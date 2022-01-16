@@ -21,6 +21,7 @@ namespace SuperNewRoles
     {
         public const string Id = "jp.ykundesu.supernewroles";
 
+        //Version.txtの変更も忘れないように
         public const string VersionString = "1.0.0";
 
         public static System.Version Version = System.Version.Parse(VersionString);
