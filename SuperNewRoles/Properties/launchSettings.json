@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SuperNewRoles": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\Epic Games\\AmongUs\\Among Us.exe"
+    }
+  }
+}
