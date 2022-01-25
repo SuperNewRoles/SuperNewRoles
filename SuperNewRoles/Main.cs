@@ -21,8 +21,7 @@ namespace SuperNewRoles
     {
         public const string Id = "jp.ykundesu.supernewroles";
 
-        //Version.txtの変更も忘れないように
-        public const string VersionString = "1.0.0";
+        public const string VersionString = "0.0.1";
 
         public static System.Version Version = System.Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
@@ -31,6 +30,8 @@ namespace SuperNewRoles
         public Harmony Harmony { get; } = new Harmony(Id);
         public static SuperNewRolesPlugin Instance;
         public static Dictionary<string, Dictionary<int, string>> StringDATE;
+        public static bool IsUpdate = false;
+        public static string NewVersion = "" ;
 
         public override void Load()
         {
@@ -39,7 +40,25 @@ namespace SuperNewRoles
 
             // All Load() Start
             ModTranslation.Load();
+            ConfigRoles.Load();
+            CustomOption.CustomOptions.Load();
             // All Load() End
+
+            // Old Delete Start
+
+            try
+            {
+                DirectoryInfo d = new DirectoryInfo(Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins");
+                string[] files = d.GetFiles("*.dll.old").Select(x => x.FullName).ToArray(); // Getting old versions
+                foreach (string f in files)
+                    File.Delete(f);
+            }
+            catch (System.Exception e)
+            {
+                System.Console.WriteLine("Exception occured when clearing old versions:\n" + e);
+            }
+
+            // Old Delete End
 
             Logger.LogInfo(ModTranslation.getString("StartLogText"));
 
@@ -49,7 +68,8 @@ namespace SuperNewRoles
             Harmony.PatchAll();
         }
 
-        
+
+
         [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]
         public static class AmBannedPatch
         {

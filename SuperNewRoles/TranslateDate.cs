@@ -45,7 +45,7 @@ namespace SuperNewRoles
 
                         if (text != null && text.Length > 0)
                         {
-                            //TheOtherRolesPlugin.Instance.Log.LogInfo($"key: {stringName} {key} {text}");
+                            //SuperNewRolesPlugin.Instance.Log.LogInfo($"key: {stringName} {key} {text}");
                             strings[j] = text;
                         }
                     }
@@ -70,7 +70,6 @@ namespace SuperNewRoles
                     return stringData[key][defaultLanguage].Replace("\\n", "\n");
                 }
                 catch {
-                    SuperNewRolesPlugin.Logger.LogInfo("TranslateError:"+key);
                     return key;
                 }
             }

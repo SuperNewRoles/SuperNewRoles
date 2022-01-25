@@ -5,9 +5,12 @@ using System.Reflection;
 using System.Collections;
 using UnhollowerBaseLib;
 using UnityEngine;
+using UnityEngine.Events;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomOption;
+
 namespace SuperNewRoles
 {
     public static class ModHelpers
@@ -50,10 +53,10 @@ namespace SuperNewRoles
 
 
 
-        //public static string cs(Color c, string s)
-        //{
-        //    return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptions.ToByte(c.r), CustomOptions.ToByte(c.g), CustomOptions.ToByte(c.b), CustomOptions.ToByte(c.a), s);
-        //}
+        public static string cs(Color c, string s)
+        {
+            return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptions.ToByte(c.r), CustomOptions.ToByte(c.g), CustomOptions.ToByte(c.b), CustomOptions.ToByte(c.a), s);
+        }
         public static T GetRandom<T>(List<T> list)
         {
             return list[UnityEngine.Random.Range(0, list.Count)];
@@ -89,9 +92,25 @@ namespace SuperNewRoles
         public static PlayerControl playerById(byte id)
         {
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
                 if (player.PlayerId == id)
+                {
                     return player;
+                }
+            }
             return null;
+        }
+        public static bool IsCheckListPlayerControl(this List<PlayerControl> ListDate,PlayerControl CheckPlayer)
+        {
+            foreach(PlayerControl Player in ListDate)
+            {
+                if ( Player == CheckPlayer)
+                {
+                    if (ConfigRoles.DebugMode.Value) SuperNewRolesPlugin.Logger.LogInfo("PlayerCheck");
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

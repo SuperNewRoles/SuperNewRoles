@@ -160,6 +160,10 @@
         "0" : "SuperNewRoles v{0}" ,
         "11" : "SuperNewRoles v{0}"
         } ,
+ "creditsUpdateOk" : {
+        "0" : "It has been updated. It will be applied when you reboot. Latest Version:v{0}" ,
+        "11" : "\u81ea\u52d5\u30a2\u30c3\u30d7\u30c7\u30fc\u30c8\u6e08\u307f\u3067\u3059\u3002\u518d\u8d77\u52d5\u3059\u308b\u3068\u9069\u7528\u3055\u308c\u307e\u3059\u3002\u6700\u65b0\u30d0\u30fc\u30b8\u30e7\u30f3:v{0}"
+        } ,
  "modOptionsText" : {
         "0" : "Mod Options" ,
         "11" : "Mod\u306e\u8a2d\u5b9a"
@@ -171,6 +175,10 @@
  "CustomStremerMode" : {
         "0" : "StremerMode" ,
         "11" : "\u30b9\u30c8\u30ea\u30fc\u30de\u30fc\u30e2\u30fc\u30c9"
+        } ,
+ "CustomAutoUpdate" : {
+        "0" : "Auto Update" ,
+        "11" : "\u81ea\u52d5\u30a2\u30c3\u30d7\u30c7\u30fc\u30c8"
         } ,
  "SettingCrewmateRoles" : {
         "0" : "CrewMate Setting" ,
@@ -328,6 +336,10 @@
         "0" : "Maximum number of kills for Sheriff" ,
         "11" : "\u30b7\u30a7\u30ea\u30d5\u306e\u6700\u5927\u30ad\u30eb\u6570"
         } ,
+ "SherifKillButtonName" : {
+        "0" : "Kill" ,
+        "11" : "\u30ad\u30eb"
+        } ,
  "MeetingSheriffName" : {
         "0" : "Meeting Sheriff" ,
         "11" : "\u30df\u30fc\u30c6\u30a3\u30f3\u30b0 \u30b7\u30a7\u30ea\u30d5"
@@ -472,6 +484,10 @@
         "0" : "Double your speed" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\u306e\u500d\u901f"
         } ,
+ "SpeedBoosterBoostButtonName" : {
+        "0" : "Speed Boost" ,
+        "11" : "\u30b9\u30d4\u30fc\u30c9\\n\u30d6\u30fc\u30b9\u30c8"
+        } ,
  "EvilSpeedBoosterName" : {
         "0" : "Evil Speed Booster" ,
         "11" : "\u30a4\u30d3\u30eb\u30b9\u30d4\u30fc\u30c9\u30d6\u30fc\u30b9\u30bf\u30fc"
@@ -499,6 +515,10 @@
  "EvilSpeedBoosterPlusSpeedSetting" : {
         "0" : "Double Speed" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\u306e\u500d\u901f"
+        } ,
+ "EvilSpeedBoosterBoostButtonName" : {
+        "0" : "Speed Boost" ,
+        "11" : "\u30b9\u30d4\u30fc\u30c9\\n\u30d6\u30fc\u30b9\u30c8"
         } ,
  "TaskerName" : {
         "0" : "Tasker" ,
@@ -700,6 +720,10 @@
         "0" : "Let's sabotage the outsider." ,
         "11" : "\u4eba\u5916\u306e\u59a8\u5bb3\u3092\u3057\u3088\u3046"
         } ,
+ "ClergymanTitle2" : {
+        "0" : "Let's obstruct the outsider's view." ,
+        "11" : "\u4eba\u5916\u306e\u8996\u754c\u3092\u59a8\u5bb3\u3057\u3088\u3046"
+        } ,
  "ClergymanCoolDownSetting" : {
         "0" : "Cool Time" ,
         "11" : "\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
@@ -707,6 +731,14 @@
  "ClergymanDurationTimeSetting" : {
         "0" : "Duration Time" ,
         "11" : "\u7d99\u7d9a\u6642\u9593"
+        } ,
+ "ClergymanDownVisionSetting" : {
+        "0" : "Impostor Down Vision." ,
+        "11" : "\u5b9f\u884c\u6642\u306e\u8996\u754c"
+        } ,
+ "ClergymanLightOutButtonName" : {
+        "0" : "Light Down" ,
+        "11" : "\u30e9\u30a4\u30c8\u30c0\u30a6\u30f3"
         } ,
  "MadMateName" : {
         "0" : "Mad Mate" ,
