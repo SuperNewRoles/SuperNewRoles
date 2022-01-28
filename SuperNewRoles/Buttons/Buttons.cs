@@ -48,20 +48,21 @@ namespace SuperNewRoles.Buttons
                     var Target = PlayerControlFixedUpdatePatch.setTarget();
                     var misfire = !Roles.Sheriff.IsSheriffKill(Target);
                     var TargetID = Target.PlayerId;
-                    var LocalID = PlayerControl.LocalPlayer.Data.PlayerId;
-                    CustomRPC.RPCProcedure.sheriffKill(LocalID,TargetID);
-                    MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.sheriffKill, Hazel.SendOption.Reliable, -1);
+                    var LocalID = PlayerControl.LocalPlayer.PlayerId;
+
+                    CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID,misfire);
+
+                    MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
                     killWriter.Write(LocalID);
                     killWriter.Write(TargetID);
-                    SuperNewRolesPlugin.Logger.LogInfo("a:"+LocalID);
-                    SuperNewRolesPlugin.Logger.LogInfo("a:"+TargetID);
+                    killWriter.Write(misfire);
                     AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                     Sheriff.ResetKillCoolDown();
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && !PlayerControl.LocalPlayer.Data.Role.IsImpostor; },
                 () =>
                 {
-                    return false;
+                    return PlayerControlFixedUpdatePatch.setTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Sheriff.ResetKillCoolDown(); },
                 RoleClass.Sheriff.getButtonSprite(__instance),
@@ -95,20 +96,25 @@ namespace SuperNewRoles.Buttons
             SpeedBoosterBoostButton = new Buttons.CustomButton(
                 () =>
                 {
+                    Roles.RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
                     SpeedBooster.BoostStart();
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) &&  SpeedBooster.IsSpeedBooster(PlayerControl.LocalPlayer); },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && SpeedBooster.IsSpeedBooster(PlayerControl.LocalPlayer); },
                 () =>
                 {
-                    return true;
+                    if (SpeedBoosterBoostButton.Timer <= 0)
+                    {
+                        return true;
+                    }
+                    return false;
                 },
                 () => { SpeedBooster.EndMeeting(); },
-                RoleClass.Sheriff.getButtonSprite(__instance),
+                RoleClass.SpeedBooster.GetSpeedBoostButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.UseButton,
                 KeyCode.F
-            );
+            ) ;
 
             SpeedBoosterBoostButton.buttonText = ModTranslation.getString("SpeedBoosterBoostButtonName");
             SpeedBoosterBoostButton.showButtonText = true;
@@ -125,7 +131,7 @@ namespace SuperNewRoles.Buttons
                     return true;
                 },
                 () => { EvilSpeedBooster.EndMeeting(); },
-                RoleClass.Sheriff.getButtonSprite(__instance),
+                RoleClass.SpeedBooster.GetSpeedBoostButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.UseButton,

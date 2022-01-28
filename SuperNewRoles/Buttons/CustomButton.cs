@@ -199,6 +199,7 @@ namespace SuperNewRoles.Buttons {
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
 
             CustomButton.HudUpdate();
+            ButtonTime.Update();
             Roles.Clergyman.LightOutCheck();
             Roles.SpeedBooster.SpeedBoostCheck();
             Roles.EvilSpeedBooster.SpeedBoostCheck();
