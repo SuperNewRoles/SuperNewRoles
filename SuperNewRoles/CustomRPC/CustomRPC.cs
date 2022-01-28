@@ -41,10 +41,11 @@ namespace SuperNewRoles.CustomRPC
 
     enum CustomRPC
     {
-        ShareOptions,
+        ShareOptions = 91,
         SetRole,
-        sheriffKill,
         RPCClergymanLightOut,
+        SheriffKill,
+        CustomRPCKill,
     }
     public static class RPCProcedure
     {
@@ -60,40 +61,51 @@ namespace SuperNewRoles.CustomRPC
                 {
                     uint optionId = reader.ReadPackedUInt32();
                     uint selection = reader.ReadPackedUInt32();
-                    CustomOption.CustomOption option = CustomOption.CustomOption.options[0];
+                    CustomOption.CustomOption option = CustomOption.CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
                     option.updateSelection((int)selection);
                 }
             }
             catch (Exception e)
             {
-                if (ConfigRoles.DebugMode.Value)
-                {
-                    SuperNewRolesPlugin.Logger.LogError("Error while deserializing options: " + e.Message);
-                }
+                SuperNewRolesPlugin.Logger.LogError("Error while deserializing options: " + e.Message);
             }
         }
         public static void SetRole(byte playerid,byte RPCRoleId)
         {
             ModHelpers.playerById(playerid).setRole((RoleId)RPCRoleId);
         }
-
-        public static void sheriffKill(byte sheriffId, byte targetId)
+        public static void SheriffKill(byte SheriffId,byte TargetId,bool MissFire)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(sheriffId);
-            SuperNewRolesPlugin.Logger.LogInfo(targetId);
-            PlayerControl sheriffplayer = ModHelpers.playerById(sheriffId);
-            PlayerControl targetplayer = ModHelpers.playerById(targetId);
+            PlayerControl sheriff = ModHelpers.playerById(SheriffId);
+            PlayerControl target = ModHelpers.playerById(TargetId);
+            SuperNewRolesPlugin.Logger.LogInfo(sheriff.PlayerId);
+            SuperNewRolesPlugin.Logger.LogInfo(sheriff.PlayerId);
+            if (sheriff == null || target == null) return;
 
-            SuperNewRolesPlugin.Logger.LogInfo(sheriffplayer.PlayerId);
-            SuperNewRolesPlugin.Logger.LogInfo(targetplayer.PlayerId);
-            if (sheriffplayer == null || targetplayer == null) return;
-            if (!Roles.Sheriff.IsSheriffKill(targetplayer))
+            if (MissFire)
             {
-                sheriffplayer.MurderPlayer(sheriffplayer);
-                return;
+                sheriff.MurderPlayer(sheriff);
+            } else
+            {
+                sheriff.MurderPlayer(target);
             }
 
-            sheriffplayer.MurderPlayer(targetplayer);
+        }
+        public static void CustomRPCKill(byte notTargetId,byte targetId)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo(notTargetId);
+            SuperNewRolesPlugin.Logger.LogInfo(targetId);
+            if (notTargetId == targetId)
+            {
+                PlayerControl Player = ModHelpers.playerById(targetId);
+                Player.MurderPlayer(Player);
+            }
+            else
+            {
+                PlayerControl notTargetPlayer = ModHelpers.playerById(notTargetId);
+                PlayerControl TargetPlayer = ModHelpers.playerById(targetId);
+                notTargetPlayer.MurderPlayer(TargetPlayer);
+            }
         }
         public static void RPCClergymanLightOut(bool Start)
         {
@@ -131,8 +143,11 @@ namespace SuperNewRoles.CustomRPC
                         case (byte)CustomRPC.SetRole:
                             RPCProcedure.SetRole(reader.ReadByte(), reader.ReadByte());
                             break;
-                        case (byte)CustomRPC.sheriffKill:
-                            RPCProcedure.sheriffKill(reader.ReadByte(), reader.ReadByte());
+                        case (byte)CustomRPC.SheriffKill:
+                            RPCProcedure.SheriffKill(reader.ReadByte(),reader.ReadByte(),reader.ReadBoolean());
+                            break;
+                        case (byte)CustomRPC.CustomRPCKill:
+                            RPCProcedure.CustomRPCKill(reader.ReadByte(), reader.ReadByte());
                             break;
                         case (byte)CustomRPC.RPCClergymanLightOut:
                             RPCProcedure.RPCClergymanLightOut(reader.ReadBoolean());
