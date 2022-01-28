@@ -59,7 +59,7 @@ namespace SuperNewRoles.Buttons
                     AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                     Sheriff.ResetKillCoolDown();
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && !PlayerControl.LocalPlayer.Data.Role.IsImpostor; },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Roles.Sheriff.IsSheriff(PlayerControl.LocalPlayer); },
                 () =>
                 {
                     return PlayerControlFixedUpdatePatch.setTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -97,6 +97,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     Roles.RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
+                    SpeedBoosterBoostButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     SpeedBooster.BoostStart();
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && SpeedBooster.IsSpeedBooster(PlayerControl.LocalPlayer); },
@@ -118,7 +119,7 @@ namespace SuperNewRoles.Buttons
 
             SpeedBoosterBoostButton.buttonText = ModTranslation.getString("SpeedBoosterBoostButtonName");
             SpeedBoosterBoostButton.showButtonText = true;
-
+            SpeedBoosterBoostButton.HasEffect = true;
 
             EvilSpeedBoosterBoostButton = new Buttons.CustomButton(
                 () =>

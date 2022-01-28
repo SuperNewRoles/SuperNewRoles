@@ -48,10 +48,6 @@ namespace SuperNewRoles.Buttons {
             this.buttonText = buttonText;
             Timer = 16.2f;
             buttons.Add(this);
-            if (ConfigRoles.DebugMode.Value)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("AddButton");
-            }
             actionButton = UnityEngine.Object.Instantiate(hudManager.KillButton, hudManager.KillButton.transform.parent);
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
@@ -68,16 +64,18 @@ namespace SuperNewRoles.Buttons {
         }
 
         public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton? textTemplate, KeyCode? hotkey, bool mirror = false, string buttonText = "")
-        : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, false, 0f, () => {}, mirror, buttonText) { }
+        : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, false, 0f, () => { }, mirror, buttonText) { }
 
         void onClickEvent()
         {
-            if ((this.Timer < 0f || (this.HasEffect && this.isEffectActive && this.effectCancellable) && HasButton() && CouldUse()))
+            SuperNewRolesPlugin.Logger.LogInfo("OnClicked!");
+            if ((this.Timer <= 0f || (this.HasEffect && this.isEffectActive && this.effectCancellable) && HasButton() && CouldUse()))
             {
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 this.OnClick();
 
-                if (this.HasEffect && !this.isEffectActive) {
+                if (this.HasEffect && !this.isEffectActive)
+                {
                     this.Timer = this.EffectDuration;
                     actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     this.isEffectActive = true;
@@ -201,7 +199,6 @@ namespace SuperNewRoles.Buttons {
             CustomButton.HudUpdate();
             ButtonTime.Update();
             Roles.Clergyman.LightOutCheck();
-            Roles.SpeedBooster.SpeedBoostCheck();
             Roles.EvilSpeedBooster.SpeedBoostCheck();
         }
     }
