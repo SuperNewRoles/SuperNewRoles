@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles
 {
@@ -77,10 +78,20 @@ namespace SuperNewRoles
                     return;
             }
         }
+        public static void setRoleRPC(this PlayerControl Player,RoleId SelectRoleDate)
+        {
+            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetRole, Hazel.SendOption.Reliable, -1);
+            killWriter.Write(Player.PlayerId);
+            killWriter.Write((byte)SelectRoleDate);
+            AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+            RPCProcedure.SetRole(Player.PlayerId, (byte)SelectRoleDate);
+        }
+        public static bool isNeutral(this PlayerControl player)
+        {
+            return false;
+        }
         public static SuperNewRoles.CustomRPC.RoleId getRole(this PlayerControl player)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(Roles.RoleClass.MeetingSheriff.MeetingSheriffPlayer);
-            SuperNewRolesPlugin.Logger.LogInfo(Roles.RoleClass.MeetingSheriff.MeetingSheriffPlayer.IsCheckListPlayerControl(player));
             if (SuperNewRoles.Roles.RoleClass.SoothSayer.SoothSayerPlayer.IsCheckListPlayerControl(player))
             {
                 return SuperNewRoles.CustomRPC.RoleId.SoothSayer;

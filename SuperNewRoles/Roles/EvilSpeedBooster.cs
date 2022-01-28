@@ -16,6 +16,7 @@ namespace SuperNewRoles.Roles
         }
         public static void BoostStart()
         {
+            SuperNewRolesPlugin.Logger.LogInfo(RoleClass.EvilSpeedBooster.Speed);
             PlayerControl.GameOptions.PlayerSpeedMod = RoleClass.EvilSpeedBooster.Speed;
             RoleClass.EvilSpeedBooster.IsSpeedBoost = true;
             EvilSpeedBooster.ResetCoolDown();
@@ -37,8 +38,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsEvilSpeedBooster(PlayerControl Player)
         {
-            return true;
-            if (RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.Contains(Player))
+            if (RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.IsCheckListPlayerControl(Player))
             {
                 return true;
             }

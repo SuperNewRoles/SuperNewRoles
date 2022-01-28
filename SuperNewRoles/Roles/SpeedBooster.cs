@@ -12,7 +12,8 @@ namespace SuperNewRoles.Roles
     class SpeedBooster { 
         public static void ResetCoolDown()
         {
-            HudManagerStartPatch.SpeedBoosterBoostButton.Timer = RoleClass.SpeedBooster.CoolTime;
+            HudManagerStartPatch.SpeedBoosterBoostButton.isEffectActive = true;
+            HudManagerStartPatch.SpeedBoosterBoostButton.Timer = HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = RoleClass.SpeedBooster.CoolTime;
         }
         public static void BoostStart()
         {
@@ -37,7 +38,6 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSpeedBooster(PlayerControl Player)
         {
-            return true;
             if (RoleClass.SpeedBooster.SpeedBoosterPlayer.Contains(Player))
             {
                 return true;

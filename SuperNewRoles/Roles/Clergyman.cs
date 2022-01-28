@@ -33,7 +33,7 @@ namespace SuperNewRoles.Roles
             RoleClass.Clergyman.IsLightOff = true;
             Buttons.HudManagerStartPatch.ClergymanLightOutButton.effectCancellable = true;
             MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCClergymanLightOut, Hazel.SendOption.Reliable, -1);
-            RPCWriter.Write(false);
+            RPCWriter.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
             Clergyman.ResetCoolDown();
         }

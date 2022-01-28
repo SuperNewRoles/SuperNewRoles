@@ -24,6 +24,7 @@ namespace SuperNewRoles.Roles
 
         public static void clearAndReloadRoles()
         {
+            SuperNewRolesPlugin.Logger.LogInfo("くりああんどりろーどろーるず");
             SoothSayer.clearAndReload();
             Jester.clearAndReload();
             Lighter.clearAndReload();
@@ -34,8 +35,20 @@ namespace SuperNewRoles.Roles
             AllKiller.clearAndReload();
             Teleporter.clearAndReload();
             SpiritMedium.clearAndReload();
-            SpeedBooster.clearAndReload(); 
+            SpeedBooster.clearAndReload();
+            EvilSpeedBooster.clearAndReload();
+            Tasker.clearAndReload();
+            Doorr.clearAndReload();
+            EvilDoorr.clearAndReload();
+            Sealdor.clearAndReload();
+            Speeder.clearAndReload();
+            Freezer.clearAndReload();
+            Guesser.clearAndReload();
+            EvilGuesser.clearAndReload();
+            Vulture.clearAndReload();
+            NiceScientist.clearAndReload();
             Clergyman.clearAndReload();
+            MadMate.clearAndReload();
         }
         public static void NotRole()
         {
@@ -207,12 +220,19 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SpeedBoosterPlayer;
             public static Color32 color = new Color32(100, 149, 237, byte.MaxValue);
+            public static Sprite SpeedBoostButtonSprite;
             public static float CoolTime;
             public static float DurationTime;
             public static float Speed;
             public static float DefaultSpeed;
+            public static DateTime ButtonTimer;
             public static bool IsSpeedBoost;
-
+            public static Sprite GetSpeedBoostButtonSprite() {
+                if (SpeedBoostButtonSprite) return SpeedBoostButtonSprite;
+                SpeedBoostButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                return SpeedBoostButtonSprite;
+            }
+            
             public static void clearAndReload()
             {
                 SpeedBoosterPlayer = new List<PlayerControl>();
@@ -265,7 +285,7 @@ namespace SuperNewRoles.Roles
             public static void clearAndReload()
             {
                 DoorrPlayer = new List<PlayerControl>();
-                CoolTime = CustomOptions.DoorrOption.getFloat();
+                CoolTime = CustomOptions.DoorrCoolTime.getFloat();
             }
         }
         public static class EvilDoorr
@@ -275,8 +295,9 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static void clearAndReload()
             {
+                SuperNewRolesPlugin.Logger.LogInfo("EvilDoorrクリアーーーーーー！！！！！");
                 EvilDoorrPlayer = new List<PlayerControl>();
-                CoolTime = CustomOptions.DoorrOption.getFloat();
+                CoolTime = CustomOptions.EvilDoorrCoolTime.getFloat();
             }
         }
         public static class Sealdor
@@ -321,19 +342,39 @@ namespace SuperNewRoles.Roles
         }
         public static class Guesser
         {
+            public static List<PlayerControl> GuesserPlayer;
             public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
+            public static void clearAndReload()
+            {
+                GuesserPlayer = new List<PlayerControl>();
+            }
         }
         public static class EvilGuesser
         {
+            public static List<PlayerControl> EvilGuesserPlayer;
             public static Color32 color = ImpostorRed;
+            public static void clearAndReload()
+            {
+                EvilGuesserPlayer = new List<PlayerControl>();
+            }
         }
         public static class Vulture
         {
+            public static List<PlayerControl> VulturePlayer;
             public static Color32 color = new Color32(205, 133, 63, byte.MaxValue);
+            public static void clearAndReload()
+            {
+                VulturePlayer = new List<PlayerControl>();
+            }
         }
         public static class NiceScientist
         {
+            public static List<PlayerControl> NiceScientistPlayer;
             public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+            public static void clearAndReload()
+            {
+                NiceScientistPlayer = new List<PlayerControl>();
+            }
         }
         public static class Clergyman
         {
@@ -356,7 +397,12 @@ namespace SuperNewRoles.Roles
         }
         public static class MadMate
         {
+            public static List<PlayerControl> MadMatePlayer;
             public static Color32 color = ImpostorRed;
+            public static void clearAndReload()
+            {
+                MadMatePlayer = new List<PlayerControl>();
+            }
         }
 
     }
