@@ -144,7 +144,6 @@ namespace SuperNewRoles.CustomOption
             if (format != "")
             {
                 return sel;
-                //return string.Format(format, sel);
             }
             return ModTranslation.getString(sel);
         }
