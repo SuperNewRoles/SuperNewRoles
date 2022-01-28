@@ -208,6 +208,14 @@
         "0" : "Hide And Seek Mode" ,
         "11" : "\u304b\u304f\u308c\u3093\u307c\u30e2\u30fc\u30c9"
         } ,
+ "CrewMateName" : {
+        "0" : "Crewmate" ,
+        "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8"
+        } ,
+ "ImpostorName" : {
+        "0" : "Impostor" ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc"
+        } ,
  "detecName" : {
         "0" : "Detective" ,
         "11" : "\u63a2\u5075"
