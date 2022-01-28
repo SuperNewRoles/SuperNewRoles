@@ -21,6 +21,7 @@ namespace SuperNewRoles.Roles
 
         public static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
         public static Color ImpostorRed = Palette.ImpostorRed;
+        public static Color CrewmateWhite = Color.white;
 
         public static void clearAndReloadRoles()
         {

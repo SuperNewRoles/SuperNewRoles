@@ -24,13 +24,6 @@ namespace SuperNewRoles.Roles
         public static void ResetSpeed()
         {
             PlayerControl.GameOptions.PlayerSpeedMod = RoleClass.SpeedBooster.DefaultSpeed;
-            RoleClass.SpeedBooster.IsSpeedBoost = false;
-        }
-
-        public static void SpeedBoostCheck()
-        {
-            if (!RoleClass.SpeedBooster.IsSpeedBoost) return;
-            if (HudManagerStartPatch.SpeedBoosterBoostButton.Timer + RoleClass.SpeedBooster.DurationTime <= RoleClass.SpeedBooster.CoolTime) SpeedBoostEnd();
         }
         public static void SpeedBoostEnd()
         {
@@ -38,6 +31,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSpeedBooster(PlayerControl Player)
         {
+            return true;
             if (RoleClass.SpeedBooster.SpeedBoosterPlayer.Contains(Player))
             {
                 return true;

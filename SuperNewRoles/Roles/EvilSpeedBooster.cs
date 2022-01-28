@@ -16,7 +16,6 @@ namespace SuperNewRoles.Roles
         }
         public static void BoostStart()
         {
-            SuperNewRolesPlugin.Logger.LogInfo(RoleClass.EvilSpeedBooster.Speed);
             PlayerControl.GameOptions.PlayerSpeedMod = RoleClass.EvilSpeedBooster.Speed;
             RoleClass.EvilSpeedBooster.IsSpeedBoost = true;
             EvilSpeedBooster.ResetCoolDown();

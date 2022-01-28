@@ -26,5 +26,16 @@ namespace SuperNewRoles.Roles
                 return false;
             }
         }
+        public static bool IsSheriff(PlayerControl Player)
+        {
+            if (RoleClass.Sheriff.SheriffPlayer.IsCheckListPlayerControl(Player))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

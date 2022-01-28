@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool isClergyman(PlayerControl Player)
         {
-            if (RoleClass.Clergyman.ClergymanPlayer.Contains(Player))
+            if (RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(Player))
             {
                 return true;
             } else
@@ -70,8 +70,6 @@ namespace SuperNewRoles.Roles
         public static void LightOutCheck()
         {
             if (!RoleClass.Clergyman.IsLightOff) return;
-            SuperNewRolesPlugin.Logger.LogInfo("Timer:"+HudManagerStartPatch.ClergymanLightOutButton.Timer);
-            SuperNewRolesPlugin.Logger.LogInfo("Duration:"+ (HudManagerStartPatch.ClergymanLightOutButton.Timer - RoleClass.Clergyman.DurationTime));
             if (HudManagerStartPatch.ClergymanLightOutButton.Timer + RoleClass.Clergyman.DurationTime <= RoleClass.Clergyman.CoolTime) LightOutEnd();
         }
         public static void EndMeeting()
