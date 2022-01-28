@@ -27,10 +27,6 @@
         <Reference Include="$(AmongUs)/BepInEx/unhollowed/*.dll" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Buttons\" />
-    </ItemGroup>
-
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
         <Message Text="Second occurrence" />
         <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\netstandard2.1\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
