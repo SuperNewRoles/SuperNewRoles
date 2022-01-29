@@ -11,11 +11,14 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 [日本語←](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_jp.md)
 
-##クレジット
+## クレジット
 
 [TheOtherRoles](https://github.com/Eisbison/TheOtherRoles) オプションやボタンなどのソースコードを参考にさせていただきました。**Eisbision**さんありがとうございます！
+
 [TheOtherRolesGM](https://github.com/yukinogatari/TheOtherRoles-GM) 言語対応の参考にしました。**yukinogatari**さんありがとうございます！
-[Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) - カスタムゲームオプション**DorCoMaNdO**: 
+
+[Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) - カスタムゲームオプション
+**DorCoMaNdO**: 
 - v1.6より前：デフォルトのEssentialsリリースを使用しました
 - v1.6-v1.8：デフォルトのEssentialsを少し変更しました。 変更 この ブランチに は、フォークの あります。
 - v2.0.0以降：Reactorを使用しなくなったため、 実装に触発された独自の実装を使用しています。 **DorCoMaNdO**の
