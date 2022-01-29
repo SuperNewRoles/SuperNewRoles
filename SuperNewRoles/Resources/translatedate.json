@@ -752,6 +752,10 @@
         "0" : "Light Down" ,
         "11" : "\u30e9\u30a4\u30c8\u30c0\u30a6\u30f3"
         } ,
+ "ClergymanLightOutMessage" : {
+        "0" : "The Clergyman is blocking my view!" ,
+        "11" : "\u8056\u8077\u8005\u304c\u8996\u754c\u3092\u59a8\u5bb3\u3057\u3066\u3044\u307e\u3059\uff01"
+        } ,
  "MadMateName" : {
         "0" : "Mad Mate" ,
         "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30c8"
