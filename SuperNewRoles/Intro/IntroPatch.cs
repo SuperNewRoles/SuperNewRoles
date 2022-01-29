@@ -19,8 +19,14 @@ namespace SuperNewRoles.Patches
 
         public static void setupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
-            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor) return;
-            PlayerControl.LocalPlayer.setRoleRPC(CustomRPC.RoleId.Sheriff);
+            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            {
+                PlayerControl.LocalPlayer.setRoleRPC(CustomRPC.RoleId.EvilSpeedBooster);
+            } else
+            {
+                PlayerControl.LocalPlayer.setRoleRPC(CustomRPC.RoleId.Clergyman);
+            }
+            SuperNewRolesPlugin.Logger.LogInfo("Seted");
             if (PlayerControl.LocalPlayer.isNeutral())
             {
                 __instance.BackgroundBar.material.color = Color.gray;
@@ -42,6 +48,7 @@ namespace SuperNewRoles.Patches
             public static void Postfix(IntroCutscene __instance)
             {
                 var RoleDate = PlayerControl.LocalPlayer.getRole();
+                SuperNewRolesPlugin.Logger.LogInfo(RoleDate);
                 if (RoleDate == CustomRPC.RoleId.DefaultRole) return;
                 var date = Intro.IntroDate.GetIntroDate(RoleDate);
                 __instance.YouAreText.color = date.color;
