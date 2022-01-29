@@ -65,7 +65,7 @@ namespace SuperNewRoles.Buttons
                     return PlayerControlFixedUpdatePatch.setTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Sheriff.ResetKillCoolDown(); },
-                RoleClass.Sheriff.getButtonSprite(__instance),
+                RoleClass.Sheriff.getButtonSprite(),
                 new Vector3(0f, 1f, 0),
                 __instance,
                 __instance.KillButton,
@@ -75,15 +75,22 @@ namespace SuperNewRoles.Buttons
             ClergymanLightOutButton = new Buttons.CustomButton(
                 () =>
                 {
+                    RoleClass.Clergyman.IsLightOff = true;
+                    Roles.RoleClass.Clergyman.ButtonTimer = DateTime.Now;
+                    ClergymanLightOutButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Clergyman.LightOutStart();
                 },
-                () => { return Clergyman.isClergyman(PlayerControl.LocalPlayer); },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Clergyman.isClergyman(PlayerControl.LocalPlayer); },
                 () =>
                 {
-                    return true;
+                    if (ClergymanLightOutButton.Timer <= 0)
+                    {
+                        return true;
+                    }
+                    return false;
                 },
                 () => { Clergyman.EndMeeting(); },
-                RoleClass.Sheriff.getButtonSprite(__instance),
+                RoleClass.Clergyman.getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.UseButton,
@@ -124,12 +131,18 @@ namespace SuperNewRoles.Buttons
             EvilSpeedBoosterBoostButton = new Buttons.CustomButton(
                 () =>
                 {
+                    Roles.RoleClass.EvilSpeedBooster.ButtonTimer = DateTime.Now;
+                    EvilSpeedBoosterBoostButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     EvilSpeedBooster.BoostStart();
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && EvilSpeedBooster.IsEvilSpeedBooster(PlayerControl.LocalPlayer); },
                 () =>
                 {
-                    return true;
+                    if (EvilSpeedBoosterBoostButton.Timer <= 0)
+                    {
+                        return true;
+                    }
+                    return false;
                 },
                 () => { EvilSpeedBooster.EndMeeting(); },
                 RoleClass.SpeedBooster.GetSpeedBoostButtonSprite(),

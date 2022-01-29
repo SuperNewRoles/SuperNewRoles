@@ -198,7 +198,6 @@ namespace SuperNewRoles.Buttons {
 
             CustomButton.HudUpdate();
             ButtonTime.Update();
-            Roles.Clergyman.LightOutCheck();
             Roles.EvilSpeedBooster.SpeedBoostCheck();
         }
     }

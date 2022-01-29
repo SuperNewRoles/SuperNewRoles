@@ -31,11 +31,9 @@ namespace SuperNewRoles.Roles
         {
             PlayerControl.GameOptions.ImpostorLightMod = RoleClass.Clergyman.DownImpoVision;
             RoleClass.Clergyman.IsLightOff = true;
-            Buttons.HudManagerStartPatch.ClergymanLightOutButton.effectCancellable = true;
             MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCClergymanLightOut, Hazel.SendOption.Reliable, -1);
             RPCWriter.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
-            Clergyman.ResetCoolDown();
         }
         public static void LightOutStartRPC()
         {
@@ -43,7 +41,12 @@ namespace SuperNewRoles.Roles
             SuperNewRolesPlugin.Logger.LogInfo("-----------");
             SuperNewRolesPlugin.Logger.LogInfo("Light Out Start");
             SuperNewRolesPlugin.Logger.LogInfo("-----------");
+            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            {
+                new CustomMessage(ModTranslation.getString("ClergymanLightOutMessage"), RoleClass.Clergyman.DurationTime);
+            }
             PlayerControl.GameOptions.ImpostorLightMod = RoleClass.Clergyman.DownImpoVision;
+            RoleClass.Clergyman.OldButtonTimer = DateTime.Now; 
         }
         public static void LightOutEnd()
         {
@@ -51,7 +54,6 @@ namespace SuperNewRoles.Roles
             
             PlayerControl.GameOptions.ImpostorLightMod = RoleClass.Clergyman.DefaultImpoVision;
             RoleClass.Clergyman.IsLightOff = false;
-            Buttons.HudManagerStartPatch.ClergymanLightOutButton.effectCancellable = true;
 
             MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCClergymanLightOut, Hazel.SendOption.Reliable, -1);
             RPCWriter.Write(false);
@@ -66,11 +68,6 @@ namespace SuperNewRoles.Roles
                 SuperNewRolesPlugin.Logger.LogInfo("-----------");
                 PlayerControl.GameOptions.ImpostorLightMod = RoleClass.Clergyman.DefaultImpoVision;
             }
-        }
-        public static void LightOutCheck()
-        {
-            if (!RoleClass.Clergyman.IsLightOff) return;
-            if (HudManagerStartPatch.ClergymanLightOutButton.Timer + RoleClass.Clergyman.DurationTime <= RoleClass.Clergyman.CoolTime) LightOutEnd();
         }
         public static void EndMeeting()
         {

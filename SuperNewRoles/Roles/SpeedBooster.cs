@@ -31,7 +31,6 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSpeedBooster(PlayerControl Player)
         {
-            return true;
             if (RoleClass.SpeedBooster.SpeedBoosterPlayer.Contains(Player))
             {
                 return true;

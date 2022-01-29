@@ -134,13 +134,14 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static bool MadMateKill;
             public static float KillMaxCount;
+            public static DateTime ButtonTimer;
 
             private static Sprite buttonSprite;
 
-            public static Sprite getButtonSprite(HudManager hud)
+            public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = hud.KillButton.graphic.sprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
                 return buttonSprite;
             }
 
@@ -253,9 +254,11 @@ namespace SuperNewRoles.Roles
             public static float Speed;
             public static float DefaultSpeed;
             public static bool IsSpeedBoost;
+            public static DateTime ButtonTimer;
 
             public static void clearAndReload()
             {
+                ButtonTimer = DateTime.Now;
                 EvilSpeedBoosterPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.EvilSpeedBoosterCoolTime.getFloat();
                 DurationTime = CustomOptions.EvilSpeedBoosterDurationTime.getFloat();
@@ -386,6 +389,17 @@ namespace SuperNewRoles.Roles
             public static bool IsLightOff;
             public static float DownImpoVision;
             public static float DefaultImpoVision;
+            public static DateTime ButtonTimer;
+            public static DateTime OldButtonTimer;
+
+
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
+                return buttonSprite;
+            }
             public static void clearAndReload()
             {
                 ClergymanPlayer = new List<PlayerControl>();
