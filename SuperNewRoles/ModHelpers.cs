@@ -106,7 +106,6 @@ namespace SuperNewRoles
             {
                 if ( Player == CheckPlayer)
                 {
-                    if (ConfigRoles.DebugMode.Value) 
                     return true;
                 }
             }
