@@ -22,6 +22,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 - v1.6より前：デフォルトのEssentialsリリースを使用しました
 - v1.6-v1.8：デフォルトのEssentialsを少し変更しました。 変更 この ブランチに は、フォークの あります。
 - v2.0.0以降：Reactorを使用しなくなったため、 実装に触発された独自の実装を使用しています。 **DorCoMaNdO**の
+
 (TheOtherRolesより&Google翻訳より)
 
 [BepInEx](https://github.com/BepInEx) - modを適用するために使いました。
