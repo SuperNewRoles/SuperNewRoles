@@ -39,7 +39,7 @@ namespace SuperNewRoles.Roles
         public static bool IsSpeedBooster(PlayerControl Player)
         {
             return true;
-            if (RoleClass.SpeedBooster.SpeedBoosterPlayer.Contains(Player))
+            if (RoleClass.SpeedBooster.SpeedBoosterPlayer.IsCheckListPlayerControl(Player))
             {
                 return true;
             }
