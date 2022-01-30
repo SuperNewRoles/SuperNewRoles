@@ -14,6 +14,7 @@ namespace SuperNewRoles.Buttons
             Roles.SpeedBooster.ResetSpeed();
             Roles.EvilSpeedBooster.ResetSpeed();
             Roles.Clergyman.LightOutEnd();
+            Roles.Lighter.LightOutEnd();
         }
     }
 }
