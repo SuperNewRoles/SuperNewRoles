@@ -70,8 +70,29 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Sealdor):
                     Roles.RoleClass.Sealdor.SealdorPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Speeder):
+                    Roles.RoleClass.Speeder.SpeederPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Freezer):
+                    Roles.RoleClass.Freezer.FreezerPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Guesser):
+                    Roles.RoleClass.Guesser.GuesserPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.EvilGuesser):
+                    Roles.RoleClass.EvilGuesser.EvilGuesserPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Vulture):
+                    Roles.RoleClass.Vulture.VulturePlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.NiceScientist):
+                    Roles.RoleClass.NiceScientist.NiceScientistPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.Clergyman):
                     Roles.RoleClass.Clergyman.ClergymanPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.MadMate):
+                    Roles.RoleClass.MadMate.MadMatePlayer.Add(player);
                     break;
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
