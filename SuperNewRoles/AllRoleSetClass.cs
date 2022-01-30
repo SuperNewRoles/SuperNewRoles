@@ -12,6 +12,7 @@ namespace SuperNewRoles
     {
         public static void Postfix()
         {
+            Roles.RoleClass.clearAndReloadRoles();
             AllRoleSetClass.AllRoleSet();
         }
     }

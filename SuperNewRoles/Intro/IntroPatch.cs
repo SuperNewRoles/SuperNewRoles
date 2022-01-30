@@ -23,11 +23,10 @@ namespace SuperNewRoles.Patches
             SuperNewRolesPlugin.Logger.LogInfo("Seted");
             if (PlayerControl.LocalPlayer.isNeutral())
             {
-                __instance.BackgroundBar.material.color = Color.gray;
-                __instance.TeamTitle.text = ModTranslation.getString("ヴァルチャー");
-                __instance.TeamTitle.color = Color.yellow;
-                __instance.ImpostorText.text = "やばぁ";
-                __instance.ImpostorText.color = Color.yellow;
+                IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
+                __instance.BackgroundBar.material.color = Intro.color;
+                __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey+"Name");
+                __instance.TeamTitle.color = Intro.color;
             }
             if (CustomOption.CustomOptions.HideAndSeekMode.getBool())
             {
@@ -49,6 +48,7 @@ namespace SuperNewRoles.Patches
                 __instance.ImpostorText.color = Color.yellow;
             }
         }
+        
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.SetUpRoleText))]
         class SetUpRoleTextPatch
         {
@@ -72,8 +72,6 @@ namespace SuperNewRoles.Patches
                 __instance.RoleBlurbText.color = date.color;
             }
         }
-
-
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
         class BeginCrewmatePatch
         {

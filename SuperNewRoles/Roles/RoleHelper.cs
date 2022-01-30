@@ -109,7 +109,20 @@ namespace SuperNewRoles
         }
         public static bool isNeutral(this PlayerControl player)
         {
-            return false;
+            var IsNeutral = false;
+            switch (player.getRole())
+            {
+                case (RoleId.Jester):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.AllKiller):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Vulture):
+                    IsNeutral = true;
+                    break;
+            }
+            return IsNeutral;
         }
         public static SuperNewRoles.CustomRPC.RoleId getRole(this PlayerControl player)
         {
