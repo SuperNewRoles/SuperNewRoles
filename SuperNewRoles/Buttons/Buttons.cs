@@ -70,7 +70,8 @@ namespace SuperNewRoles.Buttons
                 new Vector3(0f, 1f, 0),
                 __instance,
                 __instance.KillButton,
-                KeyCode.Q
+                KeyCode.Q,
+                8
             );
 
             ClergymanLightOutButton = new Buttons.CustomButton(
@@ -94,8 +95,9 @@ namespace SuperNewRoles.Buttons
                 RoleClass.Clergyman.getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
-                __instance.UseButton,
-                KeyCode.F
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
             );
 
             ClergymanLightOutButton.buttonText = ModTranslation.getString("ClergymanLightOutButtonName");
@@ -121,8 +123,9 @@ namespace SuperNewRoles.Buttons
                 RoleClass.SpeedBooster.GetSpeedBoostButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
-                __instance.UseButton,
-                KeyCode.F
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
             ) ;
 
             SpeedBoosterBoostButton.buttonText = ModTranslation.getString("SpeedBoosterBoostButtonName");
@@ -149,8 +152,9 @@ namespace SuperNewRoles.Buttons
                 RoleClass.SpeedBooster.GetSpeedBoostButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
-                __instance.UseButton,
-                KeyCode.F
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
             );
 
             EvilSpeedBoosterBoostButton.buttonText = ModTranslation.getString("EvilSpeedBoosterBoostButtonName");
@@ -176,8 +180,9 @@ namespace SuperNewRoles.Buttons
                 RoleClass.Lighter.getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
-                __instance.UseButton,
-                KeyCode.F
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
             );
 
             ClergymanLightOutButton.buttonText = ModTranslation.getString("ClergymanLightOutButtonName");

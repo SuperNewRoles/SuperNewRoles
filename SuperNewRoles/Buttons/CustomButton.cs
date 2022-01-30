@@ -30,8 +30,10 @@ namespace SuperNewRoles.Buttons {
         private HudManager hudManager;
         private bool mirror;
         private KeyCode? hotkey;
+        private int joystickkey;
 
-        public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = "")
+
+        public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey,bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = "")
         {
             this.hudManager = hudManager;
             this.OnClick = OnClick;
@@ -45,12 +47,14 @@ namespace SuperNewRoles.Buttons {
             this.Sprite = Sprite;
             this.mirror = mirror;
             this.hotkey = hotkey;
+            this.joystickkey = joystickkey;
             this.buttonText = buttonText;
             Timer = 16.2f;
             buttons.Add(this);
             actionButton = UnityEngine.Object.Instantiate(hudManager.KillButton, hudManager.KillButton.transform.parent);
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
+            
             button.OnClick.AddListener((UnityEngine.Events.UnityAction)onClickEvent);
 
             LocalScale = actionButton.transform.localScale;
@@ -63,8 +67,8 @@ namespace SuperNewRoles.Buttons {
             setActive(false);
         }
 
-        public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton? textTemplate, KeyCode? hotkey, bool mirror = false, string buttonText = "")
-        : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, false, 0f, () => { }, mirror, buttonText) { }
+        public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton? textTemplate, KeyCode? hotkey, int joystickkey,bool mirror = false, string buttonText = "")
+        : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey,false, 0f, () => { }, mirror, buttonText) { }
 
         void onClickEvent()
         {
@@ -162,9 +166,9 @@ namespace SuperNewRoles.Buttons {
             }
 
             actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
-
             // Trigger OnClickEvent if the hotkey is being pressed down
-            if (hotkey.HasValue && Input.GetKeyDown(hotkey.Value)) onClickEvent();
+            SuperNewRolesPlugin.Logger.LogInfo("KeyBoardJoyStick:"+KeyboardJoystick.player.controllers.ToString());
+            if ((KeyboardJoystick.player.GetButtonDown(hotkey.Value.ToString()) || KeyboardJoystick.player.GetButtonDown(joystickkey))) onClickEvent();
         }
     }
 
