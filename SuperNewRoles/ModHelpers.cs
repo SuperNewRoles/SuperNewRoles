@@ -59,7 +59,13 @@ namespace SuperNewRoles
         }
         public static T GetRandom<T>(List<T> list)
         {
-            return list[UnityEngine.Random.Range(0, list.Count)];
+            var indexdate = UnityEngine.Random.Range(0, list.Count);
+            return list[indexdate];
+        }
+        public static int GetRandomIndex<T>(List<T> list)
+        {
+            var indexdate = UnityEngine.Random.Range(0, list.Count);
+            return indexdate;
         }
         public static Texture2D loadTextureFromDisk(string path)
         {

@@ -26,45 +26,358 @@ namespace SuperNewRoles
         public static List<PlayerControl> CrewMatePlayers;
         public static List<PlayerControl> ImpostorPlayers;
 
+        public static int ImpostorPlayerNum;
+        public static int NeutralPlayerNum;
+        public static int CrewMatePlayerNum;
+
         public static void AllRoleSet()
         {
             if (!AmongUsClient.Instance.AmHost) return;
+            SetPlayerNum();
             CrewOrImpostorSet();
             OneOrNotListSet();
             ImpostorRandomSelect();
+            NeutralRandomSelect();
+            CrewMateRandomSelect();
+        }
+        public static void SetPlayerNum()
+        {
+            ImpostorPlayerNum = (int)CustomOption.CustomOptions.impostorRolesCountMax.getFloat();
+            NeutralPlayerNum = (int)CustomOption.CustomOptions.neutralRolesCountMax.getFloat();
+            CrewMatePlayerNum = (int)CustomOption.CustomOptions.crewmateRolesCountMax.getFloat();
         }
         public static void ImpostorRandomSelect()
         {
-            SuperNewRolesPlugin.Logger.LogInfo(Impoonepar);
-            foreach (RoleId id in Impoonepar)
+            if (ImpostorPlayerNum == 0 || (Impoonepar.Count == 0 && Imponotonepar.Count == 0))
             {
-                SuperNewRolesPlugin.Logger.LogInfo(id);
+                return;
             }
             bool IsNotEndRandomSelect= true;
             while (IsNotEndRandomSelect)
             {
-                RoleId SelectRoleDate= ModHelpers.GetRandom(Impoonepar);
-                int PlayerCount = (int)GetPlayerCount(SelectRoleDate);
-                if (PlayerCount >= ImpostorPlayers.Count)
+                SuperNewRolesPlugin.Logger.LogInfo("---");
+                foreach (RoleId rolid in Imponotonepar)
                 {
-                    foreach(PlayerControl Player in ImpostorPlayers)
+                    SuperNewRolesPlugin.Logger.LogInfo("ID:"+rolid);
+                }
+                if (Impoonepar.Count != 0)
+                {
+                    int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Impoonepar);
+                    RoleId SelectRoleDate = Impoonepar[SelectRoleDateIndex];
+                    int PlayerCount = (int)GetPlayerCount(SelectRoleDate);
+                    if (PlayerCount >= ImpostorPlayerNum)
                     {
-                        Player.setRoleRPC(SelectRoleDate);
+                        for (int i = 1; i <= ImpostorPlayerNum; i++)
+                        {
+                            PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
+                            p.setRoleRPC(SelectRoleDate);
+                            ImpostorPlayers.Remove(p);
+                        }
+                        IsNotEndRandomSelect = false;
+                        
+                    } else if (PlayerCount >= ImpostorPlayers.Count)
+                    {
+                        foreach (PlayerControl Player in ImpostorPlayers)
+                        {
+                            ImpostorPlayerNum--;
+                            Player.setRoleRPC(SelectRoleDate);
+                        }
+                        IsNotEndRandomSelect = false;
                     }
-                } 
+                    else
+                    {
+                        for (int i = 1; i <= PlayerCount; i++)
+                        {
+                            ImpostorPlayerNum--;
+                            PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
+                            p.setRoleRPC(SelectRoleDate);
+                            ImpostorPlayers.Remove(p);
+                        }
+                    }
+                    Impoonepar.RemoveAt(SelectRoleDateIndex);
+                } else
+                {
+                    int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Imponotonepar);
+                    RoleId SelectRoleDate = Imponotonepar[SelectRoleDateIndex];
+                    int PlayerCount = (int)GetPlayerCount(SelectRoleDate);
+                    if (PlayerCount >= ImpostorPlayerNum)
+                    {
+                        for (int i = 1; i <= ImpostorPlayerNum; i++)
+                        {
+                            PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
+                            p.setRoleRPC(SelectRoleDate);
+                            ImpostorPlayers.Remove(p);
+                        }
+                        IsNotEndRandomSelect = false;
+                        
+                    } else if (PlayerCount >= ImpostorPlayers.Count) {
+                        foreach (PlayerControl Player in ImpostorPlayers)
+                        {
+                            Player.setRoleRPC(SelectRoleDate);
+                        }
+                        IsNotEndRandomSelect = false;
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= PlayerCount; i++)
+                        {
+                            ImpostorPlayerNum--;
+                            PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
+                            p.setRoleRPC(SelectRoleDate);
+                            ImpostorPlayers.Remove(p);
+                        }
+                    }
+                    for (int i1 = 1; i1<= 15; i1++)
+                    {
+                        for (int i = 1; i <= Imponotonepar.Count; i++)
+                        {
+                            if (Imponotonepar[i - 1] == SelectRoleDate)
+                            {
+                                Imponotonepar.RemoveAt(i - 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public static void NeutralRandomSelect()
+        {
+            if (NeutralPlayerNum == 0 || (Neutonepar.Count == 0 && Neutnotonepar.Count == 0))
+            {
+                return;
+            }
+            bool IsNotEndRandomSelect = true;
+            while (IsNotEndRandomSelect)
+            {
+                if (Crewonepar.Count != 0)
+                {
+                    int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Neutonepar);
+                    RoleId SelectRoleDate = Neutonepar[SelectRoleDateIndex];
+                    int PlayerCount = (int)GetPlayerCount(SelectRoleDate);
+                    if (PlayerCount >= NeutralPlayerNum)
+                    {
+                        for (int i = 1; i <= NeutralPlayerNum; i++)
+                        {
+                            PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                            p.setRoleRPC(SelectRoleDate);
+                            CrewMatePlayers.Remove(p);
+                        }
+                        IsNotEndRandomSelect = false;
+
+                    }
+                    else if (PlayerCount >= CrewMatePlayers.Count)
+                    {
+                        foreach (PlayerControl Player in CrewMatePlayers)
+                        {
+                            NeutralPlayerNum--;
+                            Player.setRoleRPC(SelectRoleDate);
+                        }
+                        IsNotEndRandomSelect = false;
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= PlayerCount; i++)
+                        {
+                            NeutralPlayerNum--;
+                            PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                            p.setRoleRPC(SelectRoleDate);
+                            CrewMatePlayers.Remove(p);
+                        }
+                    }
+                    Neutonepar.RemoveAt(SelectRoleDateIndex);
+                }
+                else
+                {
+                    int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Neutnotonepar);
+                    RoleId SelectRoleDate = Neutnotonepar[SelectRoleDateIndex];
+                    int PlayerCount = (int)GetPlayerCount(SelectRoleDate);
+                    if (PlayerCount >= NeutralPlayerNum)
+                    {
+                        for (int i = 1; i <= NeutralPlayerNum; i++)
+                        {
+                            PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                            p.setRoleRPC(SelectRoleDate);
+                            CrewMatePlayers.Remove(p);
+                        }
+                        IsNotEndRandomSelect = false;
+
+                    }
+                    else if (PlayerCount >= CrewMatePlayers.Count)
+                    {
+                        foreach (PlayerControl Player in CrewMatePlayers)
+                        {
+                            Player.setRoleRPC(SelectRoleDate);
+                        }
+                        IsNotEndRandomSelect = false;
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= PlayerCount; i++)
+                        {
+                            NeutralPlayerNum--;
+                            PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                            p.setRoleRPC(SelectRoleDate);
+                            CrewMatePlayers.Remove(p);
+                        }
+                    }
+                    for (int i1 = 1; i1 <= 15; i1++)
+                    {
+                        for (int i = 1; i <= Neutnotonepar.Count; i++)
+                        {
+                            if (Neutnotonepar[i - 1] == SelectRoleDate)
+                            {
+                                Neutnotonepar.RemoveAt(i - 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public static void CrewMateRandomSelect()
+        {
+            if (CrewMatePlayerNum == 0 || (Crewonepar.Count == 0 && Crewnotonepar.Count == 0))
+            {
+                return;
+            }
+            bool IsNotEndRandomSelect = true;
+            while (IsNotEndRandomSelect)
+            {
+                if (Crewonepar.Count != 0)
+                {
+                    int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Crewonepar);
+                    RoleId SelectRoleDate = Crewonepar[SelectRoleDateIndex];
+                    int PlayerCount = (int)GetPlayerCount(SelectRoleDate);
+                    if (PlayerCount >= CrewMatePlayerNum)
+                    {
+                        for (int i = 1; i <= CrewMatePlayerNum; i++)
+                        {
+                            PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                            p.setRoleRPC(SelectRoleDate);
+                            CrewMatePlayers.Remove(p);
+                        }
+                        IsNotEndRandomSelect = false;
+
+                    }
+                    else if (PlayerCount >= CrewMatePlayers.Count)
+                    {
+                        foreach (PlayerControl Player in CrewMatePlayers)
+                        {
+                            CrewMatePlayerNum--;
+                            Player.setRoleRPC(SelectRoleDate);
+                        }
+                        IsNotEndRandomSelect = false;
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= PlayerCount; i++)
+                        {
+                            CrewMatePlayerNum--;
+                            PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                            p.setRoleRPC(SelectRoleDate);
+                            CrewMatePlayers.Remove(p);
+                        }
+                    }
+                    Crewonepar.RemoveAt(SelectRoleDateIndex);
+                }
+                else
+                {
+                    int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Crewnotonepar);
+                    RoleId SelectRoleDate = Crewnotonepar[SelectRoleDateIndex];
+                    int PlayerCount = (int)GetPlayerCount(SelectRoleDate);
+                    if (PlayerCount >= CrewMatePlayerNum)
+                    {
+                        for (int i = 1; i <= CrewMatePlayerNum; i++)
+                        {
+                            PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                            p.setRoleRPC(SelectRoleDate);
+                            CrewMatePlayers.Remove(p);
+                        }
+                        IsNotEndRandomSelect = false;
+
+                    }
+                    else if (PlayerCount >= CrewMatePlayers.Count)
+                    {
+                        foreach (PlayerControl Player in CrewMatePlayers)
+                        {
+                            Player.setRoleRPC(SelectRoleDate);
+                        }
+                        IsNotEndRandomSelect = false;
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= PlayerCount; i++)
+                        {
+                            CrewMatePlayerNum--;
+                            PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                            p.setRoleRPC(SelectRoleDate);
+                            CrewMatePlayers.Remove(p);
+                        }
+                    }
+                    for (int i1 = 1; i1 <= 15; i1++)
+                    {
+                        for (int i = 1; i <= Crewnotonepar.Count; i++)
+                        {
+                            if (Crewnotonepar[i - 1] == SelectRoleDate)
+                            {
+                                Crewnotonepar.RemoveAt(i - 1);
+                            }
+                        }
+                    }
+                }
             }
         }
         public static float GetPlayerCount(RoleId RoleDate)
         {
             switch (RoleDate)
             {
-                case (RoleId.EvilSpeedBooster):
-                    return CustomOption.CustomOptions.EvilSpeedBoosterPlayerCount.getFloat();
-                case (RoleId.EvilScientist):
-                    return CustomOption.CustomOptions.EvilScientistPlayerCount.getFloat();
+                case (RoleId.SoothSayer):
+                    return CustomOption.CustomOptions.SoothSayerPlayerCount.getFloat();
+                case (RoleId.Jester):
+                    return CustomOption.CustomOptions.JesterPlayerCount.getFloat();
+                case (RoleId.Lighter):
+                    return CustomOption.CustomOptions.LighterPlayerCount.getFloat();
                 case (RoleId.EvilLighter):
                     return CustomOption.CustomOptions.EvilLighterPlayerCount.getFloat();
-               
+                case (RoleId.EvilScientist):
+                    return CustomOption.CustomOptions.EvilScientistPlayerCount.getFloat();
+                case (RoleId.Sheriff):
+                    return CustomOption.CustomOptions.SheriffPlayerCount.getFloat();
+                case (RoleId.MeetingSheriff):
+                    return CustomOption.CustomOptions.MeetingSheriffPlayerCount.getFloat();
+                case (RoleId.AllKiller):
+                    return CustomOption.CustomOptions.AllKillerPlayerCount.getFloat();
+                case (RoleId.Teleporter):
+                    return CustomOption.CustomOptions.TeleporterPlayerCount.getFloat();
+                case (RoleId.SpiritMedium):
+                    return CustomOption.CustomOptions.SpiritMediumPlayerCount.getFloat();
+                case (RoleId.SpeedBooster):
+                    return CustomOption.CustomOptions.SpeedBoosterPlayerCount.getFloat();
+                case (RoleId.EvilSpeedBooster):
+                    return CustomOption.CustomOptions.EvilSpeedBoosterPlayerCount.getFloat();
+                case (RoleId.Tasker):
+                    return CustomOption.CustomOptions.TaskerPlayerCount.getFloat();
+                case (RoleId.Doorr):
+                    return CustomOption.CustomOptions.DoorrPlayerCount.getFloat();
+                case (RoleId.EvilDoorr):
+                    return CustomOption.CustomOptions.EvilDoorrPlayerCount.getFloat();
+                case (RoleId.Sealdor):
+                    return CustomOption.CustomOptions.SealdorPlayerCount.getFloat();
+                case (RoleId.Speeder):
+                    return CustomOption.CustomOptions.SpeederPlayerCount.getFloat();
+                case (RoleId.Freezer):
+                    return CustomOption.CustomOptions.FreezerPlayerCount.getFloat();
+                case (RoleId.Guesser):
+                    return CustomOption.CustomOptions.GuesserPlayerCount.getFloat();
+                case (RoleId.EvilGuesser):
+                    return CustomOption.CustomOptions.EvilGuesserPlayerCount.getFloat();
+                case (RoleId.Vulture):
+                    return CustomOption.CustomOptions.VulturePlayerCount.getFloat();
+                case (RoleId.NiceScientist):
+                    return CustomOption.CustomOptions.NiceScientistPlayerCount.getFloat();
+                case (RoleId.Clergyman):
+                    return CustomOption.CustomOptions.ClergymanPlayerCount.getFloat();
+                case (RoleId.MadMate):
+                    return CustomOption.CustomOptions.MadMatePlayerCount.getFloat();
             }
             return 1;
         }
@@ -95,8 +408,14 @@ namespace SuperNewRoles
             Neutnotonepar = new List<RoleId>();
             Crewonepar = new List<RoleId>();
             Crewnotonepar = new List<RoleId>();
+            SuperNewRolesPlugin.Logger.LogInfo("-----");
+            SuperNewRolesPlugin.Logger.LogInfo(CustomOption.CustomOptions.EvilScientistOption.getString().Replace("0%",""));
+            SuperNewRolesPlugin.Logger.LogInfo(CustomOption.CustomOptions.EvilLighterOption.getString().Replace("0%", ""));
+            SuperNewRolesPlugin.Logger.LogInfo(CustomOption.CustomOptions.EvilSpeedBoosterOption.getString().Replace("0%", ""));
+            SuperNewRolesPlugin.Logger.LogInfo("-----");
             if (!(CustomOption.CustomOptions.SoothSayerOption.getString().Replace("0%", "") == ""))
             {
+                SuperNewRolesPlugin.Logger.LogInfo("占い師いいいいい");
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SoothSayerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.SoothSayer;
                 if (OptionDate == 10)
@@ -109,7 +428,8 @@ namespace SuperNewRoles
                         Crewnotonepar.Add(ThisRoleId);
                     }
                 }
-            } else if (!(CustomOption.CustomOptions.JesterOption.getString().Replace("0%", "") == ""))
+            }
+            if (!(CustomOption.CustomOptions.JesterOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.JesterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Jester;
@@ -125,8 +445,9 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.LighterOption.getString().Replace("0%", "") == ""))
+             if (!(CustomOption.CustomOptions.LighterOption.getString().Replace("0%", "") == ""))
             {
+                SuperNewRolesPlugin.Logger.LogInfo("Lighterあああああ");
                 int OptionDate = int.Parse(CustomOption.CustomOptions.LighterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Lighter;
                 if (OptionDate == 10)
@@ -141,8 +462,9 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.EvilLighterOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.EvilLighterOption.getString().Replace("0%", "") == ""))
             {
+                SuperNewRolesPlugin.Logger.LogInfo("EvilLighterSelected!!!!");
                 int OptionDate = int.Parse(CustomOption.CustomOptions.EvilLighterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.EvilLighter;
                 if (OptionDate == 10)
@@ -157,7 +479,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.EvilScientistOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.EvilScientistOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.EvilScientistOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.EvilScientist;
@@ -173,7 +495,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.SheriffOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.SheriffOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SheriffOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Sheriff;
@@ -189,7 +511,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.MeetingSheriffOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.MeetingSheriffOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MeetingSheriffOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.MeetingSheriff;
@@ -205,7 +527,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.AllKillerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.AllKillerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.AllKillerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.AllKiller;
@@ -221,7 +543,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.TeleporterOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.TeleporterOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.TeleporterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Teleporter;
@@ -237,7 +559,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.SpiritMediumOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.SpiritMediumOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SpiritMediumOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.SpiritMedium;
@@ -253,7 +575,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.SpeedBoosterOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.SpeedBoosterOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SpeedBoosterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.SpeedBooster;
@@ -269,7 +591,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.EvilSpeedBoosterOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.EvilSpeedBoosterOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.EvilSpeedBoosterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.EvilSpeedBooster;
@@ -285,7 +607,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.TaskerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.TaskerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.TaskerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Tasker;
@@ -301,7 +623,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.DoorrOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.DoorrOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.DoorrOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Doorr;
@@ -317,7 +639,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.EvilDoorrOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.EvilDoorrOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.EvilDoorrOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.EvilDoorr;
@@ -333,7 +655,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.SealdorOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.SealdorOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SealdorOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Sealdor;
@@ -349,7 +671,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.SpeederOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.SpeederOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SpeederOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Speeder;
@@ -365,7 +687,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.FreezerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.FreezerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.FreezerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Freezer;
@@ -381,7 +703,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.GuesserOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.GuesserOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.GuesserOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Guesser;
@@ -397,7 +719,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.EvilGuesserOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.EvilGuesserOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.EvilGuesserOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.EvilGuesser;
@@ -413,7 +735,8 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.VultureOption.getString().Replace("0%", "") == ""))
+//
+            if (!(CustomOption.CustomOptions.VultureOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.VultureOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Vulture;
@@ -429,7 +752,8 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.NiceScientistOption.getString().Replace("0%", "") == ""))
+            SuperNewRolesPlugin.Logger.LogInfo("ばあいおｐｆじぇをふぇｗｑ");
+            if (!(CustomOption.CustomOptions.NiceScientistOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.NiceScientistOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.NiceScientist;
@@ -445,7 +769,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.ClergymanOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.ClergymanOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.ClergymanOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Clergyman;
@@ -461,7 +785,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            else if (!(CustomOption.CustomOptions.MadMateOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.MadMateOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MadMateOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.MadMate;
@@ -477,6 +801,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            SuperNewRolesPlugin.Logger.LogInfo("あああ");
         }
     }
 }
