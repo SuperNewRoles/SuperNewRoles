@@ -208,6 +208,10 @@
         "0" : "Hide And Seek Mode" ,
         "11" : "\u304b\u304f\u308c\u3093\u307c\u30e2\u30fc\u30c9"
         } ,
+ "HideAndSeekModeName" : {
+        "0" : "Hide And Seek" ,
+        "11" : "\u304b\u304f\u308c\u3093\u307c"
+        } ,
  "CrewMateName" : {
         "0" : "Crewmate" ,
         "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8"
@@ -275,6 +279,10 @@
  "LigtherDurationSetting" : {
         "0" : "Lighter Duration" ,
         "11" : "\u30e9\u30a4\u30bf\u30fc\u306e\u7d99\u7d9a\u6642\u9593"
+        } ,
+ "LighterUpVisionSetting" : {
+        "0" : "View in light" ,
+        "11" : "\u30e9\u30a4\u30c8\u4e2d\u306e\u8996\u754c"
         } ,
  "EvilLighterName" : {
         "0" : "Evil Lighter" ,
