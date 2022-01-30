@@ -12,8 +12,8 @@ namespace SuperNewRoles.Roles
     class SpeedBooster { 
         public static void ResetCoolDown()
         {
-            HudManagerStartPatch.SpeedBoosterBoostButton.isEffectActive = true;
-            HudManagerStartPatch.SpeedBoosterBoostButton.Timer = HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = RoleClass.SpeedBooster.CoolTime;
+            HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = RoleClass.SpeedBooster.CoolTime;
+            RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
         }
         public static void BoostStart()
         {
@@ -31,7 +31,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSpeedBooster(PlayerControl Player)
         {
-            if (RoleClass.SpeedBooster.SpeedBoosterPlayer.Contains(Player))
+            if (RoleClass.SpeedBooster.SpeedBoosterPlayer.IsCheckListPlayerControl(Player))
             {
                 return true;
             }
@@ -43,7 +43,8 @@ namespace SuperNewRoles.Roles
         public static void EndMeeting()
         {
 
-            ResetCoolDown();
+            HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = RoleClass.SpeedBooster.CoolTime;
+            RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
             ResetSpeed();
 
         }

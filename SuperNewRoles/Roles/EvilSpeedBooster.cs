@@ -12,7 +12,8 @@ namespace SuperNewRoles.Roles
     class EvilSpeedBooster { 
         public static void ResetCoolDown()
         {
-            HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = RoleClass.EvilSpeedBooster.CoolTime;
+            HudManagerStartPatch.EvilSpeedBoosterBoostButton.MaxTimer = RoleClass.EvilSpeedBooster.CoolTime;
+            RoleClass.EvilSpeedBooster.ButtonTimer = DateTime.Now;
         }
         public static void BoostStart()
         {
@@ -49,7 +50,8 @@ namespace SuperNewRoles.Roles
         public static void EndMeeting()
         {
 
-            ResetCoolDown();
+            HudManagerStartPatch.EvilSpeedBoosterBoostButton.MaxTimer = RoleClass.EvilSpeedBooster.CoolTime;
+            RoleClass.EvilSpeedBooster.ButtonTimer = DateTime.Now;
             ResetSpeed();
 
         }

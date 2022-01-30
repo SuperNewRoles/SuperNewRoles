@@ -13,7 +13,8 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetKillCoolDown()
         {
-            HudManagerStartPatch.SheriffKillButton.Timer = RoleClass.Sheriff.CoolTime;
+            HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
+            RoleClass.Sheriff.ButtonTimer = DateTime.Now;
         }
         public static bool IsSheriffKill(PlayerControl Target)
         {
@@ -36,6 +37,11 @@ namespace SuperNewRoles.Roles
             {
                 return false;
             }
+        }
+        public static void EndMeeting()
+        {
+            HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
+            RoleClass.Sheriff.ButtonTimer = DateTime.Now;
         }
     }
 }

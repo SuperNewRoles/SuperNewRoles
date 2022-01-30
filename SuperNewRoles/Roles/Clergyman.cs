@@ -12,17 +12,19 @@ namespace SuperNewRoles.Roles
 {
     class Clergyman
     {
-        
+
         public static void ResetCoolDown()
         {
-            HudManagerStartPatch.ClergymanLightOutButton.Timer = RoleClass.Clergyman.CoolTime;
+            HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
+            RoleClass.Clergyman.ButtonTimer = DateTime.Now;
         }
         public static bool isClergyman(PlayerControl Player)
         {
             if (RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(Player))
             {
                 return true;
-            } else
+            }
+            else
             {
                 return false;
             }
@@ -46,12 +48,12 @@ namespace SuperNewRoles.Roles
                 new CustomMessage(ModTranslation.getString("ClergymanLightOutMessage"), RoleClass.Clergyman.DurationTime);
             }
             PlayerControl.GameOptions.ImpostorLightMod = RoleClass.Clergyman.DownImpoVision;
-            RoleClass.Clergyman.OldButtonTimer = DateTime.Now; 
+            RoleClass.Clergyman.OldButtonTimer = DateTime.Now;
         }
         public static void LightOutEnd()
         {
             if (!RoleClass.Clergyman.IsLightOff) return;
-            
+
             PlayerControl.GameOptions.ImpostorLightMod = RoleClass.Clergyman.DefaultImpoVision;
             RoleClass.Clergyman.IsLightOff = false;
 
@@ -71,7 +73,8 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            Clergyman.ResetCoolDown();
+            HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;
+            RoleClass.Clergyman.ButtonTimer = DateTime.Now;
             PlayerControl.GameOptions.ImpostorLightMod = RoleClass.Clergyman.DefaultImpoVision;
             RoleClass.Clergyman.IsLightOff = false;
         }
