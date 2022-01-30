@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Patches
 {
@@ -19,13 +20,6 @@ namespace SuperNewRoles.Patches
 
         public static void setupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
-            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
-            {
-                PlayerControl.LocalPlayer.setRoleRPC(CustomRPC.RoleId.EvilSpeedBooster);
-            } else
-            {
-                PlayerControl.LocalPlayer.setRoleRPC(CustomRPC.RoleId.Clergyman);
-            }
             SuperNewRolesPlugin.Logger.LogInfo("Seted");
             if (PlayerControl.LocalPlayer.isNeutral())
             {
@@ -33,6 +27,25 @@ namespace SuperNewRoles.Patches
                 __instance.TeamTitle.text = ModTranslation.getString("ヴァルチャー");
                 __instance.TeamTitle.color = Color.yellow;
                 __instance.ImpostorText.text = "やばぁ";
+                __instance.ImpostorText.color = Color.yellow;
+            }
+            if (CustomOption.CustomOptions.HideAndSeekMode.getBool())
+            {
+                Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                int ImpostorNum = 0;
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.Data.Role.IsImpostor)
+                    {
+                        ImpostorNum++;
+                        ImpostorTeams.Add(player);
+                    }
+                }
+                yourTeam = ImpostorTeams;
+                __instance.BackgroundBar.material.color = Color.white;
+                __instance.TeamTitle.text = ModTranslation.getString("HideAndSeekModeName");
+                __instance.TeamTitle.color = Color.yellow;
+                __instance.ImpostorText.text = string.Format("この{0}人が鬼だ。",ImpostorNum.ToString());
                 __instance.ImpostorText.color = Color.yellow;
             }
         }
@@ -49,6 +62,7 @@ namespace SuperNewRoles.Patches
             {
                 var RoleDate = PlayerControl.LocalPlayer.getRole();
                 SuperNewRolesPlugin.Logger.LogInfo(RoleDate);
+                CustomButton.MeetingEndedUpdate();
                 if (RoleDate == CustomRPC.RoleId.DefaultRole) return;
                 var date = Intro.IntroDate.GetIntroDate(RoleDate);
                 __instance.YouAreText.color = date.color;
