@@ -69,64 +69,43 @@ namespace SuperNewRoles.Buttons {
         void onClickEvent()
         {
             SuperNewRolesPlugin.Logger.LogInfo("OnClicked!");
-            if ((this.Timer <= 0f || (this.HasEffect && this.isEffectActive && this.effectCancellable) && HasButton() && CouldUse()))
+            if ((Timer <= 0f || (HasEffect && isEffectActive && effectCancellable) && HasButton() && CouldUse()))
             {
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
-                this.OnClick();
-
-                if (this.HasEffect && !this.isEffectActive)
-                {
-                    this.Timer = this.EffectDuration;
-                    actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
-                    this.isEffectActive = true;
-                }
+                OnClick();
             }
         }
 
         public static void HudUpdate()
         {
             buttons.RemoveAll(item => item.actionButton == null);
-        
-            for (int i = 0; i < buttons.Count; i++)
+
+            foreach (CustomButton btn in buttons)
             {
                 try
                 {
-                    buttons[i].Update();
+                    btn.Update();
                 }
-                catch (NullReferenceException)
+                catch (Exception e)
                 {
-                    System.Console.WriteLine("[WARNING] NullReferenceException from HudUpdate().HasButton(), if theres only one warning its fine");
+                    if (ConfigRoles.DebugMode.Value) System.Console.WriteLine("ButtonError:" + e);
                 }
             }
         }
 
-        public static void MeetingEndedUpdate() {
+        public static void MeetingEndedUpdate()
+        {
             buttons.RemoveAll(item => item.actionButton == null);
-            for (int i = 0; i < buttons.Count; i++)
+            foreach (CustomButton btn in buttons)
             {
                 try
                 {
-                    buttons[i].OnMeetingEnds();
-                    buttons[i].Update();
+                    btn.OnMeetingEnds();
+                    btn.Update();
                 }
-                catch (NullReferenceException)
+                catch (Exception e)
                 {
-                    System.Console.WriteLine("[WARNING] NullReferenceException from MeetingEndedUpdate().HasButton(), if theres only one warning its fine");
-                }
-            }
-        }
-
-        public static void ResetAllCooldowns() {
-            for (int i = 0; i < buttons.Count; i++)
-            {
-                try
-                {
-                    buttons[i].Timer = buttons[i].MaxTimer;
-                    buttons[i].Update();
-                }
-                catch (NullReferenceException)
-                {
-                    System.Console.WriteLine("[WARNING] NullReferenceException from MeetingEndedUpdate().HasButton(), if theres only one warning its fine");
+                    if (ConfigRoles.DebugMode.Value) System.Console.WriteLine("MeetingEnd_ButtonError:" + e);
                 }
             }
         }
@@ -150,7 +129,7 @@ namespace SuperNewRoles.Buttons {
             setActive(hudManager.UseButton.isActiveAndEnabled);
 
             actionButton.graphic.sprite = Sprite;
-            if (showButtonText && buttonText != ""){
+            if (showButtonText && buttonText != "") {
                 actionButton.OverrideText(buttonText);
             }
             actionButton.buttonLabelText.enabled = showButtonText; // Only show the text if it's a kill button
@@ -175,13 +154,13 @@ namespace SuperNewRoles.Buttons {
                 else if (!PlayerControl.LocalPlayer.inVent && PlayerControl.LocalPlayer.moveable)
                     Timer -= Time.deltaTime;
             }
-            
+
             if (Timer <= 0 && HasEffect && isEffectActive) {
                 isEffectActive = false;
                 actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 OnEffectEnds();
             }
-        
+
             actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
 
             // Trigger OnClickEvent if the hotkey is being pressed down
@@ -198,7 +177,22 @@ namespace SuperNewRoles.Buttons {
 
             CustomButton.HudUpdate();
             ButtonTime.Update();
-            Roles.EvilSpeedBooster.SpeedBoostCheck();
+        }
+    }
+    [HarmonyPatch(typeof(ExileController),nameof(ExileController.WrapUp))]
+    class ExileControllerPatch
+    {
+        public static void Postfix(AirshipExileController __instance)
+        {
+            CustomButton.MeetingEndedUpdate();
+        }
+    }
+    [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
+    class AirshipExileControllerPatch
+    {
+        public static void Postfix(AirshipExileController __instance)
+        {
+            CustomButton.MeetingEndedUpdate();
         }
     }
 }
