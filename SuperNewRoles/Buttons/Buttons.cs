@@ -17,6 +17,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ClergymanLightOutButton;
         public static CustomButton SpeedBoosterBoostButton;
         public static CustomButton EvilSpeedBoosterBoostButton;
+        public static CustomButton LighterLightOnButton;
         public static CustomButton FreezerFreezeButton;
         public static CustomButton SpeederSpeedDownButton;
         public static CustomButton AllKillerKillbutton;
@@ -64,7 +65,7 @@ namespace SuperNewRoles.Buttons
                 {
                     return PlayerControlFixedUpdatePatch.setTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
-                () => { Sheriff.ResetKillCoolDown(); },
+                () => { Sheriff.EndMeeting(); },
                 RoleClass.Sheriff.getButtonSprite(),
                 new Vector3(0f, 1f, 0),
                 __instance,
@@ -154,7 +155,33 @@ namespace SuperNewRoles.Buttons
 
             EvilSpeedBoosterBoostButton.buttonText = ModTranslation.getString("EvilSpeedBoosterBoostButtonName");
             EvilSpeedBoosterBoostButton.showButtonText = true;
+            LighterLightOnButton = new Buttons.CustomButton(
+                () =>
+                {
+                    RoleClass.Lighter.IsLightOn= true;
+                    Roles.RoleClass.Lighter.ButtonTimer = DateTime.Now;
+                    LighterLightOnButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    Lighter.LightOnStart();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Lighter.isLighter(PlayerControl.LocalPlayer); },
+                () =>
+                {
+                    if (LighterLightOnButton.Timer <= 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                },
+                () => { Lighter.EndMeeting(); },
+                RoleClass.Lighter.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.UseButton,
+                KeyCode.F
+            );
 
+            ClergymanLightOutButton.buttonText = ModTranslation.getString("ClergymanLightOutButtonName");
+            ClergymanLightOutButton.showButtonText = true;
             // Set the default (or settings from the previous game) timers/durations when spawning the buttons
             setCustomButtonCooldowns();
         }

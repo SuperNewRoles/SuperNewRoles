@@ -16,6 +16,35 @@ namespace SuperNewRoles.Buttons
             EvilSpeedBoosterButton();
             SheriffKillButton();
             ClergymanButton();
+            LighterButton();
+        }
+        public static void LighterButton()
+        {
+            if (Roles.RoleClass.Lighter.IsLightOn)
+            {
+                var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Lighter.DurationTime);
+                Buttons.HudManagerStartPatch.LighterLightOnButton.MaxTimer = Roles.RoleClass.Lighter.DurationTime;
+                Buttons.HudManagerStartPatch.LighterLightOnButton.Timer = (float)((Roles.RoleClass.Lighter.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+                if (Buttons.HudManagerStartPatch.LighterLightOnButton.Timer <= 0f)
+                {
+                    Roles.Lighter.LightOutEnd();
+                    Roles.Lighter.ResetCoolDown();
+                    Buttons.HudManagerStartPatch.LighterLightOnButton.MaxTimer = Roles.RoleClass.Lighter.CoolTime;
+                    Roles.RoleClass.Lighter.IsLightOn = false;
+                    Buttons.HudManagerStartPatch.LighterLightOnButton.actionButton.cooldownTimerText.color = Color.white;
+                    Roles.RoleClass.Lighter.ButtonTimer = DateTime.Now;
+                }
+            }
+            else
+            {
+                if (Roles.RoleClass.Lighter.ButtonTimer == null)
+                {
+                    Roles.RoleClass.Lighter.ButtonTimer = DateTime.Now;
+                }
+                var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Lighter.CoolTime);
+                Buttons.HudManagerStartPatch.LighterLightOnButton.Timer = (float)((Roles.RoleClass.Lighter.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+                if (Buttons.HudManagerStartPatch.LighterLightOnButton.Timer <= 0f) Buttons.HudManagerStartPatch.LighterLightOnButton.Timer = 0f; return;
+            }
         }
         public static void ClergymanDuration()
         {
@@ -42,7 +71,7 @@ namespace SuperNewRoles.Buttons
                 {
                     Roles.Clergyman.LightOutEnd();
                     Roles.Clergyman.ResetCoolDown();
-                    Buttons.HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = Roles.RoleClass.Clergyman.CoolTime;
+                    Buttons.HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = Roles.RoleClass.Clergyman.CoolTime;
                     Roles.RoleClass.Clergyman.IsLightOff = false;
                     Buttons.HudManagerStartPatch.ClergymanLightOutButton.actionButton.cooldownTimerText.color = Color.white;
                     Roles.RoleClass.Clergyman.ButtonTimer = DateTime.Now;
