@@ -87,12 +87,25 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
             public static float CoolTime;
             public static float DurationTime;
+            public static bool IsLightOn;
+            public static float UpVision;
+            public static float DefaultCrewVision;
+            public static DateTime ButtonTimer;
 
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
+                return buttonSprite;
+            }
             public static void clearAndReload()
             {
                 LighterPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.LighterCoolTime.getFloat();
-                DurationTime = CustomOptions.LighterDurationTime.getFloat();
+                DurationTime = CustomOptions.LighterDurationTime.getFloat(); 
+                UpVision = CustomOptions.LighterUpVision.getFloat();
+                DefaultCrewVision = PlayerControl.GameOptions.CrewLightMod;
             }
 
         }
