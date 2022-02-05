@@ -50,6 +50,11 @@ namespace SuperNewRoles.Roles
             NiceScientist.clearAndReload();
             Clergyman.clearAndReload();
             MadMate.clearAndReload();
+            Bait.ClearAndReload();
+            HomeSecurityGuard.ClearAndReload();
+            StuntMan.ClearAndReload();
+            Moving.ClearAndReload();
+            MapOptions.MapOption.ClearAndReload();
         }
         public static void NotRole()
         {
@@ -60,7 +65,13 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> SoothSayerPlayer;
             public static bool DisplayMode;
             public static Color32 color = new Color32(190, 86, 235, byte.MaxValue);
-
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
+                return buttonSprite;
+            }
             public static void clearAndReload()
             {
                 SoothSayerPlayer = new List<PlayerControl>();
@@ -73,11 +84,16 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> JesterPlayer;
             public static bool IsJesterWin;
             public static Color32 color = new Color32(255, 255, 255, byte.MaxValue);
-
+            public static bool IsUseVent;
+            public static bool IsUseSabo;
+            public static bool IsJesterTaskClearWin;
             public static void clearAndReload()
             {
                 IsJesterWin = false;
                 JesterPlayer = new List<PlayerControl>();
+                IsUseSabo = CustomOptions.JesterIsSabotage.getBool();
+                IsUseVent = CustomOptions.JesterIsVent.getBool();
+                IsJesterTaskClearWin = CustomOptions.JesterIsWinCleartask.getBool();
             }
 
         }
@@ -175,6 +191,14 @@ namespace SuperNewRoles.Roles
             public static float KillMaxCount;
             public static bool OneMeetingMultiKill;
 
+            private static Sprite buttonSprite;
+
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
+                return buttonSprite;
+            }
             public static void clearAndReload()
             {
                 MeetingSheriffPlayer = new List<PlayerControl>();
@@ -207,7 +231,14 @@ namespace SuperNewRoles.Roles
             public static Color32 color = RoleClass.ImpostorRed;
             public static float CoolTime;
             public static float DurationTime;
-
+            public static DateTime ButtonTimer;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                return ButtonSprite;
+            }
             public static void clearAndReload()
             {
                 TeleporterPlayer = new List<PlayerControl>();
@@ -299,8 +330,17 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> DoorrPlayer;
             public static Color32 color = new Color32(205, 133, 63, byte.MaxValue);
             public static float CoolTime;
+            public static DateTime ButtonTimer;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.DoorrDoorButton.png", 115f);
+                return ButtonSprite;
+            }
             public static void clearAndReload()
             {
+                ButtonTimer = DateTime.Now;
                 DoorrPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.DoorrCoolTime.getFloat();
             }
@@ -336,6 +376,13 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static float CoolTime;
             public static float DurationTime;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                return ButtonSprite;
+            }
             public static void clearAndReload()
             {
                 FreezerPlayer = new List<PlayerControl>();
@@ -432,6 +479,67 @@ namespace SuperNewRoles.Roles
                 MadMatePlayer = new List<PlayerControl>();
             }
         }
+        public static class Bait
+        {
+            public static List<PlayerControl> BaitPlayer;
+            public static Color32 color = new Color32(222, 184, 135, byte.MaxValue);
+            public static bool Reported;
+            public static float ReportTime = 0f;
 
+            public static void ClearAndReload()
+            {
+                BaitPlayer = new List<PlayerControl>();
+                Reported = false;
+                ReportTime = CustomOptions.BaitReportTime.getFloat();
+            }
+        }
+        public static class HomeSecurityGuard
+        {
+            public static List<PlayerControl> HomeSecurityGuardPlayer;
+            public static Color32 color = new Color32(0,255,0, byte.MaxValue);
+
+            public static void ClearAndReload()
+            {
+                HomeSecurityGuardPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class StuntMan
+        {
+            public static List<PlayerControl> StuntManPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+
+            public static void ClearAndReload()
+            {
+                StuntManPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class Moving
+        {
+            public static List<PlayerControl> MovingPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static float CoolTime;
+            public static DateTime ButtonTimer;
+            public static Vector3 setpostion;
+            private static Sprite nosetbuttonSprite;
+            private static Sprite setbuttonSprite;
+            public static Sprite getSetButtonSprite()
+            {
+                if (setbuttonSprite) return setbuttonSprite;
+                setbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                return setbuttonSprite;
+            }
+            public static Sprite getNoSetButtonSprite()
+            {
+                if (nosetbuttonSprite) return nosetbuttonSprite;
+                nosetbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
+                return nosetbuttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                MovingPlayer = new List<PlayerControl>();
+                setpostion = new Vector3(0,0,0);
+                CoolTime = CustomOptions.MovingCoolTime.getFloat();
+            }
+        }
     }
 }
