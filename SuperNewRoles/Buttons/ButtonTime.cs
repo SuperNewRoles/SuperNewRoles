@@ -17,6 +17,34 @@ namespace SuperNewRoles.Buttons
             SheriffKillButton();
             ClergymanButton();
             LighterButton();
+            MovingButton();
+            DoorrButton();
+        }
+        public static void DoorrButton()
+        {
+            if (Buttons.HudManagerStartPatch.DoorrDoorButton.Timer == 0) return;
+            if (Roles.RoleClass.Doorr.ButtonTimer == null)
+            {
+                Roles.RoleClass.Doorr.ButtonTimer = DateTime.Now;
+            }
+            TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Doorr.CoolTime);
+            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            {
+                TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.EvilDoorr.CoolTime);
+            }
+            Buttons.HudManagerStartPatch.DoorrDoorButton.Timer = (float)((Roles.RoleClass.Doorr.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            if (Buttons.HudManagerStartPatch.DoorrDoorButton.Timer <= 0f) Buttons.HudManagerStartPatch.DoorrDoorButton.Timer = 0f; return;
+        }
+        public static void MovingButton()
+        {
+            if (Buttons.HudManagerStartPatch.MovingTpButton.Timer == 0) return;
+            if (Roles.RoleClass.Moving.ButtonTimer == null)
+            {
+                Roles.RoleClass.Moving.ButtonTimer = DateTime.Now;
+            }
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Moving.CoolTime);
+            Buttons.HudManagerStartPatch.MovingTpButton.Timer = (float)((Roles.RoleClass.Moving.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            if (Buttons.HudManagerStartPatch.MovingTpButton.Timer <= 0f) Buttons.HudManagerStartPatch.MovingTpButton.Timer = 0f; return;
         }
         public static void LighterButton()
         {

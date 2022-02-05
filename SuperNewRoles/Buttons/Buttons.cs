@@ -18,6 +18,12 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SpeedBoosterBoostButton;
         public static CustomButton EvilSpeedBoosterBoostButton;
         public static CustomButton LighterLightOnButton;
+        public static CustomButton CustomSabotageButton;
+        public static CustomButton MovingSetButton;
+        public static CustomButton MovingTpButton;
+        public static CustomButton TeleporterButton;
+        public static CustomButton DoorrDoorButton;
+
         public static CustomButton FreezerFreezeButton;
         public static CustomButton SpeederSpeedDownButton;
         public static CustomButton AllKillerKillbutton;
@@ -33,6 +39,7 @@ namespace SuperNewRoles.Buttons
         {
             Sheriff.ResetKillCoolDown();
             Clergyman.ResetCoolDown();
+            Teleporter.ResetCoolDown();
         }
 
 
@@ -42,7 +49,103 @@ namespace SuperNewRoles.Buttons
         {
             RoleClass.clearAndReloadRoles();
             SuperNewRolesPlugin.Logger.LogInfo("HudMangerButton");
-            // Sheriff Kill Button
+
+            DoorrDoorButton = new Buttons.CustomButton(
+                () =>
+                {
+                    Roles.RoleClass.Doorr.ButtonTimer = DateTime.Now;
+                    Doorr.DoorrBtn();
+                    Doorr.ResetCoolDown();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Doorr.isDoorr(PlayerControl.LocalPlayer); },
+                () =>
+                {
+                    return Doorr.CheckTarget();
+                },
+                () => { Doorr.EndMeeting(); },
+                RoleClass.Doorr.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            TeleporterButton = new Buttons.CustomButton(
+                () =>
+                {
+                    Roles.RoleClass.Clergyman.ButtonTimer = DateTime.Now;
+                    TeleporterButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    Teleporter.TeleportStart();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Teleporter.IsTeleporter(PlayerControl.LocalPlayer); },
+                () =>
+                {
+                    return true;
+                },
+                () => { Teleporter.EndMeeting(); },
+                RoleClass.Teleporter.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            TeleporterButton.buttonText = ModTranslation.getString("TeleporterTeleportButton");
+            TeleporterButton.showButtonText = true;
+
+            MovingSetButton = new Buttons.CustomButton(
+                () =>
+                {
+                    if (!Moving.IsSetPostion()) {
+                        Moving.SetPostion();
+                    }
+                    Moving.ResetCoolDown();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Moving.IsMoving(PlayerControl.LocalPlayer) && !Moving.IsSetPostion(); },
+                () =>
+                {
+                    return true;
+                },
+                () => { Moving.EndMeeting(); },
+                RoleClass.Moving.getNoSetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            MovingSetButton.buttonText = ModTranslation.getString("MovingButtonSetName");
+            MovingSetButton.showButtonText = true;
+
+            MovingTpButton = new Buttons.CustomButton(
+                () =>
+                {
+                    if (Moving.IsSetPostion())
+                    {
+                        Moving.TP();
+                    }
+                    Moving.ResetCoolDown();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Moving.IsMoving(PlayerControl.LocalPlayer) && Moving.IsSetPostion(); },
+                () =>
+                {
+                    return true;
+                },
+                () => { Moving.EndMeeting(); },
+                RoleClass.Moving.getSetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            MovingTpButton.buttonText = ModTranslation.getString("MovingButtonTpName");
+            MovingTpButton.showButtonText = true;
+
             SheriffKillButton = new Buttons.CustomButton(
                 () =>
                 {

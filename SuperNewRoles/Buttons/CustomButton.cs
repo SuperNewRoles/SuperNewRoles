@@ -51,7 +51,7 @@ namespace SuperNewRoles.Buttons {
             this.buttonText = buttonText;
             Timer = 16.2f;
             buttons.Add(this);
-            actionButton = UnityEngine.Object.Instantiate(hudManager.KillButton, hudManager.KillButton.transform.parent);
+            actionButton = UnityEngine.Object.Instantiate(textTemplate, textTemplate.transform.parent);
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
             
@@ -72,7 +72,6 @@ namespace SuperNewRoles.Buttons {
 
         void onClickEvent()
         {
-            SuperNewRolesPlugin.Logger.LogInfo("OnClicked!");
             if ((Timer <= 0f || (HasEffect && isEffectActive && effectCancellable) && HasButton() && CouldUse()))
             {
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
@@ -167,8 +166,7 @@ namespace SuperNewRoles.Buttons {
 
             actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
             // Trigger OnClickEvent if the hotkey is being pressed down
-            SuperNewRolesPlugin.Logger.LogInfo("KeyBoardJoyStick:"+KeyboardJoystick.player.controllers.ToString());
-            if ((KeyboardJoystick.player.GetButtonDown(hotkey.Value.ToString()) || KeyboardJoystick.player.GetButtonDown(joystickkey))) onClickEvent();
+            if (KeyboardJoystick.player.GetButtonDown(hotkey.Value.ToString()) || KeyboardJoystick.player.GetButtonDown(joystickkey)) onClickEvent();
         }
     }
 
@@ -186,7 +184,7 @@ namespace SuperNewRoles.Buttons {
     [HarmonyPatch(typeof(ExileController),nameof(ExileController.WrapUp))]
     class ExileControllerPatch
     {
-        public static void Postfix(AirshipExileController __instance)
+        public static void Postfix(ExileController __instance)
         {
             CustomButton.MeetingEndedUpdate();
         }
