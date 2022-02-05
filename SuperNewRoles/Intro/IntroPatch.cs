@@ -16,17 +16,37 @@ namespace SuperNewRoles.Patches
     {
         public static void setupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
+            if (!PlayerControl.LocalPlayer.Data.Role.IsImpostor && PlayerControl.LocalPlayer.isNeutral())
+            {
+                var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                newTeam.Add(PlayerControl.LocalPlayer);
+                yourTeam = newTeam;
+            }
+            if (CustomOption.CustomOptions.HideAndSeekMode.getBool())
+            {
+                Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                int ImpostorNum = 0;
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.Data.Role.IsImpostor)
+                    {
+                        ImpostorNum++;
+                        ImpostorTeams.Add(player);
+                    }
+                }
+                yourTeam = ImpostorTeams;
+            }
         }
 
         public static void setupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("Seted");
             if (PlayerControl.LocalPlayer.isNeutral())
             {
                 IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
                 __instance.BackgroundBar.material.color = Intro.color;
                 __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey+"Name");
                 __instance.TeamTitle.color = Intro.color;
+                __instance.ImpostorText.text = "";
             }
             if (CustomOption.CustomOptions.HideAndSeekMode.getBool())
             {
@@ -68,7 +88,7 @@ namespace SuperNewRoles.Patches
                 __instance.YouAreText.color = date.color;
                 __instance.RoleText.text = ModTranslation.getString(date.NameKey + "Name");
                 __instance.RoleText.color = date.color;
-                __instance.RoleBlurbText.text = Intro.IntroDate.GetTitle(date.NameKey, date.TitleNum);
+                __instance.RoleBlurbText.text = date.TitleDesc;
                 __instance.RoleBlurbText.color = date.color;
             }
         }

@@ -12,6 +12,7 @@ namespace SuperNewRoles.Intro
     {
         public string NameKey;
         public Int16 TitleNum;
+        public string TitleDesc;
         public Color color;
         public CustomRPC.RoleId RoleId;
 
@@ -21,6 +22,7 @@ namespace SuperNewRoles.Intro
             this.NameKey = NameKey;
             this.RoleId = RoleId;
             this.TitleNum = TitleNum;
+            this.TitleDesc = Intro.IntroDate.GetTitle(NameKey, TitleNum);
         }
         public static IntroDate GetIntroDate(CustomRPC.RoleId RoleId)
         {
@@ -59,6 +61,16 @@ namespace SuperNewRoles.Intro
                     return SealdorIntro;
                 case (CustomRPC.RoleId.Clergyman):
                     return ClergymanIntro;
+                case (CustomRPC.RoleId.MadMate):
+                    return MadMateIntro;
+                case (CustomRPC.RoleId.Bait):
+                    return BaitIntro;
+                case (CustomRPC.RoleId.HomeSecurityGuard):
+                    return HomeSecurityGuardIntro;
+                case (CustomRPC.RoleId.StuntMan):
+                    return StuntManIntro;
+                case (CustomRPC.RoleId.Moving):
+                    return MovingIntro;
             }
 
             return SheriffIntro;
@@ -92,5 +104,10 @@ namespace SuperNewRoles.Intro
         public static IntroDate NiceScientistIntro = new IntroDate("NiceScientist",RoleClass.NiceScientist.color,2,CustomRPC.RoleId.NiceScientist);
         public static IntroDate ClergymanIntro = new IntroDate("Clergyman", RoleClass.Clergyman.color, 2, CustomRPC.RoleId.Clergyman);
         public static IntroDate MadMateIntro = new IntroDate("MadMate", RoleClass.MadMate.color, 1, CustomRPC.RoleId.MadMate);
+        public static IntroDate BaitIntro = new IntroDate("Bait", RoleClass.Bait.color, 1, CustomRPC.RoleId.Bait);
+        public static IntroDate HomeSecurityGuardIntro = new IntroDate("HomeSecurityGuard", RoleClass.HomeSecurityGuard.color, 1, CustomRPC.RoleId.HomeSecurityGuard);
+        public static IntroDate StuntManIntro = new IntroDate("StuntMan", RoleClass.StuntMan.color, 1, CustomRPC.RoleId.StuntMan);
+        public static IntroDate MovingIntro = new IntroDate("Moving", RoleClass.Moving.color, 1, CustomRPC.RoleId.Moving);
+
     }
 }
