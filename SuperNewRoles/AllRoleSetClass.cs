@@ -37,6 +37,10 @@ namespace SuperNewRoles
             SetPlayerNum();
             CrewOrImpostorSet();
             OneOrNotListSet();
+            SuperNewRolesPlugin.Logger.LogInfo("-0-");
+            SuperNewRolesPlugin.Logger.LogInfo(Neutonepar);
+            SuperNewRolesPlugin.Logger.LogInfo(Neutnotonepar);
+            SuperNewRolesPlugin.Logger.LogInfo("-0-");
             ImpostorRandomSelect();
             NeutralRandomSelect();
             CrewMateRandomSelect();
@@ -150,7 +154,7 @@ namespace SuperNewRoles
             bool IsNotEndRandomSelect = true;
             while (IsNotEndRandomSelect)
             {
-                if (Crewonepar.Count != 0)
+                if (Neutonepar.Count != 0)
                 {
                     int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Neutonepar);
                     RoleId SelectRoleDate = Neutonepar[SelectRoleDateIndex];
@@ -379,6 +383,10 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.ClergymanPlayerCount.getFloat();
                 case (RoleId.MadMate):
                     return CustomOption.CustomOptions.MadMatePlayerCount.getFloat();
+                case (RoleId.HomeSecurityGuard):
+                    return CustomOption.CustomOptions.HomeSecurityGuardPlayerCount.getFloat();
+                case (RoleId.Moving):
+                    return CustomOption.CustomOptions.MovingPlayerCount.getFloat();
             }
             return 1;
         }
@@ -790,6 +798,70 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MadMateOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.MadMate;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.BaitOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.BaitOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Bait;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.HomeSecurityGuardOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.HomeSecurityGuardOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.HomeSecurityGuard;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.StuntManOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.StuntManOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.StuntMan;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.MovingOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MovingOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Moving;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);
