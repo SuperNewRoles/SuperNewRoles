@@ -15,7 +15,15 @@ namespace SuperNewRoles
 {
     public static class ModHelpers
     {
-
+        public static bool ShowButtons
+        {
+            get
+            {
+                return !(MapBehaviour.Instance && MapBehaviour.Instance.IsOpen) &&
+                      !MeetingHud.Instance &&
+                      !ExileController.Instance;
+            }
+        }
         public static Sprite loadSpriteFromResources(string path, float pixelsPerUnit)
         {
             try
@@ -58,6 +66,11 @@ namespace SuperNewRoles
             return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptions.ToByte(c.r), CustomOptions.ToByte(c.g), CustomOptions.ToByte(c.b), CustomOptions.ToByte(c.a), s);
         }
         public static T GetRandom<T>(List<T> list)
+        {
+            var indexdate = UnityEngine.Random.Range(0, list.Count);
+            return list[indexdate];
+        }
+        public static PlayerControl GetRandompc(List<PlayerControl> list)
         {
             var indexdate = UnityEngine.Random.Range(0, list.Count);
             return list[indexdate];
