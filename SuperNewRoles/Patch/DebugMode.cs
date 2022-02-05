@@ -17,15 +17,5 @@ namespace SuperNewRoles.Patch
 {
     class DebugMode
     {
-        [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
-        public class GameStartManagerPatch
-        {
-            public static void Prefix(GameStartManager __instance) {
-
-                if (ConfigRoles.DebugMode.Value)
-                {
-                }
-            }
-        }
     }
 }
