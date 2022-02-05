@@ -18,13 +18,14 @@ namespace SuperNewRoles
     {
         public static ConfigEntry<bool> StreamerMode { get; set; }
         public static ConfigEntry<bool> AutoUpdate { get; set; }
+        public static ConfigEntry<bool> AutoCopyGameCode { get; set; }
         public static ConfigEntry<bool> DebugMode { get; set; }
         public static void Load()
         {
             StreamerMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Enable Streamer Mode", false);
             AutoUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Auto Update", true);
             DebugMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Debug Mode", false);
-            
+            AutoCopyGameCode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Auto Copy Game Code", true);
         }
     }
 }
