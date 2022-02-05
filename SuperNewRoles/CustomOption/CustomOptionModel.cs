@@ -734,7 +734,7 @@ namespace SuperNewRoles.CustomOption
     {
         public static void Postfix(KeyboardJoystick __instance)
         {
-            if (Input.GetKeyDown(KeyCode.Tab) && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+            if ((Input.GetKeyDown(KeyCode.Tab) || KeyboardJoystick.player.GetButtonDown(7)) && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
             {
                 SuperNewRolesPlugin.optionsPage = SuperNewRolesPlugin.optionsPage + 1;
             }

@@ -28,6 +28,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption impostorRolesCountMax;
         public static CustomOption neutralRolesCountMax;
 
+        public static CustomOption DeviceOptions;
+        public static CustomOption DeviceUseAdmin;
+        public static CustomOption DeviceUseVitalOrDoorLog;
+        public static CustomOption DeviceUseCamera;
+
         public static CustomOption HideAndSeekMode;
 
         public static CustomOption DetectiveRate;
@@ -42,6 +47,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption JesterPlayerCount;
         public static CustomOption JesterIsVent;
         public static CustomOption JesterIsSabotage;
+        public static CustomOption JesterIsWinCleartask;
 
         public static CustomRoleOption LighterOption;
         public static CustomOption LighterPlayerCount;
@@ -157,6 +163,21 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadMatePlayerCount;
         public static CustomOption MadMateIsCheckImpostor;
 
+        public static CustomRoleOption BaitOption;
+        public static CustomOption BaitPlayerCount;
+        public static CustomOption BaitReportTime;
+
+        public static CustomRoleOption HomeSecurityGuardOption;
+        public static CustomOption HomeSecurityGuardPlayerCount;
+
+        public static CustomRoleOption StuntManOption;
+        public static CustomOption StuntManPlayerCount;
+        public static CustomOption StuntManMaxGuardCount;
+
+        public static CustomRoleOption MovingOption;
+        public static CustomOption MovingPlayerCount;
+        public static CustomOption MovingCoolTime;
+
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
         public static List<float> CrewPlayers = new List<float> { 1f,1f,15f,1f};
@@ -188,6 +209,11 @@ namespace SuperNewRoles.CustomOption
             neutralRolesCountMax = CustomOption.Create(4, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralRole"), 0f, 0f, 15f, 1f);
             impostorRolesCountMax = CustomOption.Create(5, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 3f, 1f);
 
+            DeviceOptions = CustomOption.Create(115, cs(Color.white, "DeviceOptionsSetting"), false, null);
+            DeviceUseAdmin = CustomOption.Create(116, cs(Color.white, "DeviceUseAdminSetting"), true, DeviceOptions);
+            DeviceUseVitalOrDoorLog = CustomOption.Create(117, cs(Color.white, "DeviceUseVitalOrDoorLogSetting"), true, DeviceOptions);
+            DeviceUseCamera = CustomOption.Create(118, cs(Color.white, "DeviceUseCameraSetting"), true, DeviceOptions);
+
             //SoothSayerRate = CustomOption.Create(2, cs(SoothSayer.color,"soothName"),rates, null, true);
 
             HideAndSeekMode = CustomOption.Create(101, cs(Color.white,"SettingHideAndSeekMode"), false, null, isHeader: true);
@@ -201,6 +227,7 @@ namespace SuperNewRoles.CustomOption
             JesterPlayerCount = CustomOption.Create(11, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
             JesterIsVent = CustomOption.Create(12, ModTranslation.getString("JesterIsVentSetting"), false, JesterOption);
             JesterIsSabotage = CustomOption.Create(13, ModTranslation.getString("JesterIsSabotageSetting"), false, JesterOption);
+            JesterIsWinCleartask = CustomOption.Create(113, ModTranslation.getString("JesterIsWinClearTaskSetting"), false, JesterOption);
 
             LighterOption = new CustomRoleOption(14, "LighterName", RoleClass.Lighter.color, 1);
             LighterPlayerCount = CustomOption.Create(15, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LighterOption);
@@ -316,6 +343,19 @@ namespace SuperNewRoles.CustomOption
             MadMatePlayerCount = CustomOption.Create(99, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMateOption);
             MadMateIsCheckImpostor = CustomOption.Create(100, ModTranslation.getString("MadMateIsCheckImpostorSetting"), false, MadMateOption);
 
+            BaitOption = new CustomRoleOption(104, "BaitName", RoleClass.Bait.color,1);
+            BaitPlayerCount = CustomOption.Create(105, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BaitOption);
+            BaitReportTime = CustomOption.Create(114, cs(Color.white, "BaitReportTimeSetting"), 2f,1f,4f,0.5f,BaitOption);
+
+            HomeSecurityGuardOption = new CustomRoleOption(106, "HomeSecurityGuardName", RoleClass.HomeSecurityGuard.color, 1);
+            HomeSecurityGuardPlayerCount = CustomOption.Create(107, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HomeSecurityGuardOption);
+
+            StuntManOption = new CustomRoleOption(108, "StuntManName", RoleClass.StuntMan.color, 1);
+            StuntManPlayerCount = CustomOption.Create(109, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StuntManOption);
+
+            MovingOption = new CustomRoleOption(110, "MovingName", RoleClass.Moving.color, 1);
+            MovingPlayerCount = CustomOption.Create(111, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MovingOption);
+            MovingCoolTime = CustomOption.Create(112, cs(Color.white, "MovingCoolDownSetting"),30f , 0f,60f, 2.5f, MovingOption);
         }
     }
 }
