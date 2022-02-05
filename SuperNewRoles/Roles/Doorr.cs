@@ -10,12 +10,18 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetCoolDown()
         {
-            HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.Doorr.CoolTime;
+            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            {
+                HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.EvilDoorr.CoolTime;
+            } else
+            {
+                HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.Doorr.CoolTime;
+            }
             RoleClass.Doorr.ButtonTimer = DateTime.Now;
         }
         public static bool isDoorr(PlayerControl Player)
         {
-            if (RoleClass.Doorr.DoorrPlayer.IsCheckListPlayerControl(Player))
+            if (RoleClass.Doorr.DoorrPlayer.IsCheckListPlayerControl(Player) || RoleClass.EvilDoorr.EvilDoorrPlayer.IsCheckListPlayerControl(Player) )
             {
                 return true;
             }
@@ -40,7 +46,6 @@ namespace SuperNewRoles.Roles
         private static PlainDoor GetDoor()
         {
             Vector3 position = PlayerControl.LocalPlayer.transform.position;
-            SuperNewRolesPlugin.Logger.LogInfo(position);
             foreach (PlainDoor door in ShipStatus.Instance.AllDoors)
             {
                 Vector3 Doorposition = door.transform.position;
@@ -59,7 +64,13 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.Doorr.CoolTime;
+            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            {
+                HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.EvilDoorr.CoolTime;
+            } else
+            {
+                HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.Doorr.CoolTime;
+            }
             RoleClass.Doorr.ButtonTimer = DateTime.Now;
         }
     }
