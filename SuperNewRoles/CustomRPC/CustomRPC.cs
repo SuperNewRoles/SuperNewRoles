@@ -35,17 +35,25 @@ namespace SuperNewRoles.CustomRPC
         Vulture,
         NiceScientist,
         Clergyman,
-        MadMate
-
+        MadMate,
+        Bait,
+        HomeSecurityGuard,
+        StuntMan,
+        Moving
     }
 
     enum CustomRPC
     {
         ShareOptions = 91,
+        ShareSNRVersion,
         SetRole,
         RPCClergymanLightOut,
         SheriffKill,
+        MeetingSheriffKill,
         CustomRPCKill,
+        ReportDeadBody,
+        ShareWinner,
+        TeleporterTP
     }
     public static class RPCProcedure
     {
@@ -70,6 +78,15 @@ namespace SuperNewRoles.CustomRPC
                 SuperNewRolesPlugin.Logger.LogError("Error while deserializing options: " + e.Message);
             }
         }
+        public static void ShareSNRversion(int major, int minor, int build, int revision, Guid guid, int clientId)
+        {
+            System.Version ver;
+            if (revision < 0)
+                ver = new System.Version(major, minor, build);
+            else
+                ver = new System.Version(major, minor, build, revision);
+            Patch.ShareGameVersion.playerVersions[clientId] = new Patch.PlayerVersion(ver, guid);
+        }
         public static void SetRole(byte playerid,byte RPCRoleId)
         {
             ModHelpers.playerById(playerid).setRole((RoleId)RPCRoleId);
@@ -88,6 +105,38 @@ namespace SuperNewRoles.CustomRPC
             } else
             {
                 sheriff.MurderPlayer(target);
+            }
+
+        }
+        public static void MeetingSheriffKill(byte SheriffId, byte TargetId, bool MissFire)
+        {
+            PlayerControl sheriff = ModHelpers.playerById(SheriffId);
+            PlayerControl target = ModHelpers.playerById(TargetId);
+            SuperNewRolesPlugin.Logger.LogInfo("-----");
+            SuperNewRolesPlugin.Logger.LogInfo(SheriffId);
+            SuperNewRolesPlugin.Logger.LogInfo(TargetId);
+            SuperNewRolesPlugin.Logger.LogInfo(MissFire);
+            SuperNewRolesPlugin.Logger.LogInfo("-----");
+            target.Exiled();
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
+            if (sheriff == null || target == null) return;
+            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff,sheriff.name+"は"+target.name+"をシェリフキルした！");
+            if (MissFire)
+            {
+                sheriff.Data.IsDead = true;
+                if (PlayerControl.LocalPlayer == sheriff)
+                {
+                    HudManager.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
+                }
+                
+            }
+            else
+            {
+                target.Data.IsDead = true;
+                if (PlayerControl.LocalPlayer == target)
+                {
+                    HudManager.Instance.KillOverlay.ShowKillAnimation(target.Data,sheriff.Data);
+                }
             }
 
         }
@@ -122,7 +171,23 @@ namespace SuperNewRoles.CustomRPC
                 Roles.Clergyman.LightOutEndRPC();
             }
         }
-
+        public static void ReportDeadBody(byte sourceId, byte targetId)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceId);
+            PlayerControl target = ModHelpers.playerById(targetId);
+            if (source != null && target != null) source.ReportDeadBody(target.Data);
+        }
+        public static void ShareWinner(byte playerid)
+        {
+            PlayerControl player = ModHelpers.playerById(playerid);
+            EndGame.OnGameEndPatch.WinnerPlayer = player;
+        }
+        public static void TeleporterTP(byte playerid)
+        {
+            var p = ModHelpers.playerById(playerid);
+            PlayerControl.LocalPlayer.transform.position = p.transform.position;
+            new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"),p.nameText.text), 3);
+        }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
         {
@@ -140,11 +205,34 @@ namespace SuperNewRoles.CustomRPC
                         case (byte)CustomRPC.ShareOptions:
                             RPCProcedure.ShareOptions((int)reader.ReadPackedUInt32(), reader);
                             break;
+                        case (byte)CustomRPC.ShareSNRVersion:
+                            byte major = reader.ReadByte();
+                            byte minor = reader.ReadByte();
+                            byte patch = reader.ReadByte();
+                            int versionOwnerId = reader.ReadPackedInt32();
+                            byte revision = 0xFF;
+                            Guid guid;
+                            if (reader.Length - reader.Position >= 17)
+                            { // enough bytes left to read
+                                revision = reader.ReadByte();
+                                // GUID
+                                byte[] gbytes = reader.ReadBytes(16);
+                                guid = new Guid(gbytes);
+                            }
+                            else
+                            {
+                                guid = new Guid(new byte[16]);
+                            }
+                            RPCProcedure.ShareSNRversion(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
+                            break;
                         case (byte)CustomRPC.SetRole:
                             RPCProcedure.SetRole(reader.ReadByte(), reader.ReadByte());
                             break;
                         case (byte)CustomRPC.SheriffKill:
                             RPCProcedure.SheriffKill(reader.ReadByte(),reader.ReadByte(),reader.ReadBoolean());
+                            break;
+                        case (byte)CustomRPC.MeetingSheriffKill:
+                            RPCProcedure.MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                             break;
                         case (byte)CustomRPC.CustomRPCKill:
                             RPCProcedure.CustomRPCKill(reader.ReadByte(), reader.ReadByte());
@@ -152,6 +240,15 @@ namespace SuperNewRoles.CustomRPC
                         case (byte)CustomRPC.RPCClergymanLightOut:
                             RPCProcedure.RPCClergymanLightOut(reader.ReadBoolean());
                             break;
+                        case (byte)CustomRPC.ReportDeadBody:
+                            RPCProcedure.ReportDeadBody(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case (byte)CustomRPC.ShareWinner:
+                            RPCProcedure.ShareWinner(reader.ReadByte());
+                            break;
+                        case (byte)CustomRPC.TeleporterTP:
+                            RPCProcedure.TeleporterTP(reader.ReadByte());
+                            break; 
 
                     }
                 }
