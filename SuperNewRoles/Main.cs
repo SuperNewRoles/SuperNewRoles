@@ -78,16 +78,19 @@ namespace SuperNewRoles
                 __result = false;
             }
         }
-        [HarmonyPatch(typeof(ChatController), nameof(ChatController.Awake))]
+        [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
         public static class ChatControllerAwakePatch
         {
-            private static void Prefix()
+            public static void Prefix()
             {
-                if (!EOSManager.Instance.IsMinor())
-                {
                     SaveManager.chatModeType = 1;
                     SaveManager.isGuest = false;
-                }
+            }
+            public static void Postfix()
+            {
+                    SaveManager.chatModeType = 1;
+                    SaveManager.isGuest = false;
+
             }
         }
     }
