@@ -6,6 +6,7 @@ using UnityEngine;
 using System;
 using SuperNewRoles.Patches;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.CustomRPC
 {
@@ -47,13 +48,14 @@ namespace SuperNewRoles.CustomRPC
         ShareOptions = 91,
         ShareSNRVersion,
         SetRole,
+        SetQuarreled,
         RPCClergymanLightOut,
         SheriffKill,
         MeetingSheriffKill,
         CustomRPCKill,
         ReportDeadBody,
         ShareWinner,
-        TeleporterTP
+        TeleporterTP,
     }
     public static class RPCProcedure
     {
@@ -90,6 +92,12 @@ namespace SuperNewRoles.CustomRPC
         public static void SetRole(byte playerid,byte RPCRoleId)
         {
             ModHelpers.playerById(playerid).setRole((RoleId)RPCRoleId);
+        }
+        public static void SetQuarreled(byte playerid1,byte playerid2)
+        {
+            var player1 = ModHelpers.playerById(playerid1);
+            var player2 = ModHelpers.playerById(playerid2);
+            RoleHelpers.SetQuarreled(player1,player2);
         }
         public static void SheriffKill(byte SheriffId,byte TargetId,bool MissFire)
         {
@@ -180,7 +188,7 @@ namespace SuperNewRoles.CustomRPC
         public static void ShareWinner(byte playerid)
         {
             PlayerControl player = ModHelpers.playerById(playerid);
-            EndGame.OnGameEndPatch.WinnerPlayer = player;
+            EndGame.OnGameEndPatch.WinnerPlayer.Add(player);
         }
         public static void TeleporterTP(byte playerid)
         {
@@ -248,8 +256,10 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case (byte)CustomRPC.TeleporterTP:
                             RPCProcedure.TeleporterTP(reader.ReadByte());
-                            break; 
-
+                            break;
+                        case (byte)CustomRPC.SetQuarreled:
+                            RPCProcedure.SetQuarreled(reader.ReadByte(),reader.ReadByte());
+                            break;
                     }
                 }
                 catch (Exception e)

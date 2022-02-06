@@ -18,14 +18,9 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSheriffKill(PlayerControl Target)
         {
-            if (Target.Data.Role.IsImpostor)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            if (Target.Data.Role.IsImpostor) return true;
+            if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(Target) && RoleClass.Sheriff.IsMadMateKill) return true;
+            return false;
         }
         public static bool IsSheriff(PlayerControl Player)
         {

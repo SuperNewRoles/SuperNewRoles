@@ -53,14 +53,17 @@ namespace SuperNewRoles.Buttons
             DoorrDoorButton = new Buttons.CustomButton(
                 () =>
                 {
-                    Roles.RoleClass.Doorr.ButtonTimer = DateTime.Now;
-                    Doorr.DoorrBtn();
-                    Doorr.ResetCoolDown();
+                    if (Doorr.CheckTarget() && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        Doorr.DoorrBtn();
+                        Roles.RoleClass.Doorr.ButtonTimer = DateTime.Now;
+                        Doorr.ResetCoolDown();
+                    }
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Doorr.isDoorr(PlayerControl.LocalPlayer); },
                 () =>
                 {
-                    return Doorr.CheckTarget();
+                    return Doorr.CheckTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Doorr.EndMeeting(); },
                 RoleClass.Doorr.GetButtonSprite(),
@@ -71,17 +74,22 @@ namespace SuperNewRoles.Buttons
                 49
             );
 
+            DoorrDoorButton.buttonText = ModTranslation.getString("DoorrButtonText");
+            DoorrDoorButton.showButtonText = true;
+            
             TeleporterButton = new Buttons.CustomButton(
                 () =>
                 {
+                    if (!PlayerControl.LocalPlayer.CanMove) return;
                     Roles.RoleClass.Clergyman.ButtonTimer = DateTime.Now;
                     TeleporterButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Teleporter.TeleportStart();
+                    Teleporter.ResetCoolDown();
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Teleporter.IsTeleporter(PlayerControl.LocalPlayer); },
                 () =>
                 {
-                    return true;
+                    return true && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Teleporter.EndMeeting(); },
                 RoleClass.Teleporter.GetButtonSprite(),
@@ -98,6 +106,7 @@ namespace SuperNewRoles.Buttons
             MovingSetButton = new Buttons.CustomButton(
                 () =>
                 {
+                    if (!PlayerControl.LocalPlayer.CanMove) return;
                     if (!Moving.IsSetPostion()) {
                         Moving.SetPostion();
                     }
@@ -106,7 +115,7 @@ namespace SuperNewRoles.Buttons
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Moving.IsMoving(PlayerControl.LocalPlayer) && !Moving.IsSetPostion(); },
                 () =>
                 {
-                    return true;
+                    return true && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Moving.EndMeeting(); },
                 RoleClass.Moving.getNoSetButtonSprite(),
@@ -123,6 +132,7 @@ namespace SuperNewRoles.Buttons
             MovingTpButton = new Buttons.CustomButton(
                 () =>
                 {
+                    if (!PlayerControl.LocalPlayer.CanMove) return;
                     if (Moving.IsSetPostion())
                     {
                         Moving.TP();
@@ -132,7 +142,7 @@ namespace SuperNewRoles.Buttons
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Moving.IsMoving(PlayerControl.LocalPlayer) && Moving.IsSetPostion(); },
                 () =>
                 {
-                    return true;
+                    return true && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Moving.EndMeeting(); },
                 RoleClass.Moving.getSetButtonSprite(),

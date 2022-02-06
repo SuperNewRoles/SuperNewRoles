@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -39,18 +40,50 @@ namespace SuperNewRoles.Buttons
         class VentButtonVisibilityPatch
         {
             static void Postfix(PlayerControl __instance) { 
-                    HudManager.Instance.ImpostorVentButton.Hide();
-                    HudManager.Instance.SabotageButton.Hide();
-                        if (PlayerControl.LocalPlayer.IsUseVent())
-                            HudManager.Instance.ImpostorVentButton.Show();
+                HudManager.Instance.ImpostorVentButton.Hide();
+                HudManager.Instance.SabotageButton.Hide();
 
-                        if (PlayerControl.LocalPlayer.IsUseSabo())
-                        {
+                if (PlayerControl.LocalPlayer.IsUseVent())
+                {
+                    HudManager.Instance.ImpostorVentButton.Show();
+                    if (Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50))
+                    {
+                        HudManager.Instance.ImpostorVentButton.DoClick();
+                    }
+                }
+
+                if (PlayerControl.LocalPlayer.IsUseSabo())
+                {
                             HudManager.Instance.SabotageButton.Show();
                             HudManager.Instance.SabotageButton.gameObject.SetActive(true);
-                        }
                 }
-         }
+           }
+        }
+        [HarmonyPatch(typeof(Vent), nameof(Vent.Use))]
+        public static class VentUsePatch
+        {
+            public static bool Prefix(Vent __instance)
+            {
+                bool canUse;
+                bool couldUse;
+                __instance.CanUse(PlayerControl.LocalPlayer.Data, out canUse, out couldUse);
+                bool canMoveInVents = !(RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && RoleClass.MadMate.IsMoveVent);
+                if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
+
+                bool isEnter = !PlayerControl.LocalPlayer.inVent;
+
+                if (isEnter)
+                {
+                    PlayerControl.LocalPlayer.MyPhysics.RpcEnterVent(__instance.Id);
+                }
+                else
+                {
+                    PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(__instance.Id);
+                }
+                __instance.SetButtons(isEnter && canMoveInVents);
+                return false;
+            }
+        }
         [HarmonyPatch(typeof(SabotageButton), nameof(SabotageButton.DoClick))]
         public static class SabotageButtonDoClickPatch
         {
@@ -68,15 +101,10 @@ namespace SuperNewRoles.Buttons
         {
             public static void Postfix(MapBehaviour __instance)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("DoClicked!");
-                SuperNewRolesPlugin.Logger.LogInfo(PlayerControl.LocalPlayer.IsUseSabo() && ModHelpers.ShowButtons);
                 if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons)
                 {
                     __instance.Close();
                     DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
-                } else
-                {
-                    __instance.Close();
                 }
             }
         }

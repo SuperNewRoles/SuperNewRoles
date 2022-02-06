@@ -162,6 +162,8 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption MadMateOption;
         public static CustomOption MadMatePlayerCount;
         public static CustomOption MadMateIsCheckImpostor;
+        public static CustomOption MadMateIsUseVent;
+        public static CustomOption MadMateIsMoveVent;
 
         public static CustomRoleOption BaitOption;
         public static CustomOption BaitPlayerCount;
@@ -178,10 +180,15 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MovingPlayerCount;
         public static CustomOption MovingCoolTime;
 
+        public static CustomOption QuarreledOption;
+        public static CustomOption QuarreledTeamCount;
+        public static CustomOption QuarreledOnlyCrewMate;
+
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
         public static List<float> CrewPlayers = new List<float> { 1f,1f,15f,1f};
         public static List<float> ImpostorPlayers = new List<float> { 1f, 1f, 5f, 1f };
+        public static List<float> QuarreledPlayers = new List<float> { 1f,1f,7f,1f};
         // public static CustomOption ;
 
         internal static Dictionary<byte, byte[]> blockedRolePairings = new Dictionary<byte, byte[]>();
@@ -342,6 +349,8 @@ namespace SuperNewRoles.CustomOption
             MadMateOption = new CustomRoleOption(98, "MadMateName", RoleClass.ImpostorRed, 1);
             MadMatePlayerCount = CustomOption.Create(99, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMateOption);
             MadMateIsCheckImpostor = CustomOption.Create(100, ModTranslation.getString("MadMateIsCheckImpostorSetting"), false, MadMateOption);
+            MadMateIsUseVent = CustomOption.Create(120, ModTranslation.getString("MadMateUseVentSetting"), false, MadMateOption);
+            MadMateIsMoveVent = CustomOption.Create(121, ModTranslation.getString("MadMateVentMoveSetting"), false, MadMateIsUseVent);
 
             BaitOption = new CustomRoleOption(104, "BaitName", RoleClass.Bait.color,1);
             BaitPlayerCount = CustomOption.Create(105, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BaitOption);
@@ -352,10 +361,15 @@ namespace SuperNewRoles.CustomOption
 
             StuntManOption = new CustomRoleOption(108, "StuntManName", RoleClass.StuntMan.color, 1);
             StuntManPlayerCount = CustomOption.Create(109, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], StuntManOption);
+            StuntManMaxGuardCount = CustomOption.Create(119, ModTranslation.getString("StuntManGuardMaxCountSetting"), 1f, 1f,15f,1f,StuntManOption);
 
             MovingOption = new CustomRoleOption(110, "MovingName", RoleClass.Moving.color, 1);
             MovingPlayerCount = CustomOption.Create(111, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MovingOption);
             MovingCoolTime = CustomOption.Create(112, cs(Color.white, "MovingCoolDownSetting"),30f , 0f,60f, 2.5f, MovingOption);
+
+            QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null);
+            QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3],QuarreledOption);
+            QuarreledOnlyCrewMate = CustomOption.Create(123, cs(Color.white, "QuarreledOnlyCrewMateSetting"), false, QuarreledOption);
         }
     }
 }

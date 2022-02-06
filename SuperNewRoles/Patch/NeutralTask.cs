@@ -4,29 +4,31 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
+using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using UnityEngine;
+
 namespace SuperNewRoles.Patch
 {
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
     class NeutralTask
     {
-        public static void Postfix(PlayerControl __instance)
+        public static void Prefix(IntroCutscene __instance)
         {
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-
-            if (PlayerControl.LocalPlayer == __instance)
+            if (Roles.RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
             {
-                refreshRoleDescription(__instance);
-            }
-        }
-        
-        public static void refreshRoleDescription(PlayerControl player)
-        {
-            if (player == null) return;
-
-            if (!(player.getRole() == CustomRPC.RoleId.EvilSpeedBooster)) return;
-            var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
-            task.transform.SetParent(player.transform, false);
-            task.Text = ModHelpers.cs(Color.red,"イビルスピードブースター : スピードを早くしよう");
+                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                    {
+                        task.Complete();
+                        PlayerControl.LocalPlayer.RpcCompleteTask((uint)task.Index);
+                    }
+                    
+                }
+               PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
         }
     }
 }
+

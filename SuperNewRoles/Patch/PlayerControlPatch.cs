@@ -1,5 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
+using SuperNewRoles.EndGame;
+using SuperNewRoles.Patch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,48 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches
 {
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
+    public static class MurderPlayerPatch
+    {
+        public static bool resetToCrewmate = false;
+        public static bool resetToDead = false;
+
+
+        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+        {
+            // Collect dead player info
+            DeadPlayer deadPlayer = new DeadPlayer(target, DateTime.UtcNow, DeathReason.Kill, __instance);
+            DeadPlayer.deadPlayers.Add(deadPlayer);
+            if (RoleHelpers.IsQuarreled(target))
+            {
+                var Side = RoleHelpers.GetOneSideQuarreled(target);
+                if (Side.isDead())
+                {
+                    CustomRPC.RPCProcedure.ShareWinner(target.PlayerId);
+                    CustomRPC.RPCProcedure.ShareWinner(Side.PlayerId);
+
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                    Writer.Write(target.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                    Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                    Writer.Write(Side.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                    Roles.RoleClass.Quarreled.IsQuarreledWin = true;
+                    ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
+                }
+            }
+        }
+    }
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Exiled))]
+    public static class ExilePlayerPatch
+    {
+        public static void Postfix(PlayerControl __instance)
+        {
+            // Collect dead player info
+            DeadPlayer deadPlayer = new DeadPlayer(__instance, DateTime.UtcNow, DeathReason.Exile, null);
+            DeadPlayer.deadPlayers.Add(deadPlayer);
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     public static class PlayerControlFixedUpdatePatch
     {

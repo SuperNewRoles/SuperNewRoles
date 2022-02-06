@@ -18,7 +18,7 @@ namespace SuperNewRoles.Roles
             List<PlayerControl> aliveplayers = new List<PlayerControl>();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (p.isAlive())
+                if (p.isAlive() && p.CanMove)
                 {
                     aliveplayers.Add(p);
                 }

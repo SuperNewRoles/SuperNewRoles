@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,18 +8,22 @@ namespace SuperNewRoles.Roles
 {
     class StuntMan_Patch
     {
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
-        class CheckMurderPatch
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
+        class StuntManMurderPatch
         {
-            public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+            public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
-                if (RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(target)) {
-                    SuperNewRolesPlugin.Logger.LogInfo("checkkkkkkkkkk");
-                    __instance.RpcProtectPlayer(target, 0);
-                    __instance.RpcMurderPlayer(target);
-                    return false;
+                if (RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(target) && !(RoleClass.StuntMan.GuardCount <= 0)) {
+                    RoleClass.StuntMan.GuardCount--;
+                    target.protectedByGuardian = true;
                 }
-                return false;
+            }
+            public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+            {
+                if (RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(target))
+                {
+                    target.RemoveProtection();
+                }
             }
         }
         
