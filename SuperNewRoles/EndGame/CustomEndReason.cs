@@ -6,6 +6,7 @@ namespace SuperNewRoles.EndGame
 {
     enum CustomGameOverReason
     {
-        JesterWin = 10
+        JesterWin = 10,
+        QuarreledWin = 11
     }
 }

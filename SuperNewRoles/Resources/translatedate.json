@@ -180,6 +180,10 @@
         "0" : "Auto Update" ,
         "11" : "\u81ea\u52d5\u30a2\u30c3\u30d7\u30c7\u30fc\u30c8"
         } ,
+ "CustomAutoCopyGameCode" : {
+        "0" : "Game Code Auto Copy" ,
+        "11" : "\u30b2\u30fc\u30e0\u30b3\u30fc\u30c9\u3092\u81ea\u52d5\u3067\u30b3\u30d4\u30fc\u3059\u308b"
+        } ,
  "SettingCrewmateRoles" : {
         "0" : "CrewMate Setting" ,
         "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u306e\u4eba\u6570\u8a2d\u5b9a"
@@ -204,6 +208,22 @@
         "0" : "Press Tab For More" ,
         "11" : "Tab\u3092\u62bc\u3057\u3066\u8a73\u7d30\u3092\u8868\u793a"
         } ,
+ "ErrorHostNoVersion" : {
+        "0" : "Your host does not have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>." ,
+        "11" : "\u30db\u30b9\u30c8\u306b<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u304c\u5165\u3063\u3066\u3044\u307e\u305b\u3093\u3002"
+        } ,
+ "ErrorHostChangeVersion" : {
+        "0" : "The host has a different version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>." ,
+        "11" : "\u30db\u30b9\u30c8\u306e<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u30d0\u30fc\u30b8\u30e7\u30f3\u304c\u9055\u3044\u307e\u3059\u3002"
+        } ,
+ "ErrorClientNoVersion" : {
+        "0" : "You don't have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0}." ,
+        "11" : "{0}\u306b<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u304c\u5165\u3063\u3066\u3044\u307e\u305b\u3093\u3002"
+        } ,
+ "ErrorClientChangeVersion" : {
+        "0" : "The version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0} is wrong." ,
+        "11" : "{0}\u306e<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u30d0\u30fc\u30b8\u30e7\u30f3\u304c\u9055\u3044\u307e\u3059\u3002"
+        } ,
  "SettingHideAndSeekMode" : {
         "0" : "Hide And Seek Mode" ,
         "11" : "\u304b\u304f\u308c\u3093\u307c\u30e2\u30fc\u30c9"
@@ -219,6 +239,22 @@
  "ImpostorName" : {
         "0" : "Impostor" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc"
+        } ,
+ "DeviceOptionsSetting" : {
+        "0" : "Device Options" ,
+        "11" : "\u6a5f\u5668\u306e\u8a2d\u5b9a"
+        } ,
+ "DeviceUseAdminSetting" : {
+        "0" : "Use OK Admin" ,
+        "11" : "\u30a2\u30c9\u30df\u30f3\u304c\u4f7f\u3048\u308b"
+        } ,
+ "DeviceUseVitalOrDoorLogSetting" : {
+        "0" : "Use OK Vital Or DoorLog" ,
+        "11" : "\u30d0\u30a4\u30bf\u30eb\u30fb\u30c9\u30a2\u30ed\u30b0\u304c\u4f7f\u3048\u308b"
+        } ,
+ "DeviceUseCameraSetting" : {
+        "0" : "Use OK Camera" ,
+        "11" : "\u30ab\u30e1\u30e9\u304c\u4f7f\u3048\u308b"
         } ,
  "detecName" : {
         "0" : "Detective" ,
@@ -248,6 +284,10 @@
         "0" : "Number of times you can divine" ,
         "11" : "\u5360\u3048\u308b\u56de\u6570"
         } ,
+ "SoothSayerGetChat" : {
+        "0" : "The Role of {0} is {1}." ,
+        "11" : "{0}\u306e\u5f79\u8077\u306f{1}\u3067\u3059\u3002"
+        } ,
  "JesterName" : {
         "0" : "Jester" ,
         "11" : "\u3066\u308b\u3066\u308b"
@@ -263,6 +303,14 @@
  "JesterIsSabotageSetting" : {
         "0" : "You can sabotage it." ,
         "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u304c\u3067\u304d\u308b"
+        } ,
+ "JesterIsWinClearTaskSetting" : {
+        "0" : "Jester was Clear Task Win" ,
+        "11" : "\u30bf\u30b9\u30af\u3092\u5b8c\u4e86\u3057\u306a\u3044\u3068\u52dd\u5229\u3067\u304d\u306a\u3044"
+        } ,
+ "JesterWinText" : {
+        "0" : "Jester Win!" ,
+        "11" : "\u3066\u308b\u3066\u308b \u52dd\u5229"
         } ,
  "LighterName" : {
         "0" : "Lighter" ,
@@ -456,6 +504,14 @@
         "0" : "Time to be teleported" ,
         "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\u3055\u308c\u308b\u307e\u3067\u306e\u6642\u9593"
         } ,
+ "TeleporterTeleportButton" : {
+        "0" : "Teleport" ,
+        "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\uff01"
+        } ,
+ "TeleporterTPTextMessage" : {
+        "0" : "The teleporter teleported you to {0}!" ,
+        "11" : "\u30c6\u30ec\u30dd\u30fc\u30bf\u30fc\u304c{0}\u306b\u30c6\u30ec\u30dd\u30fc\u30c8\u3055\u305b\u305f!"
+        } ,
  "SpiritMediumName" : {
         "0" : "Medium" ,
         "11" : "\u970a\u5a92\u5e2b"
@@ -575,6 +631,10 @@
  "DoorrCoolTimeSetting" : {
         "0" : "Door Cool Time" ,
         "11" : "\u30c9\u30a2\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+        } ,
+ "DoorrButtonText" : {
+        "0" : "Door Open Or Close" ,
+        "11" : "\u30c9\u30a2\u3092\u958b\u3051\u9589\u3081\u3059\u308b"
         } ,
  "EvilDoorrName" : {
         "0" : "Evil Doorr" ,
@@ -775,6 +835,82 @@
  "MadMateIsCheckImpostorSetting" : {
         "0" : "You can check the Imposter." ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u78ba\u8a8d\u3067\u304d\u308b"
+        } ,
+ "MadMateUseVentSetting" : {
+        "0" : "Use Vent" ,
+        "11" : "\u30d9\u30f3\u30c8\u306b\u5165\u308c\u308b"
+        } ,
+ "MadMateVentMoveSetting" : {
+        "0" : "Move Vent" ,
+        "11" : "\u30d9\u30f3\u30c8\u3067\u52d5\u3051\u308b"
+        } ,
+ "BaitName" : {
+        "0" : "Bait" ,
+        "11" : "\u30d9\u30a4\u30c8"
+        } ,
+ "BaitTitle1" : {
+        "0" : "Let's get them to call it in." ,
+        "11" : "\u76f8\u624b\u306b\u901a\u5831\u3055\u305b\u3088\u3046"
+        } ,
+ "BaitReportTimeSetting" : {
+        "0" : "Report Time" ,
+        "11" : "\u901a\u5831\u307e\u3067\u306e\u6642\u9593"
+        } ,
+ "HomeSecurityGuardName" : {
+        "0" : "Home Security Guard" ,
+        "11" : "\u81ea\u5b85\u8b66\u5099\u54e1"
+        } ,
+ "HomeSecurityGuardTitle1" : {
+        "0" : "Guard My Home" ,
+        "11" : "\u81ea\u5206\u305f\u3061\u306e\u5bb6\u3092\u5b88\u308d\u3046"
+        } ,
+ "StuntManName" : {
+        "0" : "Stunt Man" ,
+        "11" : "\u30b9\u30bf\u30f3\u30c8\u30de\u30f3"
+        } ,
+ "StuntManTitle1" : {
+        "0" : "Guard Impostor Kill" ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u30ad\u30eb\u3092\u9632\u3054\u3046"
+        } ,
+ "StuntManGuardMaxCountSetting" : {
+        "0" : "Guard Max Count" ,
+        "11" : "\u30ac\u30fc\u30c9\u3067\u304d\u308b\u56de\u6570"
+        } ,
+ "MovingName" : {
+        "0" : "Moving" ,
+        "11" : "\u30e0\u30fc\u30d3\u30f3\u30b0"
+        } ,
+ "MovingTitle1" : {
+        "0" : "Let's run away from the Imposter." ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304b\u3089\u9003\u3052\u3088\u3046"
+        } ,
+ "MovingCoolDownSetting" : {
+        "0" : "Teleportation Cool Time" ,
+        "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+        } ,
+ "MovingButtonSetName" : {
+        "0" : "Location Set" ,
+        "11" : "\u5834\u6240\u30bb\u30c3\u30c8"
+        } ,
+ "MovingButtonTpName" : {
+        "0" : "Teleport" ,
+        "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8"
+        } ,
+ "QuarreledName" : {
+        "0" : "Quarreled" ,
+        "11" : "\u30af\u30e9\u30fc\u30c9"
+        } ,
+ "QuarreledIntro" : {
+        "0" : "{0} and it's Quarreled!" ,
+        "11" : "{0}\u3068\u30af\u30e9\u30fc\u30c9\u306b\u306a\u308a\u307e\u3057\u305f\uff01"
+        } ,
+ "QuarreledTeamCountSetting" : {
+        "0" : "Max Teams" ,
+        "11" : "\u30c1\u30fc\u30e0\u6570"
+        } ,
+ "QuarreledOnlyCrewMateSetting" : {
+        "0" : "Only Crewmate Team" ,
+        "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u9663\u55b6\u306e\u307f"
         } 
 
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles
 {
@@ -16,7 +17,77 @@ namespace SuperNewRoles
 
     public static class RoleHelpers
     {
+        public static bool isCrew(this PlayerControl player)
+        {
+            return player != null && !player.isImpostor() && !player.isNeutral();
+        }
 
+        public static bool isImpostor(this PlayerControl player)
+        {
+            return player != null && player.Data.Role.IsImpostor;
+        }
+        public static bool IsQuarreled(this PlayerControl player)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo("～～～クラートIs～～～");
+            foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer) {
+                SuperNewRolesPlugin.Logger.LogInfo(players);
+                foreach (PlayerControl p in players)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo(player.nameText.text);
+                    SuperNewRolesPlugin.Logger.LogInfo(p.nameText.text);
+                    if (p == player)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public static void SetQuarreled(PlayerControl player1,PlayerControl player2)
+        {
+            RoleClass.Quarreled.QuarreledPlayer.Add(new List<PlayerControl>() { player1, player2 });
+        }
+        public static void SetQuarreledRPC(PlayerControl player1, PlayerControl player2)
+        {
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetQuarreled, Hazel.SendOption.Reliable, -1);
+            Writer.Write(player1.PlayerId);
+            Writer.Write(player2.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+        }
+        public static void RemoveQuarreled(this PlayerControl player)
+        {
+            foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
+            {
+                foreach (PlayerControl p in players)
+                {
+                    if (p == player)
+                    {
+                        RoleClass.Quarreled.QuarreledPlayer.Remove(players);
+                        return;
+                    }
+                }
+            }
+        }
+        public static PlayerControl GetOneSideQuarreled(this PlayerControl player)
+        {
+            foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
+            {
+                foreach (PlayerControl p in players)
+                {
+                    if (p == player)
+                    {
+                        if (p == players[0])
+                        {
+                            return players[1];
+                        } else
+                        {
+                            return players[0];
+                        }
+                    }
+                }
+            }
+            return null;
+        }
         public static void setRole(this PlayerControl player, SuperNewRoles.CustomRPC.RoleId role)
         {
             SuperNewRolesPlugin.Logger.LogInfo("SetRole");
@@ -94,6 +165,18 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMate):
                     Roles.RoleClass.MadMate.MadMatePlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Bait):
+                    Roles.RoleClass.Bait.BaitPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.HomeSecurityGuard):
+                    Roles.RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.StuntMan):
+                    Roles.RoleClass.StuntMan.StuntManPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Moving):
+                    Roles.RoleClass.Moving.MovingPlayer.Add(player);
+                    break;
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
                     return;
@@ -106,6 +189,42 @@ namespace SuperNewRoles
             killWriter.Write((byte)SelectRoleDate);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
             RPCProcedure.SetRole(Player.PlayerId, (byte)SelectRoleDate);
+        }
+        public static bool isClearTask(this PlayerControl player) {
+            var IsTaskClear = false;
+            switch (player.getRole())
+            {
+                case (RoleId.Jester):
+                    IsTaskClear = true;
+                    break;
+                case (RoleId.AllKiller):
+                    IsTaskClear = true;
+                    break;
+                case (RoleId.Vulture):
+                    IsTaskClear = true;
+                    break;
+                case (RoleId.HomeSecurityGuard):
+                    IsTaskClear = true;
+                    break;
+                case (RoleId.MadMate):
+                    IsTaskClear = true;
+                    break;
+                    
+            }
+            return IsTaskClear;
+        }
+        public static bool IsUseVent(this PlayerControl player)
+        {
+            if (player.Data.Role.IsImpostor) return true;
+            if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Jester.IsUseVent) return true;
+            if (Roles.RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMate.IsUseVent) return true;
+            return false;
+        }
+        public static bool IsUseSabo(this PlayerControl player)
+        {
+            if (player.Data.Role.IsImpostor) return true;
+            if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Jester.IsUseSabo) return true;
+            return false;
         }
         public static bool isNeutral(this PlayerControl player)
         {
@@ -185,9 +304,57 @@ namespace SuperNewRoles
             {
                 return CustomRPC.RoleId.Sealdor;
             }
+            else if (Roles.RoleClass.Sealdor.SealdorPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Sealdor;
+            }
+            else if (Roles.RoleClass.Speeder.SpeederPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Speeder;
+            }
+            else if (Roles.RoleClass.Freezer.FreezerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Freezer;
+            }
+            else if (Roles.RoleClass.Guesser.GuesserPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Guesser;
+            }
+            else if (Roles.RoleClass.EvilGuesser.EvilGuesserPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.EvilGuesser;
+            }
+            else if (Roles.RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Vulture;
+            }
+            else if (Roles.RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.NiceScientist;
+            }
             else if (Roles.RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Clergyman;
+            }
+            else if (Roles.RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.MadMate;
+            }
+            else if (Roles.RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Bait;
+            }
+            else if (Roles.RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.HomeSecurityGuard;
+            }
+            else if (Roles.RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.StuntMan;
+            }
+            else if (Roles.RoleClass.Moving.MovingPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Moving;
             }
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;
 

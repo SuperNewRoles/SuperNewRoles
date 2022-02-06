@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles
 {
@@ -37,13 +39,81 @@ namespace SuperNewRoles
             SetPlayerNum();
             CrewOrImpostorSet();
             OneOrNotListSet();
-            SuperNewRolesPlugin.Logger.LogInfo("-0-");
-            SuperNewRolesPlugin.Logger.LogInfo(Neutonepar);
-            SuperNewRolesPlugin.Logger.LogInfo(Neutnotonepar);
-            SuperNewRolesPlugin.Logger.LogInfo("-0-");
-            ImpostorRandomSelect();
-            NeutralRandomSelect();
-            CrewMateRandomSelect();
+
+
+            try
+            {
+                ImpostorRandomSelect();
+            } catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:"+e);
+            }
+
+
+            try
+            {
+                NeutralRandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
+
+
+            try
+            {
+                CrewMateRandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
+
+
+            try
+            {
+                QuarreledRandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
+        }
+        public static void QuarreledRandomSelect()
+        {
+            if (!CustomOption.CustomOptions.QuarreledOption.getBool()) return;
+            List<PlayerControl> SelectPlayers = new List<PlayerControl>();
+            if (CustomOption.CustomOptions.QuarreledOnlyCrewMate.getBool())
+            {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (!p.Data.Role.IsImpostor && !p.isNeutral())
+                    {
+                        SelectPlayers.Add(p);
+                    }
+                }
+            } else
+            {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    SelectPlayers.Add(p);
+                }
+            }
+            for (int i = 0; i < CustomOptions.QuarreledTeamCount.getFloat(); i++)
+            {
+                if (!(SelectPlayers.Count == 1 || SelectPlayers.Count == 0))
+                {
+                    var Listdate = new List<PlayerControl>();
+                    for (int i2 = 0; i2 < 2; i2++)
+                    {
+                        var player = ModHelpers.GetRandomIndex<PlayerControl>(SelectPlayers);
+                        Listdate.Add(SelectPlayers[player]);
+                        SelectPlayers.RemoveAt(player);
+                    }
+                    RoleHelpers.SetQuarreled(Listdate[0],Listdate[1]);
+                    RoleHelpers.SetQuarreledRPC(Listdate[0],Listdate[1]);
+                }
+            }
         }
         public static void SetPlayerNum()
         {

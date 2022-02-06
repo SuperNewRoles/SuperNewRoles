@@ -54,6 +54,7 @@ namespace SuperNewRoles.Roles
             HomeSecurityGuard.ClearAndReload();
             StuntMan.ClearAndReload();
             Moving.ClearAndReload();
+            Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
         }
         public static void NotRole()
@@ -161,7 +162,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
             public static PlayerControl currentTarget;
             public static float CoolTime;
-            public static bool MadMateKill;
+            public static bool IsMadMateKill;
             public static float KillMaxCount;
             public static DateTime ButtonTimer;
 
@@ -178,7 +179,7 @@ namespace SuperNewRoles.Roles
             {
                 SheriffPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.SheriffCoolTime.getFloat();
-                MadMateKill = CustomOptions.SheriffMadMateKill.getBool();
+                IsMadMateKill = CustomOptions.SheriffMadMateKill.getBool();
                 KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
             }
 
@@ -474,9 +475,15 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> MadMatePlayer;
             public static Color32 color = ImpostorRed;
+            public static bool IsImpostorCheck;
+            public static bool IsUseVent;
+            public static bool IsMoveVent;
             public static void clearAndReload()
             {
                 MadMatePlayer = new List<PlayerControl>();
+                IsImpostorCheck = CustomOptions.MadMateIsCheckImpostor.getBool();
+                IsUseVent = CustomOptions.MadMateIsUseVent.getBool();
+                IsMoveVent = CustomOptions.MadMateIsMoveVent.getBool();
             }
         }
         public static class Bait
@@ -507,10 +514,12 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> StuntManPlayer;
             public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static int GuardCount;
 
             public static void ClearAndReload()
             {
                 StuntManPlayer = new List<PlayerControl>();
+                GuardCount = (int)CustomOptions.StuntManMaxGuardCount.getFloat();
             }
         }
         public static class Moving
@@ -539,6 +548,16 @@ namespace SuperNewRoles.Roles
                 MovingPlayer = new List<PlayerControl>();
                 setpostion = new Vector3(0,0,0);
                 CoolTime = CustomOptions.MovingCoolTime.getFloat();
+            }
+        }
+        public static class Quarreled
+        {
+            public static List<List<PlayerControl>> QuarreledPlayer;
+            public static Color32 color = new Color32(210,105, 30, byte.MaxValue);
+            public static bool IsQuarreledWin;
+            public static void ClearAndReload()
+            {
+                QuarreledPlayer = new List<List<PlayerControl>>();
             }
         }
     }
