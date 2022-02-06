@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -108,6 +109,16 @@ namespace SuperNewRoles.Patch
             }
             else
             {
+                if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && RoleClass.MadMate.IsImpostorCheck)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.Data.Role.IsImpostor)
+                        {
+                            SetNamesClass.SetPlayerNameColors(p);
+                        }
+                    }
+                }
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }
