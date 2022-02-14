@@ -77,6 +77,7 @@ namespace SuperNewRoles.Intro
                     return NiceGamblerIntro;
                 case (CustomRPC.RoleId.EvilGambler):
                     return EvilGamblerIntro;
+                //イントロ検知
             }
 
             return SheriffIntro;
@@ -117,5 +118,6 @@ namespace SuperNewRoles.Intro
         public static IntroDate OpportunistIntro = new IntroDate("Opportunist",RoleClass.Opportunist.color,2,CustomRPC.RoleId.Opportunist);
         public static IntroDate NiceGamblerIntro = new IntroDate("NiceGambler", RoleClass.NiceGambler.color, 1, CustomRPC.RoleId.NiceGambler);
         public static IntroDate EvilGamblerIntro = new IntroDate("EvilGambler", RoleClass.EvilGambler.color, 1, CustomRPC.RoleId.EvilGambler);
+        //イントロオブジェ
     }
 }

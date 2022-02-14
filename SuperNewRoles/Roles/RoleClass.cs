@@ -55,9 +55,10 @@ namespace SuperNewRoles.Roles
             StuntMan.ClearAndReload();
             Moving.ClearAndReload();
             Opportunist.ClearAndReload();
-            Quarreled.ClearAndReload();
             NiceGambler.ClearAndReload();
             EvilGambler.ClearAndReload();
+            //ロールクリア
+            Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
         }
         public static void NotRole()
@@ -594,6 +595,7 @@ namespace SuperNewRoles.Roles
                     SucPar = int.Parse(temp);
                 }
             }
+            //ロールクラス
             public static bool GetSuc() {
                 var a = new List<string>();
                 for (int i = 0; i < SucPar; i++) {
@@ -613,6 +615,7 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
+        //新ロールクラス
         public static class Quarreled
         {
             public static List<List<PlayerControl>> QuarreledPlayer;

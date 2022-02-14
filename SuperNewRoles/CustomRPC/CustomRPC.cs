@@ -1,4 +1,4 @@
-ï»¿using HarmonyLib;
+using HarmonyLib;
 using Hazel;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +43,8 @@ namespace SuperNewRoles.CustomRPC
         Moving,
         Opportunist,
         NiceGambler,
-        EvilGambler
+        EvilGambler,
+        //RoleId
     }
 
     enum CustomRPC
@@ -127,7 +128,7 @@ namespace SuperNewRoles.CustomRPC
             target.Exiled();
             if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
             if (sheriff == null || target == null) return;
-            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff,sheriff.name+"ã¯"+target.name+"ã‚’ã‚·ã‚§ãƒªãƒ•ã‚­ãƒ«ã—ãŸï¼");
+            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff,sheriff.name+"‚Í"+target.name+"‚ğƒVƒFƒŠƒtƒLƒ‹‚µ‚½I");
             if (MissFire)
             {
                 sheriff.Data.IsDead = true;

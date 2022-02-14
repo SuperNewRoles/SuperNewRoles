@@ -186,6 +186,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilGambler):
                     Roles.RoleClass.EvilGambler.EvilGamblerPlayer.Add(player);
                     break;
+                //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
                     return;
@@ -220,7 +221,8 @@ namespace SuperNewRoles
                     break;
                 case (RoleId.Opportunist):
                     IsTaskClear = true;
-                    break;                    
+                    break; 
+                //タスククリアか
             }
             return IsTaskClear;
         }
@@ -254,6 +256,7 @@ namespace SuperNewRoles
                 case (RoleId.Opportunist):
                     IsNeutral = true;
                     break;
+                //第三か
             }
             return IsNeutral;
         }
@@ -382,6 +385,7 @@ namespace SuperNewRoles
             {
                 return CustomRPC.RoleId.EvilGambler;
             }
+            //ロールチェック
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;
 
         }
