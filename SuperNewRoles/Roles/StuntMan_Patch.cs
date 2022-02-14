@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
-                if (RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(target) && !(RoleClass.StuntMan.GuardCount <= 0)) {
+                if (RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(target) && PlayerControl.LocalPlayer == target &&!(RoleClass.StuntMan.GuardCount <= 0)) {
                     RoleClass.StuntMan.GuardCount--;
                     target.protectedByGuardian = true;
                 }

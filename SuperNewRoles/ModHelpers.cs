@@ -10,11 +10,18 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles
 {
     public static class ModHelpers
     {
+        public enum MurderAttemptResult
+        {
+            PerformKill,
+            SuppressKill,
+            BlankKill
+        }
         public static bool ShowButtons
         {
             get
@@ -23,6 +30,45 @@ namespace SuperNewRoles
                       !MeetingHud.Instance &&
                       !ExileController.Instance;
             }
+        }
+        public static Dictionary<byte, PlayerControl> allPlayersById()
+        {
+            Dictionary<byte, PlayerControl> res = new Dictionary<byte, PlayerControl>();
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                res.Add(player.PlayerId, player);
+            return res;
+        }
+        public static MurderAttemptResult checkMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
+        {
+            // Modified vanilla checks
+            if (AmongUsClient.Instance.IsGameOver) return MurderAttemptResult.SuppressKill;
+            if (killer == null || killer.Data == null || killer.Data.IsDead || killer.Data.Disconnected) return MurderAttemptResult.SuppressKill; // Allow non Impostor kills compared to vanilla code
+            if (target == null || target.Data == null || target.Data.IsDead || target.Data.Disconnected) return MurderAttemptResult.SuppressKill; // Allow killing players in vents compared to vanilla code
+            return MurderAttemptResult.PerformKill;
+        }
+        public static MurderAttemptResult checkMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
+        {
+            // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
+            // The kill attempt will be shared using a custom RPC, hence combining modded and unmodded versions is impossible
+
+            MurderAttemptResult murder = checkMuderAttempt(killer, target, isMeetingStart);
+            if (murder == MurderAttemptResult.PerformKill)
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                writer.Write(killer.PlayerId);
+                writer.Write(target.PlayerId);
+                writer.Write(showAnimation ? Byte.MaxValue : 0);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
+            }
+            return murder;
+        }
+        public static bool hidePlayerName(PlayerControl source, PlayerControl target)
+        {
+            if (source == null || target == null) return true;
+            else if (source == target) return false; // Player sees his own name
+            else if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor)) return false;
+            return true;
         }
         public static Sprite loadSpriteFromResources(string path, float pixelsPerUnit)
         {
@@ -38,7 +84,11 @@ namespace SuperNewRoles
             return null;
         }
 
-        
+        internal static string cs(object unityEngine, string v)
+        {
+            throw new NotImplementedException();
+        }
+
         public static Texture2D loadTextureFromResources(string path)
         {
             try

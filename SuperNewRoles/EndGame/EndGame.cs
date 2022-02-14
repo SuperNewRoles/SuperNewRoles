@@ -9,6 +9,7 @@ using System.Text;
 using UnityEngine;
 using System.Reflection;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.EndGame
 {
@@ -69,8 +70,39 @@ namespace SuperNewRoles.EndGame
                 text = "QuarreledWinText";
                 textRenderer.color = Roles.RoleClass.Quarreled.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Quarreled.color);
+            } else if (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask || AdditionalTempData.gameOverReason == GameOverReason.HumansByVote)
+            {
+                text = "CrewMateName";
+                textRenderer.color = Palette.White;
+            } else if (AdditionalTempData.gameOverReason == GameOverReason.ImpostorByKill || AdditionalTempData.gameOverReason == GameOverReason.ImpostorBySabotage || AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote)
+            {
+                text = "Impostorname";
+                textRenderer.color = RoleClass.ImpostorRed;
             }
-            textRenderer.text = string.Format(ModTranslation.getString(text),"");
+
+            if (ModeHandler.isMode(ModeId.BattleRoyal)) {
+                SuperNewRolesPlugin.Logger.LogInfo("BATTLEROYAL!!!!");
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
+                    if (p.isAlive())
+                    {
+                        text = p.nameText.text + " 勝利";
+                        textRenderer.color = new Color32(116, 80, 48, byte.MaxValue);
+                    }
+                }
+            }
+
+            text = ModTranslation.getString(text);
+            bool IsOpptexton = false;
+            foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer) {
+                if (player.isAlive()) { 
+                    if (!IsOpptexton)
+                    {
+                        text = text + "&"+ModTranslation.getString("OpportunistName");
+                    }
+
+                }
+            }
+            textRenderer.text = string.Format(text,"");
             AdditionalTempData.clear();
         }
     }
@@ -78,7 +110,7 @@ namespace SuperNewRoles.EndGame
     public class OnGameEndPatch
     {
 
-        public static new List<PlayerControl> WinnerPlayer;
+        public static PlayerControl WinnerPlayer;
         public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
 
@@ -119,19 +151,29 @@ namespace SuperNewRoles.EndGame
             if (JesterWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                WinnerPlayer[0].Data.IsDead = true;
-                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer[0].Data);
+                WinnerPlayer.Data.IsDead = false;
+                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.JesterWin;
             } else if (QuarreledWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                foreach (PlayerControl p in WinnerPlayer)
+                var winplays = new List<PlayerControl>() { WinnerPlayer };
+                winplays.Add(WinnerPlayer.GetOneSideQuarreled());
+                foreach (PlayerControl p in winplays)
                 {
+                    p.Data.IsDead = false;
                     WinningPlayerData wpd = new WinningPlayerData(p.Data);
                     TempData.winners.Add(wpd);
                 }
                 AdditionalTempData.winCondition = WinCondition.QuarreledWin;
+            }
+            foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
+            {
+                if (player.isAlive())
+                {
+                    TempData.winners.Add(new WinningPlayerData(player.Data));
+                }
             }
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
@@ -144,18 +186,46 @@ namespace SuperNewRoles.EndGame
                     }
                 }
             }
+
+            if (ModeHandler.isMode(ModeId.BattleRoyal)) {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.isAlive())
+                    {
+                        p.Data.IsDead = false;
+                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                        TempData.winners.Add(wpd);
+                    }
+                }
+                AdditionalTempData.winCondition = WinCondition.Default;
+            }
+
         }
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CheckEndCriteria))]
         class CheckEndCriteriaPatch
         {
-            public static bool Prefix(ShipStatus __instance)
+            public static void Postfix(ShipStatus __instance)
             {
-                if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
-                var playerdates = new PlayerStatistics(__instance);
-                QuarreledWinCheck(__instance);
-                JesterWinCheck(__instance);
-                ImpostorWinCheck(__instance,playerdates);
-                return false;
+                try
+                {
+                    var playerdates = new PlayerStatistics(__instance);
+                    if (!ModeHandler.isMode(ModeId.Default))
+                    {
+                        ModeHandler.EndGameChecks(__instance,playerdates);
+                        return;
+                    }
+                    else if (ModeHandler.isMode(ModeId.Default)) {
+                        QuarreledWinCheck(__instance);
+                        JesterWinCheck(__instance);
+                        ImpostorWinCheck(__instance, playerdates);
+                        CrewmateWinCheck(__instance, playerdates);
+                        return;
+                    }
+                }
+                catch {
+                }
+                return;
             }
             public static bool ImpostorWinCheck(ShipStatus __instance, PlayerStatistics statistics)
             {
@@ -184,9 +254,20 @@ namespace SuperNewRoles.EndGame
             {
                 if (Roles.RoleClass.Jester.IsJesterWin)
                 {
-                    
+
                     __instance.enabled = false;
                 }
+            }
+
+            private static bool CrewmateWinCheck(ShipStatus __instance, PlayerStatistics statistics)
+            {
+                if (statistics.TeamCrew > 0 && statistics.TeamImpostorsAlive == 0)
+                {
+                    __instance.enabled = false;
+                    ShipStatus.RpcEndGame(GameOverReason.HumansByVote, false);
+                    return true;
+                }
+                return false;
             }
             static void QuarreledWinCheck(ShipStatus __instance)
             {
@@ -201,7 +282,7 @@ namespace SuperNewRoles.EndGame
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
     public class CheckEndGamePatch
     {
-        public static void Postfix(ExileController __instance)
+        public static void Prefix(ExileController __instance)
         {
             try
             {
@@ -216,7 +297,7 @@ namespace SuperNewRoles.EndGame
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
     public class CheckAirShipEndGamePatch
     {
-        public static void Postfix(AirshipExileController __instance)
+        public static void Prefix(AirshipExileController __instance)
         {
             try
             {
@@ -239,13 +320,9 @@ namespace SuperNewRoles.EndGame
                 if (Side.isDead())
                 {
                     CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
-                    CustomRPC.RPCProcedure.ShareWinner(Side.PlayerId);
 
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                     Writer.Write(Player.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                    Writer.Write(Side.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
                     Roles.RoleClass.Quarreled.IsQuarreledWin = true;
                     ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
@@ -271,6 +348,7 @@ namespace SuperNewRoles.EndGame
     {
         public int TeamImpostorsAlive { get; set; }
         public int TeamCrew { get; set; }
+        public int TeamCrewAlive { get; set; }
         public int NeutralAlive { get; set; }
         public int TotalAlive { get; set; }
 
@@ -283,22 +361,18 @@ namespace SuperNewRoles.EndGame
 
         private void GetPlayerCounts()
         {
-            int numJackalAlive = 0;
             int numImpostorsAlive = 0;
             int numTotalAlive = 0;
             int numNeutralAlive = 0;
             int numCrew = 0;
-
-            int numLoversAlive = 0;
-            int numCouplesAlive = 0;
-            int impLovers = 0;
+            int numCrewAlive = 0;
 
             for (int i = 0; i < GameData.Instance.PlayerCount; i++)
             {
                 GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
                 if (!playerInfo.Disconnected)
                 {
-                    if (playerInfo.Object.isCrew()) { numCrew++; }
+                    if (playerInfo.Object.isCrew()) { numCrew++; if (!playerInfo.IsDead) numCrewAlive++; }
                     numTotalAlive++;
 
                         
@@ -314,6 +388,7 @@ namespace SuperNewRoles.EndGame
             }
 
             TeamCrew = numCrew;
+            TeamCrewAlive = numCrewAlive;
             TeamImpostorsAlive = numImpostorsAlive;
             NeutralAlive = numNeutralAlive;
             TotalAlive = numTotalAlive;

@@ -71,6 +71,7 @@ namespace SuperNewRoles.Patch
         {
             public static void Postfix(GameData __instance)
             {
+                if (!Mode.ModeHandler.isMode(Mode.ModeId.Default)) return;
                 __instance.TotalTasks = 0;
                 __instance.CompletedTasks = 0;
                 for (int i = 0; i < __instance.AllPlayers.Count; i++)

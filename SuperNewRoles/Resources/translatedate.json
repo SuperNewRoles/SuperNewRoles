@@ -224,13 +224,29 @@
         "0" : "The version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0} is wrong." ,
         "11" : "{0}\u306e<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u30d0\u30fc\u30b8\u30e7\u30f3\u304c\u9055\u3044\u307e\u3059\u3002"
         } ,
+ "ModeSetting" : {
+        "0" : "Mode Setting" ,
+        "11" : "\u30e2\u30fc\u30c9\u8a2d\u5b9a"
+        } ,
+ "SettingMode" : {
+        "0" : "Mode" ,
+        "11" : "\u30e2\u30fc\u30c9"
+        } ,
  "SettingHideAndSeekMode" : {
         "0" : "Hide And Seek Mode" ,
-        "11" : "\u304b\u304f\u308c\u3093\u307c\u30e2\u30fc\u30c9"
+        "11" : "\u304b\u304f\u308c\u3093\u307c\u30e2\u30fc\u30c9\u306e\u8a2d\u5b9a"
+        } ,
+ "SettingBattleRoyalMode" : {
+        "0" : "Battle Royal Mode" ,
+        "11" : "\u30d0\u30c8\u30eb\u30ed\u30a4\u30e4\u30eb\u30e2\u30fc\u30c9\u306e\u8a2d\u5b9a"
         } ,
  "HideAndSeekModeName" : {
         "0" : "Hide And Seek" ,
         "11" : "\u304b\u304f\u308c\u3093\u307c"
+        } ,
+ "BattleRoyalModeName" : {
+        "0" : "Battle Royal" ,
+        "11" : "\u30d0\u30c8\u30eb\u30ed\u30a4\u30e4\u30eb"
         } ,
  "CrewMateName" : {
         "0" : "Crewmate" ,
@@ -255,6 +271,26 @@
  "DeviceUseCameraSetting" : {
         "0" : "Use OK Camera" ,
         "11" : "\u30ab\u30e1\u30e9\u304c\u4f7f\u3048\u308b"
+        } ,
+ "HASHideName" : {
+        "0" : "Hide" ,
+        "11" : "\u9003"
+        } ,
+ "HASSeekName" : {
+        "0" : "Seek" ,
+        "11" : "\u9b3c"
+        } ,
+ "HASDeathTaskSetting" : {
+        "0" : "Hide Death Clear Task" ,
+        "11" : "\u6b7b\u4ea1\u3059\u308b\u3068\u30bf\u30b9\u30af\u304c\u7d42\u308f\u308b"
+        } ,
+ "HASUseSaboSetting" : {
+        "0" : "Use Sabotage" ,
+        "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u304c\u4f7f\u3048\u308b"
+        } ,
+ "HASUseVentSetting" : {
+        "0" : "Use Vent" ,
+        "11" : "\u30d9\u30f3\u30c8\u304c\u4f7f\u3048\u308b"
         } ,
  "detecName" : {
         "0" : "Detective" ,
@@ -309,8 +345,8 @@
         "11" : "\u30bf\u30b9\u30af\u3092\u5b8c\u4e86\u3057\u306a\u3044\u3068\u52dd\u5229\u3067\u304d\u306a\u3044"
         } ,
  "JesterWinText" : {
-        "0" : "Jester Win!" ,
-        "11" : "\u3066\u308b\u3066\u308b \u52dd\u5229"
+        "0" : "Jester{0}Win!" ,
+        "11" : "\u3066\u308b\u3066\u308b{0}\u52dd\u5229"
         } ,
  "LighterName" : {
         "0" : "Lighter" ,
@@ -591,6 +627,10 @@
  "EvilSpeedBoosterPlusSpeedSetting" : {
         "0" : "Double Speed" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\u306e\u500d\u901f"
+        } ,
+ "EvilSpeedBoosterIsNotSpeedBooster" : {
+        "0" : "If this position is selected the speed booster will not be selected." ,
+        "11" : "\u3053\u306e\u5f79\u8077\u304c\u9078\u3070\u308c\u308b\u3068\u30b9\u30d4\u30fc\u30c9\u30d6\u30fc\u30b9\u30bf\u30fc\u304c\u9078\u3070\u308c\u306a\u3044"
         } ,
  "EvilSpeedBoosterBoostButtonName" : {
         "0" : "Speed\\nBoost" ,
@@ -911,6 +951,62 @@
  "QuarreledOnlyCrewMateSetting" : {
         "0" : "Only Crewmate Team" ,
         "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u9663\u55b6\u306e\u307f"
+        } ,
+ "QuarreledWinText" : {
+        "0" : "Quarreled{0}Win" ,
+        "11" : "\u30af\u30e9\u30fc\u30c9{0}\u52dd\u5229"
+        } ,
+ "OpportunistName" : {
+        "0" : "Opportunist" ,
+        "11" : "\u30aa\u30dd\u30c1\u30e5\u30cb\u30b9\u30c8"
+        } ,
+ "OpportunistTitle1" : {
+        "0" : "We'll survive." ,
+        "11" : "\u751f\u304d\u6b8b\u308d\u3046"
+        } ,
+ "OpportunistTitle2" : {
+        "0" : "Let's try not to die." ,
+        "11" : "\u6b7b\u306a\u306a\u3044\u3088\u3046\u306b\u3057\u3088\u3046"
+        } ,
+ "BestfalsechargeName" : {
+        "0" : "Best False Charge" ,
+        "11" : "\u30d9\u30b9\u30c8\u51a4\u7f6a\u30e4\u30fc"
+        } ,
+ "BestfalsechargeTitle1" : {
+        "0" : "Lets' Task!" ,
+        "11" : "\u30bf\u30b9\u30af\u3092\u3057\u3088\u3046"
+        } ,
+ "NiceGamblerName" : {
+        "0" : "Nice Gambler" ,
+        "11" : "\u30ca\u30a4\u30b9\u30ae\u30e3\u30f3\u30d6\u30e9\u30fc"
+        } ,
+ "NiceGamblerTitle1" : {
+        "0" : "Lets' Gambler!" ,
+        "11" : "\u30ae\u30e3\u30f3\u30d6\u30eb\u3092\u3057\u3088\u3046"
+        } ,
+ "NiceGamblerUseCountSetting" : {
+        "0" : "Use Count" ,
+        "11" : "\u4f7f\u3048\u308b\u56de\u6570"
+        } ,
+ "EvilGamblerName" : {
+        "0" : "Evil Gambler" ,
+        "11" : "\u30a4\u30d3\u30eb\u30ae\u30e3\u30f3\u30d6\u30e9\u30fc"
+        } ,
+ "EvilGamblerTitle1" : {
+        "0" : "Lets' Kill!" ,
+        "11" : "\u30ad\u30eb\u3092\u3057\u3088\u3046"
+        } ,
+ "EvilGamblerSucTimeSetting" : {
+        "0" : "Kill cool time on success" ,
+        "11" : "\u6210\u529f\u6642\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+        } ,
+ "EvilGamblerNotSucTimeSetting" : {
+        "0" : "Kill Cool Time on Failure" ,
+        "11" : "\u5931\u6557\u6642\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+        } ,
+ "EvilGamblerSucParSetting" : {
+        "0" : "Success probability" ,
+        "11" : "\u6210\u529f\u78ba\u7387"
         } 
 
 }

@@ -16,6 +16,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerControl __instance)
             {
+                if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 if (!RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer)) return;
                 if ((!PlayerControl.LocalPlayer.isAlive()) && !RoleClass.Bait.Reported)
                 {

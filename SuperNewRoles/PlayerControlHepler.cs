@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SuperNewRoles.Patch;
+using SuperNewRoles.Roles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,6 +57,10 @@ namespace SuperNewRoles
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
                 task.Text = CustomOption.CustomOptions.cs(roleInfo.color, $"{ModTranslation.getString(roleInfo.NameKey+"Name")}: {roleInfo.TitleDesc}");
+                if (player.IsQuarreled())
+                {
+                    task.Text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
+                }
 
                 player.myTasks.Insert(0, task);
             }

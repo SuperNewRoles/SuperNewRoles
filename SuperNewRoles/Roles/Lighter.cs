@@ -31,15 +31,12 @@ namespace SuperNewRoles.Roles
         }
         public static void LightOnStart()
         {
-            PlayerControl.GameOptions.CrewLightMod = RoleClass.Lighter.UpVision;
             RoleClass.Lighter.IsLightOn = true;
         }
        
         public static void LightOutEnd()
         {
             if (!RoleClass.Lighter.IsLightOn) return;
-
-            PlayerControl.GameOptions.CrewLightMod = RoleClass.Lighter.DefaultCrewVision;
             RoleClass.Lighter.IsLightOn = false;
 
         }
@@ -47,7 +44,6 @@ namespace SuperNewRoles.Roles
         {
             HudManagerStartPatch.LighterLightOnButton.MaxTimer = RoleClass.Lighter.CoolTime;
             RoleClass.Lighter.ButtonTimer = DateTime.Now;
-            PlayerControl.GameOptions.ImpostorLightMod = RoleClass.Lighter.DefaultCrewVision;
             RoleClass.Lighter.IsLightOn = false;
         }
     }

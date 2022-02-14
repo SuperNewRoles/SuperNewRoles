@@ -33,8 +33,6 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption DeviceUseVitalOrDoorLog;
         public static CustomOption DeviceUseCamera;
 
-        public static CustomOption HideAndSeekMode;
-
         public static CustomOption DetectiveRate;
         public static CustomOption DetectivePlayerCount;
 
@@ -104,6 +102,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption EvilSpeedBoosterCoolTime;
         public static CustomOption EvilSpeedBoosterDurationTime;
         public static CustomOption EvilSpeedBoosterSpeed;
+        public static CustomOption EvilSpeedBoosterIsNotSpeedBooster;
 
         public static CustomRoleOption TaskerOption;
         public static CustomOption TaskerPlayerCount;
@@ -180,6 +179,19 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MovingPlayerCount;
         public static CustomOption MovingCoolTime;
 
+        public static CustomRoleOption OpportunistOption;
+        public static CustomOption OpportunistPlayerCount;
+
+        public static CustomRoleOption NiceGamblerOption;
+        public static CustomOption NiceGamblerPlayerCount;
+        public static CustomOption NiceGamblerUseCount;
+
+        public static CustomRoleOption EvilGamblerOption;
+        public static CustomOption EvilGamblerPlayerCount;
+        public static CustomOption EvilGamblerSucTime;
+        public static CustomOption EvilGamblerNotSucTime;
+        public static CustomOption EvilGamblerSucpar;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -222,8 +234,7 @@ namespace SuperNewRoles.CustomOption
             DeviceUseCamera = CustomOption.Create(118, cs(Color.white, "DeviceUseCameraSetting"), true, DeviceOptions);
 
             //SoothSayerRate = CustomOption.Create(2, cs(SoothSayer.color,"soothName"),rates, null, true);
-
-            HideAndSeekMode = CustomOption.Create(101, cs(Color.white,"SettingHideAndSeekMode"), false, null, isHeader: true);
+            Mode.ModeHandler.OptionLoad();
 
             SoothSayerOption = new CustomRoleOption(6, "SoothSayerName", RoleClass.SoothSayer.color, 1);
             SoothSayerPlayerCount = CustomOption.Create(7, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
@@ -291,6 +302,7 @@ namespace SuperNewRoles.CustomOption
             EvilSpeedBoosterCoolTime = CustomOption.Create(56, ModTranslation.getString("EvilSpeedBoosterCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, EvilSpeedBoosterOption, format: "unitSeconds");
             EvilSpeedBoosterDurationTime = CustomOption.Create(57, ModTranslation.getString("EvilSpeedBoosterDurationSetting"), 15f, 2.5f, 60f, 2.5f, EvilSpeedBoosterOption, format: "unitSeconds");
             EvilSpeedBoosterSpeed = CustomOption.Create(58, ModTranslation.getString("EvilSpeedBoosterPlusSpeedSetting"), 0.5f, 0.0f, 5f, 0.25f, EvilSpeedBoosterOption, format: "unitSeconds");
+            EvilSpeedBoosterIsNotSpeedBooster = CustomOption.Create(126, ModTranslation.getString("EvilSpeedBoosterIsNotSpeedBooster"), false, EvilSpeedBoosterOption);
 
             TaskerOption = new CustomRoleOption(59, "TaskerName", RoleClass.ImpostorRed, 1);
             TaskerPlayerCount = CustomOption.Create(60, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], TaskerOption);
@@ -367,9 +379,24 @@ namespace SuperNewRoles.CustomOption
             MovingPlayerCount = CustomOption.Create(111, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MovingOption);
             MovingCoolTime = CustomOption.Create(112, cs(Color.white, "MovingCoolDownSetting"),30f , 0f,60f, 2.5f, MovingOption);
 
-            QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null);
+            OpportunistOption = new CustomRoleOption(127, "OpportunistName", RoleClass.Opportunist.color, 1);
+            OpportunistPlayerCount = CustomOption.Create(125, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], OpportunistOption);
+
+            NiceGamblerOption = new CustomRoleOption(140, "NiceGamblerName", RoleClass.NiceGambler.color, 1);
+            NiceGamblerPlayerCount = CustomOption.Create(134, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceGamblerOption);
+            NiceGamblerUseCount = CustomOption.Create(139, cs(Color.white, "NiceGamblerUseCountSetting"), 1f, 1f,15f, 1f, NiceGamblerOption);
+
+            EvilGamblerOption = new CustomRoleOption(141, "EvilGamblerName", RoleClass.EvilGambler.color, 1);
+            EvilGamblerPlayerCount = CustomOption.Create(135, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGamblerOption);
+            EvilGamblerSucTime = CustomOption.Create(136, cs(Color.white, "EvilGamblerSucTimeSetting"), 15f, 0f, 60f, 2.5f, EvilGamblerOption);
+            EvilGamblerNotSucTime = CustomOption.Create(137, cs(Color.white, "EvilGamblerNotSucTimeSetting"), 15f, 0f, 60f, 2.5f, EvilGamblerOption);
+            EvilGamblerSucpar = CustomOption.Create(138, cs(Color.white, "EvilGamblerSucParSetting"), rates , EvilGamblerOption);
+
+            QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader:true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3],QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, cs(Color.white, "QuarreledOnlyCrewMateSetting"), false, QuarreledOption);
+
+
         }
     }
 }

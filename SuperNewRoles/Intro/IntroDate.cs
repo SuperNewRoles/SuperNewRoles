@@ -71,6 +71,12 @@ namespace SuperNewRoles.Intro
                     return StuntManIntro;
                 case (CustomRPC.RoleId.Moving):
                     return MovingIntro;
+                case (CustomRPC.RoleId.Opportunist):
+                    return OpportunistIntro;
+                case (CustomRPC.RoleId.NiceGambler):
+                    return NiceGamblerIntro;
+                case (CustomRPC.RoleId.EvilGambler):
+                    return EvilGamblerIntro;
             }
 
             return SheriffIntro;
@@ -108,6 +114,8 @@ namespace SuperNewRoles.Intro
         public static IntroDate HomeSecurityGuardIntro = new IntroDate("HomeSecurityGuard", RoleClass.HomeSecurityGuard.color, 1, CustomRPC.RoleId.HomeSecurityGuard);
         public static IntroDate StuntManIntro = new IntroDate("StuntMan", RoleClass.StuntMan.color, 1, CustomRPC.RoleId.StuntMan);
         public static IntroDate MovingIntro = new IntroDate("Moving", RoleClass.Moving.color, 1, CustomRPC.RoleId.Moving);
-
+        public static IntroDate OpportunistIntro = new IntroDate("Opportunist",RoleClass.Opportunist.color,2,CustomRPC.RoleId.Opportunist);
+        public static IntroDate NiceGamblerIntro = new IntroDate("NiceGambler", RoleClass.NiceGambler.color, 1, CustomRPC.RoleId.NiceGambler);
+        public static IntroDate EvilGamblerIntro = new IntroDate("EvilGambler", RoleClass.EvilGambler.color, 1, CustomRPC.RoleId.EvilGambler);
     }
 }

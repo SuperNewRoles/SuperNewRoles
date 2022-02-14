@@ -6,6 +6,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles
 {
@@ -14,8 +15,12 @@ namespace SuperNewRoles
     {
         public static void Postfix()
         {
+            ModeHandler.ClearAndReload();
             Roles.RoleClass.clearAndReloadRoles();
-            AllRoleSetClass.AllRoleSet();
+            if (ModeHandler.thisMode == ModeId.Default)
+            {
+                AllRoleSetClass.AllRoleSet();
+            }
         }
     }
     class AllRoleSetClass
@@ -139,6 +144,28 @@ namespace SuperNewRoles
                 {
                     int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Impoonepar);
                     RoleId SelectRoleDate = Impoonepar[SelectRoleDateIndex];
+                    
+                    if (SelectRoleDate == RoleId.EvilSpeedBooster)
+                    {
+                        try
+                        {
+                            for (int i1 = 1; i1 <= 15; i1++)
+                            {
+                                for (int i = 1; i <= Imponotonepar.Count; i++)
+                                {
+                                    if (Crewnotonepar[i - 1] == RoleId.SpeedBooster)
+                                    {
+                                        Crewnotonepar.RemoveAt(i - 1);
+                                    }
+                                }
+                            }
+                            Crewonepar.Remove(RoleId.SpeedBooster);
+                        } catch
+                        {
+
+                        }
+                    }
+
                     int PlayerCount = (int)GetPlayerCount(SelectRoleDate);
                     if (PlayerCount >= ImpostorPlayerNum)
                     {
@@ -944,7 +971,54 @@ namespace SuperNewRoles
                     }
                 }
             }
-            SuperNewRolesPlugin.Logger.LogInfo("あああ");
+            if (!(CustomOption.CustomOptions.OpportunistOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.OpportunistOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Opportunist;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.NiceGamblerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NiceGamblerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.NiceGambler;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.EvilGamblerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.EvilGamblerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.EvilGambler;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
         }
     }
 }

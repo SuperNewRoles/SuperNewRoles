@@ -2,6 +2,7 @@
 using Hazel;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Patch;
+using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,20 +26,20 @@ namespace SuperNewRoles.Patches
             DeadPlayer.deadPlayers.Add(deadPlayer);
             if (RoleHelpers.IsQuarreled(target))
             {
-                var Side = RoleHelpers.GetOneSideQuarreled(target);
-                if (Side.isDead())
+                if (AmongUsClient.Instance.AmHost)
                 {
-                    CustomRPC.RPCProcedure.ShareWinner(target.PlayerId);
-                    CustomRPC.RPCProcedure.ShareWinner(Side.PlayerId);
+                    SuperNewRolesPlugin.Logger.LogInfo(RoleClass.Quarreled.QuarreledPlayer);
+                    var Side = RoleHelpers.GetOneSideQuarreled(target);
+                    if (Side.isDead())
+                    {
+                        CustomRPC.RPCProcedure.ShareWinner(target.PlayerId);
 
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                    Writer.Write(target.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                    Writer.Write(Side.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    Roles.RoleClass.Quarreled.IsQuarreledWin = true;
-                    ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        Writer.Write(target.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        Roles.RoleClass.Quarreled.IsQuarreledWin = true;
+                        ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
+                    }
                 }
             }
         }

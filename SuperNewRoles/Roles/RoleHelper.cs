@@ -28,7 +28,6 @@ namespace SuperNewRoles
         }
         public static bool IsQuarreled(this PlayerControl player)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("～～～クラートIs～～～");
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer) {
                 SuperNewRolesPlugin.Logger.LogInfo(players);
                 foreach (PlayerControl p in players)
@@ -45,7 +44,8 @@ namespace SuperNewRoles
         }
         public static void SetQuarreled(PlayerControl player1,PlayerControl player2)
         {
-            RoleClass.Quarreled.QuarreledPlayer.Add(new List<PlayerControl>() { player1, player2 });
+            var sets = new List<PlayerControl>() { player1, player2 };
+            RoleClass.Quarreled.QuarreledPlayer.Add(sets);
         }
         public static void SetQuarreledRPC(PlayerControl player1, PlayerControl player2)
         {
@@ -177,6 +177,15 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Moving):
                     Roles.RoleClass.Moving.MovingPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Opportunist):
+                    Roles.RoleClass.Opportunist.OpportunistPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.NiceGambler):
+                    Roles.RoleClass.NiceGambler.NiceGamblerPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.EvilGambler):
+                    Roles.RoleClass.EvilGambler.EvilGamblerPlayer.Add(player);
+                    break;
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
                     return;
@@ -209,7 +218,9 @@ namespace SuperNewRoles
                 case (RoleId.MadMate):
                     IsTaskClear = true;
                     break;
-                    
+                case (RoleId.Opportunist):
+                    IsTaskClear = true;
+                    break;                    
             }
             return IsTaskClear;
         }
@@ -238,6 +249,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.Vulture):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Opportunist):
                     IsNeutral = true;
                     break;
             }
@@ -355,6 +369,18 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.Moving.MovingPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Moving;
+            }
+            else if (Roles.RoleClass.Opportunist.OpportunistPlayer.IsCheckListPlayerControl(player)) 
+            {
+                return CustomRPC.RoleId.Opportunist;
+            }
+            else if (Roles.RoleClass.NiceGambler.NiceGamblerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.NiceGambler;
+            }
+            else if (Roles.RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.EvilGambler;
             }
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;
 

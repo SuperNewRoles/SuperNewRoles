@@ -54,7 +54,10 @@ namespace SuperNewRoles.Roles
             HomeSecurityGuard.ClearAndReload();
             StuntMan.ClearAndReload();
             Moving.ClearAndReload();
+            Opportunist.ClearAndReload();
             Quarreled.ClearAndReload();
+            NiceGambler.ClearAndReload();
+            EvilGambler.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
         }
         public static void NotRole()
@@ -548,6 +551,66 @@ namespace SuperNewRoles.Roles
                 MovingPlayer = new List<PlayerControl>();
                 setpostion = new Vector3(0,0,0);
                 CoolTime = CustomOptions.MovingCoolTime.getFloat();
+            }
+        }
+        public static class Opportunist
+        {
+            public static List<PlayerControl> OpportunistPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                OpportunistPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class NiceGambler
+        {
+            public static List<PlayerControl> NiceGamblerPlayer;
+            public static int Num;
+            public static Color32 color = new Color32(218, 112, 214, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                NiceGamblerPlayer = new List<PlayerControl>();
+                Num = (int)CustomOptions.NiceGamblerUseCount.getFloat();
+            }
+        }
+        public static class EvilGambler
+        {
+            public static List<PlayerControl> EvilGamblerPlayer;
+            public static int SucCool;
+            public static int NotSucCool;
+            public static int SucPar;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                EvilGamblerPlayer = new List<PlayerControl>();
+                SucCool = (int)CustomOptions.EvilGamblerSucTime.getFloat();
+                NotSucCool = (int)CustomOptions.EvilGamblerNotSucTime.getFloat();
+                var temp = CustomOptions.EvilGamblerSucpar.getString().Replace("0%", "");
+                if (temp == "")
+                {
+                    SucPar = 0;
+                } else
+                {
+                    SucPar = int.Parse(temp);
+                }
+            }
+            public static bool GetSuc() {
+                var a = new List<string>();
+                for (int i = 0; i < SucPar; i++) {
+                    a.Add("Suc");
+                }
+                for (int i = 0; i < 10 - SucPar; i++)
+                {
+                    a.Add("No");
+                }
+                SuperNewRolesPlugin.Logger.LogInfo(a);
+                if (ModHelpers.GetRandom<string>(a) == "Suc")
+                {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
         }
         public static class Quarreled

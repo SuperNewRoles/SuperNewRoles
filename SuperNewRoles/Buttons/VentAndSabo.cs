@@ -39,7 +39,8 @@ namespace SuperNewRoles.Buttons
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
         class VentButtonVisibilityPatch
         {
-            static void Postfix(PlayerControl __instance) { 
+            static void Postfix(PlayerControl __instance) {
+                if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 HudManager.Instance.ImpostorVentButton.Hide();
                 HudManager.Instance.SabotageButton.Hide();
 

@@ -40,7 +40,10 @@ namespace SuperNewRoles.CustomRPC
         Bait,
         HomeSecurityGuard,
         StuntMan,
-        Moving
+        Moving,
+        Opportunist,
+        NiceGambler,
+        EvilGambler
     }
 
     enum CustomRPC
@@ -54,6 +57,7 @@ namespace SuperNewRoles.CustomRPC
         MeetingSheriffKill,
         CustomRPCKill,
         ReportDeadBody,
+        RPCMurderPlayer,
         ShareWinner,
         TeleporterTP,
     }
@@ -120,11 +124,6 @@ namespace SuperNewRoles.CustomRPC
         {
             PlayerControl sheriff = ModHelpers.playerById(SheriffId);
             PlayerControl target = ModHelpers.playerById(TargetId);
-            SuperNewRolesPlugin.Logger.LogInfo("-----");
-            SuperNewRolesPlugin.Logger.LogInfo(SheriffId);
-            SuperNewRolesPlugin.Logger.LogInfo(TargetId);
-            SuperNewRolesPlugin.Logger.LogInfo(MissFire);
-            SuperNewRolesPlugin.Logger.LogInfo("-----");
             target.Exiled();
             if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
             if (sheriff == null || target == null) return;
@@ -185,10 +184,32 @@ namespace SuperNewRoles.CustomRPC
             PlayerControl target = ModHelpers.playerById(targetId);
             if (source != null && target != null) source.ReportDeadBody(target.Data);
         }
+        [HarmonyPatch(typeof(KillAnimation), nameof(KillAnimation.CoPerformKill))]
+        class KillAnimationCoPerformKillPatch
+        {
+            public static bool hideNextAnimation = false;
+
+            public static void Prefix(KillAnimation __instance, [HarmonyArgument(0)] ref PlayerControl source, [HarmonyArgument(1)] ref PlayerControl target)
+            {
+                if (hideNextAnimation)
+                    source = target;
+                hideNextAnimation = false;
+            }
+        }
+        public static void RPCMurderPlayer(byte sourceId, byte targetId, byte showAnimation)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceId);
+            PlayerControl target = ModHelpers.playerById(targetId);
+            if (source != null && target != null)
+            {
+                if (showAnimation == 0) KillAnimationCoPerformKillPatch.hideNextAnimation = true;
+                source.MurderPlayer(target);
+            }
+        }
         public static void ShareWinner(byte playerid)
         {
             PlayerControl player = ModHelpers.playerById(playerid);
-            EndGame.OnGameEndPatch.WinnerPlayer.Add(player);
+            EndGame.OnGameEndPatch.WinnerPlayer = player;
         }
         public static void TeleporterTP(byte playerid)
         {
@@ -250,6 +271,12 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case (byte)CustomRPC.ReportDeadBody:
                             RPCProcedure.ReportDeadBody(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case (byte)CustomRPC.RPCMurderPlayer:
+                            byte source = reader.ReadByte();
+                            byte target = reader.ReadByte();
+                            byte showAnimation = reader.ReadByte();
+                            RPCProcedure.RPCMurderPlayer(source, target, showAnimation);
                             break;
                         case (byte)CustomRPC.ShareWinner:
                             RPCProcedure.ShareWinner(reader.ReadByte());

@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SuperNewRoles.CustomOption;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,68 @@ namespace SuperNewRoles.Patch
 {
     public class SetNamesClass
     {
+        public static Dictionary<int, string> AllNames = new Dictionary<int, string>();
         private static string roleNames;
         private static Color roleColors;
 
         public static void SetPlayerNameColor(PlayerControl p, Color color)
         {
             p.nameText.color = color;
+        }
+        public static void SetPlayerNameText(PlayerControl p,string text)
+        {
+            p.nameText.text = text;
+        }
+        public static void resetNameTagsAndColors()
+        {
+            Dictionary<byte, PlayerControl> playersById = ModHelpers.allPlayersById();
+
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            {
+                player.nameText.text = ModHelpers.hidePlayerName(PlayerControl.LocalPlayer, player) ? "" : player.CurrentOutfit.PlayerName;
+                if (PlayerControl.LocalPlayer.Data.Role.IsImpostor && player.Data.Role.IsImpostor)
+                {
+                    player.nameText.color = Palette.ImpostorRed;
+                }
+                else
+                {
+                    player.nameText.color = Color.white;
+                }
+            }
+            if (MeetingHud.Instance != null)
+            {
+                foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                {
+                    PlayerControl playerControl = playersById.ContainsKey((byte)player.TargetPlayerId) ? playersById[(byte)player.TargetPlayerId] : null;
+                    if (playerControl != null)
+                    {
+                        player.NameText.text = playerControl.Data.PlayerName;
+                        if (PlayerControl.LocalPlayer.Data.Role.IsImpostor && playerControl.Data.Role.IsImpostor)
+                        {
+                            player.NameText.color = Palette.ImpostorRed;
+                        }
+                        else
+                        {
+                            player.NameText.color = Color.white;
+                        }
+                    }
+                }
+            }
+            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            {
+                List<PlayerControl> impostors = PlayerControl.AllPlayerControls.ToArray().ToList();
+                impostors.RemoveAll(x => !x.Data.Role.IsImpostor);
+                foreach (PlayerControl player in impostors)
+                    player.nameText.color = Palette.ImpostorRed;
+                if (MeetingHud.Instance != null)
+                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                    {
+                        PlayerControl playerControl = ModHelpers.playerById((byte)player.TargetPlayerId);
+                        if (playerControl != null && playerControl.Data.Role.IsImpostor)
+                            player.NameText.color = Palette.ImpostorRed;
+                    }
+            }
+
         }
         public static void SetPlayerRoleInfo(PlayerControl p)
         {
@@ -76,7 +133,7 @@ namespace SuperNewRoles.Patch
                         meetingInfoText = $"{CustomOption.CustomOptions.cs(roleColors, roleNames)}".Trim();
 
 
-
+            
                     playerInfo.text = playerInfoText;
                     playerInfo.gameObject.SetActive(p.Visible);
             if (meetingInfo != null) meetingInfo.text = MeetingHud.Instance.state == MeetingHud.VoteStates.Results ? "" : meetingInfoText;  p.nameText.color = roleColors;
@@ -92,7 +149,18 @@ namespace SuperNewRoles.Patch
             SetPlayerRoleInfo(player);
         }
     }
-
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Start))]
+    class PlayerStartUpdate
+    {
+        public static void Postfix(PlayerControl __instance)
+        {
+            
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                SetNamesClass.AllNames[p.PlayerId] = p.nameText.text;
+            }
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     class PlayerFixedUpdate
     {
@@ -103,6 +171,10 @@ namespace SuperNewRoles.Patch
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
+                    if (player.IsQuarreled())
+                    {
+                        SetNamesClass.SetPlayerNameText(player, SetNamesClass.AllNames[player.PlayerId] + "○");
+                    }
                     SetNamesClass.SetPlayerRoleNames(player);
                     SetNamesClass.SetPlayerNameColors(player);
                 }
@@ -119,9 +191,16 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
+                if (PlayerControl.LocalPlayer.IsQuarreled())
+                {
+                    var Side = PlayerControl.LocalPlayer.GetOneSideQuarreled();
+                    SetNamesClass.SetPlayerNameText(PlayerControl.LocalPlayer, SetNamesClass.AllNames[PlayerControl.LocalPlayer.PlayerId] + "○");
+                    SetNamesClass.SetPlayerNameText(Side, SetNamesClass.AllNames[Side.PlayerId] + "○");
+                }
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }
         }
+        
     }
 }
