@@ -1043,6 +1043,22 @@
  "GodTitle1" : {
         "0" : "You Are God!!" ,
         "11" : "\u3042\u306a\u305f\u306f\u795e\u3060"
+        } ,
+ "AllCleanerName" : {
+        "0" : "All Cleaner" ,
+        "11" : "\u30aa\u30fc\u30eb\u30af\u30ea\u30fc\u30ca\u30fc"
+        } ,
+ "AllCleanerTitle1" : {
+        "0" : "Let's get rid of the corpse." ,
+        "11" : "\u6b7b\u4f53\u3092\u6d88\u305d\u3046"
+        } ,
+ "AllCleanerCountSetting" : {
+        "0" : "Number of times it can be used in one game" ,
+        "11" : "1\u8a66\u5408\u4e2d\u306b\u4f7f\u3048\u308b\u56de\u6570"
+        } ,
+ "AllCleanerButtonName" : {
+        "0" : "Clean" ,
+        "11" : "\u30af\u30ea\u30fc\u30f3"
         } 
 
 }
