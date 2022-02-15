@@ -85,6 +85,8 @@ namespace SuperNewRoles.Intro
                     return SelfBomberIntro;
                 case (CustomRPC.RoleId.God):
                     return GodIntro;
+                case (CustomRPC.RoleId.AllCleaner):
+                    return AllCleanerIntro;
                 //イントロ検知
             }
 
@@ -130,6 +132,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate ResearcherIntro = new IntroDate("Researcher", RoleClass.Researcher.color, 1, CustomRPC.RoleId.Researcher);
         public static IntroDate SelfBomberIntro = new IntroDate("SelfBomber", RoleClass.SelfBomber.color, 1, CustomRPC.RoleId.SelfBomber);
         public static IntroDate GodIntro = new IntroDate("God", RoleClass.God.color, 1, CustomRPC.RoleId.God);
+        public static IntroDate AllCleanerIntro = new IntroDate("AllCleaner", RoleClass.AllCleaner.color, 1, CustomRPC.RoleId.AllCleaner);
         //イントロオブジェ
     }
 }

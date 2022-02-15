@@ -61,6 +61,7 @@ namespace SuperNewRoles.Roles
             Researcher.ClearAndReload();
             SelfBomber.ClearAndReload();
             God.ClearAndReload();
+            AllCleaner.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -678,6 +679,15 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 GodPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class AllCleaner
+        {
+            public static List<PlayerControl> AllCleanerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                AllCleanerPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

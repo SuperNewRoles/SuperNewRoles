@@ -48,6 +48,7 @@ namespace SuperNewRoles.CustomRPC
         Researcher,
         SelfBomber,
         God,
+        AllCleaner,
         //RoleId
     }
 

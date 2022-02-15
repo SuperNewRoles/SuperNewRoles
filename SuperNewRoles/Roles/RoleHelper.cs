@@ -198,6 +198,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.God):
                     Roles.RoleClass.God.GodPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.AllCleaner):
+                    Roles.RoleClass.AllCleaner.AllCleanerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -424,6 +427,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.God.GodPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.God;
+            }
+            else if (Roles.RoleClass.AllCleaner.AllCleanerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.AllCleaner;
             }
             //ロールチェック
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;
