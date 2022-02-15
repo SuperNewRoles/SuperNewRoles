@@ -75,11 +75,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MeetingSheriffKillMaxCount;
         public static CustomOption MeetingSheriffOneMeetingMultiKill;
 
-        public static CustomRoleOption AllKillerOption;
-        public static CustomOption AllKillerPlayerCount;
-        public static CustomOption AllKillerKillCoolDown;
-        public static CustomOption AllKillerCreateSideNewKiller;
-        public static CustomOption AllKillerNewAllKillerCreateSideNewKiller;
+        public static CustomRoleOption JackalOption;
+        public static CustomOption JackalPlayerCount;
+        public static CustomOption JackalKillCoolDown;
+        public static CustomOption JackalCreateSidekick;
+        public static CustomOption JackalNewJackalCreateSidekick;
 
         public static CustomRoleOption TeleporterOption;
         public static CustomOption TeleporterPlayerCount;
@@ -293,11 +293,11 @@ namespace SuperNewRoles.CustomOption
             MeetingSheriffKillMaxCount = CustomOption.Create(34, ModTranslation.getString("MeetingSheriffMaxKillCountSetting"), 10f, 1f, 20f, 0.5f, MeetingSheriffOption, format: "unitSeconds");
             MeetingSheriffOneMeetingMultiKill = CustomOption.Create(35, ModTranslation.getString("MeetingSheriffMeetingmultipleKillSetting"), false, MeetingSheriffOption);
 
-            AllKillerOption = new CustomRoleOption(36, "AllKillerName", RoleClass.AllKiller.color, 1);
-            AllKillerPlayerCount = CustomOption.Create(37, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AllKillerOption);
-            AllKillerKillCoolDown = CustomOption.Create(38, ModTranslation.getString("AllKillerCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, AllKillerOption, format: "unitSeconds");
-            AllKillerCreateSideNewKiller = CustomOption.Create(39, ModTranslation.getString("AllkillerCreateSideNewKillerSetting"), false, AllKillerOption);
-            AllKillerNewAllKillerCreateSideNewKiller = CustomOption.Create(40, ModTranslation.getString("AllKillerNewKillerCreateSideNewKillerSetting"), false, AllKillerOption);
+            JackalOption = new CustomRoleOption(36, "JackalName", RoleClass.Jackal.color, 1);
+            JackalPlayerCount = CustomOption.Create(37, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalOption);
+            JackalKillCoolDown = CustomOption.Create(38, ModTranslation.getString("JackalCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, JackalOption, format: "unitSeconds");
+            JackalCreateSidekick = CustomOption.Create(39, ModTranslation.getString("JackalCreateSidekickSetting"), false, JackalOption);
+            JackalNewJackalCreateSidekick = CustomOption.Create(40, ModTranslation.getString("JackalNewJackalCreateSidekickSetting"), false, JackalOption);
 
             TeleporterOption = new CustomRoleOption(41, "TeleporterName", RoleClass.ImpostorRed, 1);
             TeleporterPlayerCount = CustomOption.Create(42, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], TeleporterOption);

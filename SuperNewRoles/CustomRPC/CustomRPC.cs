@@ -20,7 +20,7 @@ namespace SuperNewRoles.CustomRPC
         EvilScientist,
         Sheriff,
         MeetingSheriff,
-        AllKiller,
+        Jackal,
         Teleporter,
         SpiritMedium,
         SpeedBooster,
@@ -68,6 +68,7 @@ namespace SuperNewRoles.CustomRPC
         RPCMurderPlayer,
         ShareWinner,
         TeleporterTP,
+        SidekickPromotes
     }
     public static class RPCProcedure
     {
@@ -203,6 +204,12 @@ namespace SuperNewRoles.CustomRPC
                 }
             }
         }
+        public static void SidekickPromotes() {
+            for (int i = 0; i < RoleClass.Jackal.SidekickPlayer.Count; i++) {
+                RoleClass.Jackal.JackalPlayer.Add(RoleClass.Jackal.SidekickPlayer[i]);
+                RoleClass.Jackal.SidekickPlayer.RemoveAt(i);
+            }
+        }
         public static void ExiledRPC(byte playerid) {
             var player = ModHelpers.playerById(playerid);
             if (player != null) {
@@ -317,6 +324,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case (byte)CustomRPC.SetQuarreled:
                             RPCProcedure.SetQuarreled(reader.ReadByte(),reader.ReadByte());
+                            break;
+                        case (byte)CustomRPC.SidekickPromotes:
+                            RPCProcedure.SidekickPromotes();
                             break;
                     }
                 }

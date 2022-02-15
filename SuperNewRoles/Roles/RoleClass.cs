@@ -33,7 +33,7 @@ namespace SuperNewRoles.Roles
             EvilScientist.clearAndReload();
             Sheriff.clearAndReload();
             MeetingSheriff.clearAndReload();
-            AllKiller.clearAndReload();
+            Jackal.clearAndReload();
             Teleporter.clearAndReload();
             SpiritMedium.clearAndReload();
             SpeedBooster.clearAndReload();
@@ -218,20 +218,22 @@ namespace SuperNewRoles.Roles
             }
 
         }
-        public static class AllKiller
+        public static class Jackal
         {
-            public static List<PlayerControl> AllKillerPlayer;
-            public static Color32 color = new Color32(69, 69, 69, byte.MaxValue);
+            public static List<PlayerControl> JackalPlayer;
+            public static List<PlayerControl> SidekickPlayer;
+            public static Color32 color = new Color32(0,255,255, byte.MaxValue);
             public static float KillCoolDown;
-            public static bool CreateSideNewKiller;
-            public static bool NewAllKillerCreateSideNewKiller;
+            public static bool CreateSidekick;
+            public static bool NewJackalCreateSidekick;
 
             public static void clearAndReload()
             {
-                AllKillerPlayer = new List<PlayerControl>();
-                KillCoolDown = CustomOptions.AllKillerKillCoolDown.getFloat();
-                CreateSideNewKiller = CustomOptions.AllKillerCreateSideNewKiller.getBool();
-                NewAllKillerCreateSideNewKiller = CustomOptions.AllKillerNewAllKillerCreateSideNewKiller.getBool();
+                JackalPlayer = new List<PlayerControl>();
+                SidekickPlayer = new List<PlayerControl>();
+                KillCoolDown = CustomOptions.JackalKillCoolDown.getFloat();
+                CreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
+                NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
             }
 
         }

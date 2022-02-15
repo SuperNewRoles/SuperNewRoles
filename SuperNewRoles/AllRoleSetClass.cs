@@ -446,8 +446,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SheriffPlayerCount.getFloat();
                 case (RoleId.MeetingSheriff):
                     return CustomOption.CustomOptions.MeetingSheriffPlayerCount.getFloat();
-                case (RoleId.AllKiller):
-                    return CustomOption.CustomOptions.AllKillerPlayerCount.getFloat();
+                case (RoleId.Jackal):
+                    return CustomOption.CustomOptions.JackalPlayerCount.getFloat();
                 case (RoleId.Teleporter):
                     return CustomOption.CustomOptions.TeleporterPlayerCount.getFloat();
                 case (RoleId.SpiritMedium):
@@ -654,10 +654,10 @@ namespace SuperNewRoles
                     }
                 }
             }
-            if (!(CustomOption.CustomOptions.AllKillerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.AllKillerOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.AllKiller;
+                int OptionDate = int.Parse(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Jackal;
                 if (OptionDate == 10)
                 {
                     Neutonepar.Add(ThisRoleId);

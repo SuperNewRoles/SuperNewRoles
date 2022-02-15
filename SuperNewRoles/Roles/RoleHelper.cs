@@ -114,8 +114,8 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MeetingSheriff):
                     Roles.RoleClass.MeetingSheriff.MeetingSheriffPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.AllKiller):
-                    Roles.RoleClass.AllKiller.AllKillerPlayer.Add(player);
+                case (CustomRPC.RoleId.Jackal):
+                    Roles.RoleClass.Jackal.JackalPlayer.Add(player);
                     break;
                 case (CustomRPC.RoleId.Teleporter):
                     Roles.RoleClass.Teleporter.TeleporterPlayer.Add(player);
@@ -222,7 +222,7 @@ namespace SuperNewRoles
                 case (RoleId.Jester):
                     IsTaskClear = true;
                     break;
-                case (RoleId.AllKiller):
+                case (RoleId.Jackal):
                     IsTaskClear = true;
                     break;
                 case (RoleId.Vulture):
@@ -268,7 +268,7 @@ namespace SuperNewRoles
                 case (RoleId.Jester):
                     IsNeutral = true;
                     break;
-                case (RoleId.AllKiller):
+                case (RoleId.Jackal):
                     IsNeutral = true;
                     break;
                 case (RoleId.Vulture):
@@ -312,9 +312,9 @@ namespace SuperNewRoles
             {
                 return CustomRPC.RoleId.MeetingSheriff;
             }
-            else if (Roles.RoleClass.AllKiller.AllKillerPlayer.IsCheckListPlayerControl(player))
+            else if (Roles.RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player))
             {
-                return CustomRPC.RoleId.AllKiller;
+                return CustomRPC.RoleId.Jackal;
             }
             else if (Roles.RoleClass.Teleporter.TeleporterPlayer.IsCheckListPlayerControl(player))
             {
