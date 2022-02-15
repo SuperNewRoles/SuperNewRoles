@@ -62,6 +62,7 @@ namespace SuperNewRoles.CustomRPC
         MeetingSheriffKill,
         CustomRPCKill,
         ReportDeadBody,
+        CleanBody,
         ExiledRPC,
         RPCMurderPlayer,
         ShareWinner,
@@ -190,6 +191,17 @@ namespace SuperNewRoles.CustomRPC
             PlayerControl target = ModHelpers.playerById(targetId);
             if (source != null && target != null) source.ReportDeadBody(target.Data);
         }
+        public static void CleanBody(byte playerId)
+        {
+            DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (GameData.Instance.GetPlayerById(array[i].ParentId).PlayerId == playerId)
+                {
+                    UnityEngine.Object.Destroy(array[i].gameObject);
+                }
+            }
+        }
         public static void ExiledRPC(byte playerid) {
             var player = ModHelpers.playerById(playerid);
             if (player != null) {
@@ -283,6 +295,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case (byte)CustomRPC.ReportDeadBody:
                             RPCProcedure.ReportDeadBody(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case (byte)CustomRPC.CleanBody:
+                            RPCProcedure.CleanBody(reader.ReadByte());
                             break;
                         case (byte)CustomRPC.RPCMurderPlayer:
                             byte source = reader.ReadByte();
