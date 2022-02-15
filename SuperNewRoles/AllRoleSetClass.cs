@@ -480,10 +480,29 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.ClergymanPlayerCount.getFloat();
                 case (RoleId.MadMate):
                     return CustomOption.CustomOptions.MadMatePlayerCount.getFloat();
+                case (RoleId.Bait):
+                    return CustomOption.CustomOptions.BaitPlayerCount.getFloat();
                 case (RoleId.HomeSecurityGuard):
                     return CustomOption.CustomOptions.HomeSecurityGuardPlayerCount.getFloat();
+                case (RoleId.StuntMan):
+                    return CustomOption.CustomOptions.StuntManPlayerCount.getFloat();
                 case (RoleId.Moving):
                     return CustomOption.CustomOptions.MovingPlayerCount.getFloat();
+                case (RoleId.Opportunist):
+                    return CustomOption.CustomOptions.OpportunistPlayerCount.getFloat();
+                case (RoleId.NiceGambler):
+                    return CustomOption.CustomOptions.NiceGamblerPlayerCount.getFloat();
+                case (RoleId.EvilGambler):
+                    return CustomOption.CustomOptions.EvilGamblerPlayerCount.getFloat();
+                case (RoleId.Bestfalsecharge):
+                    return CustomOption.CustomOptions.BestfalsechargePlayerCount.getFloat();
+                case (RoleId.Researcher):
+                    return CustomOption.CustomOptions.ResearcherPlayerCount.getFloat();
+                    case (RoleId.SelfBomber):
+                    return CustomOption.CustomOptions.SelfBomberPlayerCount.getFloat();
+                    case (RoleId.God):
+                    return CustomOption.CustomOptions.GodPlayerCount.getFloat();
+                    //プレイヤーカウント
             }
             return 1;
         }
@@ -1019,7 +1038,71 @@ namespace SuperNewRoles
                     }
                 }
             }
-            //セットクラス
+            if (!(CustomOption.CustomOptions.BestfalsechargeOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.BestfalsechargeOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Bestfalsecharge;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.ResearcherOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.ResearcherOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Researcher;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.SelfBomberOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SelfBomberOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.SelfBomber;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.GodOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.GodOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.God;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        //セットクラス
         }
     }
 }

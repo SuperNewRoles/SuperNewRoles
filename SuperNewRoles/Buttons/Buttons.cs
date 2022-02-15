@@ -23,6 +23,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton MovingTpButton;
         public static CustomButton TeleporterButton;
         public static CustomButton DoorrDoorButton;
+        public static CustomButton SelfBomberButton;
 
         public static CustomButton FreezerFreezeButton;
         public static CustomButton SpeederSpeedDownButton;
@@ -49,6 +50,27 @@ namespace SuperNewRoles.Buttons
         {
             RoleClass.clearAndReloadRoles();
             SuperNewRolesPlugin.Logger.LogInfo("HudMangerButton");
+
+            SelfBomberButton = new Buttons.CustomButton(
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.CanMove) {
+                        SelfBomber.SelfBomb();
+                    }
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && SelfBomber.isSelfBomber(PlayerControl.LocalPlayer); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { SelfBomber.EndMeeting(); },
+                RoleClass.SelfBomber.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
 
             DoorrDoorButton = new Buttons.CustomButton(
                 () =>

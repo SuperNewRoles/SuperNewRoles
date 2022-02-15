@@ -31,11 +31,16 @@ namespace SuperNewRoles
             List<Intro.IntroDate> infos = new List<Intro.IntroDate>() { Intro.IntroDate.GetIntroDate(player.getRole()) };
 
             var toRemove = new List<PlayerTask>();
+            var aaa = false;
+            var mytxt = "";
             foreach (PlayerTask t in player.myTasks)
             {
                 var textTask = t.gameObject.GetComponent<ImportantTextTask>();
                 if (textTask != null)
                 {
+                    if (aaa == false) {
+                        mytxt = textTask.Text;
+                    }
                     var info = infos.FirstOrDefault(x => textTask.Text.StartsWith(x.NameKey));
                     if (info != null)
                         infos.Remove(info); // TextTask for this RoleInfo does not have to be added, as it already exists
@@ -56,7 +61,15 @@ namespace SuperNewRoles
             {
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
-                task.Text = CustomOption.CustomOptions.cs(roleInfo.color, $"{ModTranslation.getString(roleInfo.NameKey+"Name")}: {roleInfo.TitleDesc}");
+
+                if (!(player.getRole() == CustomRPC.RoleId.DefaultRole))
+                {
+                    task.Text = CustomOption.CustomOptions.cs(roleInfo.color, $"{ModTranslation.getString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
+                }
+                else {
+                    task.Text = mytxt;
+                }
+                task.Text = CustomOption.CustomOptions.cs(roleInfo.color, $"{ModTranslation.getString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
                 if (player.IsQuarreled())
                 {
                     task.Text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));

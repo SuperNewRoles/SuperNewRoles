@@ -77,6 +77,14 @@ namespace SuperNewRoles.Intro
                     return NiceGamblerIntro;
                 case (CustomRPC.RoleId.EvilGambler):
                     return EvilGamblerIntro;
+                case (CustomRPC.RoleId.Bestfalsecharge):
+                    return BestfalsechargeIntro;
+                case (CustomRPC.RoleId.Researcher):
+                    return ResearcherIntro;
+                case (CustomRPC.RoleId.SelfBomber):
+                    return SelfBomberIntro;
+                case (CustomRPC.RoleId.God):
+                    return GodIntro;
                 //イントロ検知
             }
 
@@ -118,6 +126,10 @@ namespace SuperNewRoles.Intro
         public static IntroDate OpportunistIntro = new IntroDate("Opportunist",RoleClass.Opportunist.color,2,CustomRPC.RoleId.Opportunist);
         public static IntroDate NiceGamblerIntro = new IntroDate("NiceGambler", RoleClass.NiceGambler.color, 1, CustomRPC.RoleId.NiceGambler);
         public static IntroDate EvilGamblerIntro = new IntroDate("EvilGambler", RoleClass.EvilGambler.color, 1, CustomRPC.RoleId.EvilGambler);
+        public static IntroDate BestfalsechargeIntro = new IntroDate("Bestfalsecharge", RoleClass.Bestfalsecharge.color, 1, CustomRPC.RoleId.Bestfalsecharge);
+        public static IntroDate ResearcherIntro = new IntroDate("Researcher", RoleClass.Researcher.color, 1, CustomRPC.RoleId.Researcher);
+        public static IntroDate SelfBomberIntro = new IntroDate("SelfBomber", RoleClass.SelfBomber.color, 1, CustomRPC.RoleId.SelfBomber);
+        public static IntroDate GodIntro = new IntroDate("God", RoleClass.God.color, 1, CustomRPC.RoleId.God);
         //イントロオブジェ
     }
 }

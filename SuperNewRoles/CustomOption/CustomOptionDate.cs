@@ -192,6 +192,20 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption EvilGamblerNotSucTime;
         public static CustomOption EvilGamblerSucpar;
 
+        public static CustomRoleOption BestfalsechargeOption;
+        public static CustomOption BestfalsechargePlayerCount;
+
+        public static CustomRoleOption ResearcherOption;
+        public static CustomOption ResearcherPlayerCount;
+        public static CustomOption ResearcherOneTurnSample;
+
+        public static CustomRoleOption SelfBomberOption;
+        public static CustomOption SelfBomberPlayerCount;
+        public static CustomOption SelfBomberScope;
+
+        public static CustomRoleOption GodOption;
+        public static CustomOption GodPlayerCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -396,6 +410,18 @@ namespace SuperNewRoles.CustomOption
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3],QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, cs(Color.white, "QuarreledOnlyCrewMateSetting"), false, QuarreledOption);
 
+            BestfalsechargeOption = new CustomRoleOption(142, "BestfalsechargeName", RoleClass.Bestfalsecharge.color, 1);
+            BestfalsechargePlayerCount = CustomOption.Create(143, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BestfalsechargeOption);
+
+            ResearcherOption = new CustomRoleOption(144, "ResearcherName", RoleClass.Researcher.color, 1);
+            ResearcherPlayerCount = CustomOption.Create(145, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ResearcherOption);
+
+            SelfBomberOption = new CustomRoleOption(146, "SelfBomberName", RoleClass.SelfBomber.color, 1);
+            SelfBomberPlayerCount = CustomOption.Create(147, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SelfBomberOption);
+            SelfBomberScope = CustomOption.Create(148, cs(Color.white, "SelfBomberScopeSetting"),1f,0.5f,3f,0.5f,SelfBomberOption);
+
+            GodOption = new CustomRoleOption(149, "GodName", RoleClass.God.color, 1);
+            GodPlayerCount = CustomOption.Create(150, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GodOption);
 
         }
     }

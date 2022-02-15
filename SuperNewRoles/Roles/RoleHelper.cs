@@ -186,6 +186,18 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilGambler):
                     Roles.RoleClass.EvilGambler.EvilGamblerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Bestfalsecharge):
+                    Roles.RoleClass.Bestfalsecharge.BestfalsechargePlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Researcher):
+                    Roles.RoleClass.Researcher.ResearcherPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.SelfBomber):
+                    Roles.RoleClass.SelfBomber.SelfBomberPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.God):
+                    Roles.RoleClass.God.GodPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -222,6 +234,12 @@ namespace SuperNewRoles
                 case (RoleId.Opportunist):
                     IsTaskClear = true;
                     break; 
+                case (RoleId.Researcher):
+                    IsTaskClear = true;
+                    break; 
+                case (RoleId.God):
+                    IsTaskClear = true;
+                    break; 
                 //タスククリアか
             }
             return IsTaskClear;
@@ -254,6 +272,12 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.Opportunist):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Researcher):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.God):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -384,6 +408,22 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.EvilGambler;
+            }
+            else if (Roles.RoleClass.Bestfalsecharge.BestfalsechargePlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Bestfalsecharge;
+            }
+            else if (Roles.RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Researcher;
+            }
+            else if (Roles.RoleClass.SelfBomber.SelfBomberPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.SelfBomber;
+            }
+            else if (Roles.RoleClass.God.GodPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.God;
             }
             //ロールチェック
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;

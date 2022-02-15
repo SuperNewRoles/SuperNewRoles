@@ -44,6 +44,10 @@ namespace SuperNewRoles.CustomRPC
         Opportunist,
         NiceGambler,
         EvilGambler,
+        Bestfalsecharge,
+        Researcher,
+        SelfBomber,
+        God,
         //RoleId
     }
 
@@ -58,6 +62,7 @@ namespace SuperNewRoles.CustomRPC
         MeetingSheriffKill,
         CustomRPCKill,
         ReportDeadBody,
+        ExiledRPC,
         RPCMurderPlayer,
         ShareWinner,
         TeleporterTP,
@@ -185,6 +190,12 @@ namespace SuperNewRoles.CustomRPC
             PlayerControl target = ModHelpers.playerById(targetId);
             if (source != null && target != null) source.ReportDeadBody(target.Data);
         }
+        public static void ExiledRPC(byte playerid) {
+            var player = ModHelpers.playerById(playerid);
+            if (player != null) {
+                player.Exiled();
+            }
+        }
         [HarmonyPatch(typeof(KillAnimation), nameof(KillAnimation.CoPerformKill))]
         class KillAnimationCoPerformKillPatch
         {
@@ -278,6 +289,9 @@ namespace SuperNewRoles.CustomRPC
                             byte target = reader.ReadByte();
                             byte showAnimation = reader.ReadByte();
                             RPCProcedure.RPCMurderPlayer(source, target, showAnimation);
+                            break;
+                        case (byte)CustomRPC.ExiledRPC:
+                            RPCProcedure.ExiledRPC(reader.ReadByte());
                             break;
                         case (byte)CustomRPC.ShareWinner:
                             RPCProcedure.ShareWinner(reader.ReadByte());

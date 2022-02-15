@@ -57,6 +57,10 @@ namespace SuperNewRoles.Roles
             Opportunist.ClearAndReload();
             NiceGambler.ClearAndReload();
             EvilGambler.ClearAndReload();
+            Bestfalsecharge.ClearAndReload();
+            Researcher.ClearAndReload();
+            SelfBomber.ClearAndReload();
+            God.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -538,7 +542,7 @@ namespace SuperNewRoles.Roles
             public static Sprite getSetButtonSprite()
             {
                 if (setbuttonSprite) return setbuttonSprite;
-                setbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                setbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MovingLocationSetButton.png", 115f);
                 return setbuttonSprite;
             }
             public static Sprite getNoSetButtonSprite()
@@ -613,6 +617,67 @@ namespace SuperNewRoles.Roles
                 else {
                     return false;
                 }
+            }
+        }
+        public static class Bestfalsecharge
+        {
+            public static List<PlayerControl> BestfalsechargePlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static bool IsOnMeeting;
+            public static void ClearAndReload()
+            {
+                BestfalsechargePlayer = new List<PlayerControl>();
+                IsOnMeeting = false;
+            }
+        }
+        public static class Researcher
+        {
+            public static List<PlayerControl> ResearcherPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static Vector3 SamplePosition;
+            private static List<Vector3> SamplePoss = new List<Vector3>() {
+                new Vector3(-11, -2.1f, 0),
+                new Vector3(16.9f, 0.4f, 0),
+                new Vector3(35.2f, -6.8f, 0),
+                new Vector3(11f, -2.1f, 0),
+                new Vector3(28.9f, -5.2f, 0)
+            };
+            public static List<PlayerControl> GetSamplePlayers;
+            public static List<PlayerControl> OKSamplePlayers;
+            public static int MySample;
+            public static void ClearAndReload()
+            {
+                ResearcherPlayer = new List<PlayerControl>();
+                OKSamplePlayers = new List<PlayerControl>();
+                GetSamplePlayers = new List<PlayerControl>();
+                SuperNewRolesPlugin.Logger.LogInfo("mapid"+Constants.MapNames[PlayerControl.GameOptions.MapId]);
+                SamplePosition = SamplePoss[PlayerControl.GameOptions.MapId];
+                MySample = 0;
+            }
+        }
+        public static class SelfBomber
+        {
+            public static List<PlayerControl> SelfBomberPlayer;
+            public static Color32 color = ImpostorRed;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
+                return ButtonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                SelfBomberPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class God
+        {
+            public static List<PlayerControl> GodPlayer;
+            public static Color32 color = Color.yellow;
+            public static void ClearAndReload()
+            {
+                GodPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

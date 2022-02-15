@@ -87,19 +87,19 @@ namespace SuperNewRoles.Patches
                 CustomButton.MeetingEndedUpdate();
                 if (ModeHandler.isMode(ModeId.Default))
                 {
-                    if (PlayerControl.LocalPlayer.IsQuarreled() && RoleDate == CustomRPC.RoleId.DefaultRole)
+                    if (PlayerControl.LocalPlayer.IsQuarreled() && (RoleDate == CustomRPC.RoleId.DefaultRole || RoleDate == CustomRPC.RoleId.Bestfalsecharge))
                     {
                         __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
                     }
-                    else if (PlayerControl.LocalPlayer.IsQuarreled() && RoleDate != CustomRPC.RoleId.DefaultRole)
+                    else if (PlayerControl.LocalPlayer.IsQuarreled() && RoleDate != CustomRPC.RoleId.DefaultRole && RoleDate != CustomRPC.RoleId.Bestfalsecharge)
                     {
                         __instance.RoleBlurbText.text = "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
                     }
-                    else if (RoleDate != CustomRPC.RoleId.DefaultRole)
+                    else if (RoleDate != CustomRPC.RoleId.DefaultRole && RoleDate != CustomRPC.RoleId.Bestfalsecharge)
                     {
                         __instance.RoleBlurbText.text = "";
                     }
-                    if (RoleDate == CustomRPC.RoleId.DefaultRole) return;
+                    if (RoleDate == CustomRPC.RoleId.DefaultRole || RoleDate == CustomRPC.RoleId.Bestfalsecharge) return;
                     var date = Intro.IntroDate.GetIntroDate(RoleDate);
                     __instance.YouAreText.color = date.color;
                     __instance.RoleText.text = ModTranslation.getString(date.NameKey + "Name");

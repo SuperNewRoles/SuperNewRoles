@@ -17,7 +17,8 @@ namespace SuperNewRoles.EndGame
     {
         Default,
         JesterWin,
-        QuarreledWin
+        QuarreledWin,
+        GodWin
     }
     static class AdditionalTempData
     {
@@ -59,15 +60,20 @@ namespace SuperNewRoles.EndGame
             bonusTextObject.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
             textRenderer = bonusTextObject.GetComponent<TMPro.TMP_Text>();
             textRenderer.text = "";
-            var text = "{0}";
-            if (AdditionalTempData.winCondition == WinCondition.JesterWin) {
+            var text = "";
+            if (AdditionalTempData.winCondition == WinCondition.GodWin) {
+                text = "GodName";
+                textRenderer.color = RoleClass.God.color;
+                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.God.color);
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.JesterWin) {
                 //bonusText = "jesterWin";
-                text = "JesterWinText";
+                text = "JesterName";
                 textRenderer.color = Roles.RoleClass.Jester.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Jester.color);
             } else if (AdditionalTempData.winCondition == WinCondition.QuarreledWin)
             {
-                text = "QuarreledWinText";
+                text = "QuarreledName";
                 textRenderer.color = Roles.RoleClass.Quarreled.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Quarreled.color);
             } else if (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask || AdditionalTempData.gameOverReason == GameOverReason.HumansByVote)
@@ -76,7 +82,7 @@ namespace SuperNewRoles.EndGame
                 textRenderer.color = Palette.White;
             } else if (AdditionalTempData.gameOverReason == GameOverReason.ImpostorByKill || AdditionalTempData.gameOverReason == GameOverReason.ImpostorBySabotage || AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote)
             {
-                text = "Impostorname";
+                text = "ImpostorName";
                 textRenderer.color = RoleClass.ImpostorRed;
             }
 
@@ -85,7 +91,7 @@ namespace SuperNewRoles.EndGame
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
                     if (p.isAlive())
                     {
-                        text = p.nameText.text + " 勝利";
+                        text = p.nameText.text;
                         textRenderer.color = new Color32(116, 80, 48, byte.MaxValue);
                     }
                 }
@@ -102,7 +108,7 @@ namespace SuperNewRoles.EndGame
 
                 }
             }
-            textRenderer.text = string.Format(text,"");
+            textRenderer.text = string.Format(text+" "+ModTranslation.getString("WinName"));
             AdditionalTempData.clear();
         }
     }
@@ -126,8 +132,9 @@ namespace SuperNewRoles.EndGame
             // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
             List<PlayerControl> notWinners = new List<PlayerControl>();
            
-            notWinners.AddRange(Roles.RoleClass.Jester.JesterPlayer);
-            notWinners.AddRange(Roles.RoleClass.MadMate.MadMatePlayer);
+            notWinners.AddRange(RoleClass.Jester.JesterPlayer);
+            notWinners.AddRange(RoleClass.MadMate.MadMatePlayer);
+            notWinners.AddRange(RoleClass.God.GodPlayer);
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
             {
                 notWinners.AddRange(players);
@@ -193,39 +200,54 @@ namespace SuperNewRoles.EndGame
                 {
                     if (p.isAlive())
                     {
-                        p.Data.IsDead = false;
                         WinningPlayerData wpd = new WinningPlayerData(p.Data);
                         TempData.winners.Add(wpd);
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.Default;
             }
+            var godalive = false;
+            foreach (PlayerControl p in RoleClass.God.GodPlayer) { 
+                if (p.isAlive())
+                {
+                    godalive = true;
+                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                    AdditionalTempData.winCondition = WinCondition.GodWin;
+                }
+            }
 
         }
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CheckEndCriteria))]
         class CheckEndCriteriaPatch
         {
-            public static void Postfix(ShipStatus __instance)
+            public static bool Prefix(ShipStatus __instance)
             {
+                __instance.enabled = true;
                 try
                 {
+                    if (!GameData.Instance) return false;
+                    if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
+                    if (HudManager.Instance.isIntroDisplayed) return false;
+
                     var playerdates = new PlayerStatistics(__instance);
                     if (!ModeHandler.isMode(ModeId.Default))
                     {
                         ModeHandler.EndGameChecks(__instance,playerdates);
-                        return;
+                        return false;
                     }
-                    else if (ModeHandler.isMode(ModeId.Default)) {
+                    else {
                         QuarreledWinCheck(__instance);
                         JesterWinCheck(__instance);
                         ImpostorWinCheck(__instance, playerdates);
                         CrewmateWinCheck(__instance, playerdates);
-                        return;
+                        return false;
                     }
                 }
                 catch {
                 }
-                return;
+                return false;
             }
             public static bool ImpostorWinCheck(ShipStatus __instance, PlayerStatistics statistics)
             {

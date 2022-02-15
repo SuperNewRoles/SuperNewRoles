@@ -107,7 +107,7 @@ namespace SuperNewRoles.Patch
             }
 
                     var role = p.getRole();
-            if (role == CustomRPC.RoleId.DefaultRole) {
+            if (role == CustomRPC.RoleId.DefaultRole || (role == CustomRPC.RoleId.Bestfalsecharge && p.isAlive())) {
                 if (p.Data.Role.IsImpostor) 
                 { 
                     roleNames = "ImpostorName"; 
@@ -141,7 +141,7 @@ namespace SuperNewRoles.Patch
         public static void SetPlayerNameColors(PlayerControl player)
         {
             var role = player.getRole();
-            if (role == CustomRPC.RoleId.DefaultRole) return;
+            if (role == CustomRPC.RoleId.DefaultRole || (role == CustomRPC.RoleId.Bestfalsecharge && player.isAlive())) return;
             SetPlayerNameColor(player, Intro.IntroDate.GetIntroDate(role).color);
         }
         public static void SetPlayerRoleNames(PlayerControl player)
@@ -167,7 +167,7 @@ namespace SuperNewRoles.Patch
         public static void Postfix(PlayerControl __instance)
         {
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-            if (PlayerControl.LocalPlayer.Data.IsDead)
+            if (PlayerControl.LocalPlayer.Data.IsDead || RoleClass.God.GodPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {

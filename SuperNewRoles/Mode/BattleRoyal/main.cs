@@ -10,8 +10,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
     {
         public static void EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("CHECK!");
-            SuperNewRolesPlugin.Logger.LogInfo(statistics.TotalAlive);
             var alives = 0;
             foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
                 if (p.isAlive()) {
