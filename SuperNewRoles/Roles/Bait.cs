@@ -11,15 +11,10 @@ namespace SuperNewRoles.Roles
 {
     class Bait
     {
-        [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.FixedUpdate))]
         public class BaitUpdate
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-                if (!RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer)) return;
-                if ((!PlayerControl.LocalPlayer.isAlive()) && !RoleClass.Bait.Reported)
-                {
                     bool IsError = false;
                     RoleClass.Bait.ReportTime -= Time.fixedDeltaTime;
                     SuperNewRolesPlugin.Logger.LogInfo(RoleClass.Bait.ReportTime);
@@ -30,10 +25,9 @@ namespace SuperNewRoles.Roles
                         writer.Write(deadPlayer.killerIfExisting.PlayerId);
                         writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RoleClass.Bait.Reported = true; 
+                        RoleClass.Bait.Reported = true;
                         CustomRPC.RPCProcedure.ReportDeadBody(deadPlayer.killerIfExisting.PlayerId, PlayerControl.LocalPlayer.PlayerId);
                     }
-                }
             }
         }
     }

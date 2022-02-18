@@ -240,12 +240,46 @@ namespace SuperNewRoles.EndGame
                     else {
                         QuarreledWinCheck(__instance);
                         JesterWinCheck(__instance);
+                        SabotageWinCheck(__instance);
                         ImpostorWinCheck(__instance, playerdates);
                         CrewmateWinCheck(__instance, playerdates);
                         return false;
                     }
                 }
                 catch {
+                }
+                return false;
+            }
+            public static bool SabotageWinCheck(ShipStatus __instance)
+            {
+                if (__instance.Systems == null) return false;
+                ISystemType systemType = __instance.Systems.ContainsKey(SystemTypes.LifeSupp) ? __instance.Systems[SystemTypes.LifeSupp] : null;
+                if (systemType != null)
+                {
+                    LifeSuppSystemType lifeSuppSystemType = systemType.TryCast<LifeSuppSystemType>();
+                    if (lifeSuppSystemType != null && lifeSuppSystemType.Countdown < 0f)
+                    {
+                        __instance.enabled = false;
+                        ShipStatus.RpcEndGame(GameOverReason.ImpostorBySabotage, false);
+                        lifeSuppSystemType.Countdown = 10000f;
+                        return true;
+                    }
+                }
+                ISystemType systemType2 = __instance.Systems.ContainsKey(SystemTypes.Reactor) ? __instance.Systems[SystemTypes.Reactor] : null;
+                if (systemType2 == null)
+                {
+                    systemType2 = __instance.Systems.ContainsKey(SystemTypes.Laboratory) ? __instance.Systems[SystemTypes.Laboratory] : null;
+                }
+                if (systemType2 != null)
+                {
+                    ICriticalSabotage criticalSystem = systemType2.TryCast<ICriticalSabotage>();
+                    if (criticalSystem != null && criticalSystem.Countdown < 0f)
+                    {
+                        __instance.enabled = false;
+                        ShipStatus.RpcEndGame(GameOverReason.ImpostorBySabotage, false);
+                        criticalSystem.ClearSabotage();
+                        return true;
+                    }
                 }
                 return false;
             }

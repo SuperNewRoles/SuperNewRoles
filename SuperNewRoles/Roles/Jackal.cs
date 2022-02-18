@@ -18,8 +18,7 @@ namespace SuperNewRoles.Roles
             target.myRend.material.SetFloat("_Outline", 1f);
             target.myRend.material.SetColor("_OutlineColor", color);
         }
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-        class JackalFixedPatch
+        public class JackalFixedPatch
         {
 
             static void jackalSetTarget() {
@@ -27,7 +26,7 @@ namespace SuperNewRoles.Roles
                 setPlayerOutline(PlayerControlFixedUpdatePatch.setTarget(), RoleClass.Jackal.color);
             }
             public static void Postfix(PlayerControl __instance) {
-                if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && AmongUsClient.Instance.AmHost) {
+                if (AmongUsClient.Instance.AmHost) {
                     var jackalalldead = true;
                     foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer) {
                         if (p.isAlive()) {

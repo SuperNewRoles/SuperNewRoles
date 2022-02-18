@@ -59,6 +59,12 @@ namespace SuperNewRoles.Mode
             HideAndSeek.HASOptions.Load();
             BattleRoyal.BROption.Load();
         }
+        public static void FixedUpdate(PlayerControl __instance) {
+            if (isMode(ModeId.Default)) return;
+            if (isMode(ModeId.HideAndSeek)) {
+                HideAndSeek.Patch.HASFixed.Postfix(__instance);
+            }
+        }
         public static ModeId GetMode() {
             if (!ModeSetting.getBool()) return ModeId.Default;
             if (isMode(ModeId.HideAndSeek)) return ModeId.HideAndSeek;

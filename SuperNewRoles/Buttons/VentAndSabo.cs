@@ -36,11 +36,9 @@ namespace SuperNewRoles.Buttons
                 return false;
             }
         }
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-        class VentButtonVisibilityPatch
+        public class VentButtonVisibilityPatch
         {
-            static void Postfix(PlayerControl __instance) {
-                if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+            public static void Postfix(PlayerControl __instance) {
                 HudManager.Instance.ImpostorVentButton.Hide();
                 HudManager.Instance.SabotageButton.Hide();
 
@@ -55,8 +53,8 @@ namespace SuperNewRoles.Buttons
 
                 if (PlayerControl.LocalPlayer.IsUseSabo())
                 {
-                            HudManager.Instance.SabotageButton.Show();
-                            HudManager.Instance.SabotageButton.gameObject.SetActive(true);
+                    HudManager.Instance.SabotageButton.Show();
+                    HudManager.Instance.SabotageButton.gameObject.SetActive(true);
                 }
            }
         }
