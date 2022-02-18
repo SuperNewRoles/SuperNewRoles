@@ -47,13 +47,10 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-        class UseButtonSetTargetPatch
+        public class ReseUseButtonSetTargetPatch
         {
-            static void Postfix(PlayerControl __instance)
+            public static void Postfix(PlayerControl __instance)
             {
-                if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-                if (!RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer)) return;
                 if (IsTarget())
                 {
                     HudManager.Instance.UseButton.SetEnabled();

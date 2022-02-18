@@ -149,31 +149,18 @@ namespace SuperNewRoles.Patch
             SetPlayerRoleInfo(player);
         }
     }
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Start))]
-    class PlayerStartUpdate
+    public class SetNameUpdate
     {
         public static void Postfix(PlayerControl __instance)
         {
-            
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-            {
-                SetNamesClass.AllNames[p.PlayerId] = p.nameText.text;
-            }
-        }
-    }
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-    class PlayerFixedUpdate
-    {
-        public static void Postfix(PlayerControl __instance)
-        {
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
+            SetNamesClass.resetNameTagsAndColors();
             if (PlayerControl.LocalPlayer.Data.IsDead || RoleClass.God.GodPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (player.IsQuarreled())
                     {
-                        SetNamesClass.SetPlayerNameText(player, SetNamesClass.AllNames[player.PlayerId] + "○");
+                        SetNamesClass.SetPlayerNameText(player,player.nameText.text + "○");
                     }
                     SetNamesClass.SetPlayerRoleNames(player);
                     SetNamesClass.SetPlayerNameColors(player);
@@ -194,8 +181,8 @@ namespace SuperNewRoles.Patch
                 if (PlayerControl.LocalPlayer.IsQuarreled())
                 {
                     var Side = PlayerControl.LocalPlayer.GetOneSideQuarreled();
-                    SetNamesClass.SetPlayerNameText(PlayerControl.LocalPlayer, SetNamesClass.AllNames[PlayerControl.LocalPlayer.PlayerId] + "○");
-                    SetNamesClass.SetPlayerNameText(Side, SetNamesClass.AllNames[Side.PlayerId] + "○");
+                    SetNamesClass.SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.nameText.name + "○");
+                    SetNamesClass.SetPlayerNameText(Side, Side.nameText.name + "○");
                 }
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);

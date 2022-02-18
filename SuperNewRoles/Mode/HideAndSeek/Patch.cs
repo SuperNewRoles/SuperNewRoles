@@ -21,11 +21,9 @@ namespace SuperNewRoles.Mode.HideAndSeek
                 }
             }
         }
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-        class RepairSystemPatch
+        public class RepairSystemPatch
         {
             public static void Postfix(PlayerControl __instance) {
-                if (!ModeHandler.isMode(ModeId.HideAndSeek) || AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 if (!HASOptions.HASUseSabo.getBool())
                 {
                         foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
@@ -91,13 +89,11 @@ namespace SuperNewRoles.Mode.HideAndSeek
                 }
              }
         }
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-        class HASFixed
+        public class HASFixed
         {
-            public static void Postfix(MeetingHud __instance)
+            public static void Postfix(PlayerControl __instance)
             {
-                if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-                if (!ModeHandler.isMode(ModeId.HideAndSeek)) return;
+                RepairSystemPatch.Postfix(__instance);
                 HudManager.Instance.ReportButton.Hide();
                 HudManager.Instance.AbilityButton.Hide();
                 
