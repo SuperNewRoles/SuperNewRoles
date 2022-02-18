@@ -488,41 +488,41 @@
         "0" : "Can you get multiple kills in one meeting?" ,
         "11" : "\u4e00\u4f1a\u8b70\u4e2d\u306b\u8907\u6570\u30ad\u30eb\u3067\u304d\u308b\u304b"
         } ,
- "AllKillerName" : {
-        "0" : "All killers" ,
-        "11" : "\u30aa\u30fc\u30eb\u30ad\u30e9\u30fc"
+ "JackalName" : {
+        "0" : "Jackal" ,
+        "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb"
         } ,
- "AllKillerTitle1" : {
+ "JackalTitle1" : {
         "0" : "Try to kill Imposters and Crew Mates" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3068\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3092\u30ad\u30eb\u3057\u3088\u3046"
         } ,
- "AllKillerTitle2" : {
+ "JackalTitle2" : {
         "0" : "Kill the other team to win!" ,
         "11" : "\u4ed6\u9663\u55b6\u3092\u30ad\u30eb\u3057\u3066\u52dd\u5229\u3057\u3088\u3046"
         } ,
- "AllKillerCoolDownSetting" : {
-        "0" : "Allkiller's kill cool time" ,
-        "11" : "\u30aa\u30fc\u30eb\u30ad\u30e9\u30fc\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+ "JackalCoolDownSetting" : {
+        "0" : "Jackal's kill cool time" ,
+        "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "AllkillerCreateSideNewKillerSetting" : {
-        "0" : "Allkiller can make a side new killer" ,
-        "11" : "\u30aa\u30fc\u30eb\u30ad\u30e9\u30fc\u304c\u30b5\u30a4\u30c9\u30cb\u30e5\u30fc\u30ad\u30e9\u30fc\u3092\u4f5c\u308c\u308b"
+ "JackalCreateSidekickSetting" : {
+        "0" : "Jackal can make a Sidekick" ,
+        "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb\u304c\u30b5\u30a4\u30c9\u30ad\u30c3\u30af\u3092\u4f5c\u308c\u308b"
         } ,
- "AllKillerNewKillerCreateSideNewKillerSetting" : {
-        "0" : "New all killer can make side new killer" ,
-        "11" : "\u65b0\u30aa\u30fc\u30eb\u30ad\u30e9\u30fc\u304c\u30b5\u30a4\u30c9\u30cb\u30e5\u30fc\u30ad\u30e9\u30fc\u3092\u4f5c\u308c\u308b"
+ "JackalNewJackalCreateSidekickSetting" : {
+        "0" : "New Jackal can make Sidekick" ,
+        "11" : "\u65b0\u30b8\u30e3\u30c3\u30ab\u30eb\u304c\u30b5\u30a4\u30c9\u30ad\u30c3\u30af\u3092\u4f5c\u308c\u308b"
         } ,
- "AllKillerOn" : {
+ "JackalOn" : {
         "0" : "On" ,
         "11" : "\u30aa\u30f3"
         } ,
- "AllKillerOff" : {
+ "JackalOff" : {
         "0" : "Off" ,
         "11" : "\u30aa\u30d5"
         } ,
- "SideNewKillerName" : {
-        "0" : "Side new killer" ,
-        "11" : "\u30b5\u30a4\u30c9\u30cb\u30e5\u30fc\u30ad\u30e9\u30fc"
+ "SidekickName" : {
+        "0" : "Sidekick" ,
+        "11" : "\u30b5\u30a4\u30c9\u30ad\u30c3\u30af"
         } ,
  "TeleporterName" : {
         "0" : "Teleporter" ,
@@ -1043,6 +1043,22 @@
  "GodTitle1" : {
         "0" : "You Are God!!" ,
         "11" : "\u3042\u306a\u305f\u306f\u795e\u3060"
+        } ,
+ "AllCleanerName" : {
+        "0" : "All Cleaner" ,
+        "11" : "\u30aa\u30fc\u30eb\u30af\u30ea\u30fc\u30ca\u30fc"
+        } ,
+ "AllCleanerTitle1" : {
+        "0" : "Let's get rid of the corpse." ,
+        "11" : "\u6b7b\u4f53\u3092\u6d88\u305d\u3046"
+        } ,
+ "AllCleanerCountSetting" : {
+        "0" : "Number of times it can be used in one game" ,
+        "11" : "1\u8a66\u5408\u4e2d\u306b\u4f7f\u3048\u308b\u56de\u6570"
+        } ,
+ "AllCleanerButtonName" : {
+        "0" : "Clean" ,
+        "11" : "\u30af\u30ea\u30fc\u30f3"
         } 
 
 }

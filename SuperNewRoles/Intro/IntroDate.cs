@@ -41,8 +41,8 @@ namespace SuperNewRoles.Intro
                     return SheriffIntro;
                 case (CustomRPC.RoleId.MeetingSheriff):
                     return MeetingSheriffIntro;
-                case (CustomRPC.RoleId.AllKiller):
-                    return AllKillerIntro;
+                case (CustomRPC.RoleId.Jackal):
+                    return JackalIntro;
                 case (CustomRPC.RoleId.Teleporter):
                     return TeleporterIntro;
                 case (CustomRPC.RoleId.SpiritMedium):
@@ -85,6 +85,8 @@ namespace SuperNewRoles.Intro
                     return SelfBomberIntro;
                 case (CustomRPC.RoleId.God):
                     return GodIntro;
+                case (CustomRPC.RoleId.AllCleaner):
+                    return AllCleanerIntro;
                 //イントロ検知
             }
 
@@ -102,7 +104,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate EvilScientist = new IntroDate("EvilScientist",RoleClass.EvilScientist.color,2,CustomRPC.RoleId.EvilScientist);
         public static IntroDate SheriffIntro = new IntroDate("Sheriff", RoleClass.Sheriff.color, 2, CustomRPC.RoleId.Sheriff);
         public static IntroDate MeetingSheriffIntro = new IntroDate("MeetingSheriff",RoleClass.MeetingSheriff.color,4,CustomRPC.RoleId.MeetingSheriff);
-        public static IntroDate AllKillerIntro = new IntroDate("AllKiller",RoleClass.AllKiller.color,2,CustomRPC.RoleId.AllKiller);
+        public static IntroDate JackalIntro = new IntroDate("Jackal",RoleClass.Jackal.color,2,CustomRPC.RoleId.Jackal);
         public static IntroDate TeleporterIntro = new IntroDate("Teleporter",RoleClass.Teleporter.color,2,CustomRPC.RoleId.Teleporter);
         public static IntroDate SpiritMediumIntro = new IntroDate("SpiritMedium",RoleClass.SpiritMedium.color,1,CustomRPC.RoleId.SpiritMedium);
         public static IntroDate SpeedBoosterIntro = new IntroDate("SpeedBooster",RoleClass.SpeedBooster.color,2,CustomRPC.RoleId.SpeedBooster);
@@ -130,6 +132,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate ResearcherIntro = new IntroDate("Researcher", RoleClass.Researcher.color, 1, CustomRPC.RoleId.Researcher);
         public static IntroDate SelfBomberIntro = new IntroDate("SelfBomber", RoleClass.SelfBomber.color, 1, CustomRPC.RoleId.SelfBomber);
         public static IntroDate GodIntro = new IntroDate("God", RoleClass.God.color, 1, CustomRPC.RoleId.God);
+        public static IntroDate AllCleanerIntro = new IntroDate("AllCleaner", RoleClass.AllCleaner.color, 1, CustomRPC.RoleId.AllCleaner);
         //イントロオブジェ
     }
 }

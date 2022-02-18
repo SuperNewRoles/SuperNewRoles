@@ -446,8 +446,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SheriffPlayerCount.getFloat();
                 case (RoleId.MeetingSheriff):
                     return CustomOption.CustomOptions.MeetingSheriffPlayerCount.getFloat();
-                case (RoleId.AllKiller):
-                    return CustomOption.CustomOptions.AllKillerPlayerCount.getFloat();
+                case (RoleId.Jackal):
+                    return CustomOption.CustomOptions.JackalPlayerCount.getFloat();
                 case (RoleId.Teleporter):
                     return CustomOption.CustomOptions.TeleporterPlayerCount.getFloat();
                 case (RoleId.SpiritMedium):
@@ -502,6 +502,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SelfBomberPlayerCount.getFloat();
                     case (RoleId.God):
                     return CustomOption.CustomOptions.GodPlayerCount.getFloat();
+                    case (RoleId.AllCleaner):
+                    return CustomOption.CustomOptions.AllCleanerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -652,10 +654,10 @@ namespace SuperNewRoles
                     }
                 }
             }
-            if (!(CustomOption.CustomOptions.AllKillerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.AllKillerOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.AllKiller;
+                int OptionDate = int.Parse(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Jackal;
                 if (OptionDate == 10)
                 {
                     Neutonepar.Add(ThisRoleId);
@@ -1099,6 +1101,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.AllCleanerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.AllCleanerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.AllCleaner;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }

@@ -75,11 +75,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MeetingSheriffKillMaxCount;
         public static CustomOption MeetingSheriffOneMeetingMultiKill;
 
-        public static CustomRoleOption AllKillerOption;
-        public static CustomOption AllKillerPlayerCount;
-        public static CustomOption AllKillerKillCoolDown;
-        public static CustomOption AllKillerCreateSideNewKiller;
-        public static CustomOption AllKillerNewAllKillerCreateSideNewKiller;
+        public static CustomRoleOption JackalOption;
+        public static CustomOption JackalPlayerCount;
+        public static CustomOption JackalKillCoolDown;
+        public static CustomOption JackalCreateSidekick;
+        public static CustomOption JackalNewJackalCreateSidekick;
 
         public static CustomRoleOption TeleporterOption;
         public static CustomOption TeleporterPlayerCount;
@@ -206,6 +206,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption GodOption;
         public static CustomOption GodPlayerCount;
 
+        public static CustomRoleOption AllCleanerOption;
+        public static CustomOption AllCleanerPlayerCount;
+        public static CustomOption AllCleanerCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -289,11 +293,11 @@ namespace SuperNewRoles.CustomOption
             MeetingSheriffKillMaxCount = CustomOption.Create(34, ModTranslation.getString("MeetingSheriffMaxKillCountSetting"), 10f, 1f, 20f, 0.5f, MeetingSheriffOption, format: "unitSeconds");
             MeetingSheriffOneMeetingMultiKill = CustomOption.Create(35, ModTranslation.getString("MeetingSheriffMeetingmultipleKillSetting"), false, MeetingSheriffOption);
 
-            AllKillerOption = new CustomRoleOption(36, "AllKillerName", RoleClass.AllKiller.color, 1);
-            AllKillerPlayerCount = CustomOption.Create(37, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AllKillerOption);
-            AllKillerKillCoolDown = CustomOption.Create(38, ModTranslation.getString("AllKillerCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, AllKillerOption, format: "unitSeconds");
-            AllKillerCreateSideNewKiller = CustomOption.Create(39, ModTranslation.getString("AllkillerCreateSideNewKillerSetting"), false, AllKillerOption);
-            AllKillerNewAllKillerCreateSideNewKiller = CustomOption.Create(40, ModTranslation.getString("AllKillerNewKillerCreateSideNewKillerSetting"), false, AllKillerOption);
+            JackalOption = new CustomRoleOption(36, "JackalName", RoleClass.Jackal.color, 1);
+            JackalPlayerCount = CustomOption.Create(37, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalOption);
+            JackalKillCoolDown = CustomOption.Create(38, ModTranslation.getString("JackalCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, JackalOption, format: "unitSeconds");
+            JackalCreateSidekick = CustomOption.Create(39, ModTranslation.getString("JackalCreateSidekickSetting"), false, JackalOption);
+            JackalNewJackalCreateSidekick = CustomOption.Create(40, ModTranslation.getString("JackalNewJackalCreateSidekickSetting"), false, JackalOption);
 
             TeleporterOption = new CustomRoleOption(41, "TeleporterName", RoleClass.ImpostorRed, 1);
             TeleporterPlayerCount = CustomOption.Create(42, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], TeleporterOption);
@@ -406,10 +410,6 @@ namespace SuperNewRoles.CustomOption
             EvilGamblerNotSucTime = CustomOption.Create(137, cs(Color.white, "EvilGamblerNotSucTimeSetting"), 15f, 0f, 60f, 2.5f, EvilGamblerOption);
             EvilGamblerSucpar = CustomOption.Create(138, cs(Color.white, "EvilGamblerSucParSetting"), rates , EvilGamblerOption);
 
-            QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader:true);
-            QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3],QuarreledOption);
-            QuarreledOnlyCrewMate = CustomOption.Create(123, cs(Color.white, "QuarreledOnlyCrewMateSetting"), false, QuarreledOption);
-
             BestfalsechargeOption = new CustomRoleOption(142, "BestfalsechargeName", RoleClass.Bestfalsecharge.color, 1);
             BestfalsechargePlayerCount = CustomOption.Create(143, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BestfalsechargeOption);
 
@@ -422,6 +422,14 @@ namespace SuperNewRoles.CustomOption
 
             GodOption = new CustomRoleOption(149, "GodName", RoleClass.God.color, 1);
             GodPlayerCount = CustomOption.Create(150, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GodOption);
+
+            AllCleanerOption = new CustomRoleOption(151, "AllCleanerName", RoleClass.AllCleaner.color, 1);
+            AllCleanerPlayerCount = CustomOption.Create(152, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SelfBomberOption);
+            AllCleanerCount = CustomOption.Create(153, cs(Color.white, "AllCleanerCountSetting"), 1f, 1f, 15f, 1f, SelfBomberOption);
+
+            QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
+            QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
+            QuarreledOnlyCrewMate = CustomOption.Create(123, cs(Color.white, "QuarreledOnlyCrewMateSetting"), false, QuarreledOption);
 
         }
     }

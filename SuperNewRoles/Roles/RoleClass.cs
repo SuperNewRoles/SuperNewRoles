@@ -33,7 +33,7 @@ namespace SuperNewRoles.Roles
             EvilScientist.clearAndReload();
             Sheriff.clearAndReload();
             MeetingSheriff.clearAndReload();
-            AllKiller.clearAndReload();
+            Jackal.clearAndReload();
             Teleporter.clearAndReload();
             SpiritMedium.clearAndReload();
             SpeedBooster.clearAndReload();
@@ -61,6 +61,7 @@ namespace SuperNewRoles.Roles
             Researcher.ClearAndReload();
             SelfBomber.ClearAndReload();
             God.ClearAndReload();
+            AllCleaner.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -217,20 +218,22 @@ namespace SuperNewRoles.Roles
             }
 
         }
-        public static class AllKiller
+        public static class Jackal
         {
-            public static List<PlayerControl> AllKillerPlayer;
-            public static Color32 color = new Color32(69, 69, 69, byte.MaxValue);
+            public static List<PlayerControl> JackalPlayer;
+            public static List<PlayerControl> SidekickPlayer;
+            public static Color32 color = new Color32(0,255,255, byte.MaxValue);
             public static float KillCoolDown;
-            public static bool CreateSideNewKiller;
-            public static bool NewAllKillerCreateSideNewKiller;
+            public static bool CreateSidekick;
+            public static bool NewJackalCreateSidekick;
 
             public static void clearAndReload()
             {
-                AllKillerPlayer = new List<PlayerControl>();
-                KillCoolDown = CustomOptions.AllKillerKillCoolDown.getFloat();
-                CreateSideNewKiller = CustomOptions.AllKillerCreateSideNewKiller.getBool();
-                NewAllKillerCreateSideNewKiller = CustomOptions.AllKillerNewAllKillerCreateSideNewKiller.getBool();
+                JackalPlayer = new List<PlayerControl>();
+                SidekickPlayer = new List<PlayerControl>();
+                KillCoolDown = CustomOptions.JackalKillCoolDown.getFloat();
+                CreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
+                NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
             }
 
         }
@@ -678,6 +681,15 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 GodPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class AllCleaner
+        {
+            public static List<PlayerControl> AllCleanerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                AllCleanerPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

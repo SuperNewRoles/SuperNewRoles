@@ -27,8 +27,8 @@ namespace SuperNewRoles.Buttons
 
         public static CustomButton FreezerFreezeButton;
         public static CustomButton SpeederSpeedDownButton;
-        public static CustomButton AllKillerKillbutton;
-        public static CustomButton AllKillerVentButton;
+        public static CustomButton JackalKillbutton;
+        public static CustomButton JackalVentButton;
 
         public static TMPro.TMP_Text securityGuardButtonScrewsText;
         public static TMPro.TMP_Text vultureNumCorpsesText;
