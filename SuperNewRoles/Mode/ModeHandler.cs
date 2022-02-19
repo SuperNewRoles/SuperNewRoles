@@ -32,7 +32,7 @@ namespace SuperNewRoles.Mode
                 thisMode = ModeId.Default;
             }
         }
-        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName") }//, ModTranslation.getString("BattleRoyalModeName") };
+        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName") };//, ModTranslation.getString("BattleRoyalModeName") };
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;

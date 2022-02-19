@@ -39,7 +39,7 @@ namespace SuperNewRoles.Patch
                         {
                             if (RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                             {
-                                if (RoleClass.Bait.Reported)
+                                if (!RoleClass.Bait.Reported)
                                 {
                                     Bait.BaitUpdate.Postfix(__instance);
 

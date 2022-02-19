@@ -104,7 +104,7 @@ namespace SuperNewRoles.CustomRPC
                 ver = new System.Version(major, minor, build);
             else
                 ver = new System.Version(major, minor, build, revision);
-            Patch.ShareGameVersion.playerVersions[clientId] = new Patch.PlayerVersion(ver, guid);
+//            Patch.ShareGameVersion.playerVersions[clientId] = new Patch.PlayerVersion(ver, guid);
         }
         public static void SetRole(byte playerid,byte RPCRoleId)
         {
@@ -218,6 +218,7 @@ namespace SuperNewRoles.CustomRPC
         public static void CreateSidekick(byte playerid) {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
+            DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
             player.ClearRole();
             player.setRole(RoleId.Sidekick);
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);

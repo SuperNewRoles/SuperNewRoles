@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-
+/**
 namespace SuperNewRoles.Patch
 {
     class ShareGameVersion
@@ -33,11 +33,19 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
+        [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
+        public class GameStartManagerStartPatch
+        {
+            public static void Postfix() {
+                GameStartManagerUpdatePatch.VersionPlayers = new List<PlayerControl>();
+            }
+        }
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
         public class GameStartManagerUpdatePatch
         {
             private static bool update = false;
             private static string currentText = "";
+            public static List<PlayerControl> VersionPlayers = new List<PlayerControl>();
 
             public static void Prefix(GameStartManager __instance)
             {
@@ -51,6 +59,14 @@ namespace SuperNewRoles.Patch
                 if (AmongUsClient.Instance.AmHost)
                 {
                     bool blockStart = false;
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
+                        if (!VersionPlayers.Contains(p)) {
+                            message += string.Format(ModTranslation.getString("ErrorClientNoVersion"), client.PlayerName);
+                        }
+                    }
+                } else { 
+
+                }
                     string message = "";
                     foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.ToArray())
                     {
@@ -72,17 +88,6 @@ namespace SuperNewRoles.Patch
                             blockStart = true;
                             
                         }
-                    }
-                    if (blockStart)
-                    {
-                        __instance.StartButton.color = __instance.startLabelText.color = Palette.DisabledClear;
-                        __instance.GameStartText.text = message;
-                        __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
-                    }
-                    else
-                    {
-                        __instance.StartButton.color = __instance.startLabelText.color = ((__instance.LastPlayerCount >= __instance.MinPlayers) ? Palette.EnabledColor : Palette.DisabledClear);
-                        __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
                     }
                 }
                 if (!AmongUsClient.Instance.AmHost)
@@ -118,3 +123,4 @@ namespace SuperNewRoles.Patch
         }
     }
 }
+**/

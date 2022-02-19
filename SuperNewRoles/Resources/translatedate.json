@@ -168,6 +168,10 @@
         "0" : "Mod Options" ,
         "11" : "Mod\u306e\u8a2d\u5b9a"
         } ,
+ "moreOptionsText" : {
+        "0" : "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings" ,
+        "11" : "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u8a2d\u5b9a"
+        } ,
  "SettingPlayerCountName" : {
         "0" : "Role Player" ,
         "11" : "\u4eba\u6570"
