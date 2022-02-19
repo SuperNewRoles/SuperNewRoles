@@ -184,6 +184,22 @@ namespace SuperNewRoles.Patch
                     SetNamesClass.SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.nameText.name + "○");
                     SetNamesClass.SetPlayerNameText(Side, Side.nameText.name + "○");
                 }
+                if (RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer)) {
+                    foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer) {
+                        if (p != PlayerControl.LocalPlayer) {
+                            SetNamesClass.SetPlayerRoleNames(p);
+                            SetNamesClass.SetPlayerNameColors(p);
+                        }
+                    }
+                    foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer)
+                    {
+                        if (p != PlayerControl.LocalPlayer)
+                        {
+                            SetNamesClass.SetPlayerRoleNames(p);
+                            SetNamesClass.SetPlayerNameColors(p);
+                        }
+                    }
+                }
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }

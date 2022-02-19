@@ -78,6 +78,8 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption JackalOption;
         public static CustomOption JackalPlayerCount;
         public static CustomOption JackalKillCoolDown;
+        public static CustomOption JackalUseVent;
+        public static CustomOption JackalUseSabo;
         public static CustomOption JackalCreateSidekick;
         public static CustomOption JackalNewJackalCreateSidekick;
 
@@ -303,6 +305,8 @@ namespace SuperNewRoles.CustomOption
             JackalOption = new CustomRoleOption(36, "JackalName", RoleClass.Jackal.color, 1);
             JackalPlayerCount = CustomOption.Create(37, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalOption);
             JackalKillCoolDown = CustomOption.Create(38, ModTranslation.getString("JackalCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, JackalOption, format: "unitSeconds");
+            JackalUseVent = CustomOption.Create(160, ModTranslation.getString("JackalUseVentSetting"), true, JackalOption);
+            JackalUseSabo = CustomOption.Create(161, ModTranslation.getString("JackalUseSaboSetting"), false, JackalOption);
             JackalCreateSidekick = CustomOption.Create(39, ModTranslation.getString("JackalCreateSidekickSetting"), false, JackalOption);
             JackalNewJackalCreateSidekick = CustomOption.Create(40, ModTranslation.getString("JackalNewJackalCreateSidekickSetting"), false, JackalOption);
 

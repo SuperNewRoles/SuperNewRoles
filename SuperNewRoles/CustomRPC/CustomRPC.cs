@@ -21,6 +21,7 @@ namespace SuperNewRoles.CustomRPC
         Sheriff,
         MeetingSheriff,
         Jackal,
+        Sidekick,
         Teleporter,
         SpiritMedium,
         SpeedBooster,
@@ -70,7 +71,8 @@ namespace SuperNewRoles.CustomRPC
         RPCMurderPlayer,
         ShareWinner,
         TeleporterTP,
-        SidekickPromotes
+        SidekickPromotes,
+        CreateSidekick
     }
     public static class RPCProcedure
     {
@@ -211,6 +213,14 @@ namespace SuperNewRoles.CustomRPC
                 RoleClass.Jackal.JackalPlayer.Add(RoleClass.Jackal.SidekickPlayer[i]);
                 RoleClass.Jackal.SidekickPlayer.RemoveAt(i);
             }
+            PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+        }
+        public static void CreateSidekick(byte playerid) {
+            var player = ModHelpers.playerById(playerid);
+            if (player == null) return;
+            player.ClearRole();
+            player.setRole(RoleId.Sidekick);
+            PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
         }
         public static void ExiledRPC(byte playerid) {
             var player = ModHelpers.playerById(playerid);
@@ -329,6 +339,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case (byte)CustomRPC.SidekickPromotes:
                             RPCProcedure.SidekickPromotes();
+                            break;
+                        case (byte)CustomRPC.CreateSidekick:
+                            RPCProcedure.CreateSidekick(reader.ReadByte());
                             break;
                     }
                 }

@@ -226,15 +226,20 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> SidekickPlayer;
             public static Color32 color = new Color32(0,255,255, byte.MaxValue);
             public static float KillCoolDown;
+            public static bool IsUseVent;
+            public static bool IsUseSabo;
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
-
+            public static bool IsCreateSidekick;
             public static void clearAndReload()
             {
                 JackalPlayer = new List<PlayerControl>();
                 SidekickPlayer = new List<PlayerControl>();
                 KillCoolDown = CustomOptions.JackalKillCoolDown.getFloat();
+                IsUseVent = CustomOptions.JackalUseVent.getBool();
+                IsUseVent = CustomOptions.JackalUseSabo.getBool();
                 CreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
+                IsCreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
             }
 

@@ -43,6 +43,8 @@ namespace SuperNewRoles.Intro
                     return MeetingSheriffIntro;
                 case (CustomRPC.RoleId.Jackal):
                     return JackalIntro;
+                case (CustomRPC.RoleId.Sidekick):
+                    return SidekickIntro;
                 case (CustomRPC.RoleId.Teleporter):
                     return TeleporterIntro;
                 case (CustomRPC.RoleId.SpiritMedium):
@@ -109,6 +111,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate SheriffIntro = new IntroDate("Sheriff", RoleClass.Sheriff.color, 2, CustomRPC.RoleId.Sheriff);
         public static IntroDate MeetingSheriffIntro = new IntroDate("MeetingSheriff",RoleClass.MeetingSheriff.color,4,CustomRPC.RoleId.MeetingSheriff);
         public static IntroDate JackalIntro = new IntroDate("Jackal",RoleClass.Jackal.color,2,CustomRPC.RoleId.Jackal);
+        public static IntroDate SidekickIntro = new IntroDate("Sidekick", RoleClass.Jackal.color, 1, CustomRPC.RoleId.Sidekick);
         public static IntroDate TeleporterIntro = new IntroDate("Teleporter",RoleClass.Teleporter.color,2,CustomRPC.RoleId.Teleporter);
         public static IntroDate SpiritMediumIntro = new IntroDate("SpiritMedium",RoleClass.SpiritMedium.color,1,CustomRPC.RoleId.SpiritMedium);
         public static IntroDate SpeedBoosterIntro = new IntroDate("SpeedBooster",RoleClass.SpeedBooster.color,2,CustomRPC.RoleId.SpeedBooster);

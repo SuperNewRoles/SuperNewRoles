@@ -32,7 +32,7 @@ namespace SuperNewRoles.Mode
                 thisMode = ModeId.Default;
             }
         }
-        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("BattleRoyalModeName") };
+        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName") }//, ModTranslation.getString("BattleRoyalModeName") };
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;
@@ -57,7 +57,7 @@ namespace SuperNewRoles.Mode
             ModeSetting = CustomOption.CustomOption.Create(132, CustomOptions.cs(Color.white, "ModeSetting"), false, Mode, isHeader: true);
             ThisModeSetting = CustomOption.CustomOption.Create(133, CustomOptions.cs(Color.white, "SettingMode"), modes , ModeSetting);
             HideAndSeek.HASOptions.Load();
-            BattleRoyal.BROption.Load();
+            //BattleRoyal.BROption.Load();
         }
         public static void FixedUpdate(PlayerControl __instance) {
             if (isMode(ModeId.Default)) return;
@@ -68,7 +68,7 @@ namespace SuperNewRoles.Mode
         public static ModeId GetMode() {
             if (!ModeSetting.getBool()) return ModeId.Default;
             if (isMode(ModeId.HideAndSeek)) return ModeId.HideAndSeek;
-            if (isMode(ModeId.BattleRoyal)) return ModeId.BattleRoyal;
+            //if (isMode(ModeId.BattleRoyal)) return ModeId.BattleRoyal;
             return ModeId.No;
         }
         public static string GetThisModeIntro() {
@@ -82,7 +82,7 @@ namespace SuperNewRoles.Mode
                 case ModeId.HideAndSeek:
                     return ModeSetting.getBool() && ThisModeSetting.getString()==modes[0];
                 case ModeId.BattleRoyal:
-                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[1];
+                    return false;// ModeSetting.getBool() && ThisModeSetting.getString() == modes[1];
             }
             return false;
         }

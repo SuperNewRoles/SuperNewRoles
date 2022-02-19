@@ -17,6 +17,7 @@ namespace SuperNewRoles.EndGame
     {
         Default,
         JesterWin,
+        JackalWin,
         QuarreledWin,
         GodWin
     }
@@ -85,6 +86,12 @@ namespace SuperNewRoles.EndGame
                 text = "ImpostorName";
                 textRenderer.color = RoleClass.ImpostorRed;
             }
+            else if (AdditionalTempData.winCondition == WinCondition.JackalWin)
+            {
+                text = "JackalName";
+                textRenderer.color = Roles.RoleClass.Jackal.color;
+                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Jackal.color);
+            }
 
             if (ModeHandler.isMode(ModeId.BattleRoyal)) {
                 SuperNewRolesPlugin.Logger.LogInfo("BATTLEROYAL!!!!");
@@ -134,6 +141,8 @@ namespace SuperNewRoles.EndGame
 
             notWinners.AddRange(RoleClass.Jester.JesterPlayer);
             notWinners.AddRange(RoleClass.MadMate.MadMatePlayer);
+            notWinners.AddRange(RoleClass.Jackal.JackalPlayer);
+            notWinners.AddRange(RoleClass.Jackal.SidekickPlayer);
             notWinners.AddRange(RoleClass.God.GodPlayer);
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
             {
@@ -153,6 +162,7 @@ namespace SuperNewRoles.EndGame
 
             bool JesterWin = gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
             bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
+            bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
 
             // Jester win
             if (JesterWin)
@@ -174,6 +184,21 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(wpd);
                 }
                 AdditionalTempData.winCondition = WinCondition.QuarreledWin;
+            } else if (JackalWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
+                {
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                }
+                foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer)
+                {
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                }
+
+                AdditionalTempData.winCondition = WinCondition.JackalWin;
             }
             foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
             {
@@ -319,8 +344,9 @@ namespace SuperNewRoles.EndGame
             if (!GameData.Instance) return false;
             if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
             var statistics = new PlayerStatistics(__instance);
-                if (false)
+                if (!ModeHandler.isMode(ModeId.Default))
                 {
+                    ModeHandler.EndGameChecks(__instance, statistics);
                 }
                 else
                 {
@@ -328,7 +354,8 @@ namespace SuperNewRoles.EndGame
                     if (CheckAndEndGameForSabotageWin(__instance)) return false;
                     if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                     if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
-                }
+                    if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
+            }
             return false;
         }
         public static void CustomEndGame(GameOverReason reason,bool showAd) {
@@ -379,7 +406,7 @@ namespace SuperNewRoles.EndGame
 
         private static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive)
+            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0)
             {
                 __instance.enabled = false;
                 GameOverReason endReason;
@@ -400,10 +427,20 @@ namespace SuperNewRoles.EndGame
             }
             return false;
         }
+        private static bool CheckAndEndGameForJackalWin(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0)
+            {
+                __instance.enabled = false;
+                CustomEndGame((GameOverReason)CustomGameOverReason.JackalWin, false);
+                return true;
+            }
+            return false;
+        }
 
         private static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive == 0)
+            if (statistics.TeamImpostorsAlive == 0 &&statistics.TeamJackalAlive == 0)
             {
                 __instance.enabled = false;
                 CustomEndGame(GameOverReason.HumansByVote, false);
@@ -422,6 +459,7 @@ namespace SuperNewRoles.EndGame
             public int TeamImpostorsAlive { get; set; }
             public int CrewAlive { get; set; }
             public int TotalAlive { get; set; }
+            public int TeamJackalAlive { get; set; }
             public PlayerStatistics(ShipStatus __instance)
             {
                 GetPlayerCounts();
@@ -431,6 +469,7 @@ namespace SuperNewRoles.EndGame
                 int numImpostorsAlive = 0;
                 int numCrewAlive = 0;
                 int numTotalAlive = 0;
+                int numTotalJackalTeam = 0;
 
                 for (int i = 0; i < GameData.Instance.PlayerCount; i++)
                 {
@@ -445,8 +484,15 @@ namespace SuperNewRoles.EndGame
                             {
                                 numImpostorsAlive++;
                             }
-                            else if (!playerInfo.Object.isNeutral()) {
+                            else if (!playerInfo.Object.isNeutral())
+                            {
                                 numCrewAlive++;
+                            }
+                            else if (playerInfo.Object.isNeutral()) { 
+                                if(RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(playerInfo.Object) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(playerInfo.Object))
+                                {
+                                    numTotalJackalTeam++;
+                                }
                             }
                         }
                     }
@@ -455,6 +501,7 @@ namespace SuperNewRoles.EndGame
                 TeamImpostorsAlive = numImpostorsAlive;
                 TotalAlive = numTotalAlive;
                 CrewAlive = numCrewAlive;
+                TeamJackalAlive = numTotalJackalTeam;
             }
         }
     }

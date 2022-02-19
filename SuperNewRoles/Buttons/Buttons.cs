@@ -27,8 +27,8 @@ namespace SuperNewRoles.Buttons
 
         public static CustomButton FreezerFreezeButton;
         public static CustomButton SpeederSpeedDownButton;
-        public static CustomButton JackalKillbutton;
-        public static CustomButton JackalVentButton;
+        public static CustomButton JackalKillButton;
+        public static CustomButton JackalSidekickButton;
 
         public static TMPro.TMP_Text securityGuardButtonScrewsText;
         public static TMPro.TMP_Text vultureNumCorpsesText;
@@ -41,6 +41,7 @@ namespace SuperNewRoles.Buttons
             Sheriff.ResetKillCoolDown();
             Clergyman.ResetCoolDown();
             Teleporter.ResetCoolDown();
+            Jackal.resetCoolDown();
         }
 
 
@@ -50,6 +51,63 @@ namespace SuperNewRoles.Buttons
         {
             RoleClass.clearAndReloadRoles();
             SuperNewRolesPlugin.Logger.LogInfo("HudMangerButton");
+
+            JackalSidekickButton = new CustomButton(
+                () =>
+                {
+                    var target = Jackal.JackalFixedPatch.JackalsetTarget();
+                    if (target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.IsCreateSidekick)
+                    {
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CreateSidekick, Hazel.SendOption.Reliable, -1);
+                        killWriter.Write(target.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                        CustomRPC.RPCProcedure.CreateSidekick(target.PlayerId);
+                        RoleClass.Jackal.IsCreateSidekick = false;
+                        Jackal.resetCoolDown();
+                    }
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && RoleClass.Jackal.IsCreateSidekick; },
+                () =>
+                {
+                    return Jackal.JackalFixedPatch.JackalsetTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { Jackal.EndMeeting(); },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            JackalSidekickButton.buttonText = ModTranslation.getString("JackalCreateSidekickButtonName");
+            JackalSidekickButton.showButtonText = true;
+
+            JackalKillButton = new CustomButton(
+                () =>
+                {
+                    if (Jackal.JackalFixedPatch.JackalsetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, Jackal.JackalFixedPatch.JackalsetTarget());
+                        Jackal.resetCoolDown();
+                    }
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer); },
+                () =>
+                {
+                    return Jackal.JackalFixedPatch.JackalsetTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { Jackal.EndMeeting(); },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8
+            );
+
+            JackalKillButton.buttonText = HudManager.Instance.KillButton.buttonLabelText.text;
+            JackalKillButton.showButtonText = true;
 
             SelfBomberButton = new Buttons.CustomButton(
                 () =>
