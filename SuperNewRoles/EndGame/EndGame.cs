@@ -131,7 +131,7 @@ namespace SuperNewRoles.EndGame
 
             // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
             List<PlayerControl> notWinners = new List<PlayerControl>();
-           
+
             notWinners.AddRange(RoleClass.Jester.JesterPlayer);
             notWinners.AddRange(RoleClass.MadMate.MadMatePlayer);
             notWinners.AddRange(RoleClass.God.GodPlayer);
@@ -187,7 +187,7 @@ namespace SuperNewRoles.EndGame
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     if (Roles.RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(p))
-                    { 
+                    {
                         WinningPlayerData wpd = new WinningPlayerData(p.Data);
                         TempData.winners.Add(wpd);
                     }
@@ -207,7 +207,7 @@ namespace SuperNewRoles.EndGame
                 AdditionalTempData.winCondition = WinCondition.Default;
             }
             var godalive = false;
-            foreach (PlayerControl p in RoleClass.God.GodPlayer) { 
+            foreach (PlayerControl p in RoleClass.God.GodPlayer) {
                 if (p.isAlive())
                 {
                     godalive = true;
@@ -220,37 +220,35 @@ namespace SuperNewRoles.EndGame
 
         }
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CheckEndCriteria))]
-        class CheckEndCriteriaPatch
+        class CheckGameEndPatch
         {
             public static bool Prefix(ShipStatus __instance)
             {
-                __instance.enabled = true;
+                if (!GameData.Instance) return false;
+                if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
+                if (HudManager.Instance.isIntroDisplayed) return false;
                 try
                 {
-                    if (!GameData.Instance) return false;
-                    if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
-                    if (HudManager.Instance.isIntroDisplayed) return false;
-
                     var playerdates = new PlayerStatistics(__instance);
                     if (!ModeHandler.isMode(ModeId.Default))
                     {
-                        ModeHandler.EndGameChecks(__instance,playerdates);
-                        return false;
+                        SuperNewRolesPlugin.Logger.LogInfo("WINCHECK");
+                        if(ModeHandler.EndGameChecks(__instance,playerdates)) return true;
                     }
                     else {
-                        QuarreledWinCheck(__instance);
-                        JesterWinCheck(__instance);
-                        SabotageWinCheck(__instance);
-                        ImpostorWinCheck(__instance, playerdates);
-                        CrewmateWinCheck(__instance, playerdates);
-                        return false;
+                        SuperNewRolesPlugin.Logger.LogInfo("DEFAULTCHECK");
+                        if(QuarreledWinCheck(__instance)) return true;
+                        if(JesterWinCheck(__instance)) return true;
+                        if(SabotageWinCheck(__instance)) return true;
+                        if(ImpostorWinCheck(__instance, playerdates)) return true;
+                        if (CrewmateWinCheck(__instance, playerdates)) return true;
                     }
                 }
                 catch {
                 }
                 return false;
             }
-            public static bool SabotageWinCheck(ShipStatus __instance)
+            private static bool SabotageWinCheck(ShipStatus __instance)
             {
                 if (__instance.Systems == null) return false;
                 ISystemType systemType = __instance.Systems.ContainsKey(SystemTypes.LifeSupp) ? __instance.Systems[SystemTypes.LifeSupp] : null;
@@ -283,7 +281,7 @@ namespace SuperNewRoles.EndGame
                 }
                 return false;
             }
-            public static bool ImpostorWinCheck(ShipStatus __instance, PlayerStatistics statistics)
+            private static bool ImpostorWinCheck(ShipStatus __instance, PlayerStatistics statistics)
             {
                 if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive)
                 {
@@ -306,13 +304,14 @@ namespace SuperNewRoles.EndGame
                 }
                 return false;
             }
-            static void JesterWinCheck(ShipStatus __instance)
+            private static bool JesterWinCheck(ShipStatus __instance)
             {
                 if (Roles.RoleClass.Jester.IsJesterWin)
-                {
-
+                { 
                     __instance.enabled = false;
+                    return true;
                 }
+                return false;
             }
 
             private static bool CrewmateWinCheck(ShipStatus __instance, PlayerStatistics statistics)
@@ -325,13 +324,14 @@ namespace SuperNewRoles.EndGame
                 }
                 return false;
             }
-            static void QuarreledWinCheck(ShipStatus __instance)
+            private static bool QuarreledWinCheck(ShipStatus __instance)
             {
                 if (Roles.RoleClass.Quarreled.IsQuarreledWin)
                 {
-
                     __instance.enabled = false;
+                    return true;
                 }
+                return false;
             }
         }
     }

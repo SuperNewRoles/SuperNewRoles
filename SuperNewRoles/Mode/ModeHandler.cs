@@ -26,7 +26,6 @@ namespace SuperNewRoles.Mode
             } else if (isMode(ModeId.BattleRoyal))
             {
                 thisMode = ModeId.BattleRoyal;
-                BattleRoyal.main.ClearAndReload();
             }
             else {
                 thisMode = ModeId.Default;
@@ -86,14 +85,15 @@ namespace SuperNewRoles.Mode
             }
             return false;
         }
-        public static void EndGameChecks(ShipStatus __instance,PlayerStatistics statistics) {
+        public static bool EndGameChecks(ShipStatus __instance,PlayerStatistics statistics) {
             if (isMode(ModeId.HideAndSeek))
             {
-                HideAndSeek.main.EndGameCheck(__instance,statistics);
+                return HideAndSeek.main.EndGameCheck(__instance,statistics);
             } else if (isMode(ModeId.BattleRoyal))
             {
-                BattleRoyal.main.EndGameCheck(__instance, statistics);
+                return BattleRoyal.main.EndGameCheck(__instance, statistics);
             }
+            return false;
         }
     }
 }

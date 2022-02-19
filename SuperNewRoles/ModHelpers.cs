@@ -63,6 +63,26 @@ namespace SuperNewRoles
             }
             return murder;
         }
+        public static void SetPrivateRole(this PlayerControl player, RoleTypes role, PlayerControl seer = null)
+        {
+            if (player == null) return;
+            if (seer == null) seer = player;
+            var clientId = seer.getClientId();
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, Hazel.SendOption.Reliable, clientId);
+            writer.Write((ushort)role);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
+        public static InnerNet.ClientData getClient(this PlayerControl player)
+        {
+            var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
+            return client;
+        }
+        public static int getClientId(this PlayerControl player)
+        {
+            var client = player.getClient();
+            if (client == null) return -1;
+            return client.Id;
+        }
         public static bool hidePlayerName(PlayerControl source, PlayerControl target)
         {
             if (source == null || target == null) return true;
