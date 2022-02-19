@@ -318,8 +318,13 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
-            ) ;
+                49,
+                true,
+                RoleClass.SpeedBooster.DurationTime,
+                () => {
+                    SpeedBooster.SpeedBoostEnd();
+                }
+            );
 
             SpeedBoosterBoostButton.buttonText = ModTranslation.getString("SpeedBoosterBoostButtonName");
             SpeedBoosterBoostButton.showButtonText = true;
@@ -347,7 +352,12 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                true,
+                RoleClass.EvilSpeedBooster.DurationTime,
+                () => {
+                    EvilSpeedBooster.SpeedBoostEnd();
+                }
             );
 
             EvilSpeedBoosterBoostButton.buttonText = ModTranslation.getString("EvilSpeedBoosterBoostButtonName");

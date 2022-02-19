@@ -181,8 +181,8 @@ namespace SuperNewRoles.Patch
                 if (PlayerControl.LocalPlayer.IsQuarreled())
                 {
                     var Side = PlayerControl.LocalPlayer.GetOneSideQuarreled();
-                    SetNamesClass.SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.nameText.name + "○");
-                    SetNamesClass.SetPlayerNameText(Side, Side.nameText.name + "○");
+                    SetNamesClass.SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.nameText.text + "○");
+                    SetNamesClass.SetPlayerNameText(Side, Side.nameText.text + "○");
                 }
                 if (RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer)) {
                     foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer) {

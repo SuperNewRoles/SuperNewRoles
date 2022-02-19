@@ -221,7 +221,11 @@ namespace SuperNewRoles
         {
             static bool ClearRemove(PlayerControl p)
             {
-                if (p == ClearTarget) return true;
+                SuperNewRolesPlugin.Logger.LogInfo("-ClearRole-");
+                SuperNewRolesPlugin.Logger.LogInfo(p.PlayerId);
+                SuperNewRolesPlugin.Logger.LogInfo(ClearTarget.PlayerId);
+                SuperNewRolesPlugin.Logger.LogInfo("-----------");
+                if (p.PlayerId == ClearTarget.PlayerId) return true;
                 return false;
             }
             SuperNewRolesPlugin.Logger.LogInfo("ClearRole");

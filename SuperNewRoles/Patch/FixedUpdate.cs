@@ -16,7 +16,13 @@ namespace SuperNewRoles.Patch
             FixedUpdate.IsProDown = ConfigRoles.CustomProcessDown.Value;
         }        
     }
-    
+    [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]
+    public class AbilityUpdate { 
+        public static void Postfix(AbilityButton __instance)
+        {
+            __instance.commsDown.SetActive(false);
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     public class FixedUpdate
     {

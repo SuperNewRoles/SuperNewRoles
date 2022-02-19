@@ -28,6 +28,8 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption impostorRolesCountMax;
         public static CustomOption neutralRolesCountMax;
 
+        public static CustomOption IsDebugMode;
+
         public static CustomOption DeviceOptions;
         public static CustomOption DeviceUseAdmin;
         public static CustomOption DeviceUseVitalOrDoorLog;
@@ -255,7 +257,11 @@ namespace SuperNewRoles.CustomOption
             neutralRolesCountMax = CustomOption.Create(4, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralRole"), 0f, 0f, 15f, 1f);
             impostorRolesCountMax = CustomOption.Create(5, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 3f, 1f);
 
-            DeviceOptions = CustomOption.Create(115, cs(Color.white, "DeviceOptionsSetting"), false, null);
+            if (ConfigRoles.DebugMode.Value) {
+                IsDebugMode = CustomOption.Create(159, "デバッグモード", false, null, isHeader: true);
+            }
+
+            DeviceOptions = CustomOption.Create(115, cs(Color.white, "DeviceOptionsSetting"), false, null,isHeader:true);
             DeviceUseAdmin = CustomOption.Create(116, cs(Color.white, "DeviceUseAdminSetting"), true, DeviceOptions);
             DeviceUseVitalOrDoorLog = CustomOption.Create(117, cs(Color.white, "DeviceUseVitalOrDoorLogSetting"), true, DeviceOptions);
             DeviceUseCamera = CustomOption.Create(118, cs(Color.white, "DeviceUseCameraSetting"), true, DeviceOptions);

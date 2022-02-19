@@ -23,7 +23,6 @@ namespace SuperNewRoles.Patch
                     foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                     {
                         task.Complete();
-                        PlayerControl.LocalPlayer.RpcCompleteTask((uint)task.Index);
                     }
                     
                 }
