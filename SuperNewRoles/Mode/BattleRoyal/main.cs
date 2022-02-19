@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.BattleRoyal
 {
@@ -26,14 +27,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     }
                 }
                 return true;
-            }
-        }
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
-        class CheckMurderPatch {
-            public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
-            {
-                __instance.RpcMurderPlayer(target);
-                return false;
             }
         }
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.RepairSystem))]

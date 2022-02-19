@@ -89,6 +89,8 @@ namespace SuperNewRoles.Intro
                     return AllCleanerIntro;
                 case (CustomRPC.RoleId.NiceNekomata):
                     return NiceNekomataIntro;
+                case (CustomRPC.RoleId.EvilNekomata):
+                    return EvilNekomataIntro;
                 //イントロ検知
             }
 
@@ -136,6 +138,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate GodIntro = new IntroDate("God", RoleClass.God.color, 1, CustomRPC.RoleId.God);
         public static IntroDate AllCleanerIntro = new IntroDate("AllCleaner", RoleClass.AllCleaner.color, 1, CustomRPC.RoleId.AllCleaner);
         public static IntroDate NiceNekomataIntro = new IntroDate("NiceNekomata", RoleClass.NiceNekomata.color, 1, CustomRPC.RoleId.NiceNekomata);
+        public static IntroDate EvilNekomataIntro = new IntroDate("EvilNekomata", RoleClass.EvilNekomata.color, 1, CustomRPC.RoleId.EvilNekomata);
         //イントロオブジェ
     }
 }

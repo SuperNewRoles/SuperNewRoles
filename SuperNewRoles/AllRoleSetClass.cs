@@ -506,6 +506,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.AllCleanerPlayerCount.getFloat();
                     case (RoleId.NiceNekomata):
                     return CustomOption.CustomOptions.NiceNekomataPlayerCount.getFloat();
+                    case (RoleId.EvilNekomata):
+                    return CustomOption.CustomOptions.EvilNekomataPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1135,6 +1137,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.EvilNekomataOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.EvilNekomataOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.EvilNekomata;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }

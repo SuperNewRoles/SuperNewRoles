@@ -63,6 +63,7 @@ namespace SuperNewRoles.Roles
             God.ClearAndReload();
             AllCleaner.ClearAndReload();
             NiceNekomata.ClearAndReload();
+            EvilNekomata.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -696,10 +697,21 @@ namespace SuperNewRoles.Roles
         public static class NiceNekomata
         {
             public static List<PlayerControl> NiceNekomataPlayer;
-            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static Color32 color = new Color32(244, 164, 96, byte.MaxValue);
+            public static bool IsChain;
             public static void ClearAndReload()
             {
                 NiceNekomataPlayer = new List<PlayerControl>();
+                IsChain = CustomOptions.NiceNekomataIsChain.getBool();
+            }
+        }
+        public static class EvilNekomata
+        {
+            public static List<PlayerControl> EvilNekomataPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                EvilNekomataPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

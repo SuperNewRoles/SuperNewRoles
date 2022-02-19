@@ -214,6 +214,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption NiceNekomataPlayerCount;
         public static CustomOption NiceNekomataIsChain;
 
+        public static CustomRoleOption EvilNekomataOption;
+        public static CustomOption EvilNekomataPlayerCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -433,7 +436,10 @@ namespace SuperNewRoles.CustomOption
 
             NiceNekomataOption = new CustomRoleOption(154, "NiceNekomataName", RoleClass.NiceNekomata.color, 1);
             NiceNekomataPlayerCount = CustomOption.Create(155, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceNekomataOption);
-            NiceNekomataIsChain = CustomOption.Create(156, cs(Color.white, "AllCleanerCountSetting"), true, NiceNekomataOption);
+            NiceNekomataIsChain = CustomOption.Create(156, cs(Color.white, "NiceNekomataIsChainSetting"), true, NiceNekomataOption);
+
+            EvilNekomataOption = new CustomRoleOption(157, "EvilNekomataName", RoleClass.EvilNekomata.color, 1);
+            EvilNekomataPlayerCount = CustomOption.Create(158, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilNekomataOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

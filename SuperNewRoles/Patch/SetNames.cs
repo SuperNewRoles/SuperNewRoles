@@ -29,7 +29,7 @@ namespace SuperNewRoles.Patch
 
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                player.nameText.text = ModHelpers.hidePlayerName(PlayerControl.LocalPlayer, player) ? "" : player.CurrentOutfit.PlayerName;
+                player.nameText.text = player.CurrentOutfit.PlayerName;
                 if (PlayerControl.LocalPlayer.Data.Role.IsImpostor && player.Data.Role.IsImpostor)
                 {
                     player.nameText.color = Palette.ImpostorRed;

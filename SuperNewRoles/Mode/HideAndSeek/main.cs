@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.HideAndSeek
 {
@@ -10,7 +11,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
     {
         public static bool EndGameCheck(ShipStatus __instance,PlayerStatistics statistics)
         {
-            if (statistics.TeamCrewAlive == 0) {
+            if (statistics.CrewAlive == 0) {
                 SuperNewRolesPlugin.Logger.LogInfo("ENDDED!!!");
                 __instance.enabled = false;
                 ShipStatus.RpcEndGame(GameOverReason.ImpostorByKill, false);

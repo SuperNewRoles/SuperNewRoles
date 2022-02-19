@@ -50,6 +50,7 @@ namespace SuperNewRoles.CustomRPC
         God,
         AllCleaner,
         NiceNekomata,
+        EvilNekomata,
         //RoleId
     }
 
