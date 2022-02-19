@@ -49,6 +49,7 @@ namespace SuperNewRoles.CustomRPC
         SelfBomber,
         God,
         AllCleaner,
+        NiceNekomata,
         //RoleId
     }
 

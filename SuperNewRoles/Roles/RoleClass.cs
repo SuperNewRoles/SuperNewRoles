@@ -62,6 +62,7 @@ namespace SuperNewRoles.Roles
             SelfBomber.ClearAndReload();
             God.ClearAndReload();
             AllCleaner.ClearAndReload();
+            NiceNekomata.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -690,6 +691,15 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 AllCleanerPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class NiceNekomata
+        {
+            public static List<PlayerControl> NiceNekomataPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                NiceNekomataPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

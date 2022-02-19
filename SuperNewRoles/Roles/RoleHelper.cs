@@ -201,6 +201,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.AllCleaner):
                     Roles.RoleClass.AllCleaner.AllCleanerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.NiceNekomata):
+                    Roles.RoleClass.NiceNekomata.NiceNekomataPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -431,6 +434,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.AllCleaner.AllCleanerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.AllCleaner;
+            }
+            else if (Roles.RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.NiceNekomata;
             }
             //ロールチェック
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;
