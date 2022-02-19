@@ -16,9 +16,19 @@ namespace SuperNewRoles.Patch
             FixedUpdate.IsProDown = ConfigRoles.CustomProcessDown.Value;
         }        
     }
+    
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     public class FixedUpdate
     {
+        static void setBasePlayerOutlines()
+        {
+            foreach (PlayerControl target in PlayerControl.AllPlayerControls)
+            {
+                if (target == null || target.myRend == null) continue;
+                target.myRend.material.SetFloat("_Outline", 0f);
+            }
+        }
+
         static bool ProDown = false;
         public static bool IsProDown;
 
@@ -30,6 +40,7 @@ namespace SuperNewRoles.Patch
                 if (IsProDown && ProDown) return;
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                 {
+                    setBasePlayerOutlines();
                     VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
                     if (ModeHandler.isMode(ModeId.Default))
                     {
