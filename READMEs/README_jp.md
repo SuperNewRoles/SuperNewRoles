@@ -13,9 +13,9 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 ## クレジット
 
-[TheOtherRoles](https://github.com/Eisbison/TheOtherRoles) オプションやボタンなどのソースコードを参考にさせていただきました。**Eisbision**さんありがとうございます！
+[TheOtherRoles](https://github.com/Eisbison/TheOtherRoles) modの作り方の参考にさせていただきました。**Eisbision**さんありがとうございます！
 
-[TheOtherRolesGM](https://github.com/yukinogatari/TheOtherRoles-GM) 言語対応の参考にしました。**yukinogatari**さんありがとうございます！
+[TheOtherRolesGM](https://github.com/yukinogatari/TheOtherRoles-GM) オプションやボタンなどのソースコードを参考にさせていただきました。**yukinogatari**さんありがとうございます！
 
 [Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) - カスタムゲームオプション
 **DorCoMaNdO**: 
@@ -25,8 +25,8 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 (TheOtherRolesより&Google翻訳より)
 
-[BepInEx](https://github.com/BepInEx) - modを適用するために使いました。
-[AllKillerとSideNewKiller](https://www.twitch.tv/dhalucard) - 元のアイデアは **Dhalucard**から来ています。元の名前:Jackal、SideKick(TheOtherRolesより)\
-[Town Of Host](https://github.com/tukasa0001/TownOfHost) - デバッグ用に使用。DEBUGモードを使用させてもらいました。**tukasa0001**さんありがとうございます！
-[Jester](https://github.com/Maartii/Jester) - Jester(てるてる)のアイデアは、 **Maartii** から来ています。(TheOtherRolesから引用)\
-[Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)\
+[BepInEx](https://github.com/BepInEx) - modを適用するために使いました。<br>
+[AllKillerとSideNewKiller](https://www.twitch.tv/dhalucard) - 元のアイデアは **Dhalucard**から来ています。元の名前:Jackal、SideKick(TheOtherRolesより)<br>
+[Town Of Host](https://github.com/tukasa0001/TownOfHost) - デバッグ用に使用。DEBUGモードを使用させてもらいました。**tukasa0001**さんありがとうございます！<br>
+[Jester](https://github.com/Maartii/Jester) - Jester(てるてる)のアイデアは、 **Maartii** から来ています。(TheOtherRolesから引用)<br>
+[Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)
