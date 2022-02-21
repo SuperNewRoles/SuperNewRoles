@@ -27,7 +27,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 (from TheOtherRoles & from Google Translate)
 
 [BepInEx](https://github.com/BepInEx) - I used it to apply the mod.
-[AllKiller and SideNewKiller](https://www.twitch.tv/dhalucard) - Original idea came from **Dhalucard**. Original name: Jackal, SideKick (from TheOtherRoles).
-[Town Of Host](https://github.com/tukasa0001/TownOfHost) - Used for debugging, and allowed me to use DEBUG mode. Thanks to **tukasa0001**!
-[Jester](https://github.com/Maartii/Jester) - The idea for Jester (Teruteru) came from **Maartii**. (Taken from TheOtherRoles)
+[Jackal and Sidekick](https://www.twitch.tv/dhalucard) - Original idea came from **Dhalucard** (from TheOtherRoles).
+[Town Of Host](https://github.com/tukasa0001/TownOfHost) - Used for debugging, and allowed me to use DEBUG mode. Thanks to **tukasa0001**!<br.
+[Jester](https://github.com/Maartii/Jester) - The idea for Jester (Teruteru) came from **Maartii**. (Taken from TheOtherRoles)<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - The idea for Sheriff comes from **Woodi-dev**. (Taken from TheOtherRoles)
