@@ -30,11 +30,33 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [Town Of Host](https://github.com/tukasa0001/TownOfHost) - デバッグ用に使用。DEBUGモードを使用させてもらいました。**tukasa0001**さんありがとうございます！<br>
 [Jester](https://github.com/Maartii/Jester) - Jester(てるてる)のアイデアは、 **Maartii** から来ています。(TheOtherRolesから引用)<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)
+[au.libhalt.net](https://au.libhalt.net) - ナイス猫又/イビル猫又のアイデアは **au.libhalt.net** から来ています。
 
 ## 連絡について
 
 Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/95YuUZp4kM)
 
 ## 役職一覧
-現在作成中です。
 Discordサーバーにはすでに乗っています。
+| インポスター | クルーメイト | 第三陣営 | 重複陣営 |
+|----------|-------------|-----------------|----------------|
+| [テレポーター](#Teleporter) | [Nice Mini](#mini) | [Arsonist](#arsonist) | [Lover](#lovers) |
+| [イビルスピードブースター](#EvilSpeedBooster) | [Nice Guesser](#guesser) | [Jester](#jester) |  |
+| [イビルドアー](#EvilDoorr) | [Detective](#detective) | [Jackal](#jackal) |  |
+| [イビルギャンブラー](#EvilGambler) | [Engineer](#engineer) | [Sidekick](#sidekick) |  |
+| [自爆魔](#SelfBomber) | [Hacker](#hacker) | [Vulture](#vulture) |  |
+| [イビル猫又](#EvilNekomata) | [Lighter](#lighter) | [Lawyer](#lawyer) |  |
+|  | [Mayor](#mayor) |  |  |
+|  | [Medic](#medic) |  |  |
+|  | [Security Guard](#security-guard) |  |  |
+|  | [Seer](#seer) |  |  |
+|  | [Sheriff](#sheriff) 
+|  | [Deputy](#deputy) |  |
+|  | [Shifter](#shifter) |  |  |
+|  | [Snitch](#snitch) |  |  |
+|  | [Spy](#spy) |  |  |
+|  | [Swapper](#swapper) |  |  |
+|  | [Time Master](#time-master) |  |  |
+|  |  [Tracker](#tracker) |  |  |
+|  |  [Bait](#bait) |  |
+|  |  [Medium](#medium) |  |
