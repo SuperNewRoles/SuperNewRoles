@@ -40,15 +40,15 @@ It is already on the Discord server.
 
 | Impostor | Crewmate | Neutral | Redundant Camps |
 |----------|-------------|-----------------|----------------|
-| [Teleporter](#Teleporter) | [ライター](#Lighter) | [てるてる](#Jester) | [クラード](#Quarreled) |
-| [](#EvilSpeedBooster) | [シェリフ](#Sheriff) | [オポチュニスト](#Opportunist) |  |
-| [イビルドアー](#EvilDoorr) | [スピードブースター](#SpeedBooster) | [ジャッカル](#Jackal) |  |
-| [イビルギャンブラー](#EvilGambler) | [ドアー](#Doorr) | [サイドキック](#Sidekick) |  |
-| [自爆魔](#SelfBomber) | [聖職者](#Clergyman) | [神](God) | |
-| [イビル猫又](#EvilNekomata) | [マッドメイト](#Madmate) | | |
-|  | [ベイト](#Bait) |  |  |
-|  | [自宅警備員](#HomeSecurityGuard) |  |  |
-|  | [スタントマン](#Stuntman) |  |  |
-|  | [ムービング](#Moving) |  |  |
-|  | [ベスト冤罪ヤー](#BestFalseCharge) |  |  |
-|  | [ナイス猫又](#deputy) |  |  |
+| [Teleporter](#Teleporter) | [Lighter](#Lighter) | [Jester](#Jester) | [Quarreled](#Quarreled) |
+| [Evil SpeedBooster](#EvilSpeedBooster) | [Sheriff](#Sheriff) | [Opportunist](#Opportunist) |  |
+| [Evil Doorr](#EvilDoorr) | [SpeedBooster](#SpeedBooster) | [Jackal](#Jackal) |  |
+| [Evil Gambler](#EvilGambler) | [Doorr](#Doorr) | [Sidekick](#Sidekick) |  |
+| [Self Bomber](#SelfBomber) | [Clergyman](#Clergyman) | [God](#God) | |
+| [Evil Nekomata](#EvilNekomata) | [Madmate](#Madmate) | | |
+|  | [Bait](#Bait) |  |  |
+|  | [Home Security Guard](#HomeSecurityGuard) |  |  |
+|  | [Stuntman](#Stuntman) |  |  |
+|  | [Moving](#Moving) |  |  |
+|  | [Best False Charge](#BestFalseCharge) |  |  |
+|  | [Nice Nekomata](#NiceNekomata) |  |  |
