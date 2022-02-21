@@ -11,6 +11,19 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 [日本語←](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_jp.md)
 
+# このMODの特徴
+## コントローラー対応
+ボタンの使用にコントローラーが使えます!
+
+## 1役職に複数人設定できる
+クルーメイト全員がシェリフなどもできます!
+
+## モードがある
+通常とは別で、[かくれんぼモード](#かくれんぼモード)などが追加されています。
+
+## 一部ホストのみでも行けるように対応!
+一部、ホストが入れるだけで全員が使えるモード、役職があります!
+
 ## クレジット
 
 [TheOtherRoles](https://github.com/Eisbison/TheOtherRoles) modの作り方の参考にさせていただきました。**Eisbision**さんありがとうございます！
@@ -37,7 +50,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/95YuUZp4kM)
 
 ## 役職一覧
-Discordサーバーにはすでに乗っています。
+Discordサーバーには全てすでに乗っています。
 | インポスター | クルーメイト | 第三陣営 | 重複陣営 |
 |----------|-------------|-----------------|----------------|
 | [テレポーター](#テレポーター) | [ライター](#Lighter) | [てるてる](#てるてる) | [クラード](#Quarreled) |
@@ -211,5 +224,13 @@ Discordサーバーにはすでに乗っています。
 [ジャッカル](#ジャッカル)にサイドキックされることで、<br>
 この役職になります。<br>
 ジャッカルが全員死亡すると、サイドキックへと昇格します。
+
+-----------------------
+
+## 神
+### 第三陣営
+
+全員の役職が分かります。
+最後まで生き残っていると単独勝利です。
 
 -----------------------
