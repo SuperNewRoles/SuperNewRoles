@@ -34,3 +34,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 ## 連絡について
 
 Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/95YuUZp4kM)
+
+## 役職一覧
+現在作成中です。
+Discordサーバーにはすでに乗っています。
