@@ -44,7 +44,7 @@ Discordサーバーにはすでに乗っています。
 | [イビルスピードブースター](#EvilSpeedBooster) | [シェリフ](#Sheriff) | [オポチュニスト](#Opportunist) |  |
 | [イビルドアー](#EvilDoorr) | [スピードブースター](#SpeedBooster) | [ジャッカル](#Jackal) |  |
 | [イビルギャンブラー](#EvilGambler) | [ドアー](#Doorr) | [サイドキック](#Sidekick) |  |
-| [自爆魔](#SelfBomber) | [聖職者](#Clergyman) | [神](God) | |
+| [自爆魔](#SelfBomber) | [聖職者](#Clergyman) | [神](#God) | |
 | [イビル猫又](#EvilNekomata) | [マッドメイト](#Madmate) | | |
 |  | [ベイト](#Bait) |  |  |
 |  | [自宅警備員](#HomeSecurityGuard) |  |  |
