@@ -26,7 +26,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 (TheOtherRolesより&Google翻訳より)
 
 [BepInEx](https://github.com/BepInEx) - modを適用するために使いました。<br>
-[AllKillerとSideNewKiller](https://www.twitch.tv/dhalucard) - 元のアイデアは **Dhalucard**から来ています。元の名前:Jackal、SideKick(TheOtherRolesより)<br>
+[JackalとSidekick](https://www.twitch.tv/dhalucard) - 元のアイデアは **Dhalucard**から来ています。(TheOtherRolesより)<br>
 [Town Of Host](https://github.com/tukasa0001/TownOfHost) - デバッグ用に使用。DEBUGモードを使用させてもらいました。**tukasa0001**さんありがとうございます！<br>
 [Jester](https://github.com/Maartii/Jester) - Jester(てるてる)のアイデアは、 **Maartii** から来ています。(TheOtherRolesから引用)<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)
