@@ -230,7 +230,14 @@ namespace SuperNewRoles.Roles
             public static bool IsUseSabo;
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
-            public static bool IsCreateSidekick;
+            public static bool IsCreateSidekick; 
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.JackalSidekickButton.png", 115f);
+                return buttonSprite;
+            }
             public static void clearAndReload()
             {
                 JackalPlayer = new List<PlayerControl>();
@@ -549,16 +556,16 @@ namespace SuperNewRoles.Roles
             public static Vector3 setpostion;
             private static Sprite nosetbuttonSprite;
             private static Sprite setbuttonSprite;
-            public static Sprite getSetButtonSprite()
+            public static Sprite getNoSetButtonSprite()
             {
                 if (setbuttonSprite) return setbuttonSprite;
                 setbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MovingLocationSetButton.png", 115f);
                 return setbuttonSprite;
             }
-            public static Sprite getNoSetButtonSprite()
+            public static Sprite getSetButtonSprite()
             {
                 if (nosetbuttonSprite) return nosetbuttonSprite;
-                nosetbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
+                nosetbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MovingTpButton.png", 115f);
                 return nosetbuttonSprite;
             }
             public static void ClearAndReload()
