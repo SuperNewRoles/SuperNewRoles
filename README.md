@@ -36,5 +36,19 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 Please use the Discord server:[Discord server](https://discord.gg/95YuUZp4kM)
 
 ## List of Positions
-Currently being created.
 It is already on the Discord server.
+
+| Impostor | Crewmate | Neutral | Redundant Camps |
+|----------|-------------|-----------------|----------------|
+| [Teleporter](#Teleporter) | [ライター](#Lighter) | [てるてる](#Jester) | [クラード](#Quarreled) |
+| [](#EvilSpeedBooster) | [シェリフ](#Sheriff) | [オポチュニスト](#Opportunist) |  |
+| [イビルドアー](#EvilDoorr) | [スピードブースター](#SpeedBooster) | [ジャッカル](#Jackal) |  |
+| [イビルギャンブラー](#EvilGambler) | [ドアー](#Doorr) | [サイドキック](#Sidekick) |  |
+| [自爆魔](#SelfBomber) | [聖職者](#Clergyman) | [神](God) | |
+| [イビル猫又](#EvilNekomata) | [マッドメイト](#Madmate) | | |
+|  | [ベイト](#Bait) |  |  |
+|  | [自宅警備員](#HomeSecurityGuard) |  |  |
+|  | [スタントマン](#Stuntman) |  |  |
+|  | [ムービング](#Moving) |  |  |
+|  | [ベスト冤罪ヤー](#BestFalseCharge) |  |  |
+|  | [ナイス猫又](#deputy) |  |  |
