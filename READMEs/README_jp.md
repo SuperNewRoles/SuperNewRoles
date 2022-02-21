@@ -31,6 +31,6 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [Jester](https://github.com/Maartii/Jester) - Jester(てるてる)のアイデアは、 **Maartii** から来ています。(TheOtherRolesから引用)<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)
 
-##連絡について
+## 連絡について
 
 Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/95YuUZp4kM)
