@@ -32,5 +32,5 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [Jester](https://github.com/Maartii/Jester) - The idea for Jester (Teruteru) came from **Maartii**. (Taken from TheOtherRoles)<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - The idea for Sheriff comes from **Woodi-dev**. (Taken from TheOtherRoles)
 
-##About Contact
+## About Contact
 Please use the Discord server:[Discord server](https://discord.gg/95YuUZp4kM)
