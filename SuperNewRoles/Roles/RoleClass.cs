@@ -75,7 +75,7 @@ namespace SuperNewRoles.Roles
         public static class SoothSayer
         {
             public static List<PlayerControl> SoothSayerPlayer;
-            public static bool DisplayMode;
+            //public static bool DisplayMode;
             public static Color32 color = new Color32(190, 86, 235, byte.MaxValue);
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
@@ -87,7 +87,7 @@ namespace SuperNewRoles.Roles
             public static void clearAndReload()
             {
                 SoothSayerPlayer = new List<PlayerControl>();
-                DisplayMode = CustomOptions.SoothSayerDisplayMode.getBool();
+                //DisplayMode = CustomOptions.SoothSayerDisplayMode.getBool();
             }
 
         }
@@ -141,14 +141,14 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> EvilLighterPlayer;
             public static Color32 color = RoleClass.ImpostorRed;
-            public static float CoolTime;
-            public static float DurationTime;
+            //public static float CoolTime;
+            //public static float DurationTime;
 
             public static void clearAndReload()
             {
                 EvilLighterPlayer = new List<PlayerControl>();
-                CoolTime = CustomOptions.EvilLighterCoolTime.getFloat();
-                DurationTime = CustomOptions.EvilLighterDurationTime.getFloat();
+                //CoolTime = CustomOptions.EvilLighterCoolTime.getFloat();
+                //DurationTime = CustomOptions.EvilLighterDurationTime.getFloat();
             }
 
         }
@@ -156,14 +156,14 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> EvilScientistPlayer;
             public static Color32 color = RoleClass.ImpostorRed;
-            public static float CoolTime;
-            public static float DurationTime;
+            //public static float CoolTime;
+            //public static float DurationTime;
 
             public static void clearAndReload()
             {
                 EvilScientistPlayer = new List<PlayerControl>();
-                CoolTime = CustomOptions.EvilScientistCoolTime.getFloat();
-                DurationTime = CustomOptions.EvilScientistDurationTime.getFloat();
+                //CoolTime = CustomOptions.EvilScientistCoolTime.getFloat();
+                //DurationTime = CustomOptions.EvilScientistDurationTime.getFloat();
             }
 
         }
@@ -199,9 +199,9 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> MeetingSheriffPlayer;
             public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
-            public static bool MadMateKill;
-            public static float KillMaxCount;
-            public static bool OneMeetingMultiKill;
+            //public static bool MadMateKill;
+            //public static float KillMaxCount;
+            //public static bool OneMeetingMultiKill;
 
             private static Sprite buttonSprite;
 
@@ -214,9 +214,9 @@ namespace SuperNewRoles.Roles
             public static void clearAndReload()
             {
                 MeetingSheriffPlayer = new List<PlayerControl>();
-                MadMateKill = CustomOptions.SheriffMadMateKill.getBool();
-                KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
-                OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.getBool();
+                //MadMateKill = CustomOptions.SheriffMadMateKill.getBool();
+                //KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
+                //OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.getBool();
             }
 
         }
@@ -270,14 +270,14 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SpiritMediumPlayer;
             public static Color32 color = new Color32(0, 191, 255, byte.MaxValue);
-            public static bool DisplayMode;
-            public static float MaxCount;
+            //public static bool DisplayMode;
+            //public static float MaxCount;
 
             public static void clearAndReload()
             {
                 SpiritMediumPlayer = new List<PlayerControl>();
-                DisplayMode = CustomOptions.SpiritMediumDisplayMode.getBool();
-                MaxCount = CustomOptions.SpiritMediumMaxCount.getFloat();
+                //DisplayMode = CustomOptions.SpiritMediumDisplayMode.getBool();
+                //MaxCount = CustomOptions.SpiritMediumMaxCount.getFloat();
             }
 
         }
@@ -334,14 +334,14 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> TaskerPlayer;
             public static Color32 color = ImpostorRed;
-            public static bool IsKill;
-            public static float TaskCount;
+            //public static bool IsKill;
+            //public static float TaskCount;
 
             public static void clearAndReload()
             {
                 TaskerPlayer = new List<PlayerControl>();
-                IsKill = CustomOptions.TaskerIsKill.getBool();
-                TaskCount = CustomOptions.TaskerAmount.getFloat();
+                //IsKill = CustomOptions.TaskerIsKill.getBool();
+                //TaskCount = CustomOptions.TaskerAmount.getFloat();
             }
         }
         public static class Doorr
@@ -380,21 +380,21 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SealdorPlayer;
             public static Color32 color = new Color32(100, 149, 237, byte.MaxValue);
-            public static float CoolTime;
-            public static float DurationTime;
+            //public static float CoolTime;
+            //public static float DurationTime;
             public static void clearAndReload()
             {
                 SealdorPlayer = new List<PlayerControl>();
-                CoolTime = CustomOptions.SealdorCoolTime.getFloat();
-                DurationTime = CustomOptions.SealdorDurationTime.getFloat();
+                //CoolTime = CustomOptions.SealdorCoolTime.getFloat();
+                //DurationTime = CustomOptions.SealdorDurationTime.getFloat();
             }
         }
         public static class Freezer
         {
             public static List<PlayerControl> FreezerPlayer;
             public static Color32 color = ImpostorRed;
-            public static float CoolTime;
-            public static float DurationTime;
+            //public static float CoolTime;
+            //public static float DurationTime;
             private static Sprite ButtonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -405,8 +405,8 @@ namespace SuperNewRoles.Roles
             public static void clearAndReload()
             {
                 FreezerPlayer = new List<PlayerControl>();
-                CoolTime = CustomOptions.FreezerCoolTime.getFloat();
-                DurationTime = CustomOptions.FreezerDurationTime.getFloat();
+                //CoolTime = CustomOptions.FreezerCoolTime.getFloat();
+                //DurationTime = CustomOptions.FreezerDurationTime.getFloat();
             }
         }
 
@@ -414,13 +414,13 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SpeederPlayer;
             public static Color32 color = ImpostorRed;
-            public static float CoolTime;
-            public static float DurationTime;
+            //public static float CoolTime;
+            //public static float DurationTime;
             public static void clearAndReload()
             {
                 SpeederPlayer = new List<PlayerControl>();
-                CoolTime = CustomOptions.SpeederCoolTime.getFloat();
-                DurationTime = CustomOptions.SpeederDurationTime.getFloat();
+                //CoolTime = CustomOptions.SpeederCoolTime.getFloat();
+                //DurationTime = CustomOptions.SpeederDurationTime.getFloat();
             }
         }
         public static class Guesser
@@ -580,12 +580,12 @@ namespace SuperNewRoles.Roles
         public static class NiceGambler
         {
             public static List<PlayerControl> NiceGamblerPlayer;
-            public static int Num;
+            //public static int Num;
             public static Color32 color = new Color32(218, 112, 214, byte.MaxValue);
             public static void ClearAndReload()
             {
                 NiceGamblerPlayer = new List<PlayerControl>();
-                Num = (int)CustomOptions.NiceGamblerUseCount.getFloat();
+                //Num = (int)CustomOptions.NiceGamblerUseCount.getFloat();
             }
         }
         public static class EvilGambler
@@ -644,7 +644,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> ResearcherPlayer;
             public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
-            public static Vector3 SamplePosition;
+            //public static Vector3 SamplePosition;
             private static List<Vector3> SamplePoss = new List<Vector3>() {
                 new Vector3(-11, -2.1f, 0),
                 new Vector3(16.9f, 0.4f, 0),
@@ -661,7 +661,7 @@ namespace SuperNewRoles.Roles
                 OKSamplePlayers = new List<PlayerControl>();
                 GetSamplePlayers = new List<PlayerControl>();
                 SuperNewRolesPlugin.Logger.LogInfo("mapid"+Constants.MapNames[PlayerControl.GameOptions.MapId]);
-                SamplePosition = SamplePoss[PlayerControl.GameOptions.MapId];
+                //SamplePosition = SamplePoss[PlayerControl.GameOptions.MapId];
                 MySample = 0;
             }
         }

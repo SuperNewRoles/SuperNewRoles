@@ -94,6 +94,14 @@ namespace SuperNewRoles.Intro
                 case (CustomRPC.RoleId.EvilNekomata):
                     return EvilNekomataIntro;
                 //イントロ検知
+                case (CustomRPC.RoleId.DefaultRole):
+                    if (PlayerControl.LocalPlayer.Data.Role.IsImpostor) {
+                        return ImpostorIntro;
+                    } else
+                    {
+                        return CrewmateIntro;
+                    }
+                    
             }
 
             return SheriffIntro;
@@ -103,6 +111,8 @@ namespace SuperNewRoles.Intro
             System.Random r1 = new System.Random();
             return ModTranslation.getString(name + "Title" + r1.Next(1, num + 1).ToString());
         }
+        public static IntroDate CrewmateIntro = new IntroDate("CrewMate", Color.white, 1, CustomRPC.RoleId.DefaultRole);
+        public static IntroDate ImpostorIntro = new IntroDate("Impostor", RoleClass.ImpostorRed, 1, CustomRPC.RoleId.DefaultRole);
         public static IntroDate SoothSayerIntro = new IntroDate("SoothSayer", RoleClass.SoothSayer.color, 1, CustomRPC.RoleId.SoothSayer);
         public static IntroDate JesterIntro = new IntroDate("Jester", RoleClass.Jester.color, 1, CustomRPC.RoleId.Jester);
         public static IntroDate LighterIntro = new IntroDate("Lighter",RoleClass.Lighter.color,1,CustomRPC.RoleId.Lighter);

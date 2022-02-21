@@ -498,15 +498,15 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.BestfalsechargePlayerCount.getFloat();
                 case (RoleId.Researcher):
                     return CustomOption.CustomOptions.ResearcherPlayerCount.getFloat();
-                    case (RoleId.SelfBomber):
+                case (RoleId.SelfBomber):
                     return CustomOption.CustomOptions.SelfBomberPlayerCount.getFloat();
-                    case (RoleId.God):
+                case (RoleId.God):
                     return CustomOption.CustomOptions.GodPlayerCount.getFloat();
-                    case (RoleId.AllCleaner):
+                case (RoleId.AllCleaner):
                     return CustomOption.CustomOptions.AllCleanerPlayerCount.getFloat();
-                    case (RoleId.NiceNekomata):
+                case (RoleId.NiceNekomata):
                     return CustomOption.CustomOptions.NiceNekomataPlayerCount.getFloat();
-                    case (RoleId.EvilNekomata):
+                case (RoleId.EvilNekomata):
                     return CustomOption.CustomOptions.EvilNekomataPlayerCount.getFloat();
                     //プレイヤーカウント
             }
@@ -544,6 +544,7 @@ namespace SuperNewRoles
             SuperNewRolesPlugin.Logger.LogInfo(CustomOption.CustomOptions.EvilLighterOption.getString().Replace("0%", ""));
             SuperNewRolesPlugin.Logger.LogInfo(CustomOption.CustomOptions.EvilSpeedBoosterOption.getString().Replace("0%", ""));
             SuperNewRolesPlugin.Logger.LogInfo("-----");
+            /**
             if (!(CustomOption.CustomOptions.SoothSayerOption.getString().Replace("0%", "") == ""))
             {
                 SuperNewRolesPlugin.Logger.LogInfo("占い師いいいいい");
@@ -560,6 +561,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            **/
             if (!(CustomOption.CustomOptions.JesterOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.JesterOption.getString().Replace("0%", ""));
@@ -593,6 +595,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            /**
             if (!(CustomOption.CustomOptions.EvilLighterOption.getString().Replace("0%", "") == ""))
             {
                 SuperNewRolesPlugin.Logger.LogInfo("EvilLighterSelected!!!!");
@@ -626,6 +629,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            **/
             if (!(CustomOption.CustomOptions.SheriffOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SheriffOption.getString().Replace("0%", ""));
@@ -642,6 +646,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            /**
             if (!(CustomOption.CustomOptions.MeetingSheriffOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MeetingSheriffOption.getString().Replace("0%", ""));
@@ -658,6 +663,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            **/
             if (!(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", ""));
@@ -690,6 +696,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            /**
             if (!(CustomOption.CustomOptions.SpiritMediumOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SpiritMediumOption.getString().Replace("0%", ""));
@@ -706,6 +713,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            **/
             if (!(CustomOption.CustomOptions.SpeedBoosterOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SpeedBoosterOption.getString().Replace("0%", ""));
@@ -738,6 +746,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            /**
             if (!(CustomOption.CustomOptions.TaskerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.TaskerOption.getString().Replace("0%", ""));
@@ -754,6 +763,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            **/
             if (!(CustomOption.CustomOptions.DoorrOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.DoorrOption.getString().Replace("0%", ""));
@@ -786,6 +796,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            /**
             if (!(CustomOption.CustomOptions.SealdorOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SealdorOption.getString().Replace("0%", ""));
@@ -866,7 +877,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-//
             if (!(CustomOption.CustomOptions.VultureOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.VultureOption.getString().Replace("0%", ""));
@@ -883,7 +893,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-            SuperNewRolesPlugin.Logger.LogInfo("ばあいおｐｆじぇをふぇｗｑ");
             if (!(CustomOption.CustomOptions.NiceScientistOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.NiceScientistOption.getString().Replace("0%", ""));
@@ -900,6 +909,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            **/
             if (!(CustomOption.CustomOptions.ClergymanOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.ClergymanOption.getString().Replace("0%", ""));
@@ -1012,6 +1022,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            /**
             if (!(CustomOption.CustomOptions.NiceGamblerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.NiceGamblerOption.getString().Replace("0%", ""));
@@ -1028,6 +1039,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            **/
             if (!(CustomOption.CustomOptions.EvilGamblerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.EvilGamblerOption.getString().Replace("0%", ""));
@@ -1060,6 +1072,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            /**
         if (!(CustomOption.CustomOptions.ResearcherOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.ResearcherOption.getString().Replace("0%", ""));
@@ -1076,7 +1089,8 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.SelfBomberOption.getString().Replace("0%", "") == ""))
+            **/
+            if (!(CustomOption.CustomOptions.SelfBomberOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SelfBomberOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.SelfBomber;
@@ -1108,6 +1122,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+        /**
         if (!(CustomOption.CustomOptions.AllCleanerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.AllCleanerOption.getString().Replace("0%", ""));
@@ -1124,6 +1139,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            **/
         if (!(CustomOption.CustomOptions.NiceNekomataOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.NiceNekomataOption.getString().Replace("0%", ""));

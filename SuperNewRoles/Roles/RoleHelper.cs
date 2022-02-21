@@ -228,6 +228,7 @@ namespace SuperNewRoles
                 if (p.PlayerId == ClearTarget.PlayerId) return true;
                 return false;
             }
+            ClearTarget = player;
             SuperNewRolesPlugin.Logger.LogInfo("ClearRole");
             switch (player.getRole())
             {

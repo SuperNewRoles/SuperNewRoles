@@ -16,10 +16,11 @@ namespace SuperNewRoles.Roles
             public static void Postfix(PlayerControl __instance)
             {
                     bool IsError = false;
-                    RoleClass.Bait.ReportTime -= Time.fixedDeltaTime;
                     SuperNewRolesPlugin.Logger.LogInfo(RoleClass.Bait.ReportTime);
-                    DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == PlayerControl.LocalPlayer.PlayerId)?.FirstOrDefault();
-                    if (deadPlayer.killerIfExisting != null && RoleClass.Bait.ReportTime <= 0f)
+                RoleClass.Bait.ReportTime -= Time.fixedDeltaTime;
+                DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == PlayerControl.LocalPlayer.PlayerId)?.FirstOrDefault();
+
+                if (deadPlayer.killerIfExisting != null && RoleClass.Bait.ReportTime <= 0f)
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ReportDeadBody, Hazel.SendOption.Reliable, -1);
                         writer.Write(deadPlayer.killerIfExisting.PlayerId);

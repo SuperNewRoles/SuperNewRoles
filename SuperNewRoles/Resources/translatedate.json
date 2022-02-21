@@ -192,6 +192,10 @@
         "0" : "Update Process Down" ,
         "11" : "\u51e6\u7406\u56de\u6570\u3092\u6e1b\u3089\u3059"
         } ,
+ "CustomIsVersionErrorView" : {
+        "0" : "Show players that are not in or have different versions." ,
+        "11" : "\u5165\u3063\u3066\u3044\u306a\u3044\u3001\u30d0\u30fc\u30b8\u30e7\u30f3\u304c\u9055\u3046\u30d7\u30ec\u30a4\u30e4\u30fc\u3092\u8868\u793a\u3059\u308b"
+        } ,
  "SettingCrewmateRoles" : {
         "0" : "CrewMate Setting" ,
         "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u306e\u4eba\u6570\u8a2d\u5b9a"
@@ -232,6 +236,10 @@
         "0" : "The version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0} is wrong." ,
         "11" : "{0}\u306e<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u30d0\u30fc\u30b8\u30e7\u30f3\u304c\u9055\u3044\u307e\u3059\u3002"
         } ,
+ "HaisonName" : {
+        "0" : "Haison" ,
+        "11" : "\u5ec3\u6751"
+        } ,
  "ModeSetting" : {
         "0" : "Mode Setting" ,
         "11" : "\u30e2\u30fc\u30c9\u8a2d\u5b9a"
@@ -260,9 +268,17 @@
         "0" : "Crewmate" ,
         "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8"
         } ,
+ "CrewMateTitle1" : {
+        "0" : "Use Task" ,
+        "11" : "\u30bf\u30b9\u30af\u3092\u884c\u3046"
+        } ,
  "ImpostorName" : {
         "0" : "Impostor" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc"
+        } ,
+ "ImpostorTitle1" : {
+        "0" : "Use Sabotage & Vent" ,
+        "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\uff06\u30d9\u30f3\u30c8\u3092\u884c\u3046"
         } ,
  "WinName" : {
         "0" : "Win" ,

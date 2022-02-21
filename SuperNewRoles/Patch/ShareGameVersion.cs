@@ -10,10 +10,10 @@ namespace SuperNewRoles.Patch
 {
     class ShareGameVersion
     {
-        public static Dictionary<int, PlayerVersion> playerVersions = new Dictionary<int, PlayerVersion>();
         public static bool IsVersionOK = false;
         public static bool IsChangeVersion = false;
         public static bool IsRPCSend = false;
+        public static float timer = 600;
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
         public class AmongUsClientOnPlayerJoinedPatch
         {
@@ -40,18 +40,30 @@ namespace SuperNewRoles.Patch
             public static void Postfix() {
                 GameStartManagerUpdatePatch.Proce = 0;
                 GameStartManagerUpdatePatch.VersionPlayers = new Dictionary<int, PlayerVersion>();
+                timer = 600f;
             }
         }
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
         public class GameStartManagerUpdatePatch
         {
             private static bool update = false;
-            private static string currentText = "";
             public static Dictionary<int, PlayerVersion> VersionPlayers = new Dictionary<int, PlayerVersion>();
             public static int Proce;
+            private static string currentText = "";
 
+            public static void Prefix(GameStartManager __instance)
+            {
+                if (!AmongUsClient.Instance.AmHost || !GameData.Instance) return; // Not host or no instance
+                update = GameData.Instance.PlayerCount != __instance.LastPlayerCount;
+            }
             public static void Postfix(GameStartManager __instance)
             {
+                SuperNewRolesPlugin.Logger.LogInfo("-Version-");
+                SuperNewRolesPlugin.Logger.LogInfo("My:"+AmongUsClient.Instance.ClientId);
+                foreach (var pv in VersionPlayers) {
+                    SuperNewRolesPlugin.Logger.LogInfo(pv.Key+","+pv.Value); 
+                }
+                SuperNewRolesPlugin.Logger.LogInfo("---------");
                 Proce++;
                 if (Proce >= 10) {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareSNRVersion, Hazel.SendOption.Reliable, -1);
@@ -68,32 +80,65 @@ namespace SuperNewRoles.Patch
                 
                 string message = "";
                 bool blockStart = false;
-                if (AmongUsClient.Instance.AmHost)
+                if (ConfigRoles.IsVersionErrorView.Value)
                 {
+                    if (!AmongUsClient.Instance.AmClient)
+                    {
+
+                        if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
+                        {
+                            message += "\n" + ModTranslation.getString("ErrorHostNoVersion");
+                            blockStart = true;
+                        }
+                        else
+                        {
+                            var client = AmongUsClient.Instance.GetHost();
+                            PlayerVersion PV = VersionPlayers[client.Id];
+                            int diff = SuperNewRolesPlugin.Version.CompareTo(PV.version);
+                            if (diff > 0)
+                            {
+                                message += $"{ModTranslation.getString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version.ToString()})\n";
+                                blockStart = true;
+                            }
+                            else if (diff < 0)
+                            {
+                                message += $"{ModTranslation.getString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version.ToString()})\n";
+                                blockStart = true;
+                            }
+                            else if (!PV.GuidMatches())
+                            { // version presumably matches, check if Guid matches
+                                message += $"{ModTranslation.getString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version.ToString()})\n";
+                                blockStart = true;
+                            }
+                        }
+
+                    }
                     foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.ToArray())
                     {
                         if (client.Id != AmongUsClient.Instance.HostId) {
-                            try
+                            if (!VersionPlayers.ContainsKey(client.Id))
                             {
-                                var a = VersionPlayers[client.Id];
-                                message += "\n" + string.Format(ModTranslation.getString("ErrorClientNoVersion"), client.PlayerName);
+                                message += string.Format(ModTranslation.getString("ErrorClientNoVersion"), client.PlayerName) + "\n";
                                 blockStart = true;
                             }
-                            catch { 
-                            }
-                        }
-                    }
-                } else {
-                    foreach (InnerNet.ClientData data in AmongUsClient.Instance.allClients) {
-                        if (data.Id == AmongUsClient.Instance.HostId) {
-                            try
-                            {
-                                var a = VersionPlayers[data.Id];
-                                message += "\n" + ModTranslation.getString("ErrorHostNoVersion");
-                                blockStart = true;
-                            }
-                            catch { 
-
+                            else {
+                                PlayerVersion PV = VersionPlayers[client.Id];
+                                int diff = SuperNewRolesPlugin.Version.CompareTo(PV.version);
+                                if (diff > 0)
+                                {
+                                    message += $"{string.Format(ModTranslation.getString("ErrorClientChangeVersion"),client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version.ToString()})\n";
+                                    blockStart = true;
+                                }
+                                else if (diff < 0)
+                                {
+                                    message += $"{string.Format(ModTranslation.getString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version.ToString()})\n";
+                                    blockStart = true;
+                                }
+                                else if (!PV.GuidMatches())
+                                { // version presumably matches, check if Guid matches
+                                    message += $"{string.Format(ModTranslation.getString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version.ToString()})\n";
+                                    blockStart = true;
+                                }
                             }
                         }
                     }
@@ -105,8 +150,19 @@ namespace SuperNewRoles.Patch
                 }
                 else
                 {
+                    __instance.GameStartText.text = "";
                     __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
                 }
+
+                if (update) currentText = __instance.PlayerCounter.text;
+
+                timer = Mathf.Max(0f, timer -= Time.deltaTime);
+                int minutes = (int)timer / 60;
+                int seconds = (int)timer % 60;
+                string suffix = $" ({minutes:00}:{seconds:00})";
+
+                __instance.PlayerCounter.text = currentText + suffix;
+                __instance.PlayerCounter.autoSizeTextContainer = true;
             }
             /**
                 if (!AmongUsClient.Instance.AmHost)

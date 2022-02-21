@@ -35,6 +35,7 @@ namespace SuperNewRoles.Roles
         public static void SpeedBoostEnd()
         {
             ResetSpeed();
+            ResetCoolDown();
         }
         public static bool IsEvilSpeedBooster(PlayerControl Player)
         {

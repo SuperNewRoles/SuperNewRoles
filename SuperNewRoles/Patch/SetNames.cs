@@ -148,6 +148,39 @@ namespace SuperNewRoles.Patch
         {
             SetPlayerRoleInfo(player);
         }
+        public static void QuarreledSet()
+        {
+            if (PlayerControl.LocalPlayer.IsQuarreled() && PlayerControl.LocalPlayer.isAlive())
+            {
+                string suffix = ModHelpers.cs(RoleClass.Quarreled.color,"○");
+                PlayerControl side = PlayerControl.LocalPlayer.GetOneSideQuarreled();
+                side.nameText.text += suffix;
+                PlayerControl.LocalPlayer.nameText.text += suffix;
+                foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates) {
+                    if (side.PlayerId == player.TargetPlayerId || PlayerControl.LocalPlayer.PlayerId == player.TargetPlayerId)
+                    {
+                        player.NameText.text += suffix;
+                    }
+                }
+            }
+            if (!PlayerControl.LocalPlayer.isAlive() && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
+            {
+                string suffix = ModHelpers.cs(RoleClass.Quarreled.color, "○");
+                foreach (List<PlayerControl> ps in RoleClass.Quarreled.QuarreledPlayer) {
+                    foreach (PlayerControl p in ps)
+                    {
+                        p.nameText.text += suffix;
+                        foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                        {
+                            if (p.PlayerId == player.TargetPlayerId)
+                            {
+                                player.NameText.text += suffix;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     public class SetNameUpdate
     {
@@ -178,12 +211,7 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
-                if (PlayerControl.LocalPlayer.IsQuarreled())
-                {
-                    var Side = PlayerControl.LocalPlayer.GetOneSideQuarreled();
-                    SetNamesClass.SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.nameText.text + "○");
-                    SetNamesClass.SetPlayerNameText(Side, Side.nameText.text + "○");
-                }
+                SetNamesClass.QuarreledSet();
                 if (RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer)) {
                     foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer) {
                         if (p != PlayerControl.LocalPlayer) {

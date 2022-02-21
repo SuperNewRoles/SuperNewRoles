@@ -16,6 +16,7 @@ namespace SuperNewRoles.EndGame
     enum WinCondition
     {
         Default,
+        HAISON,
         JesterWin,
         JackalWin,
         QuarreledWin,
@@ -62,26 +63,38 @@ namespace SuperNewRoles.EndGame
             textRenderer = bonusTextObject.GetComponent<TMPro.TMP_Text>();
             textRenderer.text = "";
             var text = "";
-            if (AdditionalTempData.winCondition == WinCondition.GodWin) {
+            if (AdditionalTempData.winCondition == WinCondition.GodWin)
+            {
                 text = "GodName";
                 textRenderer.color = RoleClass.God.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.God.color);
             }
-            else if (AdditionalTempData.winCondition == WinCondition.JesterWin) {
+            else if (AdditionalTempData.winCondition == WinCondition.HAISON)
+            {
+                //bonusText = "jesterWin";
+                text = "HAISON";
+                textRenderer.color = Color.white;
+                __instance.BackgroundBar.material.SetColor("_Color", Color.white);
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.JesterWin)
+            {
                 //bonusText = "jesterWin";
                 text = "JesterName";
                 textRenderer.color = Roles.RoleClass.Jester.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Jester.color);
-            } else if (AdditionalTempData.winCondition == WinCondition.QuarreledWin)
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.QuarreledWin)
             {
                 text = "QuarreledName";
                 textRenderer.color = Roles.RoleClass.Quarreled.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Quarreled.color);
-            } else if (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask || AdditionalTempData.gameOverReason == GameOverReason.HumansByVote)
+            }
+            else if (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask || AdditionalTempData.gameOverReason == GameOverReason.HumansByVote)
             {
                 text = "CrewMateName";
                 textRenderer.color = Palette.White;
-            } else if (AdditionalTempData.gameOverReason == GameOverReason.ImpostorByKill || AdditionalTempData.gameOverReason == GameOverReason.ImpostorBySabotage || AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote)
+            }
+            else if (AdditionalTempData.gameOverReason == GameOverReason.ImpostorByKill || AdditionalTempData.gameOverReason == GameOverReason.ImpostorBySabotage || AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote)
             {
                 text = "ImpostorName";
                 textRenderer.color = RoleClass.ImpostorRed;
@@ -103,8 +116,13 @@ namespace SuperNewRoles.EndGame
                     }
                 }
             }
-
-            text = ModTranslation.getString(text);
+            var haison = false;
+            if (text == "HAISON") {
+                    haison = true;
+                    text = ModTranslation.getString("HaisonName");
+            } else {
+                    text = ModTranslation.getString(text);
+            }
             bool IsOpptexton = false;
             foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer) {
                 if (player.isAlive()) { 
@@ -115,7 +133,11 @@ namespace SuperNewRoles.EndGame
 
                 }
             }
-            textRenderer.text = string.Format(text+" "+ModTranslation.getString("WinName"));
+            if (!haison) {
+                    textRenderer.text = string.Format(text + " " + ModTranslation.getString("WinName"));
+            } else {
+                    textRenderer.text = text;
+            }
             AdditionalTempData.clear();
         }
     }
@@ -131,41 +153,51 @@ namespace SuperNewRoles.EndGame
             if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
         }
 
-        public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
-        {
-            var gameOverReason = AdditionalTempData.gameOverReason;
-            AdditionalTempData.clear();
-
-            // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
-            List<PlayerControl> notWinners = new List<PlayerControl>();
-
-            notWinners.AddRange(RoleClass.Jester.JesterPlayer);
-            notWinners.AddRange(RoleClass.MadMate.MadMatePlayer);
-            notWinners.AddRange(RoleClass.Jackal.JackalPlayer);
-            notWinners.AddRange(RoleClass.Jackal.SidekickPlayer);
-            notWinners.AddRange(RoleClass.God.GodPlayer);
-            foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
+            public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
             {
-                notWinners.AddRange(players);
-            }
+                var gameOverReason = AdditionalTempData.gameOverReason;
+                AdditionalTempData.clear();
 
-            List<WinningPlayerData> winnersToRemove = new List<WinningPlayerData>();
-            foreach (WinningPlayerData winner in TempData.winners)
+                // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
+                List<PlayerControl> notWinners = new List<PlayerControl>();
+
+                notWinners.AddRange(RoleClass.Jester.JesterPlayer);
+                notWinners.AddRange(RoleClass.MadMate.MadMatePlayer);
+                notWinners.AddRange(RoleClass.Jackal.JackalPlayer);
+                notWinners.AddRange(RoleClass.Jackal.SidekickPlayer);
+                notWinners.AddRange(RoleClass.God.GodPlayer);
+                foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
+                {
+                    notWinners.AddRange(players);
+                }
+
+                List<WinningPlayerData> winnersToRemove = new List<WinningPlayerData>();
+                foreach (WinningPlayerData winner in TempData.winners)
+                {
+                    if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
+                }
+                foreach (var winner in winnersToRemove) TempData.winners.Remove(winner);
+                // Neutral shifter can't win
+
+                bool saboWin = gameOverReason == GameOverReason.ImpostorBySabotage;
+
+
+                bool JesterWin = gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
+                bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
+                bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
+                bool HAISON = gameOverReason == (GameOverReason)CustomGameOverReason.HAISON;
+
+            if(HAISON)
             {
-                if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
-            }
-            foreach (var winner in winnersToRemove) TempData.winners.Remove(winner);
-            // Neutral shifter can't win
-
-            bool saboWin = gameOverReason == GameOverReason.ImpostorBySabotage;
-
-
-            bool JesterWin = gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
-            bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
-            bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
-
-            // Jester win
-            if (JesterWin)
+                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                        TempData.winners.Add(wpd);
+                    }
+                    AdditionalTempData.winCondition = WinCondition.HAISON;
+                    // Jester win
+            }else if (JesterWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 WinnerPlayer.Data.IsDead = false;

@@ -5,6 +5,7 @@ using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
@@ -48,6 +49,10 @@ namespace SuperNewRoles.Patch
                 {
                     setBasePlayerOutlines();
                     VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
+                    if (AmongUsClient.Instance.AmHost && Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift)) {
+                        ShipStatus.Instance.enabled = false;
+                        ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.HAISON,false);
+                    }
                     if (ModeHandler.isMode(ModeId.Default))
                     {
                         SetNameUpdate.Postfix(__instance);
@@ -56,7 +61,7 @@ namespace SuperNewRoles.Patch
                         {
                             if (RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                             {
-                                if (!RoleClass.Bait.Reported)
+                                if (!RoleClass.Bait.Reported && !PlayerControl.LocalPlayer.isAlive())
                                 {
                                     Bait.BaitUpdate.Postfix(__instance);
 

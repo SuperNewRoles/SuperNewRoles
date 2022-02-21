@@ -9,6 +9,7 @@ namespace SuperNewRoles.Roles
     class Researcher
     {
         public static bool IsTarget(){
+            /**
             Vector3 position = PlayerControl.LocalPlayer.transform.position;
             Vector3 SamplePos = RoleClass.Researcher.SamplePosition;
             int r = 1;
@@ -22,12 +23,14 @@ namespace SuperNewRoles.Roles
                     }
                 }                    
             }
+            **/
             return false;
         }
         [HarmonyPatch(typeof(UseButton), nameof(UseButton.DoClick))]
         class UseButtonUsePatch {
             static void Postfix(UseButton __instance)
             {
+                /**
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 if (!RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer)) return;
 
@@ -45,6 +48,7 @@ namespace SuperNewRoles.Roles
                         //RoleClass.Researcher.GetSamplePlayers.RemoveAt(0);
                     }
                 }
+                **/
             }
         }
         public class ReseUseButtonSetTargetPatch

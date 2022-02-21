@@ -104,7 +104,7 @@ namespace SuperNewRoles.CustomRPC
                 ver = new System.Version(major, minor, build);
             else
                 ver = new System.Version(major, minor, build, revision);
-            Patch.ShareGameVersion.playerVersions[clientId] = new Patch.PlayerVersion(ver, guid);
+            Patch.ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[clientId] = new Patch.PlayerVersion(ver, guid);
             //SuperNewRolesPlugin.Logger.LogInfo("PATCHES:"+ Patch.ShareGameVersion.playerVersions);
         }
         public static void SetRole(byte playerid,byte RPCRoleId)
