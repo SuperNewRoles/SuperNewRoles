@@ -40,12 +40,12 @@ Discordサーバーからお願いします:[Discordサーバー](https://discor
 Discordサーバーにはすでに乗っています。
 | インポスター | クルーメイト | 第三陣営 | 重複陣営 |
 |----------|-------------|-----------------|----------------|
-| [テレポーター](#Teleporter) | [Nice Mini](#mini) | [Arsonist](#arsonist) | [Lover](#lovers) |
-| [イビルスピードブースター](#EvilSpeedBooster) | [Nice Guesser](#guesser) | [Jester](#jester) |  |
-| [イビルドアー](#EvilDoorr) | [Detective](#detective) | [Jackal](#jackal) |  |
-| [イビルギャンブラー](#EvilGambler) | [Engineer](#engineer) | [Sidekick](#sidekick) |  |
-| [自爆魔](#SelfBomber) | [Hacker](#hacker) | [Vulture](#vulture) |  |
-| [イビル猫又](#EvilNekomata) | [Lighter](#lighter) | [Lawyer](#lawyer) |  |
+| [テレポーター](#Teleporter) | [Nice Mini](#mini) | [てるてる](#Jester) | [クラード](#Quarreled) |
+| [イビルスピードブースター](#EvilSpeedBooster) | [Nice Guesser](#Oppo) | [オポチュニスト](#Opportunist) |  |
+| [イビルドアー](#EvilDoorr) | [Detective](#detective) | [ジャッカル](#Jackal) |  |
+| [イビルギャンブラー](#EvilGambler) | [Engineer](#engineer) | [サイドキック](#Sidekick) |  |
+| [自爆魔](#SelfBomber) | [Hacker](#hacker) | [神](#God) |  |
+| [イビル猫又](#EvilNekomata) | [Lighter](#lighter) |  |  |
 |  | [Mayor](#mayor) |  |  |
 |  | [Medic](#medic) |  |  |
 |  | [Security Guard](#security-guard) |  |  |
