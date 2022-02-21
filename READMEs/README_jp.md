@@ -46,17 +46,9 @@ Discordサーバーにはすでに乗っています。
 | [イビルギャンブラー](#EvilGambler) | [ドアー](#Doorr) | [サイドキック](#Sidekick) |  |
 | [自爆魔](#SelfBomber) | [聖職者](#Clergyman) | [神](God) | |
 | [イビル猫又](#EvilNekomata) | [マッドメイト](#Madmate) | | |
-|  | [Mayor](#mayor) |  |  |
-|  | [Medic](#medic) |  |  |
-|  | [Security Guard](#security-guard) |  |  |
-|  | [Seer](#seer) |  |  |
-|  | [Sheriff](#sheriff) 
-|  | [Deputy](#deputy) |  |
-|  | [Shifter](#shifter) |  |  |
-|  | [Snitch](#snitch) |  |  |
-|  | [Spy](#spy) |  |  |
-|  | [Swapper](#swapper) |  |  |
-|  | [Time Master](#time-master) |  |  |
-|  |  [Tracker](#tracker) |  |  |
-|  |  [Bait](#bait) |  |
-|  |  [Medium](#medium) |  |
+|  | [ベイト](#Bait) |  |  |
+|  | [自宅警備員](#HomeSecurityGuard) |  |  |
+|  | [スタントマン](#Stuntman) |  |  |
+|  | [ムービング](#Moving) |  |  |
+|  | [ベスト冤罪ヤー](#BestFalseCharge) |  |  |
+|  | [ナイス猫又](#deputy) |  |  |
