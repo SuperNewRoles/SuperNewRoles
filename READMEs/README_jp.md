@@ -29,7 +29,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [JackalとSidekick](https://www.twitch.tv/dhalucard) - 元のアイデアは **Dhalucard**から来ています。(TheOtherRolesより)<br>
 [Town Of Host](https://github.com/tukasa0001/TownOfHost) - デバッグ用に使用。DEBUGモードを使用させてもらいました。**tukasa0001**さんありがとうございます！<br>
 [Jester](https://github.com/Maartii/Jester) - Jester(てるてる)のアイデアは、 **Maartii** から来ています。(TheOtherRolesから引用)<br>
-[Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)
+[Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)<br>
 [au.libhalt.net](https://au.libhalt.net) - ナイス猫又/イビル猫又のアイデアは **au.libhalt.net** から来ています。
 
 ## 連絡について
@@ -51,4 +51,4 @@ Discordサーバーにはすでに乗っています。
 |  | [スタントマン](#Stuntman) |  |  |
 |  | [ムービング](#Moving) |  |  |
 |  | [ベスト冤罪ヤー](#BestFalseCharge) |  |  |
-|  | [ナイス猫又](#deputy) |  |  |
+|  | [ナイス猫又](#NiceNekomata) |  |  |
