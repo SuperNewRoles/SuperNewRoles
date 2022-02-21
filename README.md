@@ -34,3 +34,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 ## About Contact
 Please use the Discord server:[Discord server](https://discord.gg/95YuUZp4kM)
+
+## List of Positions
+Currently being created.
+It is already on the Discord server.
