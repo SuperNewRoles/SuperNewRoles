@@ -21,6 +21,8 @@ namespace SuperNewRoles.Patch
 
             if (player == null || player.IsDead)
                 __result = __instance.MaxLightRadius;
+            else if (Clergyman.IsLightOutVision())
+                __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * RoleClass.Clergyman.DownImpoVision;
             else if (player.Role.IsImpostor)
                 __result = __instance.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
             else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && RoleClass.Lighter.IsLightOn)

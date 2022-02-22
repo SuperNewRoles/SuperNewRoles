@@ -5,6 +5,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 using HarmonyLib;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Buttons
 {
@@ -12,6 +13,11 @@ namespace SuperNewRoles.Buttons
     {
         public static void Update()
         {
+            try
+            {
+                ClergymanDuration();
+            }
+            catch {}
             SpeedBoosterButton();
             EvilSpeedBoosterButton();
             SheriffKillButton();
@@ -76,37 +82,13 @@ namespace SuperNewRoles.Buttons
         }
         public static void ClergymanDuration()
         {
-            if (!PlayerControl.LocalPlayer.Data.Role.IsImpostor) return;
-            if (!(Roles.RoleClass.Clergyman.OldButtonTimer == new DateTime(2000, 1, 1, 1, 1, 1)))
-            {
-                var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Clergyman.DurationTime);
-                if ((float)((Roles.RoleClass.Clergyman.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds <= 0f)
-                {
-                    Roles.Clergyman.LightOutEndRPC();
-                    Roles.RoleClass.Clergyman.OldButtonTimer = new DateTime(2000, 1, 1, 1, 1, 1);
-                }
-            }
-                
+            if (RoleClass.Clergyman.OldButtonTime == 0) return;
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Clergyman.DurationTime);
+            RoleClass.Clergyman.OldButtonTime = (float)((Roles.RoleClass.Clergyman.OldButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            if (RoleClass.Clergyman.OldButtonTime <= 0f) RoleClass.Clergyman.OldButtonTime = 0f; return;
         }
         public static void ClergymanButton()
         {
-            if (Roles.RoleClass.Clergyman.IsLightOff)
-            {
-                var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Clergyman.DurationTime);
-                Buttons.HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = Roles.RoleClass.Clergyman.DurationTime;
-                Buttons.HudManagerStartPatch.ClergymanLightOutButton.Timer = (float)((Roles.RoleClass.Clergyman.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
-                if (Buttons.HudManagerStartPatch.ClergymanLightOutButton.Timer <= 0f)
-                {
-                    Roles.Clergyman.LightOutEnd();
-                    Roles.Clergyman.ResetCoolDown();
-                    Buttons.HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = Roles.RoleClass.Clergyman.CoolTime;
-                    Roles.RoleClass.Clergyman.IsLightOff = false;
-                    Buttons.HudManagerStartPatch.ClergymanLightOutButton.actionButton.cooldownTimerText.color = Color.white;
-                    Roles.RoleClass.Clergyman.ButtonTimer = DateTime.Now;
-                }
-            }
-            else
-            {
                 if (Roles.RoleClass.Clergyman.ButtonTimer == null)
                 {
                     Roles.RoleClass.Clergyman.ButtonTimer = DateTime.Now;
@@ -114,7 +96,6 @@ namespace SuperNewRoles.Buttons
                 var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Clergyman.CoolTime);
                 Buttons.HudManagerStartPatch.ClergymanLightOutButton.Timer = (float)((Roles.RoleClass.Clergyman.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
                 if (Buttons.HudManagerStartPatch.ClergymanLightOutButton.Timer <= 0f) Buttons.HudManagerStartPatch.ClergymanLightOutButton.Timer = 0f; return;
-            }
         }
         public static void SheriffKillButton()
         {

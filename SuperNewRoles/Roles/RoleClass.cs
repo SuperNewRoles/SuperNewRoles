@@ -478,7 +478,7 @@ namespace SuperNewRoles.Roles
             public static float DefaultImpoVision;
             public static DateTime ButtonTimer;
             public static DateTime OldButtonTimer;
-
+            public static float OldButtonTime;
 
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
