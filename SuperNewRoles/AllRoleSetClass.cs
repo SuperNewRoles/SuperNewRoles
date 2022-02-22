@@ -135,11 +135,6 @@ namespace SuperNewRoles
             bool IsNotEndRandomSelect= true;
             while (IsNotEndRandomSelect)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("---");
-                foreach (RoleId rolid in Imponotonepar)
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("ID:"+rolid);
-                }
                 if (Impoonepar.Count != 0)
                 {
                     int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Impoonepar);
@@ -508,6 +503,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.NiceNekomataPlayerCount.getFloat();
                 case (RoleId.EvilNekomata):
                     return CustomOption.CustomOptions.EvilNekomataPlayerCount.getFloat();
+                    case (RoleId.JackalFriends):
+                    return CustomOption.CustomOptions.JackalFriendsPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -518,17 +515,13 @@ namespace SuperNewRoles
             ImpostorPlayers = new List<PlayerControl>();
             foreach(PlayerControl Player in PlayerControl.AllPlayerControls)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(Player.Data.PlayerName+":"+ Player.Data.Role.IsImpostor);
                 if (Player.Data.Role.IsImpostor)
                 {
                     ImpostorPlayers.Add(Player);
-                    SuperNewRolesPlugin.Logger.LogInfo("ImpostorAdd");
                 } else
                 {
                     CrewMatePlayers.Add(Player);
-                    SuperNewRolesPlugin.Logger.LogInfo("CrewAdd");
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("AddEnd");
             }
         }
         public static void OneOrNotListSet()
@@ -539,11 +532,6 @@ namespace SuperNewRoles
             Neutnotonepar = new List<RoleId>();
             Crewonepar = new List<RoleId>();
             Crewnotonepar = new List<RoleId>();
-            SuperNewRolesPlugin.Logger.LogInfo("-----");
-            SuperNewRolesPlugin.Logger.LogInfo(CustomOption.CustomOptions.EvilScientistOption.getString().Replace("0%",""));
-            SuperNewRolesPlugin.Logger.LogInfo(CustomOption.CustomOptions.EvilLighterOption.getString().Replace("0%", ""));
-            SuperNewRolesPlugin.Logger.LogInfo(CustomOption.CustomOptions.EvilSpeedBoosterOption.getString().Replace("0%", ""));
-            SuperNewRolesPlugin.Logger.LogInfo("-----");
             /**
             if (!(CustomOption.CustomOptions.SoothSayerOption.getString().Replace("0%", "") == ""))
             {
@@ -1169,6 +1157,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.JackalFriendsOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.JackalFriendsOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.JackalFriends;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
                     }
                 }
             }

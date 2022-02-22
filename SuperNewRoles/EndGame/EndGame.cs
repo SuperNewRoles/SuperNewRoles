@@ -166,6 +166,7 @@ namespace SuperNewRoles.EndGame
                 notWinners.AddRange(RoleClass.Jackal.JackalPlayer);
                 notWinners.AddRange(RoleClass.Jackal.SidekickPlayer);
                 notWinners.AddRange(RoleClass.God.GodPlayer);
+                notWinners.AddRange(RoleClass.Opportunist.OpportunistPlayer);
                 foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
                 {
                     notWinners.AddRange(players);
@@ -187,17 +188,7 @@ namespace SuperNewRoles.EndGame
                 bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
                 bool HAISON = gameOverReason == (GameOverReason)CustomGameOverReason.HAISON;
 
-            if(HAISON)
-            {
-                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
-                        TempData.winners.Add(wpd);
-                    }
-                    AdditionalTempData.winCondition = WinCondition.HAISON;
-                    // Jester win
-            }else if (JesterWin)
+            if (JesterWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 WinnerPlayer.Data.IsDead = false;
@@ -226,6 +217,10 @@ namespace SuperNewRoles.EndGame
                 }
                 foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer)
                 {
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                }
+                foreach (PlayerControl p in RoleClass.JackalFriends.JackalFriendsPlayer) {
                     WinningPlayerData wpd = new WinningPlayerData(p.Data);
                     TempData.winners.Add(wpd);
                 }
@@ -274,7 +269,17 @@ namespace SuperNewRoles.EndGame
                     AdditionalTempData.winCondition = WinCondition.GodWin;
                 }
             }
-
+            if (HAISON)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                }
+                AdditionalTempData.winCondition = WinCondition.HAISON;
+                // Jester win
+            }
         }
         
     }

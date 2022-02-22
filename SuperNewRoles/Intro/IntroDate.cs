@@ -93,6 +93,8 @@ namespace SuperNewRoles.Intro
                     return NiceNekomataIntro;
                 case (CustomRPC.RoleId.EvilNekomata):
                     return EvilNekomataIntro;
+                case (CustomRPC.RoleId.JackalFriends):
+                    return JackalFriendsIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (PlayerControl.LocalPlayer.Data.Role.IsImpostor) {
@@ -152,6 +154,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate AllCleanerIntro = new IntroDate("AllCleaner", RoleClass.AllCleaner.color, 1, CustomRPC.RoleId.AllCleaner);
         public static IntroDate NiceNekomataIntro = new IntroDate("NiceNekomata", RoleClass.NiceNekomata.color, 1, CustomRPC.RoleId.NiceNekomata);
         public static IntroDate EvilNekomataIntro = new IntroDate("EvilNekomata", RoleClass.EvilNekomata.color, 1, CustomRPC.RoleId.EvilNekomata);
+        public static IntroDate JackalFriendsIntro = new IntroDate("JackalFriends", RoleClass.JackalFriends.color, 1, CustomRPC.RoleId.JackalFriends);
         //イントロオブジェ
     }
 }

@@ -201,7 +201,7 @@ namespace SuperNewRoles.Patch
             }
             else
             {
-                if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && RoleClass.MadMate.IsImpostorCheck)
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadMate) && RoleClass.MadMate.IsImpostorCheck)
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
@@ -209,6 +209,20 @@ namespace SuperNewRoles.Patch
                         {
                             SetNamesClass.SetPlayerNameColors(p);
                         }
+                    }
+                }
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+                {
+                    foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
+                    {
+                            SetNamesClass.SetPlayerRoleNames(p);
+                            SetNamesClass.SetPlayerNameColors(p);
+                        
+                    }
+                    foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer)
+                    {
+                            SetNamesClass.SetPlayerRoleNames(p);
+                            SetNamesClass.SetPlayerNameColors(p);
                     }
                 }
                 SetNamesClass.QuarreledSet();

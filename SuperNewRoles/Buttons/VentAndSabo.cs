@@ -66,7 +66,7 @@ namespace SuperNewRoles.Buttons
                 bool canUse;
                 bool couldUse;
                 __instance.CanUse(PlayerControl.LocalPlayer.Data, out canUse, out couldUse);
-                bool canMoveInVents = !(RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && RoleClass.MadMate.IsMoveVent);
+                bool canMoveInVents = !(RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer));
                 if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
                 bool isEnter = !PlayerControl.LocalPlayer.inVent;

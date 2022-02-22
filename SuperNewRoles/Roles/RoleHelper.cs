@@ -210,6 +210,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilNekomata):
                     Roles.RoleClass.EvilNekomata.EvilNekomataPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.JackalFriends):
+                    Roles.RoleClass.JackalFriends.JackalFriendsPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -349,6 +352,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilNekomata):
                     Roles.RoleClass.EvilNekomata.EvilNekomataPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.JackalFriends):
+                    Roles.RoleClass.JackalFriends.JackalFriendsPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
         }
@@ -382,6 +388,9 @@ namespace SuperNewRoles
                 case (RoleId.MadMate):
                     IsTaskClear = true;
                     break;
+                case (RoleId.JackalFriends):
+                    IsTaskClear = true;
+                    break;
                 case (RoleId.Opportunist):
                     IsTaskClear = true;
                     break; 
@@ -402,6 +411,7 @@ namespace SuperNewRoles
             if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMate.IsUseVent) return true;
             if ((RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player) || 
                 RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) && Roles.RoleClass.Jackal.IsUseVent) return true;
+            if (player.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsUseVent) return true;
             return false;
         }
         public static bool IsUseSabo(this PlayerControl player)
@@ -608,6 +618,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.EvilNekomata;
+            }
+            else if (Roles.RoleClass.JackalFriends.JackalFriendsPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.JackalFriends;
             }
             //ロールチェック
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;

@@ -58,12 +58,6 @@ namespace SuperNewRoles.Patch
             }
             public static void Postfix(GameStartManager __instance)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("-Version-");
-                SuperNewRolesPlugin.Logger.LogInfo("My:"+AmongUsClient.Instance.ClientId);
-                foreach (var pv in VersionPlayers) {
-                    SuperNewRolesPlugin.Logger.LogInfo(pv.Key+","+pv.Value); 
-                }
-                SuperNewRolesPlugin.Logger.LogInfo("---------");
                 Proce++;
                 if (Proce >= 10) {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareSNRVersion, Hazel.SendOption.Reliable, -1);
@@ -150,19 +144,20 @@ namespace SuperNewRoles.Patch
                 }
                 else
                 {
-                    __instance.GameStartText.text = "";
                     __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
                 }
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    if (update) currentText = __instance.PlayerCounter.text;
 
-                if (update) currentText = __instance.PlayerCounter.text;
+                    timer = Mathf.Max(0f, timer -= Time.deltaTime);
+                    int minutes = (int)timer / 60;
+                    int seconds = (int)timer % 60;
+                    string suffix = $" ({minutes:00}:{seconds:00})";
 
-                timer = Mathf.Max(0f, timer -= Time.deltaTime);
-                int minutes = (int)timer / 60;
-                int seconds = (int)timer % 60;
-                string suffix = $" ({minutes:00}:{seconds:00})";
-
-                __instance.PlayerCounter.text = currentText + suffix;
-                __instance.PlayerCounter.autoSizeTextContainer = true;
+                    __instance.PlayerCounter.text = currentText + suffix;
+                    __instance.PlayerCounter.autoSizeTextContainer = true;
+                }
             }
             /**
                 if (!AmongUsClient.Instance.AmHost)

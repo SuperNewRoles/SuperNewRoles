@@ -64,6 +64,7 @@ namespace SuperNewRoles.Roles
             AllCleaner.ClearAndReload();
             NiceNekomata.ClearAndReload();
             EvilNekomata.ClearAndReload();
+            JackalFriends.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -502,13 +503,11 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static bool IsImpostorCheck;
             public static bool IsUseVent;
-            public static bool IsMoveVent;
             public static void clearAndReload()
             {
                 MadMatePlayer = new List<PlayerControl>();
                 IsImpostorCheck = CustomOptions.MadMateIsCheckImpostor.getBool();
                 IsUseVent = CustomOptions.MadMateIsUseVent.getBool();
-                IsMoveVent = CustomOptions.MadMateIsMoveVent.getBool();
             }
         }
         public static class Bait
@@ -724,6 +723,19 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 EvilNekomataPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class JackalFriends
+        {
+            public static List<PlayerControl> JackalFriendsPlayer;
+            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+            public static bool IsJackalCheck;
+            public static bool IsUseVent;
+            public static void ClearAndReload()
+            {
+                JackalFriendsPlayer = new List<PlayerControl>();
+                IsJackalCheck = CustomOptions.JackalFriendsIsCheckJackal.getBool();
+                IsUseVent = CustomOptions.JackalFriendsIsUseVent.getBool();
             }
         }
         //新ロールクラス

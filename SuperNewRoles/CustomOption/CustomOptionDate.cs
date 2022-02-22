@@ -166,7 +166,6 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadMatePlayerCount;
         public static CustomOption MadMateIsCheckImpostor;
         public static CustomOption MadMateIsUseVent;
-        public static CustomOption MadMateIsMoveVent;
 
         public static CustomRoleOption BaitOption;
         public static CustomOption BaitPlayerCount;
@@ -220,6 +219,11 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption EvilNekomataOption;
         public static CustomOption EvilNekomataPlayerCount;
+
+        public static CustomRoleOption JackalFriendsOption;
+        public static CustomOption JackalFriendsPlayerCount;
+        public static CustomOption JackalFriendsIsCheckJackal;
+        public static CustomOption JackalFriendsIsUseVent;
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -401,8 +405,7 @@ namespace SuperNewRoles.CustomOption
             MadMatePlayerCount = CustomOption.Create(99, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMateOption);
             MadMateIsCheckImpostor = CustomOption.Create(100, ModTranslation.getString("MadMateIsCheckImpostorSetting"), false, MadMateOption);
             MadMateIsUseVent = CustomOption.Create(120, ModTranslation.getString("MadMateUseVentSetting"), false, MadMateOption);
-            MadMateIsMoveVent = CustomOption.Create(121, ModTranslation.getString("MadMateVentMoveSetting"), false, MadMateIsUseVent);
-
+            
             BaitOption = new CustomRoleOption(104, "BaitName", RoleClass.Bait.color,1);
             BaitPlayerCount = CustomOption.Create(105, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BaitOption);
             BaitReportTime = CustomOption.Create(114, cs(Color.white, "BaitReportTimeSetting"), 2f,1f,4f,0.5f,BaitOption);
@@ -455,6 +458,11 @@ namespace SuperNewRoles.CustomOption
 
             EvilNekomataOption = new CustomRoleOption(157, "EvilNekomataName", RoleClass.EvilNekomata.color, 1);
             EvilNekomataPlayerCount = CustomOption.Create(158, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilNekomataOption);
+
+            JackalFriendsOption = new CustomRoleOption(162, "JackalFriendsName", RoleClass.JackalFriends.color, 1);
+            JackalFriendsPlayerCount = CustomOption.Create(163, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalFriendsOption);
+            JackalFriendsIsCheckJackal = CustomOption.Create(164, ModTranslation.getString("JackalFriendsIsCheckJackalSetting"), false, JackalFriendsOption);
+            JackalFriendsIsUseVent = CustomOption.Create(165, ModTranslation.getString("MadMateUseVentSetting"), false, JackalFriendsOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

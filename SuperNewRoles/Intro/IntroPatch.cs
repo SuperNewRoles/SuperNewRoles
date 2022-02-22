@@ -45,6 +45,35 @@ namespace SuperNewRoles.Patches
                 }
                 yourTeam = ImpostorTeams;
             }
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+            {
+                Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                int JackalNum = 0;
+                JackalTeams.Add(PlayerControl.LocalPlayer);
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.isRole(CustomRPC.RoleId.JackalFriends))
+                    {
+                        JackalNum++;
+                        JackalTeams.Add(player);
+                    }
+                }
+                yourTeam = JackalTeams;
+            }
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal))
+            {
+                Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                int JackalNum = 0;
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.isRole(CustomRPC.RoleId.Jackal))
+                    {
+                        JackalNum++;
+                        JackalTeams.Add(player);
+                    }
+                }
+                yourTeam = JackalTeams;
+            }
         }
 
         public static void setupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
@@ -58,9 +87,17 @@ namespace SuperNewRoles.Patches
                 __instance.TeamTitle.color = Intro.color;
                 __instance.ImpostorText.text = "";
             }
-            if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && CustomOption.CustomOptions.MadMateIsCheckImpostor.getBool())
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadMate) && CustomOption.CustomOptions.MadMateIsCheckImpostor.getBool())
             {
                 IntroDate Intro = IntroDate.MadMateIntro;
+                __instance.BackgroundBar.material.color = Intro.color;
+                __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
+                __instance.TeamTitle.color = Intro.color;
+                __instance.ImpostorText.text = "";
+            }
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && CustomOption.CustomOptions.JackalFriendsIsCheckJackal.getBool())
+            {
+                IntroDate Intro = IntroDate.JackalFriendsIntro;
                 __instance.BackgroundBar.material.color = Intro.color;
                 __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
                 __instance.TeamTitle.color = Intro.color;
