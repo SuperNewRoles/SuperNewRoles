@@ -495,6 +495,8 @@ namespace SuperNewRoles.Roles
                 IsLightOff = false;
                 DownImpoVision = CustomOptions.ClergymanDownVision.getFloat();
                 DefaultImpoVision = PlayerControl.GameOptions.ImpostorLightMod;
+                OldButtonTimer = DateTime.Now;
+                OldButtonTime = Clergyman.DurationTime;
             }
         }
         public static class MadMate

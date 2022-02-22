@@ -190,7 +190,6 @@ namespace SuperNewRoles.CustomRPC
             else
             {
                 SuperNewRolesPlugin.Logger.LogInfo("end");
-                Roles.Clergyman.LightOutEndRPC();
             }
         }
         public static void ReportDeadBody(byte sourceId, byte targetId)

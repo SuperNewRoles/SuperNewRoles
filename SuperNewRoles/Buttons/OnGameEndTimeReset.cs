@@ -14,7 +14,6 @@ namespace SuperNewRoles.Buttons
         {
             Roles.SpeedBooster.ResetSpeed();
             Roles.EvilSpeedBooster.ResetSpeed();
-            Roles.Clergyman.LightOutEnd();
             Roles.Lighter.LightOutEnd();
             PlayerControl.GameOptions.KillCooldown = EvilGamblerMurder.temp;
         }
@@ -27,7 +26,6 @@ namespace SuperNewRoles.Buttons
         {
             Roles.SpeedBooster.ResetSpeed();
             Roles.EvilSpeedBooster.ResetSpeed();
-            Roles.Clergyman.LightOutEnd();
             Roles.Lighter.LightOutEnd();
             PlayerControl.GameOptions.KillCooldown = EvilGamblerMurder.temp;
         }
