@@ -17,13 +17,21 @@ namespace SuperNewRoles.Roles
         }
         public static void BoostStart()
         {
-            PlayerControl.GameOptions.PlayerSpeedMod = RoleClass.EvilSpeedBooster.Speed;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, Hazel.SendOption.Reliable, -1);
+            writer.Write(true);
+            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            CustomRPC.RPCProcedure.SetSpeedBoost(true, PlayerControl.LocalPlayer.PlayerId);
             RoleClass.EvilSpeedBooster.IsSpeedBoost = true;
             EvilSpeedBooster.ResetCoolDown();
         }
         public static void ResetSpeed()
         {
-            PlayerControl.GameOptions.PlayerSpeedMod = RoleClass.EvilSpeedBooster.DefaultSpeed;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, Hazel.SendOption.Reliable, -1);
+            writer.Write(false);
+            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            CustomRPC.RPCProcedure.SetSpeedBoost(false, PlayerControl.LocalPlayer.PlayerId);
             RoleClass.EvilSpeedBooster.IsSpeedBoost = false;
         }
 

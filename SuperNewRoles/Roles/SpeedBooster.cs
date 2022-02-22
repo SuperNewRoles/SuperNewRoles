@@ -17,13 +17,21 @@ namespace SuperNewRoles.Roles
         }
         public static void BoostStart()
         {
-            PlayerControl.GameOptions.PlayerSpeedMod = RoleClass.SpeedBooster.Speed;
             RoleClass.SpeedBooster.IsSpeedBoost = true;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, Hazel.SendOption.Reliable, -1);
+            writer.Write(true);
+            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            CustomRPC.RPCProcedure.SetSpeedBoost(true,PlayerControl.LocalPlayer.PlayerId);
             SpeedBooster.ResetCoolDown();
         }
         public static void ResetSpeed()
         {
-            PlayerControl.GameOptions.PlayerSpeedMod = RoleClass.SpeedBooster.DefaultSpeed;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, Hazel.SendOption.Reliable, -1);
+            writer.Write(false);
+            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            CustomRPC.RPCProcedure.SetSpeedBoost(false, PlayerControl.LocalPlayer.PlayerId);
         }
         public static void SpeedBoostEnd()
         {
@@ -46,7 +54,18 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = RoleClass.SpeedBooster.CoolTime;
             RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
             ResetSpeed();
+        }
+        [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
+        public static class PlayerPhysicsSpeedPatch
+        {
+            public static void Postfix(PlayerPhysics __instance)
+            {
+                if (__instance.AmOwner && __instance.myPlayer.CanMove && GameData.Instance && (RoleClass.EvilSpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId] || RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId]))
+                {
+                    __instance.body.velocity *= RoleClass.SpeedBooster.Speed;
+                }
 
+            }
         }
     }
 }

@@ -25,6 +25,18 @@ namespace SuperNewRoles.Buttons
             LighterButton();
             MovingButton();
             DoorrButton();
+            TeleporterButton();
+        }
+
+        public static void TeleporterButton()
+        {
+            if (Roles.RoleClass.Teleporter.ButtonTimer == null)
+            {
+                Roles.RoleClass.Teleporter.ButtonTimer = DateTime.Now;
+            }
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Teleporter.CoolTime);
+            Buttons.HudManagerStartPatch.TeleporterButton.Timer = (float)((Roles.RoleClass.Teleporter.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            if (Buttons.HudManagerStartPatch.TeleporterButton.Timer <= 0f) Buttons.HudManagerStartPatch.TeleporterButton.Timer = 0f; return;
         }
         public static void DoorrButton()
         {
@@ -52,6 +64,7 @@ namespace SuperNewRoles.Buttons
             Buttons.HudManagerStartPatch.MovingTpButton.Timer = (float)((Roles.RoleClass.Moving.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
             if (Buttons.HudManagerStartPatch.MovingTpButton.Timer <= 0f) Buttons.HudManagerStartPatch.MovingTpButton.Timer = 0f; return;
         }
+
         public static void LighterButton()
         {
             if (Roles.RoleClass.Lighter.IsLightOn)

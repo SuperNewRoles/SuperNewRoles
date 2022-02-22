@@ -15,7 +15,6 @@ namespace SuperNewRoles.Buttons
             Roles.SpeedBooster.ResetSpeed();
             Roles.EvilSpeedBooster.ResetSpeed();
             Roles.Lighter.LightOutEnd();
-            PlayerControl.GameOptions.KillCooldown = EvilGamblerMurder.temp;
         }
     }
    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
@@ -27,7 +26,6 @@ namespace SuperNewRoles.Buttons
             Roles.SpeedBooster.ResetSpeed();
             Roles.EvilSpeedBooster.ResetSpeed();
             Roles.Lighter.LightOutEnd();
-            PlayerControl.GameOptions.KillCooldown = EvilGamblerMurder.temp;
         }
     }
 }

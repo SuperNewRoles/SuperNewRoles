@@ -300,6 +300,7 @@ namespace SuperNewRoles.Roles
             public static float DefaultSpeed;
             public static DateTime ButtonTimer;
             public static bool IsSpeedBoost;
+            public static Dictionary<int, bool> IsBoostPlayers;
             public static Sprite GetSpeedBoostButtonSprite() {
                 if (SpeedBoostButtonSprite) return SpeedBoostButtonSprite;
                 SpeedBoostButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
@@ -314,6 +315,7 @@ namespace SuperNewRoles.Roles
                 Speed = CustomOptions.SpeedBoosterSpeed.getFloat();
                 DefaultSpeed = PlayerControl.GameOptions.PlayerSpeedMod;
                 IsSpeedBoost = false;
+                IsBoostPlayers = new Dictionary<int, bool>();
             }
         }
         public static class EvilSpeedBooster
@@ -326,7 +328,7 @@ namespace SuperNewRoles.Roles
             public static float DefaultSpeed;
             public static bool IsSpeedBoost;
             public static DateTime ButtonTimer;
-
+            public static Dictionary<int, bool> IsBoostPlayers;
             public static void clearAndReload()
             {
                 ButtonTimer = DateTime.Now;
@@ -336,6 +338,7 @@ namespace SuperNewRoles.Roles
                 Speed = CustomOptions.EvilSpeedBoosterSpeed.getFloat();
                 DefaultSpeed = PlayerControl.GameOptions.PlayerSpeedMod;
                 IsSpeedBoost = false;
+                IsBoostPlayers = new Dictionary<int, bool>();
             }
         }
         public static class Tasker
@@ -540,12 +543,12 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> StuntManPlayer;
             public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
-            public static int GuardCount;
+            public static Dictionary<int,int> GuardCount;
 
             public static void ClearAndReload()
             {
                 StuntManPlayer = new List<PlayerControl>();
-                GuardCount = (int)CustomOptions.StuntManMaxGuardCount.getFloat();
+                GuardCount = new Dictionary<int, int>();
             }
         }
         public static class Moving

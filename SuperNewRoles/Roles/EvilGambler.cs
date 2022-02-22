@@ -44,7 +44,6 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
         public class EvilGamblerMurder
         {
-            public static float temp = PlayerControl.GameOptions.KillCooldown;
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
                 if (__instance == PlayerControl.LocalPlayer && RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(__instance)) {

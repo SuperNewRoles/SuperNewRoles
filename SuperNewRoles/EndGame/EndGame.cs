@@ -227,13 +227,6 @@ namespace SuperNewRoles.EndGame
 
                 AdditionalTempData.winCondition = WinCondition.JackalWin;
             }
-            foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
-            {
-                if (player.isAlive())
-                {
-                    TempData.winners.Add(new WinningPlayerData(player.Data));
-                }
-            }
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
@@ -267,6 +260,14 @@ namespace SuperNewRoles.EndGame
                     WinningPlayerData wpd = new WinningPlayerData(p.Data);
                     TempData.winners.Add(wpd);
                     AdditionalTempData.winCondition = WinCondition.GodWin;
+                }
+            }
+
+            foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
+            {
+                if (player.isAlive())
+                {
+                    TempData.winners.Add(new WinningPlayerData(player.Data));
                 }
             }
             if (HAISON)

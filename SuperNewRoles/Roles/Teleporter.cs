@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetCoolDown()
         {
-            HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Teleporter.CoolTime;
+            HudManagerStartPatch.TeleporterButton.MaxTimer = RoleClass.Teleporter.CoolTime;
             RoleClass.Teleporter.ButtonTimer = DateTime.Now;
         }
         public static void TeleportStart()

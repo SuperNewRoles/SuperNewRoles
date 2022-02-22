@@ -73,7 +73,8 @@ namespace SuperNewRoles.CustomRPC
         ShareWinner,
         TeleporterTP,
         SidekickPromotes,
-        CreateSidekick
+        CreateSidekick,
+        SetSpeedBoost
     }
     public static class RPCProcedure
     {
@@ -190,6 +191,18 @@ namespace SuperNewRoles.CustomRPC
             else
             {
                 SuperNewRolesPlugin.Logger.LogInfo("end");
+            }
+        }
+        public static void SetSpeedBoost(bool Is,byte id)
+        {
+            var player = ModHelpers.playerById(id);
+            if (player == null) return;
+            if (player.Data.Role.IsImpostor)
+            {
+                RoleClass.EvilSpeedBooster.IsBoostPlayers[id] = Is;
+            } else
+            {
+                RoleClass.SpeedBooster.IsBoostPlayers[id] = Is;
             }
         }
         public static void ReportDeadBody(byte sourceId, byte targetId)
@@ -344,6 +357,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case (byte)CustomRPC.CreateSidekick:
                             RPCProcedure.CreateSidekick(reader.ReadByte());
+                            break;
+                        case (byte)CustomRPC.SetSpeedBoost:
+                            RPCProcedure.SetSpeedBoost(reader.ReadBoolean(),reader.ReadByte());
                             break;
                     }
                 }

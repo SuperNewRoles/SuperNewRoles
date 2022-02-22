@@ -59,14 +59,7 @@ namespace SuperNewRoles.Patch
                         Jackal.JackalFixedPatch.Postfix(__instance);
                         if (PlayerControl.LocalPlayer.isAlive())
                         {
-                            if (RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
-                            {
-                                if (!RoleClass.Bait.Reported && !PlayerControl.LocalPlayer.isAlive())
-                                {
-                                    Bait.BaitUpdate.Postfix(__instance);
-
-                                }
-                            }
+                            
                             if (RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                             {
                                 Researcher.ReseUseButtonSetTargetPatch.Postfix(__instance);
@@ -74,7 +67,14 @@ namespace SuperNewRoles.Patch
                         }
                         else
                         {
+                            if (RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
+                            {
+                                if (!RoleClass.Bait.Reported)
+                                {
+                                    Bait.BaitUpdate.Postfix(__instance);
 
+                                }
+                            }
                         }
                     }
                     else {
