@@ -45,6 +45,7 @@ namespace SuperNewRoles.Patch
                 timer = 600f;
                 notcreateroom = false;
                 GameStartManagerUpdatePatch.Proce = 0;
+                GameStartManagerUpdatePatch.LastBlockStart = false;
                 GameStartManagerUpdatePatch.VersionPlayers = new Dictionary<int, PlayerVersion>();
                 
             }
@@ -56,6 +57,7 @@ namespace SuperNewRoles.Patch
             public static Dictionary<int, PlayerVersion> VersionPlayers = new Dictionary<int, PlayerVersion>();
             public static int Proce;
             private static string currentText = "";
+            public static bool LastBlockStart;
 
             public static void Prefix(GameStartManager __instance)
             {
@@ -131,8 +133,11 @@ namespace SuperNewRoles.Patch
                         if (client.Id != AmongUsClient.Instance.HostId) {
                             if (!VersionPlayers.ContainsKey(client.Id))
                             {
-                                message += string.Format(ModTranslation.getString("ErrorClientNoVersion"), client.PlayerName) + "\n";
-                                blockStart = true;
+                                if (!(client.PlatformData.Platform != Platforms.StandaloneEpicPC && client.PlatformData.Platform != Platforms.StandaloneSteamPC))
+                                {
+                                    message += string.Format(ModTranslation.getString("ErrorClientNoVersion"), client.PlayerName) + "\n";
+                                    blockStart = true;
+                                }
                             }
                             else {
                                 PlayerVersion PV = VersionPlayers[client.Id];
@@ -163,8 +168,13 @@ namespace SuperNewRoles.Patch
                 }
                 else
                 {
+                    if (LastBlockStart)
+                    {
+                        __instance.GameStartText.text = "";
+                    }
                     __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
                 }
+                LastBlockStart = blockStart;
                 if (AmongUsClient.Instance.AmHost)
                 {
                     if (update) currentText = __instance.PlayerCounter.text;
