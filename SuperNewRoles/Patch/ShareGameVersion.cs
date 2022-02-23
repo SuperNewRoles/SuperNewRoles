@@ -80,19 +80,24 @@ namespace SuperNewRoles.Patch
                 
                 string message = "";
                 bool blockStart = false;
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    if (CustomOptions.DisconnectNotPCOption.getBool())
+                    {
+                        foreach (InnerNet.ClientData p in AmongUsClient.Instance.allClients)
+                        {
+                            if (p.PlatformData.Platform != Platforms.StandaloneEpicPC && p.PlatformData.Platform != Platforms.StandaloneSteamPC)
+                            {
+                                AmongUsClient.Instance.KickPlayer(p.Id, false);
+                            }
+                        }
+                    }
+                }
                 if (ConfigRoles.IsVersionErrorView.Value)
                 {
                     if (!AmongUsClient.Instance.AmClient)
                     {
-                        if (CustomOptions.DisconnectNotPCOption.getBool()) { 
-                            foreach(InnerNet.ClientData p in AmongUsClient.Instance.allClients)
-                            {
-                                if(p.PlatformData.Platform != Platforms.StandaloneEpicPC && p.PlatformData.Platform != Platforms.StandaloneSteamPC)
-                                {
-                                    AmongUsClient.Instance.KickPlayer(p.Id, false);
-                                }
-                            }
-                        }
+                        
                         if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
                         {
                             message += "\n" + ModTranslation.getString("ErrorHostNoVersion");
