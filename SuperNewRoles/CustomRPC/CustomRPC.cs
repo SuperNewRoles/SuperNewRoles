@@ -7,6 +7,9 @@ using System;
 using SuperNewRoles.Patches;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Roles;
+using SuperNewRoles.CustomCosmetics.ShareCosmetics;
+using System.Collections;
+using BepInEx.IL2CPP.Utils;
 
 namespace SuperNewRoles.CustomRPC
 {
@@ -74,14 +77,45 @@ namespace SuperNewRoles.CustomRPC
         TeleporterTP,
         SidekickPromotes,
         CreateSidekick,
-        SetSpeedBoost
+        SetSpeedBoost,
+        ShareCosmetics,
+        SetShareNamePlate,
+        AutoCreateRoom
     }
     public static class RPCProcedure
     {
 
         // Main Controls
-
-
+        public static void AutoCreateRoom() {
+            if (!ConfigRoles.IsAutoRoomCreate.Value) return;
+            AmongUsClient.Instance.StartCoroutine(CREATEROOMANDJOIN());
+            static IEnumerator CREATEROOMANDJOIN()
+            {
+                var gameid = AmongUsClient.Instance.GameId;
+                yield return new WaitForSeconds(8);
+                try
+                {
+                    AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
+                    SceneChanger.ChangeScene("MainMenu");
+                }
+                catch
+                {
+                }
+                AmongUsClient.Instance.CoJoinOnlineGameFromCode(gameid);
+            }
+        }
+        public static void ShareCosmetics(byte id, string url)
+        {
+            
+            if (ModHelpers.playerById(id) == null) return;
+            if (!SharePatch.PlayerUrl.ContainsKey(id))
+            {
+                SharePatch.PlayerUrl[id] = url;
+                HttpConnect.ShareCosmeticDateDownload(id,url);
+            }
+        }
+        public static void SetShareNamePlate(byte playerid,byte id) {
+        }
         public static void ShareOptions(int numberOfOptions, MessageReader reader)
         {
             try
@@ -360,6 +394,12 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case (byte)CustomRPC.SetSpeedBoost:
                             RPCProcedure.SetSpeedBoost(reader.ReadBoolean(),reader.ReadByte());
+                            break;
+                        case (byte)CustomRPC.ShareCosmetics:
+                            RPCProcedure.ShareCosmetics(reader.ReadByte(),reader.ReadString());
+                            break;
+                        case (byte)CustomRPC.AutoCreateRoom:
+                            RPCProcedure.AutoCreateRoom();
                             break;
                     }
                 }

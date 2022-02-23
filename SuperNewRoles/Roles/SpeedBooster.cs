@@ -60,11 +60,15 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerPhysics __instance)
             {
-                if (__instance.AmOwner && __instance.myPlayer.CanMove && GameData.Instance && (RoleClass.EvilSpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId] || RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId]))
+                if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+                if (__instance.AmOwner && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
                 {
                     __instance.body.velocity *= RoleClass.SpeedBooster.Speed;
                 }
-
+                else if (RoleClass.EvilSpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
+                {
+                    __instance.body.velocity *= RoleClass.EvilSpeedBooster.Speed;
+                }
             }
         }
     }

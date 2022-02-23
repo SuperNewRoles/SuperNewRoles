@@ -22,6 +22,9 @@ namespace SuperNewRoles
         public static ConfigEntry<bool> DebugMode { get; set; }
         public static ConfigEntry<bool> CustomProcessDown { get; set; }
         public static ConfigEntry<bool> IsVersionErrorView { get; set; }
+        public static ConfigEntry<bool> IsShareCosmetics { get; set; }
+        public static ConfigEntry<string> ShareCosmeticsNamePlatesURL { get; set; }
+        public static ConfigEntry<bool> IsAutoRoomCreate { get; set; }
         public static void Load()
         {
             StreamerMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Enable Streamer Mode", false);
@@ -30,6 +33,8 @@ namespace SuperNewRoles
             AutoCopyGameCode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Auto Copy Game Code", true);
             CustomProcessDown = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "CustomProcessDown", false);
             IsVersionErrorView = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsVersionErrorView", true);
+            ShareCosmeticsNamePlatesURL = SuperNewRolesPlugin.Instance.Config.Bind("ShareCosmetics", "NamePlateURL", "");
+            IsAutoRoomCreate = SuperNewRolesPlugin.Instance.Config.Bind("Custom","AutoRoomCreate",true);
         }
     }
 }

@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using System.Collections;
+using BepInEx.IL2CPP.Utils;
 
 namespace SuperNewRoles.Patch
 {
@@ -14,6 +16,7 @@ namespace SuperNewRoles.Patch
         public static bool IsChangeVersion = false;
         public static bool IsRPCSend = false;
         public static float timer = 600;
+        private static bool notcreateroom;
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
         public class AmongUsClientOnPlayerJoinedPatch
         {
@@ -38,6 +41,7 @@ namespace SuperNewRoles.Patch
         public class GameStartManagerStartPatch
         {
             public static void Postfix() {
+                notcreateroom = false;
                 GameStartManagerUpdatePatch.Proce = 0;
                 GameStartManagerUpdatePatch.VersionPlayers = new Dictionary<int, PlayerVersion>();
                 timer = 600f;
@@ -157,6 +161,28 @@ namespace SuperNewRoles.Patch
 
                     __instance.PlayerCounter.text = currentText + suffix;
                     __instance.PlayerCounter.autoSizeTextContainer = true;
+                    
+                    if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value) {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AutoCreateRoom, Hazel.SendOption.Reliable, -1);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        var roomid = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId);
+                        AmongUsClient.Instance.StartCoroutine(CREATEROOMANDJOIN(roomid, AmongUsClient.Instance.GameId));
+                        
+                        notcreateroom = true;
+                    }
+                }
+                static IEnumerator CREATEROOMANDJOIN(string ROOMID,int roomint)
+                {
+                    yield return new WaitForSeconds(7);
+                    try
+                    {
+                        AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
+                        SceneChanger.ChangeScene("MainMenu");
+                    } catch { 
+                    }
+
+                    AmongUsClient.Instance.OnGameCreated(ROOMID);
+                    AmongUsClient.Instance.CoJoinOnlineGameFromCode(roomint);
                 }
             }
             /**
