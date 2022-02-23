@@ -213,6 +213,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.JackalFriends):
                     Roles.RoleClass.JackalFriends.JackalFriendsPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Doctor):
+                    Roles.RoleClass.Doctor.DoctorPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -354,6 +357,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.JackalFriends):
                     Roles.RoleClass.JackalFriends.JackalFriendsPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Doctor):
+                    Roles.RoleClass.Doctor.DoctorPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -622,6 +628,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.JackalFriends.JackalFriendsPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.JackalFriends;
+            }
+            else if (Roles.RoleClass.Doctor.DoctorPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Doctor;
             }
             //ロールチェック
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;

@@ -6,17 +6,6 @@ using System.Text;
 
 namespace SuperNewRoles.Buttons
 {
-    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnDisconnected))]
-    public class OnGameDisconnect
-    {
-
-        public static void Prefix(AmongUsClient __instance)
-        {
-            Roles.SpeedBooster.ResetSpeed();
-            Roles.EvilSpeedBooster.ResetSpeed();
-            Roles.Lighter.LightOutEnd();
-        }
-    }
    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
     public class OnGameTimeEnd
     {

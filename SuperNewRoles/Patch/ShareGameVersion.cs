@@ -176,13 +176,15 @@ namespace SuperNewRoles.Patch
                     yield return new WaitForSeconds(7);
                     try
                     {
+                        SuperNewRolesPlugin.Logger.LogInfo("DISSCONNECTED!");
                         AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
                         SceneChanger.ChangeScene("MainMenu");
                     } catch { 
                     }
-
+                    SuperNewRolesPlugin.Logger.LogInfo("a");
                     AmongUsClient.Instance.OnGameCreated(ROOMID);
-                    AmongUsClient.Instance.CoJoinOnlineGameFromCode(roomint);
+                    AmongUsClient.Instance.OnGameJoined(ROOMID,AmongUsClient.Instance.GetClient(AmongUsClient.Instance.ClientId));
+                    SuperNewRolesPlugin.Logger.LogInfo("b");
                 }
             }
             /**

@@ -56,6 +56,7 @@ namespace SuperNewRoles.CustomRPC
         NiceNekomata,
         EvilNekomata,
         JackalFriends,
+        Doctor,
         //RoleId
     }
 

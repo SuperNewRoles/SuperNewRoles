@@ -225,6 +225,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption JackalFriendsIsCheckJackal;
         public static CustomOption JackalFriendsIsUseVent;
 
+        public static CustomRoleOption DoctorOption;
+        public static CustomOption DoctorPlayerCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -463,6 +466,9 @@ namespace SuperNewRoles.CustomOption
             JackalFriendsPlayerCount = CustomOption.Create(163, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalFriendsOption);
             JackalFriendsIsCheckJackal = CustomOption.Create(164, ModTranslation.getString("JackalFriendsIsCheckJackalSetting"), false, JackalFriendsOption);
             JackalFriendsIsUseVent = CustomOption.Create(165, ModTranslation.getString("MadMateUseVentSetting"), false, JackalFriendsOption);
+            
+            DoctorOption = new CustomRoleOption(166, "DoctorName", RoleClass.Doctor.color, 1);
+            DoctorPlayerCount = CustomOption.Create(167, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

@@ -505,6 +505,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.EvilNekomataPlayerCount.getFloat();
                     case (RoleId.JackalFriends):
                     return CustomOption.CustomOptions.JackalFriendsPlayerCount.getFloat();
+                    case (RoleId.Doctor):
+                    return CustomOption.CustomOptions.DoctorPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1164,6 +1166,22 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.JackalFriendsOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.JackalFriends;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.DoctorOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.DoctorOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Doctor;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);

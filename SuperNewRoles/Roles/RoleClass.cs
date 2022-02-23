@@ -65,6 +65,7 @@ namespace SuperNewRoles.Roles
             NiceNekomata.ClearAndReload();
             EvilNekomata.ClearAndReload();
             JackalFriends.ClearAndReload();
+            Doctor.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -741,6 +742,15 @@ namespace SuperNewRoles.Roles
                 JackalFriendsPlayer = new List<PlayerControl>();
                 IsJackalCheck = CustomOptions.JackalFriendsIsCheckJackal.getBool();
                 IsUseVent = CustomOptions.JackalFriendsIsUseVent.getBool();
+            }
+        }
+        public static class Doctor
+        {
+            public static List<PlayerControl> DoctorPlayer;
+            public static Color32 color = new Color32(102, 102, 255, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                DoctorPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

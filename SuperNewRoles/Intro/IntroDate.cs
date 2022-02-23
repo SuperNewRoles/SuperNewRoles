@@ -95,6 +95,8 @@ namespace SuperNewRoles.Intro
                     return EvilNekomataIntro;
                 case (CustomRPC.RoleId.JackalFriends):
                     return JackalFriendsIntro;
+                case (CustomRPC.RoleId.Doctor):
+                    return DoctorIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (PlayerControl.LocalPlayer.Data.Role.IsImpostor) {
@@ -155,6 +157,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate NiceNekomataIntro = new IntroDate("NiceNekomata", RoleClass.NiceNekomata.color, 1, CustomRPC.RoleId.NiceNekomata);
         public static IntroDate EvilNekomataIntro = new IntroDate("EvilNekomata", RoleClass.EvilNekomata.color, 1, CustomRPC.RoleId.EvilNekomata);
         public static IntroDate JackalFriendsIntro = new IntroDate("JackalFriends", RoleClass.JackalFriends.color, 1, CustomRPC.RoleId.JackalFriends);
+        public static IntroDate DoctorIntro = new IntroDate("Doctor", RoleClass.Doctor.color, 1, CustomRPC.RoleId.Doctor);
         //イントロオブジェ
     }
 }
