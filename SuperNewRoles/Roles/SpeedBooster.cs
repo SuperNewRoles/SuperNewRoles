@@ -64,11 +64,11 @@ namespace SuperNewRoles.Roles
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 if (__instance.AmOwner && RoleClass.SpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
                 {
-                    __instance.body.velocity *= RoleClass.SpeedBooster.Speed;
+                    __instance.body.velocity = __instance.body.velocity * RoleClass.SpeedBooster.Speed;
                 }
                 else if (__instance.AmOwner && RoleClass.EvilSpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.EvilSpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
                 {
-                    __instance.body.velocity *= RoleClass.EvilSpeedBooster.Speed;
+                    __instance.body.velocity = __instance.body.velocity * RoleClass.EvilSpeedBooster.Speed;
                 }
             }
         }

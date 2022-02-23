@@ -23,7 +23,6 @@ namespace SuperNewRoles.Roles
         }
         public static void ResetSpeed()
         {
-            PlayerControl.GameOptions.PlayerSpeedMod = RoleClass.SpeedBooster.DefaultSpeed;
             RoleClass.SpeedBooster.IsSpeedBoost = false;
         }
 

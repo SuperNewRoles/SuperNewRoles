@@ -30,6 +30,8 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomOption IsDebugMode;
 
+        public static CustomOption DisconnectNotPCOption;
+
         public static CustomOption DeviceOptions;
         public static CustomOption DeviceUseAdmin;
         public static CustomOption DeviceUseVitalOrDoorLog;
@@ -267,6 +269,8 @@ namespace SuperNewRoles.CustomOption
             if (ConfigRoles.DebugMode.Value) {
                 IsDebugMode = CustomOption.Create(159, "デバッグモード", false, null, isHeader: true);
             }
+
+            DisconnectNotPCOption = CustomOption.Create(168, cs(Color.white, "PC以外はキックする"), true,null,isHeader:true);
 
             DeviceOptions = CustomOption.Create(115, cs(Color.white, "DeviceOptionsSetting"), false, null,isHeader:true);
             DeviceUseAdmin = CustomOption.Create(116, cs(Color.white, "DeviceUseAdminSetting"), true, DeviceOptions);

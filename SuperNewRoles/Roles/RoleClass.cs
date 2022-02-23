@@ -26,6 +26,7 @@ namespace SuperNewRoles.Roles
         public static void clearAndReloadRoles()
         {
             SuperNewRolesPlugin.Logger.LogInfo("くりああんどりろーどろーるず");
+            EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             SoothSayer.clearAndReload();
             Jester.clearAndReload();
             Lighter.clearAndReload();
@@ -298,7 +299,6 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float DurationTime;
             public static float Speed;
-            public static float DefaultSpeed;
             public static DateTime ButtonTimer;
             public static bool IsSpeedBoost;
             public static Dictionary<int, bool> IsBoostPlayers;
@@ -313,8 +313,7 @@ namespace SuperNewRoles.Roles
                 SpeedBoosterPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.SpeedBoosterCoolTime.getFloat();
                 DurationTime = CustomOptions.SpeedBoosterDurationTime.getFloat();
-                Speed = CustomOptions.SpeedBoosterSpeed.getFloat();
-                DefaultSpeed = PlayerControl.GameOptions.PlayerSpeedMod;
+                Speed = CustomOptions.SpeedBoosterSpeed.getFloat() / 100f;
                 IsSpeedBoost = false;
                 IsBoostPlayers = new Dictionary<int, bool>();
             }
@@ -325,8 +324,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static float CoolTime;
             public static float DurationTime;
-            public static float Speed;
-            public static float DefaultSpeed;
+            public static float Speed { get { return CustomOptions.EvilSpeedBoosterSpeed.getFloat(); } }
             public static bool IsSpeedBoost;
             public static DateTime ButtonTimer;
             public static Dictionary<int, bool> IsBoostPlayers;
@@ -336,8 +334,6 @@ namespace SuperNewRoles.Roles
                 EvilSpeedBoosterPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.EvilSpeedBoosterCoolTime.getFloat();
                 DurationTime = CustomOptions.EvilSpeedBoosterDurationTime.getFloat();
-                Speed = CustomOptions.EvilSpeedBoosterSpeed.getFloat();
-                DefaultSpeed = PlayerControl.GameOptions.PlayerSpeedMod;
                 IsSpeedBoost = false;
                 IsBoostPlayers = new Dictionary<int, bool>();
             }

@@ -20,10 +20,10 @@ namespace SuperNewRoles.Roles
                         }
                     }
 
-                    MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ExiledRPC, Hazel.SendOption.Reliable, -1);
+                    MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.NekomataExiledRPC, Hazel.SendOption.Reliable, -1);
                     RPCWriter.Write(__instance.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
-                    CustomRPC.RPCProcedure.ExiledRPC(__instance.PlayerId);
+                    CustomRPC.RPCProcedure.NekomataExiledRPC(__instance.PlayerId);
                     NekomataProc(p);
                 }
             }

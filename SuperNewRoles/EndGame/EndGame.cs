@@ -10,6 +10,7 @@ using UnityEngine;
 using System.Reflection;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.EndGame
 {
@@ -49,14 +50,128 @@ namespace SuperNewRoles.EndGame
             public int TasksCompleted { get; set; }
             public int TasksTotal { get; set; }
             public int PlayerId { get; set; }
+            public FinalStatus Status { get; internal set; }
         }
     }
     [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
     public class EndGameManagerSetUpPatch
     {
         public static TMPro.TMP_Text textRenderer;
+        [HarmonyPatch(typeof(EndGameNavigation), nameof(EndGameNavigation.ShowProgression))]
+        public class ShowProgressionPatch
+        {
+            public static void Prefix()
+            {
+                if (textRenderer != null)
+                {
+                    textRenderer.gameObject.SetActive(false);
+                }
+            }
+        }
         public static void Postfix(EndGameManager __instance)
         {
+            SuperNewRolesPlugin.Logger.LogInfo("a");
+            foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>())
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("b");
+                UnityEngine.Object.Destroy(pb.gameObject);
+                SuperNewRolesPlugin.Logger.LogInfo("c");
+            }
+
+            SuperNewRolesPlugin.Logger.LogInfo("d");
+            int num = Mathf.CeilToInt(7.5f);
+            SuperNewRolesPlugin.Logger.LogInfo("e");
+            List<WinningPlayerData> list = TempData.winners.ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
+            {
+
+                SuperNewRolesPlugin.Logger.LogInfo("f");
+                if (!b.IsYou)
+                {
+
+                    SuperNewRolesPlugin.Logger.LogInfo("g");
+                    return 0;
+                }
+                return -1;
+            }).ToList<WinningPlayerData>();
+
+            SuperNewRolesPlugin.Logger.LogInfo("h");
+            for (int i = 0; i < list.Count; i++)
+            {
+
+                SuperNewRolesPlugin.Logger.LogInfo("i");
+                WinningPlayerData winningPlayerData2 = list[i];
+                SuperNewRolesPlugin.Logger.LogInfo("j");
+                int num2 = (i % 2 == 0) ? -1 : 1;
+
+                SuperNewRolesPlugin.Logger.LogInfo("k");
+                int num3 = (i + 1) / 2;
+                SuperNewRolesPlugin.Logger.LogInfo("l");
+                float num4 = (float)num3 / (float)num;
+                SuperNewRolesPlugin.Logger.LogInfo("m");
+                float num5 = Mathf.Lerp(1f, 0.75f, num4);
+                SuperNewRolesPlugin.Logger.LogInfo("n");
+                float num6 = (float)((i == 0) ? -8 : -1);
+                SuperNewRolesPlugin.Logger.LogInfo("o");
+                PoolablePlayer poolablePlayer = UnityEngine.Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, __instance.transform);
+
+                SuperNewRolesPlugin.Logger.LogInfo("p");
+                poolablePlayer.transform.localPosition = new Vector3(1f * (float)num2 * (float)num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + (float)num3 * 0.01f) * 0.9f;
+
+                SuperNewRolesPlugin.Logger.LogInfo("q");
+                float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
+                SuperNewRolesPlugin.Logger.LogInfo("r");
+                Vector3 vector = new Vector3(num7, num7, 1f);
+                SuperNewRolesPlugin.Logger.LogInfo("s");
+                poolablePlayer.transform.localScale = vector;
+                SuperNewRolesPlugin.Logger.LogInfo("t");
+                poolablePlayer.UpdateFromPlayerOutfit(winningPlayerData2, winningPlayerData2.IsDead);
+
+                SuperNewRolesPlugin.Logger.LogInfo("u");
+                if (winningPlayerData2.IsDead)
+                {
+
+                    SuperNewRolesPlugin.Logger.LogInfo("1");
+                    poolablePlayer.Body.sprite = __instance.GhostSprite;
+                    poolablePlayer.SetDeadFlipX(i % 2 == 0);
+                }
+                else
+                {
+                    poolablePlayer.SetFlipX(i % 2 == 0);
+                }
+
+                SuperNewRolesPlugin.Logger.LogInfo("2");
+                poolablePlayer.NameText.color = Color.white;
+                poolablePlayer.NameText.lineSpacing *= 0.7f;
+                SuperNewRolesPlugin.Logger.LogInfo(3);
+                poolablePlayer.NameText.transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
+                poolablePlayer.NameText.transform.localPosition = new Vector3(poolablePlayer.NameText.transform.localPosition.x, poolablePlayer.NameText.transform.localPosition.y, -15f);
+
+                SuperNewRolesPlugin.Logger.LogInfo(4);
+                poolablePlayer.NameText.text = winningPlayerData2.PlayerName;
+
+                SuperNewRolesPlugin.Logger.LogInfo(5);
+                foreach (var data in AdditionalTempData.playerRoles)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo(6);
+                    if (data.PlayerName != winningPlayerData2.PlayerName) continue;
+                    SuperNewRolesPlugin.Logger.LogInfo(7);
+                    string a;
+                    SuperNewRolesPlugin.Logger.LogInfo(8);
+                    var player = ModHelpers.playerById((byte)data.PlayerId);
+                    SuperNewRolesPlugin.Logger.LogInfo(9);
+
+                    SuperNewRolesPlugin.Logger.LogInfo("GETROLE:"+ player.getRole());
+                    SuperNewRolesPlugin.Logger.LogInfo("INTRODATA:"+ Intro.IntroDate.GetIntroDate(player.getRole(), player));
+                    var introdata = Intro.IntroDate.GetIntroDate(player.getRole(), player);
+                    a = ModTranslation.getString(introdata.NameKey+"Name");
+                    SuperNewRolesPlugin.Logger.LogInfo(10);
+
+                    poolablePlayer.NameText.text += data.NameSuffix + $"\n<size=80%>{string.Join("\n", ModHelpers.cs(introdata.color,a))}</size>";
+                    SuperNewRolesPlugin.Logger.LogInfo(11);
+                }
+
+                SuperNewRolesPlugin.Logger.LogInfo(5);
+            }
             GameObject bonusTextObject = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
             bonusTextObject.transform.position = new Vector3(__instance.WinText.transform.position.x, __instance.WinText.transform.position.y - 0.8f, __instance.WinText.transform.position.z);
             bonusTextObject.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
@@ -158,8 +273,29 @@ namespace SuperNewRoles.EndGame
                 var gameOverReason = AdditionalTempData.gameOverReason;
                 AdditionalTempData.clear();
 
-                // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
-                List<PlayerControl> notWinners = new List<PlayerControl>();
+            foreach (var p in GameData.Instance.AllPlayers)
+            {
+                //var p = pc.Data;
+                var roles = Intro.IntroDate.GetIntroDate(p.Object.getRole(),p.Object);
+                var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
+                var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
+                    p.Disconnected == true ? FinalStatus.Disconnected :
+                    FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId) ? FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] :
+                    p.IsDead == true ? FinalStatus.Dead :
+                    gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor ? FinalStatus.Sabotage :
+                    FinalStatus.Alive;
+
+                AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
+                {
+                    PlayerName = p.PlayerName,
+                    PlayerId = p.PlayerId,
+                    TasksTotal = tasksTotal,
+                    TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
+                    Status = finalStatus,
+                });
+            }
+            // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
+            List<PlayerControl> notWinners = new List<PlayerControl>();
 
                 notWinners.AddRange(RoleClass.Jester.JesterPlayer);
                 notWinners.AddRange(RoleClass.MadMate.MadMatePlayer);
@@ -374,6 +510,7 @@ namespace SuperNewRoles.EndGame
             }
         }
     }
+    
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CheckEndCriteria))]
     class CheckGameEndPatch
     {

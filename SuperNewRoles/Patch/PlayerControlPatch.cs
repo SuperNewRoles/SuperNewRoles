@@ -24,6 +24,7 @@ namespace SuperNewRoles.Patches
             // Collect dead player info
             DeadPlayer deadPlayer = new DeadPlayer(target, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
+            FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Kill;
             if (RoleHelpers.IsQuarreled(target))
             {
                 if (AmongUsClient.Instance.AmHost)
@@ -52,6 +53,7 @@ namespace SuperNewRoles.Patches
             // Collect dead player info
             DeadPlayer deadPlayer = new DeadPlayer(__instance, DateTime.UtcNow, DeathReason.Exile, null);
             DeadPlayer.deadPlayers.Add(deadPlayer);
+            FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
         }
     }
     public static class PlayerControlFixedUpdatePatch

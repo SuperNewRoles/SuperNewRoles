@@ -31,19 +31,22 @@ namespace SuperNewRoles.Roles
         }
         public static void SelfBomb() {
             foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                if (p.isAlive()) {
+                if (p.isAlive() && p.PlayerId!= PlayerControl.LocalPlayer.PlayerId) {
                     if (GetIsBomb(PlayerControl.LocalPlayer, p)) {
 
-                        CustomRPC.RPCProcedure.RPCMurderPlayer(PlayerControl.LocalPlayer.PlayerId, p.PlayerId,byte.MaxValue);
+                        CustomRPC.RPCProcedure.ByBomKillRPC(PlayerControl.LocalPlayer.PlayerId, p.PlayerId);
 
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByBomKillRPC, Hazel.SendOption.Reliable, -1);
                         Writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         Writer.Write(p.PlayerId);
-                        Writer.Write(byte.MaxValue);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                     }
                 }
             }
+            CustomRPC.RPCProcedure.BomKillRPC(PlayerControl.LocalPlayer.PlayerId);
+            MessageWriter Writer2 = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BomKillRPC, Hazel.SendOption.Reliable, -1);
+            Writer2.Write(PlayerControl.LocalPlayer.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(Writer2);
         }
         public static bool GetIsBomb(PlayerControl source,PlayerControl player)
         {

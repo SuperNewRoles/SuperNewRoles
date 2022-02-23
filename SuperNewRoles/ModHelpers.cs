@@ -128,8 +128,10 @@ namespace SuperNewRoles
             return null;
         }
 
-
-
+        internal static object playerById(int playerId)
+        {
+            throw new NotImplementedException();
+        }
 
         public static string cs(Color c, string s)
         {

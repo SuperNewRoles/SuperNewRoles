@@ -10,6 +10,8 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.CustomCosmetics.ShareCosmetics;
 using System.Collections;
 using BepInEx.IL2CPP.Utils;
+using SuperNewRoles.EndGame;
+using static SuperNewRoles.EndGame.FinalStatusPatch;
 
 namespace SuperNewRoles.CustomRPC
 {
@@ -81,7 +83,10 @@ namespace SuperNewRoles.CustomRPC
         SetSpeedBoost,
         ShareCosmetics,
         SetShareNamePlate,
-        AutoCreateRoom
+        AutoCreateRoom,
+        BomKillRPC,
+        ByBomKillRPC,
+        NekomataExiledRPC
     }
     public static class RPCProcedure
     {
@@ -166,9 +171,11 @@ namespace SuperNewRoles.CustomRPC
             if (MissFire)
             {
                 sheriff.MurderPlayer(sheriff);
+                FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.SheriffMisFire;
             } else
             {
                 sheriff.MurderPlayer(target);
+                FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.SheriffKill;
             }
 
         }
@@ -273,10 +280,39 @@ namespace SuperNewRoles.CustomRPC
             RoleClass.Jackal.SidekickPlayer.Add(player);
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
         }
+        public static void BomKillRPC(byte sourceId)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceId);
+            if (source != null)
+            {
+                KillAnimationCoPerformKillPatch.hideNextAnimation = false;
+                source.MurderPlayer(source);
+                FinalStatusData.FinalStatuses[source.PlayerId] = FinalStatus.SelfBomb;
+            }
+        }
+        public static void ByBomKillRPC(byte sourceId, byte targetId)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceId);
+            PlayerControl target = ModHelpers.playerById(targetId);
+            if (source != null && target != null)
+            {
+                source.MurderPlayer(target);
+                FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.BySelfBomb;
+            }
+        }
         public static void ExiledRPC(byte playerid) {
             var player = ModHelpers.playerById(playerid);
             if (player != null) {
                 player.Exiled();
+            }
+        }
+        public static void NekomataExiledRPC(byte playerid)
+        {
+            var player = ModHelpers.playerById(playerid);
+            if (player != null)
+            {
+                player.Exiled();
+                FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.NekomataExiled;
             }
         }
         [HarmonyPatch(typeof(KillAnimation), nameof(KillAnimation.CoPerformKill))]
@@ -299,6 +335,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 if (showAnimation == 0) KillAnimationCoPerformKillPatch.hideNextAnimation = true;
                 source.MurderPlayer(target);
+                FinalStatusData.FinalStatuses[source.PlayerId] = FinalStatus.Kill;
             }
         }
         public static void ShareWinner(byte playerid)
@@ -317,8 +354,6 @@ namespace SuperNewRoles.CustomRPC
         {
             static void Postfix([HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
             {
-                try
-                {
                     byte packetId = callId;
                     switch (packetId)
                     {
@@ -400,18 +435,22 @@ namespace SuperNewRoles.CustomRPC
                         case (byte)CustomRPC.ShareCosmetics:
                             RPCProcedure.ShareCosmetics(reader.ReadByte(),reader.ReadString());
                             break;
+                        case (byte)CustomRPC.SetShareNamePlate:
+                            RPCProcedure.SetShareNamePlate(reader.ReadByte(),reader.ReadByte());
+                            break;
                         case (byte)CustomRPC.AutoCreateRoom:
                             RPCProcedure.AutoCreateRoom();
                             break;
+                        case (byte)CustomRPC.BomKillRPC:
+                            RPCProcedure.BomKillRPC(reader.ReadByte());
+                            break;
+                        case (byte)CustomRPC.ByBomKillRPC:
+                            RPCProcedure.ByBomKillRPC(reader.ReadByte(),reader.ReadByte());
+                            break;
+                        case (byte)CustomRPC.NekomataExiledRPC:
+                            RPCProcedure.NekomataExiledRPC(reader.ReadByte());
+                            break;
                     }
-                }
-                catch (Exception e)
-                {
-                    if (ConfigRoles.DebugMode.Value)
-                    {
-                        SuperNewRolesPlugin.Logger.LogError("Error while deserializing RPC: " + e.Message);
-                    }
-                }
             }
         }
         

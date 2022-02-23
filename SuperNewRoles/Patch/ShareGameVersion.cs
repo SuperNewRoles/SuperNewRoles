@@ -7,6 +7,7 @@ using System.Text;
 using UnityEngine;
 using System.Collections;
 using BepInEx.IL2CPP.Utils;
+using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Patch
 {
@@ -83,7 +84,15 @@ namespace SuperNewRoles.Patch
                 {
                     if (!AmongUsClient.Instance.AmClient)
                     {
-
+                        if (CustomOptions.DisconnectNotPCOption.getBool()) { 
+                            foreach(InnerNet.ClientData p in AmongUsClient.Instance.allClients)
+                            {
+                                if(p.PlatformData.Platform != Platforms.StandaloneEpicPC && p.PlatformData.Platform != Platforms.StandaloneSteamPC)
+                                {
+                                    AmongUsClient.Instance.KickPlayer(p.Id, false);
+                                }
+                            }
+                        }
                         if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
                         {
                             message += "\n" + ModTranslation.getString("ErrorHostNoVersion");

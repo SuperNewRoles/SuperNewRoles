@@ -24,7 +24,7 @@ namespace SuperNewRoles.Intro
             this.TitleNum = TitleNum;
             this.TitleDesc = Intro.IntroDate.GetTitle(NameKey, TitleNum);
         }
-        public static IntroDate GetIntroDate(CustomRPC.RoleId RoleId)
+        public static IntroDate GetIntroDate(CustomRPC.RoleId RoleId,PlayerControl p = null)
         {
             switch (RoleId) {
                 case (CustomRPC.RoleId.SoothSayer):
@@ -99,7 +99,7 @@ namespace SuperNewRoles.Intro
                     return DoctorIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
-                    if (PlayerControl.LocalPlayer.Data.Role.IsImpostor) {
+                    if (p.Data.Role.IsImpostor) {
                         return ImpostorIntro;
                     } else
                     {
