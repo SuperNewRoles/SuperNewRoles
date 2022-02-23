@@ -106,7 +106,7 @@ namespace SuperNewRoles.CustomRPC
             }
         }
         public static void ShareCosmetics(byte id, string url)
-        {
+        {/**
             
             if (ModHelpers.playerById(id) == null) return;
             if (!SharePatch.PlayerUrl.ContainsKey(id))
@@ -114,6 +114,7 @@ namespace SuperNewRoles.CustomRPC
                 SharePatch.PlayerUrl[id] = url;
                 HttpConnect.ShareCosmeticDateDownload(id,url);
             }
+            **/
         }
         public static void SetShareNamePlate(byte playerid,byte id) {
         }

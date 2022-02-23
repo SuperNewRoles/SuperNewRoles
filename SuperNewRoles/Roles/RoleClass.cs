@@ -748,9 +748,20 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> DoctorPlayer;
             public static Color32 color = new Color32(102, 102, 255, byte.MaxValue);
+            public static bool MyPanelFlag;
+            public static Minigame Vital;
+            private static Sprite VitalSprite;
+            public static Sprite getVitalsSprite()
+            {
+                if (VitalSprite) return VitalSprite;
+                VitalSprite = HudManager.Instance.UseButton.fastUseSettings[ImageNames.VitalsButton].Image;
+                return VitalSprite;
+            }
             public static void ClearAndReload()
             {
                 DoctorPlayer = new List<PlayerControl>();
+                MyPanelFlag = false;
+                Vital = null;
             }
         }
         //新ロールクラス

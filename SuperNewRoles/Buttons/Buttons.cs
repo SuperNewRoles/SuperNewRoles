@@ -24,17 +24,12 @@ namespace SuperNewRoles.Buttons
         public static CustomButton TeleporterButton;
         public static CustomButton DoorrDoorButton;
         public static CustomButton SelfBomberButton;
+        public static CustomButton DoctorVitalsButton;
 
         public static CustomButton FreezerFreezeButton;
         public static CustomButton SpeederSpeedDownButton;
         public static CustomButton JackalKillButton;
         public static CustomButton JackalSidekickButton;
-
-        public static TMPro.TMP_Text securityGuardButtonScrewsText;
-        public static TMPro.TMP_Text vultureNumCorpsesText;
-        public static TMPro.TMP_Text pursuerButtonBlanksText;
-        public static TMPro.TMP_Text hackerAdminTableChargesText;
-        public static TMPro.TMP_Text hackerVitalsChargesText;
 
         public static void setCustomButtonCooldowns()
         {
@@ -51,6 +46,35 @@ namespace SuperNewRoles.Buttons
         {
             RoleClass.clearAndReloadRoles();
             SuperNewRolesPlugin.Logger.LogInfo("HudMangerButton");
+            DoctorVitalsButton = new CustomButton(
+               () =>
+               {
+                       if (RoleClass.Doctor.Vital == null)
+                       {
+                           var e = UnityEngine.Object.FindObjectsOfType<SystemConsole>().FirstOrDefault(x => x.gameObject.name.Contains("panel_vitals"));
+                           if (e == null || Camera.main == null) return;
+                           RoleClass.Doctor.Vital = UnityEngine.Object.Instantiate(e.MinigamePrefab, Camera.main.transform, false);
+                       }
+                       RoleClass.Doctor.Vital.transform.SetParent(Camera.main.transform, false);
+                       RoleClass.Doctor.Vital.transform.localPosition = new Vector3(0.0f, 0.0f, -50f);
+                       RoleClass.Doctor.Vital.Begin(null);
+                   
+               },
+               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Doctor) && PlayerControl.LocalPlayer.CanMove; },
+               () =>
+               {
+                   return PlayerControl.LocalPlayer.CanMove;
+               },
+               () =>
+               {
+               },
+               RoleClass.Doctor.getVitalsSprite(),
+               new Vector3(-1.8f, -0.06f, 0),
+               __instance,
+               __instance.AbilityButton,
+               KeyCode.F,
+               49
+            );
 
             JackalSidekickButton = new CustomButton(
                 () =>

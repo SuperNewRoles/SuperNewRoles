@@ -41,10 +41,11 @@ namespace SuperNewRoles.Patch
         public class GameStartManagerStartPatch
         {
             public static void Postfix() {
+                timer = 600f;
                 notcreateroom = false;
                 GameStartManagerUpdatePatch.Proce = 0;
                 GameStartManagerUpdatePatch.VersionPlayers = new Dictionary<int, PlayerVersion>();
-                timer = 600f;
+                
             }
         }
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
@@ -163,10 +164,10 @@ namespace SuperNewRoles.Patch
                     __instance.PlayerCounter.autoSizeTextContainer = true;
                     
                     if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value) {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AutoCreateRoom, Hazel.SendOption.Reliable, -1);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        var roomid = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId);
-                        AmongUsClient.Instance.StartCoroutine(CREATEROOMANDJOIN(roomid, AmongUsClient.Instance.GameId));
+                        //MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AutoCreateRoom, Hazel.SendOption.Reliable, -1);
+                        //AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        //var roomid = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId);
+                        //AmongUsClient.Instance.StartCoroutine(CREATEROOMANDJOIN(roomid, AmongUsClient.Instance.GameId));
                         
                         notcreateroom = true;
                     }

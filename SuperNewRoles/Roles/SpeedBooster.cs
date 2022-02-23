@@ -6,6 +6,7 @@ using SuperNewRoles.Patches;
 using UnityEngine;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
+using System.Linq;
 
 namespace SuperNewRoles.Roles
 {
@@ -61,11 +62,11 @@ namespace SuperNewRoles.Roles
             public static void Postfix(PlayerPhysics __instance)
             {
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-                if (__instance.AmOwner && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
+                if (__instance.AmOwner && RoleClass.SpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
                 {
                     __instance.body.velocity *= RoleClass.SpeedBooster.Speed;
                 }
-                else if (RoleClass.EvilSpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
+                else if (__instance.AmOwner && RoleClass.EvilSpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.EvilSpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
                 {
                     __instance.body.velocity *= RoleClass.EvilSpeedBooster.Speed;
                 }
