@@ -124,19 +124,16 @@ namespace SuperNewRoles.Patches
                 CustomButton.MeetingEndedUpdate();
                 if (ModeHandler.isMode(ModeId.Default))
                 {
-                    if (PlayerControl.LocalPlayer.IsQuarreled() && (RoleDate == CustomRPC.RoleId.DefaultRole || RoleDate == CustomRPC.RoleId.Bestfalsecharge))
-                    {
-                        __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
-                    }
-                    else if (PlayerControl.LocalPlayer.IsQuarreled() && RoleDate != CustomRPC.RoleId.DefaultRole && RoleDate != CustomRPC.RoleId.Bestfalsecharge)
-                    {
-                        __instance.RoleBlurbText.text = "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
-                    }
-                    else if (RoleDate != CustomRPC.RoleId.DefaultRole && RoleDate != CustomRPC.RoleId.Bestfalsecharge)
+                    var myrole = PlayerControl.LocalPlayer.getRole();
+                    if (myrole != CustomRPC.RoleId.DefaultRole && myrole != CustomRPC.RoleId.Bestfalsecharge)
                     {
                         __instance.RoleBlurbText.text = "";
                     }
-                    if (RoleDate == CustomRPC.RoleId.DefaultRole || RoleDate == CustomRPC.RoleId.Bestfalsecharge) return;
+                    if (PlayerControl.LocalPlayer.IsQuarreled())
+                    {
+                        __instance.RoleBlurbText.text = __instance.RoleBlurbText.text + "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
+                    }
+                    if (myrole == CustomRPC.RoleId.DefaultRole || myrole == CustomRPC.RoleId.Bestfalsecharge) return;
                     var date = Intro.IntroDate.GetIntroDate(RoleDate);
                     __instance.YouAreText.color = date.color;
                     __instance.RoleText.text = ModTranslation.getString(date.NameKey + "Name");
