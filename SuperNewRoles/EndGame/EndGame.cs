@@ -11,6 +11,7 @@ using System.Reflection;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patch;
+using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.EndGame
 {
@@ -51,6 +52,7 @@ namespace SuperNewRoles.EndGame
             public int TasksTotal { get; set; }
             public int PlayerId { get; set; }
             public FinalStatus Status { get; internal set; }
+            public Intro.IntroDate IntroDate { get; set; }
         }
     }
     [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
@@ -97,36 +99,21 @@ namespace SuperNewRoles.EndGame
             SuperNewRolesPlugin.Logger.LogInfo("h");
             for (int i = 0; i < list.Count; i++)
             {
-
-                SuperNewRolesPlugin.Logger.LogInfo("i");
                 WinningPlayerData winningPlayerData2 = list[i];
-                SuperNewRolesPlugin.Logger.LogInfo("j");
                 int num2 = (i % 2 == 0) ? -1 : 1;
-
-                SuperNewRolesPlugin.Logger.LogInfo("k");
                 int num3 = (i + 1) / 2;
-                SuperNewRolesPlugin.Logger.LogInfo("l");
                 float num4 = (float)num3 / (float)num;
-                SuperNewRolesPlugin.Logger.LogInfo("m");
                 float num5 = Mathf.Lerp(1f, 0.75f, num4);
-                SuperNewRolesPlugin.Logger.LogInfo("n");
                 float num6 = (float)((i == 0) ? -8 : -1);
-                SuperNewRolesPlugin.Logger.LogInfo("o");
                 PoolablePlayer poolablePlayer = UnityEngine.Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, __instance.transform);
 
-                SuperNewRolesPlugin.Logger.LogInfo("p");
                 poolablePlayer.transform.localPosition = new Vector3(1f * (float)num2 * (float)num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + (float)num3 * 0.01f) * 0.9f;
 
-                SuperNewRolesPlugin.Logger.LogInfo("q");
                 float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
-                SuperNewRolesPlugin.Logger.LogInfo("r");
                 Vector3 vector = new Vector3(num7, num7, 1f);
-                SuperNewRolesPlugin.Logger.LogInfo("s");
                 poolablePlayer.transform.localScale = vector;
-                SuperNewRolesPlugin.Logger.LogInfo("t");
                 poolablePlayer.UpdateFromPlayerOutfit(winningPlayerData2, winningPlayerData2.IsDead);
 
-                SuperNewRolesPlugin.Logger.LogInfo("u");
                 if (winningPlayerData2.IsDead)
                 {
 
@@ -139,38 +126,19 @@ namespace SuperNewRoles.EndGame
                     poolablePlayer.SetFlipX(i % 2 == 0);
                 }
 
-                SuperNewRolesPlugin.Logger.LogInfo("2");
                 poolablePlayer.NameText.color = Color.white;
                 poolablePlayer.NameText.lineSpacing *= 0.7f;
-                SuperNewRolesPlugin.Logger.LogInfo(3);
                 poolablePlayer.NameText.transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
                 poolablePlayer.NameText.transform.localPosition = new Vector3(poolablePlayer.NameText.transform.localPosition.x, poolablePlayer.NameText.transform.localPosition.y, -15f);
 
-                SuperNewRolesPlugin.Logger.LogInfo(4);
                 poolablePlayer.NameText.text = winningPlayerData2.PlayerName;
 
-                SuperNewRolesPlugin.Logger.LogInfo(5);
                 foreach (var data in AdditionalTempData.playerRoles)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo(6);
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                    SuperNewRolesPlugin.Logger.LogInfo(7);
-                    string a;
-                    SuperNewRolesPlugin.Logger.LogInfo(8);
-                    var player = ModHelpers.playerById((byte)data.PlayerId);
-                    SuperNewRolesPlugin.Logger.LogInfo(9);
-
-                    SuperNewRolesPlugin.Logger.LogInfo("GETROLE:"+ player.getRole());
-                    SuperNewRolesPlugin.Logger.LogInfo("INTRODATA:"+ Intro.IntroDate.GetIntroDate(player.getRole(), player));
-                    var introdata = Intro.IntroDate.GetIntroDate(player.getRole(), player);
-                    a = ModTranslation.getString(introdata.NameKey+"Name");
-                    SuperNewRolesPlugin.Logger.LogInfo(10);
-
-                    poolablePlayer.NameText.text += data.NameSuffix + $"\n<size=80%>{string.Join("\n", ModHelpers.cs(introdata.color,a))}</size>";
-                    SuperNewRolesPlugin.Logger.LogInfo(11);
+                    poolablePlayer.NameText.text += data.NameSuffix + $"\n<size=80%>{string.Join("\n", CustomOptions.cs(data.IntroDate.color, data.IntroDate.NameKey+"Name"))}</size>";
+                    SuperNewRolesPlugin.Logger.LogInfo("HAHAHA:"+ $"\n<size=80%>{string.Join("\n", CustomOptions.cs(data.IntroDate.color, data.IntroDate.NameKey + "Name"))}</size>");
                 }
-
-                SuperNewRolesPlugin.Logger.LogInfo(5);
             }
             GameObject bonusTextObject = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
             bonusTextObject.transform.position = new Vector3(__instance.WinText.transform.position.x, __instance.WinText.transform.position.y - 0.8f, __instance.WinText.transform.position.z);
@@ -292,6 +260,7 @@ namespace SuperNewRoles.EndGame
                     TasksTotal = tasksTotal,
                     TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
                     Status = finalStatus,
+                    IntroDate = roles
                 });
             }
             // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)

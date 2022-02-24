@@ -99,7 +99,7 @@ namespace SuperNewRoles.Intro
                     return DoctorIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
-                    if (p.Data.Role.IsImpostor) {
+                    if (p != null && p.Data.Role.IsImpostor) {
                         return ImpostorIntro;
                     } else
                     {
