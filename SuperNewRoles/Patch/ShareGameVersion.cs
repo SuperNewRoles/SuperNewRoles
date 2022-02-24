@@ -68,6 +68,7 @@ namespace SuperNewRoles.Patch
             {
                 Proce++;
                 if (Proce >= 10) {
+
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareSNRVersion, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)SuperNewRolesPlugin.Version.Major);
                     writer.Write((byte)SuperNewRolesPlugin.Version.Minor);

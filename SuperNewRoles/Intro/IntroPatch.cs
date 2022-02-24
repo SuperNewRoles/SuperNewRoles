@@ -125,21 +125,19 @@ namespace SuperNewRoles.Patches
                 if (ModeHandler.isMode(ModeId.Default))
                 {
                     var myrole = PlayerControl.LocalPlayer.getRole();
-                    if (myrole != CustomRPC.RoleId.DefaultRole && myrole != CustomRPC.RoleId.Bestfalsecharge)
-                    {
-                        __instance.RoleBlurbText.text = "";
-                    }
-                    if (PlayerControl.LocalPlayer.IsQuarreled())
-                    {
-                        __instance.RoleBlurbText.text = __instance.RoleBlurbText.text + "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
-                    }
-                    if (myrole == CustomRPC.RoleId.DefaultRole || myrole == CustomRPC.RoleId.Bestfalsecharge) return;
+                    if (!(myrole == CustomRPC.RoleId.DefaultRole || myrole == CustomRPC.RoleId.Bestfalsecharge)) { 
                     var date = Intro.IntroDate.GetIntroDate(RoleDate);
                     __instance.YouAreText.color = date.color;
                     __instance.RoleText.text = ModTranslation.getString(date.NameKey + "Name");
                     __instance.RoleText.color = date.color;
-                    __instance.RoleBlurbText.text = date.TitleDesc + __instance.RoleBlurbText.text;
+                    __instance.RoleBlurbText.text = date.TitleDesc;
                     __instance.RoleBlurbText.color = date.color;
+                    }
+
+                    if (PlayerControl.LocalPlayer.IsQuarreled())
+                    {
+                        __instance.RoleBlurbText.text = __instance.RoleBlurbText.text + "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
+                    }
                 }
             }
         }
