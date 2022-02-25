@@ -270,6 +270,7 @@ namespace SuperNewRoles.EndGame
                 notWinners.AddRange(RoleClass.MadMate.MadMatePlayer);
                 notWinners.AddRange(RoleClass.Jackal.JackalPlayer);
                 notWinners.AddRange(RoleClass.Jackal.SidekickPlayer);
+                notWinners.AddRange(RoleClass.JackalFriends.JackalFriendsPlayer)
                 notWinners.AddRange(RoleClass.God.GodPlayer);
                 notWinners.AddRange(RoleClass.Opportunist.OpportunistPlayer);
                 foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)

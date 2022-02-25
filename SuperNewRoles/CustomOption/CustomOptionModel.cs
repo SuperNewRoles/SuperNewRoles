@@ -254,6 +254,17 @@ namespace SuperNewRoles.CustomOption
 
     }
 
+    [HarmonyPatch(typeof(RoleOptionsData), nameof(RoleOptionsData.GetNumPerGame))]
+    class RoleOptionsDataGetNumPerGamePatch
+    {
+        public static void Postfix(ref int __result, ref RoleTypes role)
+        {
+            if (role == RoleTypes.Crewmate || role == RoleTypes.Impostor) return;
+
+            __result = 0;
+        }
+    }
+
     [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Start))]
     class GameOptionsMenuStartPatch
     {
