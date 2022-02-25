@@ -257,7 +257,7 @@ namespace SuperNewRoles.CustomOption
 
         public static void Load()
         {
-            presetSelection = CustomOption.Create(1, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingpresetSelection"), presets, null, true);
+            presetSelection = CustomOption.Create(0, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingpresetSelection"), presets, null, true);
 
             specialOptions = new CustomOptionBlank(null);
             hideSettings = CustomOption.Create(2, cs(Color.white, "SettingsHideSetting"), false, specialOptions);
