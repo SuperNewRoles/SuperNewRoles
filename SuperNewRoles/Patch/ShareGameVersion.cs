@@ -134,7 +134,7 @@ namespace SuperNewRoles.Patch
                         if (client.Id != AmongUsClient.Instance.HostId) {
                             if (!VersionPlayers.ContainsKey(client.Id))
                             {
-                                if (!(client.PlatformData.Platform != Platforms.StandaloneEpicPC && client.PlatformData.Platform != Platforms.StandaloneSteamPC))
+                                if (!(client.PlatformData.Platform != Platforms.StandaloneEpicPC && client.PlatformData.Platform != Platforms.StandaloneSteamPC && CustomOptions.DisconnectNotPCOption.getBool()))
                                 {
                                     message += string.Format(ModTranslation.getString("ErrorClientNoVersion"), client.PlayerName) + "\n";
                                     blockStart = true;
