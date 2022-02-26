@@ -12,7 +12,17 @@ namespace SuperNewRoles.Roles
 {
 
 
-
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
+    class SoothSayer_updatepatch
+    {
+        static void Postfix(MeetingHud __instance)
+        {
+            if (!PlayerControl.LocalPlayer.isAlive())
+            {
+                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+            }
+        }
+    }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     class SoothSayer_Patch
     {
@@ -31,7 +41,7 @@ namespace SuperNewRoles.Roles
                     namedate = "Neutral";
                 } else if (Target.isCrew())
                 {
-                    namedate = "Crewmate";
+                    namedate = "CrewMate";
                 }
             }
             else
@@ -88,7 +98,7 @@ namespace SuperNewRoles.Roles
                 }
                 else if (Target.isCrew())
                 {
-                    namedate = "Crewmate";
+                    namedate = "CrewMate";
                 }
             }
             else

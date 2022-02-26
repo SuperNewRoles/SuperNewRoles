@@ -681,7 +681,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-            /**
             if (!(CustomOption.CustomOptions.SpiritMediumOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SpiritMediumOption.getString().Replace("0%", ""));
@@ -698,7 +697,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-            **/
             if (!(CustomOption.CustomOptions.SpeedBoosterOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SpeedBoosterOption.getString().Replace("0%", ""));

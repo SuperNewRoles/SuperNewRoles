@@ -10,8 +10,17 @@ using UnityEngine.UI;
 
 namespace SuperNewRoles.Roles
 {
-
-
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
+    class meetingsheriff_updatepatch
+    {
+        static void Postfix(MeetingHud __instance)
+        {
+            if (!PlayerControl.LocalPlayer.isAlive())
+            {
+                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+            }
+        }
+    }
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     class MeetingSheriff_Patch
@@ -36,7 +45,7 @@ namespace SuperNewRoles.Roles
                 killWriter.Write(misfire);
                 AmongUsClient.Instance.FinishRpcImmediately(killWriter);
             RoleClass.MeetingSheriff.KillMaxCount--;
-            if (RoleClass.MeetingSheriff.KillMaxCount <= 0 || !RoleClass.MeetingSheriff.OneMeetingMultiKill)
+            if (RoleClass.MeetingSheriff.KillMaxCount <= 0 || !RoleClass.MeetingSheriff.OneMeetingMultiKill || misfire)
             {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
             }
