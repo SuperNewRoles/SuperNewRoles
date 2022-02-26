@@ -507,6 +507,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.JackalFriendsPlayerCount.getFloat();
                     case (RoleId.Doctor):
                     return CustomOption.CustomOptions.DoctorPlayerCount.getFloat();
+                    case (RoleId.CountChanger):
+                    return CustomOption.CustomOptions.CountChangerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1184,6 +1186,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.CountChangerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.CountChangerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.CountChanger;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }

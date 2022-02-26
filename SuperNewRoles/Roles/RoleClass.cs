@@ -67,6 +67,7 @@ namespace SuperNewRoles.Roles
             EvilNekomata.ClearAndReload();
             JackalFriends.ClearAndReload();
             Doctor.ClearAndReload();
+            CountChanger.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -760,6 +761,15 @@ namespace SuperNewRoles.Roles
                 DoctorPlayer = new List<PlayerControl>();
                 MyPanelFlag = false;
                 Vital = null;
+            }
+        }
+        public static class CountChanger
+        {
+            public static List<PlayerControl> CountChangerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                CountChangerPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

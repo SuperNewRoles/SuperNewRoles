@@ -230,6 +230,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption DoctorOption;
         public static CustomOption DoctorPlayerCount;
 
+        public static CustomRoleOption CountChangerOption;
+        public static CustomOption CountChangerPlayerCount;
+        public static CustomOption CountChangerChangeLight;
+        public static CustomOption CountChangerMaxCount;
+        public static CustomOption CountChangerNextTurn;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
