@@ -39,6 +39,10 @@ namespace SuperNewRoles.Buttons
             Jackal.resetCoolDown();
         }
 
+        private static PlayerControl setTarget(List<PlayerControl> untarget = null)
+        {
+            return PlayerControlFixedUpdatePatch.setTarget(untargetablePlayers:untarget);
+        }
 
         private static PlayerControl SheriffKillTarget;
 
@@ -263,7 +267,7 @@ namespace SuperNewRoles.Buttons
             SheriffKillButton = new Buttons.CustomButton(
                 () =>
                 {
-                    if (RoleClass.Sheriff.KillMaxCount >= 1)
+                    if (RoleClass.Sheriff.KillMaxCount >= 1 && setTarget())
                     {
                         RoleClass.Sheriff.KillMaxCount--;
                         var Target = PlayerControlFixedUpdatePatch.setTarget();
@@ -411,5 +415,6 @@ namespace SuperNewRoles.Buttons
             // Set the default (or settings from the previous game) timers/durations when spawning the buttons
             setCustomButtonCooldowns();
         }
+
     }
 }
