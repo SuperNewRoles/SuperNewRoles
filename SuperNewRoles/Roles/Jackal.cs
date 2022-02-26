@@ -76,16 +76,22 @@ namespace SuperNewRoles.Roles
             }
             public static void Postfix(PlayerControl __instance) {
                 if (AmongUsClient.Instance.AmHost) {
-                    var jackalisalive = false;
-                    foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer) {
-                        if (!p.isAlive()) {
-                            jackalisalive = true;
+                    if (RoleClass.Jackal.SidekickPlayer.Count != 0)
+                    {
+                        var upflag = true;
+                        foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
+                        {
+                            if (p.isAlive())
+                            {
+                                upflag = false;
+                            }
                         }
-                    }
-                    if (!jackalisalive) {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SidekickPromotes, Hazel.SendOption.Reliable, -1);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.SidekickPromotes();
+                        if (upflag)
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SidekickPromotes, Hazel.SendOption.Reliable, -1);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            RPCProcedure.SidekickPromotes();
+                        }
                     }
                 }
                 if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal)) {
