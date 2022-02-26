@@ -110,7 +110,7 @@ namespace SuperNewRoles.Patch
             var IsDebugModeBool = false;
             if (ConfigRoles.DebugMode.Value) {
                 if (CustomOptions.IsDebugMode.getBool()) {
-                    IsDebugModeBool = false;
+                    IsDebugModeBool = true;
                 }
             }
             return IsDebugModeBool;

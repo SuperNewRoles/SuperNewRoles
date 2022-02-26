@@ -232,7 +232,6 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption CountChangerOption;
         public static CustomOption CountChangerPlayerCount;
-        public static CustomOption CountChangerChangeLight;
         public static CustomOption CountChangerMaxCount;
         public static CustomOption CountChangerNextTurn;
 
@@ -477,6 +476,11 @@ namespace SuperNewRoles.CustomOption
             
             DoctorOption = new CustomRoleOption(166, "DoctorName", RoleClass.Doctor.color, 1);
             DoctorPlayerCount = CustomOption.Create(167, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
+
+            CountChangerOption = new CustomRoleOption(169, "CountChangerName", RoleClass.CountChanger.color, 1);
+            CountChangerPlayerCount = CustomOption.Create(170, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CountChangerOption);
+            CountChangerMaxCount = CustomOption.Create(171, cs(Color.white, "CountChangerMaxCountSetting"), 1f,1f,15f,1f, CountChangerOption);
+            CountChangerNextTurn = CustomOption.Create(172, cs(Color.white, "CountChangerNextTurnSetting"), false, CountChangerOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

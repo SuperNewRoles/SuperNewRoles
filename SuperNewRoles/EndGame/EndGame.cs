@@ -273,10 +273,6 @@ namespace SuperNewRoles.EndGame
                 notWinners.AddRange(RoleClass.JackalFriends.JackalFriendsPlayer);
                 notWinners.AddRange(RoleClass.God.GodPlayer);
                 notWinners.AddRange(RoleClass.Opportunist.OpportunistPlayer);
-                foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
-                {
-                    notWinners.AddRange(players);
-                }
 
                 List<WinningPlayerData> winnersToRemove = new List<WinningPlayerData>();
                 foreach (WinningPlayerData winner in TempData.winners)
@@ -301,18 +297,6 @@ namespace SuperNewRoles.EndGame
                 WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.JesterWin;
-            } else if (QuarreledWin)
-            {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                var winplays = new List<PlayerControl>() { WinnerPlayer };
-                winplays.Add(WinnerPlayer.GetOneSideQuarreled());
-                foreach (PlayerControl p in winplays)
-                {
-                    p.Data.IsDead = false;
-                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                AdditionalTempData.winCondition = WinCondition.QuarreledWin;
             } else if (JackalWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
@@ -376,6 +360,25 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(new WinningPlayerData(player.Data));
                 }
             }
+
+            foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
+            {
+                notWinners.AddRange(players);
+            }
+            if (QuarreledWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                var winplays = new List<PlayerControl>() { WinnerPlayer };
+                winplays.Add(WinnerPlayer.GetOneSideQuarreled());
+                foreach (PlayerControl p in winplays)
+                {
+                    p.Data.IsDead = false;
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                }
+                AdditionalTempData.winCondition = WinCondition.QuarreledWin;
+            }
+            else
             if (HAISON)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
@@ -385,7 +388,6 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(wpd);
                 }
                 AdditionalTempData.winCondition = WinCondition.HAISON;
-                // Jester win
             }
         }
         
