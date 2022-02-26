@@ -43,24 +43,45 @@ namespace SuperNewRoles.Roles
                 door.SetDoorway(!door.Open);
             }
         }
+        private static float IsPos(Vector3 mypos,PlainDoor Door,float distance) {
+            var Distance = Vector3.Distance(mypos, Door.transform.position);
+            if (Distance <= distance)
+            {
+                return Distance;
+            }
+            return 0f;
+        }
         private static PlainDoor GetDoor()
         {
             Vector3 position = PlayerControl.LocalPlayer.transform.position;
+            List<PlainDoor> selectdoors = new List<PlainDoor>();
             foreach (PlainDoor door in ShipStatus.Instance.AllDoors)
             {
-                Vector3 Doorposition = door.transform.position;
-                if ((position.x + 2 >= Doorposition.x) && (Doorposition.x >= position.x - 2))
+                var getispos = IsPos(position, door, 2);
+                if (getispos != 0)
                 {
-                    if ((position.y + 2 >= Doorposition.y) && (Doorposition.y >= position.y - 2))
-                    {
-                        if ((position.z + 2 >= Doorposition.z) && (Doorposition.z >= position.z - 2))
-                        {
-                            return door;
-                        }
-                    }
+                    selectdoors.Add(door);
                 }
             }
-            return null;
+            bool flag = true;
+            while (flag)
+            {
+                if (selectdoors.Count >= 2)
+                {
+                    if (IsPos(position, selectdoors[0], 2) >= IsPos(position, selectdoors[1], 2))
+                    {
+                        selectdoors.Remove(selectdoors[0]);
+                    }
+                    else
+                    {
+                        selectdoors.Remove(selectdoors[1]);
+                    }
+                } else
+                {
+                    flag = false;
+                }
+            }
+            return selectdoors[0];
         }
         public static void EndMeeting()
         {
