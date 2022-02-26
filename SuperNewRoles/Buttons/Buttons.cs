@@ -31,6 +31,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton JackalKillButton;
         public static CustomButton JackalSidekickButton;
 
+        public static TMPro.TMP_Text sheriffNumShotsText;
+
         public static void setCustomButtonCooldowns()
         {
             Sheriff.ResetKillCoolDown();
@@ -79,6 +81,10 @@ namespace SuperNewRoles.Buttons
                KeyCode.F,
                49
             );
+
+            
+            DoctorVitalsButton.buttonText = ModTranslation.getString("DoctorVitalButtonName");
+            DoctorVitalsButton.showButtonText = true;
 
             JackalSidekickButton = new CustomButton(
                 () =>
@@ -157,6 +163,9 @@ namespace SuperNewRoles.Buttons
                 KeyCode.F,
                 49
             );
+            
+            SelfBomberButton.buttonText = ModTranslation.getString("SelfBomberButtonName");
+            SelfBomberButton.showButtonText = true;
 
             DoorrDoorButton = new Buttons.CustomButton(
                 () =>
@@ -288,6 +297,10 @@ namespace SuperNewRoles.Buttons
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Roles.Sheriff.IsSheriff(PlayerControl.LocalPlayer) && RoleClass.Sheriff.KillMaxCount >= 1; },
                 () =>
                 {
+                    if (RoleClass.Sheriff.KillMaxCount > 0)
+                        sheriffNumShotsText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), RoleClass.Sheriff.KillMaxCount);
+                    else
+                        sheriffNumShotsText.text = "";
                     return PlayerControlFixedUpdatePatch.setTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Sheriff.EndMeeting(); },
@@ -298,6 +311,16 @@ namespace SuperNewRoles.Buttons
                 KeyCode.Q,
                 8
             );
+
+            sheriffNumShotsText = GameObject.Instantiate(SheriffKillButton.actionButton.cooldownTimerText, SheriffKillButton.actionButton.cooldownTimerText.transform.parent);
+            sheriffNumShotsText.text = "";
+            sheriffNumShotsText.enableWordWrapping = false;
+            sheriffNumShotsText.transform.localScale = Vector3.one * 0.5f;
+            sheriffNumShotsText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+
+            
+            SheriffKillButton.buttonText = ModTranslation.getString("SherifKillButtonName");
+            SheriffKillButton.showButtonText = true;
 
             ClergymanLightOutButton = new Buttons.CustomButton(
                 () =>
@@ -409,10 +432,10 @@ namespace SuperNewRoles.Buttons
                 KeyCode.F,
                 49
             );
+            
+            LighterLightOnButton.buttonText = ModTranslation.getString("LighterButtonName");
+            LighterLightOnButton.showButtonText = true;
 
-            ClergymanLightOutButton.buttonText = ModTranslation.getString("ClergymanLightOutButtonName");
-            ClergymanLightOutButton.showButtonText = true;
-            // Set the default (or settings from the previous game) timers/durations when spawning the buttons
             setCustomButtonCooldowns();
         }
 

@@ -420,6 +420,10 @@
         "0" : "View in light" ,
         "11" : "\u30e9\u30a4\u30c8\u4e2d\u306e\u8996\u754c"
         } ,
+ "LighterButtonName" : {
+        "0" : "Light!" ,
+        "11" : "\u30e9\u30a4\u30c8!"
+        } ,
  "EvilLighterName" : {
         "0" : "Evil Lighter" ,
         "11" : "\u30a4\u30d3\u30eb \u30e9\u30a4\u30bf\u30fc"
@@ -495,6 +499,10 @@
  "SherifKillButtonName" : {
         "0" : "Kill" ,
         "11" : "\u30ad\u30eb"
+        } ,
+ "SheriffNumTextName" : {
+        "0" : "{0} shots remaining." ,
+        "11" : "\u6b8b\u308a{0}\u767a"
         } ,
  "MeetingSheriffName" : {
         "0" : "Meeting Sheriff" ,
@@ -1100,6 +1108,10 @@
         "0" : "Range (radius)" ,
         "11" : "\u7bc4\u56f2(\u534a\u5f84)"
         } ,
+ "SelfBomberButtonName" : {
+        "0" : "Self Bomb" ,
+        "11" : "\u81ea\u7206"
+        } ,
  "GodName" : {
         "0" : "God" ,
         "11" : "\u795e"
@@ -1167,6 +1179,10 @@
  "DoctorTitle1" : {
         "0" : "Check Vitals" ,
         "11" : "\u30d0\u30a4\u30bf\u30eb\u3092\u30c1\u30a7\u30c3\u30af\u3057\u3088\u3046"
+        } ,
+ "DoctorVitalButtonName" : {
+        "0" : "Vital" ,
+        "11" : "\u30d0\u30a4\u30bf\u30eb"
         } 
 
 }
