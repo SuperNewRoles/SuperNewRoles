@@ -75,7 +75,26 @@ namespace SuperNewRoles.Roles
         {
             var Target = ModHelpers.playerById((byte)__instance.playerStates[Index].TargetPlayerId);
             var introdate = Target.getRole();
-            namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
+            namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey; 
+            if (RoleClass.SpiritMedium.DisplayMode)
+            {
+                if (Target.isImpostor())
+                {
+                    namedate = "Impostor";
+                }
+                else if (Target.isNeutral())
+                {
+                    namedate = "Neutral";
+                }
+                else if (Target.isCrew())
+                {
+                    namedate = "Crewmate";
+                }
+            }
+            else
+            {
+                namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
+            }
             var name = ModTranslation.getString(namedate + "Name");
             DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText.text, name));
             RoleClass.SoothSayer.Count--;
