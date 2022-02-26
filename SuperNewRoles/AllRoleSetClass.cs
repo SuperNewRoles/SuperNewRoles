@@ -534,10 +534,8 @@ namespace SuperNewRoles
             Neutnotonepar = new List<RoleId>();
             Crewonepar = new List<RoleId>();
             Crewnotonepar = new List<RoleId>();
-            /**
             if (!(CustomOption.CustomOptions.SoothSayerOption.getString().Replace("0%", "") == ""))
             {
-                SuperNewRolesPlugin.Logger.LogInfo("占い師いいいいい");
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SoothSayerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.SoothSayer;
                 if (OptionDate == 10)
@@ -551,7 +549,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-            **/
             if (!(CustomOption.CustomOptions.JesterOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.JesterOption.getString().Replace("0%", ""));
@@ -636,7 +633,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-            /**
             if (!(CustomOption.CustomOptions.MeetingSheriffOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MeetingSheriffOption.getString().Replace("0%", ""));
@@ -653,7 +649,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-            **/
             if (!(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", ""));

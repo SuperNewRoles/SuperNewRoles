@@ -280,6 +280,10 @@
         "0" : "Use Sabotage & Vent" ,
         "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\uff06\u30d9\u30f3\u30c8\u3092\u884c\u3046"
         } ,
+ "NeutralName" : {
+        "0" : "Neutral" ,
+        "11" : "\u7b2c\u4e09\u9663\u55b6"
+        } ,
  "WinName" : {
         "0" : "Win" ,
         "11" : "\u52dd\u5229"
@@ -334,7 +338,7 @@
         } ,
  "SoothSayerDisplaySetting" : {
         "0" : "Position visibility" ,
-        "11" : "\u5f79\u8077\u8868\u793a\u5ea6"
+        "11" : "\u9663\u55b6\u8868\u793a\u306b\u3059\u308b"
         } ,
  "SoothSayerDetailMode" : {
         "0" : "Detail display" ,

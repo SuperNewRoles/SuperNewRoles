@@ -78,19 +78,21 @@ namespace SuperNewRoles.Roles
         public static class SoothSayer
         {
             public static List<PlayerControl> SoothSayerPlayer;
-            //public static bool DisplayMode;
+            public static bool DisplayMode;
+            public static int Count;
             public static Color32 color = new Color32(190, 86, 235, byte.MaxValue);
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
                 return buttonSprite;
             }
             public static void clearAndReload()
             {
                 SoothSayerPlayer = new List<PlayerControl>();
-                //DisplayMode = CustomOptions.SoothSayerDisplayMode.getBool();
+                DisplayMode = CustomOptions.SoothSayerDisplayMode.getBool();
+                Count = (int)CustomOptions.SoothSayerMaxCount.getFloat();
             }
 
         }
@@ -202,9 +204,9 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> MeetingSheriffPlayer;
             public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
-            //public static bool MadMateKill;
-            //public static float KillMaxCount;
-            //public static bool OneMeetingMultiKill;
+            public static bool MadMateKill;
+            public static float KillMaxCount;
+            public static bool OneMeetingMultiKill;
 
             private static Sprite buttonSprite;
 
@@ -217,9 +219,9 @@ namespace SuperNewRoles.Roles
             public static void clearAndReload()
             {
                 MeetingSheriffPlayer = new List<PlayerControl>();
-                //MadMateKill = CustomOptions.SheriffMadMateKill.getBool();
-                //KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
-                //OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.getBool();
+                MadMateKill = CustomOptions.MeetingSheriffMadMateKill.getBool();
+                KillMaxCount = CustomOptions.MeetingSheriffKillMaxCount.getFloat();
+                OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.getBool();
             }
 
         }
@@ -280,14 +282,14 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SpiritMediumPlayer;
             public static Color32 color = new Color32(0, 191, 255, byte.MaxValue);
-            //public static bool DisplayMode;
-            //public static float MaxCount;
+            public static bool DisplayMode;
+            public static float MaxCount;
 
             public static void clearAndReload()
             {
                 SpiritMediumPlayer = new List<PlayerControl>();
-                //DisplayMode = CustomOptions.SpiritMediumDisplayMode.getBool();
-                //MaxCount = CustomOptions.SpiritMediumMaxCount.getFloat();
+                DisplayMode = CustomOptions.SpiritMediumDisplayMode.getBool();
+                MaxCount = CustomOptions.SpiritMediumMaxCount.getFloat();
             }
 
         }

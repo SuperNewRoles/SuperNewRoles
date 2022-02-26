@@ -3,6 +3,7 @@ using Hazel;
 using SuperNewRoles.Patches;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,33 +17,37 @@ namespace SuperNewRoles.Roles
     class SoothSayer_Patch
     {
         private static string namedate;
-        private static List<PassiveButton> allbutton;
         static void SoothSayerOnClick(int Index, MeetingHud __instance)
         {
+            var Target = ModHelpers.playerById((byte)__instance.playerStates[Index].TargetPlayerId);
+            var introdate = Target.getRole();
+            if (RoleClass.SoothSayer.DisplayMode)
             {
-                var Target = ModHelpers.playerById((byte)__instance.playerStates[Index].TargetPlayerId);
-                var introdate = Target.getRole();
-                if (introdate == CustomRPC.RoleId.DefaultRole)
+                if (Target.isImpostor())
                 {
-                    namedate = Intro.IntroDate.GetIntroDate(introdate).NameKey;
-                } else
+                    namedate = "Impostor";
+                } else if (Target.isNeutral())
                 {
-                    if (Target.Data.Role.IsImpostor)
-                    {
-                        namedate = "Impostor";
-                    } else
-                    {
-                        namedate = "CrewMate";
-                    }
+                    namedate = "Neutral";
+                } else if (Target.isCrew())
+                {
+                    namedate = "Crewmate";
                 }
-                var name = ModTranslation.getString(namedate + "Name");
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"),Target.nameText.text,name));
-                
+            }
+            else
+            {
+                namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
+            }
+            var name = ModTranslation.getString(namedate + "Name");
+            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"),Target.nameText.text,name));
+            RoleClass.SoothSayer.Count--;
+            if (RoleClass.SoothSayer.Count <= 0) {
+                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
             }
         }
         static void Event(MeetingHud __instance)
         {
-            if (Roles.RoleClass.SoothSayer.SoothSayerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isAlive())
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.SoothSayer) && PlayerControl.LocalPlayer.isAlive() && RoleClass.SoothSayer.Count >= 1)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -50,12 +55,11 @@ namespace SuperNewRoles.Roles
 
                     if (ModHelpers.playerById((byte)__instance.playerStates[i].TargetPlayerId).isAlive())
                     {
-
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                         GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
                         
                         targetBox.name = "SoothSayerButton";
-                        targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1f);
+                        targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
                         SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
                         renderer.sprite = RoleClass.SoothSayer.getButtonSprite();
                         PassiveButton button = targetBox.GetComponent<PassiveButton>();
@@ -66,10 +70,50 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
+        
+        static void SpiritOnClick(int Index, MeetingHud __instance)
+        {
+            var Target = ModHelpers.playerById((byte)__instance.playerStates[Index].TargetPlayerId);
+            var introdate = Target.getRole();
+            namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
+            var name = ModTranslation.getString(namedate + "Name");
+            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText.text, name));
+            RoleClass.SoothSayer.Count--;
+            if (RoleClass.SoothSayer.Count <= 0)
+            {
+                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+            }
+        }
+        static void spiritEvent(MeetingHud __instance)
+        {
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.SpiritMedium) && PlayerControl.LocalPlayer.isAlive() && RoleClass.SpiritMedium.MaxCount >= 1)
+            {
+                for (int i = 0; i < __instance.playerStates.Length; i++)
+                {
+                    PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+
+                    if (!ModHelpers.playerById((byte)__instance.playerStates[i].TargetPlayerId).isAlive())
+                    {
+                        GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
+                        GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+
+                        targetBox.name = "SoothSayerButton";
+                        targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
+                        SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
+                        renderer.sprite = RoleClass.SoothSayer.getButtonSprite();
+                        PassiveButton button = targetBox.GetComponent<PassiveButton>();
+                        button.OnClick.RemoveAllListeners();
+                        int copiedIndex = i;
+                        button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => SpiritOnClick(copiedIndex, __instance)));
+                    }
+                }
+            }
+        }
 
         static void Postfix(MeetingHud __instance)
         {
             Event(__instance);
+            spiritEvent(__instance);
         }
 
     }

@@ -183,10 +183,19 @@ namespace SuperNewRoles.CustomRPC
         {
             PlayerControl sheriff = ModHelpers.playerById(SheriffId);
             PlayerControl target = ModHelpers.playerById(TargetId);
-            target.Exiled();
             if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
             if (sheriff == null || target == null) return;
-            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff,sheriff.name+"は"+target.name+"をシェリフキルした！");
+            if (!PlayerControl.LocalPlayer.isAlive())
+            {
+                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は" + target.name + "をシェリフキルした！");
+                if (MissFire)
+                {
+                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は誤爆した！");
+                } else
+                {
+                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は成功した！");
+                }
+            }
             if (MissFire)
             {
                 sheriff.Data.IsDead = true;
@@ -203,6 +212,23 @@ namespace SuperNewRoles.CustomRPC
                 {
                     HudManager.Instance.KillOverlay.ShowKillAnimation(target.Data,sheriff.Data);
                 }
+            }
+            if (MeetingHud.Instance)
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId ==　SheriffId && MissFire)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    } else if(pva.TargetPlayerId == TargetId && !MissFire)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
             }
 
         }

@@ -280,12 +280,10 @@ namespace SuperNewRoles.CustomOption
             //SoothSayerRate = CustomOption.Create(2, cs(SoothSayer.color,"soothName"),rates, null, true);
             Mode.ModeHandler.OptionLoad();
 
-            /**
             SoothSayerOption = new CustomRoleOption(6, "SoothSayerName", RoleClass.SoothSayer.color, 1);
             SoothSayerPlayerCount = CustomOption.Create(7, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
             SoothSayerDisplayMode = CustomOption.Create(8, ModTranslation.getString("SoothSayerDisplaySetting"), false, SoothSayerOption);
             SoothSayerMaxCount = CustomOption.Create(9, cs(Color.white, "SoothSayerMaxCountSetting"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
-            **/
 
             JesterOption = new CustomRoleOption(10, "JesterName", RoleClass.Jester.color, 1);
             JesterPlayerCount = CustomOption.Create(11, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
@@ -316,13 +314,13 @@ namespace SuperNewRoles.CustomOption
             SheriffCoolTime = CustomOption.Create(28, ModTranslation.getString("SheriffCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
             SheriffMadMateKill = CustomOption.Create(29, ModTranslation.getString("SheriffIsKillMadMateSetting"), false, SheriffOption);
             SheriffKillMaxCount = CustomOption.Create(30, ModTranslation.getString("SheriffMaxKillCountSetting"), 1f, 1f, 20f, 1, SheriffOption, format: "unitSeconds");
-            /**
+            
             MeetingSheriffOption = new CustomRoleOption(31, "MeetingSheriffName", RoleClass.MeetingSheriff.color, 1);
             MeetingSheriffPlayerCount = CustomOption.Create(32, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MeetingSheriffOption);
             MeetingSheriffMadMateKill = CustomOption.Create(33, ModTranslation.getString("MeetingSheriffIsKillMadMateSetting"), false, MeetingSheriffOption);
-            MeetingSheriffKillMaxCount = CustomOption.Create(34, ModTranslation.getString("MeetingSheriffMaxKillCountSetting"), 10f, 1f, 20f, 0.5f, MeetingSheriffOption, format: "unitSeconds");
+            MeetingSheriffKillMaxCount = CustomOption.Create(34, ModTranslation.getString("MeetingSheriffMaxKillCountSetting"), 1f, 1f, 20f, 1f, MeetingSheriffOption, format: "unitSeconds");
             MeetingSheriffOneMeetingMultiKill = CustomOption.Create(35, ModTranslation.getString("MeetingSheriffMeetingmultipleKillSetting"), false, MeetingSheriffOption);
-            **/
+            
             JackalOption = new CustomRoleOption(36, "JackalName", RoleClass.Jackal.color, 1);
             JackalPlayerCount = CustomOption.Create(37, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalOption);
             JackalKillCoolDown = CustomOption.Create(38, ModTranslation.getString("JackalCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, JackalOption, format: "unitSeconds");
@@ -335,12 +333,12 @@ namespace SuperNewRoles.CustomOption
             TeleporterPlayerCount = CustomOption.Create(42, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], TeleporterOption);
             TeleporterCoolTime = CustomOption.Create(43, ModTranslation.getString("TeleporterCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, TeleporterOption, format: "unitSeconds");
             TeleporterDurationTime = CustomOption.Create(44, ModTranslation.getString("TeleporterTeleportTimeSetting"), 10f, 1f, 20f, 0.5f, TeleporterOption, format: "unitSeconds");
-            /**
+            
             SpiritMediumOption = new CustomRoleOption(45, "SpiritMediumName", RoleClass.SpiritMedium.color, 1);
             SpiritMediumPlayerCount = CustomOption.Create(46, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpiritMediumOption);
             SpiritMediumDisplayMode = CustomOption.Create(47, ModTranslation.getString("SpiritMediumDisplaySetting"), false, SpiritMediumOption);
             SpiritMediumMaxCount = CustomOption.Create(48, cs(Color.white, "SpiritMediumMaxCountSetting"), 2f,1f,15f,1f, SpiritMediumOption);
-            **/
+            
             SpeedBoosterOption = new CustomRoleOption(49, "SpeedBoosterName", RoleClass.SpeedBooster.color, 1);
             SpeedBoosterPlayerCount = CustomOption.Create(50, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpeedBoosterOption);
             SpeedBoosterCoolTime = CustomOption.Create(51, ModTranslation.getString("SpeedBoosterCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, SpeedBoosterOption, format: "unitSeconds");
