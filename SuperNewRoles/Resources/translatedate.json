@@ -148,6 +148,26 @@
         "0" : "Preset 5" ,
         "11" : "\u30d7\u30ea\u30bb\u30c3\u30c85"
         } ,
+ "preset6" : {
+        "0" : "Preset 6" ,
+        "11" : "\u30d7\u30ea\u30bb\u30c3\u30c86"
+        } ,
+ "preset7" : {
+        "0" : "Preset 7" ,
+        "11" : "\u30d7\u30ea\u30bb\u30c3\u30c87"
+        } ,
+ "preset8" : {
+        "0" : "Preset 8" ,
+        "11" : "\u30d7\u30ea\u30bb\u30c3\u30c88"
+        } ,
+ "preset9" : {
+        "0" : "Preset 9" ,
+        "11" : "\u30d7\u30ea\u30bb\u30c3\u30c89"
+        } ,
+ "preset10" : {
+        "0" : "Preset 10" ,
+        "11" : "\u30d7\u30ea\u30bb\u30c3\u30c810"
+        } ,
  "creditsMain" : {
         "0" : "Create By ykundesu" ,
         "11" : "Create By ykundesu"
