@@ -414,6 +414,10 @@ namespace SuperNewRoles
                     break; 
                 //タスククリアか
             }
+            if (!isTaskClear && player.IsQuarreled())
+            {
+                IsTaskClear = true;
+            }
             return IsTaskClear;
         }
         public static bool IsUseVent(this PlayerControl player)
