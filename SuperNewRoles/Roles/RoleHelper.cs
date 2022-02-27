@@ -414,7 +414,7 @@ namespace SuperNewRoles
                     break; 
                 //タスククリアか
             }
-            if (!isTaskClear && player.IsQuarreled())
+            if (!IsTaskClear && player.IsQuarreled())
             {
                 IsTaskClear = true;
             }

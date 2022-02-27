@@ -10,8 +10,6 @@ namespace SuperNewRoles.Patch
             {
                 if (HudManager.Instance.Chat.IsOpen)
                 {
-                    
-                    SuperNewRolesPlugin.Logger.LogInfo(HudManager.Instance.Chat.TextArea.text);
                     if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.V))
                     {
                         HudManager.Instance.Chat.TextArea.text = HudManager.Instance.Chat.TextArea.text + GUIUtility.systemCopyBuffer;

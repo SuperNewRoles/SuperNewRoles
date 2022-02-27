@@ -193,10 +193,6 @@ namespace SuperNewRoles.Patch
                 {
                     if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
-                        if (player.IsQuarreled())
-                        {
-                            SetNamesClass.SetPlayerNameText(player, player.nameText.text + "○");
-                        }
                         SetNamesClass.SetPlayerNameColors(player);
                         SetNamesClass.SetPlayerRoleNames(player);
                     }
