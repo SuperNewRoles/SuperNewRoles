@@ -32,7 +32,6 @@ namespace SuperNewRoles.EndGame
         public static GameOverReason gameOverReason;
         public static WinCondition winCondition = WinCondition.Default;
         public static List<WinCondition> additionalWinConditions = new List<WinCondition>();
-        public static List<PlayerControl> Allplayers = new List<PlayerControl>();
 
         public static Dictionary<int, PlayerControl> plagueDoctorInfected = new Dictionary<int, PlayerControl>();
         public static Dictionary<int, float> plagueDoctorProgress = new Dictionary<int, float>();
@@ -42,9 +41,7 @@ namespace SuperNewRoles.EndGame
             playerRoles.Clear();
             additionalWinConditions.Clear();
             winCondition = WinCondition.Default;
-            Allplayers = new List<PlayerControl>();
         }
-
         internal class PlayerRoleInfo
         {
             public string PlayerName { get; set; }
@@ -219,41 +216,93 @@ namespace SuperNewRoles.EndGame
             } else {
                     textRenderer.text = text;
             }
-            if (true)
+            try
             {
-                var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
-                GameObject roleSummary = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
-                roleSummary.transform.position = new Vector3(__instance.Navigation.ExitButton.transform.position.x + 0.1f, position.y - 0.1f, -14f);
-                roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
-
-                var roleSummaryText = new StringBuilder();
-                roleSummaryText.AppendLine(ModTranslation.getString("最終結果"));
-
-                SuperNewRolesPlugin.Logger.LogInfo("SAISYUUMAE");
-                foreach (var data in AdditionalTempData.Allplayers)
+                if (true)
                 {
-                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(data.Data);
-                    var taskInfo = playerTotal > 0 ? $"<color=#FAD934FF>{playerCompleted}/{playerTotal}</color>" : "";
-                    string aliveDead = "";
+                    var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
+                    GameObject roleSummary = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
+                    roleSummary.transform.position = new Vector3(__instance.Navigation.ExitButton.transform.position.x + 0.1f, position.y - 0.1f, -14f);
+                    roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
+
+                    var roleSummaryText = new StringBuilder();
+                    roleSummaryText.AppendLine(ModTranslation.getString("最終結果"));
+
+                    SuperNewRolesPlugin.Logger.LogInfo("SAISYUUMAE");
+
+                    foreach (var datas in AdditionalTempData.playerRoles)
+                    {
+                        var taskInfo = datas.TasksTotal > 0 ? $"<color=#FAD934FF>({datas.TasksCompleted}/{datas.TasksTotal})</color>" : "";
+                        string aliveDead = "";
                         string Suffix = "";
-                    string result = $"{data.Data.PlayerName + Suffix}<pos=18.5%>{taskInfo}<pos=25%>{aliveDead}<pos=34%>{ModTranslation.getString(Intro.IntroDate.GetIntroDate(data.getRole(),data)+"Name")}";
-                    SuperNewRolesPlugin.Logger.LogInfo("ADD:"+result);
-                    roleSummaryText.AppendLine(result);
+                        string result = $"{datas.PlayerName}{taskInfo} - {GetStatusText(datas.Status)} - {CustomOptions.cs(datas.IntroDate.color, datas.IntroDate.NameKey + "Name")}";
+                        SuperNewRolesPlugin.Logger.LogInfo("ADD:" + result);
+                        roleSummaryText.AppendLine(result);
+                    }
+
+                    TMPro.TMP_Text roleSummaryTextMesh = roleSummary.GetComponent<TMPro.TMP_Text>();
+                    roleSummaryTextMesh.alignment = TMPro.TextAlignmentOptions.TopLeft;
+                    roleSummaryTextMesh.color = Color.white;
+                    roleSummaryTextMesh.outlineWidth *= 1.2f;
+                    roleSummaryTextMesh.fontSizeMin = 1.25f;
+                    roleSummaryTextMesh.fontSizeMax = 1.25f;
+                    roleSummaryTextMesh.fontSize = 1.25f;
+
+                    var roleSummaryTextMeshRectTransform = roleSummaryTextMesh.GetComponent<RectTransform>();
+                    roleSummaryTextMeshRectTransform.anchoredPosition = new Vector2(position.x + 3.5f, position.y - 0.1f);
+                    roleSummaryTextMesh.text = roleSummaryText.ToString();
                 }
+            }
+            catch
+            {
 
-                TMPro.TMP_Text roleSummaryTextMesh = roleSummary.GetComponent<TMPro.TMP_Text>();
-                roleSummaryTextMesh.alignment = TMPro.TextAlignmentOptions.TopLeft;
-                roleSummaryTextMesh.color = Color.white;
-                roleSummaryTextMesh.outlineWidth *= 1.2f;
-                roleSummaryTextMesh.fontSizeMin = 1.25f;
-                roleSummaryTextMesh.fontSizeMax = 1.25f;
-                roleSummaryTextMesh.fontSize = 1.25f;
-
-                var roleSummaryTextMeshRectTransform = roleSummaryTextMesh.GetComponent<RectTransform>();
-                roleSummaryTextMeshRectTransform.anchoredPosition = new Vector2(position.x + 3.5f, position.y - 0.1f);
-                roleSummaryTextMesh.text = roleSummaryText.ToString();
             }
             AdditionalTempData.clear();
+
+            static string GetStatusText(FinalStatus status)
+            {
+                if (status == FinalStatus.Alive)
+                {
+                    return ModTranslation.getString("FinalStatusAlive");
+                }
+                else if (status == FinalStatus.Kill)
+                {
+                    return ModTranslation.getString("FinalStatusKill");
+                }
+                else if (status == FinalStatus.NekomataExiled)
+                {
+                    return ModTranslation.getString("FinalStatusNekomataExiled");
+                }
+                else if (status == FinalStatus.SheriffKill)
+                {
+                    return ModTranslation.getString("FinalStatusSheriffKill");
+                }
+                else if (status == FinalStatus.SheriffMisFire)
+                {
+                    return ModTranslation.getString("FinalStatusSheriffMisFire");
+                }
+                else if (status == FinalStatus.SelfBomb)
+                {
+                    return ModTranslation.getString("FinalStatusSelfBomb");
+                }
+                else if (status == FinalStatus.BySelfBomb)
+                {
+                    return ModTranslation.getString("FinalStatusBySelfBomb");
+                }
+                else if (status == FinalStatus.Disconnected)
+                {
+                    return ModTranslation.getString("FinalStatusDisconnected");
+                }
+                else if (status == FinalStatus.Dead)
+                {
+                    return ModTranslation.getString("FinalStatusDead");
+                }
+                else if (status == FinalStatus.Sabotage)
+                {
+                    return ModTranslation.getString("FinalStatusSabotage");
+                }
+                return ModTranslation.getString("FinalStatusAlive");
+            }
         }
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
@@ -494,8 +543,17 @@ namespace SuperNewRoles.EndGame
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
             Buttons.CustomButton.MeetingEndedUpdate();
+            /**
+            var statistics = new CheckGameEndPatch.PlayerStatistics(ShipStatus.Instance);
+            if (statistics.CrewAlive == 0 && statistics.TotalAlive == 2 && statistics.TeamJackalAlive == 1 && statistics.TeamImpostorsAlive == 1)
+                {
+                    ShipStatus.Instance.enabled = false;
+                CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.BugEnd, false);
+                }
+            **/
             if (exiled == null) return;
             exiled.Object.Exiled();
+            
             var Player = ModHelpers.playerById(exiled.PlayerId);
             if (RoleHelpers.IsQuarreled(Player))
             {
@@ -508,7 +566,7 @@ namespace SuperNewRoles.EndGame
                     Writer.Write(Player.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
                     Roles.RoleClass.Quarreled.IsQuarreledWin = true;
-                    ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
+                    CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
                 }
             }
             if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(Player))
@@ -522,7 +580,7 @@ namespace SuperNewRoles.EndGame
                     Writer.Write(Player.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
                     Roles.RoleClass.Jester.IsJesterWin = true;
-                    ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
+                    CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
                 }
             }
         }
@@ -548,7 +606,7 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForTaskWin(__instance)) return false;
-                if (CheckAndEndGameForBugEnd(__instance,statistics)) return false;
+                
             }
             return false;
         }
@@ -631,16 +689,7 @@ namespace SuperNewRoles.EndGame
             }
             return false;
         }
-        private static bool CheckAndEndGameForBugEnd(ShipStatus __instance, PlayerStatistics statistics)
-        {
-            if (statistics.CrewAlive == 0 && statistics.TotalAlive == 2 && statistics.TeamJackalAlive == 1 && statistics.TeamImpostorsAlive == 1 )
-            {
-                __instance.enabled = false;
-                CustomEndGame((GameOverReason)CustomGameOverReason.BugEnd, false);
-                return true;
-            }
-            return false;
-        }
+        
 
         private static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {

@@ -344,6 +344,46 @@
         "0" : "Use Vent" ,
         "11" : "\u30d9\u30f3\u30c8\u304c\u4f7f\u3048\u308b"
         } ,
+ "FinalStatusAlive" : {
+        "0" : "Survival" ,
+        "11" : "\u751f\u5b58"
+        } ,
+ "FinalStatusKill" : {
+        "0" : "Kill" ,
+        "11" : "\u30ad\u30eb"
+        } ,
+ "FinalStatusNekomataExiled" : {
+        "0" : "The Way of the Nekomata" ,
+        "11" : "\u732b\u53c8\u306e\u9053\u9023\u308c"
+        } ,
+ "FinalStatusSheriffKill" : {
+        "0" : "Sheriff kill" ,
+        "11" : "\u30b7\u30a7\u30ea\u30d5\u30ad\u30eb"
+        } ,
+ "FinalStatusSheriffMisFire" : {
+        "0" : "Sheriff misfire" ,
+        "11" : "\u30b7\u30a7\u30ea\u30d5\u8aa4\u7206"
+        } ,
+ "FinalStatusSelfBomb" : {
+        "0" : "Self-destruct" ,
+        "11" : "\u81ea\u7206"
+        } ,
+ "FinalStatusBySelfBomb" : {
+        "0" : "Self-destruct collateral damage" ,
+        "11" : "\u81ea\u7206\u5dfb\u304d\u6dfb\u3048"
+        } ,
+ "FinalStatusDisconnected" : {
+        "0" : "amputation" ,
+        "11" : "\u5207\u65ad"
+        } ,
+ "FinalStatusDead" : {
+        "0" : "Death" ,
+        "11" : "\u6b7b\u4ea1"
+        } ,
+ "FinalStatusSabotage" : {
+        "0" : "Sabotage" ,
+        "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5"
+        } ,
  "detecName" : {
         "0" : "Detective" ,
         "11" : "\u63a2\u5075"
@@ -695,6 +735,10 @@
  "EvilSpeedBoosterTitle3" : {
         "0" : "Get a kill with super speed!" ,
         "11" : "\u30b9\u30fc\u30d1\u30fc\u30b9\u30d4\u30fc\u30c9\u3067\u30ad\u30eb\u3092\u3057\u3088\u3046"
+        } ,
+ "EvilSpeedBoosterTitle4" : {
+        "0" : "Let's run around and kill everyone." ,
+        "11" : "\u8d70\u308a\u307e\u304f\u3063\u3066\u7686\u3092\u77ac\u6bba\u3057\u3088\u3046"
         } ,
  "EvilSpeedBoosterCoolDownSetting" : {
         "0" : "Speed Up Cooldown" ,
