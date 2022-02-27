@@ -72,7 +72,7 @@ namespace SuperNewRoles.Buttons
                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                    }
                },
-               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.CountChanger) && PlayerControl.LocalPlayer.CanMove && !RoleClass.CountChanger.IsSet && RoleClass.CountChanger.Count >= 1; },
+               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.CountChanger) && !RoleClass.CountChanger.IsSet && RoleClass.CountChanger.Count >= 1; },
                () =>
                {
                    return PlayerControl.LocalPlayer.CanMove && PlayerControlFixedUpdatePatch.setTarget(onlyCrewmates:true);
