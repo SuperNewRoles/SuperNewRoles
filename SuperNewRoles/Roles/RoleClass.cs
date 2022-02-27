@@ -767,9 +767,24 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> CountChangerPlayer;
             public static Color32 color = ImpostorRed;
+            public static Dictionary<int, int> ChangeData;
+            public static Dictionary<int, int> Setdata;
+            public static int Count;
+            public static bool IsSet;
+            private static Sprite ButtonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CountChangerButton.png", 115f);
+                return ButtonSprite;
+            }
             public static void ClearAndReload()
             {
                 CountChangerPlayer = new List<PlayerControl>();
+                ChangeData = new Dictionary<int, int>();
+                Setdata = new Dictionary<int, int>();
+                Count = (int)CustomOptions.CountChangerMaxCount.getFloat();
+                IsSet = false;
             }
         }
         //新ロールクラス

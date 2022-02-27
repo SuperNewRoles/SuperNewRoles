@@ -25,6 +25,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton DoorrDoorButton;
         public static CustomButton SelfBomberButton;
         public static CustomButton DoctorVitalsButton;
+        public static CustomButton CountChangerButton;
 
         public static CustomButton FreezerFreezeButton;
         public static CustomButton SpeederSpeedDownButton;
@@ -52,6 +53,46 @@ namespace SuperNewRoles.Buttons
         {
             RoleClass.clearAndReloadRoles();
             SuperNewRolesPlugin.Logger.LogInfo("HudMangerButton");
+            CountChangerButton = new CustomButton(
+               () =>
+               {
+                   if (RoleClass.CountChanger.Count >= 1 && setTarget() && PlayerControl.LocalPlayer.CanMove)
+                   {
+                       RoleClass.CountChanger.IsSet = true;
+                       RoleClass.CountChanger.Count--;
+                       var Target = PlayerControlFixedUpdatePatch.setTarget(onlyCrewmates:true);
+                       var TargetID = Target.PlayerId;
+                       var LocalID = PlayerControl.LocalPlayer.PlayerId;
+
+                       CustomRPC.RPCProcedure.CountChangerSetRPC(LocalID, TargetID);
+
+                       MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CountChangerSetRPC, Hazel.SendOption.Reliable, -1);
+                       killWriter.Write(LocalID);
+                       killWriter.Write(TargetID);
+                       AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                   }
+               },
+               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.CountChanger) && PlayerControl.LocalPlayer.CanMove && !RoleClass.CountChanger.IsSet && RoleClass.CountChanger.Count >= 1; },
+               () =>
+               {
+                   return PlayerControl.LocalPlayer.CanMove && PlayerControlFixedUpdatePatch.setTarget(onlyCrewmates:true);
+               },
+               () =>
+               {
+                   CountChangerButton.MaxTimer = PlayerControl.GameOptions.KillCooldown;
+                   CountChangerButton.Timer = PlayerControl.GameOptions.KillCooldown;
+               },
+               RoleClass.CountChanger.getButtonSprite(),
+               new Vector3(-1.8f, -0.06f, 0),
+               __instance,
+               __instance.AbilityButton,
+               KeyCode.F,
+               49
+            );
+
+            CountChangerButton.buttonText = ModTranslation.getString("CountChangerButtonName");
+            CountChangerButton.showButtonText = true;
+
             DoctorVitalsButton = new CustomButton(
                () =>
                {

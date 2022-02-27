@@ -87,7 +87,8 @@ namespace SuperNewRoles.CustomRPC
         AutoCreateRoom,
         BomKillRPC,
         ByBomKillRPC,
-        NekomataExiledRPC
+        NekomataExiledRPC,
+        CountChangerSetRPC
     }
     public static class RPCProcedure
     {
@@ -121,6 +122,17 @@ namespace SuperNewRoles.CustomRPC
                 HttpConnect.ShareCosmeticDateDownload(id,url);
             }
             **/
+        }
+        public static void CountChangerSetRPC(byte sourceid,byte targetid)
+        {
+            var source = ModHelpers.playerById(sourceid);
+            var target = ModHelpers.playerById(targetid);
+            if (source == null || target == null) return;
+            if (CustomOptions.CountChangerNextTurn.getBool()) { 
+                RoleClass.CountChanger.Setdata[source.PlayerId] = target.PlayerId; 
+            } else {
+                RoleClass.CountChanger.ChangeData[source.PlayerId] = target.PlayerId;
+            }
         }
         public static void SetShareNamePlate(byte playerid,byte id) {
         }
@@ -476,6 +488,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case (byte)CustomRPC.NekomataExiledRPC:
                             RPCProcedure.NekomataExiledRPC(reader.ReadByte());
+                            break;
+                        case (byte)CustomRPC.CountChangerSetRPC:
+                            RPCProcedure.CountChangerSetRPC(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
             }

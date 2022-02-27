@@ -26,7 +26,8 @@ namespace SuperNewRoles.Roles
     class MeetingSheriff_Patch
     {
         public static bool IsMeetingSheriffKill(PlayerControl Target) {
-            if (Target.Data.Role.IsImpostor) return true;
+            var roledata = CountChanger.GetRoleType(Target);
+            if (roledata == TeamRoleType.Impostor) return true;
             if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadMateKill) return true;
             return false;
         }

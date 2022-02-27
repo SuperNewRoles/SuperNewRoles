@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles
     {
         public static void NekomataEnd(GameData.PlayerInfo __instance) {
             if (AmongUsClient.Instance.AmHost) {
-                if (RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(__instance.Object) || RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object))
+                if (__instance != null && RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(__instance.Object) || RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object))
                 {
                     List<PlayerControl> p = new List<PlayerControl>();
                     foreach (PlayerControl p1 in PlayerControl.AllPlayerControls) {
