@@ -49,11 +49,9 @@ namespace SuperNewRoles.Roles
                 if (__instance == PlayerControl.LocalPlayer && RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(__instance)) {
                     if (RoleClass.EvilGambler.GetSuc()) {
                         //成功
-                        SuperNewRolesPlugin.Logger.LogInfo("成功");
                         PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);
                     } else {
                         //失敗
-                        SuperNewRolesPlugin.Logger.LogInfo("失敗");
                         PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.NotSucCool);
                     };
                 }

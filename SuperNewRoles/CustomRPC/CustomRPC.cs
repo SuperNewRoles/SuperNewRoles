@@ -177,8 +177,6 @@ namespace SuperNewRoles.CustomRPC
         {
             PlayerControl sheriff = ModHelpers.playerById(SheriffId);
             PlayerControl target = ModHelpers.playerById(TargetId);
-            SuperNewRolesPlugin.Logger.LogInfo(sheriff.PlayerId);
-            SuperNewRolesPlugin.Logger.LogInfo(sheriff.PlayerId);
             if (sheriff == null || target == null) return;
 
             if (MissFire)
@@ -247,8 +245,6 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void CustomRPCKill(byte notTargetId,byte targetId)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(notTargetId);
-            SuperNewRolesPlugin.Logger.LogInfo(targetId);
             if (notTargetId == targetId)
             {
                 PlayerControl Player = ModHelpers.playerById(targetId);
@@ -263,16 +259,13 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void RPCClergymanLightOut(bool Start)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(Start);
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (Start)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("start");
                 Roles.Clergyman.LightOutStartRPC();
             }
             else
             {
-                SuperNewRolesPlugin.Logger.LogInfo("end");
             }
         }
         public static void SetSpeedBoost(bool Is,byte id)

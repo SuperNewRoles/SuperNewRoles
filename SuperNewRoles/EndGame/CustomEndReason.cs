@@ -9,6 +9,7 @@ namespace SuperNewRoles.EndGame
         HAISON = 10,
         JesterWin,
         JackalWin,
-        QuarreledWin
+        QuarreledWin,
+        BugEnd
     }
 }

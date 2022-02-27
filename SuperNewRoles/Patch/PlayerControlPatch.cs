@@ -29,7 +29,6 @@ namespace SuperNewRoles.Patches
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo(RoleClass.Quarreled.QuarreledPlayer);
                     var Side = RoleHelpers.GetOneSideQuarreled(target);
                     if (Side.isDead())
                     {

@@ -24,7 +24,6 @@ namespace SuperNewRoles.Patch
         {
             public static void Postfix(KeyboardJoystick __instance)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(HttpMatchmakerManager.Instance.Base64Token);
             }
         }
         [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
@@ -54,7 +53,6 @@ namespace SuperNewRoles.Patch
                     this.timer = time;
                     this.name = name;
                     Tasks.Add(this);
-                    SuperNewRolesPlugin.Logger.LogInfo("New LateTask \"" + name + "\" is created");
                 }
                 public static void Update(float deltaTime)
                 {
@@ -62,7 +60,6 @@ namespace SuperNewRoles.Patch
                     Tasks.ForEach((task) => {
                         if (task.run(deltaTime))
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("LateTask \"" + task.name + "\" is finished");
                             TasksToRemove.Add(task);
                         }
                     });

@@ -29,11 +29,8 @@ namespace SuperNewRoles
         public static bool IsQuarreled(this PlayerControl player)
         {
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer) {
-                SuperNewRolesPlugin.Logger.LogInfo(players);
                 foreach (PlayerControl p in players)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo(player.nameText.text);
-                    SuperNewRolesPlugin.Logger.LogInfo(p.nameText.text);
                     if (p == player)
                     {
                         return true;
@@ -90,7 +87,6 @@ namespace SuperNewRoles
         }
         public static void setRole(this PlayerControl player, RoleId role)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("SetRole");
             switch (role)
             {
                 case (CustomRPC.RoleId.SoothSayer):
@@ -230,15 +226,10 @@ namespace SuperNewRoles
         {
             static bool ClearRemove(PlayerControl p)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("-ClearRole-");
-                SuperNewRolesPlugin.Logger.LogInfo(p.PlayerId);
-                SuperNewRolesPlugin.Logger.LogInfo(ClearTarget.PlayerId);
-                SuperNewRolesPlugin.Logger.LogInfo("-----------");
                 if (p.PlayerId == ClearTarget.PlayerId) return true;
                 return false;
             }
             ClearTarget = player;
-            SuperNewRolesPlugin.Logger.LogInfo("ClearRole");
             switch (player.getRole())
             {
                 case (CustomRPC.RoleId.SoothSayer):

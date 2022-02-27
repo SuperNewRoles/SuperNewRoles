@@ -25,7 +25,6 @@ namespace SuperNewRoles.Roles
 
         public static void clearAndReloadRoles()
         {
-            SuperNewRolesPlugin.Logger.LogInfo("くりああんどりろーどろーるず");
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             SoothSayer.clearAndReload();
             Jester.clearAndReload();
@@ -382,7 +381,6 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static void clearAndReload()
             {
-                SuperNewRolesPlugin.Logger.LogInfo("EvilDoorrクリアーーーーーー！！！！！");
                 EvilDoorrPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.EvilDoorrCoolTime.getFloat();
             }
@@ -630,7 +628,6 @@ namespace SuperNewRoles.Roles
                 {
                     a.Add("No");
                 }
-                SuperNewRolesPlugin.Logger.LogInfo(a);
                 if (ModHelpers.GetRandom<string>(a) == "Suc")
                 {
                     return true;
@@ -671,7 +668,6 @@ namespace SuperNewRoles.Roles
                 ResearcherPlayer = new List<PlayerControl>();
                 OKSamplePlayers = new List<PlayerControl>();
                 GetSamplePlayers = new List<PlayerControl>();
-                SuperNewRolesPlugin.Logger.LogInfo("mapid"+Constants.MapNames[PlayerControl.GameOptions.MapId]);
                 //SamplePosition = SamplePoss[PlayerControl.GameOptions.MapId];
                 MySample = 0;
             }

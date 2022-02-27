@@ -120,7 +120,6 @@ namespace SuperNewRoles.Patches
             public static void Postfix(IntroCutscene __instance)
             {
                 var RoleDate = PlayerControl.LocalPlayer.getRole();
-                SuperNewRolesPlugin.Logger.LogInfo(RoleDate);
                 CustomButton.MeetingEndedUpdate();
                 if (ModeHandler.isMode(ModeId.Default))
                 {

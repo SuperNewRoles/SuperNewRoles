@@ -22,7 +22,8 @@ namespace SuperNewRoles.EndGame
         JesterWin,
         JackalWin,
         QuarreledWin,
-        GodWin
+        GodWin,
+        BugEnd
     }
     static class AdditionalTempData
     {
@@ -72,31 +73,20 @@ namespace SuperNewRoles.EndGame
         }
         public static void Postfix(EndGameManager __instance)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>())
             {
-                SuperNewRolesPlugin.Logger.LogInfo("b");
                 UnityEngine.Object.Destroy(pb.gameObject);
-                SuperNewRolesPlugin.Logger.LogInfo("c");
             }
-
-            SuperNewRolesPlugin.Logger.LogInfo("d");
             int num = Mathf.CeilToInt(7.5f);
-            SuperNewRolesPlugin.Logger.LogInfo("e");
             List<WinningPlayerData> list = TempData.winners.ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
             {
-
-                SuperNewRolesPlugin.Logger.LogInfo("f");
                 if (!b.IsYou)
                 {
-
-                    SuperNewRolesPlugin.Logger.LogInfo("g");
                     return 0;
                 }
                 return -1;
             }).ToList<WinningPlayerData>();
 
-            SuperNewRolesPlugin.Logger.LogInfo("h");
             for (int i = 0; i < list.Count; i++)
             {
                 WinningPlayerData winningPlayerData2 = list[i];
@@ -116,8 +106,6 @@ namespace SuperNewRoles.EndGame
 
                 if (winningPlayerData2.IsDead)
                 {
-
-                    SuperNewRolesPlugin.Logger.LogInfo("1");
                     poolablePlayer.Body.sprite = __instance.GhostSprite;
                     poolablePlayer.SetDeadFlipX(i % 2 == 0);
                 }
@@ -136,8 +124,7 @@ namespace SuperNewRoles.EndGame
                 foreach (var data in AdditionalTempData.playerRoles)
                 {
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                    poolablePlayer.NameText.text += data.NameSuffix + $"\n<size=80%>{string.Join("\n", CustomOptions.cs(data.IntroDate.color, data.IntroDate.NameKey+"Name"))}</size>";
-                    SuperNewRolesPlugin.Logger.LogInfo("HAHAHA:"+ $"\n<size=80%>{string.Join("\n", CustomOptions.cs(data.IntroDate.color, data.IntroDate.NameKey + "Name"))}</size>");
+                    poolablePlayer.NameText.text += data.NameSuffix + $"\n<size=80%>{string.Join("\n", CustomOptions.cs(data.IntroDate.color, data.IntroDate.NameKey + "Name"))}</size>";
                 }
             }
             GameObject bonusTextObject = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
@@ -156,6 +143,13 @@ namespace SuperNewRoles.EndGame
             {
                 //bonusText = "jesterWin";
                 text = "HAISON";
+                textRenderer.color = Color.white;
+                __instance.BackgroundBar.material.SetColor("_Color", Color.white);
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.BugEnd)
+            {
+                //bonusText = "jesterWin";
+                text = "BUG";
                 textRenderer.color = Color.white;
                 __instance.BackgroundBar.material.SetColor("_Color", Color.white);
             }
@@ -190,7 +184,6 @@ namespace SuperNewRoles.EndGame
             }
 
             if (ModeHandler.isMode(ModeId.BattleRoyal)) {
-                SuperNewRolesPlugin.Logger.LogInfo("BATTLEROYAL!!!!");
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
                     if (p.isAlive())
                     {
@@ -201,9 +194,12 @@ namespace SuperNewRoles.EndGame
             }
             var haison = false;
             if (text == "HAISON") {
-                    haison = true;
-                    text = ModTranslation.getString("HaisonName");
-            } else {
+                haison = true;
+                text = ModTranslation.getString("HaisonName");
+            } else if (text == "BUG") {
+                haison = true;
+                text = "不具合が発生したので強制的に終了しました";
+            }else{
                     text = ModTranslation.getString(text);
             }
             bool IsOpptexton = false;
@@ -289,6 +285,7 @@ namespace SuperNewRoles.EndGame
                 bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
                 bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
                 bool HAISON = gameOverReason == (GameOverReason)CustomGameOverReason.HAISON;
+            bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
 
             if (JesterWin)
             {
@@ -378,8 +375,7 @@ namespace SuperNewRoles.EndGame
                 }
                 AdditionalTempData.winCondition = WinCondition.QuarreledWin;
             }
-            else
-            if (HAISON)
+            else if (HAISON)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
@@ -388,6 +384,19 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(wpd);
                 }
                 AdditionalTempData.winCondition = WinCondition.HAISON;
+            }
+            else if (BUGEND)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.isImpostor() || p.isRole(CustomRPC.RoleId.Jackal) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(p) || p.isRole(CustomRPC.RoleId.JackalFriends))
+                    {
+                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                        TempData.winners.Add(wpd);
+                    }
+                }
+                AdditionalTempData.winCondition = WinCondition.BugEnd;
             }
         }
         
@@ -450,7 +459,8 @@ namespace SuperNewRoles.EndGame
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
             Buttons.CustomButton.MeetingEndedUpdate();
-            if (exiled.PlayerId == null) return;
+            if (exiled == null) return;
+            exiled.Object.Exiled();
             var Player = ModHelpers.playerById(exiled.PlayerId);
             if (RoleHelpers.IsQuarreled(Player))
             {
@@ -492,17 +502,18 @@ namespace SuperNewRoles.EndGame
             if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
             if (Patch.DebugMode.IsDebugMode()) return false;
             var statistics = new PlayerStatistics(__instance);
-                if (!ModeHandler.isMode(ModeId.Default))
+            if (!ModeHandler.isMode(ModeId.Default))
                 {
                     ModeHandler.EndGameChecks(__instance, statistics);
                 }
                 else
                 {
-                    if (CheckAndEndGameForTaskWin(__instance)) return false;
-                    if (CheckAndEndGameForSabotageWin(__instance)) return false;
-                    if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
-                    if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
-                    if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
+                if (CheckAndEndGameForSabotageWin(__instance)) return false;
+                if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
+                if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
+                if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
+                if (CheckAndEndGameForTaskWin(__instance)) return false;
+                if (CheckAndEndGameForBugEnd(__instance,statistics)) return false;
             }
             return false;
         }
@@ -585,10 +596,20 @@ namespace SuperNewRoles.EndGame
             }
             return false;
         }
+        private static bool CheckAndEndGameForBugEnd(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            if (statistics.CrewAlive > 0 && statistics.TotalAlive == 2 && statistics.TeamJackalAlive == 1 && statistics.TeamImpostorsAlive == 1 )
+            {
+                __instance.enabled = false;
+                CustomEndGame((GameOverReason)CustomGameOverReason.JackalWin, false);
+                return true;
+            }
+            return false;
+        }
 
         private static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive == 0 &&statistics.TeamJackalAlive == 0)
+            if (statistics.CrewAlive > 0 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
             {
                 __instance.enabled = false;
                 CustomEndGame(GameOverReason.HumansByVote, false);
@@ -637,7 +658,7 @@ namespace SuperNewRoles.EndGame
                                 numCrewAlive++;
                             }
                             else if (playerInfo.Object.isNeutral()) { 
-                                if(RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(playerInfo.Object) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(playerInfo.Object))
+                                if(playerInfo.Object.isRole(CustomRPC.RoleId.Jackal) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(playerInfo.Object))
                                 {
                                     numTotalJackalTeam++;
                                 }
