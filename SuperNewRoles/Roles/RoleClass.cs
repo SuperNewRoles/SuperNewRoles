@@ -250,7 +250,7 @@ namespace SuperNewRoles.Roles
                 SidekickPlayer = new List<PlayerControl>();
                 KillCoolDown = CustomOptions.JackalKillCoolDown.getFloat();
                 IsUseVent = CustomOptions.JackalUseVent.getBool();
-                IsUseVent = CustomOptions.JackalUseSabo.getBool();
+                IsUseSabo = CustomOptions.JackalUseSabo.getBool();
                 CreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 IsCreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();

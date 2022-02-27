@@ -70,10 +70,12 @@ namespace SuperNewRoles
                     task.Text = mytxt;
                 }
                 task.Text = CustomOption.CustomOptions.cs(roleInfo.color, $"{ModTranslation.getString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
+                /**
                 if (player.IsQuarreled())
                 {
                     task.Text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
                 }
+                **/
 
                 player.myTasks.Insert(0, task);
             }
