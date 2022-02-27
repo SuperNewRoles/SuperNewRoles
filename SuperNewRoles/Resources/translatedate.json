@@ -1200,6 +1200,10 @@
         "0" : "Let's change it" ,
         "11" : "\u5909\u66f4\u3057\u3088\u3046"
         } ,
+ "CountChangerTitle2" : {
+        "0" : "Let's swap the judgment with the enemy." ,
+        "11" : "\u6575\u3068\u5224\u5b9a\u3092\u5165\u308c\u66ff\u3048\u3088\u3046"
+        } ,
  "CountChangerMaxCountSetting" : {
         "0" : "Maximum count" ,
         "11" : "\u6700\u5927\u56de\u6570"
