@@ -20,6 +20,14 @@ namespace SuperNewRoles.Patch
     class DebugMode
     {
         [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
+        public static class UPDATEDEBUG
+        {
+            public static void Postfix(KeyboardJoystick __instance)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo(HttpMatchmakerManager.Instance.Base64Token);
+            }
+        }
+        [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
         public static class DebugManager
         {
             private static readonly System.Random random = new System.Random((int)DateTime.Now.Ticks);

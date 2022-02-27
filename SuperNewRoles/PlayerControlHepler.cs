@@ -41,7 +41,7 @@ namespace SuperNewRoles
                     if (aaa == false) {
                         mytxt = textTask.Text;
                     }
-                    var info = infos.FirstOrDefault(x => textTask.Text.StartsWith(x.NameKey));
+                    var info = infos.FirstOrDefault(x => textTask.Text.StartsWith(ModTranslation.getString(x.NameKey+"Name")));
                     if (info != null)
                         infos.Remove(info); // TextTask for this RoleInfo does not have to be added, as it already exists
                     else

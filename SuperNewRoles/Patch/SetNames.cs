@@ -187,16 +187,19 @@ namespace SuperNewRoles.Patch
         public static void Postfix(PlayerControl __instance)
         {
             SetNamesClass.resetNameTagsAndColors();
-            if (PlayerControl.LocalPlayer.Data.IsDead || RoleClass.God.GodPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
+            if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.God))
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    if (player.IsQuarreled())
+                    if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
-                        SetNamesClass.SetPlayerNameText(player,player.nameText.text + "○");
+                        if (player.IsQuarreled())
+                        {
+                            SetNamesClass.SetPlayerNameText(player, player.nameText.text + "○");
+                        }
+                        SetNamesClass.SetPlayerNameColors(player);
+                        SetNamesClass.SetPlayerRoleNames(player);
                     }
-                    SetNamesClass.SetPlayerRoleNames(player);
-                    SetNamesClass.SetPlayerNameColors(player);
                 }
             }
             else
@@ -205,9 +208,10 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.Data.Role.IsImpostor)
+                        if (p.isImpostor())
                         {
                             SetNamesClass.SetPlayerNameColors(p);
+                            SetNamesClass.SetPlayerRoleNames(p);
                         }
                     }
                 }
@@ -215,22 +219,21 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
                     {
-                            SetNamesClass.SetPlayerRoleNames(p);
-                            SetNamesClass.SetPlayerNameColors(p);
-                        
+                        SetNamesClass.SetPlayerNameColors(p);
+                        SetNamesClass.SetPlayerRoleNames(p);
                     }
                     foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer)
                     {
-                            SetNamesClass.SetPlayerRoleNames(p);
-                            SetNamesClass.SetPlayerNameColors(p);
+                        SetNamesClass.SetPlayerNameColors(p);
+                        SetNamesClass.SetPlayerRoleNames(p);
                     }
                 }
                 SetNamesClass.QuarreledSet();
                 if (RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer)) {
                     foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer) {
                         if (p != PlayerControl.LocalPlayer) {
-                            SetNamesClass.SetPlayerRoleNames(p);
                             SetNamesClass.SetPlayerNameColors(p);
+                            SetNamesClass.SetPlayerRoleNames(p);
                         }
                     }
                     foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer)

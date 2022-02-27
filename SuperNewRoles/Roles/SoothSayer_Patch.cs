@@ -62,8 +62,8 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-
-                    if (ModHelpers.playerById((byte)__instance.playerStates[i].TargetPlayerId).isAlive())
+                    var player = ModHelpers.playerById((byte)__instance.playerStates[i].TargetPlayerId);
+                    if (player.isAlive() && player.PlayerId != PlayerControl.LocalPlayer.PlayerId )
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                         GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);

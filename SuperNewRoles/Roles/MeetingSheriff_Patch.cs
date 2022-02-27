@@ -59,17 +59,20 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-
-                    GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
-                    GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
-                    targetBox.name = "ShootButton";
-                    targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
-                    SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
-                    renderer.sprite = RoleClass.MeetingSheriff.getButtonSprite();
-                    PassiveButton button = targetBox.GetComponent<PassiveButton>();
-                    button.OnClick.RemoveAllListeners();
-                    int copiedIndex = i;
-                    button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => MeetingSheriffOnClick(copiedIndex,__instance)));
+                    var player = ModHelpers.playerById((byte)__instance.playerStates[i].TargetPlayerId);
+                    if (player.isAlive() && player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
+                        GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+                        targetBox.name = "ShootButton";
+                        targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
+                        SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
+                        renderer.sprite = RoleClass.MeetingSheriff.getButtonSprite();
+                        PassiveButton button = targetBox.GetComponent<PassiveButton>();
+                        button.OnClick.RemoveAllListeners();
+                        int copiedIndex = i;
+                        button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => MeetingSheriffOnClick(copiedIndex, __instance)));
+                    }
                 }
             }
         }
