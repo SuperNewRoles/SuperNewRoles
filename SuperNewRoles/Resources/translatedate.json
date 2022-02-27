@@ -520,8 +520,12 @@
         "0" : "Sheriff's Kill Cooldown" ,
         "11" : "\u30b7\u30a7\u30ea\u30d5\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } ,
+ "SheriffIsKillNeutralSetting" : {
+        "0" : "Can Kill a Neutral" ,
+        "11" : "\u7b2c\u4e09\u9663\u55b6\u3092\u30ad\u30eb\u3067\u304d\u308b"
+        } ,
  "SheriffIsKillMadMateSetting" : {
-        "0" : "Can kill a mad mate" ,
+        "0" : "Can Kill a Madmate" ,
         "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30c9\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
  "SheriffIsKillMadMateYes" : {
@@ -564,8 +568,12 @@
         "0" : "Kill an outsider in a meeting to prevent a PP" ,
         "11" : "\u4eba\u5916\u3092\u4f1a\u8b70\u3067\u30ad\u30eb\u3057\u3066PP\u3092\u9632\u3054\u3046"
         } ,
+ "MeetingSheriffIsKillNeutralSetting" : {
+        "0" : "Can Kill a Neutral" ,
+        "11" : "\u7b2c\u4e09\u9663\u55b6\u3092\u30ad\u30eb\u3067\u304d\u308b"
+        } ,
  "MeetingSheriffIsKillMadMateSetting" : {
-        "0" : "Can kill a Mad Mate" ,
+        "0" : "Can Kill a Madmate" ,
         "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30c9\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
  "MeetingSheriffYes" : {

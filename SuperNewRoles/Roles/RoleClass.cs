@@ -178,6 +178,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
             public static PlayerControl currentTarget;
             public static float CoolTime;
+            public static bool IsNeutralKill;
             public static bool IsMadMateKill;
             public static float KillMaxCount;
             public static DateTime ButtonTimer;
@@ -195,6 +196,7 @@ namespace SuperNewRoles.Roles
             {
                 SheriffPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.SheriffCoolTime.getFloat();
+                IsNeutralKill = CustomOptions.SheriffNeutralKill.getBool();
                 IsMadMateKill = CustomOptions.SheriffMadMateKill.getBool();
                 KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
             }
@@ -204,6 +206,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> MeetingSheriffPlayer;
             public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
+            public static bool NeutralKill;
             public static bool MadMateKill;
             public static float KillMaxCount;
             public static bool OneMeetingMultiKill;
@@ -219,6 +222,7 @@ namespace SuperNewRoles.Roles
             public static void clearAndReload()
             {
                 MeetingSheriffPlayer = new List<PlayerControl>();
+                NeutralKill = CustomOptions.MeetingSheriffNeutralKill.getBool();
                 MadMateKill = CustomOptions.MeetingSheriffMadMateKill.getBool();
                 KillMaxCount = CustomOptions.MeetingSheriffKillMaxCount.getFloat();
                 OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.getBool();

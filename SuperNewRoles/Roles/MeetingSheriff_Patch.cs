@@ -29,6 +29,7 @@ namespace SuperNewRoles.Roles
             var roledata = CountChanger.GetRoleType(Target);
             if (roledata == TeamRoleType.Impostor) return true;
             if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadMateKill) return true;
+            if (Target.isNeutral() && RoleClass.MeetingSheriff.NeutralKill) return true;
             return false;
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
