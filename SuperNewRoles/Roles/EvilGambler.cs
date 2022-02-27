@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles
                 }
                 catch (Exception e)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
+                    SuperNewRolesPlugin.Logger.LogInfo("EvilGambler:" + e);
                 }
             }
         }
@@ -34,6 +34,7 @@ namespace SuperNewRoles.Roles
                 }
                 catch (Exception e)
                 {
+                    SuperNewRolesPlugin.Logger.LogInfo("EvilGambler:" + e);
                 }
             }
         }

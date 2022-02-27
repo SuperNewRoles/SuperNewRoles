@@ -11,6 +11,7 @@ using SuperNewRoles.CustomCosmetics.ShareCosmetics;
 using System.Collections;
 using BepInEx.IL2CPP.Utils;
 using SuperNewRoles.EndGame;
+using InnerNet;
 using static SuperNewRoles.EndGame.FinalStatusPatch;
 
 namespace SuperNewRoles.CustomRPC
@@ -88,7 +89,8 @@ namespace SuperNewRoles.CustomRPC
         BomKillRPC,
         ByBomKillRPC,
         NekomataExiledRPC,
-        CountChangerSetRPC
+        CountChangerSetRPC,
+        SetRoomTimerRPC
     }
     public static class RPCProcedure
     {
@@ -122,6 +124,9 @@ namespace SuperNewRoles.CustomRPC
                 HttpConnect.ShareCosmeticDateDownload(id,url);
             }
             **/
+        }
+        public static void SetRoomTimerRPC (byte min,byte seconds){
+            Patch.ShareGameVersion.timer = (min * 60 )+ seconds;
         }
         public static void CountChangerSetRPC(byte sourceid,byte targetid)
         {
@@ -381,6 +386,14 @@ namespace SuperNewRoles.CustomRPC
             PlayerControl.LocalPlayer.transform.position = p.transform.position;
             new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"),p.nameText.text), 3);
         }
+        [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
+        class STARTENDGAME
+        {
+            static void Postfix()
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("STARTENDGAME!!!");
+            }
+        }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
         {
@@ -390,8 +403,7 @@ namespace SuperNewRoles.CustomRPC
                     switch (packetId)
                     {
 
-                        // Main Controls
-
+                    // Main Controls
 
                         case (byte)CustomRPC.ShareOptions:
                             RPCProcedure.ShareOptions((int)reader.ReadPackedUInt32(), reader);
@@ -455,36 +467,39 @@ namespace SuperNewRoles.CustomRPC
                         case (byte)CustomRPC.SetQuarreled:
                             RPCProcedure.SetQuarreled(reader.ReadByte(),reader.ReadByte());
                             break;
-                        case (byte)CustomRPC.SidekickPromotes:
-                            RPCProcedure.SidekickPromotes();
-                            break;
-                        case (byte)CustomRPC.CreateSidekick:
-                            RPCProcedure.CreateSidekick(reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.SetSpeedBoost:
-                            RPCProcedure.SetSpeedBoost(reader.ReadBoolean(),reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.ShareCosmetics:
-                            RPCProcedure.ShareCosmetics(reader.ReadByte(),reader.ReadString());
-                            break;
-                        case (byte)CustomRPC.SetShareNamePlate:
-                            RPCProcedure.SetShareNamePlate(reader.ReadByte(),reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.AutoCreateRoom:
-                            RPCProcedure.AutoCreateRoom();
-                            break;
-                        case (byte)CustomRPC.BomKillRPC:
-                            RPCProcedure.BomKillRPC(reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.ByBomKillRPC:
-                            RPCProcedure.ByBomKillRPC(reader.ReadByte(),reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.NekomataExiledRPC:
-                            RPCProcedure.NekomataExiledRPC(reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.CountChangerSetRPC:
-                            RPCProcedure.CountChangerSetRPC(reader.ReadByte(), reader.ReadByte());
-                            break;
+                    case (byte)CustomRPC.SidekickPromotes:
+                        RPCProcedure.SidekickPromotes();
+                        break;
+                    case (byte)CustomRPC.CreateSidekick:
+                        RPCProcedure.CreateSidekick(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetSpeedBoost:
+                        RPCProcedure.SetSpeedBoost(reader.ReadBoolean(),reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.ShareCosmetics:
+                        RPCProcedure.ShareCosmetics(reader.ReadByte(),reader.ReadString());
+                        break;
+                    case (byte)CustomRPC.SetShareNamePlate:
+                        RPCProcedure.SetShareNamePlate(reader.ReadByte(),reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.AutoCreateRoom:
+                        RPCProcedure.AutoCreateRoom();
+                        break;
+                    case (byte)CustomRPC.BomKillRPC:
+                        RPCProcedure.BomKillRPC(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.ByBomKillRPC:
+                        RPCProcedure.ByBomKillRPC(reader.ReadByte(),reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.NekomataExiledRPC:
+                        RPCProcedure.NekomataExiledRPC(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.CountChangerSetRPC:
+                        RPCProcedure.CountChangerSetRPC(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetRoomTimerRPC:
+                        RPCProcedure.SetRoomTimerRPC(reader.ReadByte(), reader.ReadByte());
+                        break;
                     }
             }
         }

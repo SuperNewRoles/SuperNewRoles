@@ -32,6 +32,7 @@ namespace SuperNewRoles.EndGame
         public static GameOverReason gameOverReason;
         public static WinCondition winCondition = WinCondition.Default;
         public static List<WinCondition> additionalWinConditions = new List<WinCondition>();
+        public static List<PlayerControl> Allplayers = new List<PlayerControl>();
 
         public static Dictionary<int, PlayerControl> plagueDoctorInfected = new Dictionary<int, PlayerControl>();
         public static Dictionary<int, float> plagueDoctorProgress = new Dictionary<int, float>();
@@ -41,6 +42,7 @@ namespace SuperNewRoles.EndGame
             playerRoles.Clear();
             additionalWinConditions.Clear();
             winCondition = WinCondition.Default;
+            Allplayers = new List<PlayerControl>();
         }
 
         internal class PlayerRoleInfo
@@ -217,6 +219,40 @@ namespace SuperNewRoles.EndGame
             } else {
                     textRenderer.text = text;
             }
+            if (true)
+            {
+                var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
+                GameObject roleSummary = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
+                roleSummary.transform.position = new Vector3(__instance.Navigation.ExitButton.transform.position.x + 0.1f, position.y - 0.1f, -14f);
+                roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
+
+                var roleSummaryText = new StringBuilder();
+                roleSummaryText.AppendLine(ModTranslation.getString("最終結果"));
+
+                SuperNewRolesPlugin.Logger.LogInfo("SAISYUUMAE");
+                foreach (var data in AdditionalTempData.Allplayers)
+                {
+                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(data.Data);
+                    var taskInfo = playerTotal > 0 ? $"<color=#FAD934FF>{playerCompleted}/{playerTotal}</color>" : "";
+                    string aliveDead = "";
+                        string Suffix = "";
+                    string result = $"{data.Data.PlayerName + Suffix}<pos=18.5%>{taskInfo}<pos=25%>{aliveDead}<pos=34%>{ModTranslation.getString(Intro.IntroDate.GetIntroDate(data.getRole(),data)+"Name")}";
+                    SuperNewRolesPlugin.Logger.LogInfo("ADD:"+result);
+                    roleSummaryText.AppendLine(result);
+                }
+
+                TMPro.TMP_Text roleSummaryTextMesh = roleSummary.GetComponent<TMPro.TMP_Text>();
+                roleSummaryTextMesh.alignment = TMPro.TextAlignmentOptions.TopLeft;
+                roleSummaryTextMesh.color = Color.white;
+                roleSummaryTextMesh.outlineWidth *= 1.2f;
+                roleSummaryTextMesh.fontSizeMin = 1.25f;
+                roleSummaryTextMesh.fontSizeMax = 1.25f;
+                roleSummaryTextMesh.fontSize = 1.25f;
+
+                var roleSummaryTextMeshRectTransform = roleSummaryTextMesh.GetComponent<RectTransform>();
+                roleSummaryTextMeshRectTransform.anchoredPosition = new Vector2(position.x + 3.5f, position.y - 0.1f);
+                roleSummaryTextMesh.text = roleSummaryText.ToString();
+            }
             AdditionalTempData.clear();
         }
     }
@@ -227,7 +263,6 @@ namespace SuperNewRoles.EndGame
         public static PlayerControl WinnerPlayer;
         public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
-
             AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
             if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
         }
@@ -513,7 +548,7 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForTaskWin(__instance)) return false;
-                if (CheckAndEndGameForBugEnd(__instance,statistics)) return false;
+                //if (CheckAndEndGameForBugEnd(__instance,statistics)) return false;
             }
             return false;
         }
@@ -598,10 +633,10 @@ namespace SuperNewRoles.EndGame
         }
         private static bool CheckAndEndGameForBugEnd(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.CrewAlive > 0 && statistics.TotalAlive == 2 && statistics.TeamJackalAlive == 1 && statistics.TeamImpostorsAlive == 1 )
+            if (statistics.CrewAlive == 0 && statistics.TotalAlive == 2 && statistics.TeamJackalAlive == 1 && statistics.TeamImpostorsAlive == 1 )
             {
                 __instance.enabled = false;
-                CustomEndGame((GameOverReason)CustomGameOverReason.JackalWin, false);
+                CustomEndGame((GameOverReason)CustomGameOverReason.BugEnd, false);
                 return true;
             }
             return false;

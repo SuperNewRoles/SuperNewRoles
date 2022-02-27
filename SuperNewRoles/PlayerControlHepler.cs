@@ -28,7 +28,7 @@ namespace SuperNewRoles
         {
             if (player == null) return;
 
-            List<Intro.IntroDate> infos = new List<Intro.IntroDate>() { Intro.IntroDate.GetIntroDate(player.getRole()) };
+            List<Intro.IntroDate> infos = new List<Intro.IntroDate>() { Intro.IntroDate.GetIntroDate(player.getRole(),player) };
 
             var toRemove = new List<PlayerTask>();
             var aaa = false;
@@ -61,14 +61,7 @@ namespace SuperNewRoles
             {
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
-
-                if (!(player.getRole() == CustomRPC.RoleId.DefaultRole))
-                {
-                    task.Text = CustomOption.CustomOptions.cs(roleInfo.color, $"{ModTranslation.getString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
-                }
-                else {
-                    task.Text = mytxt;
-                }
+                
                 task.Text = CustomOption.CustomOptions.cs(roleInfo.color, $"{ModTranslation.getString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
                 /**
                 if (player.IsQuarreled())

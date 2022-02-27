@@ -186,7 +186,14 @@ namespace SuperNewRoles.Buttons {
     {
         public static void Postfix(ExileController __instance)
         {
-            CustomButton.MeetingEndedUpdate();
+            try 
+            {
+                CustomButton.MeetingEndedUpdate();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("MeetingEnd:" + e);
+            }
         }
     }
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
@@ -194,7 +201,14 @@ namespace SuperNewRoles.Buttons {
     {
         public static void Postfix(AirshipExileController __instance)
         {
-            CustomButton.MeetingEndedUpdate();
+            try
+            {
+                CustomButton.MeetingEndedUpdate();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("MeetingEnd:" + e);
+            }
         }
     }
 }

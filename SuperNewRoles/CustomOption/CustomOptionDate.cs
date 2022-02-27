@@ -71,11 +71,13 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SheriffPlayerCount;
         public static CustomOption SheriffCoolTime;
         public static CustomOption SheriffMadMateKill;
+        public static CustomOption SheriffNeutralKill;
         public static CustomOption SheriffKillMaxCount;
 
         public static CustomRoleOption MeetingSheriffOption;
         public static CustomOption MeetingSheriffPlayerCount;
         public static CustomOption MeetingSheriffMadMateKill;
+        public static CustomOption MeetingSheriffNeutralKill;
         public static CustomOption MeetingSheriffKillMaxCount;
         public static CustomOption MeetingSheriffOneMeetingMultiKill;
 

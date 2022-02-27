@@ -17,6 +17,7 @@ namespace SuperNewRoles.Patch
         public static bool IsChangeVersion = false;
         public static bool IsRPCSend = false;
         public static float timer = 600;
+        public static float RPCTimer = 1f;
         private static bool notcreateroom;
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
         public class AmongUsClientOnPlayerJoinedPatch
@@ -43,6 +44,7 @@ namespace SuperNewRoles.Patch
         {
             public static void Postfix() {
                 timer = 600f;
+                RPCTimer = 1f;
                 notcreateroom = false;
                 GameStartManagerUpdatePatch.Proce = 0;
                 GameStartManagerUpdatePatch.LastBlockStart = false;
@@ -61,7 +63,7 @@ namespace SuperNewRoles.Patch
 
             public static void Prefix(GameStartManager __instance)
             {
-                if (!AmongUsClient.Instance.AmHost || !GameData.Instance) return; // Not host or no instance
+                if (!GameData.Instance) return; // Not host or no instance
                 update = GameData.Instance.PlayerCount != __instance.LastPlayerCount;
             }
             public static void Postfix(GameStartManager __instance)
@@ -176,16 +178,33 @@ namespace SuperNewRoles.Patch
                     __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
                 }
                 LastBlockStart = blockStart;
+                    if (update) currentText = __instance.PlayerCounter.text;
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    if (update) currentText = __instance.PlayerCounter.text;
-
                     timer = Mathf.Max(0f, timer -= Time.deltaTime);
+                    RPCTimer -= Time.deltaTime;
+                    if (RPCTimer <= 0)
+                    {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetRoomTimerRPC, Hazel.SendOption.Reliable, -1);
+                        int minutes2 = (int)timer / 60;
+                        int seconds2 = (int)timer % 60;
+                        writer.Write((byte)minutes2);
+                        writer.Write((byte)seconds2);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCTimer = 1f;
+                    }
+                }
+                else
+                {
+
+                    timer = Mathf.Max(0f, timer);
+                }
                     int minutes = (int)timer / 60;
                     int seconds = (int)timer % 60;
                     string suffix = $" ({minutes:00}:{seconds:00})";
 
-                    __instance.PlayerCounter.text = currentText + suffix;
+                    __instance.PlayerCounter.text = currentText.Replace("\n", "") + suffix.Replace("\n", "")
+                    ;
                     __instance.PlayerCounter.autoSizeTextContainer = true;
                     
                     if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value) {
@@ -196,7 +215,6 @@ namespace SuperNewRoles.Patch
                         
                         notcreateroom = true;
                     }
-                }
                 static IEnumerator CREATEROOMANDJOIN(string ROOMID,int roomint)
                 {
                     yield return new WaitForSeconds(7);
