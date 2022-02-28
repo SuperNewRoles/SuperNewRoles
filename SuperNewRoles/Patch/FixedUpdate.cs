@@ -59,10 +59,12 @@ namespace SuperNewRoles.Patch
                         Jackal.JackalFixedPatch.Postfix(__instance);
                         if (PlayerControl.LocalPlayer.isAlive())
                         {
-                            
                             if (RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                             {
                                 Researcher.ReseUseButtonSetTargetPatch.Postfix(__instance);
+                            } else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Pursuer))
+                            {
+                                Pursuer.PursureUpdate.Postfix();
                             }
                         }
                         else

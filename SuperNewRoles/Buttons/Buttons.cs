@@ -123,7 +123,7 @@ namespace SuperNewRoles.Buttons
             );
 
             
-            DoctorVitalsButton.buttonText = ModTranslation.getString("DoctorVitalButtonName");
+            DoctorVitalsButton.buttonText = ModTranslation.getString("DoctorVitalName");
             DoctorVitalsButton.showButtonText = true;
 
             JackalSidekickButton = new CustomButton(

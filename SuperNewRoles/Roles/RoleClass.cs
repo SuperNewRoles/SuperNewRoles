@@ -11,6 +11,7 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomObject;
 
 namespace SuperNewRoles.Roles
 {
@@ -67,6 +68,7 @@ namespace SuperNewRoles.Roles
             JackalFriends.ClearAndReload();
             Doctor.ClearAndReload();
             CountChanger.ClearAndReload();
+            Pursuer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -785,6 +787,22 @@ namespace SuperNewRoles.Roles
                 Setdata = new Dictionary<int, int>();
                 Count = (int)CustomOptions.CountChangerMaxCount.getFloat();
                 IsSet = false;
+            }
+        }
+        public static class Pursuer
+        {
+            public static List<PlayerControl> PursuerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static Arrow arrow = null;
+            public static void ClearAndReload()
+            {
+                PursuerPlayer = new List<PlayerControl>();
+                if (arrow != null)
+                {
+                    GameObject.Destroy(arrow.arrow);
+                }
+                arrow = new Arrow(color);
+                arrow.arrow.SetActive(false);
             }
         }
         //新ロールクラス

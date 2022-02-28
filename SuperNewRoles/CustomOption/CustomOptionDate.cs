@@ -237,6 +237,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption CountChangerMaxCount;
         public static CustomOption CountChangerNextTurn;
 
+        public static CustomRoleOption PursuerOption;
+        public static CustomOption PursuerPlayerCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -485,6 +488,9 @@ namespace SuperNewRoles.CustomOption
             CountChangerPlayerCount = CustomOption.Create(170, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CountChangerOption);
             CountChangerMaxCount = CustomOption.Create(171, cs(Color.white, "CountChangerMaxCountSetting"), 1f,1f,15f,1f, CountChangerOption);
             CountChangerNextTurn = CustomOption.Create(172, cs(Color.white, "CountChangerNextTurnSetting"), false, CountChangerOption);
+
+            PursuerOption = new CustomRoleOption(175, "PursuerName", RoleClass.Pursuer.color, 1);
+            PursuerPlayerCount = CustomOption.Create(176, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PursuerOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

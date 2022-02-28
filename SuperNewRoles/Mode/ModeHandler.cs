@@ -1,5 +1,6 @@
 ﻿using SuperNewRoles.CustomOption;
 using SuperNewRoles.EndGame;
+using SuperNewRoles.Patch;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -66,6 +67,7 @@ namespace SuperNewRoles.Mode
             }
         }
         public static ModeId GetMode() {
+            if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)) return ModeId.Default;
             if (!ModeSetting.getBool()) return ModeId.Default;
             if (isMode(ModeId.HideAndSeek)) return ModeId.HideAndSeek;
             //if (isMode(ModeId.BattleRoyal)) return ModeId.BattleRoyal;
@@ -75,6 +77,10 @@ namespace SuperNewRoles.Mode
             return ThisModeSetting.getString();
         }
         public static bool isMode(ModeId mode) {
+            if (mode != ModeId.Default && !ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
+            {
+                return true;
+            }
             switch (mode)
             {
                 case ModeId.Default:

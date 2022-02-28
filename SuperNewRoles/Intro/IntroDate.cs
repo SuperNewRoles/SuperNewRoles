@@ -99,6 +99,8 @@ namespace SuperNewRoles.Intro
                     return DoctorIntro;
                 case (CustomRPC.RoleId.CountChanger):
                     return CountChangerIntro;
+                case (CustomRPC.RoleId.Pursuer):
+                    return PursuerIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -136,7 +138,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate DoorrIntro = new IntroDate("Doorr",RoleClass.Doorr.color,2,CustomRPC.RoleId.Doorr);
         public static IntroDate EvilDoorrIntro = new IntroDate("EvilDoorr", RoleClass.EvilDoorr.color, 3, CustomRPC.RoleId.EvilDoorr);
         public static IntroDate SealdorIntro = new IntroDate("Sealdor",RoleClass.Sealdor.color,3,CustomRPC.RoleId.Sealdor);
-        public static IntroDate FreezerIntro = new IntroDate("Freezer", RoleClass.Freezer.color, 2, CustomRPC.RoleId.Freezer);
+        public static IntroDate FreezerIntro = new IntroDate("Freezer", RoleClass.Freezer.color, 3, CustomRPC.RoleId.Freezer);
         public static IntroDate SpeederIntro = new IntroDate("Speeder", RoleClass.Speeder.color, 2, CustomRPC.RoleId.Speeder);
         public static IntroDate GuesserIntro = new IntroDate("Guesser", RoleClass.Guesser.color, 2, CustomRPC.RoleId.Guesser);
         public static IntroDate EvilGuesserIntro = new IntroDate("EvilGuesser", RoleClass.EvilGuesser.color, 1, CustomRPC.RoleId.EvilGuesser);
@@ -161,6 +163,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate JackalFriendsIntro = new IntroDate("JackalFriends", RoleClass.JackalFriends.color, 2, CustomRPC.RoleId.JackalFriends);
         public static IntroDate DoctorIntro = new IntroDate("Doctor", RoleClass.Doctor.color, 1, CustomRPC.RoleId.Doctor);
         public static IntroDate CountChangerIntro = new IntroDate("CountChanger", RoleClass.CountChanger.color, 2, CustomRPC.RoleId.CountChanger);
+        public static IntroDate PursuerIntro = new IntroDate("Pursuer", RoleClass.Pursuer.color, 2, CustomRPC.RoleId.Pursuer);
         //イントロオブジェ
     }
 }

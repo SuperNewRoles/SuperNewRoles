@@ -10,6 +10,11 @@ namespace SuperNewRoles.Roles
     class IntroHandler
     {
         public static void Handler() {
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Pursuer))
+            {
+                RoleClass.Pursuer.arrow.arrow.SetActive(false);
+                RoleClass.Pursuer.arrow.arrow.SetActive(true);
+            }
         }
     }
 }

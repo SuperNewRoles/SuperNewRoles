@@ -215,6 +215,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.CountChanger):
                     Roles.RoleClass.CountChanger.CountChangerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Pursuer):
+                    Roles.RoleClass.Pursuer.PursuerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -357,6 +360,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.CountChanger):
                     Roles.RoleClass.CountChanger.CountChangerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Pursuer):
+                    Roles.RoleClass.Pursuer.PursuerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -637,6 +643,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.CountChanger.CountChangerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.CountChanger;
+            }
+            else if (Roles.RoleClass.Pursuer.PursuerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Pursuer;
             }
             //ロールチェック
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;

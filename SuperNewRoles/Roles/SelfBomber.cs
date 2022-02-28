@@ -12,6 +12,7 @@ namespace SuperNewRoles.Roles
         public static void EndMeeting()
         {
             HudManagerStartPatch.SelfBomberButton.MaxTimer = PlayerControl.GameOptions.KillCooldown;
+            HudManagerStartPatch.SelfBomberButton.Timer = PlayerControl.GameOptions.KillCooldown;
         }
         public static void ResetCoolDown()
         {

@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
         public class CheckEndGamePatch
         {
-            public static void Prefix(ExileController __instance)
+            public static void Postfix(ExileController __instance)
             {
                 try
                 {
@@ -26,7 +26,7 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
         public class CheckAirShipEndGamePatch
         {
-            public static void Prefix(AirshipExileController __instance)
+            public static void Postfix(AirshipExileController __instance)
             {
                 try
                 {

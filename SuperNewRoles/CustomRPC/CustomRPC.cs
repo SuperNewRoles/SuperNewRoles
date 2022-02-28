@@ -61,6 +61,7 @@ namespace SuperNewRoles.CustomRPC
         JackalFriends,
         Doctor,
         CountChanger,
+        Pursuer,
         //RoleId
     }
 

@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles
             public class CountChange
             {
                 
-                public static void Prefix(ExileController __instance)
+                public static void Postfix(ExileController __instance)
                 {
                     try
                     {
@@ -34,7 +34,7 @@ namespace SuperNewRoles.Roles
             [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
             public class CountChangeairship
             {
-                public static void Prefix(AirshipExileController __instance)
+                public static void Postfix(AirshipExileController __instance)
                 {
                     try
                     {

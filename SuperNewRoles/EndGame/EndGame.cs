@@ -329,7 +329,7 @@ namespace SuperNewRoles.EndGame
                 var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
                     p.Disconnected == true ? FinalStatus.Disconnected :
                     FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId) ? FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] :
-                    p.IsDead == true ? FinalStatus.Dead :
+                    p.IsDead == true ? FinalStatus.Exiled :
                     gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor ? FinalStatus.Sabotage :
                     FinalStatus.Alive;
 
@@ -488,7 +488,7 @@ namespace SuperNewRoles.EndGame
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
     public class CheckEndGamePatch
     {
-        public static void Prefix(ExileController __instance)
+        public static void Postfix(ExileController __instance)
         {
             try
             {
@@ -503,7 +503,7 @@ namespace SuperNewRoles.EndGame
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
     public class CheckAirShipEndGamePatch
     {
-        public static void Prefix(AirshipExileController __instance)
+        public static void Postfix(AirshipExileController __instance)
         {
             try
             {
@@ -522,6 +522,7 @@ namespace SuperNewRoles.EndGame
         {
             try
             {
+                
                 if (ExileController.Instance != null && ExileController.Instance.exiled != null)
                 {
                     PlayerControl player = ModHelpers.playerById(ExileController.Instance.exiled.Object.PlayerId);
@@ -540,20 +541,15 @@ namespace SuperNewRoles.EndGame
         }
     }
     public class WrapUpClass {
+
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
-            Buttons.CustomButton.MeetingEndedUpdate();
-            /**
-            var statistics = new CheckGameEndPatch.PlayerStatistics(ShipStatus.Instance);
-            if (statistics.CrewAlive == 0 && statistics.TotalAlive == 2 && statistics.TeamJackalAlive == 1 && statistics.TeamImpostorsAlive == 1)
-                {
-                    ShipStatus.Instance.enabled = false;
-                CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.BugEnd, false);
-                }
-            **/
+            
             if (exiled == null) return;
             exiled.Object.Exiled();
-            
+
+            FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
+
             var Player = ModHelpers.playerById(exiled.PlayerId);
             if (RoleHelpers.IsQuarreled(Player))
             {
@@ -585,7 +581,15 @@ namespace SuperNewRoles.EndGame
             }
         }
     }
-    
+    [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
+    class ExileControllerReEnableGameplayPatch
+    {
+        public static void Postfix(ExileController __instance)
+        {
+            Buttons.CustomButton.MeetingEndedUpdate();
+        }
+    }
+
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CheckEndCriteria))]
     class CheckGameEndPatch
     {

@@ -509,6 +509,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.DoctorPlayerCount.getFloat();
                     case (RoleId.CountChanger):
                     return CustomOption.CustomOptions.CountChangerPlayerCount.getFloat();
+                    case (RoleId.Pursuer):
+                    return CustomOption.CustomOptions.PursuerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1193,6 +1195,22 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.CountChangerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.CountChanger;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.PursuerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.PursuerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Pursuer;
                 if (OptionDate == 10)
                 {
                     Impoonepar.Add(ThisRoleId);
