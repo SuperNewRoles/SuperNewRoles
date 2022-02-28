@@ -281,6 +281,14 @@ namespace SuperNewRoles.EndGame
                 {
                     return ModTranslation.getString("FinalStatusSheriffMisFire");
                 }
+                else if (status == FinalStatus.MeetingSheriffKill)
+                {
+                    return ModTranslation.getString("FinalStatusMeetingSheriffMisFire");
+                }
+                else if (status == FinalStatus.MeetingSheriffMisFire)
+                {
+                    return ModTranslation.getString("FinalStatusMeetingSheriffMisFire");
+                }
                 else if (status == FinalStatus.SelfBomb)
                 {
                     return ModTranslation.getString("FinalStatusSelfBomb");

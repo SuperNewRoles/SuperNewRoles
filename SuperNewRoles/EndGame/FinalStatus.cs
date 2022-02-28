@@ -32,6 +32,8 @@ namespace SuperNewRoles.EndGame
         NekomataExiled,
         SheriffKill,
         SheriffMisFire,
+        MeetingSheriffKill,
+        MeetingSheriffMisFire,
         SelfBomb,
         BySelfBomb,
         Disconnected,

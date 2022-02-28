@@ -191,11 +191,9 @@ namespace SuperNewRoles.Patch
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
-                    {
                         SetNamesClass.SetPlayerNameColors(player);
                         SetNamesClass.SetPlayerRoleNames(player);
-                    }
+                    
                 }
             }
             else

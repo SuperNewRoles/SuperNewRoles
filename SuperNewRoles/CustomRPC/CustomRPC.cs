@@ -216,6 +216,7 @@ namespace SuperNewRoles.CustomRPC
             if (MissFire)
             {
                 sheriff.Data.IsDead = true;
+                FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.MeetingSheriffMisFire;
                 if (PlayerControl.LocalPlayer == sheriff)
                 {
                     HudManager.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
@@ -225,6 +226,7 @@ namespace SuperNewRoles.CustomRPC
             else
             {
                 target.Data.IsDead = true;
+                FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.MeetingSheriffKill;
                 if (PlayerControl.LocalPlayer == target)
                 {
                     HudManager.Instance.KillOverlay.ShowKillAnimation(target.Data,sheriff.Data);
