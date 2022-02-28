@@ -7,7 +7,7 @@
   "targets": {
     ".NETStandard,Version=v2.1": {},
     ".NETStandard,Version=v2.1/": {
-      "SuperNewRoles/1.0.0": {
+      "SuperNewRoles/1.2.3.0": {
         "dependencies": {
           "0Harmony": "2.7.0.0",
           "AppleAuth": "3.7.1.6",
@@ -1025,7 +1025,7 @@
     }
   },
   "libraries": {
-    "SuperNewRoles/1.0.0": {
+    "SuperNewRoles/1.2.3.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
