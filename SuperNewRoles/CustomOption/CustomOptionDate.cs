@@ -247,11 +247,16 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MinimalistSabo;
         public static CustomOption MinimalistReport;
 
-
         public static CustomRoleOption HawkOption;
         public static CustomOption HawkPlayerCount;
         public static CustomOption HawkCoolTime;
         public static CustomOption HawkDurationTime;
+
+        public static CustomRoleOption EgoistOption;
+        public static CustomOption EgoistPlayerCount;
+        public static CustomOption EgoistUseVent;
+        public static CustomOption EgoistUseSabo;
+        public static CustomOption EgoistImpostorLight;
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -516,6 +521,12 @@ namespace SuperNewRoles.CustomOption
             HawkPlayerCount = CustomOption.Create(184, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], HawkOption);
             HawkCoolTime = CustomOption.Create(185, ModTranslation.getString("HawkCoolTimeSetting"), 15f, 1f, 7f, 1f, HawkOption, format: "unitCouples");
             HawkDurationTime = CustomOption.Create(186, ModTranslation.getString("HawkDurationTimeSetting"), 1f, 1f, 7f, 1f, HawkOption, format: "unitCouples");
+
+            EgoistOption = new CustomRoleOption(187, "EgoistName", RoleClass.Egoist.color, 1);
+            EgoistPlayerCount = CustomOption.Create(188, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], EgoistOption);
+            EgoistUseVent = CustomOption.Create(189, cs(Color.white, "EgoistUseVentSetting"), false, EgoistOption);
+            EgoistUseSabo = CustomOption.Create(190, cs(Color.white, "EgoistUseSaboSetting"), false, EgoistOption);
+            EgoistImpostorLight = CustomOption.Create(191, cs(Color.white, "EgoistImpostorLightSetting"), false, EgoistOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

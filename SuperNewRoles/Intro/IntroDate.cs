@@ -105,6 +105,8 @@ namespace SuperNewRoles.Intro
                     return MinimalistIntro;
                 case (CustomRPC.RoleId.Hawk):
                     return HawkIntro;
+                case (CustomRPC.RoleId.Egoist):
+                    return EgoistIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -170,6 +172,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate PursuerIntro = new IntroDate("Pursuer", RoleClass.Pursuer.color, 3, CustomRPC.RoleId.Pursuer);
         public static IntroDate MinimalistIntro = new IntroDate("Minimalist", RoleClass.Minimalist.color, 2, CustomRPC.RoleId.Minimalist);
         public static IntroDate HawkIntro = new IntroDate("Hawk", RoleClass.Hawk.color, 1, CustomRPC.RoleId.Hawk);
+        public static IntroDate EgoistIntro = new IntroDate("Egoist", RoleClass.Egoist.color, 1, CustomRPC.RoleId.Egoist);
         //イントロオブジェ
     }
 }

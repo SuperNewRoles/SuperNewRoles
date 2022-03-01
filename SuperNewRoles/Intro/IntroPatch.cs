@@ -25,7 +25,20 @@ namespace SuperNewRoles.Patches
                 newTeam.Add(PlayerControl.LocalPlayer);
                 yourTeam = newTeam;
             }
-
+            if (PlayerControl.LocalPlayer.isImpostor())
+            {
+                var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.isImpostor())
+                    {
+                        newTeam.Add(p);
+                    } else if (p.isRole(CustomRPC.RoleId.Egoist)) {
+                        newTeam.Add(p);                    
+                    }
+                }
+                yourTeam = newTeam;
+            }
             if (ModeHandler.ModeSetting.getBool())
             {
                 yourTeam = ModeHandler.TeamHandler(__instance);

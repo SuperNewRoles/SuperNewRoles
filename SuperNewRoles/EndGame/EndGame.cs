@@ -23,6 +23,7 @@ namespace SuperNewRoles.EndGame
         JackalWin,
         QuarreledWin,
         GodWin,
+        EgoistWin,
         BugEnd
     }
     static class AdditionalTempData
@@ -181,7 +182,12 @@ namespace SuperNewRoles.EndGame
                 textRenderer.color = Roles.RoleClass.Jackal.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Jackal.color);
             }
-
+            else if (AdditionalTempData.winCondition == WinCondition.EgoistWin)
+            {
+                text = "EgoistName";
+                textRenderer.color = Roles.RoleClass.Egoist.color;
+                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Egoist.color);
+            }
             if (ModeHandler.isMode(ModeId.BattleRoyal)) {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
                     if (p.isAlive())
@@ -361,6 +367,7 @@ namespace SuperNewRoles.EndGame
                 notWinners.AddRange(RoleClass.JackalFriends.JackalFriendsPlayer);
                 notWinners.AddRange(RoleClass.God.GodPlayer);
                 notWinners.AddRange(RoleClass.Opportunist.OpportunistPlayer);
+            notWinners.AddRange(RoleClass.Egoist.EgoistPlayer);
 
                 List<WinningPlayerData> winnersToRemove = new List<WinningPlayerData>();
                 foreach (WinningPlayerData winner in TempData.winners)
@@ -377,6 +384,7 @@ namespace SuperNewRoles.EndGame
                 bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
                 bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
                 bool HAISON = gameOverReason == (GameOverReason)CustomGameOverReason.HAISON;
+            bool EgoistWin = gameOverReason == (GameOverReason)CustomGameOverReason.EgoistWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
 
             if (JesterWin)
@@ -405,6 +413,19 @@ namespace SuperNewRoles.EndGame
                 }
 
                 AdditionalTempData.winCondition = WinCondition.JackalWin;
+            }
+            else if (EgoistWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
+                {
+                    if (p.isAlive())
+                    {
+                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                        TempData.winners.Add(wpd);
+                    }
+                }
+                AdditionalTempData.winCondition = WinCondition.EgoistWin;
             }
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
@@ -535,6 +556,7 @@ namespace SuperNewRoles.EndGame
                 {
                     PlayerControl player = ModHelpers.playerById(ExileController.Instance.exiled.Object.PlayerId);
                     if (player == null) return;
+                    FinalStatusPatch.FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Exiled;
                     // Exile role text
                     if (id == StringNames.ExileTextPN || id == StringNames.ExileTextSN || id == StringNames.ExileTextPP || id == StringNames.ExileTextSP)
                     {
@@ -616,6 +638,7 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForSabotageWin(__instance)) return false;
                 if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
+                if (CheckAndEndGameForEgoistWin(__instance,statistics)) return false;
                 if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForTaskWin(__instance)) return false;
                 
@@ -691,6 +714,17 @@ namespace SuperNewRoles.EndGame
             }
             return false;
         }
+
+        private static bool CheckAndEndGameForEgoistWin(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            if (statistics.EgoistAlive != 0 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
+            {
+                __instance.enabled = false;
+                CustomEndGame((GameOverReason)CustomGameOverReason.EgoistWin, false);
+                return true;
+            }
+            return false;
+        }
         private static bool CheckAndEndGameForJackalWin(ShipStatus __instance, PlayerStatistics statistics)
         {
             if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0)
@@ -725,6 +759,7 @@ namespace SuperNewRoles.EndGame
             public int CrewAlive { get; set; }
             public int TotalAlive { get; set; }
             public int TeamJackalAlive { get; set; }
+            public int EgoistAlive { get; set; }
             public PlayerStatistics(ShipStatus __instance)
             {
                 GetPlayerCounts();
@@ -735,6 +770,7 @@ namespace SuperNewRoles.EndGame
                 int numCrewAlive = 0;
                 int numTotalAlive = 0;
                 int numTotalJackalTeam = 0;
+                int numTotalEgoist = 0;
 
                 for (int i = 0; i < GameData.Instance.PlayerCount; i++)
                 {
@@ -757,6 +793,9 @@ namespace SuperNewRoles.EndGame
                                 if(playerInfo.Object.isRole(CustomRPC.RoleId.Jackal) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(playerInfo.Object))
                                 {
                                     numTotalJackalTeam++;
+                                } else if (playerInfo.Object.isRole(CustomRPC.RoleId.Egoist))
+                                {
+                                    numTotalEgoist++;
                                 }
                             }
                         }
@@ -767,6 +806,7 @@ namespace SuperNewRoles.EndGame
                 TotalAlive = numTotalAlive;
                 CrewAlive = numCrewAlive;
                 TeamJackalAlive = numTotalJackalTeam;
+                EgoistAlive = numTotalEgoist;
             }
         }
     }

@@ -10,6 +10,7 @@ namespace SuperNewRoles.EndGame
         JesterWin,
         JackalWin,
         QuarreledWin,
+        EgoistWin,
         BugEnd
     }
 }

@@ -1343,6 +1343,26 @@
  "HawkButtonName" : {
         "0" : "Hawk Eye" ,
         "11" : "\u30db\u30fc\u30af\u30a2\u30a4"
+        } ,
+ "EgoistName" : {
+        "0" : "Egotist" ,
+        "11" : "\u30a8\u30b4\u30a4\u30b9\u30c8"
+        } ,
+ "EgoistTitle1" : {
+        "0" : "We can survive this." ,
+        "11" : "\u751f\u304d\u6b8b\u308d\u3046"
+        } ,
+ "EgoistUseVentSetting" : {
+        "0" : "I can use Vent." ,
+        "11" : "\u30d9\u30f3\u30c8\u3092\u4f7f\u3048\u308b"
+        } ,
+ "EgoistUseSaboSetting" : {
+        "0" : "Can use Sabotage" ,
+        "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u304c\u4f7f\u3048\u308b"
+        } ,
+ "EgoistImpostorLightSetting" : {
+        "0" : "Imposter's Vision" ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u8996\u754c"
         } 
 
 }

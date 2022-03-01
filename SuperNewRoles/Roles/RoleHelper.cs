@@ -224,6 +224,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Hawk):
                     Roles.RoleClass.Hawk.HawkPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Egoist):
+                    Roles.RoleClass.Egoist.EgoistPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -376,6 +379,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Hawk):
                     Roles.RoleClass.Hawk.HawkPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Egoist):
+                    Roles.RoleClass.Egoist.EgoistPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
         }
@@ -421,6 +427,9 @@ namespace SuperNewRoles
                 case (RoleId.God):
                     IsTaskClear = true;
                     break; 
+                case (RoleId.Egoist):
+                    IsTaskClear = true;
+                    break; 
                 //タスククリアか
             }
             if (!IsTaskClear && player.IsQuarreled())
@@ -437,6 +446,7 @@ namespace SuperNewRoles
             if ((RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player) || 
                 RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) && Roles.RoleClass.Jackal.IsUseVent) return true;
             if (player.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsUseVent) return true;
+            if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.UseVent) return true;
             return false;
         }
         public static bool IsUseSabo(this PlayerControl player)
@@ -445,6 +455,12 @@ namespace SuperNewRoles
             if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Jester.IsUseSabo) return true;
             if ((RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player) ||
                 RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) && Roles.RoleClass.Jackal.IsUseSabo) return true;
+            if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.UseSabo) return true;
+            return false;
+        }
+        public static bool IsImpostorLight(this PlayerControl player)
+        {
+            if(player.isRole(RoleId.Egoist) && RoleClass.Egoist.ImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -471,6 +487,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.God):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Egoist):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -667,6 +686,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.Hawk.HawkPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Hawk;
+            }
+            else if (Roles.RoleClass.Egoist.EgoistPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Egoist;
             }
             //ロールチェック
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;

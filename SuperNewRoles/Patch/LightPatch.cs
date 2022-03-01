@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Patch
 {
@@ -25,7 +26,7 @@ namespace SuperNewRoles.Patch
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * RoleClass.Clergyman.DownImpoVision;
             else if(player.Object.isRole(CustomRPC.RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate)
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * PlayerControl.GameOptions.ImpostorLightMod;
-            else if (player.Role.IsImpostor)
+            else if (player.Role.IsImpostor || RoleHelpers.IsImpostorLight(player.Object))
                 __result = __instance.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
             else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && RoleClass.Lighter.IsLightOn)
                 __result = Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num);

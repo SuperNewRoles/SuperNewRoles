@@ -72,6 +72,7 @@ namespace SuperNewRoles.Roles
             Pursuer.ClearAndReload();
             Minimalist.ClearAndReload();
             Hawk.ClearAndReload();
+            Egoist.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -876,6 +877,21 @@ namespace SuperNewRoles.Roles
                 ButtonTimer = DateTime.Now;
                 CameraDefault = Camera.main.orthographicSize;
                 Default = HudManager.Instance.UICamera.orthographicSize;
+            }
+        }
+        public static class Egoist
+        {
+            public static List<PlayerControl> EgoistPlayer;
+            public static Color32 color = new Color32(192, 192, 192, byte.MaxValue);
+            public static bool ImpostorLight;
+            public static bool UseVent;
+            public static bool UseSabo;
+            public static void ClearAndReload()
+            {
+                EgoistPlayer = new List<PlayerControl>();
+                ImpostorLight = CustomOptions.EgoistImpostorLight.getBool();
+                UseVent = CustomOptions.EgoistUseVent.getBool();
+                UseSabo = CustomOptions.EgoistUseSabo.getBool();
             }
         }
         //新ロールクラス

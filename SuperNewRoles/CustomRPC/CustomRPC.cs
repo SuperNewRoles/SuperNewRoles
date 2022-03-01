@@ -64,6 +64,7 @@ namespace SuperNewRoles.CustomRPC
         Pursuer,
         Minimalist,
         Hawk,
+        Egoist,
         //RoleId
     }
 
