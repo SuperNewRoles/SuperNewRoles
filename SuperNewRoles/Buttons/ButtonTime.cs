@@ -26,8 +26,54 @@ namespace SuperNewRoles.Buttons
             MovingButton();
             DoorrButton();
             TeleporterButton();
+            HawkDuration();
+            ScientistButton();
         }
+        public static void ScientistButton()
+        {
 
+            float durationtime;
+            float cooltime;
+            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            {
+                durationtime = RoleClass.EvilScientist.DurationTime;
+                cooltime = RoleClass.EvilScientist.CoolTime;
+            }
+            else
+            {
+                durationtime = RoleClass.NiceScientist.DurationTime;
+                cooltime = RoleClass.NiceScientist.CoolTime;
+            }
+            if (Roles.RoleClass.NiceScientist.IsScientist)
+            {
+                var TimeSpanDate = new TimeSpan(0, 0, 0, (int)durationtime);
+                Buttons.HudManagerStartPatch.ScientistButton.MaxTimer = durationtime;
+                Buttons.HudManagerStartPatch.ScientistButton.Timer = (float)((Roles.RoleClass.NiceScientist.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+                if (Buttons.HudManagerStartPatch.ScientistButton.Timer <= 0f)
+                {
+                    Roles.Scientist.ScientistEnd();
+                    Roles.Scientist.ResetCoolDown();
+                    Buttons.HudManagerStartPatch.ScientistButton.MaxTimer = cooltime;
+                    Roles.RoleClass.NiceScientist.IsScientist = false;
+                    Buttons.HudManagerStartPatch.ScientistButton.actionButton.cooldownTimerText.color = Color.white;
+                    Roles.RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
+                }
+            }
+            else
+            {
+                var TimeSpanDate = new TimeSpan(0, 0, 0, (int)cooltime);
+                Buttons.HudManagerStartPatch.ScientistButton.Timer = (float)((Roles.RoleClass.NiceScientist.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+                if (Buttons.HudManagerStartPatch.ScientistButton.Timer <= 0f) Buttons.HudManagerStartPatch.ScientistButton.Timer = 0f; return;
+            }
+        }
+        public static void HawkDuration()
+        {
+            if (RoleClass.Hawk.Timer == 0) return;
+            RoleClass.Hawk.IsHawkOn = true;
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Hawk.DurationTime);
+            RoleClass.Hawk.Timer = (float)((Roles.RoleClass.Hawk.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            if (RoleClass.Hawk.Timer <= 0f) RoleClass.Hawk.Timer = 0f; Hawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
+        }
         public static void TeleporterButton()
         {
             if (Roles.RoleClass.Teleporter.ButtonTimer == null)

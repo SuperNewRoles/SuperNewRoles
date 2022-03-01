@@ -65,6 +65,9 @@ namespace SuperNewRoles.Patch
                             } else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Pursuer))
                             {
                                 Pursuer.PursureUpdate.Postfix();
+                            } else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
+                            {
+                                Hawk.FixedUpdate.Postfix();
                             }
                             Minimalist.FixedUpdate.Postfix();
                         }

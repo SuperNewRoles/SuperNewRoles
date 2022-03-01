@@ -19,13 +19,14 @@ namespace SuperNewRoles.Roles
     public static class RoleClass
     {
 
-
+        public static bool IsMeeting;
         public static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
         public static Color ImpostorRed = Palette.ImpostorRed;
         public static Color CrewmateWhite = Color.white;
 
         public static void clearAndReloadRoles()
         {
+            IsMeeting = false;
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             SoothSayer.clearAndReload();
             Jester.clearAndReload();
@@ -70,6 +71,7 @@ namespace SuperNewRoles.Roles
             CountChanger.ClearAndReload();
             Pursuer.ClearAndReload();
             Minimalist.ClearAndReload();
+            Hawk.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -164,14 +166,20 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> EvilScientistPlayer;
             public static Color32 color = RoleClass.ImpostorRed;
-            //public static float CoolTime;
-            //public static float DurationTime;
-
+            public static float CoolTime;
+            public static float DurationTime;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png.png", 115f);
+                return buttonSprite;
+            }
             public static void clearAndReload()
             {
                 EvilScientistPlayer = new List<PlayerControl>();
-                //CoolTime = CustomOptions.EvilScientistCoolTime.getFloat();
-                //DurationTime = CustomOptions.EvilScientistDurationTime.getFloat();
+                CoolTime = CustomOptions.EvilScientistCoolTime.getFloat();
+                DurationTime = CustomOptions.EvilScientistDurationTime.getFloat();
             }
 
         }
@@ -470,9 +478,26 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> NiceScientistPlayer;
             public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+            public static float CoolTime;
+            public static float DurationTime;
+            public static DateTime ButtonTimer;
+            public static bool IsScientist;
+            private static Sprite buttonSprite;
+            public static Dictionary<int, bool> IsScientistPlayers;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.NiceScientistButton.png", 115f);
+                return buttonSprite;
+            }
             public static void clearAndReload()
             {
                 NiceScientistPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.NiceScientistCoolTime.getFloat();
+                DurationTime = CustomOptions.NiceScientistDurationTime.getFloat();
+                ButtonTimer = DateTime.Now;
+                IsScientist = false;
+                IsScientistPlayers = new Dictionary<int, bool>();
             }
         }
         public static class Clergyman
@@ -821,6 +846,36 @@ namespace SuperNewRoles.Roles
                 UseVent = CustomOptions.MinimalistVent.getBool();
                 UseSabo = CustomOptions.MinimalistSabo.getBool();
                 UseReport = CustomOptions.MinimalistReport.getBool();
+            }
+        }
+        public static class Hawk
+        {
+            public static List<PlayerControl> HawkPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static bool IsHawkOn;
+            public static float Timer;
+            public static DateTime ButtonTimer; 
+            private static Sprite buttonSprite;
+            public static float Default;
+            public static float CameraDefault;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.HawkHawkEye.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                HawkPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.HawkCoolTime.getFloat();
+                DurationTime = CustomOptions.HawkDurationTime.getFloat();
+                IsHawkOn = false;
+                Timer = 0;
+                ButtonTimer = DateTime.Now;
+                CameraDefault = Camera.main.orthographicSize;
+                Default = HudManager.Instance.UICamera.orthographicSize;
             }
         }
         //新ロールクラス

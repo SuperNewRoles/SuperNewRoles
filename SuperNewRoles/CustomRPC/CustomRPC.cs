@@ -63,6 +63,7 @@ namespace SuperNewRoles.CustomRPC
         CountChanger,
         Pursuer,
         Minimalist,
+        Hawk,
         //RoleId
     }
 
@@ -92,7 +93,8 @@ namespace SuperNewRoles.CustomRPC
         ByBomKillRPC,
         NekomataExiledRPC,
         CountChangerSetRPC,
-        SetRoomTimerRPC
+        SetRoomTimerRPC,
+        SetScientistRPC
     }
     public static class RPCProcedure
     {
@@ -290,6 +292,11 @@ namespace SuperNewRoles.CustomRPC
             {
                 RoleClass.SpeedBooster.IsBoostPlayers[id] = Is;
             }
+        }
+        public static void SetScientistRPC(bool Is, byte id)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo(id+":"+Is);
+            RoleClass.NiceScientist.IsScientistPlayers[id] = Is;
         }
         public static void ReportDeadBody(byte sourceId, byte targetId)
         {
@@ -506,6 +513,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.SetRoomTimerRPC:
                         RPCProcedure.SetRoomTimerRPC(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetScientistRPC:
+                        RPCProcedure.SetScientistRPC(reader.ReadBoolean(), reader.ReadByte());
                         break;
                     }
             }

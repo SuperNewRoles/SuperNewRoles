@@ -247,6 +247,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MinimalistSabo;
         public static CustomOption MinimalistReport;
 
+
+        public static CustomRoleOption HawkOption;
+        public static CustomOption HawkPlayerCount;
+        public static CustomOption HawkCoolTime;
+        public static CustomOption HawkDurationTime;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -320,12 +326,12 @@ namespace SuperNewRoles.CustomOption
             EvilLighterCoolTime = CustomOption.Create(20, ModTranslation.getString("EvilLigtherCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, EvilLighterOption, format: "unitSeconds");
             EvilLighterDurationTime = CustomOption.Create(21, ModTranslation.getString("EvilLigtherDurationSetting"), 10f, 1f, 20f, 0.5f, EvilLighterOption, format: "unitSeconds");
             
-
+            **/
             EvilScientistOption = new CustomRoleOption(22, "EvilScientistName", RoleClass.ImpostorRed, 1);
             EvilScientistPlayerCount = CustomOption.Create(34, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilScientistOption);
             EvilScientistCoolTime = CustomOption.Create(24, ModTranslation.getString("EvilScientistCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, EvilScientistOption, format: "unitSeconds");
-            EvilScientistDurationTime = CustomOption.Create(25, ModTranslation.getString("EvilScientistDurationSetting"), 10f, 1f, 20f, 0.5f, EvilScientistOption, format: "unitSeconds");
-            **/
+            EvilScientistDurationTime = CustomOption.Create(25, ModTranslation.getString("EvilScientistDurationSetting"), 10f, 2.5f, 20f, 2.5f, EvilScientistOption, format: "unitSeconds");
+            
             SheriffOption = new CustomRoleOption(26, "SheriffName", RoleClass.Sheriff.color, 1);
             SheriffPlayerCount = CustomOption.Create(27, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SheriffOption);
             SheriffCoolTime = CustomOption.Create(28, ModTranslation.getString("SheriffCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
@@ -413,12 +419,12 @@ namespace SuperNewRoles.CustomOption
             VulturePlayerCount = CustomOption.Create(90, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], VultureOption);
             VultureCoolDown = CustomOption.Create(91, ModTranslation.getString("VultureCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, VultureOption, format: "unitSeconds");
             VultureDeadBodyMaxCount = CustomOption.Create(92, cs(Color.white, "VultureDeadBodyCountSetting"), VultureDeadBodyCount, VultureOption);
-
+            **/
             NiceScientistOption = new CustomRoleOption(101, "NiceScientistName", RoleClass.NiceScientist.color, 1);
             NiceScientistPlayerCount = CustomOption.Create(102, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceScientistOption);
             NiceScientistCoolTime = CustomOption.Create(103, ModTranslation.getString("NiceScientistCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, NiceScientistOption, format: "unitSeconds");
-            NiceScientistDurationTime = CustomOption.Create(104, ModTranslation.getString("NiceScientistDurationSetting"), 10f, 1f, 20f, 0.5f, NiceScientistOption, format: "unitSeconds");
-            **/
+            NiceScientistDurationTime = CustomOption.Create(104, ModTranslation.getString("NiceScientistDurationSetting"), 10f, 2.5f, 20f, 2.5f, NiceScientistOption, format: "unitSeconds");
+            
             ClergymanOption = new CustomRoleOption(93, "ClergymanName", RoleClass.Clergyman.color, 1);
             ClergymanPlayerCount = CustomOption.Create(94, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ClergymanOption);
             ClergymanCoolTime = CustomOption.Create(95, ModTranslation.getString("ClergymanCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, ClergymanOption, format: "unitSeconds");
@@ -505,6 +511,11 @@ namespace SuperNewRoles.CustomOption
             MinimalistVent = CustomOption.Create(180, cs(Color.white, "MinimalistVentSetting"), false, MinimalistOption);
             MinimalistSabo = CustomOption.Create(181, cs(Color.white, "MinimalistSaboSetting"), false, MinimalistOption);
             MinimalistReport = CustomOption.Create(182, cs(Color.white, "MinimalistReportSetting"), true, MinimalistOption);
+
+            HawkOption = new CustomRoleOption(183, "HawkName", RoleClass.Hawk.color, 1);
+            HawkPlayerCount = CustomOption.Create(184, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], HawkOption);
+            HawkCoolTime = CustomOption.Create(185, ModTranslation.getString("HawkCoolTimeSetting"), 15f, 1f, 7f, 1f, HawkOption, format: "unitCouples");
+            HawkDurationTime = CustomOption.Create(186, ModTranslation.getString("HawkDurationTimeSetting"), 1f, 1f, 7f, 1f, HawkOption, format: "unitCouples");
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

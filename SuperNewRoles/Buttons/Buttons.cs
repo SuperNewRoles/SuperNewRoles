@@ -26,7 +26,9 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SelfBomberButton;
         public static CustomButton DoctorVitalsButton;
         public static CustomButton CountChangerButton;
+        public static CustomButton ScientistButton;
 
+        public static CustomButton HawkHawkEyeButton;
         public static CustomButton FreezerFreezeButton;
         public static CustomButton SpeederSpeedDownButton;
         public static CustomButton JackalKillButton;
@@ -52,6 +54,64 @@ namespace SuperNewRoles.Buttons
         public static void Postfix(HudManager __instance)
         {
             RoleClass.clearAndReloadRoles();
+            ScientistButton = new Buttons.CustomButton(
+                () =>
+                {
+                    if (!PlayerControl.LocalPlayer.CanMove) return;
+                    Roles.RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
+                    ScientistButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    Scientist.Start();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceScientist) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilScientist)); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { Scientist.EndMeeting(); },
+                RoleClass.NiceScientist.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            ScientistButton.buttonText = ModTranslation.getString("MovingButtonTpName");
+            ScientistButton.showButtonText = true;
+            HawkHawkEyeButton = new CustomButton(
+               () =>
+               {
+                   if (PlayerControl.LocalPlayer.CanMove)
+                   {
+                       RoleClass.Hawk.Timer = RoleClass.Hawk.DurationTime;
+                       RoleClass.Hawk.ButtonTimer = DateTime.Now;
+                       HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
+                       HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
+                       RoleClass.Hawk.IsHawkOn = true;
+                   }
+               },
+               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk) && PlayerControl.LocalPlayer.isAlive(); },
+               () =>
+               {
+                   return PlayerControl.LocalPlayer.CanMove;
+               },
+               () =>
+               {
+                   HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
+                   HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
+                   RoleClass.Hawk.IsHawkOn = false;
+               },
+               RoleClass.Hawk.getButtonSprite(),
+               new Vector3(-1.8f, -0.06f, 0),
+               __instance,
+               __instance.AbilityButton,
+               KeyCode.F,
+               49
+            );
+
+            HawkHawkEyeButton.buttonText = ModTranslation.getString("HawkButtonName");
+            HawkHawkEyeButton.showButtonText = true;
+
             CountChangerButton = new CustomButton(
                () =>
                {
@@ -71,7 +131,7 @@ namespace SuperNewRoles.Buttons
                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                    }
                },
-               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.CountChanger) && !RoleClass.CountChanger.IsSet && RoleClass.CountChanger.Count >= 1; },
+               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.CountChanger) && !RoleClass.CountChanger.IsSet && RoleClass.CountChanger.Count >= 1 && PlayerControl.LocalPlayer.isAlive(); },
                () =>
                {
                    return PlayerControl.LocalPlayer.CanMove && PlayerControlFixedUpdatePatch.setTarget(onlyCrewmates:true);

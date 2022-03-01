@@ -552,7 +552,7 @@ namespace SuperNewRoles.EndGame
 
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
-            
+            RoleClass.IsMeeting = false;
             if (exiled == null) return;
             exiled.Object.Exiled();
 

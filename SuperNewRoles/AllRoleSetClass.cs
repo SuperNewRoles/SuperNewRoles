@@ -513,6 +513,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.PursuerPlayerCount.getFloat();
                     case (RoleId.Minimalist):
                     return CustomOption.CustomOptions.MinimalistPlayerCount.getFloat();
+                    case (RoleId.Hawk):
+                    return CustomOption.CustomOptions.HawkPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -606,6 +608,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            */
             if (!(CustomOption.CustomOptions.EvilScientistOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.EvilScientistOption.getString().Replace("0%", ""));
@@ -622,7 +625,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-            **/
             if (!(CustomOption.CustomOptions.SheriffOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SheriffOption.getString().Replace("0%", ""));
@@ -882,6 +884,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            */
             if (!(CustomOption.CustomOptions.NiceScientistOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.NiceScientistOption.getString().Replace("0%", ""));
@@ -898,7 +901,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-            **/
             if (!(CustomOption.CustomOptions.ClergymanOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.ClergymanOption.getString().Replace("0%", ""));
@@ -1229,6 +1231,22 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MinimalistOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Minimalist;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.HawkOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.HawkOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Hawk;
                 if (OptionDate == 10)
                 {
                     Impoonepar.Add(ThisRoleId);

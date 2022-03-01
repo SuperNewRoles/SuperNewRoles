@@ -80,6 +80,7 @@ namespace SuperNewRoles.Roles
         
         static void Postfix(MeetingHud __instance)
         {
+            RoleClass.IsMeeting = true;
                 Event(__instance);
          }
         
