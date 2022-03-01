@@ -31,6 +31,13 @@ namespace SuperNewRoles
                       !ExileController.Instance;
             }
         }
+        public static void SetKillTimerUnchecked(this PlayerControl player, float time, float max = float.NegativeInfinity)
+        {
+            if (max == float.NegativeInfinity) max = time;
+
+            player.killTimer = time;
+            DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(time, max);
+        }
         public static Dictionary<byte, PlayerControl> allPlayersById()
         {
             Dictionary<byte, PlayerControl> res = new Dictionary<byte, PlayerControl>();

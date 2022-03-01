@@ -42,6 +42,7 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
+            Minimalist.MurderPatch.Postfix(__instance);
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Exiled))]

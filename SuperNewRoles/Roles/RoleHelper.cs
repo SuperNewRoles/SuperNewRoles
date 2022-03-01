@@ -218,6 +218,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Pursuer):
                     Roles.RoleClass.Pursuer.PursuerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Minimalist):
+                    Roles.RoleClass.Minimalist.MinimalistPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -363,6 +366,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.Pursuer):
                     Roles.RoleClass.Pursuer.PursuerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Minimalist):
+                    Roles.RoleClass.Minimalist.MinimalistPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -647,6 +653,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.Pursuer.PursuerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Pursuer;
+            }
+            else if (Roles.RoleClass.Minimalist.MinimalistPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Minimalist;
             }
             //ロールチェック
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;

@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
                 {
                     List<PlayerControl> p = new List<PlayerControl>();
                     foreach (PlayerControl p1 in PlayerControl.AllPlayerControls) {
-                        if (p1.PlayerId != __instance.PlayerId && p1.isAlive()) {
+                        if (p1.PlayerId != __instance.Object.PlayerId && p1.isAlive()) {
                             p.Add(p1);
                         }
                     }

@@ -240,6 +240,13 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption PursuerOption;
         public static CustomOption PursuerPlayerCount;
 
+        public static CustomRoleOption MinimalistOption;
+        public static CustomOption MinimalistPlayerCount;
+        public static CustomOption MinimalistKillCoolTime;
+        public static CustomOption MinimalistVent;
+        public static CustomOption MinimalistSabo;
+        public static CustomOption MinimalistReport;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -491,6 +498,13 @@ namespace SuperNewRoles.CustomOption
 
             PursuerOption = new CustomRoleOption(175, "PursuerName", RoleClass.Pursuer.color, 1);
             PursuerPlayerCount = CustomOption.Create(176, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PursuerOption);
+
+            MinimalistOption = new CustomRoleOption(177, "MinimalistName", RoleClass.Minimalist.color, 1);
+            MinimalistPlayerCount = CustomOption.Create(178, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MinimalistOption);
+            MinimalistKillCoolTime = CustomOption.Create(179, cs(Color.white, "MinimalistKillCoolSetting"), 20f, 2.5f, 60f, 2.5f, MinimalistOption);
+            MinimalistVent = CustomOption.Create(180, cs(Color.white, "MinimalistVentSetting"), false, MinimalistOption);
+            MinimalistSabo = CustomOption.Create(181, cs(Color.white, "MinimalistSaboSetting"), false, MinimalistOption);
+            MinimalistReport = CustomOption.Create(182, cs(Color.white, "MinimalistReportSetting"), true, MinimalistOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

@@ -66,6 +66,7 @@ namespace SuperNewRoles.Patch
                             {
                                 Pursuer.PursureUpdate.Postfix();
                             }
+                            Minimalist.FixedUpdate.Postfix();
                         }
                         else
                         {

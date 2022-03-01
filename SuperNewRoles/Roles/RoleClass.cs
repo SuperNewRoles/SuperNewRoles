@@ -69,6 +69,7 @@ namespace SuperNewRoles.Roles
             Doctor.ClearAndReload();
             CountChanger.ClearAndReload();
             Pursuer.ClearAndReload();
+            Minimalist.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -803,6 +804,23 @@ namespace SuperNewRoles.Roles
                 }
                 arrow = new Arrow(color);
                 arrow.arrow.SetActive(false);
+            }
+        }
+        public static class Minimalist
+        {
+            public static List<PlayerControl> MinimalistPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static bool UseVent;
+            public static bool UseSabo;
+            public static bool UseReport;
+            public static void ClearAndReload()
+            {
+                MinimalistPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.MinimalistKillCoolTime.getFloat();
+                UseVent = CustomOptions.MinimalistVent.getBool();
+                UseSabo = CustomOptions.MinimalistSabo.getBool();
+                UseReport = CustomOptions.MinimalistReport.getBool();
             }
         }
         //新ロールクラス

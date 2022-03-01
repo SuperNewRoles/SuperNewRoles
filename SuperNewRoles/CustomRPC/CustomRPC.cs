@@ -62,6 +62,7 @@ namespace SuperNewRoles.CustomRPC
         Doctor,
         CountChanger,
         Pursuer,
+        Minimalist,
         //RoleId
     }
 
@@ -216,6 +217,7 @@ namespace SuperNewRoles.CustomRPC
             if (MissFire)
             {
                 sheriff.Data.IsDead = true;
+                sheriff.Exiled();
                 FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.MeetingSheriffMisFire;
                 if (PlayerControl.LocalPlayer == sheriff)
                 {
@@ -226,6 +228,7 @@ namespace SuperNewRoles.CustomRPC
             else
             {
                 target.Data.IsDead = true;
+                target.Exiled();
                 FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.MeetingSheriffKill;
                 if (PlayerControl.LocalPlayer == target)
                 {
@@ -403,6 +406,7 @@ namespace SuperNewRoles.CustomRPC
             static void Postfix([HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
             {
                     byte packetId = callId;
+                SuperNewRolesPlugin.Logger.LogInfo("RPCID:"+packetId);
                     switch (packetId)
                     {
 

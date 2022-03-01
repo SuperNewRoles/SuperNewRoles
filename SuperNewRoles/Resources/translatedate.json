@@ -364,6 +364,14 @@
         "0" : "Sheriff misfire" ,
         "11" : "\u30b7\u30a7\u30ea\u30d5\u8aa4\u7206"
         } ,
+ "FinalStatusMeetingSheriffKill" : {
+        "0" : "Meeting Sheriff kill" ,
+        "11" : "\u30df\u30fc\u30c6\u30a3\u30f3\u30b0\u30b7\u30a7\u30ea\u30d5\u30ad\u30eb"
+        } ,
+ "FinalStatusMeetingSheriffMisFire" : {
+        "0" : "Meeting Sheriff misfire" ,
+        "11" : "\u30df\u30fc\u30c6\u30a3\u30f3\u30b0\u30b7\u30a7\u30ea\u30d5\u8aa4\u7206"
+        } ,
  "FinalStatusSelfBomb" : {
         "0" : "Self-destruct" ,
         "11" : "\u81ea\u7206"
@@ -1283,6 +1291,30 @@
  "PursuerTitle2" : {
         "0" : "Let's get our bearings." ,
         "11" : "\u4f4d\u7f6e\u3092\u628a\u63e1\u3057\u3088\u3046"
+        } ,
+ "MinimalistName" : {
+        "0" : "Minimalist" ,
+        "11" : "\u30df\u30cb\u30de\u30ea\u30b9\u30c8"
+        } ,
+ "MinimalistTitle1" : {
+        "0" : "Let's Kill." ,
+        "11" : "\u30ad\u30eb\u3092\u3057\u3088\u3046"
+        } ,
+ "MinimalistKillCoolSetting" : {
+        "0" : "Minimalist Kill Cool Time" ,
+        "11" : "\u30df\u30cb\u30de\u30ea\u30b9\u30c8\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0\u306e\u8a2d\u5b9a"
+        } ,
+ "MinimalistVentSetting" : {
+        "0" : "Use Vent" ,
+        "11" : "\u30d9\u30f3\u30c8\u304c\u4f7f\u3048\u308b"
+        } ,
+ "MinimalistSaboSetting" : {
+        "0" : "Use Sabotage" ,
+        "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u304c\u4f7f\u3048\u308b"
+        } ,
+ "MinimalistReportSetting" : {
+        "0" : "Use DeadBody Report" ,
+        "11" : "\u901a\u5831\u304c\u3067\u304d\u308b"
         } 
 
 }

@@ -511,6 +511,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.CountChangerPlayerCount.getFloat();
                     case (RoleId.Pursuer):
                     return CustomOption.CustomOptions.PursuerPlayerCount.getFloat();
+                    case (RoleId.Minimalist):
+                    return CustomOption.CustomOptions.MinimalistPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1211,6 +1213,22 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.PursuerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Pursuer;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.MinimalistOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MinimalistOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Minimalist;
                 if (OptionDate == 10)
                 {
                     Impoonepar.Add(ThisRoleId);

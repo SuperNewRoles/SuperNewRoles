@@ -101,6 +101,8 @@ namespace SuperNewRoles.Intro
                     return CountChangerIntro;
                 case (CustomRPC.RoleId.Pursuer):
                     return PursuerIntro;
+                case (CustomRPC.RoleId.Minimalist):
+                    return MinimalistIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -164,6 +166,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate DoctorIntro = new IntroDate("Doctor", RoleClass.Doctor.color, 1, CustomRPC.RoleId.Doctor);
         public static IntroDate CountChangerIntro = new IntroDate("CountChanger", RoleClass.CountChanger.color, 2, CustomRPC.RoleId.CountChanger);
         public static IntroDate PursuerIntro = new IntroDate("Pursuer", RoleClass.Pursuer.color, 2, CustomRPC.RoleId.Pursuer);
+        public static IntroDate MinimalistIntro = new IntroDate("Minimalist", RoleClass.Minimalist.color, 1, CustomRPC.RoleId.Minimalist);
         //イントロオブジェ
     }
 }
