@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
-{
+{/**
     [HarmonyPatch(typeof(ChatController),nameof(ChatController.AddChat))]
     class ChatHandler
     {
@@ -20,7 +20,7 @@ namespace SuperNewRoles.Patch
                 return false;
             if (__instance.chatBubPool.NotInUse == 0)
                 __instance.chatBubPool.ReclaimOldest();
-            ChatBubble bubble = __instance.chatBubPool.Get<ChatBubble>();
+            ChatBubble bubble = HudManager.Instance.Chat.chatBubPool.Get<ChatBubble>();
             try
             {
                 bubble.transform.SetParent(__instance.scroller.Inner);
@@ -39,8 +39,8 @@ namespace SuperNewRoles.Patch
                 bubble.SetText(chatText);
                 bubble.AlignChildren();
                 __instance.AlignAllBubbles();
-                if (!__instance.IsOpen && __instance.notificationRoutine == null)
-                   __instance.notificationRoutine = __instance.StartCoroutine(__instance.BounceDot());
+                if (!HudManager.Instance.Chat.IsOpen && HudManager.Instance.Chat.notificationRoutine == null)
+                    HudManager.Instance.Chat.notificationRoutine = __instance.StartCoroutine(__instance.BounceDot());
                 if (num != 0)
                     return false;
                 SoundManager.Instance.PlaySound(__instance.MessageSound, false).pitch = (float)(0.5 + (double)sourcePlayer.PlayerId / 15.0);
@@ -48,9 +48,10 @@ namespace SuperNewRoles.Patch
             catch (Exception ex)
             {
                 SuperNewRolesPlugin.Logger.LogError((object)ex);
-                __instance.chatBubPool.Reclaim((PoolableBehavior)bubble);
+                HudManager.Instance.Chat.chatBubPool.Reclaim((PoolableBehavior)bubble);
             }
             return false;
         }
     }
+    **/
 }
