@@ -73,41 +73,16 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
-        [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
-        public class CheckEndGamePatch
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
+        static class PlayerControlSetCoolDownPatch
         {
-            public static void Postfix(ExileController __instance)
+            public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] float time)
             {
-                try
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Minimalist))
                 {
-                    endm();
+                    __instance.SetKillTimerUnchecked(RoleClass.Minimalist.KillCoolTime);
+                    return;
                 }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("Minimalist:" + e);
-                }
-            }
-        }
-        [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-        public class CheckAirShipEndGamePatch
-        {
-            public static void Postfix(AirshipExileController __instance)
-            {
-                try
-                {
-                    endm();
-                }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("Minimalist:" + e);
-                }
-            }
-        }
-        public static void endm()
-        {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Minimalist))
-            {
-                PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Minimalist.KillCoolTime);
             }
         }
     }
