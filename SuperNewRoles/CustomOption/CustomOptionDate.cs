@@ -258,6 +258,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption EgoistUseSabo;
         public static CustomOption EgoistImpostorLight;
 
+        public static CustomRoleOption NiceRedRidingHoodOption;
+        public static CustomOption NiceRedRidingHoodPlayerCount;
+        public static CustomOption NiceRedRidingHoodCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -527,6 +531,10 @@ namespace SuperNewRoles.CustomOption
             EgoistUseVent = CustomOption.Create(189, cs(Color.white, "EgoistUseVentSetting"), false, EgoistOption);
             EgoistUseSabo = CustomOption.Create(190, cs(Color.white, "EgoistUseSaboSetting"), false, EgoistOption);
             EgoistImpostorLight = CustomOption.Create(191, cs(Color.white, "EgoistImpostorLightSetting"), false, EgoistOption);
+
+            NiceRedRidingHoodOption = new CustomRoleOption(192, "NiceRedRidingHoodName", RoleClass.NiceRedRidingHood.color, 1);
+            NiceRedRidingHoodPlayerCount = CustomOption.Create(193, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceRedRidingHoodOption);
+            NiceRedRidingHoodCount = CustomOption.Create(194, ModTranslation.getString("NiceRedRidingHoodCount"), 1f, 1f, 15f, 1f, NiceRedRidingHoodOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

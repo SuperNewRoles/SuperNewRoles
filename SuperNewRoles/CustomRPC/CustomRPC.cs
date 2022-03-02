@@ -65,10 +65,11 @@ namespace SuperNewRoles.CustomRPC
         Minimalist,
         Hawk,
         Egoist,
+        NiceRedRidingHood,
         //RoleId
     }
 
-    enum CustomRPC
+    public enum CustomRPC
     {
         ShareOptions = 91,
         ShareSNRVersion,
@@ -95,7 +96,8 @@ namespace SuperNewRoles.CustomRPC
         NekomataExiledRPC,
         CountChangerSetRPC,
         SetRoomTimerRPC,
-        SetScientistRPC
+        SetScientistRPC,
+        ReviveRPC
     }
     public static class RPCProcedure
     {
@@ -293,6 +295,12 @@ namespace SuperNewRoles.CustomRPC
             {
                 RoleClass.SpeedBooster.IsBoostPlayers[id] = Is;
             }
+        }
+        public static void ReviveRPC(byte playerid) {
+            var player = ModHelpers.playerById(playerid);
+            if (player == null) return;
+            player.Revive();
+            FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Alive;
         }
         public static void SetScientistRPC(bool Is, byte id)
         {
@@ -517,6 +525,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.SetScientistRPC:
                         RPCProcedure.SetScientistRPC(reader.ReadBoolean(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.ReviveRPC:
+                        RPCProcedure.ReviveRPC(reader.ReadByte());
                         break;
                     }
             }

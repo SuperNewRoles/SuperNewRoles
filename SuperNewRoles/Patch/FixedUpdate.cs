@@ -71,7 +71,7 @@ namespace SuperNewRoles.Patch
                             }
                             Minimalist.FixedUpdate.Postfix();
                         }
-                        else
+                        else if (PlayerControl.LocalPlayer.isDead())
                         {
                             if (RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                             {

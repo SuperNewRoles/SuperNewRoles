@@ -517,6 +517,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.HawkPlayerCount.getFloat();
                     case (RoleId.Egoist):
                     return CustomOption.CustomOptions.EgoistPlayerCount.getFloat();
+                    case (RoleId.NiceRedRidingHood):
+                    return CustomOption.CustomOptions.NiceRedRidingHoodPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1274,6 +1276,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.NiceRedRidingHoodOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NiceRedRidingHoodOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.NiceRedRidingHood;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
                     }
                 }
             }

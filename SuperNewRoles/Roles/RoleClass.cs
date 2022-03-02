@@ -73,6 +73,7 @@ namespace SuperNewRoles.Roles
             Minimalist.ClearAndReload();
             Hawk.ClearAndReload();
             Egoist.ClearAndReload();
+            NiceRedRidingHood.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -892,6 +893,19 @@ namespace SuperNewRoles.Roles
                 ImpostorLight = CustomOptions.EgoistImpostorLight.getBool();
                 UseVent = CustomOptions.EgoistUseVent.getBool();
                 UseSabo = CustomOptions.EgoistUseSabo.getBool();
+            }
+        }
+        public static class NiceRedRidingHood
+        {
+            public static List<PlayerControl> NiceRedRidingHoodPlayer;
+            public static Color32 color = new Color32(250, 128, 114, byte.MaxValue);
+            public static int Count;
+            public static Vector3? deadbodypos;
+            public static void ClearAndReload()
+            {
+                NiceRedRidingHoodPlayer = new List<PlayerControl>();
+                Count = (int)CustomOptions.NiceRedRidingHoodCount.getFloat();
+                deadbodypos = null;
             }
         }
         //新ロールクラス

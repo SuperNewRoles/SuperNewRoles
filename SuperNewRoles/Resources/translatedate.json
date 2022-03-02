@@ -1363,6 +1363,18 @@
  "EgoistImpostorLightSetting" : {
         "0" : "Imposter's Vision" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u8996\u754c"
+        } ,
+ "NiceRedRidingHoodName" : {
+        "0" : "NiceRedRidingHood" ,
+        "11" : "\u30ca\u30a4\u30b9\u8d64\u305a\u304d\u3093"
+        } ,
+ "NiceRedRidingHoodTitle1" : {
+        "0" : "Come back to life" ,
+        "11" : "\u751f\u304d\u8fd4\u308d\u3046"
+        } ,
+ "NiceRedRidingHoodCount" : {
+        "0" : "Maximum number of revives" ,
+        "11" : "\u6700\u5927\u751f\u304d\u8fd4\u308a\u56de\u6570"
         } 
 
 }

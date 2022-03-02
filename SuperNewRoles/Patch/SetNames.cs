@@ -30,7 +30,7 @@ namespace SuperNewRoles.Patch
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 player.nameText.text = player.CurrentOutfit.PlayerName;
-                if (PlayerControl.LocalPlayer.Data.Role.IsImpostor && player.Data.Role.IsImpostor)
+                if (PlayerControl.LocalPlayer.Data.Role.IsImpostor && (player.Data.Role.IsImpostor || player.isRole(CustomRPC.RoleId.Egoist)))
                 {
                     player.nameText.color = Palette.ImpostorRed;
                 }
@@ -47,7 +47,7 @@ namespace SuperNewRoles.Patch
                     if (playerControl != null)
                     {
                         player.NameText.text = playerControl.Data.PlayerName;
-                        if (PlayerControl.LocalPlayer.Data.Role.IsImpostor && playerControl.Data.Role.IsImpostor)
+                        if (PlayerControl.LocalPlayer.Data.Role.IsImpostor && (playerControl.Data.Role.IsImpostor || playerControl.isRole(CustomRPC.RoleId.Egoist)))
                         {
                             player.NameText.color = Palette.ImpostorRed;
                         }
@@ -61,14 +61,14 @@ namespace SuperNewRoles.Patch
             if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
             {
                 List<PlayerControl> impostors = PlayerControl.AllPlayerControls.ToArray().ToList();
-                impostors.RemoveAll(x => !x.Data.Role.IsImpostor);
+                impostors.RemoveAll(x => !x.Data.Role.IsImpostor && !x.isRole(CustomRPC.RoleId.Egoist));
                 foreach (PlayerControl player in impostors)
                     player.nameText.color = Palette.ImpostorRed;
                 if (MeetingHud.Instance != null)
                     foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
                     {
                         PlayerControl playerControl = ModHelpers.playerById((byte)player.TargetPlayerId);
-                        if (playerControl != null && playerControl.Data.Role.IsImpostor)
+                        if (playerControl != null && (playerControl.Data.Role.IsImpostor || playerControl.isRole(CustomRPC.RoleId.Egoist)))
                             player.NameText.color = Palette.ImpostorRed;
                     }
             }
@@ -187,7 +187,7 @@ namespace SuperNewRoles.Patch
         public static void Postfix(PlayerControl __instance)
         {
             SetNamesClass.resetNameTagsAndColors();
-            if (PlayerControl.LocalPlayer.Data.IsDead || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.God))
+            if ((PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.God)) && !PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceRedRidingHood))
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {

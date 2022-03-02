@@ -26,6 +26,16 @@ namespace SuperNewRoles.EndGame
         EgoistWin,
         BugEnd
     }
+    [HarmonyPatch(typeof(ShipStatus))]
+    public class ShipStatusPatch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.IsGameOverDueToDeath))]
+        public static void Postfix2(ShipStatus __instance, ref bool __result)
+        {
+            __result = false;
+        }
+    }
     static class AdditionalTempData
     {
         // Should be implemented using a proper GameOverReason in the future
@@ -637,8 +647,8 @@ namespace SuperNewRoles.EndGame
                 {
                 if (CheckAndEndGameForSabotageWin(__instance)) return false;
                 if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
+                if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
-                if (CheckAndEndGameForEgoistWin(__instance,statistics)) return false;
                 if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForTaskWin(__instance)) return false;
                 
@@ -717,7 +727,7 @@ namespace SuperNewRoles.EndGame
 
         private static bool CheckAndEndGameForEgoistWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.EgoistAlive != 0 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
+            if (statistics.EgoistAlive >= statistics.TotalAlive - statistics.EgoistAlive && statistics.EgoistAlive != 0 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
             {
                 __instance.enabled = false;
                 CustomEndGame((GameOverReason)CustomGameOverReason.EgoistWin, false);
@@ -796,6 +806,7 @@ namespace SuperNewRoles.EndGame
                                 } else if (playerInfo.Object.isRole(CustomRPC.RoleId.Egoist))
                                 {
                                     numTotalEgoist++;
+                                    numImpostorsAlive++;
                                 }
                             }
                         }

@@ -270,9 +270,9 @@ namespace SuperNewRoles.CustomOption
     {
         public static void Postfix(GameOptionsMenu __instance)
         {
-            if (GameObject.Find("TORSettings") != null)
+            if (GameObject.Find("SNRSettings") != null)
             { // Settings setup has already been performed, fixing the title of the tab and returning
-                GameObject.Find("TORSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingSuperNewRolesSetting"));
+                GameObject.Find("SNRSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingSuperNewRolesSetting"));
                 return;
             }
 
@@ -281,9 +281,9 @@ namespace SuperNewRoles.CustomOption
             if (template == null) return;
             var gameSettings = GameObject.Find("Game Settings");
             var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
-            var torSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-            var torMenu = torSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-            torSettings.name = "TORSettings";
+            var snrSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
+            var torMenu = snrSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
+            snrSettings.name = "SNRSettings";
 
             var roleTab = GameObject.Find("RoleTab");
             var gameTab = GameObject.Find("GameTab");
@@ -291,7 +291,7 @@ namespace SuperNewRoles.CustomOption
             var torTab = UnityEngine.Object.Instantiate(roleTab, roleTab.transform.parent);
             var torTabHighlight = torTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
             torTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CrewMateSetting.png", 100f);
-
+           
             gameTab.transform.position += Vector3.left * 0.5f;
             torTab.transform.position += Vector3.right * 0.5f;
             roleTab.transform.position += Vector3.left * 0.5f;
@@ -306,7 +306,7 @@ namespace SuperNewRoles.CustomOption
                 button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => {
                     gameSettingMenu.RegularGameSettings.SetActive(false);
                     gameSettingMenu.RolesSettings.gameObject.SetActive(false);
-                    torSettings.gameObject.SetActive(false);
+                    snrSettings.gameObject.SetActive(false);
                     gameSettingMenu.GameSettingsHightlight.enabled = false;
                     gameSettingMenu.RolesSettingsHightlight.enabled = false;
                     torTabHighlight.enabled = false;
@@ -322,7 +322,7 @@ namespace SuperNewRoles.CustomOption
                     }
                     else if (copiedIndex == 2)
                     {
-                        torSettings.gameObject.SetActive(true);
+                        snrSettings.gameObject.SetActive(true);
                         torTabHighlight.enabled = true;
                     }
                 }));
@@ -350,7 +350,7 @@ namespace SuperNewRoles.CustomOption
             }
 
             torMenu.Children = torOptions.ToArray();
-            torSettings.gameObject.SetActive(false);
+            snrSettings.gameObject.SetActive(false);
 
                        var numImpostorsOption = __instance.Children.FirstOrDefault(x => x.name == "NumImpostors").TryCast<NumberOption>();
                         if (numImpostorsOption != null) numImpostorsOption.ValidRange = new FloatRange(0f, 15f);
@@ -443,8 +443,8 @@ namespace SuperNewRoles.CustomOption
         private static float timer = 1f;
         public static void Postfix(GameOptionsMenu __instance)
         {
-            if (__instance.Children.Length < 100) return; // TODO: Introduce a cleaner way to seperate the TOR settings from the game settings
-
+            if (__instance.Children.Length < 30) return; // TODO: Introduce a cleaner way to seperate the TOR settings from the game settings
+           
             timer += Time.deltaTime;
             if (timer < 0.1f) return;
             timer = 0f;

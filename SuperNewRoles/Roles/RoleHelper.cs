@@ -227,6 +227,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Egoist):
                     Roles.RoleClass.Egoist.EgoistPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.NiceRedRidingHood):
+                    Roles.RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -381,6 +384,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.Egoist):
                     Roles.RoleClass.Egoist.EgoistPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.NiceRedRidingHood):
+                    Roles.RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -690,6 +696,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.Egoist.EgoistPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Egoist;
+            }
+            else if (Roles.RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.NiceRedRidingHood;
             }
             //ロールチェック
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;

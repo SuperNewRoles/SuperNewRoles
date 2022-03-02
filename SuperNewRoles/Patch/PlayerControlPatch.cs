@@ -54,13 +54,6 @@ namespace SuperNewRoles.Patches
             DeadPlayer deadPlayer = new DeadPlayer(__instance, DateTime.UtcNow, DeathReason.Exile, null);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
-            var statistics = new CheckGameEndPatch.PlayerStatistics(ShipStatus.Instance);
-                if (((ExileController.Instance.exiled != null && !ExileController.Instance.exiled.Object.isRole(CustomRPC.RoleId.Jackal) && !ExileController.Instance.exiled.Object.isImpostor() && statistics.TotalAlive == 3) || (statistics.TotalAlive == 2 && ExileController.Instance.exiled == null)) && statistics.TeamJackalAlive == 1 && statistics.TeamImpostorsAlive == 1)
-                {
-                AmongUsClient.Instance.GameState = AmongUsClient.GameStates.Started;
-                    //ShipStatus.Instance.enabled = false;
-                ///CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.BugEnd, false);
-            }
         }
     }
     public static class PlayerControlFixedUpdatePatch
