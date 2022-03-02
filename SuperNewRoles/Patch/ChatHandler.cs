@@ -16,7 +16,7 @@ namespace SuperNewRoles.Patch
                 return false;
             GameData.PlayerInfo data1 = PlayerControl.LocalPlayer.Data;
             GameData.PlayerInfo data2 = sourcePlayer.Data;
-            if (data2 == null || data1 == null || data2.IsDead && (!data1.IsDead || data1.PlayerId != data2.PlayerId || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceRedRidingHood) ))
+            if (data2 == null || data1 == null || data2.IsDead && (!data1.IsDead || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceRedRidingHood) ))
                 return false;
             if (__instance.chatBubPool.NotInUse == 0)
                 __instance.chatBubPool.ReclaimOldest();
