@@ -514,194 +514,206 @@ namespace SuperNewRoles
         }
         public static SuperNewRoles.CustomRPC.RoleId getRole(this PlayerControl player)
         {
-            if (SuperNewRoles.Roles.RoleClass.SoothSayer.SoothSayerPlayer.IsCheckListPlayerControl(player))
+            try
             {
-                return SuperNewRoles.CustomRPC.RoleId.SoothSayer;
-            } else if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player)) {
-                return CustomRPC.RoleId.Jester;
-            } else if (Roles.RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player)) {
-                return CustomRPC.RoleId.Lighter;
-            } else if (Roles.RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.EvilLighter;
+                if (SuperNewRoles.Roles.RoleClass.SoothSayer.SoothSayerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return SuperNewRoles.CustomRPC.RoleId.SoothSayer;
+                }
+                else if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Jester;
+                }
+                else if (Roles.RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Lighter;
+                }
+                else if (Roles.RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.EvilLighter;
+                }
+                else if (Roles.RoleClass.EvilScientist.EvilScientistPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.EvilScientist;
+                }
+                else if (Roles.RoleClass.Sheriff.SheriffPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Sheriff;
+                }
+                else if (Roles.RoleClass.MeetingSheriff.MeetingSheriffPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MeetingSheriff;
+                }
+                else if (Roles.RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Jackal;
+                }
+                else if (Roles.RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Sidekick;
+                }
+                else if (Roles.RoleClass.Teleporter.TeleporterPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Teleporter;
+                }
+                else if (Roles.RoleClass.SpiritMedium.SpiritMediumPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SpiritMedium;
+                }
+                else if (Roles.RoleClass.SpeedBooster.SpeedBoosterPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SpeedBooster;
+                }
+                else if (Roles.RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.EvilSpeedBooster;
+                }
+                else if (Roles.RoleClass.Tasker.TaskerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Tasker;
+                }
+                else if (Roles.RoleClass.Doorr.DoorrPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Doorr;
+                }
+                else if (Roles.RoleClass.EvilDoorr.EvilDoorrPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.EvilDoorr;
+                }
+                else if (Roles.RoleClass.Sealdor.SealdorPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Sealdor;
+                }
+                else if (Roles.RoleClass.Sealdor.SealdorPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Sealdor;
+                }
+                else if (Roles.RoleClass.Speeder.SpeederPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Speeder;
+                }
+                else if (Roles.RoleClass.Freezer.FreezerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Freezer;
+                }
+                else if (Roles.RoleClass.Guesser.GuesserPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Guesser;
+                }
+                else if (Roles.RoleClass.EvilGuesser.EvilGuesserPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.EvilGuesser;
+                }
+                else if (Roles.RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Vulture;
+                }
+                else if (Roles.RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceScientist;
+                }
+                else if (Roles.RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Clergyman;
+                }
+                else if (Roles.RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadMate;
+                }
+                else if (Roles.RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Bait;
+                }
+                else if (Roles.RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.HomeSecurityGuard;
+                }
+                else if (Roles.RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.StuntMan;
+                }
+                else if (Roles.RoleClass.Moving.MovingPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Moving;
+                }
+                else if (Roles.RoleClass.Opportunist.OpportunistPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Opportunist;
+                }
+                else if (Roles.RoleClass.NiceGambler.NiceGamblerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceGambler;
+                }
+                else if (Roles.RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.EvilGambler;
+                }
+                else if (Roles.RoleClass.Bestfalsecharge.BestfalsechargePlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Bestfalsecharge;
+                }
+                else if (Roles.RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Researcher;
+                }
+                else if (Roles.RoleClass.SelfBomber.SelfBomberPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SelfBomber;
+                }
+                else if (Roles.RoleClass.God.GodPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.God;
+                }
+                else if (Roles.RoleClass.AllCleaner.AllCleanerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.AllCleaner;
+                }
+                else if (Roles.RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceNekomata;
+                }
+                else if (Roles.RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.EvilNekomata;
+                }
+                else if (Roles.RoleClass.JackalFriends.JackalFriendsPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.JackalFriends;
+                }
+                else if (Roles.RoleClass.Doctor.DoctorPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Doctor;
+                }
+                else if (Roles.RoleClass.CountChanger.CountChangerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.CountChanger;
+                }
+                else if (Roles.RoleClass.Pursuer.PursuerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Pursuer;
+                }
+                else if (Roles.RoleClass.Minimalist.MinimalistPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Minimalist;
+                }
+                else if (Roles.RoleClass.Hawk.HawkPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Hawk;
+                }
+                else if (Roles.RoleClass.Egoist.EgoistPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Egoist;
+                }
+                else if (Roles.RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceRedRidingHood;
+                }
+                //ロールチェック
             }
-            else if (Roles.RoleClass.EvilScientist.EvilScientistPlayer.IsCheckListPlayerControl(player))
+            catch
             {
-                return CustomRPC.RoleId.EvilScientist;
+                return RoleId.DefaultRole;
             }
-            else if (Roles.RoleClass.Sheriff.SheriffPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Sheriff;
-            }
-            else if (Roles.RoleClass.MeetingSheriff.MeetingSheriffPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MeetingSheriff;
-            }
-            else if (Roles.RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Jackal;
-            }
-            else if (Roles.RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Sidekick;
-            }
-            else if (Roles.RoleClass.Teleporter.TeleporterPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Teleporter;
-            }
-            else if (Roles.RoleClass.SpiritMedium.SpiritMediumPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.SpiritMedium;
-            }
-            else if (Roles.RoleClass.SpeedBooster.SpeedBoosterPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.SpeedBooster;
-            }
-            else if (Roles.RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.EvilSpeedBooster;
-            }
-            else if (Roles.RoleClass.Tasker.TaskerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Tasker;
-            }
-            else if (Roles.RoleClass.Doorr.DoorrPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Doorr;
-            }
-            else if (Roles.RoleClass.EvilDoorr.EvilDoorrPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.EvilDoorr;
-            }
-            else if (Roles.RoleClass.Sealdor.SealdorPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Sealdor;
-            }
-            else if (Roles.RoleClass.Sealdor.SealdorPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Sealdor;
-            }
-            else if (Roles.RoleClass.Speeder.SpeederPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Speeder;
-            }
-            else if (Roles.RoleClass.Freezer.FreezerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Freezer;
-            }
-            else if (Roles.RoleClass.Guesser.GuesserPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Guesser;
-            }
-            else if (Roles.RoleClass.EvilGuesser.EvilGuesserPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.EvilGuesser;
-            }
-            else if (Roles.RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Vulture;
-            }
-            else if (Roles.RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.NiceScientist;
-            }
-            else if (Roles.RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Clergyman;
-            }
-            else if (Roles.RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MadMate;
-            }
-            else if (Roles.RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Bait;
-            }
-            else if (Roles.RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.HomeSecurityGuard;
-            }
-            else if (Roles.RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.StuntMan;
-            }
-            else if (Roles.RoleClass.Moving.MovingPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Moving;
-            }
-            else if (Roles.RoleClass.Opportunist.OpportunistPlayer.IsCheckListPlayerControl(player)) 
-            {
-                return CustomRPC.RoleId.Opportunist;
-            }
-            else if (Roles.RoleClass.NiceGambler.NiceGamblerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.NiceGambler;
-            }
-            else if (Roles.RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.EvilGambler;
-            }
-            else if (Roles.RoleClass.Bestfalsecharge.BestfalsechargePlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Bestfalsecharge;
-            }
-            else if (Roles.RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Researcher;
-            }
-            else if (Roles.RoleClass.SelfBomber.SelfBomberPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.SelfBomber;
-            }
-            else if (Roles.RoleClass.God.GodPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.God;
-            }
-            else if (Roles.RoleClass.AllCleaner.AllCleanerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.AllCleaner;
-            }
-            else if (Roles.RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.NiceNekomata;
-            }
-            else if (Roles.RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.EvilNekomata;
-            }
-            else if (Roles.RoleClass.JackalFriends.JackalFriendsPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.JackalFriends;
-            }
-            else if (Roles.RoleClass.Doctor.DoctorPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Doctor;
-            }
-            else if (Roles.RoleClass.CountChanger.CountChangerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.CountChanger;
-            }
-            else if (Roles.RoleClass.Pursuer.PursuerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Pursuer;
-            }
-            else if (Roles.RoleClass.Minimalist.MinimalistPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Minimalist;
-            }
-            else if (Roles.RoleClass.Hawk.HawkPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Hawk;
-            }
-            else if (Roles.RoleClass.Egoist.EgoistPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Egoist;
-            }
-            else if (Roles.RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.NiceRedRidingHood;
-            }
-            //ロールチェック
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;
 
         }
