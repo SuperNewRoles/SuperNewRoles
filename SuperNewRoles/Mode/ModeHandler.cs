@@ -38,7 +38,7 @@ namespace SuperNewRoles.Mode
                 thisMode = ModeId.Default;
             }
         }
-        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName") };//, ModTranslation.getString("BattleRoyalModeName") };
+        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName") };
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;
@@ -65,13 +65,17 @@ namespace SuperNewRoles.Mode
             {
                 SuperHostRoles.Intro.IntroHandler(__instance);
             }
+            else if (isMode(ModeId.BattleRoyal))
+            {
+                BattleRoyal.Intro.IntroHandler(__instance);
+            }
         }
         public static void OptionLoad() {
             Mode = new CustomOptionBlank(null);
             ModeSetting = CustomOption.CustomOption.Create(132, CustomOptions.cs(Color.white, "ModeSetting"), false, Mode, isHeader: true);
             ThisModeSetting = CustomOption.CustomOption.Create(133, CustomOptions.cs(Color.white, "SettingMode"), modes , ModeSetting);
             HideAndSeek.HASOptions.Load();
-            //BattleRoyal.BROption.Load();
+            BattleRoyal.BROption.Load();
         }
         public static void FixedUpdate(PlayerControl __instance) {
             if (isMode(ModeId.Default)) return;
@@ -82,13 +86,17 @@ namespace SuperNewRoles.Mode
             {
                 SuperHostRoles.FixedUpdate.Update();
             }
+            if (isMode(ModeId.BattleRoyal))
+            {
+                
+            }
         }
         public static ModeId GetMode() {
             if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)) return ModeId.Default;
             if (!ModeSetting.getBool()) return ModeId.Default;
             if (isMode(ModeId.HideAndSeek)) return ModeId.HideAndSeek;
             if (isMode(ModeId.SuperHostRoles)) return ModeId.HideAndSeek;
-            //if (isMode(ModeId.BattleRoyal)) return ModeId.BattleRoyal;
+            if (isMode(ModeId.BattleRoyal)) return ModeId.BattleRoyal;
             return ModeId.No;
         }
         public static string GetThisModeIntro() {
@@ -106,7 +114,7 @@ namespace SuperNewRoles.Mode
                 case ModeId.HideAndSeek:
                     return ModeSetting.getBool() && ThisModeSetting.getString()==modes[0];
                 case ModeId.BattleRoyal:
-                    return false;// ModeSetting.getBool() && ThisModeSetting.getString() == modes[2];
+                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[2];
                 case ModeId.SuperHostRoles:
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[1];
             }

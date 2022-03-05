@@ -45,6 +45,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
         {
             var alives = 0;
+            HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
             foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
                 if (p.isAlive()) {
                     alives++;
@@ -71,7 +72,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 {
                     p.RpcSetRole(RoleTypes.GuardianAngel);
                 }
-                ShipStatus.RpcEndGame(GameOverReason.ImpostorByKill, false);
+                ShipStatus.RpcEndGame(GameOverReason.HumansByVote, false);
                 return true;
             }
             return false;
@@ -85,11 +86,11 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 {
                     foreach (PlayerControl p1 in PlayerControl.AllPlayerControls)
                     {
-                        if (p1 == PlayerControl.LocalPlayer)
+                        if (p1.PlayerId == 0)
                         {
                             foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                             {
-                                if (p1 == p2)
+                                if (p1.PlayerId == p2.PlayerId)
                                 {
                                     DestroyableSingleton<RoleManager>.Instance.SetRole(p2, RoleTypes.Impostor);
 
@@ -100,15 +101,18 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                 }
                             }
                         }
-                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        else
                         {
-                            if (p1 == p2)
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                             {
-                                p1.SetPrivateRole(RoleTypes.Impostor, p2);
-                            }
-                            else
-                            {
-                                p1.SetPrivateRole(RoleTypes.Scientist, p2);
+                                if (p1.PlayerId == p2.PlayerId)
+                                {
+                                    p1.SetPrivateRole(RoleTypes.Impostor, p1);
+                                }
+                                else
+                                {
+                                    p1.SetPrivateRole(RoleTypes.Scientist, p2);
+                                }
                             }
                         }
                     }
