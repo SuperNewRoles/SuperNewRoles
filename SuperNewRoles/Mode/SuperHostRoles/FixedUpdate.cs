@@ -31,16 +31,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 return DefaultName[player.PlayerId];
             }
         }
-        public static string getsetname(PlayerControl p)
+        public static string getsetname(PlayerControl p,bool IsDead)
         {
             var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
-            if (RoleClass.IsMeeting)
+            if (RoleClass.IsMeeting || IsDead)
             {
-                return "<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + p.getDefaultName();
+                return "<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color,p.getDefaultName());
             }
             else
             {
-                return "<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + p.getDefaultName();
+                return "<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName());
             }
         }
         public static void RoleFixedUpdate()
@@ -78,7 +78,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 {
                                     foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                                     {
-                                        p2.RpcSetNamePrivate(getsetname(p2), SeePlayer: p);
+                                        p2.RpcSetNamePrivate(getsetname(p2,true), SeePlayer: p);
                                     }
                                 }
                                 else if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId)
