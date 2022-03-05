@@ -15,7 +15,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             if (exiled.Object.isRole(CustomRPC.RoleId.Jester))
             {
                 var (complate, all) = TaskCount.TaskDateNoClearCheck(exiled);
-                if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && complate >= all))
+                if (!RoleClass.Jester.IsJesterTaskClearWin || complate >= all)
                 {
                     var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
                     Writer.Write(exiled.PlayerId);
