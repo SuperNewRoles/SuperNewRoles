@@ -102,20 +102,5 @@ namespace SuperNewRoles.Mode.HideAndSeek
                 
             }
         }
-        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
-        class MeetingStart
-        {
-            public static void Prefix(MeetingHud __instance)
-            {
-                if (ModeHandler.isMode(ModeId.HideAndSeek)) return;
-                if (AmongUsClient.Instance.AmHost)
-                {
-                    MeetingHud.VoterState[] array = new MeetingHud.VoterState[__instance.playerStates.Length];
-                    SuperNewRolesPlugin.Logger.LogInfo("HIDED!");
-                    __instance.RpcVotingComplete(array, null, false);
-                    //__instance.RpcClose();
-                }
-            }
-        }
     }
 }
