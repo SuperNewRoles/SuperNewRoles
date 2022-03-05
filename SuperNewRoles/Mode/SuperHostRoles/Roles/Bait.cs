@@ -15,7 +15,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         {
             if (target.isRole(CustomRPC.RoleId.Bait))
             {
-                __instance.CmdReportDeadBody(target.Data);
+                new DebugMode.DebugManager.LateTask(delegate
+                {
+                    __instance.CmdReportDeadBody(target.Data);
+                }, RoleClass.Bait.ReportTime, "Bait Self Report");
             }
         }
     }

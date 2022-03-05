@@ -31,7 +31,7 @@ namespace SuperNewRoles.Patch
         {
             private static readonly System.Random random = new System.Random((int)DateTime.Now.Ticks);
             private static List<PlayerControl> bots = new List<PlayerControl>();
-            class LateTask
+            public class LateTask
             {
                 public string name;
                 public float timer;
