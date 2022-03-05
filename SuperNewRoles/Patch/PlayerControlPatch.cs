@@ -13,8 +13,9 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches
 {
+    /*
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
-    internal class CheckMurderPatch
+    class CheckMurderPatch
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
@@ -25,7 +26,7 @@ namespace SuperNewRoles.Patches
             __instance.RpcMurderPlayer(target);
             return false;
         }
-    }
+    }*/
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
     public static class MurderPlayerPatch
     {
