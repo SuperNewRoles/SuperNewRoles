@@ -1,7 +1,9 @@
-﻿using Hazel;
+﻿using BepInEx.IL2CPP.Utils;
+using Hazel;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,10 +17,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         {
             if (target.isRole(CustomRPC.RoleId.Bait))
             {
-                new DebugMode.DebugManager.LateTask(delegate
+                AmongUsClient.Instance.StartCoroutine(ReportbaitBody(__instance,target));
+                IEnumerator ReportbaitBody(PlayerControl __instance,PlayerControl target)
                 {
+                    yield return new WaitForSeconds(3);
                     __instance.CmdReportDeadBody(target.Data);
-                }, RoleClass.Bait.ReportTime, "Bait Self Report");
+                }
             }
         }
     }

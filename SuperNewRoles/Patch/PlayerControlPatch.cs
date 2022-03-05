@@ -28,7 +28,10 @@ namespace SuperNewRoles.Patches
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
-                Mode.SuperHostRoles.MurderPlayer.Postfix(__instance, target);
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    Mode.SuperHostRoles.MurderPlayer.Postfix(__instance, target);
+                }
             }
             else if (ModeHandler.isMode(ModeId.Default))
             {

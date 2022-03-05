@@ -20,16 +20,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                     try
                     {
                         var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
-                        Writer.Write(exiled.PlayerId);
+                        Writer.Write(exiled.Object.PlayerId);
                         Writer.EndRPC();
-                        CustomRPC.RPCProcedure.ShareWinner(exiled.PlayerId);
+                        CustomRPC.RPCProcedure.ShareWinner(exiled.Object.PlayerId);
                         Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                         Writer.Write((byte)CustomGameOverReason.JesterWin);
                         Writer.EndRPC();
                         CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JesterWin);
                         var winplayers = new List<PlayerControl>();
                         winplayers.Add(exiled.Object);
-                        EndGameCheck.WinNeutral(winplayers);
+                        //EndGameCheck.WinNeutral(winplayers);
                         Chat.WinCond = CustomGameOverReason.JesterWin;
                         Chat.Winner = new List<PlayerControl>();
                         Chat.Winner.Add(exiled.Object);
