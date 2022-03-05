@@ -17,8 +17,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 
                 if (!AmongUsClient.Instance.AmHost) return true;
-
-                //SabotageMaster
+                
 
                 if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && (player.isRole(CustomRPC.RoleId.MadMate)))
                 {

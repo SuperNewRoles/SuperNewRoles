@@ -89,14 +89,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                 }
-                AmongUsClient.Instance.StartCoroutine(EndGameCoro());
-                IEnumerator EndGameCoro()
-                {
-                    yield return new WaitForSeconds(1);
                     __instance.enabled = false;
                     ShipStatus.RpcEndGame(reason, showAd);
-
-                }
         }
         public static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
         {
