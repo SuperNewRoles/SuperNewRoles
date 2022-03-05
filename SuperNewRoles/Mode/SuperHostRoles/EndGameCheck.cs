@@ -64,6 +64,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 WinNeutral(WinGods);
                 Chat.Winner = WinGods;
             }
+            /*
                 foreach (PlayerControl p in RoleClass.Opportunist.OpportunistPlayer)
                 {
                     if (p.isAlive())
@@ -89,6 +90,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                 }
+            */
                     __instance.enabled = false;
                     ShipStatus.RpcEndGame(reason, showAd);
         }

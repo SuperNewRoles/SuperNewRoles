@@ -1,8 +1,10 @@
 ﻿using Hazel;
 using SuperNewRoles.Roles;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles
 {
@@ -31,9 +33,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         {
             var rdm = ModHelpers.GetRandomIndex(p);
             var random = p[rdm];
-            random.RpcMurderPlayer(random);
-            random.Data.IsDead = true;
-            random.Exiled();
+            IEnumerator NekomataCoro(PlayerControl randomplayer)
+            {
+                yield return new WaitForSeconds(1);
+                random.RpcMurderPlayer(randomplayer);
+            }
+            AmongUsClient.Instance.StartCoroutine(NekomataCoro(random))
             if ((random.isRole(CustomRPC.RoleId.NiceNekomata) || random.isRole(CustomRPC.RoleId.EvilNekomata)) && RoleClass.NiceNekomata.IsChain)
             {
                 p.RemoveAt(rdm);
