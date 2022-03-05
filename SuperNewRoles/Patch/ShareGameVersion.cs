@@ -100,7 +100,7 @@ namespace SuperNewRoles.Patch
                 }
                 if (ConfigRoles.IsVersionErrorView.Value)
                 {
-                    if (!AmongUsClient.Instance.AmClient)
+                    if (!AmongUsClient.Instance.AmHost)
                     {
                         
                         if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))

@@ -17,20 +17,27 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 var (complate, all) = TaskCount.TaskDateNoClearCheck(exiled);
                 if (!RoleClass.Jester.IsJesterTaskClearWin || complate >= all)
                 {
-                    var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
-                    Writer.Write(exiled.PlayerId);
-                    Writer.EndRPC();
-                    CustomRPC.RPCProcedure.ShareWinner(exiled.PlayerId);
-                    Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
-                    Writer.Write((byte)CustomGameOverReason.JesterWin);
-                    Writer.EndRPC();
-                    CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JesterWin);
-                    var winplayers = new List<PlayerControl>();
-                    winplayers.Add(exiled.Object);
-                    EndGameCheck.WinNeutral(winplayers);
-                    Chat.WinCond = CustomGameOverReason.JesterWin;
-                    Chat.Winner = new List<PlayerControl>();
-                    Chat.Winner.Add(exiled.Object);
+                    try
+                    {
+                        var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
+                        Writer.Write(exiled.PlayerId);
+                        Writer.EndRPC();
+                        CustomRPC.RPCProcedure.ShareWinner(exiled.PlayerId);
+                        Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                        Writer.Write((byte)CustomGameOverReason.JesterWin);
+                        Writer.EndRPC();
+                        CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JesterWin);
+                        var winplayers = new List<PlayerControl>();
+                        winplayers.Add(exiled.Object);
+                        EndGameCheck.WinNeutral(winplayers);
+                        Chat.WinCond = CustomGameOverReason.JesterWin;
+                        Chat.Winner = new List<PlayerControl>();
+                        Chat.Winner.Add(exiled.Object);
+                    }
+                    catch (Exception e)
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("[SHR]てるてるWrapUpエラー:"+e);
+                    }
                     EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByVote, false);
                 }
             }

@@ -448,8 +448,8 @@ namespace SuperNewRoles
         public static bool IsUseVent(this PlayerControl player)
         {
             if (player.Data.Role.IsImpostor) return true;
-            if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Jester.IsUseVent && (!ModeHandler.isMode(ModeId.SuperHostRoles) || AmongUsClient.Instance.AmHost)) return true;
-            if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMate.IsUseVent && (!ModeHandler.isMode(ModeId.SuperHostRoles) || AmongUsClient.Instance.AmHost)) return true;
+            if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Jester.IsUseVent) return true;
+            if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMate.IsUseVent) return true;
             if ((RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player) || 
                 RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) && Roles.RoleClass.Jackal.IsUseVent) return true;
             if (player.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsUseVent) return true;

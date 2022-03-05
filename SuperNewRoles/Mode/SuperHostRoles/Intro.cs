@@ -10,9 +10,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance)
         {
             Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+            Teams.Add(PlayerControl.LocalPlayer);
             if (PlayerControl.LocalPlayer.isCrew())
             {
-                Teams[0] = PlayerControl.LocalPlayer;
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
@@ -22,16 +22,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             } else if(PlayerControl.LocalPlayer.isImpostor())
             {
-                Teams[0] = PlayerControl.LocalPlayer;
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
                     if (p.isImpostor() && p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
                         Teams.Add(p);
                     }
                 }
-            } else if (PlayerControl.LocalPlayer.isNeutral())
-            {
-                Teams.Add(PlayerControl.LocalPlayer);
             }
             return Teams;
         }

@@ -1,4 +1,5 @@
 ﻿using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 foreach (PlayerControl p in RoleClass.Jester.JesterPlayer)
                 {
-                    p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
                 }
 
                 PlayerControl.GameOptions.RoleOptions.EngineerCooldown = 0f;
@@ -30,7 +34,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
                 {
-                    p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
                 }
 
                 PlayerControl.GameOptions.RoleOptions.EngineerCooldown = 0f;
