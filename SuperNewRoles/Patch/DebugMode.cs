@@ -73,7 +73,7 @@ namespace SuperNewRoles.Patch
                 // Spawn dummys
                 if (Input.GetKeyDown(KeyCode.G))
                 {
-                    
+
                     var bot = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
                     bot.PlayerId = 15;
                     GameData.Instance.AddPlayer(bot);
@@ -82,7 +82,7 @@ namespace SuperNewRoles.Patch
                     bot.transform.position = PlayerControl.LocalPlayer.transform.position;
                     bot.NetTransform.enabled = true;
                     GameData.Instance.RpcSetTasks(bot.PlayerId, new byte[0]);
-                    
+
 
                     bot.RpcSetColor((byte)PlayerControl.LocalPlayer.CurrentOutfit.ColorId);
                     bot.RpcSetName(PlayerControl.LocalPlayer.name);
@@ -94,6 +94,7 @@ namespace SuperNewRoles.Patch
                     new LateTask(() => { foreach (var pc in PlayerControl.AllPlayerControls) pc.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
                     new LateTask(() => bot.Despawn(), 0.6f, "Bot Despawn Task");
                 }
+                /**
                 if (Input.GetKeyDown(KeyCode.I))
                 {
                     DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
@@ -102,6 +103,7 @@ namespace SuperNewRoles.Patch
                 {
                     DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
                 }
+                */
             }
 
             public static string RandomString(int length)

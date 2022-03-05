@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
                 {
                     List<PlayerControl> p = new List<PlayerControl>();
                     foreach (PlayerControl p1 in PlayerControl.AllPlayerControls) {
-                        if (p1.PlayerId != __instance.Object.PlayerId && p1.isAlive()) {
+                        if (p1.Data != __instance && p1.isAlive()) {
                             p.Add(p1);
                         }
                     }
@@ -30,7 +30,6 @@ namespace SuperNewRoles.Roles
             }
         }
         public static void NekomataProc(List<PlayerControl> p){
-            SuperNewRolesPlugin.Logger.LogInfo("Proc");
             var rdm = ModHelpers.GetRandomIndex(p);
             var random = p[rdm];
             SuperNewRolesPlugin.Logger.LogInfo(random.nameText.text);

@@ -69,6 +69,7 @@ namespace SuperNewRoles.EndGame
     [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
     public class EndGameManagerSetUpPatch
     {
+        public static bool IsHaison = false;
         public static TMPro.TMP_Text textRenderer;
         [HarmonyPatch(typeof(EndGameNavigation), nameof(EndGameNavigation.ShowProgression))]
         public class ShowProgressionPatch
@@ -327,13 +328,15 @@ namespace SuperNewRoles.EndGame
                 }
                 return ModTranslation.getString("FinalStatusAlive");
             }
+            IsHaison = false;
         }
     }
+    
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
     public class OnGameEndPatch
     {
-
         public static PlayerControl WinnerPlayer;
+        public static CustomGameOverReason? EndData = null;
         public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
             AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
@@ -387,15 +390,18 @@ namespace SuperNewRoles.EndGame
                 foreach (var winner in winnersToRemove) TempData.winners.Remove(winner);
                 // Neutral shifter can't win
 
-                bool saboWin = gameOverReason == GameOverReason.ImpostorBySabotage;
-
-
-                bool JesterWin = gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
-                bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
-                bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
-                bool HAISON = gameOverReason == (GameOverReason)CustomGameOverReason.HAISON;
+            bool saboWin = gameOverReason == GameOverReason.ImpostorBySabotage;
+            bool JesterWin = gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
+            bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
+            bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
+            bool HAISON = EndGameManagerSetUpPatch.IsHaison;
             bool EgoistWin = gameOverReason == (GameOverReason)CustomGameOverReason.EgoistWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
+            if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
+            {
+                JesterWin = EndData == CustomGameOverReason.JesterWin;
+            }
+            
 
             if (JesterWin)
             {
@@ -585,38 +591,39 @@ namespace SuperNewRoles.EndGame
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
             RoleClass.IsMeeting = false;
+            if (ModeHandler.isMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
             if (exiled == null) return;
-            exiled.Object.Exiled();
-
             FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
-
-            var Player = ModHelpers.playerById(exiled.PlayerId);
-            if (RoleHelpers.IsQuarreled(Player))
+            if (ModeHandler.isMode(ModeId.Default))
             {
-                var Side = RoleHelpers.GetOneSideQuarreled(Player);
-                if (Side.isDead())
+                var Player = ModHelpers.playerById(exiled.PlayerId);
+                if (RoleHelpers.IsQuarreled(Player))
                 {
-                    CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
+                    var Side = RoleHelpers.GetOneSideQuarreled(Player);
+                    if (Side.isDead())
+                    {
+                        CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
 
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                    Writer.Write(Player.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    Roles.RoleClass.Quarreled.IsQuarreledWin = true;
-                    CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        Writer.Write(Player.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        Roles.RoleClass.Quarreled.IsQuarreledWin = true;
+                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
+                    }
                 }
-            }
-            if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(Player))
-            {
-                
-                if (!Roles.RoleClass.Jester.IsJesterTaskClearWin || (Roles.RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
+                if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(Player))
                 {
-                    CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
 
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                    Writer.Write(Player.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    Roles.RoleClass.Jester.IsJesterWin = true;
-                    CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
+                    if (!Roles.RoleClass.Jester.IsJesterTaskClearWin || (Roles.RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
+                    {
+                        CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
+
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        Writer.Write(Player.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        Roles.RoleClass.Jester.IsJesterWin = true;
+                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
+                    }
                 }
             }
         }
@@ -640,25 +647,24 @@ namespace SuperNewRoles.EndGame
             if (Patch.DebugMode.IsDebugMode()) return false;
             var statistics = new PlayerStatistics(__instance);
             if (!ModeHandler.isMode(ModeId.Default))
-                {
-                    ModeHandler.EndGameChecks(__instance, statistics);
-                }
-                else
-                {
+            {
+                ModeHandler.EndGameChecks(__instance, statistics);
+            }
+            else
+            {
                 if (CheckAndEndGameForSabotageWin(__instance)) return false;
                 if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForTaskWin(__instance)) return false;
-                
             }
             return false;
         }
         public static void CustomEndGame(GameOverReason reason,bool showAd) {
             ShipStatus.RpcEndGame(reason, showAd);
         }
-        private static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
+        public static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
         {
             if (__instance.Systems == null) return false;
             ISystemType systemType = __instance.Systems.ContainsKey(SystemTypes.LifeSupp) ? __instance.Systems[SystemTypes.LifeSupp] : null;
@@ -690,7 +696,7 @@ namespace SuperNewRoles.EndGame
             return false;
         }
 
-        private static bool CheckAndEndGameForTaskWin(ShipStatus __instance)
+        public static bool CheckAndEndGameForTaskWin(ShipStatus __instance)
         {
             if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)
             {
@@ -701,7 +707,7 @@ namespace SuperNewRoles.EndGame
             return false;
         }
 
-        private static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
+        public static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
         {
             if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0)
             {
@@ -725,7 +731,7 @@ namespace SuperNewRoles.EndGame
             return false;
         }
 
-        private static bool CheckAndEndGameForEgoistWin(ShipStatus __instance, PlayerStatistics statistics)
+        public static bool CheckAndEndGameForEgoistWin(ShipStatus __instance, PlayerStatistics statistics)
         {
             if (statistics.EgoistAlive >= statistics.TotalAlive - statistics.EgoistAlive && statistics.EgoistAlive != 0 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
             {
@@ -735,7 +741,7 @@ namespace SuperNewRoles.EndGame
             }
             return false;
         }
-        private static bool CheckAndEndGameForJackalWin(ShipStatus __instance, PlayerStatistics statistics)
+        public static bool CheckAndEndGameForJackalWin(ShipStatus __instance, PlayerStatistics statistics)
         {
             if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0)
             {
@@ -747,7 +753,7 @@ namespace SuperNewRoles.EndGame
         }
         
 
-        private static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
+        public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
             if (statistics.CrewAlive > 0 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
             {
@@ -757,7 +763,7 @@ namespace SuperNewRoles.EndGame
             }
             return false;
         }
-        private static void EndGameForSabotage(ShipStatus __instance)
+        public static void EndGameForSabotage(ShipStatus __instance)
         {
             __instance.enabled = false;
             CustomEndGame(GameOverReason.ImpostorBySabotage, false);

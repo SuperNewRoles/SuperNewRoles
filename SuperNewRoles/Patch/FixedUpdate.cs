@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using System;
@@ -50,8 +51,10 @@ namespace SuperNewRoles.Patch
                     setBasePlayerOutlines();
                     VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
                     if (AmongUsClient.Instance.AmHost && Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift)) {
+                        RPCHelper.StartRPC(CustomRPC.CustomRPC.SetHaison).EndRPC();
+                        CustomRPC.RPCProcedure.SetHaison();
                         ShipStatus.Instance.enabled = false;
-                        ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.HAISON,false);
+                        ShipStatus.RpcEndGame(GameOverReason.HumansByTask,false);
                     }
                     if (ModeHandler.isMode(ModeId.Default))
                     {

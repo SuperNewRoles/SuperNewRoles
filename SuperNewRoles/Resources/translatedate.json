@@ -276,6 +276,10 @@
         "0" : "Battle Royal Mode" ,
         "11" : "\u30d0\u30c8\u30eb\u30ed\u30a4\u30e4\u30eb\u30e2\u30fc\u30c9\u306e\u8a2d\u5b9a"
         } ,
+ "SettingSuperHostRolesMode" : {
+        "0" : "Super Host Roles Mode" ,
+        "11" : "SuperHostRoles\u306e\u8a2d\u5b9a"
+        } ,
  "HideAndSeekModeName" : {
         "0" : "Hide And Seek" ,
         "11" : "\u304b\u304f\u308c\u3093\u307c"
@@ -283,6 +287,10 @@
  "BattleRoyalModeName" : {
         "0" : "Battle Royal" ,
         "11" : "\u30d0\u30c8\u30eb\u30ed\u30a4\u30e4\u30eb"
+        } ,
+ "SuperHostRolesModeName" : {
+        "0" : "Super Host Roles" ,
+        "11" : "SuperHostRoles"
         } ,
  "CrewMateName" : {
         "0" : "Crewmate" ,

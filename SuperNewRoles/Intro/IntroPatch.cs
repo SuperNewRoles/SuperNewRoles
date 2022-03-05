@@ -41,7 +41,12 @@ namespace SuperNewRoles.Patches
             }
             if (ModeHandler.ModeSetting.getBool())
             {
-                yourTeam = ModeHandler.TeamHandler(__instance);
+                var a = ModeHandler.TeamHandler(__instance);
+                if (a != new Il2CppSystem.Collections.Generic.List<PlayerControl>())
+                {
+                    yourTeam = a;
+                }
+                
             }
             if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && RoleClass.MadMate.IsImpostorCheck)
             {
@@ -132,24 +137,27 @@ namespace SuperNewRoles.Patches
             }
             public static void Postfix(IntroCutscene __instance)
             {
-                var RoleDate = PlayerControl.LocalPlayer.getRole();
                 CustomButton.MeetingEndedUpdate();
                 if (ModeHandler.isMode(ModeId.Default))
                 {
                     var myrole = PlayerControl.LocalPlayer.getRole();
-                    if (!(myrole == CustomRPC.RoleId.DefaultRole || myrole == CustomRPC.RoleId.Bestfalsecharge)) { 
-                    var date = Intro.IntroDate.GetIntroDate(RoleDate);
-                    __instance.YouAreText.color = date.color;
-                    __instance.RoleText.text = ModTranslation.getString(date.NameKey + "Name");
-                    __instance.RoleText.color = date.color;
-                    __instance.RoleBlurbText.text = date.TitleDesc;
-                    __instance.RoleBlurbText.color = date.color;
+                    if (!(myrole == CustomRPC.RoleId.DefaultRole || myrole == CustomRPC.RoleId.Bestfalsecharge))
+                    {
+                        var date = Intro.IntroDate.GetIntroDate(myrole);
+                        __instance.YouAreText.color = date.color;
+                        __instance.RoleText.text = ModTranslation.getString(date.NameKey + "Name");
+                        __instance.RoleText.color = date.color;
+                        __instance.RoleBlurbText.text = date.TitleDesc;
+                        __instance.RoleBlurbText.color = date.color;
                     }
 
                     if (PlayerControl.LocalPlayer.IsQuarreled())
                     {
                         __instance.RoleBlurbText.text = __instance.RoleBlurbText.text + "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
                     }
+                } else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                {
+                    Mode.SuperHostRoles.Intro.RoleTextHandler(__instance);
                 }
             }
         }

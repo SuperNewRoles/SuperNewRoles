@@ -97,7 +97,9 @@ namespace SuperNewRoles.CustomRPC
         CountChangerSetRPC,
         SetRoomTimerRPC,
         SetScientistRPC,
-        ReviveRPC
+        ReviveRPC,
+        SetHaison,
+        SetWinCond
     }
     public static class RPCProcedure
     {
@@ -120,6 +122,10 @@ namespace SuperNewRoles.CustomRPC
                 }
                 AmongUsClient.Instance.CoJoinOnlineGameFromCode(gameid);
             }
+        }
+        public static void SetHaison()
+        {
+            EndGameManagerSetUpPatch.IsHaison = true;
         }
         public static void ShareCosmetics(byte id, string url)
         {/**
@@ -408,6 +414,10 @@ namespace SuperNewRoles.CustomRPC
             PlayerControl.LocalPlayer.transform.position = p.transform.position;
             new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"),p.nameText.text), 3);
         }
+        public static void SetWinCond(byte Cond)
+        {
+            OnGameEndPatch.EndData = (CustomGameOverReason)Cond;
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -460,36 +470,36 @@ namespace SuperNewRoles.CustomRPC
                         case (byte)CustomRPC.MeetingSheriffKill:
                             RPCProcedure.MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                             break;
-                        case (byte)CustomRPC.CustomRPCKill:
-                            RPCProcedure.CustomRPCKill(reader.ReadByte(), reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.RPCClergymanLightOut:
-                            RPCProcedure.RPCClergymanLightOut(reader.ReadBoolean());
-                            break;
-                        case (byte)CustomRPC.ReportDeadBody:
-                            RPCProcedure.ReportDeadBody(reader.ReadByte(), reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.CleanBody:
-                            RPCProcedure.CleanBody(reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.RPCMurderPlayer:
-                            byte source = reader.ReadByte();
-                            byte target = reader.ReadByte();
-                            byte showAnimation = reader.ReadByte();
-                            RPCProcedure.RPCMurderPlayer(source, target, showAnimation);
-                            break;
-                        case (byte)CustomRPC.ExiledRPC:
-                            RPCProcedure.ExiledRPC(reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.ShareWinner:
-                            RPCProcedure.ShareWinner(reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.TeleporterTP:
-                            RPCProcedure.TeleporterTP(reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.SetQuarreled:
-                            RPCProcedure.SetQuarreled(reader.ReadByte(),reader.ReadByte());
-                            break;
+                    case (byte)CustomRPC.CustomRPCKill:
+                        RPCProcedure.CustomRPCKill(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.RPCClergymanLightOut:
+                        RPCProcedure.RPCClergymanLightOut(reader.ReadBoolean());
+                        break;
+                    case (byte)CustomRPC.ReportDeadBody:
+                        RPCProcedure.ReportDeadBody(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.CleanBody:
+                        RPCProcedure.CleanBody(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.RPCMurderPlayer:
+                        byte source = reader.ReadByte();
+                        byte target = reader.ReadByte();
+                        byte showAnimation = reader.ReadByte();
+                        RPCProcedure.RPCMurderPlayer(source, target, showAnimation);
+                        break;
+                    case (byte)CustomRPC.ExiledRPC:
+                        RPCProcedure.ExiledRPC(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.ShareWinner:
+                        RPCProcedure.ShareWinner(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.TeleporterTP:
+                        RPCProcedure.TeleporterTP(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetQuarreled:
+                        RPCProcedure.SetQuarreled(reader.ReadByte(),reader.ReadByte());
+                        break;
                     case (byte)CustomRPC.SidekickPromotes:
                         RPCProcedure.SidekickPromotes();
                         break;
@@ -528,6 +538,12 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.ReviveRPC:
                         RPCProcedure.ReviveRPC(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetHaison:
+                        SetHaison();
+                        break;
+                    case (byte)CustomRPC.SetWinCond:
+                        RPCProcedure.SetWinCond(reader.ReadByte());
                         break;
                     }
             }

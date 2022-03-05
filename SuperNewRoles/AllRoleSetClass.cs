@@ -19,7 +19,11 @@ namespace SuperNewRoles
             Roles.RoleClass.clearAndReloadRoles();
             if (ModeHandler.thisMode == ModeId.Default)
             {
+                AllRoleSetClass.OneOrNotListSet();
                 AllRoleSetClass.AllRoleSet();
+            }
+            else if (ModeHandler.isMode(ModeId.SuperHostRoles)) {
+                Mode.SuperHostRoles.RoleSelectHandler.RoleSelect();
             }
         }
     }
@@ -43,9 +47,6 @@ namespace SuperNewRoles
             if (!AmongUsClient.Instance.AmHost) return;
             SetPlayerNum();
             CrewOrImpostorSet();
-            OneOrNotListSet();
-
-
             try
             {
                 ImpostorRandomSelect();

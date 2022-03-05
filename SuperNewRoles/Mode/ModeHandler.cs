@@ -14,7 +14,8 @@ namespace SuperNewRoles.Mode
         No,
         Default,
         HideAndSeek,
-        BattleRoyal
+        BattleRoyal,
+        SuperHostRoles
     }
     class ModeHandler
     {
@@ -29,11 +30,15 @@ namespace SuperNewRoles.Mode
             {
                 thisMode = ModeId.BattleRoyal;
             }
+            else if (isMode(ModeId.SuperHostRoles))
+            {
+                thisMode = ModeId.SuperHostRoles;
+            }
             else {
                 thisMode = ModeId.Default;
             }
         }
-        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName") };//, ModTranslation.getString("BattleRoyalModeName") };
+        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName") };//, ModTranslation.getString("BattleRoyalModeName") };
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;
@@ -43,6 +48,10 @@ namespace SuperNewRoles.Mode
             } else if (isMode(ModeId.BattleRoyal)) {
                 return BattleRoyal.Intro.ModeHandler(__instance);
             }
+            else if (isMode(ModeId.SuperHostRoles))
+            {
+                return SuperHostRoles.Intro.ModeHandler(__instance);
+            }
             return new Il2CppSystem.Collections.Generic.List<PlayerControl>();
         }
         public static void IntroHandler(IntroCutscene __instance) {
@@ -51,6 +60,10 @@ namespace SuperNewRoles.Mode
             } else if (isMode(ModeId.BattleRoyal))
             {
                 BattleRoyal.Intro.IntroHandler(__instance);
+            }
+            else if (isMode(ModeId.SuperHostRoles))
+            {
+                SuperHostRoles.Intro.IntroHandler(__instance);
             }
         }
         public static void OptionLoad() {
@@ -65,11 +78,16 @@ namespace SuperNewRoles.Mode
             if (isMode(ModeId.HideAndSeek)) {
                 HideAndSeek.Patch.HASFixed.Postfix(__instance);
             }
+            if (isMode(ModeId.SuperHostRoles))
+            {
+                SuperHostRoles.FixedUpdate.Update();
+            }
         }
         public static ModeId GetMode() {
             if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)) return ModeId.Default;
             if (!ModeSetting.getBool()) return ModeId.Default;
             if (isMode(ModeId.HideAndSeek)) return ModeId.HideAndSeek;
+            if (isMode(ModeId.SuperHostRoles)) return ModeId.HideAndSeek;
             //if (isMode(ModeId.BattleRoyal)) return ModeId.BattleRoyal;
             return ModeId.No;
         }
@@ -88,7 +106,9 @@ namespace SuperNewRoles.Mode
                 case ModeId.HideAndSeek:
                     return ModeSetting.getBool() && ThisModeSetting.getString()==modes[0];
                 case ModeId.BattleRoyal:
-                    return false;// ModeSetting.getBool() && ThisModeSetting.getString() == modes[1];
+                    return false;// ModeSetting.getBool() && ThisModeSetting.getString() == modes[2];
+                case ModeId.SuperHostRoles:
+                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[1];
             }
             return false;
         }
@@ -99,6 +119,10 @@ namespace SuperNewRoles.Mode
             } else if (isMode(ModeId.BattleRoyal))
             {
                 return BattleRoyal.main.EndGameCheck(__instance, statistics);
+            }
+            else if (isMode(ModeId.SuperHostRoles))
+            {
+                return SuperHostRoles.EndGameCheck.CheckEndGame(__instance, statistics);
             }
             return false;
         }

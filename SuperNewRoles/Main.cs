@@ -21,7 +21,7 @@ namespace SuperNewRoles
     {
         public const string Id = "jp.ykundesu.supernewroles";
 
-        public const string VersionString = "1.2.4.5";
+        public const string VersionString = "1.3.0.0";
 
         public static System.Version Version = System.Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
@@ -32,7 +32,7 @@ namespace SuperNewRoles
         public static Dictionary<string, Dictionary<int, string>> StringDATE;
         public static bool IsUpdate = false;
         public static string NewVersion = "" ;
-
+        public static string thisname;
         public override void Load()
         {
             Logger = Log;
