@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿/*
+using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
@@ -61,4 +62,4 @@ namespace SuperNewRoles.Mode.BattleRoyal
             BattleRoyalKillButton.showButtonText = true;
         }
     }
-}
+}*/
