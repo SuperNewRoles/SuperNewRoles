@@ -24,7 +24,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
         public class RepairSystemPatch
         {
             public static void Postfix(PlayerControl __instance) {
-                if (!HASOptions.HASUseSabo.getBool())
+                if (ModeHandler.isMode(ModeId.HideAndSeek) && !HASOptions.HASUseSabo.getBool())
                 {
                         foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                         {
@@ -77,10 +77,13 @@ namespace SuperNewRoles.Mode.HideAndSeek
                     switch (packetId)
                     {
                         case (byte)RpcCalls.EnterVent:
-                            var vent = ((IEnumerable<Vent>)ShipStatus.Instance.AllVents).First<Vent>((Func<Vent, bool>)(v => v.Id == reader.ReadPackedInt32()));
-                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            if (ModeHandler.isMode(ModeId.HideAndSeek))
                             {
-                                p.MyPhysics.RpcExitVent(vent.Id);
+                                var vent = ((IEnumerable<Vent>)ShipStatus.Instance.AllVents).First<Vent>((Func<Vent, bool>)(v => v.Id == reader.ReadPackedInt32()));
+                                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                                {
+                                    p.MyPhysics.RpcExitVent(vent.Id);
+                                }
                             }
                             break;
                     }
@@ -104,7 +107,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
         {
             public static void Prefix(MeetingHud __instance)
             {
-                if (ModeHandler.thisMode != ModeId.HideAndSeek) return;
+                if (ModeHandler.isMode(ModeId.HideAndSeek)) return;
                 if (AmongUsClient.Instance.AmHost)
                 {
                     MeetingHud.VoterState[] array = new MeetingHud.VoterState[__instance.playerStates.Length];
