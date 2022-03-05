@@ -432,7 +432,6 @@ namespace SuperNewRoles.CustomRPC
             static void Postfix([HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
             {
                     byte packetId = callId;
-                SuperNewRolesPlugin.Logger.LogInfo("RPCID:"+packetId);
                     switch (packetId)
                     {
 
