@@ -15,6 +15,7 @@ namespace SuperNewRoles.Patch
             {
                 if (ModeHandler.isMode(ModeId.HideAndSeek)) return false;
                 if (ModeHandler.isMode(ModeId.BattleRoyal)) return false;
+                if (ModeHandler.isMode(ModeId.SuperHostRoles)) return Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance,target);
                 return true;
             }
         }

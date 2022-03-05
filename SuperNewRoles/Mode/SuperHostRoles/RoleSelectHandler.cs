@@ -11,9 +11,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static void RoleSelect()
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             OneOrNotListSet();
             AllRoleSetClass.AllRoleSet();
             SetCustomRoles();
+            ChangeGameOptions.SelectRoleOptionChange.RolesSelectOptionsChange();
         }
         public static void SetCustomRoles() { 
             if (RoleClass.Jester.IsUseVent)
@@ -197,6 +199,25 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+
+            /*
+            if (!(CustomOption.CustomOptions.MinimalistOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MinimalistOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Minimalist;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            */
             AllRoleSetClass.Impoonepar = Impoonepar;
             AllRoleSetClass.Imponotonepar = Imponotonepar;
             AllRoleSetClass.Neutonepar = Neutonepar;

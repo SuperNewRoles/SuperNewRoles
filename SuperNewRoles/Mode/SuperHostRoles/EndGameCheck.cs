@@ -93,6 +93,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             */
                     __instance.enabled = false;
                     ShipStatus.RpcEndGame(reason, showAd);
+
+            //変更した設定を直す
+            PlayerControl.GameOptions = ChangeGameOptions.DefaultGameOption;
+            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+            //終わり
         }
         public static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
         {

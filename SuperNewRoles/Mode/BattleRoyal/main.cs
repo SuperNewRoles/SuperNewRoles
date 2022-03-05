@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
 using SuperNewRoles.EndGame;
+using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,9 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
                         writer.WritePacked(id);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    } else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    {
+                        SuperHostRoles.CoEnterVent.Prefix(__instance,id);
                     }
                 }
                 return true;
@@ -39,6 +43,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 if (!AmongUsClient.Instance.AmHost) return true;
                 if ((ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.HideAndSeek)) && (systemType == SystemTypes.Sabotage ||systemType == SystemTypes.Doors)) return false;
+                if (ModeHandler.isMode(ModeId.SuperHostRoles)) return MorePatch.RepairSystem(__instance, systemType, player, amount);
                 return true;
             }
         }
