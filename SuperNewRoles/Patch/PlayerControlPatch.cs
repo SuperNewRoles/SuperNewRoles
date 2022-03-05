@@ -13,6 +13,19 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches
 {
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
+    internal class CheckMurderPatch
+    {
+        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+        {
+            if (!AmongUsClient.Instance.AmHost)
+            {
+                return false;
+            }
+            __instance.RpcMurderPlayer(target);
+            return false;
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
     public static class MurderPlayerPatch
     {
