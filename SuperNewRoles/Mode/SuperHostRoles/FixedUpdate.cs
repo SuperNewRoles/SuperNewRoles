@@ -31,7 +31,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 return DefaultName[player.PlayerId];
             }
         }
-        public static string getsetname(PlayerControl p,bool IsDead)
+        public static string getsetname(PlayerControl p,bool IsDead = false)
         {
             var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
             if (RoleClass.IsMeeting || IsDead)
