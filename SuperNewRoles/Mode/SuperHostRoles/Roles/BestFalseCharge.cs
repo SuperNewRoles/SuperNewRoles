@@ -1,8 +1,11 @@
-﻿using HarmonyLib;
+﻿using BepInEx.IL2CPP.Utils;
+using HarmonyLib;
 using SuperNewRoles.Roles;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles
 {
@@ -13,7 +16,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             {
                 foreach (PlayerControl p in RoleClass.Bestfalsecharge.BestfalsechargePlayer)
                 {
-                    p.RpcMurderPlayer(p);
+                    IEnumerator BestFalseCoro(PlayerControl target)
+                    {
+                        yield return new WaitForSeconds(1);
+                        target.RpcMurderPlayer(target);
+                    }
+                    AmongUsClient.Instance.StartCoroutine(BestFalseCoro(p));
                 }
                 RoleClass.Bestfalsecharge.IsOnMeeting = true;
             }

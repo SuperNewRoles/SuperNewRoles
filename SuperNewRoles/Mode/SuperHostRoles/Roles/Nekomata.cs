@@ -1,4 +1,5 @@
-﻿using Hazel;
+﻿using BepInEx.IL2CPP.Utils;
+using Hazel;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections;
@@ -38,7 +39,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 yield return new WaitForSeconds(1);
                 random.RpcMurderPlayer(randomplayer);
             }
-            AmongUsClient.Instance.StartCoroutine(NekomataCoro(random))
+            AmongUsClient.Instance.StartCoroutine(NekomataCoro(random));
             if ((random.isRole(CustomRPC.RoleId.NiceNekomata) || random.isRole(CustomRPC.RoleId.EvilNekomata)) && RoleClass.NiceNekomata.IsChain)
             {
                 p.RemoveAt(rdm);
