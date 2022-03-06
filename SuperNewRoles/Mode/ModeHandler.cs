@@ -15,7 +15,8 @@ namespace SuperNewRoles.Mode
         Default,
         HideAndSeek,
         BattleRoyal,
-        SuperHostRoles
+        SuperHostRoles,
+        Zombie
     }
     class ModeHandler
     {
@@ -34,11 +35,16 @@ namespace SuperNewRoles.Mode
             {
                 thisMode = ModeId.SuperHostRoles;
             }
+            else if (isMode(ModeId.Zombie))
+            {
+                thisMode = ModeId.Zombie;
+                Zombie.main.ClearAndReload();
+            }
             else {
                 thisMode = ModeId.Default;
             }
         }
-        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName") };
+        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName") };
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;
@@ -51,6 +57,10 @@ namespace SuperNewRoles.Mode
             else if (isMode(ModeId.SuperHostRoles))
             {
                 return SuperHostRoles.Intro.ModeHandler(__instance);
+            }
+            else if (isMode(ModeId.Zombie))
+            {
+                return Zombie.Intro.ModeHandler(__instance);
             }
             return new Il2CppSystem.Collections.Generic.List<PlayerControl>();
         }
@@ -65,17 +75,26 @@ namespace SuperNewRoles.Mode
             {
                 SuperHostRoles.Intro.IntroHandler(__instance);
             }
-            else if (isMode(ModeId.BattleRoyal))
+            else if (isMode(ModeId.Zombie))
             {
-                BattleRoyal.Intro.IntroHandler(__instance);
+                Zombie.Intro.IntroHandler(__instance);
+            }
+        }
+
+        public static void YouAreIntroHandler(IntroCutscene __instance)
+        {
+            if (isMode(ModeId.Zombie))
+            {
+                Zombie.Intro.YouAreHandle(__instance);
             }
         }
         public static void OptionLoad() {
             Mode = new CustomOptionBlank(null);
             ModeSetting = CustomOption.CustomOption.Create(132, CustomOptions.cs(Color.white, "ModeSetting"), false, Mode, isHeader: true);
             ThisModeSetting = CustomOption.CustomOption.Create(133, CustomOptions.cs(Color.white, "SettingMode"), modes , ModeSetting);
-            HideAndSeek.HASOptions.Load();
+            HideAndSeek.ZombieOptions.Load();
             BattleRoyal.BROption.Load();
+            Zombie.ZombieOptions.Load();
         }
         public static void FixedUpdate(PlayerControl __instance) {
             if (isMode(ModeId.Default)) return;
@@ -90,6 +109,14 @@ namespace SuperNewRoles.Mode
             {
                 
             }
+            if (isMode(ModeId.Zombie))
+            {
+                Zombie.FixedUpdate.Update();
+            }
+        }
+        public static void Wrapup(GameData.PlayerInfo exiled)
+        {
+            if (isMode(ModeId.Default)) return;
         }
         public static ModeId GetMode() {
             if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)) return ModeId.Default;
@@ -97,6 +124,7 @@ namespace SuperNewRoles.Mode
             if (isMode(ModeId.HideAndSeek)) return ModeId.HideAndSeek;
             if (isMode(ModeId.SuperHostRoles)) return ModeId.HideAndSeek;
             if (isMode(ModeId.BattleRoyal)) return ModeId.BattleRoyal;
+            if (isMode(ModeId.Zombie)) return ModeId.Zombie;
             return ModeId.No;
         }
         public static string GetThisModeIntro() {
@@ -117,6 +145,8 @@ namespace SuperNewRoles.Mode
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[2];
                 case ModeId.SuperHostRoles:
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[1];
+                case ModeId.Zombie:
+                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[3];
             }
             return false;
         }
@@ -131,6 +161,10 @@ namespace SuperNewRoles.Mode
             else if (isMode(ModeId.SuperHostRoles))
             {
                 return SuperHostRoles.EndGameCheck.CheckEndGame(__instance, statistics);
+            }
+            else if (isMode(ModeId.Zombie))
+            {
+                return Zombie.main.EndGameCheck(__instance,statistics);
             }
             return false;
         }

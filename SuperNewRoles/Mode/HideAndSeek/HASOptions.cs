@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.HideAndSeek
 {
-    public class HASOptions
+    public class ZombieOptions
     {
         public static CustomOption.CustomOption HideAndSeekMode;
         public static CustomOption.CustomOption HASDeathTask;

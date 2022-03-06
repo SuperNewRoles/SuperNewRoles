@@ -17,7 +17,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
                 {
                     if (!target.Data.Role.IsImpostor)
                     {
-                        if (HASOptions.HASDeathTask.getBool())
+                        if (ZombieOptions.HASDeathTask.getBool())
                         {
                             foreach (PlayerTask task in target.myTasks)
                             {

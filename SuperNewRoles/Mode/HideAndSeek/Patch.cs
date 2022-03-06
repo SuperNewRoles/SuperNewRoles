@@ -14,7 +14,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
         {
             public static void Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
             {
-                if (ModeHandler.isMode(ModeId.HideAndSeek) && !HASOptions.HASUseVent.getBool())
+                if (ModeHandler.isMode(ModeId.HideAndSeek) && !ZombieOptions.HASUseVent.getBool())
                 {
                     __instance.ExitAllVents();
                     __instance.RpcExitVent(id);
@@ -24,7 +24,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
         public class RepairSystemPatch
         {
             public static void Postfix(PlayerControl __instance) {
-                if (ModeHandler.isMode(ModeId.HideAndSeek) && !HASOptions.HASUseSabo.getBool())
+                if (ModeHandler.isMode(ModeId.HideAndSeek) && !ZombieOptions.HASUseSabo.getBool())
                 {
                         foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                         {

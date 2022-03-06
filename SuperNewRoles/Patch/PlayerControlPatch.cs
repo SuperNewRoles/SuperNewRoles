@@ -32,8 +32,6 @@ namespace SuperNewRoles.Patches
     {
         public static bool resetToCrewmate = false;
         public static bool resetToDead = false;
-
-
         public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             // Collect dead player info
@@ -47,6 +45,7 @@ namespace SuperNewRoles.Patches
                     Mode.SuperHostRoles.MurderPlayer.Postfix(__instance, target);
                 }
             }
+            
             else if (ModeHandler.isMode(ModeId.Default))
             {
                 if (RoleHelpers.IsQuarreled(target))

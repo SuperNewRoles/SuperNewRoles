@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;

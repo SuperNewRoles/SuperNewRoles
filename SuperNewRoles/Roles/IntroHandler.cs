@@ -15,6 +15,10 @@ namespace SuperNewRoles.Roles
                 RoleClass.Pursuer.arrow.arrow.SetActive(false);
                 RoleClass.Pursuer.arrow.arrow.SetActive(true);
             }
+            if (Mode.ModeHandler.isMode(Mode.ModeId.Zombie))
+            {
+                Mode.Zombie.main.SetTimer();
+            }
         }
     }
 }

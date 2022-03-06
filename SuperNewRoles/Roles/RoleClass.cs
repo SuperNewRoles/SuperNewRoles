@@ -28,6 +28,7 @@ namespace SuperNewRoles.Roles
         {
             IsMeeting = false;
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
+            Mode.ModeHandler.ClearAndReload();
             SoothSayer.clearAndReload();
             Jester.clearAndReload();
             Lighter.clearAndReload();

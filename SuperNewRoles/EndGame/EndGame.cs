@@ -592,6 +592,7 @@ namespace SuperNewRoles.EndGame
         {
             RoleClass.IsMeeting = false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
+            ModeHandler.Wrapup(exiled);
             if (exiled == null) return;
             FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
             if (ModeHandler.isMode(ModeId.Default))

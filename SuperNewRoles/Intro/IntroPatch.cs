@@ -159,6 +159,7 @@ namespace SuperNewRoles.Patches
                 {
                     Mode.SuperHostRoles.Intro.RoleTextHandler(__instance);
                 }
+                ModeHandler.YouAreIntroHandler(__instance);
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
