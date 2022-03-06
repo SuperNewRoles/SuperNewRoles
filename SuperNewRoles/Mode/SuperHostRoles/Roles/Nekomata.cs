@@ -37,7 +37,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             IEnumerator NekomataCoro(PlayerControl randomplayer)
             {
                 yield return new WaitForSeconds(1);
-                random.RpcMurderPlayer(randomplayer);
+                randomplayer.RpcMurderPlayer(randomplayer);
+                randomplayer.Exiled();
             }
             AmongUsClient.Instance.StartCoroutine(NekomataCoro(random));
             if ((random.isRole(CustomRPC.RoleId.NiceNekomata) || random.isRole(CustomRPC.RoleId.EvilNekomata)) && RoleClass.NiceNekomata.IsChain)
