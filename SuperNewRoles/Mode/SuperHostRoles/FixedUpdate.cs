@@ -72,7 +72,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                     Patch.SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                                 }
                             }
-                            else
+                            else if(!p.Data.Disconnected)
                             {
                                 if (p.PlayerId != 0)
                                 {
