@@ -21,6 +21,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 IEnumerator ReportbaitBody(PlayerControl __instance,PlayerControl target)
                 {
                     yield return new WaitForSeconds(3);
+                    RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
                     __instance.CmdReportDeadBody(target.Data);
                 }
             }

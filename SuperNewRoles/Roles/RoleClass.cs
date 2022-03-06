@@ -552,6 +552,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> BaitPlayer;
             public static Color32 color = new Color32(222, 184, 135, byte.MaxValue);
             public static bool Reported;
+            public static List<int> ReportedPlayer;
             public static float ReportTime = 0f;
 
             public static void ClearAndReload()
@@ -559,6 +560,7 @@ namespace SuperNewRoles.Roles
                 BaitPlayer = new List<PlayerControl>();
                 Reported = false;
                 ReportTime = CustomOptions.BaitReportTime.getFloat();
+                ReportedPlayer = new List<int>();
             }
         }
         public static class HomeSecurityGuard

@@ -10,6 +10,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static bool ReportDeadBodyPatch(PlayerControl __instance,GameData.PlayerInfo target)
         {
             if (__instance.isRole(CustomRPC.RoleId.Minimalist)) return RoleClass.Minimalist.UseReport;
+            if (target.Object.isRole(CustomRPC.RoleId.Bait) && !RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) return false;
             return true;
         }
     }
