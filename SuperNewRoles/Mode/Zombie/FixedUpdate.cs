@@ -60,6 +60,7 @@ namespace SuperNewRoles.Mode.Zombie
                     {
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
+                            p.RpcSetName(p.getDefaultName());
                             if (!p.IsZombie())
                             {
                                 p.RpcSetVisor("visor_EmptyVisor");
@@ -128,7 +129,14 @@ namespace SuperNewRoles.Mode.Zombie
                         }
 
                         //コスメ設定
-                        p.RpcSetName("");
+                        if (p.IsZombie())
+                        {
+                            p.RpcSetHat("hat_NoHat");
+                            p.RpcSetSkin("skin_None");
+
+                            p.RpcSetColor(greenIndex);
+                            p.RpcSetVisor("visor_pk01_DumStickerVisor");
+                        }
                         //コスメ設定終わり
 
                     }
