@@ -89,6 +89,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 if (AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.BattleRoyal))
                 {
+                    PlayerControl.LocalPlayer.UnCheckedRpcSetRole(RoleTypes.Crewmate);
                     foreach (PlayerControl p1 in PlayerControl.AllPlayerControls)
                     {
                         if (p1.PlayerId == 0)
