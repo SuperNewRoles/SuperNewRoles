@@ -53,14 +53,18 @@ namespace SuperNewRoles.Mode.Zombie
             {
                 if (AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.Zombie) && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !HudManager.Instance.isIntroDisplayed)
                 {
+                    HideAndSeek.Patch.RepairSystemPatch.Postfix(PlayerControl.LocalPlayer);
                     if (NameChangeTimer >= 0f)
                     {
                         NameChangeTimer -= Time.deltaTime;
-                    } else
+                    } else if(NameChangeTimer != -10)
                     {
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            p.RpcSetName(p.getDefaultName());
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                p.RpcSetNamePrivate(p.getDefaultName(),p2);
+                            }
                             if (!p.IsZombie())
                             {
                                 p.RpcSetVisor("visor_EmptyVisor");
@@ -75,70 +79,78 @@ namespace SuperNewRoles.Mode.Zombie
                 }
             }
         }
+        public static float FixedUpdateTimer = 0f;
         public static void Update()
         {
-            if (!IsStart) return;
-            byte BlueIndex = 1;
-            byte greenIndex = 2;
-            if (main.ZombiePlayers.Count == 0)
+            FixedUpdateTimer--;
+            if (FixedUpdateTimer <= 0)
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                FixedUpdateTimer = 5;
+                if (!IsStart || !AmongUsClient.Instance.AmHost) return;
+                byte BlueIndex = 1;
+                byte greenIndex = 2;
+                if (main.ZombiePlayers.Count == 0)
                 {
-                    if (p.isImpostor())
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        main.ZombiePlayers.Add(p.PlayerId);
-                    }
-                }
-            }
-            if (NameChangeTimer >= 0f)
-            {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                {
-                    p.RpcSetNamePrivate(string.Format(ModTranslation.getString("ZombieTimerText"),(int)NameChangeTimer+1));
-                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                    {
-                        if (p2.PlayerId != p.PlayerId)
+                        if (p.isImpostor())
                         {
-                            p2.RpcSetNamePrivate("Playing on SuperNewRoles!", p);
+                            main.ZombiePlayers.Add(p.PlayerId);
                         }
                     }
                 }
-            } else
-            {
-                foreach(PlayerControl p in PlayerControl.AllPlayerControls)
+                if (NameChangeTimer >= 0f)
                 {
-                    if (p.isAlive())
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        foreach(PlayerControl p3 in PlayerControl.AllPlayerControls)
+                        p.RpcSetNamePrivate(string.Format(ModTranslation.getString("ZombieTimerText"), (int)NameChangeTimer + 1));
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {
-                            if (!p3.IsZombie())
+                            if (p2.PlayerId != p.PlayerId)
                             {
-                                foreach (int pint in main.ZombiePlayers)
+                                p2.RpcSetNamePrivate("Playing on SuperNewRoles!", p);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.isAlive())
+                        {
+                            foreach (PlayerControl p3 in PlayerControl.AllPlayerControls)
+                            {
+                                if (!p3.IsZombie())
                                 {
-                                    var p4 = ModHelpers.playerById((byte)pint);
-                                    if (p4 != null && p4.isAlive())
+                                    foreach (int pint in main.ZombiePlayers)
                                     {
-                                        var DistanceData = Vector3.Distance(p3.transform.position,p4.transform.position);
-                                        SuperNewRolesPlugin.Logger.LogInfo("DISTANCE:"+ DistanceData);
-                                        if (DistanceData <= 0.5f) {
-                                            main.SetZombie(p3);
+                                        var p4 = ModHelpers.playerById((byte)pint);
+                                        if (p4 != null && p4.isAlive())
+                                        {
+                                            var DistanceData = Vector3.Distance(p3.transform.position, p4.transform.position);
+                                            SuperNewRolesPlugin.Logger.LogInfo("DISTANCE:" + DistanceData);
+                                            if (DistanceData <= 0.5f)
+                                            {
+                                                main.SetZombie(p3);
+                                            }
                                         }
                                     }
                                 }
                             }
+
+                            //コスメ設定
+                            if (p.isImpostor())
+                            {
+                                p.RpcSetHat("hat_NoHat");
+                                p.RpcSetSkin("skin_None");
+
+                                p.RpcSetColor(greenIndex);
+                                p.RpcSetVisor("visor_pk01_DumStickerVisor");
+                            }
+                            //コスメ設定終わり
+
                         }
-
-                        //コスメ設定
-                        if (p.IsZombie())
-                        {
-                            p.RpcSetHat("hat_NoHat");
-                            p.RpcSetSkin("skin_None");
-
-                            p.RpcSetColor(greenIndex);
-                            p.RpcSetVisor("visor_pk01_DumStickerVisor");
-                        }
-                        //コスメ設定終わり
-
                     }
                 }
             }

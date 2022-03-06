@@ -1,5 +1,7 @@
 ﻿using HarmonyLib;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patch;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +19,26 @@ namespace SuperNewRoles.Mode.Zombie
             if (player.isImpostor() || ZombiePlayers.Contains(player.PlayerId)) return true;
             return false;
         }
+        [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]
+        private static class GameDataRecomputeTaskCountsPatch
+        {
+            public static void Postfix(GameData __instance)
+            {
+                if (!Mode.ModeHandler.isMode(Mode.ModeId.Zombie) || !AmongUsClient.Instance.AmHost) return;
+                __instance.TotalTasks = 0;
+                __instance.CompletedTasks = 0;
+                for (int i = 0; i < __instance.AllPlayers.Count; i++)
+                {
+                    GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
+                    if (!playerInfo.Object.IsZombie())
+                    {
+                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
+                        __instance.TotalTasks += playerTotal;
+                        __instance.CompletedTasks += playerCompleted;
+                    }
+                }
+            }
+        }
         public static void SetZombie(this PlayerControl player)
         {
             player.RpcSetHat("hat_NoHat");
@@ -24,7 +46,15 @@ namespace SuperNewRoles.Mode.Zombie
 
             player.RpcSetColor(2);
             player.RpcSetVisor("visor_pk01_DumStickerVisor");
-            player.AllTasksCompleted();
+            foreach (PlayerTask task in player.myTasks)
+            {
+                task.Complete();
+            }
+            /*
+            var Data = PlayerControl.GameOptions;
+            Data.CrewLightMod = ZombieOptions.ZombieLight.getFloat();
+            RPCHelper.RPCGameOptionsPrivate(Data,player);
+            */
             if (!ZombiePlayers.Contains(player.PlayerId)) ZombiePlayers.Add(player.PlayerId);
         }
         public static void SetNotZombie(this PlayerControl player)
@@ -57,27 +87,16 @@ namespace SuperNewRoles.Mode.Zombie
         }
         public static void ClearAndReload()
         {
-            if (AmongUsClient.Instance.AmHost)
-            {
+            /*
+            PlayerControl.GameOptions.ImpostorLightMod = ZombieOptions.ZombieLight.getFloat();
+            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+            */
+            ZombiePlayers = new List<int>();
+            if (AmongUsClient.Instance.AmHost) { 
                 FixedUpdate.IsStart = false;
-                ZombiePlayers = new List<int>();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     p.getDefaultName();
-                }
-            }
-        }
-        [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive))]
-        class SetHudActivePatch
-        {
-            public static void Postfix(HudManager __instance, [HarmonyArgument(0)] bool isActive)
-            {
-                if (ModeHandler.isMode(ModeId.Zombie))
-                {
-                    HudManager.Instance.ReportButton.ToggleVisible(false);
-                    HudManager.Instance.SabotageButton.ToggleVisible(false);
-                    HudManager.Instance.KillButton.ToggleVisible(false);
-                    HudManager.Instance.ImpostorVentButton.ToggleVisible(false);
                 }
             }
         }

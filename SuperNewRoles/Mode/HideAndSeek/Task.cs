@@ -33,7 +33,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
         {
             public static void Postfix(GameData __instance)
             {
-                if (ModeHandler.isMode(ModeId.Default)) return;
+                if (!ModeHandler.isMode(ModeId.HideAndSeek)) return;
                 __instance.TotalTasks = 0;
                 __instance.CompletedTasks = 0;
                 for (int i = 0; i < __instance.AllPlayers.Count; i++)

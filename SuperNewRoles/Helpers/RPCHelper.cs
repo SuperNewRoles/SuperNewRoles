@@ -21,16 +21,9 @@ namespace SuperNewRoles.Helpers
         }
         public static void RPCGameOptionsPrivate(GameOptionsData Data,PlayerControl target)
         {
-            if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
-            {
-                PlayerControl.GameOptions = Data;
-            }
-            else
-            {
-                MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, 2, (SendOption)1, target.getClientId());
-                Writer.WriteBytesAndSize(Data.ToBytes(5));
-                AmongUsClient.Instance.FinishRpcImmediately(Writer);
-            }
+            MessageWriter messageWriter = StartRPC((byte)2,target);
+            messageWriter.WriteBytesAndSize(Data.ToBytes((byte)5));
+            messageWriter.EndMessage();
         }
         /// <summary>
         /// 特定のプレイヤーから見て、特定のプレイヤーの名前を変更する巻数
