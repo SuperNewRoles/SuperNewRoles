@@ -40,5 +40,14 @@ namespace SuperNewRoles.Helpers
             writer.Write(NewName);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
+        public static void UncheckSetVisor(this PlayerControl p, string id)
+        {
+            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(p.NetId, (byte)RpcCalls.SetVisor, Hazel.SendOption.Reliable, p2.getClientId());
+                writer.Write(id);
+                writer.EndRPC();
+            }
+        }
     }
 }

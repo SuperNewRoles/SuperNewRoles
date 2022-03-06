@@ -45,7 +45,7 @@ namespace SuperNewRoles.Mode.Zombie
             player.RpcSetSkin("skin_None");
 
             player.RpcSetColor(2);
-            player.RpcSetVisor("visor_pk01_DumStickerVisor");
+            player.UncheckSetVisor("visor_pk01_DumStickerVisor");
             foreach (PlayerTask task in player.myTasks)
             {
                 task.Complete();

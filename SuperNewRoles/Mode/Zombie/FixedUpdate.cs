@@ -67,7 +67,8 @@ namespace SuperNewRoles.Mode.Zombie
                             }
                             if (!p.IsZombie())
                             {
-                                p.RpcSetVisor("visor_EmptyVisor");
+                                
+                                p.UncheckSetVisor("visor_EmptyVisor");
 
                                 p.RpcSetColor(1);
                                 p.RpcSetHat("hat_police");
@@ -146,7 +147,7 @@ namespace SuperNewRoles.Mode.Zombie
                                 p.RpcSetSkin("skin_None");
 
                                 p.RpcSetColor(greenIndex);
-                                p.RpcSetVisor("visor_pk01_DumStickerVisor");
+                                p.UncheckSetVisor("visor_pk01_DumStickerVisor");
                             }
                             //コスメ設定終わり
 
