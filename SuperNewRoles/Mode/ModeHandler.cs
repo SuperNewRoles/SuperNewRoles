@@ -16,7 +16,8 @@ namespace SuperNewRoles.Mode
         HideAndSeek,
         BattleRoyal,
         SuperHostRoles,
-        Zombie
+        Zombie,
+        RandomColor
     }
     class ModeHandler
     {
@@ -40,11 +41,20 @@ namespace SuperNewRoles.Mode
                 thisMode = ModeId.Zombie;
                 Zombie.main.ClearAndReload();
             }
+            else if (isMode(ModeId.RandomColor))
+            {
+                thisMode = ModeId.RandomColor;
+                RandomColor.FixedUpdate.UpdateTime = 0f;
+                RandomColor.FixedUpdate.IsRandomNameColor = RandomColor.RandomColorOptions.RandomNameColor.getBool();
+                RandomColor.FixedUpdate.IsHideName = RandomColor.RandomColorOptions.HideName.getBool();
+                RandomColor.FixedUpdate.IsRandomColorMeeting = RandomColor.RandomColorOptions.RandomColorMeeting.getBool();
+                RandomColor.FixedUpdate.IsHideNameSet = false;
+            }
             else {
                 thisMode = ModeId.Default;
             }
         }
-        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName") };
+        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName") };
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;
@@ -61,6 +71,10 @@ namespace SuperNewRoles.Mode
             else if (isMode(ModeId.Zombie))
             {
                 return Zombie.Intro.ModeHandler(__instance);
+            }
+            else if (isMode(ModeId.RandomColor))
+            {
+                return SuperHostRoles.Intro.ModeHandler(__instance);
             }
             return new Il2CppSystem.Collections.Generic.List<PlayerControl>();
         }
@@ -95,23 +109,28 @@ namespace SuperNewRoles.Mode
             HideAndSeek.ZombieOptions.Load();
             BattleRoyal.BROption.Load();
             Zombie.ZombieOptions.Load();
+            RandomColor.RandomColorOptions.Load();
         }
         public static void FixedUpdate(PlayerControl __instance) {
             if (isMode(ModeId.Default)) return;
-            if (isMode(ModeId.HideAndSeek)) {
+            else if (isMode(ModeId.HideAndSeek)) {
                 HideAndSeek.Patch.HASFixed.Postfix(__instance);
             }
-            if (isMode(ModeId.SuperHostRoles))
+            else if (isMode(ModeId.SuperHostRoles))
             {
                 SuperHostRoles.FixedUpdate.Update();
             }
-            if (isMode(ModeId.BattleRoyal))
+            else if (isMode(ModeId.BattleRoyal))
             {
                 
             }
-            if (isMode(ModeId.Zombie))
+            else if (isMode(ModeId.Zombie))
             {
                 Zombie.FixedUpdate.Update();
+            }
+            else if (isMode(ModeId.RandomColor))
+            {
+                RandomColor.FixedUpdate.Update();
             }
         }
         public static void Wrapup(GameData.PlayerInfo exiled)
@@ -125,6 +144,7 @@ namespace SuperNewRoles.Mode
             if (isMode(ModeId.SuperHostRoles)) return ModeId.HideAndSeek;
             if (isMode(ModeId.BattleRoyal)) return ModeId.BattleRoyal;
             if (isMode(ModeId.Zombie)) return ModeId.Zombie;
+            if (isMode(ModeId.RandomColor)) return ModeId.RandomColor;
             return ModeId.No;
         }
         public static string GetThisModeIntro() {
@@ -147,6 +167,8 @@ namespace SuperNewRoles.Mode
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[1];
                 case ModeId.Zombie:
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[3];
+                case ModeId.RandomColor:
+                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[4];
             }
             return false;
         }
@@ -165,6 +187,10 @@ namespace SuperNewRoles.Mode
             else if (isMode(ModeId.Zombie))
             {
                 return Zombie.main.EndGameCheck(__instance,statistics);
+            }
+            else if (isMode(ModeId.RandomColor))
+            {
+                return RandomColor.main.CheckEndGame(__instance, statistics);
             }
             return false;
         }

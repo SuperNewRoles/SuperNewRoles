@@ -284,6 +284,10 @@
         "0" : "Zombie Mode" ,
         "11" : "\u30be\u30f3\u30d3\u30e2\u30fc\u30c9\u306e\u8a2d\u5b9a"
         } ,
+ "SettingRandomColorMode" : {
+        "0" : "Random Color Mode" ,
+        "11" : "\u30e9\u30f3\u30c0\u30e0\u30ab\u30e9\u30fc\u30e2\u30fc\u30c9\u306e\u8a2d\u5b9a"
+        } ,
  "HideAndSeekModeName" : {
         "0" : "Hide And Seek" ,
         "11" : "\u304b\u304f\u308c\u3093\u307c"
@@ -299,6 +303,10 @@
  "ZombieModeName" : {
         "0" : "Zombie Mode" ,
         "11" : "\u30be\u30f3\u30d3\u30e2\u30fc\u30c9"
+        } ,
+ "RandomColorModeName" : {
+        "0" : "Random Color Mode" ,
+        "11" : "\u30e9\u30f3\u30c0\u30e0\u30ab\u30e9\u30fc"
         } ,
  "CrewMateName" : {
         "0" : "Crewmate" ,
@@ -335,6 +343,18 @@
  "ZombieTimerText" : {
         "0" : "Zombies incoming! {0}s" ,
         "11" : "\u30be\u30f3\u30d3\u304c\u3084\u3063\u3066\u304f\u308b\u307e\u3067\u6b8b\u308a{0}\u79d2\uff01"
+        } ,
+ "RandomColorHideNameSetting" : {
+        "0" : "Hide Name" ,
+        "11" : "\u540d\u524d\u3092\u96a0\u3059"
+        } ,
+ "RandomColorNameColorSetting" : {
+        "0" : "Change Name Color" ,
+        "11" : "\u540d\u524d\u306e\u8272\u3082\u5909\u3048\u308b"
+        } ,
+ "RandomColorMeetingSetting" : {
+        "0" : "In Meeting Change Color" ,
+        "11" : "\u4f1a\u8b70\u4e2d\u306b\u3082\u8272\u3092\u5909\u66f4\u3059\u308b"
         } ,
  "NeutralName" : {
         "0" : "Neutral" ,

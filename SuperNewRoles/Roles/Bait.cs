@@ -15,8 +15,8 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerControl __instance)
             {
-                    bool IsError = false;
-                    SuperNewRolesPlugin.Logger.LogInfo(RoleClass.Bait.ReportTime);
+                bool IsError = false;
+                SuperNewRolesPlugin.Logger.LogInfo(RoleClass.Bait.ReportTime);
                 RoleClass.Bait.ReportTime -= Time.fixedDeltaTime;
                 DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == PlayerControl.LocalPlayer.PlayerId)?.FirstOrDefault();
 

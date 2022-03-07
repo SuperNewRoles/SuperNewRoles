@@ -32,7 +32,6 @@ namespace SuperNewRoles.Patch
                 __result = Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num);
             else
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * PlayerControl.GameOptions.CrewLightMod;
-            SuperNewRolesPlugin.Logger.LogInfo("LIGHTRESULT:"+__result);
             return false;
         }
     }
