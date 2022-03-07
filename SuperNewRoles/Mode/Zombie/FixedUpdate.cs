@@ -51,7 +51,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix()
             {
-                if (AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.Zombie) && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !HudManager.Instance.isIntroDisplayed)
+                if (IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.Zombie) && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !HudManager.Instance.isIntroDisplayed)
                 {
                     HideAndSeek.Patch.RepairSystemPatch.Postfix(PlayerControl.LocalPlayer);
                     if (NameChangeTimer >= 0f)
@@ -59,59 +59,52 @@ namespace SuperNewRoles.Mode.Zombie
                         NameChangeTimer -= Time.deltaTime;
                     } else if(NameChangeTimer != -10)
                     {
+
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        {
+                            if (p.isImpostor())
+                            {
+                                main.SetZombie(p);
+                            }
+                        }
+                        byte BlueIndex = 1;
+                        byte greenIndex = 2;
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
                             foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                             {
-                                p.RpcSetNamePrivate(p.getDefaultName(),p2);
+                                p2.RpcSetNamePrivate("　",p);//p.getDefaultName(),p2);
                             }
                             if (!p.IsZombie())
                             {
-                                
+                                /*
                                 p.UncheckSetVisor("visor_EmptyVisor");
-
-                                p.RpcSetColor(1);
+                                */
+                                p.RpcSetColor(BlueIndex);
+                                /*
                                 p.RpcSetHat("hat_police");
                                 p.RpcSetSkin("skin_Police");
+                                */
                             }
-                            NameChangeTimer = -10;
                         }
+                        NameChangeTimer = -10;
                     }
                 }
             }
         }
-        public static float FixedUpdateTimer = 0f;
+        public static int FixedUpdateTimer = 0;
         public static void Update()
         {
+            if (!IsStart || !AmongUsClient.Instance.AmHost) return;
             FixedUpdateTimer--;
             if (FixedUpdateTimer <= 0)
             {
-                FixedUpdateTimer = 5;
-                if (!IsStart || !AmongUsClient.Instance.AmHost) return;
-                byte BlueIndex = 1;
-                byte greenIndex = 2;
-                if (main.ZombiePlayers.Count == 0)
-                {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        if (p.isImpostor())
-                        {
-                            main.ZombiePlayers.Add(p.PlayerId);
-                        }
-                    }
-                }
+                FixedUpdateTimer = 15;
                 if (NameChangeTimer >= 0f)
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         p.RpcSetNamePrivate(string.Format(ModTranslation.getString("ZombieTimerText"), (int)NameChangeTimer + 1));
-                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                        {
-                            if (p2.PlayerId != p.PlayerId)
-                            {
-                                p2.RpcSetNamePrivate("Playing on SuperNewRoles!", p);
-                            }
-                        }
                     }
                 }
                 else
@@ -129,7 +122,7 @@ namespace SuperNewRoles.Mode.Zombie
                                         var p4 = ModHelpers.playerById((byte)pint);
                                         if (p4 != null && p4.isAlive())
                                         {
-                                            var DistanceData = Vector3.Distance(p3.transform.position, p4.transform.position);
+                                            var DistanceData = Vector2.Distance(p3.transform.position, p4.transform.position);
                                             SuperNewRolesPlugin.Logger.LogInfo("DISTANCE:" + DistanceData);
                                             if (DistanceData <= 0.5f)
                                             {
@@ -139,17 +132,6 @@ namespace SuperNewRoles.Mode.Zombie
                                     }
                                 }
                             }
-
-                            //コスメ設定
-                            if (p.isImpostor())
-                            {
-                                p.RpcSetHat("hat_NoHat");
-                                p.RpcSetSkin("skin_None");
-
-                                p.RpcSetColor(greenIndex);
-                                p.UncheckSetVisor("visor_pk01_DumStickerVisor");
-                            }
-                            //コスメ設定終わり
 
                         }
                     }

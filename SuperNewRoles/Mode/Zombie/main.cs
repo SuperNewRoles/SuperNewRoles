@@ -41,11 +41,15 @@ namespace SuperNewRoles.Mode.Zombie
         }
         public static void SetZombie(this PlayerControl player)
         {
-            player.RpcSetHat("hat_NoHat");
-            player.RpcSetSkin("skin_None");
-
+            /*
+            player.RpcSetHat("");
+            player.RpcSetSkin("");
+            */
             player.RpcSetColor(2);
+            /*
             player.UncheckSetVisor("visor_pk01_DumStickerVisor");
+            */
+            
             foreach (PlayerTask task in player.myTasks)
             {
                 task.Complete();
@@ -97,13 +101,30 @@ namespace SuperNewRoles.Mode.Zombie
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     p.getDefaultName();
+                    /*
+                    p.UncheckSetVisor("visor_EmptyVisor");
+                    */
+                    /*
+                    p.RpcSetHat("");
+                    p.RpcSetSkin("");
+                    */
                 }
             }
         }
         public static void SetTimer()
         {
             FixedUpdate.IsStart = true;
-            FixedUpdate.NameChangeTimer = 20f;
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                {
+                    if (p2.PlayerId != p.PlayerId)
+                    {
+                        p2.RpcSetNamePrivate("Playing on SuperNewRoles!", p);
+                    }
+                }
+            }
+            FixedUpdate.NameChangeTimer = 5f;
         }
     }
 }

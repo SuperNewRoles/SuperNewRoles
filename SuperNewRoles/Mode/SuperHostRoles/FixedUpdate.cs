@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
@@ -108,6 +109,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                     foreach (PlayerControl p2 in impostorplayers)
                                     {
                                         p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed,p2.getDefaultName()),p);
+                                    }
+                                } else if(p.isAlive() && p.PlayerId != 0)
+                                {
+                                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                                    {
+                                        if (p.isImpostor() || p.isRole(CustomRPC.RoleId.Egoist))
+                                        {
+                                            SetNamesClass.SetPlayerNameColors(p);
+                                            SetNamesClass.SetPlayerRoleNames(p);
+                                        }
                                     }
                                 }
                             }
