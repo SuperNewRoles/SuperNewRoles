@@ -44,7 +44,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void CustomEndGame(ShipStatus __instance,GameOverReason reason, bool showAd)
         {
-            
                 Chat.IsOldSHR = true;
                 List<PlayerControl>? WinGods = null;
                 foreach (PlayerControl p in RoleClass.God.GodPlayer)
@@ -95,8 +94,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     ShipStatus.RpcEndGame(reason, showAd);
 
             //変更した設定を直す
+            /*
             PlayerControl.GameOptions = ChangeGameOptions.DefaultGameOption;
             PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+            */
             //終わり
         }
         public static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
@@ -133,7 +134,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static bool CheckAndEndGameForTaskWin(ShipStatus __instance)
         {
-            if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks && Chat.WinCond == null)
+            if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks )//&& Chat.WinCond == null)
             {
                 IsCrewmateWin = true;
                 Chat.WinCond = CustomGameOverReason.CrewmateWin;
@@ -145,7 +146,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && Chat.WinCond == null)
+            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 )//&& Chat.WinCond == null)
             {
                 IsImpostorWin = true;
                 GameOverReason endReason;
@@ -170,7 +171,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.CrewAlive > 0 && statistics.TeamImpostorsAlive == 0 && Chat.WinCond == null)
+            if (statistics.CrewAlive > 0 && statistics.TeamImpostorsAlive == 0)// && Chat.WinCond == null)
             {
                 IsCrewmateWin = true;
                 Chat.WinCond = CustomGameOverReason.CrewmateWin;
@@ -181,7 +182,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void EndGameForSabotage(ShipStatus __instance)
         {
-            if (Chat.WinCond == null)
+            if (true)//Chat.WinCond == null)
             {
                 IsImpostorWin = true;
                 Chat.WinCond = CustomGameOverReason.ImpostorWin;
