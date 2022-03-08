@@ -26,7 +26,7 @@ namespace SuperNewRoles.Helpers
             messageWriter.EndMessage();
         }
         /// <summary>
-        /// 特定のプレイヤーから見て、特定のプレイヤーの名前を変更する巻数
+        /// 特定のプレイヤーから見て、特定のプレイヤーの名前を変更する関数
         /// </summary>
         /// <param name="TargetPlayer">変更する名前</param>
         /// <param name="NewName">変更後の名前</param>
@@ -48,6 +48,16 @@ namespace SuperNewRoles.Helpers
                 writer.Write(id);
                 writer.EndRPC();
             }
+        }
+        /// <summary>
+        /// 通常のRPCのExiled
+        /// </summary>
+        public static void RpcInnerExiled(this PlayerControl TargetPlayer)
+        {
+            if (TargetPlayer == null) return;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.Exiled, Hazel.SendOption.Reliable);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            TargetPlayer.Exiled();
         }
     }
 }
