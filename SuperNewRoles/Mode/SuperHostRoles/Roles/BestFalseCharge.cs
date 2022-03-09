@@ -1,5 +1,6 @@
 ﻿using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections;
@@ -18,7 +19,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 {
                     IEnumerator BestFalseCoro(PlayerControl target)
                     {
-                        yield return new WaitForSeconds(1);
+                        yield return new WaitForSeconds(3);
                         target.RpcMurderPlayer(target);
                     }
                     AmongUsClient.Instance.StartCoroutine(BestFalseCoro(p));

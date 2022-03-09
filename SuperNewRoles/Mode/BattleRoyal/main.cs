@@ -73,10 +73,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
             }
             else if(alives == 0){
                 __instance.enabled = false;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                {
-                    p.RpcSetRole(RoleTypes.GuardianAngel);
-                }
                 ShipStatus.RpcEndGame(GameOverReason.HumansByVote, false);
                 return true;
             }
@@ -89,37 +85,12 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 if (AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.BattleRoyal))
                 {
-                    PlayerControl.LocalPlayer.UnCheckedRpcSetRole(RoleTypes.Crewmate);
                     foreach (PlayerControl p1 in PlayerControl.AllPlayerControls)
                     {
-                        if (p1.PlayerId == 0)
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (p1.PlayerId == p2.PlayerId)
-                                {
-                                    DestroyableSingleton<RoleManager>.Instance.SetRole(p2, RoleTypes.Impostor);
-
-                                }
-                                else
-                                {
-                                    DestroyableSingleton<RoleManager>.Instance.SetRole(p2, RoleTypes.Scientist);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (p1.PlayerId == p2.PlayerId)
-                                {
-                                    p1.SetPrivateRole(RoleTypes.Impostor, p1);
-                                }
-                                else
-                                {
-                                    p1.SetPrivateRole(RoleTypes.Scientist, p2);
-                                }
-                            }
+                            p1.SetPrivateRole(RoleTypes.Impostor);
+                            p2.SetPrivateRole(RoleTypes.Scientist, p1);
                         }
                     }
                 }
