@@ -31,8 +31,8 @@ namespace SuperNewRoles.Patch
                         task.Complete();
                     }
                     
-                }
-               PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            }
+            PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
         }
     }
 }
