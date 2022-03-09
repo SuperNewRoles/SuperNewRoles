@@ -221,7 +221,7 @@ namespace SuperNewRoles.EndGame
             bool IsOpptexton = false;
             foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer) {
                 if (player.isAlive()) { 
-                    if (!IsOpptexton)
+                    if (!IsOpptexton && !haison)
                     {
                         text = text + "&"+ModTranslation.getString("OpportunistName");
                     }
