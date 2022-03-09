@@ -56,6 +56,10 @@ namespace SuperNewRoles.Patch
                         ShipStatus.Instance.enabled = false;
                         ShipStatus.RpcEndGame(GameOverReason.HumansByTask,false);
                     }
+                    if (ModeHandler.isMode(ModeId.NotImpostorCheck))
+                    {
+                        Mode.NotImpostorCheck.NameSet.Postfix();
+                    }
                     if (ModeHandler.isMode(ModeId.Default))
                     {
                         SetNameUpdate.Postfix(__instance);

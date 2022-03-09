@@ -17,7 +17,8 @@ namespace SuperNewRoles.Mode
         BattleRoyal,
         SuperHostRoles,
         Zombie,
-        RandomColor
+        RandomColor,
+        NotImpostorCheck
     }
     class ModeHandler
     {
@@ -35,6 +36,7 @@ namespace SuperNewRoles.Mode
             else if (isMode(ModeId.SuperHostRoles))
             {
                 thisMode = ModeId.SuperHostRoles;
+                SuperHostRoles.main.ClearAndReloads();
             }
             else if (isMode(ModeId.Zombie))
             {
@@ -50,11 +52,16 @@ namespace SuperNewRoles.Mode
                 RandomColor.FixedUpdate.IsRandomColorMeeting = RandomColor.RandomColorOptions.RandomColorMeeting.getBool();
                 RandomColor.FixedUpdate.IsHideNameSet = false;
             }
+            else if (isMode(ModeId.NotImpostorCheck))
+            {
+                thisMode = ModeId.NotImpostorCheck;
+                NotImpostorCheck.main.ClearAndReload();
+            }
             else {
                 thisMode = ModeId.Default;
             }
         }
-        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName") };
+        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName") };
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;
@@ -73,6 +80,10 @@ namespace SuperNewRoles.Mode
                 return Zombie.Intro.ModeHandler(__instance);
             }
             else if (isMode(ModeId.RandomColor))
+            {
+                return SuperHostRoles.Intro.ModeHandler(__instance);
+            }
+            else if (isMode(ModeId.NotImpostorCheck))
             {
                 return SuperHostRoles.Intro.ModeHandler(__instance);
             }
@@ -145,6 +156,7 @@ namespace SuperNewRoles.Mode
             if (isMode(ModeId.BattleRoyal)) return ModeId.BattleRoyal;
             if (isMode(ModeId.Zombie)) return ModeId.Zombie;
             if (isMode(ModeId.RandomColor)) return ModeId.RandomColor;
+            if (isMode(ModeId.NotImpostorCheck)) return ModeId.NotImpostorCheck;
             return ModeId.No;
         }
         public static string GetThisModeIntro() {
@@ -169,6 +181,8 @@ namespace SuperNewRoles.Mode
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[3];
                 case ModeId.RandomColor:
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[4];
+                case ModeId.NotImpostorCheck:
+                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[5];
             }
             return false;
         }
@@ -192,7 +206,16 @@ namespace SuperNewRoles.Mode
             {
                 return RandomColor.main.CheckEndGame(__instance, statistics);
             }
+            else if (isMode(ModeId.NotImpostorCheck))
+            {
+                return NotImpostorCheck.WinCheck.CheckEndGame(__instance);
+            }
             return false;
+        }
+        public static bool IsBlockVanilaRole()
+        {
+            if (isMode(ModeId.NotImpostorCheck)) return false;
+            return true;
         }
     }
 }

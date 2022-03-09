@@ -308,6 +308,10 @@
         "0" : "Random Color Mode" ,
         "11" : "\u30e9\u30f3\u30c0\u30e0\u30ab\u30e9\u30fc"
         } ,
+ "NotImpostorCheckModeName" : {
+        "0" : "Not Impostor Check Mode" ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u8996\u8a8d\u4e0d\u80fd\u30e2\u30fc\u30c9"
+        } ,
  "CrewMateName" : {
         "0" : "Crewmate" ,
         "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8"

@@ -261,7 +261,7 @@ namespace SuperNewRoles.CustomOption
         {
             if (role == RoleTypes.Crewmate || role == RoleTypes.Impostor) return;
 
-            __result = 0;
+            if (Mode.ModeHandler.IsBlockVanilaRole()) __result = 0;
         }
     }
 

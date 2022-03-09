@@ -59,7 +59,7 @@ namespace SuperNewRoles.Mode.RandomColor
                         }
                         if (RoleClass.IsMeeting && IsHideName)
                         {
-                            ModHelpers.cs(Color.yellow, "RandomColorMode!");
+                            p.RpcSetName(ModHelpers.cs(Color.yellow, "RandomColorMode!"));
                             IsMeetingIn = true;
                         }
                         if (IsMeetingIn && !RoleClass.IsMeeting && IsHideName)

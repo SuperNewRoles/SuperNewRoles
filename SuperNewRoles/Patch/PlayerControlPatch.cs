@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches
 {
-    /*
+    
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
     class CheckMurderPatch
     {
@@ -23,10 +23,13 @@ namespace SuperNewRoles.Patches
             {
                 return false;
             }
-            __instance.RpcMurderPlayer(target);
+            if (ModeHandler.isMode(ModeId.BattleRoyal))
+            {
+                __instance.RpcMurderPlayer(target);
+            }
             return false;
         }
-    }*/
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
     public static class MurderPlayerPatch
     {
