@@ -1,5 +1,6 @@
 ﻿using BepInEx.IL2CPP.Utils;
 using Hazel;
+using SuperNewRoles.CustomOption;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
@@ -20,7 +21,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 AmongUsClient.Instance.StartCoroutine(ReportbaitBody(__instance,target));
                 IEnumerator ReportbaitBody(PlayerControl __instance,PlayerControl target)
                 {
-                    yield return new WaitForSeconds(3);
+                    yield return new WaitForSeconds(CustomOptions.BaitReportTime.getFloat());
                     RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
                     __instance.CmdReportDeadBody(target.Data);
                 }
