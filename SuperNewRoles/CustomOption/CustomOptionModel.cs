@@ -66,6 +66,10 @@ namespace SuperNewRoles.CustomOption
             {
                 entry = SuperNewRolesPlugin.Instance.Config.Bind($"Preset{preset}", id.ToString(), defaultSelection);
                 selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
+                if (options.Any(x => x.id == id))
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo($"CustomOptionのId({id})が重複しています。");
+                }
             }
             options.Add(this);
         }

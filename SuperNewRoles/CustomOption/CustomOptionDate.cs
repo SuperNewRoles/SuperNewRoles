@@ -327,7 +327,7 @@ namespace SuperNewRoles.CustomOption
             LighterPlayerCount = CustomOption.Create(15, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LighterOption);
             LighterCoolTime = CustomOption.Create(16, ModTranslation.getString("LigtherCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, LighterOption, format: "unitSeconds");
             LighterDurationTime = CustomOption.Create(17, ModTranslation.getString("LigtherDurationSetting"), 10f, 1f, 20f, 0.5f, LighterOption, format: "unitSeconds");
-            LighterUpVision = CustomOption.Create(105, ModTranslation.getString("LighterUpVisionSetting"), 0.25f, 0f, 5f, 0.25f, LighterOption);
+            LighterUpVision = CustomOption.Create(204, ModTranslation.getString("LighterUpVisionSetting"), 0.25f, 0f, 5f, 0.25f, LighterOption);
 
             /**
             EvilLighterOption = new CustomRoleOption(18, "EvilLighterName", RoleClass.ImpostorRed, 1);
@@ -352,7 +352,7 @@ namespace SuperNewRoles.CustomOption
             MeetingSheriffPlayerCount = CustomOption.Create(32, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MeetingSheriffOption);
             MeetingSheriffNeutralKill = CustomOption.Create(174, ModTranslation.getString("MeetingSheriffIsKillNeutralSetting"), false, MeetingSheriffOption);
             MeetingSheriffMadMateKill = CustomOption.Create(33, ModTranslation.getString("MeetingSheriffIsKillMadMateSetting"), false, MeetingSheriffOption);
-            MeetingSheriffKillMaxCount = CustomOption.Create(34, ModTranslation.getString("MeetingSheriffMaxKillCountSetting"), 1f, 1f, 20f, 1f, MeetingSheriffOption, format: "unitSeconds");
+            MeetingSheriffKillMaxCount = CustomOption.Create(201, ModTranslation.getString("MeetingSheriffMaxKillCountSetting"), 1f, 1f, 20f, 1f, MeetingSheriffOption, format: "unitSeconds");
             MeetingSheriffOneMeetingMultiKill = CustomOption.Create(35, ModTranslation.getString("MeetingSheriffMeetingmultipleKillSetting"), false, MeetingSheriffOption);
             
             JackalOption = new CustomRoleOption(36, "JackalName", RoleClass.Jackal.color, 1);
@@ -429,10 +429,10 @@ namespace SuperNewRoles.CustomOption
             VultureCoolDown = CustomOption.Create(91, ModTranslation.getString("VultureCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, VultureOption, format: "unitSeconds");
             VultureDeadBodyMaxCount = CustomOption.Create(92, cs(Color.white, "VultureDeadBodyCountSetting"), VultureDeadBodyCount, VultureOption);
             **/
-            NiceScientistOption = new CustomRoleOption(101, "NiceScientistName", RoleClass.NiceScientist.color, 1);
+            NiceScientistOption = new CustomRoleOption(202, "NiceScientistName", RoleClass.NiceScientist.color, 1);
             NiceScientistPlayerCount = CustomOption.Create(102, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceScientistOption);
             NiceScientistCoolTime = CustomOption.Create(103, ModTranslation.getString("NiceScientistCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, NiceScientistOption, format: "unitSeconds");
-            NiceScientistDurationTime = CustomOption.Create(104, ModTranslation.getString("NiceScientistDurationSetting"), 10f, 2.5f, 20f, 2.5f, NiceScientistOption, format: "unitSeconds");
+            NiceScientistDurationTime = CustomOption.Create(203, ModTranslation.getString("NiceScientistDurationSetting"), 10f, 2.5f, 20f, 2.5f, NiceScientistOption, format: "unitSeconds");
             
             ClergymanOption = new CustomRoleOption(93, "ClergymanName", RoleClass.Clergyman.color, 1);
             ClergymanPlayerCount = CustomOption.Create(94, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ClergymanOption);
