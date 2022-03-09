@@ -19,7 +19,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 {
                     IEnumerator BestFalseCoro(PlayerControl target)
                     {
-                        yield return new WaitForSeconds(10);
+                        yield return new WaitForSeconds(3);
                         target.RpcMurderPlayer(target);
                     }
                     AmongUsClient.Instance.StartCoroutine(BestFalseCoro(p));
