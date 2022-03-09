@@ -19,7 +19,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!AmongUsClient.Instance.AmHost) return true;
                 
 
-                if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && (player.isRole(CustomRPC.RoleId.MadMate)))
+                if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.isRole(CustomRPC.RoleId.MadMate))
                 {
                     return false;
                 }

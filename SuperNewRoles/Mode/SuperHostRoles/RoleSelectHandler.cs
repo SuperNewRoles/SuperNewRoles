@@ -215,7 +215,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-
+            if (!(CustomOption.CustomOptions.EgoistOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.EgoistOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Egoist;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
             /*
             if (!(CustomOption.CustomOptions.MinimalistOption.getString().Replace("0%", "") == ""))
             {

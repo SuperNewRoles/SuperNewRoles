@@ -1,8 +1,10 @@
-﻿using HarmonyLib;
+﻿using BepInEx.IL2CPP.Utils;
+using HarmonyLib;
 using Hazel;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode.SuperHostRoles;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,9 +24,18 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 {
                     if (ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie))
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
-                        writer.WritePacked(id);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 34, (SendOption)1);
+                        val.WritePacked(127);
+                        AmongUsClient.Instance.FinishRpcImmediately(val);
+                        AmongUsClient.Instance.StartCoroutine(Vent());
+                        IEnumerator Vent() { 
+                            yield return new WaitForSeconds(0.5f);
+                            int clientId = __instance.myPlayer.getClientId();
+                            MessageWriter val2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 34, (SendOption)1, clientId);
+                            val2.Write(id);
+                            AmongUsClient.Instance.FinishRpcImmediately(val2);
+                        }
+                        return false;
                     } else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
                         SuperHostRoles.CoEnterVent.Prefix(__instance,id);
@@ -78,6 +89,11 @@ namespace SuperNewRoles.Mode.BattleRoyal
             }
             return false;
         }
+        public static void ClearAndReload()
+        {
+            PlayerControl.GameOptions.NumImpostors = 15;
+            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+        }            
         [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
         class ChangeRole
         {

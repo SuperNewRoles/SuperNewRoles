@@ -32,6 +32,7 @@ namespace SuperNewRoles.Mode
             } else if (isMode(ModeId.BattleRoyal))
             {
                 thisMode = ModeId.BattleRoyal;
+                BattleRoyal.main.ClearAndReload();
             }
             else if (isMode(ModeId.SuperHostRoles))
             {
@@ -133,7 +134,7 @@ namespace SuperNewRoles.Mode
             }
             else if (isMode(ModeId.BattleRoyal))
             {
-                
+
             }
             else if (isMode(ModeId.Zombie))
             {
