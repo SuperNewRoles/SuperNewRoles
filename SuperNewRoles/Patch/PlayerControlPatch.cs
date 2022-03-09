@@ -23,10 +23,8 @@ namespace SuperNewRoles.Patches
             {
                 return false;
             }
-            if (ModeHandler.isMode(ModeId.BattleRoyal))
-            {
                 __instance.RpcMurderPlayer(target);
-            }
+            
             return false;
         }
     }
