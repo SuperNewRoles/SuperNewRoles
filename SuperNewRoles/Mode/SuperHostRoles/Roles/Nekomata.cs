@@ -35,10 +35,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         {
             var rdm = ModHelpers.GetRandomIndex(p);
             var random = p[rdm];
-            random.RpcInnerExiled();
             IEnumerator NekomataCoro(PlayerControl randomplayer)
             {
-                yield return new WaitForSeconds(3);
+                yield return new WaitForSeconds(10);
                 randomplayer.RpcInnerExiled();
             }
             AmongUsClient.Instance.StartCoroutine(NekomataCoro(random));
