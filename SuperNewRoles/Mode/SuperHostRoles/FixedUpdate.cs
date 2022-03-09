@@ -60,7 +60,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (UpdateDate <= 0)
                     {
-                        UpdateDate = 100;
+                        UpdateDate = 10;
                         SetNames();
                     }
                 }
