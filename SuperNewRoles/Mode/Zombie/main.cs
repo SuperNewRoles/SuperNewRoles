@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.Zombie
         public static Color Policecolor = Color.blue;
         public static List<int> ZombiePlayers;
         public static bool IsZombie(this PlayerControl player) {
-            if (player.isImpostor() || ZombiePlayers.Contains(player.PlayerId)) return true;
+            if (player.Data.Role.IsImpostor || ZombiePlayers.Contains(player.PlayerId)) return true;
             return false;
         }
         [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]

@@ -21,6 +21,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                     {
                         yield return new WaitForSeconds(3);
                         target.RpcMurderPlayer(target);
+                        target.Data.IsDead = true;
                     }
                     AmongUsClient.Instance.StartCoroutine(BestFalseCoro(p));
                 }

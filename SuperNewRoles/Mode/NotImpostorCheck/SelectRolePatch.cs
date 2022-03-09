@@ -20,27 +20,28 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
             {
                 if (p.isImpostor())
                 {
-                    if (p.PlayerId == 0)
+                    if (p.PlayerId != 0)
                     {
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(p, p.Data.Role.Role);
-                    }
-                    p.RpcSetRoleDesync(p.Data.Role.Role, p);
-                    foreach (var pc in PlayerControl.AllPlayerControls)
-                    {
-                        if (main.Impostors.Contains(pc.PlayerId))
+                        p.RpcSetRoleDesync(p.Data.Role.Role);
+                        foreach (var pc in PlayerControl.AllPlayerControls)
                         {
-                            p.RpcSetRoleDesync(RoleTypes.Scientist, pc);
-                            pc.RpcSetRoleDesync(RoleTypes.Scientist, p);
-
-                            if (p.PlayerId == 0 && pc.PlayerId != 0)
+                            if (main.Impostors.Contains(pc.PlayerId))
                             {
-                                DestroyableSingleton<RoleManager>.Instance.SetRole(pc, RoleTypes.Scientist);
+                                p.RpcSetRoleDesync(RoleTypes.Scientist, pc);
                             }
-                        } else
-                        {
-                            p.RpcSetRoleDesync(RoleTypes.Impostor, pc);
+                            else
+                            {
+                                p.RpcSetRoleDesync(RoleTypes.Impostor, pc);
+                            }
                             pc.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            DestroyableSingleton<RoleManager>.Instance.SetRole(pc,RoleTypes.Crewmate);
                         }
+                    }
+                    else
+                    {
+                        //ホストは代わりに普通のクルーにする
+                        p.RpcSetRole(RoleTypes.Crewmate);
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(p, p.Data.Role.Role);
                     }
                 }
             }
