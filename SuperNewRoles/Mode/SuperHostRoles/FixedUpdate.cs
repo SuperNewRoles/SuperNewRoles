@@ -60,67 +60,73 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (UpdateDate <= 0)
                     {
-                        UpdateDate = 10;
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        UpdateDate = 100;
+                        SetNames();
+                    }
+                }
+            }
+        }
+        public static void SetNames()
+        {
+
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                if (p.isAlive() && !p.isRole(CustomRPC.RoleId.God))
+                {
+                    if (p.PlayerId != 0)
+                    {
+                        p.RpcSetNamePrivate(getsetname(p));
+                    }
+                    else
+                    {
+                        Patch.SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
+                    }
+                }
+                else if (!p.Data.Disconnected)
+                {
+                    if (p.PlayerId != 0)
+                    {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {
-                            if (p.isAlive() && !p.isRole(CustomRPC.RoleId.God))
-                            {
-                                if (p.PlayerId != 0)
-                                {
-                                    p.RpcSetNamePrivate(getsetname(p));
-                                }
-                                else
-                                {
-                                    Patch.SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
-                                }
-                            }
-                            else if(!p.Data.Disconnected)
-                            {
-                                if (p.PlayerId != 0)
-                                {
-                                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                                    {
-                                        p2.RpcSetNamePrivate(getsetname(p2,true), SeePlayer: p);
-                                    }
-                                }
-                                else if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId)
-                                {
-                                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                                    {
-                                        Patch.SetNamesClass.SetPlayerRoleInfo(p2);
-                                    }
-                                }
-                            }
+                            p2.RpcSetNamePrivate(getsetname(p2, true), SeePlayer: p);
                         }
-                        if (RoleClass.MadMate.IsImpostorCheck)
+                    }
+                    else if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {
-                            var impostorplayers = new List<PlayerControl>();
-                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            Patch.SetNamesClass.SetPlayerRoleInfo(p2);
+                        }
+                    }
+                }
+            }
+            if (RoleClass.MadMate.IsImpostorCheck)
+            {
+                var impostorplayers = new List<PlayerControl>();
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.isImpostor())
+                    {
+                        impostorplayers.Add(p);
+                    }
+                }
+                foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
+                {
+                    if (p.isAlive() && p.PlayerId != 0)
+                    {
+                        foreach (PlayerControl p2 in impostorplayers)
+                        {
+                            p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
+                        }
+                    }
+                    else if (p.isAlive() && p.PlayerId != 0)
+                    {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        {
+                            if (p.isImpostor() || p.isRole(CustomRPC.RoleId.Egoist))
                             {
-                                if (p.isImpostor())
-                                {
-                                    impostorplayers.Add(p);
-                                }
-                            }
-                            foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
-                            {
-                                if (p.isAlive() && p.PlayerId != 0)
-                                {
-                                    foreach (PlayerControl p2 in impostorplayers)
-                                    {
-                                        p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed,p2.getDefaultName()),p);
-                                    }
-                                } else if(p.isAlive() && p.PlayerId != 0)
-                                {
-                                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                                    {
-                                        if (p.isImpostor() || p.isRole(CustomRPC.RoleId.Egoist))
-                                        {
-                                            SetNamesClass.SetPlayerNameColors(p);
-                                            SetNamesClass.SetPlayerRoleNames(p);
-                                        }
-                                    }
-                                }
+                                SetNamesClass.SetPlayerNameColors(p);
+                                SetNamesClass.SetPlayerRoleNames(p);
                             }
                         }
                     }
