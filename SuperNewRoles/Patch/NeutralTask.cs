@@ -26,11 +26,10 @@ namespace SuperNewRoles.Patch
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (Roles.RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
             {
-                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                    {
-                        task.Complete();
-                    }
-                    
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                {
+                    task.Complete();
+                }
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
         }
