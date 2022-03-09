@@ -17,34 +17,44 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetCustomRoles();
             ChangeGameOptions.SelectRoleOptionChange.RolesSelectOptionsChange();
         }
-        public static void SetCustomRoles() { 
+        public static void SetCustomRoles() {
+            bool IsChangeEngineer = false;
             if (RoleClass.Jester.IsUseVent)
             {
                 foreach (PlayerControl p in RoleClass.Jester.JesterPlayer)
                 {
+                    IsChangeEngineer = true;
                     if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
                     {
                         p.RpcSetRoleDesync(RoleTypes.Engineer);
                     }
                 }
-
-                PlayerControl.GameOptions.RoleOptions.EngineerCooldown = 0f;
-                PlayerControl.GameOptions.RoleOptions.EngineerInVentMaxTime = 0f;
-                PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
             }
             if (RoleClass.MadMate.IsUseVent)
             {
                 foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
                 {
+                    IsChangeEngineer = true;
                     if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
                     {
                         p.RpcSetRoleDesync(RoleTypes.Engineer);
                     }
                 }
-
+            }
+            if (IsChangeEngineer)
+            {
                 PlayerControl.GameOptions.RoleOptions.EngineerCooldown = 0f;
                 PlayerControl.GameOptions.RoleOptions.EngineerInVentMaxTime = 0f;
                 PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+            }
+            foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
+            {
+                p.RpcSetRoleDesync(RoleTypes.Impostor);
+                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                {
+                    p2.RpcSetRoleDesync(RoleTypes.Scientist,p);
+                    p.RpcSetRoleDesync(RoleTypes.Impostor,p2);
+                }
             }
         }
         public static void OneOrNotListSet()
