@@ -9,18 +9,6 @@ namespace SuperNewRoles.Mode.HideAndSeek
 {
     class Patch
     {
-        [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoEnterVent))]
-        class CoEnterVentPatch
-        {
-            public static void Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
-            {
-                if ((ModeHandler.isMode(ModeId.HideAndSeek) && !ZombieOptions.HASUseVent.getBool()))
-                {
-                    __instance.ExitAllVents();
-                    __instance.RpcExitVent(id);
-                }
-            }
-        }
         public class RepairSystemPatch
         {
             public static void Postfix(PlayerControl __instance) {
@@ -62,32 +50,6 @@ namespace SuperNewRoles.Mode.HideAndSeek
                             door.SetDoorway(true);
                         }
             }
-        }
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
-        class VentRPCHandlerPatch
-        {
-            static void Postfix([HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
-            {
-                try
-                {
-                    byte packetId = callId;
-                    switch (packetId)
-                    {
-                        case (byte)RpcCalls.EnterVent:
-                            if (ModeHandler.isMode(ModeId.HideAndSeek))
-                            {
-                                var vent = ((IEnumerable<Vent>)ShipStatus.Instance.AllVents).First<Vent>((Func<Vent, bool>)(v => v.Id == reader.ReadPackedInt32()));
-                                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                                {
-                                    p.MyPhysics.RpcExitVent(vent.Id);
-                                }
-                            }
-                            break;
-                    }
-                }
-                catch { 
-                }
-             }
         }
         public class HASFixed
         {
