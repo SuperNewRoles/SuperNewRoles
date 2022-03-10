@@ -52,7 +52,7 @@ namespace SuperNewRoles
         public static void Postfix()
         {
             IsSetRoleRpc = true;
-            if (ModeHandler.thisMode == ModeId.Default)
+            if (ModeHandler.isMode(ModeId.Default))
             {
                 AllRoleSetClass.OneOrNotListSet();
                 AllRoleSetClass.AllRoleSet();

@@ -12,12 +12,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
-    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
-    class startgamepatch {
-        public static void Postfix() {
-            Roles.RoleClass.clearAndReloadRoles();
-        }
-    }
+    
     [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
     class NeutralTask
     {

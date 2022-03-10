@@ -59,14 +59,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     p.RpcSetRoleDesync(RoleTypes.Impostor,p2);
                 }
             }
-            AmongUsClient.Instance.StartCoroutine(SetServerRole());
-            IEnumerator SetServerRole(){
-                yield return new WaitForSeconds(3);
-                foreach (var pc in PlayerControl.AllPlayerControls)
-                {
-                    pc.RpcSetRole(RoleTypes.Shapeshifter);
-                }
-            }
         }
         public static void OneOrNotListSet()
         {

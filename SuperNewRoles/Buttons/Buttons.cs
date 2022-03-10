@@ -53,7 +53,6 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
-            RoleClass.clearAndReloadRoles();
             ScientistButton = new Buttons.CustomButton(
                 () =>
                 {

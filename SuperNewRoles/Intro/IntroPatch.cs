@@ -175,14 +175,6 @@ namespace SuperNewRoles.Patches
                 setupIntroTeam(__instance, ref yourTeam);
             }
         }
-        [HarmonyPatch(typeof(GameStartManager),nameof(GameStartManager.BeginGame))]
-        class RoleResetClass
-        {
-            public static void Postfix(GameStartManager __instance)
-            {
-                RoleClass.clearAndReloadRoles();
-            }
-        }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
         class BeginImpostorPatch
         {
