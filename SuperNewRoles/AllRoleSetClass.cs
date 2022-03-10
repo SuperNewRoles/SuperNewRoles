@@ -7,6 +7,9 @@ using Hazel;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Mode;
+using System.Collections;
+using UnityEngine;
+using BepInEx.IL2CPP.Utils;
 
 namespace SuperNewRoles
 {
@@ -63,6 +66,15 @@ namespace SuperNewRoles
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 p.RpcSetRole(p.Data.Role.Role);
+            }
+            AmongUsClient.Instance.StartCoroutine(SetServerRole());
+            IEnumerator SetServerRole()
+            {
+                yield return new WaitForSeconds(3);
+                foreach (var pc in PlayerControl.AllPlayerControls)
+                {
+                    pc.RpcSetRole(RoleTypes.Shapeshifter);
+                }
             }
         }
     }
