@@ -23,8 +23,7 @@ namespace SuperNewRoles.Patches
             {
                 return false;
             }
-                __instance.RpcMurderPlayer(target);
-            
+            __instance.RpcMurderPlayer(target);
             return false;
         }
     }

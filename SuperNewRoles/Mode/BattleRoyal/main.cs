@@ -22,23 +22,9 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    AmongUsClient.Instance.StartCoroutine(VentGuard());
-                    IEnumerator VentGuard()
-                    {
-                        yield return null;
-                        int clientId = __instance.myPlayer.getClientId();
-
-                            SuperNewRolesPlugin.Logger.LogInfo("UPDATE!");
-                            foreach (Vent vent in ShipStatus.Instance.AllVents)
-                            {
-                                if (vent.Id != id)
-                                {
-                                    MessageWriter val2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, (SendOption)1, clientId);
-                                    val2.Write(vent.Id);
-                                    AmongUsClient.Instance.FinishRpcImmediately(val2);
-                                }
-                            }
-                    }
+                    /*
+                    
+                    */
                     if (ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie))
                     {
                         MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 34, (SendOption)1);

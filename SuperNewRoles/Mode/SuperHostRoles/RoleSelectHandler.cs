@@ -1,9 +1,12 @@
-﻿using SuperNewRoles.CustomRPC;
+﻿using BepInEx.IL2CPP.Utils;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -54,6 +57,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     p2.RpcSetRoleDesync(RoleTypes.Scientist,p);
                     p.RpcSetRoleDesync(RoleTypes.Impostor,p2);
+                }
+            }
+            AmongUsClient.Instance.StartCoroutine(SetServerRole());
+            IEnumerator SetServerRole(){
+                yield return new WaitForSeconds(3);
+                foreach (var pc in PlayerControl.AllPlayerControls)
+                {
+                    pc.RpcSetRole(RoleTypes.Shapeshifter);
                 }
             }
         }

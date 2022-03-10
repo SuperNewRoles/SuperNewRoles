@@ -10,13 +10,45 @@ using SuperNewRoles.Mode;
 
 namespace SuperNewRoles
 {
-    [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
-    class RoleManagerSelectRolesPatch
+    [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.RpcSetRole))]
+    class RpcSetRolePatch
+    {
+        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo("Set!");
+            __instance.Data.Role.Role = roleType;
+            DestroyableSingleton<RoleManager>.Instance.SetRole(__instance, roleType);
+            if (RoleManagerSelectRolesPatch.IsSetRoleRpc) {
+                SuperNewRolesPlugin.Logger.LogInfo("SetOK!:"+roleType);                
+                if (AmongUsClient.Instance.AmClient)
+                    __instance.SetRole(roleType);
+                MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)44);
+                messageWriter.Write((ushort)roleType);
+                messageWriter.EndMessage();
+            }
+            return false;
+        }
+    }
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
+    class startgamepatch
     {
         public static void Postfix()
         {
             ModeHandler.ClearAndReload();
             Roles.RoleClass.clearAndReloadRoles();
+        }
+    }
+    [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
+    class RoleManagerSelectRolesPatch
+    {
+        public static bool IsSetRoleRpc = false;
+        public static void Prefix()
+        {
+            IsSetRoleRpc = false;
+        }
+        public static void Postfix()
+        {
+            IsSetRoleRpc = true;
             if (ModeHandler.thisMode == ModeId.Default)
             {
                 AllRoleSetClass.OneOrNotListSet();
@@ -27,6 +59,10 @@ namespace SuperNewRoles
             } else if (ModeHandler.isMode(ModeId.NotImpostorCheck))
             {
                 Mode.NotImpostorCheck.SelectRolePatch.SetDesync();
+            }
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                p.RpcSetRole(p.Data.Role.Role);
             }
         }
     }
