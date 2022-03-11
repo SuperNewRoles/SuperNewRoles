@@ -103,7 +103,7 @@ namespace SuperNewRoles.Patches
         public static void setupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
             Roles.IntroHandler.Handler();
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.isMode(ModeId.Default) || ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 if (PlayerControl.LocalPlayer.isNeutral())
                 {
