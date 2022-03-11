@@ -40,12 +40,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             return Teams;
         }
         public static void IntroHandler(IntroCutscene __instance)
-        {/**
+        {
+            /*
             __instance.BackgroundBar.material.color = Color.white;
             __instance.TeamTitle.text = ModTranslation.getString("BattleRoyalModeName");
             __instance.TeamTitle.color = new Color32(116,80,48,byte.MaxValue);
             __instance.ImpostorText.text = "";
-            **/
+            */
         }
         public static void RoleTextHandler(IntroCutscene __instance)
         {
