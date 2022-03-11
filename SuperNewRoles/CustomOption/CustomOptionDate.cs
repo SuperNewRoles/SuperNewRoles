@@ -447,7 +447,7 @@ namespace SuperNewRoles.CustomOption
             
             BaitOption = new CustomRoleOption(104, "BaitName", RoleClass.Bait.color,1);
             BaitPlayerCount = CustomOption.Create(105, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BaitOption);
-            BaitReportTime = CustomOption.Create(114, cs(Color.white, "BaitReportTimeSetting"), 2f,1f,4f,0.5f,BaitOption);
+            BaitReportTime = CustomOption.Create(114, ModTranslation.getString("BaitReportTimeSetting"), 2f,1f,4f,0.5f,BaitOption);
 
             HomeSecurityGuardOption = new CustomRoleOption(106, "HomeSecurityGuardName", RoleClass.HomeSecurityGuard.color, 1);
             HomeSecurityGuardPlayerCount = CustomOption.Create(107, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HomeSecurityGuardOption);
@@ -493,7 +493,7 @@ namespace SuperNewRoles.CustomOption
             **/
             NiceNekomataOption = new CustomRoleOption(154, "NiceNekomataName", RoleClass.NiceNekomata.color, 1);
             NiceNekomataPlayerCount = CustomOption.Create(155, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceNekomataOption);
-            NiceNekomataIsChain = CustomOption.Create(156, cs(Color.white, "NiceNekomataIsChainSetting"), true, NiceNekomataOption);
+            NiceNekomataIsChain = CustomOption.Create(156, ModTranslation.getString("NiceNekomataIsChainSetting"), true, NiceNekomataOption);
 
             EvilNekomataOption = new CustomRoleOption(157, "EvilNekomataName", RoleClass.EvilNekomata.color, 1);
             EvilNekomataPlayerCount = CustomOption.Create(158, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilNekomataOption);
@@ -528,12 +528,12 @@ namespace SuperNewRoles.CustomOption
 
             EgoistOption = new CustomRoleOption(187, "EgoistName", RoleClass.Egoist.color, 1);
             EgoistPlayerCount = CustomOption.Create(188, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], EgoistOption);
-            EgoistUseVent = CustomOption.Create(189, cs(Color.white, "EgoistUseVentSetting"), false, EgoistOption);
-            EgoistUseSabo = CustomOption.Create(190, cs(Color.white, "EgoistUseSaboSetting"), false, EgoistOption);
+            EgoistUseVent = CustomOption.Create(189, ModTranslation.getString("EgoistUseVentSetting"), false, EgoistOption);
+            EgoistUseSabo = CustomOption.Create(190, ModTranslation.getString("EgoistUseSaboSetting"), false, EgoistOption);
             EgoistImpostorLight = CustomOption.Create(191, cs(Color.white, "EgoistImpostorLightSetting"), false, EgoistOption);
 
             NiceRedRidingHoodOption = new CustomRoleOption(192, "NiceRedRidingHoodName", RoleClass.NiceRedRidingHood.color, 1);
-            NiceRedRidingHoodPlayerCount = CustomOption.Create(193, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceRedRidingHoodOption);
+            NiceRedRidingHoodPlayerCount = CustomOption.Create(193, ModTranslation.getString("SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceRedRidingHoodOption);
             NiceRedRidingHoodCount = CustomOption.Create(194, ModTranslation.getString("NiceRedRidingHoodCount"), 1f, 1f, 15f, 1f, NiceRedRidingHoodOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
