@@ -31,7 +31,7 @@ namespace SuperNewRoles.Patch
                             handled = true;
                             if (!Int32.TryParse(text.Substring(4), out LobbyLimit))
                             {
-                                __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/mp {最大人数t}");
+                                __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/mp {最大人数}");
                             }
                             else
                             {
@@ -45,7 +45,7 @@ namespace SuperNewRoles.Patch
                                 }
                                 else
                                 {
-                                    __instance.AddChat(PlayerControl.LocalPlayer, $"Lobby Size is already {LobbyLimit}");
+                                    __instance.AddChat(PlayerControl.LocalPlayer, $"プレイヤー最小人数は {LobbyLimit}です。");
                                 }
                             }
                         }
