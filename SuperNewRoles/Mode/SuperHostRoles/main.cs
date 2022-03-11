@@ -15,7 +15,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
         }
         public static void SendAllRoleChat()
-        {/*
+        {
             float Time = 3;
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
@@ -27,18 +27,20 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         Chat = "\n";
                     }
+                    SuperNewRolesPlugin.Logger.LogInfo("テスト");
                     string RoleName = ModTranslation.getString(RoleIntroDate.NameKey + "Name");
                     Chat += "あなたの役職は「" + RoleName + "」です！\n";
                     Chat += IntroDate.GetTitle(RoleIntroDate.NameKey, RoleIntroDate.TitleNum) + "\n";
                     Chat += RoleIntroDate.Description+"\n";
                     Chat += "設定:\n" + RoleHelpers.GetOptionsText(RoleIntroDate.RoleId);
-                    if ((Chat.Length / 100) != 1)
+                    SuperNewRolesPlugin.Logger.LogInfo("ChatLen:"+ (Chat.Length / 100));
+                    if ((Chat.Length / 100)+1 != 1)
                     {
-                        for (int i=0;i<(Chat.Length / 100); i++)
+                        for (int i=0;i<(Chat.Length / 100+1); i++)
                         {
                             try
                             {
-                                AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat.Substring(100 * i, 100 * (i + 1)), Time));
+                                AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat.Substring(100 * i, (100 * (i + 1)) -1), Time));
                             }
                             catch
                             {
@@ -67,7 +69,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             Chat2 += RoleIntroDate2.Description+"\n";
             Chat2 += "設定:\n"+RoleHelpers.GetOptionsText(RoleIntroDate2.RoleId);
             DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, Chat2);
-            */
+            
         }
     }
 }
