@@ -19,6 +19,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             AllRoleSetClass.AllRoleSet();
             SetCustomRoles();
             ChangeGameOptions.SelectRoleOptionChange.RolesSelectOptionsChange();
+            FixedUpdate.SetNames();
+            main.SendAllRoleChat();
         }
         public static void SetCustomRoles() {
             bool IsChangeEngineer = false;
@@ -52,12 +54,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
             {
-                p.RpcSetRoleDesync(RoleTypes.Impostor);
-                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                {
-                    p2.RpcSetRoleDesync(RoleTypes.Scientist,p);
-                    p.RpcSetRoleDesync(RoleTypes.Impostor,p2);
-                }
+                    p.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                    {
+                        p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                        p.RpcSetRoleDesync(RoleTypes.Impostor, p2);
+                    }
+                
             }
         }
         public static void OneOrNotListSet()
@@ -234,13 +237,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 RoleId ThisRoleId = RoleId.Egoist;
                 if (OptionDate == 10)
                 {
-                    Crewonepar.Add(ThisRoleId);
+                    Neutonepar.Add(ThisRoleId);
                 }
                 else
                 {
                     for (int i = 1; i <= OptionDate; i++)
                     {
-                        Crewnotonepar.Add(ThisRoleId);
+                        Neutnotonepar.Add(ThisRoleId);
                     }
                 }
             }

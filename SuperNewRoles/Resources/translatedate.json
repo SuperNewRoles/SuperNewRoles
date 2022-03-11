@@ -320,6 +320,10 @@
         "0" : "Use Task" ,
         "11" : "\u30bf\u30b9\u30af\u3092\u884c\u3046"
         } ,
+ "CrewMateDescription" : {
+        "0" : "Default Crewmate." ,
+        "11" : "\u901a\u5e38\u306e\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3067\u3059\u3002"
+        } ,
  "ImpostorName" : {
         "0" : "Impostor" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc"
@@ -327,6 +331,10 @@
  "ImpostorTitle1" : {
         "0" : "Use Sabotage & Vent" ,
         "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\uff06\u30d9\u30f3\u30c8\u3092\u884c\u3046"
+        } ,
+ "ImpostorDescription" : {
+        "0" : "Default Impostor." ,
+        "11" : "\u901a\u5e38\u306e\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3067\u3059\u3002"
         } ,
  "ZombieZombieName" : {
         "0" : "Zombie" ,
@@ -491,6 +499,10 @@
  "JesterTitle1" : {
         "0" : "Vote to get banned!" ,
         "11" : "\u6295\u7968\u3067\u8ffd\u653e\u3055\u308c\u3088\u3046"
+        } ,
+ "JesterDescription" : {
+        "0" : "If they are expelled at the meeting they win alone." ,
+        "11" : "\u4f1a\u8b70\u3067\u8ffd\u653e\u3055\u308c\u308b\u3068\u3001\u5358\u72ec\u52dd\u5229\u3057\u307e\u3059\u3002"
         } ,
  "JesterIsVentSetting" : {
         "0" : "I can put it in a vent." ,
@@ -1076,6 +1088,10 @@
         "0" : "Let's help the Imposter." ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u52a9\u3051\u3088\u3046"
         } ,
+ "MadMateDescription" : {
+        "0" : "The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmate can also win." ,
+        "11" : "\u5224\u5b9a\u306f\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u9663\u55b6\u3067\u3059\u304c\u3001\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u4ef2\u9593\u3067\u3059\u3002\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u52dd\u5229\u3059\u308b\u3068\u3001\u30de\u30c3\u30c9\u30e1\u30a4\u30c8\u3082\u52dd\u5229\u3067\u304d\u307e\u3059\u3002"
+        } ,
  "MadMateIsCheckImpostorSetting" : {
         "0" : "You can check the Imposter." ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u78ba\u8a8d\u3067\u304d\u308b"
@@ -1096,6 +1112,10 @@
         "0" : "Bait your enemies" ,
         "11" : "\u76f8\u624b\u306b\u901a\u5831\u3055\u305b\u3088\u3046"
         } ,
+ "BaitDescription" : {
+        "0" : "If you are killed you can force the person who killed you to report you." ,
+        "11" : "\u81ea\u5206\u304c\u30ad\u30eb\u3055\u308c\u308b\u3068\u3001\u30ad\u30eb\u3057\u3066\u304d\u305f\u76f8\u624b\u306b\u5f37\u5236\u7684\u306b\u901a\u5831\u3055\u305b\u308b\u3053\u3068\u304c\u3067\u304d\u307e\u3059\u3002"
+        } ,
  "BaitReportTimeSetting" : {
         "0" : "Report Time" ,
         "11" : "\u901a\u5831\u307e\u3067\u306e\u6642\u9593"
@@ -1108,6 +1128,10 @@
         "0" : "Guard My Home" ,
         "11" : "\u81ea\u5206\u305f\u3061\u306e\u5bb6\u3092\u5b88\u308d\u3046"
         } ,
+ "HomeSecurityGuardDescription" : {
+        "0" : "It is a Crewmate with no tasks." ,
+        "11" : "\u30bf\u30b9\u30af\u304c\u306a\u3044\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3067\u3059\u3002"
+        } ,
  "StuntManName" : {
         "0" : "Stunt Man" ,
         "11" : "\u30b9\u30bf\u30f3\u30c8\u30de\u30f3"
@@ -1115,6 +1139,10 @@
  "StuntManTitle1" : {
         "0" : "Guard Impostor Kill" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u30ad\u30eb\u3092\u9632\u3054\u3046"
+        } ,
+ "StuntManDescription" : {
+        "0" : "It can prevent a set number of kills unconditionally. If a kill is prevented a text will appear in the meeting stating that you were protected by a guardian angel." ,
+        "11" : "\u7121\u6761\u4ef6\u3067\u8a2d\u5b9a\u56de\u6570\u3060\u3051\u30ad\u30eb\u3092\u9632\u3052\u307e\u3059\u3002\u30ad\u30eb\u3092\u9632\u3044\u3060\u5834\u5408\u3001\u4f1a\u8b70\u306b\u5b88\u8b77\u5929\u4f7f\u306b\u5b88\u3089\u308c\u305f\u3068\u3044\u3046\u306e\u30c6\u30ad\u30b9\u30c8\u304c\u8868\u793a\u3055\u308c\u307e\u3059\u3002"
         } ,
  "StuntManGuardMaxCountSetting" : {
         "0" : "Guard Max Count" ,
@@ -1172,6 +1200,10 @@
         "0" : "Let's try not to die." ,
         "11" : "\u6b7b\u306a\u306a\u3044\u3088\u3046\u306b\u3057\u3088\u3046"
         } ,
+ "OpportunistDescription" : {
+        "0" : "If you are still alive by the end of the game you get an additional win." ,
+        "11" : "\u30b2\u30fc\u30e0\u7d42\u4e86\u6642\u307e\u3067\u306b\u751f\u304d\u6b8b\u3063\u3066\u3044\u308b\u3068\u3001\u8ffd\u52a0\u52dd\u5229\u3067\u304d\u307e\u3059\u3002"
+        } ,
  "BestfalsechargeName" : {
         "0" : "Best False Charge" ,
         "11" : "\u30d9\u30b9\u30c8\u51a4\u7f6a\u30e4\u30fc"
@@ -1179,6 +1211,10 @@
  "BestfalsechargeTitle1" : {
         "0" : "Lets' Task!" ,
         "11" : "\u30bf\u30b9\u30af\u3092\u3057\u3088\u3046"
+        } ,
+ "BestfalsechargeDescription" : {
+        "0" : "After the first meeting it dies." ,
+        "11" : "\u6700\u521d\u306e\u4f1a\u8b70\u304c\u7d42\u308f\u308b\u3068\u6b7b\u306b\u307e\u3059\u3002"
         } ,
  "NiceGamblerName" : {
         "0" : "Nice Gambler" ,
@@ -1248,6 +1284,10 @@
         "0" : "You Are God!!" ,
         "11" : "\u3042\u306a\u305f\u306f\u795e\u3060"
         } ,
+ "GodDescription" : {
+        "0" : "If you survive to the end you take away the win. Everyone's position is known." ,
+        "11" : "\u6700\u5f8c\u307e\u3067\u751f\u304d\u6b8b\u3063\u3066\u3044\u308b\u3068\u3001\u52dd\u5229\u3092\u596a\u3044\u53d6\u308a\u307e\u3059\u3002\u5168\u54e1\u306e\u5f79\u8077\u304c\u308f\u304b\u308a\u307e\u3059\u3002"
+        } ,
  "AllCleanerName" : {
         "0" : "All Cleaner" ,
         "11" : "\u30aa\u30fc\u30eb\u30af\u30ea\u30fc\u30ca\u30fc"
@@ -1276,6 +1316,14 @@
         "0" : "Let's have a human mess." ,
         "11" : "\u4eba\u5916\u30ac\u30c1\u30e3\u3092\u3057\u3088\u3046"
         } ,
+ "NiceNekomataTitle3" : {
+        "0" : "Let's mess around!" ,
+        "11" : "\u30ac\u30c1\u30e3\u3057\u3088\u3046\u305c\uff01"
+        } ,
+ "NiceNekomataDescription" : {
+        "0" : "If you are exiled at a meeting you take one of them with you on the road." ,
+        "11" : "\u81ea\u5206\u304c\u4f1a\u8b70\u3067\u8ffd\u653e\u3055\u308c\u308b\u3068\u3001\u8ab0\u304b\u4e00\u4eba\u3092\u9053\u9023\u308c\u306b\u3057\u307e\u3059\u3002"
+        } ,
  "NiceNekomataIsChainSetting" : {
         "0" : "Chain Nekomata" ,
         "11" : "\u732b\u53c8\u540c\u58eb\u304c\u9023\u9396\u3059\u308b"
@@ -1287,6 +1335,10 @@
  "EvilNekomataTitle1" : {
         "0" : "Let's take him on the road." ,
         "11" : "\u9053\u9023\u308c\u306b\u3057\u3088\u3046"
+        } ,
+ "EvilNekomataDescription" : {
+        "0" : "If you are expelled from the meeting you will take one person with you including your friends." ,
+        "11" : "\u81ea\u5206\u304c\u4f1a\u8b70\u3067\u8ffd\u653e\u3055\u308c\u308b\u3068\u3001\u4ef2\u9593\u542b\u3080\u8ab0\u304b\u4e00\u4eba\u3092\u9053\u9023\u308c\u306b\u3057\u307e\u3059\u3002"
         } ,
  "JackalFriendsName" : {
         "0" : "Jackal Friends" ,
@@ -1411,6 +1463,10 @@
  "EgoistTitle1" : {
         "0" : "We can survive this." ,
         "11" : "\u751f\u304d\u6b8b\u308d\u3046"
+        } ,
+ "EgoistDescription" : {
+        "0" : "Imposter judgment. The imposter appears to be a peer. If all the Imposters are dead and the Imposter's victory condition is achieved (except Sabotage) the Egoist wins." ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u5224\u5b9a\u3067\u3059\u3002\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304b\u3089\u306f\u4ef2\u9593\u306b\u898b\u3048\u307e\u3059\u3002\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u3059\u3079\u3066\u6b7b\u3093\u3067\u3044\u308b\u72b6\u614b\u3067\u3001\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u52dd\u5229\u6761\u4ef6\u3092\u9054\u6210\u3059\u308b(\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u4ee5\u5916)\u3068\u30a8\u30b4\u30a4\u30b9\u30c8\u306e\u52dd\u5229\u3067\u3059\u3002"
         } ,
  "EgoistUseVentSetting" : {
         "0" : "I can use Vent." ,

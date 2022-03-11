@@ -11,6 +11,7 @@ using Hazel;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Mode;
+using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles
 {
@@ -86,6 +87,38 @@ namespace SuperNewRoles
             }
             return null;
         }
+
+        public static string GetOptionsText(RoleId role, bool IsSHR = true)
+        {
+            string returntext = "なし";
+            switch (role)
+            {
+                case RoleId.Jester:
+                    returntext = CustomOptions.JesterIsVent.name + ":" + CustomOptions.JesterIsVent.getString()+"\n";
+                    if (!IsSHR)
+                    {
+                        returntext += CustomOptions.JesterIsSabotage.name + ":" + CustomOptions.JesterIsSabotage.getString() + "\n";
+                    }
+                    returntext += CustomOptions.JesterIsWinCleartask.name + ":" + CustomOptions.JesterIsWinCleartask.getString() + "\n";
+                    break;
+                case RoleId.NiceNekomata:
+                    returntext = CustomOptions.NiceNekomataIsChain.name + ":" + CustomOptions.NiceNekomataIsChain.getString() + "\n";
+                    break;
+                case RoleId.Bait:
+                    returntext = CustomOptions.BaitReportTime.name + ":" + CustomOptions.BaitReportTime.getString() + "\n";
+                    break;
+                case RoleId.MadMate:
+                    returntext = CustomOptions.MadMateIsUseVent.name + ":" + CustomOptions.MadMateIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.MadMateIsCheckImpostor.name + ":" + CustomOptions.MadMateIsCheckImpostor.getString() + "\n";
+                    break;
+                case RoleId.Egoist:
+                    returntext = CustomOptions.EgoistUseVent.name + ":" + CustomOptions.EgoistUseVent.getString() + "\n";
+                    returntext += CustomOptions.EgoistUseSabo.name + ":" + CustomOptions.EgoistUseSabo.getString() + "\n";
+                    break;
+            }
+            return returntext;
+        }
+
         public static void setRole(this PlayerControl player, RoleId role)
         {
             switch (role)

@@ -36,8 +36,17 @@ namespace SuperNewRoles.Helpers
             if (TargetPlayer == null || NewName == null || !AmongUsClient.Instance.AmHost) return;
             if (SeePlayer == null) SeePlayer = TargetPlayer;
             var clientId = SeePlayer.getClientId();
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SetName, Hazel.SendOption.Reliable, clientId);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SetName, SendOption.Reliable, clientId);
             writer.Write(NewName);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
+        public static void RPCSendChatPrivate(this PlayerControl TargetPlayer,string Chat,PlayerControl SeePlayer = null)
+        {
+            if (TargetPlayer == null || Chat == null) return;
+            if (SeePlayer == null) SeePlayer = TargetPlayer;
+            var clientId = SeePlayer.getClientId();
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SendChat, SendOption.Reliable, clientId);
+            writer.Write(Chat);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
         public static void UncheckSetVisor(this PlayerControl p, string id)

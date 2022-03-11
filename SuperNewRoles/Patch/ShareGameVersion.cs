@@ -11,6 +11,14 @@ using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Patch
 {
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
+    public static class PlayerCountChange
+    {
+        public static void Prefix(GameStartManager __instance)
+        {
+            __instance.MinPlayers = 1;
+        }
+    }
     class ShareGameVersion
     {
         public static bool IsVersionOK = false;

@@ -15,15 +15,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         public static void WrapUp() { 
             if (AmongUsClient.Instance.AmHost && !RoleClass.Bestfalsecharge.IsOnMeeting && RoleClass.IsMeeting)
             {
+                PlayerControl impostor = null;
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.isImpostor()) {
+                        impostor = p;
+                    }
+                }
                 foreach (PlayerControl p in RoleClass.Bestfalsecharge.BestfalsechargePlayer)
                 {
-                    IEnumerator BestFalseCoro(PlayerControl target)
-                    {
-                        yield return new WaitForSeconds(3);
-                        target.RpcMurderPlayer(target);
-                        target.Data.IsDead = true;
-                    }
-                    AmongUsClient.Instance.StartCoroutine(BestFalseCoro(p));
+                        impostor.RpcMurderPlayer(p);
+                        p.Data.IsDead = true;
                 }
                 RoleClass.Bestfalsecharge.IsOnMeeting = true;
             }

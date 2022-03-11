@@ -146,7 +146,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 )//&& Chat.WinCond == null)
+            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamImpostorsAlive != 0)//&& Chat.WinCond == null)
             {
                 IsImpostorWin = true;
                 GameOverReason endReason;

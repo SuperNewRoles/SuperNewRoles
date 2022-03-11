@@ -35,13 +35,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         {
             var rdm = ModHelpers.GetRandomIndex(p);
             var random = p[rdm];
-            IEnumerator NekomataCoro(PlayerControl target)
+            PlayerControl impostor = null;
+            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
             {
-                yield return new WaitForSeconds(3);
-                target.RpcMurderPlayer(target);
-                target.Data.IsDead = true;
+                if (p2.isImpostor())
+                {
+                    impostor = p2;
+                }
             }
-            AmongUsClient.Instance.StartCoroutine(NekomataCoro(random));
+            impostor.RpcMurderPlayer(random);
+            random.Data.IsDead = true;
             if ((random.isRole(CustomRPC.RoleId.NiceNekomata) || random.isRole(CustomRPC.RoleId.EvilNekomata)) && RoleClass.NiceNekomata.IsChain)
             {
                 p.RemoveAt(rdm);

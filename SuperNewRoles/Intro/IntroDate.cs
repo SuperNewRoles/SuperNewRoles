@@ -15,7 +15,7 @@ namespace SuperNewRoles.Intro
         public string TitleDesc;
         public Color color;
         public CustomRPC.RoleId RoleId;
-
+        public string Description;
         IntroDate(string NameKey, Color color , Int16 TitleNum ,CustomRPC.RoleId RoleId)
         {
             this.color = color;
@@ -23,6 +23,7 @@ namespace SuperNewRoles.Intro
             this.RoleId = RoleId;
             this.TitleNum = TitleNum;
             this.TitleDesc = Intro.IntroDate.GetTitle(NameKey, TitleNum);
+            this.Description = ModTranslation.getString(NameKey+"Description");
         }
         public static IntroDate GetIntroDate(CustomRPC.RoleId RoleId,PlayerControl p = null)
         {
@@ -166,7 +167,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate SelfBomberIntro = new IntroDate("SelfBomber", RoleClass.SelfBomber.color, 1, CustomRPC.RoleId.SelfBomber);
         public static IntroDate GodIntro = new IntroDate("God", RoleClass.God.color, 1, CustomRPC.RoleId.God);
         public static IntroDate AllCleanerIntro = new IntroDate("AllCleaner", RoleClass.AllCleaner.color, 1, CustomRPC.RoleId.AllCleaner);
-        public static IntroDate NiceNekomataIntro = new IntroDate("NiceNekomata", RoleClass.NiceNekomata.color, 1, CustomRPC.RoleId.NiceNekomata);
+        public static IntroDate NiceNekomataIntro = new IntroDate("NiceNekomata", RoleClass.NiceNekomata.color, 3, CustomRPC.RoleId.NiceNekomata);
         public static IntroDate EvilNekomataIntro = new IntroDate("EvilNekomata", RoleClass.EvilNekomata.color, 1, CustomRPC.RoleId.EvilNekomata);
         public static IntroDate JackalFriendsIntro = new IntroDate("JackalFriends", RoleClass.JackalFriends.color, 2, CustomRPC.RoleId.JackalFriends);
         public static IntroDate DoctorIntro = new IntroDate("Doctor", RoleClass.Doctor.color, 1, CustomRPC.RoleId.Doctor);

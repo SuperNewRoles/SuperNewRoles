@@ -645,6 +645,7 @@ namespace SuperNewRoles.EndGame
         {
             if (!GameData.Instance) return false;
             if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
+            if (!RoleManagerSelectRolesPatch.IsSetRoleRpc) return false;
             if (Patch.DebugMode.IsDebugMode()) return false;
             var statistics = new PlayerStatistics(__instance);
             if (!ModeHandler.isMode(ModeId.Default))

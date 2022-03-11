@@ -94,8 +94,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
         }
         public static void ClearAndReload()
         {
-            PlayerControl.GameOptions.NumImpostors = 15;
-            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
         }            
         [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
         class ChangeRole

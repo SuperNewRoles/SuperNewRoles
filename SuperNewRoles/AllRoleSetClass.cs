@@ -19,16 +19,40 @@ namespace SuperNewRoles
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
             SuperNewRolesPlugin.Logger.LogInfo("Set!");
-            __instance.Data.Role.Role = roleType;
-            DestroyableSingleton<RoleManager>.Instance.SetRole(__instance, roleType);
-            if (RoleManagerSelectRolesPatch.IsSetRoleRpc) {
-                SuperNewRolesPlugin.Logger.LogInfo("SetOK!:"+roleType);                
-                if (AmongUsClient.Instance.AmClient)
-                    __instance.SetRole(roleType);
-                MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)44);
+
+            if (RoleManagerSelectRolesPatch.IsShapeSet)
+            {
+                MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
                 messageWriter.Write((ushort)roleType);
                 messageWriter.EndMessage();
             }
+            else
+            {
+                if (RoleManagerSelectRolesPatch.IsNotDesync)
+                {
+                    MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
+                    messageWriter.Write((ushort)roleType);
+                    messageWriter.EndMessage();
+                    __instance.SetRole(roleType);
+                }
+                else
+                {
+                    if (!RoleManagerSelectRolesPatch.IsNotPrefix)
+                    {
+                        __instance.Data.Role.Role = roleType;
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(__instance, roleType);
+                    }
+                    if (RoleManagerSelectRolesPatch.IsSetRoleRpc)
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("SetOK!:" + roleType);
+                        MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
+                        messageWriter.Write((ushort)roleType);
+                        messageWriter.EndMessage();
+                        __instance.SetRole(roleType);
+                    }
+                }
+            }
+
             return false;
         }
     }
@@ -44,14 +68,36 @@ namespace SuperNewRoles
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
     class RoleManagerSelectRolesPatch
     {
+        public static bool IsNotPrefix = false;
+        public static bool IsRPCSetRoleOK = false;
         public static bool IsSetRoleRpc = false;
+        public static bool IsShapeSet = false;
+        public static bool IsNotDesync = false;
         public static void Prefix()
         {
+            IsNotPrefix = false;
             IsSetRoleRpc = false;
+            IsRPCSetRoleOK = true;
+            IsShapeSet = false;
+            IsNotDesync = true;
+            if (ModeHandler.isMode(ModeId.BattleRoyal))
+            {
+                IsNotDesync = false;
+            }
+            if (ModeHandler.isMode(ModeId.NotImpostorCheck))
+            {
+                IsNotDesync = false;
+            }
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
+                IsNotDesync = false;
+            }
         }
         public static void Postfix()
         {
             IsSetRoleRpc = true;
+            IsRPCSetRoleOK = false;
+            IsNotPrefix = true;
             if (ModeHandler.isMode(ModeId.Default))
             {
                 AllRoleSetClass.OneOrNotListSet();
@@ -63,14 +109,17 @@ namespace SuperNewRoles
             {
                 Mode.NotImpostorCheck.SelectRolePatch.SetDesync();
             }
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-            {
-                p.RpcSetRole(p.Data.Role.Role);
+            if (!ModeHandler.isMode(ModeId.NotImpostorCheck) && !ModeHandler.isMode(ModeId.BattleRoyal)) {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    p.RpcSetRole(p.Data.Role.Role);
+                }
+                AmongUsClient.Instance.StartCoroutine(SetServerRole());
             }
-            AmongUsClient.Instance.StartCoroutine(SetServerRole());
             IEnumerator SetServerRole()
             {
                 yield return new WaitForSeconds(3);
+                IsShapeSet = true;
                 foreach (var pc in PlayerControl.AllPlayerControls)
                 {
                     pc.RpcSetRole(RoleTypes.Shapeshifter);

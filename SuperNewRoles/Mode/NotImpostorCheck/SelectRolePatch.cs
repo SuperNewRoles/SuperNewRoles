@@ -13,16 +13,17 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
             {
                 if (p.isImpostor())
                 {
+                    SuperNewRolesPlugin.Logger.LogInfo("ImpostorName:"+p.nameText.text);
                     main.Impostors.Add(p.PlayerId);
                 }
             }
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (p.isImpostor())
+                if (main.Impostors.Contains(p.PlayerId))
                 {
                     if (p.PlayerId != 0)
                     {
-                        p.RpcSetRoleDesync(p.Data.Role.Role);
+                        p.RpcSetRoleDesync(RoleTypes.Impostor);//p.Data.Role.Role);
                         foreach (var pc in PlayerControl.AllPlayerControls)
                         {
                             if (main.Impostors.Contains(pc.PlayerId))
@@ -39,10 +40,26 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                     }
                     else
                     {
-                        //ホストは代わりに普通のクルーにする
-                        p.RpcSetRole(RoleTypes.Crewmate);
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(p, p.Data.Role.Role);
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);//p.Data.Role.Role);
+                        foreach (var pc in PlayerControl.AllPlayerControls)
+                        {
+                            if (pc.PlayerId != 0)
+                            {
+                                if (main.Impostors.Contains(pc.PlayerId))
+                                {
+                                    p.RpcSetRoleDesync(RoleTypes.Scientist, pc);
+                                }
+                                else
+                                {
+                                    p.RpcSetRoleDesync(RoleTypes.Impostor, pc);
+                                }
+                                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                            }
+                        }
                     }
+                } else
+                {
+                    p.RpcSetRole(p.Data.Role.Role);
                 }
             }
         }

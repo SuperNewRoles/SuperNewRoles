@@ -29,21 +29,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
             }
         }
         public static void ClearAndReload() {
-            if (AmongUsClient.Instance.AmHost)
-            {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-                {
-                    if (player.Data.Role.IsImpostor)
-                    {
-                        player.RpcSetName(ModHelpers.cs(Roles.RoleClass.ImpostorRed, player.Data.GetPlayerName(PlayerOutfitType.Default)));
-                    }
-                    else
-                    {
-                        player.RpcSetName(ModHelpers.cs(new Color32(0, 255, 0, byte.MaxValue), player.Data.GetPlayerName(PlayerOutfitType.Default)));
-
-                    }
-                }
-            }
+            
         }
     }
 }
