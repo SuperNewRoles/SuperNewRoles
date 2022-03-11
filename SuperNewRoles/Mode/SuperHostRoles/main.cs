@@ -44,7 +44,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             catch
                             {
-                                AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat.Substring(100 * i)-1, Time));
+                                AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat.Substring((100 * i)-1), Time));
                             }
                             Time += 3;
                         }
