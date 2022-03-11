@@ -44,7 +44,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             catch
                             {
-                                AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat.Substring(100 * i), Time));
+                                AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat.Substring(100 * i)-1, Time));
                             }
                             Time += 3;
                         }
@@ -69,7 +69,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             Chat2 += RoleIntroDate2.Description+"\n";
             Chat2 += "設定:\n"+RoleHelpers.GetOptionsText(RoleIntroDate2.RoleId);
             DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, Chat2);
-            
         }
     }
 }
