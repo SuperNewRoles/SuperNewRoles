@@ -18,10 +18,13 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
         {
             public static void Prefix(MeetingHud __instance)
             {
-                if (Mode.ModeHandler.isMode(Mode.ModeId.NotImpostorCheck))
-                {
-                    EndMeetingPatch();
-                }
+				if (ModeHandler.isMode(Mode.ModeId.NotImpostorCheck))
+				{
+					EndMeetingPatch();
+				}
+				else if (ModeHandler.isMode(ModeId.SuperHostRoles)) {
+					SuperHostRoles.MorePatch.MeetingEnd();
+				}
             }
 
         }

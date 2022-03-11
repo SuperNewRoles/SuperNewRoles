@@ -15,16 +15,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         public static void WrapUp() { 
             if (AmongUsClient.Instance.AmHost && !RoleClass.Bestfalsecharge.IsOnMeeting && RoleClass.IsMeeting)
             {
-                PlayerControl impostor = null;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                {
-                    if (p.isImpostor()) {
-                        impostor = p;
-                    }
-                }
                 foreach (PlayerControl p in RoleClass.Bestfalsecharge.BestfalsechargePlayer)
                 {
-                        impostor.RpcMurderPlayer(p);
+                        p.CheckMurder(p);
                         p.Data.IsDead = true;
                 }
                 RoleClass.Bestfalsecharge.IsOnMeeting = true;

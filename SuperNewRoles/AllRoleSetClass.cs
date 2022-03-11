@@ -88,10 +88,12 @@ namespace SuperNewRoles
             {
                 IsNotDesync = false;
             }
+            /*
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 IsNotDesync = false;
             }
+            */
         }
         public static void Postfix()
         {

@@ -11,23 +11,31 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
             Teams.Add(PlayerControl.LocalPlayer);
-            if (PlayerControl.LocalPlayer.isCrew())
+            try
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                if (PlayerControl.LocalPlayer.isCrew())
                 {
-                    if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        Teams.Add(p);
+                        if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                        {
+                            Teams.Add(p);
+                        }
                     }
                 }
-            } else if(PlayerControl.LocalPlayer.isImpostor())
+                else if (PlayerControl.LocalPlayer.isImpostor())
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.isImpostor() && p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                        {
+                            Teams.Add(p);
+                        }
+                    }
+                }
+            } catch (Exception e)
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                    if (p.isImpostor() && p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
-                    {
-                        Teams.Add(p);
-                    }
-                }
+                SuperNewRolesPlugin.Logger.LogInfo("イントロエラー:"+e);
             }
             return Teams;
         }

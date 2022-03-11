@@ -1,6 +1,9 @@
-﻿using System;
+﻿using BepInEx.IL2CPP.Utils;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -9,6 +12,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void WrapUp(GameData.PlayerInfo exiled)
         {
             if (!AmongUsClient.Instance.AmHost) return;
+
+            AmongUsClient.Instance.StartCoroutine(ResetName());
+            IEnumerator ResetName()
+            {
+                yield return new WaitForSeconds(1);
+                FixedUpdate.SetNames();
+            }
             Roles.BestFalseCharge.WrapUp();
             if (exiled == null) return;
             Roles.Jester.WrapUp(exiled);

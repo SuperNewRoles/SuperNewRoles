@@ -567,7 +567,6 @@ namespace SuperNewRoles.EndGame
         {
             try
             {
-                
                 if (ExileController.Instance != null && ExileController.Instance.exiled != null)
                 {
                     PlayerControl player = ModHelpers.playerById(ExileController.Instance.exiled.Object.PlayerId);

@@ -50,6 +50,55 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
 
         }
+        public static void SetRoleNames()
+        {
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                if (!p.Data.Disconnected)
+                {
+                    if (p.isDead())
+                    {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        {
+                            if (!p2.Data.Disconnected)
+                            {
+                                var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
+                                p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()),p);
+                            }
+                        }
+                    }
+                    else if (p.isAlive())
+                    {
+                        var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
+                        p.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()), p);
+                    }
+                }
+            }
+        }
+        public static void AllMeetingText()
+        {
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                if (!p.Data.Disconnected)
+                {
+                    if (p.isDead())
+                    {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        {
+                            if (!p2.Data.Disconnected) {
+
+                                var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
+                                p2.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color, p.getDefaultName()),p);
+                            }
+                        }
+                    } else if (p.isAlive())
+                    {
+                        var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
+                        p.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color, p.getDefaultName()));
+                    }
+                }
+            }
+        }
         public static void Update()
         {
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
@@ -61,14 +110,20 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (UpdateDate <= 0)
                     {
                         UpdateDate = 10;
-                        SetNames();
+                        //SetNames();
                     }
                 }
             }
         }
+        public static void SetDefaultNames()
+        {
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                p.RpcSetName(p.getDefaultName());
+            }
+        }
         public static void SetNames()
         {
-
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (p.isAlive() && !p.isRole(CustomRPC.RoleId.God))
@@ -82,7 +137,24 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Patch.SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                     }
                 }
-                else if (!p.Data.Disconnected)
+                else if (!p.Data.Disconnected && p.isDead())
+                {
+                    if (p.PlayerId != 0)
+                    {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        {
+                            p2.RpcSetNamePrivate(getsetname(p2, p2.isDead()), SeePlayer: p);
+                        }
+                    }
+                    else if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        {
+                            SetNamesClass.SetPlayerRoleInfo(p2);
+                        }
+                    }
+                }
+                else if (!p.Data.Disconnected && p.isRole(CustomRPC.RoleId.God))
                 {
                     if (p.PlayerId != 0)
                     {
@@ -95,7 +167,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {
-                            Patch.SetNamesClass.SetPlayerRoleInfo(p2);
+                            SetNamesClass.SetPlayerRoleInfo(p2);
                         }
                     }
                 }
