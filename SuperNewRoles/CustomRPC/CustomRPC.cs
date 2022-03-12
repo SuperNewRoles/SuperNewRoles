@@ -99,7 +99,8 @@ namespace SuperNewRoles.CustomRPC
         SetScientistRPC,
         ReviveRPC,
         SetHaison,
-        SetWinCond
+        SetWinCond,
+        SetDetective
     }
     public static class RPCProcedure
     {
@@ -151,6 +152,12 @@ namespace SuperNewRoles.CustomRPC
             } else {
                 RoleClass.CountChanger.ChangeData[source.PlayerId] = target.PlayerId;
             }
+        }
+        public static void SetDetective(byte playerid)
+        {
+            var player = ModHelpers.playerById(playerid);
+            if (player == null) return;
+            Mode.Detective.main.DetectivePlayer = player;
         }
         public static void SetShareNamePlate(byte playerid,byte id) {
         }
@@ -543,6 +550,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.SetWinCond:
                         RPCProcedure.SetWinCond(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetDetective:
+                        RPCProcedure.SetDetective(reader.ReadByte());
                         break;
                     }
             }

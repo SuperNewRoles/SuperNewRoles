@@ -62,12 +62,13 @@ namespace SuperNewRoles.Mode
             else if (isMode(ModeId.Detective))
             {
                 thisMode = ModeId.Detective;
+                Detective.main.ClearAndReload();
             }
             else {
                 thisMode = ModeId.Default;
             }
         }
-        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName") };
+        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName"), ModTranslation.getString("DetectiveModeName") };
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;
@@ -93,6 +94,10 @@ namespace SuperNewRoles.Mode
             {
                 return SuperHostRoles.Intro.ModeHandler(__instance);
             }
+            else if (isMode(ModeId.Detective))
+            {
+                return SuperHostRoles.Intro.ModeHandler(__instance);
+            }
             return new Il2CppSystem.Collections.Generic.List<PlayerControl>();
         }
         public static void IntroHandler(IntroCutscene __instance) {
@@ -110,6 +115,10 @@ namespace SuperNewRoles.Mode
             {
                 Zombie.Intro.IntroHandler(__instance);
             }
+            else if (isMode(ModeId.Detective))
+            {
+                SuperHostRoles.Intro.IntroHandler(__instance);
+            }
         }
 
         public static void YouAreIntroHandler(IntroCutscene __instance)
@@ -117,6 +126,10 @@ namespace SuperNewRoles.Mode
             if (isMode(ModeId.Zombie))
             {
                 Zombie.Intro.YouAreHandle(__instance);
+            }
+            else if (isMode(ModeId.Detective))
+            {
+               　Detective.Intro.YouAreHandle(__instance);
             }
         }
         public static void OptionLoad() {
@@ -127,6 +140,7 @@ namespace SuperNewRoles.Mode
             BattleRoyal.BROption.Load();
             Zombie.ZombieOptions.Load();
             RandomColor.RandomColorOptions.Load();
+            Detective.DetectiveOptions.Load();
         }
         public static void FixedUpdate(PlayerControl __instance) {
             if (isMode(ModeId.Default)) return;
@@ -163,6 +177,7 @@ namespace SuperNewRoles.Mode
             if (isMode(ModeId.Zombie)) return ModeId.Zombie;
             if (isMode(ModeId.RandomColor)) return ModeId.RandomColor;
             if (isMode(ModeId.NotImpostorCheck)) return ModeId.NotImpostorCheck;
+            if (isMode(ModeId.Detective)) return ModeId.Detective;
             return ModeId.No;
         }
         public static string GetThisModeIntro() {
@@ -188,9 +203,9 @@ namespace SuperNewRoles.Mode
                 case ModeId.RandomColor:
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[4];
                 case ModeId.NotImpostorCheck:
-                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[5];/*
+                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[5];
                 case ModeId.Detective:
-                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[6];*/
+                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[6];
             }
             return false;
         }
@@ -218,11 +233,20 @@ namespace SuperNewRoles.Mode
             {
                 return NotImpostorCheck.WinCheck.CheckEndGame(__instance);
             }
+            else if (isMode(ModeId.NotImpostorCheck))
+            {
+                return NotImpostorCheck.WinCheck.CheckEndGame(__instance);
+            }
+            else if (isMode(ModeId.Detective))
+            {
+                return Detective.WinCheckPatch.CheckEndGame(__instance);
+            }
             return false;
         }
         public static bool IsBlockVanilaRole()
         {
             if (isMode(ModeId.NotImpostorCheck)) return false;
+            if (isMode(ModeId.Detective)) return false;
             return true;
         }
     }

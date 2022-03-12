@@ -17,29 +17,49 @@ namespace SuperNewRoles.Patch
             try
             {                
                 if (!AmongUsClient.Instance.AmHost) return true;
-                if (ModeHandler.isMode(ModeId.Detective))
+                if (ModeHandler.isMode(ModeId.Detective) && Mode.Detective.main.IsNotDetectiveVote)
                 {
                     foreach (var ps in __instance.playerStates)
                     {
                         if (ps.TargetPlayerId == Mode.Detective.main.DetectivePlayer.PlayerId && !ps.DidVote)
                         {
                             return false;
-                        } else
+                        } else if(ps.TargetPlayerId == Mode.Detective.main.DetectivePlayer.PlayerId && ps.DidVote)
                         {
                             MeetingHud.VoterState[] statesdetective;
                             GameData.PlayerInfo exiledPlayerdetective = PlayerControl.LocalPlayer.Data;
                             bool tiedetective = false;
 
                             List<MeetingHud.VoterState> statesListdetective = new List<MeetingHud.VoterState>();
-                            statesdetective = statesListdetective.ToArray();
+                            if (ps.VotedFor != ps.TargetPlayerId)
+                            {
+                                statesListdetective.Add(new MeetingHud.VoterState()
+                                {
+                                    VoterId = ps.TargetPlayerId,
+                                    VotedForId = ps.VotedFor
+                                });
+                                statesdetective = statesListdetective.ToArray();
 
-                            var VotingDatadetective = __instance.CustomCalculateVotes();
-                            byte exileIddetective = byte.MaxValue;
-                            int maxdetective = 0;
+                                var VotingDatadetective = __instance.CustomCalculateVotes();
 
-                            exiledPlayerdetective = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == ps.VotedFor);
+                                exiledPlayerdetective = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == ps.VotedFor);
 
-                            __instance.RpcVotingComplete(statesdetective, exiledPlayerdetective, tiedetective); //RPC
+                                __instance.RpcVotingComplete(statesdetective, exiledPlayerdetective, tiedetective); //RPC
+                            } else
+                            {
+
+                                statesListdetective.Add(new MeetingHud.VoterState()
+                                {
+                                    VoterId = ps.TargetPlayerId,
+                                    VotedForId = 253
+                                });
+                                statesdetective = statesListdetective.ToArray();
+
+                                var VotingDatadetective = __instance.CustomCalculateVotes();
+                                exiledPlayerdetective = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == 253);
+
+                                __instance.RpcVotingComplete(statesdetective, exiledPlayerdetective, tiedetective); //RPC
+                            }
                             return false;
                         }
                     }

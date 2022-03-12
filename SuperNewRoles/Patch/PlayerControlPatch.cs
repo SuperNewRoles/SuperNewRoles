@@ -23,6 +23,7 @@ namespace SuperNewRoles.Patches
             {
                 return false;
             }
+            if (ModeHandler.isMode(ModeId.Detective) && target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
             __instance.RpcMurderPlayer(target);
             return false;
         }
@@ -45,7 +46,10 @@ namespace SuperNewRoles.Patches
                     Mode.SuperHostRoles.MurderPlayer.Postfix(__instance, target);
                 }
             }
-            
+            else if (ModeHandler.isMode(ModeId.Detective))
+            {
+                Mode.Detective.main.MurderPatch(target);
+            }
             else if (ModeHandler.isMode(ModeId.Default))
             {
                 if (RoleHelpers.IsQuarreled(target))

@@ -111,6 +111,10 @@ namespace SuperNewRoles
             {
                 Mode.NotImpostorCheck.SelectRolePatch.SetDesync();
             }
+            else if (ModeHandler.isMode(ModeId.Detective))
+            {
+                Mode.Detective.main.RoleSelect();
+            }
             if (!ModeHandler.isMode(ModeId.NotImpostorCheck) && !ModeHandler.isMode(ModeId.BattleRoyal)) {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
