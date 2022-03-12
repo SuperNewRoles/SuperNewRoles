@@ -1,18 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kPRH4gA17b4WPWsO6h8omfShFplLCOtCegd7hJsY0k7nBJnoYKkLkFhNMZccjfzra3xiN4N9Y1jACMXCfqpmvw==",
+  "dgSpecHash": "eLncNeeqrbLqQ94+SKVpnosv/vcOK2BEFcgVO+tud5waRrLRkjVizQ2mniBzc5VjEm5UBqZa7UrOa6Ygmt7rCQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\10user\\source\\repos\\SuperNewRoles\\SuperNewRoles\\SuperNewRoles.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\10user\\.nuget\\packages\\discordrichpresence\\1.0.175\\discordrichpresence.1.0.175.nupkg.sha512",
-    "C:\\Users\\10user\\.nuget\\packages\\microsoft.win32.registry\\4.5.0\\microsoft.win32.registry.4.5.0.nupkg.sha512",
-    "C:\\Users\\10user\\.nuget\\packages\\newtonsoft.json\\12.0.2\\newtonsoft.json.12.0.2.nupkg.sha512",
-    "C:\\Users\\10user\\.nuget\\packages\\system.buffers\\4.4.0\\system.buffers.4.4.0.nupkg.sha512",
-    "C:\\Users\\10user\\.nuget\\packages\\system.memory\\4.5.0\\system.memory.4.5.0.nupkg.sha512",
-    "C:\\Users\\10user\\.nuget\\packages\\system.numerics.vectors\\4.4.0\\system.numerics.vectors.4.4.0.nupkg.sha512",
-    "C:\\Users\\10user\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.0\\system.runtime.compilerservices.unsafe.4.5.0.nupkg.sha512",
-    "C:\\Users\\10user\\.nuget\\packages\\system.security.accesscontrol\\4.5.0\\system.security.accesscontrol.4.5.0.nupkg.sha512",
-    "C:\\Users\\10user\\.nuget\\packages\\system.security.principal.windows\\4.5.0\\system.security.principal.windows.4.5.0.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }
