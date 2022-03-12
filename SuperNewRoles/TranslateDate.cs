@@ -15,6 +15,7 @@ namespace SuperNewRoles
         public static int defaultLanguage = (int)SupportedLangs.English;
         public static Dictionary<string, Dictionary<int, string>> stringData = new Dictionary<string, Dictionary<int, string>>();
 
+        private const string blankText = "[BLANK]";
         public ModTranslation()
         {
 
@@ -23,11 +24,14 @@ namespace SuperNewRoles
         public static void Load()
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
-            Stream stream = assembly.GetManifestResourceStream("SuperNewRoles.Resources.translatedate.json");
-            var byteTexture = new byte[stream.Length];
-            var read = stream.Read(byteTexture, 0, (int)stream.Length);
-            string json = System.Text.Encoding.UTF8.GetString(byteTexture);
+            Stream stream = assembly.GetManifestResourceStream("TheOtherRoles.Resources.stringData.json");
+            var byteArray = new byte[stream.Length];
+            var read = stream.Read(byteArray, 0, (int)stream.Length);
+            string json = System.Text.Encoding.UTF8.GetString(byteArray);
+
+            stringData = new Dictionary<string, Dictionary<int, string>>();
             JObject parsed = JObject.Parse(json);
+
             for (int i = 0; i < parsed.Count; i++)
             {
                 JProperty token = parsed.ChildrenTokens[i].TryCast<JProperty>();
@@ -35,9 +39,11 @@ namespace SuperNewRoles
 
                 string stringName = token.Name;
                 var val = token.Value.TryCast<JObject>();
+
                 if (token.HasValues)
                 {
                     var strings = new Dictionary<int, string>();
+
                     for (int j = 0; j < (int)SupportedLangs.Irish + 1; j++)
                     {
                         string key = j.ToString();
@@ -45,15 +51,16 @@ namespace SuperNewRoles
 
                         if (text != null && text.Length > 0)
                         {
-                            //SuperNewRolesPlugin.Instance.Log.LogInfo($"key: {stringName} {key} {text}");
-                            strings[j] = text;
+                            if (text == blankText) strings[j] = "";
+                            else strings[j] = text;
                         }
                     }
+
                     stringData[stringName] = strings;
                 }
             }
         }
-        
+
         public static uint GetLang()
         {
             return SaveManager.LastLanguage;

@@ -28,9 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Mode\新しいフォルダー\**" />
-      <EmbeddedResource Remove="Mode\新しいフォルダー\**" />
-      <None Remove="Mode\新しいフォルダー\**" />
+      <PackageReference Include="DiscordRichPresence" Version="1.0.175" />
     </ItemGroup>
 
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
