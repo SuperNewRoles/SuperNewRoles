@@ -16,60 +16,63 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SendAllRoleChat()
         {
-            float Time = 3;
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
-                if (!p.Data.Disconnected && p.PlayerId != 0)
+                float Time = 3;
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    IntroDate RoleIntroDate = IntroDate.GetIntroDate(p.getRole(), p);
-                    string Chat = "";
-                    if (p.isDead())
+                    if (!p.Data.Disconnected && p.PlayerId != 0)
                     {
-                        Chat = "\n";
-                    }
-                    SuperNewRolesPlugin.Logger.LogInfo("テスト");
-                    string RoleName = ModTranslation.getString(RoleIntroDate.NameKey + "Name");
-                    Chat += "あなたの役職は「" + RoleName + "」です！\n";
-                    Chat += IntroDate.GetTitle(RoleIntroDate.NameKey, RoleIntroDate.TitleNum) + "\n";
-                    Chat += RoleIntroDate.Description+"\n";
-                    Chat += "設定:\n" + RoleHelpers.GetOptionsText(RoleIntroDate.RoleId);
-                    SuperNewRolesPlugin.Logger.LogInfo("ChatLen:"+ (Chat.Length / 100));
-                    if ((Chat.Length / 100)+1 != 1)
-                    {
-                        for (int i=0;i<(Chat.Length / 100+1); i++)
+                        IntroDate RoleIntroDate = IntroDate.GetIntroDate(p.getRole(), p);
+                        string Chat = "";
+                        if (p.isDead())
                         {
-                            try
-                            {
-                                AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat.Substring(100 * i, (100 * (i + 1)) -1), Time));
-                            }
-                            catch
-                            {
-                                AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat.Substring((100 * i)-1), Time));
-                            }
-                            Time += 3;
+                            Chat = "\n";
                         }
+                        SuperNewRolesPlugin.Logger.LogInfo("テスト");
+                        string RoleName = ModTranslation.getString(RoleIntroDate.NameKey + "Name");
+                        Chat += "あなたの役職は「" + RoleName + "」です！\n";
+                        Chat += IntroDate.GetTitle(RoleIntroDate.NameKey, RoleIntroDate.TitleNum) + "\n";
+                        Chat += RoleIntroDate.Description + "\n";
+                        Chat += "設定:\n" + RoleHelpers.GetOptionsText(RoleIntroDate.RoleId);
+                        SuperNewRolesPlugin.Logger.LogInfo("ChatLen:" + (Chat.Length / 100));
+                        if ((Chat.Length / 100) + 1 != 1)
+                        {
+                            for (int i = 0; i < (Chat.Length / 100 + 1); i++)
+                            {
+                                try
+                                {
+                                    AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat.Substring(100 * i, (100 * (i + 1)) - 1), Time));
+                                }
+                                catch
+                                {
+                                    AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat.Substring((100 * i) - 1), Time));
+                                }
+                                Time += 3;
+                            }
+                        }
+                        else
+                        {
+                            AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat, Time));
+                        }
+                        IEnumerator ChatSend(PlayerControl Player, string Chat, float Time)
+                        {
+                            yield return new WaitForSeconds(Time);
+                            //                        PlayerControl.LocalPlayer.RpcSetNamePrivate();
+                            Player.RPCSendChatPrivate(Chat);
+                        }
+                        Time += 3;
                     }
-                    else
-                    {
-                        AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat, Time));
-                    }
-                    IEnumerator ChatSend(PlayerControl Player,string Chat,float Time)
-                    {
-                        yield return new WaitForSeconds(Time);
-//                        PlayerControl.LocalPlayer.RpcSetNamePrivate();
-                        Player.RPCSendChatPrivate(Chat);
-                    }
-                    Time += 3;
                 }
+                IntroDate RoleIntroDate2 = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole(), PlayerControl.LocalPlayer);
+                string Chat2 = "";
+                string RoleName2 = ModTranslation.getString(RoleIntroDate2.NameKey + "Name");
+                Chat2 = Chat2 + "あなたの役職は「" + RoleName2 + "」です！\n";
+                Chat2 += IntroDate.GetTitle(RoleIntroDate2.NameKey, RoleIntroDate2.TitleNum) + "\n";
+                Chat2 += RoleIntroDate2.Description + "\n";
+                Chat2 += "設定:\n" + RoleHelpers.GetOptionsText(RoleIntroDate2.RoleId);
+                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, Chat2);
             }
-            IntroDate RoleIntroDate2 = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole(), PlayerControl.LocalPlayer);
-            string Chat2 = "";
-            string RoleName2 = ModTranslation.getString(RoleIntroDate2.NameKey + "Name");
-            Chat2 = Chat2 + "あなたの役職は「" + RoleName2 + "」です！\n";
-            Chat2 += IntroDate.GetTitle(RoleIntroDate2.NameKey, RoleIntroDate2.TitleNum) + "\n";
-            Chat2 += RoleIntroDate2.Description+"\n";
-            Chat2 += "設定:\n"+RoleHelpers.GetOptionsText(RoleIntroDate2.RoleId);
-            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, Chat2);
         }
     }
 }

@@ -115,7 +115,7 @@ namespace SuperNewRoles
             {
                 Mode.Detective.main.RoleSelect();
             }
-            if (!ModeHandler.isMode(ModeId.NotImpostorCheck) && !ModeHandler.isMode(ModeId.BattleRoyal)) {
+            if (!ModeHandler.isMode(ModeId.NotImpostorCheck) && !ModeHandler.isMode(ModeId.BattleRoyal) && !ModeHandler.isMode(ModeId.Default)) {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     p.RpcSetRole(p.Data.Role.Role);
