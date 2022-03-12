@@ -61,8 +61,7 @@ namespace SuperNewRoles
     {
         public static void Postfix()
         {
-            ModeHandler.ClearAndReload();
-            Roles.RoleClass.clearAndReloadRoles();
+            RoleClass.clearAndReloadRoles();
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]

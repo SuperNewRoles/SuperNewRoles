@@ -19,10 +19,20 @@ namespace SuperNewRoles.Patches
         {
             if (ModeHandler.isMode(ModeId.Default))
             {
-                if (!PlayerControl.LocalPlayer.Data.Role.IsImpostor && PlayerControl.LocalPlayer.isNeutral())
+                var newTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                newTeam2.Add(PlayerControl.LocalPlayer);
+                yourTeam = newTeam2;
+                if (PlayerControl.LocalPlayer.isCrew())
                 {
                     var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     newTeam.Add(PlayerControl.LocalPlayer);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                        {
+                            newTeam.Add(p);
+                        }
+                    }
                     yourTeam = newTeam;
                 }
                 if (PlayerControl.LocalPlayer.isImpostor())
