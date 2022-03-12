@@ -40,6 +40,7 @@ namespace SuperNewRoles.Mode.Detective
             writer.EndRPC();
             CustomRPC.RPCProcedure.SetDetective(random.PlayerId);
             DetectivePlayer.RpcSetName(ModHelpers.cs(DetectiveColor,DetectivePlayer.getDefaultName()));
+            DetectivePlayer.SetName(ModHelpers.cs(DetectiveColor, DetectivePlayer.getDefaultName()));
         }
         public static void MurderPatch(PlayerControl target)
         {
