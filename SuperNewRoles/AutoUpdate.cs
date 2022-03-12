@@ -29,6 +29,17 @@ namespace SuperNewRoles
 {
     public class AutoUpdate
     {
+        [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.UpdateAnnounceText))]
+        public static class Announcement
+        {
+            public static bool Prefix(AnnouncementPopUp __instance)
+            {
+                var text = __instance.AnnounceTextMeshPro;
+                text.text = announcement;
+                return false;
+            }
+        }
+        public static string announcement;
         public static GenericPopup InfoPopup;
         private static bool IsLoad = false;
         public static string updateURL = null;
@@ -108,10 +119,13 @@ namespace SuperNewRoles
                 {
                     return false; // Something went wrong
                 }
+                string changeLog = data["body"]?.ToString();
+                if (changeLog != null) announcement = changeLog;
                 // check version
                 SuperNewRolesPlugin.NewVersion = tagname.Replace("v", "");
                 System.Version newver = System.Version.Parse(SuperNewRolesPlugin.NewVersion);
                 System.Version Version = SuperNewRolesPlugin.Version;
+                announcement = string.Format(ModTranslation.getString("announcementUpdate"), newver, announcement);
                 if (newver == Version)
                 {
                     if (ConfigRoles.DebugMode.Value)
@@ -142,6 +156,7 @@ namespace SuperNewRoles
                             }
                         }
                     }
+                    
                 }
                 return false;
 

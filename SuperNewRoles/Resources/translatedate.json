@@ -52,13 +52,9 @@
         "0" : "100%" ,
         "11" : "100%"
         } ,
- "8" : {
-        "0" : "8" ,
-        "11" : "8"
-        } ,
- "1" : {
-        "0" : "1" ,
-        "11" : "1"
+ "announcementUpdate" : {
+        "0" : "<size=125%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> NewData</size>\\nVersion:{0}\\n{1}" ,
+        "11" : "<size=200%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u6700\u65b0\u60c5\u5831</size>\\n<size=150%>\u30d0\u30fc\u30b8\u30e7\u30f3:{0}</size>\\n{1}"
         } ,
  "SettingpresetSelection" : {
         "0" : "Preset" ,
