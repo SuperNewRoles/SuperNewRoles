@@ -75,6 +75,7 @@ namespace SuperNewRoles.Roles
             Hawk.ClearAndReload();
             Egoist.ClearAndReload();
             NiceRedRidingHood.ClearAndReload();
+            EvilEraser.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -108,7 +109,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> JesterPlayer;
             public static bool IsJesterWin;
-            public static Color32 color = new Color32(255, 255, 255, byte.MaxValue);
+            public static Color32 color = new Color32(255, 165, 0, byte.MaxValue);
             public static bool IsUseVent;
             public static bool IsUseSabo;
             public static bool IsJesterTaskClearWin;
@@ -909,6 +910,15 @@ namespace SuperNewRoles.Roles
                 NiceRedRidingHoodPlayer = new List<PlayerControl>();
                 Count = (int)CustomOptions.NiceRedRidingHoodCount.getFloat();
                 deadbodypos = null;
+            }
+        }
+        public static class EvilEraser
+        {
+            public static List<PlayerControl> EvilEraserPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                EvilEraserPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス
