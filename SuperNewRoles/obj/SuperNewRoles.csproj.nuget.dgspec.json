@@ -44,6 +44,12 @@
       "frameworks": {
         "netstandard2.1": {
           "targetAlias": "netstandard2.1",
+          "dependencies": {
+            "DiscordRichPresence": {
+              "target": "Package",
+              "version": "[1.0.175, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
