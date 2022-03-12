@@ -264,6 +264,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.NiceRedRidingHood):
                     Roles.RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.EvilEraser):
+                    Roles.RoleClass.EvilEraser.EvilEraserPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -421,6 +424,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.NiceRedRidingHood):
                     Roles.RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.EvilEraser):
+                    Roles.RoleClass.EvilEraser.EvilEraserPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -744,7 +750,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.NiceRedRidingHood;
                 }
-                //ロールチェック
+                else if (Roles.RoleClass.EvilEraser.EvilEraserPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.EvilEraser;
+            }
+            //ロールチェック
             }
             catch
             {

@@ -66,6 +66,7 @@ namespace SuperNewRoles.CustomRPC
         Hawk,
         Egoist,
         NiceRedRidingHood,
+        EvilEraser,
         //RoleId
     }
 
