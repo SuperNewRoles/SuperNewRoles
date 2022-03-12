@@ -9,7 +9,6 @@
     ".NETStandard,Version=v2.1/": {
       "SuperNewRoles/1.2.3.0": {
         "dependencies": {
-          "DiscordRichPresence": "1.0.175",
           "0Harmony": "2.7.0.0",
           "AppleAuth": "3.7.1.6",
           "Assembly-CSharp-firstpass": "3.7.1.6",
@@ -43,6 +42,7 @@
           "Mono.Cecil.Rocks": "0.11.4.0",
           "MonoMod.RuntimeDetour": "21.12.13.1",
           "MonoMod.Utils": "21.12.13.1",
+          "Newtonsoft.Json": "3.7.1.6",
           "QRCoder": "3.7.1.6",
           "Rewired_Core": "3.7.1.6",
           "Rewired_Windows": "3.7.1.6",
@@ -124,96 +124,6 @@
         },
         "runtime": {
           "SuperNewRoles.dll": {}
-        }
-      },
-      "DiscordRichPresence/1.0.175": {
-        "dependencies": {
-          "Microsoft.Win32.Registry": "4.5.0",
-          "Newtonsoft.Json": "12.0.2"
-        },
-        "runtime": {
-          "lib/netstandard2.0/DiscordRPC.dll": {
-            "assemblyVersion": "1.0.175.0",
-            "fileVersion": "1.0.175.0"
-          }
-        }
-      },
-      "Microsoft.Win32.Registry/4.5.0": {
-        "dependencies": {
-          "System.Buffers": "4.4.0",
-          "System.Memory": "4.5.0",
-          "System.Security.AccessControl": "4.5.0",
-          "System.Security.Principal.Windows": "4.5.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.Win32.Registry.dll": {
-            "assemblyVersion": "4.1.1.0",
-            "fileVersion": "4.6.26515.6"
-          }
-        }
-      },
-      "Newtonsoft.Json/12.0.2": {
-        "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "assemblyVersion": "12.0.0.0",
-            "fileVersion": "12.0.2.23222"
-          }
-        }
-      },
-      "System.Buffers/4.4.0": {
-        "runtime": {
-          "lib/netstandard2.0/System.Buffers.dll": {
-            "assemblyVersion": "4.0.2.0",
-            "fileVersion": "4.6.25519.3"
-          }
-        }
-      },
-      "System.Memory/4.5.0": {
-        "dependencies": {
-          "System.Buffers": "4.4.0",
-          "System.Numerics.Vectors": "4.4.0",
-          "System.Runtime.CompilerServices.Unsafe": "4.5.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/System.Memory.dll": {
-            "assemblyVersion": "4.0.1.0",
-            "fileVersion": "4.6.26515.6"
-          }
-        }
-      },
-      "System.Numerics.Vectors/4.4.0": {
-        "runtime": {
-          "lib/netstandard2.0/System.Numerics.Vectors.dll": {
-            "assemblyVersion": "4.1.3.0",
-            "fileVersion": "4.6.25519.3"
-          }
-        }
-      },
-      "System.Runtime.CompilerServices.Unsafe/4.5.0": {
-        "runtime": {
-          "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {
-            "assemblyVersion": "4.0.4.0",
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "System.Security.AccessControl/4.5.0": {
-        "dependencies": {
-          "System.Security.Principal.Windows": "4.5.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/System.Security.AccessControl.dll": {
-            "assemblyVersion": "4.1.1.0",
-            "fileVersion": "4.6.26515.6"
-          }
-        }
-      },
-      "System.Security.Principal.Windows/4.5.0": {
-        "runtime": {
-          "lib/netstandard2.0/System.Security.Principal.Windows.dll": {
-            "assemblyVersion": "4.1.1.0",
-            "fileVersion": "4.6.26515.6"
-          }
         }
       },
       "0Harmony/2.7.0.0": {
@@ -477,6 +387,14 @@
           "MonoMod.Utils.dll": {
             "assemblyVersion": "21.12.13.1",
             "fileVersion": "21.12.13.1"
+          }
+        }
+      },
+      "Newtonsoft.Json/3.7.1.6": {
+        "runtime": {
+          "Newtonsoft.Json.dll": {
+            "assemblyVersion": "3.7.1.6",
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -1112,69 +1030,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "DiscordRichPresence/1.0.175": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-qSWobPTbvHh9gOoBYT8C8eUhKtVdBI/WvW7GY9lNMEtsZIpL6nxCvYJwjsGL3dqlEAGY5k0vdq+wnuDLVBSV2w==",
-      "path": "discordrichpresence/1.0.175",
-      "hashPath": "discordrichpresence.1.0.175.nupkg.sha512"
-    },
-    "Microsoft.Win32.Registry/4.5.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-+FWlwd//+Tt56316p00hVePBCouXyEzT86Jb3+AuRotTND0IYn0OO3obs1gnQEs/txEnt+rF2JBGLItTG+Be6A==",
-      "path": "microsoft.win32.registry/4.5.0",
-      "hashPath": "microsoft.win32.registry.4.5.0.nupkg.sha512"
-    },
-    "Newtonsoft.Json/12.0.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-rTK0s2EKlfHsQsH6Yx2smvcTCeyoDNgCW7FEYyV01drPlh2T243PR2DiDXqtC5N4GDm4Ma/lkxfW5a/4793vbA==",
-      "path": "newtonsoft.json/12.0.2",
-      "hashPath": "newtonsoft.json.12.0.2.nupkg.sha512"
-    },
-    "System.Buffers/4.4.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-AwarXzzoDwX6BgrhjoJsk6tUezZEozOT5Y9QKF94Gl4JK91I4PIIBkBco9068Y9/Dra8Dkbie99kXB8+1BaYKw==",
-      "path": "system.buffers/4.4.0",
-      "hashPath": "system.buffers.4.4.0.nupkg.sha512"
-    },
-    "System.Memory/4.5.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-m0psCSpUxTGfvwyO0i03ajXVhgBqyXlibXz0Mo1dtKGjaHrXFLnuQ8rNBTmWRqbfRjr4eC6Wah4X5FfuFDu5og==",
-      "path": "system.memory/4.5.0",
-      "hashPath": "system.memory.4.5.0.nupkg.sha512"
-    },
-    "System.Numerics.Vectors/4.4.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-UiLzLW+Lw6HLed1Hcg+8jSRttrbuXv7DANVj0DkL9g6EnnzbL75EB7EWsw5uRbhxd/4YdG8li5XizGWepmG3PQ==",
-      "path": "system.numerics.vectors/4.4.0",
-      "hashPath": "system.numerics.vectors.4.4.0.nupkg.sha512"
-    },
-    "System.Runtime.CompilerServices.Unsafe/4.5.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-YrzNWduCDHhUaSRBxHxL11UkM2fD6y8hITHis4/LbQZ6vj3vdRjoH3IoPWWC9uDXK2wHIqn+b5gv1Np/VKyM1g==",
-      "path": "system.runtime.compilerservices.unsafe/4.5.0",
-      "hashPath": "system.runtime.compilerservices.unsafe.4.5.0.nupkg.sha512"
-    },
-    "System.Security.AccessControl/4.5.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-vW8Eoq0TMyz5vAG/6ce483x/CP83fgm4SJe5P8Tb1tZaobcvPrbMEL7rhH1DRdrYbbb6F0vq3OlzmK0Pkwks5A==",
-      "path": "system.security.accesscontrol/4.5.0",
-      "hashPath": "system.security.accesscontrol.4.5.0.nupkg.sha512"
-    },
-    "System.Security.Principal.Windows/4.5.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-U77HfRXlZlOeIXd//Yoj6Jnk8AXlbeisf1oq1os+hxOGVnuG+lGSfGqTwTZBoORFF6j/0q7HXIl8cqwQ9aUGqQ==",
-      "path": "system.security.principal.windows/4.5.0",
-      "hashPath": "system.security.principal.windows.4.5.0.nupkg.sha512"
-    },
     "0Harmony/2.7.0.0": {
       "type": "reference",
       "serviceable": false,
@@ -1336,6 +1191,11 @@
       "sha512": ""
     },
     "MonoMod.Utils/21.12.13.1": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Newtonsoft.Json/3.7.1.6": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

@@ -36,6 +36,7 @@ C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Mono.Cecil.Rocks.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\MonoMod.RuntimeDetour.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\MonoMod.Utils.dll
+C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Newtonsoft.Json.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\QRCoder.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Rewired_Core.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Rewired_Windows.dll
