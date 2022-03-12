@@ -35,7 +35,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         {
             var rdm = ModHelpers.GetRandomIndex(p);
             var random = p[rdm];
-            random.CmdCheckMurder(random);
+            random.CheckMurder(random);
             if ((random.isRole(CustomRPC.RoleId.NiceNekomata) || random.isRole(CustomRPC.RoleId.EvilNekomata)) && RoleClass.NiceNekomata.IsChain)
             {
                 p.RemoveAt(rdm);

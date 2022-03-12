@@ -18,7 +18,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 foreach (PlayerControl p in RoleClass.Bestfalsecharge.BestfalsechargePlayer)
                 {
                         p.CheckMurder(p);
-                        p.Data.IsDead = true;
                 }
                 RoleClass.Bestfalsecharge.IsOnMeeting = true;
             }

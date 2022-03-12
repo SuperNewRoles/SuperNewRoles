@@ -18,7 +18,8 @@ namespace SuperNewRoles.Mode
         SuperHostRoles,
         Zombie,
         RandomColor,
-        NotImpostorCheck
+        NotImpostorCheck,
+        Detective
     }
     class ModeHandler
     {
@@ -57,6 +58,10 @@ namespace SuperNewRoles.Mode
             {
                 thisMode = ModeId.NotImpostorCheck;
                 NotImpostorCheck.main.ClearAndReload();
+            }
+            else if (isMode(ModeId.Detective))
+            {
+                thisMode = ModeId.Detective;
             }
             else {
                 thisMode = ModeId.Default;
@@ -183,7 +188,9 @@ namespace SuperNewRoles.Mode
                 case ModeId.RandomColor:
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[4];
                 case ModeId.NotImpostorCheck:
-                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[5];
+                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[5];/*
+                case ModeId.Detective:
+                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[6];*/
             }
             return false;
         }

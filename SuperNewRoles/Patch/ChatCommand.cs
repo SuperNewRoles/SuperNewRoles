@@ -22,7 +22,7 @@ namespace SuperNewRoles.Patch
             {
                 string text = __instance.TextArea.text;
                 bool handled = false;
-                if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+                if (AmongUsClient.Instance.GameState != InnerNetClient.GameStates.Started)
                 {
                     if (text.ToLower().StartsWith("/mp "))
                     { // Unfortunately server holds this - need to do more trickery

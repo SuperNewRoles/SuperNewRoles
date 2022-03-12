@@ -54,17 +54,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (!p.Data.Disconnected)
+                if (!p.Data.Disconnected && p.PlayerId != 0)
                 {
                     if (p.isDead())
                     {
                         foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {
-                            if (!p2.Data.Disconnected)
-                            {
                                 var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
                                 p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName()),p);
-                            }
+                            
                         }
                     }
                     else if (p.isAlive())
@@ -79,7 +77,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (!p.Data.Disconnected)
+                if (!p.Data.Disconnected && p.PlayerId != 0)
                 {
                     if (p.isDead())
                     {

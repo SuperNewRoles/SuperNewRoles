@@ -56,6 +56,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     IEnumerator ChatSend(PlayerControl Player,string Chat,float Time)
                     {
                         yield return new WaitForSeconds(Time);
+//                        PlayerControl.LocalPlayer.RpcSetNamePrivate();
                         Player.RPCSendChatPrivate(Chat);
                     }
                     Time += 3;
