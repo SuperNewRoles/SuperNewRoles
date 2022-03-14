@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles
 {
@@ -40,13 +41,21 @@ namespace SuperNewRoles.Roles
             if (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor) return true;
             return false;
         }
+        public static bool IsLightOutVisionNoTime()
+        {
+            if (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor) return true;
+            return false;
+        }
         public static void LightOutStartRPC()
         {
-            if (IsLightOutVision())
+            if (IsLightOutVisionNoTime())
             {
                 new CustomMessage(ModTranslation.getString("ClergymanLightOutMessage"), RoleClass.Clergyman.DurationTime);
             }
-            RoleClass.Clergyman.OldButtonTimer = DateTime.Now;
+            if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.ClergymanLightOut))
+            {
+                RoleClass.Clergyman.OldButtonTimer = DateTime.Now;
+            }
         }
         public static void EndMeeting()
         {

@@ -191,10 +191,12 @@ namespace SuperNewRoles.Buttons
                     var target = Jackal.JackalFixedPatch.JackalsetTarget();
                     if (target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.IsCreateSidekick)
                     {
+                        bool IsFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
                         MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CreateSidekick, Hazel.SendOption.Reliable, -1);
                         killWriter.Write(target.PlayerId);
+                        killWriter.Write(IsFakeSidekick);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        CustomRPC.RPCProcedure.CreateSidekick(target.PlayerId);
+                        CustomRPC.RPCProcedure.CreateSidekick(target.PlayerId,IsFakeSidekick);
                         RoleClass.Jackal.IsCreateSidekick = false;
                         Jackal.resetCoolDown();
                     }

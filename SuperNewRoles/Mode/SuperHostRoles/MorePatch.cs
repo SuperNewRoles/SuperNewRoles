@@ -23,7 +23,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             IEnumerator SetNameCoro()
             {
                 yield return new WaitForSeconds(5);
-                FixedUpdate.SetNames();
+                FixedUpdate.SetDefaultNames();
             }
         }
         public static void MeetingEnd()

@@ -10,6 +10,7 @@ using SuperNewRoles.Mode;
 using System.Collections;
 using UnityEngine;
 using BepInEx.IL2CPP.Utils;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles
 {
@@ -30,10 +31,12 @@ namespace SuperNewRoles
             {
                 if (RoleManagerSelectRolesPatch.IsNotDesync)
                 {
+                    SuperNewRolesPlugin.Logger.LogInfo("SetOK!:" + roleType);
+                    if (AmongUsClient.Instance.AmClient)
+                        __instance.SetRole(roleType);
                     MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
                     messageWriter.Write((ushort)roleType);
-                    messageWriter.EndMessage();
-                    __instance.SetRole(roleType);
+                    messageWriter.EndMessage();             
                 }
                 else
                 {
@@ -44,11 +47,11 @@ namespace SuperNewRoles
                     }
                     if (RoleManagerSelectRolesPatch.IsSetRoleRpc)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("SetOK!:" + roleType);
+                        if (AmongUsClient.Instance.AmClient)
+                            __instance.SetRole(roleType);
                         MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
                         messageWriter.Write((ushort)roleType);
                         messageWriter.EndMessage();
-                        __instance.SetRole(roleType);
                     }
                 }
             }
@@ -61,7 +64,8 @@ namespace SuperNewRoles
     {
         public static void Postfix()
         {
-            RoleClass.clearAndReloadRoles();
+            RPCHelper.StartRPC(CustomRPC.CustomRPC.StartGameRPC).EndRPC();
+            CustomRPC.RPCProcedure.StartGameRPC();
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]

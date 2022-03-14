@@ -262,6 +262,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption NiceRedRidingHoodPlayerCount;
         public static CustomOption NiceRedRidingHoodCount;
 
+        public static CustomRoleOption EvilEraserOption;
+        public static CustomOption EvilEraserPlayerCount;
+        public static CustomOption EvilEraserMaxCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -535,6 +539,10 @@ namespace SuperNewRoles.CustomOption
             NiceRedRidingHoodOption = new CustomRoleOption(192, "NiceRedRidingHoodName", RoleClass.NiceRedRidingHood.color, 1);
             NiceRedRidingHoodPlayerCount = CustomOption.Create(193, ModTranslation.getString("SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceRedRidingHoodOption);
             NiceRedRidingHoodCount = CustomOption.Create(194, ModTranslation.getString("NiceRedRidingHoodCount"), 1f, 1f, 15f, 1f, NiceRedRidingHoodOption);
+
+            EvilEraserOption = new CustomRoleOption(210, "EvilEraserName", RoleClass.EvilEraser.color, 1);
+            EvilEraserPlayerCount = CustomOption.Create(211, ModTranslation.getString("SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilEraserOption);
+            EvilEraserMaxCount = CustomOption.Create(212, ModTranslation.getString("EvilEraserMaxCountSetting"), 1f, 1f, 15f, 1f, EvilEraserOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

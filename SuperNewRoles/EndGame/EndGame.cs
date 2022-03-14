@@ -596,6 +596,7 @@ namespace SuperNewRoles.EndGame
             FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
             if (ModeHandler.isMode(ModeId.Default))
             {
+                EvilEraser.IsWinGodGuard = false;
                 var Player = ModHelpers.playerById(exiled.PlayerId);
                 if (RoleHelpers.IsQuarreled(Player))
                 {
@@ -710,7 +711,7 @@ namespace SuperNewRoles.EndGame
 
         public static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0)
+            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard())
             {
                 __instance.enabled = false;
                 GameOverReason endReason;
@@ -807,7 +808,7 @@ namespace SuperNewRoles.EndGame
                                 numCrewAlive++;
                             }
                             else if (playerInfo.Object.isNeutral()) { 
-                                if(playerInfo.Object.isRole(CustomRPC.RoleId.Jackal) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(playerInfo.Object))
+                                if(playerInfo.Object.isRole(CustomRPC.RoleId.Jackal) || playerInfo.Object.isRole(CustomRPC.RoleId.Sidekick))
                                 {
                                     numTotalJackalTeam++;
                                 } else if (playerInfo.Object.isRole(CustomRPC.RoleId.Egoist))

@@ -248,6 +248,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> JackalPlayer;
             public static List<PlayerControl> SidekickPlayer;
+            public static List<PlayerControl> FakeSidekickPlayer;
             public static Color32 color = new Color32(0,255,255, byte.MaxValue);
             public static float KillCoolDown;
             public static bool IsUseVent;
@@ -266,6 +267,7 @@ namespace SuperNewRoles.Roles
             {
                 JackalPlayer = new List<PlayerControl>();
                 SidekickPlayer = new List<PlayerControl>();
+                FakeSidekickPlayer = new List<PlayerControl>();
                 KillCoolDown = CustomOptions.JackalKillCoolDown.getFloat();
                 IsUseVent = CustomOptions.JackalUseVent.getBool();
                 IsUseSabo = CustomOptions.JackalUseSabo.getBool();
@@ -916,9 +918,13 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> EvilEraserPlayer;
             public static Color32 color = ImpostorRed;
+            public static Dictionary<int,int> Counts;
+            public static int Count;
             public static void ClearAndReload()
             {
                 EvilEraserPlayer = new List<PlayerControl>();
+                Counts = new Dictionary<int, int>();
+                Count = ((int)CustomOptions.EvilEraserMaxCount.getFloat()) - 1;
             }
         }
         //新ロールクラス

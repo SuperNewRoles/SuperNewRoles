@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Collections;
 using BepInEx.IL2CPP.Utils;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Patch
 {
@@ -54,6 +55,7 @@ namespace SuperNewRoles.Patch
                 timer = 600f;
                 RPCTimer = 1f;
                 notcreateroom = false;
+                RoleClass.clearAndReloadRoles();
                 GameStartManagerUpdatePatch.Proce = 0;
                 GameStartManagerUpdatePatch.LastBlockStart = false;
                 GameStartManagerUpdatePatch.VersionPlayers = new Dictionary<int, PlayerVersion>();

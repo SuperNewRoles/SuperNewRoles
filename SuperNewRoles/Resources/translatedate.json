@@ -1519,6 +1519,18 @@
  "NiceRedRidingHoodCount" : {
         "0" : "Maximum number of revives" ,
         "11" : "\u6700\u5927\u751f\u304d\u8fd4\u308a\u56de\u6570"
+        } ,
+ "EvilEraserName" : {
+        "0" : "Evil Eraser" ,
+        "11" : "\u30a4\u30d3\u30eb\u30a4\u30ec\u30a4\u30b5\u30fc"
+        } ,
+ "EvilEraserTitle1" : {
+        "0" : "Let's wipe out their abilities." ,
+        "11" : "\u80fd\u529b\u3092\u6d88\u3057\u53bb\u308d\u3046"
+        } ,
+ "EvilEraserMaxCountSetting" : {
+        "0" : "Max Erase Count" ,
+        "11" : "\u6700\u5927\u524a\u9664\u56de\u6570"
         } 
 
 }

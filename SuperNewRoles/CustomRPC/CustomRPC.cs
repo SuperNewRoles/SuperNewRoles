@@ -101,11 +101,29 @@ namespace SuperNewRoles.CustomRPC
         ReviveRPC,
         SetHaison,
         SetWinCond,
-        SetDetective
+        SetDetective,
+        UseEraserCount,
+        StartGameRPC
     }
     public static class RPCProcedure
     {
-
+        public static void StartGameRPC()
+        {
+            RoleClass.clearAndReloadRoles();
+        }
+        public static void UseEraserCount(byte playerid)
+        {
+            PlayerControl p = ModHelpers.playerById(playerid);
+            if (p == null) return;
+            if (!RoleClass.EvilEraser.Counts.ContainsKey(playerid))
+            {
+                RoleClass.EvilEraser.Counts[playerid] = RoleClass.EvilEraser.Count;
+            } else
+            {
+                RoleClass.EvilEraser.Counts[playerid]--;
+            }
+            SuperNewRolesPlugin.Logger.LogInfo("CountDatas:" + RoleClass.EvilEraser.Counts[playerid]);
+        }
         // Main Controls
         public static void AutoCreateRoom() {
             if (!ConfigRoles.IsAutoRoomCreate.Value) return;
@@ -345,13 +363,20 @@ namespace SuperNewRoles.CustomRPC
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
         }
-        public static void CreateSidekick(byte playerid) {
+        public static void CreateSidekick(byte playerid,bool IsFake) {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
-            DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
-            player.ClearRole();
-            RoleClass.Jackal.SidekickPlayer.Add(player);
-            PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            if (IsFake)
+            {
+                RoleClass.Jackal.FakeSidekickPlayer.Add(player);
+            }
+            else
+            {
+                DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
+                player.ClearRole();
+                RoleClass.Jackal.SidekickPlayer.Add(player);
+                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            }
         }
         public static void BomKillRPC(byte sourceId)
         {
@@ -511,7 +536,7 @@ namespace SuperNewRoles.CustomRPC
                         RPCProcedure.SidekickPromotes();
                         break;
                     case (byte)CustomRPC.CreateSidekick:
-                        RPCProcedure.CreateSidekick(reader.ReadByte());
+                        RPCProcedure.CreateSidekick(reader.ReadByte(),reader.ReadBoolean());
                         break;
                     case (byte)CustomRPC.SetSpeedBoost:
                         RPCProcedure.SetSpeedBoost(reader.ReadBoolean(),reader.ReadByte());
@@ -555,7 +580,13 @@ namespace SuperNewRoles.CustomRPC
                     case (byte)CustomRPC.SetDetective:
                         RPCProcedure.SetDetective(reader.ReadByte());
                         break;
-                    }
+                    case (byte)CustomRPC.UseEraserCount:
+                        RPCProcedure.UseEraserCount(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.StartGameRPC:
+                        RPCProcedure.StartGameRPC();
+                        break;
+                }
             }
         }
         

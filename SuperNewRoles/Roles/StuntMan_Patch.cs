@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
@@ -15,21 +16,23 @@ namespace SuperNewRoles.Roles
         {
             public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
-                if (AmongUsClient.Instance.AmHost || !ModeHandler.isMode(ModeId.SuperHostRoles))
+                if (AmongUsClient.Instance.AmHost && !ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
-                    if (RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(target))
+                    if (target.isRole(CustomRPC.RoleId.StuntMan))
                     {
-                        if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
-                        {
-                            RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
-                            target.RpcProtectPlayer(target,0);
-                        }
-                        else
-                        {
-                            if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
+                        if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard,__instance)) {
+                            if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
                             {
-                                RoleClass.StuntMan.GuardCount[target.PlayerId]--;
+                                RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
                                 target.RpcProtectPlayer(target, 0);
+                            }
+                            else
+                            {
+                                if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
+                                {
+                                    RoleClass.StuntMan.GuardCount[target.PlayerId]--;
+                                    target.RpcProtectPlayer(target, 0);
+                                }
                             }
                         }
                     }
