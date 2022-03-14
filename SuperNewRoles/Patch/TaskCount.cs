@@ -45,12 +45,10 @@ namespace SuperNewRoles.Patch
         {
             int TotalTasks = 0;
             int CompletedTasks = 0;
-            if (playerInfo.Object.isClearTask()) return Tuple.Create(CompletedTasks, TotalTasks);
             if (!playerInfo.Disconnected && playerInfo.Tasks != null &&
                 playerInfo.Object &&
                 (PlayerControl.GameOptions.GhostsDoTasks || !playerInfo.IsDead) &&
-                playerInfo.Role && playerInfo.Role.TasksCountTowardProgress &&
-                !playerInfo.Object.isClearTask()
+                playerInfo.Role && playerInfo.Role.TasksCountTowardProgress
                 )
             {
 
@@ -78,8 +76,11 @@ namespace SuperNewRoles.Patch
                 {
                     GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
                     var (playerCompleted, playerTotal) = TaskDate(playerInfo);
-                    __instance.TotalTasks += playerTotal;
-                    __instance.CompletedTasks += playerCompleted;
+                    if (!RoleHelpers.isClearTask(playerInfo.Object))
+                    {
+                        __instance.TotalTasks += playerTotal;
+                        __instance.CompletedTasks += playerCompleted;
+                    }
                 }
                 return;
             }

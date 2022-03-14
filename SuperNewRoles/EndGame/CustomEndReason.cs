@@ -14,6 +14,7 @@ namespace SuperNewRoles.EndGame
         JackalWin,
         QuarreledWin,
         EgoistWin,
+        WorkpersonWin,
         BugEnd
     }
 }

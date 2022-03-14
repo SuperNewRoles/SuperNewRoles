@@ -247,7 +247,13 @@ namespace SuperNewRoles.Mode
         {
             if (isMode(ModeId.NotImpostorCheck)) return false;
             if (isMode(ModeId.Detective)) return false;
+            if (isMode(ModeId.Default)) return false;
             return true;
+        }
+        public static bool IsBlockGuardianAngelRole()
+        {
+            if (isMode(ModeId.Default)) return true;
+            return IsBlockVanilaRole();
         }
     }
 }

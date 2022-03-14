@@ -67,6 +67,7 @@ namespace SuperNewRoles.CustomRPC
         Egoist,
         NiceRedRidingHood,
         EvilEraser,
+        Workperson,
         //RoleId
     }
 
@@ -103,10 +104,18 @@ namespace SuperNewRoles.CustomRPC
         SetWinCond,
         SetDetective,
         UseEraserCount,
-        StartGameRPC
+        StartGameRPC,
+        UncheckedSetTasks,
     }
     public static class RPCProcedure
     {
+        public static void uncheckedSetTasks(byte playerId, byte[] taskTypeIds)
+        {
+            var player = ModHelpers.playerById(playerId);
+            player.clearAllTasks();
+
+            GameData.Instance.SetTasks(playerId, taskTypeIds);
+        }
         public static void StartGameRPC()
         {
             RoleClass.clearAndReloadRoles();
@@ -585,6 +594,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.StartGameRPC:
                         RPCProcedure.StartGameRPC();
+                        break;
+                    case (byte)CustomRPC.UncheckedSetTasks:
+                        RPCProcedure.uncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
                         break;
                 }
             }

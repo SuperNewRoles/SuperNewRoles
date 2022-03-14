@@ -266,6 +266,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption EvilEraserPlayerCount;
         public static CustomOption EvilEraserMaxCount;
 
+        public static CustomRoleOption WorkpersonOption;
+        public static CustomOption WorkpersonPlayerCount;
+        public static CustomOption WorkpersonCommonTask;
+        public static CustomOption WorkpersonLongTask;
+        public static CustomOption WorkpersonShortTask;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -543,6 +549,12 @@ namespace SuperNewRoles.CustomOption
             EvilEraserOption = new CustomRoleOption(210, "EvilEraserName", RoleClass.EvilEraser.color, 1);
             EvilEraserPlayerCount = CustomOption.Create(211, ModTranslation.getString("SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilEraserOption);
             EvilEraserMaxCount = CustomOption.Create(212, ModTranslation.getString("EvilEraserMaxCountSetting"), 1f, 1f, 15f, 1f, EvilEraserOption);
+
+            WorkpersonOption = new CustomRoleOption(213, "WorkpersonName", RoleClass.Workperson.color, 1);
+            WorkpersonPlayerCount = CustomOption.Create(214, ModTranslation.getString("SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WorkpersonOption);
+            WorkpersonCommonTask = CustomOption.Create(215, ModTranslation.getString("GameCommonTasks"), 2,0,12,1, WorkpersonOption);
+            WorkpersonLongTask = CustomOption.Create(216, ModTranslation.getString("GameLongTasks"), 10,0,69,1, WorkpersonOption);
+            WorkpersonShortTask = CustomOption.Create(217, ModTranslation.getString("GameShortTasks"), 5,0,45,1, WorkpersonOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

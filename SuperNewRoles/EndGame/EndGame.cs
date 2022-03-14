@@ -24,6 +24,7 @@ namespace SuperNewRoles.EndGame
         QuarreledWin,
         GodWin,
         EgoistWin,
+        WorkpersonWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -199,6 +200,12 @@ namespace SuperNewRoles.EndGame
                 textRenderer.color = Roles.RoleClass.Egoist.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Egoist.color);
             }
+            else if (AdditionalTempData.winCondition == WinCondition.WorkpersonWin)
+            {
+                text = "WorkpersonName";
+                textRenderer.color = RoleClass.Workperson.color;
+                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
+            }
             if (ModeHandler.isMode(ModeId.BattleRoyal)) {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
                     if (p.isAlive())
@@ -353,6 +360,11 @@ namespace SuperNewRoles.EndGame
                 //var p = pc.Data;
                 var roles = Intro.IntroDate.GetIntroDate(p.Object.getRole(),p.Object);
                 var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
+                if (!p.Object.isRole(CustomRPC.RoleId.Workperson) && p.Object.isClearTask())
+                {
+                    tasksCompleted = 0;
+                    tasksTotal = 0;
+                }
                 var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
                     p.Disconnected == true ? FinalStatus.Disconnected :
                     FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId) ? FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] :
@@ -381,8 +393,9 @@ namespace SuperNewRoles.EndGame
                 notWinners.AddRange(RoleClass.God.GodPlayer);
                 notWinners.AddRange(RoleClass.Opportunist.OpportunistPlayer);
             notWinners.AddRange(RoleClass.Egoist.EgoistPlayer);
+            notWinners.AddRange(RoleClass.Workperson.WorkpersonPlayer);
 
-                List<WinningPlayerData> winnersToRemove = new List<WinningPlayerData>();
+            List<WinningPlayerData> winnersToRemove = new List<WinningPlayerData>();
                 foreach (WinningPlayerData winner in TempData.winners)
                 {
                     if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
@@ -396,6 +409,7 @@ namespace SuperNewRoles.EndGame
             bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
             bool HAISON = EndGameManagerSetUpPatch.IsHaison;
             bool EgoistWin = gameOverReason == (GameOverReason)CustomGameOverReason.EgoistWin;
+            bool WorkpersonWin = gameOverReason == (GameOverReason)CustomGameOverReason.WorkpersonWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -442,6 +456,13 @@ namespace SuperNewRoles.EndGame
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.EgoistWin;
+            }
+            else if (WorkpersonWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
+                TempData.winners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
             }
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
@@ -603,12 +624,11 @@ namespace SuperNewRoles.EndGame
                     var Side = RoleHelpers.GetOneSideQuarreled(Player);
                     if (Side.isDead())
                     {
-                        CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
-
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                         Writer.Write(Player.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        Roles.RoleClass.Quarreled.IsQuarreledWin = true;
+                        CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
+                        RoleClass.Quarreled.IsQuarreledWin = true;
                         CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
                     }
                 }
@@ -659,6 +679,7 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
+                if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
                 if (CheckAndEndGameForTaskWin(__instance)) return false;
             }
             return false;
@@ -762,6 +783,27 @@ namespace SuperNewRoles.EndGame
                 __instance.enabled = false;
                 CustomEndGame(GameOverReason.HumansByVote, false);
                 return true;
+            }
+            return false;
+        }
+        public static bool CheckAndEndGameForWorkpersonWin(ShipStatus __instance)
+        {
+            foreach (PlayerControl p in RoleClass.Workperson.WorkpersonPlayer)
+            {
+                if (!p.Data.Disconnected)
+                {
+                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                    if (playerCompleted >= playerTotal)
+                    {
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        Writer.Write(p.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
+                        __instance.enabled = false;
+                        CustomEndGame((GameOverReason)CustomGameOverReason.WorkpersonWin, false);
+                        return true;
+                    }
+                }
             }
             return false;
         }

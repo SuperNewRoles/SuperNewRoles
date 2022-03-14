@@ -1,6 +1,7 @@
 using HarmonyLib;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SuperNewRoles.Patch;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -83,7 +84,13 @@ namespace SuperNewRoles
 
             return ModHelpers.loadSpriteFromResources(key, pixelsPerUnit);
         }
+        [HarmonyPatch(typeof(LanguageSetter), nameof(LanguageSetter.SetLanguage))]
+        class SetLanguagePatch
+        {
+            static void Postfix()
+            {
+                ClientOptionsPatch.updateTranslations();
+            }
+        }
     }
-
-    
 }

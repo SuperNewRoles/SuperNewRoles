@@ -216,7 +216,6 @@ namespace SuperNewRoles.CustomOption
                 countOption = CustomOption.Create(id + 10000, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
         }
     }
-
     public class CustomOptionBlank : CustomOption
     {
         public CustomOptionBlank(CustomOption parent)
@@ -264,8 +263,13 @@ namespace SuperNewRoles.CustomOption
         public static void Postfix(ref int __result, ref RoleTypes role)
         {
             if (role == RoleTypes.Crewmate || role == RoleTypes.Impostor) return;
-
+            
             if (Mode.ModeHandler.IsBlockVanilaRole()) __result = 0;
+
+            if (role != RoleTypes.GuardianAngel) return;
+
+            if (Mode.ModeHandler.IsBlockGuardianAngelRole()) __result = 0;
+
         }
     }
 

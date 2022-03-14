@@ -76,6 +76,7 @@ namespace SuperNewRoles.Roles
             Egoist.ClearAndReload();
             NiceRedRidingHood.ClearAndReload();
             EvilEraser.ClearAndReload();
+            Workperson.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
@@ -925,6 +926,15 @@ namespace SuperNewRoles.Roles
                 EvilEraserPlayer = new List<PlayerControl>();
                 Counts = new Dictionary<int, int>();
                 Count = ((int)CustomOptions.EvilEraserMaxCount.getFloat()) - 1;
+            }
+        }
+        public static class Workperson
+        {
+            public static List<PlayerControl> WorkpersonPlayer;
+            public static Color32 color = new Color32(210, 180, 140,byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                WorkpersonPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

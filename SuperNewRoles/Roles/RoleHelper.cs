@@ -267,6 +267,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilEraser):
                     Roles.RoleClass.EvilEraser.EvilEraserPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Workperson):
+                    Roles.RoleClass.Workperson.WorkpersonPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -428,6 +431,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilEraser):
                     Roles.RoleClass.EvilEraser.EvilEraserPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Workperson):
+                    Roles.RoleClass.Workperson.WorkpersonPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
         }
@@ -474,6 +480,9 @@ namespace SuperNewRoles
                     IsTaskClear = true;
                     break; 
                 case (RoleId.Egoist):
+                    IsTaskClear = true;
+                    break; 
+                case (RoleId.Workperson):
                     IsTaskClear = true;
                     break; 
                 //タスククリアか
@@ -538,6 +547,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.Egoist):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Workperson):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -753,6 +765,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.EvilEraser.EvilEraserPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.EvilEraser;
+            }
+            else if (Roles.RoleClass.Workperson.WorkpersonPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Workperson;
             }
             //ロールチェック
             }

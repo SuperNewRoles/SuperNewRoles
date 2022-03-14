@@ -631,6 +631,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.NiceRedRidingHoodPlayerCount.getFloat();
                     case (RoleId.EvilEraser):
                     return CustomOption.CustomOptions.EvilEraserPlayerCount.getFloat();
+                    case (RoleId.Workperson):
+                    return CustomOption.CustomOptions.WorkpersonPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -641,12 +643,16 @@ namespace SuperNewRoles
             ImpostorPlayers = new List<PlayerControl>();
             foreach(PlayerControl Player in PlayerControl.AllPlayerControls)
             {
-                if (Player.Data.Role.IsImpostor)
+                if (Player.Data.Role.IsSimpleRole)
                 {
-                    ImpostorPlayers.Add(Player);
-                } else
-                {
-                    CrewMatePlayers.Add(Player);
+                    if (Player.isImpostor())
+                    {
+                        ImpostorPlayers.Add(Player);
+                    }
+                    else
+                    {
+                        CrewMatePlayers.Add(Player);
+                    }
                 }
             }
         }
@@ -1420,6 +1426,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.WorkpersonOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.WorkpersonOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Workperson;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
                     }
                 }
             }

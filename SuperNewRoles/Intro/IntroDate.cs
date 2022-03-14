@@ -112,6 +112,8 @@ namespace SuperNewRoles.Intro
                     return NiceRedRidingHoodIntro;
                 case (CustomRPC.RoleId.EvilEraser):
                     return EvilEraserIntro;
+                case (CustomRPC.RoleId.Workperson):
+                    return WorkpersonIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -180,6 +182,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate EgoistIntro = new IntroDate("Egoist", RoleClass.Egoist.color, 1, CustomRPC.RoleId.Egoist);
         public static IntroDate NiceRedRidingHoodIntro = new IntroDate("NiceRedRidingHood", RoleClass.NiceRedRidingHood.color, 1, CustomRPC.RoleId.NiceRedRidingHood);
         public static IntroDate EvilEraserIntro = new IntroDate("EvilEraser", RoleClass.EvilEraser.color, 1, CustomRPC.RoleId.EvilEraser);
+        public static IntroDate WorkpersonIntro = new IntroDate("Workperson", RoleClass.Workperson.color, 1, CustomRPC.RoleId.Workperson);
         //イントロオブジェ
     }
 }
