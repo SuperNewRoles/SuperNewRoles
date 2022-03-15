@@ -63,6 +63,10 @@ namespace SuperNewRoles
                 task.transform.SetParent(player.transform, false);
                 
                 task.Text = CustomOption.CustomOptions.cs(roleInfo.color, $"{ModTranslation.getString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
+                if (player.IsLovers())
+                {
+                    task.Text += "\n" + ModHelpers.cs(RoleClass.Lovers.color,ModTranslation.getString("LoversName")+": "+ string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                }
                 /**
                 if (player.IsQuarreled())
                 {

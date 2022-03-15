@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Patches;
+using System.Collections;
+using BepInEx.IL2CPP.Utils;
 
 namespace SuperNewRoles.Buttons
 {
@@ -33,6 +35,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SpeederSpeedDownButton;
         public static CustomButton JackalKillButton;
         public static CustomButton JackalSidekickButton;
+        public static CustomButton MagazinerAddButton;
+        public static CustomButton MagazinerGetButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -53,6 +57,68 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
+            MagazinerGetButton = new CustomButton(
+                  () =>
+                  {
+                      if (PlayerControl.LocalPlayer.CanMove && RoleClass.Magaziner.MyPlayerCount >= 1 && HudManager.Instance.KillButton.isCoolingDown && RoleClass.Magaziner.IsOKSet)
+                      {
+                          PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Magaziner.SetTime);
+                          RoleClass.Magaziner.MyPlayerCount--;
+                          if (RoleClass.Magaziner.SetTime != 0)
+                          {
+                              RoleClass.Magaziner.IsOKSet = false;
+                              AmongUsClient.Instance.StartCoroutine(IsOKSetSet());
+                          }
+                          IEnumerator IsOKSetSet()
+                          {
+                              yield return new WaitForSeconds(1f);
+                              RoleClass.Magaziner.IsOKSet = true;
+                          }
+                      }
+                  },
+                  () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Magaziner); },
+                  () =>
+                  {
+                      return PlayerControl.LocalPlayer.CanMove && HudManager.Instance.KillButton.isCoolingDown && RoleClass.Magaziner.MyPlayerCount >= 1;
+                  },
+                  () => { MagazinerGetButton.Timer = 0f; MagazinerGetButton.MaxTimer = 0f; },
+                  RoleClass.Magaziner.getGetButtonSprite(),
+                  new Vector3(-2.7f, -0.06f, 0),
+                  __instance,
+                  __instance.AbilityButton,
+                  KeyCode.F,
+                  49
+              );
+
+            MagazinerGetButton.buttonText = ModTranslation.getString("MagazinerGetButtonName");
+            MagazinerGetButton.showButtonText = true;
+
+            MagazinerAddButton = new CustomButton(
+                () =>
+                {
+                    if (!HudManager.Instance.KillButton.isCoolingDown && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        PlayerControl.LocalPlayer.SetKillTimerUnchecked(PlayerControl.GameOptions.KillCooldown);
+                        RoleClass.Magaziner.MyPlayerCount++;
+                    }
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Magaziner); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove && !HudManager.Instance.KillButton.isCoolingDown;
+                },
+                () => { MagazinerAddButton.Timer = 0f; MagazinerAddButton.MaxTimer = 0f; },
+                RoleClass.Magaziner.getAddButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            MagazinerAddButton.buttonText = ModTranslation.getString("MagazinerAddButtonName");
+            MagazinerAddButton.showButtonText = true;
+
             ScientistButton = new Buttons.CustomButton(
                 () =>
                 {
@@ -77,6 +143,7 @@ namespace SuperNewRoles.Buttons
 
             ScientistButton.buttonText = ModTranslation.getString("MovingButtonTpName");
             ScientistButton.showButtonText = true;
+
             HawkHawkEyeButton = new CustomButton(
                () =>
                {

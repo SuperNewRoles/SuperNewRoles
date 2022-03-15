@@ -184,10 +184,18 @@ namespace SuperNewRoles
                 SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
             }
 
-
             try
             {
                 QuarreledRandomSelect();
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+            }
+
+            try
+            {
+                LoversRandomSelect();
             }
             catch (Exception e)
             {
@@ -227,6 +235,68 @@ namespace SuperNewRoles
                     }
                     RoleHelpers.SetQuarreled(Listdate[0],Listdate[1]);
                     RoleHelpers.SetQuarreledRPC(Listdate[0],Listdate[1]);
+                }
+            }
+        }
+
+        public static void LoversRandomSelect()
+        {
+            if (!CustomOptions.LoversOption.getBool() || (CustomOptions.LoversPar.getString() == "0%")) return;
+            if (!(CustomOptions.LoversPar.getString() == "100%"))
+            {
+                var a = new List<string>();
+                var SucPar = int.Parse(CustomOptions.LoversPar.getString().Replace("0%",""));
+                for (int i = 0; i < SucPar; i++)
+                {
+                    a.Add("Suc");
+                }
+                for (int i = 0; i < 10 - SucPar; i++)
+                {
+                    a.Add("No");
+                }
+                if (ModHelpers.GetRandom(a) == "No")
+                {
+                    return;
+                }
+            }
+            List<PlayerControl> SelectPlayers = new List<PlayerControl>();
+            bool IsQuarreledDup = CustomOptions.LoversDuplicationQuarreled.getBool();
+            if (CustomOptions.LoversOnlyCrewMate.getBool())
+            {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (!p.Data.Role.IsImpostor && !p.isNeutral())
+                    {
+                        if (!IsQuarreledDup || !p.IsQuarreled())
+                        {
+                            SelectPlayers.Add(p);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (!IsQuarreledDup || !p.IsQuarreled())
+                    {
+                        SelectPlayers.Add(p);
+                    }
+                }
+            }
+            for (int i = 0; i < CustomOptions.LoversTeamCount.getFloat(); i++)
+            {
+                if (!(SelectPlayers.Count == 1 || SelectPlayers.Count == 0))
+                {
+                    var Listdate = new List<PlayerControl>();
+                    for (int i2 = 0; i2 < 2; i2++)
+                    {
+                        var player = ModHelpers.GetRandomIndex(SelectPlayers);
+                        Listdate.Add(SelectPlayers[player]);
+                        SelectPlayers.RemoveAt(player);
+                    }
+                    RoleHelpers.SetLovers(Listdate[0], Listdate[1]);
+                    RoleHelpers.SetLoversRPC(Listdate[0], Listdate[1]);
                 }
             }
         }
@@ -633,6 +703,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.EvilEraserPlayerCount.getFloat();
                     case (RoleId.Workperson):
                     return CustomOption.CustomOptions.WorkpersonPlayerCount.getFloat();
+                    case (RoleId.Magaziner):
+                    return CustomOption.CustomOptions.MagazinerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1442,6 +1514,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.MagazinerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MagazinerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Magaziner;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }

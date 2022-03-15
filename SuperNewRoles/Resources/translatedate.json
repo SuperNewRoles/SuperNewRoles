@@ -1180,8 +1180,12 @@
         "0" : "Max Teams" ,
         "11" : "\u30c1\u30fc\u30e0\u6570"
         } ,
- "QuarreledOnlyCrewMateSetting" : {
+ "QuarreledParSetting" : {
         "0" : "Only Crewmate Team" ,
+        "11" : "\u6392\u51fa\u3055\u308c\u308b\u78ba\u7387"
+        } ,
+ "QuarreledOnlyCrewMateSetting" : {
+        "0" : "Discharge probability" ,
         "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u9663\u55b6\u306e\u307f"
         } ,
  "QuarreledWinText" : {
@@ -1511,6 +1515,62 @@
  "WorkpersonTitle1" : {
         "0" : "Let's do the work and win!" ,
         "11" : "\u4ed5\u4e8b\u3092\u3057\u3066\u52dd\u5229\u3057\u3088\u3046"
+        } ,
+ "MagazinerName" : {
+        "0" : "Magaziner" ,
+        "11" : "\u30de\u30ac\u30b8\u30ca\u30fc"
+        } ,
+ "MagazinerTitle1" : {
+        "0" : "Save your kills!" ,
+        "11" : "\u30ad\u30eb\u3092\u8caf\u3081\u3088\u3046"
+        } ,
+ "MagazinerSetTimeSetting" : {
+        "0" : "Kill cool time after magazine use" ,
+        "11" : "\u30de\u30ac\u30b8\u30f3\u4f7f\u7528\u5f8c\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+        } ,
+ "MagazinerAddButtonName" : {
+        "0" : "Save" ,
+        "11" : "\u8caf\u3081\u308b"
+        } ,
+ "MagazinerGetButtonName" : {
+        "0" : "Set" ,
+        "11" : "\u30bb\u30c3\u30c8"
+        } ,
+ "LoversName" : {
+        "0" : "Lovers." ,
+        "11" : "\u30e9\u30d0\u30fc\u30ba"
+        } ,
+ "LoversIntro" : {
+        "0" : "I'm in love with {0}!" ,
+        "11" : "{0}\u3068\u604b\u306b\u843d\u3061\u3066\u3057\u307e\u3063\u305f\uff01"
+        } ,
+ "LoversTeamCountSetting" : {
+        "0" : "Number of couples" ,
+        "11" : "\u30ab\u30c3\u30d7\u30eb\u6570"
+        } ,
+ "LoversParSetting" : {
+        "0" : "Discharge probability" ,
+        "11" : "\u6392\u51fa\u78ba\u7387"
+        } ,
+ "LoversOnlyCrewMateSetting" : {
+        "0" : "Chosen only by Cluemate" ,
+        "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u306e\u307f\u306b\u9078\u3070\u308c\u308b"
+        } ,
+ "LoversSingleTeamSetting" : {
+        "0" : "Single camp" ,
+        "11" : "\u5358\u72ec\u9663\u55b6"
+        } ,
+ "LoversSameDieSetting" : {
+        "0" : "Two people die at the same time" ,
+        "11" : "2\u4eba\u540c\u6642\u306b\u6b7b\u306c"
+        } ,
+ "LoversAliveTaskCountSetting" : {
+        "0" : "Tasks are counted when surviving" ,
+        "11" : "\u751f\u5b58\u6642\u3001\u30bf\u30b9\u30af\u304c\u30ab\u30a6\u30f3\u30c8\u3055\u308c\u308b"
+        } ,
+ "LoversDuplicationQuarreledSetting" : {
+        "0" : "Does not overlap with Quarreled" ,
+        "11" : "\u30af\u30e9\u30fc\u30c9\u3068\u91cd\u8907\u3057\u306a\u3044"
         } 
 
 }

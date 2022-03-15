@@ -12,6 +12,7 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patch;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.EndGame
 {
@@ -25,6 +26,7 @@ namespace SuperNewRoles.EndGame
         GodWin,
         EgoistWin,
         WorkpersonWin,
+        LoversWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -145,7 +147,13 @@ namespace SuperNewRoles.EndGame
             textRenderer = bonusTextObject.GetComponent<TMPro.TMP_Text>();
             textRenderer.text = "";
             var text = "";
-            if (AdditionalTempData.winCondition == WinCondition.GodWin)
+            if (AdditionalTempData.winCondition == WinCondition.LoversWin)
+            {
+                text = "LoversName";
+                textRenderer.color = RoleClass.Lovers.color;
+                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Lovers.color);
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.GodWin)
             {
                 text = "GodName";
                 textRenderer.color = RoleClass.God.color;
@@ -233,6 +241,30 @@ namespace SuperNewRoles.EndGame
                         text = text + "&"+ModTranslation.getString("OpportunistName");
                     }
 
+                }
+            }
+            bool IsLovetexton = false;
+            bool Temp1;
+            if (!CustomOptions.LoversSingleTeam.getBool())
+            {
+                foreach (List<PlayerControl> PlayerList in RoleClass.Lovers.LoversPlayer)
+                {
+                    Temp1 = false;
+                    foreach (PlayerControl player in PlayerList)
+                    {
+                        if (player.isAlive())
+                        {
+                            Temp1 = true;
+                        }
+                        if (Temp1)
+                        {
+                            if (!IsLovetexton && !haison)
+                            {
+                                IsLovetexton = true;
+                                text = text + "&" + ModTranslation.getString("LoversName");
+                            }
+                        }
+                    }
                 }
             }
             if (!haison) {
@@ -360,7 +392,7 @@ namespace SuperNewRoles.EndGame
                 //var p = pc.Data;
                 var roles = Intro.IntroDate.GetIntroDate(p.Object.getRole(),p.Object);
                 var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
-                if (!p.Object.isRole(CustomRPC.RoleId.Workperson) && p.Object.isClearTask())
+                if (!p.Object.isRole(RoleId.Workperson) && p.Object.isClearTask())
                 {
                     tasksCompleted = 0;
                     tasksTotal = 0;
@@ -371,10 +403,15 @@ namespace SuperNewRoles.EndGame
                     p.IsDead == true ? FinalStatus.Exiled :
                     gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor ? FinalStatus.Sabotage :
                     FinalStatus.Alive;
-
+                string namesuffix = "";
+                if (p.Object.IsLovers())
+                {
+                    namesuffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                }
                 AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
                 {
                     PlayerName = p.PlayerName,
+                    NameSuffix = namesuffix,
                     PlayerId = p.PlayerId,
                     TasksTotal = tasksTotal,
                     TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
@@ -512,6 +549,10 @@ namespace SuperNewRoles.EndGame
             {
                 notWinners.AddRange(players);
             }
+            foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
+            {
+                notWinners.AddRange(players);
+            }
             if (QuarreledWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
@@ -547,6 +588,46 @@ namespace SuperNewRoles.EndGame
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.BugEnd;
+            }
+            bool IsSingleTeam = CustomOptions.LoversSingleTeam.getBool();
+            foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
+            {
+                bool IsWinLovers = false;
+                foreach (PlayerControl p in plist)
+                {
+                    if (p.isAlive())
+                    {
+                        IsWinLovers = true;
+                    }
+                }
+                if (IsWinLovers && IsSingleTeam)
+                {
+                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                    AdditionalTempData.winCondition = WinCondition.LoversWin;
+                }
+            }
+            foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
+            {
+                bool IsWinLovers = false;
+                foreach (PlayerControl p in plist)
+                {
+                    if (p.isAlive())
+                    {
+                        IsWinLovers = true;
+                    }
+                }
+                if (IsWinLovers)
+                {
+                    foreach (PlayerControl p in plist)
+                    {
+                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                        TempData.winners.Add(wpd);
+                        if (IsSingleTeam)
+                        {
+                            SuperNewRolesPlugin.Logger.LogInfo("ラバーズ勝利");
+                        }
+                    }
+                }
             }
         }
         
@@ -630,6 +711,22 @@ namespace SuperNewRoles.EndGame
                         CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
                         RoleClass.Quarreled.IsQuarreledWin = true;
                         CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
+                    }
+                }
+                if (RoleClass.Lovers.SameDie && Player.IsLovers())
+                {
+                    if (AmongUsClient.Instance.AmHost)
+                    {
+                        PlayerControl SideLoverPlayer = Player.GetOneSideLovers();
+                        if (SideLoverPlayer.isAlive())
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                            writer.Write(SideLoverPlayer.PlayerId);
+                            writer.Write(SideLoverPlayer.PlayerId);
+                            writer.Write(byte.MaxValue);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
+                        }
                     }
                 }
                 if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(Player))

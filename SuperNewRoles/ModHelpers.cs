@@ -138,6 +138,7 @@ namespace SuperNewRoles
             if (source == null || target == null) return true;
             else if (source == target) return false; // Player sees his own name
             else if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor)) return false;
+            else if ((source.isRole(RoleId.NiceScientist) || source.isRole(RoleId.EvilScientist)) && RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(source.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[source.PlayerId]) return true;
             return true;
         }
         public static Sprite loadSpriteFromResources(string path, float pixelsPerUnit)

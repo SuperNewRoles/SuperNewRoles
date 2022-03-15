@@ -168,10 +168,14 @@ namespace SuperNewRoles.Patches
                         __instance.RoleBlurbText.text = date.TitleDesc;
                         __instance.RoleBlurbText.color = date.color;
                     }
-
+                    if (PlayerControl.LocalPlayer.IsLovers())
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("ラバーズ！");
+                        __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                    }
                     if (PlayerControl.LocalPlayer.IsQuarreled())
                     {
-                        __instance.RoleBlurbText.text = __instance.RoleBlurbText.text + "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
+                        __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
                     }
                 } else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {

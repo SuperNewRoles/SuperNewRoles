@@ -21,7 +21,7 @@ namespace SuperNewRoles
     {
         public const string Id = "jp.ykundesu.supernewroles";
 
-        public const string VersionString = "1.3.5.1";
+        public const string VersionString = "1.3.5.2";
 
         public static System.Version Version = System.Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
@@ -53,7 +53,7 @@ namespace SuperNewRoles
                 foreach (string f in files)
                     File.Delete(f);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 System.Console.WriteLine("Exception occured when clearing old versions:\n" + e);
             }

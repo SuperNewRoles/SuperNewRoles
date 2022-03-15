@@ -154,11 +154,19 @@ namespace SuperNewRoles.Patch
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideQuarreled();
                 side.nameText.text += suffix;
                 PlayerControl.LocalPlayer.nameText.text += suffix;
-                foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates) {
-                    if (side.PlayerId == player.TargetPlayerId || PlayerControl.LocalPlayer.PlayerId == player.TargetPlayerId)
+                try
+                {
+                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
                     {
-                        player.NameText.text += suffix;
+                        if (side.PlayerId == player.TargetPlayerId || PlayerControl.LocalPlayer.PlayerId == player.TargetPlayerId)
+                        {
+                            player.NameText.text += suffix;
+                        }
                     }
+                }
+                catch
+                {
+
                 }
             }
             if (!PlayerControl.LocalPlayer.isAlive() && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
@@ -168,12 +176,61 @@ namespace SuperNewRoles.Patch
                     foreach (PlayerControl p in ps)
                     {
                         p.nameText.text += suffix;
-                        foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                        try
                         {
-                            if (p.PlayerId == player.TargetPlayerId)
+                            foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
                             {
-                                player.NameText.text += suffix;
+                                if (p.PlayerId == player.TargetPlayerId)
+                                {
+                                    player.NameText.text += suffix;
+                                }
                             }
+                        }
+                        catch { }
+                    }
+                }
+            }
+        }
+        public static void LoversSet()
+        {
+            string suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+            if (PlayerControl.LocalPlayer.IsLovers() && PlayerControl.LocalPlayer.isAlive())
+            {
+                PlayerControl side = PlayerControl.LocalPlayer.GetOneSideLovers();
+                side.nameText.text += suffix;
+                PlayerControl.LocalPlayer.nameText.text += suffix;
+                try
+                {
+                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                    {
+                        if (side.PlayerId == player.TargetPlayerId || PlayerControl.LocalPlayer.PlayerId == player.TargetPlayerId)
+                        {
+                            player.NameText.text += suffix;
+                        }
+                    }
+                }
+                catch { }
+            }
+            if (PlayerControl.LocalPlayer.isDead() && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
+            {
+                foreach (List<PlayerControl> ps in RoleClass.Lovers.LoversPlayer)
+                {
+                    foreach (PlayerControl p in ps)
+                    {
+                        p.nameText.text += suffix;
+                        try
+                        {
+                            foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                            {
+                                if (p.PlayerId == player.TargetPlayerId)
+                                {
+                                    player.NameText.text += suffix;
+                                }
+                            }
+                        }
+                        catch
+                        {
+
                         }
                     }
                 }
@@ -189,9 +246,8 @@ namespace SuperNewRoles.Patch
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                        SetNamesClass.SetPlayerNameColors(player);
-                        SetNamesClass.SetPlayerRoleNames(player);
-                    
+                    SetNamesClass.SetPlayerNameColors(player);
+                    SetNamesClass.SetPlayerRoleNames(player);                    
                 }
             }
             else
@@ -221,6 +277,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
                 SetNamesClass.QuarreledSet();
+                SetNamesClass.LoversSet();
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sidekick)) {
                     foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer) {
                         if (p != PlayerControl.LocalPlayer) {

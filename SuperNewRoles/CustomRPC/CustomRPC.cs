@@ -68,6 +68,7 @@ namespace SuperNewRoles.CustomRPC
         NiceRedRidingHood,
         EvilEraser,
         Workperson,
+        Magaziner,
         //RoleId
     }
 
@@ -106,6 +107,7 @@ namespace SuperNewRoles.CustomRPC
         UseEraserCount,
         StartGameRPC,
         UncheckedSetTasks,
+        SetLovers
     }
     public static class RPCProcedure
     {
@@ -225,6 +227,12 @@ namespace SuperNewRoles.CustomRPC
             var player1 = ModHelpers.playerById(playerid1);
             var player2 = ModHelpers.playerById(playerid2);
             RoleHelpers.SetQuarreled(player1,player2);
+        }
+        public static void SetLovers(byte playerid1, byte playerid2)
+        {
+            var player1 = ModHelpers.playerById(playerid1);
+            var player2 = ModHelpers.playerById(playerid2);
+            RoleHelpers.SetLovers(player1, player2);
         }
         public static void SheriffKill(byte SheriffId,byte TargetId,bool MissFire)
         {
@@ -597,6 +605,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.UncheckedSetTasks:
                         RPCProcedure.uncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
+                        break;
+                    case (byte)CustomRPC.SetLovers:
+                        RPCProcedure.SetLovers(reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }

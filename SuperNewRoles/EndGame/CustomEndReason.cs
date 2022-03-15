@@ -15,6 +15,7 @@ namespace SuperNewRoles.EndGame
         QuarreledWin,
         EgoistWin,
         WorkpersonWin,
+        LoversWin,
         BugEnd
     }
 }

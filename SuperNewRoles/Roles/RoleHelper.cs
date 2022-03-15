@@ -41,6 +41,20 @@ namespace SuperNewRoles
             }
             return false;
         }
+        public static bool IsLovers(this PlayerControl player)
+        {
+            foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
+            {
+                foreach (PlayerControl p in players)
+                {
+                    if (p == player)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
         public static void SetQuarreled(PlayerControl player1,PlayerControl player2)
         {
             var sets = new List<PlayerControl>() { player1, player2 };
@@ -49,6 +63,18 @@ namespace SuperNewRoles
         public static void SetQuarreledRPC(PlayerControl player1, PlayerControl player2)
         {
             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetQuarreled, Hazel.SendOption.Reliable, -1);
+            Writer.Write(player1.PlayerId);
+            Writer.Write(player2.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+        }
+        public static void SetLovers(PlayerControl player1, PlayerControl player2)
+        {
+            var sets = new List<PlayerControl>() { player1, player2 };
+            RoleClass.Lovers.LoversPlayer.Add(sets);
+        }
+        public static void SetLoversRPC(PlayerControl player1, PlayerControl player2)
+        {
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetLovers, Hazel.SendOption.Reliable, -1);
             Writer.Write(player1.PlayerId);
             Writer.Write(player2.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -87,7 +113,27 @@ namespace SuperNewRoles
             }
             return null;
         }
-
+        public static PlayerControl GetOneSideLovers(this PlayerControl player)
+        {
+            foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
+            {
+                foreach (PlayerControl p in players)
+                {
+                    if (p == player)
+                    {
+                        if (p == players[0])
+                        {
+                            return players[1];
+                        }
+                        else
+                        {
+                            return players[0];
+                        }
+                    }
+                }
+            }
+            return null;
+        }
         public static string GetOptionsText(RoleId role, bool IsSHR = true)
         {
             string returntext = "なし";
@@ -270,6 +316,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Workperson):
                     Roles.RoleClass.Workperson.WorkpersonPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Magaziner):
+                    Roles.RoleClass.Magaziner.MagazinerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -434,6 +483,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Workperson):
                     Roles.RoleClass.Workperson.WorkpersonPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Magaziner):
+                    Roles.RoleClass.Magaziner.MagazinerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
         }
@@ -488,6 +540,10 @@ namespace SuperNewRoles
                 //タスククリアか
             }
             if (!IsTaskClear && player.IsQuarreled())
+            {
+                IsTaskClear = true;
+            }
+            if (!IsTaskClear && !RoleClass.Lovers.AliveTaskCount && player.IsLovers())
             {
                 IsTaskClear = true;
             }
@@ -769,6 +825,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.Workperson.WorkpersonPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Workperson;
+            }
+            else if (Roles.RoleClass.Magaziner.MagazinerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Magaziner;
             }
             //ロールチェック
             }

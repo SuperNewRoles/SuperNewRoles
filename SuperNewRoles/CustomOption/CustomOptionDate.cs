@@ -272,9 +272,22 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption WorkpersonLongTask;
         public static CustomOption WorkpersonShortTask;
 
+        public static CustomRoleOption MagazinerOption;
+        public static CustomOption MagazinerPlayerCount;
+        public static CustomOption MagazinerSetKillTime;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
+
+        public static CustomOption LoversOption;
+        public static CustomOption LoversTeamCount;
+        public static CustomOption LoversPar;
+        public static CustomOption LoversOnlyCrewMate;
+        public static CustomOption LoversSingleTeam;
+        public static CustomOption LoversSameDie;
+        public static CustomOption LoversAliveTaskCount;
+        public static CustomOption LoversDuplicationQuarreled; 
 
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
@@ -496,11 +509,11 @@ namespace SuperNewRoles.CustomOption
 
             GodOption = new CustomRoleOption(149, "GodName", RoleClass.God.color, 1);
             GodPlayerCount = CustomOption.Create(150, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GodOption);
-            /**
+            /*
             AllCleanerOption = new CustomRoleOption(151, "AllCleanerName", RoleClass.AllCleaner.color, 1);
             AllCleanerPlayerCount = CustomOption.Create(152, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AllCleanerOption);
             AllCleanerCount = CustomOption.Create(153, cs(Color.white, "AllCleanerCountSetting"), 1f, 1f, 15f, 1f, AllCleanerOption);
-            **/
+            */
             NiceNekomataOption = new CustomRoleOption(154, "NiceNekomataName", RoleClass.NiceNekomata.color, 1);
             NiceNekomataPlayerCount = CustomOption.Create(155, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceNekomataOption);
             NiceNekomataIsChain = CustomOption.Create(156, ModTranslation.getString("NiceNekomataIsChainSetting"), true, NiceNekomataOption);
@@ -556,10 +569,22 @@ namespace SuperNewRoles.CustomOption
             WorkpersonLongTask = CustomOption.Create(216, ModTranslation.getString("GameLongTasks"), 10,0,69,1, WorkpersonOption);
             WorkpersonShortTask = CustomOption.Create(217, ModTranslation.getString("GameShortTasks"), 5,0,45,1, WorkpersonOption);
 
+            MagazinerOption = new CustomRoleOption(218, "MagazinerName", RoleClass.Magaziner.color, 1);
+            MagazinerPlayerCount = CustomOption.Create(219, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MagazinerOption);
+            MagazinerSetKillTime = CustomOption.Create(220, cs(Color.white, "MagazinerSetTimeSetting"), 0f, 0f, 60f, 2.5f, MagazinerOption);
+
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, cs(Color.white, "QuarreledOnlyCrewMateSetting"), false, QuarreledOption);
 
+            LoversOption = CustomOption.Create(221, cs(RoleClass.Lovers.color, "LoversName"), false, null, isHeader: true);
+            LoversTeamCount = CustomOption.Create(222, cs(Color.white, "LoversTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], LoversOption);
+            LoversPar = CustomOption.Create(223, cs(Color.white, "LoversParSetting"), rates , LoversOption);
+            LoversOnlyCrewMate = CustomOption.Create(224, cs(Color.white, "LoversOnlyCrewMateSetting"), false, LoversOption);
+            LoversSingleTeam = CustomOption.Create(225, cs(Color.white, "LoversSingleTeamSetting"), true, LoversOption);
+            LoversSameDie = CustomOption.Create(226, cs(Color.white, "LoversSameDieSetting"), true, LoversOption);
+            LoversAliveTaskCount = CustomOption.Create(227, cs(Color.white, "LoversAliveTaskCountSetting"), false, LoversOption);
+            LoversDuplicationQuarreled = CustomOption.Create(228, cs(Color.white, "LoversDuplicationQuarreledSetting"), true, LoversOption);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patch;
@@ -52,7 +53,23 @@ namespace SuperNewRoles.Patches
             }
             else if (ModeHandler.isMode(ModeId.Default))
             {
-                if (RoleHelpers.IsQuarreled(target))
+                if (RoleClass.Lovers.SameDie && target.IsLovers())
+                {
+                    if (AmongUsClient.Instance.AmHost)
+                    {
+                        PlayerControl SideLoverPlayer = target.GetOneSideLovers();
+                        if (SideLoverPlayer.isAlive())
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                            writer.Write(SideLoverPlayer.PlayerId);
+                            writer.Write(SideLoverPlayer.PlayerId);
+                            writer.Write(byte.MaxValue);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
+                        }
+                    }
+                }
+                if (target.IsQuarreled())
                 {
                     if (AmongUsClient.Instance.AmHost)
                     {

@@ -77,8 +77,10 @@ namespace SuperNewRoles.Roles
             NiceRedRidingHood.ClearAndReload();
             EvilEraser.ClearAndReload();
             Workperson.ClearAndReload();
+            Magaziner.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
+            Lovers.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
         }
         public static void NotRole()
@@ -659,7 +661,6 @@ namespace SuperNewRoles.Roles
                     SucPar = int.Parse(temp);
                 }
             }
-            //ロールクラス
             public static bool GetSuc() {
                 var a = new List<string>();
                 for (int i = 0; i < SucPar; i++) {
@@ -937,6 +938,35 @@ namespace SuperNewRoles.Roles
                 WorkpersonPlayer = new List<PlayerControl>();
             }
         }
+        public static class Magaziner
+        {
+            public static List<PlayerControl> MagazinerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static int MyPlayerCount;
+            public static float SetTime;
+            public static bool IsOKSet;
+            private static Sprite GetbuttonSprite; 
+            private static Sprite AddbuttonSprite;
+            public static Sprite getGetButtonSprite()
+            {
+                if (GetbuttonSprite) return GetbuttonSprite;
+                GetbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MagazinerGetButton.png", 115f);
+                return GetbuttonSprite;
+            }
+            public static Sprite getAddButtonSprite()
+            {
+                if (AddbuttonSprite) return AddbuttonSprite;
+                AddbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MagazinerAddButton.png", 115f);
+                return AddbuttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                MagazinerPlayer = new List<PlayerControl>();
+                MyPlayerCount = 0;
+                SetTime = CustomOptions.MagazinerSetKillTime.getFloat();
+                IsOKSet = true;
+            }
+        }
         //新ロールクラス
         public static class Quarreled
         {
@@ -946,6 +976,19 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 QuarreledPlayer = new List<List<PlayerControl>>();
+            }
+        }
+        public static class Lovers
+        {
+            public static List<List<PlayerControl>> LoversPlayer;
+            public static Color32 color = new Color32(255, 105, 180, byte.MaxValue);
+            public static bool SameDie;
+            public static bool AliveTaskCount;
+            public static void ClearAndReload()
+            {
+                LoversPlayer = new List<List<PlayerControl>>();
+                SameDie = CustomOptions.LoversSameDie.getBool();
+                AliveTaskCount = CustomOptions.LoversAliveTaskCount.getBool();
             }
         }
     }
