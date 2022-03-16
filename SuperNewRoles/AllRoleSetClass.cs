@@ -183,24 +183,26 @@ namespace SuperNewRoles
             {
                 SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
             }
-
-            try
+            if (ModeHandler.isMode(ModeId.Default))
             {
-                QuarreledRandomSelect();
+                try
+                {
+                    QuarreledRandomSelect();
+                }
+                catch (Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                }
             }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
-            }
-
-            try
-            {
-                LoversRandomSelect();
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
-            }
+                try
+                {
+                    LoversRandomSelect();
+                }
+                catch (Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                }
+            
         }
         public static void QuarreledRandomSelect()
         {

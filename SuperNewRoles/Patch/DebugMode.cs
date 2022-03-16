@@ -85,7 +85,7 @@ namespace SuperNewRoles.Patch
 
 
                     bot.RpcSetColor((byte)PlayerControl.LocalPlayer.CurrentOutfit.ColorId);
-                    bot.RpcSetName(PlayerControl.LocalPlayer.name);
+                    bot.RpcSetName(PlayerControl.LocalPlayer.nameText.text);
                     bot.RpcSetPet(PlayerControl.LocalPlayer.CurrentOutfit.PetId);
                     bot.RpcSetSkin(PlayerControl.LocalPlayer.CurrentOutfit.SkinId);
                     bot.RpcSetNamePlate(PlayerControl.LocalPlayer.CurrentOutfit.NamePlateId);

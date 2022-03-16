@@ -36,13 +36,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static string getsetname(PlayerControl p,bool IsDead = false)
         {
             var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
+            string Suffix = "";
+            if (p.IsLovers())
+            {
+                Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+            }
             if (RoleClass.IsMeeting || IsDead)
             {
-                return "<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color,p.getDefaultName());
+                return "<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color,p.getDefaultName()+Suffix);
             }
             else
             {
-                return "<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName());
+                return "<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()+Suffix);
             }
         }
         public static void RoleFixedUpdate()
@@ -56,19 +61,32 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (!p.Data.Disconnected && p.PlayerId != 0)
                 {
-                    if (p.isDead())
+                    if (p.isDead() || p.isRole(CustomRPC.RoleId.God))
                     {
                         foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {
-                                var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
-                                p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName()),p);
+                            string Suffix = "";
+                            if (p2.IsLovers())
+                            {
+                                Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                            }
+                            var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
+                            p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName())+Suffix,p);
                             
                         }
                     }
                     else if (p.isAlive())
                     {
+                        string Suffix = "";
+                        if (p.IsLovers())
+                        {
+                            Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                            PlayerControl Side = p.GetOneSideLovers();
+                            SuperNewRolesPlugin.Logger.LogInfo("SIDE!!:"+Side.nameText.text);
+                            Side.RpcSetNamePrivate(Side.getDefaultName()+Suffix,p);
+                        }
                         var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
-                        p.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()), p);
+                        p.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()+Suffix), p);
                     }
                 }
             }
@@ -79,20 +97,31 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (!p.Data.Disconnected && p.PlayerId != 0)
                 {
-                    if (p.isDead())
+                    if (p.isDead() || p.isRole(CustomRPC.RoleId.God))
                     {
                         foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {
                             if (!p2.Data.Disconnected) {
-
+                                string Suffix = "";
+                                if (p2.IsLovers())
+                                {
+                                    Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                                }
                                 var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
-                                p2.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color, p2.getDefaultName()),p);
+                                p2.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color, p2.getDefaultName())+Suffix,p);
                             }
                         }
                     } else if (p.isAlive())
                     {
+                        string Suffix = "";
+                        if (p.IsLovers())
+                        {
+                            Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                            PlayerControl Side = p.GetOneSideLovers();
+                            Side.RpcSetNamePrivate(Side.getDefaultName() + Suffix, p);
+                        }
                         var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
-                        p.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color, p.getDefaultName()));
+                        p.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color, p.getDefaultName())+Suffix);
                     }
                 }
             }
@@ -122,6 +151,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SetNames()
         {
+            if (PlayerControl.LocalPlayer.IsLovers())
+            {
+                SetNamesClass.LoversSet();
+            }
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (p.isAlive() && !p.isRole(CustomRPC.RoleId.God))
@@ -132,7 +165,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     else
                     {
-                        Patch.SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
+                        SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                     }
                 }
                 else if (!p.Data.Disconnected && p.isDead())
@@ -169,6 +202,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                 }
+                
             }
             if (RoleClass.MadMate.IsImpostorCheck)
             {

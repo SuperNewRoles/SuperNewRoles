@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
-                if (AmongUsClient.Instance.AmHost && !ModeHandler.isMode(ModeId.SuperHostRoles))
+                if (AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId && !ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
                     if (target.isRole(CustomRPC.RoleId.StuntMan))
                     {
@@ -40,10 +40,6 @@ namespace SuperNewRoles.Roles
             }
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
-                if (RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(target))
-                {
-                    target.protectedByGuardian = false;
-                }
             }
         }
         

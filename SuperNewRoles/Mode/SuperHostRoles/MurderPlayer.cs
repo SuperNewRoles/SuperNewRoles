@@ -1,4 +1,5 @@
 ﻿using BepInEx.IL2CPP.Utils;
+using SuperNewRoles.Roles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 yield return new WaitForSeconds(0.1f);
                 FixedUpdate.SetNames();
+            }
+            if (RoleClass.Lovers.SameDie && target.IsLovers())
+            {
+                PlayerControl Side = target.GetOneSideLovers();
+                if (Side.isAlive())
+                {
+                    Side.RpcMurderPlayer(Side);
+                }
             }
             Roles.Bait.MurderPostfix(__instance,target);
         }

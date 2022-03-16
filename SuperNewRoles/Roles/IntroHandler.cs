@@ -19,6 +19,10 @@ namespace SuperNewRoles.Roles
             {
                 Mode.Zombie.main.SetTimer();
             }
+            if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
+            {
+                Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+            }
         }
     }
 }

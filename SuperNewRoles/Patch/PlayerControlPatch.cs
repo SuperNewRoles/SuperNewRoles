@@ -22,7 +22,7 @@ namespace SuperNewRoles.Patches
         {
             if (!AmongUsClient.Instance.AmHost)
             {
-                return false;
+                return true;
             }
             if (ModeHandler.isMode(ModeId.Detective) && target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
             __instance.RpcMurderPlayer(target);
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Patches
                         var Side = RoleHelpers.GetOneSideQuarreled(target);
                         if (Side.isDead())
                         {
-                            CustomRPC.RPCProcedure.ShareWinner(target.PlayerId);
+                            RPCProcedure.ShareWinner(target.PlayerId);
 
                             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                             Writer.Write(target.PlayerId);
