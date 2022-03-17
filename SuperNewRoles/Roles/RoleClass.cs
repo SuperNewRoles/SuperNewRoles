@@ -82,6 +82,7 @@ namespace SuperNewRoles.Roles
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
             MapOptions.MapOption.ClearAndReload();
+            ChacheManager.Load();
         }
         public static void NotRole()
         {

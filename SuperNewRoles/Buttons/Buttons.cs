@@ -8,7 +8,7 @@ using System.Linq;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Patches;
 using System.Collections;
-using BepInEx.IL2CPP.Utils;
+
 
 namespace SuperNewRoles.Buttons
 {
@@ -67,7 +67,7 @@ namespace SuperNewRoles.Buttons
                           if (RoleClass.Magaziner.SetTime != 0)
                           {
                               RoleClass.Magaziner.IsOKSet = false;
-                              AmongUsClient.Instance.StartCoroutine(IsOKSetSet());
+                              AmongUsClient.Instance.StartCoroutine(nameof(IsOKSetSet));
                           }
                           IEnumerator IsOKSetSet()
                           {

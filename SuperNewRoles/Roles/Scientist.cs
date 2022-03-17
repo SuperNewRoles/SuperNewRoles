@@ -89,6 +89,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerPhysics __instance)
             {
+                if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 if (__instance.myPlayer.isRole(CustomRPC.RoleId.EvilScientist) || __instance.myPlayer.isRole(CustomRPC.RoleId.NiceScientist))
                 {
                     var Scientist = __instance.myPlayer;

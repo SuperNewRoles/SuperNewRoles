@@ -1,5 +1,4 @@
-﻿using BepInEx.IL2CPP.Utils;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -13,7 +12,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (!AmongUsClient.Instance.AmHost) return;
 
-            AmongUsClient.Instance.StartCoroutine(ResetName());
+            AmongUsClient.Instance.StartCoroutine(nameof(ResetName));
             IEnumerator ResetName()
             {
                 yield return new WaitForSeconds(1);

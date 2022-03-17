@@ -1,4 +1,4 @@
-﻿/*using BepInEx;
+﻿using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using System;
@@ -49,4 +49,12 @@ namespace SuperNewRoles
             TasksToRemove.ForEach(task => Tasks.Remove(task));
         }
     }
-}*/
+    [HarmonyPatch(typeof(HudManager),nameof(HudManager.Update))]
+    class LateUpdate
+    {
+        public static void Postfix(HudManager __instance)
+        {
+            LateTask.Update(Time.deltaTime);
+        }
+    }
+}

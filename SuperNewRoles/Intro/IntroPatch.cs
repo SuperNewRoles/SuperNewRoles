@@ -170,7 +170,6 @@ namespace SuperNewRoles.Patches
                     }
                     if (PlayerControl.LocalPlayer.IsLovers())
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("ラバーズ！");
                         __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
                     }
                     if (PlayerControl.LocalPlayer.IsQuarreled())

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SuperNewRoles.Roles;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -59,6 +60,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 __instance.RoleText.color = date.color;
                 __instance.RoleBlurbText.text = date.TitleDesc;
                 __instance.RoleBlurbText.color = date.color;
+            }
+            if (PlayerControl.LocalPlayer.IsLovers())
+            {
+                __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
             }
             /**
 

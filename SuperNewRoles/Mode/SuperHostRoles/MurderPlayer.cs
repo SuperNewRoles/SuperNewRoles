@@ -1,4 +1,4 @@
-﻿using BepInEx.IL2CPP.Utils;
+﻿
 using SuperNewRoles.Roles;
 using System;
 using System.Collections;
@@ -12,7 +12,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static void Postfix(PlayerControl __instance,PlayerControl target)
         {
-            AmongUsClient.Instance.StartCoroutine(ResetName());
+            AmongUsClient.Instance.StartCoroutine(nameof(ResetName));
             IEnumerator ResetName()
             {
                 yield return new WaitForSeconds(0.1f);

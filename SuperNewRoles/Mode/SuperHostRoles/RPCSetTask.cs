@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomOption;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +21,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return true;
                 PlayerControl player = ModHelpers.playerById(playerId);
                 if (player == null) return false;
-                if (player.isClearTask())
+                if (player.isClearTask() && !player.isRole(CustomRPC.RoleId.Workperson))
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
@@ -36,6 +38,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             messageWriter2.EndRPC();
                         }
                     }
+                    return false;
+                } else if (player.isRole(CustomRPC.RoleId.Workperson))
+                {
+                    var tasks = ModHelpers.generateTasks((int)CustomOptions.WorkpersonCommonTask.getFloat(), (int)CustomOptions.WorkpersonShortTask.getFloat(), (int)CustomOptions.WorkpersonLongTask.getFloat()).ToArray();
+                    MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(player.NetId, (byte)29);
+                    messageWriter.Write(playerId);
+                    messageWriter.WriteBytesAndSize(tasks);
+                    messageWriter.EndMessage();
                     return false;
                 }
                 return true;

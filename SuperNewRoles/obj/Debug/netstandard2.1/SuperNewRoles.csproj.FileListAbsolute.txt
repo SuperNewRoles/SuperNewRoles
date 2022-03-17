@@ -11,7 +11,6 @@ C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.Core.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.IL2CPP.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.Preloader.Core.dll
-C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Cpp2IL.Core.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Hazel.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Iced.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2Cpp.TlsAdapter.dll
@@ -27,9 +26,7 @@ C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Runtime.Serialization.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Xml.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Xml.Linq.dll
-C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\IndexRange.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\IngameDebugConsole.Runtime.dll
-C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\LibCpp2IL.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Mono.Cecil.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Mono.Cecil.Mdb.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Mono.Cecil.Pdb.dll
@@ -40,7 +37,6 @@ C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\QRCoder.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Rewired_Core.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Rewired_Windows.dll
-C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\SemanticVersioning.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnhollowerBaseLib.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnhollowerRuntimeLib.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Unity.Addressables.dll
@@ -124,3 +120,4 @@ C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\SuperNewRoles.pdb
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.pdb
+C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\SemVer.dll

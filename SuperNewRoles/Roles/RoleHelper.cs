@@ -28,8 +28,22 @@ namespace SuperNewRoles
         {
             return player != null && player.Data.Role.IsImpostor;
         }
-        public static bool IsQuarreled(this PlayerControl player)
+        public static bool IsQuarreled(this PlayerControl player,bool IsChache = true)
         {
+            if (IsChache)
+            {
+                try
+                {
+                    if (ChacheManager.QuarreledChache[player.PlayerId] == null)
+                        return false;
+                    else
+                        return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer) {
                 foreach (PlayerControl p in players)
                 {
@@ -41,8 +55,22 @@ namespace SuperNewRoles
             }
             return false;
         }
-        public static bool IsLovers(this PlayerControl player)
+        public static bool IsLovers(this PlayerControl player,bool IsChache = true)
         {
+            if (IsChache)
+            {
+                try
+                {
+                    if (ChacheManager.LoversChache[player.PlayerId] == null)
+                        return false;
+                    else
+                        return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
             foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
             {
                 foreach (PlayerControl p in players)
@@ -59,6 +87,7 @@ namespace SuperNewRoles
         {
             var sets = new List<PlayerControl>() { player1, player2 };
             RoleClass.Quarreled.QuarreledPlayer.Add(sets);
+            ChacheManager.ResetQuarreledChache();
         }
         public static void SetQuarreledRPC(PlayerControl player1, PlayerControl player2)
         {
@@ -71,6 +100,7 @@ namespace SuperNewRoles
         {
             var sets = new List<PlayerControl>() { player1, player2 };
             RoleClass.Lovers.LoversPlayer.Add(sets);
+            ChacheManager.ResetLoversChache();
         }
         public static void SetLoversRPC(PlayerControl player1, PlayerControl player2)
         {
@@ -93,8 +123,13 @@ namespace SuperNewRoles
                 }
             }
         }
-        public static PlayerControl GetOneSideQuarreled(this PlayerControl player)
+        public static PlayerControl GetOneSideQuarreled(this PlayerControl player,bool IsChache = true)
         {
+            if (IsChache)
+            {
+                if (ChacheManager.QuarreledChache[player.PlayerId] == null) return null;
+                return ChacheManager.QuarreledChache[player.PlayerId];
+            }
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
             {
                 foreach (PlayerControl p in players)
@@ -113,8 +148,13 @@ namespace SuperNewRoles
             }
             return null;
         }
-        public static PlayerControl GetOneSideLovers(this PlayerControl player)
+        public static PlayerControl GetOneSideLovers(this PlayerControl player,bool IsChache = true)
         {
+            if (IsChache)
+            {
+                if (ChacheManager.LoversChache[player.PlayerId] == null) return null;
+                return ChacheManager.LoversChache[player.PlayerId];
+            }
             foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
             {
                 foreach (PlayerControl p in players)
@@ -324,6 +364,7 @@ namespace SuperNewRoles
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
                     return;
             }
+            ChacheManager.ResetMyRoleChache();
         }
         private static PlayerControl ClearTarget;
         public static void ClearRole(this PlayerControl player)
@@ -486,8 +527,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Magaziner):
                     Roles.RoleClass.Magaziner.MagazinerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
+            ChacheManager.ResetMyRoleChache();
         }
         public static void setRoleRPC(this PlayerControl Player,RoleId SelectRoleDate)
         {
@@ -612,8 +654,23 @@ namespace SuperNewRoles
             }
             return IsNeutral;
         }
-        public static bool isRole(this PlayerControl p,RoleId role) {
-            if (p.getRole() == role)
+        public static bool isRole(this PlayerControl p,RoleId role,bool IsChache = true) {
+            RoleId MyRole;
+            if (IsChache)
+            {
+                try
+                {
+                   MyRole = ChacheManager.MyRoleChache[p.PlayerId];
+                }
+                catch
+                {
+                    MyRole = RoleId.DefaultRole;
+                }
+            } else
+            {
+                MyRole = p.getRole(false);
+            }
+            if ( MyRole == role)
             {
                 return true;
             }
@@ -622,8 +679,20 @@ namespace SuperNewRoles
             }
             return false;
         }
-        public static SuperNewRoles.CustomRPC.RoleId getRole(this PlayerControl player)
+        public static RoleId getRole(this PlayerControl player,bool IsChache = true)
         {
+            if (IsChache)
+            {
+                try
+                {
+                    return ChacheManager.MyRoleChache[player.PlayerId];
+                }
+                catch
+                {
+                    return RoleId.DefaultRole;
+                }
+            }
+            SuperNewRolesPlugin.Logger.LogInfo("Chache!");
             try
             {
                 if (SuperNewRoles.Roles.RoleClass.SoothSayer.SoothSayerPlayer.IsCheckListPlayerControl(player))
@@ -819,18 +888,18 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.NiceRedRidingHood;
                 }
                 else if (Roles.RoleClass.EvilEraser.EvilEraserPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.EvilEraser;
-            }
-            else if (Roles.RoleClass.Workperson.WorkpersonPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Workperson;
-            }
-            else if (Roles.RoleClass.Magaziner.MagazinerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Magaziner;
-            }
-            //ロールチェック
+                {
+                    return CustomRPC.RoleId.EvilEraser;
+                }
+                else if (Roles.RoleClass.Workperson.WorkpersonPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Workperson;
+                }
+                else if (Roles.RoleClass.Magaziner.MagazinerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Magaziner;
+                }
+                //ロールチェック
             }
             catch
             {

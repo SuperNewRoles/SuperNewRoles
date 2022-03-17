@@ -24,7 +24,7 @@ namespace SuperNewRoles.Buttons
 
                 couldUse = (@object.inVent || roleCouldUse) && !pc.IsDead && (@object.CanMove || @object.inVent);
                 canUse = couldUse;
-                if (canUse)
+                if (canUse || pc.Role.Role == RoleTypes.Engineer)
                 {
                     Vector2 truePosition = @object.GetTruePosition();
                     Vector3 position = __instance.transform.position;

@@ -1,4 +1,4 @@
-﻿using BepInEx.IL2CPP.Utils;
+﻿
 using HarmonyLib;
 using Hazel;
 using InnerNet;
@@ -25,11 +25,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
 
         }
         public static void EndMeetingPatch()
-        {
+        {/*
             //霊界用暗転バグ対処
             foreach (var pc in PlayerControl.AllPlayerControls)
-                if (pc.isRole(CustomRPC.RoleId.Egoist) && pc.Data.IsDead) pc.ResetPlayerCam(12.5f);
-        }
+                if (pc.isRole(CustomRPC.RoleId.Egoist) && pc.Data.IsDead) pc.ResetPlayerCam(12.5f);*/
+        }/*
 		public static void ResetPlayerCam(this PlayerControl pc, float delay = 0f)
 		{
 			if ((UnityEngine.Object)(object)pc == (UnityEngine.Object)null || !AmongUsClient.Instance.AmHost || pc.AmOwner)
@@ -42,9 +42,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
 			{
 				reactorId = 21;
 			}
-			AmongUsClient.Instance.StartCoroutine(ReactorDesync());
-			AmongUsClient.Instance.StartCoroutine(MurderToResetCam());
-			AmongUsClient.Instance.StartCoroutine(FixDesyncReactor());
+			AmongUsClient.Instance.StartCoroutine(nameof(ReactorDesync));
+			AmongUsClient.Instance.StartCoroutine(nameof(MurderToResetCam));
+			AmongUsClient.Instance.StartCoroutine(nameof(FixDesyncReactor));
 			IEnumerator ReactorDesync()
 			{
 				yield return new WaitForSeconds(delay);
@@ -72,7 +72,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
 			};
 			if (PlayerControl.GameOptions.MapId == 4)
 			{
-				AmongUsClient.Instance.StartCoroutine(FixDesyncReactor2());
+				AmongUsClient.Instance.StartCoroutine(nameof(FixDesyncReactor2));
 				IEnumerator FixDesyncReactor2()
 				{
 					yield return new WaitForSeconds(0.4f + delay);
@@ -83,6 +83,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
 					AmongUsClient.Instance.FinishRpcImmediately(val);
 				}
 			}
-		}
+		}*/
 	}
 }

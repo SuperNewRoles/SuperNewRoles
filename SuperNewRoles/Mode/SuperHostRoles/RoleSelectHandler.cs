@@ -1,4 +1,4 @@
-﻿using BepInEx.IL2CPP.Utils;
+﻿
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
@@ -19,6 +19,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             AllRoleSetClass.AllRoleSet();
             SetCustomRoles();
             ChangeGameOptions.SelectRoleOptionChange.RolesSelectOptionsChange();
+            ChacheManager.ResetChache();
             FixedUpdate.SetNames();
             main.SendAllRoleChat();
         }
@@ -246,7 +247,23 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Neutnotonepar.Add(ThisRoleId);
                     }
                 }
-            }
+            }/*
+            if (!(CustomOption.CustomOptions.WorkpersonOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.WorkpersonOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Workperson;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }*/
             /*
             if (!(CustomOption.CustomOptions.MinimalistOption.getString().Replace("0%", "") == ""))
             {

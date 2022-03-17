@@ -1,4 +1,4 @@
-﻿using BepInEx.IL2CPP.Utils;
+﻿
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.EndGame;
@@ -30,7 +30,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 34, (SendOption)1);
                         val.WritePacked(127);
                         AmongUsClient.Instance.FinishRpcImmediately(val);
-                        AmongUsClient.Instance.StartCoroutine(Vent());
+                        AmongUsClient.Instance.StartCoroutine(nameof(Vent));
                         IEnumerator Vent() { 
                             yield return new WaitForSeconds(0.5f);
                             int clientId = __instance.myPlayer.getClientId();

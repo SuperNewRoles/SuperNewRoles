@@ -9,7 +9,6 @@ using SuperNewRoles.CustomOption;
 using SuperNewRoles.Roles;
 using SuperNewRoles.CustomCosmetics.ShareCosmetics;
 using System.Collections;
-using BepInEx.IL2CPP.Utils;
 using SuperNewRoles.EndGame;
 using InnerNet;
 using static SuperNewRoles.EndGame.FinalStatusPatch;
@@ -138,7 +137,7 @@ namespace SuperNewRoles.CustomRPC
         // Main Controls
         public static void AutoCreateRoom() {
             if (!ConfigRoles.IsAutoRoomCreate.Value) return;
-            AmongUsClient.Instance.StartCoroutine(CREATEROOMANDJOIN());
+            AmongUsClient.Instance.StartCoroutine(nameof(CREATEROOMANDJOIN));
             static IEnumerator CREATEROOMANDJOIN()
             {
                 var gameid = AmongUsClient.Instance.GameId;

@@ -123,6 +123,49 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
                         p.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color, p.getDefaultName())+Suffix);
                     }
+                } else if(p.PlayerId == 0){
+                    if (p.isDead() || p.isRole(CustomRPC.RoleId.God))
+                    {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        {
+                            if (p2.IsLovers())
+                            {
+                                string Suffix = "";
+                                Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                                try
+                                {
+                                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                                    {
+                                        if (p2.PlayerId == player.TargetPlayerId)
+                                        {
+                                            player.NameText.text += Suffix;
+                                        }
+                                    }
+                                }
+                                catch { }
+                            }
+                        }
+                    }
+                }
+                else if (p.isAlive())
+                {
+                    string Suffix = "";
+                    if (p.IsLovers())
+                    {
+                        Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                        PlayerControl Side = p.GetOneSideLovers();
+                        try
+                        {
+                            foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                            {
+                                if (Side.PlayerId == player.TargetPlayerId || PlayerControl.LocalPlayer.PlayerId == player.TargetPlayerId)
+                                {
+                                    player.NameText.text += Suffix;
+                                }
+                            }
+                        }
+                        catch { }
+                    }
                 }
             }
         }

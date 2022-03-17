@@ -1,4 +1,4 @@
-﻿using BepInEx.IL2CPP.Utils;
+﻿
 using HarmonyLib;
 using SuperNewRoles.EndGame;
 using System;
@@ -19,9 +19,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             public static void Postfix()
             {
-                IEnumerator SendResult(string Chat)
+                void SendResult(string Chat)
                 {
-                    yield return new WaitForSeconds(3);
                     PlayerControl.LocalPlayer.RpcSendChat(Chat);
                 }
                 if (IsOldSHR && WinCond != null && AmongUsClient.Instance.AmHost)
@@ -45,17 +44,30 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                         }
                         catch { }
-                        AmongUsClient.Instance.StartCoroutine(SendResult(string.Format(Template + "\n勝者:{1}", "神(God)",players)));
+                        //new LateTask(() => {
+                            SendResult(string.Format(Template + "\n勝者:{1}", "神(God)", players));
+                        //}, 3f, "SendResult");
                     }
                     else if (WinCond == CustomGameOverReason.CrewmateWin)
                     {
-                        AmongUsClient.Instance.StartCoroutine(SendResult(string.Format(Template,"クルーメイト(Crewmate)")));
+                        //new LateTask(() => {
+                            SendResult(string.Format(Template, "クルーメイト(Crewmate)"));
+                        //}, 3f, "SendResult");
                     } else if(WinCond == CustomGameOverReason.ImpostorWin)
                     {
-                        AmongUsClient.Instance.StartCoroutine(SendResult(string.Format(Template, "インポスター(Impostor)")));
+                        //new LateTask(() => {
+                            SendResult(string.Format(Template, "インポスター(Impostor)"));
+                        //}, 3f, "SendResult");
                     } else if(WinCond == CustomGameOverReason.JesterWin && Winner != null)
                     {
-                        AmongUsClient.Instance.StartCoroutine(SendResult(string.Format(Template+ "\n勝者:{1}", "てるてる(Jester)",Winner[0].nameText.text)));
+                        //new LateTask(() => {
+                            SendResult(string.Format(Template + "\n勝者:{1}", "てるてる(Jester)", Winner[0].nameText.text));
+                       // }, 3f, "SendResult");
+                    } else if (WinCond == CustomGameOverReason.WorkpersonWin && Winner != null)
+                    {
+                       // new LateTask(() => {
+                            SendResult(string.Format(Template + "\n勝者:{1}", "仕事人(Workperson)", Winner[0].nameText.text));
+                        //}, 3f, "SendResult");
                     }
                 }
                 IsOldSHR = false;

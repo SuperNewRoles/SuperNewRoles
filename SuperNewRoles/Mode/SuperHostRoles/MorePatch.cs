@@ -1,4 +1,4 @@
-﻿using BepInEx.IL2CPP.Utils;
+﻿
 using SuperNewRoles.Roles;
 using System;
 using System.Collections;
@@ -19,7 +19,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void StartMeeting(MeetingHud __instance)
         {
             FixedUpdate.SetRoleNames();
-            AmongUsClient.Instance.StartCoroutine(SetNameCoro());
+            AmongUsClient.Instance.StartCoroutine(nameof(SetNameCoro));
             IEnumerator SetNameCoro()
             {
                 yield return new WaitForSeconds(5);

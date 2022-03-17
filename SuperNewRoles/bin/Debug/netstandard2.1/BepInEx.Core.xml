@@ -810,7 +810,7 @@
         </member>
         <member name="P:BepInEx.BepInDependency.VersionRange">
             <summary>
-                The version <see cref="!:SemVer.Range">range</see> of the referenced plugin.
+                The version <see cref="T:SemVer.Range">range</see> of the referenced plugin.
             </summary>
         </member>
         <member name="T:BepInEx.BepInIncompatibility">
@@ -887,14 +887,6 @@
             <param name="plugin">The plugin instance.</param>
             <returns>The attributes of the instance, if existing.</returns>
         </member>
-        <member name="M:BepInEx.MetadataHelper.GetAttributes``1(System.Reflection.MemberInfo)">
-            <summary>
-                Gets the specified attributes of a reflection metadata type, if they exist.
-            </summary>
-            <typeparam name="T">The attribute type to retrieve.</typeparam>
-            <param name="member">The reflection metadata instance.</param>
-            <returns>The attributes of the instance, if existing.</returns>
-        </member>
         <member name="M:BepInEx.MetadataHelper.GetDependencies(System.Type)">
             <summary>
                 Retrieves the dependencies of the specified plugin type.
@@ -942,105 +934,10 @@
         <member name="M:BepInEx.PluginInfo.ToString">
             <inheritdoc />
         </member>
-        <member name="T:BepInEx.Core.Logging.Interpolation.BepInExLogInterpolatedStringHandler">
-            <summary>
-                Interpolated string handler for BepInEx <see cref="T:BepInEx.Logging.Logger" />. This allows to conditionally skip logging certain
-                messages and speed up logging in certain places.
-            </summary>
-            <remarks>
-                The class isn't meant to be constructed manually.
-                Instead, use <see cref="M:BepInEx.Logging.ManualLogSource.Log(BepInEx.Logging.LogLevel,BepInEx.Core.Logging.Interpolation.BepInExLogInterpolatedStringHandler)" /> with
-                string interpolation.
-            </remarks>
-        </member>
-        <member name="M:BepInEx.Core.Logging.Interpolation.BepInExLogInterpolatedStringHandler.#ctor(System.Int32,System.Int32,BepInEx.Logging.LogLevel,System.Boolean@)">
-            <summary>
-                Constructs a log handler.
-            </summary>
-            <param name="literalLength">Length of the literal string.</param>
-            <param name="formattedCount">Number for formatted items.</param>
-            <param name="logLevel">Log level the message belongs to.</param>
-            <param name="isEnabled">Whether this string should be logged.</param>
-        </member>
-        <member name="P:BepInEx.Core.Logging.Interpolation.BepInExLogInterpolatedStringHandler.Enabled">
-            <summary>
-                Whether the interpolation is enabled and string will be logged.
-            </summary>
-        </member>
-        <member name="M:BepInEx.Core.Logging.Interpolation.BepInExLogInterpolatedStringHandler.AppendLiteral(System.String)">
-            <summary>
-                Appends a literal string to the interpolation.
-            </summary>
-            <param name="s">String to append.</param>
-        </member>
-        <member name="M:BepInEx.Core.Logging.Interpolation.BepInExLogInterpolatedStringHandler.AppendFormatted``1(``0)">
-            <summary>
-                Appends a value to the interpolation.
-            </summary>
-            <param name="t">Value to append.</param>
-            <typeparam name="T">Type of the value to append.</typeparam>
-        </member>
-        <member name="M:BepInEx.Core.Logging.Interpolation.BepInExLogInterpolatedStringHandler.AppendFormatted``1(``0,System.String)">
-            <summary>
-                Append a formattable item.
-            </summary>
-            <param name="t">Item to append.</param>
-            <param name="format">Format to append with.</param>
-            <typeparam name="T">Item type.</typeparam>
-        </member>
-        <member name="M:BepInEx.Core.Logging.Interpolation.BepInExLogInterpolatedStringHandler.AppendFormatted(System.IntPtr,System.String)">
-            <summary>
-                Append an IntPtr.
-            </summary>
-            <param name="t">Item to append.</param>
-            <param name="format">Format to append with.</param>
-        </member>
-        <member name="M:BepInEx.Core.Logging.Interpolation.BepInExLogInterpolatedStringHandler.ToString">
-            <inheritdoc />
-        </member>
-        <member name="T:BepInEx.Core.Logging.Interpolation.BepInExFatalLogInterpolatedStringHandler">
-            <inheritdoc />
-        </member>
-        <member name="M:BepInEx.Core.Logging.Interpolation.BepInExFatalLogInterpolatedStringHandler.#ctor(System.Int32,System.Int32,System.Boolean@)">
-            <inheritdoc />
-        </member>
-        <member name="T:BepInEx.Core.Logging.Interpolation.BepInExErrorLogInterpolatedStringHandler">
-            <inheritdoc />
-        </member>
-        <member name="M:BepInEx.Core.Logging.Interpolation.BepInExErrorLogInterpolatedStringHandler.#ctor(System.Int32,System.Int32,System.Boolean@)">
-            <inheritdoc />
-        </member>
-        <member name="T:BepInEx.Core.Logging.Interpolation.BepInExWarningLogInterpolatedStringHandler">
-            <inheritdoc />
-        </member>
-        <member name="M:BepInEx.Core.Logging.Interpolation.BepInExWarningLogInterpolatedStringHandler.#ctor(System.Int32,System.Int32,System.Boolean@)">
-            <inheritdoc />
-        </member>
-        <member name="T:BepInEx.Core.Logging.Interpolation.BepInExMessageLogInterpolatedStringHandler">
-            <inheritdoc />
-        </member>
-        <member name="M:BepInEx.Core.Logging.Interpolation.BepInExMessageLogInterpolatedStringHandler.#ctor(System.Int32,System.Int32,System.Boolean@)">
-            <inheritdoc />
-        </member>
-        <member name="T:BepInEx.Core.Logging.Interpolation.BepInExInfoLogInterpolatedStringHandler">
-            <inheritdoc />
-        </member>
-        <member name="M:BepInEx.Core.Logging.Interpolation.BepInExInfoLogInterpolatedStringHandler.#ctor(System.Int32,System.Int32,System.Boolean@)">
-            <inheritdoc />
-        </member>
-        <member name="T:BepInEx.Core.Logging.Interpolation.BepInExDebugLogInterpolatedStringHandler">
-            <inheritdoc />
-        </member>
-        <member name="M:BepInEx.Core.Logging.Interpolation.BepInExDebugLogInterpolatedStringHandler.#ctor(System.Int32,System.Int32,System.Boolean@)">
-            <inheritdoc />
-        </member>
         <member name="T:BepInEx.Logging.ConsoleLogListener">
             <summary>
                 Logs entries using a console spawned by BepInEx.
             </summary>
-        </member>
-        <member name="P:BepInEx.Logging.ConsoleLogListener.LogLevelFilter">
-            <inheritdoc />
         </member>
         <member name="M:BepInEx.Logging.ConsoleLogListener.LogEvent(System.Object,BepInEx.Logging.LogEventArgs)">
             <inheritdoc />
@@ -1081,9 +978,6 @@
                 Timer for flushing the logs to a file.
             </summary>
         </member>
-        <member name="P:BepInEx.Logging.DiskLogListener.LogLevelFilter">
-            <inheritdoc />
-        </member>
         <member name="M:BepInEx.Logging.DiskLogListener.LogEvent(System.Object,BepInEx.Logging.LogEventArgs)">
             <inheritdoc />
         </member>
@@ -1094,18 +988,6 @@
             <summary>
                 A generic log listener that receives log events and can route them to some output (e.g. file, console, socket).
             </summary>
-        </member>
-        <member name="P:BepInEx.Logging.ILogListener.LogLevelFilter">
-            <summary>
-                What log levels the listener preliminarily wants.
-            </summary>
-            <remarks>
-                The filter is used to more efficiently discard log messages that aren't being listened to.
-                As such, the filter should represent the log levels that the listener will always want to process.
-                It is up to the the implementation of <see cref="M:BepInEx.Logging.ILogListener.LogEvent(System.Object,BepInEx.Logging.LogEventArgs)" /> whether the messages are going to be processed or
-                discarded.
-            </remarks>
-            TODO: Right now the filter cannot be updated after the log listener has been attached to the logger.
         </member>
         <member name="M:BepInEx.Logging.ILogListener.LogEvent(System.Object,BepInEx.Logging.LogEventArgs)">
             <summary>
@@ -1171,11 +1053,6 @@
                 Handles pub-sub event marshalling across all log listeners and sources.
             </summary>
         </member>
-        <member name="P:BepInEx.Logging.Logger.ListenedLogLevels">
-            <summary>
-                Log levels that are currently listened to by at least one listener.
-            </summary>
-        </member>
         <member name="P:BepInEx.Logging.Logger.Listeners">
             <summary>
                 Collection of all log listeners that receive log events.
@@ -1192,13 +1069,6 @@
             </summary>
             <param name="level">The level of the entry.</param>
             <param name="data">The data of the entry.</param>
-        </member>
-        <member name="M:BepInEx.Logging.Logger.Log(BepInEx.Logging.LogLevel,BepInEx.Core.Logging.Interpolation.BepInExLogInterpolatedStringHandler)">
-            <summary>
-                Logs an entry to the internal logger instance if any log listener wants the message.
-            </summary>
-            <param name="level">The level of the entry.</param>
-            <param name="logHandler">Log handler to resolve log from.</param>
         </member>
         <member name="M:BepInEx.Logging.Logger.CreateLogSource(System.String)">
             <summary>
@@ -1298,24 +1168,11 @@
             <param name="level">Log levels to attach to the message. Multiple can be used with bitwise ORing.</param>
             <param name="data">Data to log.</param>
         </member>
-        <member name="M:BepInEx.Logging.ManualLogSource.Log(BepInEx.Logging.LogLevel,BepInEx.Core.Logging.Interpolation.BepInExLogInterpolatedStringHandler)">
-            <summary>
-                Logs an interpolated string with the specified log level.
-            </summary>
-            <param name="level">Log levels to attach to the message. Multiple can be used with bitwise ORing.</param>
-            <param name="logHandler">Handler for the interpolated string.</param>
-        </member>
         <member name="M:BepInEx.Logging.ManualLogSource.LogFatal(System.Object)">
             <summary>
                 Logs a message with <see cref="F:BepInEx.Logging.LogLevel.Fatal" /> level.
             </summary>
             <param name="data">Data to log.</param>
-        </member>
-        <member name="M:BepInEx.Logging.ManualLogSource.LogFatal(BepInEx.Core.Logging.Interpolation.BepInExFatalLogInterpolatedStringHandler)">
-            <summary>
-                Logs an interpolated string with <see cref="F:BepInEx.Logging.LogLevel.Fatal" /> level.
-            </summary>
-            <param name="logHandler">Handler for the interpolated string.</param>
         </member>
         <member name="M:BepInEx.Logging.ManualLogSource.LogError(System.Object)">
             <summary>
@@ -1323,23 +1180,11 @@
             </summary>
             <param name="data">Data to log.</param>
         </member>
-        <member name="M:BepInEx.Logging.ManualLogSource.LogError(BepInEx.Core.Logging.Interpolation.BepInExErrorLogInterpolatedStringHandler)">
-            <summary>
-                Logs an interpolated string with <see cref="F:BepInEx.Logging.LogLevel.Error" /> level.
-            </summary>
-            <param name="logHandler">Handler for the interpolated string.</param>
-        </member>
         <member name="M:BepInEx.Logging.ManualLogSource.LogWarning(System.Object)">
             <summary>
                 Logs a message with <see cref="F:BepInEx.Logging.LogLevel.Warning" /> level.
             </summary>
             <param name="data">Data to log.</param>
-        </member>
-        <member name="M:BepInEx.Logging.ManualLogSource.LogWarning(BepInEx.Core.Logging.Interpolation.BepInExWarningLogInterpolatedStringHandler)">
-            <summary>
-                Logs an interpolated string with <see cref="F:BepInEx.Logging.LogLevel.Warning" /> level.
-            </summary>
-            <param name="logHandler">Handler for the interpolated string.</param>
         </member>
         <member name="M:BepInEx.Logging.ManualLogSource.LogMessage(System.Object)">
             <summary>
@@ -1347,35 +1192,17 @@
             </summary>
             <param name="data">Data to log.</param>
         </member>
-        <member name="M:BepInEx.Logging.ManualLogSource.LogMessage(BepInEx.Core.Logging.Interpolation.BepInExMessageLogInterpolatedStringHandler)">
-            <summary>
-                Logs an interpolated string with <see cref="F:BepInEx.Logging.LogLevel.Message" /> level.
-            </summary>
-            <param name="logHandler">Handler for the interpolated string.</param>
-        </member>
         <member name="M:BepInEx.Logging.ManualLogSource.LogInfo(System.Object)">
             <summary>
                 Logs a message with <see cref="F:BepInEx.Logging.LogLevel.Info" /> level.
             </summary>
             <param name="data">Data to log.</param>
         </member>
-        <member name="M:BepInEx.Logging.ManualLogSource.LogInfo(BepInEx.Core.Logging.Interpolation.BepInExInfoLogInterpolatedStringHandler)">
-            <summary>
-                Logs an interpolated string with <see cref="F:BepInEx.Logging.LogLevel.Info" /> level.
-            </summary>
-            <param name="logHandler">Handler for the interpolated string.</param>
-        </member>
         <member name="M:BepInEx.Logging.ManualLogSource.LogDebug(System.Object)">
             <summary>
                 Logs a message with <see cref="F:BepInEx.Logging.LogLevel.Debug" /> level.
             </summary>
             <param name="data">Data to log.</param>
-        </member>
-        <member name="M:BepInEx.Logging.ManualLogSource.LogDebug(BepInEx.Core.Logging.Interpolation.BepInExDebugLogInterpolatedStringHandler)">
-            <summary>
-                Logs an interpolated string with <see cref="F:BepInEx.Logging.LogLevel.Debug" /> level.
-            </summary>
-            <param name="logHandler">Handler for the interpolated string.</param>
         </member>
         <member name="T:BepInEx.Logging.TraceLogSource">
             <summary>
@@ -1509,7 +1336,7 @@
         </member>
         <member name="P:BepInEx.Utility.UTF8NoBom">
             <summary>
-                An encoding for UTF-8 which does not emit a byte order mark (BOM).
+            An encoding for UTF-8 which does not emit a byte order mark (BOM). 
             </summary>
         </member>
         <member name="M:BepInEx.Utility.TryDo(System.Action,System.Exception@)">
@@ -1616,14 +1443,14 @@
         </member>
         <member name="M:BepInEx.Utility.HashStream(System.IO.Stream)">
             <summary>
-                Compute a MD5 hash of the given stream.
+            Compute a MD5 hash of the given stream.
             </summary>
             <param name="stream">Stream to hash</param>
             <returns>MD5 hash as a hex string</returns>
         </member>
         <member name="M:BepInEx.Utility.ByteArrayToString(System.Byte[])">
             <summary>
-                Convert the given array to a hex string.
+            Convert the given array to a hex string.
             </summary>
             <param name="data">Bytes to convert.</param>
             <returns>Bytes reinterpreted as a hex number.</returns>
@@ -1643,8 +1470,8 @@
         </member>
         <member name="M:BepInEx.Utility.GetUniqueFilesInDirectories(System.Collections.Generic.IEnumerable{System.String},System.String)">
             <summary>
-                Gets unique files in all given directories. If the file with the same name exists in multiple directories,
-                only the first occurrence is returned.
+            Gets unique files in all given directories. If the file with the same name exists in multiple directories,
+            only the first occurrence is returned.
             </summary>
             <param name="directories">Directories to search from.</param>
             <param name="pattern">File pattern to search.</param>

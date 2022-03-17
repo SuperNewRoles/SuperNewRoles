@@ -1,6 +1,8 @@
-﻿using BepInEx.IL2CPP.Utils;
+﻿
 using HarmonyLib;
+using Hazel;
 using SuperNewRoles.EndGame;
+using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections;
@@ -21,6 +23,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
             if (CheckAndEndGameForTaskWin(__instance)) return false;
             return false;
         }
@@ -177,6 +180,28 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 Chat.WinCond = CustomGameOverReason.CrewmateWin;
                 CustomEndGame(__instance, GameOverReason.HumansByVote, false);
                 return true;
+            }
+            return false;
+        }
+        public static bool CheckAndEndGameForWorkpersonWin(ShipStatus __instance)
+        {
+            foreach (PlayerControl p in RoleClass.Workperson.WorkpersonPlayer)
+            {
+                if (!p.Data.Disconnected)
+                {
+                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                    if (playerCompleted >= playerTotal)
+                    {
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        Writer.Write(p.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
+                        Chat.WinCond = CustomGameOverReason.WorkpersonWin;
+                        __instance.enabled = false;
+                        CustomEndGame(__instance,(GameOverReason)CustomGameOverReason.CrewmateWin, false);
+                        return true;
+                    }
+                }
             }
             return false;
         }

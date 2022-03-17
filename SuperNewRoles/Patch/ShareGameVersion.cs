@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using System.Collections;
-using BepInEx.IL2CPP.Utils;
+
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Roles;
 

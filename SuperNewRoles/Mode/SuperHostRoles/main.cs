@@ -1,4 +1,4 @@
-﻿using BepInEx.IL2CPP.Utils;
+﻿
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Intro;
 using System;
@@ -15,7 +15,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
         }
         public static void SendAllRoleChat()
-        {
+        {/*
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 float Time = 3;
@@ -42,22 +42,27 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             {
                                 try
                                 {
-                                    AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat.Substring(100 * i, (100 * (i + 1)) - 1), Time));
+                                    new LateTask(() => {
+                                    ChatSend(p, Chat.Substring(100 * i, (100 * (i + 1)) - 1), Time);
+                                }, Time, "ChatSend");
                                 }
                                 catch
                                 {
-                                    AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat.Substring((100 * i) - 1), Time));
+                                    new LateTask(() => {
+                                        ChatSend(p, Chat.Substring((100 * i) - 1), Time);
+                                    }, Time, "ChatSend");
                                 }
                                 Time += 3;
                             }
                         }
                         else
                         {
-                            AmongUsClient.Instance.StartCoroutine(ChatSend(p, Chat, Time));
+                            new LateTask(() => {
+                                ChatSend(p, Chat, Time);
+                            }, Time, "ChatSend");
                         }
-                        IEnumerator ChatSend(PlayerControl Player, string Chat, float Time)
+                        void ChatSend(PlayerControl Player, string Chat, float Time)
                         {
-                            yield return new WaitForSeconds(Time);
                             //                        PlayerControl.LocalPlayer.RpcSetNamePrivate();
                             Player.RPCSendChatPrivate(Chat);
                         }
@@ -73,6 +78,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 Chat2 += "設定:\n" + RoleHelpers.GetOptionsText(RoleIntroDate2.RoleId);
                 DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, Chat2);
             }
+        }*/
         }
     }
 }

@@ -9,7 +9,6 @@ using SuperNewRoles.Roles;
 using SuperNewRoles.Mode;
 using System.Collections;
 using UnityEngine;
-using BepInEx.IL2CPP.Utils;
 using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles
@@ -123,7 +122,7 @@ namespace SuperNewRoles
                 {
                     p.RpcSetRole(p.Data.Role.Role);
                 }
-                AmongUsClient.Instance.StartCoroutine(SetServerRole());
+                AmongUsClient.Instance.StartCoroutine(nameof(SetServerRole));
             }
             IEnumerator SetServerRole()
             {
@@ -134,6 +133,7 @@ namespace SuperNewRoles
                     pc.RpcSetRole(RoleTypes.Shapeshifter);
                 }
             }
+
         }
     }
     class AllRoleSetClass
@@ -239,6 +239,7 @@ namespace SuperNewRoles
                     RoleHelpers.SetQuarreledRPC(Listdate[0],Listdate[1]);
                 }
             }
+            ChacheManager.ResetQuarreledChache();
         }
 
         public static void LoversRandomSelect()
@@ -301,6 +302,7 @@ namespace SuperNewRoles
                     RoleHelpers.SetLoversRPC(Listdate[0], Listdate[1]);
                 }
             }
+            ChacheManager.ResetLoversChache();
         }
         public static void SetPlayerNum()
         {
