@@ -17,7 +17,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             public static bool Prefix(GameData __instance,
                 [HarmonyArgument(0)] byte playerId,
                 [HarmonyArgument(1)] ref UnhollowerBaseLib.Il2CppStructArray<byte> taskTypeIds)
-            {
+            {/*
                 if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return true;
                 PlayerControl player = ModHelpers.playerById(playerId);
                 if (player == null) return false;
@@ -47,7 +47,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     messageWriter.WriteBytesAndSize(tasks);
                     messageWriter.EndMessage();
                     return false;
-                }
+                }*/
                 return true;
             }
         }

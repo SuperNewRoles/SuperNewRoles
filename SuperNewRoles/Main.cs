@@ -41,6 +41,7 @@ namespace SuperNewRoles
             // All Load() Start
             ModTranslation.Load();
             ChacheManager.Load();
+            CustomCosmetics.DownLoadClass.Load();
             ConfigRoles.Load();
             CustomOption.CustomOptions.Load();
             // All Load() End

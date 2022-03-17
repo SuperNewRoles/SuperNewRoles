@@ -238,9 +238,8 @@ namespace SuperNewRoles.EndGame
                 if (player.isAlive()) { 
                     if (!IsOpptexton && !haison)
                     {
-                        text = text + "&"+ModTranslation.getString("OpportunistName");
+                        text = text + "&"+ModHelpers.cs(RoleClass.Opportunist.color,ModTranslation.getString("OpportunistName"));
                     }
-
                 }
             }
             bool IsLovetexton = false;
@@ -690,29 +689,16 @@ namespace SuperNewRoles.EndGame
     public class WrapUpClass {
 
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
-        {
+        { 
+            PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             RoleClass.IsMeeting = false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
             ModeHandler.Wrapup(exiled);
             if (exiled == null) return;
             FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
-            if (ModeHandler.isMode(ModeId.Default))
+            var Player = ModHelpers.playerById(exiled.PlayerId);
+            if (ModeHandler.isMode(ModeId.SuperHostRoles) || ModeHandler.isMode(ModeId.Default))
             {
-                EvilEraser.IsWinGodGuard = false;
-                var Player = ModHelpers.playerById(exiled.PlayerId);
-                if (RoleHelpers.IsQuarreled(Player))
-                {
-                    var Side = RoleHelpers.GetOneSideQuarreled(Player);
-                    if (Side.isDead())
-                    {
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                        Writer.Write(Player.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
-                        RoleClass.Quarreled.IsQuarreledWin = true;
-                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
-                    }
-                }
                 if (RoleClass.Lovers.SameDie && Player.IsLovers())
                 {
                     if (AmongUsClient.Instance.AmHost)
@@ -729,6 +715,24 @@ namespace SuperNewRoles.EndGame
                         }
                     }
                 }
+            }
+            if (ModeHandler.isMode(ModeId.Default))
+            {
+                EvilEraser.IsWinGodGuard = false;
+                if (RoleHelpers.IsQuarreled(Player))
+                {
+                    var Side = RoleHelpers.GetOneSideQuarreled(Player);
+                    if (Side.isDead())
+                    {
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        Writer.Write(Player.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
+                        RoleClass.Quarreled.IsQuarreledWin = true;
+                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
+                    }
+                }
+                
                 if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(Player))
                 {
 

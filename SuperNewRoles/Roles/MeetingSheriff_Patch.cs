@@ -80,11 +80,11 @@ namespace SuperNewRoles.Roles
         
         static void Postfix(MeetingHud __instance)
         {
+            RoleClass.IsMeeting = true;
             if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
             {
                 Mode.SuperHostRoles.MorePatch.StartMeeting(__instance);
             }
-            RoleClass.IsMeeting = true;
             Event(__instance);
          }
         

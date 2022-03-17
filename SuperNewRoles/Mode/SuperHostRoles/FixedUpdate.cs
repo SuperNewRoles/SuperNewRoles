@@ -57,6 +57,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SetRoleNames()
         {
+            SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (!p.Data.Disconnected && p.PlayerId != 0)
@@ -90,9 +91,42 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            if (RoleClass.MadMate.IsImpostorCheck)
+            {
+                var impostorplayers = new List<PlayerControl>();
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.isImpostor())
+                    {
+                        impostorplayers.Add(p);
+                    }
+                }
+                foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
+                {
+                    if (p.isAlive() && p.PlayerId != 0)
+                    {
+                        foreach (PlayerControl p2 in impostorplayers)
+                        {
+                            p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
+                        }
+                    }
+                    else if (p.isAlive() && p.PlayerId != 0)
+                    {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        {
+                            if (p.isImpostor() || p.isRole(CustomRPC.RoleId.Egoist))
+                            {
+                                SetNamesClass.SetPlayerNameColors(p);
+                                SetNamesClass.SetPlayerRoleNames(p);
+                            }
+                        }
+                    }
+                }
+            }
         }
         public static void AllMeetingText()
         {
+            SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (!p.Data.Disconnected && p.PlayerId != 0)
@@ -123,48 +157,37 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
                         p.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color, p.getDefaultName())+Suffix);
                     }
-                } else if(p.PlayerId == 0){
-                    if (p.isDead() || p.isRole(CustomRPC.RoleId.God))
+                }
+            }
+            if (RoleClass.MadMate.IsImpostorCheck)
+            {
+                var impostorplayers = new List<PlayerControl>();
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.isImpostor())
+                    {
+                        impostorplayers.Add(p);
+                    }
+                }
+                foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
+                {
+                    if (p.isAlive() && p.PlayerId != 0)
+                    {
+                        foreach (PlayerControl p2 in impostorplayers)
+                        {
+                            p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
+                        }
+                    }
+                    else if (p.isAlive() && p.PlayerId != 0)
                     {
                         foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {
-                            if (p2.IsLovers())
+                            if (p.isImpostor() || p.isRole(CustomRPC.RoleId.Egoist))
                             {
-                                string Suffix = "";
-                                Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
-                                try
-                                {
-                                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-                                    {
-                                        if (p2.PlayerId == player.TargetPlayerId)
-                                        {
-                                            player.NameText.text += Suffix;
-                                        }
-                                    }
-                                }
-                                catch { }
+                                SetNamesClass.SetPlayerNameColors(p);
+                                SetNamesClass.SetPlayerRoleNames(p);
                             }
                         }
-                    }
-                }
-                else if (p.isAlive())
-                {
-                    string Suffix = "";
-                    if (p.IsLovers())
-                    {
-                        Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
-                        PlayerControl Side = p.GetOneSideLovers();
-                        try
-                        {
-                            foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-                            {
-                                if (Side.PlayerId == player.TargetPlayerId || PlayerControl.LocalPlayer.PlayerId == player.TargetPlayerId)
-                                {
-                                    player.NameText.text += Suffix;
-                                }
-                            }
-                        }
-                        catch { }
                     }
                 }
             }
@@ -179,8 +202,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (UpdateDate <= 0)
                     {
-                        UpdateDate = 10;
-                        //SetNames();
+                        UpdateDate = 100; 
+                        if (RoleClass.IsMeeting)
+                        {
+                            SetDefaultNames();
+                        }
+                        else
+                        {
+                            SetRoleNames();
+                        }
                     }
                 }
             }
@@ -194,10 +224,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SetNames()
         {
-            if (PlayerControl.LocalPlayer.IsLovers())
-            {
-                SetNamesClass.LoversSet();
-            }
+            SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (p.isAlive() && !p.isRole(CustomRPC.RoleId.God))
@@ -205,10 +232,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (p.PlayerId != 0)
                     {
                         p.RpcSetNamePrivate(getsetname(p));
-                    }
-                    else
-                    {
-                        SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                     }
                 }
                 else if (!p.Data.Disconnected && p.isDead())
@@ -220,13 +243,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             p2.RpcSetNamePrivate(getsetname(p2, p2.isDead()), SeePlayer: p);
                         }
                     }
-                    else if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId)
-                    {
-                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                        {
-                            SetNamesClass.SetPlayerRoleInfo(p2);
-                        }
-                    }
                 }
                 else if (!p.Data.Disconnected && p.isRole(CustomRPC.RoleId.God))
                 {
@@ -235,13 +251,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {
                             p2.RpcSetNamePrivate(getsetname(p2, true), SeePlayer: p);
-                        }
-                    }
-                    else if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId)
-                    {
-                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                        {
-                            SetNamesClass.SetPlayerRoleInfo(p2);
                         }
                     }
                 }

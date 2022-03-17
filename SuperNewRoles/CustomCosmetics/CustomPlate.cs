@@ -10,6 +10,7 @@ using UnityEngine;
 using UnhollowerBaseLib;
 using Hazel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SuperNewRoles.CustomCosmetics
 {
@@ -23,26 +24,9 @@ namespace SuperNewRoles.CustomCosmetics
                 SuperNewRolesPlugin.Logger.LogInfo("[SetHat]" + __instance.nameText.text + ":" + colorid);
             }
         }
-        [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetUnlockedHats))]
-        class GetUnlockedHatPatch
+        [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetUnlockedNamePlates))]
+        class GetUnlockedNamePlatesPatch
         {
-            public static bool isAdded = false;
-            public static void Postfix(HatManager __instance, ref Il2CppReferenceArray<HatBehaviour> __result)
-            {
-                if (isAdded) return;
-                isAdded = true;
-                var Allhats = __instance.AllHats;
-                foreach (HatBehaviour hat in Allhats)
-                {
-                    hat.Free = true;
-                    hat.NotInStore = true;
-                }
-                __instance.AllHats = Allhats;
-            }
-        }
-            [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetUnlockedNamePlates))]
-            class GetUnlockedNamePlatesPatch
-            {
                 public static bool isAdded = false;
                 public static void Postfix(HatManager __instance, ref Il2CppReferenceArray<NamePlateData> __result)
                 {
@@ -51,7 +35,7 @@ namespace SuperNewRoles.CustomCosmetics
                     SuperNewRolesPlugin.Logger.LogInfo("プレート読み込み処理開始");
                     var AllPlates = __result.ToList();
 
-                    var plateDir = new DirectoryInfo("SuperNewRoles\\CustomPlates");
+                    var plateDir = new DirectoryInfo("SuperNewRoles\\CustomPlatesChache");
                     if (!plateDir.Exists) plateDir.Create();
                     var pngFiles = plateDir.GetFiles("*.png");
                     var CustomPlates = new List<NamePlateData>();
@@ -60,14 +44,15 @@ namespace SuperNewRoles.CustomCosmetics
                         try
                         {
                             var plate = ScriptableObject.CreateInstance<NamePlateData>();
-                            string plateName = file.Name.Substring(0, file.Name.Length - 4);
-                            plate.name = plateName;
-                            plate.ProductId = "SNR_" + plateName;
-                            plate.BundleId = plateName;
+                        var FileName = file.Name.Substring(0, file.Name.Length - 4);
+                        var Data = DownLoadClass.platedetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
+                            plate.name = Data.name+"\nby "+Data.author;
+                            plate.ProductId = "CustomNamePlates_" + Data.resource.Replace(".png", "");
+                            plate.BundleId = "CustomNamePlates_" + Data.resource.Replace(".png", "");
                             plate.Order = 99;
                             plate.ChipOffset = new Vector2(0f, 0.2f);
                             plate.Free = true;
-                            plate.Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlates\\" + file.Name);
+                            plate.Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource);
                             CustomPlates.Add(plate);
                             AllPlates.Add(plate);
                             __instance.AllNamePlates.Add(plate);

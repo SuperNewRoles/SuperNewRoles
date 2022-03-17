@@ -18,13 +18,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void StartMeeting(MeetingHud __instance)
         {
+            RoleClass.IsMeeting = false;
             FixedUpdate.SetRoleNames();
-            AmongUsClient.Instance.StartCoroutine(nameof(SetNameCoro));
-            IEnumerator SetNameCoro()
-            {
-                yield return new WaitForSeconds(5);
-                FixedUpdate.SetDefaultNames();
-            }
+             new LateTask(() => {
+                 RoleClass.IsMeeting = true;
+                 FixedUpdate.SetDefaultNames();
+             }, 5f, "SetMeetingName");
         }
         public static void MeetingEnd()
         {

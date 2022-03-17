@@ -172,7 +172,7 @@ namespace SuperNewRoles.Mode
             if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)) return ModeId.Default;
             if (!ModeSetting.getBool()) return ModeId.Default;
             if (isMode(ModeId.HideAndSeek)) return ModeId.HideAndSeek;
-            if (isMode(ModeId.SuperHostRoles)) return ModeId.HideAndSeek;
+            if (isMode(ModeId.SuperHostRoles)) return ModeId.SuperHostRoles;
             if (isMode(ModeId.BattleRoyal)) return ModeId.BattleRoyal;
             if (isMode(ModeId.Zombie)) return ModeId.Zombie;
             if (isMode(ModeId.RandomColor)) return ModeId.RandomColor;

@@ -18,6 +18,7 @@ namespace SuperNewRoles
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
+            return true;
             SuperNewRolesPlugin.Logger.LogInfo("Set!");
 
             if (RoleManagerSelectRolesPatch.IsShapeSet)
@@ -122,8 +123,8 @@ namespace SuperNewRoles
                 {
                     p.RpcSetRole(p.Data.Role.Role);
                 }
-                AmongUsClient.Instance.StartCoroutine(nameof(SetServerRole));
-            }
+                /*AmongUsClient.Instance.StartCoroutine(nameof(SetServerRole));*/
+            }/*
             IEnumerator SetServerRole()
             {
                 yield return new WaitForSeconds(3);
@@ -132,7 +133,7 @@ namespace SuperNewRoles
                 {
                     pc.RpcSetRole(RoleTypes.Shapeshifter);
                 }
-            }
+            }*/
 
         }
     }
