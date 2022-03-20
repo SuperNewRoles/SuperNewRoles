@@ -30,11 +30,9 @@ namespace SuperNewRoles.CustomCosmetics
         public static List<CustomPlates.CustomPlate> platedetails = new List<CustomPlates.CustomPlate>();
         public static void Load()
         {
+            Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath)+@"\SuperNewRoles\");
+            Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\");
             FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
-            foreach (CustomPlates.CustomPlate plate in platedetails)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo(plate.name);
-            }
         }
         private static string sanitizeResourcePath(string res)
         {
