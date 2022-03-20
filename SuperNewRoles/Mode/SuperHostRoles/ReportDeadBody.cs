@@ -9,6 +9,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static bool ReportDeadBodyPatch(PlayerControl __instance,GameData.PlayerInfo target)
         {
+            if (!AmongUsClient.Instance.AmHost) return true;
             //会議ボタンでもレポートでも起こる処理
 
             if (target == null) {

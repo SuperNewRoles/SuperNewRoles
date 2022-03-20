@@ -110,7 +110,12 @@ namespace SuperNewRoles
             }
             else if (ModeHandler.isMode(ModeId.SuperHostRoles)) {
                 Mode.SuperHostRoles.RoleSelectHandler.RoleSelect();
-            } else if (ModeHandler.isMode(ModeId.NotImpostorCheck))
+            }
+            else if (ModeHandler.isMode(ModeId.Werewolf))
+            {
+                Mode.Werewolf.RoleSelectHandler.RoleSelect();
+            }
+            else if (ModeHandler.isMode(ModeId.NotImpostorCheck))
             {
                 Mode.NotImpostorCheck.SelectRolePatch.SetDesync();
             }

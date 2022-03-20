@@ -23,6 +23,10 @@ namespace SuperNewRoles.Roles
             {
                 Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
             }
+            if (Mode.ModeHandler.isMode(Mode.ModeId.Werewolf))
+            {
+                Mode.Werewolf.main.IntroHandler();
+            }
         }
     }
 }

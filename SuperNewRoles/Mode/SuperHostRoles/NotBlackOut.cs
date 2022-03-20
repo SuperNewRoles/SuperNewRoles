@@ -16,8 +16,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
         class CheckForEndVotingPatch
         {
             public static void Prefix(MeetingHud __instance)
-            {
-                if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
+			{
+				if (!AmongUsClient.Instance.AmHost) return ;
+				if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
                 {
                     EndMeetingPatch();
                 }

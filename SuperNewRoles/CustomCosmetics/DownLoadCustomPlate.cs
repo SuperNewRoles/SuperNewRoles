@@ -30,9 +30,7 @@ namespace SuperNewRoles.CustomCosmetics
         public static List<CustomPlates.CustomPlate> platedetails = new List<CustomPlates.CustomPlate>();
         public static void Load()
         {
-            SuperNewRolesPlugin.Logger.LogInfo("Load前");
             FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
-            SuperNewRolesPlugin.Logger.LogInfo("Load後");
             foreach (CustomPlates.CustomPlate plate in platedetails)
             {
                 SuperNewRolesPlugin.Logger.LogInfo(plate.name);
@@ -67,7 +65,6 @@ namespace SuperNewRoles.CustomCosmetics
             var response = await http.GetAsync(new System.Uri($"{repo}/CustomNamePlates.json"), HttpCompletionOption.ResponseContentRead);
             try
             {
-                SuperNewRolesPlugin.Logger.LogInfo("OK前");
                 if (response.StatusCode != HttpStatusCode.OK) return response.StatusCode;
                 if (response.Content == null)
                 {
@@ -87,7 +84,6 @@ namespace SuperNewRoles.CustomCosmetics
                         CustomPlates.CustomPlate info = new CustomPlates.CustomPlate();
 
                         info.name = current["name"]?.ToString();
-                        SuperNewRolesPlugin.Logger.LogInfo("ADDNAME:"+ current["name"]?.ToString());
                         info.resource = sanitizeResourcePath(current["resource"]?.ToString());
                         if (info.resource == null || info.name == null) // required
                             continue;
@@ -128,7 +124,6 @@ namespace SuperNewRoles.CustomCosmetics
                 SuperNewRolesPlugin.Instance.Log.LogError(ex.ToString());
                 System.Console.WriteLine(ex);
             }
-            SuperNewRolesPlugin.Logger.LogInfo("ダウンロード終了");
             return HttpStatusCode.OK;
         }
     }

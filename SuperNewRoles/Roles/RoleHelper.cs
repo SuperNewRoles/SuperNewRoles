@@ -359,6 +359,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Magaziner):
                     Roles.RoleClass.Magaziner.MagazinerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Hunter):
+                    Mode.Werewolf.main.HunterPlayers.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");

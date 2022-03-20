@@ -14,6 +14,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
     {
         public static void WrapUp(GameData.PlayerInfo exiled)
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             if (exiled.Object.isRole(CustomRPC.RoleId.NiceNekomata) || exiled.Object.isRole(CustomRPC.RoleId.EvilNekomata))
             {
                 NekomataEnd(exiled);

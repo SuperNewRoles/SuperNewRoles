@@ -16,24 +16,24 @@ namespace SuperNewRoles.CustomCosmetics
 {
     public class CustomPlate
     {
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetHat))]
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetNamePlate))]
         class Sethat
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string colorid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[SetHat]" + __instance.nameText.text + ":" + colorid);
+                SuperNewRolesPlugin.Logger.LogInfo("[SetNamePlate]" + __instance.nameText.text + ":" + colorid);
             }
         }
-        [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetUnlockedNamePlates))]
+        [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetNamePlateById))]
         class GetUnlockedNamePlatesPatch
         {
                 public static bool isAdded = false;
-                public static void Postfix(HatManager __instance, ref Il2CppReferenceArray<NamePlateData> __result)
+                public static void Postfix(HatManager __instance)
                 {
                     if (isAdded) return;
                     isAdded = true;
                     SuperNewRolesPlugin.Logger.LogInfo("プレート読み込み処理開始");
-                    var AllPlates = __result.ToList();
+                var AllPlates = __instance.AllNamePlates;
 
                     var plateDir = new DirectoryInfo("SuperNewRoles\\CustomPlatesChache");
                     if (!plateDir.Exists) plateDir.Create();
@@ -65,24 +65,8 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                     SuperNewRolesPlugin.Logger.LogInfo("プレート読み込み処理終了");
 
-                    __result = AllPlates.ToArray();
+                    __instance.AllNamePlates = AllPlates;
                 }
             }
-        
-
-        [HarmonyPatch(typeof(CosmeticData), nameof(CosmeticData.GetItemName))]
-        class CosmeticItemNamePatch
-        {
-            public static bool Prefix(CosmeticData __instance, ref string __result)
-            {
-                if (__instance.ProductId.StartsWith("SNR"))
-                {
-                    __result = __instance.ProductId = __instance.BundleId;
-                    return false;
-                }
-                return true;
-
-            }
-        }
     }
 }

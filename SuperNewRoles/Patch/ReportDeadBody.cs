@@ -13,6 +13,7 @@ namespace SuperNewRoles.Patch
         {
             public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
             {
+                if (!AmongUsClient.Instance.AmHost) return true;
                 if (ModeHandler.isMode(ModeId.HideAndSeek)) return false;
                 if (ModeHandler.isMode(ModeId.BattleRoyal)) return false;
                 if (ModeHandler.isMode(ModeId.SuperHostRoles)) return Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance,target);
