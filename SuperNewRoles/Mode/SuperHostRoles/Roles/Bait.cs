@@ -16,6 +16,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
     {
         public static void MurderPostfix(PlayerControl __instance,PlayerControl target)
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             if (target.isRole(CustomRPC.RoleId.Bait))
             {
                 new LateTask(() => {

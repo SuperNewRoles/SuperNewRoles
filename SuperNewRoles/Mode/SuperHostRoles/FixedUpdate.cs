@@ -194,6 +194,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void Update()
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
                 UpdateDate--;

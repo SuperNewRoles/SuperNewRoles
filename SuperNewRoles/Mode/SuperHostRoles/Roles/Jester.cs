@@ -12,6 +12,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
     {
         public static void WrapUp(GameData.PlayerInfo exiled)
         {
+            if (!AmongUsClient.Instance.AmHost) return ;
             if (exiled.Object.isRole(CustomRPC.RoleId.Jester))
             {
                 var (complate, all) = TaskCount.TaskDateNoClearCheck(exiled);

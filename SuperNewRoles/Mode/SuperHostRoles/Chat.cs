@@ -19,6 +19,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             public static void Postfix()
             {
+                if (!AmongUsClient.Instance.AmHost) return;
                 void SendResult(string Chat)
                 {
                     PlayerControl.LocalPlayer.RpcSendChat(Chat);

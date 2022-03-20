@@ -17,7 +17,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             public static void Postfix()
             {
-                if (!AmongUsClient.Instance.AmHost) return true;
+                if (!AmongUsClient.Instance.AmHost) return;
                 DefaultGameOption = PlayerControl.GameOptions;
             }
         }

@@ -14,6 +14,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             public static void Postfix(GameData __instance)
             {
+                if (!AmongUsClient.Instance.AmHost) return;
                 if (!Mode.ModeHandler.isMode(Mode.ModeId.Default)) return;
                 __instance.TotalTasks = 0;
                 __instance.CompletedTasks = 0;

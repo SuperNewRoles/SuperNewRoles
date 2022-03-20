@@ -13,6 +13,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static void Prefix(PlayerPhysics __instance, int id)
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             if (!RoleClass.Minimalist.UseVent && __instance.myPlayer.isRole(CustomRPC.RoleId.Minimalist))
             {
                 MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 34, (SendOption)1);
