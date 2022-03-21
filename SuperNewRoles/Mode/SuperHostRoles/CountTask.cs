@@ -21,9 +21,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 for (int i = 0; i < __instance.AllPlayers.Count; i++)
                 {
                     GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
-                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
-                    __instance.TotalTasks += playerTotal;
-                    __instance.CompletedTasks += playerCompleted;
+                    if (!RoleHelpers.isClearTask(playerInfo.Object))
+                    {
+                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
+                        __instance.TotalTasks += playerTotal;
+                        __instance.CompletedTasks += playerCompleted;
+                    }
                 }
                 return;
             }

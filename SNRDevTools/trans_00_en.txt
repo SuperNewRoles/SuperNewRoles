@@ -1,0 +1,393 @@
+SuperNewRoles
+\n---------------\nSuperNewRoles\nCreate By ykundesu\nThank You Play SuperNewRoles\n---------------
+Second
+<size=125%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> NewData</size>\nVersion:{0}\n{1}
+Common Tasks
+Long Tasks
+Short Tasks
+Preset
+Super New Roles Setting
+Minimum Crewmate Roles
+Maximum Crewmate Roles
+Minimum Neutral Roles
+Maximum Neutral Roles
+Minimum Impostor Roles
+Maximum Impostor Roles
+Hide Setting
+Position setting of crewmate camp
+Imposter camp position setting
+Setting up positions in the third camp
+Setting up multiple positions
+Other settings
+On
+Off
+Seconds
+Preset 1
+Preset 2
+Preset 3
+Preset 4
+Preset 5
+Preset 6
+Preset 7
+Preset 8
+Preset 9
+Preset 10
+Create By ykundesu
+Create By ykundesu
+SuperNewRoles v{0}
+It has been updated. It will be applied when you reboot. Latest Version:v{0}
+Mod Options
+<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings
+Role Player
+StremerMode
+Auto Update
+Game Code Auto Copy
+Update Process Down
+Show players that are not in or have different versions.
+CrewMate Setting
+Neutral Setting
+Impostor Setting
+On
+Off
+Press Tab For More
+Your host does not have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.
+The host has a different version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>.
+You don't have <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0}.
+The version of <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> in {0} is wrong.
+Haison
+Mode Setting
+Mode
+Hide And Seek Mode
+Battle Royal Mode
+Super Host Roles Mode
+Zombie Mode
+Random Color Mode
+Detective Mode
+Hide And Seek
+Battle Royal
+Super Host Roles
+Zombie Mode
+Random Color Mode
+Not Impostor Check Mode
+Detective Mode
+Not include the detective in the win condition determination.
+No tasks for detective
+Non-Detective cannot vote
+Non-Detective cannot press the conference button
+Detective
+Guess and win over your crewmates!
+Crewmate
+Use Task
+Default Crewmate.
+Impostor
+Use Sabotage & Vent
+Default Impostor.
+Zombie
+Infect other players!
+Police
+Let's finish the task.
+Zombies incoming! {0}s
+Hide Name
+Change Name Color
+In Meeting Change Color
+Neutral
+Win
+Device Options
+Use OK Admin
+Use OK Vital Or DoorLog
+Use OK Camera
+Hide
+Seek
+Hide Death Clear Task
+Use Sabotage
+Use Vent
+Survival
+Kill
+The Way of the Nekomata
+Sheriff kill
+Sheriff misfire
+Meeting Sheriff kill
+Meeting Sheriff misfire
+Self-destruct
+Self-destruct collateral damage
+amputation
+Death
+Sabotage
+Detective
+Diviner
+Divine the player and find the outsider.
+Position visibility
+Detail display
+Camp indicator
+Number of times you can divine
+The Role of {0} is {1}.
+Jester
+Vote to get banned!
+If they are expelled at the meeting they win alone.
+I can put it in a vent.
+You can sabotage it.
+Jester was Clear Task Win
+Jester{0}Win!
+Lighter
+Let's brighten our vision
+Writer Cooldown
+Lighter Duration
+View in light
+Light!
+Evil Lighter
+Darken Vision
+Create a blackout sabotage that can further reduce your vision!
+Evil Lighter Cooldown
+Duration of Evil Writer
+Evil Scientist
+Become invisible and get kills!
+Win with the power of science!
+Evil Scientist Invisibility Cooldown
+Evil Scientist's Invisibility Duration
+Sheriff
+Kill the outsider!
+Kill the outsider and lead your crewmates to victory!
+Sheriff's Kill Cooldown
+Can Kill a Neutral
+Can Kill a Madmate
+Yes
+No
+Maximum number of kills for Sheriff
+Kill
+{0} shots remaining.
+Meeting Sheriff
+Kill an outsider in a meeting!
+Kill an outsider in a meeting and lead your crewmates to victory!
+Kill an outsider in a meeting to prevent a power play
+Kill an outsider in a meeting to prevent a PP
+Can Kill a Neutral
+Can Kill a Madmate
+Yes
+No
+Maximum number of Meeting Sheriff kills
+Can you get multiple kills in one meeting?
+Jackal
+Try to kill Imposters and Crew Mates
+Kill the other team to win!
+Let's just kill them all.
+Jackal's kill cool time
+Use Vent
+Use Sabotage
+Jackal can make a Sidekick
+New Jackal can make Sidekick
+On
+Off
+Sidekick!
+Sidekick
+Help Jackal
+Teleporter
+Let's get everyone together
+Let's get everyone away from the corpse position.
+Teleporter Sabotage Kill Cool Down
+Time to be teleported
+Teleport
+The teleporter teleported you to {0}!
+Medium
+Divine the dead person's position
+Position visibility
+Detail display
+Position Display
+Number of times you can divine
+Speed Booster
+Make your speed faster!
+Lead your crew to victory with super speed!
+Speed Up Cooldown
+Duration of speed-up
+Double your speed
+Speed\nBoost
+Evil Speed Booster
+Make your speed faster!
+Use your super speed to lead your Imposter to victory!
+Get a kill with super speed!
+Let's run around and kill everyone.
+Speed Up Cooldown
+Speedup duration
+Double Speed
+If this position is selected the speed booster will not be selected.
+Speed\nBoost
+Tasker
+Finish the task and win the Imposter!
+Try to finish the task!
+Task Amount
+Killable
+Doorr
+Let's open and close the door.
+Close the door to block the imposter!
+Door Cool Time
+Door Open Or Close
+Evil Doorr
+Open and close doors!
+Try to sabotage your crewmates!
+Open and close the door immediately to block your crewmate!
+Door Cool Time
+Sealder
+Prevent outsider kills.
+Shield yourself!
+Try to block a foreigner's kill!
+Shield Cool Time
+Shield duration
+Freezer
+Stop everyone and sabotage your crewmates!
+Try to stop everyone and sabotage the task!
+Let's put them all on ice.
+Freeze Cool Time
+Freeze duration
+Speeder
+Slow everyone down and sabotage your crewmates!
+Try to slow everyone down and sabotage the task!
+Sabotage Cool Time
+Sabotage duration
+Guesser
+Let's punch out the outsider.
+Guess the position of the outsider
+Multiple hits in one meeting
+Number of times you can hit
+Evil Guesser
+Guess the position of the camp other than Imposter.
+Multiple hits in one meeting
+Number of times you can hit
+Vulture
+Let's eat a corpse.
+Corpse cooldown
+Victory corpse count
+Nice Scientist
+Turn invisible and find the bodies!
+Use the power of science to win!
+Cool Time
+Duration Time
+Clergyman
+Let's sabotage the outsider.
+Let's obstruct the outsider's view.
+Cool Time
+Duration Time
+Impostor Down Vision.
+Light Down
+The Clergyman is blocking my view!
+Mad Mate
+Let's help the Imposter.
+The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmate can also win.
+You can check the Imposter.
+Use Vent
+Move Vent
+Bait
+Bait your enemies
+If you are killed you can force the person who killed you to report you.
+Report Time
+Home Security Guard
+Guard My Home
+It is a Crewmate with no tasks.
+Stunt Man
+Guard Impostor Kill
+It can prevent a set number of kills unconditionally. If a kill is prevented a text will appear in the meeting stating that you were protected by a guardian angel.
+Guard Max Count
+Moving
+Let's run away from the Imposter.
+Teleportation Cool Time
+Location Set
+Teleport
+Quarreled
+{0} and it's Quarreled!
+Max Teams
+Only Crewmate Team
+Discharge probability
+Quarreled{0}Win
+Opportunist
+We'll survive.
+Let's try not to die.
+If you are still alive by the end of the game you get an additional win.
+Best False Charge
+Lets' Task!
+After the first meeting it dies.
+Nice Gambler
+Lets' Gambler!
+Use Count
+Evil Gambler
+Lets' Kill!
+Kill cool time on success
+Kill Cool Time on Failure
+Success probability
+Researcher
+Let's do some research.
+Maximum number of samples per turn
+Self Bomber
+Lets' Self Bomb!
+Range (radius)
+Self Bomb
+God
+You Are God!!
+If you survive to the end you take away the win. Everyone's position is known.
+All Cleaner
+Let's get rid of the corpse.
+Number of times it can be used in one game
+Clean
+Nice Nekomata
+Let's take him on the road.
+Let's have a human mess.
+Let's mess around!
+If you are exiled at a meeting you take one of them with you on the road.
+Chain Nekomata
+Evil Nekomata
+Let's take him on the road.
+If you are expelled from the meeting you will take one person with you including your friends.
+Jackal Friends
+Help Jackal.
+I'll help you kill them all.
+Is Check Jackal
+Doctor
+Check Vitals
+Vital
+Count Changer
+Let's change it
+Let's swap the judgment with the enemy.
+Maximum count
+Reflected in next turn
+Change
+Pursuer
+Let's track the other camps.
+Let's get our bearings.
+Let's go after him and kill him.
+Minimalist
+Let's Kill.
+Get rid of unnecessary stuff and kill efficiently!
+Minimalist Kill Cool Time
+Use Vent
+Use Sabotage
+Use DeadBody Report
+Hawk
+Let's figure out what we're doing.
+Cool Time
+Duration
+Hawk Eye
+Egotist
+We can survive this.
+Imposter judgment. The imposter appears to be a peer. If all the Imposters are dead and the Imposter's victory condition is achieved (except Sabotage) the Egoist wins.
+I can use Vent.
+Can use Sabotage
+Imposter's Vision
+NiceRedRidingHood
+Come back to life
+Maximum number of revives
+Evil Eraser
+Let's wipe out their abilities.
+Max Erase Count
+Work person
+Let's do the work and win!
+Magaziner
+Save your kills!
+Kill cool time after magazine use
+Save
+Set
+Lovers.
+I'm in love with {0}!
+Number of couples
+Discharge probability
+Chosen only by Cluemate
+Single camp
+Two people die at the same time
+Tasks are counted when surviving
+Does not overlap with Quarreled

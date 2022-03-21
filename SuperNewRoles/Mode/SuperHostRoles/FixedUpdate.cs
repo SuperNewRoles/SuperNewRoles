@@ -57,6 +57,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SetRoleNames()
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
@@ -126,6 +127,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void AllMeetingText()
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
