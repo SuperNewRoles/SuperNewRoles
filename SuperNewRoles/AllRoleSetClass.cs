@@ -10,6 +10,7 @@ using SuperNewRoles.Mode;
 using System.Collections;
 using UnityEngine;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles
 {
@@ -160,7 +161,22 @@ namespace SuperNewRoles
                     p.RpcSetRole(p.Data.Role.Role);
                 }
                 /*AmongUsClient.Instance.StartCoroutine(nameof(SetServerRole));*/
+            }
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
+                new LateTask(() => {
+                    if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+                    {
+                        foreach (var pc in PlayerControl.AllPlayerControls)
+                        {
+                            pc.RpcSetRole(RoleTypes.Shapeshifter);
+                        }
+                    }
+                }, 3f, "SetImpostor");
             }/*
+            BotHandler.AddBot(2, "暗転対策用1");
+            BotHandler.AddBot(3, "暗転対策用2");
+            BotHandler.AddBot(4, "暗転対策用3");
             IEnumerator SetServerRole()
             {
                 yield return new WaitForSeconds(3);
@@ -1303,7 +1319,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            /**
+            /*
         if (!(CustomOption.CustomOptions.ResearcherOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.ResearcherOption.getString().Replace("0%", ""));

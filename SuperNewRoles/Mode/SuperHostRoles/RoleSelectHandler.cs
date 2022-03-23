@@ -26,6 +26,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             new LateTask(() => {
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                 {
+                    PlayerControl.LocalPlayer.RpcSendChat("＊注意(自動送信)＊\nこのMODは、バグ等がたくさん発生します。\nいろいろな重大なバグがあるため、あくまで自己責任でお願いします。");
                     foreach (var pc in PlayerControl.AllPlayerControls)
                     {
                         pc.RpcSetRole(RoleTypes.Shapeshifter);
@@ -317,6 +318,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MayorOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Mayor;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Jackal;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);

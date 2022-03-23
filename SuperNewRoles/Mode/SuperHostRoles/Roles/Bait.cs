@@ -21,7 +21,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             {
                 new LateTask(() => {
                     RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
-                    __instance.CmdReportDeadBody(target.Data);
+                    MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, target.Data);
+                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
+                    PlayerControl.LocalPlayer.RpcStartMeeting(__instance.Data);
                 }, CustomOptions.BaitReportTime.getFloat(), "ReportBaitBody");
             }
         }
