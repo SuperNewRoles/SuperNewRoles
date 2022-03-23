@@ -13,6 +13,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Patch;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.EndGame
 {
@@ -380,10 +381,15 @@ namespace SuperNewRoles.EndGame
             AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
             if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
         }
-
+        
             public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
             {
-                var gameOverReason = AdditionalTempData.gameOverReason;
+            if (AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
+                PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
+                PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+            }
+            var gameOverReason = AdditionalTempData.gameOverReason;
                 AdditionalTempData.clear();
 
             foreach (var p in GameData.Instance.AllPlayers)
@@ -942,7 +948,7 @@ namespace SuperNewRoles.EndGame
                         {
                             numTotalAlive++;
 
-                            if (playerInfo.Role.IsImpostor)
+                            if (playerInfo.Object.isImpostor())
                             {
                                 numImpostorsAlive++;
                             }

@@ -66,6 +66,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 WinNeutral(WinGods);
                 Chat.Winner = WinGods;
             }
+            foreach (PlayerControl p in RoleClass.Sheriff.SheriffPlayer) {
+                p.RpcSetRole(RoleTypes.GuardianAngel);
+            }
             /*
                 foreach (PlayerControl p in RoleClass.Opportunist.OpportunistPlayer)
                 {

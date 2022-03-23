@@ -2,6 +2,7 @@
 using HarmonyLib;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -288,9 +289,19 @@ namespace SuperNewRoles.Patch
 
                 __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
 
+                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                {
+                    if (PlayerControl.GameOptions.MapId == 4)
+                    {
+                        foreach (var pc in PlayerControl.AllPlayerControls)
+                            if (NotBlackOut.IsAntiBlackOut(pc) && (pc.isDead() || pc.PlayerId == exiledPlayer?.PlayerId)) pc.ResetPlayerCam(19f);
+                    } else
+                    {
+                        foreach (var pc in PlayerControl.AllPlayerControls)
+                            if (NotBlackOut.IsAntiBlackOut(pc) && (pc.isDead() || pc.PlayerId == exiledPlayer?.PlayerId)) pc.ResetPlayerCam(15f);
+                    }
+                }
                 return false;
-
-
             }
             catch (Exception ex)
             {

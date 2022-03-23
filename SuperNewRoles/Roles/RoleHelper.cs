@@ -26,6 +26,7 @@ namespace SuperNewRoles
 
         public static bool isImpostor(this PlayerControl player)
         {
+            if (player.isRole(RoleId.Sheriff)) return false;
             return player != null && player.Data.Role.IsImpostor;
         }
         public static bool IsQuarreled(this PlayerControl player,bool IsChache = true)
@@ -581,8 +582,12 @@ namespace SuperNewRoles
                     break; 
                 case (RoleId.Workperson):
                     IsTaskClear = true;
-                    break; 
-                //タスククリアか
+                    break;
+                    //タスククリアか
+            }
+            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
+            {
+                IsTaskClear = true;
             }
             if (!IsTaskClear && player.IsQuarreled())
             {

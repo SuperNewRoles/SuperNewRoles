@@ -1,10 +1,13 @@
 ﻿using HarmonyLib;
+using SuperNewRoles.CustomOption;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -41,6 +44,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
             }
+            if (p.isRole(CustomRPC.RoleId.Sheriff))
+            {
+                if (RoleClass.Sheriff.KillCount.ContainsKey(p.PlayerId))
+                {
+                    Suffix += "(残り" + RoleClass.Sheriff.KillCount[p.PlayerId] + "発)";
+                }
+            }
             if (RoleClass.IsMeeting || IsDead)
             {
                 return "<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color,p.getDefaultName()+Suffix);
@@ -54,7 +64,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
 
 
-        }
+        }/*
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
+        public class KilltimerSheriff
+        {
+            public void Prefix()
+            {
+                if (ModeHandler.isMode(ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff))
+                {
+
+                }
+            }
+        }*/
         public static void SetRoleNames()
         {
             if (!AmongUsClient.Instance.AmHost) return;
@@ -72,6 +93,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             {
                                 Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
                             }
+                            if (p2.isRole(CustomRPC.RoleId.Sheriff))
+                            {
+                                if (RoleClass.Sheriff.KillCount.ContainsKey(p2.PlayerId))
+                                {
+                                    Suffix += "(残り" + RoleClass.Sheriff.KillCount[p2.PlayerId] + "発)";
+                                }
+                            }
                             var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
                             p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName())+Suffix,p);
                             
@@ -86,6 +114,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             PlayerControl Side = p.GetOneSideLovers();
                             SuperNewRolesPlugin.Logger.LogInfo("SIDE!!:"+Side.nameText.text);
                             Side.RpcSetNamePrivate(Side.getDefaultName()+Suffix,p);
+                        }
+                        if (p.isRole(CustomRPC.RoleId.Sheriff))
+                        {
+                            if (RoleClass.Sheriff.KillCount.ContainsKey(p.PlayerId))
+                            {
+                                Suffix += "(残り" + RoleClass.Sheriff.KillCount[p.PlayerId] + "発)";
+                            }
                         }
                         var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
                         p.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()+Suffix), p);
@@ -194,8 +229,31 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
         }
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive))]
+        class SetHudActivePatch
+        {
+            public static void Postfix(HudManager __instance, [HarmonyArgument(0)] bool isActive)
+            {
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff))
+                {
+                    __instance.KillButton.ToggleVisible(isActive && !PlayerControl.LocalPlayer.Data.IsDead);
+                }
+            }
+        }
         public static void Update()
         {
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff)) {
+                if (RoleClass.Sheriff.KillMaxCount >= 1)
+                {
+                    HudManager.Instance.KillButton.gameObject.SetActive(true);
+                    PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
+                    DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                } else
+                {
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                    PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = false;
+                }
+            }
             if (!AmongUsClient.Instance.AmHost) return;
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {

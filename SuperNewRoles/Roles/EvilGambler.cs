@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -64,7 +65,7 @@ namespace SuperNewRoles.Roles
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] float time)
         {
-            if (PlayerControl.GameOptions.KillCooldown <= 0f) return false;
+            if (ModeHandler.isMode(ModeId.SuperHostRoles) || PlayerControl.GameOptions.KillCooldown <= 0f) return true;
             float multiplier = 1f;
             float addition = 0f;
             if (PlayerControl.LocalPlayer.getRole() == CustomRPC.RoleId.EvilGambler) addition = RoleClass.EvilGambler.NotSucCool;

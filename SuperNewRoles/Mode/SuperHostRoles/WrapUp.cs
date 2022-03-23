@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SuperNewRoles.CustomRPC;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +21,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             Roles.BestFalseCharge.WrapUp();
             if (exiled == null) return;
+            if (exiled.Object.isRole(RoleId.Sheriff))
+            {
+                exiled.Object.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+            }
             Roles.Jester.WrapUp(exiled);
             Roles.Nekomata.WrapUp(exiled);
         }

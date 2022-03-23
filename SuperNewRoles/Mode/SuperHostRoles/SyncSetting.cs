@@ -1,0 +1,70 @@
+﻿using HarmonyLib;
+using Hazel;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Roles;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SuperNewRoles.Mode.SuperHostRoles
+{
+    public static class SyncSetting
+    {
+        public static GameOptionsData OptionData;
+        public static void CustomSyncSettings(this PlayerControl player)
+        {
+            var role = player.getRole();
+            var optdata = OptionData.DeepCopy();
+            switch (role)
+            {
+                case RoleId.Jester:
+                case RoleId.MadMate:
+                    if ((role == RoleId.Jester && RoleClass.Jester.IsUseVent) || (role == RoleId.MadMate || RoleClass.MadMate.IsUseVent))
+                    optdata.RoleOptions.EngineerCooldown = 0f;
+                    optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+                    break;
+                case RoleId.Sheriff:
+                    optdata.ImpostorLightMod = optdata.CrewLightMod;
+                    var switchSystem = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    if (switchSystem != null && switchSystem.IsActive)
+                    {
+                        optdata.ImpostorLightMod /= 5;
+                    }
+                    optdata.KillCooldown = CustomOptions.SheriffCoolTime.getFloat();
+                    break;
+                case RoleId.Minimalist:
+                    optdata.KillCooldown = RoleClass.Minimalist.KillCoolTime;
+                    break;
+            }
+            if (player.AmOwner) PlayerControl.GameOptions = optdata;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.Reliable, player.getClientId());
+            writer.WriteBytesAndSize(optdata.ToBytes(5));
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
+        public static void CustomSyncSettings()
+        {
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                if (!p.Data.Disconnected)
+                {
+                    CustomSyncSettings(p);
+                }
+            }
+        }
+        public static GameOptionsData DeepCopy(this GameOptionsData opt)
+        {
+            var optByte = opt.ToBytes(5);
+            return GameOptionsData.FromBytes(optByte);
+        }
+        [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
+        public class StartGame
+        {
+            public static void Postfix()
+            {
+                if (!AmongUsClient.Instance.AmHost) return;
+                OptionData = PlayerControl.GameOptions.DeepCopy();
+            }
+        }
+    }
+}

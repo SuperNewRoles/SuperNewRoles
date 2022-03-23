@@ -200,6 +200,7 @@ namespace SuperNewRoles.Roles
             public static bool IsNeutralKill;
             public static bool IsMadMateKill;
             public static float KillMaxCount;
+            public static Dictionary<int,int> KillCount;
             public static DateTime ButtonTimer;
 
             private static Sprite buttonSprite;
@@ -218,6 +219,7 @@ namespace SuperNewRoles.Roles
                 IsNeutralKill = CustomOptions.SheriffNeutralKill.getBool();
                 IsMadMateKill = CustomOptions.SheriffMadMateKill.getBool();
                 KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
+                KillCount = new Dictionary<int, int>();
             }
 
         }

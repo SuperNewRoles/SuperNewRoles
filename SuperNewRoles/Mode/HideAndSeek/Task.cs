@@ -12,7 +12,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
-                if (ModeHandler.thisMode != ModeId.HideAndSeek) return;
+                if (ModeHandler.isMode(ModeId.HideAndSeek)) return;
                 if (AmongUsClient.Instance.AmHost)
                 {
                     if (!target.Data.Role.IsImpostor)

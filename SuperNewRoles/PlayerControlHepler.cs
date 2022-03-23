@@ -1,15 +1,32 @@
-﻿using SuperNewRoles.Patch;
+﻿using InnerNet;
+using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using static SuperNewRoles.Patch.ShareGameVersion;
 
 namespace SuperNewRoles
 {
     public static class PlayerControlHepler
     {
+        public static bool IsMod(this PlayerControl player)
+        {
+            if (player == null) return false;
+            return IsMod(player.getClientId());
+        }
+        public static bool IsMod(this ClientData player)
+        {
+            if (player == null) return false;
+            return IsMod(player.Id);
+        }
+        public static bool IsMod(this int player)
+        {
+            if (player == AmongUsClient.Instance.HostId && AmongUsClient.Instance.AmHost) return true;
+            return GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(player);
+        }
         public static void clearAllTasks(this PlayerControl player)
         {
             if (player == null) return;

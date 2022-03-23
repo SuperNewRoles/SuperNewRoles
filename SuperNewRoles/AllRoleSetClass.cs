@@ -76,7 +76,7 @@ namespace SuperNewRoles
         public static bool IsSetRoleRpc = false;
         public static bool IsShapeSet = false;
         public static bool IsNotDesync = false;
-        public static void Prefix()
+        public static bool Prefix()
         {
             IsNotPrefix = false;
             IsSetRoleRpc = false;
@@ -97,6 +97,41 @@ namespace SuperNewRoles
                 IsNotDesync = false;
             }
             */
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
+                List<PlayerControl> SelectPlayers = new List<PlayerControl>();
+                AllRoleSetClass.impostors = new List<PlayerControl>();
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (!player.Data.Disconnected)
+                    {
+                        SelectPlayers.Add(player);
+                    }
+                }
+                for (int i = 0; i < PlayerControl.GameOptions.NumImpostors; i++)
+                {
+                    if (SelectPlayers.Count >= 1)
+                    {
+                        var newimpostor = ModHelpers.GetRandom(SelectPlayers);
+                        AllRoleSetClass.impostors.Add(newimpostor);
+                        SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
+                    }
+                }
+                Mode.SuperHostRoles.RoleSelectHandler.RoleSelect();
+                foreach (PlayerControl player in AllRoleSetClass.impostors)
+                {
+                    player.RpcSetRole(RoleTypes.Impostor);
+                }
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (!player.Data.Disconnected && !AllRoleSetClass.impostors.IsCheckListPlayerControl(player))
+                    {
+                        player.RpcSetRole(RoleTypes.Crewmate);
+                    }
+                }
+                return false;
+            }
+            return true;
         }
         public static void Postfix()
         {
@@ -107,9 +142,6 @@ namespace SuperNewRoles
             {
                 AllRoleSetClass.OneOrNotListSet();
                 AllRoleSetClass.AllRoleSet();
-            }
-            else if (ModeHandler.isMode(ModeId.SuperHostRoles)) {
-                Mode.SuperHostRoles.RoleSelectHandler.RoleSelect();
             }
             else if (ModeHandler.isMode(ModeId.Werewolf))
             {
@@ -123,7 +155,7 @@ namespace SuperNewRoles
             {
                 Mode.Detective.main.RoleSelect();
             }
-            if (!ModeHandler.isMode(ModeId.NotImpostorCheck) && !ModeHandler.isMode(ModeId.BattleRoyal) && !ModeHandler.isMode(ModeId.Default)) {
+            if (!ModeHandler.isMode(ModeId.NotImpostorCheck) && !ModeHandler.isMode(ModeId.BattleRoyal) && !ModeHandler.isMode(ModeId.Default) && !ModeHandler.isMode(ModeId.SuperHostRoles)) {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     p.RpcSetRole(p.Data.Role.Role);
@@ -144,6 +176,7 @@ namespace SuperNewRoles
     }
     class AllRoleSetClass
     {
+        public static List<PlayerControl> impostors;
         public static List<RoleId> Impoonepar;
         public static List<RoleId> Imponotonepar;
         public static List<RoleId> Neutonepar;
@@ -161,7 +194,10 @@ namespace SuperNewRoles
         {
             if (!AmongUsClient.Instance.AmHost) return;
             SetPlayerNum();
-            CrewOrImpostorSet();
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
+                CrewOrImpostorSet();
+            }
             try
             {
                 ImpostorRandomSelect();

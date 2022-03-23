@@ -241,7 +241,7 @@ namespace SuperNewRoles
         {
             foreach(PlayerControl Player in ListDate)
             {
-                if ( Player == CheckPlayer)
+                if (Player.PlayerId == CheckPlayer.PlayerId)
                 {
                     return true;
                 }

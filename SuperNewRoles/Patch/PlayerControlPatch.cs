@@ -1,8 +1,10 @@
 ﻿using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
@@ -14,18 +16,53 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patches
 {
-    
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
+    class CheckProtectPatch
+    {
+        public static bool Prefix(PlayerControl __instance,[HarmonyArgument(0)] PlayerControl target)
+        {
+            if (ConfigRoles.DebugMode.Value) SuperNewRolesPlugin.Logger.LogInfo("CheckProtect発生:キル元:" + __instance.nameText.text + ",ターゲット:" + target.nameText.text);
+            if (ModeHandler.isMode(ModeId.SuperHostRoles)) return false;
+            return true;
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
     class CheckMurderPatch
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("CheckMurder発生:キル元:"+__instance.nameText.text+",ターゲット:"+target.nameText.text);
+            if (ConfigRoles.DebugMode.Value) SuperNewRolesPlugin.Logger.LogInfo("CheckMurder発生:キル元:"+__instance.nameText.text+",ターゲット:"+target.nameText.text);
             if (!AmongUsClient.Instance.AmHost)
             {
                 return true;
             }
             if (ModeHandler.isMode(ModeId.Detective) && target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
+                if (__instance.isRole(RoleId.Sheriff))
+                {
+                    if (!Sheriff.IsSheriffKill(target))
+                    {
+                        FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
+                        __instance.RpcMurderPlayer(__instance);
+                        return false;
+                    } else
+                    {
+                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
+                        if (RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId))
+                        {
+                            RoleClass.Sheriff.KillCount[__instance.PlayerId]--;
+                        } else
+                        {
+                            RoleClass.Sheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.SheriffKillMaxCount.getFloat()-1;
+                        }
+                        if (RoleClass.Sheriff.KillCount[__instance.PlayerId] <= 0)
+                        {
+                            __instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+                        }
+                    }
+                }
+            }
             __instance.RpcMurderPlayer(target);
             SuperNewRolesPlugin.Logger.LogInfo("キル");
             return false;

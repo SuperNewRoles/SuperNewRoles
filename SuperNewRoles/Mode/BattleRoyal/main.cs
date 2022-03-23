@@ -41,7 +41,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         return false;
                     } else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
-                        SuperHostRoles.CoEnterVent.Prefix(__instance,id);
+                        return CoEnterVent.Prefix(__instance,id);
                     }
                 }
                 return true;
@@ -55,9 +55,18 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 [HarmonyArgument(1)] PlayerControl player,
                 [HarmonyArgument(2)] byte amount)
             {
-                if (!AmongUsClient.Instance.AmHost) return true;
                 if ((ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.HideAndSeek)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
-                if (ModeHandler.isMode(ModeId.SuperHostRoles)) return MorePatch.RepairSystem(__instance, systemType, player, amount);
+                if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.isRole(CustomRPC.RoleId.MadMate))
+                {
+                    return false;
+                }
+                if (ModeHandler.isMode(ModeId.SuperHostRoles) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors))
+                {
+                    bool returndata = MorePatch.RepairSystem(__instance, systemType, player, amount);
+                    SuperNewRolesPlugin.Logger.LogInfo(returndata);
+                    return returndata;
+                }
+                SuperNewRolesPlugin.Logger.LogInfo("OK");
                 return true;
             }
         }

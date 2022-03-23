@@ -16,20 +16,39 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (!AmongUsClient.Instance.AmHost) return;
             OneOrNotListSet();
+            CrewOrImpostorSet();
             AllRoleSetClass.AllRoleSet();
             SetCustomRoles();
-            ChangeGameOptions.SelectRoleOptionChange.RolesSelectOptionsChange();
+            SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
             FixedUpdate.SetNames();
             main.SendAllRoleChat();
+            new LateTask(() => {
+                SuperNewRolesPlugin.Logger.LogInfo("Setシェイプ前r");
+                foreach (var pc in PlayerControl.AllPlayerControls)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("Setシェイプa");
+                    pc.RpcSetRole(RoleTypes.Shapeshifter);
+                }
+                SuperNewRolesPlugin.Logger.LogInfo("Setシェイプ後");
+            }, 3f, "SetImpostor");
         }
         public static void SetCustomRoles() {
-            bool IsChangeEngineer = false;
+            foreach (PlayerControl SheriffPlayer in RoleClass.Sheriff.SheriffPlayer)
+            {
+                if (!SheriffPlayer.IsMod())
+                {
+                    SheriffPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Scientist,SheriffPlayer);
+                    }
+                }
+            }
             if (RoleClass.Jester.IsUseVent)
             {
                 foreach (PlayerControl p in RoleClass.Jester.JesterPlayer)
                 {
-                    IsChangeEngineer = true;
                     if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
                     {
                         p.RpcSetRoleDesync(RoleTypes.Engineer);
@@ -40,28 +59,36 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
                 {
-                    IsChangeEngineer = true;
                     if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
                     {
                         p.RpcSetRoleDesync(RoleTypes.Engineer);
                     }
                 }
             }
-            if (IsChangeEngineer)
-            {
-                PlayerControl.GameOptions.RoleOptions.EngineerCooldown = 0f;
-                PlayerControl.GameOptions.RoleOptions.EngineerInVentMaxTime = 0f;
-                PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
-            }
             foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
             {
-                    p.RpcSetRoleDesync(RoleTypes.Impostor);
-                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                    {
-                        p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                        p.RpcSetRoleDesync(RoleTypes.Impostor, p2);
-                    }
-                
+                p.RpcSetRoleDesync(RoleTypes.Impostor);
+                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                {
+                    p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                    p.RpcSetRoleDesync(RoleTypes.Impostor, p2);
+                }
+            }
+        }
+        public static void CrewOrImpostorSet()
+        {
+            AllRoleSetClass.CrewMatePlayers = new List<PlayerControl>();
+            AllRoleSetClass.ImpostorPlayers = new List<PlayerControl>();
+            foreach (PlayerControl Player in PlayerControl.AllPlayerControls)
+            {
+                if (AllRoleSetClass.impostors.IsCheckListPlayerControl(Player))
+                {
+                    AllRoleSetClass.ImpostorPlayers.Add(Player);
+                }
+                else
+                {
+                    AllRoleSetClass.CrewMatePlayers.Add(Player);
+                }
             }
         }
         public static void OneOrNotListSet()
@@ -247,24 +274,24 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Neutnotonepar.Add(ThisRoleId);
                     }
                 }
-            }/*
-            if (!(CustomOption.CustomOptions.WorkpersonOption.getString().Replace("0%", "") == ""))
+            }
+            if (!(CustomOption.CustomOptions.SheriffOption.getString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.WorkpersonOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.Workperson;
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SheriffOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Sheriff;
                 if (OptionDate == 10)
                 {
-                    Neutonepar.Add(ThisRoleId);
+                    Crewonepar.Add(ThisRoleId);
                 }
                 else
                 {
                     for (int i = 1; i <= OptionDate; i++)
                     {
-                        Neutnotonepar.Add(ThisRoleId);
+                        Crewnotonepar.Add(ThisRoleId);
                     }
                 }
-            }*/
-            /*
+            }
+            
             if (!(CustomOption.CustomOptions.MinimalistOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MinimalistOption.getString().Replace("0%", ""));
@@ -281,7 +308,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-            */
+            
             AllRoleSetClass.Impoonepar = Impoonepar;
             AllRoleSetClass.Imponotonepar = Imponotonepar;
             AllRoleSetClass.Neutonepar = Neutonepar;

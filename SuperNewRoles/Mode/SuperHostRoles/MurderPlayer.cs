@@ -1,4 +1,5 @@
 ﻿
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections;
@@ -18,6 +19,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 yield return new WaitForSeconds(0.1f);
                 FixedUpdate.SetNames();
+            }
+            if (target.isRole(RoleId.Sheriff))
+            {
+                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
             }
             if (RoleClass.Lovers.SameDie && target.IsLovers())
             {

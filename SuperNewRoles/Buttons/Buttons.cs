@@ -8,7 +8,7 @@ using System.Linq;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Patches;
 using System.Collections;
-
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Buttons
 {
@@ -462,7 +462,7 @@ namespace SuperNewRoles.Buttons
                         Sheriff.ResetKillCoolDown();
                     }
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Roles.Sheriff.IsSheriff(PlayerControl.LocalPlayer) && RoleClass.Sheriff.KillMaxCount >= 1; },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && ModeHandler.isMode(ModeId.Default) && Sheriff.IsSheriff(PlayerControl.LocalPlayer) && RoleClass.Sheriff.KillMaxCount >= 1; },
                 () =>
                 {
                     if (RoleClass.Sheriff.KillMaxCount > 0)

@@ -20,7 +20,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
             //死体レポートのみで起こる処理
 
-            if (__instance.isRole(CustomRPC.RoleId.Minimalist)) return RoleClass.Minimalist.UseReport;
+            if (__instance.isRole(CustomRPC.RoleId.Minimalist))
+            {
+                var a = RoleClass.Minimalist.UseReport;
+                return a;
+            }
             if (target.Object.isRole(CustomRPC.RoleId.Bait) && !RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) return false;
             return true;
         }
