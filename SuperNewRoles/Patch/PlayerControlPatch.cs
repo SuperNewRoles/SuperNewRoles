@@ -68,6 +68,29 @@ namespace SuperNewRoles.Patches
             return false;
         }
     }
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
+    public static class DiePatch
+    {
+        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+        {
+            if (RoleClass.Lovers.SameDie && target.IsLovers())
+            {
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    PlayerControl SideLoverPlayer = target.GetOneSideLovers();
+                    if (SideLoverPlayer.isAlive())
+                    {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                        writer.Write(SideLoverPlayer.PlayerId);
+                        writer.Write(SideLoverPlayer.PlayerId);
+                        writer.Write(byte.MaxValue);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
+                    }
+                }
+            }
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
     public static class MurderPlayerPatch
     {
