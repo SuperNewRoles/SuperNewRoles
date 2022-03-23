@@ -229,17 +229,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
         }
-        [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive))]
-        class SetHudActivePatch
-        {
-            public static void Postfix(HudManager __instance, [HarmonyArgument(0)] bool isActive)
-            {
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff))
-                {
-                    __instance.KillButton.ToggleVisible(isActive && !PlayerControl.LocalPlayer.Data.IsDead);
-                }
-            }
-        }
         public static void Update()
         {
             if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff)) {
@@ -252,6 +241,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     HudManager.Instance.KillButton.gameObject.SetActive(false);
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = false;
+                    DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
             }
             if (!AmongUsClient.Instance.AmHost) return;
