@@ -46,7 +46,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }                    
                     if (RoleClass.MadMate.IsImpostorLight)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("SetImpostorLight!");
                         optdata.CrewLightMod = optdata.ImpostorLightMod;
                         var switchSystem2 = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive)
