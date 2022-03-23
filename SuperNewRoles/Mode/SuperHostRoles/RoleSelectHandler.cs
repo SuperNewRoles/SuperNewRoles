@@ -41,8 +41,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     SheriffPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        p.RpcSetRoleDesync(RoleTypes.Scientist,SheriffPlayer);
+                        if (p.PlayerId != SheriffPlayer.PlayerId)
+                        {
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, SheriffPlayer);
+                        }
                     }
+                } else
+                {
+                    SheriffPlayer.RpcSetRole(RoleTypes.Crewmate);
                 }
             }
             if (RoleClass.Jester.IsUseVent)
