@@ -239,6 +239,7 @@ namespace SuperNewRoles.EndGame
                 if (player.isAlive()) { 
                     if (!IsOpptexton && !haison)
                     {
+                        IsOpptexton = true;
                         text = text + "&"+ModHelpers.cs(RoleClass.Opportunist.color,ModTranslation.getString("OpportunistName"));
                     }
                 }
