@@ -24,13 +24,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             FixedUpdate.SetNames();
             main.SendAllRoleChat();
             new LateTask(() => {
-                SuperNewRolesPlugin.Logger.LogInfo("Setシェイプ前r");
-                foreach (var pc in PlayerControl.AllPlayerControls)
+                if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("Setシェイプa");
-                    pc.RpcSetRole(RoleTypes.Shapeshifter);
+                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    {
+                        pc.RpcSetRole(RoleTypes.Shapeshifter);
+                    }
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("Setシェイプ後");
             }, 3f, "SetImpostor");
         }
         public static void SetCustomRoles() {
