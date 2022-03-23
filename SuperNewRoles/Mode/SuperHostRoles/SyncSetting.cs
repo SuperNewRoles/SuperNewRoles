@@ -37,6 +37,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.KillCooldown = RoleClass.Minimalist.KillCoolTime;
                     break;
             }
+            if (player.isDead()) optdata.AnonymousVotes = false;
             if (player.AmOwner) PlayerControl.GameOptions = optdata;
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.Reliable, player.getClientId());
             writer.WriteBytesAndSize(optdata.ToBytes(5));

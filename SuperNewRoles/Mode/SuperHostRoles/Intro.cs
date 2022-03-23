@@ -63,7 +63,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             if (PlayerControl.LocalPlayer.IsLovers())
             {
-                __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.getDefaultName() ?? ""));
             }
             /**
 

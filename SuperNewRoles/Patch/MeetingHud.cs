@@ -346,8 +346,11 @@ namespace SuperNewRoles.Patch
         }
         public static void Postfix(MeetingHud __instance)
         {
-            foreach (var pva in __instance.playerStates)
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
+                new LateTask(() => {
+                    SyncSetting.CustomSyncSettings();
+                }, 3f, "StartMeeting_CustomSyncSetting");
             }
         }
     }
