@@ -25,13 +25,23 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
         }
         [HarmonyPatch(typeof(Console),nameof(Console.CanUse))]
-        class MapConsoleCanuse
+        class ConsoleCanuse
         {
             public static void Postfix(Console __instance)
             {
                 UsableDistance = __instance.usableDistance;
             }
         }
+        /*
+        [HarmonyPatch(typeof(MapConsole), nameof(MapConsole.Use))]
+        class MapConsoleUse
+        {
+            public static void Postfix(MapConsole __instance)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("アドミンx:" + __instance.transform.position.x);
+                SuperNewRolesPlugin.Logger.LogInfo("アドミンy:" + __instance.transform.position.y);
+            }
+        }*/
         private static float UsableDistance;
         private static int Count = 0;
         public static bool IsCom;
@@ -89,6 +99,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (PlayerControl.GameOptions.MapId == 0)
             {
                 return new Vector2(3.48f, -8.624401f);
+            }
+            else if (PlayerControl.GameOptions.MapId == 1)
+            {
+                return new Vector2(21.024f, 19.095f);
+            }
+            else if (PlayerControl.GameOptions.MapId == 2)
+            {
+                return new Vector2(23.13707f, -21.523f);
+            }
+            else if (PlayerControl.GameOptions.MapId == 3)
+            {
+                return new Vector2(-3.48f, -8.624401f);
             }
             else if (PlayerControl.GameOptions.MapId == 4)
             {

@@ -25,7 +25,7 @@ namespace SuperNewRoles.Patch
             public static void Postfix(KeyboardJoystick __instance)
             {
             }
-        }
+        }/*
         [HarmonyPatch(typeof(MapConsole), nameof(MapConsole.Use))]
         public static class MapConsoleUsePatch
         {
@@ -38,7 +38,7 @@ namespace SuperNewRoles.Patch
                     SuperNewRolesPlugin.Logger.LogInfo("アドミンの場所(Z):" + __instance.transform.position.z);
                 }
             }
-        }
+        }*/
         [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
         public static class DebugManager
         {
