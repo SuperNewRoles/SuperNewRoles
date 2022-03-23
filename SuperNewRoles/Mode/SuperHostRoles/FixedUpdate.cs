@@ -101,8 +101,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 }
                             }
                             var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
-                            p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName())+Suffix,p);
-                            
+                            if (p2.isDead())
+                            {
+                                p2.RpcSetNamePrivate("(<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>)" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
+                            } else
+                            {
+                                p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
+                            }
                         }
                     }
                     else if (p.isAlive())
@@ -253,7 +258,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (UpdateDate <= 0)
                     {
-                        UpdateDate = 100; 
+                        UpdateDate = 20; 
                         if (RoleClass.IsMeeting)
                         {
                             SetDefaultNames();
