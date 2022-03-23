@@ -392,3 +392,6 @@ LoversSingleTeamSetting,Single camp,単独陣営
 LoversSameDieSetting,Two people die at the same time,2人同時に死ぬ
 LoversAliveTaskCountSetting,Tasks are counted when surviving,生存時、タスクがカウントされる
 LoversDuplicationQuarreledSetting,Does not overlap with Quarreled,クラードと重複しない
+MayorName,Mayor,メイヤー
+MayorTitle1,Let's add our vote at the meeting.,会議で票を追加で入れよう
+MayorVoteCountSetting,Mayer's vote count,メイヤーの票数

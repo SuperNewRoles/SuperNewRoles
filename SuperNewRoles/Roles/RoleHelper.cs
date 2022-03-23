@@ -363,6 +363,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Hunter):
                     Mode.Werewolf.main.HunterPlayers.Add(player);
                     break;
+                case (CustomRPC.RoleId.Mayor):
+                    Roles.RoleClass.Mayor.MayorPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -531,7 +534,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Magaziner):
                     Roles.RoleClass.Magaziner.MagazinerPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (CustomRPC.RoleId.Mayor):
+                    Roles.RoleClass.Mayor.MayorPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -623,7 +629,9 @@ namespace SuperNewRoles
         }
         public static bool IsImpostorLight(this PlayerControl player)
         {
-            if(player.isRole(RoleId.Egoist) && RoleClass.Egoist.ImpostorLight) return true;
+            if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.ImpostorLight) return true;
+            if (ModeHandler.isMode(ModeId.SuperHostRoles)) return false;
+            if (player.isRole(RoleId.MadMate) && RoleClass.MadMate.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -907,7 +915,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Magaziner;
                 }
-                //ロールチェック
+                else if (Roles.RoleClass.Mayor.MayorPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Mayor;
+            }
+            //ロールチェック
             }
             catch
             {

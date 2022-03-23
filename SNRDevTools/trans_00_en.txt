@@ -391,3 +391,6 @@ Single camp
 Two people die at the same time
 Tasks are counted when surviving
 Does not overlap with Quarreled
+Mayor
+Let's add our vote at the meeting.
+Mayer's vote count

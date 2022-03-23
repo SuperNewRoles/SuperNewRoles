@@ -751,6 +751,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.WorkpersonPlayerCount.getFloat();
                     case (RoleId.Magaziner):
                     return CustomOption.CustomOptions.MagazinerPlayerCount.getFloat();
+                    case (RoleId.Mayor):
+                    return CustomOption.CustomOptions.MayorPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1576,6 +1578,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.MayorOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MayorOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Mayor;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
                     }
                 }
             }

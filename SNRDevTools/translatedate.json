@@ -1571,6 +1571,18 @@
  "LoversDuplicationQuarreledSetting" : {
         "0" : "Does not overlap with Quarreled" ,
         "11" : "\u30af\u30e9\u30fc\u30c9\u3068\u91cd\u8907\u3057\u306a\u3044"
+        } ,
+ "MayorName" : {
+        "0" : "Mayor" ,
+        "11" : "\u30e1\u30a4\u30e4\u30fc"
+        } ,
+ "MayorTitle1" : {
+        "0" : "Let's add our vote at the meeting." ,
+        "11" : "\u4f1a\u8b70\u3067\u7968\u3092\u8ffd\u52a0\u3067\u5165\u308c\u3088\u3046"
+        } ,
+ "MayorVoteCountSetting" : {
+        "0" : "Mayer's vote count" ,
+        "11" : "\u30e1\u30a4\u30e4\u30fc\u306e\u7968\u6570"
         } 
 
 }

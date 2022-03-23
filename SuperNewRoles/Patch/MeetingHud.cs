@@ -3,6 +3,7 @@ using HarmonyLib;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -247,14 +248,7 @@ namespace SuperNewRoles.Patch
                                     break;
                             }
                         }*/
-                        statesList.Add(new MeetingHud.VoterState()
-                        {
-                            VoterId = ps.TargetPlayerId,
-                            VotedForId = ps.VotedFor
-                        });
-                        //if (isMayor(ps.TargetPlayerId))//Mayorの投票数
-                        /*
-                        for (var i2 = 0; i2 < main.MayorAdditionalVote; i2++)
+                        if (!ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
                         {
                             statesList.Add(new MeetingHud.VoterState()
                             {
@@ -262,7 +256,19 @@ namespace SuperNewRoles.Patch
                                 VotedForId = ps.VotedFor
                             });
                         }
-                        */
+                        if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
+                        {
+
+                            for (var i2 = 0; i2 < RoleClass.Mayor.AddVote; i2++)
+                            {
+                                statesList.Add(new MeetingHud.VoterState()
+                                {
+                                    VoterId = ps.TargetPlayerId,
+                                    VotedForId = ps.VotedFor
+                                });
+                            }
+                        }
+                        
                     }
                 }
                 states = statesList.ToArray();
@@ -331,7 +337,7 @@ namespace SuperNewRoles.Patch
                 {
                     int num;
                     int VoteNum = 1;
-                    //投票を1追加 キーが定義されていない場合は1で上書きして定義
+                    if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor)) VoteNum = RoleClass.Mayor.AddVote;
                     dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out num) ? VoteNum : num + VoteNum;
                 }
             }

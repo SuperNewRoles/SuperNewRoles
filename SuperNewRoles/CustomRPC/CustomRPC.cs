@@ -68,7 +68,8 @@ namespace SuperNewRoles.CustomRPC
         EvilEraser,
         Workperson,
         Magaziner,
-        Hunter
+        Hunter,
+        Mayor,
         //RoleId
     }
 

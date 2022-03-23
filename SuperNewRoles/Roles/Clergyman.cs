@@ -39,6 +39,7 @@ namespace SuperNewRoles.Roles
         public static bool IsLightOutVision() {
             if (!(RoleClass.Clergyman.OldButtonTime > 0)) return false;
             if (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor) return true;
+            if (CountChanger.IsChangeMadmate(PlayerControl.LocalPlayer)) return true;
             return false;
         }
         public static bool IsLightOutVisionNoTime()

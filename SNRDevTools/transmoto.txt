@@ -391,3 +391,6 @@ LoversSingleTeamSetting
 LoversSameDieSetting
 LoversAliveTaskCountSetting
 LoversDuplicationQuarreledSetting
+MayorName
+MayorTitle1
+MayorVoteCountSetting

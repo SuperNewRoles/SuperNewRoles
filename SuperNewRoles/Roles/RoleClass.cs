@@ -78,6 +78,7 @@ namespace SuperNewRoles.Roles
             EvilEraser.ClearAndReload();
             Workperson.ClearAndReload();
             Magaziner.ClearAndReload();
+            Mayor.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -550,11 +551,13 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static bool IsImpostorCheck;
             public static bool IsUseVent;
+            public static bool IsImpostorLight;
             public static void clearAndReload()
             {
                 MadMatePlayer = new List<PlayerControl>();
                 IsImpostorCheck = CustomOptions.MadMateIsCheckImpostor.getBool();
                 IsUseVent = CustomOptions.MadMateIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadMateIsImpostorLight.getBool();
             }
         }
         public static class Bait
@@ -968,6 +971,17 @@ namespace SuperNewRoles.Roles
                 MyPlayerCount = 0;
                 SetTime = CustomOptions.MagazinerSetKillTime.getFloat();
                 IsOKSet = true;
+            }
+        }
+        public static class Mayor
+        {
+            public static List<PlayerControl> MayorPlayer;
+            public static Color32 color = new Color32(0, 128, 128, byte.MaxValue);
+            public static int AddVote;
+            public static void ClearAndReload()
+            {
+                MayorPlayer = new List<PlayerControl>();
+                AddVote = (int)CustomOptions.MayorVoteCount.getFloat();
             }
         }
         //新ロールクラス

@@ -262,7 +262,7 @@ namespace SuperNewRoles.EndGame
                             if (!IsLovetexton && !haison)
                             {
                                 IsLovetexton = true;
-                                text = text + "&" + ModTranslation.getString("LoversName");
+                                text = text + "&" + CustomOptions.cs(RoleClass.Lovers.color,"LoversName");
                             }
                         }
                     }

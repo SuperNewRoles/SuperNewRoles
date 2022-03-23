@@ -170,6 +170,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadMatePlayerCount;
         public static CustomOption MadMateIsCheckImpostor;
         public static CustomOption MadMateIsUseVent;
+        public static CustomOption MadMateIsImpostorLight;
 
         public static CustomRoleOption BaitOption;
         public static CustomOption BaitPlayerCount;
@@ -275,6 +276,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption MagazinerOption;
         public static CustomOption MagazinerPlayerCount;
         public static CustomOption MagazinerSetKillTime;
+
+        public static CustomRoleOption MayorOption;
+        public static CustomOption MayorPlayerCount;
+        public static CustomOption MayorVoteCount;
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -467,7 +472,8 @@ namespace SuperNewRoles.CustomOption
             MadMatePlayerCount = CustomOption.Create(99, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMateOption);
             MadMateIsCheckImpostor = CustomOption.Create(100, ModTranslation.getString("MadMateIsCheckImpostorSetting"), false, MadMateOption);
             MadMateIsUseVent = CustomOption.Create(120, ModTranslation.getString("MadMateUseVentSetting"), false, MadMateOption);
-            
+            MadMateIsImpostorLight = CustomOption.Create(234, ModTranslation.getString("MadMateImpostorLightSetting"), false, MadMateOption);
+
             BaitOption = new CustomRoleOption(104, "BaitName", RoleClass.Bait.color,1);
             BaitPlayerCount = CustomOption.Create(105, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BaitOption);
             BaitReportTime = CustomOption.Create(114, ModTranslation.getString("BaitReportTimeSetting"), 2f,1f,4f,0.5f,BaitOption);
@@ -572,6 +578,10 @@ namespace SuperNewRoles.CustomOption
             MagazinerOption = new CustomRoleOption(218, "MagazinerName", RoleClass.Magaziner.color, 1);
             MagazinerPlayerCount = CustomOption.Create(219, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MagazinerOption);
             MagazinerSetKillTime = CustomOption.Create(220, cs(Color.white, "MagazinerSetTimeSetting"), 0f, 0f, 60f, 2.5f, MagazinerOption);
+
+            MayorOption = new CustomRoleOption(231, "MayorName", RoleClass.Mayor.color, 1);
+            MayorPlayerCount = CustomOption.Create(232, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MayorOption);
+            MayorVoteCount = CustomOption.Create(233, cs(Color.white, "MayorVoteCountSetting"), 2f, 1f, 100f, 1f, MayorOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

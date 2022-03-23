@@ -14,15 +14,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static GameOptionsData OptionData;
         public static void CustomSyncSettings(this PlayerControl player)
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             var role = player.getRole();
             var optdata = OptionData.DeepCopy();
             switch (role)
             {
                 case RoleId.Jester:
-                case RoleId.MadMate:
-                    if ((role == RoleId.Jester && RoleClass.Jester.IsUseVent) || (role == RoleId.MadMate || RoleClass.MadMate.IsUseVent))
-                    optdata.RoleOptions.EngineerCooldown = 0f;
-                    optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+                    if (RoleClass.Jester.IsUseVent)
+                    {
+                        optdata.RoleOptions.EngineerCooldown = 0f;
+                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+                    }
                     break;
                 case RoleId.Sheriff:
                     optdata.ImpostorLightMod = optdata.CrewLightMod;
@@ -35,6 +37,23 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.Minimalist:
                     optdata.KillCooldown = RoleClass.Minimalist.KillCoolTime;
+                    break;
+                case RoleId.MadMate:
+                    if (RoleClass.MadMate.IsUseVent)
+                    {
+                        optdata.RoleOptions.EngineerCooldown = 0f;
+                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+                    }                    
+                    if (RoleClass.MadMate.IsImpostorLight)
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("SetImpostorLight!");
+                        optdata.CrewLightMod = optdata.ImpostorLightMod;
+                        var switchSystem2 = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                        if (switchSystem2 != null && switchSystem2.IsActive)
+                        {
+                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
+                        }
+                    }
                     break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
