@@ -26,6 +26,19 @@ namespace SuperNewRoles.Patch
             {
             }
         }
+        [HarmonyPatch(typeof(MapConsole), nameof(MapConsole.Use))]
+        public static class MapConsoleUsePatch
+        {
+            public static void Prefix(MapConsole __instance)
+            {
+                if (ConfigRoles.DebugMode.Value)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("アドミンの場所(x):" + __instance.transform.position.x);
+                    SuperNewRolesPlugin.Logger.LogInfo("アドミンの場所(y):" + __instance.transform.position.y);
+                    SuperNewRolesPlugin.Logger.LogInfo("アドミンの場所(Z):" + __instance.transform.position.z);
+                }
+            }
+        }
         [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
         public static class DebugManager
         {

@@ -73,6 +73,10 @@ namespace SuperNewRoles.Mode
             else {
                 thisMode = ModeId.Default;
             }
+            if (!isMode(ModeId.Default))
+            {
+                SuperHostRoles.BlockTool.IsCom = false;
+            }
         }
         public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName"), ModTranslation.getString("DetectiveModeName"), };//ModTranslation.getString("WerewolfModeName") };
         public static CustomOptionBlank Mode;

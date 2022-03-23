@@ -255,9 +255,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 RoleFixedUpdate();
                 if (AmongUsClient.Instance.AmHost)
                 {
+                    BlockTool.FixedUpdate();
                     if (UpdateDate <= 0)
                     {
-                        UpdateDate = 20; 
+                        UpdateDate = 10; 
                         if (RoleClass.IsMeeting)
                         {
                             SetDefaultNames();
