@@ -24,10 +24,10 @@ namespace SuperNewRoles.CustomCosmetics
                 SuperNewRolesPlugin.Logger.LogInfo("[SetNamePlate]" + __instance.nameText.text + ":" + colorid);
             }
         }
+        public static bool isAdded = false;
         [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetNamePlateById))]
         class GetUnlockedNamePlatesPatch
         {
-                public static bool isAdded = false;
                 public static void Postfix(HatManager __instance)
                 {
                     if (isAdded) return;
