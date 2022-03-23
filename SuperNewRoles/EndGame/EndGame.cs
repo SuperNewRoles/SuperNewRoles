@@ -285,7 +285,6 @@ namespace SuperNewRoles.EndGame
                     var roleSummaryText = new StringBuilder();
                     roleSummaryText.AppendLine(ModTranslation.getString("最終結果"));
 
-                    SuperNewRolesPlugin.Logger.LogInfo("SAISYUUMAE");
 
                     foreach (var datas in AdditionalTempData.playerRoles)
                     {
@@ -293,7 +292,6 @@ namespace SuperNewRoles.EndGame
                         string aliveDead = "";
                         string Suffix = "";
                         string result = $"{datas.PlayerName}{datas.NameSuffix}{taskInfo} - {GetStatusText(datas.Status)} - {CustomOptions.cs(datas.IntroDate.color, datas.IntroDate.NameKey + "Name")}";
-                        SuperNewRolesPlugin.Logger.LogInfo("ADD:" + result);
                         roleSummaryText.AppendLine(result);
                     }
 
@@ -630,7 +628,6 @@ namespace SuperNewRoles.EndGame
                         TempData.winners.Add(wpd);
                         if (IsSingleTeam)
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("ラバーズ勝利");
                         }
                     }
                 }

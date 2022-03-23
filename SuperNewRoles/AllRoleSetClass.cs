@@ -19,7 +19,6 @@ namespace SuperNewRoles
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
             return true;
-            SuperNewRolesPlugin.Logger.LogInfo("Set!");
 
             if (RoleManagerSelectRolesPatch.IsShapeSet)
             {
@@ -817,7 +816,6 @@ namespace SuperNewRoles
             }
              if (!(CustomOption.CustomOptions.LighterOption.getString().Replace("0%", "") == ""))
             {
-                SuperNewRolesPlugin.Logger.LogInfo("Lighterあああああ");
                 int OptionDate = int.Parse(CustomOption.CustomOptions.LighterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Lighter;
                 if (OptionDate == 10)

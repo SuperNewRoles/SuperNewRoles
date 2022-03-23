@@ -56,7 +56,6 @@ namespace SuperNewRoles.Mode.Werewolf
         }
         public static void Wrapup(GameData.PlayerInfo exiled)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("WrapUp");
             IsDiscussion = !IsDiscussion;
             if (!AmongUsClient.Instance.AmHost) return;
             if (IsAbility)

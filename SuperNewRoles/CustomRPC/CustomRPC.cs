@@ -134,7 +134,6 @@ namespace SuperNewRoles.CustomRPC
             {
                 RoleClass.EvilEraser.Counts[playerid]--;
             }
-            SuperNewRolesPlugin.Logger.LogInfo("CountDatas:" + RoleClass.EvilEraser.Counts[playerid]);
         }
         // Main Controls
         public static void AutoCreateRoom() {
@@ -354,7 +353,6 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SetScientistRPC(bool Is, byte id)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(id+":"+Is);
             RoleClass.NiceScientist.IsScientistPlayers[id] = Is;
         }
         public static void ReportDeadBody(byte sourceId, byte targetId)
@@ -474,7 +472,6 @@ namespace SuperNewRoles.CustomRPC
         {
             static void Postfix()
             {
-                SuperNewRolesPlugin.Logger.LogInfo("STARTENDGAME!!!");
             }
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]

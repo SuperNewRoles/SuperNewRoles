@@ -117,7 +117,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         {
                             Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
                             PlayerControl Side = p.GetOneSideLovers();
-                            SuperNewRolesPlugin.Logger.LogInfo("SIDE!!:"+Side.nameText.text);
                             Side.RpcSetNamePrivate(Side.getDefaultName()+Suffix,p);
                         }
                         if (p.isRole(CustomRPC.RoleId.Sheriff))

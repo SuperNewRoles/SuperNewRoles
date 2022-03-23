@@ -21,7 +21,6 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance,[HarmonyArgument(0)] PlayerControl target)
         {
-            if (ConfigRoles.DebugMode.Value) SuperNewRolesPlugin.Logger.LogInfo("CheckProtect発生:キル元:" + __instance.nameText.text + ",ターゲット:" + target.nameText.text);
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) return false;
             return true;
         }
@@ -31,7 +30,6 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
-            if (ConfigRoles.DebugMode.Value) SuperNewRolesPlugin.Logger.LogInfo("CheckMurder発生:キル元:"+__instance.nameText.text+",ターゲット:"+target.nameText.text);
             if (!AmongUsClient.Instance.AmHost)
             {
                 return true;
@@ -64,7 +62,6 @@ namespace SuperNewRoles.Patches
                 }
             }
             __instance.RpcMurderPlayer(target);
-            SuperNewRolesPlugin.Logger.LogInfo("キル");
             return false;
         }
     }
@@ -98,7 +95,6 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("MurdePlayerr発生:キル元:" + __instance.nameText.text + ",ターゲット:" + target.nameText.text);
             // Collect dead player info
             DeadPlayer deadPlayer = new DeadPlayer(target, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);

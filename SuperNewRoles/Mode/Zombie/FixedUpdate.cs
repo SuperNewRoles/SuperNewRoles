@@ -123,7 +123,6 @@ namespace SuperNewRoles.Mode.Zombie
                                         if (p4 != null && p4.isAlive())
                                         {
                                             var DistanceData = Vector2.Distance(p3.transform.position, p4.transform.position);
-                                            SuperNewRolesPlugin.Logger.LogInfo("DISTANCE:" + DistanceData);
                                             if (DistanceData <= 0.5f)
                                             {
                                                 main.SetZombie(p3);

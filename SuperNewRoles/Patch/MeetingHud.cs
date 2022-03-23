@@ -26,7 +26,6 @@ namespace SuperNewRoles.Patch
             var nameplate = blankNameplate;
             var p = ModHelpers.playerById(playerId != byte.MaxValue ? playerId : pva.TargetPlayerId);
             var nameplateId = p?.CurrentOutfit?.NamePlateId;
-            SuperNewRolesPlugin.Logger.LogInfo(p.nameText.text+":"+nameplateId);
             nameplate = HatManager.Instance.GetNamePlateById(nameplateId)?.Image;
             pva.Background.sprite = nameplate;
         }
@@ -96,7 +95,6 @@ namespace SuperNewRoles.Patch
                     {
                         foreach (var ps in __instance.playerStates)
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("あ");
                             PlayerControl player = ModHelpers.playerById(ps.TargetPlayerId);
                             if (!ps.AmDead && !ps.DidVote && (player.isImpostor() || (!player.isRole(CustomRPC.RoleId.DefaultRole) && !player.isRole(CustomRPC.RoleId.MadMate) && !player.isRole(CustomRPC.RoleId.SpiritMedium) && !(player.PlayerId == Mode.Werewolf.main.HunterExilePlayer.PlayerId && Mode.Werewolf.main.HunterPlayers.IsCheckListPlayerControl(player)))))
                                 return false;

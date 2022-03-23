@@ -16,14 +16,6 @@ namespace SuperNewRoles.CustomCosmetics
 {
     public class CustomPlate
     {
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetNamePlate))]
-        class Sethat
-        {
-            public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string colorid)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("[SetNamePlate]" + __instance.nameText.text + ":" + colorid);
-            }
-        }
         public static bool isAdded = false;
         [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetNamePlateById))]
         class GetUnlockedNamePlatesPatch
