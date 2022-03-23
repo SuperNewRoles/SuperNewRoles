@@ -1,6 +1,5 @@
 ﻿
 using Hazel;
-using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using System;
@@ -37,16 +36,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         {
             var rdm = ModHelpers.GetRandomIndex(p);
             var random = p[rdm];
-            SuperNewRolesPlugin.Logger.LogInfo("ローカル死亡か:"+ PlayerControl.LocalPlayer.Data.IsDead);
-            random.RpcMurderPlayer(random);
-            SuperNewRolesPlugin.Logger.LogInfo("ローカル死亡か:" + PlayerControl.LocalPlayer.Data.IsDead);
-            random.Exiled();
-            FinalStatusPatch.FinalStatusData.FinalStatuses[random.PlayerId] = FinalStatus.NekomataExiled;
-            SuperNewRolesPlugin.Logger.LogInfo("ローカル死亡か:" + PlayerControl.LocalPlayer.Data.IsDead);
-            SuperNewRolesPlugin.Logger.LogInfo("猫又の道連れ:"+random.getDefaultName());
-            new LateTask(() => {
-                SuperNewRolesPlugin.Logger.LogInfo("ローカル死亡かLateTask:" + PlayerControl.LocalPlayer.Data.IsDead);
-            }, 1f, "SetHostDead");
+            random.CheckMurder(random);
             if ((random.isRole(CustomRPC.RoleId.NiceNekomata) || random.isRole(CustomRPC.RoleId.EvilNekomata)) && RoleClass.NiceNekomata.IsChain)
             {
                 p.RemoveAt(rdm);
