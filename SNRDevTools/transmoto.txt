@@ -274,6 +274,7 @@ MadMateDescription
 MadMateIsCheckImpostorSetting
 MadMateUseVentSetting
 MadMateVentMoveSetting
+MadMateImpostorLightSetting
 BaitName
 BaitTitle1
 BaitDescription

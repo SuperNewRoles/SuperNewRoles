@@ -274,6 +274,7 @@ The decision is in the Crewmate camp but he is a companion of the Imposter. If t
 You can check the Imposter.
 Use Vent
 Move Vent
+Impostor Light
 Bait
 Bait your enemies
 If you are killed you can force the person who killed you to report you.

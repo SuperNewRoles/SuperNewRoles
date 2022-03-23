@@ -115,7 +115,7 @@ namespace SuperNewRoles.Patch
                         
                         if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
                         {
-                            message += "\n" + ModTranslation.getString("ErrorHostNoVersion");
+                            message += "\n" + ModTranslation.getString("ErrorHostNoVersion")+"\n";
                             blockStart = true;
                         }
                         else

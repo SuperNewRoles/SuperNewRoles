@@ -275,6 +275,7 @@ MadMateDescription,The decision is in the Crewmate camp but he is a companion of
 MadMateIsCheckImpostorSetting,You can check the Imposter.,インポスターが確認できる
 MadMateUseVentSetting,Use Vent,ベントに入れる
 MadMateVentMoveSetting,Move Vent,ベントで動ける
+MadMateImpostorLightSetting,Impostor Light,インポスターの視界
 BaitName,Bait,ベイト
 BaitTitle1,Bait your enemies,相手に通報させよう
 BaitDescription,If you are killed you can force the person who killed you to report you.,自分がキルされると、キルしてきた相手に強制的に通報させることができます。
