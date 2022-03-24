@@ -119,8 +119,11 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         p1.SetPrivateRole(RoleTypes.Impostor);
                         foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {
-                            p1.SetPrivateRole(RoleTypes.Scientist,p2);
-                            p2.SetPrivateRole(RoleTypes.Scientist, p1);
+                            if (p1.PlayerId != p2.PlayerId)
+                            {
+                                p1.SetPrivateRole(RoleTypes.Scientist, p2);
+                                p2.SetPrivateRole(RoleTypes.Scientist, p1);
+                            }
                         }
                     }
                     DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
