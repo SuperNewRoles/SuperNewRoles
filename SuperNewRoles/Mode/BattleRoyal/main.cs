@@ -107,7 +107,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static void ClearAndReload()
         {
         }            
-        class ChangeRole
+        public static class ChangeRole
         {
             public static void Postfix()
             {
