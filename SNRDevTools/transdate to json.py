@@ -1,3 +1,4 @@
+import time
 writedate='''{
 '''
 readdate=""
@@ -15,4 +16,5 @@ with open("translatedate.json",mode="w",encoding="utf-8") as f:
 with open(r"C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\Resources\translatedate.json",mode="w",encoding="utf-8") as f:
     f.write(writedate)
 print("完了")
+time.sleep(2)
 #input("Enter Key Click End.(Enterキーを押すと終了します。)")

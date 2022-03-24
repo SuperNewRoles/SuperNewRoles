@@ -20,10 +20,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             if (target.isRole(CustomRPC.RoleId.Bait))
             {
                 new LateTask(() => {
-                    RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
-                    MeetingRoomManager.Instance.AssignSelf(__instance, target.Data);
-                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
-                    __instance.RpcStartMeeting(target.Data);
+                    if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+                    {
+                        RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
+                        MeetingRoomManager.Instance.AssignSelf(__instance, target.Data);
+                        DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
+                        __instance.RpcStartMeeting(target.Data);
+                    }
                 }, CustomOptions.BaitReportTime.getFloat(), "ReportBaitBody");
             }
         }

@@ -27,6 +27,7 @@ namespace SuperNewRoles.Mode
         public static ModeId thisMode;
         public static void ClearAndReload()
         {
+            PlusModeHandler.ClearAndReload();
             if (isMode(ModeId.HideAndSeek))
             {
                 thisMode = ModeId.HideAndSeek;
@@ -166,6 +167,8 @@ namespace SuperNewRoles.Mode
             RandomColor.RandomColorOptions.Load();
             Detective.DetectiveOptions.Load();
             Werewolf.WerewolfOptions.Load();
+
+            PlusMode.Options.Load();
         }
         public static void FixedUpdate(PlayerControl __instance) {
             if (isMode(ModeId.Default)) return;

@@ -93,6 +93,8 @@ RandomColorNameColorSetting,Change Name Color,名前の色も変える
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する
 NeutralName,Neutral,第三陣営
 WinName,Win,勝利
+PlusModeSetting,Plus Mode,重複モード
+SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード
 DeviceOptionsSetting,Device Options,機器の設定
 DeviceUseAdminSetting,Use OK Admin,アドミンが使える
 DeviceUseVitalOrDoorLogSetting,Use OK Vital Or DoorLog,バイタル・ドアログが使える

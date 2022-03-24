@@ -376,6 +376,14 @@
         "0" : "Win" ,
         "11" : "\u52dd\u5229"
         } ,
+ "PlusModeSetting" : {
+        "0" : "Plus Mode" ,
+        "11" : "\u91cd\u8907\u30e2\u30fc\u30c9"
+        } ,
+ "SettingNoSabotageMode" : {
+        "0" : "Block Sabotage Mode" ,
+        "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u7981\u6b62\u30e2\u30fc\u30c9"
+        } ,
  "DeviceOptionsSetting" : {
         "0" : "Device Options" ,
         "11" : "\u6a5f\u5668\u306e\u8a2d\u5b9a"

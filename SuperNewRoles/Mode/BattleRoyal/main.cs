@@ -55,6 +55,10 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 [HarmonyArgument(1)] PlayerControl player,
                 [HarmonyArgument(2)] byte amount)
             {
+                if (PlusModeHandler.isMode(PlusModeId.NotSabotage))
+                {
+                    return false;
+                }
                 if ((ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.HideAndSeek)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
                 if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.isRole(CustomRPC.RoleId.MadMate))
                 {

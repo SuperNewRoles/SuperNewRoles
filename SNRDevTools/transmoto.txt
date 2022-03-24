@@ -92,6 +92,8 @@ RandomColorNameColorSetting
 RandomColorMeetingSetting
 NeutralName
 WinName
+PlusModeSetting
+SettingNoSabotageMode
 DeviceOptionsSetting
 DeviceUseAdminSetting
 DeviceUseVitalOrDoorLogSetting

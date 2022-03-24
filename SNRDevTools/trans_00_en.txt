@@ -92,6 +92,8 @@ Change Name Color
 In Meeting Change Color
 Neutral
 Win
+Plus Mode
+Block Sabotage Mode
 Device Options
 Use OK Admin
 Use OK Vital Or DoorLog
