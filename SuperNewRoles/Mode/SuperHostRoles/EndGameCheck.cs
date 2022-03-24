@@ -52,6 +52,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 foreach (PlayerControl p in RoleClass.God.GodPlayer)
                 {
                     if (p.isAlive())
+                {
+                    var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                    if (!RoleClass.God.IsTaskEndWin || complate >= all)
                     {
                         if (WinGods == null)
                         {
@@ -59,6 +62,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                         WinGods.Add(p);
                         Chat.WinCond = CustomGameOverReason.GodWin;
+                    }
                     }
                 }
             if (Chat.WinCond == CustomGameOverReason.GodWin)

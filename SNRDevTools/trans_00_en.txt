@@ -324,6 +324,8 @@ Self Bomb
 God
 You Are God!!
 If you survive to the end you take away the win. Everyone's position is known.
+I know who to vote for.
+You have to finish the task to win.
 All Cleaner
 Let's get rid of the corpse.
 Number of times it can be used in one game

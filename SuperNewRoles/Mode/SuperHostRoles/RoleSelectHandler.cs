@@ -26,6 +26,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             new LateTask(() => {
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                 {
+                    PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
                     PlayerControl.LocalPlayer.RpcSendChat("＊注意(自動送信)＊\nこのMODは、バグ等がたくさん発生します。\nいろいろな重大なバグがあるため、あくまで自己責任でお願いします。");
                     foreach (var pc in PlayerControl.AllPlayerControls)
                     {

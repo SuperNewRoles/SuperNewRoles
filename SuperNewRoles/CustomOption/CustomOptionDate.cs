@@ -212,6 +212,8 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption GodOption;
         public static CustomOption GodPlayerCount;
+        public static CustomOption GodViewVote;
+        public static CustomOption GodIsEndTaskWin;
 
         public static CustomRoleOption AllCleanerOption;
         public static CustomOption AllCleanerPlayerCount;
@@ -514,6 +516,8 @@ namespace SuperNewRoles.CustomOption
 
             GodOption = new CustomRoleOption(149, "GodName", RoleClass.God.color, 1);
             GodPlayerCount = CustomOption.Create(150, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GodOption);
+            GodViewVote = CustomOption.Create(236, cs(Color.white, "GodViewVoteSetting"), false, GodOption);
+            GodIsEndTaskWin = CustomOption.Create(237, cs(Color.white, "GodIsEndTaskWinSetting"), true, GodOption);
             /*
             AllCleanerOption = new CustomRoleOption(151, "AllCleanerName", RoleClass.AllCleaner.color, 1);
             AllCleanerPlayerCount = CustomOption.Create(152, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AllCleanerOption);

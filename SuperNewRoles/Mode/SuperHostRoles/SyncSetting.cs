@@ -38,6 +38,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.Minimalist:
                     optdata.KillCooldown = RoleClass.Minimalist.KillCoolTime;
                     break;
+                case RoleId.God:
+                    optdata.AnonymousVotes = !RoleClass.God.IsVoteView;
+                    break;
                 case RoleId.MadMate:
                     if (RoleClass.MadMate.IsUseVent)
                     {

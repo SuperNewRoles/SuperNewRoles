@@ -740,9 +740,13 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> GodPlayer;
             public static Color32 color = Color.yellow;
+            public static bool IsVoteView;
+            public static bool IsTaskEndWin;
             public static void ClearAndReload()
             {
                 GodPlayer = new List<PlayerControl>();
+                IsVoteView = CustomOptions.GodViewVote.getBool();
+                IsTaskEndWin = CustomOptions.GodIsEndTaskWin.getBool();
             }
         }
         public static class AllCleaner
