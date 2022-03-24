@@ -325,6 +325,8 @@ SelfBomberButtonName,Self Bomb,自爆
 GodName,God,神
 GodTitle1,You Are God!!,あなたは神だ
 GodDescription,If you survive to the end you take away the win. Everyone's position is known.,最後まで生き残っていると、勝利を奪い取ります。全員の役職がわかります。
+GodViewVoteSetting,I know who to vote for.,投票先がわかる
+GodIsEndTaskWinSetting,You have to finish the task to win.,タスクを終わらせないと勝利できない
 AllCleanerName,All Cleaner,オールクリーナー
 AllCleanerTitle1,Let's get rid of the corpse.,死体を消そう
 AllCleanerCountSetting,Number of times it can be used in one game,1試合中に使える回数

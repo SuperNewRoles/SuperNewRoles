@@ -1304,6 +1304,14 @@
         "0" : "If you survive to the end you take away the win. Everyone's position is known." ,
         "11" : "\u6700\u5f8c\u307e\u3067\u751f\u304d\u6b8b\u3063\u3066\u3044\u308b\u3068\u3001\u52dd\u5229\u3092\u596a\u3044\u53d6\u308a\u307e\u3059\u3002\u5168\u54e1\u306e\u5f79\u8077\u304c\u308f\u304b\u308a\u307e\u3059\u3002"
         } ,
+ "GodViewVoteSetting" : {
+        "0" : "I know who to vote for." ,
+        "11" : "\u6295\u7968\u5148\u304c\u308f\u304b\u308b"
+        } ,
+ "GodIsEndTaskWinSetting" : {
+        "0" : "You have to finish the task to win." ,
+        "11" : "\u30bf\u30b9\u30af\u3092\u7d42\u308f\u3089\u305b\u306a\u3044\u3068\u52dd\u5229\u3067\u304d\u306a\u3044"
+        } ,
  "AllCleanerName" : {
         "0" : "All Cleaner" ,
         "11" : "\u30aa\u30fc\u30eb\u30af\u30ea\u30fc\u30ca\u30fc"
