@@ -27,17 +27,16 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     */
                     if (ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie))
                     {
-                        MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 34, (SendOption)1);
-                        val.WritePacked(127);
-                        AmongUsClient.Instance.FinishRpcImmediately(val);
-                        AmongUsClient.Instance.StartCoroutine(nameof(Vent));
-                        IEnumerator Vent() { 
-                            yield return new WaitForSeconds(0.5f);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
+                        writer.WritePacked(127);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        new LateTask(() => {
                             int clientId = __instance.myPlayer.getClientId();
-                            MessageWriter val2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 34, (SendOption)1, clientId);
-                            val2.Write(id);
-                            AmongUsClient.Instance.FinishRpcImmediately(val2);
-                        }
+                            MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, clientId);
+                            writer2.Write(id);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer2);
+                            __instance.myPlayer.inVent = false;
+                        }, 0.5f, "Anti Vent");
                         return false;
                     } else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
@@ -108,7 +107,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static void ClearAndReload()
         {
         }            
-        [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
         class ChangeRole
         {
             public static void Postfix()

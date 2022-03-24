@@ -130,6 +130,9 @@ namespace SuperNewRoles
                     }
                 }
                 return false;
+            } else if (ModeHandler.isMode(ModeId.BattleRoyal))
+            {
+                Mode.BattleRoyal.main.ChangeRole.Postfix();
             }
             return true;
         }
