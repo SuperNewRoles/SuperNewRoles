@@ -21,6 +21,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             Roles.BestFalseCharge.WrapUp();
             if (exiled == null) return;
+            exiled.IsDead = true;
+            exiled.Object.Exiled();
             if (exiled.Object.isRole(RoleId.Sheriff))
             {
                 exiled.Object.RpcSetRoleDesync(RoleTypes.GuardianAngel);

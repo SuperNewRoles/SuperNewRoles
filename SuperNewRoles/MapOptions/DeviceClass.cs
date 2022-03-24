@@ -37,16 +37,28 @@ namespace SuperNewRoles.MapOptions
                 }
             }
         }
+
+        [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Update))]
+        class PlanetSurveillanceMinigameUpdatePatch
+        {
+            public static void Postfix(PlanetSurveillanceMinigame __instance)
+            {
+                if (MapOption.UseCamera == false)
+                {
+                    __instance.Close();
+                }
+            }
+        }
         [HarmonyPatch(typeof(SecurityLogGame), nameof(SecurityLogGame.Update))]
         class SecurityLogGameUpdatePatch
         {
             public static void Postfix(SecurityLogGame __instance)
             {
-                    if (MapOption.UseVitalOrDoorLog == false)
-                    {
-                        __instance.Close();
-                    }
+                if (MapOption.UseVitalOrDoorLog == false)
+                {
+                    __instance.Close();
                 }
             }
         }
     }
+}

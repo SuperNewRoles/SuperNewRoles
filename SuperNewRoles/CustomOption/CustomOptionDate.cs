@@ -20,7 +20,6 @@ namespace SuperNewRoles.CustomOption
         public static string[] presets = new string[] { "preset1", "preset2", "preset3", "preset4", "preset5", "preset6", "preset7", "preset8", "preset9", "preset10" };
         public static CustomOption presetSelection;
 
-
         public static CustomOption specialOptions;
         public static CustomOption hideSettings;
 
