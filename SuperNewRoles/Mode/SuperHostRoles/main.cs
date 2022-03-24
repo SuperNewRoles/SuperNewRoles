@@ -13,6 +13,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static void ClearAndReloads()
         {
+            Chat.WinCond = null;
         }
         public static void SendAllRoleChat()
         {/*
