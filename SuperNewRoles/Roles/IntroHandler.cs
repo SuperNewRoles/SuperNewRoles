@@ -10,6 +10,10 @@ namespace SuperNewRoles.Roles
     class IntroHandler
     {
         public static void Handler() {
+
+            new LateTask(() => {
+                RoleClass.IsStart = true;
+            }, 2f, "IsStartOn");
             if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Pursuer))
             {
                 RoleClass.Pursuer.arrow.arrow.SetActive(false);

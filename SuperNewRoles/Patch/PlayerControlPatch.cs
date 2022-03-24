@@ -30,6 +30,8 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
+            if (!RoleClass.IsStart)
+                return false;
             if (!AmongUsClient.Instance.AmHost)
             {
                 return true;
