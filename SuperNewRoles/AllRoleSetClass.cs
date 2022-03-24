@@ -133,6 +133,7 @@ namespace SuperNewRoles
             } else if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
                 Mode.BattleRoyal.main.ChangeRole.Postfix();
+                return false;
             }
             return true;
         }
