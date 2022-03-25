@@ -110,8 +110,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                         }
                     }
-                    else if (p.isAlive())
+                    else if (p.isAlive() && !p.Data.Disconnected)
                     {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        {
+                            if (p.PlayerId != p2.PlayerId && !p2.Data.Disconnected)
+                            {
+                                p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                            }
+                        }
                         string Suffix = "";
                         if (p.IsLovers())
                         {
@@ -147,6 +154,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         foreach (PlayerControl p2 in impostorplayers)
                         {
+                            string Suffix = "";
+                            if (p2.IsLovers() && p2.GetOneSideLovers().PlayerId == p.PlayerId)
+                            {
+                                Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                            }
                             p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
                         }
                     }
@@ -188,6 +200,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     } else if (p.isAlive())
                     {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        {
+                            if (p.PlayerId != p2.PlayerId && !p2.Data.Disconnected)
+                            {
+                                p2.RpcSetNamePrivate(p2.getDefaultName(),p);
+                            }
+                        }
                         string Suffix = "";
                         if (p.IsLovers())
                         {
