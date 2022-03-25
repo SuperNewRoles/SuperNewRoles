@@ -122,7 +122,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                             p1.RpcSetRoleDesync(RoleTypes.Impostor);
                             foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                             {
-                                if (p1.PlayerId != p2.PlayerId)
+                                if (p1.PlayerId != p2.PlayerId && p2.PlayerId != 0)
                                 {
                                     p1.RpcSetRoleDesync(RoleTypes.Scientist, p2);
                                     p2.RpcSetRoleDesync(RoleTypes.Scientist, p1);

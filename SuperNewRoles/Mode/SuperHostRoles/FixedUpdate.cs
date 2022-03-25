@@ -159,10 +159,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             {
                                 Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
                             }
-                            p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
+                            p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()+Suffix), p);
                         }
                     }
-                    else if (p.isAlive() && p.PlayerId != 0)
+                    else if (p.isAlive() && p.PlayerId == 0)
                     {
                         foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {

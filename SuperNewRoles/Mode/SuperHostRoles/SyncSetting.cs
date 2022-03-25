@@ -28,9 +28,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.Sheriff:
                     optdata.ImpostorLightMod = optdata.CrewLightMod;
+                    SuperNewRolesPlugin.Logger.LogInfo("SETED!!");
                     var switchSystem = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                     if (switchSystem != null && switchSystem.IsActive)
                     {
+                        SuperNewRolesPlugin.Logger.LogInfo("インポスター視界変更！");
                         optdata.ImpostorLightMod /= 5;
                     }
                     optdata.KillCooldown = CustomOptions.SheriffCoolTime.getFloat();

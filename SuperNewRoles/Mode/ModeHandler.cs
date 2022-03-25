@@ -218,9 +218,15 @@ namespace SuperNewRoles.Mode
             return ThisModeSetting.getString();
         }
         public static bool isMode(ModeId mode) {
-            if (mode != ModeId.Default && !ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
+            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || !ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
             {
-                return true;
+                if (mode == ModeId.Default)
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
             }
             switch (mode)
             {
