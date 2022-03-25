@@ -10,10 +10,14 @@ namespace SuperNewRoles.Roles
     class IntroHandler
     {
         public static void Handler() {
-
+            float time = 2f;
+            if (PlayerControl.GameOptions.KillCooldown >= 10)
+            {
+                time = 7f;
+            }
             new LateTask(() => {
                 RoleClass.IsStart = true;
-            }, 2f, "IsStartOn");
+            }, time, "IsStartOn");
             if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Pursuer))
             {
                 RoleClass.Pursuer.arrow.arrow.SetActive(false);

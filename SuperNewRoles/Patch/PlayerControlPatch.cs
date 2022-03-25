@@ -128,6 +128,7 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
+            SuperNewRolesPlugin.Logger.LogInfo("MurderPlayer発生！元:" + __instance.getDefaultName() + "、ターゲット:" + target.getDefaultName());
             // Collect dead player info
             DeadPlayer deadPlayer = new DeadPlayer(target, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
@@ -136,7 +137,7 @@ namespace SuperNewRoles.Patches
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    Mode.SuperHostRoles.MurderPlayer.Postfix(__instance, target);
+                    MurderPlayer.Postfix(__instance, target);
                 }
             }
             else if (ModeHandler.isMode(ModeId.Detective))

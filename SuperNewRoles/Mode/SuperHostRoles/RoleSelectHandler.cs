@@ -46,6 +46,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         if (p.PlayerId != SheriffPlayer.PlayerId)
                         {
                             p.RpcSetRoleDesync(RoleTypes.Scientist, SheriffPlayer);
+                            SheriffPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
                         }
                     }
                 } else
