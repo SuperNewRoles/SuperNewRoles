@@ -8,7 +8,8 @@ namespace SuperNewRoles.Mode
     enum PlusModeId
     {
         No,
-        NotSabotage
+        NotSabotage,
+        NotTaskWin
     }
     class PlusModeHandler
     {
@@ -26,7 +27,8 @@ namespace SuperNewRoles.Mode
         }
         public static List<PlusModeId> PlusModeIds = new List<PlusModeId>()
         {
-            PlusModeId.NotSabotage
+            PlusModeId.NotSabotage,
+            PlusModeId.NotTaskWin
         };
         public static bool isMode(PlusModeId Modeid)
         {
@@ -34,6 +36,8 @@ namespace SuperNewRoles.Mode
             {
                 case PlusModeId.NotSabotage:
                     return Options.PlusModeSetting.getBool() && Options.NoSabotageModeSetting.getBool();
+                case PlusModeId.NotTaskWin:
+                    return Options.PlusModeSetting.getBool() && Options.NoTaskWinModeSetting.getBool();
             }
             return false;
         }

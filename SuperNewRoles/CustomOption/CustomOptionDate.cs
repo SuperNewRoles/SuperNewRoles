@@ -590,7 +590,7 @@ namespace SuperNewRoles.CustomOption
             MayorVoteCount = CustomOption.Create(233, cs(Color.white, "MayorVoteCountSetting"), 2f, 1f, 100f, 1f, MayorOption);
 
             trueloverOption = new CustomRoleOption(239, "trueloverName", RoleClass.truelover.color, 1);
-            trueloverPlayerCount = CustomOption.Create(240, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MayorOption);
+            trueloverPlayerCount = CustomOption.Create(240, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], trueloverOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

@@ -18,7 +18,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 byte amount)
         {
             SyncSetting.CustomSyncSettings();
-            if (player.isRole(RoleId.Sheriff)) { return false; }
+            if (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.truelover)) return false;
             if (!RoleClass.Minimalist.UseSabo && player.isRole(CustomRPC.RoleId.Minimalist)) return false;
             if (!RoleClass.Egoist.UseSabo && player.isRole(CustomRPC.RoleId.Egoist)) return false;
             return true;

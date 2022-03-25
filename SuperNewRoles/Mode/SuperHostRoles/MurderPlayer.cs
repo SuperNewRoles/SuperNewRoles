@@ -20,7 +20,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 yield return new WaitForSeconds(0.1f);
                 FixedUpdate.SetNames();
             }
-            if (target.isRole(RoleId.Sheriff))
+            if (target.isRole(RoleId.Sheriff) || target.isRole(RoleId.truelover))
             {
                 target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
             }

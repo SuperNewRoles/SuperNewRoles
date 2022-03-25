@@ -94,6 +94,7 @@ NeutralName
 WinName
 PlusModeSetting
 SettingNoSabotageMode
+SettingNoTaskWinMode
 DeviceOptionsSetting
 DeviceUseAdminSetting
 DeviceUseVitalOrDoorLogSetting

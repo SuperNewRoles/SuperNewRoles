@@ -41,7 +41,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     __instance.myPlayer.inVent = false;
                 }, 0.5f, "Anti Vent");
                 return false;
-            } else if (__instance.myPlayer.isRole(RoleId.Sheriff))
+            } else if (__instance.myPlayer.isRole(RoleId.Sheriff) || __instance.myPlayer.isRole(RoleId.truelover))
             { 
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
                 writer.WritePacked(127);

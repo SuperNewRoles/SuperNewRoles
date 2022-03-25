@@ -53,6 +53,24 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     SheriffPlayer.RpcSetRole(RoleTypes.Crewmate);
                 }
             }
+            foreach (PlayerControl trueloverPlayer in RoleClass.truelover.trueloverPlayer)
+            {
+                if (!trueloverPlayer.IsMod())
+                {
+                    trueloverPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != trueloverPlayer.PlayerId)
+                        {
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, trueloverPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    trueloverPlayer.RpcSetRole(RoleTypes.Crewmate);
+                }
+            }
             if (RoleClass.Jester.IsUseVent)
             {
                 foreach (PlayerControl p in RoleClass.Jester.JesterPlayer)
@@ -328,6 +346,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.trueloverOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.trueloverOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.truelover;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
                     }
                 }
             }

@@ -32,7 +32,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             Count--;
             if (Count >= 1) return;
             Count = 7;
-            SuperNewRolesPlugin.Logger.LogInfo("場所:" + PlayerControl.LocalPlayer.transform.position.x + "、" + PlayerControl.LocalPlayer.transform.position.y);
             if ((!MapOptions.MapOption.UseAdmin || !MapOptions.MapOption.UseCamera) && !ModeHandler.isMode(ModeId.Default))
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)

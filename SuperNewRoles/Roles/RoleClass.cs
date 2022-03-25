@@ -996,6 +996,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> trueloverPlayer;
             public static Color32 color = Lovers.color;
             public static bool IsCreate;
+            public static List<int> CreatePlayers;
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
@@ -1007,6 +1008,7 @@ namespace SuperNewRoles.Roles
             {
                 trueloverPlayer = new List<PlayerControl>();
                 IsCreate = false;
+                CreatePlayers = new List<int>();
             }
         }
         //新ロールクラス

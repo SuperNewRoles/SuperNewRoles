@@ -39,6 +39,16 @@ namespace SuperNewRoles.Patches
             if (ModeHandler.isMode(ModeId.Detective) && target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
+                if (__instance.isRole(RoleId.truelover))
+                {
+                    if (target == null || target.IsLovers() || RoleClass.truelover.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                    RoleClass.truelover.CreatePlayers.Add(__instance.PlayerId);
+                    RoleHelpers.SetLovers(__instance, target);
+                    RoleHelpers.SetLoversRPC(__instance, target);
+                    __instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+                    Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                    return false;
+                }
                 if (__instance.isRole(RoleId.Sheriff))
                 {
                     if (!Sheriff.IsSheriffKill(target))
@@ -72,24 +82,45 @@ namespace SuperNewRoles.Patches
     {
         public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
-            if (RoleClass.Lovers.SameDie && target.IsLovers())
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
-                if (AmongUsClient.Instance.AmHost)
+                if (target.isRole(RoleId.truelover))
                 {
-                    PlayerControl SideLoverPlayer = target.GetOneSideLovers();
-                    if (SideLoverPlayer.isAlive())
+                    target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+                }
+                if (RoleClass.Lovers.SameDie && target.IsLovers())
+                {
+                    if (AmongUsClient.Instance.AmHost)
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
-                        writer.Write(SideLoverPlayer.PlayerId);
-                        writer.Write(SideLoverPlayer.PlayerId);
-                        writer.Write(byte.MaxValue);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
+                        PlayerControl SideLoverPlayer = target.GetOneSideLovers();
+                        if (SideLoverPlayer.isAlive())
+                        {
+                            SideLoverPlayer.RpcMurderPlayer(SideLoverPlayer);
+                        }
                     }
                 }
             }
+            else
+            {
+                if (RoleClass.Lovers.SameDie && target.IsLovers())
+                {
+                    if (AmongUsClient.Instance.AmHost)
+                    {
+                        PlayerControl SideLoverPlayer = target.GetOneSideLovers();
+                        if (SideLoverPlayer.isAlive())
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                            writer.Write(SideLoverPlayer.PlayerId);
+                            writer.Write(SideLoverPlayer.PlayerId);
+                            writer.Write(byte.MaxValue);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
+                        }
+                    }
+                }
+            }
+            }
         }
-    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
     public static class MurderPlayerPatch
     {

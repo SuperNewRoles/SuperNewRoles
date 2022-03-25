@@ -94,6 +94,7 @@ Neutral
 Win
 Plus Mode
 Block Sabotage Mode
+Not Task Win Mode
 Device Options
 Use OK Admin
 Use OK Vital Or DoorLog

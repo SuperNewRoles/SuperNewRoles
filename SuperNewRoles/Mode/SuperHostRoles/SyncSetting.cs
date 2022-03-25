@@ -57,6 +57,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                     break;
+                case RoleId.truelover:
+                    optdata.ImpostorLightMod = optdata.CrewLightMod;
+                    var switchSystemtruelover = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    if (switchSystemtruelover != null && switchSystemtruelover.IsActive)
+                    {
+                        optdata.ImpostorLightMod /= 5;
+                    }
+                    if (RoleClass.truelover.CreatePlayers.Contains(player.PlayerId))
+                    {
+                        optdata.KillCooldown = -1f;
+                    }
+                    else
+                    {
+                        optdata.KillCooldown = 0.001f;
+                    }
+                    break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             if (player.AmOwner) PlayerControl.GameOptions = optdata;

@@ -786,7 +786,7 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
-                if (CheckAndEndGameForTaskWin(__instance)) return false;
+                if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             }
             return false;
         }

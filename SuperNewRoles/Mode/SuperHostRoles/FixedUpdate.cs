@@ -249,7 +249,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
             if (!AmongUsClient.Instance.AmHost) return;
-            SuperNewRolesPlugin.Logger.LogInfo("Vector:"+PlayerControl.LocalPlayer.transform.position);
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
                 UpdateDate--;
