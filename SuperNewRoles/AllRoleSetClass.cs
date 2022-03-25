@@ -329,7 +329,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (!p.Data.Role.IsImpostor && !p.isNeutral())
+                    if (!p.isImpostor() && !p.isNeutral() && !p.isRole(RoleId.truelover))
                     {
                         if (!IsQuarreledDup || !p.IsQuarreled())
                         {
@@ -344,7 +344,10 @@ namespace SuperNewRoles
                 {
                     if (!IsQuarreledDup || !p.IsQuarreled())
                     {
-                        SelectPlayers.Add(p);
+                        if (!p.isRole(RoleId.truelover))
+                        {
+                            SelectPlayers.Add(p);
+                        }
                     }
                 }
             }
@@ -772,6 +775,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.MagazinerPlayerCount.getFloat();
                     case (RoleId.Mayor):
                     return CustomOption.CustomOptions.MayorPlayerCount.getFloat();
+                    case (RoleId.truelover):
+                    return CustomOption.CustomOptions.trueloverPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1612,6 +1617,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.trueloverOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.trueloverOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.truelover;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
                     }
                 }
             }

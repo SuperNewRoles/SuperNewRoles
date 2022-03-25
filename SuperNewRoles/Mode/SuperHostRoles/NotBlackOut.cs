@@ -48,7 +48,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
             if (PlayerControl.GameOptions.MapId == 2) reactorId = 21;
 
             new LateTask(() => {
-                MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+                MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.UpdateSystem, SendOption.Reliable, clientId);
                 SabotageWriter.Write(reactorId);
                 MessageExtensions.WriteNetObject(SabotageWriter, pc);
                 SabotageWriter.Write((byte)128);

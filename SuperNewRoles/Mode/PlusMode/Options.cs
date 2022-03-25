@@ -11,7 +11,7 @@ namespace SuperNewRoles.Mode.PlusMode
         public static void Load()
         {
             PlusModeSetting = CustomOption.CustomOption.Create(235, ModTranslation.getString("PlusModeSetting"), false, null,isHeader:true);
-            NoSabotageModeSetting = CustomOption.CustomOption.Create(237, ModTranslation.getString("SettingNoSabotageMode"), false, PlusModeSetting);
+            NoSabotageModeSetting = CustomOption.CustomOption.Create(238, ModTranslation.getString("SettingNoSabotageMode"), false, PlusModeSetting);
         }
     }
 }

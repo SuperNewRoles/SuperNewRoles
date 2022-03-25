@@ -37,6 +37,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton JackalSidekickButton;
         public static CustomButton MagazinerAddButton;
         public static CustomButton MagazinerGetButton;
+        public static CustomButton trueloverLoveButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -57,6 +58,35 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
+            trueloverLoveButton = new CustomButton(
+                  () =>
+                  {
+                      if (PlayerControl.LocalPlayer.CanMove && !RoleClass.truelover.IsCreate && !PlayerControl.LocalPlayer.IsLovers())
+                      {
+                          var target = setTarget();
+                          if (target == null || target.IsLovers()) return;
+                          RoleClass.truelover.IsCreate = true;
+                          RoleHelpers.SetLovers(PlayerControl.LocalPlayer,target);
+                          RoleHelpers.SetLoversRPC(PlayerControl.LocalPlayer,target);
+                      }
+                  },
+                  () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.truelover) && !RoleClass.truelover.IsCreate; },
+                  () =>
+                  {
+                      return PlayerControl.LocalPlayer.CanMove && setTarget();
+                  },
+                  () => { trueloverLoveButton.Timer = 0f; trueloverLoveButton.MaxTimer = 0f; },
+                  RoleClass.truelover.getButtonSprite(),
+                  new Vector3(-1.8f, -0.06f, 0),
+                  __instance,
+                  __instance.AbilityButton,
+                  KeyCode.F,
+                  49
+              );
+
+            trueloverLoveButton.buttonText = ModTranslation.getString("trueloverloveButtonName");
+            trueloverLoveButton.showButtonText = true;
+
             MagazinerGetButton = new CustomButton(
                   () =>
                   {

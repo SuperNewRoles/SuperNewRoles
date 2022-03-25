@@ -101,6 +101,10 @@ namespace SuperNewRoles
         {
             var sets = new List<PlayerControl>() { player1, player2 };
             RoleClass.Lovers.LoversPlayer.Add(sets);
+            if (player1.PlayerId == PlayerControl.LocalPlayer.PlayerId || player2.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            }
             ChacheManager.ResetLoversChache();
         }
         public static void SetLoversRPC(PlayerControl player1, PlayerControl player2)
@@ -366,6 +370,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Mayor):
                     Roles.RoleClass.Mayor.MayorPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.truelover):
+                    Roles.RoleClass.truelover.trueloverPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -537,6 +544,9 @@ namespace SuperNewRoles
                     case (CustomRPC.RoleId.Mayor):
                     Roles.RoleClass.Mayor.MayorPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.truelover):
+                    Roles.RoleClass.truelover.trueloverPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -589,7 +599,10 @@ namespace SuperNewRoles
                 case (RoleId.Workperson):
                     IsTaskClear = true;
                     break;
-                    //タスククリアか
+                    case (RoleId.truelover):
+                    IsTaskClear = true;
+                    break; 
+                //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
             {
@@ -664,6 +677,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.Workperson):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.truelover):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -918,6 +934,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.Mayor.MayorPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Mayor;
+            }
+            else if (Roles.RoleClass.truelover.trueloverPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.truelover;
             }
             //ロールチェック
             }

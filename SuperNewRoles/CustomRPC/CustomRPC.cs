@@ -12,6 +12,7 @@ using System.Collections;
 using SuperNewRoles.EndGame;
 using InnerNet;
 using static SuperNewRoles.EndGame.FinalStatusPatch;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.CustomRPC
 {
@@ -70,12 +71,14 @@ namespace SuperNewRoles.CustomRPC
         Magaziner,
         Hunter,
         Mayor,
+        truelover,
         //RoleId
     }
 
     public enum CustomRPC
     {
-        ShareOptions = 91,
+        TORVersionShare = 65,
+        ShareOptions = 144,
         ShareSNRVersion,
         SetRole,
         SetQuarreled,
@@ -112,6 +115,18 @@ namespace SuperNewRoles.CustomRPC
     }
     public static class RPCProcedure
     {
+        public static void TORVersionShare(int major, int minor, int build, int revision, byte[] guid, int clientId)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo("TORGMシェアあああ！");
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, Hazel.SendOption.Reliable, clientId);
+            writer.WritePacked(major);
+            writer.WritePacked(minor);
+            writer.WritePacked(build);
+            writer.WritePacked(AmongUsClient.Instance.ClientId);
+            writer.Write(revision);
+            writer.Write(guid);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
         public static void uncheckedSetTasks(byte playerId, byte[] taskTypeIds)
         {
             var player = ModHelpers.playerById(playerId);
@@ -485,6 +500,17 @@ namespace SuperNewRoles.CustomRPC
 
                     // Main Controls
 
+                        case (byte)CustomRPC.TORVersionShare:
+                         int majorTOR = reader.ReadPackedInt32();
+                         int minorTOR = reader.ReadPackedInt32();
+                         int patchTOR = reader.ReadPackedInt32();
+                         int versionOwnerIdTOR = reader.ReadPackedInt32();
+                         byte revisionTOR = 0xFF;
+                         byte[] guidTOR;
+                         revisionTOR = reader.ReadByte();
+                         guidTOR = reader.ReadBytes(16);
+                         RPCProcedure.TORVersionShare(majorTOR, minorTOR, patchTOR, revisionTOR == 0xFF ? -1 : revisionTOR, guidTOR, versionOwnerIdTOR);
+                        break;
                         case (byte)CustomRPC.ShareOptions:
                             RPCProcedure.ShareOptions((int)reader.ReadPackedUInt32(), reader);
                             break;

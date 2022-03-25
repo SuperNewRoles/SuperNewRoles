@@ -1603,6 +1603,18 @@
  "MayorVoteCountSetting" : {
         "0" : "Mayer's vote count" ,
         "11" : "\u30e1\u30a4\u30e4\u30fc\u306e\u7968\u6570"
+        } ,
+ "trueloverName" : {
+        "0" : "True Lover" ,
+        "11" : "\u7d14\u611b\u8005"
+        } ,
+ "trueloverTitle1" : {
+        "0" : "Let's fall in love at first sight" ,
+        "11" : "\u4e00\u76ee\u60da\u308c\u3057\u3088\u3046"
+        } ,
+ "trueloverloveButtonName" : {
+        "0" : "Love" ,
+        "11" : "\u4e00\u76ee\u60da\u308c"
         } 
 
 }

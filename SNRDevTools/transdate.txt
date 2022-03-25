@@ -400,3 +400,6 @@ LoversDuplicationQuarreledSetting,Does not overlap with Quarreled,クラード�
 MayorName,Mayor,メイヤー
 MayorTitle1,Let's add our vote at the meeting.,会議で票を追加で入れよう
 MayorVoteCountSetting,Mayer's vote count,メイヤーの票数
+trueloverName,True Lover,純愛者
+trueloverTitle1,Let's fall in love at first sight,一目惚れしよう
+trueloverloveButtonName,Love,一目惚れ

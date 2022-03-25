@@ -1,6 +1,7 @@
 ﻿
 using HarmonyLib;
 using Hazel;
+using InnerNet;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode.SuperHostRoles;
 using System;
@@ -115,15 +116,21 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 {
                     foreach (PlayerControl p1 in PlayerControl.AllPlayerControls)
                     {
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(p1, RoleTypes.Crewmate);
-                        p1.SetPrivateRole(RoleTypes.Impostor);
-                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        if (p1.PlayerId != 0)
                         {
-                            if (p1.PlayerId != p2.PlayerId)
+                            DestroyableSingleton<RoleManager>.Instance.SetRole(p1, RoleTypes.Crewmate);
+                            p1.RpcSetRoleDesync(RoleTypes.Impostor);
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                             {
-                                p1.SetPrivateRole(RoleTypes.Scientist, p2);
-                                p2.SetPrivateRole(RoleTypes.Scientist, p1);
+                                if (p1.PlayerId != p2.PlayerId)
+                                {
+                                    p1.RpcSetRoleDesync(RoleTypes.Scientist, p2);
+                                    p2.RpcSetRoleDesync(RoleTypes.Scientist, p1);
+                                }
                             }
+                        } else
+                        {
+                            p1.RpcSetRole(RoleTypes.Crewmate);
                         }
                     }
                     DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);

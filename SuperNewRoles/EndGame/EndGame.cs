@@ -433,6 +433,7 @@ namespace SuperNewRoles.EndGame
                 notWinners.AddRange(RoleClass.JackalFriends.JackalFriendsPlayer);
                 notWinners.AddRange(RoleClass.God.GodPlayer);
                 notWinners.AddRange(RoleClass.Opportunist.OpportunistPlayer);
+            notWinners.AddRange(RoleClass.truelover.trueloverPlayer);
             notWinners.AddRange(RoleClass.Egoist.EgoistPlayer);
             notWinners.AddRange(RoleClass.Workperson.WorkpersonPlayer);
 

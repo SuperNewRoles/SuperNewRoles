@@ -23,10 +23,12 @@ namespace SuperNewRoles.Roles
         public static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
         public static Color ImpostorRed = Palette.ImpostorRed;
         public static Color CrewmateWhite = Color.white;
+        public static bool IsStart;
 
         public static void clearAndReloadRoles()
         {
             IsMeeting = false;
+            IsStart = false;
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
             SoothSayer.clearAndReload();
@@ -79,6 +81,7 @@ namespace SuperNewRoles.Roles
             Workperson.ClearAndReload();
             Magaziner.ClearAndReload();
             Mayor.ClearAndReload();
+            truelover.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -986,6 +989,24 @@ namespace SuperNewRoles.Roles
             {
                 MayorPlayer = new List<PlayerControl>();
                 AddVote = (int)CustomOptions.MayorVoteCount.getFloat();
+            }
+        }
+        public static class truelover
+        {
+            public static List<PlayerControl> trueloverPlayer;
+            public static Color32 color = Lovers.color;
+            public static bool IsCreate;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.trueloverloveButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                trueloverPlayer = new List<PlayerControl>();
+                IsCreate = false;
             }
         }
         //新ロールクラス
