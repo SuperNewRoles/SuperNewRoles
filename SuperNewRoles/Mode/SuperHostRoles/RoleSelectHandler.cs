@@ -21,7 +21,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetCustomRoles();
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
-            FixedUpdate.SetNames();
+            FixedUpdate.SetRoleNames();
             main.SendAllRoleChat();
             new LateTask(() => {
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)

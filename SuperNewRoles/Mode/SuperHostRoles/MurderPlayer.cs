@@ -18,7 +18,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             IEnumerator ResetName()
             {
                 yield return new WaitForSeconds(0.1f);
-                FixedUpdate.SetNames();
+                FixedUpdate.SetDefaultNames();
             }
             if (target.isRole(RoleId.Sheriff) || target.isRole(RoleId.truelover))
             {

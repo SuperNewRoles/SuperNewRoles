@@ -56,7 +56,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
             }
-            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            if (PlayerControl.LocalPlayer.isImpostor())
             {
                 List<PlayerControl> impostors = PlayerControl.AllPlayerControls.ToArray().ToList();
                 impostors.RemoveAll(x => !x.Data.Role.IsImpostor && !x.isRole(CustomRPC.RoleId.Egoist));
@@ -69,6 +69,44 @@ namespace SuperNewRoles.Patch
                         if (playerControl != null && (playerControl.Data.Role.IsImpostor || playerControl.isRole(CustomRPC.RoleId.Egoist)))
                             player.NameText.color = Palette.ImpostorRed;
                     }
+            }
+            string Suffix = "";
+            if (PlayerControl.LocalPlayer.isDead())
+            {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (!p.isImpostor())
+                    {
+                        Suffix = "";
+                        var switchSystem = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<SwitchSystem>();
+                        if (switchSystem != null && switchSystem.IsActive)
+                        {
+                            var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
+                            Suffix += ModHelpers.cs(Color.yellow, "(?/+" + all + ")");
+                        }
+                        else
+                        {
+                            var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                            Suffix += ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                        }
+                        p.nameText.text += Suffix;
+                    }
+                }
+            } else if (!PlayerControl.LocalPlayer.isImpostor())
+            {
+                Suffix = "";
+                var switchSystem = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<SwitchSystem>();
+                if (switchSystem != null && switchSystem.IsActive)
+                {
+                    var all = TaskCount.TaskDateNoClearCheck(PlayerControl.LocalPlayer.Data).Item2;
+                    Suffix += ModHelpers.cs(Color.yellow, "(?/+" + all + ")");
+                }
+                else
+                {
+                    var (complate, all) = TaskCount.TaskDateNoClearCheck(PlayerControl.LocalPlayer.Data);
+                    Suffix += ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                }
+                PlayerControl.LocalPlayer.nameText.text += Suffix;
             }
 
         }
@@ -242,12 +280,21 @@ namespace SuperNewRoles.Patch
         public static void Postfix(PlayerControl __instance)
         {
             SetNamesClass.resetNameTagsAndColors();
-            if ((PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.God)) && !PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceRedRidingHood))
+            if (PlayerControl.LocalPlayer.isDead() && !PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceRedRidingHood))
             {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     SetNamesClass.SetPlayerNameColors(player);
                     SetNamesClass.SetPlayerRoleNames(player);                    
+                }
+            } else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.God) ){
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.isAlive())
+                    {
+                        SetNamesClass.SetPlayerNameColors(player);
+                        SetNamesClass.SetPlayerRoleNames(player);
+                    }
                 }
             }
             else

@@ -17,7 +17,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             IEnumerator ResetName()
             {
                 yield return new WaitForSeconds(1);
-                FixedUpdate.SetNames();
+                FixedUpdate.SetRoleNames();
             }
             Roles.BestFalseCharge.WrapUp();
             if (exiled == null) return;
