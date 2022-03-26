@@ -23,6 +23,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             ChacheManager.ResetChache();
             FixedUpdate.SetRoleNames();
             main.SendAllRoleChat();
+            
+            //BotHandler.AddBot(3, "キルされるBot");
             new LateTask(() => {
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                 {

@@ -8,7 +8,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     class BotHandler
     {
-        public static List<PlayerControl> Bots;
+        public static List<PlayerControl> Bots = new List<PlayerControl>();
+        public static PlayerControl Bot;
         public static void AddBot(byte id,string name)
         {
             PlayerControl bot = null;
@@ -29,11 +30,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             bot.RpcSetPet(PlayerControl.LocalPlayer.CurrentOutfit.PetId);
             bot.RpcSetSkin(PlayerControl.LocalPlayer.CurrentOutfit.SkinId);
             bot.RpcSetNamePlate(PlayerControl.LocalPlayer.CurrentOutfit.NamePlateId);
-
+            bot.RpcSetRole(RoleTypes.Crewmate);
             new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
             new LateTask(() => { foreach (var pc in PlayerControl.AllPlayerControls) pc.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
             new LateTask(() => bot.Despawn(), 0.6f, "Bot Despawn Task");
             Bots.Add(bot);
+            Bot = bot;
         }
     }
 }

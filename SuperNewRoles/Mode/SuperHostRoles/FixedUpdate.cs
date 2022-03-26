@@ -117,7 +117,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     else if (p.isAlive())
                     {
                         bool IsMadmateCheck = Madmate.CheckImpostor(p);
-                        SuperNewRolesPlugin.Logger.LogInfo("マッドメイトがチェックできるか:"+IsMadmateCheck);
+//                        SuperNewRolesPlugin.Logger.LogInfo("マッドメイトがチェックできるか:"+IsMadmateCheck);
                         if (IsMadmateCheck)
                         {
                             foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)

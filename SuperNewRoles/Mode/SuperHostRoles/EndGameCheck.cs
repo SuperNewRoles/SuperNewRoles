@@ -17,19 +17,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
         {
-            IsImpostorWin = false;
-            IsNeutralWin = false;
-            IsCrewmateWin = false;
-            if (CheckAndEndGameForSabotageWin(__instance)) return false;
-            if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+            if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
+            if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
             return false;
         }
-        private static bool IsImpostorWin = false;
-        private static bool IsNeutralWin = false;
-        private static bool IsCrewmateWin = false;
         public static void WinNeutral(List<PlayerControl> players)
         {
             /**
@@ -146,7 +140,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks )//&& Chat.WinCond == null)
             {
-                IsCrewmateWin = true;
                 Chat.WinCond = CustomGameOverReason.CrewmateWin;
                 CustomEndGame(__instance,GameOverReason.HumansByTask, false);
                 return true;
@@ -158,7 +151,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamImpostorsAlive != 0)//&& Chat.WinCond == null)
             {
-                IsImpostorWin = true;
                 GameOverReason endReason;
                 switch (TempData.LastDeathReason)
                 {
@@ -183,7 +175,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (statistics.CrewAlive > 0 && statistics.TeamImpostorsAlive == 0)// && Chat.WinCond == null)
             {
-                IsCrewmateWin = true;
                 Chat.WinCond = CustomGameOverReason.CrewmateWin;
                 CustomEndGame(__instance, GameOverReason.HumansByVote, false);
                 return true;
@@ -216,7 +207,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (true)//Chat.WinCond == null)
             {
-                IsImpostorWin = true;
                 Chat.WinCond = CustomGameOverReason.ImpostorWin;
                 CustomEndGame(__instance, GameOverReason.ImpostorBySabotage, false);
                 return;

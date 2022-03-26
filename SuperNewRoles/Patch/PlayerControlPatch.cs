@@ -73,7 +73,13 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
-            __instance.RpcMurderPlayer(target);
+            if (!ModeHandler.isMode(ModeId.Default))
+            {
+                __instance.RpcMurderPlayer(target);
+            } else
+            {
+                return true;
+            }
             return false;
         }
     }

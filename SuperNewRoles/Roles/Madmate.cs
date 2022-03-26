@@ -21,7 +21,7 @@ namespace SuperNewRoles.Roles
                 SuperNewRolesPlugin.Logger.LogInfo("有効を返しました");
                 return true; 
             }
-            SuperNewRolesPlugin.Logger.LogInfo("一番下まで通過");
+           // SuperNewRolesPlugin.Logger.LogInfo("一番下まで通過");
             return false;
         }
     }

@@ -16,6 +16,17 @@ namespace SuperNewRoles.Patch
         public static void SetPlayerNameColor(PlayerControl p, Color color)
         {
             p.nameText.color = color;
+            try
+            {
+                foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                {
+                    if (p.PlayerId == player.TargetPlayerId)
+                    {
+                        player.NameText.color += color;
+                    }
+                }
+            }
+            catch { }
         }
         public static void SetPlayerNameText(PlayerControl p,string text)
         {
@@ -291,11 +302,13 @@ namespace SuperNewRoles.Patch
             {
                 if (Madmate.CheckImpostor(PlayerControl.LocalPlayer))
                 {
+                    SuperNewRolesPlugin.Logger.LogInfo("ローカルOK");
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         if (p.isImpostor())
                         {
-                            SetNamesClass.SetPlayerNameColors(p);
+                            SuperNewRolesPlugin.Logger.LogInfo("インポスターなのでセット");
+                            SetNamesClass.SetPlayerNameColor(p,RoleClass.ImpostorRed);
                         }
                     }
                 }

@@ -117,6 +117,7 @@ namespace SuperNewRoles.CustomRPC
     {
         public static void TORVersionShare(int major, int minor, int build, int revision, byte[] guid, int clientId)
         {
+            /*
             SuperNewRolesPlugin.Logger.LogInfo("TORGMシェアあああ！");
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, Hazel.SendOption.Reliable, clientId);
             writer.WritePacked(major);
@@ -125,7 +126,7 @@ namespace SuperNewRoles.CustomRPC
             writer.WritePacked(AmongUsClient.Instance.ClientId);
             writer.Write(revision);
             writer.Write(guid);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);*/
         }
         public static void uncheckedSetTasks(byte playerId, byte[] taskTypeIds)
         {
