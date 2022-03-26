@@ -17,6 +17,8 @@ namespace SuperNewRoles.CustomOption
     {
         public static string[] rates = new string[] { "0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" };
 
+        public static string[] rates4 = new string[] {"0%","25%","50%","75%","100%"};
+
         public static string[] presets = new string[] { "preset1", "preset2", "preset3", "preset4", "preset5", "preset6", "preset7", "preset8", "preset9", "preset10" };
         public static CustomOption presetSelection;
 
@@ -168,6 +170,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption MadMateOption;
         public static CustomOption MadMatePlayerCount;
         public static CustomOption MadMateIsCheckImpostor;
+        public static CustomOption MadMateCheckImpostorTask;
         public static CustomOption MadMateIsUseVent;
         public static CustomOption MadMateIsImpostorLight;
 
@@ -475,6 +478,7 @@ namespace SuperNewRoles.CustomOption
             MadMateOption = new CustomRoleOption(98, "MadMateName", RoleClass.ImpostorRed, 1);
             MadMatePlayerCount = CustomOption.Create(99, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMateOption);
             MadMateIsCheckImpostor = CustomOption.Create(100, ModTranslation.getString("MadMateIsCheckImpostorSetting"), false, MadMateOption);
+            MadMateCheckImpostorTask = CustomOption.Create(242, ModTranslation.getString("MadMateCheckImpostorTaskSetting"), rates4, MadMateIsCheckImpostor);
             MadMateIsUseVent = CustomOption.Create(120, ModTranslation.getString("MadMateUseVentSetting"), false, MadMateOption);
             MadMateIsImpostorLight = CustomOption.Create(234, ModTranslation.getString("MadMateImpostorLightSetting"), false, MadMateOption);
 

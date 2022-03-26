@@ -275,6 +275,7 @@ MadMateName
 MadMateTitle1
 MadMateDescription
 MadMateIsCheckImpostorSetting
+MadMateCheckImpostorTaskSetting
 MadMateUseVentSetting
 MadMateVentMoveSetting
 MadMateImpostorLightSetting

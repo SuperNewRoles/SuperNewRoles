@@ -275,6 +275,7 @@ Mad Mate
 Let's help the Imposter.
 The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmate can also win.
 You can check the Imposter.
+Amount of tasks that will be able to be checked (of all tasks)
 Use Vent
 Move Vent
 Impostor Light

@@ -51,7 +51,7 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = newTeam;
                 }
-                if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && RoleClass.MadMate.IsImpostorCheck)
+                if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && Madmate.CheckImpostor(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int ImpostorNum = 0;

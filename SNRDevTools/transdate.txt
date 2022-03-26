@@ -276,6 +276,7 @@ MadMateName,Mad Mate,マッドメイト
 MadMateTitle1,Let's help the Imposter.,インポスターを助けよう
 MadMateDescription,The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。インポスターが勝利すると、マッドメイトも勝利できます。
 MadMateIsCheckImpostorSetting,You can check the Imposter.,インポスターが確認できる
+MadMateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内)
 MadMateUseVentSetting,Use Vent,ベントに入れる
 MadMateVentMoveSetting,Move Vent,ベントで動ける
 MadMateImpostorLightSetting,Impostor Light,インポスターの視界

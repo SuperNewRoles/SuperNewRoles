@@ -1108,6 +1108,10 @@
         "0" : "You can check the Imposter." ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u78ba\u8a8d\u3067\u304d\u308b"
         } ,
+ "MadMateCheckImpostorTaskSetting" : {
+        "0" : "Amount of tasks that will be able to be checked (of all tasks)" ,
+        "11" : "\u78ba\u8a8d\u3067\u304d\u308b\u3088\u3046\u306b\u306a\u308b\u30bf\u30b9\u30af\u91cf(\u5168\u30bf\u30b9\u30af\u5185)"
+        } ,
  "MadMateUseVentSetting" : {
         "0" : "Use Vent" ,
         "11" : "\u30d9\u30f3\u30c8\u306b\u5165\u308c\u308b"

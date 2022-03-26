@@ -553,6 +553,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> MadMatePlayer;
             public static Color32 color = ImpostorRed;
             public static bool IsImpostorCheck;
+            public static int ImpostorCheckTask;
             public static bool IsUseVent;
             public static bool IsImpostorLight;
             public static void clearAndReload()
@@ -561,6 +562,12 @@ namespace SuperNewRoles.Roles
                 IsImpostorCheck = CustomOptions.MadMateIsCheckImpostor.getBool();
                 IsUseVent = CustomOptions.MadMateIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadMateIsImpostorLight.getBool();
+                int Common = PlayerControl.GameOptions.NumCommonTasks;
+                int Long = PlayerControl.GameOptions.NumLongTasks;
+                int Short = PlayerControl.GameOptions.NumShortTasks;
+                int AllTask = Common + Long + Short;
+                SuperNewRolesPlugin.Logger.LogInfo("AllTask:"+AllTask);
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMateCheckImpostorTask.getString().Replace("%",""))/100f));
             }
         }
         public static class Bait

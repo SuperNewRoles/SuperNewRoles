@@ -289,14 +289,13 @@ namespace SuperNewRoles.Patch
             }
             else
             {
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadMate) && RoleClass.MadMate.IsImpostorCheck)
+                if (Madmate.CheckImpostor(PlayerControl.LocalPlayer))
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         if (p.isImpostor())
                         {
                             SetNamesClass.SetPlayerNameColors(p);
-                            SetNamesClass.SetPlayerRoleNames(p);
                         }
                     }
                 }
