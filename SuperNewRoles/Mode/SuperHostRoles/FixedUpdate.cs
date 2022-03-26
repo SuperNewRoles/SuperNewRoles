@@ -37,30 +37,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 return DefaultName[player.PlayerId];
             }
         }
-        public static string getsetname(PlayerControl p,bool IsDead = false)
-        {
-            var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
-            string Suffix = "";
-            if (p.IsLovers())
-            {
-                Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
-            }
-            if (p.isRole(CustomRPC.RoleId.Sheriff))
-            {
-                if (RoleClass.Sheriff.KillCount.ContainsKey(p.PlayerId))
-                {
-                    Suffix += "(残り" + RoleClass.Sheriff.KillCount[p.PlayerId] + "発)";
-                }
-            }
-            if (RoleClass.IsMeeting || IsDead)
-            {
-                return "<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color,p.getDefaultName()+Suffix);
-            }
-            else
-            {
-                return "<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()+Suffix);
-            }
-        }
         public static void RoleFixedUpdate()
         {
 
@@ -81,6 +57,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (!AmongUsClient.Instance.AmHost) return;
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
+            bool commsActive = false;
+            foreach (PlayerTask t in PlayerControl.LocalPlayer.myTasks)
+            {
+                if (t.TaskType == TaskTypes.FixComms)
+                {
+                    commsActive = true;
+                    break;
+                }
+            }
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (!p.Data.Disconnected && p.PlayerId != 0)
@@ -102,12 +87,30 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 }
                             }
                             var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
-                            if (p2.isDead())
+                            string TaskText = "";
+                            if (!p2.isImpostor())
                             {
-                                p2.RpcSetNamePrivate("(<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>)" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
+                                try
+                                {
+                                    if (commsActive)
+                                    {
+                                        var all = TaskCount.TaskDateNoClearCheck(p2.Data).Item2;
+                                        TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
+                                    }
+                                    else
+                                    {
+                                        var (complate, all) = TaskCount.TaskDateNoClearCheck(p2.Data);
+                                        TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                                    }
+                                }
+                                catch { }
+                            }
+                            if (p2.isDead() && !RoleClass.IsMeeting)
+                            {
+                                p2.RpcSetNamePrivate("(<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
                             } else
                             {
-                                p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
+                                p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
                             }
                         }
                     }
@@ -156,21 +159,28 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                         }
                         var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
+                        string TaskText = "";
                         if (!p.isImpostor())
                         {
-                            var switchSystem = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<SwitchSystem>();
-                            if (switchSystem != null && switchSystem.IsActive)
+                            try
                             {
-                                var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
-                                Suffix += ModHelpers.cs(Color.yellow, "(?/+" + all + ")");
+                                if (commsActive)
+                                {
+                                    var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
+                                    TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
+                                }
+                                else
+                                {
+                                    var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                                    TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                                }
                             }
-                            else
+                            catch
                             {
-                                var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                                Suffix += ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+
                             }
                         }
-                        p.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()+Suffix), p);
+                        p.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + TaskText +"</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()+Suffix), p);
                     }
                 }
             }
@@ -179,6 +189,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (!AmongUsClient.Instance.AmHost) return;
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
+            bool commsActive = false;
+            foreach (PlayerTask t in PlayerControl.LocalPlayer.myTasks)
+            {
+                if (t.TaskType == TaskTypes.FixComms)
+                {
+                    commsActive = true;
+                    break;
+                }
+            }
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (!p.Data.Disconnected && p.PlayerId != 0)
@@ -194,7 +213,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                     Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
                                 }
                                 var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
-                                p2.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color, p2.getDefaultName())+Suffix,p);
+                                string TaskText = "";
+                                if (!p2.isImpostor())
+                                {
+                                    if (commsActive)
+                                    {
+                                        var all = TaskCount.TaskDateNoClearCheck(p2.Data).Item2;
+                                        TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
+                                    }
+                                    else
+                                    {
+                                        var (complate, all) = TaskCount.TaskDateNoClearCheck(p2.Data);
+                                        TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                                    }
+                                }
+                                p2.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + TaskText + ")</size>" + ModHelpers.cs(introdate.color, p2.getDefaultName())+Suffix,p);
                             }
                         }
                     } else if (p.isAlive())
@@ -237,21 +270,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             Side.RpcSetNamePrivate(name + Suffix, p);
                         }
                         var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
+                        string TaskText = "";
                         if (!p.isImpostor())
                         {
-                            var switchSystem = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<SwitchSystem>();
-                            if (switchSystem != null && switchSystem.IsActive)
+                            if (commsActive)
                             {
                                 var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
-                                Suffix += ModHelpers.cs(Color.yellow, "(?/+"+all+")");
+                                TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
                             }
                             else
                             {
                                 var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                                Suffix += ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                                TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
                             }
                         }
-                        p.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + ")</size>" + ModHelpers.cs(introdate.color, p.getDefaultName())+Suffix);
+                        p.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + TaskText + ")</size>" + ModHelpers.cs(introdate.color, p.getDefaultName())+Suffix);
                     }
                 }
             }

@@ -177,20 +177,7 @@ namespace SuperNewRoles
                         }
                     }
                 }, 3f, "SetImpostor");
-            }/*
-            BotHandler.AddBot(2, "暗転対策用1");
-            BotHandler.AddBot(3, "暗転対策用2");
-            BotHandler.AddBot(4, "暗転対策用3");
-            IEnumerator SetServerRole()
-            {
-                yield return new WaitForSeconds(3);
-                IsShapeSet = true;
-                foreach (var pc in PlayerControl.AllPlayerControls)
-                {
-                    pc.RpcSetRole(RoleTypes.Shapeshifter);
-                }
-            }*/
-
+            }
         }
     }
     class AllRoleSetClass

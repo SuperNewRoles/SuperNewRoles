@@ -70,49 +70,18 @@ namespace SuperNewRoles.Patch
                             player.NameText.color = Palette.ImpostorRed;
                     }
             }
-            string Suffix = "";
-            if (PlayerControl.LocalPlayer.isDead())
-            {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                {
-                    if (!p.isImpostor())
-                    {
-                        Suffix = "";
-                        var switchSystem = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<SwitchSystem>();
-                        if (switchSystem != null && switchSystem.IsActive)
-                        {
-                            var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
-                            Suffix += ModHelpers.cs(Color.yellow, "(?/+" + all + ")");
-                        }
-                        else
-                        {
-                            var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                            Suffix += ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
-                        }
-                        p.nameText.text += Suffix;
-                    }
-                }
-            } else if (!PlayerControl.LocalPlayer.isImpostor())
-            {
-                Suffix = "";
-                var switchSystem = ShipStatus.Instance.Systems[SystemTypes.Comms].Cast<SwitchSystem>();
-                if (switchSystem != null && switchSystem.IsActive)
-                {
-                    var all = TaskCount.TaskDateNoClearCheck(PlayerControl.LocalPlayer.Data).Item2;
-                    Suffix += ModHelpers.cs(Color.yellow, "(?/+" + all + ")");
-                }
-                else
-                {
-                    var (complate, all) = TaskCount.TaskDateNoClearCheck(PlayerControl.LocalPlayer.Data);
-                    Suffix += ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
-                }
-                PlayerControl.LocalPlayer.nameText.text += Suffix;
-            }
-
         }
         public static void SetPlayerRoleInfoView(PlayerControl p,Color roleColors,string roleNames)
         {
-
+            bool commsActive = false;
+            foreach (PlayerTask t in PlayerControl.LocalPlayer.myTasks)
+            {
+                if (t.TaskType == TaskTypes.FixComms)
+                {
+                    commsActive = true;
+                    break;
+                }
+            }
             Transform playerInfoTransform = p.nameText.transform.parent.FindChild("Info");
             TMPro.TextMeshPro playerInfo = playerInfoTransform != null ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
             if (playerInfo == null)
@@ -142,10 +111,31 @@ namespace SuperNewRoles.Patch
                 var playerName = playerVoteArea.NameText;
                 playerName.transform.localPosition = new Vector3(0.3384f, (0.0311f + 0.0683f), -0.1f);
             }
+            string TaskText = "";
+            if (!p.isImpostor())
+            {
+                try
+                {
+                    if (commsActive)
+                    {
+                        var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
+                        TaskText += ModHelpers.cs(Color.yellow, "(?/" + all + ")");
+                    }
+                    else
+                    {
+                        var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                        TaskText += ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                    }
+                }
+                catch
+                {
+
+                }
+            }
             string playerInfoText = "";
             string meetingInfoText = "";
-            playerInfoText = $"{CustomOptions.cs(roleColors, roleNames)}";
-            meetingInfoText = $"{CustomOptions.cs(roleColors, roleNames)}".Trim();
+            playerInfoText = $"{CustomOptions.cs(roleColors, roleNames)}{TaskText}";
+            meetingInfoText = $"{CustomOptions.cs(roleColors, roleNames)}{TaskText}".Trim();
             playerInfo.text = playerInfoText;
             playerInfo.gameObject.SetActive(p.Visible);
             if (meetingInfo != null) meetingInfo.text = MeetingHud.Instance.state == MeetingHud.VoteStates.Results ? "" : meetingInfoText;  p.nameText.color = roleColors;

@@ -31,6 +31,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     foreach (var pc in PlayerControl.AllPlayerControls)
                     {
                         pc.RpcSetRole(RoleTypes.Shapeshifter);
+                        SuperNewRolesPlugin.Logger.LogInfo("シェイプシフターセット！");
                     }
                 }
             }, 3f, "SetImpostor");
