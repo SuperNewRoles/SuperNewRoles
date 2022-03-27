@@ -97,11 +97,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
             {
-                p.RpcSetRoleDesync(RoleTypes.Impostor);
-                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                if (!p.IsMod())
                 {
-                    p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                    p.RpcSetRoleDesync(RoleTypes.Impostor, p2);
+                    p.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                    {
+                        p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                        p.RpcSetRoleDesync(RoleTypes.Impostor, p2);
+                    }
+                }
+            }
+            foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
+            {
+                if (!p.IsMod())
+                {
+                    p.RpcSetRoleDesync(RoleTypes.Engineer);
                 }
             }
         }
@@ -366,6 +376,38 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.EvilGamblerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.EvilGamblerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.EvilGambler;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.TechnicianOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.TechnicianOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Technician;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
                     }
                 }
             }

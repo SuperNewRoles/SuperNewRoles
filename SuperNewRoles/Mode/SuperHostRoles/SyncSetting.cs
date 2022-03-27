@@ -74,10 +74,31 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.KillCooldown = 0.001f;
                     }
                     break;
+                case RoleId.Technician:
+                    optdata.RoleOptions.EngineerCooldown = 0f;
+                    optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+                    break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             if (player.AmOwner) PlayerControl.GameOptions = optdata;
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.Reliable, player.getClientId());
+            writer.WriteBytesAndSize(optdata.ToBytes(5));
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
+        public static void GamblersetCool(PlayerControl p)
+        {
+            if (!AmongUsClient.Instance.AmHost) return;
+            var role = p.getRole();
+            var optdata = OptionData.DeepCopy();
+            if (RoleClass.EvilGambler.GetSuc())
+            {
+                optdata.KillCooldown = RoleClass.EvilGambler.SucCool;
+            } else
+            {
+                optdata.KillCooldown = RoleClass.EvilGambler.NotSucCool;
+            }
+            if (p.AmOwner) PlayerControl.GameOptions = optdata;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.Reliable, p.getClientId());
             writer.WriteBytesAndSize(optdata.ToBytes(5));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }

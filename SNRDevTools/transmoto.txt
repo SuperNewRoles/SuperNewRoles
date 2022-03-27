@@ -405,3 +405,5 @@ MayorVoteCountSetting
 trueloverName
 trueloverTitle1
 trueloverloveButtonName
+TechnicianName
+TechnicianTitle1

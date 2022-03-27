@@ -72,6 +72,7 @@ namespace SuperNewRoles.CustomRPC
         Hunter,
         Mayor,
         truelover,
+        Technician,
         //RoleId
     }
 

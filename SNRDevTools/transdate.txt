@@ -96,6 +96,7 @@ WinName,Win,勝利
 PlusModeSetting,Plus Mode,重複モード
 SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード
 SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード
+SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード
 DeviceOptionsSetting,Device Options,機器の設定
 DeviceUseAdminSetting,Use OK Admin,アドミンが使える
 DeviceUseVitalOrDoorLogSetting,Use OK Vital Or DoorLog,バイタル・ドアログが使える
@@ -405,3 +406,5 @@ MayorVoteCountSetting,Mayer's vote count,メイヤーの票数
 trueloverName,True Lover,純愛者
 trueloverTitle1,Let's fall in love at first sight,一目惚れしよう
 trueloverloveButtonName,Love,一目惚れ
+TechnicianName,Technician,技術者
+TechnicianTitle1,Use technology to repair sabotage!,技術を駆使してサボタージュを修理しよう

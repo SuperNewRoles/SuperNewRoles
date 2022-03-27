@@ -405,3 +405,5 @@ Mayer's vote count
 True Lover
 Let's fall in love at first sight
 Love
+Technician
+Use technology to repair sabotage!

@@ -120,6 +120,8 @@ namespace SuperNewRoles.Intro
                     return MayorIntro;
                 case (CustomRPC.RoleId.truelover):
                     return trueloverIntro;
+                case (CustomRPC.RoleId.Technician):
+                    return TechnicianIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -192,6 +194,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate MagazinerIntro = new IntroDate("Magaziner", RoleClass.Magaziner.color, 1, CustomRPC.RoleId.Magaziner);
         public static IntroDate MayorIntro = new IntroDate("Mayor", RoleClass.Mayor.color, 1, CustomRPC.RoleId.Mayor);
         public static IntroDate trueloverIntro = new IntroDate("truelover", RoleClass.truelover.color, 1, CustomRPC.RoleId.truelover);
+        public static IntroDate TechnicianIntro = new IntroDate("Technician", RoleClass.Technician.color, 1, CustomRPC.RoleId.Technician);
         //イントロオブジェ
     }
 }

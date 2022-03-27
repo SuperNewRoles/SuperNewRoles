@@ -4,6 +4,7 @@ using Hazel;
 using InnerNet;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,15 @@ namespace SuperNewRoles.Mode.BattleRoyal
 {
     class main
     {
+        [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoExitVent))]
+        class CoExitVentPatch
+        {
+            public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
+            {
+                VentData[__instance.myPlayer.PlayerId] = null;
+                return true;
+            }
+        }
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoEnterVent))]
         class CoEnterVentPatch
         {
@@ -41,12 +51,19 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         return false;
                     } else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
-                        return CoEnterVent.Prefix(__instance,id);
+                        bool data = CoEnterVent.Prefix(__instance,id);
+                        if (data)
+                        {
+                            VentData[__instance.myPlayer.PlayerId] = id;
+                        }
+                        return data;
                     }
                 }
+                VentData[__instance.myPlayer.PlayerId] = id;
                 return true;
             }
         }
+        public static Dictionary<byte, int?> VentData;
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.RepairSystem))]
         class RepairSystemPatch
         {
@@ -71,6 +88,27 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     return returndata;
                 }
                 return true;
+            }
+            public static void Postfix(ShipStatus __instance,
+                [HarmonyArgument(0)] SystemTypes systemType,
+                [HarmonyArgument(1)] PlayerControl player,
+                [HarmonyArgument(2)] byte amount)
+            {
+                new LateTask(() =>
+                {
+                    if (!RoleHelpers.IsSabotage())
+                    {
+                        foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
+                        {
+                            SuperNewRolesPlugin.Logger.LogInfo("～～～～");
+                            SuperNewRolesPlugin.Logger.LogInfo("インベント:"+p.inVent);
+                            if (p.inVent && p.isAlive() && VentData.ContainsKey(p.PlayerId) && VentData[p.PlayerId] != null)
+                            {
+                                p.MyPhysics.RpcExitVent((int)VentData[p.PlayerId]);
+                            }
+                        }
+                    }
+                }, 0.1f, "TecExitVent");
             }
         }
         public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)

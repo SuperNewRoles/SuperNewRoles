@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -46,8 +47,16 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
         public class EvilGamblerMurder
         {
-            public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+            public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
+                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                {
+                    if (__instance.isRole(CustomRPC.RoleId.EvilGambler))
+                    {
+                        SyncSetting.GamblersetCool(__instance);
+                    }
+                    return;
+                }
                 if (__instance == PlayerControl.LocalPlayer && RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(__instance)) {
                     if (RoleClass.EvilGambler.GetSuc()) {
                         //成功

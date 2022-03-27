@@ -29,6 +29,7 @@ namespace SuperNewRoles.Roles
         {
             IsMeeting = false;
             IsStart = false;
+            Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
             SoothSayer.clearAndReload();
@@ -82,6 +83,7 @@ namespace SuperNewRoles.Roles
             Magaziner.ClearAndReload();
             Mayor.ClearAndReload();
             truelover.ClearAndReload();
+            Technician.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1016,6 +1018,15 @@ namespace SuperNewRoles.Roles
                 trueloverPlayer = new List<PlayerControl>();
                 IsCreate = false;
                 CreatePlayers = new List<int>();
+            }
+        }
+        public static class Technician
+        {
+            public static List<PlayerControl> TechnicianPlayer;
+            public static Color32 color = Color.blue;
+            public static void ClearAndReload()
+            {
+                TechnicianPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

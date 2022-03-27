@@ -373,6 +373,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.truelover):
                     Roles.RoleClass.truelover.trueloverPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Technician):
+                    Roles.RoleClass.Technician.TechnicianPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -547,6 +550,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.truelover):
                     Roles.RoleClass.truelover.trueloverPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Technician):
+                    Roles.RoleClass.Technician.TechnicianPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -628,6 +634,18 @@ namespace SuperNewRoles
                 RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) && Roles.RoleClass.Jackal.IsUseVent) return true;
             if (player.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsUseVent) return true;
             if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.UseVent) return true;
+            if (player.isRole(RoleId.Technician) && IsSabotage()) return true;
+            return false;
+        }
+        public static bool IsSabotage()
+        {
+            try
+            {
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                    if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles)
+                        return true;
+            }
+            catch { }
             return false;
         }
         public static bool IsUseSabo(this PlayerControl player)
@@ -938,6 +956,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.truelover.trueloverPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.truelover;
+            }
+            else if (Roles.RoleClass.Technician.TechnicianPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Technician;
             }
             //ロールチェック
             }

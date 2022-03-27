@@ -288,6 +288,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption trueloverOption;
         public static CustomOption trueloverPlayerCount;
 
+        public static CustomRoleOption TechnicianOption;
+        public static CustomOption TechnicianPlayerCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -595,6 +598,9 @@ namespace SuperNewRoles.CustomOption
 
             trueloverOption = new CustomRoleOption(239, "trueloverName", RoleClass.truelover.color, 1);
             trueloverPlayerCount = CustomOption.Create(240, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], trueloverOption);
+
+            TechnicianOption = new CustomRoleOption(244, "TechnicianName", RoleClass.Technician.color, 1);
+            TechnicianPlayerCount = CustomOption.Create(245, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TechnicianOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
