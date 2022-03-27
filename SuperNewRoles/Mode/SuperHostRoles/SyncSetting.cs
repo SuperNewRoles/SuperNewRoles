@@ -99,6 +99,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
         public class StartGame
         {
+            public static void Prefix()
+            {
+             //   BotHandler.CreateBot();
+            }
             public static void Postfix()
             {
                 if (!AmongUsClient.Instance.AmHost) return;

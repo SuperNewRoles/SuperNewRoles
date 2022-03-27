@@ -70,7 +70,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     SuperNewRolesPlugin.Logger.LogInfo(returndata);
                     return returndata;
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("OK");
                 return true;
             }
         }

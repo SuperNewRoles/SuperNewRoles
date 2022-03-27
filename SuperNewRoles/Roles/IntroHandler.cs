@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SuperNewRoles.Mode.SuperHostRoles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,8 @@ namespace SuperNewRoles.Roles
 {
     class IntroHandler
     {
-        public static void Handler() {
+        public static void Handler()
+        {
             float time = 2f;
             if (PlayerControl.GameOptions.KillCooldown >= 10)
             {

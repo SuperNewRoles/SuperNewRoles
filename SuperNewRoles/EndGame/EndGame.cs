@@ -14,6 +14,7 @@ using SuperNewRoles.Patch;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode.SuperHostRoles;
+using InnerNet;
 
 namespace SuperNewRoles.EndGame
 {
@@ -694,7 +695,7 @@ namespace SuperNewRoles.EndGame
     public class WrapUpClass {
 
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
-        { 
+        {
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             RoleClass.IsMeeting = false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
@@ -951,7 +952,7 @@ namespace SuperNewRoles.EndGame
                             {
                                 numImpostorsAlive++;
                             }
-                            else if (!playerInfo.Object.isNeutral())
+                            else if (!playerInfo.Object.isCrew())
                             {
                                 numCrewAlive++;
                             }

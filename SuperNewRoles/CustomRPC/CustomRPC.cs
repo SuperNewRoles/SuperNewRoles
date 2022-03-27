@@ -77,7 +77,7 @@ namespace SuperNewRoles.CustomRPC
 
     public enum CustomRPC
     {
-        TORVersionShare = 65,
+        //TORVersionShare = 65,
         ShareOptions = 144,
         ShareSNRVersion,
         SetRole,
@@ -500,7 +500,7 @@ namespace SuperNewRoles.CustomRPC
                     {
 
                     // Main Controls
-
+                    /*
                         case (byte)CustomRPC.TORVersionShare:
                          int majorTOR = reader.ReadPackedInt32();
                          int minorTOR = reader.ReadPackedInt32();
@@ -511,7 +511,7 @@ namespace SuperNewRoles.CustomRPC
                          revisionTOR = reader.ReadByte();
                          guidTOR = reader.ReadBytes(16);
                          RPCProcedure.TORVersionShare(majorTOR, minorTOR, patchTOR, revisionTOR == 0xFF ? -1 : revisionTOR, guidTOR, versionOwnerIdTOR);
-                        break;
+                        break;*/
                         case (byte)CustomRPC.ShareOptions:
                             RPCProcedure.ShareOptions((int)reader.ReadPackedUInt32(), reader);
                             break;

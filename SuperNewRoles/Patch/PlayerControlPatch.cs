@@ -51,7 +51,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (__instance.isRole(RoleId.Sheriff))
                 {
-                    if (!Sheriff.IsSheriffKill(target))
+                    if (!Sheriff.IsSheriffKill(target) || target.isRole(RoleId.Sheriff))
                     {
                         FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
                         __instance.RpcMurderPlayer(__instance);

@@ -95,6 +95,7 @@ WinName
 PlusModeSetting
 SettingNoSabotageMode
 SettingNoTaskWinMode
+SettingFixedSpawnMode
 DeviceOptionsSetting
 DeviceUseAdminSetting
 DeviceUseVitalOrDoorLogSetting

@@ -293,6 +293,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void Update()
         {
+            Vector3 tr = PlayerControl.LocalPlayer.transform.position;
+            //SuperNewRolesPlugin.Logger.LogInfo("x:"+tr.x+"f,"+tr.y+"f,"+tr.z+"f");
             if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff)) {
                 if (RoleClass.Sheriff.KillMaxCount >= 1)
                 {

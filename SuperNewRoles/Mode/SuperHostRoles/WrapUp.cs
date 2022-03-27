@@ -1,6 +1,7 @@
 ﻿using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;

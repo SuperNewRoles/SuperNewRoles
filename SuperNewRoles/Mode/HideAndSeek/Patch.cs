@@ -60,7 +60,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
                 {
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
-                        if (player.Data.Role.IsImpostor)
+                        if (player.isImpostor())
                         {
                             player.RpcSetName(ModHelpers.cs(Roles.RoleClass.ImpostorRed, player.Data.GetPlayerName(PlayerOutfitType.Default)));
                         }
