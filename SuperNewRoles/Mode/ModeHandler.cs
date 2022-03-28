@@ -171,13 +171,13 @@ namespace SuperNewRoles.Mode
             PlusMode.Options.Load();
         }
         public static void FixedUpdate(PlayerControl __instance) {
-            if (isMode(ModeId.Default)) return;
-            else if (isMode(ModeId.HideAndSeek)) {
-                HideAndSeek.Patch.HASFixed.Postfix(__instance);
-            }
-            else if (isMode(ModeId.SuperHostRoles))
+            if (isMode(ModeId.SuperHostRoles))
             {
                 SuperHostRoles.FixedUpdate.Update();
+            }
+            else if (isMode(ModeId.HideAndSeek))
+            {
+                HideAndSeek.Patch.HASFixed.Postfix(__instance);
             }
             else if (isMode(ModeId.BattleRoyal))
             {

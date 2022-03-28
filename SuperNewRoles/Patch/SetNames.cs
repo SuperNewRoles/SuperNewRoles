@@ -325,8 +325,6 @@ namespace SuperNewRoles.Patch
                         SetNamesClass.SetPlayerRoleNames(p);
                     }
                 }
-                SetNamesClass.QuarreledSet();
-                SetNamesClass.LoversSet();
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sidekick)) {
                     foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer) {
                         if (p != PlayerControl.LocalPlayer) {
@@ -351,6 +349,8 @@ namespace SuperNewRoles.Patch
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }
+            SetNamesClass.QuarreledSet();
+            SetNamesClass.LoversSet();
         }
         
     }

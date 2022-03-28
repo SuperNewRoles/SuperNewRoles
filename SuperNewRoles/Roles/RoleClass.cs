@@ -29,6 +29,7 @@ namespace SuperNewRoles.Roles
         {
             IsMeeting = false;
             IsStart = false;
+            Madmate.CheckedImpostor = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();

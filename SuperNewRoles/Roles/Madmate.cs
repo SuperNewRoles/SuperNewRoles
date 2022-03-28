@@ -9,10 +9,12 @@ namespace SuperNewRoles.Roles
 {
     class Madmate
     {
+        public static List<byte> CheckedImpostor;
         public static bool CheckImpostor(PlayerControl p)
         {
             if (!RoleClass.MadMate.IsImpostorCheck) return false;
             if (!p.isRole(RoleId.MadMate)) return false;
+            if (CheckedImpostor.Contains(p.PlayerId)) return true;
             /*
             SuperNewRolesPlugin.Logger.LogInfo("インポスターチェックタスク量:"+RoleClass.MadMate.ImpostorCheckTask);
             SuperNewRolesPlugin.Logger.LogInfo("終了タスク量:"+TaskCount.TaskDate(p.Data).Item1);*/

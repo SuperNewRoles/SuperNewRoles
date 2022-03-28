@@ -84,7 +84,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 if (ModeHandler.isMode(ModeId.SuperHostRoles) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors))
                 {
                     bool returndata = MorePatch.RepairSystem(__instance, systemType, player, amount);
-                    SuperNewRolesPlugin.Logger.LogInfo(returndata);
                     return returndata;
                 }
                 return true;

@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -90,6 +91,7 @@ namespace SuperNewRoles.Roles
             public static void Postfix(PlayerPhysics __instance)
             {
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+                if (!ModeHandler.isMode(ModeId.Default)) return;
                 if (__instance.myPlayer.isRole(CustomRPC.RoleId.EvilScientist) || __instance.myPlayer.isRole(CustomRPC.RoleId.NiceScientist))
                 {
                     var Scientist = __instance.myPlayer;

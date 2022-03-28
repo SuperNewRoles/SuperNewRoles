@@ -7,6 +7,7 @@ using UnityEngine;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
 using System.Linq;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
 {
@@ -62,13 +63,16 @@ namespace SuperNewRoles.Roles
             public static void Postfix(PlayerPhysics __instance)
             {
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-                if (__instance.AmOwner && RoleClass.SpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
+                if (ModeHandler.isMode(ModeId.Default))
                 {
-                    __instance.body.velocity = __instance.body.velocity * RoleClass.SpeedBooster.Speed;
-                }
-                else if (__instance.AmOwner && RoleClass.EvilSpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.EvilSpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
-                {
-                    __instance.body.velocity = __instance.body.velocity * RoleClass.EvilSpeedBooster.Speed;
+                    if (__instance.AmOwner && RoleClass.SpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
+                    {
+                        __instance.body.velocity = __instance.body.velocity * RoleClass.SpeedBooster.Speed;
+                    }
+                    else if (__instance.AmOwner && RoleClass.EvilSpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.EvilSpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
+                    {
+                        __instance.body.velocity = __instance.body.velocity * RoleClass.EvilSpeedBooster.Speed;
+                    }
                 }
             }
         }

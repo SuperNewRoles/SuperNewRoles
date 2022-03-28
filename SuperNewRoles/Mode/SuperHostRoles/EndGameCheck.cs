@@ -1,6 +1,7 @@
 ﻿
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
@@ -17,8 +18,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
+            if (CheckAndEndGameForDefaultWin(__instance)) return false;
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
@@ -147,29 +147,57 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             return false;
         }
 
-        public static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
+        public static bool CheckAndEndGameForDefaultWin(ShipStatus __instance)
         {
-            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamImpostorsAlive != 0)//&& Chat.WinCond == null)
+            int num1 = 0;
+            int num2 = 0;
+            int num3 = 0;
+            for (int index = 0; index < GameData.Instance.PlayerCount; ++index)
             {
-                GameOverReason endReason;
-                switch (TempData.LastDeathReason)
+                GameData.PlayerInfo allPlayer = GameData.Instance.AllPlayers[index];
+                if (!allPlayer.Disconnected)
                 {
-                    case DeathReason.Exile:
-                        endReason = GameOverReason.ImpostorByVote;
-                        break;
-                    case DeathReason.Kill:
-                        endReason = GameOverReason.ImpostorByKill;
-                        break;
-                    default:
-                        endReason = GameOverReason.ImpostorByVote;
-                        break;
+                    if (allPlayer.Object.isImpostor() || allPlayer.Object.isRole(RoleId.Egoist))
+                        ++num3;
+                    if (!allPlayer.IsDead)
+                    {
+                        if (allPlayer.Object.isImpostor())
+                            ++num2;
+                        else
+                            ++num1;
+                    }
                 }
-                Chat.WinCond = CustomGameOverReason.ImpostorWin;
-                CustomEndGame(__instance, endReason, false);
-                return true;
+            }
+            if (num2 <= 0 && (!DestroyableSingleton<TutorialManager>.InstanceExists || num3 > 0))
+            {
+                __instance.BeginCalled = false;
+                CustomEndGame(__instance,GameOverReason.HumansByVote, !SaveManager.BoughtNoAds);
+            }
+            else if (num1 <= num2)
+            {
+                if (!DestroyableSingleton<TutorialManager>.InstanceExists)
+                {
+                    __instance.BeginCalled = false;
+                    GameOverReason endReason;
+                    switch (TempData.LastDeathReason)
+                    {
+                        case DeathReason.Exile:
+                            endReason = GameOverReason.ImpostorByVote;
+                            break;
+                        case DeathReason.Kill:
+                            endReason = GameOverReason.ImpostorByKill;
+                            break;
+                        default:
+                            endReason = GameOverReason.ImpostorByVote;
+                            break;
+                    }
+                    CustomEndGame(__instance,endReason, !SaveManager.BoughtNoAds);
+                    return true;
+                }
             }
             return false;
         }
+            
 
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {

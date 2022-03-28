@@ -535,11 +535,15 @@ namespace SuperNewRoles.EndGame
             foreach (PlayerControl p in RoleClass.God.GodPlayer) {
                 if (p.isAlive())
                 {
-                    godalive = true;
-                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
-                    TempData.winners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.GodWin;
+                    var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                    if (!RoleClass.God.IsTaskEndWin || complate >= all)
+                    {
+                        godalive = true;
+                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                        TempData.winners.Add(wpd);
+                        AdditionalTempData.winCondition = WinCondition.GodWin;
+                    }
                 }
             }
 

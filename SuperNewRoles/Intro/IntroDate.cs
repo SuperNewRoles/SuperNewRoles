@@ -11,6 +11,7 @@ namespace SuperNewRoles.Intro
     public class IntroDate
     {
         public string NameKey;
+        public string Name;
         public Int16 TitleNum;
         public string TitleDesc;
         public Color color;
@@ -20,6 +21,7 @@ namespace SuperNewRoles.Intro
         {
             this.color = color;
             this.NameKey = NameKey;
+            this.Name = ModTranslation.getString(NameKey+"Name");
             this.RoleId = RoleId;
             this.TitleNum = TitleNum;
             this.TitleDesc = Intro.IntroDate.GetTitle(NameKey, TitleNum);

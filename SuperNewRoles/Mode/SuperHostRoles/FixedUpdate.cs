@@ -58,67 +58,31 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!AmongUsClient.Instance.AmHost) return;
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             bool commsActive = false;
-            foreach (PlayerTask t in PlayerControl.LocalPlayer.myTasks)
+            if (RoleClass.Technician.TechnicianPlayer.Count != 0)
             {
-                if (t.TaskType == TaskTypes.FixComms)
+                foreach (PlayerTask t in PlayerControl.LocalPlayer.myTasks)
                 {
-                    commsActive = true;
-                    break;
+                    if (t.TaskType == TaskTypes.FixComms)
+                    {
+                        commsActive = true;
+                        break;
+                    }
                 }
             }
+            List<PlayerControl> DiePlayers = new List<PlayerControl>();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (!p.Data.Disconnected && p.PlayerId != 0)
                 {
                     if (p.isDead() || p.isRole(RoleId.God))
                     {
-                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                        {
-                            string Suffix = "";
-                            if (p2.IsLovers())
-                            {
-                                Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
-                            }
-                            if (p2.isRole(RoleId.Sheriff))
-                            {
-                                if (RoleClass.Sheriff.KillCount.ContainsKey(p2.PlayerId))
-                                {
-                                    Suffix += "(残り" + RoleClass.Sheriff.KillCount[p2.PlayerId] + "発)";
-                                }
-                            }
-                            var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
-                            string TaskText = "";
-                            if (!p2.isImpostor())
-                            {
-                                try
-                                {
-                                    if (commsActive)
-                                    {
-                                        var all = TaskCount.TaskDateNoClearCheck(p2.Data).Item2;
-                                        TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
-                                    }
-                                    else
-                                    {
-                                        var (complate, all) = TaskCount.TaskDateNoClearCheck(p2.Data);
-                                        TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
-                                    }
-                                }
-                                catch { }
-                            }
-                            if (p2.isDead() && !RoleClass.IsMeeting)
-                            {
-                                p2.RpcSetNamePrivate("(<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
-                            } else
-                            {
-                                p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
-                            }
-                        }
+                        DiePlayers.Add(p);
                     }
                     else if (p.isAlive())
                     {
                         bool IsMadmateCheck = Madmate.CheckImpostor(p);
-//                        SuperNewRolesPlugin.Logger.LogInfo("マッドメイトがチェックできるか:"+IsMadmateCheck);
-                        if (IsMadmateCheck)
+                        //  SuperNewRolesPlugin.Logger.LogInfo("マッドメイトがチェックできるか:"+IsMadmateCheck);
+                        if (IsMadmateCheck && !Madmate.CheckedImpostor.Contains(p.PlayerId))
                         {
                             foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                             {
@@ -131,15 +95,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                     p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed,p2.getDefaultName()), p);
                                 }
                             }
-                        } else
-                        {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (p.PlayerId != p2.PlayerId && !p2.Data.Disconnected)
-                                {
-                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
-                                }
-                            }
+                            Madmate.CheckedImpostor.Add(p.PlayerId);
                         }
                         string Suffix = "";
                         if (p.IsLovers())
@@ -182,7 +138,51 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
                             }
                         }
-                        p.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + TaskText +"</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()+Suffix), p);
+                        p.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText +"</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()+Suffix), p);
+                    }
+                }
+            }
+            if (DiePlayers.Count >= 1)
+            {
+                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                {
+                    string Suffix = "";
+                    if (p2.IsLovers())
+                    {
+                        Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                    }
+                    if (p2.isRole(RoleId.Sheriff))
+                    {
+                        if (RoleClass.Sheriff.KillCount.ContainsKey(p2.PlayerId))
+                        {
+                            Suffix += "(残り" + RoleClass.Sheriff.KillCount[p2.PlayerId] + "発)";
+                        }
+                    }
+                    var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
+                    string TaskText = "";
+                    if (!p2.isImpostor())
+                    {
+                        if (commsActive)
+                        {
+                            var all = TaskCount.TaskDate(p2.Data).Item2;
+                            TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
+                        }
+                        else
+                        {
+                            var (complate, all) = TaskCount.TaskDate(p2.Data);
+                            TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                        }
+                    }
+                    foreach (PlayerControl p in DiePlayers)
+                    {
+                        if (p2.isDead() && !RoleClass.IsMeeting)
+                        {
+                            p2.RpcSetNamePrivate("(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
+                        }
+                        else
+                        {
+                            p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
+                        }
                     }
                 }
             }
@@ -229,7 +229,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                         TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
                                     }
                                 }
-                                p2.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + TaskText + ")</size>" + ModHelpers.cs(introdate.color, p2.getDefaultName())+Suffix,p);
+                                p2.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + ")</size>" + ModHelpers.cs(introdate.color, p2.getDefaultName())+Suffix,p);
                             }
                         }
                     } else if (p.isAlive())
@@ -286,14 +286,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
                             }
                         }
-                        p.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, ModTranslation.getString(introdate.NameKey + "Name")) + TaskText + ")</size>" + ModHelpers.cs(introdate.color, p.getDefaultName())+Suffix);
+                        p.RpcSetNamePrivate("<size=50%>(" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + ")</size>" + ModHelpers.cs(introdate.color, p.getDefaultName())+Suffix);
                     }
                 }
             }
         }
         public static void Update()
         {
-            Vector3 tr = PlayerControl.LocalPlayer.transform.position;
+            //Vector3 tr = PlayerControl.LocalPlayer.transform.position;
             //SuperNewRolesPlugin.Logger.LogInfo("x:"+tr.x+"f,"+tr.y+"f,"+tr.z+"f");
             if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff)) {
                 if (RoleClass.Sheriff.KillMaxCount >= 1)
@@ -318,7 +318,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     BlockTool.FixedUpdate();
                     if (UpdateDate <= 0)
                     {
-                        UpdateDate = 10; 
+                        UpdateDate = 20; 
                         if (RoleClass.IsMeeting)
                         {
                             SetDefaultNames();

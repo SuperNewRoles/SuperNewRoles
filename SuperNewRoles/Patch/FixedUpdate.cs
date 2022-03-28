@@ -23,7 +23,7 @@ namespace SuperNewRoles.Patch
     public class AbilityUpdate { 
         public static void Postfix(AbilityButton __instance)
         {
-            __instance.commsDown.SetActive(false);
+            if (!ModeHandler.IsBlockVanilaRole()) __instance.commsDown.SetActive(false);
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
@@ -38,15 +38,21 @@ namespace SuperNewRoles.Patch
             }
         }
 
-        static bool ProDown = false;
+        private static bool ProDown = false;
         public static bool IsProDown;
 
         public static void Postfix(PlayerControl __instance)
         {
             if (__instance == PlayerControl.LocalPlayer)
             {
-                ProDown = !ProDown;
-                if (IsProDown && ProDown) return;
+                if (IsProDown)
+                {
+                    ProDown = !ProDown;
+                    if (ProDown)
+                    {
+                        return;
+                    }
+                }
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                 {
                     setBasePlayerOutlines();
@@ -57,11 +63,11 @@ namespace SuperNewRoles.Patch
                         ShipStatus.Instance.enabled = false;
                         ShipStatus.RpcEndGame(GameOverReason.HumansByTask,false);
                     }
-                    if (ModeHandler.isMode(ModeId.NotImpostorCheck))
+                    else if (ModeHandler.isMode(ModeId.NotImpostorCheck))
                     {
                         Mode.NotImpostorCheck.NameSet.Postfix();
                     }
-                    if (ModeHandler.isMode(ModeId.Default))
+                    else if (ModeHandler.isMode(ModeId.Default))
                     {
                         SetNameUpdate.Postfix(__instance);
                         Jackal.JackalFixedPatch.Postfix(__instance);
