@@ -36,6 +36,10 @@ namespace SuperNewRoles.Patches
             {
                 return true;
             }
+            if (target.isRole(RoleId.StuntMan))
+            {
+                target.RpcProtectPlayer(target,0);
+            }
             if (ModeHandler.isMode(ModeId.Detective) && target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {

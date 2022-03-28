@@ -23,9 +23,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                     if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                     {
                         RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
+                        __instance.CmdReportDeadBody(target.Data);
+                        /*
                         MeetingRoomManager.Instance.AssignSelf(__instance, target.Data);
                         DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                         __instance.RpcStartMeeting(target.Data);
+                        */
                     }
                 }, CustomOptions.BaitReportTime.getFloat(), "ReportBaitBody");
             }

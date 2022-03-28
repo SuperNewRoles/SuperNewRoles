@@ -10,7 +10,7 @@ using System.Text;
 namespace SuperNewRoles.Roles
 {
     class StuntMan_Patch
-    {
+    {/*
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
         class StuntManMurderPatch
         {
@@ -43,6 +43,6 @@ namespace SuperNewRoles.Roles
             }
         }
         
-    }
+    */}
 
 }
