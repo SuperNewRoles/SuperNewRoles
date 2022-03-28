@@ -291,7 +291,7 @@ namespace SuperNewRoles.Patch
             } else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.God) ){
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    if (player.isAlive())
+                    if (RoleClass.IsMeeting || player.isAlive())
                     {
                         SetNamesClass.SetPlayerNameColors(player);
                         SetNamesClass.SetPlayerRoleNames(player);

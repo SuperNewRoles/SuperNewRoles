@@ -1,6 +1,8 @@
-﻿using SuperNewRoles.Roles;
+﻿using SuperNewRoles.Patch;
+using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -19,13 +21,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             };
 
             //死体レポートのみで起こる処理
-
+            DeadPlayer deadPlayer;
+            deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == PlayerControl.LocalPlayer.PlayerId)?.FirstOrDefault();
             if (__instance.isRole(CustomRPC.RoleId.Minimalist))
             {
                 var a = RoleClass.Minimalist.UseReport;
                 return a;
             }
-            if (target.Object.isRole(CustomRPC.RoleId.Bait) && !RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) return false;
+            if (target.Object.isRole(CustomRPC.RoleId.Bait) && (!deadPlayer.killerIfExisting.isRole(CustomRPC.RoleId.Minimalist) || RoleClass.Minimalist.UseReport)) return false;
             return true;
         }
     }

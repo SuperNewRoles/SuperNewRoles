@@ -378,8 +378,10 @@ namespace SuperNewRoles.Patch
             }
             catch (Exception ex)
             {
+                SuperNewRolesPlugin.Logger.LogInfo("エラー:"+ex);
                 throw;
             }
+            return false;
         }
         public static bool isMayor(byte id)
         {/*

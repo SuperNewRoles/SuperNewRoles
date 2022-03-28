@@ -41,46 +41,51 @@ namespace SuperNewRoles.Patches
             {
                 if (__instance.isRole(RoleId.truelover))
                 {
-                    if (target == null || target.IsLovers() || RoleClass.truelover.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                    RoleClass.truelover.CreatePlayers.Add(__instance.PlayerId);
-                    RoleHelpers.SetLovers(__instance, target);
-                    RoleHelpers.SetLoversRPC(__instance, target);
-                    __instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
-                    Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                    if (!__instance.IsLovers())
+                    {
+                        if (target == null || target.IsLovers() || RoleClass.truelover.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                        RoleClass.truelover.CreatePlayers.Add(__instance.PlayerId);
+                        RoleHelpers.SetLovers(__instance, target);
+                        RoleHelpers.SetLoversRPC(__instance, target);
+                        //__instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                    }
                     return false;
                 }
                 if (__instance.isRole(RoleId.Sheriff))
                 {
-                    if (!Sheriff.IsSheriffKill(target) || target.isRole(RoleId.Sheriff))
+                    if (!RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.Sheriff.KillCount[__instance.PlayerId] >= 1)
                     {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
-                        __instance.RpcMurderPlayer(__instance);
-                        return false;
-                    } else
-                    {
-                        FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
-                        if (RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId))
+                        if (!Sheriff.IsSheriffKill(target) || target.isRole(RoleId.Sheriff))
                         {
-                            RoleClass.Sheriff.KillCount[__instance.PlayerId]--;
-                        } else
-                        {
-                            RoleClass.Sheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.SheriffKillMaxCount.getFloat()-1;
+                            FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
+                            __instance.RpcMurderPlayer(__instance);
+                            return false;
                         }
-                        if (RoleClass.Sheriff.KillCount[__instance.PlayerId] <= 0)
+                        else
                         {
-                            __instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+                            FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
+                            if (RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId))
+                            {
+                                RoleClass.Sheriff.KillCount[__instance.PlayerId]--;
+                            }
+                            else
+                            {
+                                RoleClass.Sheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.SheriffKillMaxCount.getFloat() - 1;
+                            }
                         }
                     }
+                    return false;
                 }
             }
             if (!ModeHandler.isMode(ModeId.Default))
             {
                 __instance.RpcMurderPlayer(target);
+                return false;
             } else
             {
                 return true;
             }
-            return false;
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]

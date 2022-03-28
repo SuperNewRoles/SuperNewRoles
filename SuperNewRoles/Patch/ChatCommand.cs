@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -49,11 +50,15 @@ namespace SuperNewRoles.Patch
                                 }
                             }
                         }
+                    } else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    {
+                        handled = Mode.SuperHostRoles.RoleChat.SendChat(__instance);
                     }
                 }
                 if (handled)
                 {
                     __instance.TextArea.Clear();
+                    HudManager.Instance.Chat.TimeSinceLastMessage = 0f;
                     __instance.quickChatMenu.ResetGlyphs();
                 }
                 return !handled;
