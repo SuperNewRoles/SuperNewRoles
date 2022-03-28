@@ -74,8 +74,10 @@ namespace SuperNewRoles.Patches
                                 RoleClass.Sheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.SheriffKillMaxCount.getFloat() - 1;
                             }
                         }
+                    } else
+                    {
+                        return false;
                     }
-                    return false;
                 }
             }
             if (!ModeHandler.isMode(ModeId.Default))
