@@ -38,7 +38,22 @@ namespace SuperNewRoles.Patches
             }
             if (target.isRole(RoleId.StuntMan))
             {
-                target.RpcProtectPlayer(target,0);
+                if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
+                {
+                    if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
+                    {
+                        RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
+                        target.RpcProtectPlayer(target, 0);
+                    }
+                    else
+                    {
+                        if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
+                        {
+                            RoleClass.StuntMan.GuardCount[target.PlayerId]--;
+                            target.RpcProtectPlayer(target, 0);
+                        }
+                    }
+                }
             }
             if (ModeHandler.isMode(ModeId.Detective) && target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles))

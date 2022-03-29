@@ -136,9 +136,10 @@ namespace SuperNewRoles
         public static bool hidePlayerName(PlayerControl source, PlayerControl target)
         {
             if (source == null || target == null) return true;
-            else if (source == target) return false; // Player sees his own name
-            else if (source.Data.Role.IsImpostor && (target.Data.Role.IsImpostor)) return false;
-            else if ((source.isRole(RoleId.NiceScientist) || source.isRole(RoleId.EvilScientist)) && RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(source.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[source.PlayerId]) return true;
+            else if (source.isDead() || source.isRole(RoleId.God)) return false;
+            else if (source.PlayerId == target.PlayerId) return false; // Player sees his own name
+            else if (source.isImpostor() && target.isImpostor()) return false;
+            else if ((target.isRole(RoleId.NiceScientist) || target.isRole(RoleId.EvilScientist))  && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[target.PlayerId]) return true;
             return true;
         }
         public static Sprite loadSpriteFromResources(string path, float pixelsPerUnit)

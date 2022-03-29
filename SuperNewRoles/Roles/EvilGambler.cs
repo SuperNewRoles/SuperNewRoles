@@ -57,7 +57,7 @@ namespace SuperNewRoles.Roles
                     }
                     return;
                 }
-                if (__instance == PlayerControl.LocalPlayer && RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(__instance)) {
+                else if (__instance == PlayerControl.LocalPlayer && RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(__instance)) {
                     if (RoleClass.EvilGambler.GetSuc()) {
                         //成功
                         PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);

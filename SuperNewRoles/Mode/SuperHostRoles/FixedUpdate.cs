@@ -53,6 +53,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
         }*/
+        private static int a = 0;
         public static void SetRoleNames()
         {
             if (!AmongUsClient.Instance.AmHost) return;
@@ -70,6 +71,24 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
             List<PlayerControl> DiePlayers = new List<PlayerControl>();
+            a--;
+            if (a <= 0)
+            {
+                a = 10;
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (!p.Data.Disconnected && p.isAlive())
+                    {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        {
+                            if (!p2.Data.Disconnected && p.PlayerId != p2.PlayerId)
+                            {
+                                p2.RpcSetNamePrivate(p2.getDefaultName(),p);
+                            }
+                        }
+                    }
+                }
+            }
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (!p.Data.Disconnected && p.PlayerId != 0)
@@ -186,7 +205,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-        }
+        }/*
         public static void AllMeetingText()
         {
             if (!AmongUsClient.Instance.AmHost) return;
@@ -290,7 +309,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-        }
+        }*/
         public static void Update()
         {
             //Vector3 tr = PlayerControl.LocalPlayer.transform.position;

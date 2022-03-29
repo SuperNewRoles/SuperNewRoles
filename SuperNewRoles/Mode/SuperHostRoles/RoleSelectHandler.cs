@@ -48,14 +48,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         if (p.PlayerId != SheriffPlayer.PlayerId)
                         {
-                            p.RpcSetRoleDesync(RoleTypes.Scientist, SheriffPlayer);
                             SheriffPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, SheriffPlayer);
                         }
                     }
                 } else
                 {
                     SheriffPlayer.RpcSetRole(RoleTypes.Crewmate);
                 }
+                //SheriffPlayer.Data.IsDead = true;
             }
             foreach (PlayerControl trueloverPlayer in RoleClass.truelover.trueloverPlayer)
             {
@@ -66,6 +67,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         if (p.PlayerId != trueloverPlayer.PlayerId)
                         {
+                            trueloverPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
                             p.RpcSetRoleDesync(RoleTypes.Scientist, trueloverPlayer);
                         }
                     }
@@ -74,6 +76,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     trueloverPlayer.RpcSetRole(RoleTypes.Crewmate);
                 }
+                //trueloverPlayer.Data.IsDead = true;
             }
             if (RoleClass.Jester.IsUseVent)
             {
@@ -99,13 +102,20 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (!p.IsMod())
                 {
-                    p.RpcSetRoleDesync(RoleTypes.Impostor);
+                    p.RpcSetRole(RoleTypes.Impostor);
                     foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                     {
-                        p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                        p.RpcSetRoleDesync(RoleTypes.Impostor, p2);
+                        if (p2.PlayerId != p.PlayerId)
+                        {
+                            p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                        }
                     }
+                } else
+                {
+                    p.RpcSetRoleDesync(RoleTypes.Crewmate);
+                    p.RpcSetRole(RoleTypes.Impostor);
                 }
+                //p.Data.IsDead = true;
             }
             foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
             {
@@ -114,6 +124,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     p.RpcSetRoleDesync(RoleTypes.Engineer);
                 }
             }
+            /*
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                p.Data.IsDead = false;
+            }
+            */
         }
         public static void CrewOrImpostorSet()
         {

@@ -120,4 +120,8 @@ C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\SuperNewRoles.pdb
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.pdb
-C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\SemVer.dll
+C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Cpp2IL.Core.dll
+C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\IndexRange.dll
+C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\LibCpp2IL.dll
+C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\SemanticVersioning.dll
+C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\WasmDisassembler.dll

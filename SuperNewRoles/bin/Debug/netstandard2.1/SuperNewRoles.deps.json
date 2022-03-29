@@ -9,16 +9,17 @@
     ".NETStandard,Version=v2.1/": {
       "SuperNewRoles/1.2.3.0": {
         "dependencies": {
-          "0Harmony": "2.4.2.0",
+          "0Harmony": "2.9.0.0",
           "AppleAuth": "3.7.1.6",
           "Assembly-CSharp-firstpass": "3.7.1.6",
           "Assembly-CSharp": "3.7.1.6",
-          "AssemblyUnhollower": "0.4.15.3",
-          "BepInEx.Core": "6.0.0.23",
-          "BepInEx.IL2CPP": "6.0.0.23",
-          "BepInEx.Preloader.Core": "6.0.0.23",
+          "AssemblyUnhollower": "0.4.23.0",
+          "BepInEx.Core": "6.0.0.552",
+          "BepInEx.IL2CPP": "6.0.0.552",
+          "BepInEx.Preloader.Core": "6.0.0.552",
+          "Cpp2IL.Core": "2022.0.1.0",
           "Hazel": "3.7.1.6",
-          "Iced": "1.11.0.0",
+          "Iced": "1.17.0.0",
           "Il2Cpp.TlsAdapter": "1.0.1.0",
           "Il2CppDumper": "6.6.4.0",
           "Il2CppMono.Security": "3.7.1.6",
@@ -32,20 +33,22 @@
           "Il2CppSystem.Runtime.Serialization": "3.7.1.6",
           "Il2CppSystem.Xml": "3.7.1.6",
           "Il2CppSystem.Xml.Linq": "3.7.1.6",
+          "IndexRange": "1.0.0.0",
           "IngameDebugConsole.Runtime": "3.7.1.6",
-          "Mono.Cecil": "0.11.3.0",
-          "Mono.Cecil.Mdb": "0.11.3.0",
-          "Mono.Cecil.Pdb": "0.11.3.0",
-          "Mono.Cecil.Rocks": "0.11.3.0",
-          "MonoMod.RuntimeDetour": "21.4.21.3",
-          "MonoMod.Utils": "21.4.21.3",
+          "LibCpp2IL": "2022.0.1.0",
+          "Mono.Cecil": "0.11.4.0",
+          "Mono.Cecil.Mdb": "0.11.4.0",
+          "Mono.Cecil.Pdb": "0.11.4.0",
+          "Mono.Cecil.Rocks": "0.11.4.0",
+          "MonoMod.RuntimeDetour": "22.1.29.1",
+          "MonoMod.Utils": "22.1.29.1",
           "Newtonsoft.Json": "3.7.1.6",
           "QRCoder": "3.7.1.6",
           "Rewired_Core": "3.7.1.6",
           "Rewired_Windows": "3.7.1.6",
-          "SemVer": "1.3.0.0",
-          "UnhollowerBaseLib": "0.4.15.3",
-          "UnhollowerRuntimeLib": "0.4.15.2",
+          "SemanticVersioning": "2.0.0.0",
+          "UnhollowerBaseLib": "0.4.23.0",
+          "UnhollowerRuntimeLib": "0.4.23.0",
           "Unity.Addressables": "3.7.1.6",
           "Unity.Analytics.DataPrivacy": "3.7.1.6",
           "Unity.ResourceManager": "3.7.1.6",
@@ -117,17 +120,18 @@
           "UnityEngine.VirtualTexturingModule": "0.0.0.0",
           "UnityEngine.VRModule": "3.7.1.6",
           "UnityEngine.WindModule": "0.0.0.0",
-          "UnityEngine.XRModule": "3.7.1.6"
+          "UnityEngine.XRModule": "3.7.1.6",
+          "WasmDisassembler": "2022.0.0.0"
         },
         "runtime": {
           "SuperNewRoles.dll": {}
         }
       },
-      "0Harmony/2.4.2.0": {
+      "0Harmony/2.9.0.0": {
         "runtime": {
           "0Harmony.dll": {
-            "assemblyVersion": "2.4.2.0",
-            "fileVersion": "2.4.2.0"
+            "assemblyVersion": "2.9.0.0",
+            "fileVersion": "2.9.0.0"
           }
         }
       },
@@ -155,35 +159,43 @@
           }
         }
       },
-      "AssemblyUnhollower/0.4.15.3": {
+      "AssemblyUnhollower/0.4.23.0": {
         "runtime": {
           "AssemblyUnhollower.dll": {
-            "assemblyVersion": "0.4.15.3",
-            "fileVersion": "0.4.15.3"
+            "assemblyVersion": "0.4.23.0",
+            "fileVersion": "0.4.23.0"
           }
         }
       },
-      "BepInEx.Core/6.0.0.23": {
+      "BepInEx.Core/6.0.0.552": {
         "runtime": {
           "BepInEx.Core.dll": {
-            "assemblyVersion": "6.0.0.23",
-            "fileVersion": "6.0.0.23"
+            "assemblyVersion": "6.0.0.552",
+            "fileVersion": "6.0.0.552"
           }
         }
       },
-      "BepInEx.IL2CPP/6.0.0.23": {
+      "BepInEx.IL2CPP/6.0.0.552": {
         "runtime": {
           "BepInEx.IL2CPP.dll": {
-            "assemblyVersion": "6.0.0.23",
-            "fileVersion": "6.0.0.23"
+            "assemblyVersion": "6.0.0.552",
+            "fileVersion": "6.0.0.552"
           }
         }
       },
-      "BepInEx.Preloader.Core/6.0.0.23": {
+      "BepInEx.Preloader.Core/6.0.0.552": {
         "runtime": {
           "BepInEx.Preloader.Core.dll": {
-            "assemblyVersion": "6.0.0.23",
-            "fileVersion": "6.0.0.23"
+            "assemblyVersion": "6.0.0.552",
+            "fileVersion": "6.0.0.552"
+          }
+        }
+      },
+      "Cpp2IL.Core/2022.0.1.0": {
+        "runtime": {
+          "Cpp2IL.Core.dll": {
+            "assemblyVersion": "2022.0.1.0",
+            "fileVersion": "2022.0.1.0"
           }
         }
       },
@@ -195,11 +207,11 @@
           }
         }
       },
-      "Iced/1.11.0.0": {
+      "Iced/1.17.0.0": {
         "runtime": {
           "Iced.dll": {
-            "assemblyVersion": "1.11.0.0",
-            "fileVersion": "1.11.0.0"
+            "assemblyVersion": "1.17.0.0",
+            "fileVersion": "1.17.0.0"
           }
         }
       },
@@ -307,6 +319,14 @@
           }
         }
       },
+      "IndexRange/1.0.0.0": {
+        "runtime": {
+          "IndexRange.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "IngameDebugConsole.Runtime/3.7.1.6": {
         "runtime": {
           "IngameDebugConsole.Runtime.dll": {
@@ -315,51 +335,59 @@
           }
         }
       },
-      "Mono.Cecil/0.11.3.0": {
+      "LibCpp2IL/2022.0.1.0": {
+        "runtime": {
+          "LibCpp2IL.dll": {
+            "assemblyVersion": "2022.0.1.0",
+            "fileVersion": "2022.0.1.0"
+          }
+        }
+      },
+      "Mono.Cecil/0.11.4.0": {
         "runtime": {
           "Mono.Cecil.dll": {
-            "assemblyVersion": "0.11.3.0",
-            "fileVersion": "0.11.3.0"
+            "assemblyVersion": "0.11.4.0",
+            "fileVersion": "0.11.4.0"
           }
         }
       },
-      "Mono.Cecil.Mdb/0.11.3.0": {
+      "Mono.Cecil.Mdb/0.11.4.0": {
         "runtime": {
           "Mono.Cecil.Mdb.dll": {
-            "assemblyVersion": "0.11.3.0",
-            "fileVersion": "0.11.3.0"
+            "assemblyVersion": "0.11.4.0",
+            "fileVersion": "0.11.4.0"
           }
         }
       },
-      "Mono.Cecil.Pdb/0.11.3.0": {
+      "Mono.Cecil.Pdb/0.11.4.0": {
         "runtime": {
           "Mono.Cecil.Pdb.dll": {
-            "assemblyVersion": "0.11.3.0",
-            "fileVersion": "0.11.3.0"
+            "assemblyVersion": "0.11.4.0",
+            "fileVersion": "0.11.4.0"
           }
         }
       },
-      "Mono.Cecil.Rocks/0.11.3.0": {
+      "Mono.Cecil.Rocks/0.11.4.0": {
         "runtime": {
           "Mono.Cecil.Rocks.dll": {
-            "assemblyVersion": "0.11.3.0",
-            "fileVersion": "0.11.3.0"
+            "assemblyVersion": "0.11.4.0",
+            "fileVersion": "0.11.4.0"
           }
         }
       },
-      "MonoMod.RuntimeDetour/21.4.21.3": {
+      "MonoMod.RuntimeDetour/22.1.29.1": {
         "runtime": {
           "MonoMod.RuntimeDetour.dll": {
-            "assemblyVersion": "21.4.21.3",
-            "fileVersion": "21.4.21.3"
+            "assemblyVersion": "22.1.29.1",
+            "fileVersion": "22.1.29.1"
           }
         }
       },
-      "MonoMod.Utils/21.4.21.3": {
+      "MonoMod.Utils/22.1.29.1": {
         "runtime": {
           "MonoMod.Utils.dll": {
-            "assemblyVersion": "21.4.21.3",
-            "fileVersion": "21.4.21.3"
+            "assemblyVersion": "22.1.29.1",
+            "fileVersion": "22.1.29.1"
           }
         }
       },
@@ -395,27 +423,27 @@
           }
         }
       },
-      "SemVer/1.3.0.0": {
+      "SemanticVersioning/2.0.0.0": {
         "runtime": {
-          "SemVer.dll": {
-            "assemblyVersion": "1.3.0.0",
-            "fileVersion": "1.3.0.0"
+          "SemanticVersioning.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
           }
         }
       },
-      "UnhollowerBaseLib/0.4.15.3": {
+      "UnhollowerBaseLib/0.4.23.0": {
         "runtime": {
           "UnhollowerBaseLib.dll": {
-            "assemblyVersion": "0.4.15.3",
-            "fileVersion": "0.4.15.3"
+            "assemblyVersion": "0.4.23.0",
+            "fileVersion": "0.4.23.0"
           }
         }
       },
-      "UnhollowerRuntimeLib/0.4.15.2": {
+      "UnhollowerRuntimeLib/0.4.23.0": {
         "runtime": {
           "UnhollowerRuntimeLib.dll": {
-            "assemblyVersion": "0.4.15.2",
-            "fileVersion": "0.4.15.2"
+            "assemblyVersion": "0.4.23.0",
+            "fileVersion": "0.4.23.0"
           }
         }
       },
@@ -994,6 +1022,14 @@
             "fileVersion": "0.0.0.0"
           }
         }
+      },
+      "WasmDisassembler/2022.0.0.0": {
+        "runtime": {
+          "WasmDisassembler.dll": {
+            "assemblyVersion": "2022.0.0.0",
+            "fileVersion": "2022.0.0.0"
+          }
+        }
       }
     }
   },
@@ -1003,7 +1039,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "0Harmony/2.4.2.0": {
+    "0Harmony/2.9.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1023,22 +1059,27 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AssemblyUnhollower/0.4.15.3": {
+    "AssemblyUnhollower/0.4.23.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "BepInEx.Core/6.0.0.23": {
+    "BepInEx.Core/6.0.0.552": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "BepInEx.IL2CPP/6.0.0.23": {
+    "BepInEx.IL2CPP/6.0.0.552": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "BepInEx.Preloader.Core/6.0.0.23": {
+    "BepInEx.Preloader.Core/6.0.0.552": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Cpp2IL.Core/2022.0.1.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1048,7 +1089,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Iced/1.11.0.0": {
+    "Iced/1.17.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1118,37 +1159,47 @@
       "serviceable": false,
       "sha512": ""
     },
+    "IndexRange/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
     "IngameDebugConsole.Runtime/3.7.1.6": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Mono.Cecil/0.11.3.0": {
+    "LibCpp2IL/2022.0.1.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Mono.Cecil.Mdb/0.11.3.0": {
+    "Mono.Cecil/0.11.4.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Mono.Cecil.Pdb/0.11.3.0": {
+    "Mono.Cecil.Mdb/0.11.4.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Mono.Cecil.Rocks/0.11.3.0": {
+    "Mono.Cecil.Pdb/0.11.4.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "MonoMod.RuntimeDetour/21.4.21.3": {
+    "Mono.Cecil.Rocks/0.11.4.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "MonoMod.Utils/21.4.21.3": {
+    "MonoMod.RuntimeDetour/22.1.29.1": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MonoMod.Utils/22.1.29.1": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1173,17 +1224,17 @@
       "serviceable": false,
       "sha512": ""
     },
-    "SemVer/1.3.0.0": {
+    "SemanticVersioning/2.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "UnhollowerBaseLib/0.4.15.3": {
+    "UnhollowerBaseLib/0.4.23.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "UnhollowerRuntimeLib/0.4.15.2": {
+    "UnhollowerRuntimeLib/0.4.23.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1544,6 +1595,11 @@
       "sha512": ""
     },
     "UnityEngine.XRModule/3.7.1.6": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "WasmDisassembler/2022.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

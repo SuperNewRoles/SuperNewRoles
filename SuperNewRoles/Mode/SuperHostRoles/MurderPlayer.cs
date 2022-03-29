@@ -14,12 +14,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void Postfix(PlayerControl __instance,PlayerControl target)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            AmongUsClient.Instance.StartCoroutine(nameof(ResetName));
-            IEnumerator ResetName()
-            {
-                yield return new WaitForSeconds(0.1f);
-                FixedUpdate.SetDefaultNames();
-            }
             if (target.isRole(RoleId.Sheriff) || target.isRole(RoleId.truelover))
             {
                 target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
