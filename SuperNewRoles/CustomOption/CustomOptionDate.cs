@@ -33,11 +33,6 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomOption DisconnectNotPCOption;
 
-        public static CustomOption DeviceOptions;
-        public static CustomOption DeviceUseAdmin;
-        public static CustomOption DeviceUseVitalOrDoorLog;
-        public static CustomOption DeviceUseCamera;
-
         public static CustomOption DetectiveRate;
         public static CustomOption DetectivePlayerCount;
 
@@ -341,11 +336,6 @@ namespace SuperNewRoles.CustomOption
             }
 
             DisconnectNotPCOption = CustomOption.Create(168, cs(Color.white, "PC以外はキックする"), true,null,isHeader:true);
-
-            DeviceOptions = CustomOption.Create(115, cs(Color.white, "DeviceOptionsSetting"), false, null,isHeader:true);
-            DeviceUseAdmin = CustomOption.Create(116, cs(Color.white, "DeviceUseAdminSetting"), true, DeviceOptions);
-            DeviceUseVitalOrDoorLog = CustomOption.Create(117, cs(Color.white, "DeviceUseVitalOrDoorLogSetting"), true, DeviceOptions);
-            DeviceUseCamera = CustomOption.Create(118, cs(Color.white, "DeviceUseCameraSetting"), true, DeviceOptions);
 
             //SoothSayerRate = CustomOption.Create(2, cs(SoothSayer.color,"soothName"),rates, null, true);
             Mode.ModeHandler.OptionLoad();

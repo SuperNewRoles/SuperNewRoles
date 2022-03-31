@@ -103,7 +103,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                             SuperNewRolesPlugin.Logger.LogInfo("インベント:"+p.inVent);
                             if (p.inVent && p.isAlive() && VentData.ContainsKey(p.PlayerId) && VentData[p.PlayerId] != null)
                             {
-                                p.MyPhysics.RpcExitVent((int)VentData[p.PlayerId]);
+                                p.MyPhysics.RpcBootFromVent((int)VentData[p.PlayerId]);
                             }
                         }
                     }

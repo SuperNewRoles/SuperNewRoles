@@ -58,6 +58,10 @@ namespace SuperNewRoles.Patches
             if (ModeHandler.isMode(ModeId.Detective) && target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
+                if (__instance.isRole(RoleId.Egoist))
+                {
+                    return false;
+                }
                 if (__instance.isRole(RoleId.truelover))
                 {
                     if (!__instance.IsLovers())
