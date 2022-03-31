@@ -14,6 +14,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void ClearAndReloads()
         {
             Chat.WinCond = null;
+            EndGame.OnGameEndPatch.EndData = null;
         }
         public static void SendAllRoleChat()
         {/*
