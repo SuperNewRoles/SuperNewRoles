@@ -34,12 +34,6 @@ namespace SuperNewRoles.CustomCosmetics
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath)+@"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\");
             FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
-            AmongUsClient.Instance.StartCoroutine(nameof(SetCoro));
-            IEnumerator SetCoro()
-            {
-                yield return new WaitForSeconds(10);
-                CustomPlate.UnlockedNamePlatesPatch.Postfix(HatManager.Instance);
-            }
         }
         private static string sanitizeResourcePath(string res)
         {

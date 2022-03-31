@@ -92,10 +92,24 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             var optdata = OptionData.DeepCopy();
             if (RoleClass.EvilGambler.GetSuc())
             {
-                optdata.KillCooldown = RoleClass.EvilGambler.SucCool;
+                if (RoleClass.EvilGambler.SucCool == 0)
+                {
+                    optdata.KillCooldown = 0.001f;
+                }
+                else
+                {
+                    optdata.KillCooldown = RoleClass.EvilGambler.SucCool;
+                }
             } else
             {
-                optdata.KillCooldown = RoleClass.EvilGambler.NotSucCool;
+                if (RoleClass.EvilGambler.SucCool == 0)
+                {
+                    optdata.KillCooldown = 0.001f;
+                }
+                else
+                {
+                    optdata.KillCooldown = RoleClass.EvilGambler.NotSucCool;
+                }
             }
             if (p.AmOwner) PlayerControl.GameOptions = optdata;
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.Reliable, p.getClientId());

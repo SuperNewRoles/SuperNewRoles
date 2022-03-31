@@ -56,7 +56,8 @@ namespace SuperNewRoles.MapOptions
             DeviceUseAdmin = CustomOption.CustomOption.Create(116, cs(Color.white, "DeviceUseAdminSetting"), true, DeviceOptions);
             DeviceUseVitalOrDoorLog = CustomOption.CustomOption.Create(117, cs(Color.white, "DeviceUseVitalOrDoorLogSetting"), true, DeviceOptions);
             DeviceUseCamera = CustomOption.CustomOption.Create(118, cs(Color.white, "DeviceUseCameraSetting"), true, DeviceOptions);
-
+            NotUseReportDeadBody = CustomOption.CustomOption.Create(247, cs(Color.white, "NotUseReportSetting"), false, MapOptionSetting);
+            NotUseMeetingButton = CustomOption.CustomOption.Create(248, cs(Color.white, "NotUseMeetingSetting"), false, MapOptionSetting);
         }
     }
 }

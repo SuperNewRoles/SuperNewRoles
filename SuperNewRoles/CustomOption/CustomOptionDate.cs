@@ -337,6 +337,8 @@ namespace SuperNewRoles.CustomOption
 
             DisconnectNotPCOption = CustomOption.Create(168, cs(Color.white, "PC以外はキックする"), true,null,isHeader:true);
 
+            MapOptions.MapOption.LoadOption();
+
             //SoothSayerRate = CustomOption.Create(2, cs(SoothSayer.color,"soothName"),rates, null, true);
             Mode.ModeHandler.OptionLoad();
 

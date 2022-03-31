@@ -17,7 +17,8 @@ namespace SuperNewRoles.CustomCosmetics
     public class CustomPlate
     {
         public static bool isAdded = false;
-        public static class UnlockedNamePlatesPatch
+        [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetNamePlateById))]
+        class UnlockedNamePlatesPatch
         {
             public static void Postfix(HatManager __instance)
             {
@@ -44,8 +45,8 @@ namespace SuperNewRoles.CustomCosmetics
                         plate.ChipOffset = new Vector2(0f, 0.2f);
                         plate.Free = true;
                         plate.Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource);
-                        CustomPlates.Add(plate);
-                        AllPlates.Add(plate);
+                        //CustomPlates.Add(plate);
+                        //AllPlates.Add(plate);
                         __instance.AllNamePlates.Add(plate);
                         SuperNewRolesPlugin.Logger.LogInfo("プレート読み込み完了:" + file.Name);
                     }

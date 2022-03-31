@@ -1,4 +1,5 @@
 using HarmonyLib;
+using SuperNewRoles.CustomCosmetics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace SuperNewRoles.Patches
         {
             static void Prefix(VersionShower __instance)
             {
+                //CustomPlate.UnlockedNamePlatesPatch.Postfix(HatManager.Instance);
             }
             static void Postfix(VersionShower __instance)
             {
