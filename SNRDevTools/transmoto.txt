@@ -96,6 +96,9 @@ PlusModeSetting
 SettingNoSabotageMode
 SettingNoTaskWinMode
 SettingFixedSpawnMode
+MapOptionSetting
+NotUseReportSetting
+NotUseMeetingSetting
 DeviceOptionsSetting
 DeviceUseAdminSetting
 DeviceUseVitalOrDoorLogSetting

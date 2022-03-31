@@ -392,6 +392,18 @@
         "0" : "Fixed Spawn Mode" ,
         "11" : "\u56fa\u5b9a\u30b9\u30dd\u30fc\u30f3\u30e2\u30fc\u30c9"
         } ,
+ "MapOptionSetting" : {
+        "0" : "Map Option" ,
+        "11" : "\u30de\u30c3\u30d7\u306e\u8a2d\u5b9a"
+        } ,
+ "NotUseReportSetting" : {
+        "0" : "Unable to Report DeadBody" ,
+        "11" : "\u6b7b\u4f53\u901a\u5831\u304c\u3067\u304d\u306a\u3044"
+        } ,
+ "NotUseMeetingSetting" : {
+        "0" : "Conference button not available" ,
+        "11" : "\u4f1a\u8b70\u30dc\u30bf\u30f3\u304c\u4f7f\u7528\u3067\u304d\u306a\u3044"
+        } ,
  "DeviceOptionsSetting" : {
         "0" : "Device Options" ,
         "11" : "\u6a5f\u5668\u306e\u8a2d\u5b9a"

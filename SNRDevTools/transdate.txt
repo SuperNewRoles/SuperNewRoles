@@ -97,6 +97,9 @@ PlusModeSetting,Plus Mode,重複モード
 SettingNoSabotageMode,Block Sabotage Mode,サボタージュ禁止モード
 SettingNoTaskWinMode,Not Task Win Mode,タスク勝利できないモード
 SettingFixedSpawnMode,Fixed Spawn Mode,固定スポーンモード
+MapOptionSetting,Map Option,マップの設定
+NotUseReportSetting,Unable to Report DeadBody,死体通報ができない
+NotUseMeetingSetting,Conference button not available,会議ボタンが使用できない
 DeviceOptionsSetting,Device Options,機器の設定
 DeviceUseAdminSetting,Use OK Admin,アドミンが使える
 DeviceUseVitalOrDoorLogSetting,Use OK Vital Or DoorLog,バイタル・ドアログが使える

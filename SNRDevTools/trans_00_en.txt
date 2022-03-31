@@ -96,6 +96,9 @@ Plus Mode
 Block Sabotage Mode
 Not Task Win Mode
 Fixed Spawn Mode
+Map Option
+Unable to Report DeadBody
+Conference button not available
 Device Options
 Use OK Admin
 Use OK Vital Or DoorLog
