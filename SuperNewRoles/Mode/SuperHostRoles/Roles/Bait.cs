@@ -22,15 +22,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 new LateTask(() => {
                     if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                     {
-                        RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
-                        __instance.CmdReportDeadBody(target.Data);
+                        if (!(__instance.isRole(CustomRPC.RoleId.Minimalist) && !RoleClass.Minimalist.UseReport))
+                        {
+                            RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
+                            __instance.CmdReportDeadBody(target.Data);
+                        }
                         /*
                         MeetingRoomManager.Instance.AssignSelf(__instance, target.Data);
                         DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                         __instance.RpcStartMeeting(target.Data);
                         */
                     }
-                }, CustomOptions.BaitReportTime.getFloat(), "ReportBaitBody");
+                },  0.15f, "ReportBaitBody");
             }
         }
     }

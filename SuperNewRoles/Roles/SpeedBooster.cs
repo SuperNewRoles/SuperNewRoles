@@ -65,7 +65,7 @@ namespace SuperNewRoles.Roles
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 if (ModeHandler.isMode(ModeId.Default))
                 {
-                    if (__instance.AmOwner && RoleClass.SpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
+                    if (__instance.AmOwner && __instance.myPlayer.isRole(CustomRPC.RoleId.SpeedBooster) && RoleClass.SpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
                     {
                         __instance.body.velocity = __instance.body.velocity * RoleClass.SpeedBooster.Speed;
                     }

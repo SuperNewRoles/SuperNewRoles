@@ -1,5 +1,6 @@
 ﻿using InnerNet;
 using SuperNewRoles.Intro;
+using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -42,20 +43,33 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             string Team;
             string IntroDesc;
             string Desc;
+            IntroDate data = IntroDate.CrewmateIntro;
             if (rolename == ModTranslation.getString("LoversName"))
             {
 
             } else
             {
-                var data = GetNameIntroDate(rolename);
+                data = GetNameIntroDate(rolename);
                 IntroDesc = data.TitleDesc;
                 Desc = data.Description;
             }
-            /*
+            if (data == IntroDate.CrewmateIntro) return "";
+
+            string team = "重複";
+            if (data.Team == TeamRoleType.Crewmate)
+            {
+                team = ModTranslation.getString("CrewMateName");
+            } else if (data.Team == TeamRoleType.Impostor)
+            {
+                team = ModTranslation.getString("ImpostorName");
+            } else if(data.Team == TeamRoleType.Neutral)
+            {
+                team = ModTranslation.getString("NeutralName");
+            }
             string returndata = "";
             returndata = rolename+"\n";
-            returndata += +"陣営\n";
-            returndata += "";*/
+            returndata += team+"陣営\n";
+            returndata += data.Description;
             return "";
         }
         public static IntroDate GetNameIntroDate(string role)

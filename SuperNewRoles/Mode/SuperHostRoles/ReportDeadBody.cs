@@ -24,13 +24,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             //死体レポートのみで起こる処理
             DeadPlayer deadPlayer;
             deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == PlayerControl.LocalPlayer.PlayerId)?.FirstOrDefault();
-            if (RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) return true;
+            //if (RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) return true;
             if (__instance.isRole(CustomRPC.RoleId.Minimalist))
             {
                 var a = RoleClass.Minimalist.UseReport;
                 return a;
             }
-            if (target.Object.isRole(CustomRPC.RoleId.Bait) && (!deadPlayer.killerIfExisting.isRole(CustomRPC.RoleId.Minimalist) || RoleClass.Minimalist.UseReport)) if (!RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) { return false; } else { return true; }
+            //if (target.Object.isRole(CustomRPC.RoleId.Bait) && (!deadPlayer.killerIfExisting.isRole(CustomRPC.RoleId.Minimalist) || RoleClass.Minimalist.UseReport)) if (!RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) { return false; } else { return true; }
             return true;
         }
     }

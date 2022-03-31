@@ -17,48 +17,47 @@ namespace SuperNewRoles.CustomCosmetics
     public class CustomPlate
     {
         public static bool isAdded = false;
-        [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetNamePlateById))]
-        class GetUnlockedNamePlatesPatch
+        public static class UnlockedNamePlatesPatch
         {
-                public static void Postfix(HatManager __instance)
-                {
-                    if (isAdded) return;
-                    isAdded = true;
-                    SuperNewRolesPlugin.Logger.LogInfo("プレート読み込み処理開始");
+            public static void Postfix(HatManager __instance)
+            {
+                if (isAdded) return;
+                isAdded = true;
+                SuperNewRolesPlugin.Logger.LogInfo("プレート読み込み処理開始");
                 var AllPlates = __instance.AllNamePlates;
 
-                    var plateDir = new DirectoryInfo("SuperNewRoles\\CustomPlatesChache");
-                    if (!plateDir.Exists) plateDir.Create();
-                    var pngFiles = plateDir.GetFiles("*.png");
-                    var CustomPlates = new List<NamePlateData>();
-                    foreach (var file in pngFiles)
+                var plateDir = new DirectoryInfo("SuperNewRoles\\CustomPlatesChache");
+                if (!plateDir.Exists) plateDir.Create();
+                var pngFiles = plateDir.GetFiles("*.png");
+                var CustomPlates = new List<NamePlateData>();
+                foreach (var file in pngFiles)
+                {
+                    try
                     {
-                        try
-                        {
-                            var plate = ScriptableObject.CreateInstance<NamePlateData>();
+                        var plate = ScriptableObject.CreateInstance<NamePlateData>();
                         var FileName = file.Name.Substring(0, file.Name.Length - 4);
                         var Data = DownLoadClass.platedetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
-                            plate.name = Data.name+"\nby "+Data.author;
-                            plate.ProductId = "CustomNamePlates_" + Data.resource.Replace(".png", "");
-                            plate.BundleId = "CustomNamePlates_" + Data.resource.Replace(".png", "");
-                            plate.Order = 99;
-                            plate.ChipOffset = new Vector2(0f, 0.2f);
-                            plate.Free = true;
-                            plate.Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource);
-                            CustomPlates.Add(plate);
-                            AllPlates.Add(plate);
-                            __instance.AllNamePlates.Add(plate);
-                            SuperNewRolesPlugin.Logger.LogInfo("プレート読み込み完了:" + file.Name);
-                        }
-                        catch
-                        {
-                            SuperNewRolesPlugin.Logger.LogError("エラー:CustomNamePlateの読み込みに失敗しました:" + file.FullName);
-                        }
+                        plate.name = Data.name + "\nby " + Data.author;
+                        plate.ProductId = "CustomNamePlates_" + Data.resource.Replace(".png", "");
+                        plate.BundleId = "CustomNamePlates_" + Data.resource.Replace(".png", "");
+                        plate.Order = 99;
+                        plate.ChipOffset = new Vector2(0f, 0.2f);
+                        plate.Free = true;
+                        plate.Image = LoadTex.loadSprite("SuperNewRoles\\CustomPlatesChache\\" + Data.resource);
+                        CustomPlates.Add(plate);
+                        AllPlates.Add(plate);
+                        __instance.AllNamePlates.Add(plate);
+                        SuperNewRolesPlugin.Logger.LogInfo("プレート読み込み完了:" + file.Name);
                     }
-                    SuperNewRolesPlugin.Logger.LogInfo("プレート読み込み処理終了");
-
-                    __instance.AllNamePlates = AllPlates;
+                    catch
+                    {
+                        SuperNewRolesPlugin.Logger.LogError("エラー:CustomNamePlateの読み込みに失敗しました:" + file.FullName);
+                    }
                 }
+                SuperNewRolesPlugin.Logger.LogInfo("プレート読み込み処理終了");
+
+                __instance.AllNamePlates = AllPlates;
             }
+        }
     }
 }
