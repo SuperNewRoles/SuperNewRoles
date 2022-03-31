@@ -41,6 +41,8 @@ namespace SuperNewRoles.MapOptions
                 UseAdmin = true;
                 UseVitalOrDoorLog = true;
                 UseCamera = true;
+                UseDeadBodyReport = true;
+                UseMeetingButton = true;
             }
         }
         public static CustomOption.CustomOption MapOptionSetting;
