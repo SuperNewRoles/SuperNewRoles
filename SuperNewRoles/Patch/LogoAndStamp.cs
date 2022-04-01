@@ -82,6 +82,7 @@ namespace SuperNewRoles.Patches
             {
 
                 DestroyableSingleton<ModManager>.Instance.ShowModStamp();
+                ModManager.Instance.ShowModStamp();
 
 
                 var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");

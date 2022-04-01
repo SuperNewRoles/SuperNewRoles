@@ -9,6 +9,7 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.HideAndSeek;
+using System.Collections;
 
 namespace SuperNewRoles.Patches
 {
@@ -143,9 +144,9 @@ namespace SuperNewRoles.Patches
             {
                 ModeHandler.IntroHandler(__instance);
             }
+            //SetUpRoleTextPatch.Postfix(__instance);
         }
-        
-        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.SetUpRoleText))]
+        [HarmonyPatch(typeof(IntroCutscene),nameof(IntroCutscene.ShowRole))]
         class SetUpRoleTextPatch
         {
             private static byte ToByteIntro(float f)
@@ -155,45 +156,49 @@ namespace SuperNewRoles.Patches
             }
             public static void Postfix(IntroCutscene __instance)
             {
-                CustomButton.MeetingEndedUpdate();
-                if (ModeHandler.isMode(ModeId.Default))
+                new LateTask(() =>
                 {
-                    var myrole = PlayerControl.LocalPlayer.getRole();
-                    if (!(myrole == CustomRPC.RoleId.DefaultRole || myrole == CustomRPC.RoleId.Bestfalsecharge))
+                    CustomButton.MeetingEndedUpdate();
+                    if (ModeHandler.isMode(ModeId.Default))
                     {
-                        var date = Intro.IntroDate.GetIntroDate(myrole);
-                        __instance.YouAreText.color = date.color;
-                        __instance.RoleText.text = ModTranslation.getString(date.NameKey + "Name");
-                        __instance.RoleText.color = date.color;
-                        __instance.RoleBlurbText.text = date.TitleDesc;
-                        __instance.RoleBlurbText.color = date.color;
+                        var myrole = PlayerControl.LocalPlayer.getRole();
+                        if (!(myrole == CustomRPC.RoleId.DefaultRole || myrole == CustomRPC.RoleId.Bestfalsecharge))
+                        {
+                            var date = Intro.IntroDate.GetIntroDate(myrole);
+                            __instance.YouAreText.color = date.color;
+                            __instance.RoleText.text = ModTranslation.getString(date.NameKey + "Name");
+                            __instance.RoleText.color = date.color;
+                            __instance.RoleBlurbText.text = date.TitleDesc;
+                            __instance.RoleBlurbText.color = date.color;
+                        }
+                        if (PlayerControl.LocalPlayer.IsLovers())
+                        {
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                        }
+                        if (PlayerControl.LocalPlayer.IsQuarreled())
+                        {
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
+                        }
                     }
-                    if (PlayerControl.LocalPlayer.IsLovers())
+                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
-                        __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                        Mode.SuperHostRoles.Intro.RoleTextHandler(__instance);
                     }
-                    if (PlayerControl.LocalPlayer.IsQuarreled())
-                    {
-                        __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
-                    }
-                } else if (ModeHandler.isMode(ModeId.SuperHostRoles))
-                {
-                    Mode.SuperHostRoles.Intro.RoleTextHandler(__instance);
-                }
-                ModeHandler.YouAreIntroHandler(__instance);
+                    ModeHandler.YouAreIntroHandler(__instance);
+                }, 0f, "Override Role Text");
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
         class BeginCrewmatePatch
         {
-            public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+            public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
             {
-                setupIntroTeamIcons(__instance, ref yourTeam);
+                setupIntroTeamIcons(__instance, ref teamToDisplay);
             }
 
-            public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+            public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
             {
-                setupIntroTeam(__instance, ref yourTeam);
+                setupIntroTeam(__instance, ref teamToDisplay);
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]

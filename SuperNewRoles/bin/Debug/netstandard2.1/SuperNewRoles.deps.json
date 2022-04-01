@@ -10,6 +10,7 @@
       "SuperNewRoles/1.2.3.0": {
         "dependencies": {
           "0Harmony": "2.9.0.0",
+          "AddressablesPlayAssetDelivery": "3.7.1.6",
           "AppleAuth": "3.7.1.6",
           "Assembly-CSharp-firstpass": "3.7.1.6",
           "Assembly-CSharp": "3.7.1.6",
@@ -132,6 +133,14 @@
           "0Harmony.dll": {
             "assemblyVersion": "2.9.0.0",
             "fileVersion": "2.9.0.0"
+          }
+        }
+      },
+      "AddressablesPlayAssetDelivery/3.7.1.6": {
+        "runtime": {
+          "AddressablesPlayAssetDelivery.dll": {
+            "assemblyVersion": "3.7.1.6",
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -1040,6 +1049,11 @@
       "sha512": ""
     },
     "0Harmony/2.9.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AddressablesPlayAssetDelivery/3.7.1.6": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

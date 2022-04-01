@@ -122,7 +122,7 @@ namespace SuperNewRoles.EndGame
 
                 if (winningPlayerData2.IsDead)
                 {
-                    poolablePlayer.Body.sprite = __instance.GhostSprite;
+                    poolablePlayer.BodySprites[0].BodySprite.sprite = __instance.GhostSprite;
                     poolablePlayer.SetDeadFlipX(i % 2 == 0);
                 }
                 else

@@ -16,26 +16,26 @@ using UnityEngine;
 namespace SuperNewRoles.Patch
 {
     
-
+    /*
     [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.SetCosmetics))]
     class PlayerVoteAreaCosmetics
     {
         private static Sprite blankNameplate = null;
         public static void updateNameplate(PlayerVoteArea pva, byte playerId = Byte.MaxValue)
         {
-            blankNameplate = blankNameplate ?? HatManager.Instance.AllNamePlates[0].Image;
+            blankNameplate = blankNameplate ?? HatManager.Instance.AllNamePlates[0].viewData.viewData.Image;
 
             var nameplate = blankNameplate;
             var p = ModHelpers.playerById(playerId != byte.MaxValue ? playerId : pva.TargetPlayerId);
             var nameplateId = p?.CurrentOutfit?.NamePlateId;
-            nameplate = HatManager.Instance.GetNamePlateById(nameplateId)?.Image;
+            nameplate = HatManager.Instance.GetNamePlateById(nameplateId)?.viewData.viewData.Image;
             pva.Background.sprite = nameplate;
         }
         static void Postfix(PlayerVoteArea __instance, GameData.PlayerInfo playerInfo)
         {
             updateNameplate(__instance, playerInfo.PlayerId);
         }
-    }
+    }*/
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
     class CheckForEndVotingPatch
     {

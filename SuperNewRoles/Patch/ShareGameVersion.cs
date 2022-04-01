@@ -226,21 +226,6 @@ namespace SuperNewRoles.Patch
                         
                         notcreateroom = true;
                     }
-                static IEnumerator CREATEROOMANDJOIN(string ROOMID,int roomint)
-                {
-                    yield return new WaitForSeconds(7);
-                    try
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("DISSCONNECTED!");
-                        AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
-                        SceneChanger.ChangeScene("MainMenu");
-                    } catch { 
-                    }
-                    SuperNewRolesPlugin.Logger.LogInfo("a");
-                    AmongUsClient.Instance.OnGameCreated(ROOMID);
-                    AmongUsClient.Instance.OnGameJoined(ROOMID,AmongUsClient.Instance.GetClient(AmongUsClient.Instance.ClientId));
-                    SuperNewRolesPlugin.Logger.LogInfo("b");
-                }
             }
             /**
                 if (!AmongUsClient.Instance.AmHost)

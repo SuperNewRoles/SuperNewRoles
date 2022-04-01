@@ -51,7 +51,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix()
             {
-                if (IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.Zombie) && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !HudManager.Instance.isIntroDisplayed)
+                if (IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.Zombie) && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !HudManager.Instance.IsIntroDisplayed)
                 {
                     HideAndSeek.Patch.RepairSystemPatch.Postfix(PlayerControl.LocalPlayer);
                     if (NameChangeTimer >= 0f)

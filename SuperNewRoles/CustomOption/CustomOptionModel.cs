@@ -767,9 +767,9 @@ namespace SuperNewRoles.CustomOption
         {
             if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
         }
-    }
+    }/*
 
-    [HarmonyPatch(typeof(CreateOptionsPicker), nameof(CreateOptionsPicker.Start))]
+    [HarmonyPatch(typeof(CreateOptionsPicker), nameof(CreateOptionsPicker.))]
     public class CreateOptionsPickerPatch
     {
         public static void Postfix(CreateOptionsPicker __instance)
@@ -777,5 +777,5 @@ namespace SuperNewRoles.CustomOption
             int numImpostors = Math.Clamp(__instance.GetTargetOptions().NumImpostors, 1, 3);
             __instance.SetImpostorButtons(numImpostors);
         }
-    }
+    }*/
 }

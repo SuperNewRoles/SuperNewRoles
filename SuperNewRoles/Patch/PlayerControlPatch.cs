@@ -60,7 +60,7 @@ namespace SuperNewRoles.Patches
             {
                 if (__instance.isRole(RoleId.Egoist))
                 {
-                    return false;
+
                 }
                 if (__instance.isRole(RoleId.truelover))
                 {

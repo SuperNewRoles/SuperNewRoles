@@ -105,7 +105,7 @@ namespace SuperNewRoles.Roles
                     if (ison)
                     {
                         opacity = Math.Max(opacity, 0);
-                        Scientist.myRend.material.SetFloat("_Outline", 0f);
+                        Scientist.MyRend.material.SetFloat("_Outline", 0f);
                     }
                     else
                     {

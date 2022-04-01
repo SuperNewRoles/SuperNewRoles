@@ -125,3 +125,4 @@ C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\LibCpp2IL.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\SemanticVersioning.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\WasmDisassembler.dll
+C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\AddressablesPlayAssetDelivery.dll

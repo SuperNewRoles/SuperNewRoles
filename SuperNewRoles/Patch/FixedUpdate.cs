@@ -33,8 +33,8 @@ namespace SuperNewRoles.Patch
         {
             foreach (PlayerControl target in PlayerControl.AllPlayerControls)
             {
-                if (target == null || target.myRend == null) continue;
-                target.myRend.material.SetFloat("_Outline", 0f);
+                if (target == null || target.MyRend == null) continue;
+                target.MyRend.material.SetFloat("_Outline", 0f);
             }
         }
 
