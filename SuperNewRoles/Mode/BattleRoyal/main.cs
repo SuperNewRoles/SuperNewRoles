@@ -1,16 +1,9 @@
 ﻿
 using HarmonyLib;
 using Hazel;
-using InnerNet;
-using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.BattleRoyal
@@ -41,7 +34,8 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
                         writer.WritePacked(127);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        new LateTask(() => {
+                        new LateTask(() =>
+                        {
                             int clientId = __instance.myPlayer.getClientId();
                             MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, clientId);
                             writer2.Write(id);
@@ -49,9 +43,10 @@ namespace SuperNewRoles.Mode.BattleRoyal
                             __instance.myPlayer.inVent = false;
                         }, 0.5f, "Anti Vent");
                         return false;
-                    } else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    }
+                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
-                        bool data = CoEnterVent.Prefix(__instance,id);
+                        bool data = CoEnterVent.Prefix(__instance, id);
                         if (data)
                         {
                             VentData[__instance.myPlayer.PlayerId] = id;
@@ -100,7 +95,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
                         {
                             SuperNewRolesPlugin.Logger.LogInfo("～～～～");
-                            SuperNewRolesPlugin.Logger.LogInfo("インベント:"+p.inVent);
+                            SuperNewRolesPlugin.Logger.LogInfo("インベント:" + p.inVent);
                             if (p.inVent && p.isAlive() && VentData.ContainsKey(p.PlayerId) && VentData[p.PlayerId] != null)
                             {
                                 p.MyPhysics.RpcBootFromVent((int)VentData[p.PlayerId]);
@@ -115,27 +110,32 @@ namespace SuperNewRoles.Mode.BattleRoyal
         {
             var alives = 0;
             HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                if (p.isAlive()) {
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                if (p.isAlive())
+                {
                     alives++;
                 }
             }
             if (alives == 1)
             {
                 __instance.enabled = false;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
                     if (p.isAlive())
                     {
                         p.RpcSetRole(RoleTypes.Impostor);
                     }
-                    else {
+                    else
+                    {
                         p.RpcSetRole(RoleTypes.GuardianAngel);
                     }
                 }
                 ShipStatus.RpcEndGame(GameOverReason.ImpostorByKill, false);
                 return true;
             }
-            else if(alives == 0){
+            else if (alives == 0)
+            {
                 __instance.enabled = false;
                 ShipStatus.RpcEndGame(GameOverReason.HumansByVote, false);
                 return true;
@@ -144,7 +144,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         }
         public static void ClearAndReload()
         {
-        }            
+        }
         public static class ChangeRole
         {
             public static void Postfix()
@@ -159,13 +159,14 @@ namespace SuperNewRoles.Mode.BattleRoyal
                             p1.RpcSetRoleDesync(RoleTypes.Impostor);
                             foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                             {
-                                if (p1.PlayerId != p2.PlayerId && p2.PlayerId != 0)
+                                if (p1.PlayerId != p2.PlayerId)
                                 {
                                     p1.RpcSetRoleDesync(RoleTypes.Scientist, p2);
                                     p2.RpcSetRoleDesync(RoleTypes.Scientist, p1);
                                 }
                             }
-                        } else
+                        }
+                        else
                         {
                             p1.RpcSetRole(RoleTypes.Crewmate);
                         }
