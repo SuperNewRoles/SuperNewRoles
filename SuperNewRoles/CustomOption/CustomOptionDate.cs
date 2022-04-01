@@ -341,7 +341,7 @@ namespace SuperNewRoles.CustomOption
                 IsDebugMode = CustomOption.Create(159, "デバッグモード", false, null, isHeader: true);
             }
 
-            DisconnectNotPCOption = CustomOption.Create(168, cs(Color.white, "PC以外はキックする"), false,null,isHeader:true);
+            DisconnectNotPCOption = CustomOption.Create(168, cs(Color.white, "PC以外はキックする"), true,null,isHeader:true);
 
             MapOptions.MapOption.LoadOption();
 
