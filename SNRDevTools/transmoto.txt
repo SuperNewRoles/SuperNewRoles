@@ -410,3 +410,9 @@ trueloverTitle1
 trueloverloveButtonName
 TechnicianName
 TechnicianTitle1
+SerialKillerName
+SerialKillerTitle1
+SerialKillerSuicideTimeSetting
+SerialKillerKillTimeSetting
+SerialKillerIsMeetingResetSetting
+SerialKillerSuicideText

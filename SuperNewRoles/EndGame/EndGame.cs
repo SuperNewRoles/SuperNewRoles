@@ -708,6 +708,7 @@ namespace SuperNewRoles.EndGame
 
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
+            SerialKiller.WrapUp();
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             RoleClass.IsMeeting = false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
@@ -793,11 +794,11 @@ namespace SuperNewRoles.EndGame
             }
             else
             {
+                if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForSabotageWin(__instance)) return false;
                 if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
-                if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
                 if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             }
@@ -897,7 +898,7 @@ namespace SuperNewRoles.EndGame
 
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.CrewAlive > 0 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
+            if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
             {
                 __instance.enabled = false;
                 CustomEndGame(GameOverReason.HumansByVote, false);

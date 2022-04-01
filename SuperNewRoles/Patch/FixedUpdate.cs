@@ -57,6 +57,7 @@ namespace SuperNewRoles.Patch
                 {
                     setBasePlayerOutlines();
                     VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
+                    SerialKiller.FixedUpdate();
                     if (AmongUsClient.Instance.AmHost && Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift)) {
                         RPCHelper.StartRPC(CustomRPC.CustomRPC.SetHaison).EndRPC();
                         CustomRPC.RPCProcedure.SetHaison();

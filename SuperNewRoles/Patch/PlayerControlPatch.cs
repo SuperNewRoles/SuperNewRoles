@@ -141,6 +141,24 @@ namespace SuperNewRoles.Patches
             }
         }
     }
+
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
+    static class PlayerControlSetCoolDownPatch
+    {
+        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] float time)
+        {
+            if (PlayerControl.GameOptions.KillCooldown <= 0f) return false;
+            float multiplier = 1f;
+            float addition = 0f;
+            if (ModeHandler.isMode(ModeId.Default))
+            {
+                if (__instance.isRole(RoleId.SerialKiller)) addition = RoleClass.SerialKiller.KillTime;
+            }
+            float max = Mathf.Max(PlayerControl.GameOptions.KillCooldown * multiplier + addition, __instance.killTimer);
+            __instance.SetKillTimerUnchecked(Mathf.Clamp(time, 0f, max), max);
+            return false;
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
     public static class MurderPlayerPatch
     {
@@ -153,6 +171,9 @@ namespace SuperNewRoles.Patches
             DeadPlayer deadPlayer = new DeadPlayer(target, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+
+            SerialKiller.MurderPlayer(__instance,target);
+
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 if (AmongUsClient.Instance.AmHost)

@@ -78,6 +78,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.EngineerCooldown = 0f;
                     optdata.RoleOptions.EngineerInVentMaxTime = 0f;
                     break;
+                case RoleId.SerialKiller:
+                    optdata.killCooldown = RoleClass.SerialKiller.KillTime;
+                    break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             if (player.AmOwner) PlayerControl.GameOptions = optdata;

@@ -410,3 +410,9 @@ Let's fall in love at first sight
 Love
 Technician
 Use technology to repair sabotage!
+Serial Killer
+Kill and Survive!
+Time to suicide
+Kill time
+Resets when you enter a meeting.
+{0} seconds to suicide

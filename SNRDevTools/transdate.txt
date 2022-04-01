@@ -411,3 +411,9 @@ trueloverTitle1,Let's fall in love at first sight,一目惚れしよう
 trueloverloveButtonName,Love,一目惚れ
 TechnicianName,Technician,技術者
 TechnicianTitle1,Use technology to repair sabotage!,技術を駆使してサボタージュを修理しよう
+SerialKillerName,Serial Killer,シリアルキラー
+SerialKillerTitle1,Kill and Survive!,キルをして生存しよう
+SerialKillerSuicideTimeSetting,Time to suicide,自殺までの時間
+SerialKillerKillTimeSetting,Kill time,キルクールタイム
+SerialKillerIsMeetingResetSetting,Resets when you enter a meeting.,会議に入るとリセットされる
+SerialKillerSuicideText,{0} seconds to suicide,自殺まで後{0}秒

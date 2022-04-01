@@ -2,6 +2,7 @@
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.SuperHostRoles.Roles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
@@ -128,7 +129,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             Side.RpcSetNamePrivate(name+Suffix,p);
                         }
-                        if (p.isRole(CustomRPC.RoleId.Sheriff))
+                        if (p.isRole(RoleId.Sheriff))
                         {
                             if (RoleClass.Sheriff.KillCount.ContainsKey(p.PlayerId))
                             {
@@ -157,7 +158,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
                             }
                         }
-                        p.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText +"</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()+Suffix), p);
+                        p.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) +"</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName()+Suffix), p);
                     }
                 }
             }
@@ -196,11 +197,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         if (p2.isDead() && !RoleClass.IsMeeting)
                         {
-                            p2.RpcSetNamePrivate("(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
+                            p2.RpcSetNamePrivate("(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p2) + "</size>)" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
                         }
                         else
                         {
-                            p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
+                            p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p2) + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
                         }
                     }
                 }

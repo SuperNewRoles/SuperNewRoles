@@ -634,6 +634,12 @@ namespace SuperNewRoles.Buttons
             LighterLightOnButton.buttonText = ModTranslation.getString("LighterButtonName");
             LighterLightOnButton.showButtonText = true;
 
+            RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(SheriffKillButton.actionButton.cooldownTimerText, SheriffKillButton.actionButton.cooldownTimerText.transform.parent);
+            RoleClass.SerialKiller.SuicideKillText.text = "";
+            RoleClass.SerialKiller.SuicideKillText.enableWordWrapping = false;
+            RoleClass.SerialKiller.SuicideKillText.transform.localScale = Vector3.one * 0.5f;
+            RoleClass.SerialKiller.SuicideKillText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+
             setCustomButtonCooldowns();
         }
 
