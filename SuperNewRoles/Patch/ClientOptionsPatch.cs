@@ -44,18 +44,26 @@ namespace SuperNewRoles.Patch
             titleText.gameObject.SetActive(false);
             Object.DontDestroyOnLoad(titleText);
         }
-
+        private static Vector3? origin;
+        public static float xOffset = 1.75f;
+        [HarmonyPatch(typeof(OptionsMenuBehaviour),nameof(OptionsMenuBehaviour.Update))]
+        class OptionsUpdate {
+            public static void Postfix(OptionsMenuBehaviour __instance)
+            {
+                if (__instance.CensorChatButton?.gameObject != null) __instance.CensorChatButton.gameObject.SetActive(false);
+                if (__instance.EnableFriendInvitesButton?.gameObject != null) __instance.EnableFriendInvitesButton.gameObject.SetActive(false);
+            }
+        }
         [HarmonyPostfix]
         [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Start))]
         public static void OptionsMenuBehaviour_StartPostfix(OptionsMenuBehaviour __instance)
         {
             if (!__instance.CensorChatButton) return;
-
             if (!popUp)
             {
                 CreateCustom(__instance);
             }
-
+            
             if (!buttonPrefab)
             {
                 buttonPrefab = Object.Instantiate(__instance.CensorChatButton);
@@ -64,7 +72,8 @@ namespace SuperNewRoles.Patch
                 buttonPrefab.gameObject.SetActive(false);
             }
             
-            SetUpOptions();
+
+            SetUpOptions(__instance);
             InitializeMoreButton(__instance);
         }
 
@@ -95,8 +104,10 @@ namespace SuperNewRoles.Patch
             
             transform.localPosition = _origin.Value + Vector3.left * 1.3f;
             moreOptions.transform.localPosition = _origin.Value + Vector3.right * 1.3f;
-            
+            var trans = moreOptions.transform.localPosition;
             moreOptions.gameObject.SetActive(true);
+            trans = moreOptions.transform.position;
+            SuperNewRolesPlugin.Logger.LogInfo("通常:" + trans.x + "、" + trans.y + "、" + trans.z);
             moreOptions.Text.text = ModTranslation.getString("modOptionsText");
             var moreOptionsButton = moreOptions.GetComponent<PassiveButton>();
             moreOptionsButton.OnClick = new ButtonClickedEvent();
@@ -116,15 +127,15 @@ namespace SuperNewRoles.Patch
                 }
                 
                 CheckSetTitle();
-                RefreshOpen();
+                RefreshOpen(__instance);
             }));
         }
 
-        private static void RefreshOpen()
+        private static void RefreshOpen(OptionsMenuBehaviour __instance)
         {
             popUp.gameObject.SetActive(false);
             popUp.gameObject.SetActive(true);
-            SetUpOptions();
+            SetUpOptions(__instance);
         }
         
         private static void CheckSetTitle()
@@ -138,15 +149,102 @@ namespace SuperNewRoles.Patch
             title.name = "TitleText";
         }
 
-        private static void SetUpOptions()
+        private static void SetUpOptions(OptionsMenuBehaviour __instance)
         {
             if (popUp.transform.GetComponentInChildren<ToggleButtonBehaviour>()) return;
 
             modButtons = new List<ToggleButtonBehaviour>();
-
-            for (var i = 0; i < AllOptions.Length; i++)
+            /*
+            for (var i = 0; i < 2; i++)
             {
-                var info = AllOptions[i];
+                ToggleButtonBehaviour button = null;
+
+                if (i == 0)
+                {
+                    button = __instance.CensorChatButton;
+                } else
+                {
+                    button = __instance.EnableFriendInvitesButton;
+                }
+                SuperNewRolesPlugin.Logger.LogInfo("ボタン:"+button.name);
+                var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
+
+                button.transform.position = new Vector3(0,0,0);
+                var transform = button.transform;
+                transform.localPosition = pos;
+                button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+
+                button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
+                button.Text.font = Object.Instantiate(titleText.font);
+                button.Text.GetComponent<RectTransform>().sizeDelta = new Vector2(2, 2);
+                button.gameObject.SetActive(true);
+
+                var passiveButton = button.GetComponent<PassiveButton>();
+                var colliderButton = button.GetComponent<BoxCollider2D>();
+
+                colliderButton.size = new Vector2(2.2f, .7f);
+
+                passiveButton.OnMouseOut = new UnityEvent();
+                passiveButton.OnMouseOver = new UnityEvent();
+
+                passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, byte.MaxValue)));
+                passiveButton.OnMouseOut.AddListener((Action)(() => button.Background.color = button.onState ? Color.green : Palette.ImpostorRed));
+
+                foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
+                    spr.size = new Vector2(2.2f, .7f);
+                modButtons.Add(button);
+            }*/
+            for (var i = 0; i < 2; i++)
+            {
+                ToggleButtonBehaviour mainbutton = null;
+                if (i == 0)
+                {
+                    mainbutton = __instance.CensorChatButton;
+                } else
+                {
+                    mainbutton = __instance.EnableFriendInvitesButton;
+                }
+                var button = Object.Instantiate(buttonPrefab, popUp.transform);
+                var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
+
+                var transform = button.transform;
+                transform.localPosition = pos;
+
+                button.onState = mainbutton.onState;
+                button.Background.color = mainbutton.onState ? Color.green : Palette.ImpostorRed;
+
+                button.Text.text = mainbutton.Text.text;
+                button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
+                button.Text.font = Object.Instantiate(titleText.font);
+                button.Text.GetComponent<RectTransform>().sizeDelta = new Vector2(2, 2);
+
+                button.name = mainbutton.name;
+                button.gameObject.SetActive(true);
+
+                var passiveButton = button.GetComponent<PassiveButton>();
+                var colliderButton = button.GetComponent<BoxCollider2D>();
+
+                colliderButton.size = new Vector2(2.2f, .7f);
+
+                passiveButton.OnClick = mainbutton.GetComponent<PassiveButton>().OnClick;
+                passiveButton.OnClick.AddListener((Action)(() =>
+                {
+                    button.onState = !button.onState;
+                    button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
+                }));
+                passiveButton.OnMouseOver = mainbutton.GetComponent<PassiveButton>().OnMouseOver;
+                passiveButton.OnMouseOut = mainbutton.GetComponent<PassiveButton>().OnMouseOut;
+
+                passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, byte.MaxValue)));
+                passiveButton.OnMouseOut.AddListener((Action)(() => button.Background.color = button.onState ? Color.green : Palette.ImpostorRed));
+
+                foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
+                    spr.size = new Vector2(2.2f, .7f);
+                modButtons.Add(button);
+            }
+            for (var i = 2; i < AllOptions.Length+2; i++)
+            {
+                var info = AllOptions[i-2];
                 
                 var button = Object.Instantiate(buttonPrefab, popUp.transform);
                 var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
@@ -185,7 +283,8 @@ namespace SuperNewRoles.Patch
 
                 foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
                     spr.size = new Vector2(2.2f, .7f);
-
+                var trans = transform.position;
+                SuperNewRolesPlugin.Logger.LogInfo(button.Text.text+":" + trans.x + "、" + trans.y + "、" + trans.z);
                 modButtons.Add(button);
             }
         }

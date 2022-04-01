@@ -286,6 +286,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption TechnicianOption;
         public static CustomOption TechnicianPlayerCount;
 
+        public static CustomRoleOption SerialKillerOption;
+        public static CustomOption SerialKillerPlayerCount;
+        public static CustomOption SerialKillerSuicideTime;
+        public static CustomOption SerialKillerKillTime;
+        public static CustomOption SerialKillerIsMeetingReset;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -594,6 +600,12 @@ namespace SuperNewRoles.CustomOption
             TechnicianOption = new CustomRoleOption(244, "TechnicianName", RoleClass.Technician.color, 1);
             TechnicianPlayerCount = CustomOption.Create(245, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TechnicianOption);
 
+            SerialKillerOption = new CustomRoleOption(249, "SerialKillerName", RoleClass.SerialKiller.color, 1);
+            SerialKillerPlayerCount = CustomOption.Create(250, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SerialKillerOption);
+            SerialKillerSuicideTime = CustomOption.Create(251, cs(Color.white, "SerialKillerSuicideTimeSetting"), 60f, 0f, 180f, 2.5f, SerialKillerOption);
+            SerialKillerKillTime = CustomOption.Create(252, cs(Color.white, "SerialKillerKillTimeSetting"), 15f,0f,60f,2.5f,SerialKillerOption);
+            SerialKillerIsMeetingReset = CustomOption.Create(253, cs(Color.white, "SerialKillerIsMeetingResetSetting"), true, SerialKillerOption);
+            
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, cs(Color.white, "QuarreledOnlyCrewMateSetting"), false, QuarreledOption);

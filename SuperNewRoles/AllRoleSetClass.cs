@@ -766,6 +766,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.trueloverPlayerCount.getFloat();
                     case (RoleId.Technician):
                     return CustomOption.CustomOptions.TechnicianPlayerCount.getFloat();
+                    case (RoleId.SerialKiller):
+                    return CustomOption.CustomOptions.SerialKillerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1638,6 +1640,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.SerialKillerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SerialKillerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.SerialKiller;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }

@@ -126,6 +126,8 @@ namespace SuperNewRoles.Intro
                     return trueloverIntro;
                 case (CustomRPC.RoleId.Technician):
                     return TechnicianIntro;
+                case (CustomRPC.RoleId.SerialKiller):
+                    return SerialKillerIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -199,6 +201,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate MayorIntro = new IntroDate("Mayor", RoleClass.Mayor.color, 1, CustomRPC.RoleId.Mayor);
         public static IntroDate trueloverIntro = new IntroDate("truelover", RoleClass.truelover.color, 1, CustomRPC.RoleId.truelover, TeamRoleType.Neutral);
         public static IntroDate TechnicianIntro = new IntroDate("Technician", RoleClass.Technician.color, 1, CustomRPC.RoleId.Technician);
+        public static IntroDate SerialKillerIntro = new IntroDate("SerialKiller", RoleClass.SerialKiller.color, 1, CustomRPC.RoleId.SerialKiller);
         //イントロオブジェ
     }
 }

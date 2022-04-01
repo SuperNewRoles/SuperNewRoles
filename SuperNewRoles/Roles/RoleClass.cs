@@ -12,6 +12,7 @@ using System.IO;
 using UnityEngine;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomObject;
+using TMPro;
 
 namespace SuperNewRoles.Roles
 {
@@ -85,6 +86,7 @@ namespace SuperNewRoles.Roles
             Mayor.ClearAndReload();
             truelover.ClearAndReload();
             Technician.ClearAndReload();
+            SerialKiller.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1028,6 +1030,30 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 TechnicianPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class SerialKiller
+        {
+            public static List<PlayerControl> SerialKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float SuicideDefaultTime;
+            public static float SuicideTime;
+            public static float KillTime;
+            public static Dictionary<byte, float> SuicideTimers;
+            public static bool IsSuicideView;
+            public static Dictionary<byte, bool> IsSuicideViews;
+            public static bool IsMeetingReset;
+            public static TextMeshPro SuicideKillText = null;
+            public static void ClearAndReload()
+            {
+                SerialKillerPlayer = new List<PlayerControl>();
+                SuicideTime = CustomOptions.SerialKillerSuicideTime.getFloat();
+                KillTime = CustomOptions.SerialKillerKillTime.getFloat();
+                SuicideDefaultTime = SuicideTime;
+                IsMeetingReset = CustomOptions.SerialKillerIsMeetingReset.getBool();
+                IsSuicideView = false;
+                IsSuicideViews = new Dictionary<byte, bool>();
+                SuicideTimers = new Dictionary<byte, float>();
             }
         }
         //新ロールクラス

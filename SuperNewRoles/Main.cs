@@ -37,7 +37,6 @@ namespace SuperNewRoles
         {
             Logger = Log;
             Instance = this;
-
             // All Load() Start
             ModTranslation.Load();
             ChacheManager.Load();
@@ -66,12 +65,19 @@ namespace SuperNewRoles
 
             var assembly = Assembly.GetExecutingAssembly();
         
-        StringDATE = new Dictionary<string, Dictionary<int, string>>();
+            StringDATE = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();
         }
-
-
-
+        /*
+        [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
+        class TranslateControllerMessagePatch
+        {
+            static void Postfix(ref string __result, [HarmonyArgument(0)] StringNames id)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo(id+":"+__result);
+            }
+        }*/
+        
         [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.AmBanned), MethodType.Getter)]
         public static class AmBannedPatch
         {

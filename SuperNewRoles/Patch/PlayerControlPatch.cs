@@ -138,25 +138,9 @@ namespace SuperNewRoles.Patches
             }
             else
             {
-                if (RoleClass.Lovers.SameDie && target.IsLovers())
-                {
-                    if (AmongUsClient.Instance.AmHost)
-                    {
-                        PlayerControl SideLoverPlayer = target.GetOneSideLovers();
-                        if (SideLoverPlayer.isAlive())
-                        {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
-                            writer.Write(SideLoverPlayer.PlayerId);
-                            writer.Write(SideLoverPlayer.PlayerId);
-                            writer.Write(byte.MaxValue);
-                            AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
-                        }
-                    }
-                }
-            }
             }
         }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
     public static class MurderPlayerPatch
     {
@@ -184,7 +168,7 @@ namespace SuperNewRoles.Patches
             {
                 if (RoleClass.Lovers.SameDie && target.IsLovers())
                 {
-                    if (AmongUsClient.Instance.AmHost)
+                    if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                     {
                         PlayerControl SideLoverPlayer = target.GetOneSideLovers();
                         if (SideLoverPlayer.isAlive())
@@ -228,6 +212,24 @@ namespace SuperNewRoles.Patches
             DeadPlayer deadPlayer = new DeadPlayer(__instance, DateTime.UtcNow, DeathReason.Exile, null);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
+            if (ModeHandler.isMode(ModeId.Default))
+            {
+
+                if (RoleClass.Lovers.SameDie && __instance.IsLovers())
+                {
+                    if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        PlayerControl SideLoverPlayer = __instance.GetOneSideLovers();
+                        if (SideLoverPlayer.isAlive())
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ExiledRPC, Hazel.SendOption.Reliable, -1);
+                            writer.Write(SideLoverPlayer.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            RPCProcedure.ExiledRPC(SideLoverPlayer.PlayerId);
+                        }
+                    }
+                }
+            }
         }
     }
     public static class PlayerControlFixedUpdatePatch

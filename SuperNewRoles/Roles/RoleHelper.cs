@@ -376,6 +376,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Technician):
                     Roles.RoleClass.Technician.TechnicianPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.SerialKiller):
+                    Roles.RoleClass.SerialKiller.SerialKillerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -552,6 +555,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.Technician):
                     Roles.RoleClass.Technician.TechnicianPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.SerialKiller):
+                    Roles.RoleClass.SerialKiller.SerialKillerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -960,6 +966,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.Technician.TechnicianPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Technician;
+            }
+            else if (Roles.RoleClass.SerialKiller.SerialKillerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.SerialKiller;
             }
             //ロールチェック
             }

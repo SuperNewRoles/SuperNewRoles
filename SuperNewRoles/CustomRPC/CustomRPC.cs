@@ -73,6 +73,7 @@ namespace SuperNewRoles.CustomRPC
         Mayor,
         truelover,
         Technician,
+        SerialKiller,
         //RoleId
     }
 
