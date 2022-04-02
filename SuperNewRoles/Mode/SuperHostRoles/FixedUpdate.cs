@@ -123,7 +123,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Madmate.CheckedImpostor.Add(p.PlayerId);
                     }
                     string Suffix = "";
-                    if (p.IsLovers())
+                    if (p.IsLovers() && p.isAlive())
                     {
                         Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
                         PlayerControl Side = p.GetOneSideLovers();
@@ -163,7 +163,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
                         }
                     }
-                    string NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
+                    string NewName = "";
+                    if (p.isDead() || p.isRole(RoleId.God))
+                    {
+                        NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>)" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
+                    } else if (p.isAlive())
+                    {
+                        NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
+                    }
                     if (p.PlayerId != 0)
                     {
                         p.RpcSetNamePrivate(NewName);
