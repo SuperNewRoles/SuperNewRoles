@@ -105,6 +105,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (!p.Data.Disconnected)
                 {
+                    string Suffix = "";
                     if (p.PlayerId != 0)
                     {
                         bool IsMadmateCheck = Madmate.CheckImpostor(p);
@@ -125,7 +126,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             //Madmate.CheckedImpostor.Add(p.PlayerId);
                         }
 
-                        string Suffix = "";
                         if (p.IsLovers() && p.isAlive())
                         {
                             Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");

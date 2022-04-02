@@ -83,12 +83,13 @@ namespace SuperNewRoles.Roles
             {
                 if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                 {
+                    RoleClass.SerialKiller.SuicideTime = RoleClass.SerialKiller.SuicideDefaultTime;
                     RoleClass.SerialKiller.IsSuicideView = true;
                 }
                 RoleClass.SerialKiller.IsSuicideViews[__instance.PlayerId] = true;
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
-                    RoleClass.SerialKiller.SuicideTimers[__instance.PlayerId] = RoleClass.SerialKiller.SuicideTime;
+                    RoleClass.SerialKiller.SuicideTimers[__instance.PlayerId] = RoleClass.SerialKiller.SuicideDefaultTime;
                 }
                 else if(ModeHandler.isMode(ModeId.Default))
                 {
