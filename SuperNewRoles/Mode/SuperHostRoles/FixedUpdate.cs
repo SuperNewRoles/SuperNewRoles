@@ -105,34 +105,38 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (!p.Data.Disconnected)
                 {
-                    bool IsMadmateCheck = Madmate.CheckImpostor(p);
-                    //  SuperNewRolesPlugin.Logger.LogInfo("マッドメイトがチェックできるか:"+IsMadmateCheck);
-                    if (IsMadmateCheck)
+                    if (p.PlayerId != 0)
                     {
-                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        bool IsMadmateCheck = Madmate.CheckImpostor(p);
+                        //  SuperNewRolesPlugin.Logger.LogInfo("マッドメイトがチェックできるか:"+IsMadmateCheck);
+                        if (IsMadmateCheck)
                         {
-                            if (!p2.Data.Disconnected && !p2.isImpostor())
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                             {
-                                p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                if (!p2.Data.Disconnected && !p2.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
+                                else if (!p2.Data.Disconnected && p2.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
+                                }
                             }
-                            else if (!p2.Data.Disconnected && p2.isImpostor())
-                            {
-                                p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
-                            }
+                            //Madmate.CheckedImpostor.Add(p.PlayerId);
                         }
-                        Madmate.CheckedImpostor.Add(p.PlayerId);
-                    }
-                    string Suffix = "";
-                    if (p.IsLovers() && p.isAlive())
-                    {
-                        Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
-                        PlayerControl Side = p.GetOneSideLovers();
-                        string name = Side.getDefaultName();
-                        if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
+
+                        string Suffix = "";
+                        if (p.IsLovers() && p.isAlive())
                         {
-                            name = ModHelpers.cs(RoleClass.ImpostorRed, name);
+                            Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                            PlayerControl Side = p.GetOneSideLovers();
+                            string name = Side.getDefaultName();
+                            if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
+                            {
+                                name = ModHelpers.cs(RoleClass.ImpostorRed, name);
+                            }
+                            Side.RpcSetNamePrivate(name + Suffix, p);
                         }
-                        Side.RpcSetNamePrivate(name + Suffix, p);
                     }
                     if (p.isRole(RoleId.Sheriff))
                     {
