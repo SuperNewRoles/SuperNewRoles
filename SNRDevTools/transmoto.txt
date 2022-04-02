@@ -416,3 +416,7 @@ SerialKillerSuicideTimeSetting
 SerialKillerKillTimeSetting
 SerialKillerIsMeetingResetSetting
 SerialKillerSuicideText
+OverKillerName
+OverKillerTitle1
+OverKillerKillCoolTimeSetting
+OverKillerKillCountSetting

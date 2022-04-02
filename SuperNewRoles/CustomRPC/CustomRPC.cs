@@ -289,7 +289,6 @@ namespace SuperNewRoles.CustomRPC
             }
             if (MissFire)
             {
-                sheriff.Data.IsDead = true;
                 sheriff.Exiled();
                 FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.MeetingSheriffMisFire;
                 if (PlayerControl.LocalPlayer == sheriff)
@@ -300,7 +299,6 @@ namespace SuperNewRoles.CustomRPC
             }
             else
             {
-                target.Data.IsDead = true;
                 target.Exiled();
                 FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.MeetingSheriffKill;
                 if (PlayerControl.LocalPlayer == target)

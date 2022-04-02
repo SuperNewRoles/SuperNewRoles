@@ -417,3 +417,7 @@ SerialKillerSuicideTimeSetting,Time to suicide,自殺までの時間
 SerialKillerKillTimeSetting,Kill time,キルクールタイム
 SerialKillerIsMeetingResetSetting,Resets when you enter a meeting.,会議に入るとリセットされる
 SerialKillerSuicideText,{0} seconds to suicide,自殺まで後{0}秒
+OverKillerName,OverKiller,オーバーキラー
+OverKillerTitle1,Let's cover up the other kills.,他のキルを隠蔽しよう
+OverKillerKillCoolTimeSetting,OverKiller Kill Cool Time,オーバーキラーのキルクールタイム
+OverKillerKillCountSetting,Number of bodies per,一回あたりの死体数

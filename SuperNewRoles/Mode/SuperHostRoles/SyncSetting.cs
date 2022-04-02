@@ -28,16 +28,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.Sheriff:
                     optdata.ImpostorLightMod = optdata.CrewLightMod;
-                    SuperNewRolesPlugin.Logger.LogInfo("SETED!!");
                     var switchSystem = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                     if (switchSystem != null && switchSystem.IsActive)
                     {
                         optdata.ImpostorLightMod /= 5;
                     }
-                    optdata.KillCooldown = CustomOptions.SheriffCoolTime.getFloat();
+                    optdata.KillCooldown = KillCoolSet(CustomOptions.SheriffCoolTime.getFloat());
                     break;
                 case RoleId.Minimalist:
-                    optdata.KillCooldown = RoleClass.Minimalist.KillCoolTime;
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Minimalist.KillCoolTime);
                     break;
                 case RoleId.God:
                     optdata.AnonymousVotes = !RoleClass.God.IsVoteView;
@@ -79,7 +78,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.EngineerInVentMaxTime = 0f;
                     break;
                 case RoleId.SerialKiller:
-                    optdata.killCooldown = RoleClass.SerialKiller.KillTime;
+                    optdata.killCooldown = KillCoolSet(RoleClass.SerialKiller.KillTime);
+                    break;
+                case RoleId.OverKiller:
+                    optdata.killCooldown = KillCoolSet(RoleClass.OverKiller.KillCoolTime);
                     break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
@@ -88,6 +90,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             writer.WriteBytesAndSize(optdata.ToBytes(5));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
+        public static float KillCoolSet(float cool)
+        {
+            if (cool <= 0)
+            {
+                return 0.001f;
+            } else
+            {
+                return cool;
+            }
+        }
         public static void GamblersetCool(PlayerControl p)
         {
             if (!AmongUsClient.Instance.AmHost) return;
@@ -95,24 +107,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             var optdata = OptionData.DeepCopy();
             if (RoleClass.EvilGambler.GetSuc())
             {
-                if (RoleClass.EvilGambler.SucCool == 0)
-                {
-                    optdata.KillCooldown = 0.001f;
-                }
-                else
-                {
-                    optdata.KillCooldown = RoleClass.EvilGambler.SucCool;
-                }
+                optdata.KillCooldown = KillCoolSet(RoleClass.EvilGambler.SucCool);
             } else
             {
-                if (RoleClass.EvilGambler.SucCool == 0)
-                {
-                    optdata.KillCooldown = 0.001f;
-                }
-                else
-                {
-                    optdata.KillCooldown = RoleClass.EvilGambler.NotSucCool;
-                }
+                optdata.KillCooldown = KillCoolSet(RoleClass.EvilGambler.NotSucCool);
             }
             if (p.AmOwner) PlayerControl.GameOptions = optdata;
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.Reliable, p.getClientId());

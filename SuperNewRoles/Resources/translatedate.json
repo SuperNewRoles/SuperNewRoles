@@ -1671,6 +1671,22 @@
  "SerialKillerSuicideText" : {
         "0" : "{0} seconds to suicide" ,
         "11" : "\u81ea\u6bba\u307e\u3067\u5f8c{0}\u79d2"
+        } ,
+ "OverKillerName" : {
+        "0" : "OverKiller" ,
+        "11" : "\u30aa\u30fc\u30d0\u30fc\u30ad\u30e9\u30fc"
+        } ,
+ "OverKillerTitle1" : {
+        "0" : "Let's cover up the other kills." ,
+        "11" : "\u4ed6\u306e\u30ad\u30eb\u3092\u96a0\u853d\u3057\u3088\u3046"
+        } ,
+ "OverKillerKillCoolTimeSetting" : {
+        "0" : "OverKiller Kill Cool Time" ,
+        "11" : "\u30aa\u30fc\u30d0\u30fc\u30ad\u30e9\u30fc\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+        } ,
+ "OverKillerKillCountSetting" : {
+        "0" : "Number of bodies per" ,
+        "11" : "\u4e00\u56de\u3042\u305f\u308a\u306e\u6b7b\u4f53\u6570"
         } 
 
 }

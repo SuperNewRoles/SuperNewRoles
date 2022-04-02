@@ -1061,9 +1061,13 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> OverKillerPlayer;
             public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static int KillCount;
             public static void ClearAndReload()
             {
                 OverKillerPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.OverKillerKillCoolTime.getFloat();
+                KillCount = (int)CustomOptions.OverKillerKillCount.getFloat();
             }
         }
         //新ロールクラス

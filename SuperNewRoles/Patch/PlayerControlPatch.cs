@@ -5,6 +5,7 @@ using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using static SuperNewRoles.Helpers.DesyncHelpers;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
@@ -61,9 +62,9 @@ namespace SuperNewRoles.Patches
             {
                 if (__instance.isRole(RoleId.Egoist))
                 {
-
+                    return false;
                 }
-                if (__instance.isRole(RoleId.truelover))
+                else if (__instance.isRole(RoleId.truelover))
                 {
                     if (!__instance.IsLovers())
                     {
@@ -76,7 +77,7 @@ namespace SuperNewRoles.Patches
                     }
                     return false;
                 }
-                if (__instance.isRole(RoleId.Sheriff))
+                else if (__instance.isRole(RoleId.Sheriff))
                 {
                     if (!RoleClass.Sheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.Sheriff.KillCount[__instance.PlayerId] >= 1)
                     {
@@ -103,6 +104,30 @@ namespace SuperNewRoles.Patches
                         return false;
                     }
                 }
+            }
+            if (__instance.isRole(RoleId.OverKiller))
+            {
+                __instance.RpcMurderPlayer(target);
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (!p.Data.Disconnected && p.PlayerId != target.PlayerId)
+                    {
+                        if (p.PlayerId != 0)
+                        {
+                            for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
+                            {
+                                __instance.RPCMurderPlayerPrivate(target,p);
+                            }
+                        } else
+                        {
+                            for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
+                            {
+                                __instance.MurderPlayer(target);
+                            }
+                        }
+                    }
+                }
+                return false;
             }
             if (!ModeHandler.isMode(ModeId.Default))
             {
@@ -154,6 +179,7 @@ namespace SuperNewRoles.Patches
             if (ModeHandler.isMode(ModeId.Default))
             {
                 if (__instance.isRole(RoleId.SerialKiller)) addition = RoleClass.SerialKiller.KillTime;
+                else if (__instance.isRole(RoleId.OverKiller)) addition = RoleClass.OverKiller.KillCoolTime;
             }
             float max = Mathf.Max(PlayerControl.GameOptions.KillCooldown * multiplier + addition, __instance.killTimer);
             __instance.SetKillTimerUnchecked(Mathf.Clamp(time, 0f, max), max);

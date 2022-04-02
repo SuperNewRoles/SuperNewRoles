@@ -443,6 +443,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            if (!(CustomOption.CustomOptions.OverKillerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.OverKillerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.OverKiller;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
             AllRoleSetClass.Impoonepar = Impoonepar;
             AllRoleSetClass.Imponotonepar = Imponotonepar;
             AllRoleSetClass.Neutonepar = Neutonepar;

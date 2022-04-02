@@ -416,3 +416,7 @@ Time to suicide
 Kill time
 Resets when you enter a meeting.
 {0} seconds to suicide
+OverKiller
+Let's cover up the other kills.
+OverKiller Kill Cool Time
+Number of bodies per

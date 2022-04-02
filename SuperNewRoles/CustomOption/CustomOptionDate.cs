@@ -294,6 +294,7 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption OverKillerOption;
         public static CustomOption OverKillerPlayerCount;
+        public static CustomOption OverKillerKillCoolTime;
         public static CustomOption OverKillerKillCount;
 
         public static CustomOption QuarreledOption;
@@ -609,7 +610,12 @@ namespace SuperNewRoles.CustomOption
             SerialKillerSuicideTime = CustomOption.Create(251, cs(Color.white, "SerialKillerSuicideTimeSetting"), 60f, 0f, 180f, 2.5f, SerialKillerOption);
             SerialKillerKillTime = CustomOption.Create(252, cs(Color.white, "SerialKillerKillTimeSetting"), 15f,0f,60f,2.5f,SerialKillerOption);
             SerialKillerIsMeetingReset = CustomOption.Create(253, cs(Color.white, "SerialKillerIsMeetingResetSetting"), true, SerialKillerOption);
-            
+
+            OverKillerOption = new CustomRoleOption(254, "OverKillerName", RoleClass.OverKiller.color, 1);
+            OverKillerPlayerCount = CustomOption.Create(255, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], OverKillerOption);
+            OverKillerKillCoolTime = CustomOption.Create(257, cs(Color.white, "OverKillerKillCoolTimeSetting"), 45f, 0f, 60f, 2.5f, OverKillerOption);
+            OverKillerKillCount = CustomOption.Create(256, cs(Color.white, "OverKillerKillCountSetting"), 30f, 1f, 60f, 1f, OverKillerOption);
+
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, cs(Color.white, "QuarreledOnlyCrewMateSetting"), false, QuarreledOption);
