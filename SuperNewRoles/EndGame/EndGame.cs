@@ -67,6 +67,7 @@ namespace SuperNewRoles.EndGame
             public int TasksCompleted { get; set; }
             public int TasksTotal { get; set; }
             public int PlayerId { get; set; }
+            public int ColorId { get; set; }
             public FinalStatus Status { get; internal set; }
             public Intro.IntroDate IntroDate { get; set; }
         }
@@ -292,7 +293,7 @@ namespace SuperNewRoles.EndGame
                         var taskInfo = datas.TasksTotal > 0 ? $"<color=#FAD934FF>({datas.TasksCompleted}/{datas.TasksTotal})</color>" : "";
                         string aliveDead = "";
                         string Suffix = "";
-                        string result = $"{ModHelpers.cs(Palette.PlayerColors[ModHelpers.playerById((byte)datas.PlayerId).Data.DefaultOutfit.ColorId],datas.PlayerName)}{datas.NameSuffix}{taskInfo} - {GetStatusText(datas.Status)} - {CustomOptions.cs(datas.IntroDate.color, datas.IntroDate.NameKey + "Name")}";
+                        string result = $"{ModHelpers.cs(Palette.PlayerColors[datas.ColorId],datas.PlayerName)}{datas.NameSuffix}{taskInfo} - {GetStatusText(datas.Status)} - {CustomOptions.cs(datas.IntroDate.color, datas.IntroDate.NameKey + "Name")}";
                         roleSummaryText.AppendLine(result);
                     }
 
@@ -309,9 +310,9 @@ namespace SuperNewRoles.EndGame
                     roleSummaryTextMesh.text = roleSummaryText.ToString();
                 }
             }
-            catch
+            catch(Exception e)
             {
-
+                SuperNewRolesPlugin.Logger.LogInfo("エラー:"+e);
             }
             AdditionalTempData.clear();
 
@@ -426,6 +427,7 @@ namespace SuperNewRoles.EndGame
                     PlayerName = p.PlayerName,
                     NameSuffix = namesuffix,
                     PlayerId = p.PlayerId,
+                    ColorId = p.DefaultOutfit.ColorId,
                     TasksTotal = tasksTotal,
                     TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
                     Status = finalStatus,
