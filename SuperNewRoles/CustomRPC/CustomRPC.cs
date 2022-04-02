@@ -74,6 +74,7 @@ namespace SuperNewRoles.CustomRPC
         truelover,
         Technician,
         SerialKiller,
+        OverKiller,
         //RoleId
     }
 

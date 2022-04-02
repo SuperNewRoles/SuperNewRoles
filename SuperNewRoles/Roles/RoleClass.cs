@@ -87,6 +87,7 @@ namespace SuperNewRoles.Roles
             truelover.ClearAndReload();
             Technician.ClearAndReload();
             SerialKiller.ClearAndReload();
+            OverKiller.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1054,6 +1055,15 @@ namespace SuperNewRoles.Roles
                 IsSuicideView = false;
                 IsSuicideViews = new Dictionary<byte, bool>();
                 SuicideTimers = new Dictionary<byte, float>();
+            }
+        }
+        public static class OverKiller
+        {
+            public static List<PlayerControl> OverKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                OverKillerPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

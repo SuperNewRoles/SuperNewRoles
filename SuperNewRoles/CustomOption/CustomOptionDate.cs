@@ -292,6 +292,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SerialKillerKillTime;
         public static CustomOption SerialKillerIsMeetingReset;
 
+        public static CustomRoleOption OverKillerOption;
+        public static CustomOption OverKillerPlayerCount;
+        public static CustomOption OverKillerKillCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;

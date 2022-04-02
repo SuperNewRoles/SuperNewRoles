@@ -514,10 +514,6 @@ namespace SuperNewRoles.CustomOption
 
         public static void Postfix(GameSettingMenu __instance)
         {
-            foreach (var a in __instance.AllHideAndSeekItems)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("HAS:" + a.name);
-            }
             // Setup mapNameTransform
             var mapNameTransform = __instance.AllItems.FirstOrDefault(x => x.gameObject.activeSelf && x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
             if (mapNameTransform == null) return;

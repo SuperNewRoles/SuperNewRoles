@@ -36,6 +36,7 @@ namespace SuperNewRoles.Patches
             {
                 return true;
             }
+            if (ModeHandler.isMode(ModeId.BattleRoyal)) return true;
             if (target.isRole(RoleId.StuntMan))
             {
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))

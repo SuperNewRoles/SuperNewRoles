@@ -99,122 +99,80 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         DiePlayers.Add(p);
                     }
-                    else if (p.isAlive())
-                    {
-                    }
                 }
             }
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-
-                bool IsMadmateCheck = Madmate.CheckImpostor(p);
-                //  SuperNewRolesPlugin.Logger.LogInfo("マッドメイトがチェックできるか:"+IsMadmateCheck);
-                if (IsMadmateCheck)
+                if (!p.Data.Disconnected)
                 {
-                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                    bool IsMadmateCheck = Madmate.CheckImpostor(p);
+                    //  SuperNewRolesPlugin.Logger.LogInfo("マッドメイトがチェックできるか:"+IsMadmateCheck);
+                    if (IsMadmateCheck)
                     {
-                        if (!p2.Data.Disconnected && !p2.isImpostor())
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                         {
-                            p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                            if (!p2.Data.Disconnected && !p2.isImpostor())
+                            {
+                                p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                            }
+                            else if (!p2.Data.Disconnected && p2.isImpostor())
+                            {
+                                p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
+                            }
                         }
-                        else if (!p2.Data.Disconnected && p2.isImpostor())
-                        {
-                            p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
-                        }
+                        Madmate.CheckedImpostor.Add(p.PlayerId);
                     }
-                    Madmate.CheckedImpostor.Add(p.PlayerId);
-                }
-                string Suffix = "";
-                if (p.IsLovers())
-                {
-                    Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
-                    PlayerControl Side = p.GetOneSideLovers();
-                    string name = Side.getDefaultName();
-                    if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
-                    {
-                        name = ModHelpers.cs(RoleClass.ImpostorRed, name);
-                    }
-                    Side.RpcSetNamePrivate(name + Suffix, p);
-                }
-                if (p.isRole(RoleId.Sheriff))
-                {
-                    if (RoleClass.Sheriff.KillCount.ContainsKey(p.PlayerId))
-                    {
-                        Suffix += "(残り" + RoleClass.Sheriff.KillCount[p.PlayerId] + "発)";
-                    }
-                }
-                var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
-                string TaskText = "";
-                if (!p.isImpostor())
-                {
-                    try
-                    {
-                        if (commsActive)
-                        {
-                            var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
-                            TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
-                        }
-                        else
-                        {
-                            var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                            TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                }
-                string NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
-                p.RpcSetNamePrivate(NewName);
-                foreach(PlayerControl p2 in DiePlayers)
-                {
-                    if (p.PlayerId != p2.PlayerId)
-                    {
-                        p.RpcSetNamePrivate(NewName,p2);
-                    }
-                }
-            }
-            if (DiePlayers.Count >= 1)
-            {
-                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                {
                     string Suffix = "";
-                    if (p2.IsLovers())
+                    if (p.IsLovers())
                     {
                         Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
-                    }
-                    if (p2.isRole(RoleId.Sheriff))
-                    {
-                        if (RoleClass.Sheriff.KillCount.ContainsKey(p2.PlayerId))
+                        PlayerControl Side = p.GetOneSideLovers();
+                        string name = Side.getDefaultName();
+                        if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
                         {
-                            Suffix += "(残り" + RoleClass.Sheriff.KillCount[p2.PlayerId] + "発)";
+                            name = ModHelpers.cs(RoleClass.ImpostorRed, name);
+                        }
+                        Side.RpcSetNamePrivate(name + Suffix, p);
+                    }
+                    if (p.isRole(RoleId.Sheriff))
+                    {
+                        if (RoleClass.Sheriff.KillCount.ContainsKey(p.PlayerId))
+                        {
+                            Suffix += "(残り" + RoleClass.Sheriff.KillCount[p.PlayerId] + "発)";
                         }
                     }
-                    var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p2.getRole(), p2);
+                    var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
                     string TaskText = "";
-                    if (!p2.isImpostor())
+                    if (!p.isImpostor())
                     {
-                        if (commsActive)
+                        try
                         {
-                            var all = TaskCount.TaskDate(p2.Data).Item2;
-                            TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
+                            if (commsActive)
+                            {
+                                var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
+                                TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
+                            }
+                            else
+                            {
+                                var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                                TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                            }
                         }
-                        else
+                        catch
                         {
-                            var (complate, all) = TaskCount.TaskDate(p2.Data);
-                            TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+
                         }
                     }
-                    foreach (PlayerControl p in DiePlayers)
+                    string NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
+                    if (p.PlayerId != 0)
                     {
-                        if (p2.isDead() && !RoleClass.IsMeeting)
+                        p.RpcSetNamePrivate(NewName);
+                    }
+                    foreach (PlayerControl p2 in DiePlayers)
+                    {
+                        if (p.PlayerId != p2.PlayerId && p2.PlayerId != 0)
                         {
-                            p2.RpcSetNamePrivate("(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p2) + "</size>)" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
-                        }
-                        else
-                        {
-                            p2.RpcSetNamePrivate("<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p2) + "</size>\n" + ModHelpers.cs(introdate.color, p2.getDefaultName()) + Suffix, p);
+                            p.RpcSetNamePrivate(NewName, p2);
                         }
                     }
                 }
