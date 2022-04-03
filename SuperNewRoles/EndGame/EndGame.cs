@@ -379,14 +379,6 @@ namespace SuperNewRoles.EndGame
         public static CustomGameOverReason? EndData = null;
         public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-            {
-                try
-                {
-                    p.nameText.text = p.getDefaultName();
-                }
-                catch { }
-            }
             AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
             if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
         }
@@ -424,7 +416,7 @@ namespace SuperNewRoles.EndGame
                 }
                 AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
                 {
-                    PlayerName = p.Object.getDefaultName(),
+                    PlayerName = p.DefaultOutfit.PlayerName,
                     NameSuffix = namesuffix,
                     PlayerId = p.PlayerId,
                     ColorId = p.DefaultOutfit.ColorId,
