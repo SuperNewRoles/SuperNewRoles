@@ -98,6 +98,8 @@ namespace SuperNewRoles.Patches
                             {
                                 RoleClass.Sheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.SheriffKillMaxCount.getFloat() - 1;
                             }
+                            __instance.RpcMurderPlayer(target);
+                            return false;
                         }
                     } else
                     {
