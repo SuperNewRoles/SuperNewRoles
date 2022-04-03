@@ -141,7 +141,7 @@ namespace SuperNewRoles.EndGame
                 foreach (var data in AdditionalTempData.playerRoles)
                 {
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                    poolablePlayer.NameText.text += data.NameSuffix + $"\n<size=80%>{string.Join("\n", CustomOptions.cs(data.IntroDate.color, data.IntroDate.NameKey + "Name"))}</size>";
+                    poolablePlayer.NameText.text = data.PlayerName + data.NameSuffix + $"\n<size=80%>{string.Join("\n", CustomOptions.cs(data.IntroDate.color, data.IntroDate.NameKey + "Name"))}</size>";
                 }
             }
             GameObject bonusTextObject = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
