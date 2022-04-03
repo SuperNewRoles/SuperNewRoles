@@ -19,19 +19,22 @@ namespace SuperNewRoles.Patch
             [HarmonyArgument(0)] byte playerId,
             [HarmonyArgument(1)] ref UnhollowerBaseLib.Il2CppStructArray<byte> taskTypeIds)
             {
-                PlayerControl.GameOptions.NumCommonTasks = 100;
-                PlayerControl.GameOptions.NumShortTasks = 100;
-                PlayerControl.GameOptions.NumLongTasks = 100;
-                var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
-                var TasksList = ModHelpers.generateTasks(commont, shortt, longt);
-                taskTypeIds = new UnhollowerBaseLib.Il2CppStructArray<byte>(TasksList.Count);
-                for (int i = 0; i < TasksList.Count; i++)
+                if (ModeHandler.isMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 {
-                    taskTypeIds[i] = TasksList[i];
+                    PlayerControl.GameOptions.NumCommonTasks = 100;
+                    PlayerControl.GameOptions.NumShortTasks = 100;
+                    PlayerControl.GameOptions.NumLongTasks = 100;
+                    var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
+                    var TasksList = ModHelpers.generateTasks(commont, shortt, longt);
+                    taskTypeIds = new UnhollowerBaseLib.Il2CppStructArray<byte>(TasksList.Count);
+                    for (int i = 0; i < TasksList.Count; i++)
+                    {
+                        taskTypeIds[i] = TasksList[i];
+                    }
+                    PlayerControl.GameOptions.NumCommonTasks = SyncSetting.OptionData.NumCommonTasks;
+                    PlayerControl.GameOptions.NumShortTasks = SyncSetting.OptionData.NumShortTasks;
+                    PlayerControl.GameOptions.NumLongTasks = SyncSetting.OptionData.NumLongTasks;
                 }
-                PlayerControl.GameOptions.NumCommonTasks = SyncSetting.OptionData.NumCommonTasks;
-                PlayerControl.GameOptions.NumShortTasks = SyncSetting.OptionData.NumShortTasks;
-                PlayerControl.GameOptions.NumLongTasks = SyncSetting.OptionData.NumLongTasks;
             }
         }
         public static (int,int,int) GetTaskCount(this PlayerControl p)

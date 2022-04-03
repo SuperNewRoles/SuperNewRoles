@@ -570,11 +570,10 @@ namespace SuperNewRoles.Roles
                 IsImpostorCheck = CustomOptions.MadMateIsCheckImpostor.getBool();
                 IsUseVent = CustomOptions.MadMateIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadMateIsImpostorLight.getBool();
-                int Common = PlayerControl.GameOptions.NumCommonTasks;
-                int Long = PlayerControl.GameOptions.NumLongTasks;
-                int Short = PlayerControl.GameOptions.NumShortTasks;
+                int Common = (int)CustomOptions.MadMateCommonTask.getFloat();
+                int Long = (int)CustomOptions.MadMateLongTask.getFloat();
+                int Short = (int)CustomOptions.MadMateShortTask.getFloat();
                 int AllTask = Common + Long + Short;
-                SuperNewRolesPlugin.Logger.LogInfo("AllTask:"+AllTask);
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMateCheckImpostorTask.getString().Replace("%",""))/100f));
             }
         }
@@ -961,9 +960,11 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> WorkpersonPlayer;
             public static Color32 color = new Color32(210, 180, 140,byte.MaxValue);
+            public static bool IsAliveWin;
             public static void ClearAndReload()
             {
                 WorkpersonPlayer = new List<PlayerControl>();
+                IsAliveWin = CustomOptions.WorkpersonIsAliveWin.getBool();
             }
         }
         public static class Magaziner

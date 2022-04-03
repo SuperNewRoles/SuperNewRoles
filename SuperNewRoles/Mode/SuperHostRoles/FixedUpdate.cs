@@ -81,19 +81,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             List<PlayerControl> DiePlayers = new List<PlayerControl>();
             List<PlayerControl> AlivePlayers = new List<PlayerControl>();
-            a--;
-            if (a <= 0)
+            if (!RoleClass.IsMeeting)
             {
-                a = 10;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                a--;
+                if (a <= 0)
                 {
-                    if (!p.Data.Disconnected && p.isAlive())
+                    a = 10;
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        if (!p.Data.Disconnected && p.isAlive())
                         {
-                            if (!p2.Data.Disconnected && p.PlayerId != p2.PlayerId)
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                             {
-                                p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                if (!p2.Data.Disconnected && p.PlayerId != p2.PlayerId)
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
                             }
                         }
                     }
@@ -114,7 +117,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!p.Data.Disconnected)
                 {
                     string Suffix = "";
-                    if (p.PlayerId != 0)
+                    if (p.PlayerId != 0 && p.isAlive())
                     {
                         bool IsMadmateCheck = Madmate.CheckImpostor(p);
                         //  SuperNewRolesPlugin.Logger.LogInfo("マッドメイトがチェックできるか:"+IsMadmateCheck);
@@ -179,7 +182,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if ((p.isDead() || p.isRole(RoleId.God)) && !IsUnchecked)
                     {
                         NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>)" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
-                    } else if (p.isAlive())
+                    } else if (p.isAlive() || IsUnchecked)
                     {
                         NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
                     }

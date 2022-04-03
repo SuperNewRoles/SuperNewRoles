@@ -215,17 +215,20 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (!p.Data.Disconnected)
                 {
-                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
-                    if (playerCompleted >= playerTotal)
+                    if (p.isAlive() || !RoleClass.Workperson.IsAliveWin)
                     {
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                        Writer.Write(p.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
-                        Chat.WinCond = CustomGameOverReason.WorkpersonWin;
-                        __instance.enabled = false;
-                        CustomEndGame(__instance,(GameOverReason)CustomGameOverReason.CrewmateWin, false);
-                        return true;
+                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                        if (playerCompleted >= playerTotal)
+                        {
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            Writer.Write(p.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                            CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
+                            Chat.WinCond = CustomGameOverReason.WorkpersonWin;
+                            __instance.enabled = false;
+                            CustomEndGame(__instance, (GameOverReason)CustomGameOverReason.CrewmateWin, false);
+                            return true;
+                        }
                     }
                 }
             }

@@ -152,17 +152,6 @@ namespace SuperNewRoles.Patches
                 {
                     target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
                 }
-                if (RoleClass.Lovers.SameDie && target.IsLovers())
-                {
-                    if (AmongUsClient.Instance.AmHost)
-                    {
-                        PlayerControl SideLoverPlayer = target.GetOneSideLovers();
-                        if (SideLoverPlayer.isAlive())
-                        {
-                            SideLoverPlayer.RpcMurderPlayer(SideLoverPlayer);
-                        }
-                    }
-                }
             }
             else
             {

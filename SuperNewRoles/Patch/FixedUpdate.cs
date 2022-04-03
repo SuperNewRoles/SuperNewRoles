@@ -26,6 +26,24 @@ namespace SuperNewRoles.Patch
             if (!ModeHandler.IsBlockVanilaRole()) __instance.commsDown.SetActive(false);
         }
     }
+
+    [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
+    class DebugManager
+    {
+        public static void Postfix(ControllerManager __instance)
+        {
+            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+            {
+                if (AmongUsClient.Instance.AmHost && Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift))
+                {
+                    RPCHelper.StartRPC(CustomRPC.CustomRPC.SetHaison).EndRPC();
+                    CustomRPC.RPCProcedure.SetHaison();
+                    ShipStatus.Instance.enabled = false;
+                    ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
+                }
+            }
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     public class FixedUpdate
     {
@@ -58,13 +76,7 @@ namespace SuperNewRoles.Patch
                     setBasePlayerOutlines();
                     VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
                     SerialKiller.FixedUpdate();
-                    if (AmongUsClient.Instance.AmHost && Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift)) {
-                        RPCHelper.StartRPC(CustomRPC.CustomRPC.SetHaison).EndRPC();
-                        CustomRPC.RPCProcedure.SetHaison();
-                        ShipStatus.Instance.enabled = false;
-                        ShipStatus.RpcEndGame(GameOverReason.HumansByTask,false);
-                    }
-                    else if (ModeHandler.isMode(ModeId.NotImpostorCheck))
+                    if (ModeHandler.isMode(ModeId.NotImpostorCheck))
                     {
                         Mode.NotImpostorCheck.NameSet.Postfix();
                     }

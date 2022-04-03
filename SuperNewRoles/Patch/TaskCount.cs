@@ -67,9 +67,12 @@ namespace SuperNewRoles.Patch
         [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]
         private static class GameDataRecomputeTaskCountsPatch
         {
-            public static void Postfix(GameData __instance)
+            public static bool Prefix(GameData __instance)
             {
-                if (!Mode.ModeHandler.isMode(Mode.ModeId.Default)) return;
+                if (!Mode.ModeHandler.isMode(Mode.ModeId.Default))
+                {
+                    return true;
+                }
                 __instance.TotalTasks = 0;
                 __instance.CompletedTasks = 0;
                 for (int i = 0; i < __instance.AllPlayers.Count; i++)
@@ -82,7 +85,7 @@ namespace SuperNewRoles.Patch
                         __instance.CompletedTasks += playerCompleted;
                     }
                 }
-                return;
+                return false;
             }
         }
     }

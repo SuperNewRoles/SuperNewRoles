@@ -2,6 +2,7 @@
 using InnerNet;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Roles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,6 +58,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (exiled.Object.isRole(RoleId.Sheriff) || exiled.Object.isRole(RoleId.truelover))
             {
                 exiled.Object.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+            }
+            if (RoleClass.Lovers.SameDie && exiled.Object.IsLovers())
+            {
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    PlayerControl SideLoverPlayer = exiled.Object.GetOneSideLovers();
+                    if (SideLoverPlayer.isAlive())
+                    {
+                        SideLoverPlayer.RpcMurderPlayer(SideLoverPlayer);
+                    }
+                }
             }
             Roles.Jester.WrapUp(exiled);
             Roles.Nekomata.WrapUp(exiled);

@@ -279,6 +279,7 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption WorkpersonOption;
         public static CustomOption WorkpersonPlayerCount;
+        public static CustomOption WorkpersonIsAliveWin;
         public static CustomOption WorkpersonCommonTask;
         public static CustomOption WorkpersonLongTask;
         public static CustomOption WorkpersonShortTask;
@@ -507,6 +508,7 @@ namespace SuperNewRoles.CustomOption
             MadMateCommonTask = madmateoption.Item1;
             MadMateShortTask = madmateoption.Item2;
             MadMateLongTask = madmateoption.Item3;
+            //MadMateIsNotTask = madmateoption.Item4;
             MadMateCheckImpostorTask = CustomOption.Create(242, ModTranslation.getString("MadMateCheckImpostorTaskSetting"), rates4, MadMateIsCheckImpostor);
             MadMateIsUseVent = CustomOption.Create(120, ModTranslation.getString("MadMateUseVentSetting"), false, MadMateOption);
             MadMateIsImpostorLight = CustomOption.Create(234, ModTranslation.getString("MadMateImpostorLightSetting"), false, MadMateOption);
@@ -554,7 +556,7 @@ namespace SuperNewRoles.CustomOption
             GodPlayerCount = CustomOption.Create(150, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GodOption);
             GodViewVote = CustomOption.Create(236, cs(Color.white, "GodViewVoteSetting"), false, GodOption);
             GodIsEndTaskWin = CustomOption.Create(237, cs(Color.white, "GodIsEndTaskWinSetting"), true, GodOption);
-            var godoption = SelectTask.TaskSetting(265, 266, 267, GodIsEndTaskWin);
+            var godoption = SelectTask.TaskSetting(265, 266, 267,GodIsEndTaskWin);
             GodCommonTask = godoption.Item1;
             GodShortTask = godoption.Item2;
             GodLongTask = godoption.Item3;
@@ -614,6 +616,7 @@ namespace SuperNewRoles.CustomOption
 
             WorkpersonOption = new CustomRoleOption(213, "WorkpersonName", RoleClass.Workperson.color, 1);
             WorkpersonPlayerCount = CustomOption.Create(214, ModTranslation.getString("SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], WorkpersonOption);
+            WorkpersonIsAliveWin = CustomOption.Create(271, ModTranslation.getString("WorkpersonIsAliveWinSetting"), false, WorkpersonOption);
             WorkpersonCommonTask = CustomOption.Create(215, ModTranslation.getString("GameCommonTasks"), 2,0,12,1, WorkpersonOption);
             WorkpersonLongTask = CustomOption.Create(216, ModTranslation.getString("GameLongTasks"), 10,0,69,1, WorkpersonOption);
             WorkpersonShortTask = CustomOption.Create(217, ModTranslation.getString("GameShortTasks"), 5,0,45,1, WorkpersonOption);
@@ -655,7 +658,7 @@ namespace SuperNewRoles.CustomOption
             LoversSameDie = CustomOption.Create(226, cs(Color.white, "LoversSameDieSetting"), true, LoversOption);
             LoversAliveTaskCount = CustomOption.Create(227, cs(Color.white, "LoversAliveTaskCountSetting"), false, LoversOption);
             LoversDuplicationQuarreled = CustomOption.Create(228, cs(Color.white, "LoversDuplicationQuarreledSetting"), true, LoversOption);
-            var loversoption = SelectTask.TaskSetting(268, 269, 270, LoversOption);
+            var loversoption = SelectTask.TaskSetting(268, 269, 270,LoversOption);
             LoversCommonTask = loversoption.Item1;
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
