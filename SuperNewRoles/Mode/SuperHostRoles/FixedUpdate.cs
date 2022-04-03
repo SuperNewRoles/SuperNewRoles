@@ -55,7 +55,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
         }*/
         private static int a = 0;
-        public static void SetRoleNames()
+        public static void SetRoleNames(bool IsUnchecked = false)
         {
             if (!AmongUsClient.Instance.AmHost) return;
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
@@ -168,7 +168,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                     string NewName = "";
-                    if (p.isDead() || p.isRole(RoleId.God))
+                    if ((p.isDead() || p.isRole(RoleId.God)) && !IsUnchecked)
                     {
                         NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>)" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
                     } else if (p.isAlive())

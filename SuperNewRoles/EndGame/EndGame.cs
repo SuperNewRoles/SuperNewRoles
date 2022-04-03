@@ -424,7 +424,7 @@ namespace SuperNewRoles.EndGame
                 }
                 AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
                 {
-                    PlayerName = p.PlayerName,
+                    PlayerName = p.Object.getDefaultName(),
                     NameSuffix = namesuffix,
                     PlayerId = p.PlayerId,
                     ColorId = p.DefaultOutfit.ColorId,

@@ -29,8 +29,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void StartMeeting(MeetingHud __instance)
         {
             if (!AmongUsClient.Instance.AmHost) return;
+            FixedUpdate.SetRoleNames(true);
             RoleClass.IsMeeting = true;
-            FixedUpdate.SetRoleNames();
+            FixedUpdate.SetRoleNames(true);
             new LateTask(() => {
                 FixedUpdate.SetDefaultNames();
             }, 5f, "SetMeetingName");
