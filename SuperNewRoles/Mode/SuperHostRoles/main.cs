@@ -15,6 +15,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             Chat.WinCond = null;
             EndGame.OnGameEndPatch.EndData = null;
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                p.getDefaultName();
+            }
         }
         public static void SendAllRoleChat()
         {/*
