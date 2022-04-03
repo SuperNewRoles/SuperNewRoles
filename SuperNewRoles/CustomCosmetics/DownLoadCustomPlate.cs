@@ -33,6 +33,7 @@ namespace SuperNewRoles.CustomCosmetics
         {
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath)+@"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\");
+            SuperNewRolesPlugin.Logger.LogInfo("ダウンロード開始");
             FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
         }
         private static string sanitizeResourcePath(string res)
@@ -59,6 +60,7 @@ namespace SuperNewRoles.CustomCosmetics
         }
         public static async Task<HttpStatusCode> FetchHats(string repo)
         {
+            SuperNewRolesPlugin.Logger.LogInfo("ダウンロード開始:"+repo);
             HttpClient http = new HttpClient();
             http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
             var response = await http.GetAsync(new System.Uri($"{repo}/CustomNamePlates.json"), HttpCompletionOption.ResponseContentRead);
@@ -71,7 +73,7 @@ namespace SuperNewRoles.CustomCosmetics
                     return HttpStatusCode.ExpectationFailed;
                 }
                 string json = await response.Content.ReadAsStringAsync();
-                JToken jobj = JObject.Parse(json)["hats"];
+                JToken jobj = JObject.Parse(json)["nameplates"];
                 if (!jobj.HasValues) return HttpStatusCode.ExpectationFailed;
 
                 List<CustomPlates.CustomPlate> platedatas = new List<CustomPlates.CustomPlate>();
@@ -123,6 +125,7 @@ namespace SuperNewRoles.CustomCosmetics
                 SuperNewRolesPlugin.Instance.Log.LogError(ex.ToString());
                 System.Console.WriteLine(ex);
             }
+            SuperNewRolesPlugin.Logger.LogInfo("ダウンロード終了:"+repo);
             return HttpStatusCode.OK;
         }
     }

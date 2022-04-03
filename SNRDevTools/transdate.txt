@@ -37,8 +37,8 @@ creditsMain,Create By ykundesu,Create By ykundesu
 creditsFull,Create By ykundesu,Create By ykundesu
 creditsVersion,SuperNewRoles v{0},SuperNewRoles v{0}
 creditsUpdateOk,It has been updated. It will be applied when you reboot. Latest Version:v{0},自動アップデート済みです。再起動すると適用されます。最新バージョン:v{0}
-modOptionsText,Mod Options,Modの設定
-moreOptionsText,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定
+modOptionsText,Options,設定
+moreOptionsText,Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings,通常設定&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定
 SettingPlayerCountName,Role Player,人数
 CustomStremerMode,StremerMode,ストリーマーモード
 CustomAutoUpdate,Auto Update,自動アップデート

@@ -36,8 +36,8 @@ Create By ykundesu
 Create By ykundesu
 SuperNewRoles v{0}
 It has been updated. It will be applied when you reboot. Latest Version:v{0}
-Mod Options
-<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings
+Options
+Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings
 Role Player
 StremerMode
 Auto Update

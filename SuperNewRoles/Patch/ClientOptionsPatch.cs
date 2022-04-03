@@ -213,7 +213,14 @@ namespace SuperNewRoles.Patch
                 button.onState = mainbutton.onState;
                 button.Background.color = mainbutton.onState ? Color.green : Palette.ImpostorRed;
 
-                button.Text.text = mainbutton.Text.text;
+                if (i == 0)
+                {
+                    button.Text.text = TranslationController.Instance.GetString(StringNames.SettingsCensorChat);
+                }
+                else
+                {
+                    button.Text.text = TranslationController.Instance.GetString(StringNames.SettingsEnableFriendInvites);
+                }
                 button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
                 button.Text.font = Object.Instantiate(titleText.font);
                 button.Text.GetComponent<RectTransform>().sizeDelta = new Vector2(2, 2);

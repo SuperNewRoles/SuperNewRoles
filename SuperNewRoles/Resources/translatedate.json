@@ -153,12 +153,12 @@
         "11" : "\u81ea\u52d5\u30a2\u30c3\u30d7\u30c7\u30fc\u30c8\u6e08\u307f\u3067\u3059\u3002\u518d\u8d77\u52d5\u3059\u308b\u3068\u9069\u7528\u3055\u308c\u307e\u3059\u3002\u6700\u65b0\u30d0\u30fc\u30b8\u30e7\u30f3:v{0}"
         } ,
  "modOptionsText" : {
-        "0" : "Mod Options" ,
-        "11" : "Mod\u306e\u8a2d\u5b9a"
+        "0" : "Options" ,
+        "11" : "\u8a2d\u5b9a"
         } ,
  "moreOptionsText" : {
-        "0" : "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings" ,
-        "11" : "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u8a2d\u5b9a"
+        "0" : "Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings" ,
+        "11" : "\u901a\u5e38\u8a2d\u5b9a&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u8a2d\u5b9a"
         } ,
  "SettingPlayerCountName" : {
         "0" : "Role Player" ,

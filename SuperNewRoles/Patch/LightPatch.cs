@@ -20,7 +20,7 @@ namespace SuperNewRoles.Patch
 
             float num = (float)switchSystem.Value / 255f;
 
-            if (player == null || player.IsDead)
+            if (player == null || player.IsDead || AmongUsClient.Instance.GameMode == GameModes.FreePlay)
                 __result = __instance.MaxLightRadius;
             else if (Clergyman.IsLightOutVision())
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * RoleClass.Clergyman.DownImpoVision;

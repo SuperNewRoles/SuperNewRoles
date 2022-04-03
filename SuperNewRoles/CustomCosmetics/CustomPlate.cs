@@ -29,9 +29,10 @@ namespace SuperNewRoles.CustomCosmetics
 
                 var plateDir = new DirectoryInfo("SuperNewRoles\\CustomPlatesChache");
                 if (!plateDir.Exists) plateDir.Create();
-                var pngFiles = plateDir.GetFiles("*.png");
+                var Files = plateDir.GetFiles("*.png").ToList();
+                Files.AddRange(plateDir.GetFiles("*.jpg"));
                 var CustomPlates = new List<NamePlateData>();
-                foreach (var file in pngFiles)
+                foreach (var file in Files)
                 {
                     try
                     {
@@ -39,8 +40,8 @@ namespace SuperNewRoles.CustomCosmetics
                         var FileName = file.Name.Substring(0, file.Name.Length - 4);
                         var Data = DownLoadClass.platedetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
                         plate.name = Data.name + "\nby " + Data.author;
-                        plate.ProductId = "CustomNamePlates_" + Data.resource.Replace(".png", "");
-                        plate.BundleId = "CustomNamePlates_" + Data.resource.Replace(".png", "");
+                        plate.ProductId = "CustomNamePlates_" + Data.resource.Replace(".png", "").Replace(".jpg","");
+                        plate.BundleId = "CustomNamePlates_" + Data.resource.Replace(".png", "").Replace(".jpg","");
                         plate.displayOrder = 99;
                         plate.ChipOffset = new Vector2(0f, 0.2f);
                         plate.Free = true;

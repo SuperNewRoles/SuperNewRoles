@@ -36,8 +36,8 @@ Create By ykundesu
 Create By ykundesu
 SuperNewRoles v{0}
 自動アップデート済みです。再起動すると適用されます。最新バージョン:v{0}
-Modの設定
-<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定
+設定
+通常設定&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定
 人数
 ストリーマーモード
 自動アップデート
