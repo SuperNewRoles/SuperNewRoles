@@ -30,12 +30,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (DefaultName.ContainsKey(player.PlayerId))
             {
-                return DefaultName[player.PlayerId];
+                return DefaultName[player.getClientId()];
             }
             else
             {
-                DefaultName[player.PlayerId] = player.CurrentOutfit.PlayerName;
-                return DefaultName[player.PlayerId];
+                DefaultName[player.getClientId()] = player.CurrentOutfit.PlayerName;
+                return DefaultName[player.getClientId()];
             }
         }
         public static void RoleFixedUpdate()
