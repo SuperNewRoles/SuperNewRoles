@@ -10,6 +10,7 @@ using static System.Drawing.Color;
 using System.Text;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.CustomOption
 {
@@ -46,6 +47,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption JesterIsVent;
         public static CustomOption JesterIsSabotage;
         public static CustomOption JesterIsWinCleartask;
+        public static CustomOption JesterCommonTask;
+        public static CustomOption JesterShortTask;
+        public static CustomOption JesterLongTask;
 
         public static CustomRoleOption LighterOption;
         public static CustomOption LighterPlayerCount;
@@ -166,6 +170,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption MadMateOption;
         public static CustomOption MadMatePlayerCount;
         public static CustomOption MadMateIsCheckImpostor;
+        public static CustomOption MadMateCommonTask;
+        public static CustomOption MadMateShortTask;
+        public static CustomOption MadMateLongTask;
         public static CustomOption MadMateCheckImpostorTask;
         public static CustomOption MadMateIsUseVent;
         public static CustomOption MadMateIsImpostorLight;
@@ -213,6 +220,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption GodPlayerCount;
         public static CustomOption GodViewVote;
         public static CustomOption GodIsEndTaskWin;
+        public static CustomOption GodCommonTask;
+        public static CustomOption GodShortTask;
+        public static CustomOption GodLongTask;
 
         public static CustomRoleOption AllCleanerOption;
         public static CustomOption AllCleanerPlayerCount;
@@ -364,6 +374,10 @@ namespace SuperNewRoles.CustomOption
             JesterIsVent = CustomOption.Create(12, ModTranslation.getString("JesterIsVentSetting"), false, JesterOption);
             JesterIsSabotage = CustomOption.Create(13, ModTranslation.getString("JesterIsSabotageSetting"), false, JesterOption);
             JesterIsWinCleartask = CustomOption.Create(113, ModTranslation.getString("JesterIsWinClearTaskSetting"), false, JesterOption);
+            var jesteroption = SelectTask.TaskSetting(262, 263, 264, JesterIsWinCleartask);
+            JesterCommonTask = jesteroption.Item1;
+            JesterShortTask = jesteroption.Item2;
+            JesterLongTask = jesteroption.Item3;
 
             LighterOption = new CustomRoleOption(14, "LighterName", RoleClass.Lighter.color, 1);
             LighterPlayerCount = CustomOption.Create(15, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], LighterOption);
@@ -486,6 +500,10 @@ namespace SuperNewRoles.CustomOption
             MadMateOption = new CustomRoleOption(98, "MadMateName", RoleClass.ImpostorRed, 1);
             MadMatePlayerCount = CustomOption.Create(99, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMateOption);
             MadMateIsCheckImpostor = CustomOption.Create(100, ModTranslation.getString("MadMateIsCheckImpostorSetting"), false, MadMateOption);
+            var madmateoption = SelectTask.TaskSetting(259,260,261,MadMateIsCheckImpostor);
+            MadMateCommonTask = madmateoption.Item1;
+            MadMateShortTask = madmateoption.Item2;
+            MadMateLongTask = madmateoption.Item3;
             MadMateCheckImpostorTask = CustomOption.Create(242, ModTranslation.getString("MadMateCheckImpostorTaskSetting"), rates4, MadMateIsCheckImpostor);
             MadMateIsUseVent = CustomOption.Create(120, ModTranslation.getString("MadMateUseVentSetting"), false, MadMateOption);
             MadMateIsImpostorLight = CustomOption.Create(234, ModTranslation.getString("MadMateImpostorLightSetting"), false, MadMateOption);
@@ -533,6 +551,10 @@ namespace SuperNewRoles.CustomOption
             GodPlayerCount = CustomOption.Create(150, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GodOption);
             GodViewVote = CustomOption.Create(236, cs(Color.white, "GodViewVoteSetting"), false, GodOption);
             GodIsEndTaskWin = CustomOption.Create(237, cs(Color.white, "GodIsEndTaskWinSetting"), true, GodOption);
+            var godoption = SelectTask.TaskSetting(265, 266, 267, GodIsEndTaskWin);
+            GodCommonTask = godoption.Item1;
+            GodShortTask = godoption.Item2;
+            GodLongTask = godoption.Item3;
             /*
             AllCleanerOption = new CustomRoleOption(151, "AllCleanerName", RoleClass.AllCleaner.color, 1);
             AllCleanerPlayerCount = CustomOption.Create(152, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], AllCleanerOption);

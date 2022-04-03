@@ -23,12 +23,12 @@ namespace SuperNewRoles.Patch
             if (player == null || player.IsDead || AmongUsClient.Instance.GameMode == GameModes.FreePlay)
                 __result = __instance.MaxLightRadius;
             else if (Clergyman.IsLightOutVision())
-                __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * RoleClass.Clergyman.DownImpoVision;
+                __result = __instance.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
             else if(player.Object.isRole(CustomRPC.RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate)
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * PlayerControl.GameOptions.ImpostorLightMod;
             else if (player.Object.isImpostor() || RoleHelpers.IsImpostorLight(player.Object))
                 __result = __instance.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
-            else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && RoleClass.Lighter.IsLightOn)
+            else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player.Object) && RoleClass.Lighter.IsLightOn)
                 __result = Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num);
             else
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * PlayerControl.GameOptions.CrewLightMod;

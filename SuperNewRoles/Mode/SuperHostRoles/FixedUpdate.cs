@@ -28,14 +28,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static string getDefaultName(this PlayerControl player)
         {
+            byte playerid = 0;
+            if (AmongUsClient.Instance.GameMode == GameModes.LocalGame)
+            {
+                playerid = player.PlayerId;
+            } else
+            {
+                playerid = (byte)player.getClientId();
+            }
             if (DefaultName.ContainsKey(player.PlayerId))
             {
-                return DefaultName[player.getClientId()];
+                return DefaultName[playerid];
             }
             else
             {
-                DefaultName[player.getClientId()] = player.CurrentOutfit.PlayerName;
-                return DefaultName[player.getClientId()];
+                DefaultName[playerid] = player.CurrentOutfit.PlayerName;
+                return DefaultName[playerid];
             }
         }
         public static void RoleFixedUpdate()
