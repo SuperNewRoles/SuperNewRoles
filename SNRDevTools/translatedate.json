@@ -632,6 +632,10 @@
         "0" : "Can Kill a Neutral" ,
         "11" : "\u7b2c\u4e09\u9663\u55b6\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
+ "SheriffIsKillLoversSetting" : {
+        "0" : "Can Kill a Lovers" ,
+        "11" : "\u30e9\u30d0\u30fc\u30ba\u3092\u30ad\u30eb\u3067\u304d\u308b"
+        } ,
  "SheriffIsKillMadMateSetting" : {
         "0" : "Can Kill a Madmate" ,
         "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30c9\u3092\u30ad\u30eb\u3067\u304d\u308b"

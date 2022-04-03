@@ -156,6 +156,7 @@ Kill the outsider!
 Kill the outsider and lead your crewmates to victory!
 Sheriff's Kill Cooldown
 Can Kill a Neutral
+Can Kill a Lovers
 Can Kill a Madmate
 Yes
 No

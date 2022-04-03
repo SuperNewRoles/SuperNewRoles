@@ -157,6 +157,7 @@ SheriffTitle1,Kill the outsider!,人外をキルしよう
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう
 SheriffCoolDownSetting,Sheriff's Kill Cooldown,シェリフのキルクールダウン
 SheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる
+SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる
 SheriffIsKillMadMateSetting,Can Kill a Madmate,マッドメイドをキルできる
 SheriffIsKillMadMateYes,Yes,できる
 SheriffIsKillMadMateNo,No,できない

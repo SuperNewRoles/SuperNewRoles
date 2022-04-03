@@ -68,6 +68,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SheriffCoolTime;
         public static CustomOption SheriffMadMateKill;
         public static CustomOption SheriffNeutralKill;
+        public static CustomOption SheriffLoversKill;
         public static CustomOption SheriffKillMaxCount;
 
         public static CustomRoleOption MeetingSheriffOption;
@@ -386,6 +387,7 @@ namespace SuperNewRoles.CustomOption
             SheriffPlayerCount = CustomOption.Create(27, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SheriffOption);
             SheriffCoolTime = CustomOption.Create(28, ModTranslation.getString("SheriffCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
             SheriffNeutralKill = CustomOption.Create(173, ModTranslation.getString("SheriffIsKillMadMateSetting"), false, SheriffOption);
+            SheriffLoversKill = CustomOption.Create(258, ModTranslation.getString("SheriffIsKillLoversSetting"), false, SheriffOption);
             SheriffMadMateKill = CustomOption.Create(29, ModTranslation.getString("SheriffIsKillNeutralSetting"), false, SheriffOption);
             SheriffKillMaxCount = CustomOption.Create(30, ModTranslation.getString("SheriffMaxKillCountSetting"), 1f, 1f, 20f, 1, SheriffOption, format: "unitSeconds");
             

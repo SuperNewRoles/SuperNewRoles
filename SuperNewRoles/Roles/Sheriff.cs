@@ -22,6 +22,7 @@ namespace SuperNewRoles.Roles
             if (roledata == TeamRoleType.Impostor) return true;
             if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(Target) && RoleClass.Sheriff.IsMadMateKill) return true;
             if (Target.isNeutral() && RoleClass.Sheriff.IsNeutralKill) return true;
+            if (RoleClass.Sheriff.IsLoversKill && Target.IsLovers()) return true;
             return false;
         }
         public static bool IsSheriff(PlayerControl Player)

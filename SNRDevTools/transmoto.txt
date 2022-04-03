@@ -156,6 +156,7 @@ SheriffTitle1
 SheriffTitle2
 SheriffCoolDownSetting
 SheriffIsKillNeutralSetting
+SheriffIsKillLoversSetting
 SheriffIsKillMadMateSetting
 SheriffIsKillMadMateYes
 SheriffIsKillMadMateNo

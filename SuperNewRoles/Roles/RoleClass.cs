@@ -208,6 +208,7 @@ namespace SuperNewRoles.Roles
             public static PlayerControl currentTarget;
             public static float CoolTime;
             public static bool IsNeutralKill;
+            public static bool IsLoversKill;
             public static bool IsMadMateKill;
             public static float KillMaxCount;
             public static Dictionary<int,int> KillCount;
@@ -227,6 +228,7 @@ namespace SuperNewRoles.Roles
                 SheriffPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.SheriffCoolTime.getFloat();
                 IsNeutralKill = CustomOptions.SheriffNeutralKill.getBool();
+                IsLoversKill = CustomOptions.SheriffLoversKill.getBool();
                 IsMadMateKill = CustomOptions.SheriffMadMateKill.getBool();
                 KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
                 KillCount = new Dictionary<int, int>();
