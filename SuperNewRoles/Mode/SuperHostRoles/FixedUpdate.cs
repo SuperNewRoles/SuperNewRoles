@@ -36,7 +36,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 playerid = (byte)player.getClientId();
             }
-            if (DefaultName.ContainsKey(player.PlayerId))
+            if (DefaultName.ContainsKey(playerid))
             {
                 return DefaultName[playerid];
             }
