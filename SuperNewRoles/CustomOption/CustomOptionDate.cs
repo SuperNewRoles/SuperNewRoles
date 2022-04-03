@@ -319,7 +319,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption LoversSingleTeam;
         public static CustomOption LoversSameDie;
         public static CustomOption LoversAliveTaskCount;
-        public static CustomOption LoversDuplicationQuarreled; 
+        public static CustomOption LoversDuplicationQuarreled;
+        public static CustomOption LoversCommonTask;
+        public static CustomOption LoversLongTask;
+        public static CustomOption LoversShortTask;
 
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
@@ -652,6 +655,10 @@ namespace SuperNewRoles.CustomOption
             LoversSameDie = CustomOption.Create(226, cs(Color.white, "LoversSameDieSetting"), true, LoversOption);
             LoversAliveTaskCount = CustomOption.Create(227, cs(Color.white, "LoversAliveTaskCountSetting"), false, LoversOption);
             LoversDuplicationQuarreled = CustomOption.Create(228, cs(Color.white, "LoversDuplicationQuarreledSetting"), true, LoversOption);
+            var loversoption = SelectTask.TaskSetting(268, 269, 270, LoversOption);
+            LoversCommonTask = loversoption.Item1;
+            LoversShortTask = loversoption.Item2;
+            LoversLongTask = loversoption.Item3;
         }
     }
 }

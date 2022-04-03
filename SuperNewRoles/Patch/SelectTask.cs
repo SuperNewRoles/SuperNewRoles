@@ -83,6 +83,17 @@ namespace SuperNewRoles.Patch
                     return (commont, shortt, longt);
                 }
             }
+
+            else if (p.IsLovers() && !p.isImpostor())
+            {
+                int commont = (int)CustomOptions.LoversCommonTask.getFloat();
+                int shortt = (int)CustomOptions.LoversShortTask.getFloat();
+                int longt = (int)CustomOptions.LoversLongTask.getFloat();
+                if (!(commont == 0 && shortt == 0 && longt == 0))
+                {
+                    return (commont, shortt, longt);
+                }
+            }
             return (SyncSetting.OptionData.NumCommonTasks, SyncSetting.OptionData.NumShortTasks, SyncSetting.OptionData.NumLongTasks);
         }
         public static (CustomOption.CustomOption, CustomOption.CustomOption, CustomOption.CustomOption) TaskSetting(int commonid,int shortid,int longid,CustomOption.CustomOption Child = null)
