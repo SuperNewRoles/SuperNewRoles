@@ -41,7 +41,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             else
             {
-                DefaultName[playerid] = player.CurrentOutfit.PlayerName;
+                DefaultName[playerid] = player.nameText.text;
                 return DefaultName[playerid];
             }
         }

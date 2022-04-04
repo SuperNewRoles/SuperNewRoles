@@ -754,7 +754,6 @@ namespace SuperNewRoles
                     return RoleId.DefaultRole;
                 }
             }
-            SuperNewRolesPlugin.Logger.LogInfo("Chache!");
             try
             {
                 if (SuperNewRoles.Roles.RoleClass.SoothSayer.SoothSayerPlayer.IsCheckListPlayerControl(player))

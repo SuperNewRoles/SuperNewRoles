@@ -94,8 +94,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("～～～～");
-                            SuperNewRolesPlugin.Logger.LogInfo("インベント:" + p.inVent);
                             if (p.inVent && p.isAlive() && VentData.ContainsKey(p.PlayerId) && VentData[p.PlayerId] != null)
                             {
                                 p.MyPhysics.RpcBootFromVent((int)VentData[p.PlayerId]);

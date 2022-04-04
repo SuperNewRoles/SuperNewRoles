@@ -22,7 +22,7 @@ namespace SuperNewRoles.CustomCosmetics
         {
             public static void Postfix(HatManager __instance)
             {
-                if (isAdded) return;
+                if (isAdded || !DownLoadClass.IsEndDownload) return;
                 isAdded = true;
                 SuperNewRolesPlugin.Logger.LogInfo("プレート読み込み処理開始");
                 var AllPlates = __instance.allNamePlates;

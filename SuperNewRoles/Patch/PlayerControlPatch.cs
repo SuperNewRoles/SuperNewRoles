@@ -32,6 +32,7 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             if (__instance.isDead()) return false;
+            if (__instance.PlayerId == target.PlayerId) { __instance.RpcMurderPlayer(target); return false; }
             if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 return false;
             if (!AmongUsClient.Instance.AmHost)

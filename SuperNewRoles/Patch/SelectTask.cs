@@ -58,7 +58,6 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.JesterCommonTask.getFloat();
                     int shortt = (int)CustomOptions.JesterShortTask.getFloat();
                     int longt = (int)CustomOptions.JesterLongTask.getFloat();
-                    SuperNewRolesPlugin.Logger.LogInfo(commont+"と"+shortt+"と"+longt);
                     if (!(commont == 0 && shortt == 0 && longt == 0))
                     {
                         return (commont, shortt, longt);

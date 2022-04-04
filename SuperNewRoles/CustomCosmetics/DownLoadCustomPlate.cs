@@ -28,9 +28,12 @@ namespace SuperNewRoles.CustomCosmetics
     }
     public static class DownLoadClass
     {
+        public static bool IsEndDownload = false;
+        public static List<string> fetchs = new List<string>();
         public static List<CustomPlates.CustomPlate> platedetails = new List<CustomPlates.CustomPlate>();
         public static void Load()
         {
+            IsEndDownload = false;
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath)+@"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\");
             SuperNewRolesPlugin.Logger.LogInfo("ダウンロード開始");
@@ -60,6 +63,7 @@ namespace SuperNewRoles.CustomCosmetics
         }
         public static async Task<HttpStatusCode> FetchHats(string repo)
         {
+            fetchs.Add(repo);
             SuperNewRolesPlugin.Logger.LogInfo("ダウンロード開始:"+repo);
             HttpClient http = new HttpClient();
             http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
@@ -126,6 +130,11 @@ namespace SuperNewRoles.CustomCosmetics
                 System.Console.WriteLine(ex);
             }
             SuperNewRolesPlugin.Logger.LogInfo("ダウンロード終了:"+repo);
+            fetchs.Remove(repo);
+            if (fetchs.Count <= 0)
+            {
+                IsEndDownload = true;
+            }
             return HttpStatusCode.OK;
         }
     }
