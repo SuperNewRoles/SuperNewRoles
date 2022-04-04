@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles.Roles;
@@ -8,7 +7,6 @@ using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -32,7 +30,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (AmongUsClient.Instance.GameMode == GameModes.LocalGame)
             {
                 playerid = player.PlayerId;
-            } else
+            }
+            else
             {
                 playerid = (byte)player.getClientId();
             }
@@ -182,7 +181,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if ((p.isDead() || p.isRole(RoleId.God)) && !IsUnchecked)
                     {
                         NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>)" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
-                    } else if (p.isAlive() || IsUnchecked)
+                    }
+                    else if (p.isAlive() || IsUnchecked)
                     {
                         NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
                     }
@@ -192,7 +192,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     foreach (PlayerControl p2 in DiePlayers)
                     {
-                        if (p.PlayerId != p2.PlayerId && p2.PlayerId != 0)
+                        if (p.PlayerId != p2.PlayerId && p2.PlayerId != 0 && !p2.Data.Disconnected)
                         {
                             p.RpcSetNamePrivate(NewName, p2);
                         }
@@ -308,13 +308,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             //Vector3 tr = PlayerControl.LocalPlayer.transform.position;
             //SuperNewRolesPlugin.Logger.LogInfo("x:"+tr.x+"f,"+tr.y+"f,"+tr.z+"f");
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff)) {
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff))
+            {
                 if (RoleClass.Sheriff.KillMaxCount >= 1)
                 {
                     HudManager.Instance.KillButton.gameObject.SetActive(true);
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
-                } else
+                }
+                else
                 {
                     HudManager.Instance.KillButton.gameObject.SetActive(false);
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = false;

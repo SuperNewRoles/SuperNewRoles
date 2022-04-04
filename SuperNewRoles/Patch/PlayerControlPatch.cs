@@ -31,6 +31,7 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
+            if (__instance.isDead()) return false;
             if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 return false;
             if (!AmongUsClient.Instance.AmHost)
@@ -38,7 +39,7 @@ namespace SuperNewRoles.Patches
                 return true;
             }
             if (ModeHandler.isMode(ModeId.BattleRoyal)) return true;
-            if (target.isRole(RoleId.StuntMan))
+            if (target.isRole(RoleId.StuntMan) && !__instance.isRole(RoleId.OverKiller))
             {
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
                 {

@@ -712,6 +712,8 @@ namespace SuperNewRoles.EndGame
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
             ModeHandler.Wrapup(exiled);
             if (exiled == null) return;
+            exiled.Object.Exiled();
+            exiled.IsDead = true;
             FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
             var Player = ModHelpers.playerById(exiled.PlayerId);
             if (ModeHandler.isMode(ModeId.Default))
