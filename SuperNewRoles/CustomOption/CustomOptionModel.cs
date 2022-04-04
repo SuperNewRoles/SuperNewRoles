@@ -70,9 +70,14 @@ namespace SuperNewRoles.CustomOption
                 {
                     SuperNewRolesPlugin.Logger.LogInfo($"CustomOptionのId({id})が重複しています。");
                 }
+                if (Max < id)
+                {
+                    Max = id;
+                }
             }
             options.Add(this);
         }
+        public static int Max = 0;
 
         public static CustomOption Create(int id, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
         {

@@ -13,6 +13,7 @@ using UnityEngine;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomObject;
 using TMPro;
+using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.Roles
 {

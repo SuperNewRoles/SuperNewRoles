@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.MapOptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,21 +19,44 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 [HarmonyArgument(1)] PlayerControl player,
                 [HarmonyArgument(2)] byte amount)
             {
-                if (systemType == SystemTypes.Comms)
+                if(systemType == SystemTypes.Security)
+                {
+                    if (amount == 1)
+                    {
+                        if (!CameraPlayers.Contains(player.PlayerId))
+                        {
+                            CameraPlayers.Add(player.PlayerId);
+                        }
+                    }
+                    else
+                    {
+                        if (CameraPlayers.Contains(player.PlayerId))
+                        {
+                            CameraPlayers.Remove(player.PlayerId);
+                        }
+                    }
+                }
+                else if (systemType == SystemTypes.Comms)
                 {
                     IsCom = !IsCom;
                 }
             }
         }
+        public static List<byte> CameraPlayers;
+        public static List<byte> AdminPlayers;
+        public static List<byte> VitalPlayers;
         private static float UsableDistance = 1.5f;
         private static int Count = 0;
         public static bool IsCom;
+        public static float CameraTime;
+        public static float AdminTime;
+        public static float VitalTime;
         public static void FixedUpdate()
         {
             Count--;
             if (Count >= 1) return;
             Count = 7;
-            if ((!MapOptions.MapOption.UseAdmin || !MapOptions.MapOption.UseCamera) && !ModeHandler.isMode(ModeId.Default))
+            if ((!MapOption.UseAdmin || !MapOption.UseVitalOrDoorLog || !MapOption.UseCamera) && !ModeHandler.isMode(ModeId.Default))
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
@@ -43,7 +67,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             var cid = p.getClientId();
                             bool IsGuard = false;
                             //アドミンチェック
-                            if (!MapOptions.MapOption.UseAdmin)
+                            if (!MapOption.UseAdmin)
                             {
                                 var AdminDistance = Vector2.Distance(p.GetTruePosition(), GetAdminTransform());
                                 if (AdminDistance <= UsableDistance)
@@ -52,33 +76,40 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 }
                             }
                             //Polus用のアドミンチェック。Polusはアドミンが2つあるから
-                            if (!IsGuard && PlayerControl.GameOptions.MapId == 2 && !MapOptions.MapOption.UseAdmin)
+                            if (!IsGuard && PlayerControl.GameOptions.MapId == 2 && !MapOptions.MapOption.UseAdmin || AdminTime != -10)
                             {
-                                var AdminDistance = Vector2.Distance(p.GetTruePosition(), new Vector2(24.66107f,-21.523f));
+                                var AdminDistance = Vector2.Distance(p.GetTruePosition(), new Vector2(24.66107f, -21.523f));
                                 if (AdminDistance <= UsableDistance)
                                 {
                                     IsGuard = true;
                                 }
                             }
                             //カメラチェック
-                            if (!IsGuard && !MapOptions.MapOption.UseCamera)
+                            if (!IsGuard && !MapOption.UseCamera)
                             {
-                                var VitalDistance = Vector2.Distance(p.GetTruePosition(), GetCameraTransform());
-                                if (VitalDistance <= UsableDistance)
+                                if (CameraPlayers.Contains(p.PlayerId))
                                 {
                                     IsGuard = true;
                                 }
                             }
+                            /*
+                            if (!IsGuard && CameraTime != -10 && CameraTime <= 0)
+                            {
+                                if (CameraPlayers.Contains(p.PlayerId))
+                                {
+                                    IsGuard = true;
+                                }
+                            }*/
                             //バイタルもしくはドアログを防ぐ
-                            if (!IsGuard && !MapOptions.MapOption.UseVitalOrDoorLog)
+                            if (!IsGuard && !MapOption.UseVitalOrDoorLog || VitalTime != -10)
                             {
                                 float distance = UsableDistance;
                                 if (PlayerControl.GameOptions.MapId == 2)
                                 {
                                     distance += 0.5f;
                                 }
-                                var VitalDistance = Vector2.Distance(p.GetTruePosition(),GetVitalOrDoorLogTransform());
-                                if (VitalDistance <= distance)
+                                var AdminDistance = Vector2.Distance(p.GetTruePosition(), GetVitalOrDoorLogTransform());
+                                if (AdminDistance <= distance)
                                 {
                                     IsGuard = true;
                                 }

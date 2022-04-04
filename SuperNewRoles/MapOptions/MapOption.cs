@@ -7,6 +7,7 @@ using UnityEngine;
 using SuperNewRoles.Roles;
 using SuperNewRoles.CustomOption;
 using static SuperNewRoles.CustomOption.CustomOptions;
+using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.MapOptions
 { 
@@ -44,20 +45,52 @@ namespace SuperNewRoles.MapOptions
                 UseDeadBodyReport = true;
                 UseMeetingButton = true;
             }
+            BlockTool.CameraPlayers = new List<byte>();
+            BlockTool.VitalPlayers = new List<byte>();
+            BlockTool.AdminPlayers = new List<byte>();
+            if (DeviceUseCameraTime.getFloat() == 0 || !UseCamera)
+            {
+                BlockTool.CameraTime = -10;
+            } else
+            {
+                BlockTool.CameraTime = DeviceUseCameraTime.getFloat();
+            }
+            if (DeviceUseVitalOrDoorLogTime.getFloat() == 0 || !UseVitalOrDoorLog)
+            {
+                BlockTool.VitalTime = -10;
+            }
+            else
+            {
+                BlockTool.VitalTime = DeviceUseVitalOrDoorLogTime.getFloat();
+            }
+            if (DeviceUseAdminTime.getFloat() == 0 || !UseAdmin)
+            {
+                BlockTool.AdminTime = -10;
+            }
+            else
+            {
+                BlockTool.AdminTime = DeviceUseAdminTime.getFloat();
+            }
         }
         public static CustomOption.CustomOption MapOptionSetting;
         public static CustomOption.CustomOption DeviceOptions;
         public static CustomOption.CustomOption DeviceUseAdmin;
+        public static CustomOption.CustomOption DeviceUseAdminTime;
         public static CustomOption.CustomOption DeviceUseVitalOrDoorLog;
+        public static CustomOption.CustomOption DeviceUseVitalOrDoorLogTime;
         public static CustomOption.CustomOption DeviceUseCamera;
+        public static CustomOption.CustomOption DeviceUseCameraTime;
         public static CustomOption.CustomOption NotUseReportDeadBody;
         public static CustomOption.CustomOption NotUseMeetingButton;
         public static void LoadOption() {
             MapOptionSetting = CustomOption.CustomOption.Create(246, cs(Color.white, "MapOptionSetting"), false, null, isHeader: true);
             DeviceOptions = CustomOption.CustomOption.Create(115, cs(Color.white, "DeviceOptionsSetting"), false, MapOptionSetting);
             DeviceUseAdmin = CustomOption.CustomOption.Create(116, cs(Color.white, "DeviceUseAdminSetting"), true, DeviceOptions);
+            DeviceUseAdminTime = CustomOption.CustomOption.Create(274, cs(Color.white, "DeviceTimeSetting"), 10f, 0f, 60f, 1f, DeviceUseAdmin);
             DeviceUseVitalOrDoorLog = CustomOption.CustomOption.Create(117, cs(Color.white, "DeviceUseVitalOrDoorLogSetting"), true, DeviceOptions);
+            DeviceUseVitalOrDoorLogTime = CustomOption.CustomOption.Create(273, cs(Color.white, "DeviceTimeSetting"), 10f, 0f, 60f, 1f, DeviceUseVitalOrDoorLog);
             DeviceUseCamera = CustomOption.CustomOption.Create(118, cs(Color.white, "DeviceUseCameraSetting"), true, DeviceOptions);
+            DeviceUseCameraTime = CustomOption.CustomOption.Create(272, cs(Color.white, "DeviceTimeSetting"), 10f,0f,60f,1f, DeviceUseCamera);
             NotUseReportDeadBody = CustomOption.CustomOption.Create(247, cs(Color.white, "NotUseReportSetting"), false, MapOptionSetting);
             NotUseMeetingButton = CustomOption.CustomOption.Create(248, cs(Color.white, "NotUseMeetingSetting"), false, MapOptionSetting);
         }

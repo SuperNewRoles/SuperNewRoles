@@ -662,6 +662,9 @@ namespace SuperNewRoles.CustomOption
             LoversCommonTask = loversoption.Item1;
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
+
+
+            SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);
         }
     }
 }

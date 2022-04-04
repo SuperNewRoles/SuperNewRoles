@@ -13,6 +13,7 @@ using SuperNewRoles.EndGame;
 using InnerNet;
 using static SuperNewRoles.EndGame.FinalStatusPatch;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.CustomRPC
 {
@@ -114,7 +115,9 @@ namespace SuperNewRoles.CustomRPC
         UseEraserCount,
         StartGameRPC,
         UncheckedSetTasks,
-        SetLovers
+        SetLovers,
+        SetUseDevice,
+        SetDeviceTime
     }
     public static class RPCProcedure
     {
@@ -130,6 +133,76 @@ namespace SuperNewRoles.CustomRPC
             writer.Write(revision);
             writer.Write(guid);
             AmongUsClient.Instance.FinishRpcImmediately(writer);*/
+        }
+        public static void SetDeviceTime(float time, byte systemtype)
+        {
+            var stype = (SystemTypes)systemtype;
+            if (stype == SystemTypes.Security)
+            {
+                BlockTool.CameraTime = time;
+            }
+            else if (stype == SystemTypes.Admin)
+            {
+                BlockTool.AdminTime = time;
+            }
+            else if (stype == SystemTypes.Medical)
+            {
+                BlockTool.VitalTime = time;
+            }
+        }
+        public static void SetUseDevice(byte playerid,byte systemtype,bool Is)
+        {
+            var stype = (SystemTypes)systemtype;
+            var player = ModHelpers.playerById(playerid);
+            if (stype == SystemTypes.Security)
+            {
+                if (Is)
+                {
+                    if (!BlockTool.CameraPlayers.Contains(player.PlayerId))
+                    {
+                        BlockTool.CameraPlayers.Add(player.PlayerId);
+                    }
+                }
+                else
+                {
+                    if (BlockTool.CameraPlayers.Contains(player.PlayerId))
+                    {
+                        BlockTool.CameraPlayers.Remove(player.PlayerId);
+                    }
+                }
+            } else if (stype == SystemTypes.Admin)
+            {
+                if (Is)
+                {
+                    if (!BlockTool.AdminPlayers.Contains(player.PlayerId))
+                    {
+                        BlockTool.AdminPlayers.Add(player.PlayerId);
+                    }
+                }
+                else
+                {
+                    if (BlockTool.AdminPlayers.Contains(player.PlayerId))
+                    {
+                        BlockTool.AdminPlayers.Remove(player.PlayerId);
+                    }
+                }
+            } else if (stype == SystemTypes.Medical)
+            {
+                if (Is)
+                {
+                    if (!BlockTool.VitalPlayers.Contains(player.PlayerId))
+                    {
+                        BlockTool.VitalPlayers.Add(player.PlayerId);
+                    }
+                }
+                else
+                {
+                    if (BlockTool.VitalPlayers.Contains(player.PlayerId))
+                    {
+                        BlockTool.VitalPlayers.Remove(player.PlayerId);
+                    }
+                }
+            }
         }
         public static void uncheckedSetTasks(byte playerId, byte[] taskTypeIds)
         {
@@ -634,6 +707,12 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.SetLovers:
                         RPCProcedure.SetLovers(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetUseDevice:
+                        RPCProcedure.SetUseDevice(reader.ReadByte(),reader.ReadByte(),reader.ReadBoolean());
+                        break;
+                    case (byte)CustomRPC.SetDeviceTime:
+                        RPCProcedure.SetDeviceTime(reader.ReadSingle(),reader.ReadByte());
                         break;
                 }
             }

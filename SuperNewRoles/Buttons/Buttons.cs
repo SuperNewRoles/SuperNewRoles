@@ -97,12 +97,10 @@ namespace SuperNewRoles.Buttons
                           if (RoleClass.Magaziner.SetTime != 0)
                           {
                               RoleClass.Magaziner.IsOKSet = false;
-                              AmongUsClient.Instance.StartCoroutine(nameof(IsOKSetSet));
-                          }
-                          IEnumerator IsOKSetSet()
-                          {
-                              yield return new WaitForSeconds(1f);
-                              RoleClass.Magaziner.IsOKSet = true;
+                              new LateTask(() =>
+                              {
+                                  RoleClass.Magaziner.IsOKSet = true;
+                              }, 1f, "IsOkSetSet");
                           }
                       }
                   },
