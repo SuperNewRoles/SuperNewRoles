@@ -684,7 +684,7 @@ namespace SuperNewRoles.EndGame
         {
             try
             {
-                if (ExileController.Instance != null && ExileController.Instance.exiled != null)
+                if (ExileController.Instance != null && ExileController.Instance.exiled != null && ModeHandler.isMode(ModeId.Default))
                 {
                     PlayerControl player = ModHelpers.playerById(ExileController.Instance.exiled.Object.PlayerId);
                     if (player == null) return;
@@ -692,7 +692,7 @@ namespace SuperNewRoles.EndGame
                     // Exile role text
                     if (id == StringNames.ExileTextPN || id == StringNames.ExileTextSN || id == StringNames.ExileTextPP || id == StringNames.ExileTextSP)
                     {
-                        __result = player.Data.PlayerName + " は " + ModTranslation.getString(Intro.IntroDate.GetIntroDate(player.getRole()).NameKey+"Name")+" だった！";
+                        __result = player.Data.PlayerName + " は " + ModTranslation.getString(Intro.IntroDate.GetIntroDate(player.getRole(),player).NameKey+"Name")+" だった！";
                     }
                 }
             }
