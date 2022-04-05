@@ -40,6 +40,8 @@ colorPitchred
 colorPitchblue
 colorPitchgreen
 colorPitchyellow
+colorBackblue
+colorMildpurple
 SettingpresetSelection
 SettingSuperNewRolesSetting
 SettingMiniCrewRole

@@ -168,6 +168,14 @@
         "0" : "Pitch yellow" ,
         "11" : "\u771f\u3063\u9ec4\u8272"
         } ,
+ "colorBackblue" : {
+        "0" : "Back blue" ,
+        "11" : "\u5f71\u9752"
+        } ,
+ "colorMildpurple" : {
+        "0" : "Mild purple" ,
+        "11" : "\u7a4f\u3084\u304b\u306a\u7d2b"
+        } ,
  "SettingpresetSelection" : {
         "0" : "Preset" ,
         "11" : "\u30d7\u30ea\u30bb\u30c3\u30c8"

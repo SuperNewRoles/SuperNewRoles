@@ -40,6 +40,8 @@ SuperNewRoles
 真っ青
 真っ緑
 真っ黄色
+影青
+穏やかな紫
 プリセット
 <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定
 最小クルーメイト役職数

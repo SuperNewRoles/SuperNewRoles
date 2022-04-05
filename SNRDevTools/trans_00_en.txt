@@ -40,6 +40,8 @@ Pitch red
 Pitch blue
 Pitch green
 Pitch yellow
+Back blue
+Mild purple
 Preset
 Super New Roles Setting
 Minimum Crewmate Roles

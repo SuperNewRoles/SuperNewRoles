@@ -55,6 +55,35 @@ namespace SuperNewRoles.Patch
                         handled = Mode.SuperHostRoles.RoleChat.SendChat(__instance);
                     }
                 }
+
+                if (AmongUsClient.Instance.GameMode == GameModes.FreePlay)
+                {
+                    if (text.ToLower().Equals("/murder"))
+                    {
+                        PlayerControl.LocalPlayer.Exiled();
+                        HudManager.Instance.KillOverlay.ShowKillAnimation(PlayerControl.LocalPlayer.Data, PlayerControl.LocalPlayer.Data);
+                        handled = true;
+                    }
+                    else if (text.ToLower().StartsWith("/color "))
+                    {
+                        handled = true;
+                        int col;
+                        if (!Int32.TryParse(text.Substring(7), out col))
+                        {
+                            __instance.AddChat(PlayerControl.LocalPlayer, "Unable to parse color id\nUsage: /color {id}");
+                        }
+                        col = Math.Clamp(col, 0, Palette.PlayerColors.Length - 1);
+                        PlayerControl.LocalPlayer.SetColor(col);
+                        __instance.AddChat(PlayerControl.LocalPlayer, "Changed color succesfully"); ;
+                    }
+                    else if (text.ToLower().StartsWith("/name "))
+                    {
+                        handled = true;
+                        string col = text.Substring(6);
+                        PlayerControl.LocalPlayer.SetName(col);
+                        __instance.AddChat(PlayerControl.LocalPlayer, "Changed name succesfully"); ;
+                    }
+                }
                 if (handled)
                 {
                     __instance.TextArea.Clear();
