@@ -82,7 +82,7 @@ CustomAutoUpdate,Auto Update,自動アップデート
 CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピーする
 CustomProcessDown,Update Process Down,処理回数を減らす
 CustomIsVersionErrorView,Show players that are not in or have different versions.,入っていない、バージョンが違うプレイヤーを表示する
-CustomHorseMode,Horse mode (can be changed only outside the game, including the lobby),馬モード(ゲーム外のみ変更可能)
+CustomHorseMode,Horse mode (can be changed only outside the game including the lobby),馬モード(ゲーム外のみ変更可能)
 SettingCrewmateRoles,CrewMate Setting,クルーメイトの人数設定
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定
 SettingImpostorRoles,Impostor Setting,インポスターの人数設定

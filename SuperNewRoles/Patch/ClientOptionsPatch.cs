@@ -317,11 +317,12 @@ namespace SuperNewRoles.Patch
 
             if (moreOptions)
                 moreOptions.Text.text = ModTranslation.getString("modOptionsText");
-
+            modButtons[0].Text.text = TranslationController.Instance.GetString(StringNames.SettingsCensorChat);
+            modButtons[1].Text.text = TranslationController.Instance.GetString(StringNames.SettingsEnableFriendInvites);
             for (int i = 0; i < AllOptions.Length; i++)
             {
                 if (i >= modButtons.Count) break;
-                modButtons[i].Text.text = ModTranslation.getString(AllOptions[i].Title);
+                modButtons[i+2].Text.text = ModTranslation.getString(AllOptions[i].Title);
             }
         }
 
