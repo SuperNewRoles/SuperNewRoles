@@ -5,6 +5,41 @@ Second
 Common Tasks
 Long Tasks
 Short Tasks
+Salmon
+Bordeaux
+Olive
+Turqoise
+Mint
+Lavender
+Nougat
+Peach
+Wasabi
+Hot Pink
+Petrol Blue
+Lemon
+Signal Orange
+Teal
+Blurple
+Sunrise
+Ice
+Pitch Black
+Dark Magenta
+Mint Cream
+Leaf
+Emerald
+Bright yellow
+Dark aqua
+Matcha
+Pitch white
+Dark sky
+Intense blue
+Blue closer to black
+Sunken greenish blue
+Azi
+Pitch red
+Pitch blue
+Pitch green
+Pitch yellow
 Preset
 Super New Roles Setting
 Minimum Crewmate Roles

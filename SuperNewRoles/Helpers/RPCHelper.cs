@@ -68,5 +68,12 @@ namespace SuperNewRoles.Helpers
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             TargetPlayer.Exiled();
         }
+        public static void RPCSetColorModOnly(this PlayerControl player,byte color)
+        {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetColor, SendOption.Reliable);
+            writer.Write(color);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            player.SetColor(color);
+        }
     }
 }

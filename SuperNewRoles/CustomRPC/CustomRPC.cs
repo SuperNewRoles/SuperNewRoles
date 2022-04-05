@@ -120,6 +120,7 @@ namespace SuperNewRoles.CustomRPC
         SetLovers,
         SetUseDevice,
         SetDeviceTime,
+        UncheckedSetColor
     }
     public static class RPCProcedure
     {
@@ -571,11 +572,11 @@ namespace SuperNewRoles.CustomRPC
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
         class RPCHandlerPatch
         {
-            static void Postfix([HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
+            static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
             {
-                    byte packetId = callId;
-                    switch (packetId)
-                    {
+                byte packetId = callId;
+                switch (packetId)
+                {
 
                     // Main Controls
                     /*
@@ -590,38 +591,38 @@ namespace SuperNewRoles.CustomRPC
                          guidTOR = reader.ReadBytes(16);
                          RPCProcedure.TORVersionShare(majorTOR, minorTOR, patchTOR, revisionTOR == 0xFF ? -1 : revisionTOR, guidTOR, versionOwnerIdTOR);
                         break;*/
-                        case (byte)CustomRPC.ShareOptions:
-                            RPCProcedure.ShareOptions((int)reader.ReadPackedUInt32(), reader);
-                            break;
-                        case (byte)CustomRPC.ShareSNRVersion:
-                            byte major = reader.ReadByte();
-                            byte minor = reader.ReadByte();
-                            byte patch = reader.ReadByte();
-                            int versionOwnerId = reader.ReadPackedInt32();
-                            byte revision = 0xFF;
-                            Guid guid;
-                            if (reader.Length - reader.Position >= 17)
-                            { // enough bytes left to read
-                                revision = reader.ReadByte();
-                                // GUID
-                                byte[] gbytes = reader.ReadBytes(16);
-                                guid = new Guid(gbytes);
-                            }
-                            else
-                            {
-                                guid = new Guid(new byte[16]);
-                            }
-                            RPCProcedure.ShareSNRversion(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
-                            break;
-                        case (byte)CustomRPC.SetRole:
-                            RPCProcedure.SetRole(reader.ReadByte(), reader.ReadByte());
-                            break;
-                        case (byte)CustomRPC.SheriffKill:
-                            RPCProcedure.SheriffKill(reader.ReadByte(),reader.ReadByte(),reader.ReadBoolean());
-                            break;
-                        case (byte)CustomRPC.MeetingSheriffKill:
-                            RPCProcedure.MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
-                            break;
+                    case (byte)CustomRPC.ShareOptions:
+                        RPCProcedure.ShareOptions((int)reader.ReadPackedUInt32(), reader);
+                        break;
+                    case (byte)CustomRPC.ShareSNRVersion:
+                        byte major = reader.ReadByte();
+                        byte minor = reader.ReadByte();
+                        byte patch = reader.ReadByte();
+                        int versionOwnerId = reader.ReadPackedInt32();
+                        byte revision = 0xFF;
+                        Guid guid;
+                        if (reader.Length - reader.Position >= 17)
+                        { // enough bytes left to read
+                            revision = reader.ReadByte();
+                            // GUID
+                            byte[] gbytes = reader.ReadBytes(16);
+                            guid = new Guid(gbytes);
+                        }
+                        else
+                        {
+                            guid = new Guid(new byte[16]);
+                        }
+                        RPCProcedure.ShareSNRversion(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
+                        break;
+                    case (byte)CustomRPC.SetRole:
+                        RPCProcedure.SetRole(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SheriffKill:
+                        RPCProcedure.SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case (byte)CustomRPC.MeetingSheriffKill:
+                        RPCProcedure.MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                        break;
                     case (byte)CustomRPC.CustomRPCKill:
                         RPCProcedure.CustomRPCKill(reader.ReadByte(), reader.ReadByte());
                         break;
@@ -650,22 +651,22 @@ namespace SuperNewRoles.CustomRPC
                         RPCProcedure.TeleporterTP(reader.ReadByte());
                         break;
                     case (byte)CustomRPC.SetQuarreled:
-                        RPCProcedure.SetQuarreled(reader.ReadByte(),reader.ReadByte());
+                        RPCProcedure.SetQuarreled(reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRPC.SidekickPromotes:
                         RPCProcedure.SidekickPromotes();
                         break;
                     case (byte)CustomRPC.CreateSidekick:
-                        RPCProcedure.CreateSidekick(reader.ReadByte(),reader.ReadBoolean());
+                        RPCProcedure.CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case (byte)CustomRPC.SetSpeedBoost:
-                        RPCProcedure.SetSpeedBoost(reader.ReadBoolean(),reader.ReadByte());
+                        RPCProcedure.SetSpeedBoost(reader.ReadBoolean(), reader.ReadByte());
                         break;
                     case (byte)CustomRPC.ShareCosmetics:
-                        RPCProcedure.ShareCosmetics(reader.ReadByte(),reader.ReadString());
+                        RPCProcedure.ShareCosmetics(reader.ReadByte(), reader.ReadString());
                         break;
                     case (byte)CustomRPC.SetShareNamePlate:
-                        RPCProcedure.SetShareNamePlate(reader.ReadByte(),reader.ReadByte());
+                        RPCProcedure.SetShareNamePlate(reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRPC.AutoCreateRoom:
                         RPCProcedure.AutoCreateRoom();
@@ -674,7 +675,7 @@ namespace SuperNewRoles.CustomRPC
                         RPCProcedure.BomKillRPC(reader.ReadByte());
                         break;
                     case (byte)CustomRPC.ByBomKillRPC:
-                        RPCProcedure.ByBomKillRPC(reader.ReadByte(),reader.ReadByte());
+                        RPCProcedure.ByBomKillRPC(reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRPC.NekomataExiledRPC:
                         RPCProcedure.NekomataExiledRPC(reader.ReadByte());
@@ -713,10 +714,13 @@ namespace SuperNewRoles.CustomRPC
                         RPCProcedure.SetLovers(reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRPC.SetUseDevice:
-                        RPCProcedure.SetUseDevice(reader.ReadByte(),reader.ReadByte(),reader.ReadBoolean());
+                        RPCProcedure.SetUseDevice(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
                         break;
                     case (byte)CustomRPC.SetDeviceTime:
-                        RPCProcedure.SetDeviceTime(reader.ReadSingle(),reader.ReadByte());
+                        RPCProcedure.SetDeviceTime(reader.ReadSingle(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.UncheckedSetColor:
+                        __instance.SetColor(reader.ReadByte());
                         break;
                 }
             }

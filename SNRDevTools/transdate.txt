@@ -6,6 +6,41 @@ announcementUpdate,<size=125%><color=#ffa500>Super</color><color=#ff0000>New</co
 GameCommonTasks,Common Tasks,通常タスク
 GameShortTasks,Long Tasks,ロングタスク
 GameLongTasks,Short Tasks,ショートタスク
+colorSalmon,Salmon,サーモン
+colorBordeaux,Bordeaux,ボルドー
+colorOlive,Olive,オリーブ
+colorTurqoise,Turqoise,ターコイズ
+colorMint,Mint,ミント
+colorLavender,Lavender,ラベンダー
+colorNougat,Nougat,ヌガー
+colorPeach,Peach,ピーチ
+colorWasabi,Wasabi,ワサビ
+colorHotPink,Hot Pink,ホットピンク
+colorPetrol,Petrol Blue,ペトロールブルー
+colorLemon,Lemon,檸檬
+colorSignalOrange,Signal Orange,シグナルオレンジ
+colorTeal,Teal,ティール
+colorBlurple,Blurple,ブラープル
+colorSunrise,Sunrise,サンライズ
+colorIce,Ice,アイス
+colorPitchBlack,Pitch Black,真っ黒
+colorDarkmagenta,Dark Magenta,ダークマゼンタ
+colorMintcream,Mint Cream,ミントクリーム
+colorLeaf,Leaf,若葉
+colorEmerald,Emerald,エメラルド
+colorBrightyellow,Bright yellow,山吹
+colorDarkaqua,Dark aqua,濃い水色
+colorMatcha,Matcha,抹茶
+colorPitchwhite,Pitch white,真っ白
+colorDarksky,Dark sky,雨空
+colorIntenseblue,Intense blue,インスタントブルー
+colorBlueclosertoblack,Blue closer to black,黒寄りの青
+colorSunkengreenishblue,Sunken greenish blue,沈んだ緑みの青
+colorAzi,Azi,アジ
+colorPitchred,Pitch red,真っ赤
+colorPitchblue,Pitch blue,真っ青
+colorPitchgreen,Pitch green,真っ緑
+colorPitchyellow,Pitch yellow,真っ黄色
 SettingpresetSelection,Preset,プリセット
 SettingSuperNewRolesSetting,Super New Roles Setting,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定
 SettingMiniCrewRole,Minimum Crewmate Roles,最小クルーメイト役職数

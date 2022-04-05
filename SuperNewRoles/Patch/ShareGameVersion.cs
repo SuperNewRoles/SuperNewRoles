@@ -9,6 +9,7 @@ using System.Collections;
 
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Patch
 {
@@ -45,6 +46,7 @@ namespace SuperNewRoles.Patch
                     writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     CustomRPC.RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.Version.Major, SuperNewRolesPlugin.Version.Minor, SuperNewRolesPlugin.Version.Build, SuperNewRolesPlugin.Version.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
+                    
                 }
             }
         }
