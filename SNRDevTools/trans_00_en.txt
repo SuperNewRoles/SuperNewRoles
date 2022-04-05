@@ -81,6 +81,7 @@ Auto Update
 Game Code Auto Copy
 Update Process Down
 Show players that are not in or have different versions.
+Horse mode (can be changed only outside the game, including the lobby)
 CrewMate Setting
 Neutral Setting
 Impostor Setting

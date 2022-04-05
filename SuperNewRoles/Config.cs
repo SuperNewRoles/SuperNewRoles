@@ -25,6 +25,7 @@ namespace SuperNewRoles
         public static ConfigEntry<bool> IsShareCosmetics { get; set; }
         public static ConfigEntry<string> ShareCosmeticsNamePlatesURL { get; set; }
         public static ConfigEntry<bool> IsAutoRoomCreate { get; set; }
+        public static ConfigEntry<bool> IsHorseMode { get; set; }
         public static void Load()
         {
             StreamerMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Enable Streamer Mode", false);
@@ -34,7 +35,8 @@ namespace SuperNewRoles
             CustomProcessDown = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "CustomProcessDown", false);
             IsVersionErrorView = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsVersionErrorView", true);
             ShareCosmeticsNamePlatesURL = SuperNewRolesPlugin.Instance.Config.Bind("ShareCosmetics", "NamePlateURL", "");
-            IsAutoRoomCreate = SuperNewRolesPlugin.Instance.Config.Bind("Custom","AutoRoomCreate",true);
+            IsAutoRoomCreate = SuperNewRolesPlugin.Instance.Config.Bind("Custom","AutoRoomCreate",true); ;
+            IsHorseMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "HorseMode", false);
         }
     }
 }

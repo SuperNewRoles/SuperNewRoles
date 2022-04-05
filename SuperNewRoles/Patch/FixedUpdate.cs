@@ -18,7 +18,7 @@ namespace SuperNewRoles.Patch
         public static void Postfix(PlayerControl __instance)
         {
             FixedUpdate.IsProDown = ConfigRoles.CustomProcessDown.Value;
-        }        
+        }
     }
     [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]
     public class AbilityUpdate { 

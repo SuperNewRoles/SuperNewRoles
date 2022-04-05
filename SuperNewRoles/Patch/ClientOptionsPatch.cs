@@ -19,8 +19,16 @@ namespace SuperNewRoles.Patch
             new SelectionBehaviour("CustomAutoCopyGameCode", () => ConfigRoles.AutoCopyGameCode.Value = !ConfigRoles.AutoCopyGameCode.Value, ConfigRoles.AutoCopyGameCode.Value),
             new SelectionBehaviour("CustomProcessDown", () => ConfigRoles.CustomProcessDown.Value = !ConfigRoles.CustomProcessDown.Value, ConfigRoles.CustomProcessDown.Value),
             new SelectionBehaviour("CustomIsVersionErrorView", () => ConfigRoles.IsVersionErrorView.Value = !ConfigRoles.IsVersionErrorView.Value, ConfigRoles.IsVersionErrorView.Value),
+            new SelectionBehaviour("CustomHorseMode", () =>HorseChange(), ConfigRoles.IsHorseMode.Value),
         };
-        
+        public static bool HorseChange()
+        {
+            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.NotJoined)
+            {
+                ConfigRoles.IsHorseMode.Value = !ConfigRoles.IsHorseMode.Value;
+            }
+            return ConfigRoles.IsHorseMode.Value;
+        }
         private static GameObject popUp;
         private static TextMeshPro titleText;
 
@@ -107,7 +115,6 @@ namespace SuperNewRoles.Patch
             var trans = moreOptions.transform.localPosition;
             moreOptions.gameObject.SetActive(true);
             trans = moreOptions.transform.position;
-            SuperNewRolesPlugin.Logger.LogInfo("通常:" + trans.x + "、" + trans.y + "、" + trans.z);
             moreOptions.Text.text = ModTranslation.getString("modOptionsText");
             var moreOptionsButton = moreOptions.GetComponent<PassiveButton>();
             moreOptionsButton.OnClick = new ButtonClickedEvent();
@@ -291,7 +298,6 @@ namespace SuperNewRoles.Patch
                 foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
                     spr.size = new Vector2(2.2f, .7f);
                 var trans = transform.position;
-                SuperNewRolesPlugin.Logger.LogInfo(button.Text.text+":" + trans.x + "、" + trans.y + "、" + trans.z);
                 modButtons.Add(button);
             }
         }

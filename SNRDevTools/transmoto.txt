@@ -81,6 +81,7 @@ CustomAutoUpdate
 CustomAutoCopyGameCode
 CustomProcessDown
 CustomIsVersionErrorView
+CustomHorseMode
 SettingCrewmateRoles
 SettingNeutralRoles
 SettingImpostorRoles
