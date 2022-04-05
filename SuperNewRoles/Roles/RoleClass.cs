@@ -89,6 +89,8 @@ namespace SuperNewRoles.Roles
             Technician.ClearAndReload();
             SerialKiller.ClearAndReload();
             OverKiller.ClearAndReload();
+            Levelinger.ClearAndReload();
+            EvilMoving.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -575,6 +577,12 @@ namespace SuperNewRoles.Roles
                 int Long = (int)CustomOptions.MadMateLongTask.getFloat();
                 int Short = (int)CustomOptions.MadMateShortTask.getFloat();
                 int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMateCheckImpostorTask.getString().Replace("%",""))/100f));
             }
         }
@@ -1072,6 +1080,154 @@ namespace SuperNewRoles.Roles
                 OverKillerPlayer = new List<PlayerControl>();
                 KillCoolTime = CustomOptions.OverKillerKillCoolTime.getFloat();
                 KillCount = (int)CustomOptions.OverKillerKillCount.getFloat();
+            }
+        }
+        public static class Levelinger
+        {
+            public enum LevelPowerTypes
+            {
+                None,
+                Keep,
+                Pursuer,
+                Teleporter,
+                Sidekick,
+                SpeedBooster,
+                Moving
+            }
+            public static List<PlayerControl> LevelingerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsCreateMadmate;
+            public static int ThisXP;
+            public static int OneKillXP;
+            public static int UpLevelXp;
+            public static List<LevelPowerTypes> GetPowerData;
+            public static bool IsUseOKRevive;
+            public static int ReviveUseXP;
+            public static void ClearAndReload()
+            {
+                try
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("a");
+                    LevelingerPlayer = new List<PlayerControl>();
+                    SuperNewRolesPlugin.Logger.LogInfo("b");
+                    ThisXP = 0;
+                    SuperNewRolesPlugin.Logger.LogInfo("c");
+                    IsCreateMadmate = false;
+                    SuperNewRolesPlugin.Logger.LogInfo("d");
+                    OneKillXP = (int)CustomOptions.LevelingerOneKillXP.getFloat();
+                    SuperNewRolesPlugin.Logger.LogInfo("ONEKILLXP:"+ (int)CustomOptions.LevelingerOneKillXP.getFloat());
+                    SuperNewRolesPlugin.Logger.LogInfo("e");
+                    UpLevelXp = (int)CustomOptions.LevelingerUpLevelXP.getFloat();
+                    SuperNewRolesPlugin.Logger.LogInfo("f");
+                    GetPowerData = new List<LevelPowerTypes>();
+                    for (int i = 0; i < 5; i++)
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("g");
+                        string getdata = "";
+                        SuperNewRolesPlugin.Logger.LogInfo("h");
+                        if (i == 0)
+                        {
+                            getdata = CustomOptions.LevelingerLevelOneGetPower.getString();
+                        }
+                        else if (i == 1)
+                        {
+                            getdata = CustomOptions.LevelingerLevelTwoGetPower.getString();
+                        }
+                        else if (i == 2)
+                        {
+                            getdata = CustomOptions.LevelingerLevelThreeGetPower.getString();
+                        }
+                        else if (i == 3)
+                        {
+                            getdata = CustomOptions.LevelingerLevelFourGetPower.getString();
+                        }
+                        else if (i == 4)
+                        {
+                            getdata = CustomOptions.LevelingerLevelFiveGetPower.getString();
+                        }
+                        GetPowerData.Add(GetLevelPowerType(getdata));
+                        SuperNewRolesPlugin.Logger.LogInfo("data:"+GetLevelPowerType(getdata));
+                    }
+                    SuperNewRolesPlugin.Logger.LogInfo("k");
+                    IsUseOKRevive = CustomOptions.LevelingerReviveXP.getBool();
+                    SuperNewRolesPlugin.Logger.LogInfo("l");
+                    ReviveUseXP = (int)CustomOptions.LevelingerUseXPRevive.getFloat();
+                }
+                catch (Exception e)
+                {
+                }
+            }
+            public static bool IsPower(LevelPowerTypes power)
+            {
+                return GetThisPower() == power;
+            }
+            public static LevelPowerTypes GetThisPower(int Level = 0,PlayerControl player = null)
+            {
+                if (player == null) player = PlayerControl.LocalPlayer;
+                if (!player.isRole(CustomRPC.RoleId.Levelinger)) return LevelPowerTypes.None;
+                if (Level == 0)
+                {
+                    Level = ThisXP / UpLevelXp;
+                }
+                LevelPowerTypes thispowertype = LevelPowerTypes.None;
+                if (Level <= 0) {return thispowertype; }
+                thispowertype = GetPowerData[Level - 1];
+                return thispowertype;
+            }
+            public static LevelPowerTypes GetLevelPowerType(string name)
+            {
+                try
+                {
+                    if (name == CustomOptions.LevelingerTexts[0])
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("ab");
+                        return LevelPowerTypes.None;
+                    }
+                    else if (name == CustomOptions.LevelingerTexts[1])
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("ac");
+                        return LevelPowerTypes.Keep;
+                    }
+                    else if (name == CustomOptions.LevelingerTexts[2])
+                    {
+                        return LevelPowerTypes.Pursuer;
+                    }
+                    else if (name == CustomOptions.LevelingerTexts[3])
+                    {
+                        return LevelPowerTypes.Teleporter;
+                    }
+                    else if (name == CustomOptions.LevelingerTexts[4])
+                    {
+                        return LevelPowerTypes.Sidekick;
+                    }
+                    else if (name == CustomOptions.LevelingerTexts[5])
+                    {
+                        return LevelPowerTypes.SpeedBooster;
+                    }
+                    else if (name == CustomOptions.LevelingerTexts[6])
+                    {
+                        return LevelPowerTypes.Moving;
+                    }
+                    else
+                    {
+                        return LevelPowerTypes.None;
+                    }
+                }
+                catch
+                {
+                    return LevelPowerTypes.None;
+                }
+            }
+        }
+        public static class EvilMoving
+        {
+            public static List<PlayerControl> EvilMovingPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static void ClearAndReload()
+            {
+                EvilMovingPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.EvilMovingCoolTime.getFloat();
             }
         }
         //新ロールクラス

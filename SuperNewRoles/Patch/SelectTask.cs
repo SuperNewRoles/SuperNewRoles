@@ -19,7 +19,7 @@ namespace SuperNewRoles.Patch
             [HarmonyArgument(0)] byte playerId,
             [HarmonyArgument(1)] ref UnhollowerBaseLib.Il2CppStructArray<byte> taskTypeIds)
             {
-                if (ModeHandler.isMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
+                if (ModeHandler.isMode(ModeId.SuperHostRoles) || ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 {
                     PlayerControl.GameOptions.NumCommonTasks = 100;
                     PlayerControl.GameOptions.NumShortTasks = 100;

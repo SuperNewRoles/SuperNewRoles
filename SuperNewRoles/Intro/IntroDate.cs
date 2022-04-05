@@ -130,6 +130,10 @@ namespace SuperNewRoles.Intro
                     return SerialKillerIntro;
                 case (CustomRPC.RoleId.OverKiller):
                     return OverKillerIntro;
+                case (CustomRPC.RoleId.Levelinger):
+                    return LevelingerIntro;
+                case (CustomRPC.RoleId.EvilMoving):
+                    return EvilMovingIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -205,6 +209,8 @@ namespace SuperNewRoles.Intro
         public static IntroDate TechnicianIntro = new IntroDate("Technician", RoleClass.Technician.color, 1, CustomRPC.RoleId.Technician);
         public static IntroDate SerialKillerIntro = new IntroDate("SerialKiller", RoleClass.SerialKiller.color, 1, CustomRPC.RoleId.SerialKiller);
         public static IntroDate OverKillerIntro = new IntroDate("OverKiller", RoleClass.OverKiller.color, 1, CustomRPC.RoleId.OverKiller);
+        public static IntroDate LevelingerIntro = new IntroDate("Levelinger", RoleClass.Levelinger.color, 1, CustomRPC.RoleId.Levelinger);
+        public static IntroDate EvilMovingIntro = new IntroDate("EvilMoving", RoleClass.EvilMoving.color, 1, CustomRPC.RoleId.EvilMoving);
         //イントロオブジェ
     }
 }

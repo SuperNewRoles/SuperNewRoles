@@ -268,7 +268,6 @@ namespace SuperNewRoles.Patch
                                 });
                             }
                         }
-                        
                     }
                 }
                 states = statesList.ToArray();

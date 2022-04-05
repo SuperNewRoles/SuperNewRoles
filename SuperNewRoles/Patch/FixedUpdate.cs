@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
@@ -89,10 +90,31 @@ namespace SuperNewRoles.Patch
                             if (RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                             {
                                 Researcher.ReseUseButtonSetTargetPatch.Postfix(__instance);
-                            } else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Pursuer))
+                            }
+                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Pursuer))
                             {
                                 Pursuer.PursureUpdate.Postfix();
-                            } else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
+                            }
+                            else if (PlayerControl.LocalPlayer.isRole(RoleId.Levelinger))
+                            {
+                                if (RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Pursuer))
+                                {
+                                    if (!RoleClass.Pursuer.arrow.arrow.active)
+                                    {
+                                        RoleClass.Pursuer.arrow.arrow.SetActive(true);
+                                    }
+                                    Pursuer.PursureUpdate.Postfix();
+
+                                }
+                                else
+                                {
+                                    if (RoleClass.Pursuer.arrow.arrow.active)
+                                    {
+                                        RoleClass.Pursuer.arrow.arrow.SetActive(false);
+                                    }
+                                }
+                            }
+                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
                             {
                                 Hawk.FixedUpdate.Postfix();
                             }

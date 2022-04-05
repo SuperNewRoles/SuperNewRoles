@@ -76,6 +76,8 @@ namespace SuperNewRoles.CustomRPC
         Technician,
         SerialKiller,
         OverKiller,
+        Levelinger,
+        EvilMoving,
         //RoleId
     }
 
@@ -117,7 +119,7 @@ namespace SuperNewRoles.CustomRPC
         UncheckedSetTasks,
         SetLovers,
         SetUseDevice,
-        SetDeviceTime
+        SetDeviceTime,
     }
     public static class RPCProcedure
     {
@@ -151,7 +153,7 @@ namespace SuperNewRoles.CustomRPC
             }
         }
         public static void SetUseDevice(byte playerid,byte systemtype,bool Is)
-        {
+        {/*
             var stype = (SystemTypes)systemtype;
             var player = ModHelpers.playerById(playerid);
             if (stype == SystemTypes.Security)
@@ -202,7 +204,7 @@ namespace SuperNewRoles.CustomRPC
                         BlockTool.VitalPlayers.Remove(player.PlayerId);
                     }
                 }
-            }
+            }*/
         }
         public static void uncheckedSetTasks(byte playerId, byte[] taskTypeIds)
         {
@@ -312,7 +314,9 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SetRole(byte playerid,byte RPCRoleId)
         {
-            ModHelpers.playerById(playerid).setRole((RoleId)RPCRoleId);
+            var player = ModHelpers.playerById(playerid);
+            player.ClearRole();
+            player.setRole((RoleId)RPCRoleId);
         }
         public static void SetQuarreled(byte playerid1,byte playerid2)
         {

@@ -309,6 +309,22 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption OverKillerKillCoolTime;
         public static CustomOption OverKillerKillCount;
 
+        public static CustomRoleOption LevelingerOption;
+        public static CustomOption LevelingerPlayerCount;
+        public static CustomOption LevelingerOneKillXP;
+        public static CustomOption LevelingerUpLevelXP;
+        public static CustomOption LevelingerLevelOneGetPower;
+        public static CustomOption LevelingerLevelTwoGetPower;
+        public static CustomOption LevelingerLevelThreeGetPower;
+        public static CustomOption LevelingerLevelFourGetPower;
+        public static CustomOption LevelingerLevelFiveGetPower;
+        public static CustomOption LevelingerUseXPRevive;
+        public static CustomOption LevelingerReviveXP;
+
+        public static CustomRoleOption EvilMovingOption;
+        public static CustomOption EvilMovingPlayerCount;
+        public static CustomOption EvilMovingCoolTime;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -326,6 +342,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption LoversShortTask;
 
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
+        public static string[] LevelingerTexts = new string[] { };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
         public static List<float> CrewPlayers = new List<float> { 1f,1f,15f,1f};
         public static List<float> ImpostorPlayers = new List<float> { 1f, 1f, 5f, 1f };
@@ -348,6 +365,13 @@ namespace SuperNewRoles.CustomOption
 
         public static void Load()
         {
+            var Levedatas = new List<string>(){ "optionOff", "LevelingerSettingKeep", "PursuerName", "TeleporterName", "SidekickName", "SpeedBoosterName", "MovingName" };
+            var LeveTransed = new List<string>();
+            foreach (string data in Levedatas)
+            {
+                LeveTransed.Add(ModTranslation.getString(data));
+            }
+            LevelingerTexts = LeveTransed.ToArray();
             presetSelection = CustomOption.Create(0, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingpresetSelection"), presets, null, true);
 
             specialOptions = new CustomOptionBlank(null);
@@ -645,6 +669,22 @@ namespace SuperNewRoles.CustomOption
             OverKillerPlayerCount = CustomOption.Create(255, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], OverKillerOption);
             OverKillerKillCoolTime = CustomOption.Create(257, cs(Color.white, "OverKillerKillCoolTimeSetting"), 45f, 0f, 60f, 2.5f, OverKillerOption);
             OverKillerKillCount = CustomOption.Create(256, cs(Color.white, "OverKillerKillCountSetting"), 30f, 1f, 60f, 1f, OverKillerOption);
+
+            LevelingerOption = new CustomRoleOption(272, "LevelingerName", RoleClass.Levelinger.color, 1);
+            LevelingerPlayerCount = CustomOption.Create(273, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], LevelingerOption);
+            LevelingerOneKillXP = CustomOption.Create(274, cs(Color.white, "LevelingerOneKillXPSetting"), 1f, 0f, 10f, 1f, LevelingerOption);
+            LevelingerUpLevelXP = CustomOption.Create(275, cs(Color.white, "LevelingerUpLevelXPSetting"), 2f, 1f, 50f, 1f, LevelingerOption);
+            LevelingerLevelOneGetPower = CustomOption.Create(276, "1" + ModTranslation.getString("LevelingerGetPowerSetting"), LevelingerTexts, LevelingerOption);
+            LevelingerLevelTwoGetPower = CustomOption.Create(277, "2" + ModTranslation.getString("LevelingerGetPowerSetting"), LevelingerTexts, LevelingerOption);
+            LevelingerLevelThreeGetPower = CustomOption.Create(278, "3" + ModTranslation.getString("LevelingerGetPowerSetting"), LevelingerTexts, LevelingerOption);
+            LevelingerLevelFourGetPower = CustomOption.Create(279, "4" + ModTranslation.getString("LevelingerGetPowerSetting"), LevelingerTexts, LevelingerOption);
+            LevelingerLevelFiveGetPower = CustomOption.Create(280, "5"+ModTranslation.getString("LevelingerGetPowerSetting"), LevelingerTexts, LevelingerOption);
+            LevelingerReviveXP = CustomOption.Create(281, cs(Color.white, "LevelingerReviveXPSetting"), false, LevelingerOption);
+            LevelingerUseXPRevive = CustomOption.Create(282, cs(Color.white, "LevelingerUseXPReviveSetting"), 5f,0f,20f,1f, LevelingerReviveXP);
+
+            EvilMovingOption = new CustomRoleOption(283, "EvilMovingName", RoleClass.EvilMoving.color, 1);
+            EvilMovingPlayerCount = CustomOption.Create(284, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilMovingOption);
+            EvilMovingCoolTime = CustomOption.Create(285, cs(Color.white, "MovingCoolDownSetting"), 30f, 0f, 60f, 2.5f, EvilMovingOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

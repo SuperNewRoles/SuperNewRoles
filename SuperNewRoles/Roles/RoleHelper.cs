@@ -382,6 +382,12 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.OverKiller):
                     Roles.RoleClass.OverKiller.OverKillerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Levelinger):
+                    Roles.RoleClass.Levelinger.LevelingerPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.EvilMoving):
+                    Roles.RoleClass.EvilMoving.EvilMovingPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -564,6 +570,12 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.OverKiller):
                     Roles.RoleClass.OverKiller.OverKillerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Levelinger):
+                    Roles.RoleClass.Levelinger.LevelingerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.EvilMoving):
+                    Roles.RoleClass.EvilMoving.EvilMovingPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -979,6 +991,14 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.OverKiller.OverKillerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.OverKiller;
+            }
+            else if (Roles.RoleClass.Levelinger.LevelingerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Levelinger;
+            }
+            else if (Roles.RoleClass.EvilMoving.EvilMovingPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.EvilMoving;
             }
             //ロールチェック
             }

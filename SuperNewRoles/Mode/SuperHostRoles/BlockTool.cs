@@ -43,8 +43,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
         }
         public static List<byte> CameraPlayers;
-        public static List<byte> AdminPlayers;
-        public static List<byte> VitalPlayers;
         private static float UsableDistance = 1.5f;
         private static int Count = 0;
         public static bool IsCom;

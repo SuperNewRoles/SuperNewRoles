@@ -421,3 +421,14 @@ OverKiller
 Let's cover up the other kills.
 OverKiller Kill Cool Time
 Number of bodies per
+Levelinger
+Save CP and raise your level!
+XP gained from kills
+Number of experience levels gained
+ Abilities gained at level
+Keep previous ability
+Increased by 1 vote
+Can be revived by spending XP.
+Amount of XP to use
+EvilMoving
+Lets Teleport Kill!

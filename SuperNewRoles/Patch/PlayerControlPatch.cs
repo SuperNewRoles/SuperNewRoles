@@ -207,6 +207,7 @@ namespace SuperNewRoles.Patches
             }
             else if (ModeHandler.isMode(ModeId.Default))
             {
+                Levelinger.MurderPlayer(__instance,target);
                 if (RoleClass.Lovers.SameDie && target.IsLovers())
                 {
                     if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)

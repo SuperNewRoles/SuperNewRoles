@@ -770,6 +770,10 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SerialKillerPlayerCount.getFloat();
                     case (RoleId.OverKiller):
                     return CustomOption.CustomOptions.OverKillerPlayerCount.getFloat();
+                    case (RoleId.Levelinger):
+                    return CustomOption.CustomOptions.LevelingerPlayerCount.getFloat();
+                    case (RoleId.EvilMoving):
+                    return CustomOption.CustomOptions.EvilMovingPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1665,6 +1669,38 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.OverKillerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.OverKiller;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.LevelingerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.LevelingerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Levelinger;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.EvilMovingOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.EvilMovingOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.EvilMoving;
                 if (OptionDate == 10)
                 {
                     Impoonepar.Add(ThisRoleId);

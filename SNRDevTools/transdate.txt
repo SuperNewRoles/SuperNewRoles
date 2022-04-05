@@ -422,3 +422,14 @@ OverKillerName,OverKiller,オーバーキラー
 OverKillerTitle1,Let's cover up the other kills.,他のキルを隠蔽しよう
 OverKillerKillCoolTimeSetting,OverKiller Kill Cool Time,オーバーキラーのキルクールタイム
 OverKillerKillCountSetting,Number of bodies per,一回あたりの死体数
+LevelingerName,Levelinger,レベリンガー
+LevelingerTitle1,Save CP and raise your level!,経験値を貯めてレベルをあげよう
+LevelingerOneKillXPSetting,XP gained from kills,キルで得られる経験値
+LevelingerUpLevelXPSetting,Number of experience levels gained,レベルがあがる経験値数
+LevelingerGetPowerSetting, Abilities gained at level,レベルで得られる能力
+LevelingerSettingKeep,Keep previous ability,前の能力をキープ
+LevelingerSettingTwoVote,Increased by 1 vote,1投票数増加
+LevelingerReviveXPSetting,Can be revived by spending XP.,経験値を消費して復活できる
+LevelingerUseXPReviveSetting,Amount of XP to use,使用する経験値量
+EvilMovingName,EvilMoving,イビルムービング
+EvilMovingTitle1,Lets Teleport Kill!,テレポートをしてキルしよう

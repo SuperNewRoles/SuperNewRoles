@@ -106,7 +106,11 @@ namespace SuperNewRoles.Buttons
             {
                 Roles.RoleClass.Moving.ButtonTimer = DateTime.Now;
             }
-            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Moving.CoolTime);
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Moving.CoolTime);
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilMoving))
+            {
+                TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.EvilMoving.CoolTime);
+            }
             Buttons.HudManagerStartPatch.MovingTpButton.Timer = (float)((Roles.RoleClass.Moving.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
             if (Buttons.HudManagerStartPatch.MovingTpButton.Timer <= 0f) Buttons.HudManagerStartPatch.MovingTpButton.Timer = 0f; return;
         }

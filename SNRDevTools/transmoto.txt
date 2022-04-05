@@ -421,3 +421,14 @@ OverKillerName
 OverKillerTitle1
 OverKillerKillCoolTimeSetting
 OverKillerKillCountSetting
+LevelingerName
+LevelingerTitle1
+LevelingerOneKillXPSetting
+LevelingerUpLevelXPSetting
+LevelingerGetPowerSetting
+LevelingerSettingKeep
+LevelingerSettingTwoVote
+LevelingerReviveXPSetting
+LevelingerUseXPReviveSetting
+EvilMovingName
+EvilMovingTitle1
