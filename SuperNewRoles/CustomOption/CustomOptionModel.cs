@@ -612,7 +612,7 @@ namespace SuperNewRoles.CustomOption
             return string.Join("\n", options);
         }
 
-        private static void Postfix(ref string __result)
+        public static void Postfix(ref string __result)
         {
 
             bool hideSettings = AmongUsClient.Instance?.AmHost == false && CustomOptions.hideSettings.getBool();
@@ -757,7 +757,7 @@ namespace SuperNewRoles.CustomOption
     {
         public static void Postfix(KeyboardJoystick __instance)
         {
-            if ((Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7)) && AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started)
+            if ((Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7)) && (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined || AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started))
             {
                 SuperNewRolesPlugin.optionsPage = SuperNewRolesPlugin.optionsPage + 1;
             }

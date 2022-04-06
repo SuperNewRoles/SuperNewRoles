@@ -63,7 +63,7 @@ namespace SuperNewRoles.Patches
                     {
                         if (DebugMode.IsDebugMode())
                         {
-                            __instance.text.text += "デバッグモードが有効です";
+                            __instance.text.text += "\nデバッグモードが有効です";
                         }
                     }
                     catch { }
@@ -90,7 +90,7 @@ namespace SuperNewRoles.Patches
         {
             static void Postfix(PingTracker __instance)
             {
-
+                DownLoadCustomhat.Load();
                 ModManager.Instance.ShowModStamp();
 
 

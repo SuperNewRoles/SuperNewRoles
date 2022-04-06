@@ -46,6 +46,23 @@ namespace SuperNewRoles
                 res.Add(player.PlayerId, player);
             return res;
         }
+
+        public static void destroyList<T>(Il2CppSystem.Collections.Generic.List<T> items) where T : UnityEngine.Object
+        {
+            if (items == null) return;
+            foreach (T item in items)
+            {
+                UnityEngine.Object.Destroy(item);
+            }
+        }
+        public static void destroyList<T>(List<T> items) where T : UnityEngine.Object
+        {
+            if (items == null) return;
+            foreach (T item in items)
+            {
+                UnityEngine.Object.Destroy(item);
+            }
+        }
         public static MurderAttemptResult checkMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
         {
             // Modified vanilla checks

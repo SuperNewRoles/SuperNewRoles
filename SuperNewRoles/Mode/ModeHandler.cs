@@ -181,7 +181,7 @@ namespace SuperNewRoles.Mode
             }
             else if (isMode(ModeId.BattleRoyal))
             {
-
+                BattleRoyal.main.FixedUpdate();
             }
             else if (isMode(ModeId.Zombie))
             {
