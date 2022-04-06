@@ -419,6 +419,7 @@ Imposter judgment. The imposter appears to be a peer. If all the Imposters are d
 I can use Vent.
 Can use Sabotage
 Imposter's Vision
+Can use Kill
 NiceRedRidingHood
 Come back to life
 Maximum number of revives
@@ -470,3 +471,5 @@ Can be revived by spending XP.
 Amount of XP to use
 EvilMoving
 Lets Teleport Kill!
+Amnesiac
+Let's call the cops and join them.

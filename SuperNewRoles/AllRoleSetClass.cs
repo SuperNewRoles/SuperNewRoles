@@ -774,6 +774,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.LevelingerPlayerCount.getFloat();
                     case (RoleId.EvilMoving):
                     return CustomOption.CustomOptions.EvilMovingPlayerCount.getFloat();
+                    case (RoleId.Amnesiac):
+                    return CustomOption.CustomOptions.AmnesiacPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1710,6 +1712,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.AmnesiacOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.AmnesiacOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Amnesiac;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
                     }
                 }
             }

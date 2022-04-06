@@ -419,6 +419,7 @@ EgoistDescription
 EgoistUseVentSetting
 EgoistUseSaboSetting
 EgoistImpostorLightSetting
+EgoistUseKillSetting
 NiceRedRidingHoodName
 NiceRedRidingHoodTitle1
 NiceRedRidingHoodCount
@@ -470,3 +471,5 @@ LevelingerReviveXPSetting
 LevelingerUseXPReviveSetting
 EvilMovingName
 EvilMovingTitle1
+AmnesiacName
+AmnesiacTitle1

@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
@@ -190,6 +191,23 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         default:
                             endReason = GameOverReason.ImpostorByVote;
                             break;
+                    }
+                    int impostorplayer = 0;
+                    int egoistplayer = 0;
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.isAlive())
+                        {
+                            if (p.isImpostor()) impostorplayer++;
+                            else if (p.isRole(RoleId.Egoist)) egoistplayer++;
+                        }
+                    }
+                    if (impostorplayer <= 0 && egoistplayer >= 1)
+                    {
+                        MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                        Writer.Write((byte)CustomGameOverReason.EgoistWin);
+                        Writer.EndRPC();
+                        RPCProcedure.SetWinCond((byte)CustomGameOverReason.EgoistWin);
                     }
                     CustomEndGame(__instance,endReason, !SaveManager.BoughtNoAds);
                     return true;

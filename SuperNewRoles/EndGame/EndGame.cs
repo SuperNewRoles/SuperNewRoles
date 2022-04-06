@@ -439,6 +439,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.truelover.trueloverPlayer);
             notWinners.AddRange(RoleClass.Egoist.EgoistPlayer);
             notWinners.AddRange(RoleClass.Workperson.WorkpersonPlayer);
+            notWinners.AddRange(RoleClass.Amnesiac.AmnesiacPlayer);
 
             List<WinningPlayerData> winnersToRemove = new List<WinningPlayerData>();
             foreach (WinningPlayerData winner in TempData.winners)
@@ -459,6 +460,7 @@ namespace SuperNewRoles.EndGame
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
                 JesterWin = EndData == CustomGameOverReason.JesterWin;
+                EgoistWin = EndData == CustomGameOverReason.EgoistWin;
             }
 
 

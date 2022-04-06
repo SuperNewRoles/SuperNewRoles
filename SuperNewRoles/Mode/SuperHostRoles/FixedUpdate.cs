@@ -308,7 +308,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             //Vector3 tr = PlayerControl.LocalPlayer.transform.position;
             //SuperNewRolesPlugin.Logger.LogInfo("x:"+tr.x+"f,"+tr.y+"f,"+tr.z+"f");
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff))
+            if (PlayerControl.LocalPlayer.isRole(RoleId.Sheriff))
             {
                 if (RoleClass.Sheriff.KillMaxCount >= 1)
                 {
@@ -322,6 +322,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = false;
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
+            } else if (PlayerControl.LocalPlayer.isRole(RoleId.Egoist))
+            {
+                HudManager.Instance.KillButton.gameObject.SetActive(true);
+                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
+                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
             }
             if (!AmongUsClient.Instance.AmHost) return;
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)

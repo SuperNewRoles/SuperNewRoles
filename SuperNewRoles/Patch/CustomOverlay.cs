@@ -1,4 +1,4 @@
-﻿/**
+﻿
 using HarmonyLib;
 using System;
 using System.Linq;
@@ -41,12 +41,12 @@ namespace SuperNewRoles.Patch
 
             if (helpButton == null)
             {
-                helpButton = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.HelpButton.png", 115f);
+                helpButton = ModHelpers.loadSpriteFromResources("TheOtherRoles.Resources.HelpButton.png", 115f);
             }
 
             if (colorBG == null)
             {
-                colorBG = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.White.png", 100f);
+                colorBG = ModHelpers.loadSpriteFromResources("TheOtherRoles.Resources.White.png", 100f);
             }
 
             if (meetingUnderlay == null)
@@ -125,7 +125,7 @@ namespace SuperNewRoles.Patch
             if (overlayShown) return;
 
             HudManager hudManager = DestroyableSingleton<HudManager>.Instance;
-            if (ShipStatus.Instance == null || PlayerControl.LocalPlayer == null || hudManager == null || HudManager.Instance.isIntroDisplayed || (!PlayerControl.LocalPlayer.CanMove && MeetingHud.Instance == null))
+            if (ShipStatus.Instance == null || PlayerControl.LocalPlayer == null || hudManager == null || HudManager.Instance.IsIntroDisplayed || (!PlayerControl.LocalPlayer.CanMove && MeetingHud.Instance == null))
                 return;
 
             if (!initializeOverlays()) return;
@@ -155,15 +155,12 @@ namespace SuperNewRoles.Patch
             SuperNewRolesPlugin.optionsPage = 0;
             GameOptionsData o = PlayerControl.GameOptions;
             List<string> gameOptions = o.ToString().Split("\n", StringSplitOptions.RemoveEmptyEntries).ToList().GetRange(2, 17);
-            infoOverlayRules.text = string.Join("\n", gameOptions) + "\n\n" + GameOptionsDataPatch.optionsToString(CustomOptionHolder.specialOptions);
+            string text = "";
+            GameOptionsDataPatch.Postfix(ref text);
+            infoOverlayRules.text = text;
             infoOverlayRules.enabled = true;
 
             string rolesText = "";
-                string roleOptions = Intro.IntroDate.GetIntroDate().roleOptions;
-                string roleDesc = r.fullDescription;
-                rolesText += //$"<size=150%>{r.nameColored}</size>" +
-                    //(roleDesc != "" ? $"\n{r.fullDescription}" : "") + "\n\n" +
-                    (roleOptions != "" ? $"{roleOptions}\n\n" : "");
 
             infoOverlayRoles.text = rolesText;
             infoOverlayRoles.enabled = true;
@@ -230,4 +227,4 @@ namespace SuperNewRoles.Patch
             }
         }
     }
-}**/
+}

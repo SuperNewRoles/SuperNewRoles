@@ -10,6 +10,10 @@ namespace SuperNewRoles.Mode.BattleRoyal
 {
     class main
     {
+        public static void FixedUpdate()
+        {
+            HudManager.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.setTarget());
+        }
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoExitVent))]
         class CoExitVentPatch
         {

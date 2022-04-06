@@ -82,7 +82,7 @@ CustomAutoUpdate,Auto Update,自動アップデート
 CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピーする
 CustomProcessDown,Update Process Down,処理回数を減らす
 CustomIsVersionErrorView,Show players that are not in or have different versions.,入っていない、バージョンが違うプレイヤーを表示する
-CustomHorseMode,Horse mode (can be changed only outside the game including the lobby),馬モード(ゲーム外のみ変更可能)
+CustomHorseMode,Horse mode (can be changed only outside the game including the lobby),馬モード(ロビー含むゲーム外のみ変更可能)
 SettingCrewmateRoles,CrewMate Setting,クルーメイトの人数設定
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定
 SettingImpostorRoles,Impostor Setting,インポスターの人数設定
@@ -420,6 +420,7 @@ EgoistDescription,Imposter judgment. The imposter appears to be a peer. If all t
 EgoistUseVentSetting,I can use Vent.,ベントを使える
 EgoistUseSaboSetting,Can use Sabotage,サボタージュが使える
 EgoistImpostorLightSetting,Imposter's Vision,インポスターの視界
+EgoistUseKillSetting,Can use Kill,キルできる
 NiceRedRidingHoodName,NiceRedRidingHood,ナイス赤ずきん
 NiceRedRidingHoodTitle1,Come back to life,生き返ろう
 NiceRedRidingHoodCount,Maximum number of revives,最大生き返り回数
@@ -471,3 +472,5 @@ LevelingerReviveXPSetting,Can be revived by spending XP.,経験値を消費し�
 LevelingerUseXPReviveSetting,Amount of XP to use,使用する経験値量
 EvilMovingName,EvilMoving,イビルムービング
 EvilMovingTitle1,Lets Teleport Kill!,テレポートをしてキルしよう
+AmnesiacName,Amnesiac,忘却者
+AmnesiacTitle1,Let's call the cops and join them.,通報して仲間になろう

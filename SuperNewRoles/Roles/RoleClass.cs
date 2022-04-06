@@ -91,6 +91,7 @@ namespace SuperNewRoles.Roles
             OverKiller.ClearAndReload();
             Levelinger.ClearAndReload();
             EvilMoving.ClearAndReload();
+            Amnesiac.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -931,12 +932,14 @@ namespace SuperNewRoles.Roles
             public static bool ImpostorLight;
             public static bool UseVent;
             public static bool UseSabo;
+            public static bool UseKill;
             public static void ClearAndReload()
             {
                 EgoistPlayer = new List<PlayerControl>();
                 ImpostorLight = CustomOptions.EgoistImpostorLight.getBool();
                 UseVent = CustomOptions.EgoistUseVent.getBool();
                 UseSabo = CustomOptions.EgoistUseSabo.getBool();
+                UseKill = CustomOptions.EgoistUseKill.getBool();
             }
         }
         public static class NiceRedRidingHood
@@ -1228,6 +1231,15 @@ namespace SuperNewRoles.Roles
             {
                 EvilMovingPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.EvilMovingCoolTime.getFloat();
+            }
+        }
+        public static class Amnesiac
+        {
+            public static List<PlayerControl> AmnesiacPlayer;
+            public static Color32 color = new Color32(125, 125, 125, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                AmnesiacPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

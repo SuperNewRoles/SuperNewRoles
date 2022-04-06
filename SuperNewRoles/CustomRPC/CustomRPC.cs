@@ -78,6 +78,7 @@ namespace SuperNewRoles.CustomRPC
         OverKiller,
         Levelinger,
         EvilMoving,
+        Amnesiac,
         //RoleId
     }
 
@@ -120,10 +121,17 @@ namespace SuperNewRoles.CustomRPC
         SetLovers,
         SetUseDevice,
         SetDeviceTime,
-        UncheckedSetColor
+        UncheckedSetColor,
+        UncheckedSetVanilaRole
     }
     public static class RPCProcedure
     {
+        public static void UncheckedSetVanilaRole(byte playerid,byte roletype)
+        {
+            var player = ModHelpers.playerById(playerid);
+            if (player == null) return;
+            DestroyableSingleton<RoleManager>.Instance.SetRole(player, (RoleTypes)roletype);
+        }
         public static void TORVersionShare(int major, int minor, int build, int revision, byte[] guid, int clientId)
         {
             /*
@@ -721,6 +729,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.UncheckedSetColor:
                         __instance.SetColor(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.UncheckedSetVanilaRole:
+                        UncheckedSetVanilaRole(reader.ReadByte(),reader.ReadByte());
                         break;
                 }
             }

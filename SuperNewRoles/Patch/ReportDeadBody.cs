@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Patch
@@ -14,6 +16,20 @@ namespace SuperNewRoles.Patch
             public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
             {
                 if (!AmongUsClient.Instance.AmHost) return true;
+                if (ModeHandler.isMode(ModeId.Default))
+                {
+                    if (__instance.isRole(RoleId.Amnesiac))
+                    {
+                        if (!target.Disconnected)
+                        {
+                            __instance.RPCSetRoleUnchecked(target.Role.Role);
+                            if (target.Role.IsSimpleRole)
+                            {
+                                __instance.setRoleRPC(target.Object.getRole());
+                            }
+                        }
+                    }
+                }
                 if (!MapOptions.MapOption.UseDeadBodyReport && target != null) return false;
                 if (!MapOptions.MapOption.UseMeetingButton && target == null) return false;
                 if (ModeHandler.isMode(ModeId.HideAndSeek)) return false;

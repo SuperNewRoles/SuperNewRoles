@@ -75,5 +75,13 @@ namespace SuperNewRoles.Helpers
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             player.SetColor(color);
         }
+        public static void RPCSetRoleUnchecked(this PlayerControl player, RoleTypes roletype)
+        {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetVanilaRole, SendOption.Reliable);
+            writer.Write(player.PlayerId);
+            writer.Write((byte)roletype);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            CustomRPC.RPCProcedure.UncheckedSetVanilaRole(player.PlayerId,(byte)roletype);
+        }
     }
 }

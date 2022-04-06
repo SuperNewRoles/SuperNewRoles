@@ -52,7 +52,7 @@ namespace SuperNewRoles.Buttons
             Jackal.resetCoolDown();
         }
 
-        private static PlayerControl setTarget(List<PlayerControl> untarget = null,bool Crewmateonly = false)
+        public static PlayerControl setTarget(List<PlayerControl> untarget = null,bool Crewmateonly = false)
         {
             return PlayerControlFixedUpdatePatch.setTarget(untargetablePlayers:untarget,onlyCrewmates:Crewmateonly);
         }

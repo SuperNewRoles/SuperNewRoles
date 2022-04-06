@@ -388,6 +388,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilMoving):
                     Roles.RoleClass.EvilMoving.EvilMovingPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Amnesiac):
+                    Roles.RoleClass.Amnesiac.AmnesiacPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -577,6 +580,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilMoving):
                     Roles.RoleClass.EvilMoving.EvilMovingPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Amnesiac):
+                    Roles.RoleClass.Amnesiac.AmnesiacPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -630,6 +636,9 @@ namespace SuperNewRoles
                     IsTaskClear = true;
                     break;
                     case (RoleId.truelover):
+                    IsTaskClear = true;
+                    break; 
+                case (RoleId.Amnesiac):
                     IsTaskClear = true;
                     break; 
                 //タスククリアか
@@ -722,6 +731,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.truelover):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Amnesiac):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -999,6 +1011,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.EvilMoving.EvilMovingPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.EvilMoving;
+            }
+            else if (Roles.RoleClass.Amnesiac.AmnesiacPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Amnesiac;
             }
             //ロールチェック
             }

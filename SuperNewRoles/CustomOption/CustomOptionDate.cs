@@ -268,6 +268,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption EgoistUseVent;
         public static CustomOption EgoistUseSabo;
         public static CustomOption EgoistImpostorLight;
+        public static CustomOption EgoistUseKill;
 
         public static CustomRoleOption NiceRedRidingHoodOption;
         public static CustomOption NiceRedRidingHoodPlayerCount;
@@ -324,6 +325,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption EvilMovingOption;
         public static CustomOption EvilMovingPlayerCount;
         public static CustomOption EvilMovingCoolTime;
+
+        public static CustomRoleOption AmnesiacOption;
+        public static CustomOption AmnesiacPlayerCount;
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -629,6 +633,7 @@ namespace SuperNewRoles.CustomOption
             EgoistUseVent = CustomOption.Create(189, ModTranslation.getString("EgoistUseVentSetting"), false, EgoistOption);
             EgoistUseSabo = CustomOption.Create(190, ModTranslation.getString("EgoistUseSaboSetting"), false, EgoistOption);
             EgoistImpostorLight = CustomOption.Create(191, cs(Color.white, "EgoistImpostorLightSetting"), false, EgoistOption);
+            EgoistUseKill = CustomOption.Create(288, cs(Color.white, "EgoistUseKillSetting"), false, EgoistOption);
 
             NiceRedRidingHoodOption = new CustomRoleOption(192, "NiceRedRidingHoodName", RoleClass.NiceRedRidingHood.color, 1);
             NiceRedRidingHoodPlayerCount = CustomOption.Create(193, ModTranslation.getString("SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceRedRidingHoodOption);
@@ -685,6 +690,9 @@ namespace SuperNewRoles.CustomOption
             EvilMovingOption = new CustomRoleOption(283, "EvilMovingName", RoleClass.EvilMoving.color, 1);
             EvilMovingPlayerCount = CustomOption.Create(284, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilMovingOption);
             EvilMovingCoolTime = CustomOption.Create(285, cs(Color.white, "MovingCoolDownSetting"), 30f, 0f, 60f, 2.5f, EvilMovingOption);
+
+            AmnesiacOption = new CustomRoleOption(286, "AmnesiacName", RoleClass.Amnesiac.color, 1);
+            AmnesiacPlayerCount = CustomOption.Create(287, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AmnesiacOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
