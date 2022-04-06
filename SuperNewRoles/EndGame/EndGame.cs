@@ -15,6 +15,7 @@ using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode.SuperHostRoles;
 using InnerNet;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.EndGame
 {
@@ -440,6 +441,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Egoist.EgoistPlayer);
             notWinners.AddRange(RoleClass.Workperson.WorkpersonPlayer);
             notWinners.AddRange(RoleClass.Amnesiac.AmnesiacPlayer);
+            notWinners.AddRange(RoleClass.SideKiller.MadKillerPlayer);
 
             List<WinningPlayerData> winnersToRemove = new List<WinningPlayerData>();
             foreach (WinningPlayerData winner in TempData.winners)
@@ -515,13 +517,15 @@ namespace SuperNewRoles.EndGame
             }
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
                 {
-                    if (Roles.RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(p))
-                    {
-                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
-                        TempData.winners.Add(wpd);
-                    }
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                }
+                foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
+                {
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
                 }
             }
 
@@ -652,6 +656,17 @@ namespace SuperNewRoles.EndGame
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
     public class CheckEndGamePatch
     {
+        public static void Prefix(ExileController __instance)
+        {
+            try
+            {
+                WrapUpClass.Prefix(__instance.exiled);
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
+            }
+        }
         public static void Postfix(ExileController __instance)
         {
             try
@@ -667,6 +682,17 @@ namespace SuperNewRoles.EndGame
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
     public class CheckAirShipEndGamePatch
     {
+        public static void Prefix(AirshipExileController __instance)
+        {
+            try
+            {
+                WrapUpClass.Prefix(__instance.exiled);
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
+            }
+        }
         public static void Postfix(AirshipExileController __instance)
         {
             try
@@ -705,7 +731,24 @@ namespace SuperNewRoles.EndGame
         }
     }
     public class WrapUpClass {
-
+        public static void Prefix(GameData.PlayerInfo exiled)
+        {
+            if (!ModeHandler.isMode(ModeId.Default)) return;
+            if (exiled == null) return;
+            if (exiled.Object.PlayerId != PlayerControl.LocalPlayer.PlayerId) return;
+            if (exiled.Object.isRole(RoleId.SideKiller))
+            {
+                var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                if (sideplayer != null)
+                {
+                    if (!RoleClass.SideKiller.IsUpMadKiller)
+                    {
+                        sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                        RoleClass.SideKiller.IsUpMadKiller = true;
+                    }
+                }
+            }
+        }
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
             SerialKiller.WrapUp();
@@ -890,6 +933,13 @@ namespace SuperNewRoles.EndGame
         {
             if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0)
             {
+                foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
+                {
+                    if (!p.isImpostor() && !p.Data.Disconnected)
+                    {
+                        return false;
+                    }
+                }
                 __instance.enabled = false;
                 CustomEndGame((GameOverReason)CustomGameOverReason.JackalWin, false);
                 return true;
@@ -902,6 +952,13 @@ namespace SuperNewRoles.EndGame
         {
             if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
             {
+                foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
+                {
+                    if (!p.isImpostor() && !p.Data.Disconnected)
+                    {
+                        return false;
+                    }
+                }
                 __instance.enabled = false;
                 CustomEndGame(GameOverReason.HumansByVote, false);
                 return true;

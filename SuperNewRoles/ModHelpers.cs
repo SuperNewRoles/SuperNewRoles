@@ -39,6 +39,17 @@ namespace SuperNewRoles
             player.killTimer = time;
             DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(time, max);
         }
+        public static byte? GetKey(this Dictionary<byte, byte> dec, byte Value)
+        {
+            foreach (var data in dec)
+            {
+                if(data.Value == Value)
+                {
+                    return data.Key;
+                }
+            }
+            return null;
+        }
         public static Dictionary<byte, PlayerControl> allPlayersById()
         {
             Dictionary<byte, PlayerControl> res = new Dictionary<byte, PlayerControl>();

@@ -41,6 +41,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton MagazinerGetButton;
         public static CustomButton trueloverLoveButton;
         public static CustomButton ImpostorSidekickButton;
+        public static CustomButton SideKillerSidekickButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -665,6 +666,41 @@ namespace SuperNewRoles.Buttons
 
             ImpostorSidekickButton.buttonText = ModTranslation.getString("SidekickName");
             ImpostorSidekickButton.showButtonText = true;
+
+            SideKillerSidekickButton = new CustomButton(
+                () =>
+                {
+                    var target = setTarget(Crewmateonly: true);
+                    if (target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.SideKiller.IsCreateMadKiller)
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetMadKiller);
+                        writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                        writer.Write(target.PlayerId);
+                        writer.EndRPC();
+                        RPCProcedure.SetMadKiller(PlayerControl.LocalPlayer.PlayerId,target.PlayerId);
+                        RoleClass.SideKiller.IsCreateMadKiller = true;
+                        PlayerControl.LocalPlayer.killTimer = RoleClass.SideKiller.KillCoolTime;
+                    }
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.SideKiller) && !RoleClass.SideKiller.IsCreateMadKiller; },
+                () =>
+                {
+                    return setTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => {
+                    SideKillerSidekickButton.MaxTimer = RoleClass.SideKiller.KillCoolTime;
+                    SideKillerSidekickButton.Timer = RoleClass.SideKiller.KillCoolTime;
+                },
+                RoleClass.Jackal.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            SideKillerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
+            SideKillerSidekickButton.showButtonText = true;
 
             RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(HudManager.Instance.KillButton.cooldownTimerText, HudManager.Instance.KillButton.cooldownTimerText.transform.parent);
             RoleClass.SerialKiller.SuicideKillText.text = "";

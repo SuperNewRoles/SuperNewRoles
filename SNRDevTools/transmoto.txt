@@ -42,6 +42,9 @@ colorPitchgreen
 colorPitchyellow
 colorBackblue
 colorMildpurple
+colorAshishreddishpurplecolor
+colorMelon
+colorCrasyublue
 SettingpresetSelection
 SettingSuperNewRolesSetting
 SettingMiniCrewRole
@@ -473,3 +476,9 @@ EvilMovingName
 EvilMovingTitle1
 AmnesiacName
 AmnesiacTitle1
+SideKillerName
+SideKillerTitle1
+SideKillerKillCoolTimeSetting
+SideKillerMadKillerKillCoolTimeSetting
+MadKillerName
+MadKillerTitle1

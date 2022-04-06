@@ -42,6 +42,9 @@ Pitch green
 Pitch yellow
 Back blue
 Mild purple
+Ashish reddish purple color
+Melon
+Crasyu blue
 Preset
 Super New Roles Setting
 Minimum Crewmate Roles
@@ -473,3 +476,9 @@ EvilMoving
 Lets Teleport Kill!
 Amnesiac
 Let's call the cops and join them.
+SideKiller
+Make friends and win!
+SideKiller Kill Cool Time.
+MadKiller Kill Cool Time.
+MadKiller
+Let's promote and kill!

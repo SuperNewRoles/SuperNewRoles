@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (p.PlayerId == player.TargetPlayerId)
                     {
-                        player.NameText.color += color;
+                        player.NameText.color = color;
                     }
                 }
             }
@@ -300,19 +301,24 @@ namespace SuperNewRoles.Patch
             }
             else
             {
-                if (Madmate.CheckImpostor(PlayerControl.LocalPlayer))
+                if (Madmate.CheckImpostor(PlayerControl.LocalPlayer) || PlayerControl.LocalPlayer.isRole(RoleId.MadKiller))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("ローカルOK");
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         if (p.isImpostor())
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("インポスターなのでセット");
                             SetNamesClass.SetPlayerNameColor(p,RoleClass.ImpostorRed);
                         }
                     }
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+                if (PlayerControl.LocalPlayer.isImpostor())
+                {
+                    foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
+                    {
+                        SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
+                    }
+                }
+                if (PlayerControl.LocalPlayer.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
                 {
                     foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
                     {

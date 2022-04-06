@@ -34,6 +34,27 @@ namespace SuperNewRoles.Roles
                                 }
                             }
                         }
+                    } else if (ModeHandler.isMode(ModeId.Default))
+                    {
+                        if (player.isRole(CustomRPC.RoleId.SideKiller))
+                        {
+                            var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                            if (sideplayer != null)
+                            {
+                                if (!RoleClass.SideKiller.IsUpMadKiller)
+                                {
+                                    sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                                    RoleClass.SideKiller.IsUpMadKiller = true;
+                                }
+                            }
+                        } else if (player.isRole(CustomRPC.RoleId.MadKiller))
+                        {
+                            var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                            if (sideplayer != null)
+                            {
+                                PlayerControl.LocalPlayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                            }
+                        }
                     }
                 }
             }

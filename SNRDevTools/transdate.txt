@@ -474,3 +474,9 @@ EvilMovingName,EvilMoving,イビルムービング
 EvilMovingTitle1,Lets Teleport Kill!,テレポートをしてキルしよう
 AmnesiacName,Amnesiac,忘却者
 AmnesiacTitle1,Let's call the cops and join them.,通報して仲間になろう
+SideKillerName,SideKiller,サイドキラー
+SideKillerTitle1,Make friends and win!,仲間を作って勝利しよう
+SideKillerKillCoolTimeSetting,SideKiller Kill Cool Time.,サイドキラーのキルクールタイム
+SideKillerMadKillerKillCoolTimeSetting,MadKiller Kill Cool Time.,マッドキラーのキルクールタイム
+MadKillerName,MadKiller,マッドキラー
+MadKillerTitle1,Let's promote and kill!,昇格してキルをしよう

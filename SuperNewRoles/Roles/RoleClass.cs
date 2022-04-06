@@ -92,6 +92,7 @@ namespace SuperNewRoles.Roles
             Levelinger.ClearAndReload();
             EvilMoving.ClearAndReload();
             Amnesiac.ClearAndReload();
+            SideKiller.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1240,6 +1241,40 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 AmnesiacPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class SideKiller
+        {
+            public static List<PlayerControl> SideKillerPlayer;
+            public static List<PlayerControl> MadKillerPlayer;
+            public static Dictionary<byte,byte> MadKillerPair;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static float MadKillerCoolTime;
+            public static bool IsCreateMadKiller;
+            public static bool IsUpMadKiller;
+            public static void ClearAndReload()
+            {
+                SideKillerPlayer = new List<PlayerControl>();
+                MadKillerPlayer = new List<PlayerControl>();
+                MadKillerPair = new Dictionary<byte, byte>();
+                KillCoolTime = CustomOptions.SideKillerKillCoolTime.getFloat();
+                MadKillerCoolTime = CustomOptions.SideKillerMadKillerKillCoolTime.getFloat();
+                IsCreateMadKiller = false;
+                IsUpMadKiller = false;
+            }
+            public static PlayerControl getSidePlayer(PlayerControl p)
+            {
+                if (MadKillerPair.ContainsKey(p.PlayerId))
+                {
+                    return ModHelpers.playerById(MadKillerPair[p.PlayerId]);
+                } else if (MadKillerPair.ContainsValue(p.PlayerId))
+                {
+                    var key = MadKillerPair.GetKey(p.PlayerId);
+                    if (key == null) return null;
+                    return ModHelpers.playerById((byte)key);
+                }
+                return null;
             }
         }
         //新ロールクラス

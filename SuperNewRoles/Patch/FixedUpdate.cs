@@ -24,7 +24,12 @@ namespace SuperNewRoles.Patch
     public class AbilityUpdate { 
         public static void Postfix(AbilityButton __instance)
         {
-            if (!ModeHandler.IsBlockVanilaRole()) __instance.commsDown.SetActive(false);
+            if (!ModeHandler.IsBlockVanilaRole()) {
+                if (PlayerControl.LocalPlayer.Data.Role.IsSimpleRole)
+                {
+                    __instance.commsDown.SetActive(false);
+                }
+            }
         }
     }
 
@@ -87,6 +92,7 @@ namespace SuperNewRoles.Patch
                         Jackal.JackalFixedPatch.Postfix(__instance);
                         if (PlayerControl.LocalPlayer.isAlive())
                         {
+                            if (PlayerControl.LocalPlayer.isImpostor()) {SetTarget.ImpostorSetTarget();}
                             if (RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                             {
                                 Researcher.ReseUseButtonSetTargetPatch.Postfix(__instance);
@@ -128,6 +134,17 @@ namespace SuperNewRoles.Patch
                                 {
                                     Bait.BaitUpdate.Postfix(__instance);
 
+                                }
+                            } else if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
+                            {
+                                var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                                if (sideplayer != null)
+                                {
+                                    if (!RoleClass.SideKiller.IsUpMadKiller)
+                                    {
+                                        sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                                        RoleClass.SideKiller.IsUpMadKiller = true;
+                                    }
                                 }
                             }
                         }

@@ -79,6 +79,8 @@ namespace SuperNewRoles.CustomRPC
         Levelinger,
         EvilMoving,
         Amnesiac,
+        SideKiller,
+        MadKiller
         //RoleId
     }
 
@@ -122,15 +124,29 @@ namespace SuperNewRoles.CustomRPC
         SetUseDevice,
         SetDeviceTime,
         UncheckedSetColor,
-        UncheckedSetVanilaRole
+        UncheckedSetVanilaRole,
+        SetMadKiller
     }
     public static class RPCProcedure
     {
+        public static void SetMadKiller(byte sourceid,byte targetid)
+        {
+            var source = ModHelpers.playerById(sourceid);
+            var target = ModHelpers.playerById(targetid);
+            if (source == null || target == null) return;
+            target.ClearRole();
+            RoleClass.SideKiller.MadKillerPlayer.Add(target);
+            RoleClass.SideKiller.MadKillerPair.Add(source.PlayerId,target.PlayerId);
+            DestroyableSingleton<RoleManager>.Instance.SetRole(target, RoleTypes.Crewmate);
+            ChacheManager.ResetMyRoleChache();
+            PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+        }
         public static void UncheckedSetVanilaRole(byte playerid,byte roletype)
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
             DestroyableSingleton<RoleManager>.Instance.SetRole(player, (RoleTypes)roletype);
+            player.Data.Role.Role = (RoleTypes)roletype;
         }
         public static void TORVersionShare(int major, int minor, int build, int revision, byte[] guid, int clientId)
         {
@@ -732,6 +748,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.UncheckedSetVanilaRole:
                         UncheckedSetVanilaRole(reader.ReadByte(),reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetMadKiller:
+                        SetMadKiller(reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }

@@ -391,6 +391,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Amnesiac):
                     Roles.RoleClass.Amnesiac.AmnesiacPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.SideKiller):
+                    Roles.RoleClass.SideKiller.SideKillerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -582,6 +585,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.Amnesiac):
                     Roles.RoleClass.Amnesiac.AmnesiacPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.SideKiller):
+                    Roles.RoleClass.SideKiller.SideKillerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -985,41 +991,50 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.Magaziner;
                 }
                 else if (Roles.RoleClass.Mayor.MayorPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Mayor;
+                {
+                    return CustomRPC.RoleId.Mayor;
+                }
+                else if (Roles.RoleClass.truelover.trueloverPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.truelover;
+                }
+                else if (Roles.RoleClass.Technician.TechnicianPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Technician;
+                }
+                else if (Roles.RoleClass.SerialKiller.SerialKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SerialKiller;
+                }
+                else if (Roles.RoleClass.OverKiller.OverKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.OverKiller;
+                }
+                else if (Roles.RoleClass.Levelinger.LevelingerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Levelinger;
+                }
+                else if (Roles.RoleClass.EvilMoving.EvilMovingPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.EvilMoving;
+                }
+                else if (Roles.RoleClass.Amnesiac.AmnesiacPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Amnesiac;
+                }
+                else if (Roles.RoleClass.SideKiller.SideKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SideKiller;
+                }
+                else if (Roles.RoleClass.SideKiller.MadKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadKiller;
+                }
+                //ロールチェック
             }
-            else if (Roles.RoleClass.truelover.trueloverPlayer.IsCheckListPlayerControl(player))
+            catch (Exception e)
             {
-                return CustomRPC.RoleId.truelover;
-            }
-            else if (Roles.RoleClass.Technician.TechnicianPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Technician;
-            }
-            else if (Roles.RoleClass.SerialKiller.SerialKillerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.SerialKiller;
-            }
-            else if (Roles.RoleClass.OverKiller.OverKillerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.OverKiller;
-            }
-            else if (Roles.RoleClass.Levelinger.LevelingerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Levelinger;
-            }
-            else if (Roles.RoleClass.EvilMoving.EvilMovingPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.EvilMoving;
-            }
-            else if (Roles.RoleClass.Amnesiac.AmnesiacPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Amnesiac;
-            }
-            //ロールチェック
-            }
-            catch
-            {
+                SuperNewRolesPlugin.Logger.LogInfo("エラー:"+e);
                 return RoleId.DefaultRole;
             }
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;

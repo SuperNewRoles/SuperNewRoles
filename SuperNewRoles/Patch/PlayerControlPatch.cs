@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Patches
 {
@@ -173,6 +174,8 @@ namespace SuperNewRoles.Patches
             {
                 if (__instance.isRole(RoleId.SerialKiller)) addition = RoleClass.SerialKiller.KillTime;
                 else if (__instance.isRole(RoleId.OverKiller)) addition = RoleClass.OverKiller.KillCoolTime;
+                else if (__instance.isRole(RoleId.SideKiller)) addition = RoleClass.SideKiller.KillCoolTime;
+                else if (__instance.isRole(RoleId.MadKiller)) addition = RoleClass.SideKiller.MadKillerCoolTime;
             }
             float max = Mathf.Max(PlayerControl.GameOptions.KillCooldown * multiplier + addition, __instance.killTimer);
             __instance.SetKillTimerUnchecked(Mathf.Clamp(time, 0f, max), max);
@@ -184,6 +187,27 @@ namespace SuperNewRoles.Patches
     {
         public static bool resetToCrewmate = false;
         public static bool resetToDead = false;
+        public static void Prefix(PlayerControl __instance, PlayerControl target)
+        {
+            if (ModeHandler.isMode(ModeId.Default))
+            {
+                if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                {
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
+                    {
+                        var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                        if (sideplayer != null)
+                        {
+                            if (!RoleClass.SideKiller.IsUpMadKiller)
+                            {
+                                sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                                RoleClass.SideKiller.IsUpMadKiller = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             // SuperNewRolesPlugin.Logger.LogInfo("MurderPlayer発生！元:" + __instance.getDefaultName() + "、ターゲット:" + target.getDefaultName());

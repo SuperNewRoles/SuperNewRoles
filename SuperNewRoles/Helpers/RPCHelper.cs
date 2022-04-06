@@ -77,7 +77,7 @@ namespace SuperNewRoles.Helpers
         }
         public static void RPCSetRoleUnchecked(this PlayerControl player, RoleTypes roletype)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetVanilaRole, SendOption.Reliable);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetVanilaRole, SendOption.Reliable);
             writer.Write(player.PlayerId);
             writer.Write((byte)roletype);
             AmongUsClient.Instance.FinishRpcImmediately(writer);

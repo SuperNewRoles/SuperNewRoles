@@ -329,6 +329,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption AmnesiacOption;
         public static CustomOption AmnesiacPlayerCount;
 
+        public static CustomRoleOption SideKillerOption;
+        public static CustomOption SideKillerPlayerCount;
+        public static CustomOption SideKillerKillCoolTime;
+        public static CustomOption SideKillerMadKillerKillCoolTime;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -693,6 +698,11 @@ namespace SuperNewRoles.CustomOption
 
             AmnesiacOption = new CustomRoleOption(286, "AmnesiacName", RoleClass.Amnesiac.color, 1);
             AmnesiacPlayerCount = CustomOption.Create(287, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AmnesiacOption);
+
+            SideKillerOption = new CustomRoleOption(289, "SideKillerName", RoleClass.SideKiller.color, 1);
+            SideKillerPlayerCount = CustomOption.Create(290, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SideKillerOption);
+            SideKillerKillCoolTime = CustomOption.Create(291, cs(Color.white, "SideKillerKillCoolTimeSetting"), 45f, 0f, 75f, 2.5f, SideKillerOption);
+            SideKillerMadKillerKillCoolTime = CustomOption.Create(292, cs(Color.white, "SideKillerMadKillerKillCoolTimeSetting"), 45f, 0f, 75f, 2.5f, SideKillerOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
