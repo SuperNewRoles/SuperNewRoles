@@ -327,6 +327,30 @@ namespace SuperNewRoles.CustomCosmetics
                 shadow = new Color32(109, 83, 131, byte.MaxValue),
                 isLighterColor = true
             });
+
+            colors.Add(new CustomColor
+            {
+                longname = "colorAshishreddishpurplecolor",
+                color = new Color32(139, 102, 118, byte.MaxValue),
+                shadow = new Color32(139, 102, 118, byte.MaxValue),
+                isLighterColor = false
+            });
+
+            colors.Add(new CustomColor
+            {
+                longname = "colorMelon",
+                color = new Color32(0, 225, 129, byte.MaxValue),
+                shadow = new Color32(24, 255, 81, byte.MaxValue),
+                isLighterColor = true
+            });
+
+            colors.Add(new CustomColor
+            {
+                longname = "colorCrasyublue",
+                color = new Color32(2, 38, 106, byte.MaxValue),
+                shadow = new Color32(64, 0, 111, byte.MaxValue),
+                isLighterColor = false
+            });
             pickableColors += (uint)colors.Count; // Colors to show in Tab
             /** Hidden Colors **/
 

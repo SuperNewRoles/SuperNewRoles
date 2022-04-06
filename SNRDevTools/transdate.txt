@@ -43,6 +43,9 @@ colorPitchgreen,Pitch green,真っ緑
 colorPitchyellow,Pitch yellow,真っ黄色
 colorBackblue,Back blue,影青
 colorMildpurple,Mild purple,穏やかな紫
+colorAshishreddishpurplecolor,Ashish reddish purple color,灰みの赤紫系の色 
+colorMelon,Melon,メロン
+colorCrasyublue,Crasyu blue,クラッシュブルー
 SettingpresetSelection,Preset,プリセット
 SettingSuperNewRolesSetting,Super New Roles Setting,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定
 SettingMiniCrewRole,Minimum Crewmate Roles,最小クルーメイト役職数
