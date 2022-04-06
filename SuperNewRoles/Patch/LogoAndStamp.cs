@@ -1,5 +1,6 @@
 using HarmonyLib;
 using SuperNewRoles.CustomCosmetics;
+using SuperNewRoles.Patch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +57,16 @@ namespace SuperNewRoles.Patches
                 __instance.text.alignment = TMPro.TextAlignmentOptions.TopRight;
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
+
                     __instance.text.text = $"{baseCredentials}\n{__instance.text.text}";
+                    try
+                    {
+                        if (DebugMode.IsDebugMode())
+                        {
+                            __instance.text.text += "デバッグモードが有効です";
+                        }
+                    }
+                    catch { }
                     if (PlayerControl.LocalPlayer.Data.IsDead)
                     {
                         __instance.transform.localPosition = new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
@@ -81,7 +91,6 @@ namespace SuperNewRoles.Patches
             static void Postfix(PingTracker __instance)
             {
 
-                DestroyableSingleton<ModManager>.Instance.ShowModStamp();
                 ModManager.Instance.ShowModStamp();
 
 
