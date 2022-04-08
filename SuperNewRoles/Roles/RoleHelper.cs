@@ -394,6 +394,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.SideKiller):
                     Roles.RoleClass.SideKiller.SideKillerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Survivor):
+                    Roles.RoleClass.Survivor.SurvivorPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
@@ -589,6 +592,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.SideKiller):
                     Roles.RoleClass.SideKiller.SideKillerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Survivor):
+                    Roles.RoleClass.Survivor.SurvivorPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -770,6 +776,35 @@ namespace SuperNewRoles
                 return false;
             }
             return false;
+        }
+        public static float getCoolTime(PlayerControl __instance)
+        {
+            float addition = PlayerControl.GameOptions.killCooldown;
+            if (ModeHandler.isMode(ModeId.Default))
+            {
+                if (__instance.isRole(RoleId.SerialKiller)) addition = RoleClass.SerialKiller.KillTime;
+                else if (__instance.isRole(RoleId.OverKiller)) addition = RoleClass.OverKiller.KillCoolTime;
+                else if (__instance.isRole(RoleId.SideKiller)) addition = RoleClass.SideKiller.KillCoolTime;
+                else if (__instance.isRole(RoleId.MadKiller)) addition = RoleClass.SideKiller.MadKillerCoolTime;
+                else if (__instance.isRole(RoleId.Minimalist)) addition = RoleClass.Minimalist.KillCoolTime;
+                else if (__instance.isRole(RoleId.Survivor)) addition = RoleClass.Survivor.KillCoolTime;
+            }
+            return addition;
+        }
+        public static float GetEndMeetingKillCoolTime(PlayerControl p)
+        {
+            var role = p.getRole();
+            switch (role)
+            {
+                case RoleId.Minimalist:
+                case RoleId.Survivor:
+                case RoleId.SideKiller:
+                case RoleId.MadKiller:
+                case RoleId.OverKiller:
+                case RoleId.SerialKiller:
+                    return getCoolTime(p);
+            }
+            return PlayerControl.GameOptions.killCooldown;
         }
         public static RoleId getRole(this PlayerControl player,bool IsChache = true)
         {
@@ -1030,7 +1065,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.MadKiller;
                 }
-                //ロールチェック
+                else if (Roles.RoleClass.Survivor.SurvivorPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Survivor;
+            }
+            //ロールチェック
             }
             catch (Exception e)
             {

@@ -16,6 +16,7 @@ using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode.SuperHostRoles;
 using InnerNet;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Sabotage;
 
 namespace SuperNewRoles.EndGame
 {
@@ -381,6 +382,12 @@ namespace SuperNewRoles.EndGame
         public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
             AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                try {
+                    p.resetChange();
+                } catch {}
+            }
             if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
         }
 
@@ -442,6 +449,14 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Workperson.WorkpersonPlayer);
             notWinners.AddRange(RoleClass.Amnesiac.AmnesiacPlayer);
             notWinners.AddRange(RoleClass.SideKiller.MadKillerPlayer);
+
+            foreach(PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
+            {
+                if (p.isDead())
+                {
+                    notWinners.Add(p);
+                }
+            }
 
             List<WinningPlayerData> winnersToRemove = new List<WinningPlayerData>();
             foreach (WinningPlayerData winner in TempData.winners)
@@ -566,7 +581,6 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(new WinningPlayerData(player.Data));
                 }
             }
-
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
             {
                 notWinners.AddRange(players);
@@ -575,6 +589,15 @@ namespace SuperNewRoles.EndGame
             {
                 notWinners.AddRange(players);
             }
+
+            notWinners = new List<PlayerControl>();
+            winnersToRemove = new List<WinningPlayerData>();
+            foreach (WinningPlayerData winner in TempData.winners)
+            {
+                if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
+            }
+            foreach (var winner in winnersToRemove) TempData.winners.Remove(winner);
+
             if (QuarreledWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
@@ -651,7 +674,6 @@ namespace SuperNewRoles.EndGame
                 }
             }
         }
-        
     }
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
     public class CheckEndGamePatch
@@ -731,9 +753,23 @@ namespace SuperNewRoles.EndGame
         }
     }
     public class WrapUpClass {
+        public static void SetCoolTime()
+        {
+            PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer),RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer));
+        }
         public static void Prefix(GameData.PlayerInfo exiled)
         {
+            RoleClass.IsCoolTimeSetted = false;
             if (!ModeHandler.isMode(ModeId.Default)) return;
+            if (ModeHandler.isMode(ModeId.Default))
+            {
+                if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit){
+                    if (!Sabotage.CognitiveDeficit.main.IsLocalEnd)
+                    {
+                        Sabotage.CognitiveDeficit.main.UpdateTime = 0;
+                    }
+                }
+            }
             if (exiled == null) return;
             if (exiled.Object.PlayerId != PlayerControl.LocalPlayer.PlayerId) return;
             if (exiled.Object.isRole(RoleId.SideKiller))
@@ -753,7 +789,9 @@ namespace SuperNewRoles.EndGame
         {
             SerialKiller.WrapUp();
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
-            RoleClass.IsMeeting = false;
+            new LateTask(() => {
+                RoleClass.IsMeeting = false;
+            }, 0.1f, "SetIsMeeting");
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
             ModeHandler.Wrapup(exiled);
             if (exiled == null) return;
@@ -1023,8 +1061,11 @@ namespace SuperNewRoles.EndGame
                         if (playerInfo.Object.isAlive())
                         {
                             numTotalAlive++;
-
-                            if (playerInfo.Object.isImpostor())
+                            if (playerInfo.Object.isRole(RoleId.Jackal) || playerInfo.Object.isRole(CustomRPC.RoleId.Sidekick))
+                            {
+                                numTotalJackalTeam++;
+                            }
+                            else if (playerInfo.Object.isImpostor())
                             {
                                 numImpostorsAlive++;
                             }
@@ -1033,10 +1074,7 @@ namespace SuperNewRoles.EndGame
                                 numCrewAlive++;
                             }
                             else if (playerInfo.Object.isNeutral()) { 
-                                if(playerInfo.Object.isRole(CustomRPC.RoleId.Jackal) || playerInfo.Object.isRole(CustomRPC.RoleId.Sidekick))
-                                {
-                                    numTotalJackalTeam++;
-                                } else if (playerInfo.Object.isRole(CustomRPC.RoleId.Egoist))
+                                if (playerInfo.Object.isRole(CustomRPC.RoleId.Egoist))
                                 {
                                     numTotalEgoist++;
                                     numImpostorsAlive++;

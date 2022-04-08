@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
@@ -287,9 +288,11 @@ namespace SuperNewRoles.Patch
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     SetNamesClass.SetPlayerNameColors(player);
-                    SetNamesClass.SetPlayerRoleNames(player);                    
+                    SetNamesClass.SetPlayerRoleNames(player);
                 }
-            } else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.God) ){
+            }
+            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.God))
+            {
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (RoleClass.IsMeeting || player.isAlive())
@@ -307,7 +310,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (p.isImpostor())
                         {
-                            SetNamesClass.SetPlayerNameColor(p,RoleClass.ImpostorRed);
+                            SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                         }
                     }
                 }
@@ -331,9 +334,12 @@ namespace SuperNewRoles.Patch
                         SetNamesClass.SetPlayerRoleNames(p);
                     }
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sidekick)) {
-                    foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer) {
-                        if (p != PlayerControl.LocalPlayer) {
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sidekick))
+                {
+                    foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
+                    {
+                        if (p != PlayerControl.LocalPlayer)
+                        {
                             SetNamesClass.SetPlayerNameColors(p);
                             SetNamesClass.SetPlayerRoleNames(p);
                         }
@@ -348,8 +354,8 @@ namespace SuperNewRoles.Patch
                     }
                     foreach (PlayerControl p in RoleClass.Jackal.FakeSidekickPlayer)
                     {
-                        SetNamesClass.SetPlayerNameColor(p,RoleClass.Jackal.color);
-                        SetNamesClass.SetPlayerRoleInfoView(p,RoleClass.Jackal.color,Intro.IntroDate.SidekickIntro.NameKey+"Name");
+                        SetNamesClass.SetPlayerNameColor(p, RoleClass.Jackal.color);
+                        SetNamesClass.SetPlayerRoleInfoView(p, RoleClass.Jackal.color, Intro.IntroDate.SidekickIntro.NameKey + "Name");
                     }
                 }
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
@@ -357,7 +363,27 @@ namespace SuperNewRoles.Patch
             }
             SetNamesClass.QuarreledSet();
             SetNamesClass.LoversSet();
-        }
-        
+            try {
+                if (ModeHandler.isMode(ModeId.Default))
+                {
+                    if (Sabotage.SabotageManager.thisSabotage == Sabotage.SabotageManager.CustomSabotage.CognitiveDeficit)
+                    {
+                        foreach (PlayerControl p3 in PlayerControl.AllPlayerControls)
+                        {
+                            if (p3.isAlive() && !Sabotage.CognitiveDeficit.main.OKPlayers.IsCheckListPlayerControl(p3))
+                            {
+                                if (PlayerControl.LocalPlayer.isImpostor())
+                                {
+                                    if (!(p3.isImpostor() || p3.isRole(CustomRPC.RoleId.MadKiller)))
+                                    {
+                                        SetNamesClass.SetPlayerNameColor(p3, new Color32(18, 112, 214, byte.MaxValue));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch { }
+        }         
     }
 }

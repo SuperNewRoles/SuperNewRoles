@@ -14,6 +14,7 @@ using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomObject;
 using TMPro;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Sabotage;
 
 namespace SuperNewRoles.Roles
 {
@@ -22,6 +23,7 @@ namespace SuperNewRoles.Roles
     {
 
         public static bool IsMeeting;
+        public static bool IsCoolTimeSetted;
         public static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
         public static Color ImpostorRed = Palette.ImpostorRed;
         public static Color CrewmateWhite = Color.white;
@@ -30,7 +32,9 @@ namespace SuperNewRoles.Roles
         public static void clearAndReloadRoles()
         {
             IsMeeting = false;
+            IsCoolTimeSetted = false;
             IsStart = false;
+            SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
@@ -93,6 +97,7 @@ namespace SuperNewRoles.Roles
             EvilMoving.ClearAndReload();
             Amnesiac.ClearAndReload();
             SideKiller.ClearAndReload();
+            Survivor.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -680,10 +685,12 @@ namespace SuperNewRoles.Roles
             public static int SucCool;
             public static int NotSucCool;
             public static int SucPar;
+            public static bool IsSuc;
             public static Color32 color = ImpostorRed;
             public static void ClearAndReload()
             {
                 EvilGamblerPlayer = new List<PlayerControl>();
+                IsSuc = false;
                 SucCool = (int)CustomOptions.EvilGamblerSucTime.getFloat();
                 NotSucCool = (int)CustomOptions.EvilGamblerNotSucTime.getFloat();
                 var temp = CustomOptions.EvilGamblerSucpar.getString().Replace("0%", "");
@@ -1275,6 +1282,17 @@ namespace SuperNewRoles.Roles
                     return ModHelpers.playerById((byte)key);
                 }
                 return null;
+            }
+        }
+        public static class Survivor
+        {
+            public static List<PlayerControl> SurvivorPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static void ClearAndReload()
+            {
+                SurvivorPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.SurvivorKillCoolTime.getFloat();
             }
         }
         //新ロールクラス

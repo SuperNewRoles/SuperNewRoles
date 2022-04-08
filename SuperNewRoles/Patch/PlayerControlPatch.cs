@@ -167,19 +167,13 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] float time)
         {
-            if (PlayerControl.GameOptions.KillCooldown <= 0f) return false;
-            float multiplier = 1f;
-            float addition = 0f;
-            if (ModeHandler.isMode(ModeId.Default))
+            if (PlayerControl.GameOptions.killCooldown == time && !RoleClass.IsCoolTimeSetted)
             {
-                if (__instance.isRole(RoleId.SerialKiller)) addition = RoleClass.SerialKiller.KillTime;
-                else if (__instance.isRole(RoleId.OverKiller)) addition = RoleClass.OverKiller.KillCoolTime;
-                else if (__instance.isRole(RoleId.SideKiller)) addition = RoleClass.SideKiller.KillCoolTime;
-                else if (__instance.isRole(RoleId.MadKiller)) addition = RoleClass.SideKiller.MadKillerCoolTime;
+                __instance.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(__instance), RoleHelpers.GetEndMeetingKillCoolTime(__instance));
+                RoleClass.IsCoolTimeSetted = true;
+                return false;
             }
-            float max = Mathf.Max(PlayerControl.GameOptions.KillCooldown * multiplier + addition, __instance.killTimer);
-            __instance.SetKillTimerUnchecked(Mathf.Clamp(time, 0f, max), max);
-            return false;
+            return true;
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
@@ -191,6 +185,7 @@ namespace SuperNewRoles.Patches
         {
             if (ModeHandler.isMode(ModeId.Default))
             {
+                target.resetChange();
                 if (target.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                 {
                     if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
@@ -203,6 +198,18 @@ namespace SuperNewRoles.Patches
                                 sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
                                 RoleClass.SideKiller.IsUpMadKiller = true;
                             }
+                        }
+                    }
+                } else if(__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                {
+                    if (__instance.isRole(RoleId.EvilGambler))
+                    {
+                        if (RoleClass.EvilGambler.GetSuc())
+                        {
+                            PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);
+                        } else
+                        {
+                            PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.NotSucCool);
                         }
                     }
                 }
@@ -266,6 +273,13 @@ namespace SuperNewRoles.Patches
                     }
                 }
                 Minimalist.MurderPatch.Postfix(__instance);
+            }
+            if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            {
+                if (__instance.isImpostor() && !__instance.isRole(RoleId.EvilGambler))
+                {
+                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.getCoolTime(__instance),RoleHelpers.getCoolTime(__instance));
+                }
             }
         }
     }

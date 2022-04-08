@@ -5,6 +5,7 @@ using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Sabotage;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -88,6 +89,7 @@ namespace SuperNewRoles.Patch
                     }
                     else if (ModeHandler.isMode(ModeId.Default))
                     {
+                        SabotageManager.Update();
                         SetNameUpdate.Postfix(__instance);
                         Jackal.JackalFixedPatch.Postfix(__instance);
                         if (PlayerControl.LocalPlayer.isAlive())

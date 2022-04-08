@@ -334,6 +334,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SideKillerKillCoolTime;
         public static CustomOption SideKillerMadKillerKillCoolTime;
 
+        public static CustomRoleOption SurvivorOption;
+        public static CustomOption SurvivorPlayerCount;
+        public static CustomOption SurvivorKillCoolTime;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -400,6 +404,8 @@ namespace SuperNewRoles.CustomOption
 
             //SoothSayerRate = CustomOption.Create(2, cs(SoothSayer.color,"soothName"),rates, null, true);
             Mode.ModeHandler.OptionLoad();
+
+            Sabotage.Options.Load();
 
             SoothSayerOption = new CustomRoleOption(6, "SoothSayerName", RoleClass.SoothSayer.color, 1);
             SoothSayerPlayerCount = CustomOption.Create(7, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
@@ -630,8 +636,8 @@ namespace SuperNewRoles.CustomOption
 
             HawkOption = new CustomRoleOption(183, "HawkName", RoleClass.Hawk.color, 1);
             HawkPlayerCount = CustomOption.Create(184, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], HawkOption);
-            HawkCoolTime = CustomOption.Create(185, ModTranslation.getString("HawkCoolTimeSetting"), 15f, 1f, 7f, 1f, HawkOption, format: "unitCouples");
-            HawkDurationTime = CustomOption.Create(186, ModTranslation.getString("HawkDurationTimeSetting"), 1f, 1f, 7f, 1f, HawkOption, format: "unitCouples");
+            HawkCoolTime = CustomOption.Create(185, ModTranslation.getString("HawkCoolTimeSetting"), 15f, 1f, 120f, 2.5f, HawkOption, format: "unitCouples");
+            HawkDurationTime = CustomOption.Create(186, ModTranslation.getString("HawkDurationTimeSetting"), 5f, 1f, 60f, 2.5f, HawkOption, format: "unitCouples");
 
             EgoistOption = new CustomRoleOption(187, "EgoistName", RoleClass.Egoist.color, 1);
             EgoistPlayerCount = CustomOption.Create(188, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], EgoistOption);
@@ -703,6 +709,10 @@ namespace SuperNewRoles.CustomOption
             SideKillerPlayerCount = CustomOption.Create(290, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SideKillerOption);
             SideKillerKillCoolTime = CustomOption.Create(291, cs(Color.white, "SideKillerKillCoolTimeSetting"), 45f, 0f, 75f, 2.5f, SideKillerOption);
             SideKillerMadKillerKillCoolTime = CustomOption.Create(292, cs(Color.white, "SideKillerMadKillerKillCoolTimeSetting"), 45f, 0f, 75f, 2.5f, SideKillerOption);
+
+            SurvivorOption = new CustomRoleOption(293, "SurvivorName", RoleClass.Survivor.color, 1);
+            SurvivorPlayerCount = CustomOption.Create(294, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SurvivorOption);
+            SurvivorKillCoolTime = CustomOption.Create(295, cs(Color.white, "SurvivorKillCoolTimeSetting"), 15f, 0f, 75f, 2.5f, SurvivorOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

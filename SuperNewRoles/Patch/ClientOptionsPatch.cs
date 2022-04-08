@@ -219,14 +219,27 @@ namespace SuperNewRoles.Patch
 
                 button.onState = mainbutton.onState;
                 button.Background.color = mainbutton.onState ? Color.green : Palette.ImpostorRed;
-
-                if (i == 0)
+                try
                 {
-                    button.Text.text = TranslationController.Instance.GetString(StringNames.SettingsCensorChat);
+                    if (i == 0)
+                    {
+                        button.Text.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsCensorChat);
+                    }
+                    else
+                    {
+                        button.Text.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsEnableFriendInvites);
+                    }
                 }
-                else
+                catch
                 {
-                    button.Text.text = TranslationController.Instance.GetString(StringNames.SettingsEnableFriendInvites);
+                    if (i == 0)
+                    {
+                        button.Text.text = __instance.CensorChatButton.Text.text;
+                    }
+                    else
+                    {
+                        button.Text.text = __instance.EnableFriendInvitesButton.Text.text;
+                    }
                 }
                 button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
                 button.Text.font = Object.Instantiate(titleText.font);
@@ -319,8 +332,8 @@ namespace SuperNewRoles.Patch
                 moreOptions.Text.text = ModTranslation.getString("modOptionsText");
             try
             {
-                modButtons[0].Text.text = TranslationController.Instance.GetString(StringNames.SettingsCensorChat);
-                modButtons[1].Text.text = TranslationController.Instance.GetString(StringNames.SettingsEnableFriendInvites);
+                modButtons[0].Text.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsCensorChat);
+                modButtons[1].Text.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsEnableFriendInvites);
             }
             catch { }
             for (int i = 0; i < AllOptions.Length; i++)

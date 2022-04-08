@@ -74,7 +74,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 }
                             }
                             //Polus用のアドミンチェック。Polusはアドミンが2つあるから
-                            if (!IsGuard && PlayerControl.GameOptions.MapId == 2 && !MapOptions.MapOption.UseAdmin || AdminTime != -10)
+                            if (!IsGuard && PlayerControl.GameOptions.MapId == 2 && !MapOptions.MapOption.UseAdmin)
                             {
                                 var AdminDistance = Vector2.Distance(p.GetTruePosition(), new Vector2(24.66107f, -21.523f));
                                 if (AdminDistance <= UsableDistance)
@@ -99,7 +99,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 }
                             }*/
                             //バイタルもしくはドアログを防ぐ
-                            if (!IsGuard && !MapOption.UseVitalOrDoorLog || VitalTime != -10)
+                            if (!IsGuard && !MapOption.UseVitalOrDoorLog)
                             {
                                 float distance = UsableDistance;
                                 if (PlayerControl.GameOptions.MapId == 2)

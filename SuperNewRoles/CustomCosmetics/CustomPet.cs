@@ -11,6 +11,7 @@ namespace SuperNewRoles.CustomCosmetics
     public static class CustomPet
     {
         public static bool isAdded = false;
+        /*
         [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetPetById))]
         class UnlockedPetPatch
         {
@@ -63,6 +64,6 @@ namespace SuperNewRoles.CustomCosmetics
                 SuperNewRolesPlugin.Logger.LogInfo("ペット読み込み処理終了");
 
             }
-        }
+        }*/
     }
 }

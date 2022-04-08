@@ -45,6 +45,7 @@ colorMildpurple
 colorAshishreddishpurplecolor
 colorMelon
 colorCrasyublue
+colorLightgreen
 SettingpresetSelection
 SettingSuperNewRolesSetting
 SettingMiniCrewRole
@@ -161,6 +162,11 @@ FinalStatusBySelfBomb
 FinalStatusDisconnected
 FinalStatusDead
 FinalStatusSabotage
+SabotageSetting
+SabotageCognitiveDeficitSetting
+CognitiveDeficitSabotageOutfitUpdateTimeSetting
+CognitiveDeficitSabotageReleaseTimeSetting
+CognitiveDeficitSabotageIsAllPlayerEndSabotageSetting
 detecName
 SoothSayerName
 SoothSayerTitle1
@@ -482,3 +488,6 @@ SideKillerKillCoolTimeSetting
 SideKillerMadKillerKillCoolTimeSetting
 MadKillerName
 MadKillerTitle1
+SurvivorName
+SurvivorTitle1
+SurvivorKillCoolTimeSetting

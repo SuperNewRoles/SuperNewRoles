@@ -74,18 +74,5 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
-        static class PlayerControlSetCoolDownPatch
-        {
-            public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] float time)
-            {
-                if (ModeHandler.isMode(ModeId.SuperHostRoles)) return;
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Minimalist))
-                {
-                    __instance.SetKillTimerUnchecked(RoleClass.Minimalist.KillCoolTime);
-                    return;
-                }
-            }
-        }
     }
 }

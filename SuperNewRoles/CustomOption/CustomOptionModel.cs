@@ -159,7 +159,7 @@ namespace SuperNewRoles.CustomOption
 
         public virtual string getName()
         {
-            return name;
+            return ModTranslation.getString(name);
         }
 
         // Option changes
@@ -611,18 +611,17 @@ namespace SuperNewRoles.CustomOption
             }
             return string.Join("\n", options);
         }
-
-        public static void Postfix(ref string __result)
+        public static string DefaultResult = "";
+        public static string ResultData()
         {
-
             bool hideSettings = AmongUsClient.Instance?.AmHost == false && CustomOptions.hideSettings.getBool();
             if (hideSettings)
             {
-                return;
+                return DefaultResult;
             }
 
             List<string> pages = new List<string>();
-            pages.Add(__result);
+            pages.Add(DefaultResult);
 
             StringBuilder entry = new StringBuilder();
             List<string> entries = new List<string>();
@@ -717,8 +716,12 @@ namespace SuperNewRoles.CustomOption
 
             int numPages = pages.Count;
             int counter = SuperNewRolesPlugin.optionsPage = SuperNewRolesPlugin.optionsPage % numPages;
-
-            __result = pages[counter].Trim('\r', '\n') + "\n\n" + tl("SettingPressTabForMore") + $" ({counter + 1}/{numPages})";
+            return pages[counter].Trim('\r', '\n') + "\n\n" + tl("SettingPressTabForMore") + $" ({counter + 1}/{numPages})";
+        }
+        public static void Postfix(ref string __result)
+        {
+            DefaultResult = __result;
+            __result = ResultData();
         }
     }
 

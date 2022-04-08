@@ -351,6 +351,14 @@ namespace SuperNewRoles.CustomCosmetics
                 shadow = new Color32(64, 0, 111, byte.MaxValue),
                 isLighterColor = false
             });
+
+            colors.Add(new CustomColor
+            {
+                longname = "colorLightgreen",
+                color = new Color32(226, 255, 5, byte.MaxValue),
+                shadow = new Color32(192, 201, 10, byte.MaxValue),
+                isLighterColor = true
+            });
             pickableColors += (uint)colors.Count; // Colors to show in Tab
             /** Hidden Colors **/
 

@@ -69,27 +69,4 @@ namespace SuperNewRoles.Roles
             }
         }
     }
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
-    static class PlayerControlSetCoolDownPatch
-    {
-        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] float time)
-        {
-            if (ModeHandler.isMode(ModeId.SuperHostRoles) || PlayerControl.GameOptions.KillCooldown <= 0f) return true;
-            float multiplier = 1f;
-            float addition = 0f;
-            if (PlayerControl.LocalPlayer.getRole() == CustomRPC.RoleId.EvilGambler) addition = RoleClass.EvilGambler.NotSucCool;
-
-            float max = Mathf.Max(PlayerControl.GameOptions.KillCooldown * multiplier + addition, __instance.killTimer);
-            __instance.SetKillTimerUnchecked(Mathf.Clamp(time, 0f, max), max);
-            return false;
-        }
-
-        public static void SetKillTimerUnchecked(this PlayerControl player, float time, float max = float.NegativeInfinity)
-        {
-            if (max == float.NegativeInfinity) max = time;
-
-            player.killTimer = time;
-            DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(time, max);
-        }
-    }
 }

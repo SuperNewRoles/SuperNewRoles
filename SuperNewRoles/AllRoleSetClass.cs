@@ -83,10 +83,6 @@ namespace SuperNewRoles
             IsRPCSetRoleOK = true;
             IsShapeSet = false;
             IsNotDesync = true;
-            if (ModeHandler.isMode(ModeId.BattleRoyal))
-            {
-                IsNotDesync = false;
-            }
             if (ModeHandler.isMode(ModeId.NotImpostorCheck))
             {
                 IsNotDesync = false;
@@ -133,6 +129,15 @@ namespace SuperNewRoles
             } else if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
                 Mode.BattleRoyal.main.ChangeRole.Postfix();
+                new LateTask(() => {
+                    if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+                    {
+                        foreach (var pc in PlayerControl.AllPlayerControls)
+                        {
+                            pc.RpcSetRole(RoleTypes.Shapeshifter);
+                        }
+                    }
+                }, 3f, "SetImpostor");
                 return false;
             }
             return true;
@@ -778,6 +783,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.AmnesiacPlayerCount.getFloat();
                     case (RoleId.SideKiller):
                     return CustomOption.CustomOptions.SideKillerPlayerCount.getFloat();
+                    case (RoleId.Survivor):
+                    return CustomOption.CustomOptions.SurvivorPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1737,6 +1744,22 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SideKillerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.SideKiller;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.SurvivorOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SurvivorOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Survivor;
                 if (OptionDate == 10)
                 {
                     Impoonepar.Add(ThisRoleId);

@@ -14,6 +14,7 @@ using InnerNet;
 using static SuperNewRoles.EndGame.FinalStatusPatch;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Sabotage;
 
 namespace SuperNewRoles.CustomRPC
 {
@@ -80,7 +81,8 @@ namespace SuperNewRoles.CustomRPC
         EvilMoving,
         Amnesiac,
         SideKiller,
-        MadKiller
+        MadKiller,
+        Survivor,
         //RoleId
     }
 
@@ -125,7 +127,8 @@ namespace SuperNewRoles.CustomRPC
         SetDeviceTime,
         UncheckedSetColor,
         UncheckedSetVanilaRole,
-        SetMadKiller
+        SetMadKiller,
+        SetCustomSabotage
     }
     public static class RPCProcedure
     {
@@ -751,6 +754,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.SetMadKiller:
                         SetMadKiller(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetCustomSabotage:
+                        SabotageManager.SetSabotage(ModHelpers.playerById(reader.ReadByte()),(SabotageManager.CustomSabotage)reader.ReadByte(),reader.ReadBoolean());
                         break;
                 }
             }

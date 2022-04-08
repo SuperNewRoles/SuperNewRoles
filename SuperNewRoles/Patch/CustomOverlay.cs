@@ -41,12 +41,12 @@ namespace SuperNewRoles.Patch
 
             if (helpButton == null)
             {
-                helpButton = ModHelpers.loadSpriteFromResources("TheOtherRoles.Resources.HelpButton.png", 115f);
+                helpButton = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.HelpButton.png", 115f);
             }
 
             if (colorBG == null)
             {
-                colorBG = ModHelpers.loadSpriteFromResources("TheOtherRoles.Resources.White.png", 100f);
+                colorBG = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.White.png", 100f);
             }
 
             if (meetingUnderlay == null)
@@ -156,7 +156,7 @@ namespace SuperNewRoles.Patch
             GameOptionsData o = PlayerControl.GameOptions;
             List<string> gameOptions = o.ToString().Split("\n", StringSplitOptions.RemoveEmptyEntries).ToList().GetRange(2, 17);
             string text = "";
-            GameOptionsDataPatch.Postfix(ref text);
+            text = GameOptionsDataPatch.ResultData();
             infoOverlayRules.text = text;
             infoOverlayRules.enabled = true;
 

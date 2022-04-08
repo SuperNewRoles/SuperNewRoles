@@ -44,7 +44,8 @@ Back blue
 Mild purple
 Ashish reddish purple color
 Melon
-Crasyu blue
+Crasyu Blue
+Light Green
 Preset
 Super New Roles Setting
 Minimum Crewmate Roles
@@ -161,6 +162,12 @@ Self-destruct collateral damage
 amputation
 Death
 Sabotage
+Sabotage
+Sabotage Setting
+Cognitive Deficit
+Figure Change Interval
+Release Time
+Cannot be sabotaged unless everyone is deactivated.
 Detective
 Diviner
 Divine the player and find the outsider.
@@ -482,3 +489,6 @@ SideKiller Kill Cool Time.
 MadKiller Kill Cool Time.
 MadKiller
 Let's promote and kill!
+Survivor
+Survive and Kill!
+Kill Cool Time

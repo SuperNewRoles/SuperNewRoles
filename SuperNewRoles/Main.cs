@@ -21,7 +21,7 @@ namespace SuperNewRoles
     {
         public const string Id = "jp.ykundesu.supernewroles";
 
-        public const string VersionString = "1.3.8.5";
+        public const string VersionString = "1.3.8.6";
 
         public static System.Version Version = System.Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
@@ -91,14 +91,22 @@ namespace SuperNewRoles
         {
             public static void Prefix()
             {
-                    SaveManager.chatModeType = 1;
-                    SaveManager.isGuest = false;
+                SaveManager.chatModeType = 1;
+                SaveManager.isGuest = false;
             }
-            public static void Postfix()
+            public static void Postfix(ChatController __instance)
             {
-                    SaveManager.chatModeType = 1;
-                    SaveManager.isGuest = false;
-
+                SaveManager.chatModeType = 1;
+                SaveManager.isGuest = false;
+                if (Input.GetKeyDown(KeyCode.F1))
+                {
+                    if (!__instance.isActiveAndEnabled) return;
+                    __instance.SetVisible(false);
+                    new LateTask(() =>
+                    {
+                        __instance.SetVisible(true);
+                    }, 0f,"AntiChatBag");
+                }
             }
         }
     }

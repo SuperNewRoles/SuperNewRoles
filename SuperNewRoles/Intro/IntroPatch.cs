@@ -10,6 +10,7 @@ using SuperNewRoles.Patch;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.HideAndSeek;
 using System.Collections;
+using TMPro;
 
 namespace SuperNewRoles.Patches
 {
@@ -154,7 +155,7 @@ namespace SuperNewRoles.Patches
                 f = Mathf.Clamp01(f);
                 return (byte)(f * 255);
             }
-            public static void Postfix(IntroCutscene __instance)
+            public static void Prefix(IntroCutscene __instance)
             {
                 new LateTask(() =>
                 {
