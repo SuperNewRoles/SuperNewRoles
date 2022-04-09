@@ -206,6 +206,10 @@ namespace SuperNewRoles
                     returntext = CustomOptions.EgoistUseVent.name + ":" + CustomOptions.EgoistUseVent.getString() + "\n";
                     returntext += CustomOptions.EgoistUseSabo.name + ":" + CustomOptions.EgoistUseSabo.getString() + "\n";
                     break;
+                case RoleId.MadMayor:
+                    returntext = CustomOptions.MadMayorIsUseVent.name + ":" + CustomOptions.MadMayorIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.MadMayorIsCheckImpostor.name + ":" + CustomOptions.MadMayorIsCheckImpostor.getString() + "\n";
+                    break;
             }
             return returntext;
         }
@@ -397,9 +401,12 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Survivor):
                     Roles.RoleClass.Survivor.SurvivorPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.MadMayor):
+                    Roles.RoleClass.MadMayor.MadMayorPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
-                    SuperNewRolesPlugin.Logger.LogError($"setRole: no method found for role type {role}");
+                    SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
                     return;
             }
             ChacheManager.ResetMyRoleChache();
@@ -565,7 +572,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Magaziner):
                     Roles.RoleClass.Magaziner.MagazinerPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.Mayor):
+                case (CustomRPC.RoleId.Mayor):
                     Roles.RoleClass.Mayor.MayorPlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.truelover):
@@ -595,7 +602,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Survivor):
                     Roles.RoleClass.Survivor.SurvivorPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                case (CustomRPC.RoleId.MadMayor):
+                    Roles.RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
+                    break;
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -652,8 +662,11 @@ namespace SuperNewRoles
                     break; 
                 case (RoleId.Amnesiac):
                     IsTaskClear = true;
-                    break; 
-                //タスククリアか
+                    break;
+                case (RoleId.MadMayor):
+                    IsTaskClear = true;
+                    break;
+                    //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
             {
@@ -680,6 +693,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsUseVent) return true;
             if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.UseVent) return true;
             if (player.isRole(RoleId.Technician) && IsSabotage()) return true;
+            if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMayor.IsUseVent) return true;
             return false;
         }
         public static bool IsSabotage()
@@ -708,6 +722,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.ImpostorLight) return true;
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) return false;
             if (player.isRole(RoleId.MadMate) && RoleClass.MadMate.IsImpostorLight) return true;
+            if (player.isRole(RoleId.MadMayor) && RoleClass.MadMayor.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -1066,14 +1081,19 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.MadKiller;
                 }
                 else if (Roles.RoleClass.Survivor.SurvivorPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Survivor;
-            }
-            //ロールチェック
+                {
+                    return CustomRPC.RoleId.Survivor;
+                }
+                else if (Roles.RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadMayor;
+
+                    //ロールチェック
+                }
             }
             catch (Exception e)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("エラー:"+e);
+                SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
                 return RoleId.DefaultRole;
             }
             return SuperNewRoles.CustomRPC.RoleId.DefaultRole;
