@@ -491,3 +491,12 @@ MadKillerTitle1
 SurvivorName
 SurvivorTitle1
 SurvivorKillCoolTimeSetting
+MadMayorName
+MadMayorTitle1
+MadMayorVoteCountSetting
+MadMayorDescription
+MadMayorIsCheckImpostorSetting
+MadMayorUseVentSetting
+MadMayorVentMoveSetting
+MadMayorImpostorLightSetting
+MadMayorCheckImpostorTaskSetting
