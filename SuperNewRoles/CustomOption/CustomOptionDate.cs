@@ -408,15 +408,15 @@ namespace SuperNewRoles.CustomOption
             Sabotage.Options.Load();
 
             SoothSayerOption = new CustomRoleOption(6, "SoothSayerName", RoleClass.SoothSayer.color, 1);
-            SoothSayerPlayerCount = CustomOption.Create(7, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
-            SoothSayerDisplayMode = CustomOption.Create(8, ModTranslation.getString("SoothSayerDisplaySetting"), false, SoothSayerOption);
-            SoothSayerMaxCount = CustomOption.Create(9, cs(Color.white, "SoothSayerMaxCountSetting"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
+            SoothSayerPlayerCount = CustomOption.Create(7, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
+            SoothSayerDisplayMode = CustomOption.Create(8, "SoothSayerDisplaySetting", false, SoothSayerOption);
+            SoothSayerMaxCount = CustomOption.Create(9, "SoothSayerMaxCountSetting", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SoothSayerOption);
 
             JesterOption = new CustomRoleOption(10, "JesterName", RoleClass.Jester.color, 1);
-            JesterPlayerCount = CustomOption.Create(11, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
-            JesterIsVent = CustomOption.Create(12, ModTranslation.getString("JesterIsVentSetting"), false, JesterOption);
-            JesterIsSabotage = CustomOption.Create(13, ModTranslation.getString("JesterIsSabotageSetting"), false, JesterOption);
-            JesterIsWinCleartask = CustomOption.Create(113, ModTranslation.getString("JesterIsWinClearTaskSetting"), false, JesterOption);
+            JesterPlayerCount = CustomOption.Create(11, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JesterOption);
+            JesterIsVent = CustomOption.Create(12, "JesterIsVentSetting", false, JesterOption);
+            JesterIsSabotage = CustomOption.Create(13, "JesterIsSabotageSetting", false, JesterOption);
+            JesterIsWinCleartask = CustomOption.Create(113, "JesterIsWinClearTaskSetting", false, JesterOption);
             var jesteroption = SelectTask.TaskSetting(262, 263, 264, JesterIsWinCleartask);
             JesterCommonTask = jesteroption.Item1;
             JesterShortTask = jesteroption.Item2;

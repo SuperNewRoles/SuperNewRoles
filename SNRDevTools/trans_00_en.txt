@@ -46,6 +46,7 @@ Ashish reddish purple color
 Melon
 Crasyu Blue
 Light Green
+<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats
 Preset
 Super New Roles Setting
 Minimum Crewmate Roles
@@ -162,12 +163,13 @@ Self-destruct collateral damage
 amputation
 Death
 Sabotage
-Sabotage
 Sabotage Setting
 Cognitive Deficit
 Figure Change Interval
 Release Time
 Cannot be sabotaged unless everyone is deactivated.
+Ware House
+Tool Room
 Detective
 Diviner
 Divine the player and find the outsider.

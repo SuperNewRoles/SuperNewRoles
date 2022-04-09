@@ -205,67 +205,70 @@ namespace SuperNewRoles.Patch
                 for (var i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea ps = __instance.playerStates[i];
-                    if (ModeHandler.isMode(ModeId.BattleRoyal))
+                    if (AmongUsClient.Instance.GameMode != GameModes.FreePlay || ps.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId)
                     {
-                        if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(CustomRPC.RoleId.Sheriff))
+                        if (ModeHandler.isMode(ModeId.BattleRoyal))
                         {
-
-                        }
-                    }
-                    else
-                    {
-                        if (ps == null) continue;
-                        var voter = ModHelpers.playerById(ps.TargetPlayerId);
-                        if (voter == null || voter.Data == null || voter.Data.Disconnected) continue;
-                        /*
-                        if (ps.VotedFor == 253 && !voter.Data.IsDead)//スキップ
-                        {
-                            switch (main.whenSkipVote)
+                            if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(CustomRPC.RoleId.Sheriff))
                             {
-                                case VoteMode.Suicide:
-                                    main.ps.setDeathReason(ps.TargetPlayerId, PlayerState.DeathReason.Suicide);
-                                    voter.RpcMurderPlayer(voter);
-                                    break;
-                                case VoteMode.SelfVote:
-                                    ps.VotedFor = ps.TargetPlayerId;
-                                    break;
-                                default:
-                                    break;
+
                             }
                         }
-
-                        if (ps.VotedFor == 254 && !voter.Data.IsDead)//無投票
+                        else
                         {
-                            switch (main.whenNonVote)
+                            if (ps == null) continue;
+                            var voter = ModHelpers.playerById(ps.TargetPlayerId);
+                            if (voter == null || voter.Data == null || voter.Data.Disconnected) continue;
+                            /*
+                            if (ps.VotedFor == 253 && !voter.Data.IsDead)//スキップ
                             {
-                                case VoteMode.Suicide:
-                                    voter.RpcMurderPlayer(voter);
-                                    break;
-                                case VoteMode.SelfVote:
-                                    ps.VotedFor = ps.TargetPlayerId;
-                                    break;
-                                default:
-                                    break;
+                                switch (main.whenSkipVote)
+                                {
+                                    case VoteMode.Suicide:
+                                        main.ps.setDeathReason(ps.TargetPlayerId, PlayerState.DeathReason.Suicide);
+                                        voter.RpcMurderPlayer(voter);
+                                        break;
+                                    case VoteMode.SelfVote:
+                                        ps.VotedFor = ps.TargetPlayerId;
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
-                        }*/
-                        if (!ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
-                        {
-                            statesList.Add(new MeetingHud.VoterState()
-                            {
-                                VoterId = ps.TargetPlayerId,
-                                VotedForId = ps.VotedFor
-                            });
-                        }
-                        if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
-                        {
 
-                            for (var i2 = 0; i2 < RoleClass.Mayor.AddVote; i2++)
+                            if (ps.VotedFor == 254 && !voter.Data.IsDead)//無投票
+                            {
+                                switch (main.whenNonVote)
+                                {
+                                    case VoteMode.Suicide:
+                                        voter.RpcMurderPlayer(voter);
+                                        break;
+                                    case VoteMode.SelfVote:
+                                        ps.VotedFor = ps.TargetPlayerId;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }*/
+                            if (!ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
                             {
                                 statesList.Add(new MeetingHud.VoterState()
                                 {
                                     VoterId = ps.TargetPlayerId,
                                     VotedForId = ps.VotedFor
                                 });
+                            }
+                            if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
+                            {
+
+                                for (var i2 = 0; i2 < RoleClass.Mayor.AddVote; i2++)
+                                {
+                                    statesList.Add(new MeetingHud.VoterState()
+                                    {
+                                        VoterId = ps.TargetPlayerId,
+                                        VotedForId = ps.VotedFor
+                                    });
+                                }
                             }
                         }
                     }
@@ -334,6 +337,7 @@ namespace SuperNewRoles.Patch
             {
                 PlayerVoteArea ps = __instance.playerStates[i];
                 if (ps == null) continue;
+                if (AmongUsClient.Instance.GameMode == GameModes.FreePlay && ps.TargetPlayerId != PlayerControl.LocalPlayer.PlayerId) continue;
                 if (ps.VotedFor != (byte)252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != (byte)254)
                 {
                     int num;

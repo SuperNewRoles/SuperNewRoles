@@ -8,7 +8,7 @@ namespace SuperNewRoles.CustomCosmetics
     {
         public static void Load()
         {
-            //CustomHatLoader.LaunchHatFetcher();
+            CustomHatLoader.LaunchHatFetcher();
         }
     }
 }

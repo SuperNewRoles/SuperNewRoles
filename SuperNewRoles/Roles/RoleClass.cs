@@ -34,6 +34,7 @@ namespace SuperNewRoles.Roles
             IsMeeting = false;
             IsCoolTimeSetted = false;
             IsStart = false;
+            Map.Data.ClearAndReloads();
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();

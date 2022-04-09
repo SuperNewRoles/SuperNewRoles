@@ -42,6 +42,7 @@ namespace SuperNewRoles
             ChacheManager.Load();
             CustomCosmetics.CustomColors.Load();
             CustomCosmetics.DownLoadClass.Load();
+            CustomCosmetics.DownLoadClassVisor.Load();
             ConfigRoles.Load();
             CustomOption.CustomOptions.Load();
             // All Load() End

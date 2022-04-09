@@ -46,6 +46,7 @@ colorAshishreddishpurplecolor
 colorMelon
 colorCrasyublue
 colorLightgreen
+Hat_SNR
 SettingpresetSelection
 SettingSuperNewRolesSetting
 SettingMiniCrewRole
@@ -167,6 +168,8 @@ SabotageCognitiveDeficitSetting
 CognitiveDeficitSabotageOutfitUpdateTimeSetting
 CognitiveDeficitSabotageReleaseTimeSetting
 CognitiveDeficitSabotageIsAllPlayerEndSabotageSetting
+Agartha_WareHouse
+Agartha_ToolRoom
 detecName
 SoothSayerName
 SoothSayerTitle1
