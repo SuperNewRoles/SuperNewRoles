@@ -98,6 +98,7 @@ namespace SuperNewRoles.Roles
             Amnesiac.ClearAndReload();
             SideKiller.ClearAndReload();
             Survivor.ClearAndReload();
+            MadMayor.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1293,6 +1294,35 @@ namespace SuperNewRoles.Roles
             {
                 SurvivorPlayer = new List<PlayerControl>();
                 KillCoolTime = CustomOptions.SurvivorKillCoolTime.getFloat();
+            }
+        }
+        public static class MadMayor
+        {
+            public static List<PlayerControl> MadMayorPlayer;
+            public static Color32 color = ImpostorRed;
+            public static int AddVote;
+            public static bool IsImpostorCheck;
+            public static int ImpostorCheckTask;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static void ClearAndReload()
+            {
+                MadMayorPlayer = new List<PlayerControl>();
+                AddVote = (int)CustomOptions.MadMayorVoteCount.getFloat();
+                IsImpostorCheck = CustomOptions.MadMayorIsCheckImpostor.getBool();
+                IsUseVent = CustomOptions.MadMayorIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadMayorIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.MadMayorCommonTask.getFloat();
+                int Long = (int)CustomOptions.MadMayorLongTask.getFloat();
+                int Short = (int)CustomOptions.MadMayorShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
             }
         }
         //新ロールクラス

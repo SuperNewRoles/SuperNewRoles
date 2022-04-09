@@ -98,6 +98,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            if (RoleClass.MadMayor.IsUseVent)
+            {
+                foreach (PlayerControl p in RoleClass.MadMayor.MadMayorPlayer)
+                {
+                    if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
+                }
+            }
             foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
             {
                 if (!p.IsMod())
@@ -367,6 +377,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MayorOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Mayor;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.MadMayorOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadMayorOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadMayor;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);
