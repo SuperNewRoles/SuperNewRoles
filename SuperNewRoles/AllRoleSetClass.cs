@@ -743,48 +743,50 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.NiceNekomataPlayerCount.getFloat();
                 case (RoleId.EvilNekomata):
                     return CustomOption.CustomOptions.EvilNekomataPlayerCount.getFloat();
-                    case (RoleId.JackalFriends):
+                case (RoleId.JackalFriends):
                     return CustomOption.CustomOptions.JackalFriendsPlayerCount.getFloat();
-                    case (RoleId.Doctor):
+                case (RoleId.Doctor):
                     return CustomOption.CustomOptions.DoctorPlayerCount.getFloat();
-                    case (RoleId.CountChanger):
+                case (RoleId.CountChanger):
                     return CustomOption.CustomOptions.CountChangerPlayerCount.getFloat();
-                    case (RoleId.Pursuer):
+                case (RoleId.Pursuer):
                     return CustomOption.CustomOptions.PursuerPlayerCount.getFloat();
-                    case (RoleId.Minimalist):
+                case (RoleId.Minimalist):
                     return CustomOption.CustomOptions.MinimalistPlayerCount.getFloat();
-                    case (RoleId.Hawk):
+                case (RoleId.Hawk):
                     return CustomOption.CustomOptions.HawkPlayerCount.getFloat();
-                    case (RoleId.Egoist):
+                case (RoleId.Egoist):
                     return CustomOption.CustomOptions.EgoistPlayerCount.getFloat();
-                    case (RoleId.NiceRedRidingHood):
+                case (RoleId.NiceRedRidingHood):
                     return CustomOption.CustomOptions.NiceRedRidingHoodPlayerCount.getFloat();
-                    case (RoleId.EvilEraser):
+                case (RoleId.EvilEraser):
                     return CustomOption.CustomOptions.EvilEraserPlayerCount.getFloat();
-                    case (RoleId.Workperson):
+                case (RoleId.Workperson):
                     return CustomOption.CustomOptions.WorkpersonPlayerCount.getFloat();
-                    case (RoleId.Magaziner):
+                case (RoleId.Magaziner):
                     return CustomOption.CustomOptions.MagazinerPlayerCount.getFloat();
-                    case (RoleId.Mayor):
+                case (RoleId.Mayor):
                     return CustomOption.CustomOptions.MayorPlayerCount.getFloat();
-                    case (RoleId.truelover):
+                case (RoleId.truelover):
                     return CustomOption.CustomOptions.trueloverPlayerCount.getFloat();
-                    case (RoleId.Technician):
+                case (RoleId.Technician):
                     return CustomOption.CustomOptions.TechnicianPlayerCount.getFloat();
-                    case (RoleId.SerialKiller):
+                case (RoleId.SerialKiller):
                     return CustomOption.CustomOptions.SerialKillerPlayerCount.getFloat();
-                    case (RoleId.OverKiller):
+                case (RoleId.OverKiller):
                     return CustomOption.CustomOptions.OverKillerPlayerCount.getFloat();
-                    case (RoleId.Levelinger):
+                case (RoleId.Levelinger):
                     return CustomOption.CustomOptions.LevelingerPlayerCount.getFloat();
-                    case (RoleId.EvilMoving):
+                case (RoleId.EvilMoving):
                     return CustomOption.CustomOptions.EvilMovingPlayerCount.getFloat();
-                    case (RoleId.Amnesiac):
+                case (RoleId.Amnesiac):
                     return CustomOption.CustomOptions.AmnesiacPlayerCount.getFloat();
-                    case (RoleId.SideKiller):
+                case (RoleId.SideKiller):
                     return CustomOption.CustomOptions.SideKillerPlayerCount.getFloat();
-                    case (RoleId.Survivor):
+                case (RoleId.Survivor):
                     return CustomOption.CustomOptions.SurvivorPlayerCount.getFloat();
+                case (RoleId.MadMayor):
+                    return CustomOption.CustomOptions.MadMayorPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1772,7 +1774,23 @@ namespace SuperNewRoles
                     }
                 }
             }
-        //セットクラス
+            if (!(CustomOption.CustomOptions.MadMayorOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadMayorOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadMayor;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            //セットクラス
         }
     }
 }

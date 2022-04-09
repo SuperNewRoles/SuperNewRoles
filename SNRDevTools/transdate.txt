@@ -492,3 +492,12 @@ MadKillerTitle1,MadKiller,昇格してキルをしよう
 SurvivorName,Let's promote and kill!,サバイバー
 SurvivorTitle1,Survivor,生き残りながらキルをしよう
 SurvivorKillCoolTimeSetting,Survive and Kill!,キルクールタイム
+MadMayorName,マッドメイヤー
+MadMayorTitle1,会議で権力を乱用しよう
+MadMayorVoteCountSetting,マッドメイヤーの票数
+MadMayorDescription,判定はクルーメイト陣営ですが、インポスターの仲間です。インポスターが勝利すると、マッドメイヤーも勝利できます。
+MadMayorIsCheckImpostorSetting,インポスターが確認できる
+MadMayorUseVentSetting,ベントを使える
+MadMayorVentMoveSetting,ベントで動ける
+MadMayorImpostorLightSetting,インポスターの視界
+MadMayorCheckImpostorTaskSetting,確認できるようになるタスク量（全タスク内）
