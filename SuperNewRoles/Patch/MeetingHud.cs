@@ -219,37 +219,22 @@ namespace SuperNewRoles.Patch
                             if (ps == null) continue;
                             var voter = ModHelpers.playerById(ps.TargetPlayerId);
                             if (voter == null || voter.Data == null || voter.Data.Disconnected) continue;
-                            /*
-                            if (ps.VotedFor == 253 && !voter.Data.IsDead)//スキップ
+                            if (!ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
                             {
-                                switch (main.whenSkipVote)
+                                statesList.Add(new MeetingHud.VoterState()
                                 {
-                                    case VoteMode.Suicide:
-                                        main.ps.setDeathReason(ps.TargetPlayerId, PlayerState.DeathReason.Suicide);
-                                        voter.RpcMurderPlayer(voter);
-                                        break;
-                                    case VoteMode.SelfVote:
-                                        ps.VotedFor = ps.TargetPlayerId;
-                                        break;
-                                    default:
-                                        break;
-                                }
+                                    VoterId = ps.TargetPlayerId,
+                                    VotedForId = ps.VotedFor
+                                });
                             }
-
-                            if (ps.VotedFor == 254 && !voter.Data.IsDead)//無投票
+                            if (!ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MadMayor))
                             {
-                                switch (main.whenNonVote)
+                                statesList.Add(new MeetingHud.VoterState()
                                 {
-                                    case VoteMode.Suicide:
-                                        voter.RpcMurderPlayer(voter);
-                                        break;
-                                    case VoteMode.SelfVote:
-                                        ps.VotedFor = ps.TargetPlayerId;
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }*/
+                                    VoterId = ps.TargetPlayerId,
+                                    VotedForId = ps.VotedFor
+                                });
+                            }
                             if (!ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
                             {
                                 statesList.Add(new MeetingHud.VoterState()
@@ -262,6 +247,18 @@ namespace SuperNewRoles.Patch
                             {
 
                                 for (var i2 = 0; i2 < RoleClass.Mayor.AddVote; i2++)
+                                {
+                                    statesList.Add(new MeetingHud.VoterState()
+                                    {
+                                        VoterId = ps.TargetPlayerId,
+                                        VotedForId = ps.VotedFor
+                                    });
+                                }
+                            }
+                            else if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MadMayor))
+                            {
+
+                                for (var i2 = 0; i2 < RoleClass.MadMayor.AddVote; i2++)
                                 {
                                     statesList.Add(new MeetingHud.VoterState()
                                     {
@@ -343,6 +340,7 @@ namespace SuperNewRoles.Patch
                     int num;
                     int VoteNum = 1;
                     if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor)) VoteNum = RoleClass.Mayor.AddVote;
+                    if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MadMayor)) VoteNum = RoleClass.MadMayor.AddVote;
                     dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out num) ? VoteNum : num + VoteNum;
                 }
             }

@@ -83,6 +83,7 @@ namespace SuperNewRoles.CustomRPC
         SideKiller,
         MadKiller,
         Survivor,
+        MadMayor
         //RoleId
     }
 

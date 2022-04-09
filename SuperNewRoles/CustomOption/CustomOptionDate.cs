@@ -354,6 +354,17 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption LoversLongTask;
         public static CustomOption LoversShortTask;
 
+        public static CustomRoleOption MadMayorOption;
+        public static CustomOption MadMayorPlayerCount;
+        public static CustomOption MadMayorIsCheckImpostor;
+        public static CustomOption MadMayorCommonTask;
+        public static CustomOption MadMayorShortTask;
+        public static CustomOption MadMayorLongTask;
+        public static CustomOption MadMayorCheckImpostorTask;
+        public static CustomOption MadMayorIsUseVent;
+        public static CustomOption MadMayorIsImpostorLight;
+        public static CustomOption MadMayorVoteCount;
+
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
@@ -730,6 +741,19 @@ namespace SuperNewRoles.CustomOption
             LoversCommonTask = loversoption.Item1;
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
+
+            MadMayorOption = new CustomRoleOption(98, "MadMayorName", RoleClass.ImpostorRed, 1);
+            MadMayorPlayerCount = CustomOption.Create(99, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMayorOption);
+            MadMayorVoteCount = CustomOption.Create(233, cs(Color.white, "MadMayorVoteCountSetting"), 2f, 1f, 100f, 1f,MadMayorOption);
+            MadMayorIsCheckImpostor = CustomOption.Create(100, ModTranslation.getString("MadMayorIsCheckImpostorSetting"), false, MadMayorOption);
+            var madmayoroption = SelectTask.TaskSetting(259, 260, 261, MadMayorIsCheckImpostor);
+            MadMayorCommonTask = madmayoroption.Item1;
+            MadMayorShortTask = madmayoroption.Item2;
+            MadMayorLongTask = madmayoroption.Item3;
+            //MadMayorIsNotTask = madmayoroption.Item4;
+            MadMayorCheckImpostorTask = CustomOption.Create(242, ModTranslation.getString("MadMayorCheckImpostorTaskSetting"), rates4, MadMayorIsCheckImpostor);
+            MadMayorIsUseVent = CustomOption.Create(120, ModTranslation.getString("MadMayorUseVentSetting"), false, MadMayorOption);
+            MadMayorIsImpostorLight = CustomOption.Create(234, ModTranslation.getString("MadMayorImpostorLightSetting"), false, MadMayorOption);
 
 
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);
