@@ -15,7 +15,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Transform RoomNames = MapObject.FindChild("RoomNames");
             SpriteRenderer render = Background.GetComponent<SpriteRenderer>();
             render.sprite = ImageManager.MiniMap;
-            render.transform.localScale *= 1.45f;
+            render.transform.localScale *= 0.75f;
             //AdminRoomName
             Transform AdminRoom = RoomNames.FindChild("Admin");
             AdminRoom.GetComponent<TextMeshPro>().text = TranslationController.Instance.GetString(StringNames.Admin);
@@ -81,7 +81,14 @@ namespace SuperNewRoles.Map.Agartha.Patch
             , 0f, "SetMapText");
             WareHouse.localPosition = new Vector3(-3.37f, -1.2f, 0);
 
-            RoomNames.FindChild("Reactor").gameObject.SetActive(false);
+            //WorkRoomName
+            Transform WorkRoom = RoomNames.FindChild("Reactor");
+            WorkRoom.name = "WorkRoom";
+            new LateTask(() =>
+            WorkRoom.GetComponent<TextMeshPro>().text = ModTranslation.getString("Agartha_WorkRoom")
+            , 0f, "SetMapText");
+            WorkRoom.localPosition = new Vector3(-3.37f, 1.25f, 0);
+
             RoomNames.FindChild("Cafeteria").gameObject.SetActive(false);
             RoomNames.FindChild("Greenhouse").gameObject.SetActive(false);
         }

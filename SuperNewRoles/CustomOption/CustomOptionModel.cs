@@ -68,7 +68,7 @@ namespace SuperNewRoles.CustomOption
                 selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
                 if (options.Any(x => x.id == id))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("CustomOptionのId({id})が重複しています。");
+                    SuperNewRolesPlugin.Logger.LogInfo("CustomOptionのId("+id+")が重複しています。");
                 }
                 if (Max < id)
                 {

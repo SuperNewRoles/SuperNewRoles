@@ -170,6 +170,7 @@ Release Time
 Cannot be sabotaged unless everyone is deactivated.
 Ware House
 Tool Room
+Work Room
 Detective
 Diviner
 Divine the player and find the outsider.
@@ -494,12 +495,3 @@ Let's promote and kill!
 Survivor
 Survive and Kill!
 Kill Cool Time
-MadMayor
-Let's abuse our power at the meeting.
-MadMayer's vote count
-The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmayor can also win.
-You can check the Imposter.
-Use Vent
-Move Vent
-Impostor Light
-Amount of tasks that will be able to be checked (of all tasks)

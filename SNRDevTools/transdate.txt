@@ -171,6 +171,7 @@ CognitiveDeficitSabotageReleaseTimeSetting,Release Time,解除時間
 CognitiveDeficitSabotageIsAllPlayerEndSabotageSetting,Cannot be sabotaged unless everyone is deactivated.,全員が解除しないとサボタージュできない
 Agartha_WareHouse,Ware House,倉庫
 Agartha_ToolRoom,Tool Room,工具室
+Agartha_WorkRoom,Work Room,仕事場
 detecName,Detective,探偵
 SoothSayerName,Diviner,占い師
 SoothSayerTitle1,Divine the player and find the outsider.,プレイヤーを占い人外を見つけよう
@@ -495,12 +496,3 @@ MadKillerTitle1,Let's promote and kill!,昇格してキルをしよう
 SurvivorName,Survivor,サバイバー
 SurvivorTitle1,Survive and Kill!,生き残りながらキルをしよう
 SurvivorKillCoolTimeSetting,Kill Cool Time,キルクールタイム
-MadMayorName,MadMayor,マッドメイヤー
-MadMayorTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう
-MadMayorVoteCountSetting,MadMayer's vote count,マッドメイヤーの票数
-MadMayorDescription,The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmayor can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。インポスターが勝利すると、マッドメイヤーも勝利できます。
-MadMayorIsCheckImpostorSetting,You can check the Imposter.,インポスターが確認できる
-MadMayorUseVentSetting,Use Vent,ベントを使える
-MadMayorVentMoveSetting,Move Vent,ベントで動ける
-MadMayorImpostorLightSetting,Impostor Light,インポスターの視界
-MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）

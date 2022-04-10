@@ -338,6 +338,17 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SurvivorPlayerCount;
         public static CustomOption SurvivorKillCoolTime;
 
+        public static CustomRoleOption MadMayorOption;
+        public static CustomOption MadMayorPlayerCount;
+        public static CustomOption MadMayorIsCheckImpostor;
+        public static CustomOption MadMayorCommonTask;
+        public static CustomOption MadMayorShortTask;
+        public static CustomOption MadMayorLongTask;
+        public static CustomOption MadMayorCheckImpostorTask;
+        public static CustomOption MadMayorIsUseVent;
+        public static CustomOption MadMayorIsImpostorLight;
+        public static CustomOption MadMayorVoteCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -353,17 +364,6 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption LoversCommonTask;
         public static CustomOption LoversLongTask;
         public static CustomOption LoversShortTask;
-
-        public static CustomRoleOption MadMayorOption;
-        public static CustomOption MadMayorPlayerCount;
-        public static CustomOption MadMayorIsCheckImpostor;
-        public static CustomOption MadMayorCommonTask;
-        public static CustomOption MadMayorShortTask;
-        public static CustomOption MadMayorLongTask;
-        public static CustomOption MadMayorCheckImpostorTask;
-        public static CustomOption MadMayorIsUseVent;
-        public static CustomOption MadMayorIsImpostorLight;
-        public static CustomOption MadMayorVoteCount;
 
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
@@ -725,6 +725,19 @@ namespace SuperNewRoles.CustomOption
             SurvivorPlayerCount = CustomOption.Create(294, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SurvivorOption);
             SurvivorKillCoolTime = CustomOption.Create(295, cs(Color.white, "SurvivorKillCoolTimeSetting"), 15f, 0f, 75f, 2.5f, SurvivorOption);
 
+            MadMayorOption = new CustomRoleOption(301, "MadMayorName", RoleClass.ImpostorRed, 1);
+            MadMayorPlayerCount = CustomOption.Create(302, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMayorOption);
+            MadMayorVoteCount = CustomOption.Create(303, cs(Color.white, "MadMayorVoteCountSetting"), 2f, 1f, 100f, 1f, MadMayorOption);
+            MadMayorIsCheckImpostor = CustomOption.Create(304, ModTranslation.getString("MadMayorIsCheckImpostorSetting"), false, MadMayorOption);
+            var madmayoroption = SelectTask.TaskSetting(305, 306, 307, MadMayorIsCheckImpostor);
+            MadMayorCommonTask = madmayoroption.Item1;
+            MadMayorShortTask = madmayoroption.Item2;
+            MadMayorLongTask = madmayoroption.Item3;
+            //MadMayorIsNotTask = madmayoroption.Item4;
+            MadMayorCheckImpostorTask = CustomOption.Create(308, ModTranslation.getString("MadMayorCheckImpostorTaskSetting"), rates4, MadMayorIsCheckImpostor);
+            MadMayorIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMayorUseVentSetting"), false, MadMayorOption);
+            MadMayorIsImpostorLight = CustomOption.Create(310, ModTranslation.getString("MadMayorImpostorLightSetting"), false, MadMayorOption);
+
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, cs(Color.white, "QuarreledOnlyCrewMateSetting"), false, QuarreledOption);
@@ -741,20 +754,6 @@ namespace SuperNewRoles.CustomOption
             LoversCommonTask = loversoption.Item1;
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
-
-            MadMayorOption = new CustomRoleOption(98, "MadMayorName", RoleClass.ImpostorRed, 1);
-            MadMayorPlayerCount = CustomOption.Create(99, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMayorOption);
-            MadMayorVoteCount = CustomOption.Create(233, cs(Color.white, "MadMayorVoteCountSetting"), 2f, 1f, 100f, 1f,MadMayorOption);
-            MadMayorIsCheckImpostor = CustomOption.Create(100, ModTranslation.getString("MadMayorIsCheckImpostorSetting"), false, MadMayorOption);
-            var madmayoroption = SelectTask.TaskSetting(259, 260, 261, MadMayorIsCheckImpostor);
-            MadMayorCommonTask = madmayoroption.Item1;
-            MadMayorShortTask = madmayoroption.Item2;
-            MadMayorLongTask = madmayoroption.Item3;
-            //MadMayorIsNotTask = madmayoroption.Item4;
-            MadMayorCheckImpostorTask = CustomOption.Create(242, ModTranslation.getString("MadMayorCheckImpostorTaskSetting"), rates4, MadMayorIsCheckImpostor);
-            MadMayorIsUseVent = CustomOption.Create(120, ModTranslation.getString("MadMayorUseVentSetting"), false, MadMayorOption);
-            MadMayorIsImpostorLight = CustomOption.Create(234, ModTranslation.getString("MadMayorImpostorLightSetting"), false, MadMayorOption);
-
 
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);
         }

@@ -49,6 +49,58 @@ namespace SuperNewRoles
                 }
             }
             return null;
+        }// parent直下の子オブジェクトをforeachループで取得する
+        public static GameObject[] GetChildren(this GameObject ParentObject)
+        {
+            GameObject[] ChildObject = new GameObject[ParentObject.transform.childCount];
+
+            for (int i = 0; i < ParentObject.transform.childCount; i++)
+            {
+                ChildObject[i] = ParentObject.transform.GetChild(i).gameObject;
+            }
+            return ChildObject;
+        }
+        public static void DeleteObject(this Transform[] trans,string notdelete)
+        {
+            foreach(Transform tran in trans)
+            {
+                if (tran.name != notdelete)
+                {
+                    GameObject.Destroy(tran);
+                }
+            }
+        }
+        public static void DeleteObject(this GameObject[] trans, string notdelete)
+        {
+            foreach (GameObject tran in trans)
+            {
+                if (tran.name != notdelete)
+                {
+                    GameObject.Destroy(tran);
+                }
+            }
+        }
+        public static List<PlayerControl> AllNotDisconnectedPlayerControl
+        {
+            get
+            {
+                List<PlayerControl> ps = new List<PlayerControl>();
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (!p.Data.Disconnected) ps.Add(p);
+                }
+                return ps;
+            }
+        }
+        public static void SetActiveAllObject(this GameObject[] trans, string notdelete,bool IsActive)
+        {
+            foreach (GameObject tran in trans)
+            {
+                if (tran.name != notdelete)
+                {
+                    tran.SetActive(IsActive);
+                }
+            }
         }
         public static void setSkinWithAnim(PlayerPhysics playerPhysics, string SkinId)
         {

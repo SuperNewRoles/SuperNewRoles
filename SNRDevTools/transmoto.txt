@@ -170,6 +170,7 @@ CognitiveDeficitSabotageReleaseTimeSetting
 CognitiveDeficitSabotageIsAllPlayerEndSabotageSetting
 Agartha_WareHouse
 Agartha_ToolRoom
+Agartha_WorkRoom
 detecName
 SoothSayerName
 SoothSayerTitle1
@@ -494,12 +495,3 @@ MadKillerTitle1
 SurvivorName
 SurvivorTitle1
 SurvivorKillCoolTimeSetting
-MadMayorName
-MadMayorTitle1
-MadMayorVoteCountSetting
-MadMayorDescription
-MadMayorIsCheckImpostorSetting
-MadMayorUseVentSetting
-MadMayorVentMoveSetting
-MadMayorImpostorLightSetting
-MadMayorCheckImpostorTaskSetting

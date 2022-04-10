@@ -37,5 +37,45 @@ namespace SuperNewRoles.Map.Agartha
                 return m_Admin_Table;
             }
         }
+        private static Sprite m_Room_Admin;
+        public static Sprite Room_Admin
+        {
+            get
+            {
+                if (m_Room_Admin != null) return m_Room_Admin;
+                m_Room_Admin = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.Room_Admin.png", 115f);
+                return m_Room_Admin;
+            }
+        }
+        private static Sprite m_Room_Meeting;
+        public static Sprite Room_Meeting
+        {
+            get
+            {
+                if (m_Room_Meeting != null) return m_Room_Meeting;
+                m_Room_Meeting = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.Room_Meeting.png", 115f);
+                return m_Room_Meeting;
+            }
+        }
+        private static Sprite m_Object_Table1;
+        public static Sprite Object_Table1
+        {
+            get
+            {
+                if (m_Object_Table1 != null) return m_Object_Table1;
+                m_Object_Table1 = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.Object_Table1.png", 115f);
+                return m_Object_Table1;
+            }
+        }
+        private static Sprite m_CustomExilePlayer;
+        public static Sprite CustomExilePlayer
+        {
+            get
+            {
+                if (m_CustomExilePlayer != null) return m_CustomExilePlayer;
+                m_CustomExilePlayer = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.CustomExilePlayer.png", 115f);
+                return m_CustomExilePlayer;
+            }
+        }
     }
 }
