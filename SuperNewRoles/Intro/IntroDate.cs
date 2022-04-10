@@ -144,6 +144,8 @@ namespace SuperNewRoles.Intro
                     return SurvivorIntro;
                 case (CustomRPC.RoleId.MadMayor):
                     return MadMayorIntro;
+                case (CustomRPC.RoleId.EvilMayor):
+                    return EvilMayorIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -226,6 +228,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate MadKillerIntro = new IntroDate("MadKiller", RoleClass.SideKiller.color, 1, CustomRPC.RoleId.MadKiller);
         public static IntroDate SurvivorIntro = new IntroDate("Survivor", RoleClass.Survivor.color, 1, CustomRPC.RoleId.Survivor);
         public static IntroDate MadMayorIntro = new IntroDate("MadMayor", RoleClass.MadMayor.color, 1, CustomRPC.RoleId.MadMayor, TeamRoleType.Impostor);
+        public static IntroDate EvilMayorIntro = new IntroDate("EvilMayor", RoleClass.EvilMayor.color, 1, CustomRPC.RoleId.EvilMayor, TeamRoleType.Impostor);
         //イントロオブジェ
     }
 }

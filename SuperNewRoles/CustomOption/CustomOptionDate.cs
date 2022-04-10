@@ -365,6 +365,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadMayorIsImpostorLight;
         public static CustomOption MadMayorVoteCount;
 
+        public static CustomRoleOption EvilMayorOption;
+        public static CustomOption EvilMayorPlayerCount;
+        public static CustomOption EvilMayorVoteCount;
+
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
@@ -755,6 +759,9 @@ namespace SuperNewRoles.CustomOption
             MadMayorIsUseVent = CustomOption.Create(120, ModTranslation.getString("MadMayorUseVentSetting"), false, MadMayorOption);
             MadMayorIsImpostorLight = CustomOption.Create(234, ModTranslation.getString("MadMayorImpostorLightSetting"), false, MadMayorOption);
 
+            EvilMayorOption = new CustomRoleOption(231, "EvilMayorName", RoleClass.EvilMayor.color, 1);
+            EvilMayorPlayerCount = CustomOption.Create(232, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], EvilMayorOption);
+            EvilMayorVoteCount = CustomOption.Create(233, cs(Color.white, "EvilMayorVoteCountSetting"), 2f, 1f, 100f, 1f, EvilMayorOption);
 
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);
         }

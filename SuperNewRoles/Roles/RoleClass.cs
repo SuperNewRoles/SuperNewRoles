@@ -99,6 +99,7 @@ namespace SuperNewRoles.Roles
             SideKiller.ClearAndReload();
             Survivor.ClearAndReload();
             MadMayor.ClearAndReload();
+            EvilMayor.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1323,6 +1324,19 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
+            }
+        }
+
+        public static class EvilMayor
+        {
+            public static List<PlayerControl> EvilMayorPlayer;
+            public static Color32 color = ImpostorRed;
+            public static int AddVote;
+            public static void ClearAndReload()
+            {
+                EvilMayorPlayer = new List<PlayerControl>();
+                AddVote = (int)CustomOptions.EvilMayorVoteCount.getFloat();
+
             }
         }
         //新ロールクラス

@@ -500,3 +500,6 @@ MadMayorUseVentSetting
 MadMayorVentMoveSetting
 MadMayorImpostorLightSetting
 MadMayorCheckImpostorTaskSetting
+EvilMayorName
+EvilMayorTitle1
+EvilMayorVoteCountSetting

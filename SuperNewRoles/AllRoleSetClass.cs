@@ -787,6 +787,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SurvivorPlayerCount.getFloat();
                 case (RoleId.MadMayor):
                     return CustomOption.CustomOptions.MadMayorPlayerCount.getFloat();
+                case (RoleId.EvilMayor):
+                    return CustomOption.CustomOptions.EvilMayorPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1787,6 +1789,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.EvilMayorOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.EvilMayorOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.EvilMayor;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }

@@ -404,6 +404,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.EvilMayor):
+                    Roles.RoleClass.EvilMayor.EvilMayorPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -605,6 +608,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.EvilMayor):
+                    Roles.RoleClass.EvilMayor.EvilMayorPlayer.RemoveAll(ClearRemove);
+                    break;
                     //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -657,7 +663,7 @@ namespace SuperNewRoles
                 case (RoleId.Workperson):
                     IsTaskClear = true;
                     break;
-                    case (RoleId.truelover):
+                case (RoleId.truelover):
                     IsTaskClear = true;
                     break; 
                 case (RoleId.Amnesiac):
@@ -1087,9 +1093,13 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.MadMayor;
-
-                    //ロールチェック
                 }
+                else if (Roles.RoleClass.EvilMayor.EvilMayorPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.EvilMayor;
+                }
+                //ロールチェック
+
             }
             catch (Exception e)
             {

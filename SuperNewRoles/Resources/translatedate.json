@@ -2007,5 +2007,17 @@
   "MadMayorCheckImpostorTaskSetting": {
     "0": "Amount of tasks that will be able to be checked (of all tasks)",
     "11": "\u78ba\u8a8d\u3067\u304d\u308b\u3088\u3046\u306b\u306a\u308b\u30bf\u30b9\u30af\u91cf(\u5168\u30bf\u30b9\u30af\u5185)"
+  },
+  "EvilMayorName": {
+    "0": "EvilMayor",
+    "11": "\u30a4\u30d3\u30eb\u30e1\u30a4\u30e4\u30fc"
+  },
+  "EvilMayorTitle1": {
+    "0": "Let's vote to reduce the crew.",
+    "11": "\u6295\u7968\u3067\u30af\u30eb\u30fc\u3092\u6e1b\u3089\u305d\u3046"
+  },
+  "EvilMayorVoteCountSetting": {
+    "0": "EvilMayer's vote count",
+    "11": "\u30a4\u30d3\u30eb\u30e1\u30a4\u30e4\u30fc\u306e\u7968\u6570"
   }
 }

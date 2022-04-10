@@ -264,6 +264,14 @@ namespace SuperNewRoles.Patch
                                 VotedForId = ps.VotedFor
                             });
                         }
+                        if (!ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.EvilMayor))
+                        {
+                            statesList.Add(new MeetingHud.VoterState()
+                            {
+                                VoterId = ps.TargetPlayerId,
+                                VotedForId = ps.VotedFor
+                            });
+                        }
                         if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
                         {
 
@@ -342,6 +350,20 @@ namespace SuperNewRoles.Patch
             */
             return false;
         }
+        public static bool isMadMayor(byte id)
+        {/*
+            var player = PlayerControl.AllPlayerControls.ToArray().Where(pc => pc.PlayerId == id).FirstOrDefault();
+            if (player == null) return false;
+            */
+            return false;
+        }
+        public static bool isEvilMayor(byte id)
+        {/*
+            var player = PlayerControl.AllPlayerControls.ToArray().Where(pc => pc.PlayerId == id).FirstOrDefault();
+            if (player == null) return false;
+            */
+            return false;
+        }
     }
 
     static class ExtendedMeetingHud
@@ -360,6 +382,7 @@ namespace SuperNewRoles.Patch
                     int VoteNum = 1;
                     if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor)) VoteNum = RoleClass.Mayor.AddVote;
                     if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MadMayor)) VoteNum = RoleClass.MadMayor.AddVote;
+                    if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.EvilMayor)) VoteNum = RoleClass.EvilMayor.AddVote;
                     dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out num) ? VoteNum : num + VoteNum;
                 }
             }
