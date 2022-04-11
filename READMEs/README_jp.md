@@ -11,7 +11,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 [日本語←](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_jp.md)
 
-# こっちも見てね！:[公式wiki](https://wikiwiki.jp)
+# こっちも見てね！:[公式wiki](https://wikiwiki.jp/amas-snr/)
 
 # このMODの特徴
 ## コントローラー対応
