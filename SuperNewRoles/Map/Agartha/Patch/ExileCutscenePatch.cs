@@ -24,7 +24,10 @@ namespace SuperNewRoles.Map.Agartha.Patch
                         newplayer = MiraExileController.Instantiate(__instance.Player);
                         __instance.Player.gameObject.SetActive(false);
                         newplayer.BodySprites[0].BodySprite.sprite = ImageManager.CustomExilePlayer;
-                        newplayer.transform.position = new Vector3(14f, 30.4f, -70f);
+
+                        new LateTask(() => {
+                            newplayer.transform.position = new Vector3(14f, 30.4f, -70f);
+                        }, 0.2f, "ChangePosition");
                         newplayer.transform.localScale *= 1.5f;
                         IsEnd = false;
                         IEnumerator Coro()

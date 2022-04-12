@@ -39,6 +39,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }, 3f, "SetImpostor");
         }
         public static void SetCustomRoles() {
+            List<PlayerControl> DesyncImpostorPlayers = new List<PlayerControl>();
             foreach (PlayerControl SheriffPlayer in RoleClass.Sheriff.SheriffPlayer)
             {
                 if (!SheriffPlayer.IsMod())
@@ -65,7 +66,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     trueloverPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != trueloverPlayer.PlayerId)
+                        if (p.PlayerId != trueloverPlayer.PlayerId && !p.isRole(RoleId.Sheriff))
                         {
                             trueloverPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
                             p.RpcSetRoleDesync(RoleTypes.Scientist, trueloverPlayer);
@@ -115,7 +116,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     p.RpcSetRole(RoleTypes.Impostor);
                     foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                     {
-                        if (p2.PlayerId != p.PlayerId)
+                        if (p2.PlayerId != p.PlayerId && !p.isRole(RoleId.Sheriff) && !p.isRole(RoleId.truelover))
                         {
                             p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
                         }

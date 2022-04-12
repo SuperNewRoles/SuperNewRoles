@@ -449,8 +449,9 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Workperson.WorkpersonPlayer);
             notWinners.AddRange(RoleClass.Amnesiac.AmnesiacPlayer);
             notWinners.AddRange(RoleClass.SideKiller.MadKillerPlayer);
+            notWinners.AddRange(RoleClass.MadMayor.MadMayorPlayer);
 
-            foreach(PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
+            foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
                 if (p.isDead())
                 {
@@ -538,6 +539,11 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(wpd);
                 }
                 foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
+                {
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                }
+                foreach (PlayerControl p in RoleClass.MadMayor.MadMayorPlayer)
                 {
                     WinningPlayerData wpd = new WinningPlayerData(p.Data);
                     TempData.winners.Add(wpd);
