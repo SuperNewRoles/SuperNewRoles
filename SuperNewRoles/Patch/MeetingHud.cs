@@ -219,34 +219,14 @@ namespace SuperNewRoles.Patch
                             if (ps == null) continue;
                             var voter = ModHelpers.playerById(ps.TargetPlayerId);
                             if (voter == null || voter.Data == null || voter.Data.Disconnected) continue;
-                            if (!ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
+                            statesList.Add(new MeetingHud.VoterState()
                             {
-                                statesList.Add(new MeetingHud.VoterState()
-                                {
-                                    VoterId = ps.TargetPlayerId,
-                                    VotedForId = ps.VotedFor
-                                });
-                            }
-                            if (!ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MadMayor))
-                            {
-                                statesList.Add(new MeetingHud.VoterState()
-                                {
-                                    VoterId = ps.TargetPlayerId,
-                                    VotedForId = ps.VotedFor
-                                });
-                            }
-                            if (!ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
-                            {
-                                statesList.Add(new MeetingHud.VoterState()
-                                {
-                                    VoterId = ps.TargetPlayerId,
-                                    VotedForId = ps.VotedFor
-                                });
-                            }
+                                VoterId = ps.TargetPlayerId,
+                                VotedForId = ps.VotedFor
+                            });
                             if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
                             {
-
-                                for (var i2 = 0; i2 < RoleClass.Mayor.AddVote; i2++)
+                                for (var i2 = 0; i2 < RoleClass.Mayor.AddVote-1; i2++)
                                 {
                                     statesList.Add(new MeetingHud.VoterState()
                                     {
@@ -257,8 +237,7 @@ namespace SuperNewRoles.Patch
                             }
                             else if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MadMayor))
                             {
-
-                                for (var i2 = 0; i2 < RoleClass.MadMayor.AddVote; i2++)
+                                for (var i2 = 0; i2 < RoleClass.MadMayor.AddVote-1; i2++)
                                 {
                                     statesList.Add(new MeetingHud.VoterState()
                                     {
@@ -340,7 +319,7 @@ namespace SuperNewRoles.Patch
                     int num;
                     int VoteNum = 1;
                     if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor)) VoteNum = RoleClass.Mayor.AddVote;
-                    if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MadMayor)) VoteNum = RoleClass.MadMayor.AddVote;
+                    else if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MadMayor)) VoteNum = RoleClass.MadMayor.AddVote;
                     dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out num) ? VoteNum : num + VoteNum;
                 }
             }

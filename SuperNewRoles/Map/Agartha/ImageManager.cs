@@ -77,5 +77,15 @@ namespace SuperNewRoles.Map.Agartha
                 return m_CustomExilePlayer;
             }
         }
+        private static Sprite m_Room_Security;
+        public static Sprite Room_Security
+        {
+            get
+            {
+                if (m_Room_Security != null) return m_Room_Security;
+                m_Room_Security = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.Room_Security.png", 115f);
+                return m_Room_Security;
+            }
+        }
     }
 }

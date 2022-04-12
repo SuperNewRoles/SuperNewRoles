@@ -43,8 +43,8 @@ namespace SuperNewRoles.Map
                         new Vector2[] { new Vector2(-6.25f, 3f), new Vector2(10f, 3f), new Vector2(10f, 5.6f), new Vector2(12f, 5.6f), new Vector2(12f, 23.6f), new Vector2(11f, 23.6f), new Vector2(11f, 27.4f), new Vector2(-6.25f, 27.4f), new Vector2(-6.25f, 22f), new Vector2(-12.25f, 22f), new Vector2(-12.5f, 24f), new Vector2(-10.5f, 24f), new Vector2(-10.5f, 26.7f), new Vector2(-15.5f, 26.7f), new Vector2(-15.5f, 24f), new Vector2(-13.5f, 24f), new Vector2(-13.5f, 22f), new Vector2(-19f, 22f), new Vector2(-19f, 26.7f), new Vector2(-25.3f, 26.7f), new Vector2(-25.3f, 15.5f),
                             new Vector2(-23f,15.5f), new Vector2(-23f, 13f), new Vector2(-25.3f, 13f), new Vector2(-25.3f, 2.5f), new Vector2(-19f, 2.5f), new Vector2(-19f, 6.8f), new Vector2(-14f, 6.8f), new Vector2(-14f, 4.8f), new Vector2(-16f, 4.8f), new Vector2(-16f, 2.3f), new Vector2(-9.7f, 2.3f), new Vector2(-9.7f, 5.3f), new Vector2(-11.7f, 5.3f), new Vector2(-11.7f, 6.8f), new Vector2(-6.25f, 6.8f), new Vector2(-6.25f, 3f) };
                     Wall.gameObject.AddComponent<EdgeCollider2D>().points =
-                        new Vector2[] { new Vector2(-5.25f, 4f), new Vector2(9f, 4f), new Vector2(9f, 6f), new Vector2(6.8f, 6f), new Vector2(6.8f, 8.5f), new Vector2(4.8f, 8.5f), new Vector2(4.8f, 7f), new Vector2(3.3f, 7f), new Vector2(3.3f, 11f), new Vector2(4.8f, 11f), new Vector2(4.8f, 9.5f), new Vector2(6.8f, 9.5f), new Vector2(6.8f, 12.5f), new Vector2(10.8f, 12.5f), new Vector2(10.8f, 14.5f), new Vector2(5.8f, 14.5f), new Vector2(5.8f, 19.5f), new Vector2(4f, 19.5f),
-                            new Vector2(4f, 14.3f), new Vector2(-3f, 14.3f), new Vector2(-3f, 17.8f), new Vector2(-5f, 17.8f), new Vector2(-5f, 9.7f), new Vector2(-3f, 9.7f), new Vector2(-3f, 11.2f), new Vector2(-1f, 11.2f), new Vector2(-1f, 6.5f), new Vector2(-3f, 6.5f), new Vector2(-3f, 8.5f), new Vector2(-5.25f, 8.5f), new Vector2(-5.25f, 4f)
+                        new Vector2[] { new Vector2(-5.25f, 4f), new Vector2(9f, 4f), new Vector2(9f, 6f), new Vector2(6.8f, 6f), new Vector2(6.8f, 8.5f), new Vector2(5f, 8.5f), new Vector2(5f, 7f), new Vector2(2.3f, 7f), new Vector2(2.3f, 11f), new Vector2(5f, 11f), new Vector2(5f, 9.5f), new Vector2(6.8f, 9.5f), new Vector2(6.8f, 12.5f), new Vector2(10.8f, 12.5f), new Vector2(10.8f, 14.5f), new Vector2(5.8f, 14.5f), new Vector2(5.8f, 19.5f), new Vector2(4f, 19.5f),
+                            new Vector2(4f, 14.3f), new Vector2(-3f, 14.3f), new Vector2(-3f, 17.8f), new Vector2(-5f, 17.8f), new Vector2(-5f, 9.7f), new Vector2(-3f, 9.7f), new Vector2(-2.5f, 11.2f), new Vector2(0f, 11.2f), new Vector2(0f, 7f), new Vector2(-3f, 7f), new Vector2(-3f, 8.5f), new Vector2(-5.25f, 8.5f), new Vector2(-5.25f, 4f)
                         };
                     Wall.gameObject.AddComponent<EdgeCollider2D>().points =
                            new Vector2[] {
@@ -61,8 +61,18 @@ namespace SuperNewRoles.Map
 
                     SpriteRenderer CafeteriaWalls = Wall.FindChild("CafeteriaWalls").gameObject.GetComponent<SpriteRenderer>();
                     CafeteriaWalls.sprite = Agartha.ImageManager.Room_Meeting;
-                    CafeteriaWalls.transform.position = new Vector3(13.15f, 15.6f, 4f);
+                    CafeteriaWalls.transform.position = new Vector3(13.15f, 16f, 4f);
                     CafeteriaWalls.transform.localScale *= 1.5f;
+                    SpriteRenderer AdminWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
+                    AdminWalls.name = "AdminWalls";
+                    AdminWalls.sprite = Agartha.ImageManager.Room_Admin;
+                    AdminWalls.transform.position = new Vector3(11.1f, 5.6f, 4f);
+                    AdminWalls.transform.localScale *= 0.29f;
+                    SpriteRenderer SecurityWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
+                    SecurityWalls.name = "SecurityWalls";
+                    SecurityWalls.sprite = Agartha.ImageManager.Room_Security;
+                    SecurityWalls.transform.position = new Vector3(0f, 0f, 4f);
+                    SecurityWalls.transform.localScale *= 0.29f;
                     GameObject.Destroy(MiraShip.FindChild("CloudGen").GetComponent<EdgeCollider2D>());
 
                     Transform CafeObject = MiraShip.FindChild("Cafe");

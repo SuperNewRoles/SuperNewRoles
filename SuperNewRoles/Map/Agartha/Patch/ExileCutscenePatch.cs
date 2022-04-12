@@ -31,7 +31,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
                         {
                             while (!IsEnd)
                             {
-                                newplayer.transform.localPosition -= new Vector3(0, 0.025f, 0);
+                                newplayer.transform.localPosition -= new Vector3(0, 0.1f, 0);
                                 yield return null;
                             }
                             yield return null;
@@ -60,7 +60,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
                     SpriteRenderer render = Background.GetComponent<SpriteRenderer>();
                     render.sprite = ImageManager.ExileBackImage;
                     render.color = Color.white;
-                    Background.localScale *= 0.15f;
+                    Background.localScale *= 0.05f;
                 }
             }
         }
