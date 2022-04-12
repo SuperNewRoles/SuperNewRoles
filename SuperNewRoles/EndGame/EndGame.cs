@@ -771,6 +771,7 @@ namespace SuperNewRoles.EndGame
                 }
             }
             if (exiled == null) return;
+            FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.Object.PlayerId] = FinalStatus.Exiled;
             if (exiled.Object.PlayerId != PlayerControl.LocalPlayer.PlayerId) return;
             if (exiled.Object.isRole(RoleId.SideKiller))
             {

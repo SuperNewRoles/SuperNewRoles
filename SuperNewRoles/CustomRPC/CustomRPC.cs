@@ -129,10 +129,23 @@ namespace SuperNewRoles.CustomRPC
         UncheckedSetColor,
         UncheckedSetVanilaRole,
         SetMadKiller,
-        SetCustomSabotage
+        SetCustomSabotage,
+        UseStuntmanCount
     }
     public static class RPCProcedure
     {
+        public static void UseStuntmanCount(byte playerid)
+        {
+            var player = ModHelpers.playerById(playerid);
+            if (player == null) return;
+            if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
+            {
+                RoleClass.StuntMan.GuardCount[playerid] = ((int)CustomOptions.StuntManMaxGuardCount.getFloat())-1;
+            } else
+            {
+                RoleClass.StuntMan.GuardCount[playerid]--;
+            }
+        }
         public static void SetMadKiller(byte sourceid,byte targetid)
         {
             var source = ModHelpers.playerById(sourceid);

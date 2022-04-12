@@ -12,6 +12,7 @@ using Hazel;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles
 {
@@ -21,7 +22,8 @@ namespace SuperNewRoles
         {
             PerformKill,
             SuppressKill,
-            BlankKill
+            BlankKill,
+            GuardianGuardKill
         }
         public static bool ShowButtons
         {
@@ -155,6 +157,33 @@ namespace SuperNewRoles
             if (AmongUsClient.Instance.IsGameOver) return MurderAttemptResult.SuppressKill;
             if (killer == null || killer.Data == null || killer.Data.IsDead || killer.Data.Disconnected) return MurderAttemptResult.SuppressKill; // Allow non Impostor kills compared to vanilla code
             if (target == null || target.Data == null || target.Data.IsDead || target.Data.Disconnected) return MurderAttemptResult.SuppressKill; // Allow killing players in vents compared to vanilla code
+            if (target.isRole(RoleId.StuntMan) && !killer.isRole(RoleId.OverKiller) && (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId) || RoleClass.StuntMan.GuardCount[target.PlayerId] >= 1))
+            {
+                if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, killer))
+                {
+                    bool IsSend = false;
+                    if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
+                    {
+                        target.RpcProtectPlayer(target, 0);
+                        IsSend = true;
+                    }
+                    else
+                    {
+                        if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
+                        {
+                            RoleClass.StuntMan.GuardCount[target.PlayerId]--;
+                            target.RpcProtectPlayer(target, 0);
+                            IsSend = true;
+                        }
+                    }
+                    if (IsSend)
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
+                        writer.Write(target.PlayerId);
+                        writer.EndRPC();
+                    }
+                }
+            }
             return MurderAttemptResult.PerformKill;
         }
         public static void generateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)

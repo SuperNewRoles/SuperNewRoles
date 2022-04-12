@@ -122,6 +122,8 @@ namespace SuperNewRoles.Intro
                     return MagazinerIntro;
                 case (CustomRPC.RoleId.Mayor):
                     return MayorIntro;
+                case (CustomRPC.RoleId.NiceScientist):
+                    return NiceScientistIntro;
                 case (CustomRPC.RoleId.truelover):
                     return trueloverIntro;
                 case (CustomRPC.RoleId.Technician):

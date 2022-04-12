@@ -1987,6 +1987,42 @@
  "SurvivorKillCoolTimeSetting" : {
         "0" : "Kill Cool Time" ,
         "11" : "\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+        } ,
+ "MadMayorName" : {
+        "0" : "MadMayor" ,
+        "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30e4\u30fc"
+        } ,
+ "MadMayorTitle1" : {
+        "0" : "Let's abuse our power at the meeting." ,
+        "11" : "\u4f1a\u8b70\u3067\u6a29\u529b\u3092\u4e71\u7528\u3057\u3088\u3046"
+        } ,
+ "MadMayorVoteCountSetting" : {
+        "0" : "MadMayer's vote count" ,
+        "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30e4\u30fc\u306e\u7968\u6570"
+        } ,
+ "MadMayorDescription" : {
+        "0" : "The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmayor can also win." ,
+        "11" : "\u5224\u5b9a\u306f\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u9663\u55b6\u3067\u3059\u304c\u3001\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u4ef2\u9593\u3067\u3059\u3002\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u52dd\u5229\u3059\u308b\u3068\u3001\u30de\u30c3\u30c9\u30e1\u30a4\u30e4\u30fc\u3082\u52dd\u5229\u3067\u304d\u307e\u3059\u3002"
+        } ,
+ "MadMayorIsCheckImpostorSetting" : {
+        "0" : "You can check the Imposter." ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u78ba\u8a8d\u3067\u304d\u308b"
+        } ,
+ "MadMayorUseVentSetting" : {
+        "0" : "Use Vent" ,
+        "11" : "\u30d9\u30f3\u30c8\u3092\u4f7f\u3048\u308b"
+        } ,
+ "MadMayorVentMoveSetting" : {
+        "0" : "Move Vent" ,
+        "11" : "\u30d9\u30f3\u30c8\u3067\u52d5\u3051\u308b"
+        } ,
+ "MadMayorImpostorLightSetting" : {
+        "0" : "Impostor Light" ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u8996\u754c"
+        } ,
+ "MadMayorCheckImpostorTaskSetting" : {
+        "0" : "Amount of tasks that will be able to be checked (of all tasks)" ,
+        "11" : "\u78ba\u8a8d\u3067\u304d\u308b\u3088\u3046\u306b\u306a\u308b\u30bf\u30b9\u30af\u91cf\uff08\u5168\u30bf\u30b9\u30af\u5185\uff09"
         } 
 
 }

@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using SuperNewRoles.Helpers;
+using static SuperNewRoles.ModHelpers;
 
 namespace SuperNewRoles.Patches
 {
@@ -25,6 +26,35 @@ namespace SuperNewRoles.Patches
         {
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) return false;
             return true;
+        }
+    }
+
+    [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
+    class KillButtonDoClickPatch
+    {
+        public static bool Prefix(KillButton __instance)
+        {
+            if (!ModeHandler.isMode(ModeId.Default)) return true;
+            if (__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.CanMove)
+            {
+                bool showAnimation = true;
+                /*
+                if (PlayerControl.LocalPlayer.isRole(RoleType.Ninja) && Ninja.isStealthed(PlayerControl.LocalPlayer))
+                {
+                    showAnimation = false;
+                }
+                */
+
+                // Use an unchecked kill command, to allow shorter kill cooldowns etc. without getting kicked
+                MurderAttemptResult res = ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
+                // Handle blank kill
+                if (res == MurderAttemptResult.BlankKill)
+                {
+                    PlayerControl.LocalPlayer.killTimer = RoleHelpers.getCoolTime(PlayerControl.LocalPlayer);
+                }
+                __instance.SetTarget(null);
+            }
+            return false;
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
@@ -41,21 +71,24 @@ namespace SuperNewRoles.Patches
                 return true;
             }
             if (ModeHandler.isMode(ModeId.BattleRoyal)) return true;
-            if (target.isRole(RoleId.StuntMan) && !__instance.isRole(RoleId.OverKiller))
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
-                if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
+                if (target.isRole(RoleId.StuntMan) && !__instance.isRole(RoleId.OverKiller))
                 {
-                    if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
+                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
                     {
-                        RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
-                        target.RpcProtectPlayer(target, 0);
-                    }
-                    else
-                    {
-                        if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
+                        if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
                         {
-                            RoleClass.StuntMan.GuardCount[target.PlayerId]--;
+                            RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
                             target.RpcProtectPlayer(target, 0);
+                        }
+                        else
+                        {
+                            if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
+                            {
+                                RoleClass.StuntMan.GuardCount[target.PlayerId]--;
+                                target.RpcProtectPlayer(target, 0);
+                            }
                         }
                     }
                 }
