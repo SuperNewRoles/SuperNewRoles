@@ -8,9 +8,12 @@ namespace SuperNewRoles.Map.Agartha.Patch
 {
     class MiniMapPatch
     {
+        public static Transform MapObject;
         public static void MinimapChange(MapBehaviour __instance)
         {
-            Transform MapObject = GameObject.Find("HqMap(Clone)").transform;
+            GameObject.Instantiate(new SurveillanceMinigame().CameraPrefab).name = "aaaaaa";
+            MapObject = GameObject.Find("HqMap(Clone)").transform;
+            //GameObject.Find("HqMap(Clone)").SetActive(false);
             Transform Background = MapObject.FindChild("Background");
             Transform RoomNames = MapObject.FindChild("RoomNames");
             SpriteRenderer render = Background.GetComponent<SpriteRenderer>();
@@ -20,7 +23,6 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Transform AdminRoom = RoomNames.FindChild("Admin");
             AdminRoom.GetComponent<TextMeshPro>().text = TranslationController.Instance.GetString(StringNames.Admin);
             AdminRoom.localPosition = new Vector3(0.2f, -0.95f, 0f);
-
             //CommsRoomName
             Transform CommsRoom = RoomNames.FindChild("Comms");
             CommsRoom.localPosition = new Vector3(-1.72f, 1.95f, 0f);//1.38f, -0.95f, 0f);

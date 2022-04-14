@@ -21,11 +21,19 @@ namespace SuperNewRoles.Map.Agartha.Patch
                 {
                     if (__instance.exiled != null)
                     {
-                        newplayer = MiraExileController.Instantiate(__instance.Player);
+                        if (newplayer == null)
+                        {
+                            newplayer = MiraExileController.Instantiate(__instance.Player);
+                            newplayer.BodySprites[0].BodySprite.sprite = ImageManager.CustomExilePlayer;
+                        }
+                        else
+                        {
+                            newplayer.gameObject.SetActive(true);
+                        }
                         __instance.Player.gameObject.SetActive(false);
-                        newplayer.BodySprites[0].BodySprite.sprite = ImageManager.CustomExilePlayer;
 
-                        new LateTask(() => {
+                        new LateTask(() =>
+                        {
                             newplayer.transform.position = new Vector3(14f, 30.4f, -70f);
                         }, 0.2f, "ChangePosition");
                         newplayer.transform.localScale *= 1.5f;
@@ -37,14 +45,30 @@ namespace SuperNewRoles.Map.Agartha.Patch
                                 newplayer.transform.localPosition -= new Vector3(0, 0.1f, 0);
                                 yield return null;
                             }
+                            newplayer.gameObject.SetActive(false);
                             yield return null;
                         }
                         AmongUsClient.Instance.StartCoroutine(Coro());
+                        IsExileReseted = false;
+                    }
+                }
+                else if (Data.IsMap(CustomMapNames.Mira))
+                {
+                    if (__instance.exiled != null && !IsExileReseted)
+                    {
+                        __instance.Player.gameObject.SetActive(true);
+                        if (newplayer != null)
+                        {
+                            newplayer.gameObject.SetActive(false);
+                        }
+                        IsExileReseted = true;
                     }
                 }
             }
         }
-
+        public static Sprite Default;
+        public static bool IsReseted = true;
+        public static bool IsExileReseted = true;
         [HarmonyPatch(typeof(MiraExileController), nameof(MiraExileController.Animate))]
         public static class ExileControllerPatch
         {
@@ -61,9 +85,28 @@ namespace SuperNewRoles.Map.Agartha.Patch
                     ExileCust.FindChild("ForegroundClouds").gameObject.SetActive(false);
                     Transform Background = ExileCust.FindChild("Background");
                     SpriteRenderer render = Background.GetComponent<SpriteRenderer>();
+                    if (Default == null)
+                    {
+                        Default = render.sprite;
+                    }
                     render.sprite = ImageManager.ExileBackImage;
                     render.color = Color.white;
                     Background.localScale *= 0.05f;
+                    IsReseted = false;
+                } else if (Data.IsMap(CustomMapNames.Mira) && !IsReseted)
+                {
+                    Transform ExileCust = GameObject.Find("MiraExileCutscene(Clone)").transform;
+                    ExileCust.FindChild("ExilePoolablePlayer").transform.localScale *= 1.25f;
+                    //ExileCust.FindChild("ExilePoolablePlayer").gameObject.SetActive(false);
+                    //ExileCust.FindChild("StatusText_TMP").transform.localPosition *= 1.5f;
+                    //ExileCust.FindChild("ImpostorText_TMP").transform.localPosition *= 1.5f;
+                    ExileCust.FindChild("BackgroundClouds").gameObject.SetActive(false);
+                    ExileCust.FindChild("ForegroundClouds").gameObject.SetActive(false);
+                    Transform Background = ExileCust.FindChild("Background");
+                    SpriteRenderer render = Background.GetComponent<SpriteRenderer>();
+                    render.sprite = Default;
+                    render.color = Color.white;
+                    Background.localScale /= 0.05f;
                 }
             }
         }
@@ -73,7 +116,6 @@ namespace SuperNewRoles.Map.Agartha.Patch
             static void Postfix(ExileController __instance)
             {
                 IsEnd = true;
-                GameObject.Destroy(newplayer);
             }
         }
     }

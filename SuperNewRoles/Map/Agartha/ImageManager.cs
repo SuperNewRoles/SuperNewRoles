@@ -87,5 +87,25 @@ namespace SuperNewRoles.Map.Agartha
                 return m_Room_Security;
             }
         }
+        private static Sprite m_Object_Door_Open;
+        public static Sprite Object_Door_Open
+        {
+            get
+            {
+                if (m_Object_Door_Open != null) return m_Object_Door_Open;
+                m_Object_Door_Open = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.Object_Table1.png", 115f);
+                return m_Object_Door_Open;
+            }
+        }
+        private static Sprite m_FreePlayButton;
+        public static Sprite FreePlayButton
+        {
+            get
+            {
+                if (m_FreePlayButton != null) return m_FreePlayButton;
+                m_FreePlayButton = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.FreePlayButton.png", 115f);
+                return m_FreePlayButton;
+            }
+        }
     }
 }

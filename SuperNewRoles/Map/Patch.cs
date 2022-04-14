@@ -8,7 +8,6 @@ namespace SuperNewRoles.Map
 {
     public static class Patch
     {
-
         [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.Awake))]
         class ChangeMapPatch
         {

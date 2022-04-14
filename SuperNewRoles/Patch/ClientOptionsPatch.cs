@@ -51,6 +51,21 @@ namespace SuperNewRoles.Patch
             Object.Destroy(titleText.GetComponent<TextTranslatorTMP>());
             titleText.gameObject.SetActive(false);
             Object.DontDestroyOnLoad(titleText);
+            Transform MiraButton = GameObject.Find("FreeplayPopover").transform.FindChild("Content").FindChild("MiraButton");
+            PassiveButton MiraPassiveButton = MiraButton.gameObject.GetComponent<PassiveButton>();
+            MiraPassiveButton.OnClick.AddListener((Action)(() =>
+            {
+                Map.Data.ThisMap = Map.CustomMapNames.Mira;
+            }));
+            Transform AgarthaButton = MainMenuManager.Instantiate(MiraButton,MiraButton.parent);
+            PassiveButton AgarthaPassiveButton = AgarthaButton.gameObject.GetComponent<PassiveButton>();
+            AgarthaPassiveButton.OnClick.AddListener((Action)(() =>
+            {
+                Map.Data.ThisMap = Map.CustomMapNames.Agartha;
+            }));
+            SpriteRenderer AgarthaSpriteRenderer = AgarthaButton.GetComponent<SpriteRenderer>();
+            AgarthaSpriteRenderer.sprite = Map.Agartha.ImageManager.FreePlayButton;
+            AgarthaSpriteRenderer.transform.localPosition = new Vector3(0f, 1.78f, 0f);
         }
         private static Vector3? origin;
         public static float xOffset = 1.75f;

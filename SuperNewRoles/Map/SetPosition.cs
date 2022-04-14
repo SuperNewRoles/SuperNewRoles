@@ -64,7 +64,8 @@ namespace SuperNewRoles.Map
                            new Vector2[] {
                                new Vector2(-6f, 9f),new Vector2(-12f, 9f),new Vector2(-12f, 10.5f),new Vector2(-10f, 10.5f),new Vector2(-10f, 13f),new Vector2(-16f, 13f),new Vector2(-16f, 10.5f),new Vector2(-14f, 10.5f),new Vector2(-14f, 9f),new Vector2(-19f, 9f),new Vector2(-19f, 13f),new Vector2(-21.7f, 13f),new Vector2(-21.7f, 16f), new Vector2(-19f, 16f), new Vector2(-19f, 20f), new Vector2(-14f, 20f), new Vector2(-14f, 18.5f), new Vector2(-16f, 18.5f), new Vector2(-16f, 15.8f), new Vector2(-10f, 15.8f), new Vector2(-10f, 18.5f), new Vector2(-12f, 18.5f), new Vector2(-12f, 20f), new Vector2(-6f, 20f),new Vector2(-6f, 9f)
                            };
-                    
+
+                    SuperNewRolesPlugin.Logger.LogInfo("オールドア:"+ShipStatus.Instance.AllDoors.Length);
                     SpriteRenderer CafeteriaWalls = Wall.FindChild("CafeteriaWalls").gameObject.GetComponent<SpriteRenderer>();
                     CafeteriaWalls.sprite = Agartha.ImageManager.Room_Meeting;
                     CafeteriaWalls.transform.position = new Vector3(13.15f, 16f, 4f);
