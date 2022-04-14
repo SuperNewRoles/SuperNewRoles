@@ -349,6 +349,13 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadMayorIsImpostorLight;
         public static CustomOption MadMayorVoteCount;
 
+        public static CustomRoleOption DoubralKillerOption;
+        public static CustomOption DoubralKillerPlayerCount;
+        public static CustomOption DoubralKillerSuicideLTime;
+        public static CustomOption DoubralKillerSuicideRTime;
+        public static CustomOption DoubralKillerKillTime;
+        public static CustomOption DoubralKillerIsMeetingReset;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -737,6 +744,13 @@ namespace SuperNewRoles.CustomOption
             MadMayorCheckImpostorTask = CustomOption.Create(308, ModTranslation.getString("MadMayorCheckImpostorTaskSetting"), rates4, MadMayorIsCheckImpostor);
             MadMayorIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMayorUseVentSetting"), false, MadMayorOption);
             MadMayorIsImpostorLight = CustomOption.Create(310, ModTranslation.getString("MadMayorImpostorLightSetting"), false, MadMayorOption);
+
+            DoubralKillerOption = new CustomRoleOption(249, "SerialKillerName", RoleClass.SerialKiller.color, 1);
+            DoubralKillerPlayerCount = CustomOption.Create(250, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SerialKillerOption);
+            DoubralKillerSuicideLTime = CustomOption.Create(251, cs(Color.white, "SerialKillerSuicideTimeSetting"), 60f, 0f, 180f, 2.5f, SerialKillerOption);
+            DoubralKillerSuicideRTime = CustomOption.Create(251, cs(Color.white, "SerialKillerSuicideTimeSetting"), 60f, 0f, 180f, 2.5f, SerialKillerOption);
+            DoubralKillerKillTime = CustomOption.Create(252, cs(Color.white, "SerialKillerKillTimeSetting"), 15f, 0f, 60f, 2.5f, SerialKillerOption);
+            DoubralKillerIsMeetingReset = CustomOption.Create(253, cs(Color.white, "SerialKillerIsMeetingResetSetting"), true, SerialKillerOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

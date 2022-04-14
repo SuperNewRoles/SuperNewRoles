@@ -404,6 +404,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.DoubralKiller):
+                    Roles.RoleClass.DoubralKiller.DoubralKillerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -604,6 +607,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.DoubralKiller):
+                    Roles.RoleClass.DoubralKiller.DoubralKillerPlayer.RemoveAll(ClearRemove);
                     break;
                     //ロールリモベ
             }
@@ -1087,9 +1093,12 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.MadMayor;
-
-                    //ロールチェック
                 }
+                else if (Roles.RoleClass.DoubralKiller.DoubralKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.DoubralKiller;
+                }
+                //ロールチェック
             }
             catch (Exception e)
             {

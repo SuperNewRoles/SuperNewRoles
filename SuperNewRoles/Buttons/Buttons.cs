@@ -42,6 +42,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton trueloverLoveButton;
         public static CustomButton ImpostorSidekickButton;
         public static CustomButton SideKillerSidekickButton;
+        public static CustomButton DoubralKillerSecondKillButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -707,6 +708,17 @@ namespace SuperNewRoles.Buttons
             RoleClass.SerialKiller.SuicideKillText.enableWordWrapping = false;
             RoleClass.SerialKiller.SuicideKillText.transform.localScale = Vector3.one * 0.5f;
             RoleClass.SerialKiller.SuicideKillText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+
+            RoleClass.DoubralKiller.SuicideKillLText = GameObject.Instantiate(HudManager.Instance.KillButton.cooldownTimerText, HudManager.Instance.KillButton.cooldownTimerText.transform.parent);
+            RoleClass.DoubralKiller.SuicideKillRText = GameObject.Instantiate(HudManager.Instance.KillButton.cooldownTimerText, HudManager.Instance.KillButton.cooldownTimerText.transform.parent);
+            RoleClass.DoubralKiller.SuicideKillLText.text = "";
+            RoleClass.DoubralKiller.SuicideKillRText.text = "";
+            RoleClass.DoubralKiller.SuicideKillLText.enableWordWrapping = false;
+            RoleClass.DoubralKiller.SuicideKillRText.enableWordWrapping = false;
+            RoleClass.DoubralKiller.SuicideKillLText.transform.localScale = Vector3.one * 0.5f;
+            RoleClass.DoubralKiller.SuicideKillRText.transform.localScale = Vector3.one * 0.5f;
+            RoleClass.DoubralKiller.SuicideKillLText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+            RoleClass.DoubralKiller.SuicideKillRText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
 
             setCustomButtonCooldowns();
         }

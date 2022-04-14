@@ -795,6 +795,7 @@ namespace SuperNewRoles.EndGame
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
             SerialKiller.WrapUp();
+            DoubralKiller.WrapUp();
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             new LateTask(() => {
                 RoleClass.IsMeeting = false;

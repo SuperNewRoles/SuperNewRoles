@@ -100,6 +100,7 @@ namespace SuperNewRoles.Roles
             SideKiller.ClearAndReload();
             Survivor.ClearAndReload();
             MadMayor.ClearAndReload();
+            DoubralKiller.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1324,6 +1325,51 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
+            }
+        }
+        public static class DoubralKiller
+        {
+            public static List<PlayerControl> DoubralKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float SuicideDefaultLTime;
+            public static float SuicideDefaultRTime;
+            public static float SuicideLTime;
+            public static float SuicideRTime;
+            public static float KillTime;
+            public static Dictionary<byte, float> SuicideTimersL;
+            public static Dictionary<byte, float> SuicideTimersR;
+            public static bool IsSuicideViewL;
+            public static bool IsSuicideViewR;
+            public static Dictionary<byte, bool> IsSuicideViewsL;
+            public static Dictionary<byte, bool> IsSuicideViewsR;
+            public static bool IsMeetingReset;
+            public static TextMeshPro SuicideKillLText = null;
+            public static TextMeshPro SuicideKillRText = null;
+
+            private static Sprite buttonSprite;
+
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = HudManager.Instance.KillButton.graphic.sprite;
+                return buttonSprite;
+            }
+
+            public static void ClearAndReload()
+            {
+                DoubralKillerPlayer = new List<PlayerControl>();
+                SuicideLTime = CustomOptions.DoubralKillerSuicideLTime.getFloat();
+                SuicideRTime = CustomOptions.DoubralKillerSuicideRTime.getFloat();
+                KillTime = CustomOptions.DoubralKillerKillTime.getFloat();
+                SuicideDefaultLTime = SuicideLTime;
+                SuicideDefaultRTime = SuicideRTime;
+                IsMeetingReset = CustomOptions.DoubralKillerIsMeetingReset.getBool();
+                IsSuicideViewL = false;
+                IsSuicideViewR = false;
+                IsSuicideViewsL = new Dictionary<byte, bool>();
+                IsSuicideViewsR = new Dictionary<byte, bool>();
+                SuicideTimersL = new Dictionary<byte, float>();
+                SuicideTimersR = new Dictionary<byte, float>();
             }
         }
         //新ロールクラス
