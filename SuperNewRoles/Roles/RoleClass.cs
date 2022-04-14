@@ -1345,15 +1345,7 @@ namespace SuperNewRoles.Roles
             public static bool IsMeetingReset;
             public static TextMeshPro SuicideKillLText = null;
             public static TextMeshPro SuicideKillRText = null;
-
-            private static Sprite buttonSprite;
-
-            public static Sprite getButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = HudManager.Instance.KillButton.graphic.sprite;
-                return buttonSprite;
-            }
+            public static float KillCoolDown;
 
             public static void ClearAndReload()
             {
@@ -1370,6 +1362,7 @@ namespace SuperNewRoles.Roles
                 IsSuicideViewsR = new Dictionary<byte, bool>();
                 SuicideTimersL = new Dictionary<byte, float>();
                 SuicideTimersR = new Dictionary<byte, float>();
+                KillCoolDown = CustomOptions.JackalKillCoolDown.getFloat();
             }
         }
         //新ロールクラス
