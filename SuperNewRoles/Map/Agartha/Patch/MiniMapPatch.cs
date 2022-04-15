@@ -1,6 +1,8 @@
 ﻿
 
 using HarmonyLib;
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -11,7 +13,6 @@ namespace SuperNewRoles.Map.Agartha.Patch
         public static Transform MapObject;
         public static void MinimapChange(MapBehaviour __instance)
         {
-            GameObject.Instantiate(new SurveillanceMinigame().CameraPrefab).name = "aaaaaa";
             MapObject = GameObject.Find("HqMap(Clone)").transform;
             //GameObject.Find("HqMap(Clone)").SetActive(false);
             Transform Background = MapObject.FindChild("Background");
@@ -93,6 +94,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
 
             RoomNames.FindChild("Cafeteria").gameObject.SetActive(false);
             RoomNames.FindChild("Greenhouse").gameObject.SetActive(false);
+
         }
     }
 }

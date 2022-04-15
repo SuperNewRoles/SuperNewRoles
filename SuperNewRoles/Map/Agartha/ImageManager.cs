@@ -107,5 +107,45 @@ namespace SuperNewRoles.Map.Agartha
                 return m_FreePlayButton;
             }
         }
+        private static Sprite m_Room_WareHouse;
+        public static Sprite Room_WareHouse
+        {
+            get
+            {
+                if (m_Room_WareHouse != null) return m_Room_WareHouse;
+                m_Room_WareHouse = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.Room_WareHouse.png", 115f);
+                return m_Room_WareHouse;
+            }
+        }
+        private static Sprite m_Room_WorkRoom;
+        public static Sprite Room_WorkRoom
+        {
+            get
+            {
+                if (m_Room_WorkRoom != null) return m_Room_WorkRoom;
+                m_Room_WorkRoom = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.Room_WorkRoom.png", 115f);
+                return m_Room_WorkRoom;
+            }
+        }
+        private static Sprite m_Task_FixWiring1;
+        public static Sprite Task_FixWiring1
+        {
+            get
+            {
+                if (m_Task_FixWiring1 != null) return m_Task_FixWiring1;
+                m_Task_FixWiring1 = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.Task_FixWiring1.png", 115f);
+                return m_Task_FixWiring1;
+            }
+        }
+        private static Sprite m_Task_FixWiring_BackGround;
+        public static Sprite Task_FixWiring_BackGround
+        {
+            get
+            {
+                if (m_Task_FixWiring_BackGround != null) return m_Task_FixWiring_BackGround;
+                m_Task_FixWiring_BackGround = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.Task_FixWiring_BackGround.png", 115f);
+                return m_Task_FixWiring_BackGround;
+            }
+        }
     }
 }

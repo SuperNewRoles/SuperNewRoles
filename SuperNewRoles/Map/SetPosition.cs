@@ -38,6 +38,9 @@ namespace SuperNewRoles.Map
                 {
                     Transform MiraShip = GameObject.Find("MiraShip(Clone)").transform;
 
+                    Agartha.Patch.SetPosition.SetVent(MiraShip);
+                    Agartha.Patch.SetPosition.SetCamera();
+
                     Transform Wall = MiraShip.FindChild("Walls");
 
                     Wall.gameObject.AddComponent<EdgeCollider2D>().points =
@@ -83,12 +86,17 @@ namespace SuperNewRoles.Map
                     //SecurityWalls.transform.localScale *= 0.75f;
                     SecurityWalls.transform.localScale *= 0.7875f;
                     GameObject.Destroy(MiraShip.FindChild("CloudGen").GetComponent<EdgeCollider2D>());
+                    SpriteRenderer WorkRoomWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
+                    WorkRoomWalls.name = "WorkRoomWalls";
+                    WorkRoomWalls.sprite = Agartha.ImageManager.Room_WorkRoom;
+                    WorkRoomWalls.transform.position = new Vector3(-9.5f, 17.8f, 4f);
+                    WorkRoomWalls.transform.localScale *= 0.67f;
 
                     Transform CafeObject = MiraShip.FindChild("Cafe");
                     CafeObject.gameObject.GetChildren().SetActiveAllObject("Table",false);
                     GameObject.Destroy(CafeObject.gameObject.GetComponent<EdgeCollider2D>());
                     Transform CafeObject_Table = CafeObject.FindChild("Table");
-                    GameObject.Destroy(CafeObject_Table.FindChild("cafe-misc1"));
+                    CafeObject_Table.gameObject.GetChildren().SetActiveAllObject("EmergencyConsole", false);
                     CafeObject_Table.GetComponent<SpriteRenderer>().sprite = Agartha.ImageManager.Object_Table1;
                     GameObject.Destroy(CafeObject_Table.GetComponent<BoxCollider2D>());
                     GameObject.Destroy(CafeObject_Table.GetComponent<PolygonCollider2D>());
@@ -106,10 +114,13 @@ namespace SuperNewRoles.Map
                     MiraShip.FindChild("SkyBridge").gameObject.SetActive(false);
                     MiraShip.FindChild("Garden").gameObject.SetActive(false);
                     MiraShip.FindChild("Laboratory").gameObject.SetActive(false);
-                    MiraShip.FindChild("LabHall").gameObject.SetActive(false);
-                    MiraShip.FindChild("Locker").gameObject.SetActive(false);
+                    MiraShip.FindChild("LabHall").gameObject.GetChildren().SetActiveAllObject("FixWiringConsole", false);
+                    GameObject.Destroy(MiraShip.FindChild("LabHall").gameObject.GetComponent<EdgeCollider2D>());
+                    //MiraShip.FindChild("Locker").gameObject.SetActive(false);
                     MiraShip.FindChild("Office").gameObject.SetActive(false);
                     MiraShip.FindChild("Office").gameObject.SetActive(false);
+
+                    Agartha.Patch.SetTasksClass.SetTasks(MiraShip);
 
                     Transform Admin = MiraShip.FindChild("Admin");
                     Transform AdminMapTable = Admin.FindChild("MapTable");
@@ -127,6 +138,7 @@ namespace SuperNewRoles.Map
                     if (AmongUsClient.Instance.GameMode == GameModes.FreePlay)
                     {
                         MiraShip.FindChild("TaskAddConsole").position = new Vector3(12.7f, 13.7f, 0f);
+                        Agartha.Patch.SetPosition.SetDummy();
                     }
                 }
             }//

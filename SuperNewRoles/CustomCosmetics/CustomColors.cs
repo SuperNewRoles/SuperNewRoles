@@ -400,7 +400,7 @@ namespace SuperNewRoles.CustomCosmetics
                 {
                     if ((int)name >= 50000)
                     {
-                        string text = CustomColors.ColorStrings[(int)name];
+                        string text = ColorStrings[(int)name];
                         if (text != null)
                         {
                             __result = ModTranslation.getString(text) + " (MOD)";

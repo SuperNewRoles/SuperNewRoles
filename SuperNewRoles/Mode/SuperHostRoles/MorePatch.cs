@@ -17,7 +17,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 PlayerControl player,
                 byte amount)
         {
-            SyncSetting.CustomSyncSettings();
+            if (systemType != SystemTypes.Security)
+            {
+                try
+                {
+                    SyncSetting.CustomSyncSettings();
+                }
+                catch { }
+            }
             if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {
                 if (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.truelover)) return false;
