@@ -354,7 +354,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption DoubralKillerSuicideLTime;
         public static CustomOption DoubralKillerSuicideRTime;
         public static CustomOption DoubralKillerKillTime;
+        public static CustomOption DoubralKillerSecondKillTime;
         public static CustomOption DoubralKillerIsMeetingReset;
+        public static CustomOption DoubralKillerKillCoolDown;
+        public static CustomOption DoubralKillerSecondKillCoolDown;
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -750,7 +753,8 @@ namespace SuperNewRoles.CustomOption
             DoubralKillerSuicideLTime = CustomOption.Create(313, cs(Color.white, "DoubralKillerSuicideTimeSetting"), 60f, 0f, 180f, 2.5f, DoubralKillerOption);
             DoubralKillerSuicideRTime = CustomOption.Create(314, cs(Color.white, "DoubralKillerSuicideTimeSetting"), 60f, 0f, 180f, 2.5f, DoubralKillerOption);
             DoubralKillerKillTime = CustomOption.Create(315, cs(Color.white, "DoubralKillerKillTimeSetting"), 15f, 0f, 60f, 2.5f, DoubralKillerOption);
-            DoubralKillerIsMeetingReset = CustomOption.Create(316, cs(Color.white, "DoubralKillerIsMeetingResetSetting"), true, DoubralKillerOption);
+            DoubralKillerSecondKillTime = CustomOption.Create(316, cs(Color.white, "DoubralKillerSecondKillTimeSetting"), 15f, 0f, 60f, 2.5f, DoubralKillerOption);
+            DoubralKillerIsMeetingReset = CustomOption.Create(317, cs(Color.white, "DoubralKillerIsMeetingResetSetting"), true, DoubralKillerOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

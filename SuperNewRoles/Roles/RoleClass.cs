@@ -1333,9 +1333,10 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static float SuicideDefaultLTime;
             public static float SuicideDefaultRTime;
+            public static float KillTime;
+            public static float SecondKillTime;
             public static float SuicideLTime;
             public static float SuicideRTime;
-            public static float KillTime;
             public static Dictionary<byte, float> SuicideTimersL;
             public static Dictionary<byte, float> SuicideTimersR;
             public static bool IsSuicideViewL;
@@ -1345,7 +1346,7 @@ namespace SuperNewRoles.Roles
             public static bool IsMeetingReset;
             public static TextMeshPro SuicideKillLText = null;
             public static TextMeshPro SuicideKillRText = null;
-            public static float KillCoolDown;
+
 
             public static void ClearAndReload()
             {
@@ -1353,6 +1354,7 @@ namespace SuperNewRoles.Roles
                 SuicideLTime = CustomOptions.DoubralKillerSuicideLTime.getFloat();
                 SuicideRTime = CustomOptions.DoubralKillerSuicideRTime.getFloat();
                 KillTime = CustomOptions.DoubralKillerKillTime.getFloat();
+                SecondKillTime = CustomOptions.DoubralKillerSecondKillTime.getFloat();
                 SuicideDefaultLTime = SuicideLTime;
                 SuicideDefaultRTime = SuicideRTime;
                 IsMeetingReset = CustomOptions.DoubralKillerIsMeetingReset.getBool();
@@ -1362,7 +1364,6 @@ namespace SuperNewRoles.Roles
                 IsSuicideViewsR = new Dictionary<byte, bool>();
                 SuicideTimersL = new Dictionary<byte, float>();
                 SuicideTimersR = new Dictionary<byte, float>();
-                KillCoolDown = CustomOptions.JackalKillCoolDown.getFloat();
             }
         }
         //新ロールクラス

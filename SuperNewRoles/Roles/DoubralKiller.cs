@@ -6,15 +6,9 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patches;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using UnityEngine;
+
 
 namespace SuperNewRoles.Roles
 {
@@ -22,10 +16,10 @@ namespace SuperNewRoles.Roles
     {
         public static void resetCoolDown()
         {
-            HudManagerStartPatch.DoubralKillerSecondKillButton.MaxTimer = RoleClass.DoubralKiller.KillCoolDown;
-            HudManagerStartPatch.DoubralKillerSecondKillButton.Timer = RoleClass.DoubralKiller.KillCoolDown;
-            HudManagerStartPatch.DoubralKillerSecondKillButton.MaxTimer = RoleClass.DoubralKiller.KillCoolDown;
-            HudManagerStartPatch.DoubralKillerSecondKillButton.Timer = RoleClass.DoubralKiller.KillCoolDown;
+            HudManagerStartPatch.DoubralKillerSecondKillButton.MaxTimer = RoleClass.DoubralKiller.SecondKillTime;
+            HudManagerStartPatch.DoubralKillerSecondKillButton.Timer = RoleClass.DoubralKiller.SecondKillTime;
+            HudManagerStartPatch.DoubralKillerSecondKillButton.MaxTimer = RoleClass.DoubralKiller.SecondKillTime;
+            HudManagerStartPatch.DoubralKillerSecondKillButton.Timer = RoleClass.DoubralKiller.SecondKillTime;
         }
         public static void EndMeeting()
         {
@@ -63,35 +57,6 @@ namespace SuperNewRoles.Roles
                                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                                 RPCProcedure.RPCMurderPlayer(PlayerControl.LocalPlayer.PlayerId, PlayerControl.LocalPlayer.PlayerId, byte.MaxValue);
                             }
-                        }
-                    }
-                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
-                    {
-                        if (PlayerControl.LocalPlayer.isRole(RoleId.SerialKiller))
-                        {
-                            IsViewButtonText = true;
-                        }
-                        if (AmongUsClient.Instance.AmHost)
-                        {
-                            foreach (PlayerControl p in RoleClass.SerialKiller.SerialKillerPlayer)
-                            {
-                                if (p.isAlive())
-                                {
-                                    if (RoleClass.SerialKiller.IsSuicideViews.TryGetValue(p.PlayerId, out bool IsView) && IsView)
-                                    {
-                                        if (!RoleClass.SerialKiller.SuicideTimers.ContainsKey(p.PlayerId)) RoleClass.SerialKiller.SuicideTimers[p.PlayerId] = RoleClass.SerialKiller.SuicideDefaultTime;
-                                        RoleClass.SerialKiller.SuicideTimers[p.PlayerId] -= Time.fixedDeltaTime;
-                                        if (RoleClass.SerialKiller.SuicideTimers[p.PlayerId] <= 0)
-                                        {
-                                            p.RpcMurderPlayer(p);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (PlayerControl.LocalPlayer.isRole(RoleId.SerialKiller) && RoleClass.SerialKiller.IsSuicideView)
-                        {
-                            RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
                         }
                     }
                 }
