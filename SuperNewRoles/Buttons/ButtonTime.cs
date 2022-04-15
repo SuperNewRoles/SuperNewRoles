@@ -28,6 +28,7 @@ namespace SuperNewRoles.Buttons
             TeleporterButton();
             HawkDuration();
             ScientistButton();
+
         }
         public static void ScientistButton()
         {

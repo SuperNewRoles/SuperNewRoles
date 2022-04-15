@@ -104,6 +104,7 @@ namespace SuperNewRoles.Roles
                     if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                     {
                         __instance.SetKillTimerUnchecked(RoleClass.DoubralKiller.KillTime);
+                        __instance.SetKillTimerUnchecked(RoleClass.DoubralKiller.SecondKillTime);
                         RoleClass.DoubralKiller.SuicideLTime = RoleClass.DoubralKiller.SuicideDefaultLTime;
                         RoleClass.DoubralKiller.SuicideRTime = RoleClass.DoubralKiller.SuicideDefaultRTime;
                     }

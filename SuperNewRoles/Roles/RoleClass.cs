@@ -1335,6 +1335,9 @@ namespace SuperNewRoles.Roles
             public static float SuicideDefaultRTime;
             public static float KillTime;
             public static float SecondKillTime;
+            public static bool IsKill;
+            public static bool IsSecondKill;
+            public static DateTime ButtonTimer;
             public static float SuicideLTime;
             public static float SuicideRTime;
             public static Dictionary<byte, float> SuicideTimersL;
@@ -1346,14 +1349,16 @@ namespace SuperNewRoles.Roles
             public static bool IsMeetingReset;
             public static TextMeshPro SuicideKillLText = null;
             public static TextMeshPro SuicideKillRText = null;
-           //～Lは追加キルボタン（Left）～Rは純正キルボタン（Right）
-            
-　　　　
+            //～Lは追加キルボタン（Left）～Rは純正キルボタン（Right）
+
+
             public static void ClearAndReload()
             {
                 DoubralKillerPlayer = new List<PlayerControl>();
                 SuicideLTime = CustomOptions.DoubralKillerSuicideLTime.getFloat();
                 SuicideRTime = CustomOptions.DoubralKillerSuicideRTime.getFloat();
+                IsKill = false;
+                IsSecondKill = false;
                 KillTime = CustomOptions.DoubralKillerKillTime.getFloat();
                 SecondKillTime = CustomOptions.DoubralKillerSecondKillTime.getFloat();
                 SuicideDefaultLTime = SuicideLTime;
@@ -1365,6 +1370,7 @@ namespace SuperNewRoles.Roles
                 IsSuicideViewsR = new Dictionary<byte, bool>();
                 SuicideTimersL = new Dictionary<byte, float>();
                 SuicideTimersR = new Dictionary<byte, float>();
+                ButtonTimer = DateTime.Now;
             }
         }
         //新ロールクラス

@@ -752,7 +752,7 @@ namespace SuperNewRoles.CustomOption
             DoubralKillerSuicideRTime = CustomOption.Create(313, cs(Color.white, "DoubralKillerSuicideRTimeSetting"), 60f, 0f, 180f, 2.5f, DoubralKillerOption);
             DoubralKillerSuicideLTime = CustomOption.Create(314, cs(Color.white, "DoubralKillerSuicideLTimeSetting"), 60f, 0f, 180f, 2.5f, DoubralKillerOption);
             DoubralKillerKillTime = CustomOption.Create(315, cs(Color.white, "DoubralKillerKillLTimeSetting"), 15f, 0f, 60f, 2.5f, DoubralKillerOption);
-            DoubralKillerSecondKillTime = CustomOption.Create(315, cs(Color.white, "DoubralKillerSecondKillTimeSetting"), 15f, 0f, 60f, 2.5f, DoubralKillerOption);
+            DoubralKillerSecondKillTime = CustomOption.Create(316, cs(Color.white, "DoubralKillerSecondKillTimeSetting"), 15f, 0f, 60f, 2.5f, DoubralKillerOption);
             DoubralKillerIsMeetingReset = CustomOption.Create(317, cs(Color.white, "DoubralKillerIsMeetingResetSetting"), true, DoubralKillerOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
