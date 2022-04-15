@@ -26,11 +26,11 @@ namespace SuperNewRoles.Roles
                 if (RoleClass.Hawk.Timer >= 0.1 && !RoleClass.IsMeeting)
                 {
                     Camera.main.orthographicSize = RoleClass.Hawk.CameraDefault * 3f;
-                    HudManager.Instance.UICamera.orthographicSize = RoleClass.Hawk.Default * 3f;
+                    //HudManager.Instance.UICamera.orthographicSize = RoleClass.Hawk.Default * 3f;
                 } else
                 {
                     Camera.main.orthographicSize = RoleClass.Hawk.CameraDefault;
-                    HudManager.Instance.UICamera.orthographicSize = RoleClass.Hawk.Default;
+                    //HudManager.Instance.UICamera.orthographicSize = RoleClass.Hawk.Default;
                 }
             }
         }

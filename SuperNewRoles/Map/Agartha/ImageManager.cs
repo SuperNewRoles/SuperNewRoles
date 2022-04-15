@@ -147,5 +147,14 @@ namespace SuperNewRoles.Map.Agartha
                 return m_Task_FixWiring_BackGround;
             }
         }
+        private static Dictionary<string, Sprite> Datas = new Dictionary<string,Sprite>();
+        public static Sprite AgarthagetSprite(string id)
+        {
+            if (!Datas.ContainsKey(id))
+            {
+                Datas[id] = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha." + id + ".png", 115f);
+            }
+            return Datas[id];
+        }
     }
 }

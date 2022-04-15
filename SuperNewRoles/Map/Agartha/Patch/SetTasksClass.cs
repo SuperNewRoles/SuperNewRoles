@@ -26,6 +26,12 @@ namespace SuperNewRoles.Map.Agartha.Patch
             FixWiring.position = new Vector3(-2f, 1.55f, 0.1f);
             FixWiring.localScale *= 0.8f;
             FixWiring.GetComponent<SpriteRenderer>().sprite = ImageManager.Task_FixWiring1;
+
+            Transform MedScanner = MiraShip.FindChild("MedBay").FindChild("MedScanner");
+            //MedScanner.gameObject.SetActive(true);
+            MedScanner.position = new Vector3(-2.2f, 13.1f, 0.1f);
+            //MedScanner.localScale *= 0.8f;
+            //MedScanner.GetComponent<SpriteRenderer>().sprite = ImageManager.Task_FixWiring1;
         }
     }
 }

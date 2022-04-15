@@ -8,6 +8,15 @@ namespace SuperNewRoles.Map.Agartha.Patch
 {
     public static class SetPosition
     {
+        public static void SetObject(Transform MiraShip)
+        {
+            Transform CommsTop = MiraShip.FindChild("Comms").FindChild("comms-top");
+            CommsTop.gameObject.GetChildren().SetActiveAllObject("", false);
+            CommsTop.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Object_ComputerTable");
+            GameObject.Destroy(CommsTop.GetComponent<PolygonCollider2D>());
+            CommsTop.gameObject.AddComponent<PolygonCollider2D>();
+            CommsTop.position = new Vector3(-9.5f, 22f, 0.1f);
+        }
         private static List<Vector3> DummyPositions = new List<Vector3>() { new Vector3(10.7f, 7.1f, 0f),new Vector3(11.8f, 15.6f, 0f),new Vector3(-0.2f, 8.5f, 0f),new Vector3(13.7f, 0.38f, 0f),new Vector3(21.7f, 15.6f, 0f),new Vector3(-10.7f, 16f, 0f) };
         public static void SetDummy()
         {

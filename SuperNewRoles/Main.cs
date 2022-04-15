@@ -11,7 +11,8 @@ using System.IO;
 using System;
 using System.Reflection;
 using UnhollowerBaseLib;
-using UnityEngine; 
+using UnityEngine;
+using SuperNewRoles.CustomCosmetics;
 
 namespace SuperNewRoles
 {
@@ -40,9 +41,11 @@ namespace SuperNewRoles
             // All Load() Start
             ModTranslation.Load();
             ChacheManager.Load();
-            CustomCosmetics.CustomColors.Load();
-            CustomCosmetics.DownLoadClass.Load();
-            CustomCosmetics.DownLoadClassVisor.Load();
+            CustomColors.Load();
+            DownLoadClass.Load();
+            DownLoadClassVisor.Load();
+            CustomHatLoader.LaunchHatFetcher();
+
             ConfigRoles.Load();
             CustomOption.CustomOptions.Load();
             // All Load() End
