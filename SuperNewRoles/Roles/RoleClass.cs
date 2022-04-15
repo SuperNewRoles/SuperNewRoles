@@ -1346,8 +1346,9 @@ namespace SuperNewRoles.Roles
             public static bool IsMeetingReset;
             public static TextMeshPro SuicideKillLText = null;
             public static TextMeshPro SuicideKillRText = null;
-
-
+           //～Lは追加キルボタン（Left）～Rは純正キルボタン（Right）
+            
+　　　　
             public static void ClearAndReload()
             {
                 DoubralKillerPlayer = new List<PlayerControl>();

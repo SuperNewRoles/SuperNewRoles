@@ -505,3 +505,12 @@ MadMayorUseVentSetting,Use Vent,ベントを使える
 MadMayorVentMoveSetting,Move Vent,ベントで動ける
 MadMayorImpostorLightSetting,Impostor Light,インポスターの視界
 MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）
+DoubralKillerName,ダブラルキラー
+DoubralKillerTitle1,キルしてキルしよう
+DoubralKillerSuicideRTimeSetting,自殺までの時間（ノーマルボタン）
+DoubralKillerSuicideLTimeSetting,自殺までの時間（追加ボタン）
+DoubralKillerKillLTimeSetting,会議に入るとリセットされる
+DoubralKillerSecondKillTimeSetting,キルクールタイム（ノーマルボタン）
+DoubralKillerIsMeetingResetSetting,キルクールタイム（追加ボタン）
+DoubralKillerSuicideRText,自殺まで後{0}秒（通常）
+DoubralKillerSuicideLText,自殺まで後{0}秒（追加）

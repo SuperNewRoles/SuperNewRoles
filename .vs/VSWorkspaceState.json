@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\SNRDevTools",
+    "\\SuperNewRoles",
+    "\\SuperNewRoles\\Resources"
   ],
-  "SelectedNode": "\\SuperNewRoles.sln",
+  "SelectedNode": "\\SuperNewRoles\\Resources\\translatedate.json",
   "PreviewInSolutionExplorer": false
 }
