@@ -14,14 +14,19 @@ namespace SuperNewRoles.Roles
 {
     public static class DoubralKiller
     {
-        public static void resetCoolDown()
+        public static void resetNormalCoolDown()
+        {
+            HudManagerStartPatch.DoubralKillerNormalKillButton.MaxTimer = RoleClass.DoubralKiller.KillTime;
+            HudManagerStartPatch.DoubralKillerNormalKillButton.Timer = RoleClass.DoubralKiller.KillTime;
+        }
+        public static void resetSecondCoolDown()
         {
             HudManagerStartPatch.DoubralKillerSecondKillButton.MaxTimer = RoleClass.DoubralKiller.SecondKillTime;
             HudManagerStartPatch.DoubralKillerSecondKillButton.Timer = RoleClass.DoubralKiller.SecondKillTime;
         }
         public static void EndMeeting()
         {
-            resetCoolDown();
+            resetSecondCoolDown();
         }
         public static void FixedUpdate()
         {
