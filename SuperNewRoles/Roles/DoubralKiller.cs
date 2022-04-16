@@ -27,7 +27,7 @@ namespace SuperNewRoles.Roles
         public static void EndMeeting()
         {
             resetSecondCoolDown();
-            resetSecondCoolDown();
+            resetNormalCoolDown();
         }
         public static void FixedUpdate()
         {
@@ -69,6 +69,52 @@ namespace SuperNewRoles.Roles
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             RPCProcedure.RPCMurderPlayer(PlayerControl.LocalPlayer.PlayerId, PlayerControl.LocalPlayer.PlayerId, byte.MaxValue);
                         }
+                    }
+                }
+                else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                {
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.DoubralKiller))
+                    {
+                        IsViewButtonLText = true;
+                    }
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.DoubralKiller))
+                    {
+                        IsViewButtonRText = true;
+                    }
+                    if (AmongUsClient.Instance.AmHost)
+                    {
+                        foreach (PlayerControl p in RoleClass.DoubralKiller.DoubralKillerPlayer)
+                        {
+                            if (p.isAlive())
+                            {
+                                if (RoleClass.DoubralKiller.IsSuicideViewsL.TryGetValue(p.PlayerId, out bool IsView) && IsView)
+                                {
+                                    if (!RoleClass.DoubralKiller.SuicideTimersL.ContainsKey(p.PlayerId)) RoleClass.DoubralKiller.SuicideTimersL[p.PlayerId] = RoleClass.DoubralKiller.SuicideDefaultLTime;
+                                    RoleClass.DoubralKiller.SuicideTimersL[p.PlayerId] -= Time.fixedDeltaTime;
+                                    if (RoleClass.DoubralKiller.SuicideTimersL[p.PlayerId] <= 0)
+                                    {
+                                        p.RpcMurderPlayer(p);
+                                    }
+                                }
+                                if (RoleClass.DoubralKiller.IsSuicideViewsR.TryGetValue(p.PlayerId,out IsView) && IsView)
+                                {
+                                    if (!RoleClass.DoubralKiller.SuicideTimersR.ContainsKey(p.PlayerId)) RoleClass.DoubralKiller.SuicideTimersR[p.PlayerId] = RoleClass.DoubralKiller.SuicideDefaultRTime;
+                                    RoleClass.DoubralKiller.SuicideTimersR[p.PlayerId] -= Time.fixedDeltaTime;
+                                    if (RoleClass.DoubralKiller.SuicideTimersR[p.PlayerId] <= 0)
+                                    {
+                                        p.RpcMurderPlayer(p);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.DoubralKiller) && RoleClass.DoubralKiller.IsSuicideViewL)
+                    {
+                        RoleClass.DoubralKiller.SuicideLTime -= Time.fixedDeltaTime;
+                    }
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.DoubralKiller) && RoleClass.DoubralKiller.IsSuicideViewR)
+                    {
+                        RoleClass.DoubralKiller.SuicideRTime -= Time.fixedDeltaTime;
                     }
                 }
             }

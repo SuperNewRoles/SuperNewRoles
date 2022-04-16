@@ -206,6 +206,20 @@ namespace SuperNewRoles.Patches
                 RoleClass.IsCoolTimeSetted = true;
                 return false;
             }
+            {
+                if (PlayerControl.GameOptions.KillCooldown <= 0f) return false;
+                float multiplier = 1f;
+                float addition = 0f;
+                if (ModeHandler.isMode(ModeId.Default))
+                {
+                    if (__instance.isRole(RoleId.DoubralKiller)) addition = RoleClass.DoubralKiller.KillTime;
+                    if (__instance.isRole(RoleId.DoubralKiller)) addition = RoleClass.DoubralKiller.SecondKillTime;
+                }
+                float max = Mathf.Max(PlayerControl.GameOptions.KillCooldown * multiplier + addition, __instance.killTimer);
+                __instance.SetKillTimerUnchecked(Mathf.Clamp(time, 0f, max), max);
+                return false;
+            }
+
             return true;
         }
     }
@@ -257,6 +271,7 @@ namespace SuperNewRoles.Patches
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
             SerialKiller.MurderPlayer(__instance,target);
+            DoubralKiller.MurderPlayer(__instance, target);
 
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
