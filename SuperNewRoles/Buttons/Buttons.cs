@@ -720,7 +720,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { DoubralKiller.EndMeeting(); },
                 __instance.KillButton.graphic.sprite,
-                new Vector3(-2.7f, -0.06f, 0),
+                new Vector3(0, 1, 0),
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
