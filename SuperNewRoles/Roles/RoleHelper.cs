@@ -599,6 +599,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.SideKiller):
                     Roles.RoleClass.SideKiller.SideKillerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.MadKiller):
+                    Roles.RoleClass.SideKiller.MadKillerPlayer.RemoveAll(ClearRemove);
+                    break;
                 case (CustomRPC.RoleId.Survivor):
                     Roles.RoleClass.Survivor.SurvivorPlayer.RemoveAll(ClearRemove);
                     break;
@@ -664,6 +667,9 @@ namespace SuperNewRoles
                     IsTaskClear = true;
                     break;
                 case (RoleId.MadMayor):
+                    IsTaskClear = true;
+                    break;
+                case (RoleId.MadKiller):
                     IsTaskClear = true;
                     break;
                     //タスククリアか
