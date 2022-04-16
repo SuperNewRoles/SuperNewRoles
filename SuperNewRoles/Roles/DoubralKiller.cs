@@ -27,32 +27,25 @@ namespace SuperNewRoles.Roles
         public static void EndMeeting()
         {
             resetSecondCoolDown();
+            resetSecondCoolDown();
         }
         public static void FixedUpdate()
         {
             HudManager.Instance.KillButton.gameObject.SetActive(false);
-            bool IsViewButtonText = false;
+            //純正キルボタンばいばい
+            bool IsViewButtonLText = false;
+            bool IsViewButtonRText = false;
             if (!RoleClass.IsMeeting)
             {
                 if (!RoleClass.IsMeeting)
                 {
                     if (ModeHandler.isMode(ModeId.Default))
                     {
-                        if (PlayerControl.LocalPlayer.isRole(RoleId.DoubralKiller) && RoleClass.DoubralKiller.IsSuicideViewL && RoleClass.DoubralKiller.IsSuicideViewR)
+                        if (PlayerControl.LocalPlayer.isRole(RoleId.DoubralKiller) && RoleClass.DoubralKiller.IsSuicideViewL)
                         {
-                            IsViewButtonText = true;
+                            IsViewButtonLText = true;
                             RoleClass.DoubralKiller.SuicideLTime -= Time.fixedDeltaTime;
-                            RoleClass.DoubralKiller.SuicideRTime -= Time.fixedDeltaTime;
                             if (RoleClass.DoubralKiller.SuicideLTime <= 0)
-                            {
-                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-                                writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                                writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                                writer.Write(byte.MaxValue);
-                                AmongUsClient.Instance.FinishRpcImmediately(writer);
-                                RPCProcedure.RPCMurderPlayer(PlayerControl.LocalPlayer.PlayerId, PlayerControl.LocalPlayer.PlayerId, byte.MaxValue);
-                            }
-                            if (RoleClass.DoubralKiller.SuicideRTime <= 0)
                             {
                                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
                                 writer.Write(PlayerControl.LocalPlayer.PlayerId);
@@ -63,12 +56,29 @@ namespace SuperNewRoles.Roles
                             }
                         }
                     }
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.DoubralKiller)&& RoleClass.DoubralKiller.IsSuicideViewR)
+                    {
+                        IsViewButtonRText = true;
+                        RoleClass.DoubralKiller.SuicideRTime -= Time.fixedDeltaTime;
+                        if (RoleClass.DoubralKiller.SuicideRTime <= 0)
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            writer.Write(byte.MaxValue);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            RPCProcedure.RPCMurderPlayer(PlayerControl.LocalPlayer.PlayerId, PlayerControl.LocalPlayer.PlayerId, byte.MaxValue);
+                        }
+                    }
                 }
             }
-            if (IsViewButtonText && RoleClass.DoubralKiller.IsSuicideViewL && RoleClass.DoubralKiller.IsSuicideViewR && PlayerControl.LocalPlayer.isAlive())
+            if (IsViewButtonRText && RoleClass.DoubralKiller.IsSuicideViewL && RoleClass.DoubralKiller.IsSuicideViewR && PlayerControl.LocalPlayer.isAlive())
+            {
+                RoleClass.DoubralKiller.SuicideKillRText.text = string.Format(ModTranslation.getString("DoubralKillerSuicideRText"), ((int)RoleClass.DoubralKiller.SuicideRTime) + 1);
+            }
+            if (IsViewButtonLText && RoleClass.DoubralKiller.IsSuicideViewL && RoleClass.DoubralKiller.IsSuicideViewR && PlayerControl.LocalPlayer.isAlive())
             {
                 RoleClass.DoubralKiller.SuicideKillLText.text = string.Format(ModTranslation.getString("DoubralKillerSuicideLText"), ((int)RoleClass.DoubralKiller.SuicideLTime) + 1);
-                RoleClass.DoubralKiller.SuicideKillRText.text = string.Format(ModTranslation.getString("DoubralKillerSuicideRText"), ((int)RoleClass.DoubralKiller.SuicideRTime) + 1);
             }
             else
             {
@@ -90,6 +100,9 @@ namespace SuperNewRoles.Roles
                 {
                     RoleClass.DoubralKiller.SuicideLTime = RoleClass.DoubralKiller.SuicideDefaultLTime;
                     RoleClass.DoubralKiller.IsSuicideViewL = true;
+                }
+                if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                {
                     RoleClass.DoubralKiller.SuicideRTime = RoleClass.DoubralKiller.SuicideDefaultRTime;
                     RoleClass.DoubralKiller.IsSuicideViewR = true;
                 }
@@ -107,9 +120,12 @@ namespace SuperNewRoles.Roles
                 {
                     if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                     {
-                        __instance.SetKillTimerUnchecked(RoleClass.DoubralKiller.KillTime);
                         __instance.SetKillTimerUnchecked(RoleClass.DoubralKiller.SecondKillTime);
                         RoleClass.DoubralKiller.SuicideLTime = RoleClass.DoubralKiller.SuicideDefaultLTime;
+                    }
+                    if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        __instance.SetKillTimerUnchecked(RoleClass.DoubralKiller.KillTime);
                         RoleClass.DoubralKiller.SuicideRTime = RoleClass.DoubralKiller.SuicideDefaultRTime;
                     }
                 }
