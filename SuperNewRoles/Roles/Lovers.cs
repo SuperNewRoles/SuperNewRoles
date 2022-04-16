@@ -22,6 +22,11 @@ namespace SuperNewRoles.Roles
                         RoleClass.Lovers.LoversPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
                         ChacheManager.ResetLoversChache();
                     }
+                    if (player.IsQuarreled() && player.isAlive())
+                    {
+                        RoleClass.Quarreled.QuarreledPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
+                        ChacheManager.ResetQuarreledChache();
+                    }
                     if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
                         Madmate.CheckedImpostor = new List<byte>();
