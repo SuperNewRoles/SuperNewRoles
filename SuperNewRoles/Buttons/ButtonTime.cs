@@ -236,7 +236,7 @@ namespace SuperNewRoles.Buttons
             {
                 Roles.RoleClass.DoubralKiller.ButtonTimer = DateTime.Now;
             }
-            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Sheriff.CoolTime);
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.DoubralKiller.SecondKillTime);
             Buttons.HudManagerStartPatch.DoubralKillerSecondKillButton.Timer = (float)((Roles.RoleClass.DoubralKiller.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
             if (Buttons.HudManagerStartPatch.DoubralKillerSecondKillButton.Timer <= 0f) Buttons.HudManagerStartPatch.DoubralKillerSecondKillButton.Timer = 0f; return;
         }
