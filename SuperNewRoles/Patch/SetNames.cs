@@ -189,45 +189,22 @@ namespace SuperNewRoles.Patch
         }
         public static void QuarreledSet()
         {
+            string suffix = ModHelpers.cs(RoleClass.Quarreled.color, "○");
             if (PlayerControl.LocalPlayer.IsQuarreled() && PlayerControl.LocalPlayer.isAlive())
             {
-                string suffix = ModHelpers.cs(RoleClass.Quarreled.color,"○");
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideQuarreled();
-                side.nameText.text += suffix;
-                PlayerControl.LocalPlayer.nameText.text += suffix;
-                try
-                {
-                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-                    {
-                        if (side.PlayerId == player.TargetPlayerId || PlayerControl.LocalPlayer.PlayerId == player.TargetPlayerId)
-                        {
-                            player.NameText.text += suffix;
-                        }
-                    }
-                }
-                catch
-                {
-
-                }
+                SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.nameText.text + suffix);
+                SetPlayerNameText(side, side.nameText.text + suffix);
             }
             if (!PlayerControl.LocalPlayer.isAlive() && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
             {
-                string suffix = ModHelpers.cs(RoleClass.Quarreled.color, "○");
                 foreach (List<PlayerControl> ps in RoleClass.Quarreled.QuarreledPlayer) {
                     foreach (PlayerControl p in ps)
                     {
-                        p.nameText.text += suffix;
-                        try
+                        if (!p.Data.Disconnected)
                         {
-                            foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-                            {
-                                if (p.PlayerId == player.TargetPlayerId)
-                                {
-                                    player.NameText.text += suffix;
-                                }
-                            }
+                            SetPlayerNameText(p, p.nameText.text + suffix);
                         }
-                        catch { }
                     }
                 }
             }
@@ -239,7 +216,10 @@ namespace SuperNewRoles.Patch
             {
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideLovers();
                 SetPlayerNameText(PlayerControl.LocalPlayer,PlayerControl.LocalPlayer.nameText.text + suffix);
-                SetPlayerNameText(side, PlayerControl.LocalPlayer.nameText.text + suffix);
+                if (!side.Data.Disconnected)
+                {
+                    SetPlayerNameText(side, side.nameText.text + suffix);
+                }
             }
             if (PlayerControl.LocalPlayer.isDead() && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
             {
@@ -247,7 +227,10 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (PlayerControl p in ps)
                     {
-                        SetPlayerNameText(p, PlayerControl.LocalPlayer.nameText.text + suffix);
+                        if (!p.Data.Disconnected)
+                        {
+                            SetPlayerNameText(p, p.nameText.text + suffix);
+                        }
                     }
                 }
             }
