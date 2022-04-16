@@ -13,7 +13,6 @@ namespace SuperNewRoles.Map.Agartha.Patch
         public static Transform MapObject;
         public static void MinimapChange(MapBehaviour __instance)
         {
-            Agartha.Patch.SetPosition.SetDoor();//MiraShip);
             SuperNewRolesPlugin.Logger.LogInfo("マップ変更処理");
             MapObject = GameObject.Find("HqMap(Clone)").transform;
             //GameObject.Find("HqMap(Clone)").SetActive(false);
@@ -96,9 +95,8 @@ namespace SuperNewRoles.Map.Agartha.Patch
 
             RoomNames.FindChild("Cafeteria").gameObject.SetActive(false);
             RoomNames.FindChild("Greenhouse").gameObject.SetActive(false);
-            Agartha.Patch.SetTasksClass.ShipSetTask();
-            //Camera.main.orthographicSize = Camera.main.orthographicSize * 7;
-            //GameObject.Find("Main Camera").transform.FindChild("ShadowQuad").gameObject.SetActive(false);
+            Camera.main.orthographicSize = Camera.main.orthographicSize * 7;
+            GameObject.Find("Main Camera").transform.FindChild("ShadowQuad").gameObject.SetActive(false);
         }
     }
 }

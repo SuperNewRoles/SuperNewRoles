@@ -11,18 +11,39 @@ namespace SuperNewRoles.Map.Agartha.Patch
 {
     public static class SetPosition
     {
+        public static PlainDoor CreateDoor(Vector3 position,Vector3? scale = null,int id = -1,int index = 3)
+        {
+            if (id == -1)
+            {
+                id = GetDoorAvailableId();
+            }
+            if (scale == null)
+            {
+                scale = new Vector3(1,1,1);
+            }
+            PlainDoor door = GameObject.Instantiate(MapLoader.Airship.AllDoors[index]);
+            door.transform.localScale = (Vector3)scale;
+            door.transform.position = position;
+            door.Id = id;
+
+            return door;
+        }
         public static void SetDoor()//Transform Miraship)
         {
-            PlainDoor door = GameObject.Instantiate(MapLoader.Airship.AllDoors[3]);
-            door.transform.localScale *= 0.5f;
-            door.transform.position = PlayerControl.LocalPlayer.transform.position;
-            IEnumerator change()
+            List<PlainDoor> doors = new List<PlainDoor>();
+            doors.Add(CreateDoor(new Vector3(13.2f, 20.4f, 0.1f),new Vector3(0.85f,0.75f,0.75f)));
+            doors.Add(CreateDoor(new Vector3(0.03f, 20.5f, 0.1f),new Vector3(0.95f,0.8f,1f)));
+            ShipStatus.Instance.AllDoors = doors.ToArray();
+        }
+        public static int GetDoorAvailableId()
+        {
+            var id = 0;
+            if (ShipStatus.Instance.AllDoors.Count == 0) return 0;
+            while (true)
             {
-                yield return new WaitForSeconds(1);
-                door.SetDoorway(false);
+                if (ShipStatus.Instance.AllDoors.All(v => v.Id != id)) return id;
+                id++;
             }
-            AmongUsClient.Instance.StartCoroutine(change());
-            //door.GetComponent<SpriteAnim>().ima = ImageManager.AgarthagetSprite("Door_Open");
         }
         public static void SetObject(Transform MiraShip)
         {

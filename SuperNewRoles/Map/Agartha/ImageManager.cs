@@ -147,6 +147,26 @@ namespace SuperNewRoles.Map.Agartha
                 return m_Task_FixWiring_BackGround;
             }
         }
+        private static Sprite m_Room_Up;
+        public static Sprite Room_Up
+        {
+            get
+            {
+                if (m_Room_Up != null) return m_Room_Up;
+                m_Room_Up = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.Room_Up.png", 115f);
+                return m_Room_Up;
+            }
+        }
+        private static Sprite m_Room_Down;
+        public static Sprite Room_Down
+        {
+            get
+            {
+                if (m_Room_Down != null) return m_Room_Down;
+                m_Room_Down = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.Room_Down.png", 115f);
+                return m_Room_Down;
+            }
+        }
         private static Dictionary<string, Sprite> Datas = new Dictionary<string,Sprite>();
         public static Sprite AgarthagetSprite(string id)
         {

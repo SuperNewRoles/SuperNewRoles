@@ -68,7 +68,7 @@ namespace SuperNewRoles.Map
                            new Vector2[] {
                                new Vector2(-6f, 9f),new Vector2(-11.65f, 9f),new Vector2(-11.65f, 10.5f),new Vector2(-10f, 10.5f),new Vector2(-10f, 13f),new Vector2(-16f, 13f),new Vector2(-16f, 10.5f),new Vector2(-13.45f, 10.5f),new Vector2(-13.45f, 9f),new Vector2(-19f, 9f),
                                new Vector2(-19f, 13f),new Vector2(-21.7f, 13f),new Vector2(-21.7f, 16f), new Vector2(-19f, 16f), new Vector2(-19f, 20f), new Vector2(-13.45f, 20f), new Vector2(-13.45f, 18.5f), new Vector2(-16f, 18.5f), new Vector2(-16f, 15.8f), new Vector2(-10f, 15.8f),
-                               new Vector2(-10f, 18.5f), new Vector2(-11.65f, 18.5f), new Vector2(-11.65f, 20f), new Vector2(-6f, 20f),new Vector2(-6f, 9f)
+                               new Vector2(-10f, 18.5f), new Vector2(-11.65f, 18.5f), new Vector2(-11.65f, 20f), new Vector2(-6.15f, 20f),new Vector2(-6.15f, 9f)
                            };
 
                     SuperNewRolesPlugin.Logger.LogInfo("オールドア:" + ShipStatus.Instance.AllDoors.Length);
@@ -105,33 +105,45 @@ namespace SuperNewRoles.Map
 
                     SpriteRenderer CommsRoomWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     CommsRoomWalls.name = "CommsRoomWalls";
-                    CommsRoomWalls.sprite = Agartha.ImageManager.AgarthagetSprite("Room_Up");
+                    CommsRoomWalls.sprite = Agartha.ImageManager.Room_Up;
                     CommsRoomWalls.transform.position = new Vector3(-0.35f, 22.32f, 4f);
                     CommsRoomWalls.transform.localScale = new Vector3(1.41f, 1.35f, 1.35f);
 
                     SpriteRenderer O2RoomWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     O2RoomWalls.name = "O2RoomWalls";
-                    O2RoomWalls.sprite = Agartha.ImageManager.AgarthagetSprite("Room_Up");
+                    O2RoomWalls.sprite = Agartha.ImageManager.Room_Up;
                     O2RoomWalls.transform.position = new Vector3(-0.4f, 8.7f, 4f);
                     O2RoomWalls.transform.localScale = new Vector3(1.7f, 1.25f, 1.35f);
 
                     SpriteRenderer MedBayRoomWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     MedBayRoomWalls.name = "MedBayRoomWalls";
-                    MedBayRoomWalls.sprite = Agartha.ImageManager.AgarthagetSprite("Room_Up");
-                    MedBayRoomWalls.transform.position = new Vector3(-0.4f, 13.25f, 4f);
-                    MedBayRoomWalls.transform.localScale = new Vector3(1.7f, -1.3f, 1.35f);
+                    MedBayRoomWalls.sprite = Agartha.ImageManager.Room_Down;
+                    MedBayRoomWalls.transform.position = new Vector3(-0.4f, 13.35f, 4f);
+                    MedBayRoomWalls.transform.localScale = new Vector3(1.7f, 1.3f, 1.35f);
 
                     SpriteRenderer ToolRoomWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     ToolRoomWalls.name = "ToolRoomWalls";
-                    ToolRoomWalls.sprite = Agartha.ImageManager.AgarthagetSprite("Room_Up");
-                    ToolRoomWalls.transform.position = new Vector3(-0.3f, -0.35f, 4f);
-                    ToolRoomWalls.transform.localScale = new Vector3(1.75f, -1.2f, 1.35f);
+                    ToolRoomWalls.sprite = Agartha.ImageManager.Room_Down;
+                    ToolRoomWalls.transform.position = new Vector3(-0.3f, -0.25f, 4f);
+                    ToolRoomWalls.transform.localScale = new Vector3(1.75f, 1.2f, 1.35f);
 
                     SpriteRenderer ElectricalRoomWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     ElectricalRoomWalls.name = "ElectricalRoomWalls";
                     ElectricalRoomWalls.sprite = Agartha.ImageManager.AgarthagetSprite("Room_Electrical");
                     ElectricalRoomWalls.transform.position = new Vector3(21.5f, 16f, 4f);
                     ElectricalRoomWalls.transform.localScale = new Vector3(1.5f, 1.23f, 1.35f);
+
+                    SpriteRenderer Aisle1Walls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
+                    Aisle1Walls.name = "Aisle1Walls";
+                    Aisle1Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Aisle1");
+                    Aisle1Walls.transform.position = new Vector3(2.8f, 18.6f, 5f);
+                    Aisle1Walls.transform.localScale *= 2.6f;
+
+                    SpriteRenderer Aisle2Walls = ShipStatus.Instantiate(Aisle1Walls).gameObject.GetComponent<SpriteRenderer>();
+                    Aisle2Walls.name = "Aisle2Walls";
+                    Aisle2Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Aisle1");
+                    Aisle2Walls.transform.position = new Vector3(3.26f, 5.75f, 5f);
+                    Aisle2Walls.transform.localScale *= 1.1f;
 
                     MiraShip.FindChild("CloudGen").gameObject.SetActive(false);
 
@@ -224,6 +236,7 @@ namespace SuperNewRoles.Map
                     },0.01f,"ChangeBackgroundColor");
                     Agartha.Patch.SetTasksClass.ShipSetTask();
                     Agartha.Patch.ChangeMapCounter.Change(MiraShip);
+                    Agartha.Patch.SetPosition.SetDoor();
                 }
             }
         }
