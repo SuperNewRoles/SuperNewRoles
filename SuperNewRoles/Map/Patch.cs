@@ -15,6 +15,7 @@ namespace SuperNewRoles.Map
             {
                 if (Data.IsMap(CustomMapNames.Agartha))
                 {
+                    SuperNewRolesPlugin.Logger.LogInfo("マップ変更処理");
                     Agartha.Patch.MiniMapPatch.MinimapChange(__instance);
                 }
             }

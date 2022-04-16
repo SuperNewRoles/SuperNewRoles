@@ -13,8 +13,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
         public static Transform MapObject;
         public static void MinimapChange(MapBehaviour __instance)
         {
-            if (!Data.IsMap(CustomMapNames.Agartha)) return;
-
+            SuperNewRolesPlugin.Logger.LogInfo("マップ変更処理");
             MapObject = GameObject.Find("HqMap(Clone)").transform;
             //GameObject.Find("HqMap(Clone)").SetActive(false);
             Transform Background = MapObject.FindChild("Background");

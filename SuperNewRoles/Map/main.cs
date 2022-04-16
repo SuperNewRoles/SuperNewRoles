@@ -30,8 +30,8 @@ namespace SuperNewRoles.Map
         public static void ClearAndReloads()
         {
             //ThisMap = CustomMapNames.Skeld;
-            ThisMap = CustomMapNameData[MapStringNames[PlayerControl.GameOptions.MapId]];
-            ThisMap = CustomMapNames.Agartha;
+            //ThisMap = CustomMapNameData[MapStringNames[PlayerControl.GameOptions.MapId]];
+            //ThisMap = CustomMapNames.Agartha;
         }
         public static bool IsMap(CustomMapNames map)
         {
