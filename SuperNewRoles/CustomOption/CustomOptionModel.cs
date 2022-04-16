@@ -278,7 +278,7 @@ namespace SuperNewRoles.CustomOption
         }
     }
 
-    [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Start))]
+    [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu))]
     class GameOptionsMenuStartPatch
     {
         public static void Postfix(GameOptionsMenu __instance)
@@ -520,18 +520,29 @@ namespace SuperNewRoles.CustomOption
         public static void Postfix(GameSettingMenu __instance)
         {
             // Setup mapNameTransform
-            var mapNameTransform = __instance.AllItems.FirstOrDefault(x => x.gameObject.activeSelf && x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
+            var mapNameTransform = __instance.AllItems.FirstOrDefault(x => x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
             if (mapNameTransform == null) return;
 
             var options = new Il2CppSystem.Collections.Generic.List<Il2CppSystem.Collections.Generic.KeyValuePair<string, int>>();
             for (int i = 0; i < Constants.MapNames.Length; i++)
             {
+                if (i == 3) continue; // ignore dleks
                 var kvp = new Il2CppSystem.Collections.Generic.KeyValuePair<string, int>();
                 kvp.key = Constants.MapNames[i];
                 kvp.value = i;
                 options.Add(kvp);
             }
             mapNameTransform.GetComponent<KeyValueOption>().Values = options;
+            mapNameTransform.gameObject.active = true;
+            foreach (Transform i in __instance.AllItems.ToList())
+            {
+                float num = -0.5f;
+                if (i.name.Equals("MapName", StringComparison.OrdinalIgnoreCase)) num = 0.25f;
+                if (i.name.Equals("NumImpostors", StringComparison.OrdinalIgnoreCase)) num = -0.5f;
+                if (i.name.Equals("ResetToDefault", StringComparison.OrdinalIgnoreCase)) num = 0f;
+                i.position += new Vector3(0, num, 0);
+            }
+            __instance.Scroller.ContentYBounds.max += 0.5F;
         }
     }
 
