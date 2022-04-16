@@ -150,10 +150,8 @@ namespace SuperNewRoles.Map.Agartha
         private static Dictionary<string, Sprite> Datas = new Dictionary<string,Sprite>();
         public static Sprite AgarthagetSprite(string id)
         {
-            if (!Datas.ContainsKey(id))
-            {
-                Datas[id] = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha." + id + ".png", 115f);
-            }
+            //if (Datas.ContainsKey(id)) return Datas[id];
+            Datas[id] = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha." + id + ".png", 115f);
             return Datas[id];
         }
     }

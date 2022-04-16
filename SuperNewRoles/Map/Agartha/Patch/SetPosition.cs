@@ -64,14 +64,14 @@ namespace SuperNewRoles.Map.Agartha.Patch
             newcam.transform.position = new Vector3(16.3f, 7.3f, 0.1f);
             newcam.gameObject.AddComponent<PolygonCollider2D>();
             Sec.AddCamera(StringNames.Admin, new Vector3(-0.2f, 17.8f, 0f));
-            Sec.AddCamera(StringNames.Admin, new Vector3(-0.2f, 4.5f, 0f));
-            Sec.AddCamera(StringNames.Admin, new Vector3(7.3f, 15f, 0f));
-            Sec.AddCamera(StringNames.Admin, new Vector3(23.8f, 10f, 0f));
+            Sec.AddCamera(StringNames.Security, new Vector3(-0.2f, 4.5f, 0f));
+            Sec.AddCamera(StringNames.LogNorth, new Vector3(7.3f, 15f, 0f));
+            Sec.AddCamera(StringNames.ExileTextPP, new Vector3(23.8f, 10f, 0f));
         }
         public static int GetAvailableId()
         {
             var id = 0;
-
+            if (ShipStatus.Instance.AllVents.Count == 0) return 0;
             while (true)
             {
                 if (ShipStatus.Instance.AllVents.All(v => v.Id != id)) return id;
@@ -94,40 +94,51 @@ namespace SuperNewRoles.Map.Agartha.Patch
         }
         public static void SetVent(Transform Miraship)
         {
+            ShipStatus.Instance.AllVents = new List<Vent>().ToArray();
             Transform AdminVentObject = Miraship.FindChild("Admin").FindChild("AdminVent"); 
-            Vent AdminVent = AdminVentObject.GetComponent<Vent>();
+            Vent AdminVent = SetUpVent(AdminVentObject);
 
             Transform Locker = Miraship.FindChild("Locker");
             Locker.gameObject.GetChildren().SetActiveAllObject("LockerVent", false);
             Transform LockerVentObject = Locker.FindChild("LockerVent");
-            LockerVentObject.name = "SecurityVent";
-            Vent SecurityVent = LockerVentObject.GetComponent<Vent>();
+            //LockerVentObject.name = "SecurityVent";
+            Vent SecurityVent = SetUpVent(LockerVentObject);
 
             Transform Reactor = Miraship.FindChild("Reactor");
             Reactor.gameObject.GetChildren().SetActiveAllObject("ReactorVent", false);
             Transform ReactorVentObject = Reactor.FindChild("ReactorVent");
-            ReactorVentObject.name = "CommunityVent";
-            Vent CommunityVent = ReactorVentObject.GetComponent<Vent>();
+            //ReactorVentObject.name = "CommunityVent";
+            Vent CommunityVent = SetUpVent(ReactorVentObject);
 
-            Transform ToolVentObject = GameObject.Instantiate(ReactorVentObject);
-            ToolVentObject.name = "ToolVent";
+            Transform ToolVentObject = Miraship.FindChild("Office").FindChild("OfficeVent");
+            //ToolVentObject.name = "ToolVent";
+            ToolVentObject.gameObject.SetActive(true);
             Vent ToolRoomVent = SetUpVent(ToolVentObject);
 
-            Transform O2VentObject = GameObject.Instantiate(ReactorVentObject);
-            O2VentObject.name = "O2Vent";
+            Transform O2VentObject = Miraship.FindChild("MedBay").FindChild("MedVent");
+            //O2VentObject.name = "O2Vent";
             Vent O2RoomVent = SetUpVent(O2VentObject);
 
-            Transform MedbayVentObject = GameObject.Instantiate(ReactorVentObject);
-            MedbayVentObject.name = "MedbayVent";
+            Transform MedbayVentObject = Miraship.FindChild("Garden").FindChild("AgriVent");
+            //MedbayVentObject.name = "MedbayVent";
             Vent MedbayRoomVent = SetUpVent(MedbayVentObject);
 
-            Transform WareHouseVentObject = GameObject.Instantiate(ReactorVentObject);
-            WareHouseVentObject.name = "WareHouseVent";
-            Vent WareHouseVent = SetUpVent(WareHouseVentObject); ;
+            Transform WareHouseVentObject = Miraship.FindChild("LaunchPad").FindChild("LaunchVent");
+            //WareHouseVentObject.name = "WareHouseVent";
+            Vent WareHouseVent = SetUpVent(WareHouseVentObject);
 
-            Transform WorkRoomVentObject = GameObject.Instantiate(ReactorVentObject);
-            WorkRoomVentObject.name = "WorkRoomVent";
+            Transform WorkRoomVentObject = Miraship.FindChild("Cafe").FindChild("BalconyVent");
+            //WorkRoomVentObject.name = "WorkRoomVent";
+            WorkRoomVentObject.gameObject.SetActive(true);
             Vent WorkRoomVent = SetUpVent(WorkRoomVentObject);
+
+            Transform MeetingRoomVentObject = Miraship.FindChild("Decontam").FindChild("DeconVent");
+            //WorkRoomVentObject.name = "WorkRoomVent";
+            Vent MeetingRoomVent = SetUpVent(MeetingRoomVentObject);
+
+            Transform ElecRoomVentObject = Miraship.FindChild("Laboratory").FindChild("LabVent");
+            //WorkRoomVentObject.name = "WorkRoomVent";
+            Vent ElecRoomVent = SetUpVent(ElecRoomVentObject);
 
             AdminVent.Right = SecurityVent;
             AdminVent.Left = null;
@@ -161,6 +172,14 @@ namespace SuperNewRoles.Map.Agartha.Patch
             WorkRoomVent.Left = null;
             WorkRoomVent.Center = null;
 
+            MeetingRoomVent.Right = ElecRoomVent;
+            MeetingRoomVent.Left = null;
+            MeetingRoomVent.Center = null;
+
+            ElecRoomVent.Right = MeetingRoomVent;
+            ElecRoomVent.Left = null;
+            ElecRoomVent.Center = null;
+
             AdminVentObject.transform.position = new Vector3(12.3f, 4f, 0.1f);
             AdminVentObject.localScale = new Vector3(1.2f,1.2f,1.2f);
 
@@ -184,6 +203,12 @@ namespace SuperNewRoles.Map.Agartha.Patch
 
             WorkRoomVentObject.transform.position = new Vector3(-9.5f, 22.8f, 0.1f);
             WorkRoomVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+
+            MeetingRoomVentObject.transform.position = new Vector3(15.8f, 11.5f, 0.1f);
+            MeetingRoomVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+
+            ElecRoomVentObject.transform.position = new Vector3(19.6f, 11.8f, 0.1f);
+            ElecRoomVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
         }
     }
 }
