@@ -13,6 +13,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
         public static Transform MapObject;
         public static void MinimapChange(MapBehaviour __instance)
         {
+            Agartha.Patch.SetPosition.SetDoor();//MiraShip);
             SuperNewRolesPlugin.Logger.LogInfo("マップ変更処理");
             MapObject = GameObject.Find("HqMap(Clone)").transform;
             //GameObject.Find("HqMap(Clone)").SetActive(false);
@@ -20,7 +21,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Transform RoomNames = MapObject.FindChild("RoomNames");
             SpriteRenderer render = Background.GetComponent<SpriteRenderer>();
             render.sprite = ImageManager.MiniMap;
-            render.transform.localScale *= 1.06f;
+            render.transform.localScale *= 1.055f;
             //AdminRoomName
             Transform AdminRoom = RoomNames.FindChild("Admin");
             AdminRoom.GetComponent<TextMeshPro>().text = TranslationController.Instance.GetString(StringNames.Admin);

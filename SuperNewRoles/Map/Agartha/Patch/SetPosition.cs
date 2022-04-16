@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BepInEx.IL2CPP.Utils;
+using PowerTools;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +11,19 @@ namespace SuperNewRoles.Map.Agartha.Patch
 {
     public static class SetPosition
     {
+        public static void SetDoor()//Transform Miraship)
+        {
+            PlainDoor door = GameObject.Instantiate(MapLoader.Airship.AllDoors[3]);
+            door.transform.localScale *= 0.5f;
+            door.transform.position = PlayerControl.LocalPlayer.transform.position;
+            IEnumerator change()
+            {
+                yield return new WaitForSeconds(1);
+                door.SetDoorway(false);
+            }
+            AmongUsClient.Instance.StartCoroutine(change());
+            //door.GetComponent<SpriteAnim>().ima = ImageManager.AgarthagetSprite("Door_Open");
+        }
         public static void SetObject(Transform MiraShip)
         {
             Transform CommsTop = MiraShip.FindChild("Comms").FindChild("comms-top");

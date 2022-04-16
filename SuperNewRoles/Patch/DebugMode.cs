@@ -78,28 +78,33 @@ namespace SuperNewRoles.Patch
                 if (!ConfigRoles.DebugMode.Value) return;
 
                 // Spawn dummys
-                if (Input.GetKeyDown(KeyCode.G))
+                if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.G))
                 {
+                    var playerControl = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
+                    var i = playerControl.PlayerId = (byte)GameData.Instance.GetAvailableId();
 
-                    var bot = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
-                    bot.PlayerId = 15;
-                    GameData.Instance.AddPlayer(bot);
-                    bots.Add(bot);
-                    AmongUsClient.Instance.Spawn(bot, -2, SpawnFlags.None);
-                    bot.transform.position = PlayerControl.LocalPlayer.transform.position;
-                    bot.NetTransform.enabled = true;
-                    GameData.Instance.RpcSetTasks(bot.PlayerId, new byte[0]);
+                    bots.Add(playerControl);
+                    GameData.Instance.AddPlayer(playerControl);
+                    AmongUsClient.Instance.Spawn(playerControl, -2, InnerNet.SpawnFlags.None);
 
+                    int hat = random.Next(HatManager.Instance.allHats.Count);
+                    int pet = random.Next(HatManager.Instance.allPets.Count);
+                    int skin = random.Next(HatManager.Instance.allSkins.Count);
+                    int visor = random.Next(HatManager.Instance.allVisors.Count);
+                    int color = random.Next(Palette.PlayerColors.Length);
+                    int nameplate = random.Next(HatManager.Instance.allNamePlates.Count);
 
-                    bot.RpcSetColor((byte)PlayerControl.LocalPlayer.CurrentOutfit.ColorId);
-                    bot.RpcSetName(PlayerControl.LocalPlayer.nameText.text);
-                    bot.RpcSetPet(PlayerControl.LocalPlayer.CurrentOutfit.PetId);
-                    bot.RpcSetSkin(PlayerControl.LocalPlayer.CurrentOutfit.SkinId);
-                    bot.RpcSetNamePlate(PlayerControl.LocalPlayer.CurrentOutfit.NamePlateId);
-
-                    new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
-                    new LateTask(() => { foreach (var pc in PlayerControl.AllPlayerControls) pc.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
-                    new LateTask(() => bot.Despawn(), 0.6f, "Bot Despawn Task");
+                    playerControl.transform.position = PlayerControl.LocalPlayer.transform.position;
+                    playerControl.GetComponent<DummyBehaviour>().enabled = true;
+                    playerControl.NetTransform.enabled = false;
+                    playerControl.SetName(RandomString(10));
+                    playerControl.SetColor(color);
+                    playerControl.SetHat(HatManager.Instance.AllHats[hat].ProductId, color);
+                    playerControl.SetPet(HatManager.Instance.AllPets[pet].ProductId, color);
+                    playerControl.SetVisor(HatManager.Instance.AllVisors[visor].ProductId);
+                    playerControl.SetSkin(HatManager.Instance.allSkins[skin].ProductId,0);
+                    playerControl.SetNamePlate(HatManager.Instance.AllNamePlates[nameplate].ProductId);
+                    GameData.Instance.RpcSetTasks(playerControl.PlayerId, new byte[0]);
                 }
                 /*
                 if (Input.GetKeyDown(KeyCode.I))

@@ -145,7 +145,8 @@ namespace SuperNewRoles.Map
                     GameObject.Destroy(CafeObject_Table.GetComponent<BoxCollider2D>());
                     GameObject.Destroy(CafeObject_Table.GetComponent<PolygonCollider2D>());
                     CafeObject_Table.gameObject.AddComponent<PolygonCollider2D>();
-                    CafeObject_Table.transform.position = new Vector3(12.7f, 16f, 3.14f);
+                    CafeObject_Table.transform.position = new Vector3(12.7f, 16f, 0.1f);
+                    CafeObject_Table.transform.localPosition = new Vector3(-0.5f, 0f, 0.1f);
                     CafeObject_Table.FindChild("EmergencyConsole").transform.localPosition = new Vector3(0.18f, -0.5f, 0);
                     //CafeObject.position = new Vector3(1000, 1000, 1000);
                     Transform SkyBri = MiraShip.FindChild("SkyBridge");
@@ -222,6 +223,7 @@ namespace SuperNewRoles.Map
                         Camera.main.backgroundColor = new Color32(99, 71, 27, byte.MaxValue);
                     },0.01f,"ChangeBackgroundColor");
                     Agartha.Patch.SetTasksClass.ShipSetTask();
+                    Agartha.Patch.ChangeMapCounter.Change(MiraShip);
                 }
             }
         }
