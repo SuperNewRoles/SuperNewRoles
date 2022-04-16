@@ -238,19 +238,8 @@ namespace SuperNewRoles.Patch
             if (PlayerControl.LocalPlayer.IsLovers() && PlayerControl.LocalPlayer.isAlive())
             {
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideLovers();
-                side.nameText.text += suffix;
-                PlayerControl.LocalPlayer.nameText.text += suffix;
-                try
-                {
-                    foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-                    {
-                        if (side.PlayerId == player.TargetPlayerId || PlayerControl.LocalPlayer.PlayerId == player.TargetPlayerId)
-                        {
-                            player.NameText.text += suffix;
-                        }
-                    }
-                }
-                catch { }
+                SetPlayerNameText(PlayerControl.LocalPlayer,PlayerControl.LocalPlayer.nameText.text + suffix);
+                SetPlayerNameText(side, PlayerControl.LocalPlayer.nameText.text + suffix);
             }
             if (PlayerControl.LocalPlayer.isDead() && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
             {
@@ -258,21 +247,7 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (PlayerControl p in ps)
                     {
-                        p.nameText.text += suffix;
-                        try
-                        {
-                            foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
-                            {
-                                if (p.PlayerId == player.TargetPlayerId)
-                                {
-                                    player.NameText.text += suffix;
-                                }
-                            }
-                        }
-                        catch
-                        {
-
-                        }
+                        SetPlayerNameText(p, PlayerControl.LocalPlayer.nameText.text + suffix);
                     }
                 }
             }
