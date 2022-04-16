@@ -28,7 +28,6 @@ namespace SuperNewRoles.Roles
         {
             resetSecondCoolDown();
         }
-
         public static void FixedUpdate()
         {
             bool IsViewButtonText = false;
