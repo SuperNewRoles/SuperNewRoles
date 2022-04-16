@@ -30,6 +30,7 @@ namespace SuperNewRoles.Roles
         }
         public static void FixedUpdate()
         {
+            HudManager.Instance.KillButton.gameObject.SetActive(false);
             bool IsViewButtonText = false;
             if (!RoleClass.IsMeeting)
             {
