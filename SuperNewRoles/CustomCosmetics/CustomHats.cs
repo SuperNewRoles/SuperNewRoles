@@ -205,14 +205,15 @@ namespace SuperNewRoles.CustomCosmetics
         [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetHatById))]
         private static class HatManagerPatch
         {
-            private static bool LOADED;
-            private static bool RUNNING;
+            private static bool LOADED = false;
+            private static bool RUNNING = false;
 
             static void Prefix(HatManager __instance)
             {
+                /*
                 if (RUNNING) return;
                 RUNNING = true; // prevent simultanious execution
-
+                */
                 try
                 {
                     if (!LOADED)
