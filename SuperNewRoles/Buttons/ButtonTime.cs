@@ -229,16 +229,5 @@ namespace SuperNewRoles.Buttons
                 if (Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer <= 0f) Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = 0f; return;
             }
         }
-        public static void DoubralKillerSecondKillButton()
-        {
-            if (Buttons.HudManagerStartPatch.DoubralKillerSecondKillButton.Timer == 0) return;
-            if (Roles.RoleClass.DoubralKiller.ButtonTimer == null)
-            {
-                Roles.RoleClass.DoubralKiller.ButtonTimer = DateTime.Now;
-            }
-            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.DoubralKiller.SecondKillTime);
-            Buttons.HudManagerStartPatch.DoubralKillerSecondKillButton.Timer = (float)((Roles.RoleClass.DoubralKiller.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
-            if (Buttons.HudManagerStartPatch.DoubralKillerSecondKillButton.Timer <= 0f) Buttons.HudManagerStartPatch.DoubralKillerSecondKillButton.Timer = 0f; return;
-        }
     }
 }
