@@ -20,6 +20,7 @@ namespace SuperNewRoles.Roles
                     if (player.IsLovers())
                     {
                         RoleClass.Lovers.LoversPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
+                        ChacheManager.ResetLoversChache();
                     }
                     if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
@@ -52,7 +53,7 @@ namespace SuperNewRoles.Roles
                             var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
                             if (sideplayer != null)
                             {
-                                PlayerControl.LocalPlayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                                player.RPCSetRoleUnchecked(RoleTypes.Impostor);
                             }
                         }
                     }
