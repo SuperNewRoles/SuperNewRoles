@@ -20,7 +20,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Transform RoomNames = MapObject.FindChild("RoomNames");
             SpriteRenderer render = Background.GetComponent<SpriteRenderer>();
             render.sprite = ImageManager.MiniMap;
-            render.transform.localScale *= 0.75f;
+            render.transform.localScale *= 1.06f;
             //AdminRoomName
             Transform AdminRoom = RoomNames.FindChild("Admin");
             AdminRoom.GetComponent<TextMeshPro>().text = TranslationController.Instance.GetString(StringNames.Admin);
