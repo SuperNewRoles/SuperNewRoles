@@ -194,7 +194,10 @@ namespace SuperNewRoles.Patch
             {
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideQuarreled();
                 SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.nameText.text + suffix);
-                SetPlayerNameText(side, side.nameText.text + suffix);
+                if (!side.Data.Disconnected)
+                {
+                    SetPlayerNameText(side, side.nameText.text + suffix);
+                }
             }
             if (!PlayerControl.LocalPlayer.isAlive() && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
             {
