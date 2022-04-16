@@ -1349,6 +1349,7 @@ namespace SuperNewRoles.Roles
             public static bool IsMeetingReset;
             public static TextMeshPro SuicideKillLText = null;
             public static TextMeshPro SuicideKillRText = null;
+            public static bool UseOldKill;
             //～Lは追加キルボタン（Left）～Rは純正キルボタン（Right）
 
 
@@ -1371,6 +1372,7 @@ namespace SuperNewRoles.Roles
                 SuicideTimersL = new Dictionary<byte, float>();
                 SuicideTimersR = new Dictionary<byte, float>();
                 ButtonTimer = DateTime.Now;
+                UseOldKill = true;
             }
         }
         //新ロールクラス
