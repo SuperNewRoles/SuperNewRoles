@@ -28,7 +28,6 @@ namespace SuperNewRoles.Buttons
             TeleporterButton();
             HawkDuration();
             ScientistButton();
-            DoubralKillerSecondKillButton();
         }
         public static void ScientistButton()
         {
