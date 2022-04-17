@@ -130,6 +130,12 @@ namespace SuperNewRoles.Map
                     ElectricalRoomWalls.transform.position = new Vector3(21.5f, 16f, 4f);
                     ElectricalRoomWalls.transform.localScale = new Vector3(1.5f, 1.23f, 1.35f);
 
+                    SpriteRenderer LaboRoomWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
+                    LaboRoomWalls.name = "LaboRoomWalls";
+                    LaboRoomWalls.sprite = Agartha.ImageManager.AgarthagetSprite("Room_Labo");
+                    LaboRoomWalls.transform.position = new Vector3(23.2f, 6.3f, 4f);
+                    LaboRoomWalls.transform.localScale *= 0.28f;
+
                     SpriteRenderer BackGroundWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     BackGroundWalls.name = "BackGroundWalls";
                     BackGroundWalls.sprite = Agartha.ImageManager.AgarthagetSprite("BackGround");
@@ -163,8 +169,8 @@ namespace SuperNewRoles.Map
                     SpriteRenderer Aisle5Walls = ShipStatus.Instantiate(Aisle1Walls).gameObject.GetComponent<SpriteRenderer>();
                     Aisle5Walls.name = "Aisle5Walls";
                     Aisle5Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Aisle5");
-                    Aisle5Walls.transform.position = new Vector3(9.45f, 19.1f, 4.99f);
-                    Aisle5Walls.transform.localScale *= 0.15f;
+                    Aisle5Walls.transform.position = new Vector3(13f, 13.4f, 4.99f);
+                    Aisle5Walls.transform.localScale = new Vector3(3.9f, 5f, 3.9f);
 
                     MiraShip.FindChild("CloudGen").gameObject.SetActive(false);
 
@@ -253,10 +259,15 @@ namespace SuperNewRoles.Map
                         MiraShip.FindChild("TaskAddConsole").position = new Vector3(12.7f, 13.7f, 0f);
                         Agartha.Patch.SetPosition.SetDummy();
                     }
+                    Agartha.Patch.CreateShadow.Create(MiraShip);
                     Agartha.Patch.SetTasksClass.SetSabotage(MiraShip);
                     Agartha.Patch.ChangeMapCounter.Change(MiraShip);
                     Agartha.Patch.SetPosition.SetDoor();
                     Agartha.Patch.SetTasksClass.ShipSetTask();
+
+                    ShipStatus.Instance.MeetingSpawnCenter = new Vector2(12.8f, 15.6f);
+                    ShipStatus.Instance.InitialSpawnCenter = new Vector2(12.8f, 15.6f);
+                    ShipStatus.Instance.SpawnRadius = 3f;
                 }
             }
         }
