@@ -199,6 +199,34 @@ namespace SuperNewRoles.Map.Agartha.Patch
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("(Skeld)(N)" + task.name);
             }
+            foreach (NormalPlayerTask task in MapLoader.Airship.LongTasks)
+            {
+                switch (task.name)
+                {
+                    case "InspectSample":
+                        break;
+
+                }
+                SuperNewRolesPlugin.Logger.LogInfo("(Airship)(L)" + task.name);
+            }
+            foreach (NormalPlayerTask task in MapLoader.Airship.CommonTasks)
+            {
+                switch (task.name)
+                {
+                    case "InspectSample":
+                        break;
+                }
+                SuperNewRolesPlugin.Logger.LogInfo("(Airship)(C)" + task.name);
+            }
+            foreach (NormalPlayerTask task in MapLoader.Airship.NormalTasks)
+            {
+                switch (task.name)
+                {
+                    case "UploadNav":
+                        break;
+                }
+                SuperNewRolesPlugin.Logger.LogInfo("(Airship)(N)" + task.name);
+            }
 
             ShipStatus.Instance.CommonTasks = CommonTasks.ToArray();
             ShipStatus.Instance.NormalTasks = NormalTasks.ToArray();
