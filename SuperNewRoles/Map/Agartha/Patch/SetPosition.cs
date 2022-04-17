@@ -187,6 +187,9 @@ namespace SuperNewRoles.Map.Agartha.Patch
             //WorkRoomVentObject.name = "WorkRoomVent";
             Vent ElecRoomVent = SetUpVent(ElecRoomVentObject);
 
+            Transform LaboVentObject = Miraship.FindChild("SkyBridge").FindChild("YHallRightVent");
+            Vent LaboRoomVent = SetUpVent(LaboVentObject);
+
             AdminVent.Right = SecurityVent;
             AdminVent.Left = null;
             AdminVent.Center = null;
@@ -220,12 +223,16 @@ namespace SuperNewRoles.Map.Agartha.Patch
             WorkRoomVent.Center = null;
 
             MeetingRoomVent.Right = ElecRoomVent;
-            MeetingRoomVent.Left = null;
+            MeetingRoomVent.Left = LaboRoomVent;
             MeetingRoomVent.Center = null;
 
             ElecRoomVent.Right = MeetingRoomVent;
-            ElecRoomVent.Left = null;
+            ElecRoomVent.Left = LaboRoomVent;
             ElecRoomVent.Center = null;
+
+            LaboRoomVent.Right = MeetingRoomVent;
+            LaboRoomVent.Left = ElecRoomVent;
+            LaboRoomVent.Center = null;
 
             AdminVentObject.transform.position = new Vector3(12.3f, 4f, 0.1f);
             AdminVentObject.localScale = new Vector3(1.2f,1.2f,1.2f);
@@ -248,7 +255,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             WareHouseVentObject.transform.position = new Vector3(-9.5f, 0.1f, 0.1f);
             WareHouseVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 
-            WorkRoomVentObject.transform.position = new Vector3(-9.5f, 22.8f, 0.1f);
+            WorkRoomVentObject.transform.position = new Vector3(-9.5f, 22.9f, 0.1f);
             WorkRoomVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 
             MeetingRoomVentObject.transform.position = new Vector3(15.8f, 11.5f, 0.1f);
@@ -256,6 +263,9 @@ namespace SuperNewRoles.Map.Agartha.Patch
 
             ElecRoomVentObject.transform.position = new Vector3(19.6f, 11.8f, 0.1f);
             ElecRoomVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+
+            LaboVentObject.transform.position = new Vector3(20.1f, 8.6f, 0.1f);
+            LaboVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
         }
     }
 }

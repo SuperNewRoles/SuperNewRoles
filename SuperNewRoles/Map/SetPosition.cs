@@ -218,6 +218,7 @@ namespace SuperNewRoles.Map
                     MiraShip.FindChild("Comms").gameObject.GetChildren().SetActiveAllObject("comms-top", false);
                     MiraShip.FindChild("Reactor").gameObject.GetChildren().SetActiveAllObject("reactor-desk-elec", false);
                     SkyBri.gameObject.GetChildren().SetActiveAllObject("FixWiringConsole (2)", false);
+                    SkyBri.FindChild("YHallRightVent").gameObject.SetActive(true);
                     Garden.gameObject.GetChildren().SetActiveAllObject("FixWiringConsole", false);
                     Garden.FindChild("AgriVent").gameObject.SetActive(true);
                     MiraShip.FindChild("Laboratory").gameObject.GetChildren().SetActiveAllObject("LabVent",false);
@@ -252,9 +253,10 @@ namespace SuperNewRoles.Map
                         MiraShip.FindChild("TaskAddConsole").position = new Vector3(12.7f, 13.7f, 0f);
                         Agartha.Patch.SetPosition.SetDummy();
                     }
-                    Agartha.Patch.SetTasksClass.ShipSetTask();
+                    Agartha.Patch.SetTasksClass.SetSabotage(MiraShip);
                     Agartha.Patch.ChangeMapCounter.Change(MiraShip);
                     Agartha.Patch.SetPosition.SetDoor();
+                    Agartha.Patch.SetTasksClass.ShipSetTask();
                 }
             }
         }
