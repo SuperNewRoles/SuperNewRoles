@@ -32,7 +32,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
 
             Transform FixWiring3 = MiraShip.FindChild("Cafe").FindChild("FixWiringConsole (3)");
             FixWiring3.gameObject.SetActive(true);
-            FixWiring3.position = new Vector3(8.9f, 16f, 0.1f);
+            FixWiring3.localPosition = new Vector3(-4.5f, 0f, 0.1f);
             FixWiring3.localScale *= 0.8f;
             FixWiring3.GetComponent<SpriteRenderer>().sprite = ImageManager.Task_FixWiring1;
 
@@ -101,7 +101,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             DivertPowerConsole2.gameObject.SetActive(true);
             DivertPowerConsole2.GetComponent<Console>().ConsoleId = 2;
             DivertPowerConsole2.Rotate(new Vector3(75, 0, 0));
-            DivertPowerConsole2.position = new Vector3(12f, 11f, 4f);
+            DivertPowerConsole2.localPosition = new Vector3(1f, -6f, 4f);
 
             Transform DivertPowerConsole3 = MiraShip.FindChild("Laboratory").FindChild("DivertPowerConsole (6)");
             DivertPowerConsole3.gameObject.SetActive(true);

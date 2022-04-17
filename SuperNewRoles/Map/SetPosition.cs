@@ -160,6 +160,12 @@ namespace SuperNewRoles.Map
                     Aisle4Walls.transform.position = new Vector3(9.45f, 19.1f, 4.99f);
                     Aisle4Walls.transform.localScale = new Vector3(5.35f, 4.2f, 10f);
 
+                    SpriteRenderer Aisle5Walls = ShipStatus.Instantiate(Aisle1Walls).gameObject.GetComponent<SpriteRenderer>();
+                    Aisle5Walls.name = "Aisle5Walls";
+                    Aisle5Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Aisle5");
+                    Aisle5Walls.transform.position = new Vector3(9.45f, 19.1f, 4.99f);
+                    Aisle5Walls.transform.localScale *= 0.15f;
+
                     MiraShip.FindChild("CloudGen").gameObject.SetActive(false);
 
                     Transform CafeObject = MiraShip.FindChild("Cafe");

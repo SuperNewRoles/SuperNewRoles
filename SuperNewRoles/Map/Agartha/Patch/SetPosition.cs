@@ -37,7 +37,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             doors.Add(CreateDoor(new Vector3(13.5f, 20.55f, 7f),new Vector3(0.85f,0.75f,0.75f)));
             doors.Add(CreateDoor(new Vector3(0.03f, 20.5f, 4f),new Vector3(0.95f,0.8f,1f)));
             doors.Add(CreateDoor(new Vector3(0.03f, 15.4f, 4f), new Vector3(0.95f, 0.8f, 1f)));
-            doors.Add(CreateDoor(new Vector3(-6.2f, 18.23f, 4f), new Vector3(1f, 1f, 1f),-1,0));
+            doors.Add(CreateDoor(new Vector3(-6.2f, 17.8f, 4f), new Vector3(1f, 1f, 1f),-1,0));
             doors.Add(CreateDoor(new Vector3(-9.6f, 12f, 4f), new Vector3(0.65f, 0.75f, 0.75f)));
             doors.Add(CreateDoor(new Vector3(0.1f, 7.2f, 4f), new Vector3(0.95f, 0.8f, 1f)));
             doors.Add(CreateDoor(new Vector3(0.22f, 1.67f, 4f), new Vector3(0.95f, 0.8f, 1f)));
@@ -110,7 +110,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Transform newcam = UnityEngine.Object.Instantiate(Sec.FindChild("task_cams"));
             newcam.transform.position = new Vector3(16.3f, 7.3f, 0.1f);
             newcam.gameObject.AddComponent<PolygonCollider2D>();
-            Sec.AddCamera(StringNames.Admin, new Vector3(-0.2f, 17.8f, 0f));
+            Sec.AddCamera(StringNames.Admin, new Vector3(-0.9f, 19.31f, 0f));
             Sec.AddCamera(StringNames.Security, new Vector3(-0.2f, 4.5f, 0f));
             Sec.AddCamera(StringNames.LogNorth, new Vector3(7.3f, 15f, 0f));
             Sec.AddCamera(StringNames.ExileTextPP, new Vector3(23.8f, 10f, 0f));
