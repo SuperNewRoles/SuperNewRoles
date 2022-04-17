@@ -21,28 +21,32 @@ namespace SuperNewRoles.Map.Agartha.Patch
                 {
                     if (__instance.exiled != null)
                     {
-                        if (newplayer == null)
-                        {
-                            newplayer = MiraExileController.Instantiate(__instance.Player);
-                            newplayer.BodySprites[0].BodySprite.sprite = ImageManager.CustomExilePlayer;
-                        }
-                        else
-                        {
-                            newplayer.gameObject.SetActive(true);
-                        }
+                        newplayer = MiraExileController.Instantiate(__instance.Player);
+                        newplayer.BodySprites[0].BodySprite.sprite = ImageManager.CustomExilePlayer;
+
                         __instance.Player.gameObject.SetActive(false);
 
-                        new LateTask(() =>
-                        {
-                            newplayer.transform.position = new Vector3(14f, 30.4f, -70f);
-                        }, 0.2f, "ChangePosition");
                         newplayer.transform.localScale *= 1.5f;
                         IsEnd = false;
+                        float m = 0;
+                        float m2 = 0;
+                        float m3 = -1;
                         IEnumerator Coro()
                         {
                             while (!IsEnd)
                             {
-                                newplayer.transform.localPosition -= new Vector3(0, 0.1f, 0);
+                                newplayer.transform.position = new Vector3(13f, 30.4f - m, -70f);
+                                m += 0.1f;
+                                newplayer.VisorSlot.transform.position = new Vector3(14f, 40.4f - m2, -70f);
+                                newplayer.HatSlot.transform.position = new Vector3(14f, 40.4f - m2, -70f);
+                                m2 += 0.13f;
+                                m3 += 0.03f;
+                                if (m3 > 256 || m3 < -1)
+                                {
+                                    m3 = 0;
+                                }
+                                newplayer.VisorSlot.transform.Rotate(new Vector3(0,0,m3));
+                                newplayer.HatSlot.transform.Rotate(new Vector3(0, 0, m3));
                                 yield return null;
                             }
                             newplayer.gameObject.SetActive(false);

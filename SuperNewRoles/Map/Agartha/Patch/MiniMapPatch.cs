@@ -95,8 +95,8 @@ namespace SuperNewRoles.Map.Agartha.Patch
 
             RoomNames.FindChild("Cafeteria").gameObject.SetActive(false);
             RoomNames.FindChild("Greenhouse").gameObject.SetActive(false);
-            Camera.main.orthographicSize = Camera.main.orthographicSize * 7;
-            GameObject.Find("Main Camera").transform.FindChild("ShadowQuad").gameObject.SetActive(false);
+            //Camera.main.orthographicSize = Camera.main.orthographicSize * 7;
+            //GameObject.Find("Main Camera").transform.FindChild("ShadowQuad").gameObject.SetActive(false);
         }
     }
 }

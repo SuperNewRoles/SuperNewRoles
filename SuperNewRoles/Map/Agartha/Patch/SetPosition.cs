@@ -85,9 +85,9 @@ namespace SuperNewRoles.Map.Agartha.Patch
             var camera = UnityEngine.Object.Instantiate<SurvCamera>(referenceCamera);
             camera.transform.position = new Vector3(position.x, position.y, referenceCamera.transform.position.z - 1f);
             camera.CamName = $"Security Camera";
-            camera.Offset = new Vector3(0f, 0f, camera.Offset.z);
+            //camera.Offset = new Vector3(0f, 0f, camera.Offset.z);
             camera.NewName = name;
-            camera.transform.localRotation = new Quaternion(0, 0, 1, 1); // Polus and Airship 
+            //camera.transform.localRotation = new Quaternion(0, 0, 1, 1); // Polus and Airship 
             List<SurvCamera> camlist = ShipStatus.Instance.AllCameras.ToList();
             camlist.Add(camera);
             ShipStatus.Instance.AllCameras = camlist.ToArray();

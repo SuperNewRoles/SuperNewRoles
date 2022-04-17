@@ -1,7 +1,4 @@
 ﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Map
@@ -50,8 +47,8 @@ namespace SuperNewRoles.Map
                         };
 
                     Wall.gameObject.AddComponent<EdgeCollider2D>().points =
-                        new Vector2[] { new Vector2(-5.25f, 4f), new Vector2(9f, 4f), new Vector2(9f, 6f), new Vector2(6.8f, 6f), new Vector2(6.8f, 8f), new Vector2(5.3f, 8f), new Vector2(5.3f, 7f), new Vector2(2.3f, 7f), new Vector2(2.3f, 11f), new Vector2(4.5f, 11f), new Vector2(5.3f, 10f), new Vector2(5.3f, 9.25f), new Vector2(6.8f, 9.25f), new Vector2(6.8f, 12.5f), new Vector2(10.8f, 12.5f), new Vector2(10.8f, 14.5f), new Vector2(5.8f, 14.5f), new Vector2(5.8f, 19.5f), new Vector2(4f, 19.5f),
-                            new Vector2(4f, 14.3f), new Vector2(-2.8f, 14.3f), new Vector2(-2.8f, 17.8f), new Vector2(-5f, 17.8f), new Vector2(-5f, 9.2f), new Vector2(-3f, 9.2f), new Vector2(-3f, 10.2f), new Vector2(-2.5f, 11f), new Vector2(0f, 11f), new Vector2(0f, 7f), new Vector2(-3f, 7f), new Vector2(-3f, 8f), new Vector2(-5.25f, 8f), new Vector2(-5.25f, 4f)
+                        new Vector2[] { new Vector2(-5f, 4f), new Vector2(9f, 4f), new Vector2(9f, 6f), new Vector2(6.8f, 6f), new Vector2(6.8f, 8f), new Vector2(5.3f, 8f), new Vector2(5.3f, 7f), new Vector2(2.3f, 7f), new Vector2(2.3f, 11f), new Vector2(4.5f, 11f), new Vector2(5.3f, 10f), new Vector2(5.3f, 9.25f), new Vector2(6.8f, 9.25f), new Vector2(6.8f, 12.5f), new Vector2(10.8f, 12.5f), new Vector2(10.8f, 14.5f), new Vector2(5.8f, 14.5f), new Vector2(5.8f, 19.5f), new Vector2(4f, 19.5f),
+                            new Vector2(4f, 14.3f), new Vector2(-2.8f, 14.3f), new Vector2(-2.8f, 17.8f), new Vector2(-5f, 17.8f), new Vector2(-5f, 9.2f), new Vector2(-3f, 9.2f), new Vector2(-3f, 10.2f), new Vector2(-2.5f, 11f), new Vector2(0f, 11f), new Vector2(0f, 7f), new Vector2(-3f, 7f), new Vector2(-3f, 8f), new Vector2(-5f, 8f), new Vector2(-5f, 4f)
                         };
                     //会議室左上
                     Wall.gameObject.AddComponent<EdgeCollider2D>().points =
@@ -66,7 +63,7 @@ namespace SuperNewRoles.Map
                     //左側
                     Wall.gameObject.AddComponent<EdgeCollider2D>().points =
                            new Vector2[] {
-                               new Vector2(-6f, 9f),new Vector2(-11.65f, 9f),new Vector2(-11.65f, 10.5f),new Vector2(-10f, 10.5f),new Vector2(-10f, 13f),new Vector2(-16f, 13f),new Vector2(-16f, 10.5f),new Vector2(-13.45f, 10.5f),new Vector2(-13.45f, 9f),new Vector2(-19f, 9f),
+                               new Vector2(-6.15f, 9f),new Vector2(-11.65f, 9f),new Vector2(-11.65f, 10.5f),new Vector2(-10f, 10.5f),new Vector2(-10f, 13f),new Vector2(-16f, 13f),new Vector2(-16f, 10.5f),new Vector2(-13.45f, 10.5f),new Vector2(-13.45f, 9f),new Vector2(-19f, 9f),
                                new Vector2(-19f, 13f),new Vector2(-21.7f, 13f),new Vector2(-21.7f, 16f), new Vector2(-19f, 16f), new Vector2(-19f, 20f), new Vector2(-13.45f, 20f), new Vector2(-13.45f, 18.5f), new Vector2(-16f, 18.5f), new Vector2(-16f, 15.8f), new Vector2(-10f, 15.8f),
                                new Vector2(-10f, 18.5f), new Vector2(-11.65f, 18.5f), new Vector2(-11.65f, 20f), new Vector2(-6.15f, 20f),new Vector2(-6.15f, 9f)
                            };
@@ -133,6 +130,12 @@ namespace SuperNewRoles.Map
                     ElectricalRoomWalls.transform.position = new Vector3(21.5f, 16f, 4f);
                     ElectricalRoomWalls.transform.localScale = new Vector3(1.5f, 1.23f, 1.35f);
 
+                    SpriteRenderer BackGroundWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
+                    BackGroundWalls.name = "BackGroundWalls";
+                    BackGroundWalls.sprite = Agartha.ImageManager.AgarthagetSprite("BackGround");
+                    BackGroundWalls.transform.position = new Vector3(2.8f, 18.6f, 100f);
+                    BackGroundWalls.transform.localScale *= 100000f;
+
                     SpriteRenderer Aisle1Walls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     Aisle1Walls.name = "Aisle1Walls";
                     Aisle1Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Aisle1");
@@ -142,8 +145,20 @@ namespace SuperNewRoles.Map
                     SpriteRenderer Aisle2Walls = ShipStatus.Instantiate(Aisle1Walls).gameObject.GetComponent<SpriteRenderer>();
                     Aisle2Walls.name = "Aisle2Walls";
                     Aisle2Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Aisle1");
-                    Aisle2Walls.transform.position = new Vector3(3.26f, 5.75f, 5f);
+                    Aisle2Walls.transform.position = new Vector3(3.26f, 5.73f, 5f);
                     Aisle2Walls.transform.localScale *= 1.1f;
+
+                    SpriteRenderer Aisle3Walls = ShipStatus.Instantiate(Aisle1Walls).gameObject.GetComponent<SpriteRenderer>();
+                    Aisle3Walls.name = "Aisle3Walls";
+                    Aisle3Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Aisle3");
+                    Aisle3Walls.transform.position = new Vector3(17f, -0.35f, 5f);
+                    Aisle3Walls.transform.localScale = new Vector3(2.7f, 2.1f, 5f);
+
+                    SpriteRenderer Aisle4Walls = ShipStatus.Instantiate(Aisle1Walls).gameObject.GetComponent<SpriteRenderer>();
+                    Aisle4Walls.name = "Aisle4Walls";
+                    Aisle4Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Aisle4");
+                    Aisle4Walls.transform.position = new Vector3(9.45f, 19.1f, 4.99f);
+                    Aisle4Walls.transform.localScale = new Vector3(5.35f, 4.2f, 10f);
 
                     MiraShip.FindChild("CloudGen").gameObject.SetActive(false);
 
@@ -205,7 +220,7 @@ namespace SuperNewRoles.Map
                     MiraShip.FindChild("Admin").gameObject.GetChildren().SetActiveAllObject("MapTable", false);
                     MiraShip.FindChild("Admin").FindChild("AdminVent").gameObject.SetActive(true);
                     GameObject.Destroy(MiraShip.FindChild("LabHall").gameObject.GetComponent<EdgeCollider2D>());
-                    //MiraShip.FindChild("Locker").gameObject.SetActive(false);
+                    MiraShip.FindChild("Balcony").gameObject.SetActive(false);
                     MiraShip.FindChild("Office").gameObject.GetChildren().SetActiveAllObject("OfficeVent", false);
                     //MiraShip.FindChild("Office").gameObject.SetActive(false);
 
@@ -231,9 +246,6 @@ namespace SuperNewRoles.Map
                         MiraShip.FindChild("TaskAddConsole").position = new Vector3(12.7f, 13.7f, 0f);
                         Agartha.Patch.SetPosition.SetDummy();
                     }
-                    new LateTask(()=>{ 
-                        Camera.main.backgroundColor = new Color32(99, 71, 27, byte.MaxValue);
-                    },0.01f,"ChangeBackgroundColor");
                     Agartha.Patch.SetTasksClass.ShipSetTask();
                     Agartha.Patch.ChangeMapCounter.Change(MiraShip);
                     Agartha.Patch.SetPosition.SetDoor();
