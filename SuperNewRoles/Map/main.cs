@@ -16,7 +16,7 @@ namespace SuperNewRoles.Map
     }
     public static class Data
     {
-        public static CustomMapNames ThisMap = CustomMapNames.Agartha;//CustomMapNames.Skeld;//CustomMapNames.Agartha;
+        public static CustomMapNames ThisMap = CustomMapNames.Skeld;//CustomMapNames.Agartha;
         public static string[] MapStringNames = new string[6] { "The Skeld", "MIRA HQ", "Polus", "dlekS ehT", "Airship", "Agartha" };
         public static Dictionary<string, CustomMapNames> CustomMapNameData = new Dictionary<string, CustomMapNames>() {
             { MapStringNames[0],CustomMapNames.Skeld },{ MapStringNames[1],CustomMapNames.Mira }
@@ -31,7 +31,7 @@ namespace SuperNewRoles.Map
         {
             //ThisMap = CustomMapNames.Skeld;
             ThisMap = CustomMapNameData[MapStringNames[PlayerControl.GameOptions.MapId]];
-            ThisMap = CustomMapNames.Agartha;
+            ThisMap = CustomMapNames.Skeld;
         }
         public static bool IsMap(CustomMapNames map)
         {
