@@ -26,6 +26,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                             RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
                             __instance.CmdReportDeadBody(target.Data);
                         }
+
                         /*
                         MeetingRoomManager.Instance.AssignSelf(__instance, target.Data);
                         DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);

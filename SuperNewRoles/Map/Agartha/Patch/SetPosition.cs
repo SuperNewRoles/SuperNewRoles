@@ -25,7 +25,6 @@ namespace SuperNewRoles.Map.Agartha.Patch
             door.transform.localScale = (Vector3)scale;
             door.transform.position = position;
             door.Id = id;
-
             new LateTask(() =>
             {
                 door.SetDoorway(false);
