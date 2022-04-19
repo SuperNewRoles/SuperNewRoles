@@ -163,8 +163,8 @@ namespace SuperNewRoles.Map
                     SpriteRenderer Aisle4Walls = ShipStatus.Instantiate(Aisle1Walls).gameObject.GetComponent<SpriteRenderer>();
                     Aisle4Walls.name = "Aisle4Walls";
                     Aisle4Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Aisle4");
-                    Aisle4Walls.transform.position = new Vector3(9.45f, 19.1f, 4.99f);
-                    Aisle4Walls.transform.localScale = new Vector3(5.35f, 4.2f, 10f);
+                    Aisle4Walls.transform.position = new Vector3(9.45f, 21f, 4.99f);
+                    Aisle4Walls.transform.localScale = new Vector3(0.5f, 0.45f, 1.4f);
 
                     SpriteRenderer Aisle5Walls = ShipStatus.Instantiate(Aisle1Walls).gameObject.GetComponent<SpriteRenderer>();
                     Aisle5Walls.name = "Aisle5Walls";

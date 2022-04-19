@@ -43,6 +43,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
             }
+            catch { }
         }
         public static void resetNameTagsAndColors()
         {
@@ -253,6 +254,14 @@ namespace SuperNewRoles.Patch
     {
         public static void Postfix(PlayerControl __instance)
         {
+            
+            //PV用
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                SetNamesClass.SetPlayerNameText(p,"");
+            }
+            return;
+            
             SetNamesClass.resetNameTagsAndColors();
             if (PlayerControl.LocalPlayer.isDead() && !PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceRedRidingHood))
             {
