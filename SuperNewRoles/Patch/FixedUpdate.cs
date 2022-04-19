@@ -83,7 +83,6 @@ namespace SuperNewRoles.Patch
                     setBasePlayerOutlines();
                     VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
                     SerialKiller.FixedUpdate();
-                    DoubralKiller.FixedUpdate();
                     if (ModeHandler.isMode(ModeId.NotImpostorCheck))
                     {
                         Mode.NotImpostorCheck.NameSet.Postfix();

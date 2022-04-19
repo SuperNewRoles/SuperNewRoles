@@ -314,7 +314,7 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
-                if (MadMayor.CheckImpostor(PlayerControl.LocalPlayer) || PlayerControl.LocalPlayer.isRole(RoleId.MadKiller))
+                if (MadMayor.CheckImpostor(PlayerControl.LocalPlayer) || PlayerControl.LocalPlayer.isRole(RoleId.DoubralKiller))
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {

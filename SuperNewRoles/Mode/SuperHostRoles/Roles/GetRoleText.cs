@@ -23,23 +23,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         }
                     }
                 }
-                if (p.isRole(RoleId.DoubralKiller))
-                {
-                    if (!(!RoleClass.DoubralKiller.IsSuicideViewsL.ContainsKey(p.PlayerId) || !RoleClass.DoubralKiller.IsSuicideViewsL[p.PlayerId]))
-                    {
-                        if (RoleClass.DoubralKiller.SuicideTimersL.TryGetValue(p.PlayerId, out float Time))
-                        {
-                            returndata = ModHelpers.cs(RoleClass.DoubralKiller.color, "(" + ((int)Time + 1).ToString() + ")");
-                        }
-                    }
-                    if (!(!RoleClass.DoubralKiller.IsSuicideViewsR.ContainsKey(p.PlayerId) || !RoleClass.DoubralKiller.IsSuicideViewsR[p.PlayerId]))
-                    {
-                        if (RoleClass.DoubralKiller.SuicideTimersR.TryGetValue(p.PlayerId, out float Time))
-                        {
-                            returndata = ModHelpers.cs(RoleClass.DoubralKiller.color, "(" + ((int)Time + 1).ToString() + ")");
-                        }
-                    }
-                }
             }
             SuperNewRolesPlugin.Logger.LogInfo("returnデータ:"+returndata);
             return returndata;
