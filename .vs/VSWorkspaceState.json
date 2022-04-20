@@ -3,8 +3,9 @@
     "",
     "\\SNRDevTools",
     "\\SuperNewRoles",
+    "\\SuperNewRoles\\Patch",
     "\\SuperNewRoles\\Resources"
   ],
-  "SelectedNode": "\\SuperNewRoles.sln",
+  "SelectedNode": "\\SNRDevTools\\CreateRole.py",
   "PreviewInSolutionExplorer": false
 }
