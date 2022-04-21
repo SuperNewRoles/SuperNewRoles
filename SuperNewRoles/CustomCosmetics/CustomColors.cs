@@ -463,17 +463,21 @@ namespace SuperNewRoles.CustomCosmetics
                 }
                 public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte bodyColor)
                 { // Fix incorrect color assignment
-                    uint color = (uint)bodyColor;
-                    if (isTaken(__instance, color) || color >= Palette.PlayerColors.Length)
+                    if (__instance.IsMod())
                     {
-                        int num = 0;
-                        while (num++ < 50 && (color >= CustomColors.pickableColors || isTaken(__instance, color)))
+                        uint color = (uint)bodyColor;
+                        if (isTaken(__instance, color) || color >= Palette.PlayerColors.Length)
                         {
-                            color = (color + 1) % CustomColors.pickableColors;
+                            int num = 0;
+                            while (num++ < 50 && (color >= CustomColors.pickableColors || isTaken(__instance, color)))
+                            {
+                                color = (color + 1) % CustomColors.pickableColors;
+                            }
                         }
+                        __instance.RpcSetColor((byte)color);
+                        return false;
                     }
-                    __instance.RpcSetColor((byte)color);
-                    return false;
+                    return true;
                 }
             }
         }

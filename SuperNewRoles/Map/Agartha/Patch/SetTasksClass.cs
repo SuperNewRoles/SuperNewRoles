@@ -245,6 +245,13 @@ namespace SuperNewRoles.Map.Agartha.Patch
             ShipStatus.Instance.LongTasks = LongTasks.ToArray();
 
             List<Console> newconsole = ShipStatus.Instance.AllConsoles.ToList();
+            foreach (Console console in newconsole) {
+                SuperNewRolesPlugin.Logger.LogInfo("コンソール名:"+console.name);
+            }
+            foreach (Console console in MapLoader.Airship.AllConsoles.ToList())
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("(Airship)コンソール名:" + console.name);
+            }
             foreach (Console console in AddConsoles)
             {
                 newconsole.Add(console);

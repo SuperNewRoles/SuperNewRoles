@@ -133,8 +133,8 @@ namespace SuperNewRoles.Map
                     SpriteRenderer LaboRoomWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     LaboRoomWalls.name = "LaboRoomWalls";
                     LaboRoomWalls.sprite = Agartha.ImageManager.AgarthagetSprite("Room_Labo");
-                    LaboRoomWalls.transform.position = new Vector3(23.2f, 6.3f, 4f);
-                    LaboRoomWalls.transform.localScale *= 0.28f;
+                    LaboRoomWalls.transform.position = new Vector3(22.35f, 6.75f, 4f);
+                    LaboRoomWalls.transform.localScale *= 0.27f;
 
                     SpriteRenderer BackGroundWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     BackGroundWalls.name = "BackGroundWalls";
@@ -163,13 +163,13 @@ namespace SuperNewRoles.Map
                     SpriteRenderer Aisle4Walls = ShipStatus.Instantiate(Aisle1Walls).gameObject.GetComponent<SpriteRenderer>();
                     Aisle4Walls.name = "Aisle4Walls";
                     Aisle4Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Aisle4");
-                    Aisle4Walls.transform.position = new Vector3(9.45f, 21f, 4.99f);
-                    Aisle4Walls.transform.localScale = new Vector3(0.5f, 0.45f, 1.4f);
+                    Aisle4Walls.transform.position = new Vector3(9.67f, 19.15f, 4.99f);
+                    Aisle4Walls.transform.localScale = new Vector3(0.6f, 0.445f, 1.4f);
 
                     SpriteRenderer Aisle5Walls = ShipStatus.Instantiate(Aisle1Walls).gameObject.GetComponent<SpriteRenderer>();
                     Aisle5Walls.name = "Aisle5Walls";
                     Aisle5Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Aisle5");
-                    Aisle5Walls.transform.position = new Vector3(13f, 13.4f, 4.99f);
+                    Aisle5Walls.transform.position = new Vector3(13f, 13.475f, 4.99f);
                     Aisle5Walls.transform.localScale = new Vector3(3.9f, 5f, 3.9f);
 
                     MiraShip.FindChild("CloudGen").gameObject.SetActive(false);
