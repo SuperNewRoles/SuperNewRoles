@@ -787,7 +787,7 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SurvivorPlayerCount.getFloat();
                 case (RoleId.MadMayor):
                     return CustomOption.CustomOptions.MadMayorPlayerCount.getFloat();
-                    case (RoleId.NiceHawk):
+                case (RoleId.NiceHawk):
                     return CustomOption.CustomOptions.NiceHawkPlayerCount.getFloat();
                     //プレイヤーカウント
             }
