@@ -126,6 +126,10 @@ namespace SuperNewRoles.Patch
                             {
                                 Hawk.FixedUpdate.Postfix();
                             }
+                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk))
+                            {
+                                NiceHawk.FixedUpdate.Postfix();
+                            }
                             Minimalist.FixedUpdate.Postfix();
                         }
                         else if (PlayerControl.LocalPlayer.isDead())

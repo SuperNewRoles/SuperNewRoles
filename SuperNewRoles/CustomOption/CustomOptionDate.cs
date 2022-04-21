@@ -349,6 +349,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadMayorIsImpostorLight;
         public static CustomOption MadMayorVoteCount;
 
+        public static CustomRoleOption NiceHawkOption;
+        public static CustomOption NiceHawkPlayerCount;
+        public static CustomOption NiceHawkCoolTime;
+        public static CustomOption NiceHawkDurationTime;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -737,6 +742,11 @@ namespace SuperNewRoles.CustomOption
             MadMayorCheckImpostorTask = CustomOption.Create(308, ModTranslation.getString("MadMayorCheckImpostorTaskSetting"), rates4, MadMayorIsCheckImpostor);
             MadMayorIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMayorUseVentSetting"), false, MadMayorOption);
             MadMayorIsImpostorLight = CustomOption.Create(310, ModTranslation.getString("MadMayorImpostorLightSetting"), false, MadMayorOption);
+
+            NiceHawkOption = new CustomRoleOption(311, "NiceHawkName", RoleClass.NiceHawk.color, 1);
+            NiceHawkPlayerCount = CustomOption.Create(312, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceHawkOption);
+            NiceHawkCoolTime = CustomOption.Create(313, ModTranslation.getString("HawkCoolTimeSetting"), 15f, 1f, 120f, 2.5f, NiceHawkOption, format: "unitCouples");
+            NiceHawkDurationTime = CustomOption.Create(314, ModTranslation.getString("HawkDurationTimeSetting"), 5f, 1f, 60f, 2.5f, NiceHawkOption, format: "unitCouples");
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

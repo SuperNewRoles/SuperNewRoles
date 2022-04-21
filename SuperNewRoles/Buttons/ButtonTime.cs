@@ -28,6 +28,7 @@ namespace SuperNewRoles.Buttons
             TeleporterButton();
             HawkDuration();
             ScientistButton();
+            NiceHawkDuration();
         }
         public static void ScientistButton()
         {
@@ -227,6 +228,14 @@ namespace SuperNewRoles.Buttons
                 Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = (float)((Roles.RoleClass.EvilSpeedBooster.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
                 if (Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer <= 0f) Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = 0f; return;
             }
+        }
+        public static void NiceHawkDuration()
+        {
+            if (RoleClass.NiceHawk.Timer == 0) return;
+            RoleClass.NiceHawk.IsHawkOn = true;
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.NiceHawk.DurationTime);
+            RoleClass.NiceHawk.Timer = (float)((Roles.RoleClass.NiceHawk.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            if (RoleClass.NiceHawk.Timer <= 0f) RoleClass.NiceHawk.Timer = 0f; NiceHawk.TimerEnd(); RoleClass.NiceHawk.IsHawkOn = false; return;
         }
     }
 }

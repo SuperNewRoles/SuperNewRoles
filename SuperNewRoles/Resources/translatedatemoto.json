@@ -2023,14 +2023,6 @@
  "MadMayorCheckImpostorTaskSetting" : {
         "0" : "Amount of tasks that will be able to be checked (of all tasks)" ,
         "11" : "\u78ba\u8a8d\u3067\u304d\u308b\u3088\u3046\u306b\u306a\u308b\u30bf\u30b9\u30af\u91cf\uff08\u5168\u30bf\u30b9\u30af\u5185\uff09"
-        } ,
- "NiceHawkName" : {
-        "0" : "NiceHawk" ,
-        "11" : "\u30ea\u30fc\u30af\u3084\u3081\u308d"
-        } ,
- "NiceHawkTitle1" : {
-        "0" : "Fuck you" ,
-        "11" : "Fuck you"
         } 
 
 }

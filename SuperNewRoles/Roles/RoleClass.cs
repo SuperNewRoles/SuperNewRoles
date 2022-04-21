@@ -100,6 +100,7 @@ namespace SuperNewRoles.Roles
             SideKiller.ClearAndReload();
             Survivor.ClearAndReload();
             MadMayor.ClearAndReload();
+            NiceHawk.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1324,6 +1325,36 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
+            }
+        }
+        public static class NiceHawk
+        {
+            public static List<PlayerControl> NiceHawkPlayer;
+            public static Color32 color = new Color32(244, 164, 96, byte.MaxValue);
+            public static float CoolTime;
+            public static float DurationTime;
+            public static bool IsHawkOn;
+            public static float Timer;
+            public static DateTime ButtonTimer;
+            private static Sprite buttonSprite;
+            public static float Default;
+            public static float CameraDefault;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.HawkHawkEye.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                NiceHawkPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.HawkCoolTime.getFloat();
+                DurationTime = CustomOptions.HawkDurationTime.getFloat();
+                IsHawkOn = false;
+                Timer = 0;
+                ButtonTimer = DateTime.Now;
+                CameraDefault = Camera.main.orthographicSize;
+                Default = HudManager.Instance.UICamera.orthographicSize;
             }
         }
         //新ロールクラス

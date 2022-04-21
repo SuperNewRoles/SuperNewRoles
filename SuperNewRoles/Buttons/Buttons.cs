@@ -42,6 +42,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton trueloverLoveButton;
         public static CustomButton ImpostorSidekickButton;
         public static CustomButton SideKillerSidekickButton;
+        public static CustomButton NiceHawkHawkEyeButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -701,6 +702,40 @@ namespace SuperNewRoles.Buttons
 
             SideKillerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
             SideKillerSidekickButton.showButtonText = true;
+
+            NiceHawkHawkEyeButton = new CustomButton(
+               () =>
+               {
+                   if (PlayerControl.LocalPlayer.CanMove)
+                   {
+                       RoleClass.NiceHawk.Timer = RoleClass.NiceHawk.DurationTime;
+                       RoleClass.NiceHawk.ButtonTimer = DateTime.Now;
+                       NiceHawkHawkEyeButton.MaxTimer = RoleClass.NiceHawk.CoolTime;
+                       NiceHawkHawkEyeButton.Timer = RoleClass.NiceHawk.CoolTime;
+                       RoleClass.NiceHawk.IsHawkOn = true;
+                   }
+               },
+               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk) && PlayerControl.LocalPlayer.isAlive(); },
+               () =>
+               {
+                   return PlayerControl.LocalPlayer.CanMove;
+               },
+               () =>
+               {
+                   NiceHawkHawkEyeButton.MaxTimer = RoleClass.NiceHawk.CoolTime;
+                   NiceHawkHawkEyeButton.Timer = RoleClass.NiceHawk.CoolTime;
+                   RoleClass.NiceHawk.IsHawkOn = false;
+               },
+               RoleClass.Hawk.getButtonSprite(),
+               new Vector3(-1.8f, -0.06f, 0),
+               __instance,
+               __instance.AbilityButton,
+               KeyCode.F,
+               49
+            );
+
+            NiceHawkHawkEyeButton.buttonText = ModTranslation.getString("HawkButtonName");
+            NiceHawkHawkEyeButton.showButtonText = true;
 
             RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(HudManager.Instance.KillButton.cooldownTimerText, HudManager.Instance.KillButton.cooldownTimerText.transform.parent);
             RoleClass.SerialKiller.SuicideKillText.text = "";
