@@ -35,6 +35,7 @@ namespace SuperNewRoles.Roles
         {
             HudManager.Instance.KillButton.gameObject.SetActive(false);
             //純正キルボタンばいばい
+            //いえーーい
             bool IsViewButtonLText = false;
             bool IsViewButtonRText = false;
             if (!RoleClass.IsMeeting)
