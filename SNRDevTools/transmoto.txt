@@ -504,3 +504,11 @@ MadMayorUseVentSetting
 MadMayorVentMoveSetting
 MadMayorImpostorLightSetting
 MadMayorCheckImpostorTaskSetting
+SeerName
+SeerTitle1
+SeerMode
+SeerModeBoth
+SeerModeFlash
+SeerModeSouls
+SeerLimitSoulDuration
+SeerSoulDuration

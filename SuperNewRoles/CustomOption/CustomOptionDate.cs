@@ -357,6 +357,9 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption SeerOption;
         public static CustomOption SeerPlayerCount;
+        public static CustomOption seerMode;
+        public static CustomOption seerSoulDuration;
+        public static CustomOption seerLimitSoulDuration;
 
         public static CustomRoleOption BakeryOption;
         public static CustomOption BakeryPlayerCount;
@@ -641,7 +644,7 @@ namespace SuperNewRoles.CustomOption
             
             DoctorOption = new CustomRoleOption(166, "DoctorName", RoleClass.Doctor.color, 1);
             DoctorPlayerCount = CustomOption.Create(167, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
-
+                        
             CountChangerOption = new CustomRoleOption(169, "CountChangerName", RoleClass.CountChanger.color, 1);
             CountChangerPlayerCount = CustomOption.Create(170, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CountChangerOption);
             CountChangerMaxCount = CustomOption.Create(171, cs(Color.white, "CountChangerMaxCountSetting"), 1f,1f,15f,1f, CountChangerOption);
@@ -749,6 +752,12 @@ namespace SuperNewRoles.CustomOption
             MadMayorCheckImpostorTask = CustomOption.Create(308, ModTranslation.getString("MadMayorCheckImpostorTaskSetting"), rates4, MadMayorIsCheckImpostor);
             MadMayorIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMayorUseVentSetting"), false, MadMayorOption);
             MadMayorIsImpostorLight = CustomOption.Create(310, ModTranslation.getString("MadMayorImpostorLightSetting"), false, MadMayorOption);
+
+            SeerOption = new CustomRoleOption(301, "SeerName", RoleClass.Seer.color, 1);
+            seerMode = CustomOption.Create(161, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, SeerOption);
+            SeerPlayerCount = CustomOption.Create(302, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerOption);
+            seerLimitSoulDuration = CustomOption.Create(163, "SeerLimitSoulDuration", false, SeerOption);
+            seerSoulDuration = CustomOption.Create(162, "SeerSoulDuration", 15f, 0f, 120f, 5f, seerLimitSoulDuration, format: "unitSeconds");
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

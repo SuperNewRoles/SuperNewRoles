@@ -1354,12 +1354,23 @@ namespace SuperNewRoles.Roles
         public static class Seer
         {
             public static List<PlayerControl> SeerPlayer;
-            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static Color32 color = new Color32(97, 178, 108, byte.MaxValue);
+            public static List<Vector3> deadBodyPositions = new List<Vector3>();
+
+            public static float soulDuration = 15f;
+            public static bool limitSoulDuration = false;
+            public static int mode = 0;
+          
             public static void ClearAndReload()
             {
                 SeerPlayer = new List<PlayerControl>();
+                limitSoulDuration = CustomOptions.seerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.seerSoulDuration.getFloat();
+                mode = CustomOptions.seerMode.getSelection();
+
             }
         }
+
 
         public static class Bakery
         {
