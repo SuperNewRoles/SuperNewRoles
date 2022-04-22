@@ -514,6 +514,7 @@ namespace SuperNewRoles.CustomRPC
                 RoleClass.Jackal.SidekickPlayer.RemoveAt(i);
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            ChacheManager.ResetMyRoleChache();
         }
         public static void CreateSidekick(byte playerid,bool IsFake) {
             var player = ModHelpers.playerById(playerid);
@@ -528,6 +529,7 @@ namespace SuperNewRoles.CustomRPC
                 player.ClearRole();
                 RoleClass.Jackal.SidekickPlayer.Add(player);
                 PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+                ChacheManager.ResetMyRoleChache();
             }
         }
         public static void BomKillRPC(byte sourceId)
