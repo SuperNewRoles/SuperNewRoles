@@ -133,8 +133,8 @@ namespace SuperNewRoles.Map
                     SpriteRenderer LaboRoomWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     LaboRoomWalls.name = "LaboRoomWalls";
                     LaboRoomWalls.sprite = Agartha.ImageManager.AgarthagetSprite("Room_Labo");
-                    LaboRoomWalls.transform.position = new Vector3(22.35f, 6.75f, 4f);
-                    LaboRoomWalls.transform.localScale *= 0.27f;
+                    LaboRoomWalls.transform.position = new Vector3(22.075f, 6.6f, 4f);
+                    LaboRoomWalls.transform.localScale = new Vector3(0.379f, 0.4255f, 0.405f);
 
                     SpriteRenderer BackGroundWalls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     BackGroundWalls.name = "BackGroundWalls";
@@ -171,6 +171,12 @@ namespace SuperNewRoles.Map
                     Aisle5Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Aisle5");
                     Aisle5Walls.transform.position = new Vector3(13f, 13.475f, 4.99f);
                     Aisle5Walls.transform.localScale = new Vector3(3.9f, 5f, 3.9f);
+
+                    SpriteRenderer Walls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
+                    Walls.name = "Walls";
+                    Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Map");
+                    Walls.transform.position = new Vector3(4.9f, 10.75f, 3.5f);
+                    Walls.transform.localScale *= 1.2f;
 
                     MiraShip.FindChild("CloudGen").gameObject.SetActive(false);
 

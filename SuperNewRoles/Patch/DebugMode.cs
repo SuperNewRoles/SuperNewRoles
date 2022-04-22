@@ -106,13 +106,14 @@ namespace SuperNewRoles.Patch
                     playerControl.SetNamePlate(HatManager.Instance.AllNamePlates[nameplate].ProductId);
                     GameData.Instance.RpcSetTasks(playerControl.PlayerId, new byte[0]);
                 }
-                /*
+                
                 if (Input.GetKeyDown(KeyCode.I))
                 {
                     MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
                     DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcStartMeeting(PlayerControl.LocalPlayer.Data);
                 }
+                /*
                 if (Input.GetKeyDown(KeyCode.C))
                 {
                     DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);

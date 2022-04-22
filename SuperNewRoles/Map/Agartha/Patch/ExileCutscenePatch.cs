@@ -11,65 +11,20 @@ namespace SuperNewRoles.Map.Agartha.Patch
     class ExileCutscenePatch
     {
         public static bool IsEnd;
-        public static PoolablePlayer newplayer;
-        [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
-        public static class ExileControllerBeginPatch
+        private static int m;
+        static IEnumerator Coro()
         {
-            static void Postfix(ExileController __instance)
+            ExileController.Instance.Player.transform.position = new Vector3(12.6f, 30f, -70f);
+            ExileController.Instance.Player.transform.localScale = new Vector3(1,1,2);
+            while (!IsEnd)
             {
-                if (Data.IsMap(CustomMapNames.Agartha))
+                if (Time.deltaTime > 0)
                 {
-                    if (__instance.exiled != null)
-                    {
-                        newplayer = MiraExileController.Instantiate(__instance.Player);
-                        newplayer.BodySprites[0].BodySprite.sprite = ImageManager.CustomExilePlayer;
-
-                        __instance.Player.gameObject.SetActive(false);
-
-                        newplayer.transform.localScale *= 2.25f;
-                        IsEnd = false;
-                        float m = 0;
-                        float m2 = 0;
-                        float m3 = -1;
-                        newplayer.transform.position = new Vector3(13f, 30.4f - 2, -70f);
-                        IEnumerator Coro()
-                        {
-                            while (!IsEnd)
-                            {
-                                newplayer.transform.position = new Vector3(13f, 30.4f - m, -70f);
-                                m += 0.1f;
-                                newplayer.VisorSlot.transform.position = new Vector3(14f, 40.4f - m2, -70f);
-                                newplayer.HatSlot.transform.position = new Vector3(14f, 40.4f - m2, -70f);
-                                m2 += 0.13f;
-                                m3 += 0.03f;
-                                if (m3 > 256 || m3 < -1)
-                                {
-                                    m3 = 0;
-                                }
-                                newplayer.VisorSlot.transform.Rotate(new Vector3(0, 0, m3));
-                                newplayer.HatSlot.transform.Rotate(new Vector3(0, 0, m3));
-                                yield return null;
-                            }
-                            newplayer.gameObject.SetActive(false);
-                            yield return null;
-                        }
-                        //AmongUsClient.Instance.StartCoroutine(Coro());
-                        IsExileReseted = false;
-                    }
+                    ExileController.Instance.Player.transform.position -= new Vector3(0, 0.085f, 0);
                 }
-                else if (Data.IsMap(CustomMapNames.Mira))
-                {
-                    if (__instance.exiled != null && !IsExileReseted)
-                    {
-                        __instance.Player.gameObject.SetActive(true);
-                        if (newplayer != null)
-                        {
-                            newplayer.gameObject.SetActive(false);
-                        }
-                        IsExileReseted = true;
-                    }
-                }
+                yield return null;
             }
+            ExileController.Instance.Player.gameObject.SetActive(false);
         }
         public static Sprite Default;
         public static bool IsReseted = true;
@@ -177,19 +132,23 @@ namespace SuperNewRoles.Map.Agartha.Patch
                 }
                 Transform ExileCust = GameObject.Find("MiraExileCutscene(Clone)").transform;
                 Background = ExileCust.FindChild("Background");
+                Background.localScale *= 0.051f;
                 SpriteRenderer render = Background.GetComponent<SpriteRenderer>();
                 render.sprite = ImageManager.ExileBackImage;
                 render.color = Color.white;
-                Background.localScale *= 0.051f;
                 BlackGround = GameObject.Instantiate(Background,Background.transform.parent);
                 SpriteRenderer renderblack = BlackGround.GetComponent<SpriteRenderer>();
-                renderblack.sprite = ImageManager.ExileBackImage;
-                renderblack.color = Color.black;
+                renderblack.sprite = ImageManager.AgarthagetSprite("Exile_BlackGra");
+                renderblack.color = Color.white;
                 renderblack.gameObject.SetActive(true);
                 BlackGround.position += new Vector3(10000,10000,-10);
+                BlackGround.localScale *= 0.9f;
                 //__instance.Text.text = __instance.completeString;
-                MiraCont = GameObject.Find("MiraExileCutscene(Clone)").GetComponent<MiraExileController>();
+                MiraCont = GameObject.FindObjectOfType<MiraExileController>();
                 MiraCont.BackgroundClouds.gameObject.SetActive(false);
+
+                __instance.Player.BodySprites[0].BodySprite.sprite = ImageManager.CustomExilePlayer;
+
                 __instance.StartCoroutine(Animate(ExileController.Instance));
                 return false;
             }
@@ -199,16 +158,19 @@ namespace SuperNewRoles.Map.Agartha.Patch
         private static MiraExileController MiraCont;
         private static IEnumerator Animate(ExileController __instance)
         {
+            IsEnd = false;
             yield return DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.black, Color.clear);
+            __instance.StartCoroutine(Coro());
             yield return Effects.All(MiraCont.HandleText(), Effects.Slide2D(Background, new Vector2(0f, -3f), new Vector2(0f, 0.5f), __instance.Duration), Effects.Sequence(Effects.Wait(2f), Effects.Slide2D(BlackGround, new Vector2(0f, -12f), new Vector2(0f, 2.5f), 1.2f)));
             if (PlayerControl.GameOptions.ConfirmImpostor)
             {
                 __instance.ImpostorText.gameObject.SetActive(true);
             }
             yield return Effects.Bloop(0f, __instance.ImpostorText.transform);
-            yield return (object)new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.5f);
             yield return DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.clear, Color.black);
             __instance.WrapUp();
+            IsEnd = true;
         }
         [HarmonyPatch(typeof(MiraExileController), nameof(MiraExileController.Animate))]
         public static class ExileControllerPatch
