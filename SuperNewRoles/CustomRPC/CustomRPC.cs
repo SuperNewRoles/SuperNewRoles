@@ -83,7 +83,11 @@ namespace SuperNewRoles.CustomRPC
         SideKiller,
         MadKiller,
         Survivor,
-        MadMayor
+        MadMayor,
+        pharmacist,
+        Pharmacist,
+        Seer,
+        Bakery,
         //RoleId
     }
 

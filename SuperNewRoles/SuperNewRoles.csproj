@@ -30,7 +30,7 @@
 
     <ItemGroup>
       <Folder Include="Map\Agartha\新しいフォルダー\" />
-      <Folder Include="Mode\新しいフォルダー\" />
+      <Folder Include="Patch\Mode\新しいフォルダー\" />
     </ItemGroup>
 
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">

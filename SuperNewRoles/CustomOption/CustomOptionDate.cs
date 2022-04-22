@@ -349,6 +349,18 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadMayorIsImpostorLight;
         public static CustomOption MadMayorVoteCount;
 
+        public static CustomRoleOption pharmacistOption;
+        public static CustomOption pharmacistPlayerCount;
+
+        public static CustomRoleOption PharmacistOption;
+        public static CustomOption PharmacistPlayerCount;
+
+        public static CustomRoleOption SeerOption;
+        public static CustomOption SeerPlayerCount;
+
+        public static CustomRoleOption BakeryOption;
+        public static CustomOption BakeryPlayerCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;

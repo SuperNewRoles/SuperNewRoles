@@ -100,6 +100,13 @@ namespace SuperNewRoles.Roles
             SideKiller.ClearAndReload();
             Survivor.ClearAndReload();
             MadMayor.ClearAndReload();
+            pharmacist.ClearAndReload();
+            Pharmacist.ClearAndReload();
+            Seer.ClearAndReload();
+            pharmacist.ClearAndReload();
+            Pharmacist.ClearAndReload();
+            Seer.ClearAndReload();
+            Bakery.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1324,6 +1331,43 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
+            }
+        }
+        public static class pharmacist
+        {
+            public static List<PlayerControl> pharmacistPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                pharmacistPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class Pharmacist
+        {
+            public static List<PlayerControl> PharmacistPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                PharmacistPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class Seer
+        {
+            public static List<PlayerControl> SeerPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                SeerPlayer = new List<PlayerControl>();
+            }
+        }
+
+        public static class Bakery
+        {
+            public static List<PlayerControl> BakeryPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                BakeryPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

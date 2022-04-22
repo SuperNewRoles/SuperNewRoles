@@ -787,6 +787,14 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SurvivorPlayerCount.getFloat();
                 case (RoleId.MadMayor):
                     return CustomOption.CustomOptions.MadMayorPlayerCount.getFloat();
+                case (RoleId.pharmacist):
+                    return CustomOption.CustomOptions.pharmacistPlayerCount.getFloat();
+                case (RoleId.Pharmacist):
+                    return CustomOption.CustomOptions.PharmacistPlayerCount.getFloat();
+                case (RoleId.Seer):
+                    return CustomOption.CustomOptions.SeerPlayerCount.getFloat();
+                case (RoleId.Bakery):
+                    return CustomOption.CustomOptions.BakeryPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1790,7 +1798,119 @@ namespace SuperNewRoles
                     }
                 }
             }
-            //セットクラス
+            if (!(CustomOption.CustomOptions.pharmacistOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.pharmacistOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.pharmacist;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.PharmacistOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.PharmacistOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Pharmacist;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.SeerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SeerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Seer;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.pharmacistOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.pharmacistOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.pharmacist;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.PharmacistOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.PharmacistOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Pharmacist;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.SeerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SeerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Seer;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.BakeryOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.BakeryOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Bakery;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        //セットクラス
         }
     }
 }

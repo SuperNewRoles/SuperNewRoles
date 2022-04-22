@@ -404,6 +404,20 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Bakery):
+                    Roles.RoleClass.Bakery.BakeryPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.pharmacist):
+                    Roles.RoleClass.pharmacist.pharmacistPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Pharmacist):
+                    Roles.RoleClass.Pharmacist.PharmacistPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Seer):
+                    Roles.RoleClass.Seer.SeerPlayer.Add(player);
+                    break;
+                    Roles.RoleClass.Bakery.BakeryPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -608,7 +622,19 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (CustomRPC.RoleId.Bakery):
+                    Roles.RoleClass.Bakery.BakeryPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.pharmacist):
+                    Roles.RoleClass.pharmacist.pharmacistPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Pharmacist):
+                    Roles.RoleClass.Pharmacist.PharmacistPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Seer):
+                    Roles.RoleClass.Seer.SeerPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1093,12 +1119,28 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.MadMayor;
-
-                    //ロールチェック
                 }
-            }
-            catch (Exception e)
+            else if (Roles.RoleClass.pharmacist.pharmacistPlayer.IsCheckListPlayerControl(player))
             {
+                return CustomRPC.RoleId.pharmacist;
+            }
+            else if (Roles.RoleClass.Pharmacist.PharmacistPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Pharmacist;
+            }
+            else if (Roles.RoleClass.Seer.SeerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Seer;
+            }
+            else if (Roles.RoleClass.Bakery.BakeryPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Bakery;
+            }
+            //ロールチェック
+                
+            }
+            catch (Exception e) {
+            
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
                 return RoleId.DefaultRole;
             }

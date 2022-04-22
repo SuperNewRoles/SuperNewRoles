@@ -1,9 +1,12 @@
 {
   "ExpandedNodes": [
     "",
-    "\\SuperNewRoles\\Resources",
+    "\\SNRDevTools",
+    "\\SuperNewRoles",
+    "\\SuperNewRoles\\CustomRPC",
+    "\\SuperNewRoles\\DiscordStatus",
     "\\SuperNewRoles\\Roles"
   ],
-  "SelectedNode": "\\SuperNewRoles",
+  "SelectedNode": "\\SuperNewRoles\\CustomRPC\\CustomRPC.cs",
   "PreviewInSolutionExplorer": false
 }
