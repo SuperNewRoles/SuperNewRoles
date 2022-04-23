@@ -10,17 +10,39 @@ namespace SuperNewRoles.Map.Agartha.Patch
 {
     class ExileCutscenePatch
     {
+        public static PoolablePlayer UpObject;
         public static bool IsEnd;
         private static int m;
         static IEnumerator Coro()
         {
-            ExileController.Instance.Player.transform.position = new Vector3(12.6f, 30f, -70f);
-            ExileController.Instance.Player.transform.localScale = new Vector3(1,1,2);
+            var Player = ExileController.Instance.Player;
+            Player.transform.localPosition = new Vector3(0f, 14.6f, 0f);
+            Player.transform.localScale = new Vector3(0.75f,0.75f,1.5f);
+
+            Player.HatSlot.gameObject.SetActive(false);
+            Player.VisorSlot.gameObject.SetActive(false);
+            Player.Skin.gameObject.SetActive(false);
+
+            
+            UpObject = GameObject.Instantiate(Player,Player.transform.parent);
+            var UpGameObject = UpObject.gameObject;
+            UpObject.name = "Exile_Up";
+            UpObject.transform.localPosition = new Vector3(0f, 14.75f, 150f);
+            UpObject.transform.localScale = new Vector3(0.75f, 0.75f, 1.5f);
+            UpGameObject.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("CustomExilePlayer_Up");
+            
+            while (UpGameObject.transform.localPosition.y > 9.1f)
+            {
+                UpGameObject.transform.localPosition += new Vector3(0,-0.03f,0);
+                Player.transform.localPosition += new Vector3(0, -0.03f, 0);
+                yield return null;
+            }
             while (!IsEnd)
             {
                 if (Time.deltaTime > 0)
                 {
                     ExileController.Instance.Player.transform.position -= new Vector3(0, 0.085f, 0);
+                    UpGameObject.transform.position += new Vector3(0, 0.0175f, 0);
                 }
                 yield return null;
             }
@@ -133,6 +155,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
                 Transform ExileCust = GameObject.Find("MiraExileCutscene(Clone)").transform;
                 Background = ExileCust.FindChild("Background");
                 Background.localScale *= 0.051f;
+                Background.localPosition += new Vector3(0,0,1000);
                 SpriteRenderer render = Background.GetComponent<SpriteRenderer>();
                 render.sprite = ImageManager.ExileBackImage;
                 render.color = Color.white;
@@ -147,21 +170,36 @@ namespace SuperNewRoles.Map.Agartha.Patch
                 MiraCont = GameObject.FindObjectOfType<MiraExileController>();
                 MiraCont.BackgroundClouds.gameObject.SetActive(false);
 
+                //__instance.Duration -= 1f;
+
+                SuperNewRolesPlugin.Logger.LogInfo(__instance.Duration);
                 __instance.Player.BodySprites[0].BodySprite.sprite = ImageManager.CustomExilePlayer;
 
+                if (__instance.exiled == null)
+                {
+                    BackUpTime = 2f;
+                    TextPlusTime = 1f;
+                } else
+                {
+                    BackUpTime = 3.5f;
+                    TextPlusTime = 2.5f;
+                }
+
                 __instance.StartCoroutine(Animate(ExileController.Instance));
+                __instance.StartCoroutine(Coro());
                 return false;
             }
         }
         private static Transform Background;
         private static Transform BlackGround;
         private static MiraExileController MiraCont;
+        static float BackUpTime;
+        static float TextPlusTime;
         private static IEnumerator Animate(ExileController __instance)
         {
             IsEnd = false;
             yield return DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.black, Color.clear);
-            __instance.StartCoroutine(Coro());
-            yield return Effects.All(MiraCont.HandleText(), Effects.Slide2D(Background, new Vector2(0f, -3f), new Vector2(0f, 0.5f), __instance.Duration), Effects.Sequence(Effects.Wait(2f), Effects.Slide2D(BlackGround, new Vector2(0f, -12f), new Vector2(0f, 2.5f), 1.2f)));
+            yield return Effects.All(Effects.Sequence(Effects.Wait(__instance.Duration - 4+TextPlusTime),MiraCont.HandleText()),Effects.Slide2D(Background, new Vector2(0f, -3f), new Vector2(0f, 0.5f), __instance.Duration), Effects.Sequence(Effects.Wait(BackUpTime), Effects.Slide2D(BlackGround, new Vector2(0f, -12f), new Vector2(0f, 2.5f), 1.25f)));
             if (PlayerControl.GameOptions.ConfirmImpostor)
             {
                 __instance.ImpostorText.gameObject.SetActive(true);

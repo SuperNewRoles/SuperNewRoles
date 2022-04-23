@@ -13,7 +13,7 @@ namespace SuperNewRoles.Map.Agartha.Patch.Task
         {
             public static void Postfix(AutoTaskConsole __instance)
             {
-                GameObject.Find("WireMinigame(Clone)").transform.FindChild("Background").GetComponent<SpriteRenderer>().sprite = ImageManager.Task_FixWiring_BackGround;
+                //GameObject.Find("WireMinigame(Clone)").transform.FindChild("Background").GetComponent<SpriteRenderer>().sprite = ImageManager.Task_FixWiring_BackGround;
                 //GameObject.Find("WireMinigame(Clone)").transform.position += new Vector3(0f,0.25f,0f);
             }
         }

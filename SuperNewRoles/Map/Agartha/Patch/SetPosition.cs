@@ -67,6 +67,47 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Transform CommsTop2 = GameObject.Instantiate(CommsTop,CommsTop.parent);
             CommsTop2.position = new Vector3(-7.8f, 23f, 0.1f);
 
+            Transform Template = GameObject.Instantiate(MiraShip.FindChild("Office").FindChild("computerTableB"));
+            //GameObject.Destroy(Template.GetComponent<PolygonCollider2D>());
+            Template.gameObject.SetActive(true);
+            Template.localScale *= 0.5f;
+
+            Transform Labo_Object_fossil_1 = GameObject.Instantiate(Template);
+            Labo_Object_fossil_1.position = new Vector3(19.8f, 3.4f, 0.1f);
+            Labo_Object_fossil_1.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Object_fossil_1");
+            Labo_Object_fossil_1.gameObject.AddComponent<PolygonCollider2D>();
+            Labo_Object_fossil_1.name = "Object_fossil_1";
+
+            Transform Labo_Object_fossil_2 = GameObject.Instantiate(Template);
+            Labo_Object_fossil_2.position = new Vector3(20.9f, 3.4f, 0.1f);
+            Labo_Object_fossil_2.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Object_fossil_2");
+            Labo_Object_fossil_2.gameObject.AddComponent<PolygonCollider2D>();
+            Labo_Object_fossil_2.name = "Object_fossil_2";
+
+            Transform Labo_Object_kitchen_1 = GameObject.Instantiate(Template);
+            Labo_Object_kitchen_1.position = new Vector3(20.7f, 9.2f, 0.1f);
+            Labo_Object_kitchen_1.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Object_kitchen_1");
+            Labo_Object_kitchen_1.gameObject.AddComponent<PolygonCollider2D>();
+            Labo_Object_kitchen_1.name = "Object_kitchen_1";
+            Labo_Object_kitchen_1.localScale *= 1.75f;
+
+            Transform Labo_Object_shelves_1 = GameObject.Instantiate(Template);
+            Labo_Object_shelves_1.position = new Vector3(22.8f, 9f, 0.1f);
+            Labo_Object_shelves_1.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Object_shelves_1");
+            Labo_Object_shelves_1.gameObject.AddComponent<PolygonCollider2D>();
+            Labo_Object_shelves_1.name = "Object_shelves_1";
+            Labo_Object_shelves_1.localScale *= 1.75f;
+
+            Transform Labo_Object_LaboTable_1 = GameObject.Instantiate(Template);
+            Labo_Object_LaboTable_1.position = new Vector3(21f, 7.9f, 0.1f);
+            Labo_Object_LaboTable_1.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Object_LaboTable_1");
+            Labo_Object_LaboTable_1.gameObject.AddComponent<BoxCollider2D>().size = new Vector2(4, 1);
+            Labo_Object_LaboTable_1.name = "Object_LaboTable_1";
+            Labo_Object_LaboTable_1.localScale *= 0.75f;
+
+            GameObject.Destroy(Template);
+            Template = null;
+
         }
         private static List<Vector3> DummyPositions = new List<Vector3>() { new Vector3(10.7f, 7.1f, 0f),new Vector3(11.8f, 15.6f, 0f),new Vector3(-0.2f, 8.5f, 0f),new Vector3(13.7f, 0.38f, 0f),new Vector3(21.7f, 15.6f, 0f),new Vector3(-10.7f, 16f, 0f) };
         public static void SetDummy()

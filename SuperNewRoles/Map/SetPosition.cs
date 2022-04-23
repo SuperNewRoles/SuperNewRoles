@@ -172,12 +172,13 @@ namespace SuperNewRoles.Map
                     Aisle5Walls.transform.position = new Vector3(13f, 13.475f, 4.99f);
                     Aisle5Walls.transform.localScale = new Vector3(3.9f, 5f, 3.9f);
 
+                    /*
                     SpriteRenderer Walls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     Walls.name = "Walls";
                     Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Map");
                     Walls.transform.position = new Vector3(4.9f, 10.75f, 3.5f);
                     Walls.transform.localScale *= 1.2f;
-
+                    */
                     MiraShip.FindChild("CloudGen").gameObject.SetActive(false);
 
                     Transform CafeObject = MiraShip.FindChild("Cafe");
@@ -265,6 +266,7 @@ namespace SuperNewRoles.Map
                         MiraShip.FindChild("TaskAddConsole").position = new Vector3(12.7f, 13.7f, 0f);
                         Agartha.Patch.SetPosition.SetDummy();
                     }
+                    Agartha.Patch.ChangeRoomArea.Change(MiraShip);
                     Agartha.Patch.CreateShadow.Create(MiraShip);
                     Agartha.Patch.SetTasksClass.SetSabotage(MiraShip);
                     Agartha.Patch.ChangeMapCounter.Change(MiraShip);

@@ -73,7 +73,7 @@ namespace SuperNewRoles.Map.Agartha
             get
             {
                 if (m_CustomExilePlayer != null) return m_CustomExilePlayer;
-                m_CustomExilePlayer = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.CustomExilePlayer.png", 115f);
+                m_CustomExilePlayer = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.CustomExilePlayer_Player.png", 115f);
                 return m_CustomExilePlayer;
             }
         }

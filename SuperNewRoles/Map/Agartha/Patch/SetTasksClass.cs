@@ -107,7 +107,9 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Transform DivertPowerConsole1 = MiraShip.FindChild("Comms").FindChild("DivertPowerConsole (9)");
             DivertPowerConsole1.gameObject.SetActive(true);
             DivertPowerConsole1.GetComponent<Console>().ConsoleId = 1;
-            DivertPowerConsole1.position = new Vector3(1.5f, 23.5f, 4f);
+            DivertPowerConsole1.position = new Vector3(1.5f, 26f, 1f);
+            //DivertPowerConsole1.position += new Vector3(0,2,0);
+            AddConsoles.Add(DivertPowerConsole1.GetComponent<Console>());
 
             Transform DivertPowerConsole2 = MiraShip.FindChild("Cafe").FindChild("DivertPowerConsole (3)");
             DivertPowerConsole2.gameObject.SetActive(true);
@@ -246,7 +248,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
 
             List<Console> newconsole = ShipStatus.Instance.AllConsoles.ToList();
             foreach (Console console in newconsole) {
-                SuperNewRolesPlugin.Logger.LogInfo("コンソール名:"+console.name);
+                SuperNewRolesPlugin.Logger.LogInfo("コンソール名:"+console.name+":"+console.ConsoleId);
             }
             foreach (Console console in MapLoader.Airship.AllConsoles.ToList())
             {
@@ -284,6 +286,17 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Transform Powerdown = Miraship.FindChild("Office").FindChild("SwitchConsole");
             Powerdown.gameObject.SetActive(true);
             Powerdown.position = new Vector3(19.8f, 14.7f, 0.1f);
+        }
+        [HarmonyPatch(typeof(ShipStatus),nameof(ShipStatus.OnEnable))]
+        class EnablePatch
+        {
+            public static void Postfix(ShipStatus __instance)
+            {
+                if (Data.IsMap(CustomMapNames.Agartha))
+                {
+                    ShipStatus.Instance.Systems.Add(SystemTypes.Doors, new DoorsSystemType().TryCast<ISystemType>());
+                }
+            }
         }
     }
 }
