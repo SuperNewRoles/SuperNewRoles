@@ -14,6 +14,17 @@ namespace SuperNewRoles.Roles
 {
     public static class DoubralKiller
     {
+        public static void SetDoubralKillerButton()
+        {
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DoubralKiller))
+            {
+                if (!RoleClass.DoubralKiller.NoKill)
+                {
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                    //純正キルボタンばいばい
+                }
+            }
+        }
         public static void resetNormalCoolDown()
         {
             HudManagerStartPatch.DoubralKillerNormalKillButton.MaxTimer = RoleClass.DoubralKiller.KillTime;
@@ -33,10 +44,12 @@ namespace SuperNewRoles.Roles
         }
         public static void FixedUpdate()
         {
-            HudManager.Instance.KillButton.gameObject.SetActive(false);
-            //純正キルボタンばいばい
             bool IsViewButtonLText = false;
             bool IsViewButtonRText = false;
+            static void Postfix()
+            {
+                SetDoubralKillerButton();
+            }
             if (!RoleClass.IsMeeting)
             {
                 if (PlayerControl.LocalPlayer.isRole(RoleId.DoubralKiller))
@@ -144,6 +157,13 @@ namespace SuperNewRoles.Roles
                     }
                 }
                 return result;
+            }
+        }
+        public class Nokill
+        {
+            public static void Postfix()
+            {
+                SetDoubralKillerButton();
             }
         }
     }

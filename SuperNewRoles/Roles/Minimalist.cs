@@ -44,7 +44,6 @@ namespace SuperNewRoles.Roles
                 }
                 if (!RoleClass.Minimalist.UseReport)
                 {
-
                     HudManager.Instance.ReportButton.gameObject.SetActiveRecursively(false);
                     HudManager.Instance.ReportButton.SetActive(false);
                     HudManager.Instance.ReportButton.graphic.enabled = false;

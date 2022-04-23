@@ -726,6 +726,9 @@ namespace SuperNewRoles.Buttons
                 KeyCode.Q,
                 50
             );
+            DoubralKillerNormalKillButton.buttonText = ModTranslation.getString("DoubralKillerSuicideRText");
+            DoubralKillerNormalKillButton.buttonText = HudManager.Instance.KillButton.buttonLabelText.text;
+            DoubralKillerNormalKillButton.showButtonText = true;
 
             DoubralKillerSecondKillButton = new CustomButton(
                 () =>
@@ -749,7 +752,7 @@ namespace SuperNewRoles.Buttons
                 KeyCode.E,
                 51
             );
-
+            DoubralKillerSecondKillButton.buttonText = ModTranslation.getString("DoubralKillerSuicideLText");
             DoubralKillerSecondKillButton.buttonText = HudManager.Instance.KillButton.buttonLabelText.text;
             DoubralKillerSecondKillButton.showButtonText = true;
 
@@ -767,8 +770,8 @@ namespace SuperNewRoles.Buttons
             RoleClass.DoubralKiller.SuicideKillRText.enableWordWrapping = false;
             RoleClass.DoubralKiller.SuicideKillLText.transform.localScale = Vector3.one * 0.5f;
             RoleClass.DoubralKiller.SuicideKillRText.transform.localScale = Vector3.one * 0.5f;
-            RoleClass.DoubralKiller.SuicideKillLText.transform.localPosition += new Vector3(-0.1f, 0.7f, 0);
-            RoleClass.DoubralKiller.SuicideKillRText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+            RoleClass.DoubralKiller.SuicideKillLText.transform.localPosition += new Vector3(-1.8f, -0.06f, 0);
+            RoleClass.DoubralKiller.SuicideKillRText.transform.localPosition += new Vector3(0, 1, 0);
 
             setCustomButtonCooldowns();
         }
