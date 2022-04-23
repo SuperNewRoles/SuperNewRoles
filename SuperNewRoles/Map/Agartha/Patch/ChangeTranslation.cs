@@ -17,9 +17,13 @@ namespace SuperNewRoles.Map.Agartha.Patch
         {
             public static void Postfix(TranslationController __instance,ref string __result, [HarmonyArgument(0)] StringNames name)
             {
+                if (!Data.IsMap(CustomMapNames.Agartha)) return;
                 if (name == StringNames.Cafeteria)
                 {
                     __result = __instance.GetString(StringNames.MeetingRoom);
+                } else if(name == StringNames.Reactor)
+                {
+                    __result = ModTranslation.getString("Agartha_WorkRoom");
                 }
             }
         }

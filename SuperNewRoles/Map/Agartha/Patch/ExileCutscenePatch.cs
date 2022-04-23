@@ -1,5 +1,6 @@
 ﻿using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
+using SuperNewRoles.Sabotage.CognitiveDeficit;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,10 +14,11 @@ namespace SuperNewRoles.Map.Agartha.Patch
         public static PoolablePlayer UpObject;
         public static bool IsEnd;
         private static int m;
+        static float rotatedata;
         static IEnumerator Coro()
         {
             var Player = ExileController.Instance.Player;
-            Player.transform.localPosition = new Vector3(0f, 14.6f, 0f);
+            Player.transform.localPosition = new Vector3(0f, 5.85f, 1001f);
             Player.transform.localScale = new Vector3(0.75f,0.75f,1.5f);
 
             Player.HatSlot.gameObject.SetActive(false);
@@ -27,24 +29,35 @@ namespace SuperNewRoles.Map.Agartha.Patch
             UpObject = GameObject.Instantiate(Player,Player.transform.parent);
             var UpGameObject = UpObject.gameObject;
             UpObject.name = "Exile_Up";
-            UpObject.transform.localPosition = new Vector3(0f, 14.75f, 150f);
+            UpObject.transform.localPosition = new Vector3(0f, 14.75f, 1002f);
             UpObject.transform.localScale = new Vector3(0.75f, 0.75f, 1.5f);
             UpGameObject.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("CustomExilePlayer_Up");
-            
-            while (UpGameObject.transform.localPosition.y > 9.1f)
+            if (ExileController.Instance.exiled != null)
             {
-                UpGameObject.transform.localPosition += new Vector3(0,-0.03f,0);
-                Player.transform.localPosition += new Vector3(0, -0.03f, 0);
-                yield return null;
-            }
-            while (!IsEnd)
-            {
-                if (Time.deltaTime > 0)
+                while (UpGameObject.transform.localPosition.y > 8.7f)
                 {
-                    ExileController.Instance.Player.transform.position -= new Vector3(0, 0.085f, 0);
-                    UpGameObject.transform.position += new Vector3(0, 0.0175f, 0);
+                    UpGameObject.transform.localPosition += new Vector3(0, -0.06f, 0);
+                    Player.transform.localPosition += new Vector3(0, -0.06f, 0);
+                    yield return null;
                 }
-                yield return null;
+                while (!IsEnd)
+                {
+                    if (Time.deltaTime > 0)
+                    {
+                        UpGameObject.transform.position += new Vector3(0, 0.08f, 0);
+                        Background.localPosition += new Vector3(0, 0.04f, 0);
+                        rotatedata += 0.025f;
+                        if (rotatedata >= 360)
+                        {
+                            rotatedata = 0;
+                        }
+                        Player.transform.Rotate(new Vector3(0, 0, rotatedata));
+                    }
+                    yield return null;
+                }
+            }else
+            {
+                yield return Effects.Slide2D(Background, new Vector2(0f, -3f), new Vector2(0f, 1.5f), 4.5f);
             }
             ExileController.Instance.Player.gameObject.SetActive(false);
         }
@@ -181,10 +194,10 @@ namespace SuperNewRoles.Map.Agartha.Patch
                     TextPlusTime = 1f;
                 } else
                 {
-                    BackUpTime = 3.5f;
-                    TextPlusTime = 2.5f;
+                    BackUpTime = 2.75f;
+                    TextPlusTime = 1.75f;
                 }
-
+                rotatedata = 0;
                 __instance.StartCoroutine(Animate(ExileController.Instance));
                 __instance.StartCoroutine(Coro());
                 return false;
@@ -199,7 +212,8 @@ namespace SuperNewRoles.Map.Agartha.Patch
         {
             IsEnd = false;
             yield return DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.black, Color.clear);
-            yield return Effects.All(Effects.Sequence(Effects.Wait(__instance.Duration - 4+TextPlusTime),MiraCont.HandleText()),Effects.Slide2D(Background, new Vector2(0f, -3f), new Vector2(0f, 0.5f), __instance.Duration), Effects.Sequence(Effects.Wait(BackUpTime), Effects.Slide2D(BlackGround, new Vector2(0f, -12f), new Vector2(0f, 2.5f), 1.25f)));
+            TaskBar.Instance.gameObject.SetActive(false);
+            yield return Effects.All(Effects.Sequence(Effects.Wait(__instance.Duration - 4+TextPlusTime),MiraCont.HandleText()),Effects.Slide2D(Background, new Vector2(0f, -3f), new Vector2(0f, -1.5f), 1.5f), Effects.Sequence(Effects.Wait(BackUpTime), Effects.Slide2D(BlackGround, new Vector2(0f, -12f), new Vector2(0f, 2.5f), 1.25f)));
             if (PlayerControl.GameOptions.ConfirmImpostor)
             {
                 __instance.ImpostorText.gameObject.SetActive(true);
@@ -208,6 +222,10 @@ namespace SuperNewRoles.Map.Agartha.Patch
             yield return new WaitForSeconds(0.5f);
             yield return DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.clear, Color.black);
             __instance.WrapUp();
+            if (PlayerControl.GameOptions.TaskBarMode != TaskBarMode.Invisible)
+            {
+                TaskBar.Instance.gameObject.SetActive(true);
+            }
             IsEnd = true;
         }
         [HarmonyPatch(typeof(MiraExileController), nameof(MiraExileController.Animate))]

@@ -11,6 +11,36 @@ namespace SuperNewRoles.Map.Agartha.Patch
 {
     public static class SetPosition
     {
+        public static void MapPositionChange(InfectedOverlay __instance)
+        {
+            int i = 0;
+            foreach(ButtonBehavior button in __instance.allButtons)
+            {
+                //コミュ
+                if (i == 0)
+                {
+                    button.transform.localPosition = new Vector3(-3.15f, 4.3f, -1f);
+                }
+                //停電
+                else if (i == 1) {
+                    button.transform.localPosition = new Vector3(3.6f, 2f, -1f);
+                }
+                //O2
+                else if (i == 2)
+                {
+                    button.transform.localPosition = new Vector3(-3.65f, -0.5f, -1f);
+
+                }else if (i == 3)
+                {
+                    button.gameObject.SetActive(false);
+                }
+                SuperNewRolesPlugin.Logger.LogInfo(button.name+":"+i);
+                i++;
+            }
+            var Listed = __instance.allButtons.ToList();
+            Listed.RemoveAt(3);
+            __instance.allButtons = Listed.ToArray();
+        }
         public static PlainDoor CreateDoor(Vector3 position,Vector3? scale = null,int id = -1,int index = 3)
         {
             if (id == -1)
@@ -305,7 +335,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             ElecRoomVentObject.transform.position = new Vector3(19.6f, 11.8f, 0.1f);
             ElecRoomVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 
-            LaboVentObject.transform.position = new Vector3(20.1f, 8.6f, 0.1f);
+            LaboVentObject.transform.position = new Vector3(19.8f, 8.2f, 0.1f);
             LaboVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
         }
     }

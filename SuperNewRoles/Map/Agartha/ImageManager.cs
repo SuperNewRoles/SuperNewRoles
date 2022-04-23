@@ -174,5 +174,15 @@ namespace SuperNewRoles.Map.Agartha
             Datas[id] = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha." + id + ".png", 115f);
             return Datas[id];
         }
+        private static Sprite m_Button_Admin;
+        public static Sprite Button_Admin
+        {
+            get
+            {
+                if (m_Button_Admin != null) return m_Button_Admin;
+                m_Button_Admin = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.AdminButton.png", 115f);
+                return m_Button_Admin;
+            }
+        }
     }
 }

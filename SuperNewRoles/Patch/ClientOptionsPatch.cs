@@ -51,7 +51,20 @@ namespace SuperNewRoles.Patch
             Object.Destroy(titleText.GetComponent<TextTranslatorTMP>());
             titleText.gameObject.SetActive(false);
             Object.DontDestroyOnLoad(titleText);
-            Transform MiraButton = GameObject.Find("FreeplayPopover").transform.FindChild("Content").FindChild("MiraButton");
+            Transform Content = GameObject.Find("FreeplayPopover").transform.FindChild("Content");
+            Content.FindChild("SkeldButton").gameObject.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
+            {
+                Map.Data.ThisMap = Map.CustomMapNames.Skeld;
+            }));
+            Content.FindChild("PlanetButton").gameObject.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
+            {
+                Map.Data.ThisMap = Map.CustomMapNames.Polus;
+            }));
+            Content.FindChild("AirshipButton").gameObject.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
+            {
+                Map.Data.ThisMap = Map.CustomMapNames.Airship;
+            }));
+            Transform MiraButton = Content.FindChild("MiraButton");
             PassiveButton MiraPassiveButton = MiraButton.gameObject.GetComponent<PassiveButton>();
             MiraPassiveButton.OnClick.AddListener((Action)(() =>
             {

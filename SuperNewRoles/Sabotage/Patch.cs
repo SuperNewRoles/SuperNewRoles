@@ -41,6 +41,10 @@ namespace SuperNewRoles.Sabotage
                 {
                     CognitiveDeficit.main.Create(__instance);
                 }
+                if (Map.Data.IsMap(Map.CustomMapNames.Agartha))
+                {
+                    Map.Agartha.Patch.SetPosition.MapPositionChange(__instance);
+                }
             }
         }
         [HarmonyPatch(typeof(EmergencyMinigame),nameof(EmergencyMinigame.Update))]
