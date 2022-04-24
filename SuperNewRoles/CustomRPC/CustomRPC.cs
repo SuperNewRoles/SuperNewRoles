@@ -84,10 +84,7 @@ namespace SuperNewRoles.CustomRPC
         MadKiller,
         Survivor,
         MadMayor,
-        pharmacist,
-        Pharmacist,
-        Seer,
-        Bakery,
+        NiceHawk,
         //RoleId
     }
 

@@ -404,19 +404,8 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Bakery):
-                    Roles.RoleClass.Bakery.BakeryPlayer.Add(player);
-                    break;
-                case (CustomRPC.RoleId.pharmacist):
-                    Roles.RoleClass.pharmacist.pharmacistPlayer.Add(player);
-                    break;
-                case (CustomRPC.RoleId.Pharmacist):
-                    Roles.RoleClass.Pharmacist.PharmacistPlayer.Add(player);
-                    break;
-                case (CustomRPC.RoleId.Seer):
-                    Roles.RoleClass.Seer.SeerPlayer.Add(player);
-                    break;
-                    Roles.RoleClass.Bakery.BakeryPlayer.Add(player);
+                case (CustomRPC.RoleId.NiceHawk):
+                    Roles.RoleClass.NiceHawk.NiceHawkPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -622,17 +611,8 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.Bakery):
-                    Roles.RoleClass.Bakery.BakeryPlayer.RemoveAll(ClearRemove);
-                    break;
-                case (CustomRPC.RoleId.pharmacist):
-                    Roles.RoleClass.pharmacist.pharmacistPlayer.RemoveAll(ClearRemove);
-                    break;
-                case (CustomRPC.RoleId.Pharmacist):
-                    Roles.RoleClass.Pharmacist.PharmacistPlayer.RemoveAll(ClearRemove);
-                    break;
-                case (CustomRPC.RoleId.Seer):
-                    Roles.RoleClass.Seer.SeerPlayer.RemoveAll(ClearRemove);
+                case (CustomRPC.RoleId.NiceHawk):
+                    Roles.RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1120,24 +1100,12 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.MadMayor;
                 }
-            else if (Roles.RoleClass.pharmacist.pharmacistPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.pharmacist;
-            }
-            else if (Roles.RoleClass.Pharmacist.PharmacistPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Pharmacist;
-            }
-            else if (Roles.RoleClass.Seer.SeerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Seer;
-            }
-            else if (Roles.RoleClass.Bakery.BakeryPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Bakery;
-            }
+                else if (Roles.RoleClass.NiceHawk.NiceHawkPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceHawk;
+                }
             //ロールチェック
-                
+
             }
             catch (Exception e) {
             

@@ -100,13 +100,7 @@ namespace SuperNewRoles.Roles
             SideKiller.ClearAndReload();
             Survivor.ClearAndReload();
             MadMayor.ClearAndReload();
-            pharmacist.ClearAndReload();
-            Pharmacist.ClearAndReload();
-            Seer.ClearAndReload();
-            pharmacist.ClearAndReload();
-            Pharmacist.ClearAndReload();
-            Seer.ClearAndReload();
-            Bakery.ClearAndReload();
+            NiceHawk.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1331,54 +1325,33 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
-            }
+             }
         }
-        public static class pharmacist
+        public static class NiceHawk
         {
-            public static List<PlayerControl> pharmacistPlayer;
-            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static List<PlayerControl> NiceHawkPlayer;
+            public static Color32 color = new Color32(226, 162, 0, byte.MaxValue);
+            public static float CoolTime;
+            public static float DurationTime;
+            public static float Timer;
+            public static DateTime ButtonTimer;
+            public static float Default;
+            public static float CameraDefault;
+            public static Vector3 Postion;
+            public static float timer1;
+            public static DateTime Timer2;
             public static void ClearAndReload()
             {
-                pharmacistPlayer = new List<PlayerControl>();
-            }
-        }
-        public static class Pharmacist
-        {
-            public static List<PlayerControl> PharmacistPlayer;
-            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
-            public static void ClearAndReload()
-            {
-                PharmacistPlayer = new List<PlayerControl>();
-            }
-        }
-        public static class Seer
-        {
-            public static List<PlayerControl> SeerPlayer;
-            public static Color32 color = new Color32(97, 178, 108, byte.MaxValue);
-            public static List<Vector3> deadBodyPositions = new List<Vector3>();
-
-            public static float soulDuration = 15f;
-            public static bool limitSoulDuration = false;
-            public static int mode = 0;
-          
-            public static void ClearAndReload()
-            {
-                SeerPlayer = new List<PlayerControl>();
-                limitSoulDuration = CustomOptions.seerLimitSoulDuration.getBool();
-                soulDuration = CustomOptions.seerSoulDuration.getFloat();
-                mode = CustomOptions.seerMode.getSelection();
-
-            }
-        }
-
-
-        public static class Bakery
-        {
-            public static List<PlayerControl> BakeryPlayer;
-            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
-            public static void ClearAndReload()
-            {
-                BakeryPlayer = new List<PlayerControl>();
+                NiceHawkPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.NiceHawkCoolTime.getFloat();
+                DurationTime = CustomOptions.NiceHawkDurationTime.getFloat();
+                Timer = 0;
+                ButtonTimer = DateTime.Now;
+                CameraDefault = Camera.main.orthographicSize;
+                Default = HudManager.Instance.UICamera.orthographicSize;
+                Postion = new Vector3(0, 0, 0);
+                timer1 = 0;
+                Timer2 = DateTime.Now;
             }
         }
         //新ロールクラス

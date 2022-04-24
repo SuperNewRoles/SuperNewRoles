@@ -504,11 +504,6 @@ MadMayorUseVentSetting
 MadMayorVentMoveSetting
 MadMayorImpostorLightSetting
 MadMayorCheckImpostorTaskSetting
-SeerName
-SeerTitle1
-SeerMode
-SeerModeBoth
-SeerModeFlash
-SeerModeSouls
-SeerLimitSoulDuration
-SeerSoulDuration
+NiceHawkName
+NiceHawkTitle1
+NiceHawkTitle2
