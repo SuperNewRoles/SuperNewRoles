@@ -25,6 +25,7 @@ namespace SuperNewRoles.Map
             public static void Postfix(ShipStatus __instance)
             {
                 ApplyChanges(__instance);
+                SuperNewRoles.Patch.SelectTask.IsAwakeEnd = true;
             }
         }
         public static void ApplyChanges(ShipStatus __instance)
@@ -33,6 +34,7 @@ namespace SuperNewRoles.Map
             {
                 if (__instance.Type == ShipStatus.MapType.Hq)
                 {
+                    SuperNewRolesPlugin.Logger.LogInfo("Awakeを実行！");
                     Transform MiraShip = GameObject.Find("MiraShip(Clone)").transform;
 
                     Agartha.Patch.SetPosition.SetCamera();

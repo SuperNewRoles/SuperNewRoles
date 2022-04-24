@@ -31,6 +31,7 @@ namespace SuperNewRoles.Roles
 
         public static void clearAndReloadRoles()
         {
+            Patch.SelectTask.IsAwakeEnd = false;
             IsMeeting = false;
             IsCoolTimeSetted = false;
             IsStart = false;

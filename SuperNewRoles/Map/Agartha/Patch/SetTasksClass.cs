@@ -200,7 +200,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
                         CommonTasks.Add(task);
                         break;
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("(C)" + task.name);
+                //SuperNewRolesPlugin.Logger.LogInfo("(C)" + task.name);
             }
             foreach (NormalPlayerTask task in ShipStatus.Instance.NormalTasks)
             {
@@ -210,7 +210,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
                         NormalTasks.Add(task);
                         break;
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("(N)" + task.name);
+                //SuperNewRolesPlugin.Logger.LogInfo("(N)" + task.name);
             }
             foreach (NormalPlayerTask task in ShipStatus.Instance.LongTasks)
             {
@@ -227,7 +227,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
                         break;
 
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("(L)" + task.name);
+                //SuperNewRolesPlugin.Logger.LogInfo("(L)" + task.name);
             }
             foreach (NormalPlayerTask task in MapLoader.Skeld.LongTasks)
             {
@@ -240,7 +240,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
                         break;
 
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("(Skeld)(L)" + task.name);
+                //SuperNewRolesPlugin.Logger.LogInfo("(Skeld)(L)" + task.name);
             }
             foreach (NormalPlayerTask task in MapLoader.Skeld.CommonTasks)
             {
@@ -249,7 +249,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
                     case "InspectSample":
                         break;
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("(Skeld)(C)" + task.name);
+                //SuperNewRolesPlugin.Logger.LogInfo("(Skeld)(C)" + task.name);
             }
             foreach (NormalPlayerTask task in MapLoader.Skeld.NormalTasks)
             {
@@ -259,8 +259,9 @@ namespace SuperNewRoles.Map.Agartha.Patch
                         NormalTasks.Add(task);
                         break;
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("(Skeld)(N)" + task.name);
+                //SuperNewRolesPlugin.Logger.LogInfo("(Skeld)(N)" + task.name);
             }
+            /*
             foreach (NormalPlayerTask task in MapLoader.Airship.LongTasks)
             {
                 switch (task.name)
@@ -289,12 +290,27 @@ namespace SuperNewRoles.Map.Agartha.Patch
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("(Airship)(N)" + task.name);
             }
+            */
 
             ShipStatus.Instance.CommonTasks = CommonTasks.ToArray();
             ShipStatus.Instance.NormalTasks = NormalTasks.ToArray();
             ShipStatus.Instance.LongTasks = LongTasks.ToArray();
 
+            foreach (NormalPlayerTask task in ShipStatus.Instance.LongTasks)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("(L)"+task.name);
+            }
+            foreach (NormalPlayerTask task in ShipStatus.Instance.NormalTasks)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("(N)"+task.name);
+            }
+            foreach (NormalPlayerTask task in ShipStatus.Instance.CommonTasks)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("(C)" + task.name);
+            }
+
             List<Console> newconsole = ShipStatus.Instance.AllConsoles.ToList();
+            /*
             foreach (Console console in newconsole) {
                 SuperNewRolesPlugin.Logger.LogInfo("コンソール名:"+console.name+":"+console.ConsoleId);
             }
@@ -302,6 +318,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             {
                 SuperNewRolesPlugin.Logger.LogInfo("(Airship)コンソール名:" + console.name);
             }
+            */
             foreach (Console console in AddConsoles)
             {
                 newconsole.Add(console);

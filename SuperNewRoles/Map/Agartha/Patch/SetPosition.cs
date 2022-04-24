@@ -70,15 +70,15 @@ namespace SuperNewRoles.Map.Agartha.Patch
         public static void SetDoor()//Transform Miraship)
         {
             List<PlainDoor> doors = new List<PlainDoor>();
-            doors.Add(CreateDoor(new Vector3(13.5f, 20.55f, 7f),new Vector3(0.85f,0.75f,0.75f)));
-            doors.Add(CreateDoor(new Vector3(0.03f, 20.5f, 4f),new Vector3(0.95f,0.8f,1f)));
-            doors.Add(CreateDoor(new Vector3(0.03f, 15.4f, 4f), new Vector3(0.95f, 0.8f, 1f)));
-            doors.Add(CreateDoor(new Vector3(-6.2f, 17.8f, 4f), new Vector3(1f, 1f, 1f),-1,0));
-            doors.Add(CreateDoor(new Vector3(-9.6f, 12f, 4f), new Vector3(0.65f, 0.75f, 0.75f)));
-            doors.Add(CreateDoor(new Vector3(0.1f, 7.2f, 4f), new Vector3(0.95f, 0.8f, 1f)));
-            doors.Add(CreateDoor(new Vector3(0.22f, 1.67f, 4f), new Vector3(0.95f, 0.8f, 1f)));
-            doors.Add(CreateDoor(new Vector3(-6.2f, 4.5f, 4f), new Vector3(0.7f, 0.8f, 1f),-1,0));
-            doors.Add(CreateDoor(new Vector3(9.35f, 5.3f, 4f), new Vector3(0.5f, 0.7f, 0.5f), -1, 0));
+            doors.Add(CreateDoor(new Vector3(13.5f, 20.55f, 7f),new Vector3(0.85f,0.75f,0.75f),0));
+            doors.Add(CreateDoor(new Vector3(0.03f, 20.5f, 4f),new Vector3(0.95f,0.8f,1f),1));
+            doors.Add(CreateDoor(new Vector3(0.03f, 15.4f, 4f), new Vector3(0.95f, 0.8f, 1f),2));
+            doors.Add(CreateDoor(new Vector3(-6.2f, 17.8f, 4f), new Vector3(1f, 1f, 1f),3,0));
+            doors.Add(CreateDoor(new Vector3(-9.6f, 12f, 4f), new Vector3(0.65f, 0.75f, 0.75f),4));
+            doors.Add(CreateDoor(new Vector3(0.1f, 7.2f, 4f), new Vector3(0.95f, 0.8f, 1f),5));
+            doors.Add(CreateDoor(new Vector3(0.22f, 1.67f, 4f), new Vector3(0.95f, 0.8f, 1f),6));
+            doors.Add(CreateDoor(new Vector3(-6.2f, 4.5f, 4f), new Vector3(0.7f, 0.8f, 1f),7,0));
+            doors.Add(CreateDoor(new Vector3(9.35f, 5.3f, 4f), new Vector3(0.5f, 0.7f, 0.5f), 8, 0));
             ShipStatus.Instance.AllDoors = doors.ToArray();
         }
         public static int GetDoorAvailableId()
@@ -184,7 +184,6 @@ namespace SuperNewRoles.Map.Agartha.Patch
         {
             //カメラ生成
             Transform Sec = MapLoader.AirshipObject.transform.FindChild("Security");
-            SuperNewRolesPlugin.Logger.LogInfo("ドア数:" + MapLoader.Airship.AllDoors.Count);
             Transform newcam = UnityEngine.Object.Instantiate(Sec.FindChild("task_cams"));
             newcam.transform.position = new Vector3(16.3f, 7.3f, 0.1f);
             newcam.gameObject.AddComponent<PolygonCollider2D>();

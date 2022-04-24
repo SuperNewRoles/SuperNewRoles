@@ -1,17 +1,75 @@
-﻿using HarmonyLib;
+﻿using BepInEx.IL2CPP.Utils;
+using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using static GameData;
 
 namespace SuperNewRoles.Patch
 {
     public static class SelectTask
     {
 
+        public static bool IsAwakeEnd = false;
+        [HarmonyPatch(typeof(GameData), nameof(GameData.SetTasks))]
+        class SetTasksPatch
+        {
+            public static void Prefix(GameData __instance,
+            [HarmonyArgument(0)] byte playerId,
+            [HarmonyArgument(1)] ref UnhollowerBaseLib.Il2CppStructArray<byte> taskTypeIds)
+            {
+                AmongUsClient.Instance.StartCoroutine(SetTaskCoro(__instance, playerId, taskTypeIds));
+            }
+            static void SetTaskPatch(GameData __instance, byte playerId, UnhollowerBaseLib.Il2CppStructArray<byte> ids)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("長さ:" + ids.Length);
+                GameData.PlayerInfo playerById = __instance.GetPlayerById(playerId);
+                if (playerById == null)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo((object)("Could not set tasks for player id: " + playerId));
+                }
+                else
+                {
+                    if (playerById.Disconnected)
+                    {
+                        return;
+                    }
+                    if (!playerById.Object)
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo((object)("Could not set tasks for player (" + playerById.PlayerName + "): " + playerId));
+                        return;
+                    }
+                    playerById.Tasks = new Il2CppSystem.Collections.Generic.List<TaskInfo>(ids.Length);
+                    for (int i = 0; i < ids.Length; i++)
+                    {
+                        playerById.Tasks.Add(new TaskInfo(ids[i], (uint)i));
+                        playerById.Tasks[i].Id = (uint)i;
+                    }
+                    playerById.Object.SetTasks(playerById.Tasks);
+                    __instance.SetDirtyBit((uint)(1 << (int)playerById.PlayerId));
+                }
+            }
+            static IEnumerator SetTaskCoro(GameData __instance, byte playerid, UnhollowerBaseLib.Il2CppStructArray<byte> ids)
+            {
+                while (true)
+                {
+                    if (!IsAwakeEnd)
+                    {
+                        yield return null;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                SetTaskPatch(__instance,playerid,ids);
+            }
+        }
         [HarmonyPatch(typeof(GameData), nameof(GameData.RpcSetTasks))]
         class RpcSetTasksPatch
         {
@@ -21,6 +79,11 @@ namespace SuperNewRoles.Patch
             {
                 if (ModeHandler.isMode(ModeId.SuperHostRoles) || ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 {
+                    if (GetTaskCount(GameData.Instance.GetPlayerById(playerId).Object) == (PlayerControl.GameOptions.NumCommonTasks, PlayerControl.GameOptions.NumShortTasks, PlayerControl.GameOptions.NumLongTasks))
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("ﾘﾀｰﾝ");
+                        return;
+                    }
                     PlayerControl.GameOptions.NumCommonTasks = 100;
                     PlayerControl.GameOptions.NumShortTasks = 100;
                     PlayerControl.GameOptions.NumLongTasks = 100;
