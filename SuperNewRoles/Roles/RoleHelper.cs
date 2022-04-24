@@ -1093,10 +1093,11 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.MadMayor;
-
-                    //ロールチェック
                 }
             }
+                    //ロールチェック
+                
+            
             catch (Exception e)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
