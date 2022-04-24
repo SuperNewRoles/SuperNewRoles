@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "eLncNeeqrbLqQ94+SKVpnosv/vcOK2BEFcgVO+tud5waRrLRkjVizQ2mniBzc5VjEm5UBqZa7UrOa6Ygmt7rCQ==",
+  "dgSpecHash": "rE8yvkDly3l0QKWGcMzeEVYkvaWuXolF2PIZ1zEsKWjWoD8/WCUxbMQeSShQvHPlCAx3Pv/kM/uc3lBREJE5Ug==",
   "success": true,
-  "projectFilePath": "C:\\Users\\10user\\source\\repos\\SuperNewRoles\\SuperNewRoles\\SuperNewRoles.csproj",
+  "projectFilePath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us\\SuperNewRoles\\SuperNewRoles\\SuperNewRoles.csproj",
   "expectedPackageFiles": [],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "キャッシュ ファイルの読み取りの問題 C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us\\SuperNewRoles\\SuperNewRoles\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

@@ -9,7 +9,6 @@ using HarmonyLib;
 using SuperNewRoles.Buttons;
 using System.Linq;
 
-
 namespace SuperNewRoles.Roles
 {
     public static class DoubralKiller
@@ -18,7 +17,7 @@ namespace SuperNewRoles.Roles
         {
             if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DoubralKiller))
             {
-                if (!RoleClass.DoubralKiller.NoKill)
+                if (RoleClass.DoubralKiller.NoKill == true)
                 {
                     HudManager.Instance.KillButton.gameObject.SetActive(false);
                     //純正キルボタンばいばい
@@ -49,11 +48,13 @@ namespace SuperNewRoles.Roles
             static void Postfix()
             {
                 SetDoubralKillerButton();
+                SuperNewRolesPlugin.Logger.LogInfo(RoleClass.DoubralKiller.SuicideLTime);
+                SuperNewRolesPlugin.Logger.LogInfo(RoleClass.DoubralKiller.SuicideRTime);
             }
             if (!RoleClass.IsMeeting)
             {
                 if (PlayerControl.LocalPlayer.isRole(RoleId.DoubralKiller))
-                {
+                { 
                     if (RoleClass.DoubralKiller.IsSuicideViewL)
                     {
                         IsViewButtonLText = true;
@@ -83,7 +84,8 @@ namespace SuperNewRoles.Roles
                     }
                 }
 
-            }
+             }
+            
             if (IsViewButtonRText && RoleClass.DoubralKiller.IsSuicideViewR && PlayerControl.LocalPlayer.isAlive())
             {
                 RoleClass.DoubralKiller.SuicideKillRText.text = string.Format(ModTranslation.getString("DoubralKillerSuicideRText"), ((int)RoleClass.DoubralKiller.SuicideRTime) + 1);
@@ -104,6 +106,35 @@ namespace SuperNewRoles.Roles
                 if (RoleClass.DoubralKiller.SuicideKillLText.text != "")
                 {
                     RoleClass.DoubralKiller.SuicideKillLText.text = "";
+                }
+            }
+        }
+        public static void MurderPlayer(PlayerControl __instance, PlayerControl target)
+        {
+            if (__instance.isRole(RoleId.DoubralKiller))
+            {
+                if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                {
+                    RoleClass.DoubralKiller.SuicideDefaultLTime = RoleClass.DoubralKiller.SuicideDefaultLTime;
+                    RoleClass.DoubralKiller.SuicideDefaultRTime = RoleClass.DoubralKiller.SuicideDefaultRTime;
+                    RoleClass.DoubralKiller.IsSuicideViewL = true;
+                    RoleClass.DoubralKiller.IsSuicideViewR = true;
+                }
+                RoleClass.DoubralKiller.IsSuicideViewsL[__instance.PlayerId] = true;
+                RoleClass.DoubralKiller.IsSuicideViewsR[__instance.PlayerId] = true;
+                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                {
+                    RoleClass.DoubralKiller.SuicideTimersL[__instance.PlayerId] = RoleClass.DoubralKiller.SuicideDefaultLTime;
+                    RoleClass.DoubralKiller.SuicideTimersR[__instance.PlayerId] = RoleClass.DoubralKiller.SuicideDefaultRTime;
+                }
+                else if (ModeHandler.isMode(ModeId.Default))
+                {
+                    if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                    {
+                        __instance.SetKillTimerUnchecked(RoleClass.DoubralKiller.KillTime);
+                        RoleClass.DoubralKiller.SuicideLTime = RoleClass.DoubralKiller.SuicideDefaultLTime;
+                        RoleClass.DoubralKiller.SuicideRTime = RoleClass.DoubralKiller.SuicideDefaultRTime;
+                    }
                 }
             }
         }

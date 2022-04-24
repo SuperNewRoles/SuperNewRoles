@@ -126,3 +126,268 @@ C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\SemanticVersioning.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\WasmDisassembler.dll
 C:\Users\10user\source\repos\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\AddressablesPlayAssetDelivery.dll
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\SuperNewRoles.deps.json
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\SuperNewRoles.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\SuperNewRoles.pdb
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\0Harmony.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\AddressablesPlayAssetDelivery.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\AppleAuth.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Assembly-CSharp-firstpass.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Assembly-CSharp.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\AssemblyUnhollower.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.Core.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.IL2CPP.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.Preloader.Core.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Cpp2IL.Core.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Gee.External.Capstone.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Hazel.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Iced.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2Cpp.TlsAdapter.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppDumper.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppMono.Security.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2Cppmscorlib.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Configuration.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Core.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Data.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Net.Http.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Numerics.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Runtime.Serialization.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Xml.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Xml.Linq.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\IndexRange.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\IngameDebugConsole.Runtime.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\LibAssemblyUnhollower.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\LibCpp2IL.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Mono.Cecil.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Mono.Cecil.Mdb.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Mono.Cecil.Pdb.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Mono.Cecil.Rocks.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\MonoMod.RuntimeDetour.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\MonoMod.Utils.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Newtonsoft.Json.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\QRCoder.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Rewired_Core.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Rewired_Windows.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\SemanticVersioning.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\SemVer.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnhollowerBaseLib.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnhollowerRuntimeLib.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Unity.Addressables.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Unity.Analytics.DataPrivacy.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Unity.ResourceManager.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\Unity.TextMeshPro.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.AccessibilityModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.AIModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.AndroidJNIModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.AnimationModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ARModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.AssetBundleModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.AudioModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ClothModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ClusterInputModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ClusterRendererModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.CoreModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.CrashReportingModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.DirectorModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.DSPGraphModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.GameCenterModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.GIModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.GridModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.HotReloadModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ImageConversionModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.IMGUIModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.InputLegacyModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.InputModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.JSONSerializeModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.LocalizationModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ParticleSystemModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.PerformanceReportingModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.Physics2DModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.PhysicsModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ProfilerModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.Purchasing.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.Purchasing.SecurityCore.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ScreenCaptureModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.SharedInternalsModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.SpriteMaskModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.SpriteShapeModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.StreamingModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.SubstanceModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.SubsystemsModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.TerrainModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.TerrainPhysicsModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.TextCoreModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.TextRenderingModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.TilemapModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.TLSModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UI.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UIElementsModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UIElementsNativeModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UIModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UmbraModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UNETModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityAnalyticsModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityConnectModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityCurlModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityTestProtocolModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityWebRequestAssetBundleModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityWebRequestAudioModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityWebRequestModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityWebRequestTextureModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityWebRequestWWWModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.VehiclesModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.VFXModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.VideoModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.VirtualTexturingModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.VRModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.WindModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.XRModule.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\WasmDisassembler.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.Core.xml
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.IL2CPP.dll.config
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.Preloader.Core.xml
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.csproj.AssemblyReference.cache
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.GeneratedMSBuildEditorConfig.editorconfig
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.AssemblyInfoInputs.cache
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.AssemblyInfo.cs
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.csproj.CoreCompileInputs.cache
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.csproj.CopyComplete
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.dll
+E:\visual\SNR\SuperNewRoles-Doubral-Killer\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.pdb
+=======
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\SuperNewRoles.deps.json
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\SuperNewRoles.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\SuperNewRoles.pdb
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\0Harmony.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\AddressablesPlayAssetDelivery.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\AppleAuth.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Assembly-CSharp-firstpass.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Assembly-CSharp.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\AssemblyUnhollower.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.Core.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.IL2CPP.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.Preloader.Core.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Cpp2IL.Core.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Hazel.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Iced.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2Cpp.TlsAdapter.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppDumper.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppMono.Security.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2Cppmscorlib.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Configuration.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Core.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Data.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Net.Http.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Numerics.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Runtime.Serialization.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Xml.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Il2CppSystem.Xml.Linq.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\IndexRange.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\IngameDebugConsole.Runtime.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\LibCpp2IL.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Mono.Cecil.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Mono.Cecil.Mdb.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Mono.Cecil.Pdb.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Mono.Cecil.Rocks.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\MonoMod.RuntimeDetour.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\MonoMod.Utils.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Newtonsoft.Json.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\QRCoder.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Rewired_Core.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Rewired_Windows.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\SemanticVersioning.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnhollowerBaseLib.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnhollowerRuntimeLib.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Unity.Addressables.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Unity.Analytics.DataPrivacy.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Unity.ResourceManager.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\Unity.TextMeshPro.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.AccessibilityModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.AIModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.AndroidJNIModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.AnimationModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ARModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.AssetBundleModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.AudioModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ClothModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ClusterInputModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ClusterRendererModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.CoreModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.CrashReportingModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.DirectorModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.DSPGraphModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.GameCenterModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.GIModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.GridModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.HotReloadModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ImageConversionModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.IMGUIModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.InputLegacyModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.InputModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.JSONSerializeModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.LocalizationModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ParticleSystemModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.PerformanceReportingModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.Physics2DModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.PhysicsModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ProfilerModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.Purchasing.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.Purchasing.SecurityCore.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.ScreenCaptureModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.SharedInternalsModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.SpriteMaskModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.SpriteShapeModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.StreamingModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.SubstanceModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.SubsystemsModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.TerrainModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.TerrainPhysicsModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.TextCoreModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.TextRenderingModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.TilemapModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.TLSModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UI.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UIElementsModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UIElementsNativeModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UIModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UmbraModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UNETModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityAnalyticsModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityConnectModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityCurlModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityTestProtocolModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityWebRequestAssetBundleModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityWebRequestAudioModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityWebRequestModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityWebRequestTextureModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.UnityWebRequestWWWModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.VehiclesModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.VFXModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.VideoModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.VirtualTexturingModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.VRModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.WindModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\UnityEngine.XRModule.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\WasmDisassembler.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.Core.xml
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.IL2CPP.dll.config
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\bin\Debug\netstandard2.1\BepInEx.Preloader.Core.xml
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.csproj.AssemblyReference.cache
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.GeneratedMSBuildEditorConfig.editorconfig
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.AssemblyInfoInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.AssemblyInfo.cs
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.csproj.CopyComplete
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.dll
+C:\Program Files (x86)\Steam\steamapps\common\Among Us\SuperNewRoles\SuperNewRoles\obj\Debug\netstandard2.1\SuperNewRoles.pdb
+>>>>>>> 8edbf116dcb8194f8eec91390d20d016a4a8823a
+>>>>>>> 470b1bab0382ff1b1c50394176902b5e32c3a776
