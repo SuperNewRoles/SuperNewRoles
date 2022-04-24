@@ -28,6 +28,7 @@ namespace SuperNewRoles.Roles
                 {
                     Camera.main.orthographicSize = RoleClass.NiceHawk.CameraDefault * 3f;
                     HudManager.Instance.UICamera.orthographicSize = RoleClass.NiceHawk.Default * 3f;
+                    
                 }
                 else
                 {

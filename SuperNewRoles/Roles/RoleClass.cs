@@ -1330,7 +1330,7 @@ namespace SuperNewRoles.Roles
         public static class NiceHawk
         {
             public static List<PlayerControl> NiceHawkPlayer;
-            public static Color32 color = new Color32(244, 164, 96, byte.MaxValue);
+            public static Color32 color = new Color32(226, 162, 0, byte.MaxValue);
             public static float CoolTime;
             public static float DurationTime;
             public static float Timer;

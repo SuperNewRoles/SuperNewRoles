@@ -195,7 +195,7 @@ namespace SuperNewRoles.Buttons
                            HawkHawkEyeButton.MaxTimer = RoleClass.NiceHawk.CoolTime;
                            HawkHawkEyeButton.Timer = RoleClass.NiceHawk.CoolTime;
                            RoleClass.NiceHawk.Postion = PlayerControl.LocalPlayer.transform.localPosition;
-                           RoleClass.NiceHawk.timer1 = 10f;
+                           RoleClass.NiceHawk.timer1 = 10;
                            RoleClass.NiceHawk.Timer2 = DateTime.Now;
                        }
                        RoleClass.Hawk.IsHawkOn = true;
