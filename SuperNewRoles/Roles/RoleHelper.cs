@@ -611,7 +611,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.NiceHawk):
+                case (CustomRPC.RoleId.NiceHawk):
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
@@ -1105,9 +1105,10 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.NiceHawk;
                 }
             //ロールチェック
+
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
+            
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
                 return RoleId.DefaultRole;
             }
