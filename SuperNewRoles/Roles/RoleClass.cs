@@ -100,6 +100,7 @@ namespace SuperNewRoles.Roles
             SideKiller.ClearAndReload();
             Survivor.ClearAndReload();
             MadMayor.ClearAndReload();
+            NiceHawk.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1325,6 +1326,33 @@ namespace SuperNewRoles.Roles
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
              }
+        }
+        public static class NiceHawk
+        {
+            public static List<PlayerControl> NiceHawkPlayer;
+            public static Color32 color = new Color32(226, 162, 0, byte.MaxValue);
+            public static float CoolTime;
+            public static float DurationTime;
+            public static float Timer;
+            public static DateTime ButtonTimer;
+            public static float Default;
+            public static float CameraDefault;
+            public static Vector3 Postion;
+            public static float timer1;
+            public static DateTime Timer2;
+            public static void ClearAndReload()
+            {
+                NiceHawkPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.NiceHawkCoolTime.getFloat();
+                DurationTime = CustomOptions.NiceHawkDurationTime.getFloat();
+                Timer = 0;
+                ButtonTimer = DateTime.Now;
+                CameraDefault = Camera.main.orthographicSize;
+                Default = HudManager.Instance.UICamera.orthographicSize;
+                Postion = new Vector3(0, 0, 0);
+                timer1 = 0;
+                Timer2 = DateTime.Now;
+            }
         }
         //新ロールクラス
         public static class Quarreled

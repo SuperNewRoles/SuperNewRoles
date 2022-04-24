@@ -404,6 +404,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.NiceHawk):
+                    Roles.RoleClass.NiceHawk.NiceHawkPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -607,6 +610,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.NiceHawk):
+                    Roles.RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1094,8 +1100,12 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.MadMayor;
                 }
+                else if (Roles.RoleClass.NiceHawk.NiceHawkPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceHawk;
+                }
             //ロールチェック
-                
+
             }
             catch (Exception e) {
             
