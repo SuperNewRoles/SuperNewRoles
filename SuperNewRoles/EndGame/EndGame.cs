@@ -775,6 +775,13 @@ namespace SuperNewRoles.EndGame
                         Sabotage.CognitiveDeficit.main.UpdateTime = 0;
                     }
                 }
+                if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard)
+                {
+                    if (!Sabotage.Blizzard.main.IsLocalEnd)
+                    {
+                        Sabotage.Blizzard.main.UpdateTime = 0;
+                    }
+                }
             }
             if (exiled == null) return;
             FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.Object.PlayerId] = FinalStatus.Exiled;

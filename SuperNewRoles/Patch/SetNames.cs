@@ -363,6 +363,28 @@ namespace SuperNewRoles.Patch
                     }
                 }
             } catch { }
+            try
+            {
+                if (ModeHandler.isMode(ModeId.Default))
+                {
+                    if (Sabotage.SabotageManager.thisSabotage == Sabotage.SabotageManager.CustomSabotage.Blizzard)
+                    {
+                        foreach (PlayerControl p3 in PlayerControl.AllPlayerControls)
+                        {
+                            if (p3.isAlive() && !Sabotage.Blizzard.main.OKPlayers.IsCheckListPlayerControl(p3))
+                            {
+                                if (PlayerControl.LocalPlayer.isImpostor())
+                                {
+                                    if (!(p3.isImpostor() || p3.isRole(CustomRPC.RoleId.MadKiller)))
+                                    {
+                                        SetNamesClass.SetPlayerNameColor(p3, new Color32(18, 112, 214, byte.MaxValue));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch { }
         }         
     }
 }
