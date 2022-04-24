@@ -35,6 +35,7 @@
     <ItemGroup>
       <Folder Include="Map\Agartha\新しいフォルダー\" />
       <Folder Include="Mode\新しいフォルダー\" />
+      <Folder Include="Sabotage\Blizzard\" />
     </ItemGroup>
 
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">

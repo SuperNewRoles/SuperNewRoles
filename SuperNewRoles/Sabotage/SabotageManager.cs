@@ -13,7 +13,8 @@ namespace SuperNewRoles.Sabotage
         public enum CustomSabotage
         {
             None,
-            CognitiveDeficit
+            CognitiveDeficit,
+            Blizzard,
         }
         public static bool IsOK(CustomSabotage sabotage)
         {
@@ -23,6 +24,9 @@ namespace SuperNewRoles.Sabotage
                 case CustomSabotage.CognitiveDeficit:
                     if (PlayerControl.GameOptions.MapId != 4) return false;
                     else return Options.CognitiveDeficitSetting.getBool();
+                case CustomSabotage.Blizzard:
+                    if (PlayerControl.GameOptions.MapId != 4) return false;
+                    else return Options.BlizzardSetting.getBool();
             }
             return false;
         }
@@ -34,6 +38,8 @@ namespace SuperNewRoles.Sabotage
             {
                 case CustomSabotage.CognitiveDeficit:
                     return CognitiveDeficit.main.IsLocalEnd;
+                case CustomSabotage.Blizzard:
+                    return Blizzard.main.IsLocalEnd;
             }
             return false;
         }
@@ -52,6 +58,16 @@ namespace SuperNewRoles.Sabotage
                         CognitiveDeficit.main.EndSabotage(player);
                     }
                     break;
+                case CustomSabotage.Blizzard:
+                    if (Is)
+                    {
+                        Blizzard.main.StartSabotage();
+                    }
+                    else
+                    {
+                        Blizzard.main.EndSabotage(player);
+                    }
+                    break;
             }
         }
         public static void ClearAndReloads()
@@ -66,6 +82,12 @@ namespace SuperNewRoles.Sabotage
                 CognitiveDeficit.main.DefaultUpdateTime = Options.CognitiveDeficitOutfitUpdateTimeSetting.getFloat();
                 CognitiveDeficit.main.IsAllEndSabotage = Options.CognitiveDeficitIsAllEndSabotageSetting.getBool();
             }
+            if (IsOK(CustomSabotage.Blizzard))
+            {
+                Blizzard.main.DefaultDistanceTime = Options.BlizzardReleaseTimeSetting.getFloat();
+                Blizzard.main.DefaultUpdateTime = Options.BlizzardOutfitUpdateTimeSetting.getFloat();
+                Blizzard.main.IsAllEndSabotage = Options.BlizzardIsAllEndSabotageSetting.getBool();
+            }
         }
         public static void Update()
         {
@@ -79,6 +101,9 @@ namespace SuperNewRoles.Sabotage
             {
                 case CustomSabotage.CognitiveDeficit:
                     CognitiveDeficit.main.Update();
+                    break;
+                case CustomSabotage.Blizzard:
+                    Blizzard.main.Update();
                     break;
             }
         }

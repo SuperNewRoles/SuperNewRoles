@@ -14,5 +14,12 @@ namespace SuperNewRoles.Sabotage
             CognitiveDeficitbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CognitiveDeficitButton.png", 115f);
             return CognitiveDeficitbuttonSprite;
         }
+        private static Sprite BlizzardbuttonSprite;
+        public static Sprite BlizzardgetButtonSprite()
+        {
+            if (BlizzardbuttonSprite) return BlizzardbuttonSprite;
+            BlizzardbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.BlizzardButton.png", 115f);
+            return BlizzardbuttonSprite;
+        }
     }
 }
