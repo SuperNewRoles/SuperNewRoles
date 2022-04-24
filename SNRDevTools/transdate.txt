@@ -505,3 +505,11 @@ MadMayorUseVentSetting,Use Vent,ベントを使える
 MadMayorVentMoveSetting,Move Vent,ベントで動ける
 MadMayorImpostorLightSetting,Impostor Light,インポスターの視界
 MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）
+SeerName,Seer,シーア
+SeerTitle1,You will see players die,船員の気配を感じ取ろう
+SeerMode,Mode,モード
+SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える
+SeerModeFlash,Show Death Flash,死の点滅が見える
+SeerModeSouls,Show Souls,幽霊が見える
+SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える
+SeerSoulDuration,Soul Duration,幽霊が見える時間

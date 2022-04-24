@@ -84,6 +84,7 @@ namespace SuperNewRoles.CustomRPC
         MadKiller,
         Survivor,
         MadMayor,
+        Seer,
         //RoleId
     }
 

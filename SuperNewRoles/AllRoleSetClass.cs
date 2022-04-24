@@ -787,6 +787,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SurvivorPlayerCount.getFloat();
                 case (RoleId.MadMayor):
                     return CustomOption.CustomOptions.MadMayorPlayerCount.getFloat();
+                    case (RoleId.Seer):
+                    return CustomOption.CustomOptions.SeerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1790,7 +1792,23 @@ namespace SuperNewRoles
                     }
                 }
             }
-            //セットクラス
+            if (!(CustomOption.CustomOptions.SeerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SeerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Seer;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        //セットクラス
         }
     }
 }

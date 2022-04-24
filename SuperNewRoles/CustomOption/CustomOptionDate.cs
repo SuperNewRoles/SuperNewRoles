@@ -349,6 +349,17 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadMayorIsImpostorLight;
         public static CustomOption MadMayorVoteCount;
 
+        public static CustomRoleOption SeerOption;
+        public static CustomOption SeerPlayerCount;
+        public static CustomOption SeerName;
+        public static CustomOption SeerTitle1;
+        public static CustomOption SeerMode;
+        public static CustomOption SeerModeBoth;
+        public static CustomOption SeerModeFlash;
+        public static CustomOption SeerModeSouls;
+        public static CustomOption SeerLimitSoulDuration;
+        public static CustomOption SeerSoulDuration;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -737,6 +748,12 @@ namespace SuperNewRoles.CustomOption
             MadMayorCheckImpostorTask = CustomOption.Create(308, ModTranslation.getString("MadMayorCheckImpostorTaskSetting"), rates4, MadMayorIsCheckImpostor);
             MadMayorIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMayorUseVentSetting"), false, MadMayorOption);
             MadMayorIsImpostorLight = CustomOption.Create(310, ModTranslation.getString("MadMayorImpostorLightSetting"), false, MadMayorOption);
+
+            SeerOption = new CustomRoleOption(311, "SeerName", RoleClass.Seer.color, 1);
+            SeerPlayerCount = CustomOption.Create(312, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerOption);
+            SeerMode = CustomOption.Create(313, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, SeerOption);
+            SeerLimitSoulDuration = CustomOption.Create(314, "SeerLimitSoulDuration", false, SeerOption);
+            SeerSoulDuration = CustomOption.Create(315, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerLimitSoulDuration, format: "unitSeconds");
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
