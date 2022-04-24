@@ -16,7 +16,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
                 Instance = __instance;
                 if (PlayerControl.GameOptions.TaskBarMode != TaskBarMode.Invisible)
                 {
-                    if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit)
+                    if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard)
                     {
                         __instance.gameObject.SetActive(main.IsLocalEnd);
                     }
