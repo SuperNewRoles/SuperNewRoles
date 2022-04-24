@@ -8,23 +8,23 @@
     ".NETStandard,Version=v2.1": []
   },
   "packageFolders": {
-    "C:\\Users\\juny0\\.nuget\\packages\\": {},
+    "C:\\Users\\10user\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.2.3",
     "restore": {
-      "projectUniqueName": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us\\SuperNewRoles\\SuperNewRoles\\SuperNewRoles.csproj",
+      "projectUniqueName": "C:\\Users\\10user\\source\\repos\\SuperNewRoles\\SuperNewRoles\\SuperNewRoles.csproj",
       "projectName": "SuperNewRoles",
-      "projectPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us\\SuperNewRoles\\SuperNewRoles\\SuperNewRoles.csproj",
-      "packagesPath": "C:\\Users\\juny0\\.nuget\\packages\\",
-      "outputPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us\\SuperNewRoles\\SuperNewRoles\\obj\\",
+      "projectPath": "C:\\Users\\10user\\source\\repos\\SuperNewRoles\\SuperNewRoles\\SuperNewRoles.csproj",
+      "packagesPath": "C:\\Users\\10user\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\10user\\source\\repos\\SuperNewRoles\\SuperNewRoles\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\juny0\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\10user\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -33,7 +33,8 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.bepinex.dev/v3/index.json": {}
       },
       "frameworks": {
         "netstandard2.1": {
@@ -65,16 +66,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "キャッシュ ファイルの読み取りの問題 C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us\\SuperNewRoles\\SuperNewRoles\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }
