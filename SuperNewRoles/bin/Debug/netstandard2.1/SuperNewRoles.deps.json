@@ -15,9 +15,9 @@
           "Assembly-CSharp-firstpass": "3.7.1.6",
           "Assembly-CSharp": "3.7.1.6",
           "AssemblyUnhollower": "0.4.23.0",
-          "BepInEx.Core": "6.0.0.552",
-          "BepInEx.IL2CPP": "6.0.0.552",
-          "BepInEx.Preloader.Core": "6.0.0.552",
+          "BepInEx.Core": "6.0.0.553",
+          "BepInEx.IL2CPP": "6.0.0.553",
+          "BepInEx.Preloader.Core": "6.0.0.553",
           "Cpp2IL.Core": "2022.0.1.0",
           "Gee.External.Capstone": "2.1.0.0",
           "Hazel": "3.7.1.6",
@@ -179,27 +179,27 @@
           }
         }
       },
-      "BepInEx.Core/6.0.0.552": {
+      "BepInEx.Core/6.0.0.553": {
         "runtime": {
           "BepInEx.Core.dll": {
-            "assemblyVersion": "6.0.0.552",
-            "fileVersion": "6.0.0.552"
+            "assemblyVersion": "6.0.0.553",
+            "fileVersion": "6.0.0.553"
           }
         }
       },
-      "BepInEx.IL2CPP/6.0.0.552": {
+      "BepInEx.IL2CPP/6.0.0.553": {
         "runtime": {
           "BepInEx.IL2CPP.dll": {
-            "assemblyVersion": "6.0.0.552",
-            "fileVersion": "6.0.0.552"
+            "assemblyVersion": "6.0.0.553",
+            "fileVersion": "6.0.0.553"
           }
         }
       },
-      "BepInEx.Preloader.Core/6.0.0.552": {
+      "BepInEx.Preloader.Core/6.0.0.553": {
         "runtime": {
           "BepInEx.Preloader.Core.dll": {
-            "assemblyVersion": "6.0.0.552",
-            "fileVersion": "6.0.0.552"
+            "assemblyVersion": "6.0.0.553",
+            "fileVersion": "6.0.0.553"
           }
         }
       },
@@ -1105,17 +1105,17 @@
       "serviceable": false,
       "sha512": ""
     },
-    "BepInEx.Core/6.0.0.552": {
+    "BepInEx.Core/6.0.0.553": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "BepInEx.IL2CPP/6.0.0.552": {
+    "BepInEx.IL2CPP/6.0.0.553": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "BepInEx.Preloader.Core/6.0.0.552": {
+    "BepInEx.Preloader.Core/6.0.0.553": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

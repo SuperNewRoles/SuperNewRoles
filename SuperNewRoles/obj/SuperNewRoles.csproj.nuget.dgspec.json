@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "E:\\visual\\SNR\\SuperNewRoles-Doubral-Killer\\SuperNewRoles\\SuperNewRoles.csproj": {}
   },
   "projects": {
@@ -12,12 +13,29 @@
         "projectPath": "E:\\visual\\SNR\\SuperNewRoles-Doubral-Killer\\SuperNewRoles\\SuperNewRoles.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
         "outputPath": "E:\\visual\\SNR\\SuperNewRoles-Doubral-Killer\\SuperNewRoles\\obj\\",
+=======
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us\\SuperNewRoles\\SuperNewRoles\\SuperNewRoles.csproj": {}
+  },
+  "projects": {
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us\\SuperNewRoles\\SuperNewRoles\\SuperNewRoles.csproj": {
+      "version": "1.2.3",
+      "restore": {
+        "projectUniqueName": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us\\SuperNewRoles\\SuperNewRoles\\SuperNewRoles.csproj",
+        "projectName": "SuperNewRoles",
+        "projectPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us\\SuperNewRoles\\SuperNewRoles\\SuperNewRoles.csproj",
+        "packagesPath": "C:\\Users\\juny0\\.nuget\\packages\\",
+        "outputPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us\\SuperNewRoles\\SuperNewRoles\\obj\\",
+>>>>>>> 8edbf116dcb8194f8eec91390d20d016a4a8823a
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
+<<<<<<< HEAD
           "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+          "C:\\Users\\juny0\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> 8edbf116dcb8194f8eec91390d20d016a4a8823a
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

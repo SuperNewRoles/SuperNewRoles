@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "ESksJWqTJH+w8RLCqoGq63Za2rCi0AChpqojy/K4HIIxRbFQ9hIMHM3JX7AJ+Y9OdYnZ6IFS+Z86RyqNkte+2Q==",
   "success": true,
   "projectFilePath": "E:\\visual\\SNR\\SuperNewRoles-Doubral-Killer\\SuperNewRoles\\SuperNewRoles.csproj",
+=======
+  "dgSpecHash": "rE8yvkDly3l0QKWGcMzeEVYkvaWuXolF2PIZ1zEsKWjWoD8/WCUxbMQeSShQvHPlCAx3Pv/kM/uc3lBREJE5Ug==",
+  "success": true,
+  "projectFilePath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Among Us\\SuperNewRoles\\SuperNewRoles\\SuperNewRoles.csproj",
+>>>>>>> 8edbf116dcb8194f8eec91390d20d016a4a8823a
   "expectedPackageFiles": [],
   "logs": []
 }
