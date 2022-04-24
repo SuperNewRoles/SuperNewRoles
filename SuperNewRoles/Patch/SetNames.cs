@@ -258,7 +258,7 @@ namespace SuperNewRoles.Patch
             //PV用
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                SetNamesClass.SetPlayerNameText(p,"");
+                SetNamesClass.SetPlayerNameText(p,"　　");
             }
             return;
             

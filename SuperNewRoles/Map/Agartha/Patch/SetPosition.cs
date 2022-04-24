@@ -77,8 +77,11 @@ namespace SuperNewRoles.Map.Agartha.Patch
             doors.Add(CreateDoor(new Vector3(-9.6f, 12f, 4f), new Vector3(0.65f, 0.75f, 0.75f),4));
             doors.Add(CreateDoor(new Vector3(0.1f, 7.2f, 4f), new Vector3(0.95f, 0.8f, 1f),5));
             doors.Add(CreateDoor(new Vector3(0.22f, 1.67f, 4f), new Vector3(0.95f, 0.8f, 1f),6));
-            doors.Add(CreateDoor(new Vector3(-6.2f, 4.5f, 4f), new Vector3(0.7f, 0.8f, 1f),7,0));
+            doors.Add(CreateDoor(new Vector3(-6.1f, 4.5f, 4f), new Vector3(0.7f, 0.8f, 1f),7,0));
             doors.Add(CreateDoor(new Vector3(9.35f, 5.3f, 4f), new Vector3(0.5f, 0.7f, 0.5f), 8, 0));
+            doors.Add(CreateDoor(new Vector3(18.3f, 5.4f, 0.5f), new Vector3(0.8f, 0.8f, 1), 9, 0));
+            doors.Add(CreateDoor(new Vector3(19.2f, 5.4f, 0.5f), new Vector3(0.8f,0.8f,1), 10, 0));
+            doors.Add(CreateDoor(new Vector3(24.1f, 9.7f, 0.5f), new Vector3(0.75f,0.9f,1), 11));
             ShipStatus.Instance.AllDoors = doors.ToArray();
         }
         public static int GetDoorAvailableId()
