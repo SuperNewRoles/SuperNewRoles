@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
-    class NiceHawk
+    public class NiceHawk
     {
         public static void TimerEnd()
         {
@@ -23,17 +24,24 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix()
             {
-                if (RoleClass.Hawk.Timer >= 0.1 && !RoleClass.IsMeeting)
+                if (RoleClass.NiceHawk.Timer >= 0.1 && !RoleClass.IsMeeting)
                 {
-                    Camera.main.orthographicSize = RoleClass.Hawk.CameraDefault * 3f;
-                    HudManager.Instance.UICamera.orthographicSize = RoleClass.Hawk.Default * 3f;
+                    Camera.main.orthographicSize = RoleClass.NiceHawk.CameraDefault * 3f;
+                    HudManager.Instance.UICamera.orthographicSize = RoleClass.NiceHawk.Default * 3f;
                 }
                 else
                 {
-                    Camera.main.orthographicSize = RoleClass.Hawk.CameraDefault;
-                    HudManager.Instance.UICamera.orthographicSize = RoleClass.Hawk.Default;
+                    Camera.main.orthographicSize = RoleClass.NiceHawk.CameraDefault;
+                    HudManager.Instance.UICamera.orthographicSize = RoleClass.NiceHawk.Default;
                 }
-            }
+                if (RoleClass.NiceHawk.timer1 >= 0.1 && !RoleClass.IsMeeting)
+                {
+                    var TimeSpanDate = new TimeSpan(0, 0, 0, (int)10);
+                    RoleClass.NiceHawk.timer1 = (float)((Roles.RoleClass.NiceHawk.Timer2 + TimeSpanDate) - DateTime.Now).TotalSeconds;
+                    PlayerControl.LocalPlayer.transform.localPosition = RoleClass.NiceHawk.Postion;
+                    SuperNewRolesPlugin.Logger.LogInfo(RoleClass.NiceHawk.timer1);
+                }
+            }               
         }
     }
 }

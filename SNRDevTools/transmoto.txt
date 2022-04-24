@@ -506,3 +506,4 @@ MadMayorImpostorLightSetting
 MadMayorCheckImpostorTaskSetting
 NiceHawkName
 NiceHawkTitle1
+NiceHawkTitle2

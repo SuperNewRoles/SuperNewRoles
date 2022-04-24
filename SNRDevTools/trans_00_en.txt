@@ -505,4 +505,5 @@ Move Vent
 Impostor Light
 Amount of tasks that will be able to be checked (of all tasks)
 NiceHawk
-Fuck you
+See it all.
+Let's catch the crime.

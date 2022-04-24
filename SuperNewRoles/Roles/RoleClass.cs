@@ -1333,28 +1333,25 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(244, 164, 96, byte.MaxValue);
             public static float CoolTime;
             public static float DurationTime;
-            public static bool IsHawkOn;
             public static float Timer;
             public static DateTime ButtonTimer;
-            private static Sprite buttonSprite;
             public static float Default;
             public static float CameraDefault;
-            public static Sprite getButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.HawkHawkEye.png", 115f);
-                return buttonSprite;
-            }
+            public static Vector3 Postion;
+            public static float timer1;
+            public static DateTime Timer2;
             public static void ClearAndReload()
             {
                 NiceHawkPlayer = new List<PlayerControl>();
-                CoolTime = CustomOptions.HawkCoolTime.getFloat();
-                DurationTime = CustomOptions.HawkDurationTime.getFloat();
-                IsHawkOn = false;
+                CoolTime = CustomOptions.NiceHawkCoolTime.getFloat();
+                DurationTime = CustomOptions.NiceHawkDurationTime.getFloat();
                 Timer = 0;
                 ButtonTimer = DateTime.Now;
                 CameraDefault = Camera.main.orthographicSize;
                 Default = HudManager.Instance.UICamera.orthographicSize;
+                Postion = new Vector3(0, 0, 0);
+                timer1 = 0;
+                Timer2 = DateTime.Now;
             }
         }
         //新ロールクラス

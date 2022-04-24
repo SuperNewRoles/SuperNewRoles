@@ -28,7 +28,6 @@ namespace SuperNewRoles.Buttons
             TeleporterButton();
             HawkDuration();
             ScientistButton();
-            NiceHawkDuration();
         }
         public static void ScientistButton()
         {
@@ -69,11 +68,18 @@ namespace SuperNewRoles.Buttons
         }
         public static void HawkDuration()
         {
-            if (RoleClass.Hawk.Timer == 0) return;
+            if (RoleClass.Hawk.Timer == 0 && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk)) return;
+            if (RoleClass.NiceHawk.Timer == 0 && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk)) return;
             RoleClass.Hawk.IsHawkOn = true;
             var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Hawk.DurationTime);
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk))
+            {
+                TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.NiceHawk.DurationTime);
+                RoleClass.NiceHawk.Timer = (float)((Roles.RoleClass.NiceHawk.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+                if (RoleClass.NiceHawk.Timer <= 0f) RoleClass.NiceHawk.Timer = 0f; NiceHawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
+            }
             RoleClass.Hawk.Timer = (float)((Roles.RoleClass.Hawk.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
-            if (RoleClass.Hawk.Timer <= 0f) RoleClass.Hawk.Timer = 0f; Hawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
+            if (RoleClass.Hawk.Timer <= 0f && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk)) RoleClass.Hawk.Timer = 0f; Hawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
         }
         public static void TeleporterButton()
         {
@@ -228,14 +234,6 @@ namespace SuperNewRoles.Buttons
                 Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = (float)((Roles.RoleClass.EvilSpeedBooster.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
                 if (Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer <= 0f) Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = 0f; return;
             }
-        }
-        public static void NiceHawkDuration()
-        {
-            if (RoleClass.NiceHawk.Timer == 0) return;
-            RoleClass.NiceHawk.IsHawkOn = true;
-            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.NiceHawk.DurationTime);
-            RoleClass.NiceHawk.Timer = (float)((Roles.RoleClass.NiceHawk.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
-            if (RoleClass.NiceHawk.Timer <= 0f) RoleClass.NiceHawk.Timer = 0f; NiceHawk.TimerEnd(); RoleClass.NiceHawk.IsHawkOn = false; return;
         }
     }
 }

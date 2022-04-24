@@ -2,7 +2,7 @@ while True:
     rolename = input("Role名:")
     intronum = int(input("イントロ数:"))
     team = input("陣営(0:インポ,1:第三陣営,2:クルー):")
-    baseurl = "E:\\visual\\SNR\\latest\\SuperNewRoles\\"
+    baseurl = "C:\\Users\\10user\\source\\repos\\SuperNewRoles\\SuperNewRoles\\"
     if team=="0":
         color ="ImpostorRed"
     else:

@@ -505,5 +505,6 @@ MadMayorUseVentSetting,Use Vent,ベントを使える
 MadMayorVentMoveSetting,Move Vent,ベントで動ける
 MadMayorImpostorLightSetting,Impostor Light,インポスターの視界
 MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）
-NiceHawkName,NiceHawk,リークやめろ
-NiceHawkTitle1,Fuck you,Fuck you
+NiceHawkName,NiceHawk,ナイスホーク
+NiceHawkTitle1,See it all.,全てを見渡せ
+NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう

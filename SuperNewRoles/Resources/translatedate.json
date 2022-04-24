@@ -2026,11 +2026,15 @@
         } ,
  "NiceHawkName" : {
         "0" : "NiceHawk" ,
-        "11" : "\u30ea\u30fc\u30af\u3084\u3081\u308d"
+        "11" : "\u30ca\u30a4\u30b9\u30db\u30fc\u30af"
         } ,
  "NiceHawkTitle1" : {
-        "0" : "Fuck you" ,
-        "11" : "Fuck you"
+        "0" : "See it all." ,
+        "11" : "\u5168\u3066\u3092\u898b\u6e21\u305b"
+        } ,
+ "NiceHawkTitle2" : {
+        "0" : "Let's catch the crime." ,
+        "11" : "\u72af\u884c\u3092\u6349\u3048\u3088\u3046"
         } 
 
 }
