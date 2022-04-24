@@ -1374,7 +1374,7 @@ namespace SuperNewRoles.Roles
                 SuicideTimersR = new Dictionary<byte, float>();
                 ButtonTimer = DateTime.Now;
                 IsRKill = false;
-                NoKill = false;
+                NoKill = true;
             }
         }
         //新ロールクラス

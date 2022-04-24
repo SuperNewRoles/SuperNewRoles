@@ -270,7 +270,8 @@ namespace SuperNewRoles.Patches
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
-            SerialKiller.MurderPlayer(__instance,target);
+            SerialKiller.MurderPlayer(__instance, target);
+            DoubralKiller.MurderPlayer(__instance, target);           
 
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {

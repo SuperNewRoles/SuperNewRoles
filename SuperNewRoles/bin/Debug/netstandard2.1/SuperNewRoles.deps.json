@@ -19,6 +19,7 @@
           "BepInEx.IL2CPP": "6.0.0.552",
           "BepInEx.Preloader.Core": "6.0.0.552",
           "Cpp2IL.Core": "2022.0.1.0",
+          "Gee.External.Capstone": "2.1.0.0",
           "Hazel": "3.7.1.6",
           "Iced": "1.17.0.0",
           "Il2Cpp.TlsAdapter": "1.0.1.0",
@@ -36,6 +37,7 @@
           "Il2CppSystem.Xml.Linq": "3.7.1.6",
           "IndexRange": "1.0.0.0",
           "IngameDebugConsole.Runtime": "3.7.1.6",
+          "LibAssemblyUnhollower": "0.4.30.0",
           "LibCpp2IL": "2022.0.1.0",
           "Mono.Cecil": "0.11.4.0",
           "Mono.Cecil.Mdb": "0.11.4.0",
@@ -48,6 +50,7 @@
           "Rewired_Core": "3.7.1.6",
           "Rewired_Windows": "3.7.1.6",
           "SemanticVersioning": "2.0.0.0",
+          "SemVer": "1.3.0.0",
           "UnhollowerBaseLib": "0.4.23.0",
           "UnhollowerRuntimeLib": "0.4.23.0",
           "Unity.Addressables": "3.7.1.6",
@@ -208,6 +211,14 @@
           }
         }
       },
+      "Gee.External.Capstone/2.1.0.0": {
+        "runtime": {
+          "Gee.External.Capstone.dll": {
+            "assemblyVersion": "2.1.0.0",
+            "fileVersion": "2.1.0.0"
+          }
+        }
+      },
       "Hazel/3.7.1.6": {
         "runtime": {
           "Hazel.dll": {
@@ -344,6 +355,14 @@
           }
         }
       },
+      "LibAssemblyUnhollower/0.4.30.0": {
+        "runtime": {
+          "LibAssemblyUnhollower.dll": {
+            "assemblyVersion": "0.4.30.0",
+            "fileVersion": "0.4.30.0"
+          }
+        }
+      },
       "LibCpp2IL/2022.0.1.0": {
         "runtime": {
           "LibCpp2IL.dll": {
@@ -437,6 +456,14 @@
           "SemanticVersioning.dll": {
             "assemblyVersion": "2.0.0.0",
             "fileVersion": "2.0.0.0"
+          }
+        }
+      },
+      "SemVer/1.3.0.0": {
+        "runtime": {
+          "SemVer.dll": {
+            "assemblyVersion": "1.3.0.0",
+            "fileVersion": "1.3.0.0"
           }
         }
       },
@@ -1098,6 +1125,11 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Gee.External.Capstone/2.1.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
     "Hazel/3.7.1.6": {
       "type": "reference",
       "serviceable": false,
@@ -1183,6 +1215,11 @@
       "serviceable": false,
       "sha512": ""
     },
+    "LibAssemblyUnhollower/0.4.30.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
     "LibCpp2IL/2022.0.1.0": {
       "type": "reference",
       "serviceable": false,
@@ -1239,6 +1276,11 @@
       "sha512": ""
     },
     "SemanticVersioning/2.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SemVer/1.3.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

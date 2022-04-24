@@ -726,6 +726,7 @@ namespace SuperNewRoles.Buttons
                 KeyCode.Q,
                 50
             );
+
             DoubralKillerNormalKillButton.buttonText = ModTranslation.getString("DoubralKillerSuicideRText");
             DoubralKillerNormalKillButton.buttonText = HudManager.Instance.KillButton.buttonLabelText.text;
             DoubralKillerNormalKillButton.showButtonText = true;
@@ -752,6 +753,7 @@ namespace SuperNewRoles.Buttons
                 KeyCode.E,
                 51
             );
+
             DoubralKillerSecondKillButton.buttonText = ModTranslation.getString("DoubralKillerSuicideLText");
             DoubralKillerSecondKillButton.buttonText = HudManager.Instance.KillButton.buttonLabelText.text;
             DoubralKillerSecondKillButton.showButtonText = true;
