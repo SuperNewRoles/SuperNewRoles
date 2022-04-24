@@ -32,7 +32,7 @@ namespace SuperNewRoles.Patch
                     bubble.SetLeft();
                 bool flag = (bool)(UnityEngine.Object)data1.Role && (bool)(UnityEngine.Object)data2.Role && data1.Role.NameColor == data2.Role.NameColor;
                 bool didVote = (bool)(UnityEngine.Object)MeetingHud.Instance && MeetingHud.Instance.DidVote(sourcePlayer.PlayerId);
-     https://media.discordapp.net/attachments/965644999578513450/967642315541856286/2022-04-24_3.png?width=875&height=492           bubble.SetCosmetics(data2);
+                bubble.SetCosmetics(data2);
                 __instance.SetChatBubbleName(bubble, data2, data2.IsDead, didVote, flag ? data2.Role.NameColor : Color.white);
                 if (SaveManager.CensorChat)
                     chatText = BlockedWords.CensorWords(chatText);
