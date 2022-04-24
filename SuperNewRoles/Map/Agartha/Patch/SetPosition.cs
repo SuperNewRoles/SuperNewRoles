@@ -11,6 +11,12 @@ namespace SuperNewRoles.Map.Agartha.Patch
 {
     public static class SetPosition
     {
+        public static void ObjectsDestroy(Transform MiraShip)
+        {
+            Transform greenhousePanel = MiraShip.FindChild("Garden").FindChild("greenhousePanel");
+            GameObject.Destroy(greenhousePanel.GetComponent<SpriteRenderer>());
+            GameObject.Destroy(greenhousePanel.GetComponent<PolygonCollider2D>());
+        }
         public static void MapPositionChange(InfectedOverlay __instance)
         {
             int i = 0;
@@ -103,13 +109,13 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Template.localScale *= 0.5f;
 
             Transform Labo_Object_fossil_1 = GameObject.Instantiate(Template);
-            Labo_Object_fossil_1.position = new Vector3(19.8f, 3.4f, 0.1f);
+            Labo_Object_fossil_1.position = new Vector3(19.8f, 3.225f, 0.1f);
             Labo_Object_fossil_1.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Object_fossil_1");
             Labo_Object_fossil_1.gameObject.AddComponent<PolygonCollider2D>();
             Labo_Object_fossil_1.name = "Object_fossil_1";
 
             Transform Labo_Object_fossil_2 = GameObject.Instantiate(Template);
-            Labo_Object_fossil_2.position = new Vector3(20.9f, 3.4f, 0.1f);
+            Labo_Object_fossil_2.position = new Vector3(20.9f, 3.25f, 0.1f);
             Labo_Object_fossil_2.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Object_fossil_2");
             Labo_Object_fossil_2.gameObject.AddComponent<PolygonCollider2D>();
             Labo_Object_fossil_2.name = "Object_fossil_2";
@@ -129,13 +135,14 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Labo_Object_shelves_1.localScale *= 1.75f;
 
             Transform Labo_Object_LaboTable_1 = GameObject.Instantiate(Template);
-            Labo_Object_LaboTable_1.position = new Vector3(21f, 7.9f, 0.1f);
+            Labo_Object_LaboTable_1.position = new Vector3(21f, 7.25f, 0.1f);
             Labo_Object_LaboTable_1.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Object_LaboTable_1");
-            Labo_Object_LaboTable_1.gameObject.AddComponent<BoxCollider2D>().size = new Vector2(4, 1);
             Labo_Object_LaboTable_1.name = "Object_LaboTable_1";
             Labo_Object_LaboTable_1.localScale *= 0.75f;
+            GameObject.Destroy(Labo_Object_LaboTable_1.GetComponent<PolygonCollider2D>());
+            Labo_Object_LaboTable_1.gameObject.AddComponent<PolygonCollider2D>();
 
-            GameObject.Destroy(Template);
+            GameObject.Destroy(Template.gameObject);
             Template = null;
 
         }
@@ -213,7 +220,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
         public static void SetVent(Transform Miraship)
         {
             ShipStatus.Instance.AllVents = new List<Vent>().ToArray();
-            Transform AdminVentObject = Miraship.FindChild("Admin").FindChild("AdminVent"); 
+            Transform AdminVentObject = Miraship.FindChild("Admin").FindChild("AdminVent");
             Vent AdminVent = SetUpVent(AdminVentObject);
 
             Transform Locker = Miraship.FindChild("Locker");
@@ -226,6 +233,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Reactor.gameObject.GetChildren().SetActiveAllObject("ReactorVent", false);
             Transform ReactorVentObject = Reactor.FindChild("ReactorVent");
             //ReactorVentObject.name = "CommunityVent";
+            ReactorVentObject.gameObject.SetActive(true);
             Vent CommunityVent = SetUpVent(ReactorVentObject);
 
             Transform ToolVentObject = Miraship.FindChild("Office").FindChild("OfficeVent");
@@ -306,7 +314,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             LaboRoomVent.Center = null;
 
             AdminVentObject.transform.position = new Vector3(12.3f, 4f, 0.1f);
-            AdminVentObject.localScale = new Vector3(1.2f,1.2f,1.2f);
+            AdminVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 
             LockerVentObject.transform.position = new Vector3(15.3f, 4f, 0.1f);
             LockerVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
@@ -326,8 +334,11 @@ namespace SuperNewRoles.Map.Agartha.Patch
             WareHouseVentObject.transform.position = new Vector3(-9.5f, 0.1f, 0.1f);
             WareHouseVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 
-            WorkRoomVentObject.transform.position = new Vector3(-9.5f, 22.9f, 0.1f);
-            WorkRoomVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            new LateTask(() =>
+            {
+                WorkRoomVentObject.transform.position = new Vector3(-9.5f, 22.9f, 0.1f);
+                WorkRoomVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            }, 0.05f);
 
             MeetingRoomVentObject.transform.position = new Vector3(15.8f, 11.5f, 0.1f);
             MeetingRoomVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
@@ -335,7 +346,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             ElecRoomVentObject.transform.position = new Vector3(19.6f, 11.8f, 0.1f);
             ElecRoomVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
 
-            LaboVentObject.transform.position = new Vector3(19.8f, 8.2f, 0.1f);
+            LaboVentObject.transform.position = new Vector3(24.3f, 8.6f, 0.1f);
             LaboVentObject.localScale = new Vector3(1.2f, 1.2f, 1.2f);
         }
     }

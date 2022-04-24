@@ -7,6 +7,8 @@ using HarmonyLib;
 using Hazel;
 using System.Reflection;
 using System.Text;
+using UnhollowerBaseLib;
+using UnityEngine.Events;
 
 namespace SuperNewRoles.CustomOption
 {
@@ -775,15 +777,77 @@ namespace SuperNewRoles.CustomOption
         {
             if (__instance.GameSettings != null) __instance.GameSettings.fontSize = 1.2f;
         }
-    }/*
+    }
 
-    [HarmonyPatch(typeof(CreateOptionsPicker), nameof(CreateOptionsPicker.))]
+    [HarmonyPatch(typeof(CreateOptionsPicker), nameof(CreateOptionsPicker.Awake))]
     public class CreateOptionsPickerPatch
     {
+        /*
         public static void Postfix(CreateOptionsPicker __instance)
         {
-            int numImpostors = Math.Clamp(__instance.GetTargetOptions().NumImpostors, 1, 3);
-            __instance.SetImpostorButtons(numImpostors);
+            if (__instance.gameObject.scene.name == "FindAGame")
+            {
+                __instance.SetMap(5);
+            }
         }
-    }*/
+        
+        public static bool Prefix(CreateOptionsPicker __instance)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo("シーン:"+__instance.gameObject.scene.name);
+            if (__instance.gameObject.scene.name == "FindAGame")
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                Transform val = ((Component)__instance).transform.Find("Languages");
+                float y = val.position.y;
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                ((Component)val).gameObject.SetActive(false);
+                Transform val2 = ((Component)__instance).transform.Find("Impostors");
+                float y2 = val2.position.y;
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                val2.transform.position = new Vector3(-1.97f,y,val2.transform.position.z);
+                Vector3 position = ((Component)((Il2CppArrayBase<SpriteRenderer>)(object)__instance.MapButtons)[0]).transform.position;
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                Vector3 position2 = ((Component)((Il2CppArrayBase<SpriteRenderer>)(object)__instance.MapButtons)[3]).transform.position;
+                float num = (position2.x - position.x) / 3f;
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                float x = position.x;
+                ((Component)((Il2CppArrayBase<SpriteRenderer>)(object)__instance.MapButtons)[3]).transform.position = new Vector3(x, y2, position.z);
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                GameObject val3 = GameObject.Instantiate<GameObject>(__instance.MapButtons[0].transform.parent.gameObject, __instance.MapButtons[0].transform.parent.parent);
+                SuperNewRolesPlugin.Logger.LogInfo("b");
+                ((GameObject)val3).name = "5";
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                Transform val3trans = val3.transform;
+                SuperNewRolesPlugin.Logger.LogInfo("namae:"+val3trans.name);
+                SuperNewRolesPlugin.Logger.LogInfo("da");
+                SpriteRenderer component = val3trans.GetComponent<SpriteRenderer>();
+                SuperNewRolesPlugin.Logger.LogInfo("da");
+                component.sprite = (Map.Agartha.ImageManager.FreePlayButton);
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                PassiveButton component2 = val3.GetComponent<PassiveButton>();
+                ((UnityEventBase)component2.OnClick).m_PersistentCalls.m_Calls = new Il2CppSystem.Collections.Generic.List<PersistentCall>();
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                ((UnityEvent)component2.OnClick).AddListener(((UnityAction)delegate
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("ｾｯﾄ!");
+                    __instance.SetMap(5);
+                }));
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                __instance.MapButtons = (Il2CppReferenceArray<SpriteRenderer>)__instance.MapButtons.AddItem(val3.transform.FindChild("0").GetComponent<SpriteRenderer>());
+                Vector3 position3 = ((Component)((Il2CppArrayBase<SpriteRenderer>)(object)__instance.MapButtons)[3]).transform.position;
+                position3.x += num * 1.1f;
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                val3.transform.position = position3 ;
+                Transform child = GameObject.Find("OptionsMenu").transform.GetChild(0);
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                child.Find("Map").Translate(0.8f, 0f, 0f);
+                child.Find("Impostors").Translate(0.8f, 0f, 0f);
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                child.Find("Max Players").Translate(0.8f, 0f, 0f);
+                SuperNewRolesPlugin.Logger.LogInfo("a");
+                return false;
+            }
+            return true;
+        }*/
+    }
 }

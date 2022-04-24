@@ -1,5 +1,8 @@
-﻿using HarmonyLib;
+﻿using BepInEx.IL2CPP.Utils;
+using HarmonyLib;
+using PowerTools;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -139,6 +142,49 @@ namespace SuperNewRoles.Map.Agartha.Patch
             DivertPowerConsole6.GetComponent<Console>().ConsoleId = 6;
             DivertPowerConsole6.position = new Vector3(-6.9f, -0.8f, 4f);
 
+            Transform Airlock_O2 = GameObject.Instantiate(MapLoader.Skeld.transform.FindChild("LifeSupport").FindChild("Ground").FindChild("GarbageConsole"));
+            Airlock_O2.GetComponent<Console>().ConsoleId = 2;
+            Airlock_O2.position = new Vector3(-3.3f, 9.6f, 4f);
+            AddConsoles.Add(Airlock_O2.GetComponent<Console>());
+
+            Transform Airlock_Labo = GameObject.Instantiate(MapLoader.Skeld.transform.FindChild("Cafeteria").FindChild("Ground").FindChild("GarbageConsole"));
+            Airlock_Labo.GetComponent<Console>().ConsoleId = 1;
+            //Airlock_Labo.position = new Vector3(19.4f, 8f, 4f);
+            AddConsoles.Add(Airlock_Labo.GetComponent<Console>());
+
+            Transform Airlock_Aisle1 = GameObject.Instantiate(MapLoader.Skeld.transform.FindChild("Storage").FindChild("Ground").FindChild("AirlockConsole"));
+            Airlock_Aisle1.GetComponent<Console>().ConsoleId = 0;
+            Airlock_Aisle1.position = new Vector3(22.6f, 0.3f, 4f);
+            AddConsoles.Add(Airlock_Aisle1.GetComponent<Console>());
+            
+            Transform Airlock_AisleSeeObject1 = GameObject.Instantiate(MapLoader.Skeld.transform.FindChild("HullItems").FindChild("hatch0001"));
+            Airlock_AisleSeeObject1.position = new Vector3(22.78f, 0.3f, 4f);
+            AirlockParticle = Airlock_AisleSeeObject1.FindChild("Particles");
+            AirlockParticle.position = new Vector3(22.78f, 0.3f, 4f);
+            Airlock_AisleSeeObject1.Rotate(new Vector3(0, 261f, 100f));
+        }
+        static Transform AirlockParticle;
+        static Dictionary<string, SystemTypes> ChangeTasks =  new Dictionary<string, SystemTypes>()
+        {
+            { "EmptyGarbage",SystemTypes.LifeSupp },{ "EmptyFilterChute",SystemTypes.Laboratory}
+        };
+        [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.OpenHatch))]
+        class ab
+        {
+            static void Postfix(ShipStatus __instance)
+            {
+                if (Data.IsMap(CustomMapNames.Agartha))
+                {
+                    AmongUsClient.Instance.StartCoroutine(Airlockhatch(__instance));
+                }
+            }
+            static IEnumerator Airlockhatch(ShipStatus __instance)
+            {
+                AirlockParticle.gameObject.SetActive(false);
+                AirlockParticle.gameObject.SetActive(true);
+                yield return new WaitForSeconds(1);
+                AirlockParticle.gameObject.SetActive(false);
+            }
         }
         public static void ShipSetTask()
         {
@@ -187,6 +233,8 @@ namespace SuperNewRoles.Map.Agartha.Patch
             {
                 switch (task.name)
                 {
+                    case "EmptyFilterChute":
+                    case "EmptyGarbage":
                     case "InspectSample":
                         LongTasks.Add(task);
                         break;
@@ -268,8 +316,8 @@ namespace SuperNewRoles.Map.Agartha.Patch
 
             Transform GardenGreenHousePanel = Miraship.FindChild("Garden").FindChild("greenhousePanel");
             GardenGreenHousePanel.gameObject.SetActive(true);
+            GardenGreenHousePanel.gameObject.GetChildren().SetActiveAllObject("NoOxyConsole",false);
             Transform O2_Garden = GardenGreenHousePanel.FindChild("NoOxyConsole");
-            O2_Garden.gameObject.SetActive(true);
             O2_Garden.position = new Vector3(1.8404f, 9.813f, 0.1f);
 
             Transform Comms_Comm = Miraship.FindChild("Comms").FindChild("comms-top").FindChild("FixCommsConsole");

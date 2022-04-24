@@ -35,7 +35,6 @@ namespace SuperNewRoles.Map
                 {
                     Transform MiraShip = GameObject.Find("MiraShip(Clone)").transform;
 
-                    Agartha.Patch.SetPosition.SetVent(MiraShip);
                     Agartha.Patch.SetPosition.SetCamera();
 
                     Transform Wall = MiraShip.FindChild("Walls");
@@ -172,13 +171,13 @@ namespace SuperNewRoles.Map
                     Aisle5Walls.transform.position = new Vector3(13f, 13.475f, 4.99f);
                     Aisle5Walls.transform.localScale = new Vector3(3.9f, 5f, 3.9f);
 
-                    
+                    /*
                     SpriteRenderer Walls = ShipStatus.Instantiate(CafeteriaWalls).gameObject.GetComponent<SpriteRenderer>();
                     Walls.name = "Walls";
                     Walls.sprite = Agartha.ImageManager.AgarthagetSprite("Map");
                     Walls.transform.position = new Vector3(6.2f, 11.7f, 3.5f);
                     Walls.transform.localScale *= 1.2f;
-                    
+                    */
                     MiraShip.FindChild("CloudGen").gameObject.SetActive(false);
 
                     Transform CafeObject = MiraShip.FindChild("Cafe");
@@ -229,7 +228,6 @@ namespace SuperNewRoles.Map
                     MedBay.FindChild("MedVent").gameObject.SetActive(true);
                     MiraShip.FindChild("Storage").gameObject.SetActive(false);
                     MiraShip.FindChild("Comms").gameObject.GetChildren().SetActiveAllObject("comms-top", false);
-                    MiraShip.FindChild("Reactor").gameObject.GetChildren().SetActiveAllObject("reactor-desk-elec", false);
                     SkyBri.gameObject.GetChildren().SetActiveAllObject("FixWiringConsole (2)", false);
                     SkyBri.FindChild("YHallRightVent").gameObject.SetActive(true);
                     Garden.gameObject.GetChildren().SetActiveAllObject("FixWiringConsole", false);
@@ -244,6 +242,7 @@ namespace SuperNewRoles.Map
                     MiraShip.FindChild("Office").gameObject.GetChildren().SetActiveAllObject("OfficeVent", false);
                     //MiraShip.FindChild("Office").gameObject.SetActive(false);
 
+                    Agartha.Patch.SetPosition.SetVent(MiraShip);
                     Agartha.Patch.SetTasksClass.SetTasks(MiraShip);
                     Agartha.Patch.SetPosition.SetObject(MiraShip);
 
@@ -267,6 +266,7 @@ namespace SuperNewRoles.Map
                         Agartha.Patch.SetPosition.SetDummy();
                     }
                     Agartha.Patch.ChangeRoomArea.Change(MiraShip);
+                    Agartha.Patch.SetPosition.ObjectsDestroy(MiraShip);
                     Agartha.Patch.CreateShadow.Create(MiraShip);
                     Agartha.Patch.SetTasksClass.SetSabotage(MiraShip);
                     Agartha.Patch.ChangeMapCounter.Change(MiraShip);
