@@ -1342,6 +1342,10 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             { 
                 SeerPlayer = new List<PlayerControl>();
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.SeerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.SeerSoulDuration.getFloat();
+                mode = CustomOptions.SeerMode.getSelection();
             }
 
         }
