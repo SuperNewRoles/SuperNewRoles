@@ -149,7 +149,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
                     DistanceTime = DefaultDistanceTime;
                 }
                 UpdateTime -= Time.fixedDeltaTime;
-                if (UpdateTime <= 0)
+                /*if (UpdateTime <= 0)
                 {
                     List<PlayerControl> target = new List<PlayerControl>();
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
@@ -159,7 +159,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
                             target.Add(p);
                         }
                     }
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    /*foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         if (target.Count > 0)
                         {
@@ -170,9 +170,10 @@ namespace SuperNewRoles.Sabotage.Blizzard
                         }
                     }
                    // UpdateTime = DefaultUpdateTime;
-                }
+                }*/
             }
         }
+        [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
         public static void EndSabotage(PlayerControl p)
         {
             OKPlayers.Add(p);
@@ -191,6 +192,10 @@ namespace SuperNewRoles.Sabotage.Blizzard
                 foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                 {
                     p2.resetChange();
+                }
+                static void Postfix(PlayerPhysics __instance)
+                {
+                    __instance.body.velocity /= main.BlizzardSlowSpeedmagnification;
                 }
             }
         }
