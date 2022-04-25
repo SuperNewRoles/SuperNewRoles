@@ -29,9 +29,6 @@ namespace SuperNewRoles.Sabotage.Blizzard
             }
             }
         //ここにリアクター関連を書こう
-<<<<<<< HEAD
-=======
         //偽レイラーが何をとは言わないけど漏らした!
->>>>>>> 26c95da156732118993eb00f63a46e71a30a709b
     }
 }
