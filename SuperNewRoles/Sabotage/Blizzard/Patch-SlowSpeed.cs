@@ -18,6 +18,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
                     __instance.body.velocity /= main.BlizzardSlowSpeedmagnification;
                     SuperNewRolesPlugin.Logger.LogInfo("スロースピードスタート！");
                 }
+                //SNR最高うううううううううううううううううううううううううううう
             }
         }
     }
