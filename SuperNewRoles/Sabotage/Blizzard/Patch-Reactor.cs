@@ -1,29 +1,33 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
+using System.Reflection;
+using UnityEngine;
+using UnityEngine.UI;
+using HarmonyLib;
+using SuperNewRoles.Roles;
+using Hazel;
 
 namespace SuperNewRoles.Sabotage.Blizzard
 {
     public static class Reactor
     {
-        public static ProgressTracker Instance;
-        [HarmonyPatch(typeof(ProgressTracker),nameof(ProgressTracker.FixedUpdate))]
-        class TaskBarPatch
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
+        public static void Postfix()
         {
-            public static void Postfix(ProgressTracker __instance)
+            SuperNewRolesPlugin.Logger.LogInfo(main.Timer);
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)1f);
+            if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard && main.Timer >= 0.1)
             {
-                Instance = __instance;
-                if (PlayerControl.GameOptions.TaskBarMode != TaskBarMode.Invisible)
-                {
-                    if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard)
-                    {
-                        __instance.gameObject.SetActive(main.IsLocalEnd);
-                    }
-                }
+                main.Timer = (float) ((DateTime.Now + TimeSpanDate) - DateTime.Now).TotalSeconds;
+                ModHelpers.ShowFlash(new Color(204f / 255f, 102f / 255f, 0f / 255f));
+                SuperNewRolesPlugin.Logger.LogInfo("フラッシュー！");
             }
-        }
+            if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard && main.Timer >= 0.1)
+            {
+                main.Timer = 1f;
+            }
+            }
         //ここにリアクター関連を書こう
-        //これ機密情報だから漏らすなよ
     }
 }

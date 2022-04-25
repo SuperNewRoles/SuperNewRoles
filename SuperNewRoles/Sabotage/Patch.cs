@@ -40,6 +40,7 @@ namespace SuperNewRoles.Sabotage
                 if (ModeHandler.isMode(ModeId.Default))
                 {
                     CognitiveDeficit.main.Create(__instance);
+                    Blizzard.main.Create(__instance);
                 }
             }
         }

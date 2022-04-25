@@ -25,7 +25,7 @@ namespace SuperNewRoles.Sabotage
                     if (PlayerControl.GameOptions.MapId != 4) return false;
                     else return Options.CognitiveDeficitSetting.getBool();
                 case CustomSabotage.Blizzard:
-                    if (PlayerControl.GameOptions.MapId != 4) return false;
+                    if (false) return false;
                     else return Options.BlizzardSetting.getBool();
             }
             return false;
@@ -85,8 +85,9 @@ namespace SuperNewRoles.Sabotage
             if (IsOK(CustomSabotage.Blizzard))
             {
                 Blizzard.main.DefaultDistanceTime = Options.BlizzardReleaseTimeSetting.getFloat();
-                Blizzard.main.DefaultUpdateTime = Options.BlizzardOutfitUpdateTimeSetting.getFloat();
+                Blizzard.main.BlizzardSlowSpeedmagnification = Options.BlizzardSlowSpeedmagnificationSetting.getFloat();
                 Blizzard.main.IsAllEndSabotage = Options.BlizzardIsAllEndSabotageSetting.getBool();
+                Blizzard.main.Timer = 0;
             }
         }
         public static void Update()

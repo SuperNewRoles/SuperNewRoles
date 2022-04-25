@@ -34,7 +34,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
             ArrowUpdateColor = 0.25f;
             OKPlayers = new List<PlayerControl>();
         }
-        public static float DefaultUpdateTime = 2;
+        public static float BlizzardSlowSpeedmagnification;
         private static float ArrowUpdateColor = 1;
         public static float UpdateTime;
         private static float DistanceTime;
@@ -45,12 +45,17 @@ namespace SuperNewRoles.Sabotage.Blizzard
         public static List<PlayerControl> OKPlayers;
         public static bool IsLocalEnd;
         public static bool IsAllEndSabotage;
+        public static float Timer;
         public static void Create(InfectedOverlay __instance)
         {
             if (SabotageManager.IsOK(SabotageManager.CustomSabotage.Blizzard))
             {
                 ButtonBehavior button = InfectedOverlay.Instantiate(__instance.allButtons[0], __instance.allButtons[0].transform.parent);
-                button.transform.localPosition += new Vector3(0.2f, -1.7f, 0);
+                if (PlayerControl.GameOptions.MapId == 1)
+                {
+                    button.transform.localPosition += new Vector3(-3.48f, - 0.2624f, 0);
+                }
+                button.transform.localPosition += new Vector3(1.36f, 0, 0);
                 button.spriteRenderer.sprite = IconManager.BlizzardgetButtonSprite();
                 button.OnClick = new ButtonClickedEvent();
 
@@ -78,7 +83,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
                 }
             }
             bool IsOK = true;
-            foreach (PlayerControl p3 in PlayerControl.AllPlayerControls)
+            /*foreach (PlayerControl p3 in PlayerControl.AllPlayerControls)
             {
                 if (p3.isAlive() && !OKPlayers.IsCheckListPlayerControl(p3)) {
                     IsOK = false;
@@ -90,7 +95,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
                         }
                     }
                 }
-            }
+            }*/
             if (IsOK)
             {
                 SabotageManager.thisSabotage = SabotageManager.CustomSabotage.None;
@@ -164,7 +169,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
                             target.RemoveAt(index);
                         }
                     }
-                    UpdateTime = DefaultUpdateTime;
+                   // UpdateTime = DefaultUpdateTime;
                 }
             }
         }
@@ -174,10 +179,10 @@ namespace SuperNewRoles.Sabotage.Blizzard
             if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId)
             {
                 IsLocalEnd = true;
-                if (PlayerControl.GameOptions.TaskBarMode != TaskBarMode.Invisible)
+                /*if (PlayerControl.GameOptions.TaskBarMode != TaskBarMode.Invisible)
                 {
                     SlowSpeed.Instance.gameObject.SetActive(IsLocalEnd);
-                }
+                }*/
                 foreach (Arrow aw in ArrowDatas)
                 {
                     GameObject.Destroy(aw.arrow);

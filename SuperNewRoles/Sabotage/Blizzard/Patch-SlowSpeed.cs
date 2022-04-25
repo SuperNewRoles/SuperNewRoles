@@ -7,22 +7,18 @@ namespace SuperNewRoles.Sabotage.Blizzard
 {
     public static class SlowSpeed
     {
-        public static ProgressTracker Instance;
-        [HarmonyPatch(typeof(ProgressTracker),nameof(ProgressTracker.FixedUpdate))]
-        class TaskBarPatch
+        //ここにスピード関連を書こう
+        [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
+        public static class PlayerPhysicsSprinterPatch
         {
-            public static void Postfix(ProgressTracker __instance)
+            public static void Postfix(PlayerPhysics __instance)
             {
-                Instance = __instance;
-                if (PlayerControl.GameOptions.TaskBarMode != TaskBarMode.Invisible)
+                if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard)
                 {
-                    if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard)
-                    {
-                        __instance.gameObject.SetActive(main.IsLocalEnd);
-                    }
+                    __instance.body.velocity /= main.BlizzardSlowSpeedmagnification;
+                    SuperNewRolesPlugin.Logger.LogInfo("スロースピードスタート！");
                 }
             }
         }
-        //ここにスピード関連を書こう
     }
 }
