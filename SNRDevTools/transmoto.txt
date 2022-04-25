@@ -507,3 +507,6 @@ MadMayorCheckImpostorTaskSetting
 NiceHawkName
 NiceHawkTitle1
 NiceHawkTitle2
+BakeryName
+BakeryTitle1
+BakeryTitle2

@@ -407,6 +407,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.NiceHawk):
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Bakery):
+                    Roles.RoleClass.Bakery.BakeryPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -613,6 +616,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.NiceHawk):
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Bakery):
+                    Roles.RoleClass.Bakery.BakeryPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1104,6 +1110,10 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.NiceHawk;
                 }
+            else if (Roles.RoleClass.Bakery.BakeryPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Bakery;
+            }
             //ロールチェック
 
             }

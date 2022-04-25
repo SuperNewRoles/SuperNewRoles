@@ -789,6 +789,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.MadMayorPlayerCount.getFloat();
                 case (RoleId.NiceHawk):
                     return CustomOption.CustomOptions.NiceHawkPlayerCount.getFloat();
+                    case (RoleId.Bakery):
+                    return CustomOption.CustomOptions.BakeryPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1796,6 +1798,22 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.NiceHawkOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.NiceHawk;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.BakeryOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.BakeryOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Bakery;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);
