@@ -24,6 +24,6 @@ namespace SuperNewRoles.Sabotage.Blizzard
             }
         }
         //ここにリアクター関連を書こう
-        //偽レイラー、漏らすなよ
+        //偽レイラーが何をとは言わないけど漏らした
     }
 }
