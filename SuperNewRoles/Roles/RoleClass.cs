@@ -1338,9 +1338,16 @@ namespace SuperNewRoles.Roles
             public static int mode = 0;
 
             private static Sprite soulSprite;
+            public static Sprite getSoulSprite()
+            {
+                if (soulSprite) return soulSprite;
+                soulSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Soul.png", 500f);
+                return soulSprite;
+            }
+
 
             public static void ClearAndReload()
-            { 
+            {
                 SeerPlayer = new List<PlayerControl>();
                 deadBodyPositions = new List<Vector3>();
                 limitSoulDuration = CustomOptions.SeerLimitSoulDuration.getBool();
@@ -1349,6 +1356,7 @@ namespace SuperNewRoles.Roles
             }
 
         }
+
         //新ロールクラス
         public static class Quarreled
         {
