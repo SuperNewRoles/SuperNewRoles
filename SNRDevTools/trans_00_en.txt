@@ -509,4 +509,3 @@ See it all.
 Let's catch the crime.
 Bakery
 Would you like some breads?
-Let's bake some breads for crewmates.

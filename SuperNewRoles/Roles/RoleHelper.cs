@@ -1110,10 +1110,10 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.NiceHawk;
                 }
-            else if (Roles.RoleClass.Bakery.BakeryPlayer.IsCheckListPlayerControl(player))
-            {
+                 else if (Roles.RoleClass.Bakery.BakeryPlayer.IsCheckListPlayerControl(player))
+                {
                 return CustomRPC.RoleId.Bakery;
-            }
+                }
             //ロールチェック
 
             }

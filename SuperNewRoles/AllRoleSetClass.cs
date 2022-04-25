@@ -789,7 +789,7 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.MadMayorPlayerCount.getFloat();
                 case (RoleId.NiceHawk):
                     return CustomOption.CustomOptions.NiceHawkPlayerCount.getFloat();
-                    case (RoleId.Bakery):
+                case (RoleId.Bakery):
                     return CustomOption.CustomOptions.BakeryPlayerCount.getFloat();
                     //プレイヤーカウント
             }
