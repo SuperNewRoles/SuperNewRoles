@@ -21,7 +21,6 @@ namespace SuperNewRoles.Sabotage.Blizzard
             {
                 main.Timer = (float) ((DateTime.Now + TimeSpanDate) - DateTime.Now).TotalSeconds;
                 ModHelpers.ShowFlash(new Color(204f / 255f, 102f / 255f, 0f / 255f));
-                SuperNewRolesPlugin.Logger.LogInfo("フラッシュー！");
             }
             if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard && main.Timer >= 0.1)
             {
