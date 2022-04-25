@@ -6,5 +6,9 @@ SHR対応させたい場合は更に、
 [Seer.cs]を追加する
 
 
-[]
-
+[役職.csファイルにプログラムのテンプレートを貼り付ける]
+作成した「Seer.cs」(SNR)に
+「C:\Users\wingc\source\repos\Kurato-Tsukishiro\SuperNewRoles\SuperNewRoles\Roles\RoleTemplate.cs」
+にある文章を全て貼り付ける。
+これを貼り付けると、.csファイルが他の物と同じように階層化される。
+更に17行目「class RoleTemplate」を「class Seer」に変更する。
