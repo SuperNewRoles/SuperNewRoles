@@ -504,3 +504,11 @@ Use Vent
 Move Vent
 Impostor Light
 Amount of tasks that will be able to be checked (of all tasks)
+Seer
+You will see players die
+Mode
+Show Death Flash + Souls
+Show Death Flash
+Show Souls
+Limit Soul Duration
+Soul Duration

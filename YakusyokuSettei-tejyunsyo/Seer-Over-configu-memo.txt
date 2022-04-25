@@ -1,0 +1,118 @@
+[「CustomOptionDate.cs」 に入れる役職用変数名]
+
+public static CustomRoleOption SeerOption;
+public static CustomOption SeerPlayerCount;
+public static CustomOption SeerName;
+public static CustomOption SeerTitle1;
+public static CustomOption SeerMode;
+public static CustomOption SeerModeBoth;
+public static CustomOption SeerModeFlash;
+public static CustomOption SeerModeSouls;
+public static CustomOption SeerLimitSoulDuration;
+public static CustomOption SeerSoulDuration;
+
+
+[「CustomOptionDate.cs」にいれる役職設定画面用データ]
+[注意:この時の数字(311とか312とかは前の番号に被らないようにする。
+この数字は「「transmoto.txt」の何行目にある文章」と指定し、設定と関連付ける為のものだと考える)]
+
+SeerOption = new CustomRoleOption(311, "SeerName", RoleClass.Seer.color, 1);
+SeerPlayerCount = CustomOption.Create(312, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerOption);
+SeerMode = CustomOption.Create(313, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, SeerOption);
+SeerLimitSoulDuration = CustomOption.Create(314, "SeerLimitSoulDuration", false, SeerOption);
+SeerSoulDuration = CustomOption.Create(315, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerLimitSoulDuration, format: "unitSeconds");
+
+(参照;TORGM-「CustomOptionHolder.cs」752行～757行
+「seerSpawnRate = new CustomRoleOption(160, "seer", Seer.color, 1);
+  seerMode = CustomOption.Create(161, "seerMode", new string[] { "seerModeBoth", "seerModeFlash", "seerModeSouls" }, seerSpawnRate);
+  seerLimitSoulDuration = CustomOption.Create(163, "seerLimitSoulDuration", false, seerSpawnRate);
+  seerSoulDuration = CustomOption.Create(162, "seerSoulDuration", 15f, 0f, 120f, 5f, seerLimitSoulDuration, format: "unitSeconds");」)
+
+
+[「transmoto.txt」に追加する文章]
+
+SeerName
+SeerTitle1
+SeerMode
+SeerModeBoth
+SeerModeFlash
+SeerModeSouls
+SeerLimitSoulDuration
+SeerSoulDuration
+
+
+[「フォルダ:SNRDevTools」の「transdate」にいれる翻訳データ]
+
+SeerName,Seer,シーア
+SeerTitle1,You will see players die,船員の気配を感じ取ろう
+SeerMode,Mode,モード
+SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える
+SeerModeFlash,Show Death Flash,死の点滅が見える
+SeerModeSouls,Show Souls,幽霊が見える
+SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える
+SeerSoulDuration,Soul Duration,幽霊が見える時間
+
+
+[「フォルダ:SNRDevTools」内「trans_00_en.txt」に英語表記の変数名記載
+(「transdate」に入れた単語の左の方)]
+Seer
+You will see players die
+Mode
+Show Death Flash + Souls
+Show Death Flash
+Show Souls
+Limit Soul Duration
+Soul Duration
+
+
+[「フォルダ:SNRDevTools」内「trans_11_jp.txt」に日本語表記の変数名を記載
+(「transdate」に入れた単語の右の方)]
+シーア
+船員の気配を感じ取ろう
+モード
+死の点滅＆幽霊が見える
+死の点滅が見える
+幽霊が見える
+時間経過で幽霊が消える
+幽霊が見える時間
+
+
+[「transdate」,「trans_00_en.txt」,「trans_11_jp.txt」に翻訳データを入れた後、
+「フォルダ:SNRDevTools」内「trans_xx to transdate.py」と
+「フォルダ:SNRDevTools」内「trans_xx to json.bat」を起動。
+すると「フォルダ:SNRDevTools」内「translatedate.json」に翻訳データが生成される。
+生成されたデータを「フォルダ:Resources」内「translatedate.json」の該当部にコピペする。]
+
+{生成されて、コピペしたデータ}
+"SeerName" : {
+        "0" : "Seer" ,
+        "11" : "\u30b7\u30fc\u30a2"
+        } ,
+ "SeerTitle1" : {
+        "0" : "You will see players die" ,
+        "11" : "\u8239\u54e1\u306e\u6c17\u914d\u3092\u611f\u3058\u53d6\u308d\u3046"
+        } ,
+ "SeerMode" : {
+        "0" : "Mode" ,
+        "11" : "\u30e2\u30fc\u30c9"
+        } ,
+ "SeerModeBoth" : {
+        "0" : "Show Death Flash + Souls" ,
+        "11" : "\u6b7b\u306e\u70b9\u6ec5\uff06\u5e7d\u970a\u304c\u898b\u3048\u308b"
+        } ,
+ "SeerModeFlash" : {
+        "0" : "Show Death Flash" ,
+        "11" : "\u6b7b\u306e\u70b9\u6ec5\u304c\u898b\u3048\u308b"
+        } ,
+ "SeerModeSouls" : {
+        "0" : "Show Souls" ,
+        "11" : "\u5e7d\u970a\u304c\u898b\u3048\u308b"
+        } ,
+ "SeerLimitSoulDuration" : {
+        "0" : "Limit Soul Duration" ,
+        "11" : "\u6642\u9593\u7d4c\u904e\u3067\u5e7d\u970a\u304c\u6d88\u3048\u308b"
+        } ,
+ "SeerSoulDuration" : {
+        "0" : "Soul Duration" ,
+        "11" : "\u5e7d\u970a\u304c\u898b\u3048\u308b\u6642\u9593"
+        } 

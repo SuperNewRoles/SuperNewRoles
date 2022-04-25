@@ -1,0 +1,10 @@
+[役職.csファイル作成]
+「C:\Users\wingc\source\repos\Kurato-Tsukishiro\SuperNewRoles\SuperNewRoles\Roles」に
+「Seer.cs」を追加する。
+SHR対応させたい場合は更に、
+「C:\Users\wingc\source\repos\Kurato-Tsukishiro\SuperNewRoles\SuperNewRoles\Mode\SuperHostRoles\Roles」に
+[Seer.cs]を追加する
+
+
+[]
+
