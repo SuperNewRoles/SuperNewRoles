@@ -763,7 +763,6 @@ namespace SuperNewRoles.CustomOption
 
             MadEngineerOption = new CustomRoleOption(315, "MadEngineerName", RoleClass.ImpostorRed, 1);
             MadEngineerPlayerCount = CustomOption.Create(316, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadEngineerOption);
-            MadEngineerIsCheckImpostor = CustomOption.Create(317, ModTranslation.getString("MadMateIsCheckImpostorSetting"), false, MadEngineerOption);
             MadEngineerIsUseVent = CustomOption.Create(322, ModTranslation.getString("MadMateUseVentSetting"), false, MadEngineerOption);
             MadEngineerIsImpostorLight = CustomOption.Create(323, ModTranslation.getString("MadMateImpostorLightSetting"), false, MadEngineerOption);
 

@@ -1369,27 +1369,13 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> MadEngineerPlayer;
             public static Color32 color = ImpostorRed;
-            public static bool IsImpostorCheck;
-            public static int ImpostorCheckTask;
             public static bool IsUseVent;
             public static bool IsImpostorLight;
             public static void ClearAndReload()
             {
                 MadEngineerPlayer = new List<PlayerControl>();
-                IsImpostorCheck = CustomOptions.MadEngineerIsCheckImpostor.getBool();
                 IsUseVent = CustomOptions.MadEngineerIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadEngineerIsImpostorLight.getBool();
-                int Common = (int)CustomOptions.MadEngineerCommonTask.getFloat();
-                int Long = (int)CustomOptions.MadEngineerLongTask.getFloat();
-                int Short = (int)CustomOptions.MadEngineerShortTask.getFloat();
-                int AllTask = Common + Long + Short;
-                if (AllTask == 0)
-                {
-                    Common = PlayerControl.GameOptions.NumCommonTasks;
-                    Long = PlayerControl.GameOptions.NumLongTasks;
-                    Short = PlayerControl.GameOptions.NumShortTasks;
-                }
-                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadEngineerCheckImpostorTask.getString().Replace("%", "")) / 100f));
             }
         }
         //新ロールクラス
