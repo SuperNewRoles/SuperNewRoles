@@ -135,6 +135,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     p.RpcSetRoleDesync(RoleTypes.Engineer);
                 }
             }
+            if (RoleClass.MadEngineer.IsUseVent)
+            {
+                foreach (PlayerControl p in RoleClass.MadEngineer.MadEngineerPlayer)
+                {
+                    if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
+                }
+            }
             /*
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
@@ -499,6 +509,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.MadEngineerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadEngineerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadEngineer;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
                     }
                 }
             }

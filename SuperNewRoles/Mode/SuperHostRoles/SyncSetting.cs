@@ -89,6 +89,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.KillCooldown = 0.001f;
                     }
                     break;
+                case RoleId.MadEngineer:
+                    if (RoleClass.MadEngineer.IsUseVent)
+                    {
+                        optdata.RoleOptions.EngineerCooldown = 0f;
+                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+                    }
+                    if (RoleClass.MadEngineer.IsImpostorLight)
+                    {
+                        optdata.CrewLightMod = optdata.ImpostorLightMod;
+                        var switchSystem2 = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                        if (switchSystem2 != null && switchSystem2.IsActive)
+                        {
+                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
+                        }
+                    }
+                    break;
                 case RoleId.Technician:
                     optdata.RoleOptions.EngineerCooldown = 0f;
                     optdata.RoleOptions.EngineerInVentMaxTime = 0f;

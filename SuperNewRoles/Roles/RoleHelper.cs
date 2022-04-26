@@ -210,6 +210,10 @@ namespace SuperNewRoles
                     returntext = CustomOptions.MadMayorIsUseVent.name + ":" + CustomOptions.MadMayorIsUseVent.getString() + "\n";
                     returntext += CustomOptions.MadMayorIsCheckImpostor.name + ":" + CustomOptions.MadMayorIsCheckImpostor.getString() + "\n";
                     break;
+                case RoleId.MadEngineer:
+                    returntext = CustomOptions.MadEngineerIsUseVent.name + ":" + CustomOptions.MadEngineerIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.MadEngineerIsCheckImpostor.name + ":" + CustomOptions.MadEngineerIsCheckImpostor.getString() + "\n";
+                    break;
             }
             return returntext;
         }
@@ -406,6 +410,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.NiceHawk):
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.MadEngineer):
+                    Roles.RoleClass.MadEngineer.MadEngineerPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -614,6 +621,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.NiceHawk):
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.MadEngineer):
+                    Roles.RoleClass.MadEngineer.MadEngineerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -678,6 +688,9 @@ namespace SuperNewRoles
                 case (RoleId.MadKiller):
                     IsTaskClear = true;
                     break;
+                case (RoleId.MadEngineer):
+                    IsTaskClear = true;
+                    break;
                     //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
@@ -706,6 +719,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.UseVent) return true;
             if (player.isRole(RoleId.Technician) && IsSabotage()) return true;
             if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMayor.IsUseVent) return true;
+            if (RoleClass.MadEngineer.MadEngineerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadEngineer.IsUseVent) return true;
             return false;
         }
         public static bool IsSabotage()
@@ -735,6 +749,7 @@ namespace SuperNewRoles
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) return false;
             if (player.isRole(RoleId.MadMate) && RoleClass.MadMate.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadMayor) && RoleClass.MadMayor.IsImpostorLight) return true;
+            if (player.isRole(RoleId.MadEngineer) && RoleClass.MadEngineer.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -1103,6 +1118,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.NiceHawk.NiceHawkPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.NiceHawk;
+                }
+                else if (Roles.RoleClass.MadEngineer.MadEngineerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadEngineer;
                 }
             //ロールチェック
 

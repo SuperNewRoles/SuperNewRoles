@@ -101,6 +101,8 @@ namespace SuperNewRoles.Roles
             Survivor.ClearAndReload();
             MadMayor.ClearAndReload();
             NiceHawk.ClearAndReload();
+            Bakery.ClearAndReload();
+            MadEngineer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1325,7 +1327,7 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
-             }
+            }
         }
         public static class NiceHawk
         {
@@ -1352,6 +1354,42 @@ namespace SuperNewRoles.Roles
                 Postion = new Vector3(0, 0, 0);
                 timer1 = 0;
                 Timer2 = DateTime.Now;
+            }
+        }
+        public static class Bakery
+        {
+            public static List<PlayerControl> BakeryPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                BakeryPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class MadEngineer
+        {
+            public static List<PlayerControl> MadEngineerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsImpostorCheck;
+            public static int ImpostorCheckTask;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static void ClearAndReload()
+            {
+                MadEngineerPlayer = new List<PlayerControl>();
+                IsImpostorCheck = CustomOptions.MadEngineerIsCheckImpostor.getBool();
+                IsUseVent = CustomOptions.MadEngineerIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadEngineerIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.MadEngineerCommonTask.getFloat();
+                int Long = (int)CustomOptions.MadEngineerLongTask.getFloat();
+                int Short = (int)CustomOptions.MadEngineerShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadEngineerCheckImpostorTask.getString().Replace("%", "")) / 100f));
             }
         }
         //新ロールクラス
