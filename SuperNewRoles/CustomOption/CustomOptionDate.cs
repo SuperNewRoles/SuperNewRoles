@@ -763,15 +763,15 @@ namespace SuperNewRoles.CustomOption
 
             MadEngineerOption = new CustomRoleOption(315, "MadEngineerName", RoleClass.ImpostorRed, 1);
             MadEngineerPlayerCount = CustomOption.Create(316, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadEngineerOption);
-            MadEngineerIsCheckImpostor = CustomOption.Create(317, ModTranslation.getString("MadmateIsCheckImpostorSetting"), false, MadEngineerOption);
+            MadEngineerIsCheckImpostor = CustomOption.Create(317, ModTranslation.getString("MadMateIsCheckImpostorSetting"), false, MadEngineerOption);
             var madengineeroption = SelectTask.TaskSetting(318, 319, 320, MadEngineerIsCheckImpostor);
             MadEngineerCommonTask = madmayoroption.Item1;
             MadEngineerShortTask = madmayoroption.Item2;
             MadEngineerLongTask = madmayoroption.Item3;
             //MadMayorIsNotTask = madmayoroption.Item4;
-            MadEngineerCheckImpostorTask = CustomOption.Create(321, ModTranslation.getString("MadmateCheckImpostorTaskSetting"), rates4, MadEngineerIsCheckImpostor);
-            MadEngineerIsUseVent = CustomOption.Create(322, ModTranslation.getString("MadmateUseVentSetting"), false, MadEngineerOption);
-            MadEngineerIsImpostorLight = CustomOption.Create(323, ModTranslation.getString("MadmateImpostorLightSetting"), false, MadEngineerOption);
+            MadEngineerCheckImpostorTask = CustomOption.Create(321, ModTranslation.getString("MadMateCheckImpostorTaskSetting"), rates4, MadEngineerIsCheckImpostor);
+            MadEngineerIsUseVent = CustomOption.Create(322, ModTranslation.getString("MadMateUseVentSetting"), false, MadEngineerOption);
+            MadEngineerIsImpostorLight = CustomOption.Create(323, ModTranslation.getString("MadMateImpostorLightSetting"), false, MadEngineerOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

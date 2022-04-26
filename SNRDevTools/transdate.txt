@@ -508,3 +508,5 @@ MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked
 NiceHawkName,NiceHawk,ナイスホーク
 NiceHawkTitle1,See it all.,全てを見渡せ
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう
+MadEngineerName,MadTechnician,マッド技術者
+MadEngineerTitle1,Use technology to help the Imposter.,技術を使ってインポスターを助けよう
