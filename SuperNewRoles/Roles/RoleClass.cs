@@ -1329,7 +1329,6 @@ namespace SuperNewRoles.Roles
         }
         public static class Seer
         {
-            public static PlayerControl seer;
             public static List<PlayerControl> SeerPlayer;
             public static Color color = new Color32(97, 178, 108, byte.MaxValue);
             public static List<Vector3> deadBodyPositions = new List<Vector3>();
@@ -1349,7 +1348,6 @@ namespace SuperNewRoles.Roles
 
             public static void ClearAndReload()
             {
-                seer = null;
                 SeerPlayer = new List<PlayerControl>();
                 deadBodyPositions = new List<Vector3>();
                 limitSoulDuration = CustomOptions.SeerLimitSoulDuration.getBool();

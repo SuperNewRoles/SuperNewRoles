@@ -16,7 +16,6 @@ namespace SuperNewRoles.Roles
 {
     class Seer
     {
-        public static PlayerControl seer;
         public static List<PlayerControl> SeerPlayer;
         public static List<Vector3> deadBodyPositions;
         public static bool limitSoulDuration;
@@ -54,13 +53,29 @@ namespace SuperNewRoles.Roles
 
             static void WrapUpPostfix(GameData.PlayerInfo exiled)
             {
+                
 
                 // Seer spawn souls
-                if (Seer.deadBodyPositions != null && Seer.seer != null && PlayerControl.LocalPlayer == Seer.seer && (Seer.mode == 0 || Seer.mode == 2))
+                if (Seer.deadBodyPositions != null && Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer == Seer.SeerPlayer && (Seer.mode == 0 || Seer.mode == 2))
+                //
+                //TORでは
+                //if (Seer.deadBodyPositions != null && Seer.seer != null && PlayerControl.LocalPlayer == Seer.seer && (Seer.mode == 0 || Seer.mode == 2)) 
+                //「TOR:seer」は「SNR;SeerPlayer」とほぼ同じ意味を持つ。
+                //よっキングさん曰く
+                //「Seer.seerは、SeerPlayerですよ。　Seer.seerだと複数対応できないので、SeerPlayerにしてほしいですね」との事。
+                //その為、[RoleClass.cs]に「public static PlayerControl seer;」を付ける必要はない。
+                //
+                //但し、「TOR:PlayerControl.LocalPlayer == Seer.seer」の部分は[Seer.seer]を置き換えるだけでは不十分。
+                //[TOR:PlayerControl]→[SNR:RoleClass]
+                //[TOR:LocalPlayer]→[SNR:Seer.SeerPlayer]
+                //と置き換える。
+                //
+
+
                 {
-                    foreach (Vector3 pos in Seer.deadBodyPositions)
+                    foreach (Vector3 pos in Seer.deadBodyPositions) 
                     {
-                        GameObject soul = new GameObject();
+                        GameObject soul = new GameObject(); 
                         soul.transform.position = pos;
                         soul.layer = 5;
                         var rend = soul.AddComponent<SpriteRenderer>();
