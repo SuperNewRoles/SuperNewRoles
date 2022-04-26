@@ -1329,6 +1329,7 @@ namespace SuperNewRoles.Roles
         }
         public static class Seer
         {
+            public static PlayerControl seer;
             public static List<PlayerControl> SeerPlayer;
             public static Color color = new Color32(97, 178, 108, byte.MaxValue);
             public static List<Vector3> deadBodyPositions = new List<Vector3>();
@@ -1337,17 +1338,18 @@ namespace SuperNewRoles.Roles
             public static bool limitSoulDuration = false;
             public static int mode = 0;
 
-            private static Sprite soulSprite;
+            private static Sprite SoulSprite;
             public static Sprite getSoulSprite()
             {
-                if (soulSprite) return soulSprite;
-                soulSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Soul.png", 500f);
-                return soulSprite;
+                if (SoulSprite) return SoulSprite;
+                SoulSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Soul.png", 500f);
+                return SoulSprite;
             }
 
 
             public static void ClearAndReload()
             {
+                seer = null;
                 SeerPlayer = new List<PlayerControl>();
                 deadBodyPositions = new List<Vector3>();
                 limitSoulDuration = CustomOptions.SeerLimitSoulDuration.getBool();
