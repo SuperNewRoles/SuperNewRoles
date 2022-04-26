@@ -2035,6 +2035,14 @@
  "NiceHawkTitle2" : {
         "0" : "Let's catch the crime." ,
         "11" : "\u72af\u884c\u3092\u6349\u3048\u3088\u3046"
+        } ,
+ "MadEngineerName" : {
+        "0" : "MadTechnician" ,
+        "11" : "\u30de\u30c3\u30c9\u6280\u8853\u8005"
+        } ,
+ "MadEngineerTitle1" : {
+        "0" : "Use technology to help the Imposter." ,
+        "11" : "\u6280\u8853\u3092\u4f7f\u3063\u3066\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u52a9\u3051\u3088\u3046"
         } 
 
 }

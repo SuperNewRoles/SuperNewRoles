@@ -85,6 +85,7 @@ namespace SuperNewRoles.CustomRPC
         Survivor,
         MadMayor,
         NiceHawk,
+        MadEngineer,
         //RoleId
     }
 

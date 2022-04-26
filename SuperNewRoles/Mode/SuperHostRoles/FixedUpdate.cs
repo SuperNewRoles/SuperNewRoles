@@ -152,6 +152,23 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             //MadMayor.CheckedImpostor.Add(p.PlayerId);
                         }
+                        bool IsMadEngineerCheck = MadEngineer.CheckImpostor(p);
+                        //  SuperNewRolesPlugin.Logger.LogInfo("マッド技術者がチェックできるか:"+IsMadEngineerCheck);
+                        if (IsMadEngineerCheck)
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (!p2.Data.Disconnected && !p2.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
+                                else if (!p2.Data.Disconnected && p2.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
+                                }
+                            }
+                            //MadEngineer.CheckedImpostor.Add(p.PlayerId);
+                        }
 
                         if (p.IsLovers() && p.isAlive())
                         {
@@ -163,6 +180,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 name = ModHelpers.cs(RoleClass.ImpostorRed, name);
                             }
                             if (MadMayor.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
+                            {
+                                name = ModHelpers.cs(RoleClass.ImpostorRed, name);
+                            }
+                            if (MadEngineer.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
                             {
                                 name = ModHelpers.cs(RoleClass.ImpostorRed, name);
                             }

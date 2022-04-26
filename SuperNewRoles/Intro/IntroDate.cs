@@ -148,6 +148,8 @@ namespace SuperNewRoles.Intro
                     return MadMayorIntro;
                 case (CustomRPC.RoleId.NiceHawk):
                     return NiceHawkIntro;
+                case (CustomRPC.RoleId.MadEngineer):
+                    return MadEngineerIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -231,6 +233,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate SurvivorIntro = new IntroDate("Survivor", RoleClass.Survivor.color, 1, CustomRPC.RoleId.Survivor);
         public static IntroDate MadMayorIntro = new IntroDate("MadMayor", RoleClass.MadMayor.color, 1, CustomRPC.RoleId.MadMayor, TeamRoleType.Impostor);
         public static IntroDate NiceHawkIntro = new IntroDate("NiceHawk", RoleClass.NiceHawk.color, 2, CustomRPC.RoleId.NiceHawk);
+        public static IntroDate MadEngineerIntro = new IntroDate("MadEngineer", RoleClass.MadEngineer.color, 1, CustomRPC.RoleId.MadEngineer);
         //イントロオブジェ
     }
 }

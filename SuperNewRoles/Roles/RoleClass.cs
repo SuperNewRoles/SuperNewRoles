@@ -101,6 +101,8 @@ namespace SuperNewRoles.Roles
             Survivor.ClearAndReload();
             MadMayor.ClearAndReload();
             NiceHawk.ClearAndReload();
+            Bakery.ClearAndReload();
+            MadEngineer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1325,7 +1327,7 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
-             }
+            }
         }
         public static class NiceHawk
         {
@@ -1352,6 +1354,28 @@ namespace SuperNewRoles.Roles
                 Postion = new Vector3(0, 0, 0);
                 timer1 = 0;
                 Timer2 = DateTime.Now;
+            }
+        }
+        public static class Bakery
+        {
+            public static List<PlayerControl> BakeryPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                BakeryPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class MadEngineer
+        {
+            public static List<PlayerControl> MadEngineerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static void ClearAndReload()
+            {
+                MadEngineerPlayer = new List<PlayerControl>();
+                IsUseVent = CustomOptions.MadEngineerIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadEngineerIsImpostorLight.getBool();
             }
         }
         //新ロールクラス

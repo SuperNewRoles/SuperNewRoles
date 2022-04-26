@@ -373,6 +373,16 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption BakeryOption;
         public static CustomOption BakeryPlayerCount;
 
+        public static CustomRoleOption MadEngineerOption;
+        public static CustomOption MadEngineerPlayerCount;
+        public static CustomOption MadEngineerIsCheckImpostor;
+        public static CustomOption MadEngineerCommonTask;
+        public static CustomOption MadEngineerShortTask;
+        public static CustomOption MadEngineerLongTask;
+        public static CustomOption MadEngineerCheckImpostorTask;
+        public static CustomOption MadEngineerIsUseVent;
+        public static CustomOption MadEngineerIsImpostorLight;
+
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
@@ -750,6 +760,11 @@ namespace SuperNewRoles.CustomOption
             NiceHawkPlayerCount = CustomOption.Create(312, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceHawkOption);
             NiceHawkCoolTime = CustomOption.Create(313, ModTranslation.getString("HawkCoolTimeSetting"), 15f, 1f, 120f, 2.5f, NiceHawkOption, format: "unitCouples");
             NiceHawkDurationTime = CustomOption.Create(314, ModTranslation.getString("HawkDurationTimeSetting"), 5f, 1f, 60f, 2.5f, NiceHawkOption, format: "unitCouples");
+
+            MadEngineerOption = new CustomRoleOption(315, "MadEngineerName", RoleClass.ImpostorRed, 1);
+            MadEngineerPlayerCount = CustomOption.Create(316, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadEngineerOption);
+            MadEngineerIsUseVent = CustomOption.Create(322, ModTranslation.getString("MadMateUseVentSetting"), false, MadEngineerOption);
+            MadEngineerIsImpostorLight = CustomOption.Create(323, ModTranslation.getString("MadMateImpostorLightSetting"), false, MadEngineerOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
