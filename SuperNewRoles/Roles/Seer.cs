@@ -99,6 +99,66 @@ namespace SuperNewRoles.Roles
                 }
 
             }
+
+            [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
+            public static class MurderPlayerPatch
+            {
+                public static bool resetToCrewmate = false;
+                public static bool resetToDead = false;
+
+                public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+                {
+                    // Allow everyone to murder players
+                    resetToCrewmate = !__instance.Data.Role.IsImpostor;
+                    resetToDead = __instance.Data.IsDead;
+                    __instance.Data.Role.TeamType = RoleTeamTypes.Impostor;
+                    __instance.Data.IsDead = false;
+                }
+
+                public static void ShowFlash(Color color, float duration = 1f)
+                {
+                    if (HudManager.Instance == null || HudManager.Instance.FullScreen == null) return;
+                    HudManager.Instance.FullScreen.gameObject.SetActive(true);
+                    HudManager.Instance.FullScreen.enabled = true;
+                    HudManager.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => {
+                        var renderer = HudManager.Instance.FullScreen;
+
+                        if (p < 0.5)
+                        {
+                            if (renderer != null)
+                                renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
+                        }
+                        else
+                        {
+                            if (renderer != null)
+                                renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
+                        }
+                        if (p == 1f && renderer != null) renderer.enabled = false;
+                    })));
+                }
+
+                public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+                {
+                    // Collect dead player info
+                    DeadPlayer deadPlayer = new DeadPlayer(target, DateTime.UtcNow, DeathReason.Kill, __instance);
+                    GameHistory.deadPlayers.Add(deadPlayer);
+
+
+                    // Seer show flash and add dead player position
+                    if (Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer == Seer.SeerPlayer && !Seer.SeerPlayer.Data.IsDead && Seer.SeerPlayer != target && Seer.mode <= 1)
+                    {
+                        ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+                    }
+                    if (Seer.deadBodyPositions != null) Seer.deadBodyPositions.Add(target.transform.position);
+
+                    
+                }
+            }
+
+
+
+
+
         }
 
 
