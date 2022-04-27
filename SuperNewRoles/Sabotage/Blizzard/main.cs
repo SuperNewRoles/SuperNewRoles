@@ -46,6 +46,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
         public static bool IsLocalEnd;
         public static bool IsAllEndSabotage;
         public static float Timer;
+        public static bool IsFlash;
         public static void Create(InfectedOverlay __instance)
         {
             if (SabotageManager.IsOK(SabotageManager.CustomSabotage.Blizzard))

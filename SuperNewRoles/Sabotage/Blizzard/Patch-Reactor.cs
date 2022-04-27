@@ -17,13 +17,15 @@ namespace SuperNewRoles.Sabotage.Blizzard
         {
             SuperNewRolesPlugin.Logger.LogInfo(main.Timer);
             var TimeSpanDate = new TimeSpan(0, 0, 0, (int)1f);
-            if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard && main.Timer >= 0.1 && __instance == PlayerControl.LocalPlayer)
+            main.Timer = (float)((DateTime.Now + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            if (main.IsFlash == true && main.Timer >= 0.1 && __instance == PlayerControl.LocalPlayer)
             {
-                main.Timer = (float) ((DateTime.Now + TimeSpanDate) - DateTime.Now).TotalSeconds;
                 ModHelpers.ShowFlash(new Color(204f / 255f, 102f / 255f, 0f / 255f));
+                main.IsFlash = false;
             }
-            if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard && main.Timer >= 0.1)
+            if (main.Timer >= 0.1)
             {
+                main.IsFlash = true;
                 main.Timer = 1f;
             }
             }
