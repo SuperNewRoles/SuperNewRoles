@@ -101,6 +101,7 @@ namespace SuperNewRoles.Roles
             Survivor.ClearAndReload();
             MadMayor.ClearAndReload();
             NiceHawk.ClearAndReload();
+            Bakery.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1352,6 +1353,15 @@ namespace SuperNewRoles.Roles
                 Postion = new Vector3(0, 0, 0);
                 timer1 = 0;
                 Timer2 = DateTime.Now;
+            }
+        }
+        public static class Bakery
+        {
+            public static List<PlayerControl> BakeryPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                BakeryPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

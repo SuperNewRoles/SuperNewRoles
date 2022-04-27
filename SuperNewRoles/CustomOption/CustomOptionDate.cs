@@ -768,6 +768,9 @@ namespace SuperNewRoles.CustomOption
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
 
+            BakeryOption = new CustomRoleOption(311, "BakeryName", RoleClass.Bakery.color, 1);
+            BakeryPlayerCount = CustomOption.Create(312, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BakeryOption);
+
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);
         }
     }
