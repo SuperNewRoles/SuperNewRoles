@@ -12,16 +12,12 @@ using System.IO;
 using UnityEngine;
 using SuperNewRoles.Patches;
 using System.Reflection;
+
+
 namespace SuperNewRoles.Roles
 {
     class Seer
     {
-        public static List<PlayerControl> SeerPlayer;
-        public static List<Vector3> deadBodyPositions;
-        public static bool limitSoulDuration;
-        public static float soulDuration;
-        public static int mode;
-
         private static Sprite SoulSprite;
         public static Sprite getSoulSprite()
         {
@@ -53,51 +49,54 @@ namespace SuperNewRoles.Roles
 
             static void WrapUpPostfix(GameData.PlayerInfo exiled)
             {
-                
+
 
                 // Seer spawn souls
-                if (Seer.deadBodyPositions != null && Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer == Seer.SeerPlayer && (Seer.mode == 0 || Seer.mode == 2))
-                //
-                //TORでは
-                //if (Seer.deadBodyPositions != null && Seer.seer != null && PlayerControl.LocalPlayer == Seer.seer && (Seer.mode == 0 || Seer.mode == 2)) 
-                //「TOR:seer」は「SNR;SeerPlayer」とほぼ同じ意味を持つ。
-                //よっキングさん曰く
-                //「Seer.seerは、SeerPlayerですよ。　Seer.seerだと複数対応できないので、SeerPlayerにしてほしいですね」との事。
-                //その為、[RoleClass.cs]に「public static PlayerControl seer;」を付ける必要はない。
-                //
-                //但し、「TOR:PlayerControl.LocalPlayer == Seer.seer」の部分は[Seer.seer]を置き換えるだけでは不十分。
-                //[TOR:PlayerControl]→[SNR:RoleClass]
-                //[TOR:LocalPlayer]→[SNR:Seer.SeerPlayer]
-                //と置き換える。
-                //
-
-
+                int h;
+                for (h = 0; h < 16; h++)
                 {
-                    foreach (Vector3 pos in Seer.deadBodyPositions) 
+                    if (RoleClass.Seer.deadBodyPositions != null && RoleClass.Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer[h] && (RoleClass.Seer.mode == 0 || RoleClass.Seer.mode == 2))
+                    //
+                    //TORでは
+                    //if (Seer.deadBodyPositions != null && Seer.seer != null && PlayerControl.LocalPlayer == Seer.seer && (Seer.mode == 0 || Seer.mode == 2)) 
+                    //「TOR:seer」は「SNR;SeerPlayer」とほぼ同じ意味を持つ。
+                    //よっキングさん曰く
+                    //「Seer.seerは、SeerPlayerですよ。　Seer.seerだと複数対応できないので、SeerPlayerにしてほしいですね」との事。
+                    //その為、[RoleClass.cs]に「public static PlayerControl seer;」を付ける必要はない。
+                    //
+                    //但し、「TOR:PlayerControl.LocalPlayer == Seer.seer」の部分は[Seer.seer]を置き換えるだけでは不十分。
+                    //[TOR:PlayerControl]→[SNR:RoleClass]
+                    //[TOR:LocalPlayer]→[SNR:Seer.SeerPlayer]
+                    //と置き換える。
+                    //
+
+
                     {
-                        GameObject soul = new GameObject(); 
-                        soul.transform.position = pos;
-                        soul.layer = 5;
-                        var rend = soul.AddComponent<SpriteRenderer>();
-                        rend.sprite = Seer.getSoulSprite();
-
-                        if (Seer.limitSoulDuration)
+                        foreach (Vector3 pos in RoleClass.Seer.deadBodyPositions)
                         {
-                            HudManager.Instance.StartCoroutine(Effects.Lerp(Seer.soulDuration, new Action<float>((p) =>
-                            {
-                                if (rend != null)
-                                {
-                                    var tmp = rend.color;
-                                    tmp.a = Mathf.Clamp01(1 - p);
-                                    rend.color = tmp;
-                                }
-                                if (p == 1f && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
-                            })));
-                        }
-                    }
-                    Seer.deadBodyPositions = new List<Vector3>();
-                }
+                            GameObject soul = new GameObject();
+                            soul.transform.position = pos;
+                            soul.layer = 5;
+                            var rend = soul.AddComponent<SpriteRenderer>();
+                            rend.sprite = Seer.getSoulSprite();
 
+                            if (RoleClass.Seer.limitSoulDuration)
+                            {
+                                HudManager.Instance.StartCoroutine(Effects.Lerp(RoleClass.Seer.soulDuration, new Action<float>((p) =>
+                                {
+                                    if (rend != null)
+                                    {
+                                        var tmp = rend.color;
+                                        tmp.a = Mathf.Clamp01(1 - p);
+                                        rend.color = tmp;
+                                    }
+                                    if (p == 1f && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
+                                })));
+                            }
+                        }
+                        RoleClass.Seer.deadBodyPositions = new List<Vector3>();
+                    }
+                }
             }
 
             [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
@@ -120,7 +119,8 @@ namespace SuperNewRoles.Roles
                     if (HudManager.Instance == null || HudManager.Instance.FullScreen == null) return;
                     HudManager.Instance.FullScreen.gameObject.SetActive(true);
                     HudManager.Instance.FullScreen.enabled = true;
-                    HudManager.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => {
+                    HudManager.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
+                    {
                         var renderer = HudManager.Instance.FullScreen;
 
                         if (p < 0.5)
@@ -146,10 +146,9 @@ namespace SuperNewRoles.Roles
                     int i;
                     for (i = 0; i < 16; i++)
                     {
-                        if (Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer == Seer.SeerPlayer && !Seer.SeerPlayer.Data.IsDead && Seer.SeerPlayer[i] != target && Seer.mode <= 1)
+                        if (RoleClass.Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer == RoleClass.Seer.SeerPlayer && !RoleClass.Seer.SeerPlayer.Data.IsDead && RoleClass.Seer.SeerPlayer[i] != target && RoleClass.Seer.mode <= 1)
 
                         //Seer.SeerPlayer != target 部分 For で処理!! リスト(配列)から中身取り出す必要が有る。多分　1人目のシーア～　で処理する。
-                        //Seer.SeerPlayer[i] != targetでやると思う　ターゲットは知らん
 
 
                         {
@@ -157,9 +156,9 @@ namespace SuperNewRoles.Roles
                         }
                     }
 
-                    if (Seer.deadBodyPositions != null) Seer.deadBodyPositions.Add(target.transform.position);
+                    if (RoleClass.Seer.deadBodyPositions != null) RoleClass.Seer.deadBodyPositions.Add(target.transform.position);
 
-                    
+
                 }
             }
 
@@ -168,8 +167,8 @@ namespace SuperNewRoles.Roles
 
 
         }
-
-
     }
+
+    
 }
 
