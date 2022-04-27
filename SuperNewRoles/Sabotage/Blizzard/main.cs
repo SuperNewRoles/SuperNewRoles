@@ -51,12 +51,25 @@ namespace SuperNewRoles.Sabotage.Blizzard
         {
             if (SabotageManager.IsOK(SabotageManager.CustomSabotage.Blizzard))
             {
+                SuperNewRolesPlugin.Logger.LogInfo("マップID:" + PlayerControl.GameOptions.MapId);
                 ButtonBehavior button = InfectedOverlay.Instantiate(__instance.allButtons[0], __instance.allButtons[0].transform.parent);
+                if (PlayerControl.GameOptions.MapId == 0)
+                {
+                  //  button.transform.position += new Vector3(5.6233f, -8.0887f, -37);
+                    button.transform.localPosition = new Vector3(- 4.92f, - 0.3f, - 1);                    
+                }
                 if (PlayerControl.GameOptions.MapId == 1)
                 {
-                    button.transform.localPosition += new Vector3(-3.48f, - 0.2624f, 0);
+                    button.transform.localPosition = new Vector3(0.55f, 4.3f, - 1);
                 }
-                button.transform.localPosition += new Vector3(1.36f, 0, 0);
+                if (PlayerControl.GameOptions.MapId == 2)
+                {
+                    button.transform.localPosition = new Vector3(4.28f, 0.3251f, - 1);
+                }
+                if (PlayerControl.GameOptions.MapId == 4)
+                {
+                    button.transform.localPosition = new Vector3(1.42f, 0f, - 1);
+                }
                 button.spriteRenderer.sprite = IconManager.BlizzardgetButtonSprite();
                 button.OnClick = new ButtonClickedEvent();
 
@@ -82,6 +95,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
                 {
                     SabotageManager.InfectedOverlayInstance.SabSystem.Timer = SabotageManager.SabotageMaxTime;
                 }
+                SuperNewRolesPlugin.Logger.LogInfo(SabotageManager.thisSabotage);
             }
             bool IsOK = true;
             /*foreach (PlayerControl p3 in PlayerControl.AllPlayerControls)
@@ -99,7 +113,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
             }*/
             if (IsOK)
             {
-                SabotageManager.thisSabotage = SabotageManager.CustomSabotage.None;
+              //  SabotageManager.thisSabotage = SabotageManager.CustomSabotage.None;
                 return;
             }
             if (!IsLocalEnd)
@@ -190,14 +204,10 @@ namespace SuperNewRoles.Sabotage.Blizzard
                     GameObject.Destroy(aw.arrow);
                 }
                 ArrowDatas = new List<Arrow>();
-                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                /*foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                 {
                     p2.resetChange();
-                }
-                static void Postfix(PlayerPhysics __instance)
-                {
-                    __instance.body.velocity /= main.BlizzardSlowSpeedmagnification;
-                }
+                }*/
             }
         }
     }
