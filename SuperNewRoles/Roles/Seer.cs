@@ -139,16 +139,24 @@ namespace SuperNewRoles.Roles
 
                 public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
                 {
-                    // Collect dead player info
-                    DeadPlayer deadPlayer = new DeadPlayer(target, DateTime.UtcNow, DeathReason.Kill, __instance);
-                    GameHistory.deadPlayers.Add(deadPlayer);
 
 
                     // Seer show flash and add dead player position
-                    if (Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer == Seer.SeerPlayer && !Seer.SeerPlayer.Data.IsDead && Seer.SeerPlayer != target && Seer.mode <= 1)
+
+                    int i;
+                    for (i = 0; i < 16; i++)
                     {
-                        ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+                        if (Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer == Seer.SeerPlayer && !Seer.SeerPlayer.Data.IsDead && Seer.SeerPlayer[i] != target && Seer.mode <= 1)
+
+                        //Seer.SeerPlayer != target 部分 For で処理!! リスト(配列)から中身取り出す必要が有る。多分　1人目のシーア～　で処理する。
+                        //Seer.SeerPlayer[i] != targetでやると思う　ターゲットは知らん
+
+
+                        {
+                            ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+                        }
                     }
+
                     if (Seer.deadBodyPositions != null) Seer.deadBodyPositions.Add(target.transform.position);
 
                     
