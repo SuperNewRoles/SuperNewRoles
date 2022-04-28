@@ -6,6 +6,7 @@ using SuperNewRoles.Patch;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static SuperNewRoles.EndGame.CheckGameEndPatch;
 using static UnityEngine.UI.Button;
 
 namespace SuperNewRoles.Sabotage.Blizzard
@@ -34,7 +35,13 @@ namespace SuperNewRoles.Sabotage.Blizzard
             ArrowUpdateColor = 0.25f;
             OKPlayers = new List<PlayerControl>();
             main.Timer = 5f;
+            main.Timer = BlizzardDuration;
+            if (PlayerControl.GameOptions.MapId == 0) Blizzard.main.BlizzardDuration = Options.BlizzardskeldDurationSetting.getFloat();
+            if (PlayerControl.GameOptions.MapId == 1) Blizzard.main.BlizzardDuration = Options.BlizzardmiraDurationSetting.getFloat();
+            if (PlayerControl.GameOptions.MapId == 2) Blizzard.main.BlizzardDuration = Options.BlizzardpolusDurationSetting.getFloat();
+            if (PlayerControl.GameOptions.MapId == 4) Blizzard.main.BlizzardDuration = Options.BlizzardairshipDurationSetting.getFloat();
         }
+        public static float BlizzardDuration;
         public static float BlizzardSlowSpeedmagnification;
         private static float ArrowUpdateColor = 1;
         public static float UpdateTime;
@@ -50,6 +57,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
         public static bool IsOverlay = false;
         public static float MaxTimer;
         public static DateTime OverlayTimer;
+        public static float ReactorTimer;
         public static void Create(InfectedOverlay __instance)
         {
             if (SabotageManager.IsOK(SabotageManager.CustomSabotage.Blizzard))
@@ -87,8 +95,11 @@ namespace SuperNewRoles.Sabotage.Blizzard
         }
         public static void Update()
         {
+            SuperNewRolesPlugin.Logger.LogInfo(main.ReactorTimer);
             var TimeSpanDate = new TimeSpan(0, 0, 0, (int)2f);
             main.Timer = (float)((main.OverlayTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            var TimeSpanDate1 = new TimeSpan(0, 0, 0, (int)BlizzardDuration);
+            main.ReactorTimer = (float)((main.OverlayTimer + TimeSpanDate1) - DateTime.Now).TotalSeconds;
             Blizzard.Reactor.Postfix();
             if (SabotageManager.InfectedOverlayInstance != null)
             {
@@ -114,6 +125,14 @@ namespace SuperNewRoles.Sabotage.Blizzard
                     }
                 }
             }*/
+            static void EndGame(ShipStatus __instance)
+            {
+                if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard)
+                {
+                    __instance.enabled = false;
+                    ShipStatus.RpcEndGame(GameOverReason.ImpostorBySabotage, false);
+                }
+            }
             if (IsOK)
             {
                 //  SabotageManager.thisSabotage = SabotageManager.CustomSabotage.None;

@@ -7,6 +7,12 @@ using UnityEngine.UI;
 using HarmonyLib;
 using SuperNewRoles.Roles;
 using Hazel;
+using SuperNewRoles.EndGame;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patch;
+using System.Text;
+using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Sabotage.Blizzard
 {
@@ -22,8 +28,11 @@ namespace SuperNewRoles.Sabotage.Blizzard
                 main.OverlayTimer = DateTime.Now;
                 main.Timer = 2f;
             }
+            if (main.ReactorTimer <= 0)
+            {
+                ShipStatus.RpcEndGame(GameOverReason.ImpostorBySabotage, false);
+            }
         }
         //ここにリアクター関連を書こう
-        //開発楽しいいいいいいいいいいいいいいいいいいいいいいい
     }
 }

@@ -13,8 +13,10 @@ namespace SuperNewRoles.Sabotage
         public static CustomOption.CustomOption CognitiveDeficitIsAllEndSabotageSetting;
         public static CustomOption.CustomOption BlizzardSetting;
         public static CustomOption.CustomOption BlizzardSlowSpeedmagnificationSetting;
-        public static CustomOption.CustomOption BlizzardReleaseTimeSetting;
-        public static CustomOption.CustomOption BlizzardIsAllEndSabotageSetting;
+        public static CustomOption.CustomOption BlizzardskeldDurationSetting;
+        public static CustomOption.CustomOption BlizzardmiraDurationSetting;
+        public static CustomOption.CustomOption BlizzardpolusDurationSetting;
+        public static CustomOption.CustomOption BlizzardairshipDurationSetting;
         public static CustomOption.CustomOption skeldReactorDuration;
         public static CustomOption.CustomOption miraReactorDuration;
         public static CustomOption.CustomOption polusReactorDuration;
@@ -29,8 +31,10 @@ namespace SuperNewRoles.Sabotage
             CognitiveDeficitIsAllEndSabotageSetting = CustomOption.CustomOption.Create(300, "CognitiveDeficitSabotageIsAllPlayerEndSabotageSetting", true, CognitiveDeficitSetting);            //
             BlizzardSetting = CustomOption.CustomOption.Create(297, "SabotageBlizzardSetting", false, SabotageSetting);
             BlizzardSlowSpeedmagnificationSetting = CustomOption.CustomOption.Create(315, "BlizzardSlowSpeedmagnificationSetting", 3f, 0.5f, 10f, 0.5f, BlizzardSetting);
-            BlizzardReleaseTimeSetting = CustomOption.CustomOption.Create(316, "BlizzardSabotageReleaseTimeSetting", 3f, 0.5f, 10f, 0.5f, BlizzardSetting);
-            BlizzardIsAllEndSabotageSetting = CustomOption.CustomOption.Create(317, "BlizzardSabotageIsAllPlayerEndSabotageSetting", true, BlizzardSetting);
+            BlizzardskeldDurationSetting = CustomOption.CustomOption.Create(316, "BlizzardskeldDurationSetting", 60f, 0f, 600f, 1f, BlizzardSetting);
+            BlizzardmiraDurationSetting = CustomOption.CustomOption.Create(317, "BlizzardmiraDurationSetting", 60f, 0f, 600f, 1f, BlizzardSetting);
+            BlizzardpolusDurationSetting = CustomOption.CustomOption.Create(316, "BlizzardpolusDurationSetting", 60f, 0f, 600f, 1f, BlizzardSetting);
+            BlizzardairshipDurationSetting = CustomOption.CustomOption.Create(317, "BlizzardairshipDurationSetting", 60f, 0f, 600f, 1f, BlizzardSetting);
             skeldReactorDuration = CustomOption.CustomOption.Create(318, "skeldReactorDuration", 60f, 0f, 600f, 1f, SabotageSetting, format: "unitSeconds");
             miraReactorDuration = CustomOption.CustomOption.Create(319, "miraReactorDuration", 60f, 0f, 600f, 1f, SabotageSetting, format: "unitSeconds");
             polusReactorDuration = CustomOption.CustomOption.Create(320, "polusReactorDuration", 60f, 0f, 600f, 1f, SabotageSetting, format: "unitSeconds");
