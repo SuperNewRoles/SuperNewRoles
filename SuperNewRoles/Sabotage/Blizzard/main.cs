@@ -36,10 +36,22 @@ namespace SuperNewRoles.Sabotage.Blizzard
             OKPlayers = new List<PlayerControl>();
             main.Timer = 5f;
             main.Timer = BlizzardDuration;
-            if (PlayerControl.GameOptions.MapId == 0) Blizzard.main.ReactorTimer = main.BlizzardDuration;
-            if (PlayerControl.GameOptions.MapId == 1) Blizzard.main.ReactorTimer = main.BlizzardDuration;
-            if (PlayerControl.GameOptions.MapId == 2) Blizzard.main.ReactorTimer = main.BlizzardDuration;
-            if (PlayerControl.GameOptions.MapId == 4) Blizzard.main.ReactorTimer = main.BlizzardDuration;
+            if (PlayerControl.GameOptions.MapId == 0)
+            {
+                Blizzard.main.ReactorTimer = main.BlizzardDuration;
+            }
+            if (PlayerControl.GameOptions.MapId == 1)
+            {
+                Blizzard.main.ReactorTimer = main.BlizzardDuration;
+            }
+            if (PlayerControl.GameOptions.MapId == 2)
+            {
+                Blizzard.main.ReactorTimer = main.BlizzardDuration;
+            }
+            if (PlayerControl.GameOptions.MapId == 4)
+            {
+                Blizzard.main.ReactorTimer = main.BlizzardDuration;
+            }
         }
         public static float BlizzardDuration;
         public static float BlizzardSlowSpeedmagnification;

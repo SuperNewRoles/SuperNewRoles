@@ -28,11 +28,12 @@ namespace SuperNewRoles.Sabotage.Blizzard
                 main.OverlayTimer = DateTime.Now;
                 main.Timer = 2f;
             }
-            if (main.ReactorTimer <= 0)
+            if (main.ReactorTimer >= 0)
             {
                 ShipStatus.RpcEndGame(GameOverReason.ImpostorBySabotage, false);
             }
         }
+        private static float count;
         //ここにリアクター関連を書こう
     }
 }

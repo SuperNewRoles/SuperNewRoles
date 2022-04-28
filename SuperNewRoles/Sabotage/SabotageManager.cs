@@ -85,10 +85,22 @@ namespace SuperNewRoles.Sabotage
             if (IsOK(CustomSabotage.Blizzard))
             {
                 Blizzard.main.BlizzardSlowSpeedmagnification = Options.BlizzardSlowSpeedmagnificationSetting.getFloat();
-                if (PlayerControl.GameOptions.MapId == 0) Blizzard.main.BlizzardDuration = Options.BlizzardskeldDurationSetting.getFloat();
-                if (PlayerControl.GameOptions.MapId == 1) Blizzard.main.BlizzardDuration = Options.BlizzardmiraDurationSetting.getFloat();
-                if (PlayerControl.GameOptions.MapId == 2) Blizzard.main.BlizzardDuration = Options.BlizzardpolusDurationSetting.getFloat();
-                if (PlayerControl.GameOptions.MapId == 4) Blizzard.main.BlizzardDuration = Options.BlizzardairshipDurationSetting.getFloat();
+                if (PlayerControl.GameOptions.MapId == 0)
+                {
+                    Blizzard.main.BlizzardDuration = Options.BlizzardskeldDurationSetting.getFloat();
+                }
+                if (PlayerControl.GameOptions.MapId == 1)
+                {
+                    Blizzard.main.BlizzardDuration = Options.BlizzardmiraDurationSetting.getFloat();
+                }
+                if (PlayerControl.GameOptions.MapId == 2)
+                {
+                    Blizzard.main.BlizzardDuration = Options.BlizzardpolusDurationSetting.getFloat();
+                }
+                if (PlayerControl.GameOptions.MapId == 4)
+                {
+                    Blizzard.main.BlizzardDuration = Options.BlizzardairshipDurationSetting.getFloat();
+                }
                 Blizzard.main.Timer = 0;
                 Blizzard.main.OverlayTimer = DateTime.Now;
                 Blizzard.main.IsOverlay = false;
