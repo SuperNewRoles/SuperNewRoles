@@ -434,9 +434,6 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Lighter):
                     Roles.RoleClass.Lighter.LighterPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.EvilLighter):
-                    Roles.RoleClass.EvilLighter.EvilLighterPlayer.RemoveAll(ClearRemove);
-                    break;
                 case (CustomRPC.RoleId.EvilScientist):
                     Roles.RoleClass.EvilScientist.EvilScientistPlayer.RemoveAll(ClearRemove);
                     break;
@@ -1105,6 +1102,7 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.Seer;
                 }
             }
+
             //ロールチェック
 
 
