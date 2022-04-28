@@ -411,6 +411,12 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadStuntMan):
                     Roles.RoleClass.MadStuntMan.MadStuntManPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.NiceHawk):
+                    Roles.RoleClass.NiceHawk.NiceHawkPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Bakery):
+                    Roles.RoleClass.Bakery.BakeryPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -617,6 +623,13 @@ namespace SuperNewRoles
                     break;
                     case (CustomRPC.RoleId.MadStuntMan):
                     Roles.RoleClass.MadStuntMan.MadStuntManPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
+                case (CustomRPC.RoleId.NiceHawk):
+                    Roles.RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Bakery):
+                    Roles.RoleClass.Bakery.BakeryPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1118,6 +1131,20 @@ namespace SuperNewRoles
             }
             catch (Exception e)
             {
+                }
+                else if (Roles.RoleClass.NiceHawk.NiceHawkPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceHawk;
+                }
+                 else if (Roles.RoleClass.Bakery.BakeryPlayer.IsCheckListPlayerControl(player))
+                {
+                return CustomRPC.RoleId.Bakery;
+                }
+            //ロールチェック
+
+            }
+            catch (Exception e) {
+            
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
                 return RoleId.DefaultRole;
             }

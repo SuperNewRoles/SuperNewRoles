@@ -349,6 +349,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadMayorIsImpostorLight;
         public static CustomOption MadMayorVoteCount;
 
+        public static CustomRoleOption NiceHawkOption;
+        public static CustomOption NiceHawkPlayerCount;
+        public static CustomOption NiceHawkCoolTime;
+        public static CustomOption NiceHawkDurationTime;
+
         public static CustomRoleOption MadStuntManOption;
         public static CustomOption MadStuntManPlayerCount;
         public static CustomOption MadStuntManIsUseVent;
@@ -375,6 +380,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption LoversCommonTask;
         public static CustomOption LoversLongTask;
         public static CustomOption LoversShortTask;
+
+        public static CustomOption BakeryOption;
+        public static CustomOption BakeryPlayerCount;
 
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
@@ -749,6 +757,11 @@ namespace SuperNewRoles.CustomOption
             MadMayorIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMayorUseVentSetting"), false, MadMayorOption);
             MadMayorIsImpostorLight = CustomOption.Create(310, ModTranslation.getString("MadMayorImpostorLightSetting"), false, MadMayorOption);
 
+            NiceHawkOption = new CustomRoleOption(311, "NiceHawkName", RoleClass.NiceHawk.color, 1);
+            NiceHawkPlayerCount = CustomOption.Create(312, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceHawkOption);
+            NiceHawkCoolTime = CustomOption.Create(313, ModTranslation.getString("HawkCoolTimeSetting"), 15f, 1f, 120f, 2.5f, NiceHawkOption, format: "unitCouples");
+            NiceHawkDurationTime = CustomOption.Create(314, ModTranslation.getString("HawkDurationTimeSetting"), 5f, 1f, 60f, 2.5f, NiceHawkOption, format: "unitCouples");
+
             MadStuntManOption = new CustomRoleOption(301, "MadStuntManName", RoleClass.ImpostorRed, 1);
             MadStuntManPlayerCount = CustomOption.Create(302, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadStuntManOption);
             MadStuntManIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMayorUseVentSetting"), false, MadStuntManOption);
@@ -770,6 +783,9 @@ namespace SuperNewRoles.CustomOption
             LoversCommonTask = loversoption.Item1;
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
+
+            BakeryOption = new CustomRoleOption(311, "BakeryName", RoleClass.Bakery.color, 1);
+            BakeryPlayerCount = CustomOption.Create(312, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BakeryOption);
 
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);
         }

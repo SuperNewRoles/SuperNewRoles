@@ -100,6 +100,8 @@ namespace SuperNewRoles.Roles
             SideKiller.ClearAndReload();
             Survivor.ClearAndReload();
             MadMayor.ClearAndReload();
+            NiceHawk.ClearAndReload();
+            Bakery.ClearAndReload();
             MadStuntMan.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -1325,6 +1327,42 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
+             }
+        }
+        public static class NiceHawk
+        {
+            public static List<PlayerControl> NiceHawkPlayer;
+            public static Color32 color = new Color32(226, 162, 0, byte.MaxValue);
+            public static float CoolTime;
+            public static float DurationTime;
+            public static float Timer;
+            public static DateTime ButtonTimer;
+            public static float Default;
+            public static float CameraDefault;
+            public static Vector3 Postion;
+            public static float timer1;
+            public static DateTime Timer2;
+            public static void ClearAndReload()
+            {
+                NiceHawkPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.NiceHawkCoolTime.getFloat();
+                DurationTime = CustomOptions.NiceHawkDurationTime.getFloat();
+                Timer = 0;
+                ButtonTimer = DateTime.Now;
+                CameraDefault = Camera.main.orthographicSize;
+                Default = HudManager.Instance.UICamera.orthographicSize;
+                Postion = new Vector3(0, 0, 0);
+                timer1 = 0;
+                Timer2 = DateTime.Now;
+            }
+        }
+        public static class Bakery
+        {
+            public static List<PlayerControl> BakeryPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                BakeryPlayer = new List<PlayerControl>();
             }
         }
         public static class MadStuntMan
@@ -1367,5 +1405,7 @@ namespace SuperNewRoles.Roles
                 AliveTaskCount = CustomOptions.LoversAliveTaskCount.getBool();
             }
         }
+    }
+}
     } }
 

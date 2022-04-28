@@ -84,6 +84,10 @@ namespace SuperNewRoles.CustomRPC
         MadKiller,
         Survivor,
         MadMayor,
+        NiceHawk,
+        Bakery,
+        Neta,
+        MadMayor,
         MadStuntMan,
         //RoleId
     }
