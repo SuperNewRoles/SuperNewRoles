@@ -832,17 +832,17 @@
         "0" : "Sheriff's Kill Cooldown" ,
         "11" : "\u30b7\u30a7\u30ea\u30d5\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } ,
- "SheriffIsKillNeutralSetting" : {
-        "0" : "Can Kill a Neutral" ,
-        "11" : "\u7b2c\u4e09\u9663\u55b6\u3092\u30ad\u30eb\u3067\u304d\u308b"
+ "SheriffIsKillNewtralSetting" : {
+        "0" : "Can Kill a Newtral" ,
+        "11" : "\u30b7\u30a7\u30ea\u30d5\u304c\u7b2c\u4e09\u9663\u55b6\u3092\u30ad\u30eb\u3067\u304d\u308b\r\n"
         } ,
  "SheriffIsKillLoversSetting" : {
         "0" : "Can Kill a Lovers" ,
         "11" : "\u30e9\u30d0\u30fc\u30ba\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
- "SheriffIsKillMadMateSetting" : {
-        "0" : "Can Kill a Madmate" ,
-        "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30c9\u3092\u30ad\u30eb\u3067\u304d\u308b"
+ "SheriffIsKillMadRoleSetting" : {
+        "0" : "Can Kill a MadRole" ,
+        "11" : "\u30b7\u30a7\u30ea\u30d5\u304c\u30de\u30c3\u30c9\u7cfb\u5f79\u8077\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
  "SheriffIsKillMadMateYes" : {
         "0" : "Yes" ,
@@ -888,9 +888,9 @@
         "0" : "Can Kill a Neutral" ,
         "11" : "\u7b2c\u4e09\u9663\u55b6\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
- "MeetingSheriffIsKillMadMateSetting" : {
-        "0" : "Can Kill a Madmate" ,
-        "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30c9\u3092\u30ad\u30eb\u3067\u304d\u308b"
+ "MeetingSheriffIsKillMadRoleSetting" : {
+        "0" : "Can Kill a MadRole" ,
+        "11" : "\u30df\u30fc\u30c6\u30a3\u30f3\u30b0\u30b7\u30a7\u30ea\u30d5\u304c\u30de\u30c3\u30c9\u7cfb\u5f79\u8077\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
  "MeetingSheriffYes" : {
         "0" : "Yes" ,
@@ -2052,5 +2052,43 @@
         "0" : "a" ,
         "11" : "\u9003\u304c\u3055\u306a\u3044\u3088\u2661"
         } 
+        } ,
+ "MadStuntManName" : {
+        "0" : "MadStuntMan" ,
+        "11" : "\u30de\u30c3\u30c9\u30b9\u30bf\u30f3\u30c8\u30de\u30f3"
+        } ,
+ "MadStuntManTitle1" : {
+        "0" : "Prevent kills and connect with impostors." ,
+        "11" : "\u30ad\u30eb\u3092\u9632\u3044\u3067\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3068\u7e4b\u304c\u308d\u3046"
+        } ,
+ "MadStuntManDescription" : {
+        "0" : "The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the MadStuntMan can also win." ,
+        "11" : "\u5224\u5b9a\u306f\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u9663\u55b6\u3067\u3059\u304c\u3001\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u4ef2\u9593\u3067\u3059\u3002\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u52dd\u5229\u3059\u308b\u3068\u3001\u30de\u30c3\u30c9\u30e1\u30a4\u30e4\u30fc\u3082\u52dd\u5229\u3067\u304d\u307e\u3059\u3002"
+        } ,
+ "MadStuntManIsCheckImpostorSetting" : {
+        "0" : "You can check the Imposter." ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u78ba\u8a8d\u3067\u304d\u308b"
+        } ,
+ "MadStuntManUseVentSetting" : {
+        "0" : "Use Vent" ,
+        "11" : "\u30d9\u30f3\u30c8\u3092\u4f7f\u3048\u308b"
+        } ,
+ "MadStuntManVentMoveSetting" : {
+        "0" : "Move Vent" ,
+        "11" : "\u30d9\u30f3\u30c8\u3067\u52d5\u3051\u308b"
+        } ,
+ "MadStuntManImpostorLightSetting" : {
+        "0" : "Impostor Light" ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u8996\u754c"
+        } ,
+ "MadStuntManCheckImpostorTaskSetting" : {
+        "0" : "Amount of tasks that will be able to be checked (of all tasks)" ,
+        "11" : "\u78ba\u8a8d\u3067\u304d\u308b\u3088\u3046\u306b\u306a\u308b\u30bf\u30b9\u30af\u91cf\uff08\u5168\u30bf\u30b9\u30af\u5185\uff09"
+        } ,
+ "MadStuntManGuardMaxCountSetting" : {
+        "0" : "Guard Max Count" ,
+        "11" : "\u30ac\u30fc\u30c9\u3067\u304d\u308b\u56de\u6570"
+        } ,
+
 
 }

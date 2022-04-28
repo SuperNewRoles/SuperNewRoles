@@ -152,6 +152,23 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             //MadMayor.CheckedImpostor.Add(p.PlayerId);
                         }
+                        bool IsMadStuntManCheck = MadStuntMan.CheckImpostor(p);
+                        //  SuperNewRolesPlugin.Logger.LogInfo("マッドスタントマンがチェックできるか:"+IsMadStuntManCheck);
+                        if (IsMadStuntManCheck)
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (!p2.Data.Disconnected && !p2.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
+                                else if (!p2.Data.Disconnected && p2.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
+                                }
+                            }
+                            //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
+                        }
 
                         if (p.IsLovers() && p.isAlive())
                         {
@@ -283,6 +300,20 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                         }
                         if (MadMayor.CheckImpostor(p) && p.isRole(RoleId.MadMayor))
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (p.PlayerId != p2.PlayerId && !p2.Data.Disconnected && !p.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
+                                else if (!p2.Data.Disconnected && p.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
+                                }
+                            }
+                        }
+                        if (MadStuntMan.CheckImpostor(p) && p.isRole(RoleId.MadStuntMan))
                         {
                             foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                             {

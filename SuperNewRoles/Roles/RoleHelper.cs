@@ -210,6 +210,10 @@ namespace SuperNewRoles
                     returntext = CustomOptions.MadMayorIsUseVent.name + ":" + CustomOptions.MadMayorIsUseVent.getString() + "\n";
                     returntext += CustomOptions.MadMayorIsCheckImpostor.name + ":" + CustomOptions.MadMayorIsCheckImpostor.getString() + "\n";
                     break;
+                case RoleId.MadStuntMan:
+                    returntext = CustomOptions.MadStuntManIsUseVent.name + ":" + CustomOptions.MadStuntManIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.MadStuntManIsCheckImpostor.name + ":" + CustomOptions.MadStuntManIsCheckImpostor.getString() + "\n";
+                    break;
             }
             return returntext;
         }
@@ -403,6 +407,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.MadStuntMan):
+                    Roles.RoleClass.MadStuntMan.MadStuntManPlayer.Add(player);
                     break;
                 case (CustomRPC.RoleId.NiceHawk):
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.Add(player);
@@ -614,6 +621,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
                     break;
+                    case (CustomRPC.RoleId.MadStuntMan):
+                    Roles.RoleClass.MadStuntMan.MadStuntManPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
                 case (CustomRPC.RoleId.NiceHawk):
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
                     break;
@@ -681,6 +692,9 @@ namespace SuperNewRoles
                 case (RoleId.MadMayor):
                     IsTaskClear = true;
                     break;
+                case (RoleId.MadStuntMan):
+                    IsTaskClear = true;
+                    break;
                 case (RoleId.MadKiller):
                     IsTaskClear = true;
                     break;
@@ -712,6 +726,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.UseVent) return true;
             if (player.isRole(RoleId.Technician) && IsSabotage()) return true;
             if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMayor.IsUseVent) return true;
+            if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadStuntMan.IsUseVent) return true;
             return false;
         }
         public static bool IsSabotage()
@@ -741,6 +756,7 @@ namespace SuperNewRoles
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) return false;
             if (player.isRole(RoleId.MadMate) && RoleClass.MadMate.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadMayor) && RoleClass.MadMayor.IsImpostorLight) return true;
+            if (player.isRole(RoleId.MadStuntMan) && RoleClass.MadStuntMan.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -1105,6 +1121,16 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.MadMayor;
+                }
+
+                else if (Roles.RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.MadStuntMan;
+            }
+            //ロールチェック
+            }
+            catch (Exception e)
+            {
                 }
                 else if (Roles.RoleClass.NiceHawk.NiceHawkPlayer.IsCheckListPlayerControl(player))
                 {
