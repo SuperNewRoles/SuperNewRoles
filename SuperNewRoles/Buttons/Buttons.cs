@@ -22,6 +22,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SpeedBoosterBoostButton;
         public static CustomButton EvilSpeedBoosterBoostButton;
         public static CustomButton LighterLightOnButton;
+        public static CustomButton EvilLighterLightOffButton;
         public static CustomButton CustomSabotageButton;
         public static CustomButton MovingSetButton;
         public static CustomButton MovingTpButton;
@@ -637,7 +638,41 @@ namespace SuperNewRoles.Buttons
             LighterLightOnButton.buttonText = ModTranslation.getString("LighterButtonName");
             LighterLightOnButton.showButtonText = true;
 
-            ImpostorSidekickButton = new CustomButton(
+
+            //EvilLighter_‹­§’â“dƒ{ƒ^ƒ“‚Ì§Œä
+
+            EvilLighterLightOffButton = new Buttons.CustomButton(
+                () =>
+                {
+                    RoleClass.EvilLighter.IsLightOff = true;
+                    Roles.RoleClass.EvilLighter.ButtonTimer = DateTime.Now;
+                    EvilLighterLightOffButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    EvilLighter.LightOffStart();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && EvilLighter.isEvilLighter(PlayerControl.LocalPlayer); },
+                () =>
+                {
+                    if (EvilLighterLightOffButton.Timer <= 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                },
+                
+                () => { EvilLighter.EndMeeting();},
+                RoleClass.EvilLighter.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+                );
+            
+            EvilLighterLightOffButton.buttonText = ModTranslation.getString("EvilLighterButtonName");
+            EvilLighterLightOffButton.showButtonText = true;
+
+
+ImpostorSidekickButton = new CustomButton(
                 () =>
                 {
                     var target = setTarget(Crewmateonly: true);

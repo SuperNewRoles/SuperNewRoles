@@ -800,6 +800,10 @@
     "0": "Visibility during a forced power outage",
     "11": "\u5f37\u5236\u505c\u96fb\u4e2d\u306e\u8996\u754c"
   },
+  "EvilLighterButtonName": {
+    "0": "Forced power outage",
+    "11": "\u5f37\u5236\u505c\u96fb!"
+  },
   "EvilScientistName": {
     "0": "Evil Scientist",
     "11": "\u30a4\u30d3\u30eb\u30b5\u30a4\u30a8\u30f3\u30c6\u30a3\u30b9\u30c8"

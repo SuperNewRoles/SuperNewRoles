@@ -797,8 +797,12 @@
         "11" : "\u5f37\u5236\u505c\u96fb\u306e\u7d99\u7d9a\u6642\u9593"
         } ,
  "EvilLighterDownVision" : {
-        "0" : "" ,
+        "0" : "Visibility during a forced power outage" ,
         "11" : "\u5f37\u5236\u505c\u96fb\u4e2d\u306e\u8996\u754c"
+        } ,
+ "EvilLighterButtonName" : {
+        "0" : "Forced power outage" ,
+        "11" : "\u5f37\u5236\u505c\u96fb!"
         } ,
  "EvilScientistName" : {
         "0" : "Evil Scientist" ,

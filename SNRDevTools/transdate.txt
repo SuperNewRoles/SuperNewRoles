@@ -199,6 +199,7 @@ EvilLighterTitle2,Create a blackout sabotage that can further reduce your vision
 EvilLighterLightsOutCooldown,Evil Lighter Cooldown,強制停電のクールダウン
 EvilLighterLightsOutDuration,Duration of Evil Writer,強制停電の継続時間
 EvilLighterDownVision,Visibility during a forced power outage,強制停電中の視界
+EvilLighterButtonName,Forced power outage,強制停電!
 EvilScientistName,Evil Scientist,イビルサイエンティスト
 EvilScientistTitle1,Become invisible and get kills!,透明になってキルをしよう
 EvilScientistTitle2,Win with the power of science!,科学の力で勝利しよう

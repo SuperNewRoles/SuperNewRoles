@@ -150,6 +150,9 @@ namespace SuperNewRoles.Roles
             }
 
         }
+
+
+
         public static class Lighter
         {
             public static List<PlayerControl> LighterPlayer;
@@ -182,18 +185,26 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> EvilLighterPlayer;
             public static Color32 color = RoleClass.ImpostorRed;
-            public static float lightsOutCooldown = 30f;
-            public static float lightsOutDuration = 10f;
-            public static float lightsOutTimer = 0f;
+            public static float LightsOffCooldown;
+            public static float LightsOffDuration;
+            public static float LightsOffTimer;
+            public static bool IsLightOff;
             public static float DownVision;
+            public static DateTime ButtonTimer;
 
-            public static Sprite lightOutButtonSprite;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.LightsOffButton.png", 115f);
+                return buttonSprite;
+            }
 
             public static void clearAndReload()
             {
                 EvilLighterPlayer = new List<PlayerControl>();
-                lightsOutCooldown = CustomOptions.EvilLighterLightsOutCooldown.getFloat();
-                lightsOutDuration = CustomOptions.EvilLighterLightsOutDuration.getFloat();
+                LightsOffCooldown = CustomOptions.EvilLighterLightsOutCooldown.getFloat();
+                LightsOffDuration = CustomOptions.EvilLighterLightsOutDuration.getFloat();
                 DownVision = CustomOptions.EvilLighterDownVision.getFloat();
             }
             

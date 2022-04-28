@@ -198,6 +198,7 @@ EvilLighterTitle2
 EvilLighterLightsOutCooldown
 EvilLighterLightsOutDuration
 EvilLighterDownVision
+EvilLighterButtonName
 EvilScientistName
 EvilScientistTitle1
 EvilScientistTitle2
