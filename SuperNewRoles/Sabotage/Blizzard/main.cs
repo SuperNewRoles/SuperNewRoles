@@ -36,10 +36,10 @@ namespace SuperNewRoles.Sabotage.Blizzard
             OKPlayers = new List<PlayerControl>();
             main.Timer = 5f;
             main.Timer = BlizzardDuration;
-            if (PlayerControl.GameOptions.MapId == 0) Blizzard.main.BlizzardDuration = Options.BlizzardskeldDurationSetting.getFloat();
-            if (PlayerControl.GameOptions.MapId == 1) Blizzard.main.BlizzardDuration = Options.BlizzardmiraDurationSetting.getFloat();
-            if (PlayerControl.GameOptions.MapId == 2) Blizzard.main.BlizzardDuration = Options.BlizzardpolusDurationSetting.getFloat();
-            if (PlayerControl.GameOptions.MapId == 4) Blizzard.main.BlizzardDuration = Options.BlizzardairshipDurationSetting.getFloat();
+            if (PlayerControl.GameOptions.MapId == 0) Blizzard.main.ReactorTimer = Options.BlizzardskeldDurationSetting.getFloat();
+            if (PlayerControl.GameOptions.MapId == 1) Blizzard.main.ReactorTimer = Options.BlizzardmiraDurationSetting.getFloat();
+            if (PlayerControl.GameOptions.MapId == 2) Blizzard.main.ReactorTimer = Options.BlizzardpolusDurationSetting.getFloat();
+            if (PlayerControl.GameOptions.MapId == 4) Blizzard.main.ReactorTimer = Options.BlizzardairshipDurationSetting.getFloat();
         }
         public static float BlizzardDuration;
         public static float BlizzardSlowSpeedmagnification;
