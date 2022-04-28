@@ -13,22 +13,32 @@ namespace SuperNewRoles.Sabotage.Blizzard
     public static class Reactor
     {
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+        public static void Postfix()
         {
-            SuperNewRolesPlugin.Logger.LogInfo(main.Timer);
-            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)1f);
-            main.Timer = (float)((DateTime.Now + TimeSpanDate) - DateTime.Now).TotalSeconds;
-            if (main.IsFlash == true && main.Timer >= 0.1 && __instance == PlayerControl.LocalPlayer)
+            if (main.Timer <= 0 && SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard)
             {
-                ModHelpers.ShowFlash(new Color(204f / 255f, 102f / 255f, 0f / 255f));
-                main.IsFlash = false;
+                SuperNewRolesPlugin.Logger.LogInfo(main.Timer);
+                ModHelpers.ShowFlash(new Color(0, 255, 255));
+                main.OverlayTimer = DateTime.Now;
+                main.Timer = 2f;
             }
-            if (main.Timer >= 0.1)
+        }
+        /*public static void Update()
+        {
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)5f);
+            main.Timer = (float)((main.OverlayTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            if (main.Timer <= 0)
             {
-                main.IsFlash = true;
-                main.Timer = 1f;
+                main.IsOverlay = true;
             }
+            if (main.IsOverlay == true)
+            {
+                ModHelpers.ShowFlash(new Color(0, 255, 255));
+                SuperNewRolesPlugin.Logger.LogInfo("@here");
+                main.Timer = 5f;
+                main.IsOverlay = false;
             }
+        }*/
         //ここにリアクター関連を書こう
     }
 }

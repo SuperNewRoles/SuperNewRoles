@@ -33,6 +33,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
             DistanceTime = DefaultDistanceTime;
             ArrowUpdateColor = 0.25f;
             OKPlayers = new List<PlayerControl>();
+            main.Timer = 5f;
         }
         public static float BlizzardSlowSpeedmagnification;
         private static float ArrowUpdateColor = 1;
@@ -46,29 +47,29 @@ namespace SuperNewRoles.Sabotage.Blizzard
         public static bool IsLocalEnd;
         public static bool IsAllEndSabotage;
         public static float Timer;
-        public static bool IsFlash;
+        public static bool IsOverlay = false;
+        public static float MaxTimer;
+        public static DateTime OverlayTimer;
         public static void Create(InfectedOverlay __instance)
         {
             if (SabotageManager.IsOK(SabotageManager.CustomSabotage.Blizzard))
             {
-                SuperNewRolesPlugin.Logger.LogInfo("マップID:" + PlayerControl.GameOptions.MapId);
                 ButtonBehavior button = InfectedOverlay.Instantiate(__instance.allButtons[0], __instance.allButtons[0].transform.parent);
                 if (PlayerControl.GameOptions.MapId == 0)
                 {
-                  //  button.transform.position += new Vector3(5.6233f, -8.0887f, -37);
-                    button.transform.localPosition = new Vector3(- 4.92f, - 0.3f, - 1);                    
+                    button.transform.localPosition = new Vector3(-4.06f, -0.3f, -1);
                 }
                 if (PlayerControl.GameOptions.MapId == 1)
                 {
-                    button.transform.localPosition = new Vector3(0.55f, 4.3f, - 1);
+                    button.transform.localPosition = new Vector3(0.55f, 4.3f, -1);
                 }
                 if (PlayerControl.GameOptions.MapId == 2)
                 {
-                    button.transform.localPosition = new Vector3(4.28f, 0.3251f, - 1);
+                    button.transform.localPosition = new Vector3(4.28f, 0.3251f, -1);
                 }
                 if (PlayerControl.GameOptions.MapId == 4)
                 {
-                    button.transform.localPosition = new Vector3(1.42f, 0f, - 1);
+                    button.transform.localPosition = new Vector3(1.42f, 0f, -1);
                 }
                 button.spriteRenderer.sprite = IconManager.BlizzardgetButtonSprite();
                 button.OnClick = new ButtonClickedEvent();
@@ -86,6 +87,9 @@ namespace SuperNewRoles.Sabotage.Blizzard
         }
         public static void Update()
         {
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)2f);
+            main.Timer = (float)((main.OverlayTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            Blizzard.Reactor.Postfix();
             if (SabotageManager.InfectedOverlayInstance != null)
             {
                 if (IsAllEndSabotage)
@@ -95,7 +99,6 @@ namespace SuperNewRoles.Sabotage.Blizzard
                 {
                     SabotageManager.InfectedOverlayInstance.SabSystem.Timer = SabotageManager.SabotageMaxTime;
                 }
-                SuperNewRolesPlugin.Logger.LogInfo(SabotageManager.thisSabotage);
             }
             bool IsOK = true;
             /*foreach (PlayerControl p3 in PlayerControl.AllPlayerControls)
@@ -113,7 +116,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
             }*/
             if (IsOK)
             {
-              //  SabotageManager.thisSabotage = SabotageManager.CustomSabotage.None;
+                //  SabotageManager.thisSabotage = SabotageManager.CustomSabotage.None;
                 return;
             }
             if (!IsLocalEnd)
@@ -164,28 +167,6 @@ namespace SuperNewRoles.Sabotage.Blizzard
                     DistanceTime = DefaultDistanceTime;
                 }
                 UpdateTime -= Time.fixedDeltaTime;
-                /*if (UpdateTime <= 0)
-                {
-                    List<PlayerControl> target = new List<PlayerControl>();
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        if (!p.Data.Disconnected && p.isAlive())
-                        {
-                            target.Add(p);
-                        }
-                    }
-                    /*foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        if (target.Count > 0)
-                        {
-                            var index = ModHelpers.GetRandomIndex(target);
-                            OutfitManager.resetChange(p);
-                            OutfitManager.changeToPlayer(p, target[index]);
-                            target.RemoveAt(index);
-                        }
-                    }
-                   // UpdateTime = DefaultUpdateTime;
-                }*/
             }
         }
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]

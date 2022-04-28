@@ -16,8 +16,9 @@ namespace SuperNewRoles.Sabotage.Blizzard
                 if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard)
                 {
                     __instance.body.velocity /= main.BlizzardSlowSpeedmagnification;
-                    SuperNewRolesPlugin.Logger.LogInfo("@everyone");//速度遅くするやつ
                 }
+                SuperNewRolesPlugin.Logger.LogInfo(main.IsOverlay);
+                SuperNewRolesPlugin.Logger.LogInfo(main.Timer);
             }
         }
     }

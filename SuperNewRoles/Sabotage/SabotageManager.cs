@@ -88,6 +88,8 @@ namespace SuperNewRoles.Sabotage
                 Blizzard.main.BlizzardSlowSpeedmagnification = Options.BlizzardSlowSpeedmagnificationSetting.getFloat();
                 Blizzard.main.IsAllEndSabotage = Options.BlizzardIsAllEndSabotageSetting.getBool();
                 Blizzard.main.Timer = 0;
+                Blizzard.main.OverlayTimer = DateTime.Now;
+                Blizzard.main.IsOverlay = false;
             }
         }
         public static void Update()
