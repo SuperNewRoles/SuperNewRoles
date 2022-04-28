@@ -23,22 +23,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
                 main.Timer = 2f;
             }
         }
-        /*public static void Update()
-        {
-            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)5f);
-            main.Timer = (float)((main.OverlayTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
-            if (main.Timer <= 0)
-            {
-                main.IsOverlay = true;
-            }
-            if (main.IsOverlay == true)
-            {
-                ModHelpers.ShowFlash(new Color(0, 255, 255));
-                SuperNewRolesPlugin.Logger.LogInfo("@here");
-                main.Timer = 5f;
-                main.IsOverlay = false;
-            }
-        }*/
         //ここにリアクター関連を書こう
+        //開発楽しいいいいいいいいいいいいいいいいいいいいいいい
     }
 }
