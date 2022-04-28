@@ -1407,5 +1407,4 @@ namespace SuperNewRoles.Roles
         }
     }
 }
-    } }
 

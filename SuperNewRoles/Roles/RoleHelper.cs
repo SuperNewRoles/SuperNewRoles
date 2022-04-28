@@ -1122,23 +1122,17 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.MadMayor;
                 }
-
                 else if (Roles.RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MadStuntMan;
-            }
-            //ロールチェック
-            }
-            catch (Exception e)
-            {
+                {
+                    return CustomRPC.RoleId.MadStuntMan;
                 }
                 else if (Roles.RoleClass.NiceHawk.NiceHawkPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.NiceHawk;
                 }
-                 else if (Roles.RoleClass.Bakery.BakeryPlayer.IsCheckListPlayerControl(player))
+                else if (Roles.RoleClass.Bakery.BakeryPlayer.IsCheckListPlayerControl(player))
                 {
-                return CustomRPC.RoleId.Bakery;
+                    return CustomRPC.RoleId.Bakery;
                 }
             //ロールチェック
 
