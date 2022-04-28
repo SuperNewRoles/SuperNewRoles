@@ -195,8 +195,9 @@ LighterButtonName
 EvilLighterName
 EvilLighterTitle1
 EvilLighterTitle2
-EvilLigtherCoolDownSetting
-EvilLigtherDurationSetting
+EvilLighterLightsOutCooldown
+EvilLighterLightsOutDuration
+EvilLighterDownVision
 EvilScientistName
 EvilScientistTitle1
 EvilScientistTitle2

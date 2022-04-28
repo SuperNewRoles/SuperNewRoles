@@ -182,20 +182,21 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> EvilLighterPlayer;
             public static Color32 color = RoleClass.ImpostorRed;
-            //public static float CoolTime;
-            //public static float DurationTime;
             public static float lightsOutCooldown = 30f;
             public static float lightsOutDuration = 10f;
             public static float lightsOutTimer = 0f;
+            public static float DownVision;
+
             public static Sprite lightOutButtonSprite;
 
             public static void clearAndReload()
             {
                 EvilLighterPlayer = new List<PlayerControl>();
-                //CoolTime = CustomOptions.EvilLighterCoolTime.getFloat();
-                //DurationTime = CustomOptions.EvilLighterDurationTime.getFloat();
+                lightsOutCooldown = CustomOptions.EvilLighterLightsOutCooldown.getFloat();
+                lightsOutDuration = CustomOptions.EvilLighterLightsOutDuration.getFloat();
+                DownVision = CustomOptions.EvilLighterDownVision.getFloat();
             }
-
+            
         }
         public static class EvilScientist
         {
@@ -207,7 +208,7 @@ namespace SuperNewRoles.Roles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png.png", 115f);
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png", 115f);
                 return buttonSprite;
             }
             public static void clearAndReload()

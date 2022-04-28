@@ -143,6 +143,8 @@ namespace SuperNewRoles.Roles
 
                     // Seer show flash and add dead player position
 
+                    /*//「／＊」置く場所
+
                     int i;
                     for (i = 0; i < 16; i++)
                     {
@@ -155,7 +157,7 @@ namespace SuperNewRoles.Roles
                             ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
                         }
                     }
-
+                    *///「＊／」置く場所
                     if (RoleClass.Seer.deadBodyPositions != null) RoleClass.Seer.deadBodyPositions.Add(target.transform.position);
 
 

@@ -59,10 +59,9 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption EvilLighterOption;
         public static CustomOption EvilLighterPlayerCount;
-        public static CustomOption EvilLighterCoolTime;
-        public static CustomOption EvilLighterDurationTime;
-        public static CustomOption EvilLighterLightsOutCooldown;//強制停電クールダウン
-        public static CustomOption EvilLighterLightsOutDuration;//強制停電持続時間
+        public static CustomOption EvilLighterLightsOutCooldown;
+        public static CustomOption EvilLighterLightsOutDuration;
+        public static CustomOption EvilLighterDownVision;
 
 
         public static CustomRoleOption EvilScientistOption;
@@ -453,11 +452,9 @@ namespace SuperNewRoles.CustomOption
 
             EvilLighterOption = new CustomRoleOption(18, "EvilLighterName", RoleClass.ImpostorRed, 1);
             EvilLighterPlayerCount = CustomOption.Create(19, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilLighterOption);
-            EvilLighterCoolTime = CustomOption.Create(20, ModTranslation.getString("EvilLigtherCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, EvilLighterOption, format: "unitSeconds");
-            EvilLighterDurationTime = CustomOption.Create(21, ModTranslation.getString("EvilLigtherDurationSetting"), 10f, 1f, 20f, 0.5f, EvilLighterOption, format: "unitSeconds");
-            EvilLighterLightsOutCooldown = CustomOption.Create(252, "Trickster Lights Out Cooldown", 30f, 10f, 60f, 5f, EvilLighterLightsOutCooldown, format: "unitSeconds");
-            EvilLighterLightsOutDuration = CustomOption.Create(253, "Trickster Lights Out Duration", 15f, 5f, 60f, 2.5f, EvilLighterLightsOutDuration, format: "unitSeconds");
-
+            EvilLighterLightsOutCooldown = CustomOption.Create(20, "EvilLighterLightsOutCooldown", 30f, 10f, 60f, 5f, EvilLighterOption, format: "unitSeconds");
+            EvilLighterLightsOutDuration = CustomOption.Create(21, "EvilLighterLightsOutDuration", 15f, 5f, 60f, 2.5f, EvilLighterOption, format: "unitSeconds");
+            EvilLighterDownVision = CustomOption.Create(318, ModTranslation.getString("EvilLighterDownVision"), 0.25f, 0f, 5f, 0.25f, EvilLighterOption);
 
             EvilScientistOption = new CustomRoleOption(22, "EvilScientistName", RoleClass.ImpostorRed, 1);
             EvilScientistPlayerCount = CustomOption.Create(34, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilScientistOption);

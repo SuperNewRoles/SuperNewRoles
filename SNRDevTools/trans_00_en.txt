@@ -197,6 +197,7 @@ Darken Vision
 Create a blackout sabotage that can further reduce your vision!
 Evil Lighter Cooldown
 Duration of Evil Writer
+Visibility during a forced power outage
 Evil Scientist
 Become invisible and get kills!
 Win with the power of science!
