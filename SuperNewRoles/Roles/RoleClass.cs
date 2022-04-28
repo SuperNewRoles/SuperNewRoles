@@ -1342,14 +1342,6 @@ namespace SuperNewRoles.Roles
             public static bool limitSoulDuration = false;
             public static int mode = 0;
 
-            private static Sprite SoulSprite;
-            public static Sprite getSoulSprite()
-            {
-                if (SoulSprite) return SoulSprite;
-                SoulSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Soul.png", 500f);
-                return SoulSprite;
-            }
-
 
             public static void ClearAndReload()
             {
