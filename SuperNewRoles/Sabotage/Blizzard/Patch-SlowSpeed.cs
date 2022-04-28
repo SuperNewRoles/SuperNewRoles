@@ -17,8 +17,6 @@ namespace SuperNewRoles.Sabotage.Blizzard
                 {
                     __instance.body.velocity /= main.BlizzardSlowSpeedmagnification;
                 }
-                SuperNewRolesPlugin.Logger.LogInfo(main.IsOverlay);
-                SuperNewRolesPlugin.Logger.LogInfo(main.Timer);
             }
         }
     }

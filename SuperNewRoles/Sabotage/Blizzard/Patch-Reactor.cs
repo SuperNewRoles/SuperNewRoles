@@ -23,7 +23,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
         {
             if (main.Timer <= 0 && SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(main.Timer);
+            //    SuperNewRolesPlugin.Logger.LogInfo(main.Timer);
                 ModHelpers.ShowFlash(new Color(0, 255, 255));
                 main.OverlayTimer = DateTime.Now;
                 main.Timer = 2f;

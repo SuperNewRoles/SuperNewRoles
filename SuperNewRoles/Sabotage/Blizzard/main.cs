@@ -62,6 +62,28 @@ namespace SuperNewRoles.Sabotage.Blizzard
         {
             if (SabotageManager.IsOK(SabotageManager.CustomSabotage.Blizzard))
             {
+                    int i = 0;
+                    foreach (ButtonBehavior Sabotagebuttons in __instance.allButtons)
+                    {
+                        if (PlayerControl.GameOptions.MapId == 1)
+                        {
+                            if (i == 2)
+                            {
+                                Sabotagebuttons.transform.localPosition = new Vector3(-0.5f, 1.964f, -1);
+                            }
+                            SuperNewRolesPlugin.Logger.LogInfo(Sabotagebuttons.name + ":" + i);
+                            i++;
+                        }
+                    if (PlayerControl.GameOptions.MapId == 0)
+                    {
+                        if (i == 6)
+                        {
+                            Sabotagebuttons.transform.localPosition = new Vector3(0.12f, - 0.36f, - 1);
+                        }
+                        SuperNewRolesPlugin.Logger.LogInfo(Sabotagebuttons.name + ":" + i);
+                        i++;
+                    }
+                    }
                 ButtonBehavior button = InfectedOverlay.Instantiate(__instance.allButtons[0], __instance.allButtons[0].transform.parent);
                 if (PlayerControl.GameOptions.MapId == 0)
                 {
@@ -95,7 +117,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
         }
         public static void Update()
         {
-            SuperNewRolesPlugin.Logger.LogInfo(main.ReactorTimer);
+            //   SuperNewRolesPlugin.Logger.LogInfo(main.ReactorTimer);
             var TimeSpanDate = new TimeSpan(0, 0, 0, (int)2f);
             main.Timer = (float)((main.OverlayTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
             var TimeSpanDate1 = new TimeSpan(0, 0, 0, (int)BlizzardDuration);
