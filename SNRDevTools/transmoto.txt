@@ -509,3 +509,5 @@ NiceHawkTitle1
 NiceHawkTitle2
 BakeryName
 BakeryTitle1
+MadJesterName
+MadJesterTitle1

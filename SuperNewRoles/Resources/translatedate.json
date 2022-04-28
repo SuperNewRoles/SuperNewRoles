@@ -2044,13 +2044,13 @@
         "0" : "Would you like some breads?" ,
         "11" : "\u713c\u304d\u305f\u3066\u306e\u30d1\u30f3\u306f\u3044\u304b\u304c\uff1f"
         } ,
- "NetaName" : {
-        "0" : "a" ,
-        "11" : "\u958b\u767a\u304b\u3089\u9003\u3052\u308b\u306a"
+ "MadJesterName" : {
+        "0" : "MadJester" ,
+        "11" : "\u30de\u30c3\u30c9\u3066\u308b\u3066\u308b"
         } ,
- "NetaTitle1" : {
-        "0" : "a" ,
-        "11" : "\u9003\u304c\u3055\u306a\u3044\u3088\u2661"
+ "MadJesterTitle1" : {
+        "0" : "KaihatuKaraNigeruna" ,
+        "11" : "\u958b\u767a\u304b\u3089\u9003\u3052\u308b\u306a(\u4eee\u7f6e\u304d)"
         } 
 
 }

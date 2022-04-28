@@ -373,6 +373,16 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption BakeryOption;
         public static CustomOption BakeryPlayerCount;
 
+        public static CustomRoleOption MadJesterOption;
+        public static CustomOption MadJesterPlayerCount;
+        public static CustomOption MadJesterIsCheckImpostor;
+        public static CustomOption MadJesterCommonTask;
+        public static CustomOption MadJesterShortTask;
+        public static CustomOption MadJesterLongTask;
+        public static CustomOption MadJesterCheckImpostorTask;
+        public static CustomOption MadJesterIsUseVent;
+        public static CustomOption MadJesterIsImpostorLight;
+
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
@@ -770,6 +780,19 @@ namespace SuperNewRoles.CustomOption
 
             BakeryOption = new CustomRoleOption(311, "BakeryName", RoleClass.Bakery.color, 1);
             BakeryPlayerCount = CustomOption.Create(312, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BakeryOption);
+
+            MadJesterOption = new CustomRoleOption(313, "MadMateName", RoleClass.ImpostorRed, 1);
+            MadJesterPlayerCount = CustomOption.Create(314, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadJesterOption);
+            MadJesterIsCheckImpostor = CustomOption.Create(315, ModTranslation.getString("MadMateIsCheckImpostorSetting"), false, MadJesterOption);
+            var madjesteroption = SelectTask.TaskSetting(316, 317, 318, MadJesterIsCheckImpostor);
+            MadJesterCommonTask = madmayoroption.Item1;
+            MadJesterShortTask = madmayoroption.Item2;
+            MadJesterLongTask = madmayoroption.Item3;
+            //MadMayorIsNotTask = madmayoroption.Item4;
+            MadJesterCheckImpostorTask = CustomOption.Create(308, ModTranslation.getString("MadMateCheckImpostorTaskSetting"), rates4, MadJesterIsCheckImpostor);
+            MadJesterIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMateUseVentSetting"), false, MadJesterOption);
+            MadJesterIsImpostorLight = CustomOption.Create(310, ModTranslation.getString("MadMateImpostorLightSetting"), false, MadJesterOption);
+
 
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);
         }

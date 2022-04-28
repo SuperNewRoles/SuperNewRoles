@@ -102,6 +102,7 @@ namespace SuperNewRoles.Roles
             MadMayor.ClearAndReload();
             NiceHawk.ClearAndReload();
             Bakery.ClearAndReload();
+            MadJester.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1362,6 +1363,33 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 BakeryPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class MadJester
+        {
+            public static List<PlayerControl> MadJesterPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsImpostorCheck;
+            public static int ImpostorCheckTask;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static void ClearAndReload()
+            {
+                MadJesterPlayer = new List<PlayerControl>();
+                IsImpostorCheck = CustomOptions.MadJesterIsCheckImpostor.getBool();
+                IsUseVent = CustomOptions.MadJesterIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.MadJesterCommonTask.getFloat();
+                int Long = (int)CustomOptions.MadJesterLongTask.getFloat();
+                int Short = (int)CustomOptions.MadJesterShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadJesterCheckImpostorTask.getString().Replace("%", "")) / 100f));
             }
         }
         //新ロールクラス
