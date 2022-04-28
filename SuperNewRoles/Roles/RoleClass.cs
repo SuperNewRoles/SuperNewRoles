@@ -184,6 +184,10 @@ namespace SuperNewRoles.Roles
             public static Color32 color = RoleClass.ImpostorRed;
             //public static float CoolTime;
             //public static float DurationTime;
+            public static float lightsOutCooldown = 30f;
+            public static float lightsOutDuration = 10f;
+            public static float lightsOutTimer = 0f;
+            public static Sprite lightOutButtonSprite;
 
             public static void clearAndReload()
             {
