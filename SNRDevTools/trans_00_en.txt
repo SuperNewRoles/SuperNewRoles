@@ -195,8 +195,11 @@ Light!
 Evil Lighter
 Darken Vision
 Create a blackout sabotage that can further reduce your vision!
-Evil Lighter Cooldown
+Lights Out Cooldown
+Lights Out Duration
+Visibility during a forced power outage
 Duration of Evil Writer
+Lights Are Out!
 Evil Scientist
 Become invisible and get kills!
 Win with the power of science!
@@ -515,3 +518,11 @@ UseVent
 Impostor Light
 MadHawk
 See it all.
+Seer
+You will see players die
+Mode
+Show Death Flash + Souls
+Show Death Flash
+Show Souls
+Limit Soul Duration
+Soul Duration

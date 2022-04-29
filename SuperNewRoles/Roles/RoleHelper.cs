@@ -231,9 +231,6 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Lighter):
                     Roles.RoleClass.Lighter.LighterPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.EvilLighter):
-                    Roles.RoleClass.EvilLighter.EvilLighterPlayer.Add(player);
-                    break;
                 case (CustomRPC.RoleId.EvilScientist):
                     Roles.RoleClass.EvilScientist.EvilScientistPlayer.Add(player);
                     break;
@@ -449,9 +446,6 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.Lighter):
                     Roles.RoleClass.Lighter.LighterPlayer.RemoveAll(ClearRemove);
-                    break;
-                case (CustomRPC.RoleId.EvilLighter):
-                    Roles.RoleClass.EvilLighter.EvilLighterPlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.EvilScientist):
                     Roles.RoleClass.EvilScientist.EvilScientistPlayer.RemoveAll(ClearRemove);
@@ -897,11 +891,7 @@ namespace SuperNewRoles
                 }
                 else if (Roles.RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player))
                 {
-                    return CustomRPC.RoleId.Lighter;
-                }
-                else if (Roles.RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player))
-                {
-                    return CustomRPC.RoleId.EvilLighter;
+                    return CustomRPC.RoleId.Lighter;                
                 }
                 else if (Roles.RoleClass.EvilScientist.EvilScientistPlayer.IsCheckListPlayerControl(player))
                 {
@@ -1159,6 +1149,7 @@ namespace SuperNewRoles
             {
                 return CustomRPC.RoleId.Seer;
             }
+
             //ロールチェック
 
             }

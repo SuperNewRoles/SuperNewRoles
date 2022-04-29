@@ -739,6 +739,42 @@ namespace SuperNewRoles.Buttons
             SideKillerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
             SideKillerSidekickButton.showButtonText = true;
 
+
+            EvilLighterLightOffButton = new Buttons.CustomButton(
+                () =>
+                {
+                    RoleClass.EvilLighter.IsLightOff = true;
+                    Roles.RoleClass.EvilLighter.ButtonTimer = DateTime.Now;
+                    EvilLighterLightOffButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    EvilLighter.LightOffStart();
+                },
+                
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && EvilLighter.isEvilLighter(PlayerControl.LocalPlayer); },
+                () =>
+                
+                {
+                    if (EvilLighterLightOffButton.Timer <= 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                },
+                
+                
+                () => { EvilLighter.EndMeeting();},
+
+                RoleClass.EvilLighter.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+                );
+
+            EvilLighterLightOffButton.buttonText = ModTranslation.getString("EvilLighterButtonName");
+            EvilLighterLightOffButton.showButtonText = true;
+
+
             RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(HudManager.Instance.KillButton.cooldownTimerText, HudManager.Instance.KillButton.cooldownTimerText.transform.parent);
             RoleClass.SerialKiller.SuicideKillText.text = "";
             RoleClass.SerialKiller.SuicideKillText.enableWordWrapping = false;
@@ -746,6 +782,9 @@ namespace SuperNewRoles.Buttons
             RoleClass.SerialKiller.SuicideKillText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
 
             setCustomButtonCooldowns();
+
+
+
         }
 
     }

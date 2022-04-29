@@ -196,323 +196,333 @@ LighterButtonName,Light!,ライト!
 EvilLighterName,Evil Lighter,イビル ライター
 EvilLighterTitle1,Darken Vision,視界を暗くしよう
 EvilLighterTitle2,Create a blackout sabotage that can further reduce your vision!,視界をさらに狭くできる停電のサボタージュを発生させよう
-EvilLigtherCoolDownSetting,Evil Lighter Cooldown,イビルライターのクールダウン
-EvilLigtherDurationSetting,Duration of Evil Writer,イビルライターの継続時間
-EvilScientistName,Evil Scientist,イビルサイエンティスト
-EvilScientistTitle1,Become invisible and get kills!,透明になってキルをしよう
-EvilScientistTitle2,Win with the power of science!,科学の力で勝利しよう
-EvilScientistCoolDownSetting,Evil Scientist Invisibility Cooldown,イビルサイエンティストの透明クールダウン
-EvilScientistDurationSetting,Evil Scientist's Invisibility Duration,イビルサイエンティストの透明継続時間
-SheriffName,Sheriff,シェリフ
-SheriffTitle1,Kill the outsider!,人外をキルしよう
-SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう
-SheriffCoolDownSetting,Sheriff's Kill Cooldown,シェリフのキルクールダウン
-SheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる
-SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる
-SheriffIsKillMadMateSetting,Can Kill a Madmate,マッドメイドをキルできる
-SheriffIsKillMadMateYes,Yes,できる
-SheriffIsKillMadMateNo,No,できない
-SheriffMaxKillCountSetting,Maximum number of kills for Sheriff,シェリフの最大キル数
-SherifKillButtonName,Kill,キル
-SheriffNumTextName,{0} shots remaining.,残り{0}発
-MeetingSheriffName,Meeting Sheriff,ミーティング シェリフ
-MeetingSheriffTitle1,Kill an outsider in a meeting!,人外を会議でキルしよう
-MeetingSheriffTitle2,Kill an outsider in a meeting and lead your crewmates to victory!,人外を会議でキルしてクルーメイトを勝利に導こう
-MeetingSheriffTitle3,Kill an outsider in a meeting to prevent a power play,人外を会議でキルしてパワープレイを防ごう
-MeetingSheriffTitle4,Kill an outsider in a meeting to prevent a PP,人外を会議でキルしてPPを防ごう
-MeetingSheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる
-MeetingSheriffIsKillMadMateSetting,Can Kill a Madmate,マッドメイドをキルできる
-MeetingSheriffYes,Yes,できる
-MeetingSheriffNo,No,できない
-MeetingSheriffMaxKillCountSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数
-MeetingSheriffMeetingmultipleKillSetting,Can you get multiple kills in one meeting?,一会議中に複数キルできるか
-JackalName,Jackal,ジャッカル
-JackalTitle1,Try to kill Imposters and Crew Mates,インポスターとクルーメイトをキルしよう
-JackalTitle2,Kill the other team to win!,他陣営をキルして勝利しよう
-JackalTitle3,Let's just kill them all.,全員ぶち殺そう
-JackalCoolDownSetting,Jackal's kill cool time,ジャッカルのキルクールタイム
-JackalUseVentSetting,Use Vent,ベントを使える
-JackalUseSaboSetting,Use Sabotage,サボタージュが使える
-JackalCreateSidekickSetting,Jackal can make a Sidekick,ジャッカルがサイドキックを作れる
-JackalNewJackalCreateSidekickSetting,New Jackal can make Sidekick,新ジャッカルがサイドキックを作れる
-JackalOn,On,オン
-JackalOff,Off,オフ
-JackalCreateSidekickButtonName,Sidekick!,サイドキック！
-SidekickName,Sidekick,サイドキック
-SidekickTitle1,Help Jackal,ジャッカルを助けよう
-TeleporterName,Teleporter,テレポーター
-TeleporterTitle1,Let's get everyone together,みんなを集めよう
-TeleporterTitle2,Let's get everyone away from the corpse position.,みんなを死体位置から遠ざけよう
-TeleporterCoolDownSetting,Teleporter Sabotage Kill Cool Down,テレポーターサボタージュのキルクールダウン
-TeleporterTeleportTimeSetting,Time to be teleported,テレポートされるまでの時間
-TeleporterTeleportButton,Teleport,テレポート！
-TeleporterTPTextMessage,The teleporter teleported you to {0}!,テレポーターが{0}にテレポートさせた!
-SpiritMediumName,Medium,霊媒師
-SpiritMediumTitle1,Divine the dead person's position,やられた人を占い役職を調べよう
-SpiritMediumDisplaySetting,Position visibility,陣営表示にする
-SpiritMediumDetailMode,Detail display,詳細表示
-SpiritMediumEncampMode,Position Display,陣営表示
-SpiritMediumMaxCountSetting,Number of times you can divine,占える回数
-SpeedBoosterName,Speed Booster,スピードブースター
-SpeedBoosterTitle1,Make your speed faster!,スピードを速くしよう
-SpeedBoosterTitle2,Lead your crew to victory with super speed!,スーパースピードでクルーを勝利に導こう
-SpeedBoosterCoolDownSetting,Speed Up Cooldown,スピードアップクールダウン
-SpeedBoosterDurationSetting,Duration of speed-up,スピードアップの継続時間
-SpeedBoosterPlusSpeedSetting,Double your speed,スピードの倍速
-SpeedBoosterBoostButtonName,Speed\nBoost,スピード\nブースト
-EvilSpeedBoosterName,Evil Speed Booster,イビルスピードブースター
-EvilSpeedBoosterTitle1,Make your speed faster!,スピードを速くしよう
-EvilSpeedBoosterTitle2,Use your super speed to lead your Imposter to victory!,スーパースピードでインポスターを勝利に導こう
-EvilSpeedBoosterTitle3,Get a kill with super speed!,スーパースピードでキルをしよう
-EvilSpeedBoosterTitle4,Let's run around and kill everyone.,走りまくって皆を瞬殺しよう
-EvilSpeedBoosterCoolDownSetting,Speed Up Cooldown,スピードアップクールダウン
-EvilSpeedBoosterDurationSetting,Speedup duration,スピードアップの継続時間
-EvilSpeedBoosterPlusSpeedSetting,Double Speed,スピードの倍速
-EvilSpeedBoosterIsNotSpeedBooster,If this position is selected the speed booster will not be selected.,この役職が選ばれるとスピードブースターが選ばれない
-EvilSpeedBoosterBoostButtonName,Speed\nBoost,スピード\nブースト
-TaskerName,Tasker,タスカー
-TaskerTitle1,Finish the task and win the Imposter!,タスクを終わらせてインポスターを勝利させよう
-TaskerTitle2,Try to finish the task!,タスクを頑張って終わらせよう
-TaskerTaskSetting,Task Amount,タスク量
-TaskerIsKillSetting,Killable,キルできる
-DoorrName,Doorr,ドアー
-DoorrTitle1,Let's open and close the door.,ドアを開け閉めしよう
-DoorrTitle2,Close the door to block the imposter!,ドアを閉めてインポスターを妨害しよう
-DoorrCoolTimeSetting,Door Cool Time,ドアクールタイム
-DoorrButtonText,Door Open Or Close,ドアを開け閉めする
-EvilDoorrName,Evil Doorr,イビルドアー
-EvilDoorrTitle1,Open and close doors!,ドアを開け閉めしよう
-EvilDoorrTitle2,Try to sabotage your crewmates!,クルーメイトを妨害しよう
-EvilDoorrTitle3,Open and close the door immediately to block your crewmate!,すぐにドアを開け閉めしてクルーメイトを妨害しよう
-EvilDoorrCoolTimeSetting,Door Cool Time,ドアクールタイム
-SealdorName,Sealder,シールダー
-SealdorTitle1,Prevent outsider kills.,人外のキルを防ごう
-SealdorTitle2,Shield yourself!,自分にシールドを張ろう
-SealdorTitle3,Try to block a foreigner's kill!,人外のキルを妨害しよう
-SealdorCoolTimeSetting,Shield Cool Time,シールドクールタイム
-SealdorDurationSetting,Shield duration,シールド継続時間
-FreezerName,Freezer,フリーザー
-FreezerTitle1,Stop everyone and sabotage your crewmates!,みんなを止めてクルーメイトを妨害しよう
+EvilLighterLightsOutCooldown,Lights Out Cooldown,強制停電のクールダウン
+EvilLighterLightsOutDuration,Lights Out Duration,強制停電の持続時間
+EvilLighterDownVision,Visibility during a forced power outage,強制停電中の視界
+EvilLighterButtonName,Duration of Evil Writer,イビルライターの継続時間
+EvilScientistName,Lights Are Out!,強制停電!
+EvilScientistTitle1,Evil Scientist,イビルサイエンティスト
+EvilScientistTitle2,Become invisible and get kills!,透明になってキルをしよう
+EvilScientistCoolDownSetting,Win with the power of science!,科学の力で勝利しよう
+EvilScientistDurationSetting,Evil Scientist Invisibility Cooldown,イビルサイエンティストの透明クールダウン
+SheriffName,Evil Scientist's Invisibility Duration,イビルサイエンティストの透明継続時間
+SheriffTitle1,Sheriff,シェリフ
+SheriffTitle2,Kill the outsider!,人外をキルしよう
+SheriffCoolDownSetting,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう
+SheriffIsKillNeutralSetting,Sheriff's Kill Cooldown,シェリフのキルクールダウン
+SheriffIsKillLoversSetting,Can Kill a Neutral,第三陣営をキルできる
+SheriffIsKillMadMateSetting,Can Kill a Lovers,ラバーズをキルできる
+SheriffIsKillMadMateYes,Can Kill a Madmate,マッドメイドをキルできる
+SheriffIsKillMadMateNo,Yes,できる
+SheriffMaxKillCountSetting,No,できない
+SherifKillButtonName,Maximum number of kills for Sheriff,シェリフの最大キル数
+SheriffNumTextName,Kill,キル
+MeetingSheriffName,{0} shots remaining.,残り{0}発
+MeetingSheriffTitle1,Meeting Sheriff,ミーティング シェリフ
+MeetingSheriffTitle2,Kill an outsider in a meeting!,人外を会議でキルしよう
+MeetingSheriffTitle3,Kill an outsider in a meeting and lead your crewmates to victory!,人外を会議でキルしてクルーメイトを勝利に導こう
+MeetingSheriffTitle4,Kill an outsider in a meeting to prevent a power play,人外を会議でキルしてパワープレイを防ごう
+MeetingSheriffIsKillNeutralSetting,Kill an outsider in a meeting to prevent a PP,人外を会議でキルしてPPを防ごう
+MeetingSheriffIsKillMadMateSetting,Can Kill a Neutral,第三陣営をキルできる
+MeetingSheriffYes,Can Kill a Madmate,マッドメイドをキルできる
+MeetingSheriffNo,Yes,できる
+MeetingSheriffMaxKillCountSetting,No,できない
+MeetingSheriffMeetingmultipleKillSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数
+JackalName,Can you get multiple kills in one meeting?,一会議中に複数キルできるか
+JackalTitle1,Jackal,ジャッカル
+JackalTitle2,Try to kill Imposters and Crew Mates,インポスターとクルーメイトをキルしよう
+JackalTitle3,Kill the other team to win!,他陣営をキルして勝利しよう
+JackalCoolDownSetting,Let's just kill them all.,全員ぶち殺そう
+JackalUseVentSetting,Jackal's kill cool time,ジャッカルのキルクールタイム
+JackalUseSaboSetting,Use Vent,ベントを使える
+JackalCreateSidekickSetting,Use Sabotage,サボタージュが使える
+JackalNewJackalCreateSidekickSetting,Jackal can make a Sidekick,ジャッカルがサイドキックを作れる
+JackalOn,New Jackal can make Sidekick,新ジャッカルがサイドキックを作れる
+JackalOff,On,オン
+JackalCreateSidekickButtonName,Off,オフ
+SidekickName,Sidekick!,サイドキック！
+SidekickTitle1,Sidekick,サイドキック
+TeleporterName,Help Jackal,ジャッカルを助けよう
+TeleporterTitle1,Teleporter,テレポーター
+TeleporterTitle2,Let's get everyone together,みんなを集めよう
+TeleporterCoolDownSetting,Let's get everyone away from the corpse position.,みんなを死体位置から遠ざけよう
+TeleporterTeleportTimeSetting,Teleporter Sabotage Kill Cool Down,テレポーターサボタージュのキルクールダウン
+TeleporterTeleportButton,Time to be teleported,テレポートされるまでの時間
+TeleporterTPTextMessage,Teleport,テレポート！
+SpiritMediumName,The teleporter teleported you to {0}!,テレポーターが{0}にテレポートさせた!
+SpiritMediumTitle1,Medium,霊媒師
+SpiritMediumDisplaySetting,Divine the dead person's position,やられた人を占い役職を調べよう
+SpiritMediumDetailMode,Position visibility,陣営表示にする
+SpiritMediumEncampMode,Detail display,詳細表示
+SpiritMediumMaxCountSetting,Position Display,陣営表示
+SpeedBoosterName,Number of times you can divine,占える回数
+SpeedBoosterTitle1,Speed Booster,スピードブースター
+SpeedBoosterTitle2,Make your speed faster!,スピードを速くしよう
+SpeedBoosterCoolDownSetting,Lead your crew to victory with super speed!,スーパースピードでクルーを勝利に導こう
+SpeedBoosterDurationSetting,Speed Up Cooldown,スピードアップクールダウン
+SpeedBoosterPlusSpeedSetting,Duration of speed-up,スピードアップの継続時間
+SpeedBoosterBoostButtonName,Double your speed,スピードの倍速
+EvilSpeedBoosterName,Speed\nBoost,スピード\nブースト
+EvilSpeedBoosterTitle1,Evil Speed Booster,イビルスピードブースター
+EvilSpeedBoosterTitle2,Make your speed faster!,スピードを速くしよう
+EvilSpeedBoosterTitle3,Use your super speed to lead your Imposter to victory!,スーパースピードでインポスターを勝利に導こう
+EvilSpeedBoosterTitle4,Get a kill with super speed!,スーパースピードでキルをしよう
+EvilSpeedBoosterCoolDownSetting,Let's run around and kill everyone.,走りまくって皆を瞬殺しよう
+EvilSpeedBoosterDurationSetting,Speed Up Cooldown,スピードアップクールダウン
+EvilSpeedBoosterPlusSpeedSetting,Speedup duration,スピードアップの継続時間
+EvilSpeedBoosterIsNotSpeedBooster,Double Speed,スピードの倍速
+EvilSpeedBoosterBoostButtonName,If this position is selected the speed booster will not be selected.,この役職が選ばれるとスピードブースターが選ばれない
+TaskerName,Speed\nBoost,スピード\nブースト
+TaskerTitle1,Tasker,タスカー
+TaskerTitle2,Finish the task and win the Imposter!,タスクを終わらせてインポスターを勝利させよう
+TaskerTaskSetting,Try to finish the task!,タスクを頑張って終わらせよう
+TaskerIsKillSetting,Task Amount,タスク量
+DoorrName,Killable,キルできる
+DoorrTitle1,Doorr,ドアー
+DoorrTitle2,Let's open and close the door.,ドアを開け閉めしよう
+DoorrCoolTimeSetting,Close the door to block the imposter!,ドアを閉めてインポスターを妨害しよう
+DoorrButtonText,Door Cool Time,ドアクールタイム
+EvilDoorrName,Door Open Or Close,ドアを開け閉めする
+EvilDoorrTitle1,Evil Doorr,イビルドアー
+EvilDoorrTitle2,Open and close doors!,ドアを開け閉めしよう
+EvilDoorrTitle3,Try to sabotage your crewmates!,クルーメイトを妨害しよう
+EvilDoorrCoolTimeSetting,Open and close the door immediately to block your crewmate!,すぐにドアを開け閉めしてクルーメイトを妨害しよう
+SealdorName,Door Cool Time,ドアクールタイム
+SealdorTitle1,Sealder,シールダー
+SealdorTitle2,Prevent outsider kills.,人外のキルを防ごう
+SealdorTitle3,Shield yourself!,自分にシールドを張ろう
+SealdorCoolTimeSetting,Try to block a foreigner's kill!,人外のキルを妨害しよう
+SealdorDurationSetting,Shield Cool Time,シールドクールタイム
+FreezerName,Shield duration,シールド継続時間
+FreezerTitle1,Freezer,フリーザー
+FreezerTitle2,Stop everyone and sabotage your crewmates!,みんなを止めてクルーメイトを妨害しよう
 FreezerTitle2,Try to stop everyone and sabotage the task!,みんなを止めてタスクの妨害をしよう
-FreezerTitle2,Let's put them all on ice.,全員を氷漬けにしよう
-FreezerCoolTimeSetting,Freeze Cool Time,フリーズクールタイム
-FreezerDurationSetting,Freeze duration,フリーズ継続時間
-SpeederName,Speeder,スピーダー
-SpeederTitle1,Slow everyone down and sabotage your crewmates!,みんなを遅くしてクルーメイトを妨害しよう
-SpeederTitle2,Try to slow everyone down and sabotage the task!,みんなを遅くしてタスクの妨害をしよう
-SpeederCoolTimeSetting,Sabotage Cool Time,サボタージュクールタイム
-SpeederDurationTimeSetting,Sabotage duration,サボタージュ継続時間
-GuesserName,Guesser,ゲッサー
-GuesserTitle1,Let's punch out the outsider.,人外を打ち抜こう
-GuesserTitle2,Guess the position of the outsider,人外の役職を当てよう
-GuesserOneMeetingShortSetting,Multiple hits in one meeting,1会議に複数回打てる
-GuesserShortMaxCountSetting,Number of times you can hit,打てる回数
-EvilGuesserName,Evil Guesser,イビルゲッサー
-EvilGuesserTitle1,Guess the position of the camp other than Imposter.,インポスター以外の陣営の役職を当てよう
-EvilGuesserOneMeetingShortSetting,Multiple hits in one meeting,人外の役職を当てよう
-EvilGuesserShortMaxCountSetting,Number of times you can hit,1会議に複数回打てる
-VultureName,Vulture,ヴァルチャー
-VultureTitle1,Let's eat a corpse.,死体を食べよう
-VultureCoolDownSetting,Corpse cooldown,死体クールダウン
-VultureDeadBodyCountSetting,Victory corpse count,勝利死体数
-NiceScientistName,Nice Scientist,ナイスサイエンティスト
-NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう
-NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう
-NiceScientistCoolDownSetting,Cool Time,クールタイム
-NiceScientistDurationSetting,Duration Time,継続時間
-ClergymanName,Clergyman,聖職者
-ClergymanTitle1,Let's sabotage the outsider.,人外の妨害をしよう
-ClergymanTitle2,Let's obstruct the outsider's view.,人外の視界を妨害しよう
-ClergymanCoolDownSetting,Cool Time,クールタイム
-ClergymanDurationTimeSetting,Duration Time,継続時間
-ClergymanDownVisionSetting,Impostor Down Vision.,実行時の視界
-ClergymanLightOutButtonName,Light Down,ライトダウン
-ClergymanLightOutMessage,The Clergyman is blocking my view!,聖職者が視界を妨害しています！
-MadMateName,Mad Mate,マッドメイト
-MadMateTitle1,Let's help the Imposter.,インポスターを助けよう
-MadMateDescription,The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。インポスターが勝利すると、マッドメイトも勝利できます。
-MadMateIsCheckImpostorSetting,You can check the Imposter.,インポスターが確認できる
-MadMateCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内)
-MadMateUseVentSetting,Use Vent,ベントに入れる
-MadMateVentMoveSetting,Move Vent,ベントで動ける
-MadMateImpostorLightSetting,Impostor Light,インポスターの視界
-BaitName,Bait,ベイト
-BaitTitle1,Bait your enemies,相手に通報させよう
-BaitDescription,If you are killed you can force the person who killed you to report you.,自分がキルされると、キルしてきた相手に強制的に通報させることができます。
-BaitReportTimeSetting,Report Time,通報までの時間
-HomeSecurityGuardName,Home Security Guard,自宅警備員
-HomeSecurityGuardTitle1,Guard My Home,自分たちの家を守ろう
-HomeSecurityGuardDescription,It is a Crewmate with no tasks.,タスクがないクルーメイトです。
-StuntManName,Stunt Man,スタントマン
-StuntManTitle1,Guard Impostor Kill,インポスターのキルを防ごう
-StuntManDescription,It can prevent a set number of kills unconditionally. If a kill is prevented a text will appear in the meeting stating that you were protected by a guardian angel.,無条件で設定回数だけキルを防げます。キルを防いだ場合、会議に守護天使に守られたというのテキストが表示されます。
-StuntManGuardMaxCountSetting,Guard Max Count,ガードできる回数
-MovingName,Moving,ムービング
-MovingTitle1,Let's run away from the Imposter.,インポスターから逃げよう
-MovingCoolDownSetting,Teleportation Cool Time,テレポートクールタイム
-MovingButtonSetName,Location Set,場所セット
-MovingButtonTpName,Teleport,テレポート
-QuarreledName,Quarreled,クラード
-QuarreledIntro,{0} and it's Quarreled!,{0}とクラードになりました！
-QuarreledTeamCountSetting,Max Teams,チーム数
-QuarreledParSetting,Only Crewmate Team,排出される確率
-QuarreledOnlyCrewMateSetting,Discharge probability,クルーメイト陣営のみ
-QuarreledWinText,Quarreled{0}Win,クラード{0}勝利
-OpportunistName,Opportunist,オポチュニスト
-OpportunistTitle1,We'll survive.,生き残ろう
-OpportunistTitle2,Let's try not to die.,死なないようにしよう
-OpportunistDescription,If you are still alive by the end of the game you get an additional win.,ゲーム終了時までに生き残っていると、追加勝利できます。
-BestfalsechargeName,Best False Charge,ベスト冤罪ヤー
-BestfalsechargeTitle1,Lets' Task!,タスクをしよう
-BestfalsechargeDescription,After the first meeting it dies.,最初の会議が終わると死にます。
-NiceGamblerName,Nice Gambler,ナイスギャンブラー
-NiceGamblerTitle1,Lets' Gambler!,ギャンブルをしよう
-NiceGamblerUseCountSetting,Use Count,使える回数
-EvilGamblerName,Evil Gambler,イビルギャンブラー
-EvilGamblerTitle1,Lets' Kill!,キルをしよう
-EvilGamblerSucTimeSetting,Kill cool time on success,成功時のキルクールタイム
-EvilGamblerNotSucTimeSetting,Kill Cool Time on Failure,失敗時のキルクールタイム
-EvilGamblerSucParSetting,Success probability,成功確率
-ResearcherName,Researcher,研究者
-ResearcherTitle1,Let's do some research.,研究をしよう
-ResearcherOneTurnSetting,Maximum number of samples per turn,1ターンの最大サンプル数
-SelfBomberName,Self Bomber,自爆魔
-SelfBomberTitle1,Lets' Self Bomb!,自爆をしよう
-SelfBomberScopeSetting,Range (radius),範囲(半径)
-SelfBomberButtonName,Self Bomb,自爆
-GodName,God,神
-GodTitle1,You Are God!!,あなたは神だ
-GodDescription,If you survive to the end you take away the win. Everyone's position is known.,最後まで生き残っていると、勝利を奪い取ります。全員の役職がわかります。
-GodViewVoteSetting,I know who to vote for.,投票先がわかる
-GodIsEndTaskWinSetting,You have to finish the task to win.,タスクを終わらせないと勝利できない
-AllCleanerName,All Cleaner,オールクリーナー
-AllCleanerTitle1,Let's get rid of the corpse.,死体を消そう
-AllCleanerCountSetting,Number of times it can be used in one game,1試合中に使える回数
-AllCleanerButtonName,Clean,クリーン
-NiceNekomataName,Nice Nekomata,ナイス猫又
-NiceNekomataTitle1,Let's take him on the road.,道連れにしよう
-NiceNekomataTitle2,Let's have a human mess.,人外ガチャをしよう
-NiceNekomataTitle3,Let's mess around!,ガチャしようぜ！
-NiceNekomataDescription,If you are exiled at a meeting you take one of them with you on the road.,自分が会議で追放されると、誰か一人を道連れにします。
-NiceNekomataIsChainSetting,Chain Nekomata,猫又同士が連鎖する
-EvilNekomataName,Evil Nekomata,イビル猫又
-EvilNekomataTitle1,Let's take him on the road.,道連れにしよう
-EvilNekomataDescription,If you are expelled from the meeting you will take one person with you including your friends.,自分が会議で追放されると、仲間含む誰か一人を道連れにします。
-JackalFriendsName,Jackal Friends,ジャッカルフレンズ
-JackalFriendsTitle1,Help Jackal.,ジャッカルを助けよう
-JackalFriendsTitle2,I'll help you kill them all.,全員ぶち殺す手伝いをしよう
-JackalFriendsIsCheckJackalSetting,Is Check Jackal,ジャッカルをチェックできる
-DoctorName,Doctor,ドクター
-DoctorTitle1,Check Vitals,バイタルをチェックしよう
-DoctorVitalName,Vital,バイタル
-CountChangerName,Count Changer,カウントチェンジャー
-CountChangerTitle1,Let's change it,変更しよう
-CountChangerTitle2,Let's swap the judgment with the enemy.,敵と判定を入れ替えよう
-CountChangerMaxCountSetting,Maximum count,最大回数
-CountChangerNextTurnSetting,Reflected in next turn,次のターンに反映
-CountChangerButtonName,Change,チェンジ
-PursuerName,Pursuer,追跡者
-PursuerTitle1,Let's track the other camps.,他陣営を追跡しよう
-PursuerTitle2,Let's get our bearings.,位置を把握しよう
-PursuerTitle3,Let's go after him and kill him.,後を追ってキルしよう
-MinimalistName,Minimalist,ミニマリスト
-MinimalistTitle1,Let's Kill.,キルをしよう
-MinimalistTitle2,Get rid of unnecessary stuff and kill efficiently!,不必要なものを捨て、効率よくキルしよう
-MinimalistKillCoolSetting,Minimalist Kill Cool Time,ミニマリストのキルクールタイムの設定
-MinimalistVentSetting,Use Vent,ベントが使える
-MinimalistSaboSetting,Use Sabotage,サボタージュが使える
-MinimalistReportSetting,Use DeadBody Report,通報ができる
-HawkName,Hawk,ホーク
-HawkTitle1,Let's figure out what we're doing.,行動を把握しよう
-HawkCoolTimeSetting,Cool Time,クールタイム
-HawkDurationTimeSetting,Duration,継続時間
-HawkButtonName,Hawk Eye,ホークアイ
-EgoistName,Egotist,エゴイスト
-EgoistTitle1,We can survive this.,生き残ろう
-EgoistDescription,Imposter judgment. The imposter appears to be a peer. If all the Imposters are dead and the Imposter's victory condition is achieved (except Sabotage) the Egoist wins.,インポスター判定です。インポスターからは仲間に見えます。インポスターがすべて死んでいる状態で、インポスターの勝利条件を達成する(サボタージュ以外)とエゴイストの勝利です。
-EgoistUseVentSetting,I can use Vent.,ベントを使える
-EgoistUseSaboSetting,Can use Sabotage,サボタージュが使える
-EgoistImpostorLightSetting,Imposter's Vision,インポスターの視界
-EgoistUseKillSetting,Can use Kill,キルできる
-NiceRedRidingHoodName,NiceRedRidingHood,ナイス赤ずきん
-NiceRedRidingHoodTitle1,Come back to life,生き返ろう
-NiceRedRidingHoodCount,Maximum number of revives,最大生き返り回数
-EvilEraserName,Evil Eraser,イビルイレイサー
-EvilEraserTitle1,Let's wipe out their abilities.,能力を消し去ろう
-EvilEraserMaxCountSetting,Max Erase Count,最大削除回数
-WorkpersonName,Work person,仕事人
-WorkpersonTitle1,Let's do the work and win!,仕事をして勝利しよう
-MagazinerName,Magaziner,マガジナー
-MagazinerTitle1,Save your kills!,キルを貯めよう
-MagazinerSetTimeSetting,Kill cool time after magazine use,マガジン使用後のキルクールタイム
-MagazinerAddButtonName,Save,貯める
-MagazinerGetButtonName,Set,セット
-LoversName,Lovers.,ラバーズ
-LoversIntro,I'm in love with {0}!,{0}と恋に落ちてしまった！
-LoversTeamCountSetting,Number of couples,カップル数
-LoversParSetting,Discharge probability,排出確率
-LoversOnlyCrewMateSetting,Chosen only by Cluemate,クルーメイトのみに選ばれる
-LoversSingleTeamSetting,Single camp,単独陣営
-LoversSameDieSetting,Two people die at the same time,2人同時に死ぬ
-LoversAliveTaskCountSetting,Tasks are counted when surviving,生存時、タスクがカウントされる
-LoversDuplicationQuarreledSetting,Does not overlap with Quarreled,クラードと重複しない
-MayorName,Mayor,メイヤー
-MayorTitle1,Let's add our vote at the meeting.,会議で票を追加で入れよう
-MayorVoteCountSetting,Mayer's vote count,メイヤーの票数
-trueloverName,True Lover,純愛者
-trueloverTitle1,Let's fall in love at first sight,一目惚れしよう
-trueloverloveButtonName,Love,一目惚れ
-TechnicianName,Technician,技術者
-TechnicianTitle1,Use technology to repair sabotage!,技術を駆使してサボタージュを修理しよう
-SerialKillerName,Serial Killer,シリアルキラー
-SerialKillerTitle1,Kill and Survive!,キルをして生存しよう
-SerialKillerSuicideTimeSetting,Time to suicide,自殺までの時間
-SerialKillerKillTimeSetting,Kill time,キルクールタイム
-SerialKillerIsMeetingResetSetting,Resets when you enter a meeting.,会議に入るとリセットされる
-SerialKillerSuicideText,{0} seconds to suicide,自殺まで後{0}秒
-OverKillerName,OverKiller,オーバーキラー
-OverKillerTitle1,Let's cover up the other kills.,他のキルを隠蔽しよう
-OverKillerKillCoolTimeSetting,OverKiller Kill Cool Time,オーバーキラーのキルクールタイム
-OverKillerKillCountSetting,Number of bodies per,一回あたりの死体数
-LevelingerName,Levelinger,レベリンガー
-LevelingerTitle1,Save CP and raise your level!,経験値を貯めてレベルをあげよう
-LevelingerOneKillXPSetting,XP gained from kills,キルで得られる経験値
-LevelingerUpLevelXPSetting,Number of experience levels gained,レベルがあがる経験値数
-LevelingerGetPowerSetting, Abilities gained at level,レベルで得られる能力
-LevelingerSettingKeep,Keep previous ability,前の能力をキープ
-LevelingerSettingTwoVote,Increased by 1 vote,1投票数増加
-LevelingerReviveXPSetting,Can be revived by spending XP.,経験値を消費して復活できる
-LevelingerUseXPReviveSetting,Amount of XP to use,使用する経験値量
-EvilMovingName,EvilMoving,イビルムービング
-EvilMovingTitle1,Lets Teleport Kill!,テレポートをしてキルしよう
-AmnesiacName,Amnesiac,忘却者
-AmnesiacTitle1,Let's call the cops and join them.,通報して仲間になろう
-SideKillerName,SideKiller,サイドキラー
-SideKillerTitle1,Make friends and win!,仲間を作って勝利しよう
-SideKillerKillCoolTimeSetting,SideKiller Kill Cool Time.,サイドキラーのキルクールタイム
-SideKillerMadKillerKillCoolTimeSetting,MadKiller Kill Cool Time.,マッドキラーのキルクールタイム
-MadKillerName,MadKiller,マッドキラー
-MadKillerTitle1,Let's promote and kill!,昇格してキルをしよう
-SurvivorName,Survivor,サバイバー
-SurvivorTitle1,Survive and Kill!,生き残りながらキルをしよう
-SurvivorKillCoolTimeSetting,Kill Cool Time,キルクールタイム
-MadMayorName,MadMayor,マッドメイヤー
-MadMayorTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう
-MadMayorVoteCountSetting,MadMayer's vote count,マッドメイヤーの票数
-MadMayorDescription,The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmayor can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。インポスターが勝利すると、マッドメイヤーも勝利できます。
-MadMayorIsCheckImpostorSetting,You can check the Imposter.,インポスターが確認できる
-MadMayorUseVentSetting,Use Vent,ベントを使える
-MadMayorVentMoveSetting,Move Vent,ベントで動ける
-MadMayorImpostorLightSetting,Impostor Light,インポスターの視界
-MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）
-NiceHawkName,NiceHawk,ナイスホーク
-NiceHawkTitle1,See it all.,全てを見渡せ
-NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう
-BakeryName,Bakery,パン屋
-BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？
-MadStuntManName,MadStuntMan,マッドスタントマン
-MadStuntManTitle1,Prevent kills and connect with impostors.,キルを防いでインポスターと繋がろう
-MadStuntManUseVentSetting,UseVent,ベントを使える
-MadStuntManImpostorLightSetting,ImpostorLight,インポスターの視界
-MadHawkName,MadHawk,マッドホーク
-MadHawkTitle1,See it all.,すべてを見渡そう
+FreezerCoolTimeSetting,Let's put them all on ice.,全員を氷漬けにしよう
+FreezerDurationSetting,Freeze Cool Time,フリーズクールタイム
+SpeederName,Freeze duration,フリーズ継続時間
+SpeederTitle1,Speeder,スピーダー
+SpeederTitle2,Slow everyone down and sabotage your crewmates!,みんなを遅くしてクルーメイトを妨害しよう
+SpeederCoolTimeSetting,Try to slow everyone down and sabotage the task!,みんなを遅くしてタスクの妨害をしよう
+SpeederDurationTimeSetting,Sabotage Cool Time,サボタージュクールタイム
+GuesserName,Sabotage duration,サボタージュ継続時間
+GuesserTitle1,Guesser,ゲッサー
+GuesserTitle2,Let's punch out the outsider.,人外を打ち抜こう
+GuesserOneMeetingShortSetting,Guess the position of the outsider,人外の役職を当てよう
+GuesserShortMaxCountSetting,Multiple hits in one meeting,1会議に複数回打てる
+EvilGuesserName,Number of times you can hit,打てる回数
+EvilGuesserTitle1,Evil Guesser,イビルゲッサー
+EvilGuesserOneMeetingShortSetting,Guess the position of the camp other than Imposter.,インポスター以外の陣営の役職を当てよう
+EvilGuesserShortMaxCountSetting,Multiple hits in one meeting,人外の役職を当てよう
+VultureName,Number of times you can hit,1会議に複数回打てる
+VultureTitle1,Vulture,ヴァルチャー
+VultureCoolDownSetting,Let's eat a corpse.,死体を食べよう
+VultureDeadBodyCountSetting,Corpse cooldown,死体クールダウン
+NiceScientistName,Victory corpse count,勝利死体数
+NiceScientistTitle1,Nice Scientist,ナイスサイエンティスト
+NiceScientistTitle2,Turn invisible and find the bodies!,透明になって死体を発見しよう
+NiceScientistCoolDownSetting,Use the power of science to win!,科学の力で勝利しよう
+NiceScientistDurationSetting,Cool Time,クールタイム
+ClergymanName,Duration Time,継続時間
+ClergymanTitle1,Clergyman,聖職者
+ClergymanTitle2,Let's sabotage the outsider.,人外の妨害をしよう
+ClergymanCoolDownSetting,Let's obstruct the outsider's view.,人外の視界を妨害しよう
+ClergymanDurationTimeSetting,Cool Time,クールタイム
+ClergymanDownVisionSetting,Duration Time,継続時間
+ClergymanLightOutButtonName,Impostor Down Vision.,実行時の視界
+ClergymanLightOutMessage,Light Down,ライトダウン
+MadMateName,The Clergyman is blocking my view!,聖職者が視界を妨害しています！
+MadMateTitle1,Mad Mate,マッドメイト
+MadMateDescription,Let's help the Imposter.,インポスターを助けよう
+MadMateIsCheckImpostorSetting,The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmate can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。インポスターが勝利すると、マッドメイトも勝利できます。
+MadMateCheckImpostorTaskSetting,You can check the Imposter.,インポスターが確認できる
+MadMateUseVentSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内)
+MadMateVentMoveSetting,Use Vent,ベントに入れる
+MadMateImpostorLightSetting,Move Vent,ベントで動ける
+BaitName,Impostor Light,インポスターの視界
+BaitTitle1,Bait,ベイト
+BaitDescription,Bait your enemies,相手に通報させよう
+BaitReportTimeSetting,If you are killed you can force the person who killed you to report you.,自分がキルされると、キルしてきた相手に強制的に通報させることができます。
+HomeSecurityGuardName,Report Time,通報までの時間
+HomeSecurityGuardTitle1,Home Security Guard,自宅警備員
+HomeSecurityGuardDescription,Guard My Home,自分たちの家を守ろう
+StuntManName,It is a Crewmate with no tasks.,タスクがないクルーメイトです。
+StuntManTitle1,Stunt Man,スタントマン
+StuntManDescription,Guard Impostor Kill,インポスターのキルを防ごう
+StuntManGuardMaxCountSetting,It can prevent a set number of kills unconditionally. If a kill is prevented a text will appear in the meeting stating that you were protected by a guardian angel.,無条件で設定回数だけキルを防げます。キルを防いだ場合、会議に守護天使に守られたというのテキストが表示されます。
+MovingName,Guard Max Count,ガードできる回数
+MovingTitle1,Moving,ムービング
+MovingCoolDownSetting,Let's run away from the Imposter.,インポスターから逃げよう
+MovingButtonSetName,Teleportation Cool Time,テレポートクールタイム
+MovingButtonTpName,Location Set,場所セット
+QuarreledName,Teleport,テレポート
+QuarreledIntro,Quarreled,クラード
+QuarreledTeamCountSetting,{0} and it's Quarreled!,{0}とクラードになりました！
+QuarreledParSetting,Max Teams,チーム数
+QuarreledOnlyCrewMateSetting,Only Crewmate Team,排出される確率
+QuarreledWinText,Discharge probability,クルーメイト陣営のみ
+OpportunistName,Quarreled{0}Win,クラード{0}勝利
+OpportunistTitle1,Opportunist,オポチュニスト
+OpportunistTitle2,We'll survive.,生き残ろう
+OpportunistDescription,Let's try not to die.,死なないようにしよう
+BestfalsechargeName,If you are still alive by the end of the game you get an additional win.,ゲーム終了時までに生き残っていると、追加勝利できます。
+BestfalsechargeTitle1,Best False Charge,ベスト冤罪ヤー
+BestfalsechargeDescription,Lets' Task!,タスクをしよう
+NiceGamblerName,After the first meeting it dies.,最初の会議が終わると死にます。
+NiceGamblerTitle1,Nice Gambler,ナイスギャンブラー
+NiceGamblerUseCountSetting,Lets' Gambler!,ギャンブルをしよう
+EvilGamblerName,Use Count,使える回数
+EvilGamblerTitle1,Evil Gambler,イビルギャンブラー
+EvilGamblerSucTimeSetting,Lets' Kill!,キルをしよう
+EvilGamblerNotSucTimeSetting,Kill cool time on success,成功時のキルクールタイム
+EvilGamblerSucParSetting,Kill Cool Time on Failure,失敗時のキルクールタイム
+ResearcherName,Success probability,成功確率
+ResearcherTitle1,Researcher,研究者
+ResearcherOneTurnSetting,Let's do some research.,研究をしよう
+SelfBomberName,Maximum number of samples per turn,1ターンの最大サンプル数
+SelfBomberTitle1,Self Bomber,自爆魔
+SelfBomberScopeSetting,Lets' Self Bomb!,自爆をしよう
+SelfBomberButtonName,Range (radius),範囲(半径)
+GodName,Self Bomb,自爆
+GodTitle1,God,神
+GodDescription,You Are God!!,あなたは神だ
+GodViewVoteSetting,If you survive to the end you take away the win. Everyone's position is known.,最後まで生き残っていると、勝利を奪い取ります。全員の役職がわかります。
+GodIsEndTaskWinSetting,I know who to vote for.,投票先がわかる
+AllCleanerName,You have to finish the task to win.,タスクを終わらせないと勝利できない
+AllCleanerTitle1,All Cleaner,オールクリーナー
+AllCleanerCountSetting,Let's get rid of the corpse.,死体を消そう
+AllCleanerButtonName,Number of times it can be used in one game,1試合中に使える回数
+NiceNekomataName,Clean,クリーン
+NiceNekomataTitle1,Nice Nekomata,ナイス猫又
+NiceNekomataTitle2,Let's take him on the road.,道連れにしよう
+NiceNekomataTitle3,Let's have a human mess.,人外ガチャをしよう
+NiceNekomataDescription,Let's mess around!,ガチャしようぜ！
+NiceNekomataIsChainSetting,If you are exiled at a meeting you take one of them with you on the road.,自分が会議で追放されると、誰か一人を道連れにします。
+EvilNekomataName,Chain Nekomata,猫又同士が連鎖する
+EvilNekomataTitle1,Evil Nekomata,イビル猫又
+EvilNekomataDescription,Let's take him on the road.,道連れにしよう
+JackalFriendsName,If you are expelled from the meeting you will take one person with you including your friends.,自分が会議で追放されると、仲間含む誰か一人を道連れにします。
+JackalFriendsTitle1,Jackal Friends,ジャッカルフレンズ
+JackalFriendsTitle2,Help Jackal.,ジャッカルを助けよう
+JackalFriendsIsCheckJackalSetting,I'll help you kill them all.,全員ぶち殺す手伝いをしよう
+DoctorName,Is Check Jackal,ジャッカルをチェックできる
+DoctorTitle1,Doctor,ドクター
+DoctorVitalName,Check Vitals,バイタルをチェックしよう
+CountChangerName,Vital,バイタル
+CountChangerTitle1,Count Changer,カウントチェンジャー
+CountChangerTitle2,Let's change it,変更しよう
+CountChangerMaxCountSetting,Let's swap the judgment with the enemy.,敵と判定を入れ替えよう
+CountChangerNextTurnSetting,Maximum count,最大回数
+CountChangerButtonName,Reflected in next turn,次のターンに反映
+PursuerName,Change,チェンジ
+PursuerTitle1,Pursuer,追跡者
+PursuerTitle2,Let's track the other camps.,他陣営を追跡しよう
+PursuerTitle3,Let's get our bearings.,位置を把握しよう
+MinimalistName,Let's go after him and kill him.,後を追ってキルしよう
+MinimalistTitle1,Minimalist,ミニマリスト
+MinimalistTitle2,Let's Kill.,キルをしよう
+MinimalistKillCoolSetting,Get rid of unnecessary stuff and kill efficiently!,不必要なものを捨て、効率よくキルしよう
+MinimalistVentSetting,Minimalist Kill Cool Time,ミニマリストのキルクールタイムの設定
+MinimalistSaboSetting,Use Vent,ベントが使える
+MinimalistReportSetting,Use Sabotage,サボタージュが使える
+HawkName,Use DeadBody Report,通報ができる
+HawkTitle1,Hawk,ホーク
+HawkCoolTimeSetting,Let's figure out what we're doing.,行動を把握しよう
+HawkDurationTimeSetting,Cool Time,クールタイム
+HawkButtonName,Duration,継続時間
+EgoistName,Hawk Eye,ホークアイ
+EgoistTitle1,Egotist,エゴイスト
+EgoistDescription,We can survive this.,生き残ろう
+EgoistUseVentSetting,Imposter judgment. The imposter appears to be a peer. If all the Imposters are dead and the Imposter's victory condition is achieved (except Sabotage) the Egoist wins.,インポスター判定です。インポスターからは仲間に見えます。インポスターがすべて死んでいる状態で、インポスターの勝利条件を達成する(サボタージュ以外)とエゴイストの勝利です。
+EgoistUseSaboSetting,I can use Vent.,ベントを使える
+EgoistImpostorLightSetting,Can use Sabotage,サボタージュが使える
+EgoistUseKillSetting,Imposter's Vision,インポスターの視界
+NiceRedRidingHoodName,Can use Kill,キルできる
+NiceRedRidingHoodTitle1,NiceRedRidingHood,ナイス赤ずきん
+NiceRedRidingHoodCount,Come back to life,生き返ろう
+EvilEraserName,Maximum number of revives,最大生き返り回数
+EvilEraserTitle1,Evil Eraser,イビルイレイサー
+EvilEraserMaxCountSetting,Let's wipe out their abilities.,能力を消し去ろう
+WorkpersonName,Max Erase Count,最大削除回数
+WorkpersonTitle1,Work person,仕事人
+MagazinerName,Let's do the work and win!,仕事をして勝利しよう
+MagazinerTitle1,Magaziner,マガジナー
+MagazinerSetTimeSetting,Save your kills!,キルを貯めよう
+MagazinerAddButtonName,Kill cool time after magazine use,マガジン使用後のキルクールタイム
+MagazinerGetButtonName,Save,貯める
+LoversName,Set,セット
+LoversIntro,Lovers.,ラバーズ
+LoversTeamCountSetting,I'm in love with {0}!,{0}と恋に落ちてしまった！
+LoversParSetting,Number of couples,カップル数
+LoversOnlyCrewMateSetting,Discharge probability,排出確率
+LoversSingleTeamSetting,Chosen only by Cluemate,クルーメイトのみに選ばれる
+LoversSameDieSetting,Single camp,単独陣営
+LoversAliveTaskCountSetting,Two people die at the same time,2人同時に死ぬ
+LoversDuplicationQuarreledSetting,Tasks are counted when surviving,生存時、タスクがカウントされる
+MayorName,Does not overlap with Quarreled,クラードと重複しない
+MayorTitle1,Mayor,メイヤー
+MayorVoteCountSetting,Let's add our vote at the meeting.,会議で票を追加で入れよう
+trueloverName,Mayer's vote count,メイヤーの票数
+trueloverTitle1,True Lover,純愛者
+trueloverloveButtonName,Let's fall in love at first sight,一目惚れしよう
+TechnicianName,Love,一目惚れ
+TechnicianTitle1,Technician,技術者
+SerialKillerName,Use technology to repair sabotage!,技術を駆使してサボタージュを修理しよう
+SerialKillerTitle1,Serial Killer,シリアルキラー
+SerialKillerSuicideTimeSetting,Kill and Survive!,キルをして生存しよう
+SerialKillerKillTimeSetting,Time to suicide,自殺までの時間
+SerialKillerIsMeetingResetSetting,Kill time,キルクールタイム
+SerialKillerSuicideText,Resets when you enter a meeting.,会議に入るとリセットされる
+OverKillerName,{0} seconds to suicide,自殺まで後{0}秒
+OverKillerTitle1,OverKiller,オーバーキラー
+OverKillerKillCoolTimeSetting,Let's cover up the other kills.,他のキルを隠蔽しよう
+OverKillerKillCountSetting,OverKiller Kill Cool Time,オーバーキラーのキルクールタイム
+LevelingerName,Number of bodies per,一回あたりの死体数
+LevelingerTitle1,Levelinger,レベリンガー
+LevelingerOneKillXPSetting,Save CP and raise your level!,経験値を貯めてレベルをあげよう
+LevelingerUpLevelXPSetting,XP gained from kills,キルで得られる経験値
+LevelingerGetPowerSetting,Number of experience levels gained,レベルがあがる経験値数
+LevelingerSettingKeep, Abilities gained at level,レベルで得られる能力
+LevelingerSettingTwoVote,Keep previous ability,前の能力をキープ
+LevelingerReviveXPSetting,Increased by 1 vote,1投票数増加
+LevelingerUseXPReviveSetting,Can be revived by spending XP.,経験値を消費して復活できる
+EvilMovingName,Amount of XP to use,使用する経験値量
+EvilMovingTitle1,EvilMoving,イビルムービング
+AmnesiacName,Lets Teleport Kill!,テレポートをしてキルしよう
+AmnesiacTitle1,Amnesiac,忘却者
+SideKillerName,Let's call the cops and join them.,通報して仲間になろう
+SideKillerTitle1,SideKiller,サイドキラー
+SideKillerKillCoolTimeSetting,Make friends and win!,仲間を作って勝利しよう
+SideKillerMadKillerKillCoolTimeSetting,SideKiller Kill Cool Time.,サイドキラーのキルクールタイム
+MadKillerName,MadKiller Kill Cool Time.,マッドキラーのキルクールタイム
+MadKillerTitle1,MadKiller,マッドキラー
+SurvivorName,Let's promote and kill!,昇格してキルをしよう
+SurvivorTitle1,Survivor,サバイバー
+SurvivorKillCoolTimeSetting,Survive and Kill!,生き残りながらキルをしよう
+MadMayorName,Kill Cool Time,キルクールタイム
+MadMayorTitle1,MadMayor,マッドメイヤー
+MadMayorVoteCountSetting,Let's abuse our power at the meeting.,会議で権力を乱用しよう
+MadMayorDescription,MadMayer's vote count,マッドメイヤーの票数
+MadMayorIsCheckImpostorSetting,The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmayor can also win.,判定はクルーメイト陣営ですが、インポスターの仲間です。インポスターが勝利すると、マッドメイヤーも勝利できます。
+MadMayorUseVentSetting,You can check the Imposter.,インポスターが確認できる
+MadMayorVentMoveSetting,Use Vent,ベントを使える
+MadMayorImpostorLightSetting,Move Vent,ベントで動ける
+MadMayorCheckImpostorTaskSetting,Impostor Light,インポスターの視界
+NiceHawkName,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）
+NiceHawkTitle1,NiceHawk,ナイスホーク
+NiceHawkTitle2,See it all.,全てを見渡せ
+BakeryName,Let's catch the crime.,犯行を捉えよう
+BakeryTitle1,Bakery,パン屋
+MadStuntManName,Would you like some breads?,焼きたてのパンはいかが？
+MadStuntManTitle1,MadStuntman,マッドスタントマン
+MadStuntManUseVentSetting,Prevent kills and connect with impostors.,キルを防いでインポスターと繋がろう
+MadStuntManImpostorLightSetting,UseVent,ベントを使える
+MadHawkName,Impostor Light,インポスターの視界
+MadHawkTitle1,MadHawk,マッドホーク
+SeerName,See it all.,すべてを見渡そう
+SeerTitle1,Seer,シーア
+SeerMode,You will see players die,船員の気配を感じ取ろう
+SeerModeBoth,Mode,モード
+SeerModeFlash,Show Death Flash + Souls,死の点滅＆幽霊が見える
+SeerModeSouls,Show Death Flash,死の点滅が見える
+SeerLimitSoulDuration,Show Souls,幽霊が見える
+SeerSoulDuration,Limit Soul Duration,時間経過で幽霊が消える
