@@ -23,9 +23,14 @@ namespace SuperNewRoles.Roles
 
         /*---------------------------------------------------------------------------------------------------------------------*/
 
+        public static void ResetCoolDown()
+        {
+            HudManagerStartPatch.LighterLightOnButton.MaxTimer = RoleClass.Lighter.CoolTime;
+            RoleClass.Lighter.ButtonTimer = DateTime.Now;
+        }
         public static bool isEvilLighter(PlayerControl Player)
         {
-            if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(Player))
+            if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(Player))
             {
                 return true;
             }
@@ -36,12 +41,12 @@ namespace SuperNewRoles.Roles
         }
         public static void LightOffStart()
         {
-            RoleClass.Lighter.IsLightOn = true;
+            RoleClass.EvilLighter.IsLightOff = true;
         }
 
         public static void EndMeeting()
         {
-            HudManagerStartPatch.EvilLighterLightOffButton.MaxTimer = RoleClass.Lighter.CoolTime;
+            HudManagerStartPatch.EvilLighterLightOffButton.MaxTimer = RoleClass.EvilLighter.LightOutCooldown;
             RoleClass.EvilLighter.ButtonTimer = DateTime.Now;
             RoleClass.EvilLighter.IsLightOff = false;
         }

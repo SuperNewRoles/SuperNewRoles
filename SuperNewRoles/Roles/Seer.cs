@@ -14,10 +14,13 @@ using SuperNewRoles.Patches;
 using System.Reflection;
 
 
+
 namespace SuperNewRoles.Roles
 {
     class Seer
     {
+
+
         private static Sprite SoulSprite;
         public static Sprite getSoulSprite()
         {
@@ -26,7 +29,10 @@ namespace SuperNewRoles.Roles
             return SoulSprite;
         }
 
+
+        
         class ExileControllerWrapUpPatch
+        
         {
 
             [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
@@ -53,7 +59,7 @@ namespace SuperNewRoles.Roles
 
                 // Seer spawn souls
                 int h;
-                for (h = 0; h < 16; h++)
+                for (h = 0; h < 16 ; h++)
                 {
                     if (RoleClass.Seer.deadBodyPositions != null && RoleClass.Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer[h] && (RoleClass.Seer.mode == 0 || RoleClass.Seer.mode == 2))
                     //
@@ -79,7 +85,7 @@ namespace SuperNewRoles.Roles
                             soul.layer = 5;
                             var rend = soul.AddComponent<SpriteRenderer>();
                             rend.sprite = Seer.getSoulSprite();
-
+                            
                             if (RoleClass.Seer.limitSoulDuration)
                             {
                                 HudManager.Instance.StartCoroutine(Effects.Lerp(RoleClass.Seer.soulDuration, new Action<float>((p) =>
@@ -146,7 +152,7 @@ namespace SuperNewRoles.Roles
                     /*//ÅuÅ^ÅñÅvíuÇ≠èÍèä
 
                     int i;
-                    for (i = 0; i < 16; i++)
+                    for (i = 0; i <  i ; i++)
                     {
                         if (RoleClass.Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer == RoleClass.Seer.SeerPlayer && !RoleClass.Seer.SeerPlayer.Data.IsDead && RoleClass.Seer.SeerPlayer[i] != target && RoleClass.Seer.mode <= 1)
 
@@ -163,12 +169,9 @@ namespace SuperNewRoles.Roles
 
                 }
             }
-
-
-
-
-
+        
         }
+    
     }
 
     

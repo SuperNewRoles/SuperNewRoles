@@ -185,8 +185,8 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> EvilLighterPlayer;
             public static Color32 color = RoleClass.ImpostorRed;
-            public static float LightsOffCooldown;
-            public static float LightsOffDuration;
+            public static float LightOutCooldown;
+            public static float LightsOutDuration;
             public static float LightsOffTimer;
             public static bool IsLightOff;
             public static float DownVision;
@@ -203,8 +203,8 @@ namespace SuperNewRoles.Roles
             public static void clearAndReload()
             {
                 EvilLighterPlayer = new List<PlayerControl>();
-                LightsOffCooldown = CustomOptions.EvilLighterLightsOutCooldown.getFloat();
-                LightsOffDuration = CustomOptions.EvilLighterLightsOutDuration.getFloat();
+                LightOutCooldown = CustomOptions.EvilLighterLightsOutCooldown.getFloat();
+                LightsOutDuration = CustomOptions.EvilLighterLightsOutDuration.getFloat();
                 DownVision = CustomOptions.EvilLighterDownVision.getFloat();
             }
             
