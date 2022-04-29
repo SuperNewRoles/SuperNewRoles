@@ -103,6 +103,7 @@ namespace SuperNewRoles.Roles
             NiceHawk.ClearAndReload();
             Bakery.ClearAndReload();
             MadStuntMan.ClearAndReload();
+            MadHawk.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1381,6 +1382,38 @@ namespace SuperNewRoles.Roles
         }
 
 
+        public static class MadHawk
+        {
+            public static List<PlayerControl> MadHawkPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static float Timer;
+            public static DateTime ButtonTimer;
+            public static float Default;
+            public static float CameraDefault;
+            public static Vector3 Postion;
+            public static float timer1;
+            public static DateTime Timer2;
+            public static void ClearAndReload()
+            {
+                MadHawkPlayer = new List<PlayerControl>();
+                IsUseVent = CustomOptions.MadHawkIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadHawkIsImpostorLight.getBool();
+                MadHawkPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.MadHawkCoolTime.getFloat();
+                DurationTime = CustomOptions.MadHawkDurationTime.getFloat();
+                Timer = 0;
+                ButtonTimer = DateTime.Now;
+                CameraDefault = Camera.main.orthographicSize;
+                Default = HudManager.Instance.UICamera.orthographicSize;
+                Postion = new Vector3(0, 0, 0);
+                timer1 = 0;
+                Timer2 = DateTime.Now;
+            }
+        }
         //新ロールクラス
         public static class Quarreled
         {

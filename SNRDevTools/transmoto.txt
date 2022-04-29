@@ -509,3 +509,9 @@ NiceHawkTitle1
 NiceHawkTitle2
 BakeryName
 BakeryTitle1
+MadStuntManName
+MadStuntManTitle1
+MadStuntManUseVentSetting
+MadStuntManImpostorLightSetting
+MadHawkName
+MadHawkTitle1

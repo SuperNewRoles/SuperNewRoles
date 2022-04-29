@@ -198,10 +198,20 @@ namespace SuperNewRoles.Buttons
                            RoleClass.NiceHawk.timer1 = 10;
                            RoleClass.NiceHawk.Timer2 = DateTime.Now;
                        }
+                       if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk))
+                       {
+                           RoleClass.MadHawk.Timer = RoleClass.MadHawk.DurationTime;
+                           RoleClass.MadHawk.ButtonTimer = DateTime.Now;
+                           HawkHawkEyeButton.MaxTimer = RoleClass.MadHawk.CoolTime;
+                           HawkHawkEyeButton.Timer = RoleClass.MadHawk.CoolTime;
+                           RoleClass.MadHawk.Postion = PlayerControl.LocalPlayer.transform.localPosition;
+                           RoleClass.MadHawk.timer1 = 10;
+                           RoleClass.MadHawk.Timer2 = DateTime.Now;
+                       }
                        RoleClass.Hawk.IsHawkOn = true;
                    }
                },
-               () => { return PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk); },
+               () => { return PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk); },
                () =>
                {
                    return PlayerControl.LocalPlayer.CanMove;
@@ -217,6 +227,11 @@ namespace SuperNewRoles.Buttons
                    {
                        HawkHawkEyeButton.MaxTimer = RoleClass.NiceHawk.CoolTime;
                        HawkHawkEyeButton.Timer = RoleClass.NiceHawk.CoolTime;
+                   }
+                   if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk))
+                   {
+                       HawkHawkEyeButton.MaxTimer = RoleClass.MadHawk.CoolTime;
+                       HawkHawkEyeButton.Timer = RoleClass.MadHawk.CoolTime;
                    }
                    RoleClass.Hawk.IsHawkOn = false;
                },
