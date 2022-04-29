@@ -198,8 +198,7 @@ Create a blackout sabotage that can further reduce your vision!
 Lights Out Cooldown
 Lights Out Duration
 Visibility during a forced power outage
-Duration of Evil Writer
-Lights Are Out!
+Forced power outage!
 Evil Scientist
 Become invisible and get kills!
 Win with the power of science!

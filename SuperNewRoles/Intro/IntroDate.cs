@@ -243,6 +243,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate MadStuntManIntro = new IntroDate("MadStuntMan", RoleClass.MadStuntMan.color, 1, CustomRPC.RoleId.MadStuntMan, TeamRoleType.Impostor);
         public static IntroDate MadHawkIntro = new IntroDate("MadHawk", RoleClass.MadHawk.color, 1, CustomRPC.RoleId.MadHawk);
         public static IntroDate SeerIntro = new IntroDate("Seer", RoleClass.Seer.color, 1, CustomRPC.RoleId.Seer);
+
         //イントロオブジェ
     }
 }

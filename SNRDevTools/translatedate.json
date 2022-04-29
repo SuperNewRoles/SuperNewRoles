@@ -226,7 +226,7 @@
         } ,
  "SettingMaxImpoRole" : {
         "0" : "Maximum Impostor Roles" ,
-        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u4eba\u5f79\u8077\u6570"
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u5f79\u8077\u4eba\u6570"
         } ,
  "SettingsHideSetting" : {
         "0" : "Hide Setting" ,
@@ -801,390 +801,386 @@
         "11" : "\u5f37\u5236\u505c\u96fb\u4e2d\u306e\u8996\u754c"
         } ,
  "EvilLighterButtonName" : {
-        "0" : "Duration of Evil Writer" ,
-        "11" : "\u30a4\u30d3\u30eb\u30e9\u30a4\u30bf\u30fc\u306e\u7d99\u7d9a\u6642\u9593"
-        } ,
- "EvilScientistName" : {
-        "0" : "Lights Are Out!" ,
+        "0" : "Forced power outage!" ,
         "11" : "\u5f37\u5236\u505c\u96fb!"
         } ,
- "EvilScientistTitle1" : {
+ "EvilScientistName" : {
         "0" : "Evil Scientist" ,
         "11" : "\u30a4\u30d3\u30eb\u30b5\u30a4\u30a8\u30f3\u30c6\u30a3\u30b9\u30c8"
         } ,
- "EvilScientistTitle2" : {
+ "EvilScientistTitle1" : {
         "0" : "Become invisible and get kills!" ,
         "11" : "\u900f\u660e\u306b\u306a\u3063\u3066\u30ad\u30eb\u3092\u3057\u3088\u3046"
         } ,
- "EvilScientistCoolDownSetting" : {
+ "EvilScientistTitle2" : {
         "0" : "Win with the power of science!" ,
         "11" : "\u79d1\u5b66\u306e\u529b\u3067\u52dd\u5229\u3057\u3088\u3046"
         } ,
- "EvilScientistDurationSetting" : {
+ "EvilScientistCoolDownSetting" : {
         "0" : "Evil Scientist Invisibility Cooldown" ,
         "11" : "\u30a4\u30d3\u30eb\u30b5\u30a4\u30a8\u30f3\u30c6\u30a3\u30b9\u30c8\u306e\u900f\u660e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } ,
- "SheriffName" : {
+ "EvilScientistDurationSetting" : {
         "0" : "Evil Scientist's Invisibility Duration" ,
         "11" : "\u30a4\u30d3\u30eb\u30b5\u30a4\u30a8\u30f3\u30c6\u30a3\u30b9\u30c8\u306e\u900f\u660e\u7d99\u7d9a\u6642\u9593"
         } ,
- "SheriffTitle1" : {
+ "SheriffName" : {
         "0" : "Sheriff" ,
         "11" : "\u30b7\u30a7\u30ea\u30d5"
         } ,
- "SheriffTitle2" : {
+ "SheriffTitle1" : {
         "0" : "Kill the outsider!" ,
         "11" : "\u4eba\u5916\u3092\u30ad\u30eb\u3057\u3088\u3046"
         } ,
- "SheriffCoolDownSetting" : {
+ "SheriffTitle2" : {
         "0" : "Kill the outsider and lead your crewmates to victory!" ,
         "11" : "\u4eba\u5916\u3092\u30ad\u30eb\u3057\u3066\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3092\u52dd\u5229\u306b\u5c0e\u3053\u3046"
         } ,
- "SheriffIsKillNeutralSetting" : {
+ "SheriffCoolDownSetting" : {
         "0" : "Sheriff's Kill Cooldown" ,
         "11" : "\u30b7\u30a7\u30ea\u30d5\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } ,
- "SheriffIsKillLoversSetting" : {
+ "SheriffIsKillNeutralSetting" : {
         "0" : "Can Kill a Neutral" ,
         "11" : "\u7b2c\u4e09\u9663\u55b6\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
- "SheriffIsKillMadMateSetting" : {
+ "SheriffIsKillLoversSetting" : {
         "0" : "Can Kill a Lovers" ,
         "11" : "\u30e9\u30d0\u30fc\u30ba\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
- "SheriffIsKillMadMateYes" : {
+ "SheriffIsKillMadMateSetting" : {
         "0" : "Can Kill a Madmate" ,
         "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30c9\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
- "SheriffIsKillMadMateNo" : {
+ "SheriffIsKillMadMateYes" : {
         "0" : "Yes" ,
         "11" : "\u3067\u304d\u308b"
         } ,
- "SheriffMaxKillCountSetting" : {
+ "SheriffIsKillMadMateNo" : {
         "0" : "No" ,
         "11" : "\u3067\u304d\u306a\u3044"
         } ,
- "SherifKillButtonName" : {
+ "SheriffMaxKillCountSetting" : {
         "0" : "Maximum number of kills for Sheriff" ,
         "11" : "\u30b7\u30a7\u30ea\u30d5\u306e\u6700\u5927\u30ad\u30eb\u6570"
         } ,
- "SheriffNumTextName" : {
+ "SherifKillButtonName" : {
         "0" : "Kill" ,
         "11" : "\u30ad\u30eb"
         } ,
- "MeetingSheriffName" : {
+ "SheriffNumTextName" : {
         "0" : "{0} shots remaining." ,
         "11" : "\u6b8b\u308a{0}\u767a"
         } ,
- "MeetingSheriffTitle1" : {
+ "MeetingSheriffName" : {
         "0" : "Meeting Sheriff" ,
         "11" : "\u30df\u30fc\u30c6\u30a3\u30f3\u30b0 \u30b7\u30a7\u30ea\u30d5"
         } ,
- "MeetingSheriffTitle2" : {
+ "MeetingSheriffTitle1" : {
         "0" : "Kill an outsider in a meeting!" ,
         "11" : "\u4eba\u5916\u3092\u4f1a\u8b70\u3067\u30ad\u30eb\u3057\u3088\u3046"
         } ,
- "MeetingSheriffTitle3" : {
+ "MeetingSheriffTitle2" : {
         "0" : "Kill an outsider in a meeting and lead your crewmates to victory!" ,
         "11" : "\u4eba\u5916\u3092\u4f1a\u8b70\u3067\u30ad\u30eb\u3057\u3066\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3092\u52dd\u5229\u306b\u5c0e\u3053\u3046"
         } ,
- "MeetingSheriffTitle4" : {
+ "MeetingSheriffTitle3" : {
         "0" : "Kill an outsider in a meeting to prevent a power play" ,
         "11" : "\u4eba\u5916\u3092\u4f1a\u8b70\u3067\u30ad\u30eb\u3057\u3066\u30d1\u30ef\u30fc\u30d7\u30ec\u30a4\u3092\u9632\u3054\u3046"
         } ,
- "MeetingSheriffIsKillNeutralSetting" : {
+ "MeetingSheriffTitle4" : {
         "0" : "Kill an outsider in a meeting to prevent a PP" ,
         "11" : "\u4eba\u5916\u3092\u4f1a\u8b70\u3067\u30ad\u30eb\u3057\u3066PP\u3092\u9632\u3054\u3046"
         } ,
- "MeetingSheriffIsKillMadMateSetting" : {
+ "MeetingSheriffIsKillNeutralSetting" : {
         "0" : "Can Kill a Neutral" ,
         "11" : "\u7b2c\u4e09\u9663\u55b6\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
- "MeetingSheriffYes" : {
+ "MeetingSheriffIsKillMadMateSetting" : {
         "0" : "Can Kill a Madmate" ,
         "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30c9\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
- "MeetingSheriffNo" : {
+ "MeetingSheriffYes" : {
         "0" : "Yes" ,
         "11" : "\u3067\u304d\u308b"
         } ,
- "MeetingSheriffMaxKillCountSetting" : {
+ "MeetingSheriffNo" : {
         "0" : "No" ,
         "11" : "\u3067\u304d\u306a\u3044"
         } ,
- "MeetingSheriffMeetingmultipleKillSetting" : {
+ "MeetingSheriffMaxKillCountSetting" : {
         "0" : "Maximum number of Meeting Sheriff kills" ,
         "11" : "\u30df\u30fc\u30c6\u30a3\u30f3\u30b0\u30b7\u30a7\u30ea\u30d5\u306e\u6700\u5927\u30ad\u30eb\u6570"
         } ,
- "JackalName" : {
+ "MeetingSheriffMeetingmultipleKillSetting" : {
         "0" : "Can you get multiple kills in one meeting?" ,
         "11" : "\u4e00\u4f1a\u8b70\u4e2d\u306b\u8907\u6570\u30ad\u30eb\u3067\u304d\u308b\u304b"
         } ,
- "JackalTitle1" : {
+ "JackalName" : {
         "0" : "Jackal" ,
         "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb"
         } ,
- "JackalTitle2" : {
+ "JackalTitle1" : {
         "0" : "Try to kill Imposters and Crew Mates" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3068\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3092\u30ad\u30eb\u3057\u3088\u3046"
         } ,
- "JackalTitle3" : {
+ "JackalTitle2" : {
         "0" : "Kill the other team to win!" ,
         "11" : "\u4ed6\u9663\u55b6\u3092\u30ad\u30eb\u3057\u3066\u52dd\u5229\u3057\u3088\u3046"
         } ,
- "JackalCoolDownSetting" : {
+ "JackalTitle3" : {
         "0" : "Let's just kill them all." ,
         "11" : "\u5168\u54e1\u3076\u3061\u6bba\u305d\u3046"
         } ,
- "JackalUseVentSetting" : {
+ "JackalCoolDownSetting" : {
         "0" : "Jackal's kill cool time" ,
         "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "JackalUseSaboSetting" : {
+ "JackalUseVentSetting" : {
         "0" : "Use Vent" ,
         "11" : "\u30d9\u30f3\u30c8\u3092\u4f7f\u3048\u308b"
         } ,
- "JackalCreateSidekickSetting" : {
+ "JackalUseSaboSetting" : {
         "0" : "Use Sabotage" ,
         "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u304c\u4f7f\u3048\u308b"
         } ,
- "JackalNewJackalCreateSidekickSetting" : {
+ "JackalCreateSidekickSetting" : {
         "0" : "Jackal can make a Sidekick" ,
         "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb\u304c\u30b5\u30a4\u30c9\u30ad\u30c3\u30af\u3092\u4f5c\u308c\u308b"
         } ,
- "JackalOn" : {
+ "JackalNewJackalCreateSidekickSetting" : {
         "0" : "New Jackal can make Sidekick" ,
         "11" : "\u65b0\u30b8\u30e3\u30c3\u30ab\u30eb\u304c\u30b5\u30a4\u30c9\u30ad\u30c3\u30af\u3092\u4f5c\u308c\u308b"
         } ,
- "JackalOff" : {
+ "JackalOn" : {
         "0" : "On" ,
         "11" : "\u30aa\u30f3"
         } ,
- "JackalCreateSidekickButtonName" : {
+ "JackalOff" : {
         "0" : "Off" ,
         "11" : "\u30aa\u30d5"
         } ,
- "SidekickName" : {
+ "JackalCreateSidekickButtonName" : {
         "0" : "Sidekick!" ,
         "11" : "\u30b5\u30a4\u30c9\u30ad\u30c3\u30af\uff01"
         } ,
- "SidekickTitle1" : {
+ "SidekickName" : {
         "0" : "Sidekick" ,
         "11" : "\u30b5\u30a4\u30c9\u30ad\u30c3\u30af"
         } ,
- "TeleporterName" : {
+ "SidekickTitle1" : {
         "0" : "Help Jackal" ,
         "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb\u3092\u52a9\u3051\u3088\u3046"
         } ,
- "TeleporterTitle1" : {
+ "TeleporterName" : {
         "0" : "Teleporter" ,
         "11" : "\u30c6\u30ec\u30dd\u30fc\u30bf\u30fc"
         } ,
- "TeleporterTitle2" : {
+ "TeleporterTitle1" : {
         "0" : "Let's get everyone together" ,
         "11" : "\u307f\u3093\u306a\u3092\u96c6\u3081\u3088\u3046"
         } ,
- "TeleporterCoolDownSetting" : {
+ "TeleporterTitle2" : {
         "0" : "Let's get everyone away from the corpse position." ,
         "11" : "\u307f\u3093\u306a\u3092\u6b7b\u4f53\u4f4d\u7f6e\u304b\u3089\u9060\u3056\u3051\u3088\u3046"
         } ,
- "TeleporterTeleportTimeSetting" : {
+ "TeleporterCoolDownSetting" : {
         "0" : "Teleporter Sabotage Kill Cool Down" ,
         "11" : "\u30c6\u30ec\u30dd\u30fc\u30bf\u30fc\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } ,
- "TeleporterTeleportButton" : {
+ "TeleporterTeleportTimeSetting" : {
         "0" : "Time to be teleported" ,
         "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\u3055\u308c\u308b\u307e\u3067\u306e\u6642\u9593"
         } ,
- "TeleporterTPTextMessage" : {
+ "TeleporterTeleportButton" : {
         "0" : "Teleport" ,
         "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\uff01"
         } ,
- "SpiritMediumName" : {
+ "TeleporterTPTextMessage" : {
         "0" : "The teleporter teleported you to {0}!" ,
         "11" : "\u30c6\u30ec\u30dd\u30fc\u30bf\u30fc\u304c{0}\u306b\u30c6\u30ec\u30dd\u30fc\u30c8\u3055\u305b\u305f!"
         } ,
- "SpiritMediumTitle1" : {
+ "SpiritMediumName" : {
         "0" : "Medium" ,
         "11" : "\u970a\u5a92\u5e2b"
         } ,
- "SpiritMediumDisplaySetting" : {
+ "SpiritMediumTitle1" : {
         "0" : "Divine the dead person's position" ,
         "11" : "\u3084\u3089\u308c\u305f\u4eba\u3092\u5360\u3044\u5f79\u8077\u3092\u8abf\u3079\u3088\u3046"
         } ,
- "SpiritMediumDetailMode" : {
+ "SpiritMediumDisplaySetting" : {
         "0" : "Position visibility" ,
         "11" : "\u9663\u55b6\u8868\u793a\u306b\u3059\u308b"
         } ,
- "SpiritMediumEncampMode" : {
+ "SpiritMediumDetailMode" : {
         "0" : "Detail display" ,
         "11" : "\u8a73\u7d30\u8868\u793a"
         } ,
- "SpiritMediumMaxCountSetting" : {
+ "SpiritMediumEncampMode" : {
         "0" : "Position Display" ,
         "11" : "\u9663\u55b6\u8868\u793a"
         } ,
- "SpeedBoosterName" : {
+ "SpiritMediumMaxCountSetting" : {
         "0" : "Number of times you can divine" ,
         "11" : "\u5360\u3048\u308b\u56de\u6570"
         } ,
- "SpeedBoosterTitle1" : {
+ "SpeedBoosterName" : {
         "0" : "Speed Booster" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\u30d6\u30fc\u30b9\u30bf\u30fc"
         } ,
- "SpeedBoosterTitle2" : {
+ "SpeedBoosterTitle1" : {
         "0" : "Make your speed faster!" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\u3092\u901f\u304f\u3057\u3088\u3046"
         } ,
- "SpeedBoosterCoolDownSetting" : {
+ "SpeedBoosterTitle2" : {
         "0" : "Lead your crew to victory with super speed!" ,
         "11" : "\u30b9\u30fc\u30d1\u30fc\u30b9\u30d4\u30fc\u30c9\u3067\u30af\u30eb\u30fc\u3092\u52dd\u5229\u306b\u5c0e\u3053\u3046"
         } ,
- "SpeedBoosterDurationSetting" : {
+ "SpeedBoosterCoolDownSetting" : {
         "0" : "Speed Up Cooldown" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\u30a2\u30c3\u30d7\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } ,
- "SpeedBoosterPlusSpeedSetting" : {
+ "SpeedBoosterDurationSetting" : {
         "0" : "Duration of speed-up" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\u30a2\u30c3\u30d7\u306e\u7d99\u7d9a\u6642\u9593"
         } ,
- "SpeedBoosterBoostButtonName" : {
+ "SpeedBoosterPlusSpeedSetting" : {
         "0" : "Double your speed" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\u306e\u500d\u901f"
         } ,
- "EvilSpeedBoosterName" : {
+ "SpeedBoosterBoostButtonName" : {
         "0" : "Speed\\nBoost" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\\n\u30d6\u30fc\u30b9\u30c8"
         } ,
- "EvilSpeedBoosterTitle1" : {
+ "EvilSpeedBoosterName" : {
         "0" : "Evil Speed Booster" ,
         "11" : "\u30a4\u30d3\u30eb\u30b9\u30d4\u30fc\u30c9\u30d6\u30fc\u30b9\u30bf\u30fc"
         } ,
- "EvilSpeedBoosterTitle2" : {
+ "EvilSpeedBoosterTitle1" : {
         "0" : "Make your speed faster!" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\u3092\u901f\u304f\u3057\u3088\u3046"
         } ,
- "EvilSpeedBoosterTitle3" : {
+ "EvilSpeedBoosterTitle2" : {
         "0" : "Use your super speed to lead your Imposter to victory!" ,
         "11" : "\u30b9\u30fc\u30d1\u30fc\u30b9\u30d4\u30fc\u30c9\u3067\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u52dd\u5229\u306b\u5c0e\u3053\u3046"
         } ,
- "EvilSpeedBoosterTitle4" : {
+ "EvilSpeedBoosterTitle3" : {
         "0" : "Get a kill with super speed!" ,
         "11" : "\u30b9\u30fc\u30d1\u30fc\u30b9\u30d4\u30fc\u30c9\u3067\u30ad\u30eb\u3092\u3057\u3088\u3046"
         } ,
- "EvilSpeedBoosterCoolDownSetting" : {
+ "EvilSpeedBoosterTitle4" : {
         "0" : "Let's run around and kill everyone." ,
         "11" : "\u8d70\u308a\u307e\u304f\u3063\u3066\u7686\u3092\u77ac\u6bba\u3057\u3088\u3046"
         } ,
- "EvilSpeedBoosterDurationSetting" : {
+ "EvilSpeedBoosterCoolDownSetting" : {
         "0" : "Speed Up Cooldown" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\u30a2\u30c3\u30d7\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } ,
- "EvilSpeedBoosterPlusSpeedSetting" : {
+ "EvilSpeedBoosterDurationSetting" : {
         "0" : "Speedup duration" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\u30a2\u30c3\u30d7\u306e\u7d99\u7d9a\u6642\u9593"
         } ,
- "EvilSpeedBoosterIsNotSpeedBooster" : {
+ "EvilSpeedBoosterPlusSpeedSetting" : {
         "0" : "Double Speed" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\u306e\u500d\u901f"
         } ,
- "EvilSpeedBoosterBoostButtonName" : {
+ "EvilSpeedBoosterIsNotSpeedBooster" : {
         "0" : "If this position is selected the speed booster will not be selected." ,
         "11" : "\u3053\u306e\u5f79\u8077\u304c\u9078\u3070\u308c\u308b\u3068\u30b9\u30d4\u30fc\u30c9\u30d6\u30fc\u30b9\u30bf\u30fc\u304c\u9078\u3070\u308c\u306a\u3044"
         } ,
- "TaskerName" : {
+ "EvilSpeedBoosterBoostButtonName" : {
         "0" : "Speed\\nBoost" ,
         "11" : "\u30b9\u30d4\u30fc\u30c9\\n\u30d6\u30fc\u30b9\u30c8"
         } ,
- "TaskerTitle1" : {
+ "TaskerName" : {
         "0" : "Tasker" ,
         "11" : "\u30bf\u30b9\u30ab\u30fc"
         } ,
- "TaskerTitle2" : {
+ "TaskerTitle1" : {
         "0" : "Finish the task and win the Imposter!" ,
         "11" : "\u30bf\u30b9\u30af\u3092\u7d42\u308f\u3089\u305b\u3066\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u52dd\u5229\u3055\u305b\u3088\u3046"
         } ,
- "TaskerTaskSetting" : {
+ "TaskerTitle2" : {
         "0" : "Try to finish the task!" ,
         "11" : "\u30bf\u30b9\u30af\u3092\u9811\u5f35\u3063\u3066\u7d42\u308f\u3089\u305b\u3088\u3046"
         } ,
- "TaskerIsKillSetting" : {
+ "TaskerTaskSetting" : {
         "0" : "Task Amount" ,
         "11" : "\u30bf\u30b9\u30af\u91cf"
         } ,
- "DoorrName" : {
+ "TaskerIsKillSetting" : {
         "0" : "Killable" ,
         "11" : "\u30ad\u30eb\u3067\u304d\u308b"
         } ,
- "DoorrTitle1" : {
+ "DoorrName" : {
         "0" : "Doorr" ,
         "11" : "\u30c9\u30a2\u30fc"
         } ,
- "DoorrTitle2" : {
+ "DoorrTitle1" : {
         "0" : "Let's open and close the door." ,
         "11" : "\u30c9\u30a2\u3092\u958b\u3051\u9589\u3081\u3057\u3088\u3046"
         } ,
- "DoorrCoolTimeSetting" : {
+ "DoorrTitle2" : {
         "0" : "Close the door to block the imposter!" ,
         "11" : "\u30c9\u30a2\u3092\u9589\u3081\u3066\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u59a8\u5bb3\u3057\u3088\u3046"
         } ,
- "DoorrButtonText" : {
+ "DoorrCoolTimeSetting" : {
         "0" : "Door Cool Time" ,
         "11" : "\u30c9\u30a2\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "EvilDoorrName" : {
+ "DoorrButtonText" : {
         "0" : "Door Open Or Close" ,
         "11" : "\u30c9\u30a2\u3092\u958b\u3051\u9589\u3081\u3059\u308b"
         } ,
- "EvilDoorrTitle1" : {
+ "EvilDoorrName" : {
         "0" : "Evil Doorr" ,
         "11" : "\u30a4\u30d3\u30eb\u30c9\u30a2\u30fc"
         } ,
- "EvilDoorrTitle2" : {
+ "EvilDoorrTitle1" : {
         "0" : "Open and close doors!" ,
         "11" : "\u30c9\u30a2\u3092\u958b\u3051\u9589\u3081\u3057\u3088\u3046"
         } ,
- "EvilDoorrTitle3" : {
+ "EvilDoorrTitle2" : {
         "0" : "Try to sabotage your crewmates!" ,
         "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3092\u59a8\u5bb3\u3057\u3088\u3046"
         } ,
- "EvilDoorrCoolTimeSetting" : {
+ "EvilDoorrTitle3" : {
         "0" : "Open and close the door immediately to block your crewmate!" ,
         "11" : "\u3059\u3050\u306b\u30c9\u30a2\u3092\u958b\u3051\u9589\u3081\u3057\u3066\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3092\u59a8\u5bb3\u3057\u3088\u3046"
         } ,
- "SealdorName" : {
+ "EvilDoorrCoolTimeSetting" : {
         "0" : "Door Cool Time" ,
         "11" : "\u30c9\u30a2\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "SealdorTitle1" : {
+ "SealdorName" : {
         "0" : "Sealder" ,
         "11" : "\u30b7\u30fc\u30eb\u30c0\u30fc"
         } ,
- "SealdorTitle2" : {
+ "SealdorTitle1" : {
         "0" : "Prevent outsider kills." ,
         "11" : "\u4eba\u5916\u306e\u30ad\u30eb\u3092\u9632\u3054\u3046"
         } ,
- "SealdorTitle3" : {
+ "SealdorTitle2" : {
         "0" : "Shield yourself!" ,
         "11" : "\u81ea\u5206\u306b\u30b7\u30fc\u30eb\u30c9\u3092\u5f35\u308d\u3046"
         } ,
- "SealdorCoolTimeSetting" : {
+ "SealdorTitle3" : {
         "0" : "Try to block a foreigner's kill!" ,
         "11" : "\u4eba\u5916\u306e\u30ad\u30eb\u3092\u59a8\u5bb3\u3057\u3088\u3046"
         } ,
- "SealdorDurationSetting" : {
+ "SealdorCoolTimeSetting" : {
         "0" : "Shield Cool Time" ,
         "11" : "\u30b7\u30fc\u30eb\u30c9\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "FreezerName" : {
+ "SealdorDurationSetting" : {
         "0" : "Shield duration" ,
         "11" : "\u30b7\u30fc\u30eb\u30c9\u7d99\u7d9a\u6642\u9593"
         } ,
- "FreezerTitle1" : {
+ "FreezerName" : {
         "0" : "Freezer" ,
         "11" : "\u30d5\u30ea\u30fc\u30b6\u30fc"
         } ,
- "FreezerTitle2" : {
+ "FreezerTitle1" : {
         "0" : "Stop everyone and sabotage your crewmates!" ,
         "11" : "\u307f\u3093\u306a\u3092\u6b62\u3081\u3066\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3092\u59a8\u5bb3\u3057\u3088\u3046"
         } ,
@@ -1192,921 +1188,925 @@
         "0" : "Try to stop everyone and sabotage the task!" ,
         "11" : "\u307f\u3093\u306a\u3092\u6b62\u3081\u3066\u30bf\u30b9\u30af\u306e\u59a8\u5bb3\u3092\u3057\u3088\u3046"
         } ,
- "FreezerCoolTimeSetting" : {
+ "FreezerTitle2" : {
         "0" : "Let's put them all on ice." ,
         "11" : "\u5168\u54e1\u3092\u6c37\u6f2c\u3051\u306b\u3057\u3088\u3046"
         } ,
- "FreezerDurationSetting" : {
+ "FreezerCoolTimeSetting" : {
         "0" : "Freeze Cool Time" ,
         "11" : "\u30d5\u30ea\u30fc\u30ba\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "SpeederName" : {
+ "FreezerDurationSetting" : {
         "0" : "Freeze duration" ,
         "11" : "\u30d5\u30ea\u30fc\u30ba\u7d99\u7d9a\u6642\u9593"
         } ,
- "SpeederTitle1" : {
+ "SpeederName" : {
         "0" : "Speeder" ,
         "11" : "\u30b9\u30d4\u30fc\u30c0\u30fc"
         } ,
- "SpeederTitle2" : {
+ "SpeederTitle1" : {
         "0" : "Slow everyone down and sabotage your crewmates!" ,
         "11" : "\u307f\u3093\u306a\u3092\u9045\u304f\u3057\u3066\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3092\u59a8\u5bb3\u3057\u3088\u3046"
         } ,
- "SpeederCoolTimeSetting" : {
+ "SpeederTitle2" : {
         "0" : "Try to slow everyone down and sabotage the task!" ,
         "11" : "\u307f\u3093\u306a\u3092\u9045\u304f\u3057\u3066\u30bf\u30b9\u30af\u306e\u59a8\u5bb3\u3092\u3057\u3088\u3046"
         } ,
- "SpeederDurationTimeSetting" : {
+ "SpeederCoolTimeSetting" : {
         "0" : "Sabotage Cool Time" ,
         "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "GuesserName" : {
+ "SpeederDurationTimeSetting" : {
         "0" : "Sabotage duration" ,
         "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u7d99\u7d9a\u6642\u9593"
         } ,
- "GuesserTitle1" : {
+ "GuesserName" : {
         "0" : "Guesser" ,
         "11" : "\u30b2\u30c3\u30b5\u30fc"
         } ,
- "GuesserTitle2" : {
+ "GuesserTitle1" : {
         "0" : "Let's punch out the outsider." ,
         "11" : "\u4eba\u5916\u3092\u6253\u3061\u629c\u3053\u3046"
         } ,
- "GuesserOneMeetingShortSetting" : {
+ "GuesserTitle2" : {
         "0" : "Guess the position of the outsider" ,
         "11" : "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046"
         } ,
- "GuesserShortMaxCountSetting" : {
+ "GuesserOneMeetingShortSetting" : {
         "0" : "Multiple hits in one meeting" ,
         "11" : "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b"
         } ,
- "EvilGuesserName" : {
+ "GuesserShortMaxCountSetting" : {
         "0" : "Number of times you can hit" ,
         "11" : "\u6253\u3066\u308b\u56de\u6570"
         } ,
- "EvilGuesserTitle1" : {
+ "EvilGuesserName" : {
         "0" : "Evil Guesser" ,
         "11" : "\u30a4\u30d3\u30eb\u30b2\u30c3\u30b5\u30fc"
         } ,
- "EvilGuesserOneMeetingShortSetting" : {
+ "EvilGuesserTitle1" : {
         "0" : "Guess the position of the camp other than Imposter." ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u4ee5\u5916\u306e\u9663\u55b6\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046"
         } ,
- "EvilGuesserShortMaxCountSetting" : {
+ "EvilGuesserOneMeetingShortSetting" : {
         "0" : "Multiple hits in one meeting" ,
         "11" : "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046"
         } ,
- "VultureName" : {
+ "EvilGuesserShortMaxCountSetting" : {
         "0" : "Number of times you can hit" ,
         "11" : "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b"
         } ,
- "VultureTitle1" : {
+ "VultureName" : {
         "0" : "Vulture" ,
         "11" : "\u30f4\u30a1\u30eb\u30c1\u30e3\u30fc"
         } ,
- "VultureCoolDownSetting" : {
+ "VultureTitle1" : {
         "0" : "Let's eat a corpse." ,
         "11" : "\u6b7b\u4f53\u3092\u98df\u3079\u3088\u3046"
         } ,
- "VultureDeadBodyCountSetting" : {
+ "VultureCoolDownSetting" : {
         "0" : "Corpse cooldown" ,
         "11" : "\u6b7b\u4f53\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } ,
- "NiceScientistName" : {
+ "VultureDeadBodyCountSetting" : {
         "0" : "Victory corpse count" ,
         "11" : "\u52dd\u5229\u6b7b\u4f53\u6570"
         } ,
- "NiceScientistTitle1" : {
+ "NiceScientistName" : {
         "0" : "Nice Scientist" ,
         "11" : "\u30ca\u30a4\u30b9\u30b5\u30a4\u30a8\u30f3\u30c6\u30a3\u30b9\u30c8"
         } ,
- "NiceScientistTitle2" : {
+ "NiceScientistTitle1" : {
         "0" : "Turn invisible and find the bodies!" ,
         "11" : "\u900f\u660e\u306b\u306a\u3063\u3066\u6b7b\u4f53\u3092\u767a\u898b\u3057\u3088\u3046"
         } ,
- "NiceScientistCoolDownSetting" : {
+ "NiceScientistTitle2" : {
         "0" : "Use the power of science to win!" ,
         "11" : "\u79d1\u5b66\u306e\u529b\u3067\u52dd\u5229\u3057\u3088\u3046"
         } ,
- "NiceScientistDurationSetting" : {
+ "NiceScientistCoolDownSetting" : {
         "0" : "Cool Time" ,
         "11" : "\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "ClergymanName" : {
+ "NiceScientistDurationSetting" : {
         "0" : "Duration Time" ,
         "11" : "\u7d99\u7d9a\u6642\u9593"
         } ,
- "ClergymanTitle1" : {
+ "ClergymanName" : {
         "0" : "Clergyman" ,
         "11" : "\u8056\u8077\u8005"
         } ,
- "ClergymanTitle2" : {
+ "ClergymanTitle1" : {
         "0" : "Let's sabotage the outsider." ,
         "11" : "\u4eba\u5916\u306e\u59a8\u5bb3\u3092\u3057\u3088\u3046"
         } ,
- "ClergymanCoolDownSetting" : {
+ "ClergymanTitle2" : {
         "0" : "Let's obstruct the outsider's view." ,
         "11" : "\u4eba\u5916\u306e\u8996\u754c\u3092\u59a8\u5bb3\u3057\u3088\u3046"
         } ,
- "ClergymanDurationTimeSetting" : {
+ "ClergymanCoolDownSetting" : {
         "0" : "Cool Time" ,
         "11" : "\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "ClergymanDownVisionSetting" : {
+ "ClergymanDurationTimeSetting" : {
         "0" : "Duration Time" ,
         "11" : "\u7d99\u7d9a\u6642\u9593"
         } ,
- "ClergymanLightOutButtonName" : {
+ "ClergymanDownVisionSetting" : {
         "0" : "Impostor Down Vision." ,
         "11" : "\u5b9f\u884c\u6642\u306e\u8996\u754c"
         } ,
- "ClergymanLightOutMessage" : {
+ "ClergymanLightOutButtonName" : {
         "0" : "Light Down" ,
         "11" : "\u30e9\u30a4\u30c8\u30c0\u30a6\u30f3"
         } ,
- "MadMateName" : {
+ "ClergymanLightOutMessage" : {
         "0" : "The Clergyman is blocking my view!" ,
         "11" : "\u8056\u8077\u8005\u304c\u8996\u754c\u3092\u59a8\u5bb3\u3057\u3066\u3044\u307e\u3059\uff01"
         } ,
- "MadMateTitle1" : {
+ "MadMateName" : {
         "0" : "Mad Mate" ,
         "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30c8"
         } ,
- "MadMateDescription" : {
+ "MadMateTitle1" : {
         "0" : "Let's help the Imposter." ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u52a9\u3051\u3088\u3046"
         } ,
- "MadMateIsCheckImpostorSetting" : {
+ "MadMateDescription" : {
         "0" : "The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmate can also win." ,
         "11" : "\u5224\u5b9a\u306f\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u9663\u55b6\u3067\u3059\u304c\u3001\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u4ef2\u9593\u3067\u3059\u3002\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u52dd\u5229\u3059\u308b\u3068\u3001\u30de\u30c3\u30c9\u30e1\u30a4\u30c8\u3082\u52dd\u5229\u3067\u304d\u307e\u3059\u3002"
         } ,
- "MadMateCheckImpostorTaskSetting" : {
+ "MadMateIsCheckImpostorSetting" : {
         "0" : "You can check the Imposter." ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u78ba\u8a8d\u3067\u304d\u308b"
         } ,
- "MadMateUseVentSetting" : {
+ "MadMateCheckImpostorTaskSetting" : {
         "0" : "Amount of tasks that will be able to be checked (of all tasks)" ,
         "11" : "\u78ba\u8a8d\u3067\u304d\u308b\u3088\u3046\u306b\u306a\u308b\u30bf\u30b9\u30af\u91cf(\u5168\u30bf\u30b9\u30af\u5185)"
         } ,
- "MadMateVentMoveSetting" : {
+ "MadMateUseVentSetting" : {
         "0" : "Use Vent" ,
         "11" : "\u30d9\u30f3\u30c8\u306b\u5165\u308c\u308b"
         } ,
- "MadMateImpostorLightSetting" : {
+ "MadMateVentMoveSetting" : {
         "0" : "Move Vent" ,
         "11" : "\u30d9\u30f3\u30c8\u3067\u52d5\u3051\u308b"
         } ,
- "BaitName" : {
+ "MadMateImpostorLightSetting" : {
         "0" : "Impostor Light" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u8996\u754c"
         } ,
- "BaitTitle1" : {
+ "BaitName" : {
         "0" : "Bait" ,
         "11" : "\u30d9\u30a4\u30c8"
         } ,
- "BaitDescription" : {
+ "BaitTitle1" : {
         "0" : "Bait your enemies" ,
         "11" : "\u76f8\u624b\u306b\u901a\u5831\u3055\u305b\u3088\u3046"
         } ,
- "BaitReportTimeSetting" : {
+ "BaitDescription" : {
         "0" : "If you are killed you can force the person who killed you to report you." ,
         "11" : "\u81ea\u5206\u304c\u30ad\u30eb\u3055\u308c\u308b\u3068\u3001\u30ad\u30eb\u3057\u3066\u304d\u305f\u76f8\u624b\u306b\u5f37\u5236\u7684\u306b\u901a\u5831\u3055\u305b\u308b\u3053\u3068\u304c\u3067\u304d\u307e\u3059\u3002"
         } ,
- "HomeSecurityGuardName" : {
+ "BaitReportTimeSetting" : {
         "0" : "Report Time" ,
         "11" : "\u901a\u5831\u307e\u3067\u306e\u6642\u9593"
         } ,
- "HomeSecurityGuardTitle1" : {
+ "HomeSecurityGuardName" : {
         "0" : "Home Security Guard" ,
         "11" : "\u81ea\u5b85\u8b66\u5099\u54e1"
         } ,
- "HomeSecurityGuardDescription" : {
+ "HomeSecurityGuardTitle1" : {
         "0" : "Guard My Home" ,
         "11" : "\u81ea\u5206\u305f\u3061\u306e\u5bb6\u3092\u5b88\u308d\u3046"
         } ,
- "StuntManName" : {
+ "HomeSecurityGuardDescription" : {
         "0" : "It is a Crewmate with no tasks." ,
         "11" : "\u30bf\u30b9\u30af\u304c\u306a\u3044\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3067\u3059\u3002"
         } ,
- "StuntManTitle1" : {
+ "StuntManName" : {
         "0" : "Stunt Man" ,
         "11" : "\u30b9\u30bf\u30f3\u30c8\u30de\u30f3"
         } ,
- "StuntManDescription" : {
+ "StuntManTitle1" : {
         "0" : "Guard Impostor Kill" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u30ad\u30eb\u3092\u9632\u3054\u3046"
         } ,
- "StuntManGuardMaxCountSetting" : {
+ "StuntManDescription" : {
         "0" : "It can prevent a set number of kills unconditionally. If a kill is prevented a text will appear in the meeting stating that you were protected by a guardian angel." ,
         "11" : "\u7121\u6761\u4ef6\u3067\u8a2d\u5b9a\u56de\u6570\u3060\u3051\u30ad\u30eb\u3092\u9632\u3052\u307e\u3059\u3002\u30ad\u30eb\u3092\u9632\u3044\u3060\u5834\u5408\u3001\u4f1a\u8b70\u306b\u5b88\u8b77\u5929\u4f7f\u306b\u5b88\u3089\u308c\u305f\u3068\u3044\u3046\u306e\u30c6\u30ad\u30b9\u30c8\u304c\u8868\u793a\u3055\u308c\u307e\u3059\u3002"
         } ,
- "MovingName" : {
+ "StuntManGuardMaxCountSetting" : {
         "0" : "Guard Max Count" ,
         "11" : "\u30ac\u30fc\u30c9\u3067\u304d\u308b\u56de\u6570"
         } ,
- "MovingTitle1" : {
+ "MovingName" : {
         "0" : "Moving" ,
         "11" : "\u30e0\u30fc\u30d3\u30f3\u30b0"
         } ,
- "MovingCoolDownSetting" : {
+ "MovingTitle1" : {
         "0" : "Let's run away from the Imposter." ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304b\u3089\u9003\u3052\u3088\u3046"
         } ,
- "MovingButtonSetName" : {
+ "MovingCoolDownSetting" : {
         "0" : "Teleportation Cool Time" ,
         "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "MovingButtonTpName" : {
+ "MovingButtonSetName" : {
         "0" : "Location Set" ,
         "11" : "\u5834\u6240\u30bb\u30c3\u30c8"
         } ,
- "QuarreledName" : {
+ "MovingButtonTpName" : {
         "0" : "Teleport" ,
         "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8"
         } ,
- "QuarreledIntro" : {
+ "QuarreledName" : {
         "0" : "Quarreled" ,
         "11" : "\u30af\u30e9\u30fc\u30c9"
         } ,
- "QuarreledTeamCountSetting" : {
+ "QuarreledIntro" : {
         "0" : "{0} and it's Quarreled!" ,
         "11" : "{0}\u3068\u30af\u30e9\u30fc\u30c9\u306b\u306a\u308a\u307e\u3057\u305f\uff01"
         } ,
- "QuarreledParSetting" : {
+ "QuarreledTeamCountSetting" : {
         "0" : "Max Teams" ,
         "11" : "\u30c1\u30fc\u30e0\u6570"
         } ,
- "QuarreledOnlyCrewMateSetting" : {
+ "QuarreledParSetting" : {
         "0" : "Only Crewmate Team" ,
         "11" : "\u6392\u51fa\u3055\u308c\u308b\u78ba\u7387"
         } ,
- "QuarreledWinText" : {
+ "QuarreledOnlyCrewMateSetting" : {
         "0" : "Discharge probability" ,
         "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u9663\u55b6\u306e\u307f"
         } ,
- "OpportunistName" : {
+ "QuarreledWinText" : {
         "0" : "Quarreled{0}Win" ,
         "11" : "\u30af\u30e9\u30fc\u30c9{0}\u52dd\u5229"
         } ,
- "OpportunistTitle1" : {
+ "OpportunistName" : {
         "0" : "Opportunist" ,
         "11" : "\u30aa\u30dd\u30c1\u30e5\u30cb\u30b9\u30c8"
         } ,
- "OpportunistTitle2" : {
+ "OpportunistTitle1" : {
         "0" : "We'll survive." ,
         "11" : "\u751f\u304d\u6b8b\u308d\u3046"
         } ,
- "OpportunistDescription" : {
+ "OpportunistTitle2" : {
         "0" : "Let's try not to die." ,
         "11" : "\u6b7b\u306a\u306a\u3044\u3088\u3046\u306b\u3057\u3088\u3046"
         } ,
- "BestfalsechargeName" : {
+ "OpportunistDescription" : {
         "0" : "If you are still alive by the end of the game you get an additional win." ,
         "11" : "\u30b2\u30fc\u30e0\u7d42\u4e86\u6642\u307e\u3067\u306b\u751f\u304d\u6b8b\u3063\u3066\u3044\u308b\u3068\u3001\u8ffd\u52a0\u52dd\u5229\u3067\u304d\u307e\u3059\u3002"
         } ,
- "BestfalsechargeTitle1" : {
+ "BestfalsechargeName" : {
         "0" : "Best False Charge" ,
         "11" : "\u30d9\u30b9\u30c8\u51a4\u7f6a\u30e4\u30fc"
         } ,
- "BestfalsechargeDescription" : {
+ "BestfalsechargeTitle1" : {
         "0" : "Lets' Task!" ,
         "11" : "\u30bf\u30b9\u30af\u3092\u3057\u3088\u3046"
         } ,
- "NiceGamblerName" : {
+ "BestfalsechargeDescription" : {
         "0" : "After the first meeting it dies." ,
         "11" : "\u6700\u521d\u306e\u4f1a\u8b70\u304c\u7d42\u308f\u308b\u3068\u6b7b\u306b\u307e\u3059\u3002"
         } ,
- "NiceGamblerTitle1" : {
+ "NiceGamblerName" : {
         "0" : "Nice Gambler" ,
         "11" : "\u30ca\u30a4\u30b9\u30ae\u30e3\u30f3\u30d6\u30e9\u30fc"
         } ,
- "NiceGamblerUseCountSetting" : {
+ "NiceGamblerTitle1" : {
         "0" : "Lets' Gambler!" ,
         "11" : "\u30ae\u30e3\u30f3\u30d6\u30eb\u3092\u3057\u3088\u3046"
         } ,
- "EvilGamblerName" : {
+ "NiceGamblerUseCountSetting" : {
         "0" : "Use Count" ,
         "11" : "\u4f7f\u3048\u308b\u56de\u6570"
         } ,
- "EvilGamblerTitle1" : {
+ "EvilGamblerName" : {
         "0" : "Evil Gambler" ,
         "11" : "\u30a4\u30d3\u30eb\u30ae\u30e3\u30f3\u30d6\u30e9\u30fc"
         } ,
- "EvilGamblerSucTimeSetting" : {
+ "EvilGamblerTitle1" : {
         "0" : "Lets' Kill!" ,
         "11" : "\u30ad\u30eb\u3092\u3057\u3088\u3046"
         } ,
- "EvilGamblerNotSucTimeSetting" : {
+ "EvilGamblerSucTimeSetting" : {
         "0" : "Kill cool time on success" ,
         "11" : "\u6210\u529f\u6642\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "EvilGamblerSucParSetting" : {
+ "EvilGamblerNotSucTimeSetting" : {
         "0" : "Kill Cool Time on Failure" ,
         "11" : "\u5931\u6557\u6642\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "ResearcherName" : {
+ "EvilGamblerSucParSetting" : {
         "0" : "Success probability" ,
         "11" : "\u6210\u529f\u78ba\u7387"
         } ,
- "ResearcherTitle1" : {
+ "ResearcherName" : {
         "0" : "Researcher" ,
         "11" : "\u7814\u7a76\u8005"
         } ,
- "ResearcherOneTurnSetting" : {
+ "ResearcherTitle1" : {
         "0" : "Let's do some research." ,
         "11" : "\u7814\u7a76\u3092\u3057\u3088\u3046"
         } ,
- "SelfBomberName" : {
+ "ResearcherOneTurnSetting" : {
         "0" : "Maximum number of samples per turn" ,
         "11" : "1\u30bf\u30fc\u30f3\u306e\u6700\u5927\u30b5\u30f3\u30d7\u30eb\u6570"
         } ,
- "SelfBomberTitle1" : {
+ "SelfBomberName" : {
         "0" : "Self Bomber" ,
         "11" : "\u81ea\u7206\u9b54"
         } ,
- "SelfBomberScopeSetting" : {
+ "SelfBomberTitle1" : {
         "0" : "Lets' Self Bomb!" ,
         "11" : "\u81ea\u7206\u3092\u3057\u3088\u3046"
         } ,
- "SelfBomberButtonName" : {
+ "SelfBomberScopeSetting" : {
         "0" : "Range (radius)" ,
         "11" : "\u7bc4\u56f2(\u534a\u5f84)"
         } ,
- "GodName" : {
+ "SelfBomberButtonName" : {
         "0" : "Self Bomb" ,
         "11" : "\u81ea\u7206"
         } ,
- "GodTitle1" : {
+ "GodName" : {
         "0" : "God" ,
         "11" : "\u795e"
         } ,
- "GodDescription" : {
+ "GodTitle1" : {
         "0" : "You Are God!!" ,
         "11" : "\u3042\u306a\u305f\u306f\u795e\u3060"
         } ,
- "GodViewVoteSetting" : {
+ "GodDescription" : {
         "0" : "If you survive to the end you take away the win. Everyone's position is known." ,
         "11" : "\u6700\u5f8c\u307e\u3067\u751f\u304d\u6b8b\u3063\u3066\u3044\u308b\u3068\u3001\u52dd\u5229\u3092\u596a\u3044\u53d6\u308a\u307e\u3059\u3002\u5168\u54e1\u306e\u5f79\u8077\u304c\u308f\u304b\u308a\u307e\u3059\u3002"
         } ,
- "GodIsEndTaskWinSetting" : {
+ "GodViewVoteSetting" : {
         "0" : "I know who to vote for." ,
         "11" : "\u6295\u7968\u5148\u304c\u308f\u304b\u308b"
         } ,
- "AllCleanerName" : {
+ "GodIsEndTaskWinSetting" : {
         "0" : "You have to finish the task to win." ,
         "11" : "\u30bf\u30b9\u30af\u3092\u7d42\u308f\u3089\u305b\u306a\u3044\u3068\u52dd\u5229\u3067\u304d\u306a\u3044"
         } ,
- "AllCleanerTitle1" : {
+ "AllCleanerName" : {
         "0" : "All Cleaner" ,
         "11" : "\u30aa\u30fc\u30eb\u30af\u30ea\u30fc\u30ca\u30fc"
         } ,
- "AllCleanerCountSetting" : {
+ "AllCleanerTitle1" : {
         "0" : "Let's get rid of the corpse." ,
         "11" : "\u6b7b\u4f53\u3092\u6d88\u305d\u3046"
         } ,
- "AllCleanerButtonName" : {
+ "AllCleanerCountSetting" : {
         "0" : "Number of times it can be used in one game" ,
         "11" : "1\u8a66\u5408\u4e2d\u306b\u4f7f\u3048\u308b\u56de\u6570"
         } ,
- "NiceNekomataName" : {
+ "AllCleanerButtonName" : {
         "0" : "Clean" ,
         "11" : "\u30af\u30ea\u30fc\u30f3"
         } ,
- "NiceNekomataTitle1" : {
+ "NiceNekomataName" : {
         "0" : "Nice Nekomata" ,
         "11" : "\u30ca\u30a4\u30b9\u732b\u53c8"
         } ,
- "NiceNekomataTitle2" : {
+ "NiceNekomataTitle1" : {
         "0" : "Let's take him on the road." ,
         "11" : "\u9053\u9023\u308c\u306b\u3057\u3088\u3046"
         } ,
- "NiceNekomataTitle3" : {
+ "NiceNekomataTitle2" : {
         "0" : "Let's have a human mess." ,
         "11" : "\u4eba\u5916\u30ac\u30c1\u30e3\u3092\u3057\u3088\u3046"
         } ,
- "NiceNekomataDescription" : {
+ "NiceNekomataTitle3" : {
         "0" : "Let's mess around!" ,
         "11" : "\u30ac\u30c1\u30e3\u3057\u3088\u3046\u305c\uff01"
         } ,
- "NiceNekomataIsChainSetting" : {
+ "NiceNekomataDescription" : {
         "0" : "If you are exiled at a meeting you take one of them with you on the road." ,
         "11" : "\u81ea\u5206\u304c\u4f1a\u8b70\u3067\u8ffd\u653e\u3055\u308c\u308b\u3068\u3001\u8ab0\u304b\u4e00\u4eba\u3092\u9053\u9023\u308c\u306b\u3057\u307e\u3059\u3002"
         } ,
- "EvilNekomataName" : {
+ "NiceNekomataIsChainSetting" : {
         "0" : "Chain Nekomata" ,
         "11" : "\u732b\u53c8\u540c\u58eb\u304c\u9023\u9396\u3059\u308b"
         } ,
- "EvilNekomataTitle1" : {
+ "EvilNekomataName" : {
         "0" : "Evil Nekomata" ,
         "11" : "\u30a4\u30d3\u30eb\u732b\u53c8"
         } ,
- "EvilNekomataDescription" : {
+ "EvilNekomataTitle1" : {
         "0" : "Let's take him on the road." ,
         "11" : "\u9053\u9023\u308c\u306b\u3057\u3088\u3046"
         } ,
- "JackalFriendsName" : {
+ "EvilNekomataDescription" : {
         "0" : "If you are expelled from the meeting you will take one person with you including your friends." ,
         "11" : "\u81ea\u5206\u304c\u4f1a\u8b70\u3067\u8ffd\u653e\u3055\u308c\u308b\u3068\u3001\u4ef2\u9593\u542b\u3080\u8ab0\u304b\u4e00\u4eba\u3092\u9053\u9023\u308c\u306b\u3057\u307e\u3059\u3002"
         } ,
- "JackalFriendsTitle1" : {
+ "JackalFriendsName" : {
         "0" : "Jackal Friends" ,
         "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb\u30d5\u30ec\u30f3\u30ba"
         } ,
- "JackalFriendsTitle2" : {
+ "JackalFriendsTitle1" : {
         "0" : "Help Jackal." ,
         "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb\u3092\u52a9\u3051\u3088\u3046"
         } ,
- "JackalFriendsIsCheckJackalSetting" : {
+ "JackalFriendsTitle2" : {
         "0" : "I'll help you kill them all." ,
         "11" : "\u5168\u54e1\u3076\u3061\u6bba\u3059\u624b\u4f1d\u3044\u3092\u3057\u3088\u3046"
         } ,
- "DoctorName" : {
+ "JackalFriendsIsCheckJackalSetting" : {
         "0" : "Is Check Jackal" ,
         "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb\u3092\u30c1\u30a7\u30c3\u30af\u3067\u304d\u308b"
         } ,
- "DoctorTitle1" : {
+ "DoctorName" : {
         "0" : "Doctor" ,
         "11" : "\u30c9\u30af\u30bf\u30fc"
         } ,
- "DoctorVitalName" : {
+ "DoctorTitle1" : {
         "0" : "Check Vitals" ,
         "11" : "\u30d0\u30a4\u30bf\u30eb\u3092\u30c1\u30a7\u30c3\u30af\u3057\u3088\u3046"
         } ,
- "CountChangerName" : {
+ "DoctorVitalName" : {
         "0" : "Vital" ,
         "11" : "\u30d0\u30a4\u30bf\u30eb"
         } ,
- "CountChangerTitle1" : {
+ "CountChangerName" : {
         "0" : "Count Changer" ,
         "11" : "\u30ab\u30a6\u30f3\u30c8\u30c1\u30a7\u30f3\u30b8\u30e3\u30fc"
         } ,
- "CountChangerTitle2" : {
+ "CountChangerTitle1" : {
         "0" : "Let's change it" ,
         "11" : "\u5909\u66f4\u3057\u3088\u3046"
         } ,
- "CountChangerMaxCountSetting" : {
+ "CountChangerTitle2" : {
         "0" : "Let's swap the judgment with the enemy." ,
         "11" : "\u6575\u3068\u5224\u5b9a\u3092\u5165\u308c\u66ff\u3048\u3088\u3046"
         } ,
- "CountChangerNextTurnSetting" : {
+ "CountChangerMaxCountSetting" : {
         "0" : "Maximum count" ,
         "11" : "\u6700\u5927\u56de\u6570"
         } ,
- "CountChangerButtonName" : {
+ "CountChangerNextTurnSetting" : {
         "0" : "Reflected in next turn" ,
         "11" : "\u6b21\u306e\u30bf\u30fc\u30f3\u306b\u53cd\u6620"
         } ,
- "PursuerName" : {
+ "CountChangerButtonName" : {
         "0" : "Change" ,
         "11" : "\u30c1\u30a7\u30f3\u30b8"
         } ,
- "PursuerTitle1" : {
+ "PursuerName" : {
         "0" : "Pursuer" ,
         "11" : "\u8ffd\u8de1\u8005"
         } ,
- "PursuerTitle2" : {
+ "PursuerTitle1" : {
         "0" : "Let's track the other camps." ,
         "11" : "\u4ed6\u9663\u55b6\u3092\u8ffd\u8de1\u3057\u3088\u3046"
         } ,
- "PursuerTitle3" : {
+ "PursuerTitle2" : {
         "0" : "Let's get our bearings." ,
         "11" : "\u4f4d\u7f6e\u3092\u628a\u63e1\u3057\u3088\u3046"
         } ,
- "MinimalistName" : {
+ "PursuerTitle3" : {
         "0" : "Let's go after him and kill him." ,
         "11" : "\u5f8c\u3092\u8ffd\u3063\u3066\u30ad\u30eb\u3057\u3088\u3046"
         } ,
- "MinimalistTitle1" : {
+ "MinimalistName" : {
         "0" : "Minimalist" ,
         "11" : "\u30df\u30cb\u30de\u30ea\u30b9\u30c8"
         } ,
- "MinimalistTitle2" : {
+ "MinimalistTitle1" : {
         "0" : "Let's Kill." ,
         "11" : "\u30ad\u30eb\u3092\u3057\u3088\u3046"
         } ,
- "MinimalistKillCoolSetting" : {
+ "MinimalistTitle2" : {
         "0" : "Get rid of unnecessary stuff and kill efficiently!" ,
         "11" : "\u4e0d\u5fc5\u8981\u306a\u3082\u306e\u3092\u6368\u3066\u3001\u52b9\u7387\u3088\u304f\u30ad\u30eb\u3057\u3088\u3046"
         } ,
- "MinimalistVentSetting" : {
+ "MinimalistKillCoolSetting" : {
         "0" : "Minimalist Kill Cool Time" ,
         "11" : "\u30df\u30cb\u30de\u30ea\u30b9\u30c8\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0\u306e\u8a2d\u5b9a"
         } ,
- "MinimalistSaboSetting" : {
+ "MinimalistVentSetting" : {
         "0" : "Use Vent" ,
         "11" : "\u30d9\u30f3\u30c8\u304c\u4f7f\u3048\u308b"
         } ,
- "MinimalistReportSetting" : {
+ "MinimalistSaboSetting" : {
         "0" : "Use Sabotage" ,
         "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u304c\u4f7f\u3048\u308b"
         } ,
- "HawkName" : {
+ "MinimalistReportSetting" : {
         "0" : "Use DeadBody Report" ,
         "11" : "\u901a\u5831\u304c\u3067\u304d\u308b"
         } ,
- "HawkTitle1" : {
+ "HawkName" : {
         "0" : "Hawk" ,
         "11" : "\u30db\u30fc\u30af"
         } ,
- "HawkCoolTimeSetting" : {
+ "HawkTitle1" : {
         "0" : "Let's figure out what we're doing." ,
         "11" : "\u884c\u52d5\u3092\u628a\u63e1\u3057\u3088\u3046"
         } ,
- "HawkDurationTimeSetting" : {
+ "HawkCoolTimeSetting" : {
         "0" : "Cool Time" ,
         "11" : "\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "HawkButtonName" : {
+ "HawkDurationTimeSetting" : {
         "0" : "Duration" ,
         "11" : "\u7d99\u7d9a\u6642\u9593"
         } ,
- "EgoistName" : {
+ "HawkButtonName" : {
         "0" : "Hawk Eye" ,
         "11" : "\u30db\u30fc\u30af\u30a2\u30a4"
         } ,
- "EgoistTitle1" : {
+ "EgoistName" : {
         "0" : "Egotist" ,
         "11" : "\u30a8\u30b4\u30a4\u30b9\u30c8"
         } ,
- "EgoistDescription" : {
+ "EgoistTitle1" : {
         "0" : "We can survive this." ,
         "11" : "\u751f\u304d\u6b8b\u308d\u3046"
         } ,
- "EgoistUseVentSetting" : {
+ "EgoistDescription" : {
         "0" : "Imposter judgment. The imposter appears to be a peer. If all the Imposters are dead and the Imposter's victory condition is achieved (except Sabotage) the Egoist wins." ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u5224\u5b9a\u3067\u3059\u3002\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304b\u3089\u306f\u4ef2\u9593\u306b\u898b\u3048\u307e\u3059\u3002\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u3059\u3079\u3066\u6b7b\u3093\u3067\u3044\u308b\u72b6\u614b\u3067\u3001\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u52dd\u5229\u6761\u4ef6\u3092\u9054\u6210\u3059\u308b(\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u4ee5\u5916)\u3068\u30a8\u30b4\u30a4\u30b9\u30c8\u306e\u52dd\u5229\u3067\u3059\u3002"
         } ,
- "EgoistUseSaboSetting" : {
+ "EgoistUseVentSetting" : {
         "0" : "I can use Vent." ,
         "11" : "\u30d9\u30f3\u30c8\u3092\u4f7f\u3048\u308b"
         } ,
- "EgoistImpostorLightSetting" : {
+ "EgoistUseSaboSetting" : {
         "0" : "Can use Sabotage" ,
         "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u304c\u4f7f\u3048\u308b"
         } ,
- "EgoistUseKillSetting" : {
+ "EgoistImpostorLightSetting" : {
         "0" : "Imposter's Vision" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u8996\u754c"
         } ,
- "NiceRedRidingHoodName" : {
+ "EgoistUseKillSetting" : {
         "0" : "Can use Kill" ,
         "11" : "\u30ad\u30eb\u3067\u304d\u308b"
         } ,
- "NiceRedRidingHoodTitle1" : {
+ "NiceRedRidingHoodName" : {
         "0" : "NiceRedRidingHood" ,
         "11" : "\u30ca\u30a4\u30b9\u8d64\u305a\u304d\u3093"
         } ,
- "NiceRedRidingHoodCount" : {
+ "NiceRedRidingHoodTitle1" : {
         "0" : "Come back to life" ,
         "11" : "\u751f\u304d\u8fd4\u308d\u3046"
         } ,
- "EvilEraserName" : {
+ "NiceRedRidingHoodCount" : {
         "0" : "Maximum number of revives" ,
         "11" : "\u6700\u5927\u751f\u304d\u8fd4\u308a\u56de\u6570"
         } ,
- "EvilEraserTitle1" : {
+ "EvilEraserName" : {
         "0" : "Evil Eraser" ,
         "11" : "\u30a4\u30d3\u30eb\u30a4\u30ec\u30a4\u30b5\u30fc"
         } ,
- "EvilEraserMaxCountSetting" : {
+ "EvilEraserTitle1" : {
         "0" : "Let's wipe out their abilities." ,
         "11" : "\u80fd\u529b\u3092\u6d88\u3057\u53bb\u308d\u3046"
         } ,
- "WorkpersonName" : {
+ "EvilEraserMaxCountSetting" : {
         "0" : "Max Erase Count" ,
         "11" : "\u6700\u5927\u524a\u9664\u56de\u6570"
         } ,
- "WorkpersonTitle1" : {
+ "WorkpersonName" : {
         "0" : "Work person" ,
         "11" : "\u4ed5\u4e8b\u4eba"
         } ,
- "MagazinerName" : {
+ "WorkpersonTitle1" : {
         "0" : "Let's do the work and win!" ,
         "11" : "\u4ed5\u4e8b\u3092\u3057\u3066\u52dd\u5229\u3057\u3088\u3046"
         } ,
- "MagazinerTitle1" : {
+ "MagazinerName" : {
         "0" : "Magaziner" ,
         "11" : "\u30de\u30ac\u30b8\u30ca\u30fc"
         } ,
- "MagazinerSetTimeSetting" : {
+ "MagazinerTitle1" : {
         "0" : "Save your kills!" ,
         "11" : "\u30ad\u30eb\u3092\u8caf\u3081\u3088\u3046"
         } ,
- "MagazinerAddButtonName" : {
+ "MagazinerSetTimeSetting" : {
         "0" : "Kill cool time after magazine use" ,
         "11" : "\u30de\u30ac\u30b8\u30f3\u4f7f\u7528\u5f8c\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "MagazinerGetButtonName" : {
+ "MagazinerAddButtonName" : {
         "0" : "Save" ,
         "11" : "\u8caf\u3081\u308b"
         } ,
- "LoversName" : {
+ "MagazinerGetButtonName" : {
         "0" : "Set" ,
         "11" : "\u30bb\u30c3\u30c8"
         } ,
- "LoversIntro" : {
+ "LoversName" : {
         "0" : "Lovers." ,
         "11" : "\u30e9\u30d0\u30fc\u30ba"
         } ,
- "LoversTeamCountSetting" : {
+ "LoversIntro" : {
         "0" : "I'm in love with {0}!" ,
         "11" : "{0}\u3068\u604b\u306b\u843d\u3061\u3066\u3057\u307e\u3063\u305f\uff01"
         } ,
- "LoversParSetting" : {
+ "LoversTeamCountSetting" : {
         "0" : "Number of couples" ,
         "11" : "\u30ab\u30c3\u30d7\u30eb\u6570"
         } ,
- "LoversOnlyCrewMateSetting" : {
+ "LoversParSetting" : {
         "0" : "Discharge probability" ,
         "11" : "\u6392\u51fa\u78ba\u7387"
         } ,
- "LoversSingleTeamSetting" : {
+ "LoversOnlyCrewMateSetting" : {
         "0" : "Chosen only by Cluemate" ,
         "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u306e\u307f\u306b\u9078\u3070\u308c\u308b"
         } ,
- "LoversSameDieSetting" : {
+ "LoversSingleTeamSetting" : {
         "0" : "Single camp" ,
         "11" : "\u5358\u72ec\u9663\u55b6"
         } ,
- "LoversAliveTaskCountSetting" : {
+ "LoversSameDieSetting" : {
         "0" : "Two people die at the same time" ,
         "11" : "2\u4eba\u540c\u6642\u306b\u6b7b\u306c"
         } ,
- "LoversDuplicationQuarreledSetting" : {
+ "LoversAliveTaskCountSetting" : {
         "0" : "Tasks are counted when surviving" ,
         "11" : "\u751f\u5b58\u6642\u3001\u30bf\u30b9\u30af\u304c\u30ab\u30a6\u30f3\u30c8\u3055\u308c\u308b"
         } ,
- "MayorName" : {
+ "LoversDuplicationQuarreledSetting" : {
         "0" : "Does not overlap with Quarreled" ,
         "11" : "\u30af\u30e9\u30fc\u30c9\u3068\u91cd\u8907\u3057\u306a\u3044"
         } ,
- "MayorTitle1" : {
+ "MayorName" : {
         "0" : "Mayor" ,
         "11" : "\u30e1\u30a4\u30e4\u30fc"
         } ,
- "MayorVoteCountSetting" : {
+ "MayorTitle1" : {
         "0" : "Let's add our vote at the meeting." ,
         "11" : "\u4f1a\u8b70\u3067\u7968\u3092\u8ffd\u52a0\u3067\u5165\u308c\u3088\u3046"
         } ,
- "trueloverName" : {
+ "MayorVoteCountSetting" : {
         "0" : "Mayer's vote count" ,
         "11" : "\u30e1\u30a4\u30e4\u30fc\u306e\u7968\u6570"
         } ,
- "trueloverTitle1" : {
+ "trueloverName" : {
         "0" : "True Lover" ,
         "11" : "\u7d14\u611b\u8005"
         } ,
- "trueloverloveButtonName" : {
+ "trueloverTitle1" : {
         "0" : "Let's fall in love at first sight" ,
         "11" : "\u4e00\u76ee\u60da\u308c\u3057\u3088\u3046"
         } ,
- "TechnicianName" : {
+ "trueloverloveButtonName" : {
         "0" : "Love" ,
         "11" : "\u4e00\u76ee\u60da\u308c"
         } ,
- "TechnicianTitle1" : {
+ "TechnicianName" : {
         "0" : "Technician" ,
         "11" : "\u6280\u8853\u8005"
         } ,
- "SerialKillerName" : {
+ "TechnicianTitle1" : {
         "0" : "Use technology to repair sabotage!" ,
         "11" : "\u6280\u8853\u3092\u99c6\u4f7f\u3057\u3066\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u3092\u4fee\u7406\u3057\u3088\u3046"
         } ,
- "SerialKillerTitle1" : {
+ "SerialKillerName" : {
         "0" : "Serial Killer" ,
         "11" : "\u30b7\u30ea\u30a2\u30eb\u30ad\u30e9\u30fc"
         } ,
- "SerialKillerSuicideTimeSetting" : {
+ "SerialKillerTitle1" : {
         "0" : "Kill and Survive!" ,
         "11" : "\u30ad\u30eb\u3092\u3057\u3066\u751f\u5b58\u3057\u3088\u3046"
         } ,
- "SerialKillerKillTimeSetting" : {
+ "SerialKillerSuicideTimeSetting" : {
         "0" : "Time to suicide" ,
         "11" : "\u81ea\u6bba\u307e\u3067\u306e\u6642\u9593"
         } ,
- "SerialKillerIsMeetingResetSetting" : {
+ "SerialKillerKillTimeSetting" : {
         "0" : "Kill time" ,
         "11" : "\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "SerialKillerSuicideText" : {
+ "SerialKillerIsMeetingResetSetting" : {
         "0" : "Resets when you enter a meeting." ,
         "11" : "\u4f1a\u8b70\u306b\u5165\u308b\u3068\u30ea\u30bb\u30c3\u30c8\u3055\u308c\u308b"
         } ,
- "OverKillerName" : {
+ "SerialKillerSuicideText" : {
         "0" : "{0} seconds to suicide" ,
         "11" : "\u81ea\u6bba\u307e\u3067\u5f8c{0}\u79d2"
         } ,
- "OverKillerTitle1" : {
+ "OverKillerName" : {
         "0" : "OverKiller" ,
         "11" : "\u30aa\u30fc\u30d0\u30fc\u30ad\u30e9\u30fc"
         } ,
- "OverKillerKillCoolTimeSetting" : {
+ "OverKillerTitle1" : {
         "0" : "Let's cover up the other kills." ,
         "11" : "\u4ed6\u306e\u30ad\u30eb\u3092\u96a0\u853d\u3057\u3088\u3046"
         } ,
- "OverKillerKillCountSetting" : {
+ "OverKillerKillCoolTimeSetting" : {
         "0" : "OverKiller Kill Cool Time" ,
         "11" : "\u30aa\u30fc\u30d0\u30fc\u30ad\u30e9\u30fc\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "LevelingerName" : {
+ "OverKillerKillCountSetting" : {
         "0" : "Number of bodies per" ,
         "11" : "\u4e00\u56de\u3042\u305f\u308a\u306e\u6b7b\u4f53\u6570"
         } ,
- "LevelingerTitle1" : {
+ "LevelingerName" : {
         "0" : "Levelinger" ,
         "11" : "\u30ec\u30d9\u30ea\u30f3\u30ac\u30fc"
         } ,
- "LevelingerOneKillXPSetting" : {
+ "LevelingerTitle1" : {
         "0" : "Save CP and raise your level!" ,
         "11" : "\u7d4c\u9a13\u5024\u3092\u8caf\u3081\u3066\u30ec\u30d9\u30eb\u3092\u3042\u3052\u3088\u3046"
         } ,
- "LevelingerUpLevelXPSetting" : {
+ "LevelingerOneKillXPSetting" : {
         "0" : "XP gained from kills" ,
         "11" : "\u30ad\u30eb\u3067\u5f97\u3089\u308c\u308b\u7d4c\u9a13\u5024"
         } ,
- "LevelingerGetPowerSetting" : {
+ "LevelingerUpLevelXPSetting" : {
         "0" : "Number of experience levels gained" ,
         "11" : "\u30ec\u30d9\u30eb\u304c\u3042\u304c\u308b\u7d4c\u9a13\u5024\u6570"
         } ,
- "LevelingerSettingKeep" : {
+ "LevelingerGetPowerSetting" : {
         "0" : " Abilities gained at level" ,
         "11" : "\u30ec\u30d9\u30eb\u3067\u5f97\u3089\u308c\u308b\u80fd\u529b"
         } ,
- "LevelingerSettingTwoVote" : {
+ "LevelingerSettingKeep" : {
         "0" : "Keep previous ability" ,
         "11" : "\u524d\u306e\u80fd\u529b\u3092\u30ad\u30fc\u30d7"
         } ,
- "LevelingerReviveXPSetting" : {
+ "LevelingerSettingTwoVote" : {
         "0" : "Increased by 1 vote" ,
         "11" : "1\u6295\u7968\u6570\u5897\u52a0"
         } ,
- "LevelingerUseXPReviveSetting" : {
+ "LevelingerReviveXPSetting" : {
         "0" : "Can be revived by spending XP." ,
         "11" : "\u7d4c\u9a13\u5024\u3092\u6d88\u8cbb\u3057\u3066\u5fa9\u6d3b\u3067\u304d\u308b"
         } ,
- "EvilMovingName" : {
+ "LevelingerUseXPReviveSetting" : {
         "0" : "Amount of XP to use" ,
         "11" : "\u4f7f\u7528\u3059\u308b\u7d4c\u9a13\u5024\u91cf"
         } ,
- "EvilMovingTitle1" : {
+ "EvilMovingName" : {
         "0" : "EvilMoving" ,
         "11" : "\u30a4\u30d3\u30eb\u30e0\u30fc\u30d3\u30f3\u30b0"
         } ,
- "AmnesiacName" : {
+ "EvilMovingTitle1" : {
         "0" : "Lets Teleport Kill!" ,
         "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\u3092\u3057\u3066\u30ad\u30eb\u3057\u3088\u3046"
         } ,
- "AmnesiacTitle1" : {
+ "AmnesiacName" : {
         "0" : "Amnesiac" ,
         "11" : "\u5fd8\u5374\u8005"
         } ,
- "SideKillerName" : {
+ "AmnesiacTitle1" : {
         "0" : "Let's call the cops and join them." ,
         "11" : "\u901a\u5831\u3057\u3066\u4ef2\u9593\u306b\u306a\u308d\u3046"
         } ,
- "SideKillerTitle1" : {
+ "SideKillerName" : {
         "0" : "SideKiller" ,
         "11" : "\u30b5\u30a4\u30c9\u30ad\u30e9\u30fc"
         } ,
- "SideKillerKillCoolTimeSetting" : {
+ "SideKillerTitle1" : {
         "0" : "Make friends and win!" ,
         "11" : "\u4ef2\u9593\u3092\u4f5c\u3063\u3066\u52dd\u5229\u3057\u3088\u3046"
         } ,
- "SideKillerMadKillerKillCoolTimeSetting" : {
+ "SideKillerKillCoolTimeSetting" : {
         "0" : "SideKiller Kill Cool Time." ,
         "11" : "\u30b5\u30a4\u30c9\u30ad\u30e9\u30fc\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "MadKillerName" : {
+ "SideKillerMadKillerKillCoolTimeSetting" : {
         "0" : "MadKiller Kill Cool Time." ,
         "11" : "\u30de\u30c3\u30c9\u30ad\u30e9\u30fc\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "MadKillerTitle1" : {
+ "MadKillerName" : {
         "0" : "MadKiller" ,
         "11" : "\u30de\u30c3\u30c9\u30ad\u30e9\u30fc"
         } ,
- "SurvivorName" : {
+ "MadKillerTitle1" : {
         "0" : "Let's promote and kill!" ,
         "11" : "\u6607\u683c\u3057\u3066\u30ad\u30eb\u3092\u3057\u3088\u3046"
         } ,
- "SurvivorTitle1" : {
+ "SurvivorName" : {
         "0" : "Survivor" ,
         "11" : "\u30b5\u30d0\u30a4\u30d0\u30fc"
         } ,
- "SurvivorKillCoolTimeSetting" : {
+ "SurvivorTitle1" : {
         "0" : "Survive and Kill!" ,
         "11" : "\u751f\u304d\u6b8b\u308a\u306a\u304c\u3089\u30ad\u30eb\u3092\u3057\u3088\u3046"
         } ,
- "MadMayorName" : {
+ "SurvivorKillCoolTimeSetting" : {
         "0" : "Kill Cool Time" ,
         "11" : "\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "MadMayorTitle1" : {
+ "MadMayorName" : {
         "0" : "MadMayor" ,
         "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30e4\u30fc"
         } ,
- "MadMayorVoteCountSetting" : {
+ "MadMayorTitle1" : {
         "0" : "Let's abuse our power at the meeting." ,
         "11" : "\u4f1a\u8b70\u3067\u6a29\u529b\u3092\u4e71\u7528\u3057\u3088\u3046"
         } ,
- "MadMayorDescription" : {
+ "MadMayorVoteCountSetting" : {
         "0" : "MadMayer's vote count" ,
         "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30e4\u30fc\u306e\u7968\u6570"
         } ,
- "MadMayorIsCheckImpostorSetting" : {
+ "MadMayorDescription" : {
         "0" : "The decision is in the Crewmate camp but he is a companion of the Imposter. If the Imposter wins the Madmayor can also win." ,
         "11" : "\u5224\u5b9a\u306f\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u9663\u55b6\u3067\u3059\u304c\u3001\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u4ef2\u9593\u3067\u3059\u3002\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u52dd\u5229\u3059\u308b\u3068\u3001\u30de\u30c3\u30c9\u30e1\u30a4\u30e4\u30fc\u3082\u52dd\u5229\u3067\u304d\u307e\u3059\u3002"
         } ,
- "MadMayorUseVentSetting" : {
+ "MadMayorIsCheckImpostorSetting" : {
         "0" : "You can check the Imposter." ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u78ba\u8a8d\u3067\u304d\u308b"
         } ,
- "MadMayorVentMoveSetting" : {
+ "MadMayorUseVentSetting" : {
         "0" : "Use Vent" ,
         "11" : "\u30d9\u30f3\u30c8\u3092\u4f7f\u3048\u308b"
         } ,
- "MadMayorImpostorLightSetting" : {
+ "MadMayorVentMoveSetting" : {
         "0" : "Move Vent" ,
         "11" : "\u30d9\u30f3\u30c8\u3067\u52d5\u3051\u308b"
         } ,
- "MadMayorCheckImpostorTaskSetting" : {
+ "MadMayorImpostorLightSetting" : {
         "0" : "Impostor Light" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u8996\u754c"
         } ,
- "NiceHawkName" : {
+ "MadMayorCheckImpostorTaskSetting" : {
         "0" : "Amount of tasks that will be able to be checked (of all tasks)" ,
         "11" : "\u78ba\u8a8d\u3067\u304d\u308b\u3088\u3046\u306b\u306a\u308b\u30bf\u30b9\u30af\u91cf\uff08\u5168\u30bf\u30b9\u30af\u5185\uff09"
         } ,
- "NiceHawkTitle1" : {
+ "NiceHawkName" : {
         "0" : "NiceHawk" ,
         "11" : "\u30ca\u30a4\u30b9\u30db\u30fc\u30af"
         } ,
- "NiceHawkTitle2" : {
+ "NiceHawkTitle1" : {
         "0" : "See it all." ,
         "11" : "\u5168\u3066\u3092\u898b\u6e21\u305b"
         } ,
- "BakeryName" : {
+ "NiceHawkTitle2" : {
         "0" : "Let's catch the crime." ,
         "11" : "\u72af\u884c\u3092\u6349\u3048\u3088\u3046"
         } ,
- "BakeryTitle1" : {
+ "BakeryName" : {
         "0" : "Bakery" ,
         "11" : "\u30d1\u30f3\u5c4b"
         } ,
- "MadStuntManName" : {
+ "BakeryTitle1" : {
         "0" : "Would you like some breads?" ,
         "11" : "\u713c\u304d\u305f\u3066\u306e\u30d1\u30f3\u306f\u3044\u304b\u304c\uff1f"
         } ,
- "MadStuntManTitle1" : {
+ "MadStuntManName" : {
         "0" : "MadStuntman" ,
         "11" : "\u30de\u30c3\u30c9\u30b9\u30bf\u30f3\u30c8\u30de\u30f3"
         } ,
- "MadStuntManUseVentSetting" : {
+ "MadStuntManTitle1" : {
         "0" : "Prevent kills and connect with impostors." ,
         "11" : "\u30ad\u30eb\u3092\u9632\u3044\u3067\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3068\u7e4b\u304c\u308d\u3046"
         } ,
- "MadStuntManImpostorLightSetting" : {
+ "MadStuntManUseVentSetting" : {
         "0" : "UseVent" ,
         "11" : "\u30d9\u30f3\u30c8\u3092\u4f7f\u3048\u308b"
         } ,
- "MadHawkName" : {
+ "MadStuntManImpostorLightSetting" : {
         "0" : "Impostor Light" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u8996\u754c"
         } ,
- "MadHawkTitle1" : {
+ "MadHawkName" : {
         "0" : "MadHawk" ,
         "11" : "\u30de\u30c3\u30c9\u30db\u30fc\u30af"
         } ,
- "SeerName" : {
+ "MadHawkTitle1" : {
         "0" : "See it all." ,
         "11" : "\u3059\u3079\u3066\u3092\u898b\u6e21\u305d\u3046"
         } ,
- "SeerTitle1" : {
+ "SeerName" : {
         "0" : "Seer" ,
         "11" : "\u30b7\u30fc\u30a2"
         } ,
- "SeerMode" : {
+ "SeerTitle1" : {
         "0" : "You will see players die" ,
         "11" : "\u8239\u54e1\u306e\u6c17\u914d\u3092\u611f\u3058\u53d6\u308d\u3046"
         } ,
- "SeerModeBoth" : {
+ "SeerMode" : {
         "0" : "Mode" ,
         "11" : "\u30e2\u30fc\u30c9"
         } ,
- "SeerModeFlash" : {
+ "SeerModeBoth" : {
         "0" : "Show Death Flash + Souls" ,
         "11" : "\u6b7b\u306e\u70b9\u6ec5\uff06\u5e7d\u970a\u304c\u898b\u3048\u308b"
         } ,
- "SeerModeSouls" : {
+ "SeerModeFlash" : {
         "0" : "Show Death Flash" ,
         "11" : "\u6b7b\u306e\u70b9\u6ec5\u304c\u898b\u3048\u308b"
         } ,
- "SeerLimitSoulDuration" : {
+ "SeerModeSouls" : {
         "0" : "Show Souls" ,
         "11" : "\u5e7d\u970a\u304c\u898b\u3048\u308b"
         } ,
- "SeerSoulDuration" : {
+ "SeerLimitSoulDuration" : {
         "0" : "Limit Soul Duration" ,
         "11" : "\u6642\u9593\u7d4c\u904e\u3067\u5e7d\u970a\u304c\u6d88\u3048\u308b"
+        } ,
+ "SeerSoulDuration" : {
+        "0" : "Soul Duration" ,
+        "11" : "\u5e7d\u970a\u304c\u898b\u3048\u308b\u6642\u9593"
         } 
 
 }

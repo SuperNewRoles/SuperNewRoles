@@ -420,6 +420,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Seer):
                     Roles.RoleClass.Seer.SeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.EvilLighter):
+                    Roles.RoleClass.EvilLighter.EvilLighterPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -629,6 +632,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.Seer):
                     Roles.RoleClass.Seer.SeerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.EvilLighter):
+                    Roles.RoleClass.EvilLighter.EvilLighterPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
                 case (CustomRPC.RoleId.NiceHawk):
@@ -1150,6 +1156,10 @@ namespace SuperNewRoles
                 return CustomRPC.RoleId.Seer;
             }
 
+            else if (Roles.RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.EvilLighter;
+            }
             //ロールチェック
 
             }
