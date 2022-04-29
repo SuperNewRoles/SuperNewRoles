@@ -150,6 +150,9 @@ namespace SuperNewRoles.Roles
             }
 
         }
+
+
+
         public static class Lighter
         {
             public static List<PlayerControl> LighterPlayer;
@@ -182,16 +185,29 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> EvilLighterPlayer;
             public static Color32 color = RoleClass.ImpostorRed;
-            //public static float CoolTime;
-            //public static float DurationTime;
+            public static float LightOutCooldown;
+            public static float LightsOutDuration;
+            public static float LightsOffTimer;
+            public static bool IsLightOff;
+            public static float DownVision;
+            public static DateTime ButtonTimer;
+
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.LightsOffButton.png", 115f);
+                return buttonSprite;
+            }
 
             public static void clearAndReload()
             {
                 EvilLighterPlayer = new List<PlayerControl>();
-                //CoolTime = CustomOptions.EvilLighterCoolTime.getFloat();
-                //DurationTime = CustomOptions.EvilLighterDurationTime.getFloat();
+                LightOutCooldown = CustomOptions.EvilLighterLightsOutCooldown.getFloat();
+                LightsOutDuration = CustomOptions.EvilLighterLightsOutDuration.getFloat();
+                DownVision = CustomOptions.EvilLighterDownVision.getFloat();
             }
-
+            
         }
         public static class EvilScientist
         {
@@ -203,7 +219,7 @@ namespace SuperNewRoles.Roles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png.png", 115f);
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png", 115f);
                 return buttonSprite;
             }
             public static void clearAndReload()
@@ -1330,12 +1346,25 @@ namespace SuperNewRoles.Roles
         public static class Seer
         {
             public static List<PlayerControl> SeerPlayer;
-            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static Color color = new Color32(97, 178, 108, byte.MaxValue);
+            public static List<Vector3> deadBodyPositions = new List<Vector3>();
+
+            public static float soulDuration = 15f;
+            public static bool limitSoulDuration = false;
+            public static int mode = 0;
+
+
             public static void ClearAndReload()
             {
                 SeerPlayer = new List<PlayerControl>();
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.SeerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.SeerSoulDuration.getFloat();
+                mode = CustomOptions.SeerMode.getSelection();
             }
+
         }
+
         //新ロールクラス
         public static class Quarreled
         {

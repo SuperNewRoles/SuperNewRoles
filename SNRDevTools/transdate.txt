@@ -196,8 +196,10 @@ LighterButtonName,Light!,ライト!
 EvilLighterName,Evil Lighter,イビル ライター
 EvilLighterTitle1,Darken Vision,視界を暗くしよう
 EvilLighterTitle2,Create a blackout sabotage that can further reduce your vision!,視界をさらに狭くできる停電のサボタージュを発生させよう
-EvilLigtherCoolDownSetting,Evil Lighter Cooldown,イビルライターのクールダウン
-EvilLigtherDurationSetting,Duration of Evil Writer,イビルライターの継続時間
+EvilLighterLightsOutCooldown,Evil Lighter Cooldown,強制停電のクールダウン
+EvilLighterLightsOutDuration,Duration of Evil Writer,強制停電の継続時間
+EvilLighterDownVision,Visibility during a forced power outage,強制停電中の視界
+EvilLighterButtonName,Forced power outage,強制停電!
 EvilScientistName,Evil Scientist,イビルサイエンティスト
 EvilScientistTitle1,Become invisible and get kills!,透明になってキルをしよう
 EvilScientistTitle2,Win with the power of science!,科学の力で勝利しよう
