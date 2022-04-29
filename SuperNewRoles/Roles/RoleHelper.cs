@@ -417,6 +417,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Bakery):
                     Roles.RoleClass.Bakery.BakeryPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.MadHawk):
+                    Roles.RoleClass.MadHawk.MadHawkPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -624,6 +627,9 @@ namespace SuperNewRoles
                     case (CustomRPC.RoleId.MadStuntMan):
                     Roles.RoleClass.MadStuntMan.MadStuntManPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.MadHawk):
+                    Roles.RoleClass.MadHawk.MadHawkPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
                 case (CustomRPC.RoleId.NiceHawk):
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
@@ -698,6 +704,9 @@ namespace SuperNewRoles
                 case (RoleId.MadKiller):
                     IsTaskClear = true;
                     break;
+                case (RoleId.MadHawk):
+                    IsTaskClear = true;
+                    break;
                     //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
@@ -727,6 +736,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.Technician) && IsSabotage()) return true;
             if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMayor.IsUseVent) return true;
             if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadStuntMan.IsUseVent) return true;
+            if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadHawk.IsUseVent) return true;
             return false;
         }
         public static bool IsSabotage()
@@ -757,6 +767,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.MadMate) && RoleClass.MadMate.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadMayor) && RoleClass.MadMayor.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadStuntMan) && RoleClass.MadStuntMan.IsImpostorLight) return true;
+            if (player.isRole(RoleId.MadHawk) && RoleClass.MadHawk.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -1134,6 +1145,10 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Bakery;
                 }
+            else if (Roles.RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.MadHawk;
+            }
             //ロールチェック
 
             }

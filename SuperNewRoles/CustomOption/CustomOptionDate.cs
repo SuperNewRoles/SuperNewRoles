@@ -365,6 +365,13 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadStuntManCheckImpostorTask;
         public static CustomOption MadStuntManMaxGuardCount;
 
+        public static CustomRoleOption MadHawkOption;
+        public static CustomOption MadHawkPlayerCount;
+        public static CustomOption MadHawkCoolTime;
+        public static CustomOption MadHawkDurationTime;
+        public static CustomOption MadHawkIsUseVent;
+        public static CustomOption MadHawkIsImpostorLight;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -766,6 +773,13 @@ namespace SuperNewRoles.CustomOption
             MadStuntManPlayerCount = CustomOption.Create(302, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadStuntManOption);
             MadStuntManIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMayorUseVentSetting"), false, MadStuntManOption);
             MadStuntManIsImpostorLight = CustomOption.Create(310, ModTranslation.getString("MadStuntManImpostorLightSetting"), false, MadStuntManOption);
+
+            MadHawkOption = new CustomRoleOption(301, "MadHawkName", RoleClass.ImpostorRed, 1);
+            MadHawkPlayerCount = CustomOption.Create(312, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadHawkOption);
+            MadHawkCoolTime = CustomOption.Create(313, ModTranslation.getString("HawkCoolTimeSetting"), 15f, 1f, 120f, 2.5f, MadHawkOption, format: "unitCouples");
+            MadHawkDurationTime = CustomOption.Create(314, ModTranslation.getString("HawkDurationTimeSetting"), 5f, 1f, 60f, 2.5f, MadHawkOption, format: "unitCouples");
+            MadHawkIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMateUseVentSetting"), false, MadHawkOption);
+            MadHawkIsImpostorLight = CustomOption.Create(310, ModTranslation.getString("MadMateImpostorLightSetting"), false, MadHawkOption);
 
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

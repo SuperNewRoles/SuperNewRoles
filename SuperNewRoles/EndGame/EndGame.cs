@@ -451,6 +451,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.SideKiller.MadKillerPlayer);
             notWinners.AddRange(RoleClass.MadMayor.MadMayorPlayer);
             notWinners.AddRange(RoleClass.MadStuntMan.MadStuntManPlayer);
+            notWinners.AddRange(RoleClass.MadHawk.MadHawkPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {

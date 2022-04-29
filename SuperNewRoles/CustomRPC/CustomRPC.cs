@@ -88,6 +88,7 @@ namespace SuperNewRoles.CustomRPC
         Bakery,
         Neta,
         MadStuntMan,
+        MadHawk,
         //RoleId
     }
 
