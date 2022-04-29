@@ -787,9 +787,14 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SurvivorPlayerCount.getFloat();
                 case (RoleId.MadMayor):
                     return CustomOption.CustomOptions.MadMayorPlayerCount.getFloat();
-                case (RoleId.Seer):
-                    return CustomOption.CustomOptions.SeerPlayerCount.getFloat();
-
+                case (RoleId.NiceHawk):
+                    return CustomOption.CustomOptions.NiceHawkPlayerCount.getFloat();
+                case (RoleId.Bakery):
+                    return CustomOption.CustomOptions.BakeryPlayerCount.getFloat();
+                case (RoleId.MadStuntMan):
+                    return CustomOption.CustomOptions.MadStuntManPlayerCount.getFloat();
+                case (RoleId.MadHawk):
+                    return CustomOption.CustomOptions.MadHawkPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1777,10 +1782,26 @@ namespace SuperNewRoles
                     }
                 }
             }
-            if (!(CustomOption.CustomOptions.MadMayorOption.getString().Replace("0%", "") == ""))
+         if (!(CustomOption.CustomOptions.MadMayorOption.getString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.MadMayorOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.MadMayor;
+                 int OptionDate = int.Parse(CustomOption.CustomOptions.MadMayorOption.getString().Replace("0%", ""));
+                 RoleId ThisRoleId = RoleId.MadMayor;
+                 if (OptionDate == 10)
+                 { 
+                    Crewonepar.Add(ThisRoleId);
+                 }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.NiceHawkOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NiceHawkOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.NiceHawk;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);
@@ -1793,10 +1814,10 @@ namespace SuperNewRoles
                     }
                 }
             }
-            if (!(CustomOption.CustomOptions.SeerOption.getString().Replace("0%", "") == ""))
+        if (!(CustomOption.CustomOptions.BakeryOption.getString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.SeerOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.Seer;
+                int OptionDate = int.Parse(CustomOption.CustomOptions.BakeryOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Bakery;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);
@@ -1809,19 +1830,52 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.EvilLighterOption.getString().Replace("0%", "") == ""))
+        if (!(CustomOption.CustomOptions.MadHawkOption.getString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.EvilLighterOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.EvilLighter;
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadHawkOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadHawk;
                 if (OptionDate == 10)
                 {
-                    Impoonepar.Add(ThisRoleId);
+                    Crewonepar.Add(ThisRoleId);
                 }
                 else
                 {
                     for (int i = 1; i <= OptionDate; i++)
                     {
-                        Imponotonepar.Add(ThisRoleId);
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        //セットクラス
+            if (!(CustomOption.CustomOptions.MadStuntManOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadStuntManOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadStuntMan;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.MadHawkOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadHawkOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadHawk;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
                     }
                 }
             }

@@ -11,6 +11,7 @@ namespace SuperNewRoles.Roles
         public enum BlockTypes
         {
             StuntmanGuard,
+            MadStuntmanGuard,
             ClergymanLightOut,
             BaitReport,
             RedRidingHoodRevive,

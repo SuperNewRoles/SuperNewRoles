@@ -92,6 +92,24 @@ namespace SuperNewRoles.Patches
                         }
                     }
                 }
+                if (target.isRole(RoleId.MadStuntMan) && !__instance.isRole(RoleId.OverKiller))
+                {
+                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, __instance))
+                    {
+                        if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
+                        {
+                            target.RpcProtectPlayer(target, 0);
+                        }
+                        else
+                        {
+                            if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
+                            {
+                                RoleClass.MadStuntMan.GuardCount[target.PlayerId]--;
+                                target.RpcProtectPlayer(target, 0);
+                            }
+                        }
+                    }
+                }
             }
             if (ModeHandler.isMode(ModeId.Detective) && target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles))

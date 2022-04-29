@@ -197,7 +197,6 @@ Darken Vision
 Create a blackout sabotage that can further reduce your vision!
 Evil Lighter Cooldown
 Duration of Evil Writer
-Visibility during a forced power outage
 Evil Scientist
 Become invisible and get kills!
 Win with the power of science!
@@ -505,11 +504,14 @@ Use Vent
 Move Vent
 Impostor Light
 Amount of tasks that will be able to be checked (of all tasks)
-Seer
-You will see players die
-Mode
-Show Death Flash + Souls
-Show Death Flash
-Show Souls
-Limit Soul Duration
-Soul Duration
+NiceHawk
+See it all.
+Let's catch the crime.
+Bakery
+Would you like some breads?
+MadStuntman
+Prevent kills and connect with impostors.
+UseVent
+Impostor Light
+MadHawk
+See it all.

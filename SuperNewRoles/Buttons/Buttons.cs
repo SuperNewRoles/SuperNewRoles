@@ -22,7 +22,6 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SpeedBoosterBoostButton;
         public static CustomButton EvilSpeedBoosterBoostButton;
         public static CustomButton LighterLightOnButton;
-        public static CustomButton EvilLighterLightOffButton;
         public static CustomButton CustomSabotageButton;
         public static CustomButton MovingSetButton;
         public static CustomButton MovingTpButton;
@@ -182,22 +181,58 @@ namespace SuperNewRoles.Buttons
                {
                    if (PlayerControl.LocalPlayer.CanMove)
                    {
-                       RoleClass.Hawk.Timer = RoleClass.Hawk.DurationTime;
-                       RoleClass.Hawk.ButtonTimer = DateTime.Now;
-                       HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
-                       HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
+                       if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
+                       {
+                           RoleClass.Hawk.Timer = RoleClass.Hawk.DurationTime;
+                           RoleClass.Hawk.ButtonTimer = DateTime.Now;
+                           HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
+                           HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
+                       }
+                       if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk))
+                       {
+                           RoleClass.NiceHawk.Timer = RoleClass.NiceHawk.DurationTime;
+                           RoleClass.NiceHawk.ButtonTimer = DateTime.Now;
+                           HawkHawkEyeButton.MaxTimer = RoleClass.NiceHawk.CoolTime;
+                           HawkHawkEyeButton.Timer = RoleClass.NiceHawk.CoolTime;
+                           RoleClass.NiceHawk.Postion = PlayerControl.LocalPlayer.transform.localPosition;
+                           RoleClass.NiceHawk.timer1 = 10;
+                           RoleClass.NiceHawk.Timer2 = DateTime.Now;
+                       }
+                       if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk))
+                       {
+                           RoleClass.MadHawk.Timer = RoleClass.MadHawk.DurationTime;
+                           RoleClass.MadHawk.ButtonTimer = DateTime.Now;
+                           HawkHawkEyeButton.MaxTimer = RoleClass.MadHawk.CoolTime;
+                           HawkHawkEyeButton.Timer = RoleClass.MadHawk.CoolTime;
+                           RoleClass.MadHawk.Postion = PlayerControl.LocalPlayer.transform.localPosition;
+                           RoleClass.MadHawk.timer1 = 10;
+                           RoleClass.MadHawk.Timer2 = DateTime.Now;
+                       }
                        RoleClass.Hawk.IsHawkOn = true;
                    }
                },
-               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk) && PlayerControl.LocalPlayer.isAlive(); },
+               () => { return PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk); },
                () =>
                {
                    return PlayerControl.LocalPlayer.CanMove;
                },
                () =>
                {
-                   HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
-                   HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
+                   if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
+                   {
+                       HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
+                       HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
+                   }
+                   if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk))
+                   {
+                       HawkHawkEyeButton.MaxTimer = RoleClass.NiceHawk.CoolTime;
+                       HawkHawkEyeButton.Timer = RoleClass.NiceHawk.CoolTime;
+                   }
+                   if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk))
+                   {
+                       HawkHawkEyeButton.MaxTimer = RoleClass.MadHawk.CoolTime;
+                       HawkHawkEyeButton.Timer = RoleClass.MadHawk.CoolTime;
+                   }
                    RoleClass.Hawk.IsHawkOn = false;
                },
                RoleClass.Hawk.getButtonSprite(),
@@ -638,41 +673,7 @@ namespace SuperNewRoles.Buttons
             LighterLightOnButton.buttonText = ModTranslation.getString("LighterButtonName");
             LighterLightOnButton.showButtonText = true;
 
-
-            //EvilLighter_‹­§’â“dƒ{ƒ^ƒ“‚Ì§Œä
-
-            EvilLighterLightOffButton = new Buttons.CustomButton(
-                () =>
-                {
-                    RoleClass.EvilLighter.IsLightOff = true;
-                    Roles.RoleClass.EvilLighter.ButtonTimer = DateTime.Now;
-                    EvilLighterLightOffButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
-                    EvilLighter.LightOffStart();
-                },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && EvilLighter.isEvilLighter(PlayerControl.LocalPlayer); },
-                () =>
-                {
-                    if (EvilLighterLightOffButton.Timer <= 0)
-                    {
-                        return true;
-                    }
-                    return false;
-                },
-                
-                () => { EvilLighter.EndMeeting();},
-                RoleClass.EvilLighter.getButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
-                __instance,
-                __instance.AbilityButton,
-                KeyCode.F,
-                49
-                );
-            
-            EvilLighterLightOffButton.buttonText = ModTranslation.getString("EvilLighterButtonName");
-            EvilLighterLightOffButton.showButtonText = true;
-
-
-ImpostorSidekickButton = new CustomButton(
+            ImpostorSidekickButton = new CustomButton(
                 () =>
                 {
                     var target = setTarget(Crewmateonly: true);

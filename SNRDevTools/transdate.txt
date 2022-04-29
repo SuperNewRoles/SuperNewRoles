@@ -196,10 +196,8 @@ LighterButtonName,Light!,ライト!
 EvilLighterName,Evil Lighter,イビル ライター
 EvilLighterTitle1,Darken Vision,視界を暗くしよう
 EvilLighterTitle2,Create a blackout sabotage that can further reduce your vision!,視界をさらに狭くできる停電のサボタージュを発生させよう
-EvilLighterLightsOutCooldown,Evil Lighter Cooldown,強制停電のクールダウン
-EvilLighterLightsOutDuration,Duration of Evil Writer,強制停電の継続時間
-EvilLighterDownVision,Visibility during a forced power outage,強制停電中の視界
-EvilLighterButtonName,Forced power outage,強制停電!
+EvilLigtherCoolDownSetting,Evil Lighter Cooldown,イビルライターのクールダウン
+EvilLigtherDurationSetting,Duration of Evil Writer,イビルライターの継続時間
 EvilScientistName,Evil Scientist,イビルサイエンティスト
 EvilScientistTitle1,Become invisible and get kills!,透明になってキルをしよう
 EvilScientistTitle2,Win with the power of science!,科学の力で勝利しよう
@@ -507,11 +505,14 @@ MadMayorUseVentSetting,Use Vent,ベントを使える
 MadMayorVentMoveSetting,Move Vent,ベントで動ける
 MadMayorImpostorLightSetting,Impostor Light,インポスターの視界
 MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量（全タスク内）
-SeerName,Seer,シーア
-SeerTitle1,You will see players die,船員の気配を感じ取ろう
-SeerMode,Mode,モード
-SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える
-SeerModeFlash,Show Death Flash,死の点滅が見える
-SeerModeSouls,Show Souls,幽霊が見える
-SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える
-SeerSoulDuration,Soul Duration,幽霊が見える時間
+NiceHawkName,NiceHawk,ナイスホーク
+NiceHawkTitle1,See it all.,全てを見渡せ
+NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう
+BakeryName,Bakery,パン屋
+BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？
+MadStuntManName,MadStuntMan,マッドスタントマン
+MadStuntManTitle1,Prevent kills and connect with impostors.,キルを防いでインポスターと繋がろう
+MadStuntManUseVentSetting,UseVent,ベントを使える
+MadStuntManImpostorLightSetting,ImpostorLight,インポスターの視界
+MadHawkName,MadHawk,マッドホーク
+MadHawkTitle1,See it all.,すべてを見渡そう
