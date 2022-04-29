@@ -1,2 +1,2 @@
-"trans_xx to transdate.py"
-"transdate to json.py"
+py "trans_xx to transdate.py"
+py "transdate to json.py"
