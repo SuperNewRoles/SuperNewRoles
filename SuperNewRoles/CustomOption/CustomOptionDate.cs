@@ -382,6 +382,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadJesterCheckImpostorTask;
         public static CustomOption MadJesterIsUseVent;
         public static CustomOption MadJesterIsImpostorLight;
+        public static CustomOption IsMadJesterTaskClearWin;
 
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
@@ -792,6 +793,7 @@ namespace SuperNewRoles.CustomOption
             MadJesterCheckImpostorTask = CustomOption.Create(308, ModTranslation.getString("MadMateCheckImpostorTaskSetting"), rates4, MadJesterIsCheckImpostor);
             MadJesterIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMateUseVentSetting"), false, MadJesterOption);
             MadJesterIsImpostorLight = CustomOption.Create(310, ModTranslation.getString("MadMateImpostorLightSetting"), false, MadJesterOption);
+            IsMadJesterTaskClearWin = CustomOption.Create(311, "JesterIsWinClearTaskSetting", false, MadJesterOption);
 
 
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);

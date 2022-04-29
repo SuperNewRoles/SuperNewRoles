@@ -1368,17 +1368,22 @@ namespace SuperNewRoles.Roles
         public static class MadJester
         {
             public static List<PlayerControl> MadJesterPlayer;
+            public static bool IsMadJesterWin;
             public static Color32 color = ImpostorRed;
             public static bool IsImpostorCheck;
             public static int ImpostorCheckTask;
             public static bool IsUseVent;
             public static bool IsImpostorLight;
+            public static bool IsMadJesterTaskClearWin;
             public static void ClearAndReload()
             {
                 MadJesterPlayer = new List<PlayerControl>();
+
                 IsImpostorCheck = CustomOptions.MadJesterIsCheckImpostor.getBool();
+                IsMadJesterWin = false;
                 IsUseVent = CustomOptions.MadJesterIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.getBool();
+                IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.getBool();
                 int Common = (int)CustomOptions.MadJesterCommonTask.getFloat();
                 int Long = (int)CustomOptions.MadJesterLongTask.getFloat();
                 int Short = (int)CustomOptions.MadJesterShortTask.getFloat();

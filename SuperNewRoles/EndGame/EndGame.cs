@@ -31,6 +31,7 @@ namespace SuperNewRoles.EndGame
         EgoistWin,
         WorkpersonWin,
         LoversWin,
+        MadJesterWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -218,6 +219,12 @@ namespace SuperNewRoles.EndGame
                 text = "WorkpersonName";
                 textRenderer.color = RoleClass.Workperson.color;
                 __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.MadJesterWin)
+            {
+                text = "MadJesterName";
+                textRenderer.color = RoleClass.Workperson.color;
+                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.MadJester.color);
             }
             if (ModeHandler.isMode(ModeId.BattleRoyal)) {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
@@ -470,6 +477,7 @@ namespace SuperNewRoles.EndGame
 
             bool saboWin = gameOverReason == GameOverReason.ImpostorBySabotage;
             bool JesterWin = gameOverReason == (GameOverReason)CustomGameOverReason.JesterWin;
+            bool MadJesterWin = gameOverReason == (GameOverReason)CustomGameOverReason.ImpostorWin;
             bool QuarreledWin = gameOverReason == (GameOverReason)CustomGameOverReason.QuarreledWin;
             bool JackalWin = gameOverReason == (GameOverReason)CustomGameOverReason.JackalWin;
             bool HAISON = EndGameManagerSetUpPatch.IsHaison;
@@ -480,6 +488,7 @@ namespace SuperNewRoles.EndGame
             {
                 JesterWin = EndData == CustomGameOverReason.JesterWin;
                 EgoistWin = EndData == CustomGameOverReason.EgoistWin;
+
             }
 
 
@@ -490,6 +499,14 @@ namespace SuperNewRoles.EndGame
                 WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.JesterWin;
+            }
+            if (MadJesterWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                WinnerPlayer.Data.IsDead = false;
+                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
+                TempData.winners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.MadJesterWin;
             }
             else if (JackalWin)
             {
@@ -847,7 +864,7 @@ namespace SuperNewRoles.EndGame
                         CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
                     }
                 }
-                
+
                 if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(Player))
                 {
 
@@ -860,6 +877,21 @@ namespace SuperNewRoles.EndGame
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         Roles.RoleClass.Jester.IsJesterWin = true;
                         CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
+                    }
+                }
+
+                if (Roles.RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(Player))
+                {
+
+                    if (!Roles.RoleClass.MadJester.IsMadJesterTaskClearWin || (Roles.RoleClass.MadJester.IsMadJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
+                    {
+                        CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
+
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        Writer.Write(Player.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        Roles.RoleClass.MadJester.IsMadJesterWin = true;
+                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.MadJesterWin, false);
                     }
                 }
             }
@@ -950,7 +982,8 @@ namespace SuperNewRoles.EndGame
         {
             if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard())
             {
-                __instance.enabled = false;
+
+                        __instance.enabled = false;
                 GameOverReason endReason;
                 switch (TempData.LastDeathReason)
                 {
@@ -964,6 +997,7 @@ namespace SuperNewRoles.EndGame
                         endReason = GameOverReason.ImpostorByVote;
                         break;
                 }
+
                 CustomEndGame(endReason, false);
                 return true;
             }
