@@ -375,11 +375,6 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption MadJesterOption;
         public static CustomOption MadJesterPlayerCount;
-        public static CustomOption MadJesterIsCheckImpostor;
-        public static CustomOption MadJesterCommonTask;
-        public static CustomOption MadJesterShortTask;
-        public static CustomOption MadJesterLongTask;
-        public static CustomOption MadJesterCheckImpostorTask;
         public static CustomOption MadJesterIsUseVent;
         public static CustomOption MadJesterIsImpostorLight;
         public static CustomOption IsMadJesterTaskClearWin;
@@ -782,15 +777,8 @@ namespace SuperNewRoles.CustomOption
             BakeryOption = new CustomRoleOption(311, "BakeryName", RoleClass.Bakery.color, 1);
             BakeryPlayerCount = CustomOption.Create(312, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BakeryOption);
 
-            MadJesterOption = new CustomRoleOption(313, "MadMateName", RoleClass.ImpostorRed, 1);
+            MadJesterOption = new CustomRoleOption(313, "MadJesterName", RoleClass.ImpostorRed, 1);
             MadJesterPlayerCount = CustomOption.Create(314, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadJesterOption);
-            MadJesterIsCheckImpostor = CustomOption.Create(315, ModTranslation.getString("MadMateIsCheckImpostorSetting"), false, MadJesterOption);
-            var madjesteroption = SelectTask.TaskSetting(316, 317, 318, MadJesterIsCheckImpostor);
-            MadJesterCommonTask = madmayoroption.Item1;
-            MadJesterShortTask = madmayoroption.Item2;
-            MadJesterLongTask = madmayoroption.Item3;
-            //MadMayorIsNotTask = madmayoroption.Item4;
-            MadJesterCheckImpostorTask = CustomOption.Create(308, ModTranslation.getString("MadMateCheckImpostorTaskSetting"), rates4, MadJesterIsCheckImpostor);
             MadJesterIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMateUseVentSetting"), false, MadJesterOption);
             MadJesterIsImpostorLight = CustomOption.Create(310, ModTranslation.getString("MadMateImpostorLightSetting"), false, MadJesterOption);
             IsMadJesterTaskClearWin = CustomOption.Create(311, "JesterIsWinClearTaskSetting", false, MadJesterOption);

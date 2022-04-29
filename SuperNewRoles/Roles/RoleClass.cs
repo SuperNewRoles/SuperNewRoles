@@ -224,7 +224,7 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static bool IsNeutralKill;
             public static bool IsLoversKill;
-            public static bool IsMadMateKill;
+            public static bool IsMadRoleKill;
             public static float KillMaxCount;
             public static Dictionary<int,int> KillCount;
             public static DateTime ButtonTimer;
@@ -244,7 +244,7 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.SheriffCoolTime.getFloat();
                 IsNeutralKill = CustomOptions.SheriffNeutralKill.getBool();
                 IsLoversKill = CustomOptions.SheriffLoversKill.getBool();
-                IsMadMateKill = CustomOptions.SheriffMadMateKill.getBool();
+                IsMadRoleKill = CustomOptions.SheriffMadMateKill.getBool();
                 KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
                 KillCount = new Dictionary<int, int>();
             }
@@ -255,7 +255,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> MeetingSheriffPlayer;
             public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
             public static bool NeutralKill;
-            public static bool MadMateKill;
+            public static bool IsMadRoleKill;
             public static float KillMaxCount;
             public static bool OneMeetingMultiKill;
 
@@ -271,7 +271,7 @@ namespace SuperNewRoles.Roles
             {
                 MeetingSheriffPlayer = new List<PlayerControl>();
                 NeutralKill = CustomOptions.MeetingSheriffNeutralKill.getBool();
-                MadMateKill = CustomOptions.MeetingSheriffMadMateKill.getBool();
+                IsMadRoleKill = CustomOptions.MeetingSheriffMadMateKill.getBool();
                 KillMaxCount = CustomOptions.MeetingSheriffKillMaxCount.getFloat();
                 OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.getBool();
             }
@@ -1379,22 +1379,10 @@ namespace SuperNewRoles.Roles
             {
                 MadJesterPlayer = new List<PlayerControl>();
 
-                IsImpostorCheck = CustomOptions.MadJesterIsCheckImpostor.getBool();
                 IsMadJesterWin = false;
                 IsUseVent = CustomOptions.MadJesterIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.getBool();
                 IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.getBool();
-                int Common = (int)CustomOptions.MadJesterCommonTask.getFloat();
-                int Long = (int)CustomOptions.MadJesterLongTask.getFloat();
-                int Short = (int)CustomOptions.MadJesterShortTask.getFloat();
-                int AllTask = Common + Long + Short;
-                if (AllTask == 0)
-                {
-                    Common = PlayerControl.GameOptions.NumCommonTasks;
-                    Long = PlayerControl.GameOptions.NumLongTasks;
-                    Short = PlayerControl.GameOptions.NumShortTasks;
-                }
-                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadJesterCheckImpostorTask.getString().Replace("%", "")) / 100f));
             }
         }
         //新ロールクラス
