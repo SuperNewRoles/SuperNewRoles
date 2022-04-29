@@ -89,6 +89,7 @@ namespace SuperNewRoles.CustomRPC
         Neta,
         MadStuntMan,
         MadHawk,
+        Seer,
         //RoleId
     }
 

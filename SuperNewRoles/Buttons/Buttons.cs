@@ -42,6 +42,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton trueloverLoveButton;
         public static CustomButton ImpostorSidekickButton;
         public static CustomButton SideKillerSidekickButton;
+        public static CustomButton EvilLighterLightOffButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
