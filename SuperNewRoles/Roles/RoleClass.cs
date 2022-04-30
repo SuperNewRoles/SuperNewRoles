@@ -370,7 +370,7 @@ namespace SuperNewRoles.Roles
                 SpeedBoosterPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.SpeedBoosterCoolTime.getFloat();
                 DurationTime = CustomOptions.SpeedBoosterDurationTime.getFloat();
-                Speed = CustomOptions.SpeedBoosterSpeed.getFloat() / 100f;
+                Speed = CustomOptions.SpeedBoosterSpeed.getFloat();
                 IsSpeedBoost = false;
                 IsBoostPlayers = new Dictionary<int, bool>();
             }
