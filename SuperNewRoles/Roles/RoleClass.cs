@@ -224,7 +224,7 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static bool IsNeutralKill;
             public static bool IsLoversKill;
-            public static bool IsMadRoleKill;
+            public static bool MadRoleKill;
             public static float KillMaxCount;
             public static Dictionary<int,int> KillCount;
             public static DateTime ButtonTimer;
@@ -244,7 +244,7 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.SheriffCoolTime.getFloat();
                 IsNeutralKill = CustomOptions.SheriffNeutralKill.getBool();
                 IsLoversKill = CustomOptions.SheriffLoversKill.getBool();
-                IsMadRoleKill = CustomOptions.SheriffMadMateKill.getBool();
+                MadRoleKill = CustomOptions.SheriffMadMateKill.getBool();
                 KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
                 KillCount = new Dictionary<int, int>();
             }
@@ -255,7 +255,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> MeetingSheriffPlayer;
             public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
             public static bool NeutralKill;
-            public static bool IsMadRoleKill;
+            public static bool MadRoleKill;
             public static float KillMaxCount;
             public static bool OneMeetingMultiKill;
 
@@ -271,7 +271,7 @@ namespace SuperNewRoles.Roles
             {
                 MeetingSheriffPlayer = new List<PlayerControl>();
                 NeutralKill = CustomOptions.MeetingSheriffNeutralKill.getBool();
-                IsMadRoleKill = CustomOptions.MeetingSheriffMadMateKill.getBool();
+                MadRoleKill = CustomOptions.MeetingSheriffMadMateKill.getBool();
                 KillMaxCount = CustomOptions.MeetingSheriffKillMaxCount.getFloat();
                 OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.getBool();
             }

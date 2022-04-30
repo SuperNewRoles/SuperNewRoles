@@ -28,9 +28,8 @@ namespace SuperNewRoles.Roles
         public static bool IsMeetingSheriffKill(PlayerControl Target) {
             var roledata = CountChanger.GetRoleType(Target);
             if (roledata == TeamRoleType.Impostor) return true;
-            if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.IsMadRoleKill) return true;
-            if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.IsMadRoleKill) return true;
-            if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.IsMadRoleKill) return true;
+            if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (Target.isNeutral() && RoleClass.MeetingSheriff.NeutralKill) return true;
             return false;
         }

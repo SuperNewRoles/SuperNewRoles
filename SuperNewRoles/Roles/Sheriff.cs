@@ -20,9 +20,8 @@ namespace SuperNewRoles.Roles
         {
             var roledata = CountChanger.GetRoleType(Target);
             if (roledata == TeamRoleType.Impostor) return true;
-            if (Target.isRole(CustomRPC.RoleId.MadMate) && RoleClass.Sheriff.IsMadRoleKill) return true;
-            if (Target.isRole(CustomRPC.RoleId.MadMayor) && RoleClass.Sheriff.IsMadRoleKill) return true;
-            if (Target.isRole(CustomRPC.RoleId.MadJester) && RoleClass.Sheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadMate) && RoleClass.Sheriff.MadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadJester) && RoleClass.Sheriff.MadRoleKill) return true;
             if (Target.isNeutral() && RoleClass.Sheriff.IsNeutralKill) return true;
             if (RoleClass.Sheriff.IsLoversKill && Target.IsLovers()) return true;
             return false;
