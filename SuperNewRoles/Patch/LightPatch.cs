@@ -24,15 +24,30 @@ namespace SuperNewRoles.Patch
                 __result = __instance.MaxLightRadius;
             else if (Clergyman.IsLightOutVision())
                 __result = __instance.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
-            else if(player.Object.isRole(CustomRPC.RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate)
+            else if (player.Object.isRole(CustomRPC.RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate)
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * PlayerControl.GameOptions.ImpostorLightMod;
             else if (player.Object.isImpostor() || RoleHelpers.IsImpostorLight(player.Object))
                 __result = __instance.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
+            else if (RoleClass.EvilLighter.EvilLighterPlayer != null && RoleClass.EvilLighter.LightsOffTimer > 0f)
+            {
+                float lerpValue = 1f;
+                if (RoleClass.EvilLighter.LightsOutDuration - RoleClass.EvilLighter.LightsOffTimer < 0.5f) lerpValue = Mathf.Clamp01((RoleClass.EvilLighter.LightsOutDuration - RoleClass.EvilLighter.LightsOffTimer) * 2);
+                else if (RoleClass.EvilLighter.LightsOffTimer < 0.5) lerpValue = Mathf.Clamp01(RoleClass.EvilLighter.LightsOffTimer * 2);
+                __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, 1 - lerpValue) * PlayerControl.GameOptions.CrewLightMod;
+            } // Instant lights out? Maybe add a smooth transition?}
             else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player.Object) && RoleClass.Lighter.IsLightOn)
                 __result = Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num);
             else
                 __result = Mathf.Lerp(__instance.MinLightRadius, __instance.MaxLightRadius, num) * PlayerControl.GameOptions.CrewLightMod;
+
+
             return false;
         }
     }
 }
+
+
+
+
+
+
