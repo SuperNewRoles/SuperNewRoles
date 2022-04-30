@@ -372,6 +372,15 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadHawkIsUseVent;
         public static CustomOption MadHawkIsImpostorLight;
 
+        public static CustomOption BakeryOption;
+        public static CustomOption BakeryPlayerCount;
+
+        public static CustomRoleOption MadJesterOption;
+        public static CustomOption MadJesterPlayerCount;
+        public static CustomOption MadJesterIsUseVent;
+        public static CustomOption MadJesterIsImpostorLight;
+        public static CustomOption IsMadJesterTaskClearWin;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -387,9 +396,6 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption LoversCommonTask;
         public static CustomOption LoversLongTask;
         public static CustomOption LoversShortTask;
-
-        public static CustomOption BakeryOption;
-        public static CustomOption BakeryPlayerCount;
 
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
@@ -783,7 +789,13 @@ namespace SuperNewRoles.CustomOption
 
             BakeryOption = new CustomRoleOption(311, "BakeryName", RoleClass.Bakery.color, 1);
             BakeryPlayerCount = CustomOption.Create(312, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BakeryOption);
-            
+
+            MadJesterOption = new CustomRoleOption(313, "MadJesterName", RoleClass.ImpostorRed, 1);
+            MadJesterPlayerCount = CustomOption.Create(314, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadJesterOption);
+            MadJesterIsUseVent = CustomOption.Create(309, ModTranslation.getString("MadMateUseVentSetting"), false, MadJesterOption);
+            MadJesterIsImpostorLight = CustomOption.Create(310, ModTranslation.getString("MadMateImpostorLightSetting"), false, MadJesterOption);
+            IsMadJesterTaskClearWin = CustomOption.Create(311, "JesterIsWinClearTaskSetting", false, MadJesterOption);
+
             QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, cs(Color.white, "QuarreledOnlyCrewMateSetting"), false, QuarreledOption);
@@ -800,6 +812,9 @@ namespace SuperNewRoles.CustomOption
             LoversCommonTask = loversoption.Item1;
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
+
+
+
       
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);
         }

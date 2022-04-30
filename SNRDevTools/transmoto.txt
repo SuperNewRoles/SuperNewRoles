@@ -515,3 +515,6 @@ MadStuntManUseVentSetting
 MadStuntManImpostorLightSetting
 MadHawkName
 MadHawkTitle1
+BakeryTitle1
+MadJesterName
+MadJesterTitle1

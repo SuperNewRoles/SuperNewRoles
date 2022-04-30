@@ -516,3 +516,5 @@ MadStuntManUseVentSetting,UseVent,ベントを使える
 MadStuntManImpostorLightSetting,ImpostorLight,インポスターの視界
 MadHawkName,MadHawk,マッドホーク
 MadHawkTitle1,See it all.,すべてを見渡そう
+MadJesterName,MadJester,マッドてるてる
+MadJesterTitle1,Get voted out and win with the Imposters!,投票で追放されてインポスターと勝利しよう
