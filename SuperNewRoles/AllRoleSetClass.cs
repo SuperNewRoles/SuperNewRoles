@@ -793,6 +793,10 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.BakeryPlayerCount.getFloat();
                     case (RoleId.MadJester):
                     return CustomOption.CustomOptions.MadJesterPlayerCount.getFloat();
+                case (RoleId.MadStuntMan):
+                    return CustomOption.CustomOptions.MadStuntManPlayerCount.getFloat();
+                case (RoleId.MadHawk):
+                    return CustomOption.CustomOptions.MadHawkPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1816,6 +1820,55 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.BakeryOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Bakery;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.MadHawkOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadHawkOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadHawk;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        //セットクラス
+            if (!(CustomOption.CustomOptions.MadStuntManOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadStuntManOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadStuntMan;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.MadHawkOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadHawkOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadHawk;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);

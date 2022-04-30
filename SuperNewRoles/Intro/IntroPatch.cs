@@ -83,6 +83,21 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
+                if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && MadStuntMan.CheckImpostor(PlayerControl.LocalPlayer))
+                {
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    int ImpostorNum = 0;
+                    ImpostorTeams.Add(PlayerControl.LocalPlayer);
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.Data.Role.IsImpostor)
+                        {
+                            ImpostorNum++;
+                            ImpostorTeams.Add(player);
+                        }
+                    }
+                    yourTeam = ImpostorTeams;
+                }
                 if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && MadJester.CheckImpostor(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();

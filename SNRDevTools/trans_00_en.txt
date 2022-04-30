@@ -509,5 +509,12 @@ See it all.
 Let's catch the crime.
 Bakery
 Would you like some breads?
+MadStuntman
+Prevent kills and connect with impostors.
+UseVent
+Impostor Light
+MadHawk
+See it all.
+Would you like some breads?
 MadJester
 Get voted out and win with the Imposters!

@@ -88,6 +88,8 @@ namespace SuperNewRoles.CustomRPC
         Bakery,
         Neta,
         MadJester,
+        MadStuntMan,
+        MadHawk,
         //RoleId
     }
 
@@ -134,7 +136,8 @@ namespace SuperNewRoles.CustomRPC
         UncheckedSetVanilaRole,
         SetMadKiller,
         SetCustomSabotage,
-        UseStuntmanCount
+        UseStuntmanCount,
+        UseMadStuntmanCount,
     }
     public static class RPCProcedure
     {

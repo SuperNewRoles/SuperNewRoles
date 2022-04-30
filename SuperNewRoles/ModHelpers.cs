@@ -184,6 +184,25 @@ namespace SuperNewRoles
                     }
                 }
             }
+            if (target.isRole(RoleId.MadStuntMan) && !killer.isRole(RoleId.OverKiller) && (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId) || RoleClass.MadStuntMan.GuardCount[target.PlayerId] >= 1))
+            {
+                if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, killer))
+                {
+                    bool IsSend = false;
+                    {
+                        target.RpcProtectPlayer(target, 0);
+                        IsSend = true;
+                    }
+                    
+
+                    if (IsSend)
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseMadStuntmanCount);
+                        writer.Write(target.PlayerId);
+                        writer.EndRPC();
+                    }
+                }
+            }
             return MurderAttemptResult.PerformKill;
         }
         public static void generateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
