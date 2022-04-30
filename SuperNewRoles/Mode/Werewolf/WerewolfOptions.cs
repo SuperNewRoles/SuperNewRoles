@@ -12,8 +12,8 @@ namespace SuperNewRoles.Mode.Werewolf
         public static CustomOption.CustomOption WerewolfHunterOption;
         public static void Load()
         {
-            WerewolfMode = CustomOption.CustomOption.Create(229, CustomOptions.cs(Color.white, "SettingWerewolfMode"), false, ModeHandler.ModeSetting);
-            WerewolfHunterOption = CustomOption.CustomOption.Create(230, CustomOptions.cs(Color.white, "HunterName"), CustomOptions.rates, WerewolfMode);
+            WerewolfMode = CustomOption.CustomOption.Create(229, true, CustomOptionType.Generic, "SettingWerewolfMode", false, ModeHandler.ModeSetting);
+            WerewolfHunterOption = CustomOption.CustomOption.Create(230, true, CustomOptionType.Generic, "HunterName", CustomOptions.rates, WerewolfMode);
         }
     }
 }
