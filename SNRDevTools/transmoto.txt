@@ -48,7 +48,10 @@ colorCrasyublue
 colorLightgreen
 Hat_SNR
 SettingpresetSelection
-SettingSuperNewRolesSetting
+SettingSuperNewRoles
+SettingImpostor
+SettingNeutral
+SettingCrewmate
 SettingMiniCrewRole
 SettingMaxCrewRole
 SettingMiniNeutralRole

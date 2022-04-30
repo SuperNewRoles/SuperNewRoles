@@ -200,9 +200,21 @@
         "0" : "Preset" ,
         "11" : "\u30d7\u30ea\u30bb\u30c3\u30c8"
         } ,
- "SettingSuperNewRolesSetting" : {
-        "0" : "Super New Roles Setting" ,
-        "11" : "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u8a2d\u5b9a"
+ "SettingSuperNewRoles" : {
+        "0" : "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings" ,
+        "11" : "<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>\u306e\u8a2d\u5b9a"
+        } ,
+ "SettingImpostor" : {
+        "0" : "<color=#ff0000>Impostor</color> Settings" ,
+        "11" : "<color=#ff0000>\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc</color>\u306e\u8a2d\u5b9a"
+        } ,
+ "SettingNeutral" : {
+        "0" : "<color=#808080>Neutral</color> Settings" ,
+        "11" : "<color=#808080>\u7b2c\u4e09\u9663\u55b6</color>\u306e\u8a2d\u5b9a"
+        } ,
+ "SettingCrewmate" : {
+        "0" : "<color=#a9ceec>Crewmate</color> Settings" ,
+        "11" : "<color=#00ffff>\u30af\u30eb\u30fc\u30e1\u30a4\u30c8</color>\u306e\u8a2d\u5b9a"
         } ,
  "SettingMiniCrewRole" : {
         "0" : "Minimum Crewmate Roles" ,
@@ -832,17 +844,17 @@
         "0" : "Sheriff's Kill Cooldown" ,
         "11" : "\u30b7\u30a7\u30ea\u30d5\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } ,
- "SheriffIsKillNewtralSetting" : {
-        "0" : "Can Kill a Newtral" ,
-        "11" : "\u30b7\u30a7\u30ea\u30d5\u304c\u7b2c\u4e09\u9663\u55b6\u3092\u30ad\u30eb\u3067\u304d\u308b\r\n"
+ "SheriffIsKillNeutralSetting" : {
+        "0" : "Can Kill a Neutral" ,
+        "11" : "\u7b2c\u4e09\u9663\u55b6\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
  "SheriffIsKillLoversSetting" : {
         "0" : "Can Kill a Lovers" ,
         "11" : "\u30e9\u30d0\u30fc\u30ba\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
- "SheriffIsKillMadRoleSetting" : {
-        "0" : "Can Kill a MadRole" ,
-        "11" : "\u30b7\u30a7\u30ea\u30d5\u304c\u30de\u30c3\u30c9\u7cfb\u5f79\u8077\u3092\u30ad\u30eb\u3067\u304d\u308b"
+ "SheriffIsKillMadMateSetting" : {
+        "0" : "Can Kill a Madmate" ,
+        "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30c9\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
  "SheriffIsKillMadMateYes" : {
         "0" : "Yes" ,
@@ -888,9 +900,9 @@
         "0" : "Can Kill a Neutral" ,
         "11" : "\u7b2c\u4e09\u9663\u55b6\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
- "MeetingSheriffIsKillMadRoleSetting" : {
-        "0" : "Can Kill a MadRole" ,
-        "11" : "\u30df\u30fc\u30c6\u30a3\u30f3\u30b0\u30b7\u30a7\u30ea\u30d5\u304c\u30de\u30c3\u30c9\u7cfb\u5f79\u8077\u3092\u30ad\u30eb\u3067\u304d\u308b"
+ "MeetingSheriffIsKillMadMateSetting" : {
+        "0" : "Can Kill a Madmate" ,
+        "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30c9\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
  "MeetingSheriffYes" : {
         "0" : "Yes" ,
@@ -2044,16 +2056,8 @@
         "0" : "Would you like some breads?" ,
         "11" : "\u713c\u304d\u305f\u3066\u306e\u30d1\u30f3\u306f\u3044\u304b\u304c\uff1f"
         } ,
- "NetaName" : {
-        "0" : "a" ,
-        "11" : "\u958b\u767a\u304b\u3089\u9003\u3052\u308b\u306a"
-        } ,
- "NetaTitle1" : {
-        "0" : "a" ,
-        "11" : "\u9003\u304c\u3055\u306a\u3044\u3088\u2661"
-        },
  "MadStuntManName" : {
-        "0" : "MadStuntMan" ,
+        "0" : "MadStuntman" ,
         "11" : "\u30de\u30c3\u30c9\u30b9\u30bf\u30f3\u30c8\u30de\u30f3"
         } ,
  "MadStuntManTitle1" : {
@@ -2061,7 +2065,7 @@
         "11" : "\u30ad\u30eb\u3092\u9632\u3044\u3067\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3068\u7e4b\u304c\u308d\u3046"
         } ,
  "MadStuntManUseVentSetting" : {
-        "0" : "Use Vent" ,
+        "0" : "UseVent" ,
         "11" : "\u30d9\u30f3\u30c8\u3092\u4f7f\u3048\u308b"
         } ,
  "MadStuntManImpostorLightSetting" : {
@@ -2075,7 +2079,6 @@
  "MadHawkTitle1" : {
         "0" : "See it all." ,
         "11" : "\u3059\u3079\u3066\u3092\u898b\u6e21\u305d\u3046"
-        } ,
-
+        } 
 
 }

@@ -299,25 +299,24 @@ namespace SuperNewRoles.CustomOption
         {
             if (GameObject.Find("SNRSettings") != null)
             { // Settings setup has already been performed, fixing the title of the tab and returning
-                GameObject.Find("SNRSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText("The Other Roles Settings");
+                GameObject.Find("SNRSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingSuperNewRoles"));
                 return;
             }
             if (GameObject.Find("ImpostorSettings") != null)
             {
-                GameObject.Find("ImpostorSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText("Impostor Roles Settings");
+                GameObject.Find("ImpostorSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingImpostor"));
                 return;
             }
             if (GameObject.Find("NeutralSettings") != null)
             {
-                GameObject.Find("NeutralSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText("Neutral Roles Settings");
+                GameObject.Find("NeutralSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingNeutral"));
                 return;
             }
             if (GameObject.Find("CrewmateSettings") != null)
             {
-                GameObject.Find("CrewmateSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText("Crewmate Roles Settings");
+                GameObject.Find("CrewmateSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingCrewmate"));
                 return;
             }
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             // Setup TOR tab
             var template = UnityEngine.Object.FindObjectsOfType<StringOption>().FirstOrDefault();
             if (template == null) return;
