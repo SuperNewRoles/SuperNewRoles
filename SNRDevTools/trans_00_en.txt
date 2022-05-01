@@ -48,7 +48,7 @@ Crasyu Blue
 Light Green
 <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats
 Preset
-<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings
+<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings
 <color=#ff0000>Impostor</color> Settings
 <color=#808080>Neutral</color> Settings
 <color=#a9ceec>Crewmate</color> Settings
@@ -518,3 +518,6 @@ UseVent
 Impostor Light
 MadHawk
 See it all.
+Would you like some breads?
+MadJester
+Get voted out and win with the Imposters!

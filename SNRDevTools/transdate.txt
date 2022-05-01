@@ -49,7 +49,7 @@ colorCrasyublue,Crasyu Blue,クラッシュブルー
 colorLightgreen,Light Green,ライトグリーン
 Hat_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats
 SettingpresetSelection,Preset,プリセット
-SettingSuperNewRoles,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定
+SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定
 SettingImpostor,<color=#ff0000>Impostor</color> Settings,<color=#ff0000>インポスター</color>の設定
 SettingNeutral,<color=#808080>Neutral</color> Settings,<color=#808080>第三陣営</color>の設定
 SettingCrewmate,<color=#a9ceec>Crewmate</color> Settings,<color=#00ffff>クルーメイト</color>の設定
@@ -519,3 +519,6 @@ MadStuntManUseVentSetting,UseVent,ベントを使える
 MadStuntManImpostorLightSetting,Impostor Light,インポスターの視界
 MadHawkName,MadHawk,マッドホーク
 MadHawkTitle1,See it all.,すべてを見渡そう
+BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？
+MadJesterName,MadJester,マッドてるてる
+MadJesterTitle1,Get voted out and win with the Imposters!,投票で追放されてインポスターと勝利しよう
