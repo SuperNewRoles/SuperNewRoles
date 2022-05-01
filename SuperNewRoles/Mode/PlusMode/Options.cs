@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SuperNewRoles.CustomOption;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,9 +13,9 @@ namespace SuperNewRoles.Mode.PlusMode
         //public static CustomOption.CustomOption FixedSpawnSetting;
         public static void Load()
         {
-            PlusModeSetting = CustomOption.CustomOption.Create(235, ModTranslation.getString("PlusModeSetting"), false, null,isHeader:true);
-            NoSabotageModeSetting = CustomOption.CustomOption.Create(238, ModTranslation.getString("SettingNoSabotageMode"), false, PlusModeSetting);
-            NoTaskWinModeSetting = CustomOption.CustomOption.Create(241, ModTranslation.getString("SettingNoTaskWinMode"), false, PlusModeSetting);
+            PlusModeSetting = CustomOption.CustomOption.Create(235, true, CustomOptionType.Generic, "PlusModeSetting", false, null,isHeader:true);
+            NoSabotageModeSetting = CustomOption.CustomOption.Create(238, true, CustomOptionType.Generic, "SettingNoSabotageMode", false, PlusModeSetting);
+            NoTaskWinModeSetting = CustomOption.CustomOption.Create(241, true, CustomOptionType.Generic, "SettingNoTaskWinMode", false, PlusModeSetting);
             //FixedSpawnSetting = CustomOption.CustomOption.Create(243, ModTranslation.getString("SettingFixedSpawnMode"), false, PlusModeSetting);
         }
     }

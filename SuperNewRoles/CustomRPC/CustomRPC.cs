@@ -87,6 +87,7 @@ namespace SuperNewRoles.CustomRPC
         NiceHawk,
         Bakery,
         Neta,
+        MadJester,
         MadStuntMan,
         MadHawk,
         Seer,

@@ -48,7 +48,10 @@ colorCrasyublue
 colorLightgreen
 Hat_SNR
 SettingpresetSelection
-SettingSuperNewRolesSetting
+SettingSuperNewRoles
+SettingImpostor
+SettingNeutral
+SettingCrewmate
 SettingMiniCrewRole
 SettingMaxCrewRole
 SettingMiniNeutralRole
@@ -186,6 +189,12 @@ JesterIsVentSetting
 JesterIsSabotageSetting
 JesterIsWinClearTaskSetting
 JesterWinText
+LighterName
+LighterTitle1
+LigtherCoolDownSetting
+LigtherDurationSetting
+LighterUpVisionSetting
+LighterButtonName
 EvilLighterName
 EvilLighterTitle1
 EvilLighterTitle2
@@ -511,6 +520,8 @@ MadStuntManUseVentSetting
 MadStuntManImpostorLightSetting
 MadHawkName
 MadHawkTitle1
+MadJesterName
+MadJesterTitle1
 SeerName
 SeerTitle1
 SeerMode

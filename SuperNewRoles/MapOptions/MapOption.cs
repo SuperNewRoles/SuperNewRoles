@@ -84,16 +84,16 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption NotUseReportDeadBody;
         public static CustomOption.CustomOption NotUseMeetingButton;
         public static void LoadOption() {
-            MapOptionSetting = CustomOption.CustomOption.Create(246, cs(Color.white, "MapOptionSetting"), false, null, isHeader: true);
-            DeviceOptions = CustomOption.CustomOption.Create(115, cs(Color.white, "DeviceOptionsSetting"), false, MapOptionSetting);
-            DeviceUseAdmin = CustomOption.CustomOption.Create(116, cs(Color.white, "DeviceUseAdminSetting"), true, DeviceOptions);
+            MapOptionSetting = CustomOption.CustomOption.Create(246, true, CustomOptionType.Generic, "MapOptionSetting", false, null, isHeader: true);
+            DeviceOptions = CustomOption.CustomOption.Create(115, true, CustomOptionType.Generic, "DeviceOptionsSetting", false, MapOptionSetting);
+            DeviceUseAdmin = CustomOption.CustomOption.Create(116, true, CustomOptionType.Generic, "DeviceUseAdminSetting", true, DeviceOptions);
             //DeviceUseAdminTime = CustomOption.CustomOption.Create(274, cs(Color.white, "DeviceTimeSetting"), 10f, 0f, 60f, 1f, DeviceUseAdmin);
-            DeviceUseVitalOrDoorLog = CustomOption.CustomOption.Create(117, cs(Color.white, "DeviceUseVitalOrDoorLogSetting"), true, DeviceOptions);
+            DeviceUseVitalOrDoorLog = CustomOption.CustomOption.Create(117, true, CustomOptionType.Generic, "DeviceUseVitalOrDoorLogSetting", true, DeviceOptions);
             //DeviceUseVitalOrDoorLogTime = CustomOption.CustomOption.Create(273, cs(Color.white, "DeviceTimeSetting"), 10f, 0f, 60f, 1f, DeviceUseVitalOrDoorLog);
-            DeviceUseCamera = CustomOption.CustomOption.Create(118, cs(Color.white, "DeviceUseCameraSetting"), true, DeviceOptions);
+            DeviceUseCamera = CustomOption.CustomOption.Create(118, true, CustomOptionType.Generic, "DeviceUseCameraSetting", true, DeviceOptions);
             //DeviceUseCameraTime = CustomOption.CustomOption.Create(272, cs(Color.white, "DeviceTimeSetting"), 10f,0f,60f,1f, DeviceUseCamera);
-            NotUseReportDeadBody = CustomOption.CustomOption.Create(247, cs(Color.white, "NotUseReportSetting"), false, MapOptionSetting);
-            NotUseMeetingButton = CustomOption.CustomOption.Create(248, cs(Color.white, "NotUseMeetingSetting"), false, MapOptionSetting);
+            NotUseReportDeadBody = CustomOption.CustomOption.Create(247, true, CustomOptionType.Generic, "NotUseReportSetting", false, MapOptionSetting);
+            NotUseMeetingButton = CustomOption.CustomOption.Create(248, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, MapOptionSetting);
         }
     }
 }

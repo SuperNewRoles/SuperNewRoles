@@ -104,6 +104,7 @@ namespace SuperNewRoles.Roles
             Bakery.ClearAndReload();
             MadStuntMan.ClearAndReload();
             MadHawk.ClearAndReload();
+            MadJester.ClearAndReload();
             Seer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -241,6 +242,7 @@ namespace SuperNewRoles.Roles
             public static bool IsNeutralKill;
             public static bool IsLoversKill;
             public static bool IsMadRoleKill;
+            public static bool MadRoleKill;
             public static float KillMaxCount;
             public static Dictionary<int, int> KillCount;
             public static DateTime ButtonTimer;
@@ -261,6 +263,7 @@ namespace SuperNewRoles.Roles
                 IsNeutralKill = CustomOptions.SheriffNeutralKill.getBool();
                 IsLoversKill = CustomOptions.SheriffLoversKill.getBool();
                 IsMadRoleKill = CustomOptions.SheriffMadRoleKill.getBool();
+                MadRoleKill = CustomOptions.SheriffMadRoleKill.getBool();
                 KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
                 KillCount = new Dictionary<int, int>();
             }
@@ -287,6 +290,7 @@ namespace SuperNewRoles.Roles
             {
                 MeetingSheriffPlayer = new List<PlayerControl>();
                 NeutralKill = CustomOptions.MeetingSheriffNeutralKill.getBool();
+                MadRoleKill = CustomOptions.MeetingSheriffMadRoleKill.getBool();
                 MadRoleKill = CustomOptions.MeetingSheriffMadRoleKill.getBool();
                 KillMaxCount = CustomOptions.MeetingSheriffKillMaxCount.getFloat();
                 OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.getBool();
@@ -1427,6 +1431,26 @@ namespace SuperNewRoles.Roles
                 Postion = new Vector3(0, 0, 0);
                 timer1 = 0;
                 Timer2 = DateTime.Now;
+            }
+        }
+        public static class MadJester
+        {
+            public static List<PlayerControl> MadJesterPlayer;
+            public static bool IsMadJesterWin;
+            public static Color32 color = ImpostorRed;
+            public static bool IsImpostorCheck;
+            public static int ImpostorCheckTask;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static bool IsMadJesterTaskClearWin;
+            public static void ClearAndReload()
+            {
+                MadJesterPlayer = new List<PlayerControl>();
+
+                IsMadJesterWin = false;
+                IsUseVent = CustomOptions.MadJesterIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.getBool();
+                IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.getBool();
             }
         }
         public static class Seer

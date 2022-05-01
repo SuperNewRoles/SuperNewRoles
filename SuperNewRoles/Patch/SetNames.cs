@@ -293,6 +293,16 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
+                if (MadJester.CheckImpostor(PlayerControl.LocalPlayer) || PlayerControl.LocalPlayer.isRole(RoleId.MadKiller))
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.isImpostor())
+                        {
+                            SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
+                        }
+                    }
+                }
                 if (PlayerControl.LocalPlayer.isImpostor())
                 {
                     foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)

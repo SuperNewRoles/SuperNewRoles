@@ -11,7 +11,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
         public static CustomOption.CustomOption BattleRoyalMode;
         public static void Load()
         {
-            BattleRoyalMode = CustomOption.CustomOption.Create(131, CustomOptions.cs(Color.white, "SettingBattleRoyalMode"), false, ModeHandler.ModeSetting);
+            BattleRoyalMode = CustomOption.CustomOption.Create(131, true, CustomOptionType.Generic, "SettingBattleRoyalMode", false, ModeHandler.ModeSetting);
            
         }
     }

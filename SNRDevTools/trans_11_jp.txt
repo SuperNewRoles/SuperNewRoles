@@ -48,7 +48,10 @@ SuperNewRoles
 ライトグリーン
 <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats
 プリセット
-<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定
+<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定
+<color=#ff0000>インポスター</color>の設定
+<color=#808080>第三陣営</color>の設定
+<color=#00ffff>クルーメイト</color>の設定
 最小クルーメイト役職数
 クルーメイト役職人数
 最小第三陣営役職数
@@ -517,6 +520,9 @@ SuperHostRoles
 インポスターの視界
 マッドホーク
 すべてを見渡そう
+焼きたてのパンはいかが？
+マッドてるてる
+投票で追放されてインポスターと勝利しよう
 シーア
 船員の気配を感じ取ろう
 モード
