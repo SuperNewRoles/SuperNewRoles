@@ -186,12 +186,6 @@ JesterIsVentSetting
 JesterIsSabotageSetting
 JesterIsWinClearTaskSetting
 JesterWinText
-LighterName
-LighterTitle1
-LigtherCoolDownSetting
-LigtherDurationSetting
-LighterUpVisionSetting
-LighterButtonName
 EvilLighterName
 EvilLighterTitle1
 EvilLighterTitle2
