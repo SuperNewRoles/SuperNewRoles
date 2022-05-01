@@ -55,7 +55,7 @@ SettingMaxCrewRole,Maximum Crewmate Roles,クルーメイト役職人数
 SettingMiniNeutralRole,Minimum Neutral Roles,最小第三陣営役職数
 SettingMaxNeutralRole,Maximum Neutral Roles,第三陣営役職人数
 SettingMiniImpoRole,Minimum Impostor Roles,最小インポスター役職数
-SettingMaxImpoRole,Maximum Impostor Roles,インポスター役職人数
+SettingMaxImpoRole,Maximum Impostor Roles,インポスター人役職数
 SettingsHideSetting,Hide Setting,設定を隠す
 SettingCrewMateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定
 SettingImpostorTeamRolesName,Imposter camp position setting,インポスター陣営の役職設定
@@ -518,11 +518,11 @@ MadStuntManUseVentSetting,UseVent,ベントを使える
 MadStuntManImpostorLightSetting,Impostor Light,インポスターの視界
 MadHawkName,MadHawk,マッドホーク
 MadHawkTitle1,See it all.,すべてを見渡そう
-SeerName,Seer,シーア
-SeerTitle1,You will see players die,船員の気配を感じ取ろう
-SeerMode,Mode,モード
-SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える
-SeerModeFlash,Show Death Flash,死の点滅が見える
-SeerModeSouls,Show Souls,幽霊が見える
-SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える
-SeerSoulDuration,Soul Duration,幽霊が見える時間
+SeerName,Would you like some breads?,シーア
+SeerTitle1,Seer,船員の気配を感じ取ろう
+SeerMode,You will see players die,モード
+SeerModeBoth,Mode,死の点滅＆幽霊が見える
+SeerModeFlash,Show Death Flash + Souls,死の点滅が見える
+SeerModeSouls,Show Death Flash,幽霊が見える
+SeerLimitSoulDuration,Show Souls,時間経過で幽霊が消える
+SeerSoulDuration,Limit Soul Duration,幽霊が見える時間

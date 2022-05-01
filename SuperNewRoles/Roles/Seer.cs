@@ -149,12 +149,12 @@ namespace SuperNewRoles.Roles
 
                     // Seer show flash and add dead player position
 
-                    /*//「／＊」置く場所
+                    //「／＊」置く場所
 
                     int i;
                     for (i = 0; i <  i ; i++)
                     {
-                        if (RoleClass.Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer == RoleClass.Seer.SeerPlayer && !RoleClass.Seer.SeerPlayer.Data.IsDead && RoleClass.Seer.SeerPlayer[i] != target && RoleClass.Seer.mode <= 1)
+                        if (RoleClass.Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer == RoleClass.Seer.SeerPlayer && !PlayerControl.LocalPlayer.isDead() && RoleClass.Seer.SeerPlayer[i] != target && RoleClass.Seer.mode <= 1)
 
                         //Seer.SeerPlayer != target 部分 For で処理!! リスト(配列)から中身取り出す必要が有る。多分　1人目のシーア～　で処理する。
 
@@ -163,7 +163,7 @@ namespace SuperNewRoles.Roles
                             ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
                         }
                     }
-                    *///「＊／」置く場所
+                    //「＊／」置く場所
                     if (RoleClass.Seer.deadBodyPositions != null) RoleClass.Seer.deadBodyPositions.Add(target.transform.position);
 
 
