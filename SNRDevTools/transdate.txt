@@ -200,9 +200,9 @@ EvilLighterName,Evil Lighter,イビル ライター
 EvilLighterTitle1,Darken Vision,視界を暗くしよう
 EvilLighterTitle2,Create a blackout sabotage that can further reduce your vision!,視界をさらに狭くできる停電のサボタージュを発生させよう
 EvilLighterLightsOutCooldown,Lights Out Cooldown,強制停電のクールダウン
-EvilLighterLightsOutDurationLights Out Duration,強制停電の持続時間
+EvilLighterLightsOutDuration,Lights Out Duration,強制停電の持続時間
 EvilLighterDownVision,Visibility during a forced power outage,強制停電中の視界
-EvilLighterButtonName,強制停電!
+EvilLighterButtonName,Forced power outage!,強制停電!
 EvilScientistName,Evil Scientist,イビルサイエンティスト
 EvilScientistTitle1,Become invisible and get kills!,透明になってキルをしよう
 EvilScientistTitle2,Win with the power of science!,科学の力で勝利しよう
@@ -214,11 +214,11 @@ SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキ
 SheriffCoolDownSetting,Sheriff's Kill Cooldown,シェリフのキルクールダウン
 SheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる
 SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる
-SheriffIsKillMadMateSetting,Can Kill a Madmate,マッドメイドをキルできる
-SheriffIsKillMadMateYes,Yes,できる
-SheriffIsKillMadMateNo,No,できない
+SheriffIsKillMadRoleSetting,Can Kill a Madmate,マッドメイトをキルできる
+SheriffIsKillMadRoleYes,Yes,できる
+SheriffIsKillMadRoleNo,No,できない
 SheriffMaxKillCountSetting,Maximum number of kills for Sheriff,シェリフの最大キル数
-SherifKillButtonName,Kill,キル
+SheriffKillButtonName,Kill,キル
 SheriffNumTextName,{0} shots remaining.,残り{0}発
 MeetingSheriffName,Meeting Sheriff,ミーティング シェリフ
 MeetingSheriffTitle1,Kill an outsider in a meeting!,人外を会議でキルしよう
@@ -226,7 +226,7 @@ MeetingSheriffTitle2,Kill an outsider in a meeting and lead your crewmates to vi
 MeetingSheriffTitle3,Kill an outsider in a meeting to prevent a power play,人外を会議でキルしてパワープレイを防ごう
 MeetingSheriffTitle4,Kill an outsider in a meeting to prevent a PP,人外を会議でキルしてPPを防ごう
 MeetingSheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる
-MeetingSheriffIsKillMadMateSetting,Can Kill a Madmate,マッドメイドをキルできる
+MeetingSheriffIsKillMadRoleSetting,Can Kill a Madmate,マッドメイトをキルできる
 MeetingSheriffYes,Yes,できる
 MeetingSheriffNo,No,できない
 MeetingSheriffMaxKillCountSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数
@@ -299,7 +299,7 @@ SealdorDurationSetting,Shield duration,シールド継続時間
 FreezerName,Freezer,フリーザー
 FreezerTitle1,Stop everyone and sabotage your crewmates!,みんなを止めてクルーメイトを妨害しよう
 FreezerTitle2,Try to stop everyone and sabotage the task!,みんなを止めてタスクの妨害をしよう
-FreezerTitle2,Let's put them all on ice.,全員を氷漬けにしよう
+FreezerTitle3,Let's put them all on ice.,全員を氷漬けにしよう
 FreezerCoolTimeSetting,Freeze Cool Time,フリーズクールタイム
 FreezerDurationSetting,Freeze duration,フリーズ継続時間
 SpeederName,Speeder,スピーダー
@@ -521,7 +521,6 @@ MadStuntManUseVentSetting,UseVent,ベントを使える
 MadStuntManImpostorLightSetting,Impostor Light,インポスターの視界
 MadHawkName,MadHawk,マッドホーク
 MadHawkTitle1,See it all.,すべてを見渡そう
-BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？
 MadJesterName,MadJester,マッドてるてる
 MadJesterTitle1,Get voted out and win with the Imposters!,投票で追放されてインポスターと勝利しよう
 SeerName,Seer,シーア

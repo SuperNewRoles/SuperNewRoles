@@ -213,11 +213,11 @@ SheriffTitle2
 SheriffCoolDownSetting
 SheriffIsKillNeutralSetting
 SheriffIsKillLoversSetting
-SheriffIsKillMadMateSetting
-SheriffIsKillMadMateYes
-SheriffIsKillMadMateNo
+SheriffIsKillMadRoleSetting
+SheriffIsKillMadRoleYes
+SheriffIsKillMadRoleNo
 SheriffMaxKillCountSetting
-SherifKillButtonName
+SheriffKillButtonName
 SheriffNumTextName
 MeetingSheriffName
 MeetingSheriffTitle1
@@ -225,7 +225,7 @@ MeetingSheriffTitle2
 MeetingSheriffTitle3
 MeetingSheriffTitle4
 MeetingSheriffIsKillNeutralSetting
-MeetingSheriffIsKillMadMateSetting
+MeetingSheriffIsKillMadRoleSetting
 MeetingSheriffYes
 MeetingSheriffNo
 MeetingSheriffMaxKillCountSetting
@@ -298,7 +298,7 @@ SealdorDurationSetting
 FreezerName
 FreezerTitle1
 FreezerTitle2
-FreezerTitle2
+FreezerTitle3
 FreezerCoolTimeSetting
 FreezerDurationSetting
 SpeederName

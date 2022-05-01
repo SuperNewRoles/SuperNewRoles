@@ -152,7 +152,7 @@ namespace SuperNewRoles.Roles
                     //u^–v’u‚­êŠ
 
                     int i;
-                    for (i = 0; i <  i ; i++)
+                    for (i = 0; i <  16 ; i++)
                     {
                         if (RoleClass.Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer == RoleClass.Seer.SeerPlayer && !PlayerControl.LocalPlayer.isDead() && RoleClass.Seer.SeerPlayer[i] != target && RoleClass.Seer.mode <= 1)
 

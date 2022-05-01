@@ -494,8 +494,8 @@ namespace SuperNewRoles.CustomOption
             
             SheriffOption = new CustomRoleOption(26, true, CustomOptionType.Crewmate, "SheriffName", RoleClass.Sheriff.color, 1);
             SheriffPlayerCount = CustomOption.Create(27, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SheriffOption);
-            SheriffCoolTime = CustomOption.Create(28, true, CustomOptionType.Crewmate, ModTranslation.getString("SheriffCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
-            SheriffNeutralKill = CustomOption.Create(173, true, CustomOptionType.Crewmate, "SheriffIsKillNewtralSetting", false, SheriffOption);
+            SheriffCoolTime = CustomOption.Create(28, true, CustomOptionType.Crewmate, "SheriffCoolDownSetting", 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
+            SheriffNeutralKill = CustomOption.Create(173, true, CustomOptionType.Crewmate, "SheriffIsKillNeutralSetting", false, SheriffOption);
             SheriffLoversKill = CustomOption.Create(258, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, SheriffOption);
             SheriffMadRoleKill = CustomOption.Create(29, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, SheriffOption);
             SheriffKillMaxCount = CustomOption.Create(30, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, SheriffOption, format: "unitSeconds");
@@ -804,11 +804,11 @@ namespace SuperNewRoles.CustomOption
             MadJesterIsImpostorLight = CustomOption.Create(326, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadJesterOption);
             IsMadJesterTaskClearWin = CustomOption.Create(327, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
 
-            SeerOption = new CustomRoleOption(316, true, CustomOptionType.Crewmate, "SeerName", RoleClass.Seer.color, 1);
-            SeerPlayerCount = CustomOption.Create(317, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerOption);
+            SeerOption = new CustomRoleOption(332, true, CustomOptionType.Crewmate, "SeerName", RoleClass.Seer.color, 1);
+            SeerPlayerCount = CustomOption.Create(333, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerOption);
             SeerMode = CustomOption.Create(318, true, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, SeerOption);
-            SeerLimitSoulDuration = CustomOption.Create(319, true, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, SeerOption);
-            SeerSoulDuration = CustomOption.Create(320, true, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerLimitSoulDuration, format: "unitSeconds");
+            SeerLimitSoulDuration = CustomOption.Create(334, true, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, SeerOption);
+            SeerSoulDuration = CustomOption.Create(335, true, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerOption, format: "unitCouples");
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Crewmate, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
