@@ -214,7 +214,7 @@ SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキ
 SheriffCoolDownSetting,Sheriff's Kill Cooldown,シェリフのキルクールダウン
 SheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる
 SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる
-SheriffIsKillMadRoleSetting,Can Kill a Madmate,マッドメイトをキルできる
+SheriffIsKillMadRoleSetting,Can Kill a Madmate,マッドメイト系役職をキルできる
 SheriffIsKillMadRoleYes,Yes,できる
 SheriffIsKillMadRoleNo,No,できない
 SheriffMaxKillCountSetting,Maximum number of kills for Sheriff,シェリフの最大キル数
@@ -226,7 +226,7 @@ MeetingSheriffTitle2,Kill an outsider in a meeting and lead your crewmates to vi
 MeetingSheriffTitle3,Kill an outsider in a meeting to prevent a power play,人外を会議でキルしてパワープレイを防ごう
 MeetingSheriffTitle4,Kill an outsider in a meeting to prevent a PP,人外を会議でキルしてPPを防ごう
 MeetingSheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる
-MeetingSheriffIsKillMadRoleSetting,Can Kill a Madmate,マッドメイトをキルできる
+MeetingSheriffIsKillMadRoleSetting,Can Kill a Madmate,マッドメイト系役職をキルできる
 MeetingSheriffYes,Yes,できる
 MeetingSheriffNo,No,できない
 MeetingSheriffMaxKillCountSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数
