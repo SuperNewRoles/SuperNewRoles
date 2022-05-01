@@ -158,8 +158,6 @@ namespace SuperNewRoles.Intro
                     return MadJesterIntro;
                 case (CustomRPC.RoleId.Seer):
                     return SeerIntro;
-                case (CustomRPC.RoleId.Seer):
-                    return SeerIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
