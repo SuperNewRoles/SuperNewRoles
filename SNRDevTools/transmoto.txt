@@ -518,3 +518,5 @@ MadHawkTitle1
 BakeryTitle1
 MadJesterName
 MadJesterTitle1
+DarkKillerName
+DarkKillerTitle1
