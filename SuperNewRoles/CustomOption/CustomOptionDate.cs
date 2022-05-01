@@ -774,26 +774,26 @@ namespace SuperNewRoles.CustomOption
             NiceHawkCoolTime = CustomOption.Create(313, false, CustomOptionType.Crewmate, "HawkCoolTimeSetting", 15f, 1f, 120f, 2.5f, NiceHawkOption, format: "unitCouples");
             NiceHawkDurationTime = CustomOption.Create(314, false, CustomOptionType.Crewmate, "HawkDurationTimeSetting", 5f, 1f, 60f, 2.5f, NiceHawkOption, format: "unitCouples");
 
-            MadStuntManOption = new CustomRoleOption(301, false, CustomOptionType.Crewmate, "MadStuntManName", RoleClass.ImpostorRed, 1);
-            MadStuntManPlayerCount = CustomOption.Create(302, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadStuntManOption);
-            MadStuntManIsUseVent = CustomOption.Create(309, false, CustomOptionType.Crewmate, "MadMayorUseVentSetting", false, MadStuntManOption);
-            MadStuntManIsImpostorLight = CustomOption.Create(310, false, CustomOptionType.Crewmate, "MadStuntManImpostorLightSetting", false, MadStuntManOption);
+            MadStuntManOption = new CustomRoleOption(315, false, CustomOptionType.Crewmate, "MadStuntManName", RoleClass.ImpostorRed, 1);
+            MadStuntManPlayerCount = CustomOption.Create(316, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadStuntManOption);
+            MadStuntManIsUseVent = CustomOption.Create(317, false, CustomOptionType.Crewmate, "MadMayorUseVentSetting", false, MadStuntManOption);
+            MadStuntManIsImpostorLight = CustomOption.Create(318, false, CustomOptionType.Crewmate, "MadStuntManImpostorLightSetting", false, MadStuntManOption);
 
-            MadHawkOption = new CustomRoleOption(301, false, CustomOptionType.Crewmate, "MadHawkName", RoleClass.ImpostorRed, 1);
-            MadHawkPlayerCount = CustomOption.Create(312, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadHawkOption);
-            MadHawkCoolTime = CustomOption.Create(313, false, CustomOptionType.Crewmate, "HawkCoolTimeSetting", 15f, 1f, 120f, 2.5f, MadHawkOption, format: "unitCouples");
-            MadHawkDurationTime = CustomOption.Create(314, false, CustomOptionType.Crewmate, "HawkDurationTimeSetting", 5f, 1f, 60f, 2.5f, MadHawkOption, format: "unitCouples");
-            MadHawkIsUseVent = CustomOption.Create(309, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadHawkOption);
-            MadHawkIsImpostorLight = CustomOption.Create(310, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadHawkOption);
+            MadHawkOption = new CustomRoleOption(319, false, CustomOptionType.Crewmate, "MadHawkName", RoleClass.ImpostorRed, 1);
+            MadHawkPlayerCount = CustomOption.Create(320, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadHawkOption);
+            MadHawkCoolTime = CustomOption.Create(321, false, CustomOptionType.Crewmate, "HawkCoolTimeSetting", 15f, 1f, 120f, 2.5f, MadHawkOption, format: "unitCouples");
+            MadHawkDurationTime = CustomOption.Create(322, false, CustomOptionType.Crewmate, "HawkDurationTimeSetting", 5f, 1f, 60f, 2.5f, MadHawkOption, format: "unitCouples");
+            MadHawkIsUseVent = CustomOption.Create(323, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadHawkOption);
+            MadHawkIsImpostorLight = CustomOption.Create(324, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadHawkOption);
 
-            BakeryOption = new CustomRoleOption(311, false, CustomOptionType.Crewmate, "BakeryName", RoleClass.Bakery.color, 1);
-            BakeryPlayerCount = CustomOption.Create(312, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BakeryOption);
+            BakeryOption = new CustomRoleOption(325, false, CustomOptionType.Crewmate, "BakeryName", RoleClass.Bakery.color, 1);
+            BakeryPlayerCount = CustomOption.Create(328, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BakeryOption);
 
-            MadJesterOption = new CustomRoleOption(313, true, CustomOptionType.Crewmate,"MadJesterName", RoleClass.ImpostorRed, 1);
-            MadJesterPlayerCount = CustomOption.Create(314, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadJesterOption);
-            MadJesterIsUseVent = CustomOption.Create(309, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadJesterOption);
-            MadJesterIsImpostorLight = CustomOption.Create(310, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadJesterOption);
-            IsMadJesterTaskClearWin = CustomOption.Create(311, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
+            MadJesterOption = new CustomRoleOption(329, true, CustomOptionType.Crewmate,"MadJesterName", RoleClass.ImpostorRed, 1);
+            MadJesterPlayerCount = CustomOption.Create(330, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadJesterOption);
+            MadJesterIsUseVent = CustomOption.Create(331, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadJesterOption);
+            MadJesterIsImpostorLight = CustomOption.Create(326, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadJesterOption);
+            IsMadJesterTaskClearWin = CustomOption.Create(327, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Crewmate, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
