@@ -90,7 +90,6 @@ namespace SuperNewRoles.CustomRPC
         MadJester,
         MadStuntMan,
         MadHawk,
-        DarkKiller,
         //RoleId
     }
 

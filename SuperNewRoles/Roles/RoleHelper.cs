@@ -426,9 +426,6 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadHawk):
                     Roles.RoleClass.MadHawk.MadHawkPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.DarkKiller):
-                    Roles.RoleClass.DarkKiller.DarkKillerPlayer.Add(player);
-                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -638,9 +635,6 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.MadHawk):
                     Roles.RoleClass.MadHawk.MadHawkPlayer.RemoveAll(ClearRemove);
-                    break;
-                case (CustomRPC.RoleId.DarkKiller):
-                    Roles.RoleClass.DarkKiller.DarkKillerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
                 case (CustomRPC.RoleId.NiceHawk):
@@ -1173,10 +1167,6 @@ namespace SuperNewRoles
                 {
                 return CustomRPC.RoleId.MadJester;
                 }
-            else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.DarkKiller;
-            }
             //ロールチェック
 
             }

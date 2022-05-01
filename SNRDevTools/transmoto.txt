@@ -48,7 +48,10 @@ colorCrasyublue
 colorLightgreen
 Hat_SNR
 SettingpresetSelection
-SettingSuperNewRolesSetting
+SettingSuperNewRoles
+SettingImpostor
+SettingNeutral
+SettingCrewmate
 SettingMiniCrewRole
 SettingMaxCrewRole
 SettingMiniNeutralRole
@@ -518,5 +521,3 @@ MadHawkTitle1
 BakeryTitle1
 MadJesterName
 MadJesterTitle1
-DarkKillerName
-DarkKillerTitle1

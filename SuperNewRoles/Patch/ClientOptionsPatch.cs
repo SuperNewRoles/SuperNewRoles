@@ -223,11 +223,11 @@ namespace SuperNewRoles.Patch
                 {
                     if (i == 0)
                     {
-                        button.Text.text = DestroyableSingleton<TranslationController>.Instance.GetString((RoleTypes)StringNames.SettingsCensorChat);
+                        button.Text.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsCensorChat);
                     }
                     else
                     {
-                        button.Text.text = DestroyableSingleton<TranslationController>.Instance.GetString((RoleTypes)StringNames.SettingsEnableFriendInvites);
+                        button.Text.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsEnableFriendInvites);
                     }
                 }
                 catch
@@ -332,8 +332,8 @@ namespace SuperNewRoles.Patch
                 moreOptions.Text.text = ModTranslation.getString("modOptionsText");
             try
             {
-                modButtons[0].Text.text = DestroyableSingleton<TranslationController>.Instance.GetString((RoleTypes)StringNames.SettingsCensorChat);
-                modButtons[1].Text.text = DestroyableSingleton<TranslationController>.Instance.GetString((RoleTypes)StringNames.SettingsEnableFriendInvites);
+                modButtons[0].Text.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsCensorChat);
+                modButtons[1].Text.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsEnableFriendInvites);
             }
             catch { }
             for (int i = 0; i < AllOptions.Length; i++)

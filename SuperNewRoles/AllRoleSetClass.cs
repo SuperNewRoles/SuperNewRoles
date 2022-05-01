@@ -797,8 +797,6 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.MadStuntManPlayerCount.getFloat();
                 case (RoleId.MadHawk):
                     return CustomOption.CustomOptions.MadHawkPlayerCount.getFloat();
-                    case (RoleId.DarkKiller):
-                    return CustomOption.CustomOptions.DarkKillerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1850,22 +1848,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.DarkKillerOption.getString().Replace("0%", "") == ""))
-            {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.DarkKillerOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.DarkKiller;
-                if (OptionDate == 10)
-                {
-                    Impoonepar.Add(ThisRoleId);
-                }
-                else
-                {
-                    for (int i = 1; i <= OptionDate; i++)
-                    {
-                        Imponotonepar.Add(ThisRoleId);
-                    }
-                }
-            }
         //セットクラス
             if (!(CustomOption.CustomOptions.MadStuntManOption.getString().Replace("0%", "") == ""))
             {
@@ -1912,22 +1894,6 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
-                    }
-                }
-            }
-        if (!(CustomOption.CustomOptions.DarkKillerOption.getString().Replace("0%", "") == ""))
-            {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.DarkKillerOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.DarkKiller;
-                if (OptionDate == 10)
-                {
-                    Impoonepar.Add(ThisRoleId);
-                }
-                else
-                {
-                    for (int i = 1; i <= OptionDate; i++)
-                    {
-                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }
