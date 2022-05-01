@@ -62,19 +62,6 @@ namespace SuperNewRoles.Roles
                 for (h = 0; h < 16 ; h++)
                 {
                     if (RoleClass.Seer.deadBodyPositions != null && RoleClass.Seer.SeerPlayer != null && RoleClass.Seer.SeerPlayer[h] && (RoleClass.Seer.mode == 0 || RoleClass.Seer.mode == 2))
-                    //
-                    //TORでは
-                    //if (Seer.deadBodyPositions != null && Seer.seer != null && PlayerControl.LocalPlayer == Seer.seer && (Seer.mode == 0 || Seer.mode == 2)) 
-                    //「TOR:seer」は「SNR;SeerPlayer」とほぼ同じ意味を持つ。
-                    //よっキングさん曰く
-                    //「Seer.seerは、SeerPlayerですよ。　Seer.seerだと複数対応できないので、SeerPlayerにしてほしいですね」との事。
-                    //その為、[RoleClass.cs]に「public static PlayerControl seer;」を付ける必要はない。
-                    //
-                    //但し、「TOR:PlayerControl.LocalPlayer == Seer.seer」の部分は[Seer.seer]を置き換えるだけでは不十分。
-                    //[TOR:PlayerControl]→[SNR:RoleClass]
-                    //[TOR:LocalPlayer]→[SNR:Seer.SeerPlayer]
-                    //と置き換える。
-                    //
 
 
                     {
@@ -149,7 +136,6 @@ namespace SuperNewRoles.Roles
 
                     // Seer show flash and add dead player position
 
-                    //「／＊」置く場所
 
                     int i;
                     for (i = 0; i <  16 ; i++)
@@ -163,7 +149,7 @@ namespace SuperNewRoles.Roles
                             ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
                         }
                     }
-                    //「＊／」置く場所
+
                     if (RoleClass.Seer.deadBodyPositions != null) RoleClass.Seer.deadBodyPositions.Add(target.transform.position);
 
 
