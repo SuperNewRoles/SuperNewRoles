@@ -16,12 +16,13 @@ using UnityEngine;
 namespace SuperNewRoles
 {
     [BepInPlugin(Id, "SuperNewRoles", VersionString)]
+    [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInProcess("Among Us.exe")]
     public class SuperNewRolesPlugin : BasePlugin
     {
         public const string Id = "jp.ykundesu.supernewroles";
 
-        public const string VersionString = "1.3.9.1";
+        public const string VersionString = "1.3.9.2";
 
         public static System.Version Version = System.Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
