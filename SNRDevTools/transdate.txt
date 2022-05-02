@@ -212,7 +212,7 @@ SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキ
 SheriffCoolDownSetting,Sheriff's Kill Cooldown,シェリフのキルクールダウン
 SheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる
 SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる
-SheriffIsKillMadMateSetting,Can Kill a Madmate,マッドメイドをキルできる
+SheriffIsKillMadMateSetting,Can Kill a Madmate,マッド系役職をキルできる
 SheriffIsKillMadMateYes,Yes,できる
 SheriffIsKillMadMateNo,No,できない
 SheriffMaxKillCountSetting,Maximum number of kills for Sheriff,シェリフの最大キル数
