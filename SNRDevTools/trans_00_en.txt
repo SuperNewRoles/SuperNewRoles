@@ -211,7 +211,7 @@ Kill the outsider and lead your crewmates to victory!
 Sheriff's Kill Cooldown
 Can Kill a Neutral
 Can Kill a Lovers
-Can Kill a Madmate
+Can Kill a MadRole
 Yes
 No
 Maximum number of kills for Sheriff
@@ -518,6 +518,5 @@ UseVent
 Impostor Light
 MadHawk
 See it all.
-Would you like some breads?
 MadJester
 Get voted out and win with the Imposters!

@@ -238,7 +238,7 @@
         } ,
  "SettingMaxImpoRole" : {
         "0" : "Maximum Impostor Roles" ,
-        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u4eba\u5f79\u8077\u6570"
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u5f79\u8077\u4eba\u6570"
         } ,
  "SettingsHideSetting" : {
         "0" : "Hide Setting" ,
@@ -853,8 +853,8 @@
         "11" : "\u30e9\u30d0\u30fc\u30ba\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
  "SheriffIsKillMadMateSetting" : {
-        "0" : "Can Kill a Madmate" ,
-        "11" : "\u30de\u30c3\u30c9\u30e1\u30a4\u30c9\u3092\u30ad\u30eb\u3067\u304d\u308b"
+        "0" : "Can Kill a MadRole" ,
+        "11" : "\u30de\u30c3\u30c9\u7cfb\u5f79\u8077\u3092\u30ad\u30eb\u3067\u304d\u308b"
         } ,
  "SheriffIsKillMadMateYes" : {
         "0" : "Yes" ,
@@ -2079,10 +2079,6 @@
  "MadHawkTitle1" : {
         "0" : "See it all." ,
         "11" : "\u3059\u3079\u3066\u3092\u898b\u6e21\u305d\u3046"
-        } ,
- "BakeryTitle1" : {
-        "0" : "Would you like some breads?" ,
-        "11" : "\u713c\u304d\u305f\u3066\u306e\u30d1\u30f3\u306f\u3044\u304b\u304c\uff1f"
         } ,
  "MadJesterName" : {
         "0" : "MadJester" ,
