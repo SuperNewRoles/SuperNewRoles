@@ -481,11 +481,13 @@ namespace SuperNewRoles.CustomOption
             LighterDurationTime = CustomOption.Create(17, false, CustomOptionType.Crewmate, "LigtherDurationSetting", 10f, 1f, 20f, 0.5f, LighterOption, format: "unitSeconds");
             LighterUpVision = CustomOption.Create(204, false, CustomOptionType.Crewmate, "LighterUpVisionSetting", 0.25f, 0f, 5f, 0.25f, LighterOption);
 
+            /*
             EvilLighterOption = new CustomRoleOption(18, false, CustomOptionType.Impostor, "EvilLighterName", RoleClass.ImpostorRed, 1);
             EvilLighterPlayerCount = CustomOption.Create(19, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilLighterOption);
             EvilLighterLightsOutCooldown = CustomOption.Create(20, false, CustomOptionType.Impostor, "EvilLighterLightsOutCooldown", 30f, 10f, 60f, 5f, EvilLighterOption, format: "unitSeconds");
             EvilLighterLightsOutDuration = CustomOption.Create(21, false, CustomOptionType.Impostor, "EvilLighterLightsOutDuration", 15f, 5f, 60f, 2.5f, EvilLighterOption, format: "unitSeconds");
             EvilLighterDownVision = CustomOption.Create(318, false, CustomOptionType.Impostor, "EvilLighterDownVision", 0.25f, 0f, 5f, 0.25f, EvilLighterOption);
+            */
 
             EvilScientistOption = new CustomRoleOption(22, false, CustomOptionType.Impostor, "EvilScientistName", RoleClass.ImpostorRed, 1);
             EvilScientistPlayerCount = CustomOption.Create(34, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilScientistOption);
@@ -804,11 +806,13 @@ namespace SuperNewRoles.CustomOption
             MadJesterIsImpostorLight = CustomOption.Create(326, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadJesterOption);
             IsMadJesterTaskClearWin = CustomOption.Create(327, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
 
+            /*
             SeerOption = new CustomRoleOption(332, true, CustomOptionType.Crewmate, "SeerName", RoleClass.Seer.color, 1);
             SeerPlayerCount = CustomOption.Create(333, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerOption);
             SeerMode = CustomOption.Create(318, true, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, SeerOption);
             SeerLimitSoulDuration = CustomOption.Create(334, true, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, SeerOption);
             SeerSoulDuration = CustomOption.Create(335, true, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerOption, format: "unitCouples");
+            */
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Crewmate, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
