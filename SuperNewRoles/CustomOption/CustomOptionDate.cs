@@ -57,11 +57,13 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption LighterDurationTime;
         public static CustomOption LighterUpVision;
 
+        /*
         public static CustomRoleOption EvilLighterOption;
         public static CustomOption EvilLighterPlayerCount;
         public static CustomOption EvilLighterLightsOutCooldown;
         public static CustomOption EvilLighterLightsOutDuration;
         public static CustomOption EvilLighterDownVision;
+        */
 
         public static CustomRoleOption EvilScientistOption;
         public static CustomOption EvilScientistPlayerCount;
@@ -667,10 +669,10 @@ namespace SuperNewRoles.CustomOption
             JackalFriendsPlayerCount = CustomOption.Create(163, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalFriendsOption);
             JackalFriendsIsCheckJackal = CustomOption.Create(164, false, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, JackalFriendsOption);
             JackalFriendsIsUseVent = CustomOption.Create(165, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, JackalFriendsOption);
-            
+                   
             DoctorOption = new CustomRoleOption(166, false, CustomOptionType.Crewmate, "DoctorName", RoleClass.Doctor.color, 1);
             DoctorPlayerCount = CustomOption.Create(167, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
-
+        
             CountChangerOption = new CustomRoleOption(169, false, CustomOptionType.Impostor, "CountChangerName", RoleClass.CountChanger.color, 1);
             CountChangerPlayerCount = CustomOption.Create(170, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CountChangerOption);
             CountChangerMaxCount = CustomOption.Create(171, false, CustomOptionType.Impostor, "CountChangerMaxCountSetting", 1f,1f,15f,1f, CountChangerOption);
@@ -804,12 +806,14 @@ namespace SuperNewRoles.CustomOption
             MadJesterIsImpostorLight = CustomOption.Create(326, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadJesterOption);
             IsMadJesterTaskClearWin = CustomOption.Create(327, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
 
+            /*
             SeerOption = new CustomRoleOption(332, true, CustomOptionType.Crewmate, "SeerName", RoleClass.Seer.color, 1);
             SeerPlayerCount = CustomOption.Create(333, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerOption);
             SeerMode = CustomOption.Create(318, true, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, SeerOption);
             SeerLimitSoulDuration = CustomOption.Create(334, true, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, SeerOption);
             SeerSoulDuration = CustomOption.Create(335, true, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerOption, format: "unitCouples");
-
+            */
+            
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Crewmate, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, false, CustomOptionType.Crewmate, "QuarreledOnlyCrewMateSetting", false, QuarreledOption);
