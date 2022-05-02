@@ -58,7 +58,7 @@ SettingMaxCrewRole,Maximum Crewmate Roles,クルーメイト役職人数
 SettingMiniNeutralRole,Minimum Neutral Roles,最小第三陣営役職数
 SettingMaxNeutralRole,Maximum Neutral Roles,第三陣営役職人数
 SettingMiniImpoRole,Minimum Impostor Roles,最小インポスター役職数
-SettingMaxImpoRole,Maximum Impostor Roles,インポスター人役職数
+SettingMaxImpoRole,Maximum Impostor Roles,インポスター役職人数
 SettingsHideSetting,Hide Setting,設定を隠す
 SettingCrewMateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定
 SettingImpostorTeamRolesName,Imposter camp position setting,インポスター陣営の役職設定
