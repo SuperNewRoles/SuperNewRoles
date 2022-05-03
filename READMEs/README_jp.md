@@ -66,7 +66,7 @@ Discordサーバーには全てすでに乗っています。
 | [追跡者](#Pursuer) | [自宅警備員](#HomeSecurityGuard) |  [純愛者](#Truelove) |  |
 | [イビルサイエンティスト](#EvilScientist) | [スタントマン](#Stuntman) | [忘却者](#Amnesiac) |  |
 | [ホーク](#Hawk) | [ムービング](#Moving) |[ジャッカルフレンズ](#JackalFriends)  |  |
-| [ミニマリスト](#Minimalist) | [ベスト冤罪ヤー](#BestFalseCharge) |  |  |
+| [ミニマリスト](#ミニマリスト) | [ベスト冤罪ヤー](#BestFalseCharge) |  |  |
 | [マガジナー](#Magaziner)| [ナイス猫又](#NiceNekomata) |  |  |
 | [シリアルキラー](#SerialKiller) | [ドクター](#Doctor)
 | [イビルイレイサー](#EvilEraser) | [ミーティングシェリフ](#MeetingSheriff)
