@@ -41,15 +41,29 @@ It is already on the Discord server.
 
 | Impostor | Crewmate | Neutral | Redundant Camps |
 |----------|-------------|-----------------|----------------|
-| [Teleporter](#Teleporter) | [Lighter](#Lighter) | [Jester](#Jester) | [Quarreled](#Quarreled) |
-| [Evil SpeedBooster](#EvilSpeedBooster) | [Sheriff](#Sheriff) | [Opportunist](#Opportunist) |  |
-| [Evil Doorr](#EvilDoorr) | [SpeedBooster](#SpeedBooster) | [Jackal](#Jackal) |  |
-| [Evil Gambler](#EvilGambler) | [Doorr](#Doorr) | [Sidekick](#Sidekick) |  |
-| [Self Bomber](#SelfBomber) | [Clergyman](#Clergyman) | [God](#God) | |
-| [Evil Nekomata](#EvilNekomata) | [Madmate](#Madmate) | | |
-|  | [Bait](#Bait) |  |  |
-|  | [Home Security Guard](#HomeSecurityGuard) |  |  |
-|  | [Stuntman](#Stuntman) |  |  |
-|  | [Moving](#Moving) |  |  |
-|  | [Best False Charge](#BestFalseCharge) |  |  |
-|  | [Nice Nekomata](#NiceNekomata) |  |  |
+| [Teleporter](#テレポーター) | [ライター](#ライター) | [てるてる](#てるてる) | [クラード](#クラード) |
+| [EvilSpeedBooster](#イビルスピードブースター) | [シェリフ](#シェリフ) | [オポチュニスト](#オポチュニスト) | [ラバーズ](#ラバーズ) |
+| [EvilDoorr](#イビルドアー) | [スピードブースター](#スピードブースター) | [ジャッカル](#ジャッカル) |  |
+| [EvilGambler](#イビルギャンブラー) | [ドアー](#ドアー) | [サイドキック](#サイドキック) |  |
+| [SelfBomber](#自爆魔) | [聖職者](#聖職者) | [神](#神) | |
+| [EvilNekomata](#イビル猫又) | [マッドメイト](#マッドメイト) | [エゴイスト](#エゴイスト) | |
+| [CountChanger](#カウントチェンジャー) | [ベイト](#ベイト) | [仕事人](#仕事人) |  |
+| [Pursuer](#追跡者) | [自宅警備員](#自宅警備員) |  [純愛者](#純愛者) |  |
+| [イビルサイエンティスト](#イビルサイエンティスト) | [スタントマン](#スタントマン) | [忘却者](#忘却者) |  |
+| [ホーク](#ホーク) | [ムービング](#ムービング) |[ジャッカルフレンズ](#ジャッカルフレンズ)  |  |
+| [ミニマリスト](#ミニマリスト) | [ベスト冤罪ヤー](#ベスト冤罪ヤー) |  |  |
+| [マガジナー](#マガジナー)| [ナイス猫又](#ナイス猫又) |  |  |
+| [シリアルキラー](#シリアルキラー) | [ドクター](#ドクター)
+| [イビルイレイサー](#イビルイレイサー) | [ミーティングシェリフ](#ミーティングシェリフ)
+| [オーバーキラー](#オーバーキラー) | [ナイスサイエンティスト](#ナイスサイエンティスト)
+| [イビルムービング](#イビルムービング) |[ナイス赤ずきん](#ナイス赤ずきん)
+| [レベリンガー](#レベリンガー) | [メイヤー](#メイヤー)
+| [サイドキラー](#サイドキラー) | [技術者](#技術者)
+| [サバイバー](#サバイバー) | [占い師](#占い師)
+| |[霊媒師](#霊媒師)
+| |[マッドメイヤー](#マッドメイヤー)
+| |[ナイスホーク](#ナイスホーク)
+| |[マッドスタントマン](#マッドスタントマン)
+| |[マッドホーク](#マッドホーク)
+| |[パン屋](#パン屋)
+| |[マッドてるてる](#マッドてるてる)
