@@ -61,11 +61,11 @@ Discordサーバーには全てすでに乗っています。
 | [イビルドアー](#イビルドアー) | [スピードブースター](#SpeedBooster) | [ジャッカル](#ジャッカル) |  |
 | [イビルギャンブラー](#イビルギャンブラー) | [ドアー](#Doorr) | [サイドキック](#サイドキック) |  |
 | [自爆魔](#自爆魔) | [聖職者](#Clergyman) | [神](#神) | |
-| [イビル猫又](#EvilNekomata) | [マッドメイト](#マッドメイト) | | |
-| [カウントチェンジャー](#CountChanger) | [ベイト](#Bait) |  |  |
-| [追跡者](#Pursuer) | [自宅警備員](#HomeSecurityGuard) |  |  |
-| [イビルサイエンティスト](#EvilScientist) | [スタントマン](#Stuntman) |  |  |
-| [ホーク](#Hawk) | [ムービング](#Moving) |  |  |
+| [イビル猫又](#EvilNekomata) | [マッドメイト](#マッドメイト) | [エゴイスト](#Egoist) | |
+| [カウントチェンジャー](#CountChanger) | [ベイト](#Bait) | [仕事人](#WorkPerson) |  |
+| [追跡者](#Pursuer) | [自宅警備員](#HomeSecurityGuard) |  [純愛者](#Truelove) |  |
+| [イビルサイエンティスト](#EvilScientist) | [スタントマン](#Stuntman) | [忘却者](#Amnesiac) |  |
+| [ホーク](#Hawk) | [ムービング](#Moving) |[ジャッカルフレンズ](#JackalFriends)  |  |
 | [ミニマリスト](#Minimalist) | [ベスト冤罪ヤー](#BestFalseCharge) |  |  |
 | [マガジナー](#Magaziner)| [ナイス猫又](#NiceNekomata) |  |  |
 | [シリアルキラー](#SerialKiller) | [ドクター](#Doctor)
