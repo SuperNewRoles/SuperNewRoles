@@ -68,18 +68,27 @@ Discordサーバーには全てすでに乗っています。
 | [ホーク](#Hawk) | [ムービング](#Moving) |  |  |
 | [ミニマリスト](#Minimalist) | [ベスト冤罪ヤー](#BestFalseCharge) |  |  |
 | [マガジナー](#Magaziner)| [ナイス猫又](#NiceNekomata) |  |  |
-| [シリアルキラー](#SerialKiller) | [ドクター](#)
-| [イビルイレイサー](#EvilEraser)
-| [オーバーキラー](#OverKiller)
-| [イビルムービング](#EvilMoving)
-| [レベリンガー](#Levelinger)
-| [サイドキラー](#SideKiller)
-| [サバイバー](#Survivor)
+| [シリアルキラー](#SerialKiller) | [ドクター](#Doctor)
+| [イビルイレイサー](#EvilEraser) | [ミーティングシェリフ](#MeetingSheriff)
+| [オーバーキラー](#OverKiller) | [ナイスサイエンティスト](#NiceScientist)
+| [イビルムービング](#EvilMoving) |[ナイス赤ずきん](#NiceRedRidingHood)
+| [レベリンガー](#Levelinger) | [メイヤー](#Mayor)
+| [サイドキラー](#SideKiller) | [技術者](#Technician)
+| [サバイバー](#Survivor) | [占い師](#SoothSayer)
+| |[霊媒師](#SpiritMedium)
+| |[マッドメイヤー](#MadMayor)
+| |[ナイスホーク](#NiceHawk)
+| |[マッドスタントマン](#MadStuntman)
+| |[マッドホーク](#MadHawk)
+| |[パン屋](#Bakery)
+| |[マッドてるてる](#MadJester)
 
 # 役職の詳細
 
 ## 注意
 人数は設定から省いています。
+
+
 
 ## テレポーター
 ### インポスター陣営
@@ -149,6 +158,7 @@ Discordサーバーには全てすでに乗っています。
 
 ## イビル猫又
 ### インポスター陣営
+
 
 自分が会議で追放されると、<br>
 その役職関係なく誰か一人を道連れにします。<br>
@@ -335,6 +345,7 @@ SuperHostRoles対応。
 |----------|:-------------:|
 | サバイバーのキルクールタイム | サバイバーのキルクールタイムを設定できます。
 -----------------------
+
 ## マッドメイト
 ### インポスター陣営
 
