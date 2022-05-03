@@ -34,6 +34,7 @@ namespace SuperNewRoles
         public static bool IsUpdate = false;
         public static string NewVersion = "" ;
         public static string thisname;
+
         public override void Load()
         {
             Logger = Log;
