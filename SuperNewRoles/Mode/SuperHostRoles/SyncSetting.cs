@@ -15,6 +15,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void CustomSyncSettings(this PlayerControl player)
         {
             if (!AmongUsClient.Instance.AmHost) return;
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
             var role = player.getRole();
             var optdata = OptionData.DeepCopy();
             switch (role)
