@@ -10,18 +10,93 @@ using UnityEngine.UI;
 
 namespace SuperNewRoles.Roles
 {
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
+    class MeetingUpdatePatch
+    {
+        public static void Postfix(MeetingHud __instance)
+        {
+            if (!IsFlag) return;
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                meetingsheriff_updatepatch.index += 1;
+            } else if (Input.GetKeyDown(KeyCode.K))
+            {
+                meetingsheriff_updatepatch.index -= 1;
+            }
+            meetingsheriff_updatepatch.Change(__instance, false);
+        }
+        public static PassiveButton RightButton;
+        public static PassiveButton LeftButton;
+        public static bool IsFlag;
+        private static Sprite m_Meeting_AreaTabChange;
+        public static Sprite Meeting_AreaTabChange
+        {
+            get
+            {
+                if (m_Meeting_AreaTabChange == null)
+                {
+                    m_Meeting_AreaTabChange = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Meeting_AreaTabChange.png", 110f);
+                }
+                return m_Meeting_AreaTabChange;
+            }
+        }
+    }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
     class meetingsheriff_updatepatch
     {
         static void Postfix(MeetingHud __instance)
         {
-            if (!PlayerControl.LocalPlayer.isAlive())
+            if (PlayerControl.LocalPlayer.isDead())
             {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
         }
+        public static void Change(MeetingHud __instance,bool right)
+        {
+            if (!(meetingsheriff_updatepatch.index < (PlayerControl.AllPlayerControls.Count / 15) + 1))
+            {
+                MeetingSheriff_Patch.Right.SetActive(false);
+            } else
+            {
+                MeetingSheriff_Patch.Right.SetActive(true);
+            }
+            if (index <= 1)
+            {
+                MeetingSheriff_Patch.Left.SetActive(false);
+            }
+            else
+            {
+                MeetingSheriff_Patch.Left.SetActive(true);
+            }
+            int i = 0;
+            foreach (PlayerVoteArea area in __instance.playerStates)
+            {
+                try
+                {
+                    if (!(index * 15 < i && i >= 15 * (index - 1)))
+                    {
+                        area.transform.localPosition = Positions[i - ((index - 1) * 15)];
+                    }
+                    else
+                    {
+                        area.transform.localPosition = new Vector3(100, 100, 100);
+                    }
+                }
+                catch
+                {
+                    area.transform.localPosition = new Vector3(100, 100, 100);
+                }
+                i++;
+            }
+        }
+        public static int index;
+        public static PlayerVoteArea[] PlayerVoteAreas;
+        public static Vector3[] Positions = new Vector3[] {
+            new Vector3(-3.1f, 1.5f, -0.9f), new Vector3(-0.2f, 1.5f, -0.9f), new Vector3(2.7f, 1.5f, -0.9f), new Vector3(-3.1f, 0.74f, -0.91f), new Vector3(-0.2f, 0.74f, -0.91f),
+            new Vector3(2.7f, 0.74f, -0.91f), new Vector3(-3.1f, -0.02f, -0.92f), new Vector3(-0.2f, -0.02f, -0.92f), new Vector3(2.7f, -0.02f, -0.92f), new Vector3(-3.1f, -0.78f, -0.93f),
+            new Vector3(-0.2f, -0.78f, -0.93f), new Vector3(2.7f, -0.78f, -0.93f), new Vector3(-3.1f, -1.54f, -0.94f), new Vector3(-0.2f, -1.54f, -0.94f), new Vector3(2.7f, -1.54f, -0.94f)
+        };
     }
-
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     class MeetingSheriff_Patch
     {
@@ -90,8 +165,69 @@ namespace SuperNewRoles.Roles
             {
                 Mode.SuperHostRoles.MorePatch.StartMeeting(__instance);
             }
+
+            MeetingUpdatePatch.IsFlag = false;
+            if (PlayerControl.AllPlayerControls.Count > 15)
+            {
+                MeetingUpdatePatch.IsFlag = true;
+                meetingsheriff_updatepatch.PlayerVoteAreas = null;
+                meetingsheriff_updatepatch.index = 1;
+                CreateAreaButton(__instance);
+            }
+
             Event(__instance);
          }
-        
+        public static GameObject Right;
+        public static GameObject Left;
+        static void CreateAreaButton(MeetingHud __instance)
+        {
+            GameObject template = __instance.transform.FindChild("ButtonStuff").FindChild("button_skipVoting").gameObject;
+            GameObject targetBox = UnityEngine.Object.Instantiate(template, __instance.transform);
+            targetBox.name = "RightButton";
+            targetBox.gameObject.SetActive(true);
+            targetBox.transform.localPosition = new Vector3(4.8f, 0f, -3f);
+            targetBox.transform.localScale = new Vector3(0.075f, 0.075f, 0.075f);
+            Right = targetBox;
+            GameObject.Destroy(targetBox.transform.FindChild("Text_TMP").gameObject);
+            SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
+            renderer.sprite = MeetingUpdatePatch.Meeting_AreaTabChange;
+            GameObject.Destroy(targetBox.GetComponent<BoxCollider2D>());
+            PassiveButton button = targetBox.GetComponent<PassiveButton>();
+            button.Colliders = new List<Collider2D>() { targetBox.AddComponent<PolygonCollider2D>() }.ToArray();
+            button.OnClick.RemoveAllListeners();
+            button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => right()));
+            button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => renderer.color = Color.green));
+            button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => renderer.color = Color.white));
+
+            GameObject targetBoxl = UnityEngine.Object.Instantiate(template, __instance.transform);
+            targetBoxl.name = "LeftButton";
+            targetBoxl.gameObject.SetActive(true);
+            targetBoxl.transform.localPosition = new Vector3(-4.75f, 0f, -3f);
+            targetBoxl.transform.localScale = new Vector3(-0.075f, 0.075f, 0.075f);
+            Left = targetBoxl;
+            GameObject.Destroy(targetBoxl.transform.FindChild("Text_TMP").gameObject);
+            SpriteRenderer rendererl = targetBoxl.GetComponent<SpriteRenderer>();
+            rendererl.sprite = MeetingUpdatePatch.Meeting_AreaTabChange;
+            GameObject.Destroy(targetBoxl.GetComponent<BoxCollider2D>());
+            PassiveButton buttonl = targetBoxl.GetComponent<PassiveButton>();
+            buttonl.Colliders = new List<Collider2D>() { targetBoxl.AddComponent<PolygonCollider2D>() }.ToArray();
+            buttonl.OnClick.RemoveAllListeners();
+            buttonl.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => left()));
+            buttonl.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => rendererl.color = Color.green));
+            buttonl.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => rendererl.color = Color.white));
+        }
+        public static void right()
+        {
+            if (meetingsheriff_updatepatch.index < (PlayerControl.AllPlayerControls.Count / 15) + 1) {
+                meetingsheriff_updatepatch.index++;
+            }
+        }
+        public static void left()
+        {
+            if (meetingsheriff_updatepatch.index > 1)
+            {
+                meetingsheriff_updatepatch.index--;
+            }
+        }
     }
 }
