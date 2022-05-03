@@ -16,6 +16,8 @@ namespace SuperNewRoles
 {
     public static class ConfigRoles
     {
+        public static ConfigEntry<string> Ip { get; set; }
+        public static ConfigEntry<ushort> Port { get; set; }
         public static ConfigEntry<bool> StreamerMode { get; set; }
         public static ConfigEntry<bool> AutoUpdate { get; set; }
         public static ConfigEntry<bool> AutoCopyGameCode { get; set; }
@@ -37,6 +39,10 @@ namespace SuperNewRoles
             ShareCosmeticsNamePlatesURL = SuperNewRolesPlugin.Instance.Config.Bind("ShareCosmetics", "NamePlateURL", "");
             IsAutoRoomCreate = SuperNewRolesPlugin.Instance.Config.Bind("Custom","AutoRoomCreate",true); ;
             IsHorseMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "HorseMode", false);
+            Ip = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server IP", "127.0.0.1");
+            Port = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server Port", (ushort)22023);
+            Patch.RegionMenuOpenPatch.defaultRegions = ServerManager.DefaultRegions;
+            Patch.RegionMenuOpenPatch.UpdateRegions();
         }
     }
 }
