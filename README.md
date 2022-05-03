@@ -41,29 +41,29 @@ It is already on the Discord server.
 
 | Impostor | Crewmate | Neutral | Redundant Camps |
 |----------|-------------|-----------------|----------------|
-| [Teleporter](#テレポーター) | [ライター](#ライター) | [てるてる](#てるてる) | [クラード](#クラード) |
-| [EvilSpeedBooster](#イビルスピードブースター) | [シェリフ](#シェリフ) | [オポチュニスト](#オポチュニスト) | [ラバーズ](#ラバーズ) |
-| [EvilDoorr](#イビルドアー) | [スピードブースター](#スピードブースター) | [ジャッカル](#ジャッカル) |  |
-| [EvilGambler](#イビルギャンブラー) | [ドアー](#ドアー) | [サイドキック](#サイドキック) |  |
-| [SelfBomber](#自爆魔) | [聖職者](#聖職者) | [神](#神) | |
-| [EvilNekomata](#イビル猫又) | [マッドメイト](#マッドメイト) | [エゴイスト](#エゴイスト) | |
-| [CountChanger](#カウントチェンジャー) | [ベイト](#ベイト) | [仕事人](#仕事人) |  |
-| [Pursuer](#追跡者) | [自宅警備員](#自宅警備員) |  [純愛者](#純愛者) |  |
-| [EvilScientist](#イビルサイエンティスト) | [スタントマン](#スタントマン) | [忘却者](#忘却者) |  |
-| [Hawk](#ホーク) | [ムービング](#ムービング) |[ジャッカルフレンズ](#ジャッカルフレンズ)  |  |
-| [Minimalist](#ミニマリスト) | [ベスト冤罪ヤー](#ベスト冤罪ヤー) |  |  |
-| [Magaziner](#マガジナー)| [ナイス猫又](#ナイス猫又) |  |  |
-| [SerialKiller](#シリアルキラー) | [ドクター](#ドクター)
-| [EvilEraser](#イビルイレイサー) | [ミーティングシェリフ](#ミーティングシェリフ)
-| [OverKiller](#オーバーキラー) | [ナイスサイエンティスト](#ナイスサイエンティスト)
-| [EvilMoving](#イビルムービング) |[ナイス赤ずきん](#ナイス赤ずきん)
-| [Levelinger](#レベリンガー) | [メイヤー](#メイヤー)
-| [SideKiller](#サイドキラー) | [技術者](#技術者)
-| [Survivor](#サバイバー) | [占い師](#占い師)
-| |[霊媒師](#霊媒師)
-| |[マッドメイヤー](#マッドメイヤー)
-| |[ナイスホーク](#ナイスホーク)
-| |[マッドスタントマン](#マッドスタントマン)
-| |[マッドホーク](#マッドホーク)
-| |[パン屋](#パン屋)
-| |[マッドてるてる](#マッドてるてる)
+| [Teleporter](#テレポーター) | [Lighter](#ライター) | [Jester](#てるてる) | [Quarreled](#クラード) |
+| [EvilSpeedBooster](#イビルスピードブースター) | [Sheriff](#シェリフ) | [Opportunist](#オポチュニスト) | [Lovers](#ラバーズ) |
+| [EvilDoorr](#イビルドアー) | [SpeedBooster](#スピードブースター) | [Jackal](#ジャッカル) |  |
+| [EvilGambler](#イビルギャンブラー) | [Doorr](#ドアー) | [Sidekick](#サイドキック) |  |
+| [SelfBomber](#自爆魔) | [Clergyman](#聖職者) | [God](#神) | |
+| [EvilNekomata](#イビル猫又) | [Madmate](#マッドメイト) | [Egoist](#エゴイスト) | |
+| [CountChanger](#カウントチェンジャー) | [Bait](#ベイト) | [Work Person](#仕事人) |  |
+| [Pursuer](#追跡者) | [Home Security Guard](#自宅警備員) |  [True Lover](#純愛者) |  |
+| [EvilScientist](#イビルサイエンティスト) | [Stuntman](#スタントマン) | [Amnesiac](#忘却者) |  |
+| [Hawk](#ホーク) | [Moving](#ムービング) |[Jackal Friends](#ジャッカルフレンズ)  |  |
+| [Minimalist](#ミニマリスト) | [Best False Charge](#ベスト冤罪ヤー) |  |  |
+| [Magaziner](#マガジナー)| [Nice Nekomata](#ナイス猫又) |  |  |
+| [SerialKiller](#シリアルキラー) | [Doctor](#ドクター)
+| [EvilEraser](#イビルイレイサー) | [MeetingSheriff](#ミーティングシェリフ)
+| [OverKiller](#オーバーキラー) | [NicScientist](#ナイスサイエンティスト)
+| [EvilMoving](#イビルムービング) |[NiceRedRidingHood](#ナイス赤ずきん)
+| [Levelinger](#レベリンガー) | [Mayor](#メイヤー)
+| [SideKiller](#サイドキラー) | [Technician](#技術者)
+| [Survivor](#サバイバー) | [SoothSayer](#占い師)
+| |[Spirit Medium](#霊媒師)
+| |[MadMayor](#マッドメイヤー)
+| |[NiceHawk](#ナイスホーク)
+| |[MadStuntman](#マッドスタントマン)
+| |[MadHawk](#マッドホーク)
+| |[Bakery](#パン屋)
+| |[MadJester](#マッドてるてる)
