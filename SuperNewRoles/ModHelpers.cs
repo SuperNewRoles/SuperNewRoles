@@ -307,6 +307,16 @@ namespace SuperNewRoles
             return null;
         }
 
+        public static bool isCustomServer()
+        {
+            if (DestroyableSingleton<ServerManager>.Instance == null) return false;
+            StringNames n = DestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
+            return n != StringNames.ServerNA && n != StringNames.ServerEU && n != StringNames.ServerAS;
+        }
+        public static object TryCast(this Il2CppObjectBase self, Type type)
+        {
+            return AccessTools.Method(self.GetType(), nameof(Il2CppObjectBase.TryCast)).MakeGenericMethod(type).Invoke(self, Array.Empty<object>());
+        }
         internal static string cs(object unityEngine, string v)
         {
             throw new NotImplementedException();

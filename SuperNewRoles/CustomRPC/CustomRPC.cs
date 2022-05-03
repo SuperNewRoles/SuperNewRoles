@@ -606,6 +606,10 @@ namespace SuperNewRoles.CustomRPC
         {
             var p = ModHelpers.playerById(playerid);
             PlayerControl.LocalPlayer.transform.position = p.transform.position;
+            if (SubmergedCompatibility.isSubmerged())
+            {
+                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
+            }
             new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"),p.nameText.text), 3);
         }
         public static void SetWinCond(byte Cond)

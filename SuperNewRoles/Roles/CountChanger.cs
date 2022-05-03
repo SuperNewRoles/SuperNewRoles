@@ -134,6 +134,46 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
+        public static bool IsChangeMadJester(this PlayerControl p)
+        {
+            var getroledata = GetRoleType(p);
+            if (getroledata == TeamRoleType.Crewmate)
+            {
+                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(CustomRPC.RoleId.MadJester)) return true;
+                }
+                else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(CustomRPC.RoleId.MadJester)) return true;
+                }
+                else
+                {
+                    return p.isRole(CustomRPC.RoleId.MadJester);
+                }
+            }
+            return false;
+        }
+        public static bool IsChangeMadHawk(this PlayerControl p)
+        {
+            var getroledata = GetRoleType(p);
+            if (getroledata == TeamRoleType.Crewmate)
+            {
+                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(CustomRPC.RoleId.MadHawk)) return true;
+                }
+                else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(CustomRPC.RoleId.MadHawk)) return true;
+                }
+                else
+                {
+                    return p.isRole(CustomRPC.RoleId.MadHawk);
+                }
+            }
+            return false;
+        }
         public static int? GetKey(this Dictionary<int,int> dics,int id)
         {
             foreach (var data in dics)
