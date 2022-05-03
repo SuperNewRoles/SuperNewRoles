@@ -137,7 +137,6 @@ namespace SuperNewRoles
         public static float GetSubmergedNeutralLightRadius(bool isImpostor)
         {
             if (!Loaded) return 0;
-            SuperNewRolesPlugin.Logger.LogInfo(SubmarineStatus == null);
             return (float)CalculateLightRadiusMethod.Invoke(SubmarineStatus, new object[] { null, true, isImpostor });
         }
 
