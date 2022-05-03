@@ -129,7 +129,7 @@ namespace SuperNewRoles.Patches
 
                 var text = button.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) => {
-                    text.SetText(ModTranslation.getString("ダウンロード中です。\nサブマージドのファイルは\n大きいため、時間がかかります。"));
+                    text.SetText(ModTranslation.getString("サブマージドを適用する"));
                 })));
 
                 TwitchManager man = DestroyableSingleton<TwitchManager>.Instance;
