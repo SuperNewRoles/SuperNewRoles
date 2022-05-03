@@ -44,7 +44,7 @@ namespace SuperNewRoles
                     {
                         if (ShipStatus.Instance.Type == SUBMERGED_MAP_TYPE)
                         {
-                            return _submarineStatus = ShipStatus.Instance.GetComponent(Il2CppType.From(SubmarineStatusType)) as MonoBehaviour;
+                            return _submarineStatus = ShipStatus.Instance.GetComponent(Il2CppType.From(SubmarineStatusType))?.TryCast(SubmarineStatusType) as MonoBehaviour;
                         }
                         else
                         {
@@ -137,6 +137,7 @@ namespace SuperNewRoles
         public static float GetSubmergedNeutralLightRadius(bool isImpostor)
         {
             if (!Loaded) return 0;
+            SuperNewRolesPlugin.Logger.LogInfo(SubmarineStatus == null);
             return (float)CalculateLightRadiusMethod.Invoke(SubmarineStatus, new object[] { null, true, isImpostor });
         }
 
