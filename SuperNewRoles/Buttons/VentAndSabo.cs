@@ -22,12 +22,15 @@ namespace SuperNewRoles.Buttons
                 {
                     return false;
                 }
-                Vector3 vector = PlayerControl.LocalPlayer.transform.position;
-                vector /= ShipStatus.Instance.MapScale;
-                vector.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
-                vector.z = -1f;
-                __instance.HerePoint.transform.localPosition = vector;
-                PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
+                if (Mode.ModeHandler.isMode(Mode.ModeId.Default))
+                {
+                    Vector3 vector = PlayerControl.LocalPlayer.transform.position;
+                    vector /= ShipStatus.Instance.MapScale;
+                    vector.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
+                    vector.z = -1f;
+                    __instance.HerePoint.transform.localPosition = vector;
+                    PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
+                }
                 return false;
             }
             [HarmonyPostfix]
