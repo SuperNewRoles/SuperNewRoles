@@ -14,7 +14,7 @@ namespace SuperNewRoles.Patch
         public static GameObject airship;
         public static void Prefix()
         {
-            if (CustomOptions.enableMirroMap.getBool())
+            if (AmongUsClient.Instance.GameMode != GameModes.FreePlay && CustomOptions.enableMirroMap.getBool())
             {
                 if (PlayerControl.GameOptions.MapId == 0)
                 {
@@ -38,6 +38,14 @@ namespace SuperNewRoles.Patch
                     PolusShipStatus.Instance.InitialSpawnCenter = new Vector2(-16.7f, -2.1f);
                     PolusShipStatus.Instance.MeetingSpawnCenter = new Vector2(-19.5f, -17f);
                     PolusShipStatus.Instance.MeetingSpawnCenter2 = new Vector2(-19.5f, -17f);
+                }
+                else if (SubmergedCompatibility.isSubmerged())
+                {
+                    ShipStatus.Instance.InitialSpawnCenter = new Vector2(-3.4f, -28.35f);
+                    ShipStatus.Instance.MeetingSpawnCenter = new Vector2(-3.4f, -28.35f);
+                    ShipStatus.Instance.MeetingSpawnCenter2 = new Vector2(-3.4f, -28.35f);
+                    ShipStatus.Instance.transform.localScale = new Vector3(-0.8f, 0.8f, 0.9412f);
+                    SuperNewRolesPlugin.Logger.LogInfo("a");
                 }
                 /*else if(PlayerControl.GameOptions.MapId == 4 && CustomOptionHolder.InversionAShip.getBool())
                 {
