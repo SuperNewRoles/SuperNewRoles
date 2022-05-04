@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\SuperNewRoles\\Buttons",
+    "\\SuperNewRoles\\Roles"
   ],
-  "SelectedNode": "\\SuperNewRoles.sln",
+  "SelectedNode": "\\SuperNewRoles",
   "PreviewInSolutionExplorer": false
 }

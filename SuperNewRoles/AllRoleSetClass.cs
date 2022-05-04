@@ -797,8 +797,13 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.MadStuntManPlayerCount.getFloat();
                 case (RoleId.MadHawk):
                     return CustomOption.CustomOptions.MadHawkPlayerCount.getFloat();
+<<<<<<< HEAD
                     case (RoleId.FalseCharges):
                     return CustomOption.CustomOptions.FalseChargesPlayerCount.getFloat();
+=======
+                    case (RoleId.NiceTeleporter):
+                    return CustomOption.CustomOptions.NiceTeleporterPlayerCount.getFloat();
+>>>>>>> master
                     //プレイヤーカウント
             }
             return 1;
@@ -1850,6 +1855,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+<<<<<<< HEAD
         if (!(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", ""));
@@ -1857,12 +1863,25 @@ namespace SuperNewRoles
                 if (OptionDate == 10)
                 {
                     Neutonepar.Add(ThisRoleId);
+=======
+        if (!(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.NiceTeleporter;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+>>>>>>> master
                 }
                 else
                 {
                     for (int i = 1; i <= OptionDate; i++)
                     {
+<<<<<<< HEAD
                         Neutnotonepar.Add(ThisRoleId);
+=======
+                        Crewnotonepar.Add(ThisRoleId);
+>>>>>>> master
                     }
                 }
             }
@@ -1915,6 +1934,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+<<<<<<< HEAD
         if (!(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", ""));
@@ -1922,12 +1942,25 @@ namespace SuperNewRoles
                 if (OptionDate == 10)
                 {
                     Neutonepar.Add(ThisRoleId);
+=======
+        if (!(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.NiceTeleporter;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+>>>>>>> master
                 }
                 else
                 {
                     for (int i = 1; i <= OptionDate; i++)
                     {
+<<<<<<< HEAD
                         Neutnotonepar.Add(ThisRoleId);
+=======
+                        Crewnotonepar.Add(ThisRoleId);
+>>>>>>> master
                     }
                 }
             }

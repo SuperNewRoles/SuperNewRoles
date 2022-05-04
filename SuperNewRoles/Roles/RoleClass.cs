@@ -105,7 +105,11 @@ namespace SuperNewRoles.Roles
             MadStuntMan.ClearAndReload();
             MadHawk.ClearAndReload();
             MadJester.ClearAndReload();
+<<<<<<< HEAD
             FalseCharges.ClearAndReload();
+=======
+            NiceTeleporter.ClearAndReload();
+>>>>>>> master
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1439,6 +1443,7 @@ namespace SuperNewRoles.Roles
                 IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.getBool();
             }
         }
+<<<<<<< HEAD
         public static class FalseCharges
         {
             public static List<PlayerControl> FalseChargesPlayer;
@@ -1459,6 +1464,27 @@ namespace SuperNewRoles.Roles
                 DefaultTurn = (int)CustomOptions.FalseChargesExileTurn.getFloat();
                 CoolTime = CustomOptions.FalseChargesCoolTime.getFloat();
 
+=======
+        public static class NiceTeleporter
+        {
+            public static List<PlayerControl> NiceTeleporterPlayer;
+            public static Color32 color = new Color32(0, 0, 128, byte.MaxValue);
+            public static float CoolTime;
+            public static float DurationTime;
+            public static DateTime ButtonTimer;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                return ButtonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                NiceTeleporterPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.NiceTeleporterCoolTime.getFloat();
+                DurationTime = CustomOptions.NiceTeleporterDurationTime.getFloat();
+>>>>>>> master
             }
         }
         //新ロールクラス

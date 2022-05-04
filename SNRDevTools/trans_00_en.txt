@@ -520,6 +520,7 @@ See it all.
 Let's catch the crime.
 Bakery
 Would you like some breads?
+Bakery baked some breads for crewmates.
 MadStuntman
 Prevent kills and connect with impostors.
 UseVent
@@ -528,8 +529,14 @@ MadHawk
 See it all.
 MadJester
 Get voted out and win with the Imposters!
+<<<<<<< HEAD
 FalseCharges
 Let the false accusations win!
 Turn of the false accusation range
 Cool Time
 False Charge
+=======
+Nice Teleporter
+Teleport and uncover impostors!
+Teleport cool down
+>>>>>>> master

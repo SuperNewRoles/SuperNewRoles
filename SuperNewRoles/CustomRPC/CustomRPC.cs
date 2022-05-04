@@ -90,7 +90,11 @@ namespace SuperNewRoles.CustomRPC
         MadJester,
         MadStuntMan,
         MadHawk,
+<<<<<<< HEAD
         FalseCharges,
+=======
+        NiceTeleporter,
+>>>>>>> master
         //RoleId
     }
 

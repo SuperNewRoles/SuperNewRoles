@@ -2088,6 +2088,10 @@
         "0" : "Would you like some breads?" ,
         "11" : "\u713c\u304d\u305f\u3066\u306e\u30d1\u30f3\u306f\u3044\u304b\u304c\uff1f"
         } ,
+ "BakeryExileText" : {
+        "0" : "Bakery baked some breads for crewmates." ,
+        "11" : "\u30d1\u30f3\u5c4b\u306b\u3088\u3063\u3066\u30d1\u30f3\u304c\u632f\u821e\u308f\u308c\u307e\u3057\u305f\u3002"
+        } ,
  "MadStuntManName" : {
         "0" : "MadStuntman" ,
         "11" : "\u30de\u30c3\u30c9\u30b9\u30bf\u30f3\u30c8\u30de\u30f3"
@@ -2120,6 +2124,7 @@
         "0" : "Get voted out and win with the Imposters!" ,
         "11" : "\u6295\u7968\u3067\u8ffd\u653e\u3055\u308c\u3066\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3068\u52dd\u5229\u3057\u3088\u3046"
         } ,
+<<<<<<< HEAD
  "FalseChargesName" : {
         "0" : "FalseCharges" ,
         "11" : "\u51a4\u7f6a\u5e2b"
@@ -2140,5 +2145,19 @@
         "0" : "False Charge" ,
         "11" : "\u51a4\u7f6a"
         } 
+=======
+ "NiceTeleporterName" : {
+        "0" : "NiceTeleporter" ,
+        "11" : "\u30ca\u30a4\u30b9\u30c6\u30ec\u30dd\u30fc\u30bf\u30fc"
+        } ,
+ "NiceTeleporterTitle1" : {
+        "0" : "Teleport and uncover impostors!" ,
+        "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\u3057\u3066\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u66b4\u3053\u3046"
+        } ,
+ "NiceTeleporterCoolDownSetting" : {
+        "0" : "Teleport Cool Down" ,
+        "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+>>>>>>> master
 
 }

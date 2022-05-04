@@ -429,6 +429,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.FalseCharges):
                     Roles.RoleClass.FalseCharges.FalseChargesPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.NiceTeleporter):
+                    Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -651,7 +654,11 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.FalseCharges):
                     Roles.RoleClass.FalseCharges.FalseChargesPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.NiceTeleporter):
+                    Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
+
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1170,23 +1177,28 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Bakery;
                 }
-            else if (Roles.RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MadHawk;
-            }
+                else if (Roles.RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadHawk;
+                }
                 else if (Roles.RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(player))
                 {
-                return CustomRPC.RoleId.MadJester;
+                    return CustomRPC.RoleId.MadJester;
                 }
-            else if (Roles.RoleClass.FalseCharges.FalseChargesPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.FalseCharges;
-            }
-            //ロールチェック
+                else if (Roles.RoleClass.FalseCharges.FalseChargesPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.FalseCharges;
+                }
+                else if (Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceTeleporter;
+                }
+                //ロールチェック
 
             }
-            catch (Exception e) {
-            
+            catch (Exception e)
+            {
+
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
                 return RoleId.DefaultRole;
             }
