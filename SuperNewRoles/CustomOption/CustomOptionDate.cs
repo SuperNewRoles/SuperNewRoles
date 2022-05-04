@@ -30,6 +30,8 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption impostorRolesCountMax;
         public static CustomOption neutralRolesCountMax;
 
+        public static CustomOption enableMirroMap;
+
         public static CustomOption IsDebugMode;
 
         public static CustomOption DisconnectNotPCOption;
@@ -436,6 +438,8 @@ namespace SuperNewRoles.CustomOption
             crewmateRolesCountMax = CustomOption.Create(3, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewRole"), 0f, 0f, 15f, 1f);
             neutralRolesCountMax = CustomOption.Create(4, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralRole"), 0f, 0f, 15f, 1f);
             impostorRolesCountMax = CustomOption.Create(5, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 3f, 1f);
+
+            enableMirroMap = CustomOption.Create(338, false, CustomOptionType.Generic, "enableMirroMap", false);
 
             if (ConfigRoles.DebugMode.Value) {
                 IsDebugMode = CustomOption.Create(159, true, CustomOptionType.Generic, "デバッグモード", false, null, isHeader: true);

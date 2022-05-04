@@ -47,6 +47,7 @@ colorMelon
 colorCrasyublue
 colorLightgreen
 Hat_SNR
+enableMirroMap
 SettingpresetSelection
 SettingSuperNewRoles
 SettingImpostor
