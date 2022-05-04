@@ -158,6 +158,8 @@ namespace SuperNewRoles.Intro
                     return MadJesterIntro;
                 case (CustomRPC.RoleId.NiceTeleporter):
                     return NiceTeleporterIntro;
+                case (CustomRPC.RoleId.Celebrity):
+                    return CelebrityIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -246,6 +248,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate MadHawkIntro = new IntroDate("MadHawk", RoleClass.MadHawk.color, 1, CustomRPC.RoleId.MadHawk);
         public static IntroDate MadJesterIntro = new IntroDate("MadJester", RoleClass.MadJester.color, 1, CustomRPC.RoleId.MadJester);
         public static IntroDate NiceTeleporterIntro = new IntroDate("NiceTeleporter", RoleClass.NiceTeleporter.color, 1, CustomRPC.RoleId.NiceTeleporter);
+        public static IntroDate CelebrityIntro = new IntroDate("Celebrity", RoleClass.Celebrity.color, 1, CustomRPC.RoleId.Celebrity);
         //イントロオブジェ
     }
 }

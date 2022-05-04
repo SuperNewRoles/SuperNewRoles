@@ -532,3 +532,6 @@ MadJesterTitle1
 NiceTeleporterName
 NiceTeleporterTitle1
 NiceTeleporterCoolDownSetting
+CelebrityName
+CelebrityTitle1
+CelebrityChangeRoleViewSetting

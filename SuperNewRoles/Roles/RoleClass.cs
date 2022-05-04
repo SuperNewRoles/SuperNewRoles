@@ -106,6 +106,7 @@ namespace SuperNewRoles.Roles
             MadHawk.ClearAndReload();
             MadJester.ClearAndReload();
             NiceTeleporter.ClearAndReload();
+            Celebrity.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1458,6 +1459,20 @@ namespace SuperNewRoles.Roles
                 NiceTeleporterPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.NiceTeleporterCoolTime.getFloat();
                 DurationTime = CustomOptions.NiceTeleporterDurationTime.getFloat();
+            }
+        }
+        public static class Celebrity
+        {
+            public static List<PlayerControl> CelebrityPlayer;
+            public static Color32 color = Color.yellow;
+            public static bool ChangeRoleView;
+            public static List<PlayerControl> ViewPlayers;
+
+            public static void ClearAndReload()
+            {
+                CelebrityPlayer = new List<PlayerControl>();
+                ChangeRoleView = CustomOptions.CelebrityChangeRoleView.getBool();
+                ViewPlayers = new List<PlayerControl>();
             }
         }
         //新ロールクラス

@@ -91,6 +91,7 @@ namespace SuperNewRoles.CustomRPC
         MadStuntMan,
         MadHawk,
         NiceTeleporter,
+        Celebrity,
         //RoleId
     }
 

@@ -246,6 +246,22 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
+        public static void SetCelebrity()
+        {
+            if (RoleClass.Celebrity.ChangeRoleView)
+            {
+                foreach (PlayerControl p in RoleClass.Celebrity.ViewPlayers)
+                {
+                    SetNamesClass.SetPlayerNameColor(p,RoleClass.Celebrity.color);
+                }
+            } else
+            {
+                foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
+                {
+                    SetNamesClass.SetPlayerNameColor(p, RoleClass.Celebrity.color);
+                }
+            }
+        }
     }
     public class SetNameUpdate
     {

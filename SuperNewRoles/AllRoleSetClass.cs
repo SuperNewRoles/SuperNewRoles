@@ -799,6 +799,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.MadHawkPlayerCount.getFloat();
                     case (RoleId.NiceTeleporter):
                     return CustomOption.CustomOptions.NiceTeleporterPlayerCount.getFloat();
+                    case (RoleId.Celebrity):
+                    return CustomOption.CustomOptions.CelebrityPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1866,6 +1868,22 @@ namespace SuperNewRoles
                     }
                 }
             }
+        if (!(CustomOption.CustomOptions.CelebrityOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.CelebrityOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Celebrity;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
         //セットクラス
             if (!(CustomOption.CustomOptions.MadStuntManOption.getString().Replace("0%", "") == ""))
             {
@@ -1919,6 +1937,22 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.NiceTeleporter;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.CelebrityOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.CelebrityOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Celebrity;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);
