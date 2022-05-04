@@ -520,6 +520,7 @@ NiceHawkTitle1
 NiceHawkTitle2
 BakeryName
 BakeryTitle1
+BakeryExileText
 MadStuntManName
 MadStuntManTitle1
 MadStuntManUseVentSetting

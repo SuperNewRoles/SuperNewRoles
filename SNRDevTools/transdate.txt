@@ -521,6 +521,7 @@ NiceHawkTitle1,See it all.,全てを見渡せ
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう
 BakeryName,Bakery,パン屋
 BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？
+BakeryExileText,Bakery baked some breads for crewmates.,パン屋によってパンが振舞われました。
 MadStuntManName,MadStuntman,マッドスタントマン
 MadStuntManTitle1,Prevent kills and connect with impostors.,キルを防いでインポスターと繋がろう
 MadStuntManUseVentSetting,UseVent,ベントを使える
