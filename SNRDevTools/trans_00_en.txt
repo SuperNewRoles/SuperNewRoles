@@ -529,3 +529,6 @@ MadHawk
 See it all.
 MadJester
 Get voted out and win with the Imposters!
+Observer
+Let's monitor everything.
+I know who to vote for.

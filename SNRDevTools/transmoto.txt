@@ -529,3 +529,6 @@ MadHawkName
 MadHawkTitle1
 MadJesterName
 MadJesterTitle1
+ObserverName
+ObserverTitle1
+ObserverViewVoteSetting

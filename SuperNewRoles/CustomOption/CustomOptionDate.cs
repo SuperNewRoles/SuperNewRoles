@@ -383,6 +383,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadJesterIsImpostorLight;
         public static CustomOption IsMadJesterTaskClearWin;
 
+        public static CustomRoleOption ObserverOption;
+        public static CustomOption ObserverPlayerCount;
+        public static CustomOption ObserverViewVote;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -798,6 +802,10 @@ namespace SuperNewRoles.CustomOption
             MadJesterIsUseVent = CustomOption.Create(331, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadJesterOption);
             MadJesterIsImpostorLight = CustomOption.Create(326, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadJesterOption);
             IsMadJesterTaskClearWin = CustomOption.Create(327, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
+
+            ObserverOption = new CustomRoleOption(332, true, CustomOptionType.Crewmate, "ObserverName", RoleClass.Observer.color, 1);
+            ObserverPlayerCount = CustomOption.Create(333, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ObserverOption);
+            ObserverViewVote = CustomOption.Create(334, true, CustomOptionType.Crewmate, "ObserverViewVoteSetting", false, ObserverOption); 
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

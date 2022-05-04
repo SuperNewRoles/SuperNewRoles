@@ -105,6 +105,7 @@ namespace SuperNewRoles.Roles
             MadStuntMan.ClearAndReload();
             MadHawk.ClearAndReload();
             MadJester.ClearAndReload();
+            Observer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1436,6 +1437,17 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.MadJesterIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.getBool();
                 IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.getBool();
+            }
+        }
+        public static class Observer
+        {
+            public static List<PlayerControl> ObserverPlayer;
+            public static Color32 color = new Color32(127, 127, 127, byte.MaxValue);
+            public static bool IsVoteView;
+            public static void ClearAndReload()
+            {
+                ObserverPlayer = new List<PlayerControl>();
+                IsVoteView = CustomOptions.ObserverViewVote.getBool();
             }
         }
         //新ロールクラス

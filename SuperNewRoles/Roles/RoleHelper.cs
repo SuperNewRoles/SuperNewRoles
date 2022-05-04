@@ -426,6 +426,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadHawk):
                     Roles.RoleClass.MadHawk.MadHawkPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Observer):
+                    Roles.RoleClass.Observer.ObserverPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -636,7 +639,6 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadHawk):
                     Roles.RoleClass.MadHawk.MadHawkPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
                 case (CustomRPC.RoleId.NiceHawk):
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
                     break;
@@ -645,6 +647,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.MadJester):
                     Roles.RoleClass.MadJester.MadJesterPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Observer):
+                    Roles.RoleClass.Observer.ObserverPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1167,6 +1172,10 @@ namespace SuperNewRoles
                 {
                 return CustomRPC.RoleId.MadJester;
                 }
+            else if (Roles.RoleClass.Observer.ObserverPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Observer;
+            }
             //ロールチェック
 
             }

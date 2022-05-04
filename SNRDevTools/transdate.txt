@@ -530,3 +530,6 @@ MadHawkName,MadHawk,マッドホーク
 MadHawkTitle1,See it all.,すべてを見渡そう
 MadJesterName,MadJester,マッドてるてる
 MadJesterTitle1,Get voted out and win with the Imposters!,投票で追放されてインポスターと勝利しよう
+ObserverName,Observer,選挙管理委員
+ObserverTitle1,Let's monitor everything.,すべてを監視しよう
+ObserverViewVoteSetting,I know who to vote for.,投票先を確認できるか
