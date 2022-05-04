@@ -90,6 +90,7 @@ namespace SuperNewRoles.CustomRPC
         MadJester,
         MadStuntMan,
         MadHawk,
+        Observer,
         //RoleId
     }
 
