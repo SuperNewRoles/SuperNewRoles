@@ -196,6 +196,10 @@
         "0" : "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats" ,
         "11" : "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats"
         } ,
+ "enableMirroMap" : {
+        "0" : "enable MirroMap" ,
+        "11" : "\u53cd\u8ee2\u30de\u30c3\u30d7\u3092\u6709\u52b9\u306b\u3059\u308b"
+        } ,
  "SettingpresetSelection" : {
         "0" : "Preset" ,
         "11" : "\u30d7\u30ea\u30bb\u30c3\u30c8"
