@@ -540,6 +540,34 @@
         "0" : "Zombies incoming! {0}s" ,
         "11" : "\u30be\u30f3\u30d3\u304c\u3084\u3063\u3066\u304f\u308b\u307e\u3067\u6b8b\u308a{0}\u79d2\uff01"
         } ,
+ "ZombieStartSecondSetting" : {
+        "0" : "Time until the zombies come." ,
+        "11" : "\u30be\u30f3\u30d3\u304c\u3084\u3063\u3066\u304f\u308b\u307e\u3067\u306e\u6642\u9593"
+        } ,
+ "ZombieZombieLightSetting" : {
+        "0" : "Zombie Visibility" ,
+        "11" : "\u30be\u30f3\u30d3\u306e\u8996\u754c"
+        } ,
+ "ZombieZombieSpeedSetting" : {
+        "0" : "Zombie Speed" ,
+        "11" : "\u30be\u30f3\u30d3\u306e\u30b9\u30d4\u30fc\u30c9"
+        } ,
+ "ZombiePoliceLightSetting" : {
+        "0" : "Police visibility" ,
+        "11" : "\u8b66\u5bdf\u306e\u8996\u754c"
+        } ,
+ "ZombiePoliceSpeedSetting" : {
+        "0" : "Speed of police" ,
+        "11" : "\u8b66\u5bdf\u306e\u30b9\u30d4\u30fc\u30c9"
+        } ,
+ "ZombieCommingLightSetting" : {
+        "0" : "Light before zombies" ,
+        "11" : "\u30be\u30f3\u30d3\u304c\u3084\u3063\u3066\u304f\u308b\u524d\u306e\u8996\u754c"
+        } ,
+ "ZombieCommingSpeedSetting" : {
+        "0" : "Speed before zombies" ,
+        "11" : "\u30be\u30f3\u30d3\u304c\u3084\u3063\u3066\u304f\u308b\u524d\u306e\u30b9\u30d4\u30fc\u30c9"
+        } ,
  "RandomColorHideNameSetting" : {
         "0" : "Hide Name" ,
         "11" : "\u540d\u524d\u3092\u96a0\u3059"

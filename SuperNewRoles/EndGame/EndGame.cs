@@ -279,6 +279,18 @@ namespace SuperNewRoles.EndGame
                     }
                 }
             }
+            if (ModeHandler.isMode(ModeId.Zombie))
+            {
+                if (AdditionalTempData.winCondition == WinCondition.Default)
+                {
+                    text = ModTranslation.getString("ZombieZombieName");
+                    textRenderer.color = Mode.Zombie.main.Zombiecolor;
+                } else if(AdditionalTempData.winCondition == WinCondition.WorkpersonWin)
+                {
+                    text = ModTranslation.getString("ZombiePoliceName");
+                    textRenderer.color = Mode.Zombie.main.Policecolor;
+                }
+            }
             if (!haison) {
                     textRenderer.text = string.Format(text + " " + ModTranslation.getString("WinName"));
             } else {
@@ -296,13 +308,18 @@ namespace SuperNewRoles.EndGame
                     var roleSummaryText = new StringBuilder();
                     roleSummaryText.AppendLine(ModTranslation.getString("最終結果"));
 
-
                     foreach (var datas in AdditionalTempData.playerRoles)
                     {
                         var taskInfo = datas.TasksTotal > 0 ? $"<color=#FAD934FF>({datas.TasksCompleted}/{datas.TasksTotal})</color>" : "";
                         string aliveDead = "";
                         string Suffix = "";
                         string result = $"{ModHelpers.cs(Palette.PlayerColors[datas.ColorId],datas.PlayerName)}{datas.NameSuffix}{taskInfo} - {GetStatusText(datas.Status)} - {CustomOptions.cs(datas.IntroDate.color, datas.IntroDate.NameKey + "Name")}";
+                        if (ModeHandler.isMode(ModeId.Zombie))
+                        {
+                            var roletext = datas.ColorId == 1 ? CustomOptions.cs(Mode.Zombie.main.Policecolor,"ZombiePoliceName") : CustomOptions.cs(Mode.Zombie.main.Zombiecolor, "ZombieZombieName");
+                            if (datas.ColorId == 2) taskInfo = "";
+                            result = $"{ModHelpers.cs(Palette.PlayerColors[datas.ColorId],datas.PlayerName)}{taskInfo} : {roletext}";
+                        }
                         roleSummaryText.AppendLine(result);
                     }
 
@@ -400,7 +417,7 @@ namespace SuperNewRoles.EndGame
 
         public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
-            if (AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (AmongUsClient.Instance.AmHost && (ModeHandler.isMode(ModeId.SuperHostRoles) || ModeHandler.isMode(ModeId.Zombie)))
             {
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
                 PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
@@ -705,6 +722,33 @@ namespace SuperNewRoles.EndGame
                         TempData.winners.Add(wpd);
                         if (IsSingleTeam)
                         {
+                        }
+                    }
+                }
+            }
+            if (ModeHandler.isMode(ModeId.Zombie))
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                if (gameOverReason == GameOverReason.ImpostorByKill)
+                {
+                    AdditionalTempData.winCondition = WinCondition.Default;
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.CurrentOutfit.ColorId == 2)
+                        {
+                            WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                            TempData.winners.Add(wpd);
+                        }
+                    }
+                } else
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
+                        if (p.CurrentOutfit.ColorId == 1)
+                        {
+                            WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                            TempData.winners.Add(wpd);
                         }
                     }
                 }

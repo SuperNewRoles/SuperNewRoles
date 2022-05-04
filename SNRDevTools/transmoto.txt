@@ -133,6 +133,13 @@ ZombieZombieTitle1
 ZombiePoliceName
 ZombiePoliceTitle1
 ZombieTimerText
+ZombieStartSecondSetting
+ZombieZombieLightSetting
+ZombieZombieSpeedSetting
+ZombiePoliceLightSetting
+ZombiePoliceSpeedSetting
+ZombieCommingLightSetting
+ZombieCommingSpeedSetting
 RandomColorHideNameSetting
 RandomColorNameColorSetting
 RandomColorMeetingSetting

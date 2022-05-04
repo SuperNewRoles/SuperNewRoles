@@ -133,6 +133,13 @@ Infect other players!
 Police
 Let's finish the task.
 Zombies incoming! {0}s
+Time until the zombies come.
+Zombie Visibility
+Zombie Speed
+Police visibility
+Speed of police
+Light before zombies
+Speed before zombies
 Hide Name
 Change Name Color
 In Meeting Change Color

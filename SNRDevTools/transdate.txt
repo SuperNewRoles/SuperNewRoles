@@ -134,6 +134,13 @@ ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよ
 ZombiePoliceName,Police,警察
 ZombiePoliceTitle1,Let's finish the task.,タスクを終わらせて勝利しよう
 ZombieTimerText,Zombies incoming! {0}s,ゾンビがやってくるまで残り{0}秒！
+ZombieStartSecondSetting,Time until the zombies come.,ゾンビがやってくるまでの時間
+ZombieZombieLightSetting,Zombie Visibility,ゾンビの視界
+ZombieZombieSpeedSetting,Zombie Speed,ゾンビのスピード
+ZombiePoliceLightSetting,Police visibility,警察の視界
+ZombiePoliceSpeedSetting,Speed of police,警察のスピード
+ZombieCommingLightSetting,Light before zombies,ゾンビがやってくる前の視界
+ZombieCommingSpeedSetting,Speed before zombies,ゾンビがやってくる前のスピード
 RandomColorHideNameSetting,Hide Name,名前を隠す
 RandomColorNameColorSetting,Change Name Color,名前の色も変える
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する
