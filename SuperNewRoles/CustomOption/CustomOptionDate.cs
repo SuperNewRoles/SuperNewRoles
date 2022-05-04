@@ -383,6 +383,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadJesterIsImpostorLight;
         public static CustomOption IsMadJesterTaskClearWin;
 
+        public static CustomRoleOption NiceTeleporterOption;
+        public static CustomOption NiceTeleporterPlayerCount;
+        public static CustomOption NiceTeleporterCoolTime;
+        public static CustomOption NiceTeleporterDurationTime;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -798,6 +803,11 @@ namespace SuperNewRoles.CustomOption
             MadJesterIsUseVent = CustomOption.Create(331, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadJesterOption);
             MadJesterIsImpostorLight = CustomOption.Create(326, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadJesterOption);
             IsMadJesterTaskClearWin = CustomOption.Create(327, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
+
+            NiceTeleporterOption = new CustomRoleOption(41, false, CustomOptionType.Crewmate, "NiceTeleporterName", RoleClass.NiceTeleporter.color, 1);
+            NiceTeleporterPlayerCount = CustomOption.Create(42, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceTeleporterOption);
+            NiceTeleporterCoolTime = CustomOption.Create(43, false, CustomOptionType.Crewmate, "NiceTeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, NiceTeleporterOption, format: "unitSeconds");
+            NiceTeleporterDurationTime = CustomOption.Create(44, false, CustomOptionType.Crewmate, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, NiceTeleporterOption, format: "unitSeconds");
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

@@ -529,3 +529,6 @@ MadHawk
 See it all.
 MadJester
 Get voted out and win with the Imposters!
+Nice Teleporter
+Teleport and uncover impostors!
+Teleport cool down
