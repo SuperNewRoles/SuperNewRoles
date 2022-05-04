@@ -521,18 +521,18 @@ NiceHawkTitle1,See it all.,全てを見渡せ
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう
 BakeryName,Bakery,パン屋
 BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？
-BakeryExileText,Bakery baked some breads for crewmates.,マッドスタントマン
-MadStuntManName,MadStuntman,キルを防いでインポスターと繋がろう
-MadStuntManTitle1,Prevent kills and connect with impostors.,ベントを使える
-MadStuntManUseVentSetting,UseVent,インポスターの視界
-MadStuntManImpostorLightSetting,Impostor Light,マッドホーク
-MadHawkName,MadHawk,すべてを見渡そう
-MadHawkTitle1,See it all.,マッドてるてる
-MadJesterName,MadJester,投票で追放されてインポスターと勝利しよう
-MadJesterTitle1,Get voted out and win with the Imposters!,冤罪師
-NiceTeleporterName,Nice Teleporter,冤罪をさせて勝利しよう
-NiceTeleporterTitle1,Teleport and uncover impostors!,冤罪の範囲のターン
-NiceTeleporterCoolDownSetting,Teleport cool down,クールタイム
-CelebrityName,Celebrity,スター
-CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！
-CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる
+BakeryExileText,Bakery baked some breads for crewmates.,
+MadStuntManName,MadStuntman,パン屋によってパンが振舞われました。
+MadStuntManTitle1,Prevent kills and connect with impostors.,マッドスタントマン
+MadStuntManUseVentSetting,UseVent,キルを防いでインポスターと繋がろう
+MadStuntManImpostorLightSetting,Impostor Light,ベントを使える
+MadHawkName,MadHawk,インポスターの視界
+MadHawkTitle1,See it all.,マッドホーク
+MadJesterName,MadJester,すべてを見渡そう
+MadJesterTitle1,Get voted out and win with the Imposters!,マッドてるてる
+NiceTeleporterName,Nice Teleporter,投票で追放されてインポスターと勝利しよう
+NiceTeleporterTitle1,Teleport and uncover impostors!,ナイステレポーター
+NiceTeleporterCoolDownSetting,Teleport cool down,テレポートしてインポスターを暴こう
+CelebrityName,Celebrity,テレポートのクールダウン
+CelebrityTitle1,A Celebrity for everyone!,スター
+CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,みんなのスター！！

@@ -246,19 +246,19 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
-        public static void SetCelebrity()
+        public static void CelebritySet()
         {
             if (RoleClass.Celebrity.ChangeRoleView)
             {
                 foreach (PlayerControl p in RoleClass.Celebrity.ViewPlayers)
                 {
-                    SetNamesClass.SetPlayerNameColor(p,RoleClass.Celebrity.color);
+                    SetPlayerNameColor(p,RoleClass.Celebrity.color);
                 }
             } else
             {
                 foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
                 {
-                    SetNamesClass.SetPlayerNameColor(p, RoleClass.Celebrity.color);
+                    SetPlayerNameColor(p, RoleClass.Celebrity.color);
                 }
             }
         }
@@ -366,6 +366,7 @@ namespace SuperNewRoles.Patch
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }
+            SetNamesClass.CelebritySet();
             SetNamesClass.QuarreledSet();
             SetNamesClass.LoversSet();
             try {
