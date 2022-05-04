@@ -129,7 +129,7 @@ namespace SuperNewRoles.Patches
 
                 var text = button.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) => {
-                    text.SetText(ModTranslation.getString("サブマージドをダウンロードする"));
+                    text.SetText(ModTranslation.getString("サブマージドを適用する"));
                 })));
 
                 TwitchManager man = DestroyableSingleton<TwitchManager>.Instance;
@@ -140,7 +140,7 @@ namespace SuperNewRoles.Patches
                 void onClick()
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("ダウンロード！");
-                    showPopup(ModTranslation.getString("ダウンロード中です。サブマージドのファイルは大きいため、時間がかかります。"));
+                    showPopup(ModTranslation.getString("ダウンロード中です。\nサブマージドのファイルは大きいため、時間がかかります。"));
                     DownloadSubmarged();
                     button.SetActive(false);
                 }
@@ -195,7 +195,7 @@ namespace SuperNewRoles.Patches
                             responseStream.CopyTo(fileStream);
                         }
                     }
-                    showPopup(ModTranslation.getString("ダウンロード完了！再起動してください！"));
+                    showPopup(ModTranslation.getString("ダウンロード完了！\n再起動してください！"));
                     return true;
                 }
                 catch (System.Exception ex)

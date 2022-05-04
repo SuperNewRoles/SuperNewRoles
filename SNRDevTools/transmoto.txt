@@ -47,6 +47,7 @@ colorMelon
 colorCrasyublue
 colorLightgreen
 Hat_SNR
+enableMirroMap
 SettingpresetSelection
 SettingSuperNewRoles
 SettingImpostor
@@ -133,6 +134,13 @@ ZombieZombieTitle1
 ZombiePoliceName
 ZombiePoliceTitle1
 ZombieTimerText
+ZombieStartSecondSetting
+ZombieZombieLightSetting
+ZombieZombieSpeedSetting
+ZombiePoliceLightSetting
+ZombiePoliceSpeedSetting
+ZombieCommingLightSetting
+ZombieCommingSpeedSetting
 RandomColorHideNameSetting
 RandomColorNameColorSetting
 RandomColorMeetingSetting
@@ -512,6 +520,7 @@ NiceHawkTitle1
 NiceHawkTitle2
 BakeryName
 BakeryTitle1
+BakeryExileText
 MadStuntManName
 MadStuntManTitle1
 MadStuntManUseVentSetting

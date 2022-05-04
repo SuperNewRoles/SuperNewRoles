@@ -26,15 +26,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static string getDefaultName(this PlayerControl player)
         {
-            byte playerid = 0;
-            if (AmongUsClient.Instance.GameMode == GameModes.LocalGame)
-            {
-                playerid = player.PlayerId;
-            }
-            else
-            {
-                playerid = (byte)player.getClientId();
-            }
+            var playerid = player.PlayerId;
             if (DefaultName.ContainsKey(playerid))
             {
                 return DefaultName[playerid];
@@ -65,7 +57,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void SetRoleNames(bool IsUnchecked = false)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             bool commsActive = false;
             if (RoleClass.Technician.TechnicianPlayer.Count != 0)
             {
@@ -79,28 +70,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
             List<PlayerControl> DiePlayers = new List<PlayerControl>();
-            List<PlayerControl> AlivePlayers = new List<PlayerControl>();
-            if (!RoleClass.IsMeeting)
-            {
-                a--;
-                if (a <= 0)
-                {
-                    a = 10;
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        if (!p.Data.Disconnected && p.isAlive())
-                        {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (!p2.Data.Disconnected && p.PlayerId != p2.PlayerId)
-                                {
-                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 if (!p.Data.Disconnected && p.PlayerId != 0)
@@ -116,41 +85,19 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!p.Data.Disconnected)
                 {
                     string Suffix = "";
-                    if (p.PlayerId != 0 && p.isAlive())
+                    if (!p.IsMod() && p.isAlive())
                     {
                         bool IsMadmateCheck = Madmate.CheckImpostor(p);
-                        //  SuperNewRolesPlugin.Logger.LogInfo("マッドメイトがチェックできるか:"+IsMadmateCheck);
                         if (IsMadmateCheck)
                         {
                             foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                             {
-                                if (!p2.Data.Disconnected && !p2.isImpostor())
-                                {
-                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
-                                }
-                                else if (!p2.Data.Disconnected && p2.isImpostor())
+                                if (!p2.Data.Disconnected && p2.isImpostor())
                                 {
                                     p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
                                 }
                             }
                             //Madmate.CheckedImpostor.Add(p.PlayerId);
-                        }
-                        bool IsMadMayorCheck = MadMayor.CheckImpostor(p);
-                        //  SuperNewRolesPlugin.Logger.LogInfo("マッドメイヤーがチェックできるか:"+IsMadMayorCheck);
-                        if (IsMadMayorCheck)
-                        {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (!p2.Data.Disconnected && !p2.isImpostor())
-                                {
-                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
-                                }
-                                else if (!p2.Data.Disconnected && p2.isImpostor())
-                                {
-                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
-                                }
-                            }
-                            //MadMayor.CheckedImpostor.Add(p.PlayerId);
                         }
                         bool IsMadStuntManCheck = MadStuntMan.CheckImpostor(p);
                         //  SuperNewRolesPlugin.Logger.LogInfo("マッドスタントマンがチェックできるか:"+IsMadStuntManCheck);
@@ -169,38 +116,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
                         }
-                        bool IsMadJesterCheck = MadJester.CheckImpostor(p);
-                        //  SuperNewRolesPlugin.Logger.LogInfo("マッドメイヤーがチェックできるか:"+IsMadMayorCheck);
-                        if (IsMadJesterCheck)
-                        {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (!p2.Data.Disconnected && !p2.isImpostor())
-                                {
-                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
-                                }
-                                else if (!p2.Data.Disconnected && p2.isImpostor())
-                                {
-                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
-                                }
-                            }
-                            //MadMayor.CheckedImpostor.Add(p.PlayerId);
-                        }
-
                         if (p.IsLovers() && p.isAlive())
                         {
                             Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
                             PlayerControl Side = p.GetOneSideLovers();
                             string name = Side.getDefaultName();
                             if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
-                            {
-                                name = ModHelpers.cs(RoleClass.ImpostorRed, name);
-                            }
-                            if (MadMayor.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
-                            {
-                                name = ModHelpers.cs(RoleClass.ImpostorRed, name);
-                            }
-                            if (MadJester.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
                             {
                                 name = ModHelpers.cs(RoleClass.ImpostorRed, name);
                             }
@@ -245,13 +166,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
                     }
-                    if (p.PlayerId != 0)
+                    if (!p.IsMod())
                     {
                         p.RpcSetNamePrivate(NewName);
                     }
                     foreach (PlayerControl p2 in DiePlayers)
                     {
-                        if (p.PlayerId != p2.PlayerId && p2.PlayerId != 0 && !p2.Data.Disconnected)
+                        if (p.PlayerId != p2.PlayerId && !p2.IsMod() && !p2.Data.Disconnected)
                         {
                             p.RpcSetNamePrivate(NewName, p2);
                         }
@@ -419,6 +340,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
                 DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
             }
+            SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             if (!AmongUsClient.Instance.AmHost) return;
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {

@@ -34,6 +34,7 @@ namespace SuperNewRoles
         public static bool IsUpdate = false;
         public static string NewVersion = "" ;
         public static string thisname;
+
         public override void Load()
         {
             Logger = Log;
@@ -70,6 +71,7 @@ namespace SuperNewRoles
         
             StringDATE = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();
+            SubmergedCompatibility.Initialize();
         }
         /*
         [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]

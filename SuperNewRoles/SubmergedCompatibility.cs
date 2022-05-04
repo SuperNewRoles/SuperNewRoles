@@ -44,7 +44,7 @@ namespace SuperNewRoles
                     {
                         if (ShipStatus.Instance.Type == SUBMERGED_MAP_TYPE)
                         {
-                            return _submarineStatus = ShipStatus.Instance.GetComponent(Il2CppType.From(SubmarineStatusType)) as MonoBehaviour;
+                            return _submarineStatus = ShipStatus.Instance.GetComponent(Il2CppType.From(SubmarineStatusType))?.TryCast(SubmarineStatusType) as MonoBehaviour;
                         }
                         else
                         {
@@ -77,6 +77,7 @@ namespace SuperNewRoles
         private static MethodInfo RpcRequestChangeFloorMethod;
         private static Type FloorHandlerType;
         private static MethodInfo GetFloorHandlerMethod;
+        private static FieldInfo OnUpperField;
 
         private static Type Vent_MoveToVent_PatchType;
         private static FieldInfo InTransitionField;
@@ -112,6 +113,7 @@ namespace SuperNewRoles
             FloorHandlerType = Types.First(t => t.Name == "FloorHandler");
             GetFloorHandlerMethod = AccessTools.Method(FloorHandlerType, "GetFloorHandler", new Type[] { typeof(PlayerControl) });
             RpcRequestChangeFloorMethod = AccessTools.Method(FloorHandlerType, "RpcRequestChangeFloor");
+            OnUpperField = AccessTools.Field(FloorHandlerType, "OnUpper");
 
             Vent_MoveToVent_PatchType = Types.First(t => t.Name == "Vent_MoveToVent_Patch");
             InTransitionField = AccessTools.Field(Vent_MoveToVent_PatchType, "InTransition");
@@ -143,6 +145,27 @@ namespace SuperNewRoles
             if (!Loaded) return;
             MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { PlayerControl.LocalPlayer })) as MonoBehaviour;
             RpcRequestChangeFloorMethod.Invoke(_floorHandler, new object[] { toUpper });
+        }
+
+        public static void ChangeFloor(bool toUpper,PlayerControl player)
+        {
+            if (!Loaded) return;
+            MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { player })) as MonoBehaviour;
+            RpcRequestChangeFloorMethod.Invoke(_floorHandler, new object[] { toUpper });
+        }
+
+        public static bool GetFloor()
+        {
+            if (!Loaded) return false;
+            MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { PlayerControl.LocalPlayer })) as MonoBehaviour;
+            return (bool)OnUpperField.GetValue(_floorHandler);
+        }
+
+        public static bool GetFloor(PlayerControl player)
+        {
+            if (!Loaded) return false;
+            MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { player })) as MonoBehaviour;
+            return (bool)OnUpperField.GetValue(_floorHandler);
         }
 
         public static bool getInTransition()

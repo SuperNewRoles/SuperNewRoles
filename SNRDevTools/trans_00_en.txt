@@ -47,6 +47,7 @@ Melon
 Crasyu Blue
 Light Green
 <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats
+enable MirroMap
 Preset
 <color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings
 <color=#ff0000>Impostor</color> Settings
@@ -133,6 +134,13 @@ Infect other players!
 Police
 Let's finish the task.
 Zombies incoming! {0}s
+Time until the zombies come.
+Zombie Visibility
+Zombie Speed
+Police visibility
+Speed of police
+Light before zombies
+Speed before zombies
 Hide Name
 Change Name Color
 In Meeting Change Color
@@ -211,7 +219,7 @@ Kill the outsider and lead your crewmates to victory!
 Sheriff's Kill Cooldown
 Can Kill a Neutral
 Can Kill a Lovers
-Can Kill a Madmate
+Can Kill a MadRole
 Yes
 No
 Maximum number of kills for Sheriff
@@ -512,6 +520,7 @@ See it all.
 Let's catch the crime.
 Bakery
 Would you like some breads?
+Bakery baked some breads for crewmates.
 MadStuntman
 Prevent kills and connect with impostors.
 UseVent

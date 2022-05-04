@@ -53,28 +53,22 @@ namespace SuperNewRoles.Mode.Zombie
             {
                 if (IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.Zombie) && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !HudManager.Instance.IsIntroDisplayed)
                 {
-                    HideAndSeek.Patch.RepairSystemPatch.Postfix(PlayerControl.LocalPlayer);
                     if (NameChangeTimer >= 0f)
                     {
                         NameChangeTimer -= Time.deltaTime;
                     } else if(NameChangeTimer != -10)
                     {
-
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
+                            p.RpcSetName("　");
                             if (p.isImpostor())
                             {
                                 main.SetZombie(p);
                             }
                         }
                         byte BlueIndex = 1;
-                        byte greenIndex = 2;
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                p2.RpcSetNamePrivate("　",p);//p.getDefaultName(),p2);
-                            }
                             if (!p.IsZombie())
                             {
                                 /*
@@ -83,8 +77,10 @@ namespace SuperNewRoles.Mode.Zombie
                                 p.RpcSetColor(BlueIndex);
                                 /*
                                 p.RpcSetHat("hat_police");
+                                
                                 p.RpcSetSkin("skin_Police");
                                 */
+                                ZombieOptions.ChengeSetting(p);
                             }
                         }
                         NameChangeTimer = -10;
@@ -109,29 +105,22 @@ namespace SuperNewRoles.Mode.Zombie
                 }
                 else
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (int pint in main.ZombiePlayers)
                     {
-                        if (p.isAlive())
+                        var p1 = ModHelpers.playerById((byte)pint);
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            foreach (PlayerControl p3 in PlayerControl.AllPlayerControls)
+                            if (!p.IsZombie())
                             {
-                                if (!p3.IsZombie())
+                                if (p != null && p.isAlive() && !p.Data.Disconnected)
                                 {
-                                    foreach (int pint in main.ZombiePlayers)
+                                    var DistanceData = Vector2.Distance(p.transform.position, p1.transform.position);
+                                    if (DistanceData <= 0.5f)
                                     {
-                                        var p4 = ModHelpers.playerById((byte)pint);
-                                        if (p4 != null && p4.isAlive())
-                                        {
-                                            var DistanceData = Vector2.Distance(p3.transform.position, p4.transform.position);
-                                            if (DistanceData <= 0.5f)
-                                            {
-                                                main.SetZombie(p3);
-                                            }
-                                        }
+                                        main.SetZombie(p);
                                     }
                                 }
                             }
-
                         }
                     }
                 }

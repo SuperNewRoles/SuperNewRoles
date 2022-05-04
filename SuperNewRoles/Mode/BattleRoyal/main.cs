@@ -105,7 +105,10 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         }
                     }
                 }, 0.1f, "TecExitVent");
-                SyncSetting.CustomSyncSettings();
+                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                {
+                    SyncSetting.CustomSyncSettings();
+                }
             }
         }
         public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)

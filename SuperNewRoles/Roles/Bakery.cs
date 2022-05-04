@@ -38,7 +38,8 @@ namespace SuperNewRoles.Roles
             breadText = UnityEngine.Object.Instantiate(                                             //文字定義
                     __instance.ImpostorText,
                     __instance.Text.transform);
-            breadText.text = "パン屋によってパンが振舞われました";                                  //文字の内容を変える
+            string ExileText = ModTranslation.getString("BakeryExileText");                         //翻訳
+            breadText.text = ExileText;                                                             //文字の内容を変える
             bool isBakeryAlive = BakeryAlive();                                                     //Boolの取得(生存判定)
             if (isBakeryAlive)                                                                      //if文(Bakeryが生きていたら実行)
             {

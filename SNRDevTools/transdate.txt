@@ -48,6 +48,7 @@ colorMelon,Melon,メロン
 colorCrasyublue,Crasyu Blue,クラッシュブルー
 colorLightgreen,Light Green,ライトグリーン
 Hat_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats
+enableMirroMap,enable MirroMap,反転マップを有効にする
 SettingpresetSelection,Preset,プリセット
 SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定
 SettingImpostor,<color=#ff0000>Impostor</color> Settings,<color=#ff0000>インポスター</color>の設定
@@ -58,7 +59,7 @@ SettingMaxCrewRole,Maximum Crewmate Roles,クルーメイト役職人数
 SettingMiniNeutralRole,Minimum Neutral Roles,最小第三陣営役職数
 SettingMaxNeutralRole,Maximum Neutral Roles,第三陣営役職人数
 SettingMiniImpoRole,Minimum Impostor Roles,最小インポスター役職数
-SettingMaxImpoRole,Maximum Impostor Roles,インポスター人役職数
+SettingMaxImpoRole,Maximum Impostor Roles,インポスター役職人数
 SettingsHideSetting,Hide Setting,設定を隠す
 SettingCrewMateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定
 SettingImpostorTeamRolesName,Imposter camp position setting,インポスター陣営の役職設定
@@ -134,6 +135,13 @@ ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよ
 ZombiePoliceName,Police,警察
 ZombiePoliceTitle1,Let's finish the task.,タスクを終わらせて勝利しよう
 ZombieTimerText,Zombies incoming! {0}s,ゾンビがやってくるまで残り{0}秒！
+ZombieStartSecondSetting,Time until the zombies come.,ゾンビがやってくるまでの時間
+ZombieZombieLightSetting,Zombie Visibility,ゾンビの視界
+ZombieZombieSpeedSetting,Zombie Speed,ゾンビのスピード
+ZombiePoliceLightSetting,Police visibility,警察の視界
+ZombiePoliceSpeedSetting,Speed of police,警察のスピード
+ZombieCommingLightSetting,Light before zombies,ゾンビがやってくる前の視界
+ZombieCommingSpeedSetting,Speed before zombies,ゾンビがやってくる前のスピード
 RandomColorHideNameSetting,Hide Name,名前を隠す
 RandomColorNameColorSetting,Change Name Color,名前の色も変える
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する
@@ -513,6 +521,7 @@ NiceHawkTitle1,See it all.,全てを見渡せ
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう
 BakeryName,Bakery,パン屋
 BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？
+BakeryExileText,Bakery baked some breads for crewmates.,パン屋によってパンが振舞われました。
 MadStuntManName,MadStuntman,マッドスタントマン
 MadStuntManTitle1,Prevent kills and connect with impostors.,キルを防いでインポスターと繋がろう
 MadStuntManUseVentSetting,UseVent,ベントを使える
