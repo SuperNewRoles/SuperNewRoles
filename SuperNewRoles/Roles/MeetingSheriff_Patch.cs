@@ -16,12 +16,12 @@ namespace SuperNewRoles.Roles
         public static void Postfix(MeetingHud __instance)
         {
             if (!IsFlag) return;
-            if (Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                meetingsheriff_updatepatch.index += 1;
-            } else if (Input.GetKeyDown(KeyCode.K))
+                MeetingSheriff_Patch.right();
+            } else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                meetingsheriff_updatepatch.index -= 1;
+                MeetingSheriff_Patch.left();
             }
             meetingsheriff_updatepatch.Change(__instance, false);
         }
