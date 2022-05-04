@@ -38,7 +38,7 @@ namespace SuperNewRoles.Buttons
             static bool Prefix3(MapBehaviour __instance)
             {
                 if (!MeetingHud.Instance) {
-                    if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons)
+                    if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons && !__instance.IsOpen)
                     {
                         __instance.Close();
                         DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));

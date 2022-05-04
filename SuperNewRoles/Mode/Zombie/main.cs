@@ -129,15 +129,6 @@ namespace SuperNewRoles.Mode.Zombie
                     
                 }
             }
-            new LateTask(() => {
-                if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
-                {
-                    foreach (var pc in PlayerControl.AllPlayerControls)
-                    {
-                        pc.RpcSetRole(RoleTypes.Shapeshifter);
-                    }
-                }
-            }, 4f, "SetImpostor");
             ZombieOptions.FirstChangeSettings();
         }
         public static void SetTimer()
