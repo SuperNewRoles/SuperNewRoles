@@ -41,15 +41,29 @@ It is already on the Discord server.
 
 | Impostor | Crewmate | Neutral | Redundant Camps |
 |----------|-------------|-----------------|----------------|
-| [Teleporter](#Teleporter) | [Lighter](#Lighter) | [Jester](#Jester) | [Quarreled](#Quarreled) |
-| [Evil SpeedBooster](#EvilSpeedBooster) | [Sheriff](#Sheriff) | [Opportunist](#Opportunist) |  |
-| [Evil Doorr](#EvilDoorr) | [SpeedBooster](#SpeedBooster) | [Jackal](#Jackal) |  |
-| [Evil Gambler](#EvilGambler) | [Doorr](#Doorr) | [Sidekick](#Sidekick) |  |
-| [Self Bomber](#SelfBomber) | [Clergyman](#Clergyman) | [God](#God) | |
-| [Evil Nekomata](#EvilNekomata) | [Madmate](#Madmate) | | |
-|  | [Bait](#Bait) |  |  |
-|  | [Home Security Guard](#HomeSecurityGuard) |  |  |
-|  | [Stuntman](#Stuntman) |  |  |
-|  | [Moving](#Moving) |  |  |
-|  | [Best False Charge](#BestFalseCharge) |  |  |
-|  | [Nice Nekomata](#NiceNekomata) |  |  |
+| [Teleporter](#テレポーター) | [Lighter](#ライター) | [Jester](#てるてる) | [Quarreled](#クラード) |
+| [EvilSpeedBooster](#イビルスピードブースター) | [Sheriff](#シェリフ) | [Opportunist](#オポチュニスト) | [Lovers](#ラバーズ) |
+| [EvilDoorr](#イビルドアー) | [SpeedBooster](#スピードブースター) | [Jackal](#ジャッカル) |  |
+| [EvilGambler](#イビルギャンブラー) | [Doorr](#ドアー) | [Sidekick](#サイドキック) |  |
+| [SelfBomber](#自爆魔) | [Clergyman](#聖職者) | [God](#神) | |
+| [EvilNekomata](#イビル猫又) | [Madmate](#マッドメイト) | [Egoist](#エゴイスト) | |
+| [CountChanger](#カウントチェンジャー) | [Bait](#ベイト) | [Work Person](#仕事人) |  |
+| [Pursuer](#追跡者) | [Home Security Guard](#自宅警備員) |  [True Lover](#純愛者) |  |
+| [EvilScientist](#イビルサイエンティスト) | [Stuntman](#スタントマン) | [Amnesiac](#忘却者) |  |
+| [Hawk](#ホーク) | [Moving](#ムービング) |[Jackal Friends](#ジャッカルフレンズ)  |  |
+| [Minimalist](#ミニマリスト) | [Best False Charge](#ベスト冤罪ヤー) |  |  |
+| [Magaziner](#マガジナー)| [Nice Nekomata](#ナイス猫又) |  |  |
+| [SerialKiller](#シリアルキラー) | [Doctor](#ドクター)
+| [EvilEraser](#イビルイレイサー) | [MeetingSheriff](#ミーティングシェリフ)
+| [OverKiller](#オーバーキラー) | [NicScientist](#ナイスサイエンティスト)
+| [EvilMoving](#イビルムービング) |[NiceRedRidingHood](#ナイス赤ずきん)
+| [Levelinger](#レベリンガー) | [Mayor](#メイヤー)
+| [SideKiller](#サイドキラー) | [Technician](#技術者)
+| [Survivor](#サバイバー) | [SoothSayer](#占い師)
+| |[Spirit Medium](#霊媒師)
+| |[MadMayor](#マッドメイヤー)
+| |[NiceHawk](#ナイスホーク)
+| |[MadStuntman](#マッドスタントマン)
+| |[MadHawk](#マッドホーク)
+| |[Bakery](#パン屋)
+| |[MadJester](#マッドてるてる)
