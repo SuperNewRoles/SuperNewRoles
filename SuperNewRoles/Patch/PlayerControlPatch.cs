@@ -74,6 +74,13 @@ namespace SuperNewRoles.Patches
             if (ModeHandler.isMode(ModeId.BattleRoyal)) return true;
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
+                if (__instance.isRole(RoleId.FalseCharges))
+                {
+                    target.RpcMurderPlayer(__instance);
+                    RoleClass.FalseCharges.FalseChargePlayers[__instance.PlayerId] = target.PlayerId;
+                    RoleClass.FalseCharges.AllTurns[__instance.PlayerId] = RoleClass.FalseCharges.DefaultTurn;
+                    return false;
+                }
                 if (target.isRole(RoleId.StuntMan) && !__instance.isRole(RoleId.OverKiller))
                 {
                     if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))

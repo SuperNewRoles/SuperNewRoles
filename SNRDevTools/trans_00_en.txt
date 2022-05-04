@@ -528,3 +528,8 @@ MadHawk
 See it all.
 MadJester
 Get voted out and win with the Imposters!
+FalseCharges
+Let the false accusations win!
+Turn of the false accusation range
+Cool Time
+False Charge

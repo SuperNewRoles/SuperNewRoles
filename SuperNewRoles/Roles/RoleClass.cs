@@ -105,6 +105,7 @@ namespace SuperNewRoles.Roles
             MadStuntMan.ClearAndReload();
             MadHawk.ClearAndReload();
             MadJester.ClearAndReload();
+            FalseCharges.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1436,6 +1437,28 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.MadJesterIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.getBool();
                 IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.getBool();
+            }
+        }
+        public static class FalseCharges
+        {
+            public static List<PlayerControl> FalseChargesPlayer;
+            public static Dictionary<byte, int> AllTurns;
+            public static Dictionary<byte, byte> FalseChargePlayers;
+            public static byte FalseChargePlayer;
+            public static int Turns;
+            public static int DefaultTurn;
+            public static float CoolTime;
+            public static Color32 color = Color.green;
+            public static void ClearAndReload()
+            {
+                FalseChargesPlayer = new List<PlayerControl>();
+                AllTurns = new Dictionary<byte, int>();
+                FalseChargePlayers = new Dictionary<byte, byte>();
+                FalseChargePlayer = 255;
+                Turns = 255;
+                DefaultTurn = (int)CustomOptions.FalseChargesExileTurn.getFloat();
+                CoolTime = CustomOptions.FalseChargesCoolTime.getFloat();
+
             }
         }
         //新ロールクラス

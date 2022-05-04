@@ -32,6 +32,7 @@ namespace SuperNewRoles.EndGame
         WorkpersonWin,
         LoversWin,
         MadJesterWin,
+        FalseChargesWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -225,6 +226,12 @@ namespace SuperNewRoles.EndGame
                 text = "MadJesterName";
                 textRenderer.color = RoleClass.Workperson.color;
                 __instance.BackgroundBar.material.SetColor("_Color", RoleClass.MadJester.color);
+            }
+            else if(AdditionalTempData.winCondition == WinCondition.FalseChargesWin)
+            {
+                text = "FalseChargesName";
+                textRenderer.color = RoleClass.FalseCharges.color;
+                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.FalseCharges.color);
             }
             if (ModeHandler.isMode(ModeId.BattleRoyal)) {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
@@ -477,6 +484,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.MadStuntMan.MadStuntManPlayer);
             notWinners.AddRange(RoleClass.MadHawk.MadHawkPlayer);
             notWinners.AddRange(RoleClass.MadJester.MadJesterPlayer);
+            notWinners.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -502,12 +510,14 @@ namespace SuperNewRoles.EndGame
             bool HAISON = EndGameManagerSetUpPatch.IsHaison;
             bool EgoistWin = gameOverReason == (GameOverReason)CustomGameOverReason.EgoistWin;
             bool WorkpersonWin = gameOverReason == (GameOverReason)CustomGameOverReason.WorkpersonWin;
+            bool FalseChargesWin = gameOverReason == (GameOverReason)CustomGameOverReason.FalseChargesWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
                 JesterWin = EndData == CustomGameOverReason.JesterWin;
                 EgoistWin = EndData == CustomGameOverReason.EgoistWin;
-
+                WorkpersonWin = EndData == CustomGameOverReason.WorkpersonWin;
+                FalseChargesWin = EndData == CustomGameOverReason.FalseChargesWin;
             }
 
 
@@ -567,6 +577,13 @@ namespace SuperNewRoles.EndGame
                 WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
+            }
+            else if (FalseChargesWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
+                TempData.winners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.FalseChargesWin;
             }
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
@@ -869,6 +886,7 @@ namespace SuperNewRoles.EndGame
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
             SerialKiller.WrapUp();
+            FalseCharges.WrapUp(exiled.Object);
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             new LateTask(() => {
                 RoleClass.IsMeeting = false;

@@ -79,6 +79,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 //trueloverPlayer.Data.IsDead = true;
             }
+            foreach (PlayerControl Player in RoleClass.FalseCharges.FalseChargesPlayer)
+            {
+                if (!Player.IsMod())
+                {
+                    Player.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != Player.PlayerId && !p.isRole(RoleId.Sheriff))
+                        {
+                            Player.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, Player);
+                        }
+                    }
+                }
+                else
+                {
+                    Player.RpcSetRole(RoleTypes.Crewmate);
+                }
+                //trueloverPlayer.Data.IsDead = true;
+            }
             if (RoleClass.Jester.IsUseVent)
             {
                 foreach (PlayerControl p in RoleClass.Jester.JesterPlayer)
@@ -526,6 +546,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.FalseCharges;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
                     }
                 }
             }
