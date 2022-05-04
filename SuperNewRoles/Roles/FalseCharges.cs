@@ -15,58 +15,65 @@ namespace SuperNewRoles.Roles
         {
             if (ModeHandler.isMode(ModeId.Default))
             {
-                if (PlayerControl.LocalPlayer.isDead() && RoleClass.FalseCharges.Turns != 255)
+                if (exiled != null)
                 {
-                    if (RoleClass.FalseCharges.Turns <= 0) return;
-                    if (exiled.PlayerId == RoleClass.FalseCharges.FalseChargePlayer)
+                    if (PlayerControl.LocalPlayer.isDead() && RoleClass.FalseCharges.Turns != 255)
                     {
-                        CustomRPC.RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
-
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                        Writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.FalseChargesWin, false);
-                    }
-                    RoleClass.FalseCharges.Turns--;
-                }
-            } else
-            {
-                foreach (var data in RoleClass.FalseCharges.FalseChargePlayers)
-                {
-                    if (exiled.PlayerId == data.Value)
-                    {
-                        if (RoleClass.FalseCharges.AllTurns[data.Key] > 0)
+                        if (RoleClass.FalseCharges.Turns <= 0) return;
+                        if (exiled.PlayerId == RoleClass.FalseCharges.FalseChargePlayer)
                         {
-                            try
+                            CustomRPC.RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
+
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                            CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.FalseChargesWin, false);
+                        }
+                    }
+                }
+                RoleClass.FalseCharges.Turns--;
+            }
+            else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
+                if (exiled != null)
+                {
+                    foreach (var data in RoleClass.FalseCharges.FalseChargePlayers)
+                    {
+                        if (exiled.PlayerId == data.Value)
+                        {
+                            if (RoleClass.FalseCharges.AllTurns[data.Key] > 0)
                             {
-                                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                                try
                                 {
-                                    if (!p.Data.Disconnected && p.PlayerId != data.Key)
+                                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                                     {
-                                        p.RpcMurderPlayer(p);
+                                        if (!p.Data.Disconnected && p.PlayerId != data.Key)
+                                        {
+                                            p.RpcMurderPlayer(p);
+                                        }
                                     }
+                                    var player = ModHelpers.playerById(data.Key);
+                                    var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
+                                    Writer.Write(player.PlayerId);
+                                    Writer.EndRPC();
+                                    CustomRPC.RPCProcedure.ShareWinner(player.PlayerId);
+                                    Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                                    Writer.Write((byte)CustomGameOverReason.FalseChargesWin);
+                                    Writer.EndRPC();
+                                    CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.FalseChargesWin);
+                                    var winplayers = new List<PlayerControl>();
+                                    winplayers.Add(player);
+                                    //EndGameCheck.WinNeutral(winplayers);
+                                    Chat.WinCond = CustomGameOverReason.FalseChargesWin;
+                                    Chat.Winner = new List<PlayerControl>();
+                                    Chat.Winner.Add(player);
                                 }
-                                var player = ModHelpers.playerById(data.Key);
-                                var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
-                                Writer.Write(player.PlayerId);
-                                Writer.EndRPC();
-                                CustomRPC.RPCProcedure.ShareWinner(player.PlayerId);
-                                Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
-                                Writer.Write((byte)CustomGameOverReason.FalseChargesWin);
-                                Writer.EndRPC();
-                                CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.FalseChargesWin);
-                                var winplayers = new List<PlayerControl>();
-                                winplayers.Add(player);
-                                //EndGameCheck.WinNeutral(winplayers);
-                                Chat.WinCond = CustomGameOverReason.FalseChargesWin;
-                                Chat.Winner = new List<PlayerControl>();
-                                Chat.Winner.Add(player);
+                                catch (Exception e)
+                                {
+                                    SuperNewRolesPlugin.Logger.LogInfo("[SHR]冤罪師WrapUpエラー:" + e);
+                                }
+                                EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByVote, false);
                             }
-                            catch (Exception e)
-                            {
-                                SuperNewRolesPlugin.Logger.LogInfo("[SHR]冤罪師WrapUpエラー:" + e);
-                            }
-                            EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByVote, false);
                         }
                     }
                 }

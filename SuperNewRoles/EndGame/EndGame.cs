@@ -860,6 +860,7 @@ namespace SuperNewRoles.EndGame
         public static void Prefix(GameData.PlayerInfo exiled)
         {
             RoleClass.IsCoolTimeSetted = false;
+            FalseCharges.WrapUp(exiled.Object);
             if (!ModeHandler.isMode(ModeId.Default)) return;
             if (ModeHandler.isMode(ModeId.Default))
             {
@@ -889,7 +890,6 @@ namespace SuperNewRoles.EndGame
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
             SerialKiller.WrapUp();
-            FalseCharges.WrapUp(exiled.Object);
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             new LateTask(() => {
                 RoleClass.IsMeeting = false;
