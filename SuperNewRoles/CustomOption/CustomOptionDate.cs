@@ -813,10 +813,10 @@ namespace SuperNewRoles.CustomOption
             NiceTeleporterCoolTime = CustomOption.Create(43, false, CustomOptionType.Crewmate, "NiceTeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, NiceTeleporterOption, format: "unitSeconds");
             NiceTeleporterDurationTime = CustomOption.Create(44, false, CustomOptionType.Crewmate, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, NiceTeleporterOption, format: "unitSeconds");
 
-            CelebrityOption = new CustomRoleOption(41, false, CustomOptionType.Crewmate, "NiceTeleporterName", RoleClass.NiceTeleporter.color, 1);
-            CelebrityPlayerCount = CustomOption.Create(42, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceTeleporterOption);
-            CelebrityViewChengeRole = new CustomRoleOption(41, false, CustomOptionType.Crewmate, "NiceTeleporterName", RoleClass.NiceTeleporter.color, 1);
-            
+            CelebrityOption = new CustomRoleOption(41, true, CustomOptionType.Crewmate, "CelebrityName", RoleClass.Celebrity.color, 1);
+            CelebrityPlayerCount = CustomOption.Create(42, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CelebrityOption);
+            CelebrityChangeRoleView = CustomOption.Create(42, true, CustomOptionType.Crewmate, "CelebrityChangeRoleViewSetting", false, CelebrityOption);
+
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, false, CustomOptionType.Neutral, "QuarreledOnlyCrewMateSetting", false, QuarreledOption);
