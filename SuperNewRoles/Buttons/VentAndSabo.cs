@@ -33,23 +33,20 @@ namespace SuperNewRoles.Buttons
                 }
                 return false;
             }
-            [HarmonyPostfix]
-            [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.FixedUpdate))]
-            static void Postfix(MapBehaviour __instance)
-            {
-                if (MeetingHud.Instance) return;
-                if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons)
-                {
-                    __instance.Close();
-                    DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
-                }
-            }
             [HarmonyPrefix]
             [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
             static bool Prefix3(MapBehaviour __instance)
             {
-                if (!MeetingHud.Instance || __instance.IsOpen) return true;  // Only run in meetings and when the map is closed
-
+                if (!MeetingHud.Instance) {
+                    if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons)
+                    {
+                        __instance.Close();
+                        DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                        return false;
+                    }
+                    return true;
+                }  // Only run in meetings and when the map is closed
+                if (__instance.IsOpen) return true;
                 PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
                 __instance.GenericShow();
                 __instance.taskOverlay.Show();
