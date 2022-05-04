@@ -69,7 +69,7 @@ namespace SuperNewRoles.Roles
                 MeetingSheriff_Patch.Left.SetActive(true);
             }
             int i = 0;
-            foreach (PlayerVoteArea area in __instance.playerStates)
+            foreach (PlayerVoteArea area in PlayerVoteAreas)
             {
                 try
                 {
@@ -90,7 +90,7 @@ namespace SuperNewRoles.Roles
             }
         }
         public static int index;
-        public static PlayerVoteArea[] PlayerVoteAreas;
+        public static List<PlayerVoteArea> PlayerVoteAreas;
         public static Vector3[] Positions = new Vector3[] {
             new Vector3(-3.1f, 1.5f, -0.9f), new Vector3(-0.2f, 1.5f, -0.9f), new Vector3(2.7f, 1.5f, -0.9f), new Vector3(-3.1f, 0.74f, -0.91f), new Vector3(-0.2f, 0.74f, -0.91f),
             new Vector3(2.7f, 0.74f, -0.91f), new Vector3(-3.1f, -0.02f, -0.92f), new Vector3(-0.2f, -0.02f, -0.92f), new Vector3(2.7f, -0.02f, -0.92f), new Vector3(-3.1f, -0.78f, -0.93f),
@@ -170,7 +170,22 @@ namespace SuperNewRoles.Roles
             if (PlayerControl.AllPlayerControls.Count > 15)
             {
                 MeetingUpdatePatch.IsFlag = true;
-                meetingsheriff_updatepatch.PlayerVoteAreas = null;
+                meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();
+                List<PlayerVoteArea> deadareas = new List<PlayerVoteArea>();
+                foreach (PlayerVoteArea area in __instance.playerStates)
+                {
+                    if (ModHelpers.playerById(area.TargetPlayerId).isAlive())
+                    {
+                        meetingsheriff_updatepatch.PlayerVoteAreas.Add(area);
+                    } else
+                    {
+                        deadareas.Add(area);
+                    }
+                }
+                foreach (PlayerVoteArea area in deadareas)
+                {
+                    meetingsheriff_updatepatch.PlayerVoteAreas.Add(area);
+                }
                 meetingsheriff_updatepatch.index = 1;
                 CreateAreaButton(__instance);
             }
