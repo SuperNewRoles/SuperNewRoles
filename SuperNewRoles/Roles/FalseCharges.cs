@@ -39,20 +39,28 @@ namespace SuperNewRoles.Roles
                         {
                             try
                             {
+                                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                                {
+                                    if (!p.Data.Disconnected && p.PlayerId != data.Key)
+                                    {
+                                        p.RpcMurderPlayer(p);
+                                    }
+                                }
+                                var player = ModHelpers.playerById(data.Key);
                                 var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
-                                Writer.Write(exiled.PlayerId);
+                                Writer.Write(player.PlayerId);
                                 Writer.EndRPC();
-                                CustomRPC.RPCProcedure.ShareWinner(exiled.PlayerId);
+                                CustomRPC.RPCProcedure.ShareWinner(player.PlayerId);
                                 Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                                 Writer.Write((byte)CustomGameOverReason.FalseChargesWin);
                                 Writer.EndRPC();
                                 CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.FalseChargesWin);
                                 var winplayers = new List<PlayerControl>();
-                                winplayers.Add(exiled);
+                                winplayers.Add(player);
                                 //EndGameCheck.WinNeutral(winplayers);
                                 Chat.WinCond = CustomGameOverReason.FalseChargesWin;
                                 Chat.Winner = new List<PlayerControl>();
-                                Chat.Winner.Add(exiled);
+                                Chat.Winner.Add(player);
                             }
                             catch (Exception e)
                             {
