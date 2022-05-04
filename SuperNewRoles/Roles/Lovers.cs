@@ -27,20 +27,7 @@ namespace SuperNewRoles.Roles
                         RoleClass.Quarreled.QuarreledPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
                         ChacheManager.ResetQuarreledChache();
                     }
-                    if (ModeHandler.isMode(ModeId.SuperHostRoles))
-                    {
-                        Madmate.CheckedImpostor = new List<byte>();
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                        {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (p.PlayerId != p2.PlayerId && !p2.Data.Disconnected)
-                                {
-                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
-                                }
-                            }
-                        }
-                    } else if (ModeHandler.isMode(ModeId.Default))
+                    if (ModeHandler.isMode(ModeId.Default))
                     {
                         if (player.isRole(CustomRPC.RoleId.SideKiller))
                         {
