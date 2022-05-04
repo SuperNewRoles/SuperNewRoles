@@ -41,7 +41,7 @@ namespace SuperNewRoles.Roles
                     {
                         if (exiled.PlayerId == data.Value)
                         {
-                            if (RoleClass.FalseCharges.AllTurns[data.Key] > 0)
+                            if (RoleClass.FalseCharges.AllTurns.ContainsKey(data.Key) && RoleClass.FalseCharges.AllTurns[data.Key] > 0)
                             {
                                 try
                                 {

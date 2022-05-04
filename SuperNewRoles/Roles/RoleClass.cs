@@ -105,11 +105,8 @@ namespace SuperNewRoles.Roles
             MadStuntMan.ClearAndReload();
             MadHawk.ClearAndReload();
             MadJester.ClearAndReload();
-<<<<<<< HEAD
             FalseCharges.ClearAndReload();
-=======
             NiceTeleporter.ClearAndReload();
->>>>>>> master
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1443,7 +1440,6 @@ namespace SuperNewRoles.Roles
                 IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.getBool();
             }
         }
-<<<<<<< HEAD
         public static class FalseCharges
         {
             public static List<PlayerControl> FalseChargesPlayer;
@@ -1464,7 +1460,8 @@ namespace SuperNewRoles.Roles
                 DefaultTurn = (int)CustomOptions.FalseChargesExileTurn.getFloat();
                 CoolTime = CustomOptions.FalseChargesCoolTime.getFloat();
 
-=======
+            }
+        }
         public static class NiceTeleporter
         {
             public static List<PlayerControl> NiceTeleporterPlayer;
@@ -1484,7 +1481,6 @@ namespace SuperNewRoles.Roles
                 NiceTeleporterPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.NiceTeleporterCoolTime.getFloat();
                 DurationTime = CustomOptions.NiceTeleporterDurationTime.getFloat();
->>>>>>> master
             }
         }
         //新ロールクラス
