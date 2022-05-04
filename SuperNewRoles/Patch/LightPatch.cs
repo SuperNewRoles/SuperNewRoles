@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using SuperNewRoles.Roles;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Patch
 {
@@ -23,6 +24,17 @@ namespace SuperNewRoles.Patch
 
             SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             float lerpValue = switchSystem.Value / 255f;
+
+            var LocalPlayer = PlayerControl.LocalPlayer;
+            if (LocalPlayer.isRole(RoleId.Nocturnality)) {
+                if (1 - lerpValue >= 0)
+                {
+                    lerpValue = 1f - lerpValue;
+                } else
+                {
+                    lerpValue = 1f + (1f - lerpValue);
+                }
+            }
 
             return Mathf.Lerp(shipStatus.MinLightRadius, shipStatus.MaxLightRadius, lerpValue) * PlayerControl.GameOptions.CrewLightMod;
         }

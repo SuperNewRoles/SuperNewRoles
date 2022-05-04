@@ -1464,7 +1464,7 @@ namespace SuperNewRoles.Roles
         public static class Nocturnality
         {
             public static List<PlayerControl> NocturnalityPlayer;
-            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static Color32 color = new Color32(255, 0, 255, byte.MaxValue);
             public static void ClearAndReload()
             {
                 NocturnalityPlayer = new List<PlayerControl>();

@@ -388,6 +388,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption NiceTeleporterCoolTime;
         public static CustomOption NiceTeleporterDurationTime;
 
+        public static CustomRoleOption NocturnalityOption;
+        public static CustomOption NocturnalityPlayerCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -808,6 +811,9 @@ namespace SuperNewRoles.CustomOption
             NiceTeleporterPlayerCount = CustomOption.Create(42, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceTeleporterOption);
             NiceTeleporterCoolTime = CustomOption.Create(43, false, CustomOptionType.Crewmate, "NiceTeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, NiceTeleporterOption, format: "unitSeconds");
             NiceTeleporterDurationTime = CustomOption.Create(44, false, CustomOptionType.Crewmate, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, NiceTeleporterOption, format: "unitSeconds");
+
+            NocturnalityOption = new CustomRoleOption(600, true, CustomOptionType.Crewmate, "NocturnalityName", RoleClass.Nocturnality.color, 1);
+            NocturnalityPlayerCount = CustomOption.Create(600, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NocturnalityOption);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
