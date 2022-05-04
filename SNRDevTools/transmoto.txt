@@ -532,3 +532,5 @@ MadJesterTitle1
 NiceTeleporterName
 NiceTeleporterTitle1
 NiceTeleporterCoolDownSetting
+NocturnalityName
+NocturnalityTitle1

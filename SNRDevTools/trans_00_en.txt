@@ -532,3 +532,5 @@ Get voted out and win with the Imposters!
 Nice Teleporter
 Teleport and uncover impostors!
 Teleport cool down
+Nocturnality
+You live in darkness.

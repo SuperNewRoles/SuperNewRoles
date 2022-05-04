@@ -106,6 +106,7 @@ namespace SuperNewRoles.Roles
             MadHawk.ClearAndReload();
             MadJester.ClearAndReload();
             NiceTeleporter.ClearAndReload();
+            Nocturnality.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1458,6 +1459,15 @@ namespace SuperNewRoles.Roles
                 NiceTeleporterPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.NiceTeleporterCoolTime.getFloat();
                 DurationTime = CustomOptions.NiceTeleporterDurationTime.getFloat();
+            }
+        }
+        public static class Nocturnality
+        {
+            public static List<PlayerControl> NocturnalityPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                NocturnalityPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス
