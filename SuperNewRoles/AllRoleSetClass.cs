@@ -797,6 +797,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.MadStuntManPlayerCount.getFloat();
                 case (RoleId.MadHawk):
                     return CustomOption.CustomOptions.MadHawkPlayerCount.getFloat();
+                    case (RoleId.NiceTeleporter):
+                    return CustomOption.CustomOptions.NiceTeleporterPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1848,6 +1850,22 @@ namespace SuperNewRoles
                     }
                 }
             }
+        if (!(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.NiceTeleporter;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
         //セットクラス
             if (!(CustomOption.CustomOptions.MadStuntManOption.getString().Replace("0%", "") == ""))
             {
@@ -1885,6 +1903,22 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MadJesterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.MadJester;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.NiceTeleporter;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);
