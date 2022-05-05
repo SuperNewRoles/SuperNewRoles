@@ -74,6 +74,19 @@ namespace SuperNewRoles.Patches
             if (ModeHandler.isMode(ModeId.BattleRoyal)) {
                 if (Mode.BattleRoyal.main.StartSeconds <= 0)
                 {
+                    if (Mode.BattleRoyal.main.IsTeamBattle)
+                    {
+                        foreach (List<PlayerControl> teams in Mode.BattleRoyal.main.Teams)
+                        {
+                            if (teams.Count > 0)
+                            {
+                                if (teams.IsCheckListPlayerControl(__instance) && teams.IsCheckListPlayerControl(target))
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
                     return true;
                 } else
                 {

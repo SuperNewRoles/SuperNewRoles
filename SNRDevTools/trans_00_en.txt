@@ -124,6 +124,8 @@ Non-Detective cannot press the conference button
 Detective
 Guess and win over your crewmates!
 You can see how many player are left alive.
+Team competition
+Number of teams
 Seconds to be able to make a kill
 Crewmate
 Use Task
