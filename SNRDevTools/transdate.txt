@@ -543,3 +543,5 @@ CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！
 CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる
 NocturnalityName,Nocturnality,夜行性
 NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている
+ObserverName,Observer,選挙管理委員
+ObserverTitle1,Let's monitor everything.,すべてを監視しよう

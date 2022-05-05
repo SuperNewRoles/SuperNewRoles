@@ -94,6 +94,7 @@ namespace SuperNewRoles.CustomRPC
         NiceTeleporter,
         Celebrity,
         Nocturnality,
+        Observer,
         //RoleId
     }
 
