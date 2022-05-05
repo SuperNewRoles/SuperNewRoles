@@ -182,5 +182,14 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 }
             }
         }
+        [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CloseDoorsOfType))]
+        class CloseDoorsPatch
+        {
+            public static bool Prefix(ShipStatus __instance)
+            {
+                if (ModeHandler.isMode(ModeId.BattleRoyal)) return false;
+                return true;
+            }
+        }
     }
 }
