@@ -429,6 +429,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.NiceTeleporter):
                     Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Celebrity):
+                    Roles.RoleClass.Celebrity.CelebrityPlayer.Add(player);
+                    Roles.RoleClass.Celebrity.ViewPlayers.Add(player);
                 case (CustomRPC.RoleId.Nocturnality):
                     Roles.RoleClass.Nocturnality.NocturnalityPlayer.Add(player);
                     break;
@@ -654,6 +657,8 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.NiceTeleporter):
                     Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Celebrity):
+                    Roles.RoleClass.Celebrity.CelebrityPlayer.RemoveAll(ClearRemove);
                 case (CustomRPC.RoleId.Nocturnality):
                     Roles.RoleClass.Nocturnality.NocturnalityPlayer.RemoveAll(ClearRemove);
                     break;
@@ -1183,6 +1188,9 @@ namespace SuperNewRoles
             {
                 return CustomRPC.RoleId.NiceTeleporter;
             }
+            else if (Roles.RoleClass.Celebrity.CelebrityPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Celebrity;
             else if (Roles.RoleClass.Nocturnality.NocturnalityPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Nocturnality;

@@ -529,6 +529,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            if (!(CustomOption.CustomOptions.CelebrityOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.CelebrityOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Celebrity;
             if (!(CustomOption.CustomOptions.NocturnalityOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.NocturnalityOption.getString().Replace("0%", ""));

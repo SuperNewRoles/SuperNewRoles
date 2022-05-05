@@ -532,5 +532,8 @@ Get voted out and win with the Imposters!
 Nice Teleporter
 Teleport and uncover impostors!
 Teleport cool down
+Celebrity
+A Celebrity for everyone!
+Name color will remain Celebrity even if the position changes.
 Nocturnality
 You live in darkness.

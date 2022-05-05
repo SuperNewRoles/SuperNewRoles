@@ -533,5 +533,8 @@ MadJesterTitle1,Get voted out and win with the Imposters!,投票で追放され�
 NiceTeleporterName,Nice Teleporter,ナイステレポーター
 NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてインポスターを暴こう
 NiceTeleporterCoolDownSetting,Teleport cool down,テレポートのクールダウン
+CelebrityName,Celebrity,スター
+CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！
+CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる
 NocturnalityName,Nocturnality,夜行性
 NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている

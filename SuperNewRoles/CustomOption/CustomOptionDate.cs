@@ -388,6 +388,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption NiceTeleporterCoolTime;
         public static CustomOption NiceTeleporterDurationTime;
 
+        public static CustomRoleOption CelebrityOption;
+        public static CustomOption CelebrityPlayerCount;
+        public static CustomOption CelebrityChangeRoleView;
         public static CustomRoleOption NocturnalityOption;
         public static CustomOption NocturnalityPlayerCount;
 
@@ -807,10 +810,14 @@ namespace SuperNewRoles.CustomOption
             MadJesterIsImpostorLight = CustomOption.Create(326, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadJesterOption);
             IsMadJesterTaskClearWin = CustomOption.Create(327, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
 
-            NiceTeleporterOption = new CustomRoleOption(41, false, CustomOptionType.Crewmate, "NiceTeleporterName", RoleClass.NiceTeleporter.color, 1);
-            NiceTeleporterPlayerCount = CustomOption.Create(42, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceTeleporterOption);
-            NiceTeleporterCoolTime = CustomOption.Create(43, false, CustomOptionType.Crewmate, "NiceTeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, NiceTeleporterOption, format: "unitSeconds");
-            NiceTeleporterDurationTime = CustomOption.Create(44, false, CustomOptionType.Crewmate, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, NiceTeleporterOption, format: "unitSeconds");
+            NiceTeleporterOption = new CustomRoleOption(339, false, CustomOptionType.Crewmate, "NiceTeleporterName", RoleClass.NiceTeleporter.color, 1);
+            NiceTeleporterPlayerCount = CustomOption.Create(340, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceTeleporterOption);
+            NiceTeleporterCoolTime = CustomOption.Create(341, false, CustomOptionType.Crewmate, "NiceTeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, NiceTeleporterOption, format: "unitSeconds");
+            NiceTeleporterDurationTime = CustomOption.Create(342, false, CustomOptionType.Crewmate, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, NiceTeleporterOption, format: "unitSeconds");
+
+            CelebrityOption = new CustomRoleOption(343, true, CustomOptionType.Crewmate, "CelebrityName", RoleClass.Celebrity.color, 1);
+            CelebrityPlayerCount = CustomOption.Create(344, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CelebrityOption);
+            CelebrityChangeRoleView = CustomOption.Create(345, true, CustomOptionType.Crewmate, "CelebrityChangeRoleViewSetting", false, CelebrityOption);
 
             NocturnalityOption = new CustomRoleOption(600, true, CustomOptionType.Crewmate, "NocturnalityName", RoleClass.Nocturnality.color, 1);
             NocturnalityPlayerCount = CustomOption.Create(600, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NocturnalityOption);
