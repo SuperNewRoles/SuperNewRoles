@@ -62,7 +62,7 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
-            if (ModeHandler.isMode(ModeId.Zombie)) return false;
+            SuperNewRolesPlugin.Logger.LogInfo("キル:" + __instance.name + "(" + __instance.PlayerId + ")" + " => " + target.name + "(" + target.PlayerId + ")");
             if (__instance.isDead()) return false;
             if (__instance.PlayerId == target.PlayerId) { __instance.RpcMurderPlayer(target); return false; }
             if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
@@ -71,9 +71,11 @@ namespace SuperNewRoles.Patches
             {
                 return true;
             }
-            if (ModeHandler.isMode(ModeId.BattleRoyal)) {
+            if (ModeHandler.isMode(ModeId.BattleRoyal))
+            {
                 if (Mode.BattleRoyal.main.StartSeconds <= 0)
                 {
+                    SuperNewRolesPlugin.Logger.LogInfo("キルでした:" + __instance.name + "(" + __instance.PlayerId + ")" + " => " + target.name + "(" + target.PlayerId + ")");
                     if (Mode.BattleRoyal.main.IsTeamBattle)
                     {
                         foreach (List<PlayerControl> teams in Mode.BattleRoyal.main.Teams)
@@ -87,12 +89,15 @@ namespace SuperNewRoles.Patches
                             }
                         }
                     }
-                    return true;
-                } else
+                    __instance.RpcMurderPlayer(target);
+                    return false;
+                }
+                else
                 {
                     return false;
                 }
             }
+            if (ModeHandler.isMode(ModeId.Zombie)) return false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 if (__instance.isRole(RoleId.FalseCharges))

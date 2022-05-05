@@ -181,6 +181,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 }
             }
         }
+        public static List<PlayerControl> Winners;
         public static bool IsViewAlivePlayer;
         public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
         {
@@ -213,19 +214,31 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         }
                     }
                 }
-                __instance.enabled = false;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                Winners = new List<PlayerControl>();
+                try
                 {
-                    if (p.isAlive())
+                    foreach (List<PlayerControl> teams in Teams)
                     {
-                        p.RpcSetRole(RoleTypes.Impostor);
-                    }
-                    else
-                    {
-                        p.RpcSetRole(RoleTypes.GuardianAngel);
+                        if (teams.IsCheckListPlayerControl(players[0]))
+                        {
+                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            {
+                                p.RpcSetRole(RoleTypes.GuardianAngel);
+                                if (teams.IsCheckListPlayerControl(p))
+                                {
+                                    p.Data.IsDead = false;
+                                    Winners.Add(p);
+                                    var writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
+                                    writer.Write(p.PlayerId);
+                                    writer.EndRPC();
+                                }
+                            }
+                        }
                     }
                 }
-                ShipStatus.RpcEndGame(GameOverReason.ImpostorByKill, false);
+                catch { SuperNewRolesPlugin.Logger.LogInfo("Winnersエラー"); }
+                __instance.enabled = false;
+                ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                 return true;
             } else
             {
@@ -282,6 +295,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             IsTeamBattle = BROption.IsTeamBattle.getBool();
             Teams = new List<List<PlayerControl>>();
             IsSeted = false;
+            Winners = new List<PlayerControl>();
         }
         public static class ChangeRole
         {
@@ -291,12 +305,12 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 {
                     if (IsTeamBattle)
                     {
-                        var count = (int)BROption.TeamAmount.getFloat();
+                        float count = BROption.TeamAmount.getFloat();
                         if (count == 8)
                         {
                             count = 7;
                         }
-                        var oneteamcount = PlayerControl.AllPlayerControls.Count / count;
+                        var oneteamcount = Mathf.CeilToInt(PlayerControl.AllPlayerControls.Count / count);
                         List<PlayerControl> target = new List<PlayerControl>();
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {

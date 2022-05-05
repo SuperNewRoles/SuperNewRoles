@@ -622,12 +622,23 @@ namespace SuperNewRoles.EndGame
             if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                if (Mode.BattleRoyal.main.IsTeamBattle)
                 {
-                    if (p.isAlive())
+                    foreach (PlayerControl p in Mode.BattleRoyal.main.Winners)
                     {
                         WinningPlayerData wpd = new WinningPlayerData(p.Data);
                         TempData.winners.Add(wpd);
+                    }
+                }
+                else
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.isAlive())
+                        {
+                            WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                            TempData.winners.Add(wpd);
+                        }
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.Default;
