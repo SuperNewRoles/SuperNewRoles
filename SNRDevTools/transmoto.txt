@@ -529,14 +529,16 @@ MadHawkName
 MadHawkTitle1
 MadJesterName
 MadJesterTitle1
-<<<<<<< HEAD
 FalseChargesName
 FalseChargesTitle1
 FalseChargesExileTurn
 FalseChargesCoolTime
 FalseChargesButtonTitle
-=======
 NiceTeleporterName
 NiceTeleporterTitle1
 NiceTeleporterCoolDownSetting
->>>>>>> master
+CelebrityName
+CelebrityTitle1
+CelebrityChangeRoleViewSetting
+NocturnalityName
+NocturnalityTitle1

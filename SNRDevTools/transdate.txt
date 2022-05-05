@@ -530,14 +530,19 @@ MadHawkName,MadHawk,マッドホーク
 MadHawkTitle1,See it all.,すべてを見渡そう
 MadJesterName,MadJester,マッドてるてる
 MadJesterTitle1,Get voted out and win with the Imposters!,投票で追放されてインポスターと勝利しよう
-<<<<<<< HEAD
 FalseChargesName,FalseCharges,冤罪師
 FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう
 FalseChargesExileTurn,Turn of the false accusation range,冤罪の範囲のターン
 FalseChargesCoolTime,Cool Time,クールタイム
 FalseChargesButtonTitle,False Charge,冤罪
-=======
 NiceTeleporterName,NiceTeleporter,ナイステレポーター
 NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてインポスターを暴こう
 NiceTeleporterCoolDownSetting,Teleport cool down,テレポートのクールダウン
->>>>>>> master
+NiceTeleporterName,Nice Teleporter,ナイステレポーター
+NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてインポスターを暴こう
+NiceTeleporterCoolDownSetting,Teleport cool down,テレポートのクールダウン
+CelebrityName,Celebrity,スター
+CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！
+CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる
+NocturnalityName,Nocturnality,夜行性
+NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている

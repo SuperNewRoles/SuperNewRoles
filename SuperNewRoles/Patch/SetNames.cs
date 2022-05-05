@@ -33,12 +33,16 @@ namespace SuperNewRoles.Patch
         public static void SetPlayerNameText(PlayerControl p,string text)
         {
             p.nameText.text = text;
-            foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+            if (MeetingHud.Instance) { 
+            if (MeetingHud.Instance)
             {
-                if (player.TargetPlayerId == p.PlayerId)
+                foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
                 {
-                    player.NameText.text = text;
-                    return;
+                    if (player.TargetPlayerId == p.PlayerId)
+                    {
+                        player.NameText.text = text;
+                        return;
+                    }
                 }
             }
         }
@@ -246,6 +250,22 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
+        public static void CelebritySet()
+        {
+            if (RoleClass.Celebrity.ChangeRoleView)
+            {
+                foreach (PlayerControl p in RoleClass.Celebrity.ViewPlayers)
+                {
+                    SetPlayerNameColor(p,RoleClass.Celebrity.color);
+                }
+            } else
+            {
+                foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
+                {
+                    SetPlayerNameColor(p, RoleClass.Celebrity.color);
+                }
+            }
+        }
     }
     public class SetNameUpdate
     {
@@ -350,6 +370,7 @@ namespace SuperNewRoles.Patch
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }
+            SetNamesClass.CelebritySet();
             SetNamesClass.QuarreledSet();
             SetNamesClass.LoversSet();
             try {
