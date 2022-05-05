@@ -142,9 +142,14 @@ namespace SuperNewRoles.CustomRPC
         SetCustomSabotage,
         UseStuntmanCount,
         UseMadStuntmanCount,
+        CustomEndGame
     }
     public static class RPCProcedure
     {
+        public static void CustomEndGame(GameOverReason reason, bool showAd)
+        {
+            CheckGameEndPatch.CustomEndGame(reason, showAd);
+        }
         public static void UseStuntmanCount(byte playerid)
         {
             var player = ModHelpers.playerById(playerid);
@@ -788,6 +793,12 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.SetCustomSabotage:
                         SabotageManager.SetSabotage(ModHelpers.playerById(reader.ReadByte()),(SabotageManager.CustomSabotage)reader.ReadByte(),reader.ReadBoolean());
+                        break;
+                    case (byte)CustomRPC.CustomEndGame:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
+                        }
                         break;
                 }
             }

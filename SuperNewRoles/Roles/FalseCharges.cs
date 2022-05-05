@@ -27,7 +27,16 @@ namespace SuperNewRoles.Roles
                             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(PlayerControl.LocalPlayer.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                            CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.FalseChargesWin, false);
+                            if (AmongUsClient.Instance.AmHost)
+                            {
+                                CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.FalseChargesWin, false);
+                            } else
+                            {
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                                writer.Write((byte)CustomGameOverReason.FalseChargesWin);
+                                writer.Write(false);
+                                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            }
                         }
                     }
                 }
