@@ -432,6 +432,8 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Celebrity):
                     Roles.RoleClass.Celebrity.CelebrityPlayer.Add(player);
                     Roles.RoleClass.Celebrity.ViewPlayers.Add(player);
+                case (CustomRPC.RoleId.Nocturnality):
+                    Roles.RoleClass.Nocturnality.NocturnalityPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -657,6 +659,8 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.Celebrity):
                     Roles.RoleClass.Celebrity.CelebrityPlayer.RemoveAll(ClearRemove);
+                case (CustomRPC.RoleId.Nocturnality):
+                    Roles.RoleClass.Nocturnality.NocturnalityPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
 
@@ -1187,6 +1191,9 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.Celebrity.CelebrityPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Celebrity;
+            else if (Roles.RoleClass.Nocturnality.NocturnalityPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Nocturnality;
             }
             //ロールチェック
 

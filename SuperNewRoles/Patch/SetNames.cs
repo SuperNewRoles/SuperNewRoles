@@ -34,6 +34,8 @@ namespace SuperNewRoles.Patch
         {
             p.nameText.text = text;
             if (MeetingHud.Instance) { 
+            if (MeetingHud.Instance)
+            {
                 foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
                 {
                     if (player.TargetPlayerId == p.PlayerId)

@@ -391,6 +391,8 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption CelebrityOption;
         public static CustomOption CelebrityPlayerCount;
         public static CustomOption CelebrityChangeRoleView;
+        public static CustomRoleOption NocturnalityOption;
+        public static CustomOption NocturnalityPlayerCount;
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -816,6 +818,9 @@ namespace SuperNewRoles.CustomOption
             CelebrityOption = new CustomRoleOption(343, true, CustomOptionType.Crewmate, "CelebrityName", RoleClass.Celebrity.color, 1);
             CelebrityPlayerCount = CustomOption.Create(344, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], CelebrityOption);
             CelebrityChangeRoleView = CustomOption.Create(345, true, CustomOptionType.Crewmate, "CelebrityChangeRoleViewSetting", false, CelebrityOption);
+
+            NocturnalityOption = new CustomRoleOption(600, true, CustomOptionType.Crewmate, "NocturnalityName", RoleClass.Nocturnality.color, 1);
+            NocturnalityPlayerCount = CustomOption.Create(600, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NocturnalityOption);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

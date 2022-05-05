@@ -107,6 +107,7 @@ namespace SuperNewRoles.Roles
             MadJester.ClearAndReload();
             NiceTeleporter.ClearAndReload();
             Celebrity.ClearAndReload();
+            Nocturnality.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1473,6 +1474,13 @@ namespace SuperNewRoles.Roles
                 CelebrityPlayer = new List<PlayerControl>();
                 ChangeRoleView = CustomOptions.CelebrityChangeRoleView.getBool();
                 ViewPlayers = new List<PlayerControl>();
+        public static class Nocturnality
+        {
+            public static List<PlayerControl> NocturnalityPlayer;
+            public static Color32 color = new Color32(255, 0, 255, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                NocturnalityPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

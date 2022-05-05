@@ -535,3 +535,5 @@ NiceTeleporterCoolDownSetting
 CelebrityName
 CelebrityTitle1
 CelebrityChangeRoleViewSetting
+NocturnalityName
+NocturnalityTitle1

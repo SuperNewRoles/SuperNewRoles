@@ -801,6 +801,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.NiceTeleporterPlayerCount.getFloat();
                     case (RoleId.Celebrity):
                     return CustomOption.CustomOptions.CelebrityPlayerCount.getFloat();
+                    case (RoleId.Nocturnality):
+                    return CustomOption.CustomOptions.NocturnalityPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1872,6 +1874,10 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.CelebrityOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Celebrity;
+        if (!(CustomOption.CustomOptions.NocturnalityOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NocturnalityOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Nocturnality;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);
@@ -1953,6 +1959,10 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.CelebrityOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Celebrity;
+        if (!(CustomOption.CustomOptions.NocturnalityOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NocturnalityOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Nocturnality;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);

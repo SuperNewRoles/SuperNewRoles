@@ -535,3 +535,5 @@ Teleport cool down
 Celebrity
 A Celebrity for everyone!
 Name color will remain Celebrity even if the position changes.
+Nocturnality
+You live in darkness.

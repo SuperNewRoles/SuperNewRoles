@@ -2147,6 +2147,13 @@
  "CelebrityChangeRoleViewSetting" : {
         "0" : "Name color will remain Celebrity even if the position changes." ,
         "11" : "\u5f79\u8077\u304c\u5909\u308f\u3063\u3066\u3082\u540d\u524d\u306e\u8272\u304c\u30b9\u30bf\u30fc\u306e\u307e\u307e\u306b\u306a\u308b"
+ "NocturnalityName" : {
+        "0" : "Nocturnality" ,
+        "11" : "\u591c\u884c\u6027"
+        } ,
+ "NocturnalityTitle1" : {
+        "0" : "You live in darkness." ,
+        "11" : "\u3042\u306a\u305f\u306f\u6697\u95c7\u306e\u4e2d\u3067\u751f\u304d\u3066\u3044\u308b"
         } 
 
 }
