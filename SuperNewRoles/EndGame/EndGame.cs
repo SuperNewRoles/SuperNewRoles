@@ -234,15 +234,6 @@ namespace SuperNewRoles.EndGame
                 text = "ImpostorName";
                 textRenderer.color = RoleClass.ImpostorRed;
             }
-            if (ModeHandler.isMode(ModeId.BattleRoyal)) {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                    if (p.isAlive())
-                    {
-                        text = p.nameText.text;
-                        textRenderer.color = new Color32(116, 80, 48, byte.MaxValue);
-                    }
-                }
-            }
             var haison = false;
             if (text == "HAISON") {
                 haison = true;
@@ -297,6 +288,17 @@ namespace SuperNewRoles.EndGame
                 {
                     text = ModTranslation.getString("ZombiePoliceName");
                     textRenderer.color = Mode.Zombie.main.Policecolor;
+                }
+            }
+            if (ModeHandler.isMode(ModeId.BattleRoyal))
+            {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.isAlive())
+                    {
+                        text = p.nameText.text;
+                        textRenderer.color = new Color32(116, 80, 48, byte.MaxValue);
+                    }
                 }
             }
             if (!haison) {

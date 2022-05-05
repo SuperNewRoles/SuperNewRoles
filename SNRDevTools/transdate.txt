@@ -124,6 +124,8 @@ DetectiveModeIsNotDetectiveVoteSetting,Non-Detective cannot vote,探偵以外は
 DetectiveModeIsNotDetectiveMeetingButtonSetting,Non-Detective cannot press the conference button,探偵以外が会議ボタンを押せない
 DetectiveName,Detective,探偵
 DetectiveTitle1,Guess and win over your crewmates!,推理してクルーメイトを勝利させよう
+BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる
+BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数
 CrewMateName,Crewmate,クルーメイト
 CrewMateTitle1,Use Task,タスクを行う
 CrewMateDescription,Default Crewmate.,通常のクルーメイトです。

@@ -29,6 +29,10 @@ namespace SuperNewRoles.Roles
             {
                 Mode.Zombie.main.SetTimer();
             }
+            else if (Mode.ModeHandler.isMode(Mode.ModeId.BattleRoyal))
+            {
+                Mode.BattleRoyal.main.IsCountOK = true;
+            }
             if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
             {
                 Mode.SuperHostRoles.FixedUpdate.SetRoleNames();

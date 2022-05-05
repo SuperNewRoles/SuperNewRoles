@@ -71,7 +71,15 @@ namespace SuperNewRoles.Patches
             {
                 return true;
             }
-            if (ModeHandler.isMode(ModeId.BattleRoyal)) return true;
+            if (ModeHandler.isMode(ModeId.BattleRoyal)) {
+                if (Mode.BattleRoyal.main.StartSeconds <= 0)
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 if (__instance.isRole(RoleId.FalseCharges))

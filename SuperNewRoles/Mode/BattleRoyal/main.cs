@@ -1,9 +1,11 @@
 ﻿
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using System.Collections.Generic;
+using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.BattleRoyal
@@ -12,8 +14,62 @@ namespace SuperNewRoles.Mode.BattleRoyal
     {
         public static void FixedUpdate()
         {
-            HudManager.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.setTarget());
+            if (IsStart)
+            {
+                HudManager.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.setTarget());
+                int alives = 0;
+                int allplayer = 0;
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    allplayer++;
+                    if (p.isAlive())
+                    {
+                        alives++;
+                    }
+                }
+                if (AlivePlayer != alives || AllPlayer != allplayer)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (!p.Data.Disconnected)
+                        {
+                            p.RpcSetNamePrivate("(" + alives + "/" + allplayer + ")");
+                        }
+                    }
+                    AlivePlayer = alives;
+                    AllPlayer = allplayer;
+                }
+            } else
+            {
+                if (IsCountOK)
+                {
+                    StartSeconds -= Time.fixedDeltaTime;
+                }
+                UpdateTime -= Time.fixedDeltaTime;
+                if (UpdateTime <= 0)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (!p.Data.Disconnected)
+                        {
+                            p.RpcSetNamePrivate("キルができるようになるまで残り" + ((int)StartSeconds + 1) + "秒");
+                        }
+                    }
+                    UpdateTime += 1f;
+                }
+                if (StartSeconds <= 0)
+                {
+                    IsStart = true;
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        p.RpcSetName("　");
+                    }
+                }
+            }
         }
+        public static int AlivePlayer;
+        public static int AllPlayer;
+        public static bool IsStart;
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoExitVent))]
         class CoExitVentPatch
         {
@@ -111,6 +167,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 }
             }
         }
+        public static bool IsViewAlivePlayer;
         public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
         {
             var alives = 0;
@@ -147,8 +204,18 @@ namespace SuperNewRoles.Mode.BattleRoyal
             }
             return false;
         }
+        public static float StartSeconds;
+        public static bool IsCountOK;
+        static float UpdateTime;
         public static void ClearAndReload()
         {
+            IsViewAlivePlayer = BROption.IsViewAlivePlayer.getBool();
+            AlivePlayer = 0;
+            AllPlayer = 0;
+            IsStart = false;
+            StartSeconds = BROption.StartSeconds.getFloat()+4.5f;
+            IsCountOK = false;
+            UpdateTime = 0f;
         }
         public static class ChangeRole
         {
@@ -156,7 +223,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.Crewmate);
                     foreach (PlayerControl p1 in PlayerControl.AllPlayerControls)
                     {
                         if (p1.PlayerId != 0)
@@ -179,6 +245,20 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     }
                     DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
                     PlayerControl.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        p.getDefaultName();
+                        p.RpcSetName("Playing on SuperNewRoles!");
+                    }
+                    new LateTask(() => {
+                        if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+                        {
+                            foreach (var pc in PlayerControl.AllPlayerControls)
+                            {
+                                pc.RpcSetRole(RoleTypes.Shapeshifter);
+                            }
+                        }
+                    }, 3f, "SetImpostor");
                 }
             }
         }

@@ -123,6 +123,8 @@ DetectiveModeIsNotDetectiveVoteSetting
 DetectiveModeIsNotDetectiveMeetingButtonSetting
 DetectiveName
 DetectiveTitle1
+BattleRoyalIsViewAlivePlayer
+BattleRoyalStartSeconds
 CrewMateName
 CrewMateTitle1
 CrewMateDescription

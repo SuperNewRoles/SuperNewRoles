@@ -129,15 +129,6 @@ namespace SuperNewRoles
             } else if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
                 Mode.BattleRoyal.main.ChangeRole.Postfix();
-                new LateTask(() => {
-                    if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
-                    {
-                        foreach (var pc in PlayerControl.AllPlayerControls)
-                        {
-                            pc.RpcSetRole(RoleTypes.Shapeshifter);
-                        }
-                    }
-                }, 3f, "SetImpostor");
                 return false;
             }
             return true;
