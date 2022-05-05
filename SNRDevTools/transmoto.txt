@@ -529,6 +529,11 @@ MadHawkName
 MadHawkTitle1
 MadJesterName
 MadJesterTitle1
+FalseChargesName
+FalseChargesTitle1
+FalseChargesExileTurn
+FalseChargesCoolTime
+FalseChargesButtonTitle
 NiceTeleporterName
 NiceTeleporterTitle1
 NiceTeleporterCoolDownSetting

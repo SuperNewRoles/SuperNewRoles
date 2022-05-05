@@ -132,6 +132,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.OverKiller:
                     optdata.killCooldown = KillCoolSet(RoleClass.OverKiller.KillCoolTime);
                     break;
+                case RoleId.FalseCharges:
+                    optdata.ImpostorLightMod = optdata.CrewLightMod;
+                    var switchSystemFalseCharges = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    if (switchSystemFalseCharges != null && switchSystemFalseCharges.IsActive)
+                    {
+                        optdata.ImpostorLightMod /= 5;
+                    }
+                    optdata.killCooldown = KillCoolSet(RoleClass.FalseCharges.CoolTime);
                 case RoleId.Nocturnality:
                     var switchSystemNocturnality = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                     if (switchSystemNocturnality == null || !switchSystemNocturnality.IsActive)

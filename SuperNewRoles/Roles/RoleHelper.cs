@@ -426,6 +426,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadHawk):
                     Roles.RoleClass.MadHawk.MadHawkPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.FalseCharges):
+                    Roles.RoleClass.FalseCharges.FalseChargesPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.NiceTeleporter):
                     Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.Add(player);
                     break;
@@ -654,6 +657,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadJester):
                     Roles.RoleClass.MadJester.MadJesterPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.FalseCharges):
+                    Roles.RoleClass.FalseCharges.FalseChargesPlayer.RemoveAll(ClearRemove);
+                    break;
                 case (CustomRPC.RoleId.NiceTeleporter):
                     Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.RemoveAll(ClearRemove);
                     break;
@@ -736,7 +742,10 @@ namespace SuperNewRoles
                 case (RoleId.MadJester):
                     IsTaskClear = true;
                     break;
-                    //タスククリアか
+                    case (RoleId.FalseCharges):
+                    IsTaskClear = true;
+                    break; 
+                //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
             {
@@ -837,6 +846,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.Amnesiac):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.FalseCharges):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1176,14 +1188,23 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Bakery;
                 }
-            else if (Roles.RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MadHawk;
-            }
+                else if (Roles.RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadHawk;
+                }
                 else if (Roles.RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(player))
                 {
-                return CustomRPC.RoleId.MadJester;
+                    return CustomRPC.RoleId.MadJester;
                 }
+                else if (Roles.RoleClass.FalseCharges.FalseChargesPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.FalseCharges;
+                }
+                else if (Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceTeleporter;
+                }
+                //ロールチェック
             else if (Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.NiceTeleporter;
@@ -1198,8 +1219,9 @@ namespace SuperNewRoles
             //ロールチェック
 
             }
-            catch (Exception e) {
-            
+            catch (Exception e)
+            {
+
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
                 return RoleId.DefaultRole;
             }

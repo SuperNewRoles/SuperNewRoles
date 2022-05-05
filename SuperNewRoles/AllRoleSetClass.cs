@@ -797,7 +797,9 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.MadStuntManPlayerCount.getFloat();
                 case (RoleId.MadHawk):
                     return CustomOption.CustomOptions.MadHawkPlayerCount.getFloat();
-                    case (RoleId.NiceTeleporter):
+                case (RoleId.FalseCharges):
+                    return CustomOption.CustomOptions.FalseChargesPlayerCount.getFloat();
+                case (RoleId.NiceTeleporter):
                     return CustomOption.CustomOptions.NiceTeleporterPlayerCount.getFloat();
                     case (RoleId.Celebrity):
                     return CustomOption.CustomOptions.CelebrityPlayerCount.getFloat();
@@ -1854,7 +1856,23 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.FalseCharges;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.NiceTeleporter;
@@ -1939,7 +1957,23 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.FalseCharges;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.NiceTeleporter;
