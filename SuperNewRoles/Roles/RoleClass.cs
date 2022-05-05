@@ -109,6 +109,7 @@ namespace SuperNewRoles.Roles
             NiceTeleporter.ClearAndReload();
             Celebrity.ClearAndReload();
             Nocturnality.ClearAndReload();
+            Observer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1441,7 +1442,6 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MadJesterPlayer = new List<PlayerControl>();
-
                 IsMadJesterWin = false;
                 IsUseVent = CustomOptions.MadJesterIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.getBool();
@@ -1512,6 +1512,17 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 NocturnalityPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class Observer
+        {
+            public static List<PlayerControl> ObserverPlayer;
+            public static Color32 color = new Color32(127, 127, 127, byte.MaxValue);
+            public static bool IsVoteView;
+            public static void ClearAndReload()
+            {
+                ObserverPlayer = new List<PlayerControl>();
+                IsVoteView = false;
             }
         }
         //新ロールクラス
