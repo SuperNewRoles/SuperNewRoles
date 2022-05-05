@@ -2143,7 +2143,7 @@
  "FalseChargesButtonTitle" : {
         "0" : "False Charge" ,
         "11" : "\u51a4\u7f6a"
-        } 
+        } ,
  "NiceTeleporterName" : {
         "0" : "Nice Teleporter" ,
         "11" : "\u30ca\u30a4\u30b9\u30c6\u30ec\u30dd\u30fc\u30bf\u30fc"
@@ -2167,6 +2167,7 @@
  "CelebrityChangeRoleViewSetting" : {
         "0" : "Name color will remain Celebrity even if the position changes." ,
         "11" : "\u5f79\u8077\u304c\u5909\u308f\u3063\u3066\u3082\u540d\u524d\u306e\u8272\u304c\u30b9\u30bf\u30fc\u306e\u307e\u307e\u306b\u306a\u308b"
+        } ,
  "NocturnalityName" : {
         "0" : "Nocturnality" ,
         "11" : "\u591c\u884c\u6027"

@@ -535,9 +535,6 @@ FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよ
 FalseChargesExileTurn,Turn of the false accusation range,冤罪の範囲のターン
 FalseChargesCoolTime,Cool Time,クールタイム
 FalseChargesButtonTitle,False Charge,冤罪
-NiceTeleporterName,NiceTeleporter,ナイステレポーター
-NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてインポスターを暴こう
-NiceTeleporterCoolDownSetting,Teleport cool down,テレポートのクールダウン
 NiceTeleporterName,Nice Teleporter,ナイステレポーター
 NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてインポスターを暴こう
 NiceTeleporterCoolDownSetting,Teleport cool down,テレポートのクールダウン
