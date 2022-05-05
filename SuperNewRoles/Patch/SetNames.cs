@@ -33,12 +33,15 @@ namespace SuperNewRoles.Patch
         public static void SetPlayerNameText(PlayerControl p,string text)
         {
             p.nameText.text = text;
-            foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+            if (MeetingHud.Instance)
             {
-                if (player.TargetPlayerId == p.PlayerId)
+                foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
                 {
-                    player.NameText.text = text;
-                    return;
+                    if (player.TargetPlayerId == p.PlayerId)
+                    {
+                        player.NameText.text = text;
+                        return;
+                    }
                 }
             }
         }

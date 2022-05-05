@@ -132,6 +132,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.OverKiller:
                     optdata.killCooldown = KillCoolSet(RoleClass.OverKiller.KillCoolTime);
                     break;
+                case RoleId.Nocturnality:
+                    var switchSystemNocturnality = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    if (switchSystemNocturnality == null || !switchSystemNocturnality.IsActive)
+                    {
+                        optdata.CrewLightMod /= 5;
+                    }
+                    break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             if (player.AmOwner) PlayerControl.GameOptions = optdata;

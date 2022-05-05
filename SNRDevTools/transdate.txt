@@ -530,6 +530,8 @@ MadHawkName,MadHawk,マッドホーク
 MadHawkTitle1,See it all.,すべてを見渡そう
 MadJesterName,MadJester,マッドてるてる
 MadJesterTitle1,Get voted out and win with the Imposters!,投票で追放されてインポスターと勝利しよう
-NiceTeleporterName,NiceTeleporter,ナイステレポーター
+NiceTeleporterName,Nice Teleporter,ナイステレポーター
 NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてインポスターを暴こう
 NiceTeleporterCoolDownSetting,Teleport cool down,テレポートのクールダウン
+NocturnalityName,Nocturnality,夜行性
+NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている
