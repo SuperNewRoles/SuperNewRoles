@@ -140,6 +140,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.ImpostorLightMod /= 5;
                     }
                     optdata.killCooldown = KillCoolSet(RoleClass.FalseCharges.CoolTime);
+                    break;
                 case RoleId.Nocturnality:
                     var switchSystemNocturnality = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                     if (switchSystemNocturnality == null || !switchSystemNocturnality.IsActive)
