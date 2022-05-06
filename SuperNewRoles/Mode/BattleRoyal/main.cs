@@ -317,12 +317,14 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         for (int i = 0;i < counttemp; i++)
                         {
                             SuperNewRolesPlugin.Logger.LogInfo("oneTeamCount:"+oneteamcount);
+                            SuperNewRolesPlugin.Logger.LogInfo("index:"+i);
                             if (target.Count > 0)
                             {
                                 var index = ModHelpers.GetRandomIndex(target);
                                 TempTeam.Add(target[index]);
                                 target.RemoveAt(index);
                                 SuperNewRolesPlugin.Logger.LogInfo("ついか");
+                                SuperNewRolesPlugin.Logger.LogInfo("てんぷちーむ:"+ TempTeam.Count);
                                 if (TempTeam.Count >= oneteamcount)
                                 {
                                     Teams.Add(TempTeam);
@@ -331,6 +333,13 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                 }
                             }
                         }
+                        if (TempTeam.Count > 0)
+                        {
+                            Teams.Add(TempTeam);
+                            TempTeam = new List<PlayerControl>();
+                            SuperNewRolesPlugin.Logger.LogInfo("リセット");
+                        }
+                        SuperNewRolesPlugin.Logger.LogInfo("チーム数:"+Teams.Count);
                         foreach (List<PlayerControl> teamlist in Teams)
                         {
                             foreach (PlayerControl p in teamlist)
