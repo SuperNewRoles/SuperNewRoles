@@ -60,6 +60,7 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
     class CheckMurderPatch
     {
+        public static bool isKill = false;
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             SuperNewRolesPlugin.Logger.LogInfo("キル:" + __instance.name + "(" + __instance.PlayerId + ")" + " => " + target.name + "(" + target.PlayerId + ")");
@@ -73,6 +74,10 @@ namespace SuperNewRoles.Patches
             }
             if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
+                if (isKill)
+                {
+                    return false;
+                }
                 if (Mode.BattleRoyal.main.StartSeconds <= 0)
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("キルでした:" + __instance.name + "(" + __instance.PlayerId + ")" + " => " + target.name + "(" + target.PlayerId + ")");
@@ -94,12 +99,15 @@ namespace SuperNewRoles.Patches
                         __instance.RpcMurderPlayer(target);
                     } else
                     {
+                        SuperNewRolesPlugin.Logger.LogInfo("レートタスク:"+ (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                        isKill = true;
                         new LateTask(() => {
                             if (__instance.isAlive() && target.isAlive())
                             {
                                 __instance.RpcMurderPlayer(target);
                             }
-                            }, AmongUsClient.Instance.Ping / 1000f);
+                            isKill = false;
+                            }, (AmongUsClient.Instance.Ping / 1000f)* 2f);
                     }
                     return false;
                 }
