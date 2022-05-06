@@ -306,10 +306,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     if (IsTeamBattle)
                     {
                         float count = BROption.TeamAmount.getFloat();
-                        if (count == 8)
-                        {
-                            count = 7;
-                        }
                         var oneteamcount = Mathf.CeilToInt(PlayerControl.AllPlayerControls.Count / count);
                         List<PlayerControl> target = new List<PlayerControl>();
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
