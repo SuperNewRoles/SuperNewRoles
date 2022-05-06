@@ -163,12 +163,27 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
-            if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
+            if (player.isRole(RoleId.MadStuntMan))
             {
-                RoleClass.StuntMan.GuardCount[playerid] = ((int)CustomOptions.StuntManMaxGuardCount.getFloat())-1;
-            } else
+                if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(playerid))
+                {
+                    RoleClass.MadStuntMan.GuardCount[playerid] = ((int)CustomOptions.MadStuntManMaxGuardCount.getFloat()) - 1;
+                }
+                else
+                {
+                    RoleClass.MadStuntMan.GuardCount[playerid]--;
+                }
+            }
+            else if (player.isRole(RoleId.StuntMan))
             {
-                RoleClass.StuntMan.GuardCount[playerid]--;
+                if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
+                {
+                    RoleClass.StuntMan.GuardCount[playerid] = ((int)CustomOptions.StuntManMaxGuardCount.getFloat()) - 1;
+                }
+                else
+                {
+                    RoleClass.StuntMan.GuardCount[playerid]--;
+                }
             }
         }
         public static void SetMadKiller(byte sourceid,byte targetid)

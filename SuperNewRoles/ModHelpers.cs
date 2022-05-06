@@ -164,7 +164,6 @@ namespace SuperNewRoles
                     bool IsSend = false;
                     if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
                     {
-                        RoleClass.StuntMan.GuardCount[target.PlayerId] = ((int)CustomOptions.StuntManMaxGuardCount.getFloat()) - 1;
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
                         writer.Write(target.PlayerId);
                         writer.Write(target.PlayerId);
@@ -177,7 +176,6 @@ namespace SuperNewRoles
                     {
                         if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
                         {
-                            RoleClass.StuntMan.GuardCount[target.PlayerId]--;
                             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
                             writer.Write(target.PlayerId);
                             writer.Write(target.PlayerId);
@@ -192,6 +190,7 @@ namespace SuperNewRoles
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
                         writer.Write(target.PlayerId);
                         writer.EndRPC();
+                        RPCProcedure.UseStuntmanCount(target.PlayerId);
                     }
                 }
             }
@@ -202,7 +201,6 @@ namespace SuperNewRoles
                     bool IsSend = false;
                     if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
                     {
-                        RoleClass.MadStuntMan.GuardCount[target.PlayerId] = ((int)CustomOptions.MadStuntManMaxGuardCount.getFloat()) - 1;
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
                         writer.Write(target.PlayerId);
                         writer.Write(target.PlayerId);
@@ -215,7 +213,6 @@ namespace SuperNewRoles
                     {
                         if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
                         {
-                            RoleClass.MadStuntMan.GuardCount[target.PlayerId]--;
                             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
                             writer.Write(target.PlayerId);
                             writer.Write(target.PlayerId);
@@ -229,9 +226,10 @@ namespace SuperNewRoles
 
                     if (IsSend)
                     {
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseMadStuntmanCount);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
                         writer.Write(target.PlayerId);
                         writer.EndRPC();
+                        RPCProcedure.UseStuntmanCount(target.PlayerId);
                     }
                 }
             }
