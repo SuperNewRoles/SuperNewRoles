@@ -96,7 +96,11 @@ namespace SuperNewRoles.Patches
                     }
                     if (__instance.PlayerId != 0)
                     {
-                        __instance.RpcMurderPlayer(target);
+                        if (__instance.isAlive() && target.isAlive())
+                        {
+                            __instance.Data.IsDead = true;
+                            __instance.RpcMurderPlayer(target);
+                        }
                     } else
                     {
                         SuperNewRolesPlugin.Logger.LogInfo("レートタスク:"+ (AmongUsClient.Instance.Ping / 1000f) * 2f);
