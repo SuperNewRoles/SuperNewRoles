@@ -1328,6 +1328,10 @@
         "0" : "Duration Time" ,
         "11" : "\u7d99\u7d9a\u6642\u9593"
         } ,
+ "ScientistButtonName" : {
+        "0" : "Hide" ,
+        "11" : "\u96a0\u308c\u308b"
+        } ,
  "ClergymanName" : {
         "0" : "Clergyman" ,
         "11" : "\u8056\u8077\u8005"

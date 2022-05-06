@@ -331,6 +331,7 @@ NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう
 NiceScientistCoolDownSetting,Cool Time,クールタイム
 NiceScientistDurationSetting,Duration Time,継続時間
+ScientistButtonName,Hide,隠れる
 ClergymanName,Clergyman,聖職者
 ClergymanTitle1,Let's sabotage the outsider.,人外の妨害をしよう
 ClergymanTitle2,Let's obstruct the outsider's view.,人外の視界を妨害しよう

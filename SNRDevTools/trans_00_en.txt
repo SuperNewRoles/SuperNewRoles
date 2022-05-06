@@ -330,6 +330,7 @@ Turn invisible and find the bodies!
 Use the power of science to win!
 Cool Time
 Duration Time
+Hide
 Clergyman
 Let's sabotage the outsider.
 Let's obstruct the outsider's view.

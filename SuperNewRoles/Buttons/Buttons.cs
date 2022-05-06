@@ -211,7 +211,7 @@ namespace SuperNewRoles.Buttons
                 49
             );
 
-            ScientistButton.buttonText = ModTranslation.getString("MovingButtonTpName");
+            ScientistButton.buttonText = ModTranslation.getString("ScientistButtonName");
             ScientistButton.showButtonText = true;
 
             HawkHawkEyeButton = new CustomButton(

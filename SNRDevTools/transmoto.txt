@@ -330,6 +330,7 @@ NiceScientistTitle1
 NiceScientistTitle2
 NiceScientistCoolDownSetting
 NiceScientistDurationSetting
+ScientistButtonName
 ClergymanName
 ClergymanTitle1
 ClergymanTitle2
