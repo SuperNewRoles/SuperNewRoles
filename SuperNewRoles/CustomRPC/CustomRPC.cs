@@ -143,10 +143,18 @@ namespace SuperNewRoles.CustomRPC
         SetCustomSabotage,
         UseStuntmanCount,
         UseMadStuntmanCount,
-        CustomEndGame
+        CustomEndGame,
+        UncheckedProtect
     }
     public static class RPCProcedure
     {
+        public static void UncheckedProtect(byte sourceid, byte playerid,byte colorid)
+        {
+            PlayerControl player = ModHelpers.playerById(playerid);
+            PlayerControl source = ModHelpers.playerById(sourceid);
+            if (player == null || source == null) return;
+            source.ProtectPlayer(player,colorid);
+        }
         public static void CustomEndGame(GameOverReason reason, bool showAd)
         {
             CheckGameEndPatch.CustomEndGame(reason, showAd);
@@ -800,6 +808,9 @@ namespace SuperNewRoles.CustomRPC
                         {
                             CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
                         }
+                        break;
+                    case (byte)CustomRPC.UncheckedProtect:
+                        UncheckedProtect(reader.ReadByte(),reader.ReadByte(),reader.ReadByte());
                         break;
                 }
             }
