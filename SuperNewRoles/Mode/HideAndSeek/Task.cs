@@ -28,25 +28,19 @@ namespace SuperNewRoles.Mode.HideAndSeek
                 }
             }
         }
-        [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]
-        public static class GameDataRecomputeTaskCountsPatch
+        public static void TaskCountHideAndSeek(GameData __instance)
         {
-            public static void Postfix(GameData __instance)
+            __instance.TotalTasks = 0;
+            __instance.CompletedTasks = 0;
+            for (int i = 0; i < __instance.AllPlayers.Count; i++)
             {
-                if (!ModeHandler.isMode(ModeId.HideAndSeek)) return;
-                __instance.TotalTasks = 0;
-                __instance.CompletedTasks = 0;
-                for (int i = 0; i < __instance.AllPlayers.Count; i++)
+                GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
+                if (playerInfo.Object.isAlive() && !playerInfo.Object.isImpostor())
                 {
-                    GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
-                    if (playerInfo.Object.isAlive() && !playerInfo.Object.isImpostor())
-                    {
-                        var (playerCompleted, playerTotal) = SuperNewRoles.Patch.TaskCount.TaskDate(playerInfo);
-                        __instance.TotalTasks += playerTotal;
-                        __instance.CompletedTasks += playerCompleted;
-                    }
+                    var (playerCompleted, playerTotal) = SuperNewRoles.Patch.TaskCount.TaskDate(playerInfo);
+                    __instance.TotalTasks += playerTotal;
+                    __instance.CompletedTasks += playerCompleted;
                 }
-                return;
             }
         }
     }
