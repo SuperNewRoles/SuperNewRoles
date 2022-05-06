@@ -89,7 +89,18 @@ namespace SuperNewRoles.Patches
                             }
                         }
                     }
-                    __instance.RpcMurderPlayer(target);
+                    if (__instance.PlayerId != 0)
+                    {
+                        __instance.RpcMurderPlayer(target);
+                    } else
+                    {
+                        new LateTask(() => {
+                            if (__instance.isAlive() && target.isAlive())
+                            {
+                                __instance.RpcMurderPlayer(target);
+                            }
+                            }, AmongUsClient.Instance.Ping / 1000f);
+                    }
                     return false;
                 }
                 else

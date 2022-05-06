@@ -67,6 +67,7 @@ namespace SuperNewRoles.Patch
                             {
                                 settime = 0.00001f;
                             }
+                            
                             PlayerControl.GameOptions.KillCooldown = settime;
                             PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
                             __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
