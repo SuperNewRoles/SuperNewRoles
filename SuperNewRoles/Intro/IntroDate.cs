@@ -156,6 +156,16 @@ namespace SuperNewRoles.Intro
                     return MadHawkIntro;
                 case (CustomRPC.RoleId.MadJester):
                     return MadJesterIntro;
+                case (CustomRPC.RoleId.FalseCharges):
+                    return FalseChargesIntro;
+                case (CustomRPC.RoleId.NiceTeleporter):
+                    return NiceTeleporterIntro;
+                case (CustomRPC.RoleId.Celebrity):
+                    return CelebrityIntro;
+                case (CustomRPC.RoleId.Nocturnality):
+                    return NocturnalityIntro;
+                case (CustomRPC.RoleId.Observer):
+                    return ObserverIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -243,6 +253,11 @@ namespace SuperNewRoles.Intro
         public static IntroDate MadStuntManIntro = new IntroDate("MadStuntMan", RoleClass.MadStuntMan.color, 1, CustomRPC.RoleId.MadStuntMan, TeamRoleType.Impostor);
         public static IntroDate MadHawkIntro = new IntroDate("MadHawk", RoleClass.MadHawk.color, 1, CustomRPC.RoleId.MadHawk);
         public static IntroDate MadJesterIntro = new IntroDate("MadJester", RoleClass.MadJester.color, 1, CustomRPC.RoleId.MadJester);
+        public static IntroDate FalseChargesIntro = new IntroDate("FalseCharges", RoleClass.FalseCharges.color, 1, CustomRPC.RoleId.FalseCharges);
+        public static IntroDate NiceTeleporterIntro = new IntroDate("NiceTeleporter", RoleClass.NiceTeleporter.color, 1, CustomRPC.RoleId.NiceTeleporter);
+        public static IntroDate CelebrityIntro = new IntroDate("Celebrity", RoleClass.Celebrity.color, 1, CustomRPC.RoleId.Celebrity);
+        public static IntroDate NocturnalityIntro = new IntroDate("Nocturnality", RoleClass.Nocturnality.color, 1, CustomRPC.RoleId.Nocturnality);
+        public static IntroDate ObserverIntro = new IntroDate("Observer", RoleClass.Observer.color, 1, CustomRPC.RoleId.Observer);
         //イントロオブジェ
     }
 }

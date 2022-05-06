@@ -1,5 +1,4 @@
-﻿
-using SuperNewRoles.CustomRPC;
+﻿using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
@@ -76,6 +75,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 else
                 {
                     trueloverPlayer.RpcSetRole(RoleTypes.Crewmate);
+                }
+                //trueloverPlayer.Data.IsDead = true;
+            }
+            foreach (PlayerControl Player in RoleClass.FalseCharges.FalseChargesPlayer)
+            {
+                if (!Player.IsMod())
+                {
+                    Player.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != Player.PlayerId && !p.isRole(RoleId.Sheriff))
+                        {
+                            Player.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, Player);
+                        }
+                    }
+                }
+                else
+                {
+                    Player.RpcSetRole(RoleTypes.Crewmate);
                 }
                 //trueloverPlayer.Data.IsDead = true;
             }
@@ -517,6 +536,57 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MadJesterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.MadJester;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.FalseCharges;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+            }
+            if (!(CustomOption.CustomOptions.CelebrityOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.CelebrityOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Celebrity;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+            }
+            if (!(CustomOption.CustomOptions.NocturnalityOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NocturnalityOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Nocturnality;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.ObserverOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.ObserverOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Observer;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);

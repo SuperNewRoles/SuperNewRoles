@@ -426,6 +426,22 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadHawk):
                     Roles.RoleClass.MadHawk.MadHawkPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.FalseCharges):
+                    Roles.RoleClass.FalseCharges.FalseChargesPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.NiceTeleporter):
+                    Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Celebrity):
+                    Roles.RoleClass.Celebrity.CelebrityPlayer.Add(player);
+                    Roles.RoleClass.Celebrity.ViewPlayers.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Nocturnality):
+                    Roles.RoleClass.Nocturnality.NocturnalityPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Observer):
+                    Roles.RoleClass.Observer.ObserverPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -636,7 +652,6 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadHawk):
                     Roles.RoleClass.MadHawk.MadHawkPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
                 case (CustomRPC.RoleId.NiceHawk):
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
                     break;
@@ -646,7 +661,23 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadJester):
                     Roles.RoleClass.MadJester.MadJesterPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                case (CustomRPC.RoleId.FalseCharges):
+                    Roles.RoleClass.FalseCharges.FalseChargesPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.NiceTeleporter):
+                    Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Celebrity):
+                    Roles.RoleClass.Celebrity.CelebrityPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Nocturnality):
+                    Roles.RoleClass.Nocturnality.NocturnalityPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Observer):
+                    Roles.RoleClass.Observer.ObserverPlayer.RemoveAll(ClearRemove);
+                    break;
+                    //ロールリモベ
+
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -719,7 +750,10 @@ namespace SuperNewRoles
                 case (RoleId.MadJester):
                     IsTaskClear = true;
                     break;
-                    //タスククリアか
+                    case (RoleId.FalseCharges):
+                    IsTaskClear = true;
+                    break; 
+                //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
             {
@@ -820,6 +854,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.Amnesiac):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.FalseCharges):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1159,19 +1196,44 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Bakery;
                 }
-            else if (Roles.RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MadHawk;
-            }
+                else if (Roles.RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadHawk;
+                }
                 else if (Roles.RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(player))
                 {
-                return CustomRPC.RoleId.MadJester;
+                    return CustomRPC.RoleId.MadJester;
                 }
-            //ロールチェック
+                else if (Roles.RoleClass.FalseCharges.FalseChargesPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.FalseCharges;
+                }
+                else if (Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceTeleporter;
+                }
+                else if (Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceTeleporter;
+                }
+                else if (Roles.RoleClass.Celebrity.CelebrityPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Celebrity;
+                }
+                else if (Roles.RoleClass.Nocturnality.NocturnalityPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Nocturnality;
+                }
+                else if (Roles.RoleClass.Observer.ObserverPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Observer;
+                }
+                //ロールチェック
 
             }
-            catch (Exception e) {
-            
+            catch (Exception e)
+            {
+
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
                 return RoleId.DefaultRole;
             }

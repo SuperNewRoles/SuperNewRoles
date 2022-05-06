@@ -529,3 +529,18 @@ MadHawk
 See it all.
 MadJester
 Get voted out and win with the Imposters!
+FalseCharges
+Let the false accusations win!
+Turn of the false accusation range
+Cool Time
+False Charge
+Nice Teleporter
+Teleport and uncover impostors!
+Teleport cool down
+Celebrity
+A Celebrity for everyone!
+Name color will remain Celebrity even if the position changes.
+Nocturnality
+You live in darkness.
+Observer
+Let's monitor everything.

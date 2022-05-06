@@ -105,6 +105,11 @@ namespace SuperNewRoles.Roles
             MadStuntMan.ClearAndReload();
             MadHawk.ClearAndReload();
             MadJester.ClearAndReload();
+            FalseCharges.ClearAndReload();
+            NiceTeleporter.ClearAndReload();
+            Celebrity.ClearAndReload();
+            Nocturnality.ClearAndReload();
+            Observer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -363,7 +368,8 @@ namespace SuperNewRoles.Roles
             public static DateTime ButtonTimer;
             public static bool IsSpeedBoost;
             public static Dictionary<int, bool> IsBoostPlayers;
-            public static Sprite GetSpeedBoostButtonSprite() {
+            public static Sprite GetSpeedBoostButtonSprite()
+            {
                 if (SpeedBoostButtonSprite) return SpeedBoostButtonSprite;
                 SpeedBoostButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
                 return SpeedBoostButtonSprite;
@@ -707,14 +713,17 @@ namespace SuperNewRoles.Roles
                 if (temp == "")
                 {
                     SucPar = 0;
-                } else
+                }
+                else
                 {
                     SucPar = int.Parse(temp);
                 }
             }
-            public static bool GetSuc() {
+            public static bool GetSuc()
+            {
                 var a = new List<string>();
-                for (int i = 0; i < SucPar; i++) {
+                for (int i = 0; i < SucPar; i++)
+                {
                     a.Add("Suc");
                 }
                 for (int i = 0; i < 10 - SucPar; i++)
@@ -725,7 +734,8 @@ namespace SuperNewRoles.Roles
                 {
                     return true;
                 }
-                else {
+                else
+                {
                     return false;
                 }
             }
@@ -1285,7 +1295,8 @@ namespace SuperNewRoles.Roles
                 if (MadKillerPair.ContainsKey(p.PlayerId))
                 {
                     return ModHelpers.playerById(MadKillerPair[p.PlayerId]);
-                } else if (MadKillerPair.ContainsValue(p.PlayerId))
+                }
+                else if (MadKillerPair.ContainsValue(p.PlayerId))
                 {
                     var key = MadKillerPair.GetKey(p.PlayerId);
                     if (key == null) return null;
@@ -1332,7 +1343,7 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
-             }
+            }
         }
         public static class NiceHawk
         {
@@ -1431,11 +1442,87 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MadJesterPlayer = new List<PlayerControl>();
-
                 IsMadJesterWin = false;
                 IsUseVent = CustomOptions.MadJesterIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.getBool();
                 IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.getBool();
+            }
+        }
+        public static class FalseCharges
+        {
+            public static List<PlayerControl> FalseChargesPlayer;
+            public static Dictionary<byte, int> AllTurns;
+            public static Dictionary<byte, byte> FalseChargePlayers;
+            public static byte FalseChargePlayer;
+            public static int Turns;
+            public static int DefaultTurn;
+            public static float CoolTime;
+            public static Color32 color = Color.green;
+            public static void ClearAndReload()
+            {
+                FalseChargesPlayer = new List<PlayerControl>();
+                AllTurns = new Dictionary<byte, int>();
+                FalseChargePlayers = new Dictionary<byte, byte>();
+                FalseChargePlayer = 255;
+                Turns = 255;
+                DefaultTurn = (int)CustomOptions.FalseChargesExileTurn.getFloat();
+                CoolTime = CustomOptions.FalseChargesCoolTime.getFloat();
+
+            }
+        }
+        public static class NiceTeleporter
+        {
+            public static List<PlayerControl> NiceTeleporterPlayer;
+            public static Color32 color = new Color32(0, 0, 128, byte.MaxValue);
+            public static float CoolTime;
+            public static float DurationTime;
+            public static DateTime ButtonTimer;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                return ButtonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                NiceTeleporterPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.NiceTeleporterCoolTime.getFloat();
+                DurationTime = CustomOptions.NiceTeleporterDurationTime.getFloat();
+            }
+        }
+        public static class Celebrity
+        {
+            public static List<PlayerControl> CelebrityPlayer;
+            public static Color32 color = Color.yellow;
+            public static bool ChangeRoleView;
+            public static List<PlayerControl> ViewPlayers;
+
+            public static void ClearAndReload()
+            {
+                CelebrityPlayer = new List<PlayerControl>();
+                ChangeRoleView = CustomOptions.CelebrityChangeRoleView.getBool();
+                ViewPlayers = new List<PlayerControl>();
+            }
+        }
+        public static class Nocturnality
+        {
+            public static List<PlayerControl> NocturnalityPlayer;
+            public static Color32 color = new Color32(255, 0, 255, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                NocturnalityPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class Observer
+        {
+            public static List<PlayerControl> ObserverPlayer;
+            public static Color32 color = new Color32(127, 127, 127, byte.MaxValue);
+            public static bool IsVoteView;
+            public static void ClearAndReload()
+            {
+                ObserverPlayer = new List<PlayerControl>();
+                IsVoteView = true;
             }
         }
         //新ロールクラス

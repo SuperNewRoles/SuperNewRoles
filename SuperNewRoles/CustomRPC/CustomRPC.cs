@@ -90,6 +90,11 @@ namespace SuperNewRoles.CustomRPC
         MadJester,
         MadStuntMan,
         MadHawk,
+        FalseCharges,
+        NiceTeleporter,
+        Celebrity,
+        Nocturnality,
+        Observer,
         //RoleId
     }
 
@@ -138,9 +143,14 @@ namespace SuperNewRoles.CustomRPC
         SetCustomSabotage,
         UseStuntmanCount,
         UseMadStuntmanCount,
+        CustomEndGame
     }
     public static class RPCProcedure
     {
+        public static void CustomEndGame(GameOverReason reason, bool showAd)
+        {
+            CheckGameEndPatch.CustomEndGame(reason, showAd);
+        }
         public static void UseStuntmanCount(byte playerid)
         {
             var player = ModHelpers.playerById(playerid);
@@ -175,7 +185,7 @@ namespace SuperNewRoles.CustomRPC
         public static void TORVersionShare(int major, int minor, int build, int revision, byte[] guid, int clientId)
         {
             /*
-            SuperNewRolesPlugin.Logger.LogInfo("TORGMƒVƒFƒA‚ ‚ ‚ I");
+            SuperNewRolesPlugin.Logger.LogInfo("TORGMã‚·ã‚§ã‚¢ã‚ã‚ã‚ï¼");
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, Hazel.SendOption.Reliable, clientId);
             writer.WritePacked(major);
             writer.WritePacked(minor);
@@ -404,13 +414,13 @@ namespace SuperNewRoles.CustomRPC
             if (sheriff == null || target == null) return;
             if (!PlayerControl.LocalPlayer.isAlive())
             {
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "‚Í" + target.name + "‚ğƒVƒFƒŠƒtƒLƒ‹‚µ‚½I");
+                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "ã¯" + target.name + "ã‚’ã‚·ã‚§ãƒªãƒ•ã‚­ãƒ«ã—ãŸï¼");
                 if (MissFire)
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "‚ÍŒë”š‚µ‚½I");
+                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "ã¯èª¤çˆ†ã—ãŸï¼");
                 } else
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "‚Í¬Œ÷‚µ‚½I");
+                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "ã¯æˆåŠŸã—ãŸï¼");
                 }
             }
             if (MissFire)
@@ -436,7 +446,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
                 {
-                    if (pva.TargetPlayerId ==@SheriffId && MissFire)
+                    if (pva.TargetPlayerId ==ã€€SheriffId && MissFire)
                     {
                         pva.SetDead(pva.DidReport, true);
                         pva.Overlay.gameObject.SetActive(true);
@@ -784,6 +794,12 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.SetCustomSabotage:
                         SabotageManager.SetSabotage(ModHelpers.playerById(reader.ReadByte()),(SabotageManager.CustomSabotage)reader.ReadByte(),reader.ReadBoolean());
+                        break;
+                    case (byte)CustomRPC.CustomEndGame:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
+                        }
                         break;
                 }
             }
