@@ -207,6 +207,7 @@ namespace SuperNewRoles.EndGame
             }
             else if (AdditionalTempData.winCondition == WinCondition.WorkpersonWin)
             {
+                SuperNewRolesPlugin.Logger.LogInfo("仕事人勝利文字");
                 text = "WorkpersonName";
                 textRenderer.color = RoleClass.Workperson.color;
                 __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
@@ -575,6 +576,7 @@ namespace SuperNewRoles.EndGame
             }
             else if (WorkpersonWin)
             {
+                SuperNewRolesPlugin.Logger.LogInfo("仕事人勝利");
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
                 TempData.winners.Add(wpd);
@@ -582,7 +584,6 @@ namespace SuperNewRoles.EndGame
             }
             else if (FalseChargesWin)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("FC勝利！");
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
                 TempData.winners.Add(wpd);
