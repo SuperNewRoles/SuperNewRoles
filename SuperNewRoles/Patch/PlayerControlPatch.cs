@@ -107,7 +107,7 @@ namespace SuperNewRoles.Patches
                                 __instance.RpcMurderPlayer(target);
                             }
                             isKill = false;
-                            }, (AmongUsClient.Instance.Ping / 1000f)* 2f);
+                            }, (AmongUsClient.Instance.Ping / 1000f)* 1.1f);
                     }
                     return false;
                 }
