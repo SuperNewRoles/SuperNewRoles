@@ -453,6 +453,7 @@ EvilEraserTitle1
 EvilEraserMaxCountSetting
 WorkpersonName
 WorkpersonTitle1
+WorkpersonIsAliveWinSetting
 MagazinerName
 MagazinerTitle1
 MagazinerSetTimeSetting

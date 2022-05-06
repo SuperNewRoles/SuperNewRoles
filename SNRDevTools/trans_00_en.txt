@@ -453,6 +453,7 @@ Let's wipe out their abilities.
 Max Erase Count
 Work person
 Let's do the work and win!
+You have to be alive to win
 Magaziner
 Save your kills!
 Kill cool time after magazine use
