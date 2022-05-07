@@ -48,6 +48,8 @@ namespace SuperNewRoles.Patch
             {
                 buttonSpriteDiscord.color = textDiscord.color = discordColor;
             });
+
+
             var buttonTwitter = UnityEngine.Object.Instantiate(template, null);
             if (File.Exists(Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"))) buttonTwitter.transform.localPosition = new Vector3(buttonTwitter.transform.localPosition.x, buttonTwitter.transform.localPosition.y + 1.2f, buttonTwitter.transform.localPosition.z);
             else buttonTwitter.transform.localPosition = new Vector3(buttonTwitter.transform.localPosition.x, buttonTwitter.transform.localPosition.y + 1.8f, buttonTwitter.transform.localPosition.z);
@@ -62,7 +64,6 @@ namespace SuperNewRoles.Patch
             SpriteRenderer buttonSpriteTwitter = buttonTwitter.GetComponent<SpriteRenderer>();
 
             passiveButtonTwitter.OnClick = new Button.ButtonClickedEvent();
-            passiveButtonTwitter.OnClick.AddListener((System.Action)(() => Application.OpenURL("https://twitter.com/SuperNewRoles")));
 
             Color TwitterColor = new Color32(29, 155, 240, byte.MaxValue);
             buttonSpriteTwitter.color = textTwitter.color = TwitterColor;
@@ -70,6 +71,40 @@ namespace SuperNewRoles.Patch
             {
                 buttonSpriteTwitter.color = textTwitter.color = TwitterColor;
             });
+
+
+            var buttonTwitterSNRDevs = UnityEngine.Object.Instantiate(template, null);
+            buttonTwitterSNRDevs.SetActive(false);
+
+            var buttonTwitterSuperNewRoles = UnityEngine.Object.Instantiate(template, null);
+            buttonTwitterSuperNewRoles.SetActive(false);
+
+            passiveButtonTwitter.OnClick.AddListener((System.Action)(() =>
+            {
+                buttonTwitterSNRDevs.SetActive(true);
+                var textTwitterSNRDevs = buttonTwitterSNRDevs.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+                __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
+                {
+                    textTwitterSNRDevs.SetText("SuperNewRolesの人");
+                })));
+                buttonTwitterSNRDevs.transform.localPosition = new Vector3(buttonTwitter.transform.localPosition.x + 1.1f, buttonTwitter.transform.localPosition.y + -0.3f, buttonTwitter.transform.localPosition.z);
+                PassiveButton passivebuttonTwitterSNRDevs = buttonTwitterSNRDevs.GetComponent<PassiveButton>();
+                SpriteRenderer buttonSpriteTwitterSNRDevs = buttonTwitterSNRDevs.GetComponent<SpriteRenderer>();
+                passivebuttonTwitterSNRDevs.OnClick = new Button.ButtonClickedEvent();
+                passivebuttonTwitterSNRDevs.OnClick.AddListener((System.Action)(() => Application.OpenURL("https://twitter.com/SNRDevs")));
+
+                buttonTwitterSuperNewRoles.SetActive(true);
+                var textTwitterSuperNewRoles = buttonTwitterSuperNewRoles.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+                __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
+                {
+                    textTwitterSuperNewRoles.SetText("Super New Roles");
+                })));
+                buttonTwitterSuperNewRoles.transform.localPosition = new Vector3(buttonTwitter.transform.localPosition.x + 1.1f, buttonTwitter.transform.localPosition.y + 0.3f, buttonTwitter.transform.localPosition.z);
+                PassiveButton passivebuttonTwitterSuperNewRoles = buttonTwitterSuperNewRoles.GetComponent<PassiveButton>();
+                SpriteRenderer buttonSpriteTwitterSuperNewRoles = buttonTwitterSuperNewRoles.GetComponent<SpriteRenderer>();
+                passivebuttonTwitterSuperNewRoles.OnClick = new Button.ButtonClickedEvent();
+                passivebuttonTwitterSuperNewRoles.OnClick.AddListener((System.Action)(() => Application.OpenURL("https://twitter.com/SuperNewRoles")));                
+            }));
         }
     }
 }
