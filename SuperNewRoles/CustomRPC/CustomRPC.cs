@@ -15,6 +15,7 @@ using static SuperNewRoles.EndGame.FinalStatusPatch;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Sabotage;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.CustomRPC
 {
@@ -610,7 +611,14 @@ namespace SuperNewRoles.CustomRPC
         public static void ShareWinner(byte playerid)
         {
             PlayerControl player = ModHelpers.playerById(playerid);
-            EndGame.OnGameEndPatch.WinnerPlayer = player;
+            if (ModeHandler.isMode(ModeId.BattleRoyal))
+            {
+                Mode.BattleRoyal.main.Winners.Add(player);
+            }
+            else
+            {
+                EndGame.OnGameEndPatch.WinnerPlayer = player;
+            }
         }
         public static void TeleporterTP(byte playerid)
         {

@@ -11,6 +11,13 @@ namespace SuperNewRoles.Mode.BattleRoyal
         {
             Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
             Teams.Add(PlayerControl.LocalPlayer);
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                if (p.isImpostor() && p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                {
+                    Teams.Add(p);
+                }
+            }
             return Teams;
         }
         public static void IntroHandler(IntroCutscene __instance)

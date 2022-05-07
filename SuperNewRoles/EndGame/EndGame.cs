@@ -234,15 +234,6 @@ namespace SuperNewRoles.EndGame
                 text = "ImpostorName";
                 textRenderer.color = RoleClass.ImpostorRed;
             }
-            if (ModeHandler.isMode(ModeId.BattleRoyal)) {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                    if (p.isAlive())
-                    {
-                        text = p.nameText.text;
-                        textRenderer.color = new Color32(116, 80, 48, byte.MaxValue);
-                    }
-                }
-            }
             var haison = false;
             if (text == "HAISON") {
                 haison = true;
@@ -297,6 +288,17 @@ namespace SuperNewRoles.EndGame
                 {
                     text = ModTranslation.getString("ZombiePoliceName");
                     textRenderer.color = Mode.Zombie.main.Policecolor;
+                }
+            }
+            if (ModeHandler.isMode(ModeId.BattleRoyal))
+            {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.isAlive())
+                    {
+                        text = p.nameText.text;
+                        textRenderer.color = new Color32(116, 80, 48, byte.MaxValue);
+                    }
                 }
             }
             if (!haison) {
@@ -620,12 +622,23 @@ namespace SuperNewRoles.EndGame
             if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                if (Mode.BattleRoyal.main.IsTeamBattle)
                 {
-                    if (p.isAlive())
+                    foreach (PlayerControl p in Mode.BattleRoyal.main.Winners)
                     {
                         WinningPlayerData wpd = new WinningPlayerData(p.Data);
                         TempData.winners.Add(wpd);
+                    }
+                }
+                else
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.isAlive())
+                        {
+                            WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                            TempData.winners.Add(wpd);
+                        }
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.Default;
