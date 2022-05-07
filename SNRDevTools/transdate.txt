@@ -222,13 +222,13 @@ SheriffName,Sheriff,シェリフ
 SheriffTitle1,Kill the outsider!,人外をキルしよう
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう
 SheriffCoolDownSetting,Sheriff's Kill Cooldown,シェリフのキルクールダウン
-SheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる
+SheriffIsKillNewtralSetting,Can Kill a Neutral,第三陣営をキルできる
 SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる
-SheriffIsKillMadMateSetting,Can Kill a MadRole,マッド系役職をキルできる
-SheriffIsKillMadMateYes,Yes,できる
-SheriffIsKillMadMateNo,No,できない
+SheriffIsKillMadRoleSetting,Can Kill a Madmate,マッド系役職をキルできる
+SheriffYes,Yes,できる
+SheriffNo,No,できない
 SheriffMaxKillCountSetting,Maximum number of kills for Sheriff,シェリフの最大キル数
-SherifKillButtonName,Kill,キル
+SheriffKillButtonName,Kill,キル
 SheriffNumTextName,{0} shots remaining.,残り{0}発
 MeetingSheriffName,Meeting Sheriff,ミーティング シェリフ
 MeetingSheriffTitle1,Kill an outsider in a meeting!,人外を会議でキルしよう
@@ -236,7 +236,7 @@ MeetingSheriffTitle2,Kill an outsider in a meeting and lead your crewmates to vi
 MeetingSheriffTitle3,Kill an outsider in a meeting to prevent a power play,人外を会議でキルしてパワープレイを防ごう
 MeetingSheriffTitle4,Kill an outsider in a meeting to prevent a PP,人外を会議でキルしてPPを防ごう
 MeetingSheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる
-MeetingSheriffIsKillMadMateSetting,Can Kill a Madmate,マッドメイドをキルできる
+MeetingSheriffIsKillMadRoleSetting,Can Kill a Madmate,マッド系役職をキルできる
 MeetingSheriffYes,Yes,できる
 MeetingSheriffNo,No,できない
 MeetingSheriffMaxKillCountSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数
@@ -309,7 +309,7 @@ SealdorDurationSetting,Shield duration,シールド継続時間
 FreezerName,Freezer,フリーザー
 FreezerTitle1,Stop everyone and sabotage your crewmates!,みんなを止めてクルーメイトを妨害しよう
 FreezerTitle2,Try to stop everyone and sabotage the task!,みんなを止めてタスクの妨害をしよう
-FreezerTitle2,Let's put them all on ice.,全員を氷漬けにしよう
+FreezerTitle3,Let's put them all on ice.,全員を氷漬けにしよう
 FreezerCoolTimeSetting,Freeze Cool Time,フリーズクールタイム
 FreezerDurationSetting,Freeze duration,フリーズ継続時間
 SpeederName,Speeder,スピーダー
@@ -547,3 +547,5 @@ CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！
 CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる
 NocturnalityName,Nocturnality,夜行性
 NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている
+ObserverName,Observer,選挙管理委員
+ObserverTitle1,Let's monitor everything.,すべてを監視しよう
