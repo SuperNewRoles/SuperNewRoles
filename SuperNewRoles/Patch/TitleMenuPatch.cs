@@ -48,6 +48,28 @@ namespace SuperNewRoles.Patch
             {
                 buttonSpriteDiscord.color = textDiscord.color = discordColor;
             });
+            var buttonTwitter = UnityEngine.Object.Instantiate(template, null);
+            if (File.Exists(Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"))) buttonTwitter.transform.localPosition = new Vector3(buttonTwitter.transform.localPosition.x, buttonTwitter.transform.localPosition.y + 1.2f, buttonTwitter.transform.localPosition.z);
+            else buttonTwitter.transform.localPosition = new Vector3(buttonTwitter.transform.localPosition.x, buttonTwitter.transform.localPosition.y + 1.8f, buttonTwitter.transform.localPosition.z);
+
+            var textTwitter = buttonTwitter.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+            __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
+            {
+                textTwitter.SetText("Twitter");
+            })));
+
+            PassiveButton passiveButtonTwitter = buttonTwitter.GetComponent<PassiveButton>();
+            SpriteRenderer buttonSpriteTwitter = buttonTwitter.GetComponent<SpriteRenderer>();
+
+            passiveButtonTwitter.OnClick = new Button.ButtonClickedEvent();
+            passiveButtonTwitter.OnClick.AddListener((System.Action)(() => Application.OpenURL("https://twitter.com/SuperNewRoles")));
+
+            Color TwitterColor = new Color32(29, 155, 240, byte.MaxValue);
+            buttonSpriteTwitter.color = textTwitter.color = TwitterColor;
+            passiveButtonTwitter.OnMouseOut.AddListener((System.Action)delegate
+            {
+                buttonSpriteTwitter.color = textTwitter.color = TwitterColor;
+            });
         }
     }
 }
