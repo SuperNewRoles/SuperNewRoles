@@ -24,23 +24,18 @@ namespace SuperNewRoles.Mode.Zombie
             }
             catch { return false; }
         }
-        [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]
-        private static class GameDataRecomputeTaskCountsPatch
+        public static void CountTaskZombie(GameData __instance)
         {
-            public static void Postfix(GameData __instance)
+            __instance.TotalTasks = 0;
+            __instance.CompletedTasks = 0;
+            for (int i = 0; i < __instance.AllPlayers.Count; i++)
             {
-                if (!Mode.ModeHandler.isMode(Mode.ModeId.Zombie) || !AmongUsClient.Instance.AmHost) return;
-                __instance.TotalTasks = 0;
-                __instance.CompletedTasks = 0;
-                for (int i = 0; i < __instance.AllPlayers.Count; i++)
+                GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
+                if (!playerInfo.Object.IsZombie())
                 {
-                    GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
-                    if (!playerInfo.Object.IsZombie())
-                    {
-                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
-                        __instance.TotalTasks += playerTotal;
-                        __instance.CompletedTasks += playerCompleted;
-                    }
+                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
+                    __instance.TotalTasks += playerTotal;
+                    __instance.CompletedTasks += playerCompleted;
                 }
             }
         }
@@ -111,6 +106,7 @@ namespace SuperNewRoles.Mode.Zombie
             ZombieOptions.ZombieSpeed = ZombieOptions.ZombieSpeedOption.getFloat();
             ZombieOptions.PoliceLight = ZombieOptions.PoliceLightOption.getFloat();
             ZombieOptions.PoliceSpeed = ZombieOptions.PoliceSpeedOption.getFloat();
+            if (!AmongUsClient.Instance.AmHost) return;
             ZombiePlayers = new List<int>();
             if (AmongUsClient.Instance.AmHost) { 
                 FixedUpdate.IsStart = false;

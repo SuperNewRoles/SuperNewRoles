@@ -439,6 +439,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Nocturnality):
                     Roles.RoleClass.Nocturnality.NocturnalityPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Observer):
+                    Roles.RoleClass.Observer.ObserverPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -670,7 +673,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Nocturnality):
                     Roles.RoleClass.Nocturnality.NocturnalityPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                case (CustomRPC.RoleId.Observer):
+                    Roles.RoleClass.Observer.ObserverPlayer.RemoveAll(ClearRemove);
+                    break;
+                    //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -1218,7 +1224,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Nocturnality;
                 }
-            //ロールチェック
+                else if (Roles.RoleClass.Observer.ObserverPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Observer;
+                }
+                //ロールチェック
 
             }
             catch (Exception e)

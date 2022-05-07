@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\SNRDevTools",
+    "\\SuperNewRoles",
+    "\\SuperNewRoles\\Buttons",
+    "\\SuperNewRoles\\Patch"
   ],
-  "SelectedNode": "\\C:\\MODD",
+  "SelectedNode": "\\SuperNewRoles.sln",
   "PreviewInSolutionExplorer": false
 }
