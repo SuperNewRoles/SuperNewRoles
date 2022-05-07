@@ -773,6 +773,7 @@ namespace SuperNewRoles
         {
             if (!RoleClass.Minimalist.UseVent && player.isRole(RoleId.Minimalist)) return false;
             if (player.Data.Role.IsImpostor) return true;
+            if (ModeHandler.isMode(ModeId.SuperHostRoles) && IsComms()) return false;
             if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Jester.IsUseVent) return true;
             if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMate.IsUseVent) return true;
             if ((RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player) || 
@@ -792,6 +793,18 @@ namespace SuperNewRoles
             {
                 foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                     if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles)
+                        return true;
+            }
+            catch { }
+            return false;
+        }
+        public static bool IsComms()
+        {
+            try
+            {
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                    if (task.TaskType == TaskTypes.FixComms)
+                    if (task.TaskType == TaskTypes.FixComms)
                         return true;
             }
             catch { }

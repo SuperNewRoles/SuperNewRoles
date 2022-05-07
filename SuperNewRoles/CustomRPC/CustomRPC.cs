@@ -144,10 +144,18 @@ namespace SuperNewRoles.CustomRPC
         SetCustomSabotage,
         UseStuntmanCount,
         UseMadStuntmanCount,
-        CustomEndGame
+        CustomEndGame,
+        UncheckedProtect
     }
     public static class RPCProcedure
     {
+        public static void UncheckedProtect(byte sourceid, byte playerid,byte colorid)
+        {
+            PlayerControl player = ModHelpers.playerById(playerid);
+            PlayerControl source = ModHelpers.playerById(sourceid);
+            if (player == null || source == null) return;
+            source.ProtectPlayer(player,colorid);
+        }
         public static void CustomEndGame(GameOverReason reason, bool showAd)
         {
             CheckGameEndPatch.CustomEndGame(reason, showAd);
@@ -156,12 +164,27 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
-            if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
+            if (player.isRole(RoleId.MadStuntMan))
             {
-                RoleClass.StuntMan.GuardCount[playerid] = ((int)CustomOptions.StuntManMaxGuardCount.getFloat())-1;
-            } else
+                if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(playerid))
+                {
+                    RoleClass.MadStuntMan.GuardCount[playerid] = ((int)CustomOptions.MadStuntManMaxGuardCount.getFloat()) - 1;
+                }
+                else
+                {
+                    RoleClass.MadStuntMan.GuardCount[playerid]--;
+                }
+            }
+            else if (player.isRole(RoleId.StuntMan))
             {
-                RoleClass.StuntMan.GuardCount[playerid]--;
+                if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
+                {
+                    RoleClass.StuntMan.GuardCount[playerid] = ((int)CustomOptions.StuntManMaxGuardCount.getFloat()) - 1;
+                }
+                else
+                {
+                    RoleClass.StuntMan.GuardCount[playerid]--;
+                }
             }
         }
         public static void SetMadKiller(byte sourceid,byte targetid)
@@ -808,6 +831,9 @@ namespace SuperNewRoles.CustomRPC
                         {
                             CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
                         }
+                        break;
+                    case (byte)CustomRPC.UncheckedProtect:
+                        UncheckedProtect(reader.ReadByte(),reader.ReadByte(),reader.ReadByte());
                         break;
                 }
             }

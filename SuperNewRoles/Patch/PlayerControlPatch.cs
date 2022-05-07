@@ -130,43 +130,6 @@ namespace SuperNewRoles.Patches
                     RoleClass.FalseCharges.AllTurns[__instance.PlayerId] = RoleClass.FalseCharges.DefaultTurn;
                     return false;
                 }
-                if (target.isRole(RoleId.StuntMan) && !__instance.isRole(RoleId.OverKiller))
-                {
-                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
-                    {
-                        if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
-                        {
-                            RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
-                            target.RpcProtectPlayer(target, 0);
-                        }
-                        else
-                        {
-                            if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
-                            {
-                                RoleClass.StuntMan.GuardCount[target.PlayerId]--;
-                                target.RpcProtectPlayer(target, 0);
-                            }
-                        }
-                    }
-                }
-                if (target.isRole(RoleId.MadStuntMan) && !__instance.isRole(RoleId.OverKiller))
-                {
-                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, __instance))
-                    {
-                        if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
-                        {
-                            target.RpcProtectPlayer(target, 0);
-                        }
-                        else
-                        {
-                            if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
-                            {
-                                RoleClass.MadStuntMan.GuardCount[target.PlayerId]--;
-                                target.RpcProtectPlayer(target, 0);
-                            }
-                        }
-                    }
-                }
             }
             if (ModeHandler.isMode(ModeId.Detective) && target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
@@ -215,6 +178,51 @@ namespace SuperNewRoles.Patches
                     } else
                     {
                         return false;
+                    }
+                }
+                if (target.isRole(RoleId.StuntMan) && !__instance.isRole(RoleId.OverKiller))
+                {
+                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
+                    {
+                        if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
+                        {
+                            RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
+                            target.RpcProtectPlayer(target, 0);
+                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                            return false;
+                        }
+                        else
+                        {
+                            if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
+                            {
+                                RoleClass.StuntMan.GuardCount[target.PlayerId]--;
+                                target.RpcProtectPlayer(target, 0);
+                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                                return false;
+                            }
+                        }
+                    }
+                }
+                if (target.isRole(RoleId.MadStuntMan) && !__instance.isRole(RoleId.OverKiller))
+                {
+                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, __instance))
+                    {
+                        if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
+                        {
+                            target.RpcProtectPlayer(target, 0);
+                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                            return false;
+                        }
+                        else
+                        {
+                            if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
+                            {
+                                RoleClass.MadStuntMan.GuardCount[target.PlayerId]--;
+                                target.RpcProtectPlayer(target, 0);
+                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                                return false;
+                            }
+                        }
                     }
                 }
             }

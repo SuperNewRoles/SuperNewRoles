@@ -334,6 +334,7 @@ NiceScientistTitle1
 NiceScientistTitle2
 NiceScientistCoolDownSetting
 NiceScientistDurationSetting
+ScientistButtonName
 ClergymanName
 ClergymanTitle1
 ClergymanTitle2
@@ -456,6 +457,7 @@ EvilEraserTitle1
 EvilEraserMaxCountSetting
 WorkpersonName
 WorkpersonTitle1
+WorkpersonIsAliveWinSetting
 MagazinerName
 MagazinerTitle1
 MagazinerSetTimeSetting

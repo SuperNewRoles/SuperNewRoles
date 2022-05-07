@@ -24,6 +24,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!RoleClass.Minimalist.UseSabo && player.isRole(CustomRPC.RoleId.Minimalist)) return false;
                 if (!RoleClass.Egoist.UseSabo && player.isRole(CustomRPC.RoleId.Egoist)) return false;
             }
+            if (PlayerControl.LocalPlayer.IsUseVent() && RoleHelpers.IsComms())
+            {
+                var data = BattleRoyal.main.VentData[PlayerControl.LocalPlayer.PlayerId];
+                if (data != null)
+                {
+                    PlayerControl.LocalPlayer.MyPhysics.RpcExitVent((int)data);
+                }
+            }
             return true;
         }
         public static void StartMeeting(MeetingHud __instance)
