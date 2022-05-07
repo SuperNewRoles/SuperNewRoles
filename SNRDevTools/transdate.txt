@@ -224,7 +224,7 @@ SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキ
 SheriffCoolDownSetting,Sheriff's Kill Cooldown,シェリフのキルクールダウン
 SheriffIsKillNewtralSetting,Can Kill a Neutral,第三陣営をキルできる
 SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる
-SheriffIsKillMadRoleSetting,Can Kill a Madmate,マッド系役職をキルできる
+SheriffIsKillMadRoleSetting,Can Kill a MadRole,マッド系役職をキルできる
 SheriffYes,Yes,できる
 SheriffNo,No,できない
 SheriffMaxKillCountSetting,Maximum number of kills for Sheriff,シェリフの最大キル数
@@ -458,6 +458,7 @@ EvilEraserTitle1,Let's wipe out their abilities.,能力を消し去ろう
 EvilEraserMaxCountSetting,Max Erase Count,最大削除回数
 WorkpersonName,Work person,仕事人
 WorkpersonTitle1,Let's do the work and win!,仕事をして勝利しよう
+WorkpersonIsAliveWinSetting,You have to be alive to win,生存していないと勝利できない
 MagazinerName,Magaziner,マガジナー
 MagazinerTitle1,Save your kills!,キルを貯めよう
 MagazinerSetTimeSetting,Kill cool time after magazine use,マガジン使用後のキルクールタイム
