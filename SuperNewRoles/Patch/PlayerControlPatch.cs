@@ -98,8 +98,8 @@ namespace SuperNewRoles.Patches
                     {
                         if (__instance.isAlive() && target.isAlive())
                         {
-                            target.Data.IsDead = true;
                             __instance.RpcMurderPlayer(target);
+                            target.Data.IsDead = true;
                         }
                     } else
                     {
