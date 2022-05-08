@@ -402,6 +402,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption ObserverOption;
         public static CustomOption ObserverPlayerCount;
 
+        public static CustomRoleOption VampireOption;
+        public static CustomOption VampirePlayerCount;
+        public static CustomOption VampireKillDelay;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -837,6 +841,10 @@ namespace SuperNewRoles.CustomOption
 
             ObserverOption = new CustomRoleOption(356, true, CustomOptionType.Crewmate, "ObserverName", RoleClass.Observer.color, 1);
             ObserverPlayerCount = CustomOption.Create(357, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ObserverOption);
+
+            VampireOption = new CustomRoleOption(358, false, CustomOptionType.Impostor, "VampireName", RoleClass.Vampire.color, 1);
+            VampirePlayerCount = CustomOption.Create(359, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VampireOption);
+            VampireKillDelay = CustomOption.Create(360, false, CustomOptionType.Impostor, "VampireKillDelay", 0f, 1f, 60f, 0.5f, VampireOption, format: "unitSeconds");
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

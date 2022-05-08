@@ -96,6 +96,7 @@ namespace SuperNewRoles.CustomRPC
         Celebrity,
         Nocturnality,
         Observer,
+        Vampire,
         //RoleId
     }
 

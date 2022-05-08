@@ -442,6 +442,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Observer):
                     Roles.RoleClass.Observer.ObserverPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Vampire):
+                    Roles.RoleClass.Vampire.VampirePlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -676,7 +679,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Observer):
                     Roles.RoleClass.Observer.ObserverPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (CustomRPC.RoleId.Vampire):
+                    Roles.RoleClass.Vampire.VampirePlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -1241,7 +1247,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Observer;
                 }
-                //ロールチェック
+                else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Vampire;
+            }
+            //ロールチェック
 
             }
             catch (Exception e)

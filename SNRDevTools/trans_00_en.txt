@@ -550,3 +550,6 @@ Nocturnality
 You live in darkness.
 Observer
 Let's monitor everything.
+Vampire
+Let's do a delayed kill.
+Kill Delay

@@ -37,6 +37,14 @@ namespace SuperNewRoles.Patches
             if (!ModeHandler.isMode(ModeId.Default)) return true;
             if (__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.CanMove)
             {
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
+                {
+                    PlayerControl.LocalPlayer.killTimer = RoleHelpers.getCoolTime(PlayerControl.LocalPlayer);
+                    RoleClass.Vampire.target = __instance.currentTarget;
+                    RoleClass.Vampire.KillTimer = DateTime.Now;
+                    RoleClass.Vampire.Timer = RoleClass.Vampire.KillDelay;
+                    return false;
+                }
                 bool showAnimation = true;
                 /*
                 if (PlayerControl.LocalPlayer.isRole(RoleType.Ninja) && Ninja.isStealthed(PlayerControl.LocalPlayer))
