@@ -550,3 +550,6 @@ NocturnalityName
 NocturnalityTitle1
 ObserverName
 ObserverTitle1
+VampireName
+VampireTitle1
+VampireKillDelay

@@ -110,6 +110,7 @@ namespace SuperNewRoles.Roles
             Celebrity.ClearAndReload();
             Nocturnality.ClearAndReload();
             Observer.ClearAndReload();
+            Vampire.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1523,6 +1524,23 @@ namespace SuperNewRoles.Roles
             {
                 ObserverPlayer = new List<PlayerControl>();
                 IsVoteView = true;
+            }
+        }
+        public static class Vampire
+        {
+            public static List<PlayerControl> VampirePlayer;
+            public static Color32 color = ImpostorRed;
+            public static PlayerControl target;
+            public static float KillDelay;
+            public static float Timer;
+            public static DateTime KillTimer;
+            public static void ClearAndReload()
+            {
+                VampirePlayer = new List<PlayerControl>();
+                target = null;
+                KillDelay = CustomOptions.VampireKillDelay.getFloat();
+                Timer = 0;
+                KillTimer = DateTime.Now;
             }
         }
         //新ロールクラス
