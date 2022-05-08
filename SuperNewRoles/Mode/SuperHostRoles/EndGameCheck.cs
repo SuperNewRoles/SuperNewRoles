@@ -242,6 +242,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
+                            Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                            Writer.Write((byte)CustomGameOverReason.WorkpersonWin);
+                            Writer.EndRPC();
+                            CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.WorkpersonWin);
                             Chat.WinCond = CustomGameOverReason.WorkpersonWin;
                             __instance.enabled = false;
                             CustomEndGame(__instance, (GameOverReason)CustomGameOverReason.CrewmateWin, false);

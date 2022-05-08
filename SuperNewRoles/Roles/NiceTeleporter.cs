@@ -6,12 +6,12 @@ using System.Text;
 
 namespace SuperNewRoles.Roles
 {
-    class Teleporter
+    class NiceTeleporter
     {
         public static void ResetCoolDown()
         {
-            HudManagerStartPatch.TeleporterButton.MaxTimer = RoleClass.Teleporter.CoolTime;
-            RoleClass.Teleporter.ButtonTimer = DateTime.Now;
+            HudManagerStartPatch.TeleporterButton.MaxTimer = RoleClass.NiceTeleporter.CoolTime;
+            RoleClass.NiceTeleporter.ButtonTimer = DateTime.Now;
         }
         public static void TeleportStart()
         {
@@ -30,9 +30,9 @@ namespace SuperNewRoles.Roles
             Writer.Write(player.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
         }
-        public static bool IsTeleporter(PlayerControl Player)
+        public static bool IsNiceTeleporter(PlayerControl Player)
         {
-            if (RoleClass.Teleporter.TeleporterPlayer.IsCheckListPlayerControl(Player))
+            if (RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(Player))
             {
                 return true;
             }
@@ -43,8 +43,8 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Teleporter.CoolTime;
-            RoleClass.Teleporter.ButtonTimer = DateTime.Now;
+            HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.NiceTeleporter.CoolTime;
+            RoleClass.NiceTeleporter.ButtonTimer = DateTime.Now;
         }
     }
 }

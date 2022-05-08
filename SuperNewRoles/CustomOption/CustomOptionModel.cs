@@ -677,18 +677,8 @@ namespace SuperNewRoles.CustomOption
             // Setup mapNameTransform
             var mapNameTransform = __instance.AllItems.FirstOrDefault(x => x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
             if (mapNameTransform == null) return;
-
-            var options = new Il2CppSystem.Collections.Generic.List<Il2CppSystem.Collections.Generic.KeyValuePair<string, int>>();
-            for (int i = 0; i < Constants.MapNames.Length; i++)
-            {
-                if (i == 3) continue; // ignore dleks
-                var kvp = new Il2CppSystem.Collections.Generic.KeyValuePair<string, int>();
-                kvp.key = Constants.MapNames[i];
-                kvp.value = i;
-                options.Add(kvp);
-            }
-            mapNameTransform.GetComponent<KeyValueOption>().Values = options;
             mapNameTransform.gameObject.active = true;
+
             foreach (Transform i in __instance.AllItems.ToList())
             {
                 float num = -0.5f;
@@ -742,6 +732,79 @@ namespace SuperNewRoles.CustomOption
         }
     }
 
+    [HarmonyPatch(typeof(GameOptionsData),nameof(GameOptionsData.ToHudString))]
+    class tohudstring
+    {
+        public static bool Prefix(ref string __result,GameOptionsData __instance, [HarmonyArgument(0)] int numPlayers)
+        {
+            __instance.settings.Length = 0;
+            try
+            {
+                __instance.settings.AppendLine(DestroyableSingleton<TranslationController>.Instance.GetString(__instance.isDefaults ? StringNames.GameRecommendedSettings : StringNames.GameCustomSettings));
+                int num = 0;
+                try
+                {
+                    num = GameOptionsData.MaxImpostors[numPlayers];
+                }
+                catch
+                {
+                    num = __instance.NumImpostors;
+                }
+                int num2 = ((__instance.MapId == 0 && Constants.ShouldFlipSkeld()) ? 3 : __instance.MapId);
+                string value = Constants.MapNames[num2];
+                __instance.AppendItem(__instance.settings, StringNames.GameMapName, value);
+                __instance.settings.Append($"{DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameNumImpostors)}: {__instance.NumImpostors}");
+                if (__instance.NumImpostors > num)
+                {
+                    __instance.settings.Append($" ({DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Limit)}: {num})");
+                }
+                __instance.settings.AppendLine();
+                if (__instance.gameType == GameType.Normal)
+                {
+                    __instance.AppendItem(__instance.settings, StringNames.GameConfirmImpostor, __instance.ConfirmImpostor);
+                    __instance.AppendItem(__instance.settings, StringNames.GameNumMeetings, __instance.NumEmergencyMeetings);
+                    __instance.AppendItem(__instance.settings, StringNames.GameAnonymousVotes, __instance.AnonymousVotes);
+                    __instance.AppendItem(__instance.settings, StringNames.GameEmergencyCooldown, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.EmergencyCooldown));
+                    __instance.AppendItem(__instance.settings, StringNames.GameDiscussTime, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.DiscussionTime));
+                    if (__instance.VotingTime > 0)
+                    {
+                        __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.VotingTime));
+                    }
+                    else
+                    {
+                        __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev, "∞"));
+                    }
+                    __instance.AppendItem(__instance.settings, StringNames.GamePlayerSpeed, __instance.PlayerSpeedMod, "x");
+                    __instance.AppendItem(__instance.settings, StringNames.GameCrewLight, __instance.CrewLightMod, "x");
+                    __instance.AppendItem(__instance.settings, StringNames.GameImpostorLight, __instance.ImpostorLightMod, "x");
+                    __instance.AppendItem(__instance.settings, StringNames.GameKillCooldown, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.KillCooldown));
+                    __instance.AppendItem(__instance.settings, StringNames.GameKillDistance, DestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(204 + __instance.KillDistance)));
+                    __instance.AppendItem(__instance.settings, StringNames.GameTaskBarMode, DestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(277 + __instance.TaskBarMode)));
+                    __instance.AppendItem(__instance.settings, StringNames.GameVisualTasks, __instance.VisualTasks);
+                    __instance.AppendItem(__instance.settings, StringNames.GameCommonTasks, __instance.NumCommonTasks);
+                    __instance.AppendItem(__instance.settings, StringNames.GameLongTasks, __instance.NumLongTasks);
+                    __instance.AppendItem(__instance.settings, StringNames.GameShortTasks, __instance.NumShortTasks);
+                    if (__instance.gameType == GameType.Normal)
+                    {
+                        RoleBehaviour[] allRoles = DestroyableSingleton<RoleManager>.Instance.AllRoles;
+                        foreach (RoleBehaviour roleBehaviour in allRoles)
+                        {
+                            if (roleBehaviour.Role != 0 && roleBehaviour.Role != RoleTypes.Impostor)
+                            {
+                                __instance.AppendItem(__instance.settings, DestroyableSingleton<TranslationController>.Instance.GetString(roleBehaviour.StringName) + ": " + string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.RoleChanceAndQuantity), __instance.RoleOptions.GetNumPerGame(roleBehaviour.Role), __instance.RoleOptions.GetChancePerGame(roleBehaviour.Role)));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
+            }
+            __result = __instance.settings.ToString();
+            return false;
+        }
+    }
     [HarmonyPatch]
     class GameOptionsDataPatch
     {

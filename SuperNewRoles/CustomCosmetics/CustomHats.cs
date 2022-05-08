@@ -206,7 +206,7 @@ namespace SuperNewRoles.CustomCosmetics
         private static class HatManagerPatch
         {
             private static bool LOADED;
-            private static bool RUNNING;
+            private static bool RUNNING = false;
 
             static void Prefix(HatManager __instance)
             {
@@ -239,10 +239,6 @@ namespace SuperNewRoles.CustomCosmetics
                         System.Console.WriteLine("Unable to add Custom Hats\n" + e);
                 }
                 LOADED = true;
-            }
-            static void Postfix(HatManager __instance)
-            {
-                RUNNING = false;
             }
         }
 

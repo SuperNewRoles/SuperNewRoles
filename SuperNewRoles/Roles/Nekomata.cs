@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
 using SuperNewRoles.EndGame;
+using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,7 @@ namespace SuperNewRoles.Roles
     class Nekomata
     {
         public static void NekomataEnd(GameData.PlayerInfo __instance) {
+            if (!ModeHandler.isMode(ModeId.Default)) return;
             if (__instance == null) return; 
             if (AmongUsClient.Instance.AmHost) {
                 if (__instance != null && RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(__instance.Object) || RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object))

@@ -164,15 +164,24 @@ namespace SuperNewRoles
                     bool IsSend = false;
                     if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
                     {
-                        target.RpcProtectPlayer(target, 0);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                        writer.Write(target.PlayerId);
+                        writer.Write(target.PlayerId);
+                        writer.Write(0);
+                        writer.EndRPC();
+                        RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
                         IsSend = true;
                     }
                     else
                     {
                         if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
                         {
-                            RoleClass.StuntMan.GuardCount[target.PlayerId]--;
-                            target.RpcProtectPlayer(target, 0);
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                            writer.Write(target.PlayerId);
+                            writer.Write(target.PlayerId);
+                            writer.Write(0);
+                            writer.EndRPC();
+                            RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
                             IsSend = true;
                         }
                     }
@@ -181,6 +190,7 @@ namespace SuperNewRoles
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
                         writer.Write(target.PlayerId);
                         writer.EndRPC();
+                        RPCProcedure.UseStuntmanCount(target.PlayerId);
                     }
                 }
             }
@@ -189,17 +199,37 @@ namespace SuperNewRoles
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, killer))
                 {
                     bool IsSend = false;
+                    if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
                     {
-                        target.RpcProtectPlayer(target, 0);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                        writer.Write(target.PlayerId);
+                        writer.Write(target.PlayerId);
+                        writer.Write(0);
+                        writer.EndRPC();
+                        RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
                         IsSend = true;
                     }
-                    
+                    else
+                    {
+                        if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
+                        {
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                            writer.Write(target.PlayerId);
+                            writer.Write(target.PlayerId);
+                            writer.Write(0);
+                            writer.EndRPC();
+                            RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
+                            IsSend = true;
+                        }
+                    }
+
 
                     if (IsSend)
                     {
-                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseMadStuntmanCount);
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
                         writer.Write(target.PlayerId);
                         writer.EndRPC();
+                        RPCProcedure.UseStuntmanCount(target.PlayerId);
                     }
                 }
             }
@@ -247,22 +277,48 @@ namespace SuperNewRoles
 
             return tasks.ToArray().ToList();
         }
+        static float tien;
         public static MurderAttemptResult checkMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
             // The kill attempt will be shared using a custom RPC, hence combining modded and unmodded versions is impossible
 
+            tien = 0;
+
             MurderAttemptResult murder = checkMuderAttempt(killer, target, isMeetingStart);
             if (murder == MurderAttemptResult.PerformKill)
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
-                writer.Write(killer.PlayerId);
-                writer.Write(target.PlayerId);
-                writer.Write(showAnimation ? Byte.MaxValue : 0);
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
+                if (tien <= 0)
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                    writer.Write(killer.PlayerId);
+                    writer.Write(target.PlayerId);
+                    writer.Write(showAnimation ? byte.MaxValue : 0);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
+                } else
+                {
+                    new LateTask(() =>
+                    {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                        writer.Write(killer.PlayerId);
+                        writer.Write(target.PlayerId);
+                        writer.Write(showAnimation ? byte.MaxValue : 0);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
+                    },tien);
+                }
             }
             return murder;
+        }
+        public static void UncheckedMurderPlayer(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
+        {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+            writer.Write(killer.PlayerId);
+            writer.Write(target.PlayerId);
+            writer.Write(showAnimation ? byte.MaxValue : 0);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
         }
         public static void SetPrivateRole(this PlayerControl player, RoleTypes role, PlayerControl seer = null)
         {
@@ -307,6 +363,16 @@ namespace SuperNewRoles
             return null;
         }
 
+        public static bool isCustomServer()
+        {
+            if (DestroyableSingleton<ServerManager>.Instance == null) return false;
+            StringNames n = DestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
+            return n != StringNames.ServerNA && n != StringNames.ServerEU && n != StringNames.ServerAS;
+        }
+        public static object TryCast(this Il2CppObjectBase self, Type type)
+        {
+            return AccessTools.Method(self.GetType(), nameof(Il2CppObjectBase.TryCast)).MakeGenericMethod(type).Invoke(self, Array.Empty<object>());
+        }
         internal static string cs(object unityEngine, string v)
         {
             throw new NotImplementedException();

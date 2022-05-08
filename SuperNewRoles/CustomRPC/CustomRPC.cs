@@ -15,6 +15,7 @@ using static SuperNewRoles.EndGame.FinalStatusPatch;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Sabotage;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.CustomRPC
 {
@@ -90,6 +91,12 @@ namespace SuperNewRoles.CustomRPC
         MadJester,
         MadStuntMan,
         MadHawk,
+        FalseCharges,
+        NiceTeleporter,
+        Celebrity,
+        Nocturnality,
+        Observer,
+        DarkKiller,
         //RoleId
     }
 
@@ -138,19 +145,47 @@ namespace SuperNewRoles.CustomRPC
         SetCustomSabotage,
         UseStuntmanCount,
         UseMadStuntmanCount,
+        CustomEndGame,
+        UncheckedProtect
     }
     public static class RPCProcedure
     {
+        public static void UncheckedProtect(byte sourceid, byte playerid,byte colorid)
+        {
+            PlayerControl player = ModHelpers.playerById(playerid);
+            PlayerControl source = ModHelpers.playerById(sourceid);
+            if (player == null || source == null) return;
+            source.ProtectPlayer(player,colorid);
+        }
+        public static void CustomEndGame(GameOverReason reason, bool showAd)
+        {
+            CheckGameEndPatch.CustomEndGame(reason, showAd);
+        }
         public static void UseStuntmanCount(byte playerid)
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
-            if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
+            if (player.isRole(RoleId.MadStuntMan))
             {
-                RoleClass.StuntMan.GuardCount[playerid] = ((int)CustomOptions.StuntManMaxGuardCount.getFloat())-1;
-            } else
+                if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(playerid))
+                {
+                    RoleClass.MadStuntMan.GuardCount[playerid] = ((int)CustomOptions.MadStuntManMaxGuardCount.getFloat()) - 1;
+                }
+                else
+                {
+                    RoleClass.MadStuntMan.GuardCount[playerid]--;
+                }
+            }
+            else if (player.isRole(RoleId.StuntMan))
             {
-                RoleClass.StuntMan.GuardCount[playerid]--;
+                if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
+                {
+                    RoleClass.StuntMan.GuardCount[playerid] = ((int)CustomOptions.StuntManMaxGuardCount.getFloat()) - 1;
+                }
+                else
+                {
+                    RoleClass.StuntMan.GuardCount[playerid]--;
+                }
             }
         }
         public static void SetMadKiller(byte sourceid,byte targetid)
@@ -175,7 +210,7 @@ namespace SuperNewRoles.CustomRPC
         public static void TORVersionShare(int major, int minor, int build, int revision, byte[] guid, int clientId)
         {
             /*
-            SuperNewRolesPlugin.Logger.LogInfo("TORGMÉVÉFÉAÇ†Ç†Ç†ÅI");
+            SuperNewRolesPlugin.Logger.LogInfo("TORGM„Ç∑„Çß„Ç¢„ÅÇ„ÅÇ„ÅÇÔºÅ");
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, Hazel.SendOption.Reliable, clientId);
             writer.WritePacked(major);
             writer.WritePacked(minor);
@@ -404,13 +439,13 @@ namespace SuperNewRoles.CustomRPC
             if (sheriff == null || target == null) return;
             if (!PlayerControl.LocalPlayer.isAlive())
             {
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "ÇÕ" + target.name + "ÇÉVÉFÉäÉtÉLÉãÇµÇΩÅI");
+                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "„ÅØ" + target.name + "„Çí„Ç∑„Çß„É™„Éï„Ç≠„É´„Åó„ÅüÔºÅ");
                 if (MissFire)
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "ÇÕåÎîöÇµÇΩÅI");
+                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "„ÅØË™§ÁàÜ„Åó„ÅüÔºÅ");
                 } else
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "ÇÕê¨å˜ÇµÇΩÅI");
+                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "„ÅØÊàêÂäü„Åó„ÅüÔºÅ");
                 }
             }
             if (MissFire)
@@ -436,7 +471,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
                 {
-                    if (pva.TargetPlayerId ==Å@SheriffId && MissFire)
+                    if (pva.TargetPlayerId ==„ÄÄSheriffId && MissFire)
                     {
                         pva.SetDead(pva.DidReport, true);
                         pva.Overlay.gameObject.SetActive(true);
@@ -600,12 +635,23 @@ namespace SuperNewRoles.CustomRPC
         public static void ShareWinner(byte playerid)
         {
             PlayerControl player = ModHelpers.playerById(playerid);
-            EndGame.OnGameEndPatch.WinnerPlayer = player;
+            if (ModeHandler.isMode(ModeId.BattleRoyal))
+            {
+                Mode.BattleRoyal.main.Winners.Add(player);
+            }
+            else
+            {
+                EndGame.OnGameEndPatch.WinnerPlayer = player;
+            }
         }
         public static void TeleporterTP(byte playerid)
         {
             var p = ModHelpers.playerById(playerid);
             PlayerControl.LocalPlayer.transform.position = p.transform.position;
+            if (SubmergedCompatibility.isSubmerged())
+            {
+                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
+            }
             new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"),p.nameText.text), 3);
         }
         public static void SetWinCond(byte Cond)
@@ -780,6 +826,15 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.SetCustomSabotage:
                         SabotageManager.SetSabotage(ModHelpers.playerById(reader.ReadByte()),(SabotageManager.CustomSabotage)reader.ReadByte(),reader.ReadBoolean());
+                        break;
+                    case (byte)CustomRPC.CustomEndGame:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
+                        }
+                        break;
+                    case (byte)CustomRPC.UncheckedProtect:
+                        UncheckedProtect(reader.ReadByte(),reader.ReadByte(),reader.ReadByte());
                         break;
                 }
             }

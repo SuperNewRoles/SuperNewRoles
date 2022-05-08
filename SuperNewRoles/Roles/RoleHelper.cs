@@ -426,6 +426,25 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadHawk):
                     Roles.RoleClass.MadHawk.MadHawkPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.FalseCharges):
+                    Roles.RoleClass.FalseCharges.FalseChargesPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.NiceTeleporter):
+                    Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Celebrity):
+                    Roles.RoleClass.Celebrity.CelebrityPlayer.Add(player);
+                    Roles.RoleClass.Celebrity.ViewPlayers.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Nocturnality):
+                    Roles.RoleClass.Nocturnality.NocturnalityPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Observer):
+                    Roles.RoleClass.Observer.ObserverPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.DarkKiller):
+                    Roles.RoleClass.DarkKiller.DarkKillerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -636,7 +655,6 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadHawk):
                     Roles.RoleClass.MadHawk.MadHawkPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
                 case (CustomRPC.RoleId.NiceHawk):
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
                     break;
@@ -646,7 +664,26 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadJester):
                     Roles.RoleClass.MadJester.MadJesterPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.FalseCharges):
+                    Roles.RoleClass.FalseCharges.FalseChargesPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.NiceTeleporter):
+                    Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Celebrity):
+                    Roles.RoleClass.Celebrity.CelebrityPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Nocturnality):
+                    Roles.RoleClass.Nocturnality.NocturnalityPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Observer):
+                    Roles.RoleClass.Observer.ObserverPlayer.RemoveAll(ClearRemove);
+                    break;
+                    case (CustomRPC.RoleId.DarkKiller):
+                    Roles.RoleClass.DarkKiller.DarkKillerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
+
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -719,7 +756,10 @@ namespace SuperNewRoles
                 case (RoleId.MadJester):
                     IsTaskClear = true;
                     break;
-                    //タスククリアか
+                    case (RoleId.FalseCharges):
+                    IsTaskClear = true;
+                    break; 
+                //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
             {
@@ -739,6 +779,7 @@ namespace SuperNewRoles
         {
             if (!RoleClass.Minimalist.UseVent && player.isRole(RoleId.Minimalist)) return false;
             if (player.Data.Role.IsImpostor) return true;
+            if (ModeHandler.isMode(ModeId.SuperHostRoles) && IsComms()) return false;
             if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Jester.IsUseVent) return true;
             if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMate.IsUseVent) return true;
             if ((RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player) || 
@@ -758,6 +799,18 @@ namespace SuperNewRoles
             {
                 foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                     if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles)
+                        return true;
+            }
+            catch { }
+            return false;
+        }
+        public static bool IsComms()
+        {
+            try
+            {
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                    if (task.TaskType == TaskTypes.FixComms)
+                    if (task.TaskType == TaskTypes.FixComms)
                         return true;
             }
             catch { }
@@ -822,6 +875,9 @@ namespace SuperNewRoles
                 case (RoleId.Amnesiac):
                     IsNeutral = true;
                     break;
+                case (RoleId.FalseCharges):
+                    IsNeutral = true;
+                    break;
                 //第三か
             }
             return IsNeutral;
@@ -862,6 +918,7 @@ namespace SuperNewRoles
                 else if (__instance.isRole(RoleId.MadKiller)) addition = RoleClass.SideKiller.MadKillerCoolTime;
                 else if (__instance.isRole(RoleId.Minimalist)) addition = RoleClass.Minimalist.KillCoolTime;
                 else if (__instance.isRole(RoleId.Survivor)) addition = RoleClass.Survivor.KillCoolTime;
+                else if (__instance.isRole(RoleId.DarkKiller)) addition = RoleClass.DarkKiller.KillCoolTime;
             }
             return addition;
         }
@@ -1159,19 +1216,48 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Bakery;
                 }
-            else if (Roles.RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MadHawk;
-            }
+                else if (Roles.RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadHawk;
+                }
                 else if (Roles.RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(player))
                 {
-                return CustomRPC.RoleId.MadJester;
+                    return CustomRPC.RoleId.MadJester;
                 }
+                else if (Roles.RoleClass.FalseCharges.FalseChargesPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.FalseCharges;
+                }
+                else if (Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceTeleporter;
+                }
+                else if (Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.NiceTeleporter;
+                }
+                else if (Roles.RoleClass.Celebrity.CelebrityPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Celebrity;
+                }
+                else if (Roles.RoleClass.Nocturnality.NocturnalityPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Nocturnality;
+                }
+                else if (Roles.RoleClass.Observer.ObserverPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Observer;
+                }
+                else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.DarkKiller;
+            }
             //ロールチェック
 
             }
-            catch (Exception e) {
-            
+            catch (Exception e)
+            {
+
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
                 return RoleId.DefaultRole;
             }

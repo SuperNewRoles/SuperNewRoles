@@ -60,8 +60,10 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
     class CheckMurderPatch
     {
+        public static bool isKill = false;
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
+            SuperNewRolesPlugin.Logger.LogInfo("キル:" + __instance.name + "(" + __instance.PlayerId + ")" + " => " + target.name + "(" + target.PlayerId + ")");
             if (__instance.isDead()) return false;
             if (__instance.PlayerId == target.PlayerId) { __instance.RpcMurderPlayer(target); return false; }
             if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
@@ -70,45 +72,63 @@ namespace SuperNewRoles.Patches
             {
                 return true;
             }
-            if (ModeHandler.isMode(ModeId.BattleRoyal)) return true;
+            if (ModeHandler.isMode(ModeId.BattleRoyal))
+            {
+                if (isKill)
+                {
+                    return false;
+                }
+                if (Mode.BattleRoyal.main.StartSeconds <= 0)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("キルでした:" + __instance.name + "(" + __instance.PlayerId + ")" + " => " + target.name + "(" + target.PlayerId + ")");
+                    if (Mode.BattleRoyal.main.IsTeamBattle)
+                    {
+                        foreach (List<PlayerControl> teams in Mode.BattleRoyal.main.Teams)
+                        {
+                            if (teams.Count > 0)
+                            {
+                                if (teams.IsCheckListPlayerControl(__instance) && teams.IsCheckListPlayerControl(target))
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                    if (__instance.PlayerId != 0)
+                    {
+                        if (__instance.isAlive() && target.isAlive())
+                        {
+                            __instance.RpcMurderPlayer(target);
+                            target.Data.IsDead = true;
+                        }
+                    } else
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("レートタスク:"+ (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                        isKill = true;
+                        new LateTask(() => {
+                            if (__instance.isAlive() && target.isAlive())
+                            {
+                                __instance.RpcMurderPlayer(target);
+                            }
+                            isKill = false;
+                            }, (AmongUsClient.Instance.Ping / 1000f)* 1.1f);
+                    }
+                    return false;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            if (ModeHandler.isMode(ModeId.Zombie)) return false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
-                if (target.isRole(RoleId.StuntMan) && !__instance.isRole(RoleId.OverKiller))
+                if (__instance.isRole(RoleId.FalseCharges))
                 {
-                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
-                    {
-                        if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
-                        {
-                            RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
-                            target.RpcProtectPlayer(target, 0);
-                        }
-                        else
-                        {
-                            if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
-                            {
-                                RoleClass.StuntMan.GuardCount[target.PlayerId]--;
-                                target.RpcProtectPlayer(target, 0);
-                            }
-                        }
-                    }
-                }
-                if (target.isRole(RoleId.MadStuntMan) && !__instance.isRole(RoleId.OverKiller))
-                {
-                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, __instance))
-                    {
-                        if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
-                        {
-                            target.RpcProtectPlayer(target, 0);
-                        }
-                        else
-                        {
-                            if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
-                            {
-                                RoleClass.MadStuntMan.GuardCount[target.PlayerId]--;
-                                target.RpcProtectPlayer(target, 0);
-                            }
-                        }
-                    }
+                    target.RpcMurderPlayer(__instance);
+                    RoleClass.FalseCharges.FalseChargePlayers[__instance.PlayerId] = target.PlayerId;
+                    RoleClass.FalseCharges.AllTurns[__instance.PlayerId] = RoleClass.FalseCharges.DefaultTurn;
+                    return false;
                 }
             }
             if (ModeHandler.isMode(ModeId.Detective) && target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
@@ -158,6 +178,51 @@ namespace SuperNewRoles.Patches
                     } else
                     {
                         return false;
+                    }
+                }
+                if (target.isRole(RoleId.StuntMan) && !__instance.isRole(RoleId.OverKiller))
+                {
+                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
+                    {
+                        if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
+                        {
+                            RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
+                            target.RpcProtectPlayer(target, 0);
+                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                            return false;
+                        }
+                        else
+                        {
+                            if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
+                            {
+                                RoleClass.StuntMan.GuardCount[target.PlayerId]--;
+                                target.RpcProtectPlayer(target, 0);
+                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                                return false;
+                            }
+                        }
+                    }
+                }
+                if (target.isRole(RoleId.MadStuntMan) && !__instance.isRole(RoleId.OverKiller))
+                {
+                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, __instance))
+                    {
+                        if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
+                        {
+                            target.RpcProtectPlayer(target, 0);
+                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                            return false;
+                        }
+                        else
+                        {
+                            if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
+                            {
+                                RoleClass.MadStuntMan.GuardCount[target.PlayerId]--;
+                                target.RpcProtectPlayer(target, 0);
+                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                                return false;
+                            }
+                        }
                     }
                 }
             }

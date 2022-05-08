@@ -2,7 +2,7 @@ while True:
     rolename = input("Role名:")
     intronum = int(input("イントロ数:"))
     team = input("陣営(0:インポ,1:第三陣営,2:クルー):")
-    baseurl = r"C:\\Users\\10User\\source\\repos\\SuperNewRoles\\SuperNewRoles\\"
+    baseurl = r"..\\SuperNewRoles\\"
     if team=="0":
         color ="ImpostorRed"
     else:
@@ -21,9 +21,9 @@ while True:
         isimpo = True
     else:
         isimpo = False
-    with open(baseurl+"CustomRPC\\CustomRPC.cs",mode="r") as r:
+    with open(baseurl+"CustomRPC\\CustomRPC.cs",mode="r",encoding="utf-8") as r:
         temp = r.read()
-        with open(baseurl+"CustomRPC\\CustomRPC.cs",mode="w") as f:
+        with open(baseurl+"CustomRPC\\CustomRPC.cs",mode="w",encoding="utf-8") as f:
             temp = temp.replace("//RoleId",rolename+",\n        //RoleId")
             f.write(temp)
     with open(baseurl+"Roles\\RoleClass.cs",mode="r",encoding="utf-8") as r:

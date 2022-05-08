@@ -47,6 +47,7 @@ Melon
 Crasyu Blue
 Light Green
 <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats
+enable MirroMap
 Preset
 <color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings
 <color=#ff0000>Impostor</color> Settings
@@ -122,6 +123,10 @@ Non-Detective cannot vote
 Non-Detective cannot press the conference button
 Detective
 Guess and win over your crewmates!
+You can see how many player are left alive.
+Team competition
+Number of teams
+Seconds to be able to make a kill
 Crewmate
 Use Task
 Default Crewmate.
@@ -133,6 +138,13 @@ Infect other players!
 Police
 Let's finish the task.
 Zombies incoming! {0}s
+Time until the zombies come.
+Zombie Visibility
+Zombie Speed
+Police visibility
+Speed of police
+Light before zombies
+Speed before zombies
 Hide Name
 Change Name Color
 In Meeting Change Color
@@ -211,7 +223,7 @@ Kill the outsider and lead your crewmates to victory!
 Sheriff's Kill Cooldown
 Can Kill a Neutral
 Can Kill a Lovers
-Can Kill a Madmate
+Can Kill a MadRole
 Yes
 No
 Maximum number of kills for Sheriff
@@ -322,6 +334,7 @@ Turn invisible and find the bodies!
 Use the power of science to win!
 Cool Time
 Duration Time
+Hide
 Clergyman
 Let's sabotage the outsider.
 Let's obstruct the outsider's view.
@@ -444,6 +457,7 @@ Let's wipe out their abilities.
 Max Erase Count
 Work person
 Let's do the work and win!
+You have to be alive to win
 Magaziner
 Save your kills!
 Kill cool time after magazine use
@@ -512,12 +526,27 @@ See it all.
 Let's catch the crime.
 Bakery
 Would you like some breads?
+Bakery baked some breads for crewmates.
 MadStuntman
 Prevent kills and connect with impostors.
 UseVent
 Impostor Light
 MadHawk
 See it all.
-Would you like some breads?
 MadJester
 Get voted out and win with the Imposters!
+FalseCharges
+Let the false accusations win!
+Turn of the false accusation range
+Cool Time
+False Charge
+Nice Teleporter
+Teleport and uncover impostors!
+Teleport cool down
+Celebrity
+A Celebrity for everyone!
+Name color will remain Celebrity even if the position changes.
+Nocturnality
+You live in darkness.
+Observer
+Let's monitor everything.

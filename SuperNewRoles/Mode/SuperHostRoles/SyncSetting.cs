@@ -15,6 +15,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void CustomSyncSettings(this PlayerControl player)
         {
             if (!AmongUsClient.Instance.AmHost) return;
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
             var role = player.getRole();
             var optdata = OptionData.DeepCopy();
             switch (role)
@@ -40,6 +41,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.God:
                     optdata.AnonymousVotes = !RoleClass.God.IsVoteView;
+                    break;
+                case RoleId.Observer:
+                    optdata.AnonymousVotes = !RoleClass.Observer.IsVoteView;
                     break;
                 case RoleId.MadMate:
                     if (RoleClass.MadMate.IsUseVent)
@@ -130,6 +134,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.OverKiller:
                     optdata.killCooldown = KillCoolSet(RoleClass.OverKiller.KillCoolTime);
+                    break;
+                case RoleId.FalseCharges:
+                    optdata.ImpostorLightMod = optdata.CrewLightMod;
+                    var switchSystemFalseCharges = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    if (switchSystemFalseCharges != null && switchSystemFalseCharges.IsActive)
+                    {
+                        optdata.ImpostorLightMod /= 5;
+                    }
+                    optdata.killCooldown = KillCoolSet(RoleClass.FalseCharges.CoolTime);
+                    break;
+                case RoleId.Nocturnality:
+                    var switchSystemNocturnality = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    if (switchSystemNocturnality == null || !switchSystemNocturnality.IsActive)
+                    {
+                        optdata.CrewLightMod /= 5;
+                    }
                     break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;

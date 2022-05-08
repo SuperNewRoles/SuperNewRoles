@@ -48,6 +48,7 @@ colorMelon,Melon,メロン
 colorCrasyublue,Crasyu Blue,クラッシュブルー
 colorLightgreen,Light Green,ライトグリーン
 Hat_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats
+enableMirroMap,enable MirroMap,反転マップを有効にする
 SettingpresetSelection,Preset,プリセット
 SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定
 SettingImpostor,<color=#ff0000>Impostor</color> Settings,<color=#ff0000>インポスター</color>の設定
@@ -58,7 +59,7 @@ SettingMaxCrewRole,Maximum Crewmate Roles,クルーメイト役職人数
 SettingMiniNeutralRole,Minimum Neutral Roles,最小第三陣営役職数
 SettingMaxNeutralRole,Maximum Neutral Roles,第三陣営役職人数
 SettingMiniImpoRole,Minimum Impostor Roles,最小インポスター役職数
-SettingMaxImpoRole,Maximum Impostor Roles,インポスター人役職数
+SettingMaxImpoRole,Maximum Impostor Roles,インポスター役職人数
 SettingsHideSetting,Hide Setting,設定を隠す
 SettingCrewMateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定
 SettingImpostorTeamRolesName,Imposter camp position setting,インポスター陣営の役職設定
@@ -123,6 +124,10 @@ DetectiveModeIsNotDetectiveVoteSetting,Non-Detective cannot vote,探偵以外は
 DetectiveModeIsNotDetectiveMeetingButtonSetting,Non-Detective cannot press the conference button,探偵以外が会議ボタンを押せない
 DetectiveName,Detective,探偵
 DetectiveTitle1,Guess and win over your crewmates!,推理してクルーメイトを勝利させよう
+BattleRoyalIsViewAlivePlayer,You can see how many player are left alive.,残り生存人数がわかる
+BattleRoyalIsTeamBattle,Team competition,チーム戦
+BattleRoyalTeamAmount,Number of teams,チーム数
+BattleRoyalStartSeconds,Seconds to be able to make a kill,キルができるようになるまでの秒数
 CrewMateName,Crewmate,クルーメイト
 CrewMateTitle1,Use Task,タスクを行う
 CrewMateDescription,Default Crewmate.,通常のクルーメイトです。
@@ -134,6 +139,13 @@ ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよ
 ZombiePoliceName,Police,警察
 ZombiePoliceTitle1,Let's finish the task.,タスクを終わらせて勝利しよう
 ZombieTimerText,Zombies incoming! {0}s,ゾンビがやってくるまで残り{0}秒！
+ZombieStartSecondSetting,Time until the zombies come.,ゾンビがやってくるまでの時間
+ZombieZombieLightSetting,Zombie Visibility,ゾンビの視界
+ZombieZombieSpeedSetting,Zombie Speed,ゾンビのスピード
+ZombiePoliceLightSetting,Police visibility,警察の視界
+ZombiePoliceSpeedSetting,Speed of police,警察のスピード
+ZombieCommingLightSetting,Light before zombies,ゾンビがやってくる前の視界
+ZombieCommingSpeedSetting,Speed before zombies,ゾンビがやってくる前のスピード
 RandomColorHideNameSetting,Hide Name,名前を隠す
 RandomColorNameColorSetting,Change Name Color,名前の色も変える
 RandomColorMeetingSetting,In Meeting Change Color,会議中にも色を変更する
@@ -210,13 +222,13 @@ SheriffName,Sheriff,シェリフ
 SheriffTitle1,Kill the outsider!,人外をキルしよう
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう
 SheriffCoolDownSetting,Sheriff's Kill Cooldown,シェリフのキルクールダウン
-SheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる
+SheriffIsKillNewtralSetting,Can Kill a Neutral,第三陣営をキルできる
 SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる
-SheriffIsKillMadMateSetting,Can Kill a Madmate,マッドメイドをキルできる
-SheriffIsKillMadMateYes,Yes,できる
-SheriffIsKillMadMateNo,No,できない
+SheriffIsKillMadRoleSetting,Can Kill a MadRole,マッド系役職をキルできる
+SheriffYes,Yes,できる
+SheriffNo,No,できない
 SheriffMaxKillCountSetting,Maximum number of kills for Sheriff,シェリフの最大キル数
-SherifKillButtonName,Kill,キル
+SheriffKillButtonName,Kill,キル
 SheriffNumTextName,{0} shots remaining.,残り{0}発
 MeetingSheriffName,Meeting Sheriff,ミーティング シェリフ
 MeetingSheriffTitle1,Kill an outsider in a meeting!,人外を会議でキルしよう
@@ -224,7 +236,7 @@ MeetingSheriffTitle2,Kill an outsider in a meeting and lead your crewmates to vi
 MeetingSheriffTitle3,Kill an outsider in a meeting to prevent a power play,人外を会議でキルしてパワープレイを防ごう
 MeetingSheriffTitle4,Kill an outsider in a meeting to prevent a PP,人外を会議でキルしてPPを防ごう
 MeetingSheriffIsKillNeutralSetting,Can Kill a Neutral,第三陣営をキルできる
-MeetingSheriffIsKillMadMateSetting,Can Kill a Madmate,マッドメイドをキルできる
+MeetingSheriffIsKillMadRoleSetting,Can Kill a Madmate,マッド系役職をキルできる
 MeetingSheriffYes,Yes,できる
 MeetingSheriffNo,No,できない
 MeetingSheriffMaxKillCountSetting,Maximum number of Meeting Sheriff kills,ミーティングシェリフの最大キル数
@@ -297,7 +309,7 @@ SealdorDurationSetting,Shield duration,シールド継続時間
 FreezerName,Freezer,フリーザー
 FreezerTitle1,Stop everyone and sabotage your crewmates!,みんなを止めてクルーメイトを妨害しよう
 FreezerTitle2,Try to stop everyone and sabotage the task!,みんなを止めてタスクの妨害をしよう
-FreezerTitle2,Let's put them all on ice.,全員を氷漬けにしよう
+FreezerTitle3,Let's put them all on ice.,全員を氷漬けにしよう
 FreezerCoolTimeSetting,Freeze Cool Time,フリーズクールタイム
 FreezerDurationSetting,Freeze duration,フリーズ継続時間
 SpeederName,Speeder,スピーダー
@@ -323,6 +335,7 @@ NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう
 NiceScientistCoolDownSetting,Cool Time,クールタイム
 NiceScientistDurationSetting,Duration Time,継続時間
+ScientistButtonName,Hide,隠れる
 ClergymanName,Clergyman,聖職者
 ClergymanTitle1,Let's sabotage the outsider.,人外の妨害をしよう
 ClergymanTitle2,Let's obstruct the outsider's view.,人外の視界を妨害しよう
@@ -445,6 +458,7 @@ EvilEraserTitle1,Let's wipe out their abilities.,能力を消し去ろう
 EvilEraserMaxCountSetting,Max Erase Count,最大削除回数
 WorkpersonName,Work person,仕事人
 WorkpersonTitle1,Let's do the work and win!,仕事をして勝利しよう
+WorkpersonIsAliveWinSetting,You have to be alive to win,生存していないと勝利できない
 MagazinerName,Magaziner,マガジナー
 MagazinerTitle1,Save your kills!,キルを貯めよう
 MagazinerSetTimeSetting,Kill cool time after magazine use,マガジン使用後のキルクールタイム
@@ -513,12 +527,27 @@ NiceHawkTitle1,See it all.,全てを見渡せ
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう
 BakeryName,Bakery,パン屋
 BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？
+BakeryExileText,Bakery baked some breads for crewmates.,パン屋によってパンが振舞われました。
 MadStuntManName,MadStuntman,マッドスタントマン
 MadStuntManTitle1,Prevent kills and connect with impostors.,キルを防いでインポスターと繋がろう
 MadStuntManUseVentSetting,UseVent,ベントを使える
 MadStuntManImpostorLightSetting,Impostor Light,インポスターの視界
 MadHawkName,MadHawk,マッドホーク
 MadHawkTitle1,See it all.,すべてを見渡そう
-BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？
 MadJesterName,MadJester,マッドてるてる
 MadJesterTitle1,Get voted out and win with the Imposters!,投票で追放されてインポスターと勝利しよう
+FalseChargesName,FalseCharges,冤罪師
+FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう
+FalseChargesExileTurn,Turn of the false accusation range,冤罪の範囲のターン
+FalseChargesCoolTime,Cool Time,クールタイム
+FalseChargesButtonTitle,False Charge,冤罪
+NiceTeleporterName,Nice Teleporter,ナイステレポーター
+NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてインポスターを暴こう
+NiceTeleporterCoolDownSetting,Teleport cool down,テレポートのクールダウン
+CelebrityName,Celebrity,スター
+CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！
+CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる
+NocturnalityName,Nocturnality,夜行性
+NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている
+ObserverName,Observer,選挙管理委員
+ObserverTitle1,Let's monitor everything.,すべてを監視しよう

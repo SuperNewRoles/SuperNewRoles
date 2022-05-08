@@ -28,7 +28,7 @@ namespace SuperNewRoles.Patch
                     if (text.ToLower().StartsWith("/mp "))
                     { // Unfortunately server holds this - need to do more trickery
                         if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.CanBan())
-                        { // checking both just cause
+                        {
                             handled = true;
                             if (!Int32.TryParse(text.Substring(4), out LobbyLimit))
                             {
@@ -36,7 +36,10 @@ namespace SuperNewRoles.Patch
                             }
                             else
                             {
-                                LobbyLimit = Math.Clamp(LobbyLimit, 4, 15);
+                                if (!ModHelpers.isCustomServer())
+                                {
+                                    LobbyLimit = Math.Clamp(LobbyLimit, 4, 15);
+                                }
                                 if (LobbyLimit != PlayerControl.GameOptions.MaxPlayers)
                                 {
                                     PlayerControl.GameOptions.MaxPlayers = LobbyLimit;
@@ -50,7 +53,27 @@ namespace SuperNewRoles.Patch
                                 }
                             }
                         }
-                    } else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    } else if (text.ToLower().StartsWith("/kc "))
+                    { // Unfortunately server holds this - need to do more trickery
+                        if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.CanBan())
+                        {
+                            handled = true;
+                            if (!float.TryParse(text.Substring(4), out var cooltime))
+                            {
+                                __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/kc {キルクールタイム}");
+                            }
+                            var settime = cooltime;
+                            if (settime == 0)
+                            {
+                                settime = 0.00001f;
+                            }
+                            
+                            PlayerControl.GameOptions.KillCooldown = settime;
+                            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+                            __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
+                        }
+                    }
+                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
                         handled = Mode.SuperHostRoles.RoleChat.SendChat(__instance);
                     }

@@ -20,9 +20,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SyncSetting.CustomSyncSettings();
             if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {
-                if (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.truelover)) return false;
+                if (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.truelover) || player.isRole(RoleId.FalseCharges)) return false;
                 if (!RoleClass.Minimalist.UseSabo && player.isRole(CustomRPC.RoleId.Minimalist)) return false;
                 if (!RoleClass.Egoist.UseSabo && player.isRole(CustomRPC.RoleId.Egoist)) return false;
+            }
+            if (PlayerControl.LocalPlayer.IsUseVent() && RoleHelpers.IsComms())
+            {
+                var data = BattleRoyal.main.VentData[PlayerControl.LocalPlayer.PlayerId];
+                if (data != null)
+                {
+                    PlayerControl.LocalPlayer.MyPhysics.RpcExitVent((int)data);
+                }
             }
             return true;
         }

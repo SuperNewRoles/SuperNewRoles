@@ -80,19 +80,27 @@ namespace SuperNewRoles.Patch
                 // Spawn dummys
                 if (Input.GetKeyDown(KeyCode.G))
                 {
-
+                    var id = 0;
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo(p.PlayerId);
+                        if (id < p.PlayerId && p.PlayerId != 255)
+                        {
+                            SuperNewRolesPlugin.Logger.LogInfo("idセット:" + id);
+                            id = p.PlayerId;
+                        }
+                    }
+                    id++;
                     var bot = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
-                    bot.PlayerId = 15;
+                    bot.PlayerId = (byte)id;
                     GameData.Instance.AddPlayer(bot);
-                    bots.Add(bot);
                     AmongUsClient.Instance.Spawn(bot, -2, SpawnFlags.None);
                     bot.transform.position = PlayerControl.LocalPlayer.transform.position;
                     bot.NetTransform.enabled = true;
                     GameData.Instance.RpcSetTasks(bot.PlayerId, new byte[0]);
 
-
                     bot.RpcSetColor((byte)PlayerControl.LocalPlayer.CurrentOutfit.ColorId);
-                    bot.RpcSetName(PlayerControl.LocalPlayer.nameText.text);
+                    bot.RpcSetName(PlayerControl.LocalPlayer.name);
                     bot.RpcSetPet(PlayerControl.LocalPlayer.CurrentOutfit.PetId);
                     bot.RpcSetSkin(PlayerControl.LocalPlayer.CurrentOutfit.SkinId);
                     bot.RpcSetNamePlate(PlayerControl.LocalPlayer.CurrentOutfit.NamePlateId);

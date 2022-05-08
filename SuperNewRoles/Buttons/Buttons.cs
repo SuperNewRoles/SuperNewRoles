@@ -42,6 +42,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton trueloverLoveButton;
         public static CustomButton ImpostorSidekickButton;
         public static CustomButton SideKillerSidekickButton;
+        public static CustomButton FalseChargesFalseChargeButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -62,6 +63,43 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
+
+            FalseChargesFalseChargeButton = new CustomButton(
+                () =>
+                {
+                    if (setTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                        {
+                            PlayerControl.LocalPlayer.CmdCheckMurder(setTarget());
+                        }
+                        else
+                        {
+                            ModHelpers.UncheckedMurderPlayer(setTarget(), PlayerControl.LocalPlayer);
+                            RoleClass.FalseCharges.FalseChargePlayer = setTarget().PlayerId;
+                            RoleClass.FalseCharges.Turns = RoleClass.FalseCharges.DefaultTurn;
+                        }
+                    }
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.FalseCharges); },
+                () =>
+                {
+                    return setTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { FalseChargesFalseChargeButton.MaxTimer = RoleClass.FalseCharges.CoolTime;
+                    FalseChargesFalseChargeButton.Timer = RoleClass.FalseCharges.CoolTime;
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8
+            );
+
+            FalseChargesFalseChargeButton.buttonText = ModTranslation.getString("FalseChargesButtonTitle");
+            FalseChargesFalseChargeButton.showButtonText = true;
+
             trueloverLoveButton = new CustomButton(
                   () =>
                   {
@@ -173,7 +211,7 @@ namespace SuperNewRoles.Buttons
                 49
             );
 
-            ScientistButton.buttonText = ModTranslation.getString("MovingButtonTpName");
+            ScientistButton.buttonText = ModTranslation.getString("ScientistButtonName");
             ScientistButton.showButtonText = true;
 
             HawkHawkEyeButton = new CustomButton(
@@ -439,7 +477,7 @@ namespace SuperNewRoles.Buttons
                     Teleporter.TeleportStart();
                     Teleporter.ResetCoolDown();
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (Teleporter.IsTeleporter(PlayerControl.LocalPlayer) || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Teleporter)); },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (Teleporter.IsTeleporter(PlayerControl.LocalPlayer) || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Teleporter)) || RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (NiceTeleporter.IsNiceTeleporter(PlayerControl.LocalPlayer)); },
                 () =>
                 {
                     return true && PlayerControl.LocalPlayer.CanMove;
