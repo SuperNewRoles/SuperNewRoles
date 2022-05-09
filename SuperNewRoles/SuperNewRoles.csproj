@@ -21,6 +21,7 @@
 		<EmbeddedResource Include="Resources\Agartha\*.png" />
 		<EmbeddedResource Include="Resources\*.json" />
         <EmbeddedResource Include="Resources\TricksterAnimation\*.png" />
+        <EmbeddedResource Include="Resources\Blizzard\*.png" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,6 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Resources\Blizzard\BlizzardButton.png" />
       <None Remove="Roles\NiceHawk.cs~RF28e5343.TMP" />
     </ItemGroup>
 

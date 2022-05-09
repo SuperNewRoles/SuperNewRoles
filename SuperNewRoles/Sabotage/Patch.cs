@@ -40,6 +40,11 @@ namespace SuperNewRoles.Sabotage
                 if (ModeHandler.isMode(ModeId.Default))
                 {
                     CognitiveDeficit.main.Create(__instance);
+                    Blizzard.main.Create(__instance);
+                }
+                if (Map.Data.IsMap(Map.CustomMapNames.Agartha))
+                {
+                    //Map.Agartha.Patch.SetPosition.MapPositionChange(__instance);
                 }
             }
         }

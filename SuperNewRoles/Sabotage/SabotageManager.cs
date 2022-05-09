@@ -13,7 +13,8 @@ namespace SuperNewRoles.Sabotage
         public enum CustomSabotage
         {
             None,
-            CognitiveDeficit
+            CognitiveDeficit,
+            Blizzard,
         }
         public static bool IsOK(CustomSabotage sabotage)
         {
@@ -23,6 +24,9 @@ namespace SuperNewRoles.Sabotage
                 case CustomSabotage.CognitiveDeficit:
                     if (PlayerControl.GameOptions.MapId != 4) return false;
                     else return Options.CognitiveDeficitSetting.getBool();
+                case CustomSabotage.Blizzard:
+                    if (false) return false;
+                    else return Options.BlizzardSetting.getBool();
             }
             return false;
         }
@@ -34,6 +38,8 @@ namespace SuperNewRoles.Sabotage
             {
                 case CustomSabotage.CognitiveDeficit:
                     return CognitiveDeficit.main.IsLocalEnd;
+                case CustomSabotage.Blizzard:
+                    return Blizzard.main.IsLocalEnd;
             }
             return false;
         }
@@ -52,6 +58,16 @@ namespace SuperNewRoles.Sabotage
                         CognitiveDeficit.main.EndSabotage(player);
                     }
                     break;
+                case CustomSabotage.Blizzard:
+                    if (Is)
+                    {
+                        Blizzard.main.StartSabotage();
+                    }
+                    else
+                    {
+                        Blizzard.main.EndSabotage(player);
+                    }
+                    break;
             }
         }
         public static void ClearAndReloads()
@@ -66,6 +82,34 @@ namespace SuperNewRoles.Sabotage
                 CognitiveDeficit.main.DefaultUpdateTime = Options.CognitiveDeficitOutfitUpdateTimeSetting.getFloat();
                 CognitiveDeficit.main.IsAllEndSabotage = Options.CognitiveDeficitIsAllEndSabotageSetting.getBool();
             }
+            if (IsOK(CustomSabotage.Blizzard))
+            {
+                Blizzard.main.BlizzardSlowSpeedmagnification = Options.BlizzardSlowSpeedmagnificationSetting.getFloat();
+                if (PlayerControl.GameOptions.MapId == 0)
+                {
+                    Blizzard.main.BlizzardDuration = Options.BlizzardskeldDurationSetting.getFloat();
+                }
+                if (PlayerControl.GameOptions.MapId == 1)
+                {
+                    Blizzard.main.BlizzardDuration = Options.BlizzardmiraDurationSetting.getFloat();
+                }
+                if (PlayerControl.GameOptions.MapId == 2)
+                {
+                    Blizzard.main.BlizzardDuration = Options.BlizzardpolusDurationSetting.getFloat();
+                }
+                if (PlayerControl.GameOptions.MapId == 4)
+                {
+                    Blizzard.main.BlizzardDuration = Options.BlizzardairshipDurationSetting.getFloat();
+                }
+                if (PlayerControl.GameOptions.MapId == 5)
+                {
+                    Blizzard.main.BlizzardDuration = Options.BlizzardagarthaDurationSetting.getFloat();
+                }
+                Blizzard.main.Timer = 0;
+                Blizzard.main.OverlayTimer = DateTime.Now;
+                Blizzard.main.ReacTimer = DateTime.Now;
+                Blizzard.main.IsOverlay = false;
+            }
         }
         public static void Update()
         {
@@ -79,6 +123,9 @@ namespace SuperNewRoles.Sabotage
             {
                 case CustomSabotage.CognitiveDeficit:
                     CognitiveDeficit.main.Update();
+                    break;
+                case CustomSabotage.Blizzard:
+                    Blizzard.main.Update();
                     break;
             }
         }
