@@ -406,6 +406,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption VampirePlayerCount;
         public static CustomOption VampireKillDelay;
 
+        public static CustomRoleOption FoxOption;
+        public static CustomOption FoxPlayerCount;
+
+        public static CustomRoleOption TraitorOption;
+        public static CustomOption TraitorPlayerCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;

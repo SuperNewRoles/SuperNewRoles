@@ -233,6 +233,43 @@ namespace SuperNewRoles
                     }
                 }
             }
+            if (target.isRole(RoleId.Fox) && !killer.isRole(RoleId.OverKiller) && (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId) || RoleClass.Fox.KillGuard[target.PlayerId] >= 1))
+            {
+                if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, killer))
+                {
+                    bool IsSend = false;
+                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                        writer.Write(target.PlayerId);
+                        writer.Write(target.PlayerId);
+                        writer.Write(0);
+                        writer.EndRPC();
+                        RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
+                        IsSend = true;
+                    }
+                    else
+                    {
+                        if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
+                        {
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                            writer.Write(target.PlayerId);
+                            writer.Write(target.PlayerId);
+                            writer.Write(0);
+                            writer.EndRPC();
+                            RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
+                            IsSend = true;
+                        }
+                    }
+                    if (IsSend)
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
+                        writer.Write(target.PlayerId);
+                        writer.EndRPC();
+                        RPCProcedure.UseStuntmanCount(target.PlayerId);
+                    }
+                }
+            }
             return MurderAttemptResult.PerformKill;
         }
         public static void generateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)

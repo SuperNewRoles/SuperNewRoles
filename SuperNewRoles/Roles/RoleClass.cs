@@ -1548,10 +1548,12 @@ namespace SuperNewRoles.Roles
         public static class Fox
         {
             public static List<PlayerControl> FoxPlayer;
-            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static Color32 color = new Color32(127, 0, 255, byte.MaxValue);
+            public static Dictionary<int, int> KillGuard;
             public static void ClearAndReload()
             {
                 FoxPlayer = new List<PlayerControl>();
+                KillGuard = new Dictionary<int, int>();
             }
         }
         public static class Traitor
