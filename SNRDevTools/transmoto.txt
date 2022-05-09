@@ -553,3 +553,7 @@ ObserverTitle1
 VampireName
 VampireTitle1
 VampireKillDelay
+FoxName
+FoxTitle1
+TraitorName
+TraitorTitle1

@@ -553,3 +553,7 @@ Let's monitor everything.
 Vampire
 Let's do a delayed kill.
 Kill Delay
+Fox
+I am Fox!
+Traitor
+Let's subjugate ourselves to the fake railer.

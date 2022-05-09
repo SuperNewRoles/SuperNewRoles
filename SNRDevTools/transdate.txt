@@ -554,3 +554,7 @@ ObserverTitle1,Let's monitor everything.,すべてを監視しよう
 VampireName,Vampire,ヴァンパイア
 VampireTitle1,Let's do a delayed kill.,遅延キルしよう
 VampireKillDelay,Kill Delay,キル遅延
+FoxName,Fox,妖狐
+FoxTitle1,I am Fox!,私は狐です!
+TraitorName,Traitor,背信者
+TraitorTitle1,Let's subjugate ourselves to the fake railer.,偽レイラーに服属しよう
