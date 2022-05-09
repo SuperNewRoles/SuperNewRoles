@@ -1314,7 +1314,6 @@ namespace SuperNewRoles
             {
                 return CustomRPC.RoleId.DarkKiller;
             }
-                }
             else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Fox;

@@ -14,6 +14,22 @@ namespace SuperNewRoles.Roles
 {
     class Fox
     {
+        public static void SetFoxButton()
+        {
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
+            {
+                if (!RoleClass.Fox.UseReport)
+                {
+                    HudManager.Instance.ReportButton.gameObject.SetActiveRecursively(false);
+                    HudManager.Instance.ReportButton.SetActive(false);
+                    HudManager.Instance.ReportButton.graphic.enabled = false;
+                    HudManager.Instance.ReportButton.enabled = false;
+                    HudManager.Instance.ReportButton.graphic.sprite = null;
+                    HudManager.Instance.ReportButton.buttonLabelText.enabled = false;
+                    HudManager.Instance.ReportButton.buttonLabelText.SetText("");
+                }
+            }
+        }
         public static void setPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null || target.MyRend == null) return;
@@ -21,6 +37,14 @@ namespace SuperNewRoles.Roles
             target.MyRend.material.SetFloat("_Outline", 1f);
             target.MyRend.material.SetColor("_OutlineColor", color);
         }
+        public class FixedUpdate
+        {
+            public static void Postfix()
+            {
+                SetFoxButton();
+            }
+        }
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
         public class FoxFixedPatch
         {/*
             public static PlayerControl FoxsetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)

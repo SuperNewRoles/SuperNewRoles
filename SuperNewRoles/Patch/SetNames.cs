@@ -356,10 +356,10 @@ namespace SuperNewRoles.Patch
                         SetNamesClass.SetPlayerNameColors(p);
                         SetNamesClass.SetPlayerRoleNames(p);
                     }
-                    foreach (PlayerControl p in RoleClass.Traitor.TraitorPlayer)
+                    //foreach (PlayerControl p in RoleClass.Traitor.TraitorPlayer)
                     {
-                        SetNamesClass.SetPlayerNameColors(p);
-                        SetNamesClass.SetPlayerRoleNames(p);
+                  //      SetNamesClass.SetPlayerNameColors(p);
+                    //    SetNamesClass.SetPlayerRoleNames(p);
                     }
                 }
                 if (PlayerControl.LocalPlayer.isImpostor())

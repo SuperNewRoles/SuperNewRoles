@@ -1555,12 +1555,14 @@ namespace SuperNewRoles.Roles
             public static Color32 color = FoxPurple;
             public static Dictionary<int, int> KillGuard;
             public static bool IsUseVent;
+            public static bool UseReport;
             public static bool IsImpostorLight;
             public static void ClearAndReload()
             {
                 FoxPlayer = new List<PlayerControl>();
                 KillGuard = new Dictionary<int, int>();
                 IsUseVent = CustomOptions.FoxIsUseVent.getBool();
+                UseReport = CustomOptions.FoxReport.getBool();
                 IsImpostorLight = CustomOptions.FoxIsImpostorLight.getBool();
             }
         }

@@ -410,6 +410,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption FoxPlayerCount;
         public static CustomOption FoxIsUseVent;
         public static CustomOption FoxIsImpostorLight;
+        public static CustomOption FoxReport;
 
         public static CustomRoleOption TraitorOption;
         public static CustomOption TraitorPlayerCount;
@@ -869,6 +870,7 @@ namespace SuperNewRoles.CustomOption
             FoxPlayerCount = CustomOption.Create(357, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FoxOption);
             FoxIsUseVent = CustomOption.Create(120, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, FoxOption);
             FoxIsImpostorLight = CustomOption.Create(234, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, FoxOption);
+            FoxReport = CustomOption.Create(182, true, CustomOptionType.Neutral, "MinimalistReportSetting", true, FoxOption);
 
             TraitorOption = new CustomRoleOption(98, true, CustomOptionType.Neutral, "TraitorName", RoleClass.Fox.color, 1);
             TraitorPlayerCount = CustomOption.Create(99, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TraitorOption);
