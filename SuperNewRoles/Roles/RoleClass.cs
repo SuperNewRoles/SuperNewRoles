@@ -111,6 +111,7 @@ namespace SuperNewRoles.Roles
             Nocturnality.ClearAndReload();
             Observer.ClearAndReload();
             Vampire.ClearAndReload();
+            Seer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1541,6 +1542,15 @@ namespace SuperNewRoles.Roles
                 KillDelay = CustomOptions.VampireKillDelay.getFloat();
                 Timer = 0;
                 KillTimer = DateTime.Now;
+            }
+        }
+        public static class Seer
+        {
+            public static List<PlayerControl> SeerPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                SeerPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

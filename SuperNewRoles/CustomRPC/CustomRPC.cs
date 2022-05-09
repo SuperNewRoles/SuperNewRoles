@@ -97,6 +97,7 @@ namespace SuperNewRoles.CustomRPC
         Nocturnality,
         Observer,
         Vampire,
+        Seer,
         //RoleId
     }
 
