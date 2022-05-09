@@ -576,11 +576,15 @@ namespace SuperNewRoles.EndGame
             }
             else if (FoxWin)
             {
+                var foxalive = false;
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
                 {
+                    foxalive = true;
+                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                     WinningPlayerData wpd = new WinningPlayerData(p.Data);
                     TempData.winners.Add(wpd);
+                    AdditionalTempData.winCondition = WinCondition.FoxWin;
                 }
                 foreach (PlayerControl p in RoleClass.Traitor.TraitorPlayer)
                 {
@@ -703,19 +707,6 @@ namespace SuperNewRoles.EndGame
                 notWinners.AddRange(players);
             }
 
-            var foxalive = false;
-            foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
-            {
-                if (p.isAlive())
-                {
-                    foxalive = true;
-                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
-                    TempData.winners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.FoxWin;
-                }
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-            }
             notWinners = new List<PlayerControl>();
             winnersToRemove = new List<WinningPlayerData>();
             foreach (WinningPlayerData winner in TempData.winners)
