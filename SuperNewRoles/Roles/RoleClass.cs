@@ -111,6 +111,8 @@ namespace SuperNewRoles.Roles
             Nocturnality.ClearAndReload();
             Observer.ClearAndReload();
             Vampire.ClearAndReload();
+            Fox.ClearAndReload();
+            Traitor.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1541,6 +1543,24 @@ namespace SuperNewRoles.Roles
                 KillDelay = CustomOptions.VampireKillDelay.getFloat();
                 Timer = 0;
                 KillTimer = DateTime.Now;
+            }
+        }
+        public static class Fox
+        {
+            public static List<PlayerControl> FoxPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                FoxPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class Traitor
+        {
+            public static List<PlayerControl> TraitorPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                TraitorPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

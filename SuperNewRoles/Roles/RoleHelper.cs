@@ -445,6 +445,12 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Vampire):
                     Roles.RoleClass.Vampire.VampirePlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Fox):
+                    Roles.RoleClass.Fox.FoxPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Traitor):
+                    Roles.RoleClass.Traitor.TraitorPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -682,6 +688,12 @@ namespace SuperNewRoles
                     case (CustomRPC.RoleId.Vampire):
                     Roles.RoleClass.Vampire.VampirePlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Fox):
+                    Roles.RoleClass.Fox.FoxPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Traitor):
+                    Roles.RoleClass.Traitor.TraitorPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -757,6 +769,12 @@ namespace SuperNewRoles
                     IsTaskClear = true;
                     break;
                     case (RoleId.FalseCharges):
+                    IsTaskClear = true;
+                    break; 
+                case (RoleId.Fox):
+                    IsTaskClear = true;
+                    break; 
+                case (RoleId.Traitor):
                     IsTaskClear = true;
                     break; 
                 //タスククリアか
@@ -876,6 +894,12 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.FalseCharges):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Fox):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Traitor):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1250,6 +1274,14 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Vampire;
+            }
+            else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Fox;
+            }
+            else if (Roles.RoleClass.Traitor.TraitorPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Traitor;
             }
             //ロールチェック
 
