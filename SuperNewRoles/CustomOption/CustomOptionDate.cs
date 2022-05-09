@@ -421,6 +421,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption TraitorIsUseVent;
         public static CustomOption TraitorIsImpostorLight;
 
+        public static CustomRoleOption DarkKillerOption;
+        public static CustomOption DarkKillerPlayerCount;
+        public static CustomOption DarkKillerKillCoolTime;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -877,6 +881,10 @@ namespace SuperNewRoles.CustomOption
             TraitorCheckFoxTask = CustomOption.Create(242, true, CustomOptionType.Neutral, "TraitorCheckFoxTaskSetting", rates4, TraitorIsCheckFox);
             TraitorIsUseVent = CustomOption.Create(120, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TraitorOption);
             TraitorIsImpostorLight = CustomOption.Create(234, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, TraitorOption);
+
+            DarkKillerOption = new CustomRoleOption(361, false, CustomOptionType.Impostor, "DarkKillerName", RoleClass.DarkKiller.color, 1);
+            DarkKillerPlayerCount = CustomOption.Create(362, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DarkKillerOption);
+            DarkKillerKillCoolTime = CustomOption.Create(363, false, CustomOptionType.Impostor, "DarkKillerKillCoolSetting", 20f, 2.5f, 60f, 2.5f, DarkKillerOption);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

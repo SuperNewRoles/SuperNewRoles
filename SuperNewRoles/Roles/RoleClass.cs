@@ -116,6 +116,7 @@ namespace SuperNewRoles.Roles
             Vampire.ClearAndReload();
             Fox.ClearAndReload();
             Traitor.ClearAndReload();
+            DarkKiller.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1588,6 +1589,19 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 FoxCheckTask = (int)(AllTask * (int.Parse(CustomOptions.TraitorCheckFoxTask.getString().Replace("%", "")) / 100f));
+            }
+        }
+        public static class DarkKiller
+        {
+            public static List<PlayerControl> DarkKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static bool KillButtonDisable;
+            public static void ClearAndReload()
+            {
+                DarkKillerPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.DarkKillerKillCoolTime.getFloat();
+                KillButtonDisable = false;
             }
         }
         //新ロールクラス

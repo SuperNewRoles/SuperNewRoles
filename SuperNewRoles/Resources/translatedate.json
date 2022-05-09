@@ -2220,6 +2220,18 @@
         "0" : "Kill Delay" ,
         "11" : "\u30ad\u30eb\u9045\u5ef6"
         } ,
+ "DarkKillerName" : {
+        "0" : "DarkKiller" ,
+        "11" : "\u30c0\u30fc\u30af\u30ad\u30e9\u30fc"
+        } ,
+ "DarkKillerTitle1" : {
+        "0" : "Let's kill in the dark" ,
+        "11" : "\u95c7\u306b\u7d1b\u308c\u3066\u6bba\u305d\u3046"
+        } ,
+ "DarkKillerKillCoolSetting" : {
+        "0" : "Dark Killer's Kill Cool Time" ,
+        "11" : "\u30c0\u30fc\u30af\u30ad\u30e9\u30fc\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+        } ,
  "FoxName" : {
         "0" : "Fox" ,
         "11" : "\u5996\u72d0"

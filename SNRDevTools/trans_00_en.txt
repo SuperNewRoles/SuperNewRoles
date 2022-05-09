@@ -559,3 +559,7 @@ Traitor
 Let's subjugate ourselves to the fake railer.
 You can check the Fox.
 Amount of tasks that will be able to be checked (of all tasks)
+Kill Delay
+DarkKiller
+Let's kill in the dark
+Dark Killer's Kill Cool Time

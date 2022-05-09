@@ -800,6 +800,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.ObserverPlayerCount.getFloat();
                     case (RoleId.Vampire):
                     return CustomOption.CustomOptions.VampirePlayerCount.getFloat();
+                    case (RoleId.DarkKiller):
+                    return CustomOption.CustomOptions.DarkKillerPlayerCount.getFloat();
                     case (RoleId.Fox):
                     return CustomOption.CustomOptions.FoxPlayerCount.getFloat();
                     case (RoleId.Traitor):
@@ -2062,6 +2064,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.DarkKillerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.DarkKillerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.DarkKiller;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }
