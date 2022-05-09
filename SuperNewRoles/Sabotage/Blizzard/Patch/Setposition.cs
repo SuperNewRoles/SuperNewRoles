@@ -64,9 +64,10 @@ namespace SuperNewRoles.Sabotage.Blizzard.Patch
             Template.gameObject.SetActive(true);
 
             Transform Object_ONDO0 = GameObject.Instantiate(Template, Skeld);//Templateのクローン (Skeldの記述はペア)
-            Object_ONDO0.position = new Vector3(1.1f, 0.5f, -1f);//座標セット
+            Object_ONDO0.position = new Vector3(1.1f, 0.5f, -0.1f);//座標セット
             Object_ONDO0.GetComponent<SpriteRenderer>().sprite = ImageManager.ONDOgetSprite("ONDO");//見た目
             Object_ONDO0.gameObject.AddComponent<PolygonCollider2D>();//判定
+            //Object_ONDO0.gameObject.AddComponent<BoxCollider2D>();
             Object_ONDO0.name = "ONDO";
 
             GameObject.Destroy(Template.gameObject);
@@ -80,7 +81,7 @@ namespace SuperNewRoles.Sabotage.Blizzard.Patch
             Template.localScale *= 0.5f;
             
             Transform Object_ONDO0 = GameObject.Instantiate(Template, Mira);
-            Object_ONDO0.position = new Vector3(19.8f, 3.225f, 0.1f);
+            Object_ONDO0.position = new Vector3(19.8f, 3.225f, -0.1f);
             Object_ONDO0.GetComponent<SpriteRenderer>().sprite = ImageManager.ONDOgetSprite("ONDO");
             Object_ONDO0.gameObject.AddComponent<PolygonCollider2D>();
             Object_ONDO0.name = "ONDO";
@@ -96,7 +97,7 @@ namespace SuperNewRoles.Sabotage.Blizzard.Patch
             Template.localScale *= 1f;
             
             Transform Object_ONDO0 = GameObject.Instantiate(Template, Polus);
-            Object_ONDO0.position = new Vector3(19.8f, 3.225f, 0.1f);
+            Object_ONDO0.position = new Vector3(19.8f, 3.225f, -0.1f);
             Object_ONDO0.GetComponent<SpriteRenderer>().sprite = ImageManager.ONDOgetSprite("ONDO");
             Object_ONDO0.gameObject.AddComponent<PolygonCollider2D>();
             Object_ONDO0.name = "ONDO";
@@ -113,7 +114,7 @@ namespace SuperNewRoles.Sabotage.Blizzard.Patch
             Template.localScale *= 0.5f;
             
             Transform Object_ONDO0 = GameObject.Instantiate(Template, Airship);        
-            Object_ONDO0.position = new Vector3(19.8f, 3.225f, 0.1f);
+            Object_ONDO0.position = new Vector3(19.8f, 3.225f, -0.1f);
             Object_ONDO0.GetComponent<SpriteRenderer>().sprite = ImageManager.ONDOgetSprite("ONDO");
             Object_ONDO0.gameObject.AddComponent<PolygonCollider2D>();
             Object_ONDO0.name = "ONDO";
@@ -129,7 +130,7 @@ namespace SuperNewRoles.Sabotage.Blizzard.Patch
             Template.localScale *= 0.5f;
 
             Transform Object_ONDO0 = GameObject.Instantiate(Template, Agartha);
-            Object_ONDO0.position = new Vector3(19.8f, 3.225f, 0.1f);
+            Object_ONDO0.position = new Vector3(19.8f, 3.225f, -0.1f);
             Object_ONDO0.GetComponent<SpriteRenderer>().sprite = ImageManager.ONDOgetSprite("ONDO");
             Object_ONDO0.gameObject.AddComponent<PolygonCollider2D>();
             Object_ONDO0.name = "ONDO";
