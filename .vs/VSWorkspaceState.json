@@ -3,7 +3,11 @@
     "",
     "\\SNRDevTools",
     "\\SuperNewRoles",
-    "\\SuperNewRoles\\CustomOption"
+    "\\SuperNewRoles\\CustomOption",
+    "\\SuperNewRoles\\EndGame",
+    "\\SuperNewRoles\\Intro",
+    "\\SuperNewRoles\\Resources",
+    "\\SuperNewRoles\\Roles"
   ],
   "SelectedNode": "\\SuperNewRoles.sln",
   "PreviewInSolutionExplorer": false

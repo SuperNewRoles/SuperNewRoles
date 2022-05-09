@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
 				if (!AmongUsClient.Instance.AmHost) return;
 				if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
 				{
-					__instance.ReportButton.ToggleVisible(visible: RoleClass.Fox.UseReport);
+
 				}
 			}
 		}

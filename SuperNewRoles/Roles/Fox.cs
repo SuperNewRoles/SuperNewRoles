@@ -45,6 +45,16 @@ namespace SuperNewRoles.Roles
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
+        class FoxDestroyPatch
+        {
+            public static void Prefix(IntroCutscene __instance)
+            {
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
+                {
+                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Minimalist.KillCoolTime);
+                }
+            }
+        }
         public class FoxFixedPatch
         {/*
             public static PlayerControl FoxsetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
