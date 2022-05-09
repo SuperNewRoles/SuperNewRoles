@@ -2235,6 +2235,14 @@
  "TraitorTitle1" : {
         "0" : "Let's subjugate ourselves to the fake railer." ,
         "11" : "\u507d\u30ec\u30a4\u30e9\u30fc\u306b\u670d\u5c5e\u3057\u3088\u3046"
+        } ,
+ "TraitorIsCheckFoxSetting" : {
+        "0" : "You can check the Fox." ,
+        "11" : "\u5996\u72d0\u3092\u78ba\u8a8d\u3067\u304d\u308b"
+        } ,
+ "TraitorCheckFoxTaskSetting" : {
+        "0" : "Amount of tasks that will be able to be checked (of all tasks)" ,
+        "11" : "\u78ba\u8a8d\u3067\u304d\u308b\u3088\u3046\u306b\u306a\u308b\u30bf\u30b9\u30af\u91cf(\u5168\u30bf\u30b9\u30af\u5185)"
         } 
 
 }

@@ -874,7 +874,7 @@ namespace SuperNewRoles.CustomOption
             TraitorShortTask = traitoroption.Item2;
             TraitorLongTask = traitoroption.Item3;
             //TraitorIsNotTask = madmateoption.Item4;
-            TraitorCheckFoxTask = CustomOption.Create(242, true, CustomOptionType.Neutral, "FoxCheckFoxTaskSetting", rates4, TraitorIsCheckFox);
+            TraitorCheckFoxTask = CustomOption.Create(242, true, CustomOptionType.Neutral, "TraitorCheckFoxTaskSetting", rates4, TraitorIsCheckFox);
             TraitorIsUseVent = CustomOption.Create(120, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TraitorOption);
             TraitorIsImpostorLight = CustomOption.Create(234, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, TraitorOption);
 
