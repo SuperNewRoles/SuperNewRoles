@@ -101,7 +101,7 @@ namespace SuperNewRoles.Patch
                 {
                     List<PlayerControl> foxes = PlayerControl.AllPlayerControls.ToArray().ToList();
                     foxes.RemoveAll(x => !x.isRole(CustomRPC.RoleId.Fox));
-                    foreach (PlayerControl player in impostors)
+                    foreach (PlayerControl player in foxes)
                         player.nameText.color = Palette.Purple;
                     if (MeetingHud.Instance != null)
                         foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)

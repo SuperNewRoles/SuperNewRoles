@@ -12,9 +12,9 @@ namespace SuperNewRoles.Roles
         public static List<byte> CheckedFox;
         public static bool CheckFox(PlayerControl p)
         {
-            if (!RoleClass.Fox.IsFoxCheck) return false;
+            if (!RoleClass.Traitor.IsFoxCheck) return false;
             if (!p.isRole(RoleId.Traitor)) return false;
-            if (CheckedImpostor.Contains(p.PlayerId)) return true;
+            if (CheckedFox.Contains(p.PlayerId)) return true;
             /*
             SuperNewRolesPlugin.Logger.LogInfo("インポスターチェックタスク量:"+RoleClass.MadJester.ImpostorCheckTask);
             SuperNewRolesPlugin.Logger.LogInfo("終了タスク量:"+TaskCount.TaskDate(p.Data).Item1);*/

@@ -32,7 +32,7 @@ namespace SuperNewRoles
 
         public static bool isFox(this PlayerControl player)
         {
-            return player != RoleId.Fox;
+            return player != null && !player.IsFox();
         }
         public static bool IsQuarreled(this PlayerControl player,bool IsChache = true)
         {
@@ -921,6 +921,18 @@ namespace SuperNewRoles
                 //第三か
             }
             return IsNeutral;
+        }
+        public static bool IsFox(this PlayerControl player)
+        {
+            var IsFox = false;
+            switch (player.getRole())
+            {
+                case (RoleId.Fox):
+                    IsFox = true;
+                    break;
+                //狐か
+            }
+            return IsFox;
         }
         public static bool isRole(this PlayerControl p,RoleId role,bool IsChache = true) {
             RoleId MyRole;

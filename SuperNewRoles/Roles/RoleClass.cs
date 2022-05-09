@@ -1577,7 +1577,7 @@ namespace SuperNewRoles.Roles
                 IsImpostorLight = CustomOptions.TraitorIsImpostorLight.getBool();
                 int Common = (int)CustomOptions.TraitorCommonTask.getFloat();
                 int Long = (int)CustomOptions.TraitorLongTask.getFloat();
-                int Short = (int)CustomOptions.traitoorShortTask.getFloat();
+                int Short = (int)CustomOptions.TraitorShortTask.getFloat();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
