@@ -38,6 +38,7 @@ namespace SuperNewRoles.CustomCosmetics
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\");
             SuperNewRolesPlugin.Logger.LogInfo("バイザーダウンロード開始");
             FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
+            FetchHats("https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master");
         }
         private static string sanitizeResourcePath(string res)
         {
@@ -70,23 +71,37 @@ namespace SuperNewRoles.CustomCosmetics
             var response = await http.GetAsync(new System.Uri($"{repo}/CustomVisors.json"), HttpCompletionOption.ResponseContentRead);
             try
             {
-                SuperNewRolesPlugin.Logger.LogInfo("StatusCode:"+ response.StatusCode);
-                if (response.StatusCode != HttpStatusCode.OK) return response.StatusCode;
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    response = await http.GetAsync(new System.Uri($"{repo}/CustomHats.json"), HttpCompletionOption.ResponseContentRead);
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        return response.StatusCode;
+                    }
+                }
                 if (response.Content == null)
                 {
                     System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
                     return HttpStatusCode.ExpectationFailed;
                 }
                 string json = await response.Content.ReadAsStringAsync();
+                string visortext = "Visors";
                 JToken jobj = JObject.Parse(json)["Visors"];
-                if (!jobj.HasValues) return HttpStatusCode.ExpectationFailed;
+                if (jobj == null || !jobj.HasValues) {
+
+                    visortext = "visors";
+                    jobj = JObject.Parse(json)["visors"];
+                    if (jobj == null || !jobj.HasValues)
+                    {
+                        return HttpStatusCode.ExpectationFailed;
+                    }
+                };
 
                 List<CustomVisors.CustomVisor> Visordatas = new List<CustomVisors.CustomVisor>();
 
                 for (JToken current = jobj.First; current != null; current = current.Next)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("1");
-                    if (current.HasValues)
+                    if (current != null &&  current.HasValues)
                     {
                         CustomVisors.CustomVisor info = new CustomVisors.CustomVisor();
 
@@ -112,9 +127,9 @@ namespace SuperNewRoles.CustomCosmetics
 
                 foreach (var file in markedfordownload)
                 {
-
-                    var hatFileResponse = await http.GetAsync($"{repo}/Visors/{file}", HttpCompletionOption.ResponseContentRead);
+                    var hatFileResponse = await http.GetAsync($"{repo}/{visortext}/{file}", HttpCompletionOption.ResponseContentRead);
                     if (hatFileResponse.StatusCode != HttpStatusCode.OK) continue;
+
                     using (var responseStream = await hatFileResponse.Content.ReadAsStreamAsync())
                     {
                         using (var fileStream = File.Create($"{filePath}\\{file}"))

@@ -465,6 +465,7 @@ namespace SuperNewRoles.CustomCosmetics
         public static string[] hatRepos = new string[]
         {
             "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master",
+            "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master"
             /*
             "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master",
             "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master",
@@ -491,12 +492,14 @@ namespace SuperNewRoles.CustomCosmetics
             SuperNewRolesPlugin.Logger.LogInfo("フェチ");
             foreach (string repo in repos)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("スタート:"+repo);
+                SuperNewRolesPlugin.Logger.LogInfo("ハットスタート:"+repo);
                 try
                 {
                     HttpStatusCode status = await FetchHats(repo);
                     if (status != HttpStatusCode.OK)
                         System.Console.WriteLine($"Custom hats could not be loaded from repo: {repo}\n");
+                    else
+                        SuperNewRolesPlugin.Logger.LogInfo("ハット終了:" + repo);
                 }
                 catch (System.Exception e)
                 {
