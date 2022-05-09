@@ -553,3 +553,6 @@ ObserverTitle1
 VampireName
 VampireTitle1
 VampireKillDelay
+DarkKillerName
+DarkKillerTitle1
+DarkKillerKillCoolSetting
