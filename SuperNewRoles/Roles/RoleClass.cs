@@ -27,6 +27,7 @@ namespace SuperNewRoles.Roles
         public static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
         public static Color ImpostorRed = Palette.ImpostorRed;
         public static Color CrewmateWhite = Color.white;
+        public static Color FoxPurple = Palette.Purple;
         public static bool IsStart;
 
         public static void clearAndReloadRoles()
@@ -1548,21 +1549,43 @@ namespace SuperNewRoles.Roles
         public static class Fox
         {
             public static List<PlayerControl> FoxPlayer;
-            public static Color32 color = new Color32(127, 0, 255, byte.MaxValue);
+            public static Color32 color = FoxPurple;
             public static Dictionary<int, int> KillGuard;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
             public static void ClearAndReload()
             {
                 FoxPlayer = new List<PlayerControl>();
                 KillGuard = new Dictionary<int, int>();
+                IsUseVent = CustomOptions.FoxIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.FoxIsImpostorLight.getBool();
             }
         }
         public static class Traitor
         {
             public static List<PlayerControl> TraitorPlayer;
-            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static Color32 color = FoxPurple;
+            public static bool IsFoxCheck;
+            public static int FoxCheckTask;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
             public static void ClearAndReload()
             {
                 TraitorPlayer = new List<PlayerControl>();
+                IsFoxCheck = CustomOptions.TraitorIsCheckFox.getBool();
+                IsUseVent = CustomOptions.TraitorIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.TraitorIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.TraitorCommonTask.getFloat();
+                int Long = (int)CustomOptions.TraitorLongTask.getFloat();
+                int Short = (int)CustomOptions.traitoorShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                FoxCheckTask = (int)(AllTask * (int.Parse(CustomOptions.TraitorCheckFoxTask.getString().Replace("%", "")) / 100f));
             }
         }
         //新ロールクラス

@@ -130,6 +130,23 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
                         }
+                        bool IsTraitorCheck = Traitor.CheckFox(p);
+                        //  SuperNewRolesPlugin.Logger.LogInfo("背信者がチェックできるか:"+IsTraitorCheck);
+                        if (IsTraitorCheck)
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (!p2.Data.Disconnected && !p2.isFox())
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
+                                else if (!p2.Data.Disconnected && p2.isFox())
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.FoxPurple, p2.getDefaultName()), p);
+                                }
+                            }
+                            //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
+                        }
                         if (p.IsLovers() && p.isAlive())
                         {
                             Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
@@ -155,6 +172,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
                     string TaskText = "";
                     if (!p.isImpostor())
+                    {
+                        try
+                        {
+                            if (commsActive)
+                            {
+                                var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
+                                TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
+                            }
+                            else
+                            {
+                                var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                                TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                    if (!p.isFox())
                     {
                         try
                         {

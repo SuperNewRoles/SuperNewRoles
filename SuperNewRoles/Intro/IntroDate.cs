@@ -266,7 +266,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate ObserverIntro = new IntroDate("Observer", RoleClass.Observer.color, 1, CustomRPC.RoleId.Observer);
         public static IntroDate VampireIntro = new IntroDate("Vampire", RoleClass.Vampire.color, 1, CustomRPC.RoleId.Vampire);
         public static IntroDate FoxIntro = new IntroDate("Fox", RoleClass.Fox.color, 1, CustomRPC.RoleId.Fox);
-        public static IntroDate TraitorIntro = new IntroDate("Traitor", RoleClass.Traitor.color, 1, CustomRPC.RoleId.Traitor);
+        public static IntroDate TraitorIntro = new IntroDate("Traitor", RoleClass.Traitor.color, 1, CustomRPC.RoleId.Traitor, TeamRoleType.Neutral);
         //イントロオブジェ
     }
 }

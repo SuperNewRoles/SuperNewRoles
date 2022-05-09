@@ -138,6 +138,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            if (RoleClass.Fox.IsUseVent)
+            {
+                foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
+                {
+                    if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
+                }
+            }
+            if (RoleClass.Traitor.IsUseVent)
+            {
+                foreach (PlayerControl p in RoleClass.Traitor.TraitorPlayer)
+                {
+                    if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
+                }
+            }
 
             foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
             {

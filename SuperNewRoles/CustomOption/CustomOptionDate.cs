@@ -408,9 +408,17 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption FoxOption;
         public static CustomOption FoxPlayerCount;
+        public static CustomOption FoxIsImpostorLight;
 
         public static CustomRoleOption TraitorOption;
         public static CustomOption TraitorPlayerCount;
+        public static CustomOption TraitorIsCheckFox;
+        public static CustomOption TraitorCommonTask;
+        public static CustomOption TraitorShortTask;
+        public static CustomOption TraitorLongTask;
+        public static CustomOption TraitorCheckFoxTask;
+        public static CustomOption TraitorIsUseVent;
+        public static CustomOption TraitorIsImpostorLight;
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -851,6 +859,22 @@ namespace SuperNewRoles.CustomOption
             VampireOption = new CustomRoleOption(358, false, CustomOptionType.Impostor, "VampireName", RoleClass.Vampire.color, 1);
             VampirePlayerCount = CustomOption.Create(359, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VampireOption);
             VampireKillDelay = CustomOption.Create(360, false, CustomOptionType.Impostor, "VampireKillDelay", 0f, 1f, 60f, 0.5f, VampireOption, format: "unitSeconds");
+
+            FoxOption = new CustomRoleOption(356, true, CustomOptionType.Neutral, "FoxName", RoleClass.Fox.color, 1);
+            FoxPlayerCount = CustomOption.Create(357, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FoxOption);
+            FoxIsImpostorLight = CustomOption.Create(234, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, FoxOption);
+
+            TraitorOption = new CustomRoleOption(98, true, CustomOptionType.Neutral, "TraitorName", RoleClass.Fox.color, 1));
+            TraitorPlayerCount = CustomOption.Create(99, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TraitorOption);
+            TraitorIsCheckFox = CustomOption.Create(100, true, CustomOptionType.Neutral, "TraitorIsCheckFoxSetting", false, TraitorOption);
+            var traitoroption = SelectTask.TaskSetting(259,260,261,TraitorIsCheckFox, CustomOptionType.Neutral true);
+            TraitorCommonTask = traitoroption.Item1;
+            TraitorShortTask = traitoroption.Item2;
+            TraitorLongTask = traitoroption.Item3;
+            //TraitorIsNotTask = madmateoption.Item4;
+            TraitorCheckFoxTask = CustomOption.Create(242, true, CustomOptionType.Neutral, "FoxCheckFoxTaskSetting", rates4, TraitorIsCheckFox);
+            TraitorIsUseVent = CustomOption.Create(120, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TraitorOption);
+            TraiitorIsImpostorLight = CustomOption.Create(234, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, TraitorOption);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

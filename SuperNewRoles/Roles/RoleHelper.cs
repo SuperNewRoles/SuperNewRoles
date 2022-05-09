@@ -29,6 +29,11 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.Sheriff)) return false;
             return player != null && player.Data.Role.IsImpostor;
         }
+
+        public static bool isFox(this PlayerControl player)
+        {
+            return player != RoleId.Fox;
+        }
         public static bool IsQuarreled(this PlayerControl player,bool IsChache = true)
         {
             if (IsChache)
@@ -216,6 +221,13 @@ namespace SuperNewRoles
                     break;
                 case RoleId.MadJester:
                     returntext = CustomOptions.MadJesterIsUseVent.name + ":" + CustomOptions.MadJesterIsUseVent.getString() + "\n";
+                    break;
+                case RoleId.Fox:
+                    returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
+                    break;
+                case RoleId.Traitor:
+                    returntext = CustomOptions.TraitorIsUseVent.name + ":" + CustomOptions.TraitorIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.TraitorIsCheckFox.name + ":" + CustomOptions.TraitorIsCheckFox.getString() + "\n";
                     break;
             }
             return returntext;
@@ -747,7 +759,7 @@ namespace SuperNewRoles
                 case (RoleId.Workperson):
                     IsTaskClear = true;
                     break;
-                    case (RoleId.truelover):
+                case (RoleId.truelover):
                     IsTaskClear = true;
                     break; 
                 case (RoleId.Amnesiac):
@@ -768,7 +780,7 @@ namespace SuperNewRoles
                 case (RoleId.MadJester):
                     IsTaskClear = true;
                     break;
-                    case (RoleId.FalseCharges):
+                case (RoleId.FalseCharges):
                     IsTaskClear = true;
                     break; 
                 case (RoleId.Fox):
@@ -809,6 +821,8 @@ namespace SuperNewRoles
             if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadJester.IsUseVent) return true;
             if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadStuntMan.IsUseVent) return true;
             if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadHawk.IsUseVent) return true;
+            if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Fox.IsUseVent) return true;
+            if (RoleClass.Traitor.TraitorPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Traitor.IsUseVent) return true;
             return false;
         }
         public static bool IsSabotage()
@@ -853,6 +867,8 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.MadStuntMan) && RoleClass.MadStuntMan.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadHawk) && RoleClass.MadHawk.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadJester) && RoleClass.MadJester.IsImpostorLight) return true;
+            if (player.isRole(RoleId.Fox) && RoleClass.Fox.IsImpostorLight) return true;
+            if (player.isRole(RoleId.Traitor) && RoleClass.Traitor.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -1272,9 +1288,9 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.Observer;
                 }
                 else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
-            {
+                 {
                 return CustomRPC.RoleId.Vampire;
-            }
+                }
             else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Fox;
