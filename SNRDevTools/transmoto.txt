@@ -553,3 +553,11 @@ ObserverTitle1
 VampireName
 VampireTitle1
 VampireKillDelay
+SeerName
+SeerTitle1
+SeerMode
+SeerModeBoth
+SeerModeFlash
+SeerModeSouls
+SeerLimitSoulDuration
+SeerSoulDuration
