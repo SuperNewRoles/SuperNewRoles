@@ -110,6 +110,7 @@ namespace SuperNewRoles.Roles
             Celebrity.ClearAndReload();
             Nocturnality.ClearAndReload();
             Observer.ClearAndReload();
+            Vampire.ClearAndReload();
             DarkKiller.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -1526,6 +1527,23 @@ namespace SuperNewRoles.Roles
                 IsVoteView = true;
             }
         }
+        public static class Vampire
+        {
+            public static List<PlayerControl> VampirePlayer;
+            public static Color32 color = ImpostorRed;
+            public static PlayerControl target;
+            public static float KillDelay;
+            public static float Timer;
+            public static DateTime KillTimer;
+            public static void ClearAndReload()
+            {
+                VampirePlayer = new List<PlayerControl>();
+                target = null;
+                KillDelay = CustomOptions.VampireKillDelay.getFloat();
+                Timer = 0;
+                KillTimer = DateTime.Now;
+            }
+        }
         public static class DarkKiller
         {
             public static List<PlayerControl> DarkKillerPlayer;
@@ -1536,7 +1554,7 @@ namespace SuperNewRoles.Roles
             {
                 DarkKillerPlayer = new List<PlayerControl>();
                 KillCoolTime = CustomOptions.DarkKillerKillCoolTime.getFloat();
-                KillButtonDisable = CustomOptions.DarkKillerKillButtonDisable.getBool();
+                KillButtonDisable = false;
             }
         }
         //新ロールクラス

@@ -442,6 +442,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Observer):
                     Roles.RoleClass.Observer.ObserverPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Vampire):
+                    Roles.RoleClass.Vampire.VampirePlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.DarkKiller):
                     Roles.RoleClass.DarkKiller.DarkKillerPlayer.Add(player);
                     break;
@@ -679,7 +682,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Observer):
                     Roles.RoleClass.Observer.ObserverPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.DarkKiller):
+                    case (CustomRPC.RoleId.Vampire):
+                    Roles.RoleClass.Vampire.VampirePlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.DarkKiller):
                     Roles.RoleClass.DarkKiller.DarkKillerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
@@ -1248,7 +1254,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Observer;
                 }
-                else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
+                else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Vampire;
+            }
+            else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.DarkKiller;
             }

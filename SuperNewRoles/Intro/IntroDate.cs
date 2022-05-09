@@ -166,6 +166,8 @@ namespace SuperNewRoles.Intro
                     return NocturnalityIntro;
                 case (CustomRPC.RoleId.Observer):
                     return ObserverIntro;
+                case (CustomRPC.RoleId.Vampire):
+                    return VampireIntro;
                 case (CustomRPC.RoleId.DarkKiller):
                     return DarkKillerIntro;
                 //イントロ検知
@@ -260,6 +262,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate CelebrityIntro = new IntroDate("Celebrity", RoleClass.Celebrity.color, 1, CustomRPC.RoleId.Celebrity);
         public static IntroDate NocturnalityIntro = new IntroDate("Nocturnality", RoleClass.Nocturnality.color, 1, CustomRPC.RoleId.Nocturnality);
         public static IntroDate ObserverIntro = new IntroDate("Observer", RoleClass.Observer.color, 1, CustomRPC.RoleId.Observer);
+        public static IntroDate VampireIntro = new IntroDate("Vampire", RoleClass.Vampire.color, 1, CustomRPC.RoleId.Vampire);
         public static IntroDate DarkKillerIntro = new IntroDate("DarkKiller", RoleClass.DarkKiller.color, 1, CustomRPC.RoleId.DarkKiller);
         //イントロオブジェ
     }

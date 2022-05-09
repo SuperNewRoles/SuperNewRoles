@@ -2207,6 +2207,18 @@
  "ObserverTitle1" : {
         "0" : "Let's monitor everything." ,
         "11" : "\u3059\u3079\u3066\u3092\u76e3\u8996\u3057\u3088\u3046"
+        } ,
+ "VampireName" : {
+        "0" : "Vampire" ,
+        "11" : "\u30f4\u30a1\u30f3\u30d1\u30a4\u30a2"
+        } ,
+ "VampireTitle1" : {
+        "0" : "Let's do a delayed kill." ,
+        "11" : "\u9045\u5ef6\u30ad\u30eb\u3057\u3088\u3046"
+        } ,
+ "VampireKillDelay" : {
+        "0" : "Kill Delay" ,
+        "11" : "\u30ad\u30eb\u9045\u5ef6"
         } 
 
 }

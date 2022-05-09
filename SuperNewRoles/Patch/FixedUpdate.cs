@@ -134,11 +134,12 @@ namespace SuperNewRoles.Patch
                             {
                                 MadHawk.FixedUpdate.Postfix();
                             }
-                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DarkKiller))
-                            {
-                                DarkKiller.FixedUpdate.Postfix();
-                            }
                             Minimalist.FixedUpdate.Postfix();
+                            DarkKiller.FixedUpdate.Postfix();
+                            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
+                            {
+                                Vampire.FixedUpdate.Postfix();
+                            }
                         }
                         else if (PlayerControl.LocalPlayer.isDead())
                         {
