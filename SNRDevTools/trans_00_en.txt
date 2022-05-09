@@ -553,6 +553,9 @@ Let's monitor everything.
 Vampire
 Let's do a delayed kill.
 Kill Delay
+DarkKiller
+Let's kill in the dark
+Dark Killer's Kill Cool Time
 Seer
 You will see players die
 Mode

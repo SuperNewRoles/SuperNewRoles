@@ -554,6 +554,10 @@ ObserverTitle1,Let's monitor everything.,すべてを監視しよう
 VampireName,Vampire,ヴァンパイア
 VampireTitle1,Let's do a delayed kill.,遅延キルしよう
 VampireKillDelay,Kill Delay,キル遅延
+DarkKillerName,DarkKiller,ダークキラー
+DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう
+DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム
+VampireKillDelay,Kill Delay,キル遅延
 SeerName,Seer,シーア
 SeerTitle1,You will see players die,船員の気配を感じ取ろう
 SeerMode,Mode,モード

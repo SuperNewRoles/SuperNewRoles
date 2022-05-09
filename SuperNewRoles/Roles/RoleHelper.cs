@@ -469,6 +469,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Vampire):
                     Roles.RoleClass.Vampire.VampirePlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.DarkKiller):
+                    Roles.RoleClass.DarkKiller.DarkKillerPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.Seer):
                     Roles.RoleClass.Seer.SeerPlayer.Add(player);
                     break;
@@ -709,6 +712,9 @@ namespace SuperNewRoles
                     case (CustomRPC.RoleId.Vampire):
                     Roles.RoleClass.Vampire.VampirePlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.DarkKiller):
+                    Roles.RoleClass.DarkKiller.DarkKillerPlayer.RemoveAll(ClearRemove);
+                    break;
                 case (CustomRPC.RoleId.Seer):
                     Roles.RoleClass.Seer.SeerPlayer.RemoveAll(ClearRemove);
                     break;
@@ -948,6 +954,7 @@ namespace SuperNewRoles
                 else if (__instance.isRole(RoleId.MadKiller)) addition = RoleClass.SideKiller.MadKillerCoolTime;
                 else if (__instance.isRole(RoleId.Minimalist)) addition = RoleClass.Minimalist.KillCoolTime;
                 else if (__instance.isRole(RoleId.Survivor)) addition = RoleClass.Survivor.KillCoolTime;
+                else if (__instance.isRole(RoleId.DarkKiller)) addition = RoleClass.DarkKiller.KillCoolTime;
             }
             return addition;
         }
@@ -1278,13 +1285,17 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.Observer;
                 }
                 else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Vampire;
-            }
-            else if (Roles.RoleClass.Seer.SeerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Seer;
-            }
+                {
+                    return CustomRPC.RoleId.Vampire;
+                }
+                else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.DarkKiller;
+                }
+                else if (Roles.RoleClass.Seer.SeerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Seer;
+                }
             //ロールチェック
 
             }
