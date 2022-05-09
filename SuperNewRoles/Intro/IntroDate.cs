@@ -170,6 +170,8 @@ namespace SuperNewRoles.Intro
                     return VampireIntro;
                 case (CustomRPC.RoleId.DarkKiller):
                     return DarkKillerIntro;
+                case (CustomRPC.RoleId.Seer):
+                    return SeerIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -264,6 +266,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate ObserverIntro = new IntroDate("Observer", RoleClass.Observer.color, 1, CustomRPC.RoleId.Observer);
         public static IntroDate VampireIntro = new IntroDate("Vampire", RoleClass.Vampire.color, 1, CustomRPC.RoleId.Vampire);
         public static IntroDate DarkKillerIntro = new IntroDate("DarkKiller", RoleClass.DarkKiller.color, 1, CustomRPC.RoleId.DarkKiller);
+        public static IntroDate SeerIntro = new IntroDate("Seer", RoleClass.Seer.color, 1, CustomRPC.RoleId.Seer);
         //イントロオブジェ
     }
 }

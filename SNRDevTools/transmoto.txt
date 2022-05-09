@@ -556,3 +556,11 @@ VampireKillDelay
 DarkKillerName
 DarkKillerTitle1
 DarkKillerKillCoolSetting
+SeerName
+SeerTitle1
+SeerMode
+SeerModeBoth
+SeerModeFlash
+SeerModeSouls
+SeerLimitSoulDuration
+SeerSoulDuration
