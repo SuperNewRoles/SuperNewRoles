@@ -25,7 +25,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
         {
             if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard)
             {
-                if (__instance.TaskText.text.Contains("everyoneするまで"))
+                if (__instance.TaskText.text.Contains("凍結死するまで"))
                 {
                           return;
                 }
