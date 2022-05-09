@@ -97,19 +97,6 @@ namespace SuperNewRoles.Roles
             [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
             public static class MurderPlayerPatch
             {
-                public static bool resetToCrewmate = false;
-                public static bool resetToDead = false;
-
-                public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
-                {
-                    // Allow everyone to murder players
-                    resetToCrewmate = !__instance.Data.Role.IsImpostor;
-                    resetToDead = __instance.Data.IsDead;
-                    __instance.Data.Role.TeamType = RoleTeamTypes.Impostor;
-                    __instance.Data.IsDead = false;
-                }
-
-
                 public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
                 {
 
