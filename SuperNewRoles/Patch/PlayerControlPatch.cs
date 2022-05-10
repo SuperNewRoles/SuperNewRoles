@@ -39,6 +39,10 @@ namespace SuperNewRoles.Patches
             {
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
                 {
+                    if (__instance.currentTarget.isRole(CustomRPC.RoleId.Bait) || __instance.currentTarget.isRole(CustomRPC.RoleId.NiceRedRidingHood))
+                    {
+                        return true;
+                    }
                     PlayerControl.LocalPlayer.killTimer = RoleHelpers.getCoolTime(PlayerControl.LocalPlayer);
                     RoleClass.Vampire.target = __instance.currentTarget;
                     RoleClass.Vampire.KillTimer = DateTime.Now;
