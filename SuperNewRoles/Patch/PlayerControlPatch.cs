@@ -37,12 +37,8 @@ namespace SuperNewRoles.Patches
             if (!ModeHandler.isMode(ModeId.Default)) return true;
             if (__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.CanMove)
             {
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
+                if (!(__instance.currentTarget.isRole(CustomRPC.RoleId.Bait) || __instance.currentTarget.isRole(CustomRPC.RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
                 {
-                    if (__instance.currentTarget.isRole(CustomRPC.RoleId.Bait) || __instance.currentTarget.isRole(CustomRPC.RoleId.NiceRedRidingHood))
-                    {
-                        return true;
-                    }
                     PlayerControl.LocalPlayer.killTimer = RoleHelpers.getCoolTime(PlayerControl.LocalPlayer);
                     RoleClass.Vampire.target = __instance.currentTarget;
                     RoleClass.Vampire.KillTimer = DateTime.Now;
