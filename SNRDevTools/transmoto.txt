@@ -563,3 +563,12 @@ TraitorName
 TraitorTitle1
 TraitorIsCheckFoxSetting
 TraitorCheckFoxTaskSetting
+DarkKillerKillCoolSetting
+SeerName
+SeerTitle1
+SeerMode
+SeerModeBoth
+SeerModeFlash
+SeerModeSouls
+SeerLimitSoulDuration
+SeerSoulDuration

@@ -117,6 +117,7 @@ namespace SuperNewRoles.Roles
             Fox.ClearAndReload();
             Traitor.ClearAndReload();
             DarkKiller.ClearAndReload();
+            Seer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1605,6 +1606,27 @@ namespace SuperNewRoles.Roles
                 KillCoolTime = CustomOptions.DarkKillerKillCoolTime.getFloat();
                 KillButtonDisable = false;
             }
+        }
+        public static class Seer
+        {
+            public static List<PlayerControl> SeerPlayer;
+            public static Color color = new Color32(97, 178, 108, byte.MaxValue);
+            public static List<Vector3> deadBodyPositions;
+
+            public static float soulDuration;
+            public static bool limitSoulDuration;
+            public static int mode;
+
+
+            public static void ClearAndReload()
+            {
+                SeerPlayer = new List<PlayerControl>();
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.SeerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.SeerSoulDuration.getFloat();
+                mode = CustomOptions.SeerMode.getSelection();
+            }
+
         }
         //新ロールクラス
         public static class Quarreled

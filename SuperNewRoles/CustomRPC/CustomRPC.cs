@@ -100,6 +100,7 @@ namespace SuperNewRoles.CustomRPC
         DarkKiller,
         Fox,
         Traitor,
+        Seer,
         //RoleId
     }
 
