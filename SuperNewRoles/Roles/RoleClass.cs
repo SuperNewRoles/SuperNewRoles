@@ -1583,11 +1583,29 @@ namespace SuperNewRoles.Roles
         public static class MadSeer
         {
             public static List<PlayerControl> MadSeerPlayer;
-            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static Color color = ImpostorRed;
+            public static List<Vector3> deadBodyPositions;
+
+            public static float soulDuration;
+            public static bool limitSoulDuration;
+            public static int mode;
+
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+
             public static void ClearAndReload()
             {
                 MadSeerPlayer = new List<PlayerControl>();
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.MadSeerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.MadSeerSoulDuration.getFloat();
+                mode = CustomOptions.MadSeerMode.getSelection();
+
+                IsUseVent = CustomOptions.MadSeerIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadSeerIsImpostorLight.getBool();
+
             }
+
         }
         //新ロールクラス
         public static class Quarreled
