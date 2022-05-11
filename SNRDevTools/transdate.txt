@@ -554,3 +554,15 @@ ObserverTitle1,Let's monitor everything.,すべてを監視しよう
 VampireName,Vampire,ヴァンパイア
 VampireTitle1,Let's do a delayed kill.,遅延キルしよう
 VampireKillDelay,Kill Delay,キル遅延
+DarkKillerName,DarkKiller,ダークキラー
+DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう
+DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム
+VampireKillDelay,Kill Delay,キル遅延
+SeerName,Seer,シーア
+SeerTitle1,You will see players die,船員の気配を感じ取ろう
+SeerMode,Mode,モード
+SeerModeBoth,Show Death Flash + Souls,死の点滅＆幽霊が見える
+SeerModeFlash,Show Death Flash,死の点滅が見える
+SeerModeSouls,Show Souls,幽霊が見える
+SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える
+SeerSoulDuration,Soul Duration,幽霊が見える時間
