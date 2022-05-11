@@ -42,7 +42,7 @@ namespace SuperNewRoles.Roles
                     return true;
                 }
             }
-            if (p.isRole(RoleId.MadSeer))
+            else if (p.isRole(RoleId.MadSeer))
             {
                 if (!RoleClass.MadSeer.IsImpostorCheck) return false;
                 if (RoleClass.MadSeer.ImpostorCheckTask <= taskdata)
