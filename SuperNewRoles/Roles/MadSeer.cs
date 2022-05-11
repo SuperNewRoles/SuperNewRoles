@@ -16,9 +16,9 @@ namespace SuperNewRoles.Roles
             if (!p.isRole(RoleId.MadSeer)) return false;
             if (CheckedImpostor.Contains(p.PlayerId)) return true;
             /*
-            SuperNewRolesPlugin.Logger.LogInfo("インポスターチェックタスク量:"+RoleClass.MadJester.ImpostorCheckTask);
+            SuperNewRolesPlugin.Logger.LogInfo("インポスターチェックタスク量:"+RoleClass.MadSeer.ImpostorCheckTask);
             SuperNewRolesPlugin.Logger.LogInfo("終了タスク量:"+TaskCount.TaskDate(p.Data).Item1);*/
-            SuperNewRolesPlugin.Logger.LogInfo("有効か:" + (RoleClass.MadJester.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1));
+            SuperNewRolesPlugin.Logger.LogInfo("有効か:" + (RoleClass.MadSeer.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1));
             if (RoleClass.MadSeer.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("有効を返しました");
