@@ -880,7 +880,7 @@ namespace SuperNewRoles.CustomOption
             SeerLimitSoulDuration = CustomOption.Create(367, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, SeerOption);
             SeerSoulDuration = CustomOption.Create(368, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerLimitSoulDuration, format: "unitCouples");
 
-            MadSeerOption = new CustomRoleOption(1000, false, CustomOptionType.Crewmate, "SeerName", RoleClass.MadSeer.color, 1);
+            MadSeerOption = new CustomRoleOption(1000, false, CustomOptionType.Crewmate, "MadSeerName", RoleClass.MadSeer.color, 1);
             MadSeerPlayerCount = CustomOption.Create(1001, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadSeerOption);
             MadSeerMode = CustomOption.Create(1002, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, MadSeerOption);
             MadSeerLimitSoulDuration = CustomOption.Create(1003, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, MadSeerOption);
