@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles
             SuperNewRolesPlugin.Logger.LogInfo("インポスターチェックタスク量:"+RoleClass.MadSeer.ImpostorCheckTask);
             SuperNewRolesPlugin.Logger.LogInfo("終了タスク量:"+TaskCount.TaskDate(p.Data).Item1);*/
             SuperNewRolesPlugin.Logger.LogInfo("有効か:" + (RoleClass.MadSeer.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1));
-            if (RoleClass.MadSeer.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1)
+            if (RoleClass.MadMayor.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("有効を返しました");
                 return true;

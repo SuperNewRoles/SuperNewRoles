@@ -1602,6 +1602,7 @@ namespace SuperNewRoles.Roles
             public static bool IsImpostorCheck;
             public static int ImpostorCheckTask;
 
+
             public static void ClearAndReload()
             {
                 MadSeerPlayer = new List<PlayerControl>();
@@ -1610,10 +1611,9 @@ namespace SuperNewRoles.Roles
                 soulDuration = CustomOptions.MadSeerSoulDuration.getFloat();
                 mode = CustomOptions.MadSeerMode.getSelection();
 
+                IsImpostorCheck = CustomOptions.MadSeerIsCheckImpostor.getBool();
                 IsUseVent = CustomOptions.MadSeerIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadSeerIsImpostorLight.getBool();
-
-
                 int Common = (int)CustomOptions.MadSeerCommonTask.getFloat();
                 int Long = (int)CustomOptions.MadSeerLongTask.getFloat();
                 int Short = (int)CustomOptions.MadSeerShortTask.getFloat();
@@ -1625,9 +1625,7 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadSeerCheckImpostorTask.getString().Replace("%", "")) / 100f));
-
             }
-
         }
 
         //新ロールクラス
