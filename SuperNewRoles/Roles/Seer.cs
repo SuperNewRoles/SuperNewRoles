@@ -109,7 +109,7 @@ namespace SuperNewRoles.Roles
 
                             if (RoleClass.MadSeer.limitSoulDuration)
                             {
-                                HudManager.Instance.StartCoroutine(Effects.Lerp(RoleClass.Seer.soulDuration, new Action<float>((p) =>
+                                HudManager.Instance.StartCoroutine(Effects.Lerp(RoleClass.MadSeer.soulDuration, new Action<float>((p) =>
                                 {
                                     if (rend != null)
                                     {
