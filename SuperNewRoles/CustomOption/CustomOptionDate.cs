@@ -427,6 +427,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadSeerModeSouls;
         public static CustomOption MadSeerLimitSoulDuration;
         public static CustomOption MadSeerSoulDuration;
+        public static CustomOption MadSeerIsCheckImpostor;
+        public static CustomOption MadSeerCommonTask;
+        public static CustomOption MadSeerShortTask;
+        public static CustomOption MadSeerLongTask;
+        public static CustomOption MadSeerCheckImpostorTask;
         public static CustomOption MadSeerIsUseVent;
         public static CustomOption MadSeerIsImpostorLight;
 
@@ -887,6 +892,12 @@ namespace SuperNewRoles.CustomOption
             MadSeerSoulDuration = CustomOption.Create(1004, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, MadSeerLimitSoulDuration, format: "unitCouples");
             MadSeerIsUseVent = CustomOption.Create(1005, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadSeerOption);
             MadSeerIsImpostorLight = CustomOption.Create(1006, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadSeerOption);
+            MadSeerIsCheckImpostor = CustomOption.Create(1007, true, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, MadSeerOption);
+            var madseeroption = SelectTask.TaskSetting(1008, 1009, 1010, MadSeerIsCheckImpostor, CustomOptionType.Crewmate, true);
+            MadSeerCommonTask = madseeroption.Item1;
+            MadSeerShortTask = madseeroption.Item2;
+            MadSeerLongTask = madseeroption.Item3;
+            MadSeerCheckImpostorTask = CustomOption.Create(308, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, MadSeerIsCheckImpostor);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

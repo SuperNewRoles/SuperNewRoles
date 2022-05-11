@@ -52,7 +52,19 @@ namespace SuperNewRoles.Patch
                         return (commont, shortt, longt);
                     }
                 }
-            } else if (p.isRole(RoleId.Jester))
+            }else if (p.isRole(RoleId.MadSeer))
+            {
+                if (CustomOptions.MadSeerIsCheckImpostor.getBool())
+                {
+                    int commont = (int)CustomOptions.MadSeerCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.MadSeerShortTask.getFloat();
+                    int longt = (int)CustomOptions.MadSeerLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }else if (p.isRole(RoleId.Jester))
             {
                 if (CustomOptions.JesterIsWinCleartask.getBool())
                 {

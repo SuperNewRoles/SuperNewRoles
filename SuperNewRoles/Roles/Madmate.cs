@@ -42,6 +42,15 @@ namespace SuperNewRoles.Roles
                     return true;
                 }
             }
+            else if (p.isRole(RoleId.MadSeer))
+            {
+                if (!RoleClass.MadSeer.IsImpostorCheck) return false;
+                if (RoleClass.MadSeer.ImpostorCheckTask <= taskdata)
+                {
+                    CheckedImpostor.Add(p.PlayerId);
+                    return true;
+                }
+            }
             return false;
         }
     }

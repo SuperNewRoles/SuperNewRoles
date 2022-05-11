@@ -1569,6 +1569,11 @@ namespace SuperNewRoles.Roles
             public static bool limitSoulDuration;
             public static int mode;
 
+            public static bool IsImpostorCheck;
+            public static int ImpostorCheckTask;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+
 
             public static void ClearAndReload()
             {
@@ -1577,6 +1582,8 @@ namespace SuperNewRoles.Roles
                 limitSoulDuration = CustomOptions.SeerLimitSoulDuration.getBool();
                 soulDuration = CustomOptions.SeerSoulDuration.getFloat();
                 mode = CustomOptions.SeerMode.getSelection();
+
+
             }
 
         }
@@ -1592,6 +1599,8 @@ namespace SuperNewRoles.Roles
 
             public static bool IsUseVent;
             public static bool IsImpostorLight;
+            public static bool IsImpostorCheck;
+            public static int ImpostorCheckTask;
 
             public static void ClearAndReload()
             {
@@ -1603,6 +1612,19 @@ namespace SuperNewRoles.Roles
 
                 IsUseVent = CustomOptions.MadSeerIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadSeerIsImpostorLight.getBool();
+
+
+                int Common = (int)CustomOptions.MadSeerCommonTask.getFloat();
+                int Long = (int)CustomOptions.MadSeerLongTask.getFloat();
+                int Short = (int)CustomOptions.MadSeerShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadSeerCheckImpostorTask.getString().Replace("%", "")) / 100f));
 
             }
 
