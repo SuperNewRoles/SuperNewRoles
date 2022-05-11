@@ -113,6 +113,7 @@ namespace SuperNewRoles.Roles
             Vampire.ClearAndReload();
             DarkKiller.ClearAndReload();
             Seer.ClearAndReload();
+            MadSeer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1578,6 +1579,15 @@ namespace SuperNewRoles.Roles
                 mode = CustomOptions.SeerMode.getSelection();
             }
 
+        }
+        public static class MadSeer
+        {
+            public static List<PlayerControl> MadSeerPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                MadSeerPlayer = new List<PlayerControl>();
+            }
         }
         //新ロールクラス
         public static class Quarreled

@@ -475,6 +475,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Seer):
                     Roles.RoleClass.Seer.SeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.MadSeer):
+                    Roles.RoleClass.MadSeer.MadSeerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -717,6 +720,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.Seer):
                     Roles.RoleClass.Seer.SeerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.MadSeer):
+                    Roles.RoleClass.MadSeer.MadSeerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
 
@@ -1296,6 +1302,10 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Seer;
                 }
+            else if (Roles.RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.MadSeer;
+            }
             //ロールチェック
 
             }
