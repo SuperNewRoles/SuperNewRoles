@@ -419,6 +419,17 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SeerLimitSoulDuration;
         public static CustomOption SeerSoulDuration;
 
+        public static CustomRoleOption MadSeerOption;
+        public static CustomOption MadSeerPlayerCount;
+        public static CustomOption MadSeerMode;
+        public static CustomOption MadSeerModeBoth;
+        public static CustomOption MadSeerModeFlash;
+        public static CustomOption MadSeerModeSouls;
+        public static CustomOption MadSeerLimitSoulDuration;
+        public static CustomOption MadSeerSoulDuration;
+        public static CustomOption MadSeerIsUseVent;
+        public static CustomOption MadSeerIsImpostorLight;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -868,6 +879,14 @@ namespace SuperNewRoles.CustomOption
             SeerMode = CustomOption.Create(366, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, SeerOption);
             SeerLimitSoulDuration = CustomOption.Create(367, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, SeerOption);
             SeerSoulDuration = CustomOption.Create(368, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerLimitSoulDuration, format: "unitCouples");
+
+            MadSeerOption = new CustomRoleOption(1000, false, CustomOptionType.Crewmate, "SeerName", RoleClass.MadSeer.color, 1);
+            MadSeerPlayerCount = CustomOption.Create(1001, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadSeerOption);
+            MadSeerMode = CustomOption.Create(1002, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, MadSeerOption);
+            MadSeerLimitSoulDuration = CustomOption.Create(1003, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, MadSeerOption);
+            MadSeerSoulDuration = CustomOption.Create(1004, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, MadSeerLimitSoulDuration, format: "unitCouples");
+            MadSeerIsUseVent = CustomOption.Create(1005, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadSeerOption);
+            MadSeerIsImpostorLight = CustomOption.Create(1006, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadSeerOption);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
