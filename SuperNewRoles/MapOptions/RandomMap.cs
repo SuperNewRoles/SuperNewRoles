@@ -13,7 +13,7 @@ namespace SuperNewRoles.MapOptions
         public static bool Prefix(RandomMap __instance)
         {
             bool continueStart = true;
-            if (MapOption.RandomMapOption)
+            if (MapOption.RandomMapOption.getBool())
             {
                 var rand = new System.Random();
                 System.Collections.Generic.List<byte> RandomMaps = new System.Collections.Generic.List<byte>();
