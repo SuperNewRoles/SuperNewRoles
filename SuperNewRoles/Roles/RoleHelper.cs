@@ -219,6 +219,7 @@ namespace SuperNewRoles
                     break;
                 case RoleId.MadSeer:
                     returntext = CustomOptions.MadSeerIsUseVent.name + ":" + CustomOptions.MadSeerIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.MadSeerIsCheckImpostor.name + ":" + CustomOptions.MadSeerIsCheckImpostor.getString() + "\n";
                     break;
             }
             return returntext;

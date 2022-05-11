@@ -1629,6 +1629,7 @@ namespace SuperNewRoles.Roles
             }
 
         }
+
         //新ロールクラス
         public static class Quarreled
         {

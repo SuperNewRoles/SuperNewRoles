@@ -488,6 +488,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.MadStuntMan.MadStuntManPlayer);
             notWinners.AddRange(RoleClass.MadHawk.MadHawkPlayer);
             notWinners.AddRange(RoleClass.MadJester.MadJesterPlayer);
+            notWinners.AddRange(RoleClass.MadSeer.MadSeerPlayer);
             notWinners.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
@@ -614,6 +615,11 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(wpd);
                 }
                 foreach (PlayerControl p in RoleClass.MadJester.MadJesterPlayer)
+                {
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                }
+                foreach (PlayerControl p in RoleClass.MadSeer.MadSeerPlayer)
                 {
                     WinningPlayerData wpd = new WinningPlayerData(p.Data);
                     TempData.winners.Add(wpd);
