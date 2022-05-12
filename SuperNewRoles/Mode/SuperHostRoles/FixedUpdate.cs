@@ -144,6 +144,25 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             Side.RpcSetNamePrivate(name + Suffix, p);
                         }
+                        if (p.IsQuarreled() && p.isAlive())
+                        {
+                            Suffix = ModHelpers.cs(RoleClass.Quarreled.color, "○");
+                            PlayerControl Side = p.GetOneSideQuarreled();
+                            string name = Side.getDefaultName();
+                            if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
+                            {
+                                name = ModHelpers.cs(RoleClass.ImpostorRed, name);
+                            }
+                            else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
+                            {
+                                name = ModHelpers.cs(RoleClass.Celebrity.color, name);
+                            }
+                            if (Side.IsLovers())
+                            {
+                                Suffix += ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                            }
+                            Side.RpcSetNamePrivate(name + Suffix, p);
+                        }
                     }
                     if (p.isRole(RoleId.Sheriff))
                     {
