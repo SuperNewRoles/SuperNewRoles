@@ -1634,7 +1634,7 @@ namespace SuperNewRoles.Roles
             public static int mode;
             public static void ClearAndReload()
             {
-                EvilSeer = new List<PlayerControl>();
+                EvilSeerPlayer = new List<PlayerControl>();
                 deadBodyPositions = new List<Vector3>();
                 limitSoulDuration = CustomOptions.EvilSeerLimitSoulDuration.getBool();
                 soulDuration = CustomOptions.EvilSeerSoulDuration.getFloat();
