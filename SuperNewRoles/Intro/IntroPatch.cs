@@ -113,7 +113,7 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
-                    if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int JackalNum = 0;
