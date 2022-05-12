@@ -19,11 +19,12 @@ namespace SuperNewRoles.Roles
             SuperNewRolesPlugin.Logger.LogInfo("インポスターチェックタスク量:"+RoleClass.MadMayor.ImpostorCheckTask);
             SuperNewRolesPlugin.Logger.LogInfo("終了タスク量:"+TaskCount.TaskDate(p.Data).Item1);*/
             SuperNewRolesPlugin.Logger.LogInfo("有効か:" + (RoleClass.MadMayor.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1));
-            if (RoleClass.MadMayor.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1) {
+            if (RoleClass.MadMayor.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1)
+            {
                 SuperNewRolesPlugin.Logger.LogInfo("有効を返しました");
-                return true; 
+                return true;
             }
-           // SuperNewRolesPlugin.Logger.LogInfo("一番下まで通過");
+            // SuperNewRolesPlugin.Logger.LogInfo("一番下まで通過");
             return false;
         }
     }

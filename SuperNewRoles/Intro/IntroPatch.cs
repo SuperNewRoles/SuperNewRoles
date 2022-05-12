@@ -68,7 +68,7 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
-                if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && MadMayor.CheckImpostor(PlayerControl.LocalPlayer))
+                if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int ImpostorNum = 0;
@@ -173,14 +173,6 @@ namespace SuperNewRoles.Patches
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadMate) && CustomOption.CustomOptions.MadMateIsCheckImpostor.getBool())
                 {
                     IntroDate Intro = IntroDate.MadMateIntro;
-                    __instance.BackgroundBar.material.color = Intro.color;
-                    __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
-                    __instance.TeamTitle.color = Intro.color;
-                    __instance.ImpostorText.text = "";
-                }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadMayor) && CustomOption.CustomOptions.MadMayorIsCheckImpostor.getBool())
-                {
-                    IntroDate Intro = IntroDate.MadMayorIntro;
                     __instance.BackgroundBar.material.color = Intro.color;
                     __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
                     __instance.TeamTitle.color = Intro.color;
