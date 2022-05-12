@@ -809,9 +809,9 @@ namespace SuperNewRoles.CustomOption
             SideKillerKillCoolTime = CustomOption.Create(291, false, CustomOptionType.Impostor, "SideKillerKillCoolTimeSetting", 45f, 0f, 75f, 2.5f, SideKillerOption);
             SideKillerMadKillerKillCoolTime = CustomOption.Create(292, false, CustomOptionType.Impostor, "SideKillerMadKillerKillCoolTimeSetting", 45f, 0f, 75f, 2.5f, SideKillerOption);
 
-            SurvivorOption = new CustomRoleOption(293, false, CustomOptionType.Impostor, "SurvivorName", RoleClass.Survivor.color, 1);
-            SurvivorPlayerCount = CustomOption.Create(294, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SurvivorOption);
-            SurvivorKillCoolTime = CustomOption.Create(295, false, CustomOptionType.Impostor, "SurvivorKillCoolTimeSetting", 15f, 0f, 75f, 2.5f, SurvivorOption);
+            SurvivorOption = new CustomRoleOption(293, true, CustomOptionType.Impostor, "SurvivorName", RoleClass.Survivor.color, 1);
+            SurvivorPlayerCount = CustomOption.Create(294, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SurvivorOption);
+            SurvivorKillCoolTime = CustomOption.Create(295, true, CustomOptionType.Impostor, "SurvivorKillCoolTimeSetting", 15f, 0f, 75f, 2.5f, SurvivorOption);
 
             MadMayorOption = new CustomRoleOption(301, true, CustomOptionType.Crewmate, "MadMayorName", RoleClass.ImpostorRed, 1);
             MadMayorPlayerCount = CustomOption.Create(302, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMayorOption);
