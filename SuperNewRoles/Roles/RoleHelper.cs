@@ -217,6 +217,10 @@ namespace SuperNewRoles
                 case RoleId.MadJester:
                     returntext = CustomOptions.MadJesterIsUseVent.name + ":" + CustomOptions.MadJesterIsUseVent.getString() + "\n";
                     break;
+                case RoleId.MadSeer:
+                    returntext = CustomOptions.MadSeerIsUseVent.name + ":" + CustomOptions.MadSeerIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.MadSeerIsCheckImpostor.name + ":" + CustomOptions.MadSeerIsCheckImpostor.getString() + "\n";
+                    break;
             }
             return returntext;
         }
@@ -475,6 +479,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Seer):
                     Roles.RoleClass.Seer.SeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.MadSeer):
+                    Roles.RoleClass.MadSeer.MadSeerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -718,6 +725,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Seer):
                     Roles.RoleClass.Seer.SeerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.MadSeer):
+                    Roles.RoleClass.MadSeer.MadSeerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -827,6 +837,7 @@ namespace SuperNewRoles
             if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadJester.IsUseVent) return true;
             if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadStuntMan.IsUseVent) return true;
             if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadHawk.IsUseVent) return true;
+            if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadSeer.IsUseVent) return true;
             return false;
         }
         public static bool IsSabotage()
@@ -871,6 +882,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.MadStuntMan) && RoleClass.MadStuntMan.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadHawk) && RoleClass.MadHawk.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadJester) && RoleClass.MadJester.IsImpostorLight) return true;
+            if (player.isRole(RoleId.MadSeer) && RoleClass.MadSeer.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -1296,6 +1308,10 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Seer;
                 }
+            else if (Roles.RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.MadSeer;
+            }
             //ロールチェック
 
             }
