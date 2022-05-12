@@ -564,3 +564,5 @@ SeerModeFlash
 SeerModeSouls
 SeerLimitSoulDuration
 SeerSoulDuration
+MadSeerName
+MadSeerTitle1

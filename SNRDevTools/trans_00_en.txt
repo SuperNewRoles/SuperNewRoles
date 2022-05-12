@@ -564,3 +564,5 @@ Show Death Flash
 Show Souls
 Limit Soul Duration
 Soul Duration
+MadSeer
+Feel the success of your husband

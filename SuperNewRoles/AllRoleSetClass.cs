@@ -804,6 +804,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.DarkKillerPlayerCount.getFloat();
                 case (RoleId.Seer):
                     return CustomOption.CustomOptions.SeerPlayerCount.getFloat();
+                    case (RoleId.MadSeer):
+                    return CustomOption.CustomOptions.MadSeerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -2053,6 +2055,22 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SeerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Seer;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.MadSeerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadSeerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadSeer;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);
