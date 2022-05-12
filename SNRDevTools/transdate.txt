@@ -567,3 +567,5 @@ SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える
 SeerSoulDuration,Soul Duration,幽霊が見える時間
 MadSeerName,MadSeer,マッドシーア
 MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう
+EvilSeerName,EvilSeer,イビルシーア
+EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう
