@@ -406,6 +406,35 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption VampirePlayerCount;
         public static CustomOption VampireKillDelay;
 
+        public static CustomRoleOption DarkKillerOption;
+        public static CustomOption DarkKillerPlayerCount;
+        public static CustomOption DarkKillerKillCoolTime;
+
+        public static CustomRoleOption SeerOption;
+        public static CustomOption SeerPlayerCount;
+        public static CustomOption SeerMode;
+        public static CustomOption SeerModeBoth;
+        public static CustomOption SeerModeFlash;
+        public static CustomOption SeerModeSouls;
+        public static CustomOption SeerLimitSoulDuration;
+        public static CustomOption SeerSoulDuration;
+
+        public static CustomRoleOption MadSeerOption;
+        public static CustomOption MadSeerPlayerCount;
+        public static CustomOption MadSeerMode;
+        public static CustomOption MadSeerModeBoth;
+        public static CustomOption MadSeerModeFlash;
+        public static CustomOption MadSeerModeSouls;
+        public static CustomOption MadSeerLimitSoulDuration;
+        public static CustomOption MadSeerSoulDuration;
+        public static CustomOption MadSeerIsCheckImpostor;
+        public static CustomOption MadSeerCommonTask;
+        public static CustomOption MadSeerShortTask;
+        public static CustomOption MadSeerLongTask;
+        public static CustomOption MadSeerCheckImpostorTask;
+        public static CustomOption MadSeerIsUseVent;
+        public static CustomOption MadSeerIsImpostorLight;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -845,6 +874,30 @@ namespace SuperNewRoles.CustomOption
             VampireOption = new CustomRoleOption(358, false, CustomOptionType.Impostor, "VampireName", RoleClass.Vampire.color, 1);
             VampirePlayerCount = CustomOption.Create(359, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VampireOption);
             VampireKillDelay = CustomOption.Create(360, false, CustomOptionType.Impostor, "VampireKillDelay", 0f, 1f, 60f, 0.5f, VampireOption, format: "unitSeconds");
+
+            DarkKillerOption = new CustomRoleOption(361, false, CustomOptionType.Impostor, "DarkKillerName", RoleClass.DarkKiller.color, 1);
+            DarkKillerPlayerCount = CustomOption.Create(362, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DarkKillerOption);
+            DarkKillerKillCoolTime = CustomOption.Create(363, false, CustomOptionType.Impostor, "DarkKillerKillCoolSetting", 20f, 2.5f, 60f, 2.5f, DarkKillerOption);
+
+            SeerOption = new CustomRoleOption(364, false, CustomOptionType.Crewmate, "SeerName", RoleClass.Seer.color, 1);
+            SeerPlayerCount = CustomOption.Create(365, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerOption);
+            SeerMode = CustomOption.Create(366, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, SeerOption);
+            SeerLimitSoulDuration = CustomOption.Create(367, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, SeerOption);
+            SeerSoulDuration = CustomOption.Create(368, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerLimitSoulDuration, format: "unitCouples");
+
+            MadSeerOption = new CustomRoleOption(369, false, CustomOptionType.Crewmate, "MadSeerName", RoleClass.MadSeer.color, 1);
+            MadSeerPlayerCount = CustomOption.Create(370, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadSeerOption);
+            MadSeerMode = CustomOption.Create(371, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, MadSeerOption);
+            MadSeerLimitSoulDuration = CustomOption.Create(372, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, MadSeerOption);
+            MadSeerSoulDuration = CustomOption.Create(372, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, MadSeerLimitSoulDuration, format: "unitCouples");
+            MadSeerIsUseVent = CustomOption.Create(374, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadSeerOption);
+            MadSeerIsImpostorLight = CustomOption.Create(375, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadSeerOption);
+            MadSeerIsCheckImpostor = CustomOption.Create(376, false, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, MadSeerOption);
+            var madseeroption = SelectTask.TaskSetting(378, 379, 380, MadSeerIsCheckImpostor, CustomOptionType.Crewmate, true);
+            MadSeerCommonTask = madseeroption.Item1;
+            MadSeerShortTask = madseeroption.Item2;
+            MadSeerLongTask = madseeroption.Item3;
+            MadSeerCheckImpostorTask = CustomOption.Create(381, false, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, MadSeerIsCheckImpostor);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

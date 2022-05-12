@@ -111,6 +111,9 @@ namespace SuperNewRoles.Roles
             Nocturnality.ClearAndReload();
             Observer.ClearAndReload();
             Vampire.ClearAndReload();
+            DarkKiller.ClearAndReload();
+            Seer.ClearAndReload();
+            MadSeer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1344,6 +1347,7 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
+                Roles.MadMayor.CheckedImpostor = new List<byte>();
             }
         }
         public static class NiceHawk
@@ -1543,6 +1547,89 @@ namespace SuperNewRoles.Roles
                 KillTimer = DateTime.Now;
             }
         }
+        public static class DarkKiller
+        {
+            public static List<PlayerControl> DarkKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static bool KillButtonDisable;
+            public static void ClearAndReload()
+            {
+                DarkKillerPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.DarkKillerKillCoolTime.getFloat();
+                KillButtonDisable = false;
+            }
+        }
+        public static class Seer
+        {
+            public static List<PlayerControl> SeerPlayer;
+            public static Color color = new Color32(97, 178, 108, byte.MaxValue);
+            public static List<Vector3> deadBodyPositions;
+
+            public static float soulDuration;
+            public static bool limitSoulDuration;
+            public static int mode;
+
+            public static bool IsImpostorCheck;
+            public static int ImpostorCheckTask;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+
+
+            public static void ClearAndReload()
+            {
+                SeerPlayer = new List<PlayerControl>();
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.SeerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.SeerSoulDuration.getFloat();
+                mode = CustomOptions.SeerMode.getSelection();
+
+
+            }
+
+        }
+        public static class MadSeer
+        {
+            public static List<PlayerControl> MadSeerPlayer;
+            public static Color color = ImpostorRed;
+            public static List<Vector3> deadBodyPositions;
+
+            public static float soulDuration;
+            public static bool limitSoulDuration;
+            public static int mode;
+
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static bool IsImpostorCheck;
+            public static int ImpostorCheckTask;
+
+
+            public static void ClearAndReload()
+            {
+                MadSeerPlayer = new List<PlayerControl>();
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.MadSeerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.MadSeerSoulDuration.getFloat();
+                mode = CustomOptions.MadSeerMode.getSelection();
+
+                IsImpostorCheck = CustomOptions.MadSeerIsCheckImpostor.getBool();
+                IsUseVent = CustomOptions.MadSeerIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadSeerIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.MadSeerCommonTask.getFloat();
+                int Long = (int)CustomOptions.MadSeerLongTask.getFloat();
+                int Short = (int)CustomOptions.MadSeerShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadSeerCheckImpostorTask.getString().Replace("%", "")) / 100f));
+                Roles.MadSeer.CheckedImpostor = new List<byte>();
+            }
+        }
+
         //新ロールクラス
         public static class Quarreled
         {

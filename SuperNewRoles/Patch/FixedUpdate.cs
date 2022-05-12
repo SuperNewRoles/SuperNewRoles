@@ -94,7 +94,7 @@ namespace SuperNewRoles.Patch
                         Jackal.JackalFixedPatch.Postfix(__instance);
                         if (PlayerControl.LocalPlayer.isAlive())
                         {
-                            if (PlayerControl.LocalPlayer.isImpostor()) {SetTarget.ImpostorSetTarget();}
+                            if (PlayerControl.LocalPlayer.isImpostor()) {SetTarget.ImpostorSetTarget(); }
                             if (RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                             {
                                 Researcher.ReseUseButtonSetTargetPatch.Postfix(__instance);
@@ -138,6 +138,10 @@ namespace SuperNewRoles.Patch
                             if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
                             {
                                 Vampire.FixedUpdate.Postfix();
+                            }
+                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DarkKiller))
+                            {
+                                DarkKiller.FixedUpdate.Postfix();
                             }
                         }
                         else if (PlayerControl.LocalPlayer.isDead())

@@ -217,8 +217,36 @@ namespace SuperNewRoles
                 case RoleId.MadJester:
                     returntext = CustomOptions.MadJesterIsUseVent.name + ":" + CustomOptions.MadJesterIsUseVent.getString() + "\n";
                     break;
+                case RoleId.MadSeer:
+                    returntext = CustomOptions.MadSeerIsUseVent.name + ":" + CustomOptions.MadSeerIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.MadSeerIsCheckImpostor.name + ":" + CustomOptions.MadSeerIsCheckImpostor.getString() + "\n";
+                    break;
             }
             return returntext;
+        }
+
+        public static void ShowFlash(Color color, float duration = 1f)
+        //Seerで使用している画面を光らせるコード
+        {
+            if (HudManager.Instance == null || HudManager.Instance.FullScreen == null) return;
+            HudManager.Instance.FullScreen.gameObject.SetActive(true);
+            HudManager.Instance.FullScreen.enabled = true;
+            HudManager.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
+            {
+                var renderer = HudManager.Instance.FullScreen;
+
+                if (p < 0.5)
+                {
+                    if (renderer != null)
+                        renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
+                }
+                else
+                {
+                    if (renderer != null)
+                        renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
+                }
+                if (p == 1f && renderer != null) renderer.enabled = false;
+            })));
         }
 
         public static void setRole(this PlayerControl player, RoleId role)
@@ -444,6 +472,15 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.Vampire):
                     Roles.RoleClass.Vampire.VampirePlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.DarkKiller):
+                    Roles.RoleClass.DarkKiller.DarkKillerPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Seer):
+                    Roles.RoleClass.Seer.SeerPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.MadSeer):
+                    Roles.RoleClass.MadSeer.MadSeerPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -682,6 +719,15 @@ namespace SuperNewRoles
                     case (CustomRPC.RoleId.Vampire):
                     Roles.RoleClass.Vampire.VampirePlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.DarkKiller):
+                    Roles.RoleClass.DarkKiller.DarkKillerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Seer):
+                    Roles.RoleClass.Seer.SeerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.MadSeer):
+                    Roles.RoleClass.MadSeer.MadSeerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -791,6 +837,7 @@ namespace SuperNewRoles
             if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadJester.IsUseVent) return true;
             if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadStuntMan.IsUseVent) return true;
             if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadHawk.IsUseVent) return true;
+            if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadSeer.IsUseVent) return true;
             return false;
         }
         public static bool IsSabotage()
@@ -835,6 +882,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.MadStuntMan) && RoleClass.MadStuntMan.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadHawk) && RoleClass.MadHawk.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadJester) && RoleClass.MadJester.IsImpostorLight) return true;
+            if (player.isRole(RoleId.MadSeer) && RoleClass.MadSeer.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -918,6 +966,7 @@ namespace SuperNewRoles
                 else if (__instance.isRole(RoleId.MadKiller)) addition = RoleClass.SideKiller.MadKillerCoolTime;
                 else if (__instance.isRole(RoleId.Minimalist)) addition = RoleClass.Minimalist.KillCoolTime;
                 else if (__instance.isRole(RoleId.Survivor)) addition = RoleClass.Survivor.KillCoolTime;
+                else if (__instance.isRole(RoleId.DarkKiller)) addition = RoleClass.DarkKiller.KillCoolTime;
             }
             return addition;
         }
@@ -1248,8 +1297,20 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.Observer;
                 }
                 else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Vampire;
+                }
+                else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.DarkKiller;
+                }
+                else if (Roles.RoleClass.Seer.SeerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Seer;
+                }
+            else if (Roles.RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player))
             {
-                return CustomRPC.RoleId.Vampire;
+                return CustomRPC.RoleId.MadSeer;
             }
             //ロールチェック
 
