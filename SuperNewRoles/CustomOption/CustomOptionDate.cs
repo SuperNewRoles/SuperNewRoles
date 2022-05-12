@@ -686,9 +686,9 @@ namespace SuperNewRoles.CustomOption
             ResearcherOption = new CustomRoleOption(144, "ResearcherName", RoleClass.Researcher.color, 1);
             ResearcherPlayerCount = CustomOption.Create(145, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ResearcherOption);
             **/
-            SelfBomberOption = new CustomRoleOption(146, false, CustomOptionType.Impostor, "SelfBomberName", RoleClass.SelfBomber.color, 1);
-            SelfBomberPlayerCount = CustomOption.Create(147, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SelfBomberOption);
-            SelfBomberScope = CustomOption.Create(148, false, CustomOptionType.Impostor, "SelfBomberScopeSetting",1f,0.5f,3f,0.5f,SelfBomberOption);
+            SelfBomberOption = new CustomRoleOption(146, true, CustomOptionType.Impostor, "SelfBomberName", RoleClass.SelfBomber.color, 1);
+            SelfBomberPlayerCount = CustomOption.Create(147, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SelfBomberOption);
+            SelfBomberScope = CustomOption.Create(148, true, CustomOptionType.Impostor, "SelfBomberScopeSetting",1f,0.5f,3f,0.5f,SelfBomberOption);
 
             GodOption = new CustomRoleOption(149, true, CustomOptionType.Neutral, "GodName", RoleClass.God.color, 1);
             GodPlayerCount = CustomOption.Create(150, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GodOption);
