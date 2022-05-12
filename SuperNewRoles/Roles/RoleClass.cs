@@ -1346,6 +1346,7 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
+                Roles.MadMayor.CheckedImpostor = new List<byte>();
             }
         }
         public static class NiceHawk
