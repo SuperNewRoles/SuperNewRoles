@@ -83,21 +83,6 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
-                if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
-                {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
-                    int ImpostorNum = 0;
-                    ImpostorTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-                    {
-                        if (player.Data.Role.IsImpostor)
-                        {
-                            ImpostorNum++;
-                            ImpostorTeams.Add(player);
-                        }
-                    }
-                    yourTeam = ImpostorTeams;
-                }
                 if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && MadJester.CheckImpostor(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
@@ -113,7 +98,7 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
-                if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
+                if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && MadSeer.CheckImpostor(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int ImpostorNum = 0;
@@ -188,14 +173,6 @@ namespace SuperNewRoles.Patches
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadMate) && CustomOption.CustomOptions.MadMateIsCheckImpostor.getBool())
                 {
                     IntroDate Intro = IntroDate.MadMateIntro;
-                    __instance.BackgroundBar.material.color = Intro.color;
-                    __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
-                    __instance.TeamTitle.color = Intro.color;
-                    __instance.ImpostorText.text = "";
-                }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadSeer))
-                {
-                    IntroDate Intro = IntroDate.MadSeerIntro;
                     __instance.BackgroundBar.material.color = Intro.color;
                     __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
                     __instance.TeamTitle.color = Intro.color;
