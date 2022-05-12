@@ -193,14 +193,6 @@ namespace SuperNewRoles.Patches
                     __instance.TeamTitle.color = Intro.color;
                     __instance.ImpostorText.text = "";
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadSeer))
-                {
-                    IntroDate Intro = IntroDate.MadSeerIntro;
-                    __instance.BackgroundBar.material.color = Intro.color;
-                    __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
-                    __instance.TeamTitle.color = Intro.color;
-                    __instance.ImpostorText.text = "";
-                }
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && CustomOption.CustomOptions.JackalFriendsIsCheckJackal.getBool())
                 {
                     IntroDate Intro = IntroDate.JackalFriendsIntro;
