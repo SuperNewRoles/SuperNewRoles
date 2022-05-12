@@ -25,14 +25,11 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("シェイプ");
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
-                SuperNewRolesPlugin.Logger.LogInfo("SHR!!!");
                 if (!AmongUsClient.Instance.AmHost) return true;
                 if (__instance.isRole(RoleId.SelfBomber))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("ぼーん!!!");
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         if (p.isAlive() && p.PlayerId != __instance.PlayerId)
