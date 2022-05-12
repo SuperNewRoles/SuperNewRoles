@@ -28,23 +28,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     var Side = RoleHelpers.GetOneSideQuarreled(target);
                     if (Side.isDead())
                     {
-                        RPCProcedure.ShareWinner(target.PlayerId);
+                        new LateTask(() =>
+                        {
+                            RPCProcedure.ShareWinner(target.PlayerId);
 
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                        Writer.Write(target.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
-                        Writer.Write((byte)CustomGameOverReason.QuarreledWin);
-                        Writer.EndRPC();
-                        CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
-                        var winplayers = new List<PlayerControl>();
-                        winplayers.Add(target);
-                        //EndGameCheck.WinNeutral(winplayers);
-                        Chat.WinCond = CustomGameOverReason.QuarreledWin;
-                        Chat.Winner = new List<PlayerControl>();
-                        Chat.Winner.Add(target);
-                        RoleClass.Quarreled.IsQuarreledWin = true;
-                        SuperHostRoles.EndGameCheck.CustomEndGame(ShipStatus.Instance,GameOverReason.HumansByTask, false);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            Writer.Write(target.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                            Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                            Writer.Write((byte)CustomGameOverReason.QuarreledWin);
+                            Writer.EndRPC();
+                            CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
+                            var winplayers = new List<PlayerControl>();
+                            winplayers.Add(target);
+                            //EndGameCheck.WinNeutral(winplayers);
+                            Chat.WinCond = CustomGameOverReason.QuarreledWin;
+                            Chat.Winner = new List<PlayerControl>();
+                            Chat.Winner.Add(target);
+                            RoleClass.Quarreled.IsQuarreledWin = true;
+                            SuperHostRoles.EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByTask, false);
+                        }, 0.5f);
                     }
                 }
             }
