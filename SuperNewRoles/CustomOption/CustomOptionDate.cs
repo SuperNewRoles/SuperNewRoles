@@ -885,19 +885,19 @@ namespace SuperNewRoles.CustomOption
             SeerLimitSoulDuration = CustomOption.Create(367, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, SeerOption);
             SeerSoulDuration = CustomOption.Create(368, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerLimitSoulDuration, format: "unitCouples");
 
-            MadSeerOption = new CustomRoleOption(1000, false, CustomOptionType.Crewmate, "MadSeerName", RoleClass.MadSeer.color, 1);
-            MadSeerPlayerCount = CustomOption.Create(1001, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadSeerOption);
-            MadSeerMode = CustomOption.Create(1002, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, MadSeerOption);
-            MadSeerLimitSoulDuration = CustomOption.Create(1003, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, MadSeerOption);
-            MadSeerSoulDuration = CustomOption.Create(1004, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, MadSeerLimitSoulDuration, format: "unitCouples");
-            MadSeerIsUseVent = CustomOption.Create(1005, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadSeerOption);
-            MadSeerIsImpostorLight = CustomOption.Create(1006, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadSeerOption);
-            MadSeerIsCheckImpostor = CustomOption.Create(1007, true, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, MadSeerOption);
-            var madseeroption = SelectTask.TaskSetting(1008, 1009, 1010, MadSeerIsCheckImpostor, CustomOptionType.Crewmate, true);
+            MadSeerOption = new CustomRoleOption(369, false, CustomOptionType.Crewmate, "MadSeerName", RoleClass.MadSeer.color, 1);
+            MadSeerPlayerCount = CustomOption.Create(370, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadSeerOption);
+            MadSeerMode = CustomOption.Create(371, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, MadSeerOption);
+            MadSeerLimitSoulDuration = CustomOption.Create(372, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, MadSeerOption);
+            MadSeerSoulDuration = CustomOption.Create(372, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, MadSeerLimitSoulDuration, format: "unitCouples");
+            MadSeerIsUseVent = CustomOption.Create(374, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadSeerOption);
+            MadSeerIsImpostorLight = CustomOption.Create(375, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadSeerOption);
+            MadSeerIsCheckImpostor = CustomOption.Create(376, false, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, MadSeerOption);
+            var madseeroption = SelectTask.TaskSetting(378, 379, 380, MadSeerIsCheckImpostor, CustomOptionType.Crewmate, true);
             MadSeerCommonTask = madseeroption.Item1;
             MadSeerShortTask = madseeroption.Item2;
             MadSeerLongTask = madseeroption.Item3;
-            MadSeerCheckImpostorTask = CustomOption.Create(308, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, MadSeerIsCheckImpostor);
+            MadSeerCheckImpostorTask = CustomOption.Create(381, false, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, MadSeerIsCheckImpostor);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
