@@ -593,7 +593,7 @@ namespace SuperNewRoles.Buttons
             sheriffNumShotsText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
 
             
-            SheriffKillButton.buttonText = ModTranslation.getString("SherifKillButtonName");
+            SheriffKillButton.buttonText = ModTranslation.getString("SheriffKillButtonName");
             SheriffKillButton.showButtonText = true;
 
             ClergymanLightOutButton = new Buttons.CustomButton(
