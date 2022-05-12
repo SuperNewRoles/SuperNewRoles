@@ -223,7 +223,7 @@ namespace SuperNewRoles.Patches
                         }
                         if (PlayerControl.LocalPlayer.IsQuarreled())
                         {
-                            __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
                         }
                     }
                     else if (ModeHandler.isMode(ModeId.SuperHostRoles))
