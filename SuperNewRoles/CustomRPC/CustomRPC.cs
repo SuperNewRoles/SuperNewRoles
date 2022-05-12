@@ -100,6 +100,7 @@ namespace SuperNewRoles.CustomRPC
         DarkKiller,
         Seer,
         MadSeer,
+        EvilSeer,
         //RoleId
     }
 

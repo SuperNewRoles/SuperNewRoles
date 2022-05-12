@@ -806,6 +806,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SeerPlayerCount.getFloat();
                     case (RoleId.MadSeer):
                     return CustomOption.CustomOptions.MadSeerPlayerCount.getFloat();
+                    case (RoleId.EvilSeer):
+                    return CustomOption.CustomOptions.EvilSeerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -2080,6 +2082,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.EvilSeerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.EvilSeerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.EvilSeer;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }
