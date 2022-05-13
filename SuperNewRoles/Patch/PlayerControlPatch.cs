@@ -25,7 +25,22 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
         {
-            if (__instance.PlayerId == target.PlayerId) return true;
+            SyncSetting.CustomSyncSettings();
+            if (__instance.PlayerId == target.PlayerId) {
+
+                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                {
+                    if (__instance.isRole(RoleId.RemoteSheriff))
+                    {
+                        __instance.RpcProtectPlayer(__instance, 0);
+                        new LateTask(() =>
+                        {
+                            __instance.RpcMurderPlayer(__instance);
+                        },0.5f);
+                    }
+                }
+                return true; 
+            }
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 switch (__instance.getRole())
@@ -148,7 +163,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
                     {
-                        if (!__instance.isCoolingDown && RoleClass.RemoteSheriff.KillMaxCount > 0)
+                        if (__instance.isActiveAndEnabled && PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.CanMove && !__instance.isCoolingDown && RoleClass.RemoteSheriff.KillMaxCount > 0)
                         {
                             DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
                             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
@@ -209,6 +224,7 @@ namespace SuperNewRoles.Patches
         {
             SuperNewRolesPlugin.Logger.LogInfo("キル:" + __instance.name + "(" + __instance.PlayerId + ")" + " => " + target.name + "(" + target.PlayerId + ")");
             if (__instance.isDead()) return false;
+            SyncSetting.CustomSyncSettings();
             if (__instance.PlayerId == target.PlayerId) { __instance.RpcMurderPlayer(target); return false; }
             if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 return false;
