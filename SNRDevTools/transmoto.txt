@@ -559,10 +559,6 @@ DarkKillerKillCoolSetting
 VampireKillDelay
 FoxName
 FoxTitle1
-TraitorName
-TraitorTitle1
-TraitorIsCheckFoxSetting
-TraitorCheckFoxTaskSetting
 DarkKillerKillCoolSetting
 SeerName
 SeerTitle1

@@ -574,7 +574,3 @@ DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキ�
 VampireKillDelay,Kill Delay,キル遅延
 FoxName,Fox,妖狐
 FoxTitle1,I am Fox!,私は狐です!
-TraitorName,Traitor,背信者
-TraitorTitle1,Let's subjugate ourselves to the fake railer.,偽レイラーに服属しよう
-TraitorIsCheckFoxSetting,You can check the Fox.,妖狐を確認できる
-TraitorCheckFoxTaskSetting,Amount of tasks that will be able to be checked (of all tasks),確認できるようになるタスク量(全タスク内)
