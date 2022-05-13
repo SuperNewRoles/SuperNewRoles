@@ -16,6 +16,7 @@ namespace SuperNewRoles.Roles
             if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.RemoteSheriff))
             {
                 HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
+                HudManagerStartPatch.SheriffKillButton.Timer = RoleClass.RemoteSheriff.CoolTime;
                 RoleClass.Sheriff.ButtonTimer = DateTime.Now;
             }
             else
@@ -23,6 +24,7 @@ namespace SuperNewRoles.Roles
                 HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
                 RoleClass.Sheriff.ButtonTimer = DateTime.Now;
             }
+            SuperNewRolesPlugin.Logger.LogInfo("リセット！！！");
         }
         public static bool IsSheriffKill(PlayerControl Target)
         {
