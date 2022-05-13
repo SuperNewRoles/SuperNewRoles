@@ -577,7 +577,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 RoleId ThisRoleId = RoleId.Celebrity;
                 if (OptionDate == 10)
                 {
-                    Neutonepar.Add(ThisRoleId);
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
                 }
             }
             if (!(CustomOption.CustomOptions.NocturnalityOption.getString().Replace("0%", "") == ""))
