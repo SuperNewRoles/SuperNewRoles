@@ -16,9 +16,39 @@ using System.Threading.Tasks;
 using UnityEngine;
 using SuperNewRoles.Helpers;
 using static SuperNewRoles.ModHelpers;
+using InnerNet;
 
 namespace SuperNewRoles.Patches
 {
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
+    class RpcShapesihftPatch
+    {
+        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
+        {
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
+                if (!AmongUsClient.Instance.AmHost) return true;
+                if (__instance.isRole(RoleId.SelfBomber))
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.isAlive() && p.PlayerId != __instance.PlayerId)
+                        {
+                            if (SelfBomber.GetIsBomb(__instance, p))
+                            {
+                                __instance.RpcMurderPlayer(p);
+                            }
+                        }
+                    }
+                    __instance.RpcMurderPlayer(__instance);
+                    SuperNewRolesPlugin.Logger.LogInfo("りたーん");
+                    return false;
+                }
+            }
+            SuperNewRolesPlugin.Logger.LogInfo("trueでりたーん");
+            return true;
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
     class CheckProtectPatch
     {

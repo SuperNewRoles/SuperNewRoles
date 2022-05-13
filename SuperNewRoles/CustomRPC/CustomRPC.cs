@@ -101,6 +101,8 @@ namespace SuperNewRoles.CustomRPC
         Fox,
         Traitor,
         Seer,
+        MadSeer,
+        EvilSeer,
         //RoleId
     }
 
