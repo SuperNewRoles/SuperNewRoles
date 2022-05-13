@@ -553,6 +553,9 @@ Let's monitor everything.
 Vampire
 Let's do a delayed kill.
 Kill Delay
+Fox
+I am Fox!
+Kill Delay
 DarkKiller
 Let's kill in the dark
 Dark Killer's Kill Cool Time
@@ -566,3 +569,5 @@ Limit Soul Duration
 Soul Duration
 MadSeer
 Feel the success of your husband
+EvilSeer
+You will see players die

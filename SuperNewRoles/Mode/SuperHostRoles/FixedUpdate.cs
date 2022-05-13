@@ -89,16 +89,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         if (RoleClass.Celebrity.ChangeRoleView)
                         {
-                            foreach (PlayerControl Celebrity in RoleClass.Celebrity.ViewPlayers)
+                            foreach (PlayerControl p2 in RoleClass.Celebrity.ViewPlayers)
                             {
-                                Celebrity.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p.getDefaultName()));
+                                if( p.PlayerId != p2.PlayerId )
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p2.getDefaultName()), p);
+                                }
                             }
                         }
                         else
                         {
-                            foreach (PlayerControl Celebrity in RoleClass.Celebrity.CelebrityPlayer)
+                            foreach (PlayerControl p2 in RoleClass.Celebrity.CelebrityPlayer)
                             {
-                                Celebrity.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p.getDefaultName()),p);
+                                if( p.PlayerId != p2.PlayerId )
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p2.getDefaultName()), p);
+                                }
                             }
                         }
                         bool IsMadmateCheck = Madmate.CheckImpostor(p);
@@ -182,6 +188,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
                     string TaskText = "";
                     if (!p.isImpostor())
+                    {
+                        try
+                        {
+                            if (commsActive)
+                            {
+                                var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
+                                TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
+                            }
+                            else
+                            {
+                                var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                                TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                    if (!p.isFox())
                     {
                         try
                         {

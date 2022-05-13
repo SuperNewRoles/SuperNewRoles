@@ -27,6 +27,7 @@ namespace SuperNewRoles.Roles
         public static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
         public static Color ImpostorRed = Palette.ImpostorRed;
         public static Color CrewmateWhite = Color.white;
+        public static Color FoxPurple = Palette.Purple;
         public static bool IsStart;
 
         public static void clearAndReloadRoles()
@@ -37,6 +38,7 @@ namespace SuperNewRoles.Roles
             Map.Data.ClearAndReloads();
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new List<byte>();
+            Roles.MadMayor.CheckedImpostor = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
@@ -111,9 +113,11 @@ namespace SuperNewRoles.Roles
             Nocturnality.ClearAndReload();
             Observer.ClearAndReload();
             Vampire.ClearAndReload();
+            Fox.ClearAndReload();
             DarkKiller.ClearAndReload();
             Seer.ClearAndReload();
             MadSeer.ClearAndReload();
+            EvilSeer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1547,6 +1551,23 @@ namespace SuperNewRoles.Roles
                 KillTimer = DateTime.Now;
             }
         }
+        public static class Fox
+        {
+            public static List<PlayerControl> FoxPlayer;
+            public static Color32 color = FoxPurple;
+            public static Dictionary<int, int> KillGuard;
+            public static bool IsUseVent;
+            public static bool UseReport;
+            public static bool IsImpostorLight;
+            public static void ClearAndReload()
+            {
+                FoxPlayer = new List<PlayerControl>();
+                KillGuard = new Dictionary<int, int>();
+                IsUseVent = CustomOptions.FoxIsUseVent.getBool();
+                UseReport = CustomOptions.FoxReport.getBool();
+                IsImpostorLight = CustomOptions.FoxIsImpostorLight.getBool();
+            }
+        }
         public static class DarkKiller
         {
             public static List<PlayerControl> DarkKillerPlayer;
@@ -1570,12 +1591,6 @@ namespace SuperNewRoles.Roles
             public static bool limitSoulDuration;
             public static int mode;
 
-            public static bool IsImpostorCheck;
-            public static int ImpostorCheckTask;
-            public static bool IsUseVent;
-            public static bool IsImpostorLight;
-
-
             public static void ClearAndReload()
             {
                 SeerPlayer = new List<PlayerControl>();
@@ -1583,8 +1598,6 @@ namespace SuperNewRoles.Roles
                 limitSoulDuration = CustomOptions.SeerLimitSoulDuration.getBool();
                 soulDuration = CustomOptions.SeerSoulDuration.getFloat();
                 mode = CustomOptions.SeerMode.getSelection();
-
-
             }
 
         }
@@ -1630,8 +1643,26 @@ namespace SuperNewRoles.Roles
             }
         }
 
-        //新ロールクラス
-        public static class Quarreled
+        public static class EvilSeer
+        {
+            public static List<PlayerControl> EvilSeerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static List<Vector3> deadBodyPositions;
+
+            public static float soulDuration;
+            public static bool limitSoulDuration;
+            public static int mode;
+            public static void ClearAndReload()
+            {
+                EvilSeerPlayer = new List<PlayerControl>();
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.EvilSeerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.EvilSeerSoulDuration.getFloat();
+                mode = CustomOptions.EvilSeerMode.getSelection();
+            }
+        }
+            //新ロールクラス
+            public static class Quarreled
         {
             public static List<List<PlayerControl>> QuarreledPlayer;
             public static Color32 color = new Color32(210, 105, 30, byte.MaxValue);

@@ -263,6 +263,28 @@ namespace SuperNewRoles.Patches
                         }
                     }
                 }
+                if (target.isRole(RoleId.Fox))
+                {
+                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, __instance))
+                    {
+                        if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
+                        {
+                            target.RpcProtectPlayer(target, 0);
+                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                            return false;
+                        }
+                        else
+                        {
+                            if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
+                            {
+                                RoleClass.Fox.KillGuard[target.PlayerId]--;
+                                target.RpcProtectPlayer(target, 0);
+                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                                return false;
+                            }
+                        }
+                    }
+                }
             }
             if (__instance.isRole(RoleId.OverKiller))
             {
