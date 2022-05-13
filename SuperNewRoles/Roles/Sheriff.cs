@@ -13,8 +13,16 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetKillCoolDown()
         {
-            HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
-            RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.RemoteSheriff))
+            {
+                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
+                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+            }
+            else
+            {
+                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
+                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+            }
         }
         public static bool IsSheriffKill(PlayerControl Target)
         {
@@ -48,7 +56,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSheriff(PlayerControl Player)
         {
-            if (Player.isRole(CustomRPC.RoleId.Sheriff))
+            if (Player.isRole(CustomRPC.RoleId.Sheriff) || Player.isRole(CustomRPC.RoleId.RemoteSheriff))
             {
                 return true;
             }
@@ -57,10 +65,36 @@ namespace SuperNewRoles.Roles
                 return false;
             }
         }
+        public static bool IsSheriffButton(PlayerControl Player)
+        {
+            if (Player.isRole(CustomRPC.RoleId.Sheriff))
+            {
+                if (RoleClass.Sheriff.KillMaxCount > 0)
+                {
+                    return true;
+                }
+            }
+            else if (Player.isRole(CustomRPC.RoleId.RemoteSheriff))
+            {
+                if (RoleClass.RemoteSheriff.KillMaxCount > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public static void EndMeeting()
         {
-            HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
-            RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.RemoteSheriff))
+            {
+                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
+                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+            }
+            else
+            {
+                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
+                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+            }
         }
     }
 }

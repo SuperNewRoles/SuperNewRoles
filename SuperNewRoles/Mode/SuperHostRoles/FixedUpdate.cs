@@ -151,6 +151,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         {
                             Suffix += "(残り" + RoleClass.Sheriff.KillCount[p.PlayerId] + "発)";
                         }
+                    } else if (p.isRole(RoleId.RemoteSheriff))
+                    {
+                        if (RoleClass.RemoteSheriff.KillCount.ContainsKey(p.PlayerId))
+                        {
+                            Suffix += "(残り" + RoleClass.RemoteSheriff.KillCount[p.PlayerId] + "発)";
+                        }
                     }
                     var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
                     string TaskText = "";

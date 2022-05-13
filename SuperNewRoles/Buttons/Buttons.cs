@@ -552,7 +552,20 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
                     {
-
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        {
+                            p.Data.Role.NameColor = Color.white;
+                        }
+                        PlayerControl.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        {
+                            if (p.isImpostor())
+                            {
+                                p.Data.Role.NameColor = RoleClass.ImpostorRed;
+                            }
+                        }
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
                     }
                     else if (PlayerControl.LocalPlayer.isRole(RoleId.Sheriff))
                     {
@@ -575,14 +588,25 @@ namespace SuperNewRoles.Buttons
                         }
                     }
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && ModeHandler.isMode(ModeId.Default) && Sheriff.IsSheriff(PlayerControl.LocalPlayer) && RoleClass.Sheriff.KillMaxCount >= 1; },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && ModeHandler.isMode(ModeId.Default) && Sheriff.IsSheriffButton(PlayerControl.LocalPlayer); },
                 () =>
                 {
-                    if (RoleClass.Sheriff.KillMaxCount > 0)
-                        sheriffNumShotsText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), RoleClass.Sheriff.KillMaxCount);
+                    float killcount = 0f;
+                    bool flag = false;
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
+                    {
+                        killcount = RoleClass.RemoteSheriff.KillMaxCount;
+                        flag = true;
+                    } else if (PlayerControl.LocalPlayer.isRole(RoleId.Sheriff))
+                    {
+                        killcount = RoleClass.Sheriff.KillMaxCount;
+                        flag = PlayerControlFixedUpdatePatch.setTarget() && PlayerControl.LocalPlayer.CanMove;
+                    }
+                    if (killcount > 0)
+                        sheriffNumShotsText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), killcount);
                     else
                         sheriffNumShotsText.text = "";
-                    return PlayerControlFixedUpdatePatch.setTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return flag;
                 },
                 () => { Sheriff.EndMeeting(); },
                 RoleClass.Sheriff.getButtonSprite(),

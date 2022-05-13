@@ -181,7 +181,7 @@ namespace SuperNewRoles.Buttons
             {
                 Roles.RoleClass.Sheriff.ButtonTimer = DateTime.Now;
             }
-            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Sheriff.CoolTime);
+            var TimeSpanDate = new TimeSpan(0, 0, 0, PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff) ? (int)Roles.RoleClass.Sheriff.CoolTime : (int)Roles.RoleClass.RemoteSheriff.CoolTime);
             Buttons.HudManagerStartPatch.SheriffKillButton.Timer = (float)((Roles.RoleClass.SpeedBooster.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
             if (Buttons.HudManagerStartPatch.SheriffKillButton.Timer <= 0f) Buttons.HudManagerStartPatch.SheriffKillButton.Timer = 0f; return;
         }

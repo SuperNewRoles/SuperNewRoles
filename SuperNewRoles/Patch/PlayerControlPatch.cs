@@ -26,8 +26,8 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
         {
             SyncSetting.CustomSyncSettings();
-            if (__instance.PlayerId == target.PlayerId) {
-
+            if (__instance.PlayerId == target.PlayerId)
+            {
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
                     if (__instance.isRole(RoleId.RemoteSheriff))
@@ -36,10 +36,10 @@ namespace SuperNewRoles.Patches
                         new LateTask(() =>
                         {
                             __instance.RpcMurderPlayer(__instance);
-                        },0.5f);
+                        }, 0.5f);
                     }
                 }
-                return true; 
+                return true;
             }
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
@@ -48,6 +48,7 @@ namespace SuperNewRoles.Patches
                     case RoleId.RemoteSheriff:
                         if (AmongUsClient.Instance.AmHost)
                         {
+                            if (target.isDead()) return true;
                             if (!RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] >= 1)
                             {
                                 if (!Sheriff.IsRemoteSheriffKill(target) || target.isRole(RoleId.RemoteSheriff))
@@ -70,10 +71,11 @@ namespace SuperNewRoles.Patches
                                     if (RoleClass.RemoteSheriff.IsKillTeleport)
                                     {
                                         __instance.RpcMurderPlayer(target);
-                                    } else
+                                    }
+                                    else
                                     {
                                         target.RpcMurderPlayer(target);
-                                        __instance.RpcProtectPlayer(__instance,0);
+                                        __instance.RpcProtectPlayer(__instance, 0);
                                         new LateTask(() =>
                                         {
                                             __instance.RpcMurderPlayer(__instance);
@@ -133,17 +135,44 @@ namespace SuperNewRoles.Patches
             if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff)){
                 if (RoleClass.RemoteSheriff.KillMaxCount > 0)
                 {
-                    new LateTask(() =>
+                    if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
-                        PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
                         new LateTask(() =>
                         {
-                            PlayerControl.LocalPlayer.transform.localScale *= 1.4f;
-                        }, 1f);
-                    }, 1.5f);
-                    RoleClass.RemoteSheriff.KillMaxCount--;
-                    PlayerControl.LocalPlayer.RpcShapeshift(player, true);
-                }
+                            PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
+                            new LateTask(() =>
+                            {
+                                PlayerControl.LocalPlayer.transform.localScale *= 1.4f;
+                            }, 1.1f);
+                        }, 1.5f);
+                        PlayerControl.LocalPlayer.RpcShapeshift(player, true);
+                    } else if (ModeHandler.isMode(ModeId.Default))
+                    {
+                        if (player.isAlive())
+                        {
+                            var Target = player;
+                            var misfire = !Roles.Sheriff.IsRemoteSheriffKill(Target);
+                            var TargetID = Target.PlayerId;
+                            var LocalID = PlayerControl.LocalPlayer.PlayerId;
+
+                            PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
+                            new LateTask(() =>
+                            {
+                                PlayerControl.LocalPlayer.transform.localScale *= 1.4f;
+                            }, 1.1f);
+
+                            CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
+
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
+                            killWriter.Write(LocalID);
+                            killWriter.Write(TargetID);
+                            killWriter.Write(misfire);
+                            AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                            RoleClass.RemoteSheriff.KillMaxCount--;
+                        }
+                        Sheriff.ResetKillCoolDown();
+                    };
+                } 
                 __instance.Close();
                 return false;
             }
