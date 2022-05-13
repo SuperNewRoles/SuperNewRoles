@@ -496,6 +496,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilSeer):
                     Roles.RoleClass.EvilSeer.EvilSeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.TeleportingJackal):
+                    Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -748,6 +751,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilSeer):
                     Roles.RoleClass.EvilSeer.EvilSeerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.TeleportingJackal):
+                    Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -828,6 +834,9 @@ namespace SuperNewRoles
                 case (RoleId.Fox):
                     IsTaskClear = true;
                     break; 
+                case (RoleId.TeleportingJackal):
+                    IsTaskClear = true;
+                    break; 
                 //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
@@ -853,6 +862,7 @@ namespace SuperNewRoles
             if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMate.IsUseVent) return true;
             if ((RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player) || 
                 RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) && Roles.RoleClass.Jackal.IsUseVent) return true;
+            if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.TeleportingJackal.IsUseVent) return true;
             if (player.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsUseVent) return true;
             if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.UseVent) return true;
             if (player.isRole(RoleId.Technician) && IsSabotage()) return true;
@@ -895,6 +905,7 @@ namespace SuperNewRoles
             if ((RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player) ||
                 RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) && Roles.RoleClass.Jackal.IsUseSabo) return true;
             if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.UseSabo) return true;
+            if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.TeleportingJackal.IsUseSabo) return true;
             return false;
         }
         public static bool IsImpostorLight(this PlayerControl player)
@@ -908,6 +919,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.MadJester) && RoleClass.MadJester.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadSeer) && RoleClass.MadSeer.IsImpostorLight) return true;
             if (player.isRole(RoleId.Fox) && RoleClass.Fox.IsImpostorLight) return true;
+            if (player.isRole(RoleId.TeleportingJackal) && RoleClass.TeleportingJackal.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -952,6 +964,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.Fox):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.TeleportingJackal):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1367,6 +1382,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Fox;
+            }
+            else if (Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.TeleportingJackal;
             }
             //ロールチェック
 
