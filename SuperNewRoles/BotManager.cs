@@ -7,7 +7,6 @@ namespace SuperNewRoles
 {
     public class BotManager
     {
-        internal static BepInEx.Logging.ManualLogSource Logger;
         public static List<PlayerControl> AllBots = new List<PlayerControl>();
         public static void Spawn(string name = "Bot", byte BotPlayerId = 1)
         {
@@ -28,11 +27,11 @@ namespace SuperNewRoles
             Bot.SetNamePlate("NamePlate_Empty");
             Bot.SetSkin("skin_Empty", 1);
             GameData.Instance.RpcSetTasks(Bot.PlayerId, new byte[0]);
-            SuperNewRolesPlugin.Logger.LogInfo("<color=#00ff00>botスポーン！\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
+            SuperNewRolesPlugin.Logger.LogInfo("botスポーン！\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
         }
         public static void Despawn(PlayerControl Bot)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("<color=#00ff00>botデスポーン！\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
+            SuperNewRolesPlugin.Logger.LogInfo("botデスポーン！\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
             Bot.Despawn();
             GameData.Instance.RemovePlayer(Bot.PlayerId);
             AllBots.Remove(Bot);
@@ -43,7 +42,7 @@ namespace SuperNewRoles
             {
                 Bots.Despawn();
                 GameData.Instance.RemovePlayer(Bots.PlayerId);
-                SuperNewRolesPlugin.Logger.LogInfo("<color=#00ff00>botデスポーン！\nID:" + Bots.PlayerId + "\nBotName:" + Bots.name);
+                SuperNewRolesPlugin.Logger.LogInfo("botデスポーン！\nID:" + Bots.PlayerId + "\nBotName:" + Bots.name);
             }
             AllBots = new List<PlayerControl>();
         }
