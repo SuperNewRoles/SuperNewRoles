@@ -220,13 +220,13 @@ Evil Scientist's Invisibility Duration
 Sheriff
 Kill the outsider!
 Kill the outsider and lead your crewmates to victory!
-Sheriff's Kill Cooldown
+Kill Cooldown
 Can Kill a Neutral
 Can Kill a Lovers
 Can Kill a MadRole
 Yes
 No
-Maximum number of kills for Sheriff
+Maximum number of kills
 Kill
 {0} shots remaining.
 Meeting Sheriff
