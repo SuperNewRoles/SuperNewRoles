@@ -138,6 +138,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            if (RoleClass.Fox.IsUseVent)
+            {
+                foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
+                {
+                    if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
+                }
+            }
 
             foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
             {
@@ -567,7 +577,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 RoleId ThisRoleId = RoleId.Celebrity;
                 if (OptionDate == 10)
                 {
-                    Neutonepar.Add(ThisRoleId);
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
                 }
             }
             if (!(CustomOption.CustomOptions.NocturnalityOption.getString().Replace("0%", "") == ""))
@@ -617,6 +634,20 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         Imponotonepar.Add(ThisRoleId);
                     }
+                }
+            }
+            if (!(CustomOption.CustomOptions.FoxOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.FoxOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Fox;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                } else {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                       Neutonepar.Add(ThisRoleId);
+                    }                        
                 }
             }
             if (!(CustomOption.CustomOptions.SurvivorOption.getString().Replace("0%", "") == ""))

@@ -87,6 +87,10 @@ namespace SuperNewRoles.Patch
                     {
                         Mode.NotImpostorCheck.NameSet.Postfix();
                     }
+                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    {
+                        Fox.FixedUpdate.Postfix();
+                    }
                     else if (ModeHandler.isMode(ModeId.Default))
                     {
                         SabotageManager.Update();
@@ -143,6 +147,7 @@ namespace SuperNewRoles.Patch
                             {
                                 DarkKiller.FixedUpdate.Postfix();
                             }
+                            Fox.FixedUpdate.Postfix();
                         }
                         else if (PlayerControl.LocalPlayer.isDead())
                         {

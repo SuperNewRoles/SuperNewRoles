@@ -18,6 +18,7 @@ namespace SuperNewRoles.EndGame
         LoversWin,
         MadJesterWin,
         FalseChargesWin,
+        FoxWin,
         BugEnd
     }
 }
