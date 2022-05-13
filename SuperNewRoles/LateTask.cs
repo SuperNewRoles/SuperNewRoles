@@ -41,9 +41,10 @@ namespace SuperNewRoles
         {
             var TasksToRemove = new List<LateTask>();
             Tasks.ForEach((task) => {
+                //SuperNewRolesPlugin.Logger.LogInfo("LateTask \"" + task.name + "\" Start");
                 if (task.run(deltaTime))
                 {
-                    //Logger.info("LateTask \"" + task.name + "\" is finished");
+                    //SuperNewRolesPlugin.Logger.LogInfo("LateTask \"" + task.name + "\" is finished");
                     TasksToRemove.Add(task);
                 }
             });

@@ -138,7 +138,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                         if (p.IsLovers() && p.isAlive())
                         {
-                            Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                            var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
                             PlayerControl Side = p.GetOneSideLovers();
                             string name = Side.getDefaultName();
                             if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
@@ -148,8 +148,35 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             {
                                 name = ModHelpers.cs(RoleClass.Celebrity.color, name);
                             }
-                            Side.RpcSetNamePrivate(name + Suffix, p);
+                            Side.RpcSetNamePrivate(name + suffix, p);
                         }
+                        if (p.IsQuarreled() && p.isAlive())
+                        {
+                            var suffix = ModHelpers.cs(RoleClass.Quarreled.color, "○");
+                            PlayerControl Side = p.GetOneSideQuarreled();
+                            string name = Side.getDefaultName();
+                            if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
+                            {
+                                name = ModHelpers.cs(RoleClass.ImpostorRed, name);
+                            }
+                            else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
+                            {
+                                name = ModHelpers.cs(RoleClass.Celebrity.color, name);
+                            }
+                            if (Side.IsLovers())
+                            {
+                                suffix += ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                            }
+                            Side.RpcSetNamePrivate(name + suffix, p);
+                        }
+                    }
+                    if (p.IsLovers())
+                    {
+                        Suffix += ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                    }
+                    if (p.IsQuarreled())
+                    {
+                        Suffix += ModHelpers.cs(RoleClass.Quarreled.color, "○");
                     }
                     if (p.isRole(RoleId.Sheriff))
                     {

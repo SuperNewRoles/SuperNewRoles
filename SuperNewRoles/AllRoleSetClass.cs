@@ -125,6 +125,24 @@ namespace SuperNewRoles
                         player.RpcSetRole(RoleTypes.Crewmate);
                     }
                 }
+
+                try
+                {
+                    AllRoleSetClass.QuarreledRandomSelect();
+                }
+                catch (Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                }
+
+                try
+                {
+                    AllRoleSetClass.LoversRandomSelect();
+                }
+                catch (Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                }
                 return false;
             } else if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
@@ -237,20 +255,22 @@ namespace SuperNewRoles
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
                 }
-            }
-            try
-            {
-                LoversRandomSelect();
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+
+                try
+                {
+                    LoversRandomSelect();
+                }
+                catch (Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                }
             }
 
         }
         public static void QuarreledRandomSelect()
         {
             if (!CustomOption.CustomOptions.QuarreledOption.getBool()) return;
+            SuperNewRolesPlugin.Logger.LogInfo("クラードセレクト");
             List<PlayerControl> SelectPlayers = new List<PlayerControl>();
             if (CustomOption.CustomOptions.QuarreledOnlyCrewMate.getBool())
             {

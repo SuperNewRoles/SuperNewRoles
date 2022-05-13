@@ -19,6 +19,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             AllRoleSetClass.AllRoleSet();
             SetCustomRoles();
             SyncSetting.CustomSyncSettings();
+
             ChacheManager.ResetChache();
             FixedUpdate.SetRoleNames();
             main.SendAllRoleChat();
@@ -679,12 +680,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (OptionDate == 10)
                 {
                     Neutonepar.Add(ThisRoleId);
+                } else {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                       Neutonepar.Add(ThisRoleId);
+                    }                        
+                }
+            }
+            if (!(CustomOption.CustomOptions.SurvivorOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SurvivorOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Survivor;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
                 }
                 else
                 {
                     for (int i = 1; i <= OptionDate; i++)
                     {
-                        Neutnotonepar.Add(ThisRoleId);
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }

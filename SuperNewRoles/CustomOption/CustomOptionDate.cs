@@ -842,9 +842,9 @@ namespace SuperNewRoles.CustomOption
             SideKillerKillCoolTime = CustomOption.Create(291, false, CustomOptionType.Impostor, "SideKillerKillCoolTimeSetting", 45f, 0f, 75f, 2.5f, SideKillerOption);
             SideKillerMadKillerKillCoolTime = CustomOption.Create(292, false, CustomOptionType.Impostor, "SideKillerMadKillerKillCoolTimeSetting", 45f, 0f, 75f, 2.5f, SideKillerOption);
 
-            SurvivorOption = new CustomRoleOption(293, false, CustomOptionType.Impostor, "SurvivorName", RoleClass.Survivor.color, 1);
-            SurvivorPlayerCount = CustomOption.Create(294, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SurvivorOption);
-            SurvivorKillCoolTime = CustomOption.Create(295, false, CustomOptionType.Impostor, "SurvivorKillCoolTimeSetting", 15f, 0f, 75f, 2.5f, SurvivorOption);
+            SurvivorOption = new CustomRoleOption(293, true, CustomOptionType.Impostor, "SurvivorName", RoleClass.Survivor.color, 1);
+            SurvivorPlayerCount = CustomOption.Create(294, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SurvivorOption);
+            SurvivorKillCoolTime = CustomOption.Create(295, true, CustomOptionType.Impostor, "SurvivorKillCoolTimeSetting", 15f, 0f, 75f, 2.5f, SurvivorOption);
 
             MadMayorOption = new CustomRoleOption(301, true, CustomOptionType.Crewmate, "MadMayorName", RoleClass.ImpostorRed, 1);
             MadMayorPlayerCount = CustomOption.Create(302, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMayorOption);
@@ -944,10 +944,10 @@ namespace SuperNewRoles.CustomOption
             EvilSeerLimitSoulDuration = CustomOption.Create(385, false, CustomOptionType.Impostor, "SeerLimitSoulDuration", false, EvilSeerOption);
             EvilSeerSoulDuration = CustomOption.Create(386, false, CustomOptionType.Impostor, "SeerSoulDuration", 15f, 0f, 120f, 5f, EvilSeerLimitSoulDuration, format: "unitCouples");
 
-            QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
-            QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
-            QuarreledOnlyCrewMate = CustomOption.Create(123, false, CustomOptionType.Neutral, "QuarreledOnlyCrewMateSetting", false, QuarreledOption);
-            
+            QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
+            QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
+            QuarreledOnlyCrewMate = CustomOption.Create(123, true, CustomOptionType.Neutral, "QuarreledOnlyCrewMateSetting", false, QuarreledOption);
+
             LoversOption = CustomOption.Create(221, true, CustomOptionType.Neutral, cs(RoleClass.Lovers.color, "LoversName"), false, null, isHeader: true);
             LoversTeamCount = CustomOption.Create(222, true, CustomOptionType.Neutral, "LoversTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], LoversOption);
             LoversPar = CustomOption.Create(223, true, CustomOptionType.Neutral, "LoversParSetting", rates , LoversOption);
