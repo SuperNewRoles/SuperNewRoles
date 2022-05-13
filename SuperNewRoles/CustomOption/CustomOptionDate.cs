@@ -890,11 +890,11 @@ namespace SuperNewRoles.CustomOption
             VampirePlayerCount = CustomOption.Create(359, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VampireOption);
             VampireKillDelay = CustomOption.Create(360, false, CustomOptionType.Impostor, "VampireKillDelay", 0f, 1f, 60f, 0.5f, VampireOption, format: "unitSeconds");
 
-            FoxOption = new CustomRoleOption(356, true, CustomOptionType.Neutral, "FoxName", RoleClass.Fox.color, 1);
-            FoxPlayerCount = CustomOption.Create(357, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FoxOption);
-            FoxIsUseVent = CustomOption.Create(120, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, FoxOption);
-            FoxIsImpostorLight = CustomOption.Create(234, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, FoxOption);
-            FoxReport = CustomOption.Create(182, true, CustomOptionType.Neutral, "MinimalistReportSetting", true, FoxOption);
+            FoxOption = new CustomRoleOption(387, true, CustomOptionType.Neutral, "FoxName", RoleClass.Fox.color, 1);
+            FoxPlayerCount = CustomOption.Create(388, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FoxOption);
+            FoxIsUseVent = CustomOption.Create(389, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, FoxOption);
+            FoxIsImpostorLight = CustomOption.Create(390, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, FoxOption);
+            FoxReport = CustomOption.Create(391, true, CustomOptionType.Neutral, "MinimalistReportSetting", true, FoxOption);
 
             DarkKillerOption = new CustomRoleOption(361, false, CustomOptionType.Impostor, "DarkKillerName", RoleClass.DarkKiller.color, 1);
             DarkKillerPlayerCount = CustomOption.Create(362, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DarkKillerOption);
@@ -910,7 +910,7 @@ namespace SuperNewRoles.CustomOption
             MadSeerPlayerCount = CustomOption.Create(370, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadSeerOption);
             MadSeerMode = CustomOption.Create(371, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, MadSeerOption);
             MadSeerLimitSoulDuration = CustomOption.Create(372, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, MadSeerOption);
-            MadSeerSoulDuration = CustomOption.Create(372, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, MadSeerLimitSoulDuration, format: "unitCouples");
+            MadSeerSoulDuration = CustomOption.Create(392, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, MadSeerLimitSoulDuration, format: "unitCouples");
             MadSeerIsUseVent = CustomOption.Create(374, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadSeerOption);
             MadSeerIsImpostorLight = CustomOption.Create(375, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadSeerOption);
             MadSeerIsCheckImpostor = CustomOption.Create(376, false, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, MadSeerOption);
