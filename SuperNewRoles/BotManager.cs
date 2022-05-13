@@ -13,9 +13,9 @@ namespace SuperNewRoles
             var Bot = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
            
             AllBots.Add(Bot);
+            Bot.PlayerId = BotPlayerId;
             GameData.Instance.AddPlayer(Bot);
             AmongUsClient.Instance.Spawn(Bot, -2, InnerNet.SpawnFlags.IsClientCharacter);
-            Bot.PlayerId = BotPlayerId;
             Bot.transform.position = new Vector3(9999f, 9999f, 0);
             Bot.NetTransform.enabled = false;
             
