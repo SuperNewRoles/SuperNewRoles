@@ -27,6 +27,7 @@ namespace SuperNewRoles.Roles
         public static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
         public static Color ImpostorRed = Palette.ImpostorRed;
         public static Color CrewmateWhite = Color.white;
+        public static Color FoxPurple = Palette.Purple;
         public static bool IsStart;
 
         public static void clearAndReloadRoles()
@@ -37,6 +38,7 @@ namespace SuperNewRoles.Roles
             Map.Data.ClearAndReloads();
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new List<byte>();
+            Roles.MadMayor.CheckedImpostor = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
@@ -111,6 +113,7 @@ namespace SuperNewRoles.Roles
             Nocturnality.ClearAndReload();
             Observer.ClearAndReload();
             Vampire.ClearAndReload();
+            Fox.ClearAndReload();
             DarkKiller.ClearAndReload();
             Seer.ClearAndReload();
             MadSeer.ClearAndReload();
@@ -1547,6 +1550,23 @@ namespace SuperNewRoles.Roles
                 KillDelay = CustomOptions.VampireKillDelay.getFloat();
                 Timer = 0;
                 KillTimer = DateTime.Now;
+            }
+        }
+        public static class Fox
+        {
+            public static List<PlayerControl> FoxPlayer;
+            public static Color32 color = FoxPurple;
+            public static Dictionary<int, int> KillGuard;
+            public static bool IsUseVent;
+            public static bool UseReport;
+            public static bool IsImpostorLight;
+            public static void ClearAndReload()
+            {
+                FoxPlayer = new List<PlayerControl>();
+                KillGuard = new Dictionary<int, int>();
+                IsUseVent = CustomOptions.FoxIsUseVent.getBool();
+                UseReport = CustomOptions.FoxReport.getBool();
+                IsImpostorLight = CustomOptions.FoxIsImpostorLight.getBool();
             }
         }
         public static class DarkKiller

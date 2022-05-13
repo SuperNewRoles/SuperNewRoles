@@ -168,6 +168,8 @@ namespace SuperNewRoles.Intro
                     return ObserverIntro;
                 case (CustomRPC.RoleId.Vampire):
                     return VampireIntro;
+                case (CustomRPC.RoleId.Fox):
+                    return FoxIntro;
                 case (CustomRPC.RoleId.DarkKiller):
                     return DarkKillerIntro;
                 case (CustomRPC.RoleId.Seer):
@@ -271,6 +273,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate NocturnalityIntro = new IntroDate("Nocturnality", RoleClass.Nocturnality.color, 1, CustomRPC.RoleId.Nocturnality);
         public static IntroDate ObserverIntro = new IntroDate("Observer", RoleClass.Observer.color, 1, CustomRPC.RoleId.Observer);
         public static IntroDate VampireIntro = new IntroDate("Vampire", RoleClass.Vampire.color, 1, CustomRPC.RoleId.Vampire);
+        public static IntroDate FoxIntro = new IntroDate("Fox", RoleClass.Fox.color, 1, CustomRPC.RoleId.Fox);
         public static IntroDate DarkKillerIntro = new IntroDate("DarkKiller", RoleClass.DarkKiller.color, 1, CustomRPC.RoleId.DarkKiller);
         public static IntroDate SeerIntro = new IntroDate("Seer", RoleClass.Seer.color, 1, CustomRPC.RoleId.Seer);
         public static IntroDate MadSeerIntro = new IntroDate("MadSeer", RoleClass.MadSeer.color, 1, CustomRPC.RoleId.MadSeer);
