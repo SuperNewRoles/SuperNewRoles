@@ -169,7 +169,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.SelfBomber:
                     optdata.RoleOptions.ShapeshifterCooldown = 0.000001f;
-                    optdata.RoleOptions.ShapeshifterDuration = 0.000001f;
+                    optdata.RoleOptions.ShapeshifterDuration = 0.000001f
+                      break;
+                case RoleId.Survivor:
+                    optdata.killCooldown = KillCoolSet(RoleClass.Survivor.KillCoolTime);
                     break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
