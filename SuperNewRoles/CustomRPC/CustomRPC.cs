@@ -101,6 +101,7 @@ namespace SuperNewRoles.CustomRPC
         Seer,
         MadSeer,
         EvilSeer,
+        TimeMaster,
         //RoleId
     }
 

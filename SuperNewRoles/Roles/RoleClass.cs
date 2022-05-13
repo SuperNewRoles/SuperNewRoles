@@ -115,6 +115,7 @@ namespace SuperNewRoles.Roles
             Seer.ClearAndReload();
             MadSeer.ClearAndReload();
             EvilSeer.ClearAndReload();
+            TimeMaster.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1641,8 +1642,41 @@ namespace SuperNewRoles.Roles
                 mode = CustomOptions.EvilSeerMode.getSelection();
             }
         }
-            //新ロールクラス
-            public static class Quarreled
+
+        public static class TimeMaster
+        {
+            public static List<PlayerControl> TimeMasterPlayer;
+            public static Color32 color = new Color32(112, 142, 239, byte.MaxValue);
+
+            public static bool ReviveDuringRewind = false;
+            public static float RewindTime = 3f;
+            public static float ShieldDuration = 3f;
+            public static float Cooldown = 30f;
+
+            public static bool ShieldActive = false;
+            public static bool IsRewinding = false;
+
+            public static DateTime ButtonTimer;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.TimeShieldButton.png", 115f);
+                return ButtonSprite;
+            }
+
+            public static void ClearAndReload()
+            {
+                TimeMasterPlayer = new List<PlayerControl>();
+                IsRewinding = false;
+                ShieldActive = false;
+                RewindTime = CustomOptions.TimeMasterRewindTime.getFloat();
+                ShieldDuration = CustomOptions.TimeMasterShieldDuration.getFloat();
+                Cooldown = CustomOptions.TimeMasterCooldown.getFloat();
+            }
+        }
+        //新ロールクラス
+        public static class Quarreled
         {
             public static List<List<PlayerControl>> QuarreledPlayer;
             public static Color32 color = new Color32(210, 105, 30, byte.MaxValue);
