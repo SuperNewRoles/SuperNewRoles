@@ -824,11 +824,13 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.DarkKillerPlayerCount.getFloat();
                 case (RoleId.Seer):
                     return CustomOption.CustomOptions.SeerPlayerCount.getFloat();
-                    case (RoleId.MadSeer):
+                case (RoleId.MadSeer):
                     return CustomOption.CustomOptions.MadSeerPlayerCount.getFloat();
-                    case (RoleId.EvilSeer):
+                case (RoleId.EvilSeer):
                     return CustomOption.CustomOptions.EvilSeerPlayerCount.getFloat();
-                    case (RoleId.Fox):
+                case (RoleId.RemoteSheriff):
+                    return CustomOption.CustomOptions.RemoteSheriffPlayerCount.getFloat();
+                case (RoleId.Fox):
                     return CustomOption.CustomOptions.FoxPlayerCount.getFloat();
                     //プレイヤーカウント
             }
@@ -2136,6 +2138,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.RemoteSheriffOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.RemoteSheriffOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.RemoteSheriff;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
                     }
                 }
             }

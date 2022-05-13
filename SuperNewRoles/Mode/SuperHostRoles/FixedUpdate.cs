@@ -184,6 +184,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         {
                             Suffix += "(残り" + RoleClass.Sheriff.KillCount[p.PlayerId] + "発)";
                         }
+                    } else if (p.isRole(RoleId.RemoteSheriff))
+                    {
+                        if (RoleClass.RemoteSheriff.KillCount.ContainsKey(p.PlayerId))
+                        {
+                            Suffix += "(残り" + RoleClass.RemoteSheriff.KillCount[p.PlayerId] + "発)";
+                        }
                     }
                     var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
                     string TaskText = "";
@@ -259,6 +265,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     HudManager.Instance.KillButton.gameObject.SetActive(true);
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                    }
                 }
                 else
                 {
@@ -266,7 +276,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = false;
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
-            } else if (PlayerControl.LocalPlayer.isRole(RoleId.Egoist))
+            }
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
+            {
+                HudManager.Instance.KillButton.gameObject.SetActive(true);
+                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
+                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControl.LocalPlayer);
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                }
+            }
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.Egoist))
             {
                 HudManager.Instance.KillButton.gameObject.SetActive(true);
                 PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
