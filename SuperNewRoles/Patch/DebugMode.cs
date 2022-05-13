@@ -121,6 +121,14 @@ namespace SuperNewRoles.Patch
                     DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
                 }
                 */
+                if (Input.GetKeyDown(KeyCode.F10))
+                {
+                     BotManager.Spawn("test", (byte)GameData.Instance.GetAvailableId());
+                }
+                if (Input.GetKeyDown(KeyCode.F11))
+                {
+                    BotManager.AllBotDespawn();
+                }
             }
 
             public static string RandomString(int length)
