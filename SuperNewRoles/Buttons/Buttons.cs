@@ -550,22 +550,29 @@ namespace SuperNewRoles.Buttons
             SheriffKillButton = new Buttons.CustomButton(
                 () =>
                 {
-                    if (RoleClass.Sheriff.KillMaxCount >= 1 && setTarget())
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
                     {
-                        RoleClass.Sheriff.KillMaxCount--;
-                        var Target = PlayerControlFixedUpdatePatch.setTarget();
-                        var misfire = !Roles.Sheriff.IsSheriffKill(Target);
-                        var TargetID = Target.PlayerId;
-                        var LocalID = PlayerControl.LocalPlayer.PlayerId;
 
-                        CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
+                    }
+                    else if (PlayerControl.LocalPlayer.isRole(RoleId.Sheriff))
+                    {
+                        if (RoleClass.Sheriff.KillMaxCount >= 1 && setTarget())
+                        {
+                            RoleClass.Sheriff.KillMaxCount--;
+                            var Target = PlayerControlFixedUpdatePatch.setTarget();
+                            var misfire = !Roles.Sheriff.IsSheriffKill(Target);
+                            var TargetID = Target.PlayerId;
+                            var LocalID = PlayerControl.LocalPlayer.PlayerId;
 
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
-                        killWriter.Write(LocalID);
-                        killWriter.Write(TargetID);
-                        killWriter.Write(misfire);
-                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        Sheriff.ResetKillCoolDown();
+                            CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
+
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
+                            killWriter.Write(LocalID);
+                            killWriter.Write(TargetID);
+                            killWriter.Write(misfire);
+                            AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                            Sheriff.ResetKillCoolDown();
+                        }
                     }
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && ModeHandler.isMode(ModeId.Default) && Sheriff.IsSheriff(PlayerControl.LocalPlayer) && RoleClass.Sheriff.KillMaxCount >= 1; },

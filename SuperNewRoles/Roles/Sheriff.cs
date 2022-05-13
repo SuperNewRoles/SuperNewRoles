@@ -31,9 +31,24 @@ namespace SuperNewRoles.Roles
             if (Target.isRole(CustomRPC.RoleId.MadSeer) && RoleClass.Sheriff.IsMadRoleKill) return true;
             return false;
         }
+        public static bool IsRemoteSheriffKill(PlayerControl Target)
+        {
+            var roledata = CountChanger.GetRoleType(Target);
+            if (roledata == TeamRoleType.Impostor) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadMate) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadMate) && RoleClass.RemoteSheriff.MadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadJester) && RoleClass.RemoteSheriff.MadRoleKill) return true;
+            if (Target.isNeutral() && RoleClass.RemoteSheriff.IsNeutralKill) return true;
+            if (RoleClass.RemoteSheriff.IsLoversKill && Target.IsLovers()) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadStuntMan) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadMayor) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadHawk) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadSeer) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            return false;
+        }
         public static bool IsSheriff(PlayerControl Player)
         {
-            if (RoleClass.Sheriff.SheriffPlayer.IsCheckListPlayerControl(Player))
+            if (Player.isRole(CustomRPC.RoleId.Sheriff))
             {
                 return true;
             }

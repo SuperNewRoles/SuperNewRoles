@@ -206,6 +206,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     HudManager.Instance.KillButton.gameObject.SetActive(true);
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                    }
                 }
                 else
                 {
@@ -213,7 +217,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = false;
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
-            } else if (PlayerControl.LocalPlayer.isRole(RoleId.Egoist))
+            }
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
+            {
+                HudManager.Instance.KillButton.gameObject.SetActive(true);
+                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
+                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControl.LocalPlayer);
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                }
+            }
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.Egoist))
             {
                 HudManager.Instance.KillButton.gameObject.SetActive(true);
                 PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;

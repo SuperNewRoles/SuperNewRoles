@@ -68,6 +68,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             foreach (PlayerControl p in RoleClass.Sheriff.SheriffPlayer) {
                 p.RpcSetRole(RoleTypes.GuardianAngel);
             }
+            foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
+            {
+                p.RpcSetRole(RoleTypes.GuardianAngel);
+            }
             /*
                 foreach (PlayerControl p in RoleClass.Opportunist.OpportunistPlayer)
                 {
@@ -95,7 +99,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             */
-                    __instance.enabled = false;
+            __instance.enabled = false;
                     ShipStatus.RpcEndGame(reason, showAd);
 
             //変更した設定を直す
