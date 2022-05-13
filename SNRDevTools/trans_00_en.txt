@@ -553,12 +553,11 @@ Let's monitor everything.
 Vampire
 Let's do a delayed kill.
 Kill Delay
-Fox
-I am Fox!
-Kill Delay
 DarkKiller
 Let's kill in the dark
 Dark Killer's Kill Cool Time
+Fox
+I am Fox!
 Seer
 You will see players die
 Mode

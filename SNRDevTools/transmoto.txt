@@ -556,7 +556,6 @@ VampireKillDelay
 DarkKillerName
 DarkKillerTitle1
 DarkKillerKillCoolSetting
-VampireKillDelay
 FoxName
 FoxTitle1
 SeerName
