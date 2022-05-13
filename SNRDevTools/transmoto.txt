@@ -570,3 +570,4 @@ EvilSeerName
 EvilSeerTitle1
 RemoteSheriffName
 RemoteSheriffTitle1
+RemoteSheriffIsKillTeleportSetting

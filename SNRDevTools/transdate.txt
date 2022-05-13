@@ -571,3 +571,4 @@ EvilSeerName,EvilSeer,イビルシーア
 EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう
 RemoteSheriffName,Remote Sheriff,リモートシェリフ
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう
+RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート
