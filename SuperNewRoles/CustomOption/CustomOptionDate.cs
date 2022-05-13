@@ -412,16 +412,6 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption FoxIsImpostorLight;
         public static CustomOption FoxReport;
 
-        public static CustomRoleOption TraitorOption;
-        public static CustomOption TraitorPlayerCount;
-        public static CustomOption TraitorIsCheckFox;
-        public static CustomOption TraitorCommonTask;
-        public static CustomOption TraitorShortTask;
-        public static CustomOption TraitorLongTask;
-        public static CustomOption TraitorCheckFoxTask;
-        public static CustomOption TraitorIsUseVent;
-        public static CustomOption TraitorIsImpostorLight;
-
         public static CustomRoleOption DarkKillerOption;
         public static CustomOption DarkKillerPlayerCount;
         public static CustomOption DarkKillerKillCoolTime;
@@ -905,18 +895,6 @@ namespace SuperNewRoles.CustomOption
             FoxIsUseVent = CustomOption.Create(120, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, FoxOption);
             FoxIsImpostorLight = CustomOption.Create(234, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, FoxOption);
             FoxReport = CustomOption.Create(182, true, CustomOptionType.Neutral, "MinimalistReportSetting", true, FoxOption);
-
-            TraitorOption = new CustomRoleOption(98, true, CustomOptionType.Neutral, "TraitorName", RoleClass.Fox.color, 1);
-            TraitorPlayerCount = CustomOption.Create(99, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TraitorOption);
-            TraitorIsCheckFox = CustomOption.Create(100, true, CustomOptionType.Neutral, "TraitorIsCheckFoxSetting", false, TraitorOption);
-            var traitoroption = SelectTask.TaskSetting(259,260,261,TraitorIsCheckFox, CustomOptionType.Neutral ,true);
-            TraitorCommonTask = traitoroption.Item1;
-            TraitorShortTask = traitoroption.Item2;
-            TraitorLongTask = traitoroption.Item3;
-            //TraitorIsNotTask = madmateoption.Item4;
-            TraitorCheckFoxTask = CustomOption.Create(242, true, CustomOptionType.Neutral, "TraitorCheckFoxTaskSetting", rates4, TraitorIsCheckFox);
-            TraitorIsUseVent = CustomOption.Create(120, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TraitorOption);
-            TraitorIsImpostorLight = CustomOption.Create(234, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, TraitorOption);
 
             DarkKillerOption = new CustomRoleOption(361, false, CustomOptionType.Impostor, "DarkKillerName", RoleClass.DarkKiller.color, 1);
             DarkKillerPlayerCount = CustomOption.Create(362, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DarkKillerOption);

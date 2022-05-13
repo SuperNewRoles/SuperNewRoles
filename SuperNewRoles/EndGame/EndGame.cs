@@ -498,7 +498,6 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.MadSeer.MadSeerPlayer);
             notWinners.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
             notWinners.AddRange(RoleClass.Fox.FoxPlayer);
-            notWinners.AddRange(RoleClass.Traitor.TraitorPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -574,25 +573,6 @@ namespace SuperNewRoles.EndGame
                 }
 
                 AdditionalTempData.winCondition = WinCondition.JackalWin;
-            }
-            else if (FoxWin)
-            {
-                var foxalive = false;
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
-                {
-                    foxalive = true;
-                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
-                    TempData.winners.Add(wpd);
-                    AdditionalTempData.winCondition = WinCondition.FoxWin;
-                }
-                foreach (PlayerControl p in RoleClass.Traitor.TraitorPlayer)
-                {
-                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                AdditionalTempData.winCondition = WinCondition.FoxWin;
             }
             else if (EgoistWin)
             {
@@ -694,6 +674,19 @@ namespace SuperNewRoles.EndGame
                         TempData.winners.Add(wpd);
                         AdditionalTempData.winCondition = WinCondition.GodWin;
                     }
+                }
+            }
+            var Foxalive = false;
+            foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
+            {
+                if (p.isAlive())
+                {
+                    Foxalive = true;
+                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                    AdditionalTempData.winCondition = WinCondition.FoxWin;
+
                 }
             }
 

@@ -229,10 +229,6 @@ namespace SuperNewRoles
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
-                case RoleId.Traitor:
-                    returntext = CustomOptions.TraitorIsUseVent.name + ":" + CustomOptions.TraitorIsUseVent.getString() + "\n";
-                    returntext += CustomOptions.TraitorIsCheckFox.name + ":" + CustomOptions.TraitorIsCheckFox.getString() + "\n";
-                    break;
             }
             return returntext;
         }
@@ -488,9 +484,6 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Fox):
                     Roles.RoleClass.Fox.FoxPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Traitor):
-                    Roles.RoleClass.Traitor.TraitorPlayer.Add(player);
-                    break;
                 case (CustomRPC.RoleId.DarkKiller):
                     Roles.RoleClass.DarkKiller.DarkKillerPlayer.Add(player);
                     break;
@@ -743,9 +736,6 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Fox):
                     Roles.RoleClass.Fox.FoxPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Traitor):
-                    Roles.RoleClass.Traitor.TraitorPlayer.RemoveAll(ClearRemove);
-                    break;
                 case (CustomRPC.RoleId.DarkKiller):
                     Roles.RoleClass.DarkKiller.DarkKillerPlayer.RemoveAll(ClearRemove);
                     break;
@@ -838,9 +828,6 @@ namespace SuperNewRoles
                 case (RoleId.Fox):
                     IsTaskClear = true;
                     break; 
-                case (RoleId.Traitor):
-                    IsTaskClear = true;
-                    break; 
                 //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
@@ -875,7 +862,6 @@ namespace SuperNewRoles
             if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadHawk.IsUseVent) return true;
             if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadSeer.IsUseVent) return true;
             if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Fox.IsUseVent) return true;
-            if (RoleClass.Traitor.TraitorPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Traitor.IsUseVent) return true;
             return false;
         }
         public static bool IsSabotage()
@@ -922,7 +908,6 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.MadJester) && RoleClass.MadJester.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadSeer) && RoleClass.MadSeer.IsImpostorLight) return true;
             if (player.isRole(RoleId.Fox) && RoleClass.Fox.IsImpostorLight) return true;
-            if (player.isRole(RoleId.Traitor) && RoleClass.Traitor.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -967,9 +952,6 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.Fox):
-                    IsNeutral = true;
-                    break;
-                case (RoleId.Traitor):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1374,9 +1356,10 @@ namespace SuperNewRoles
             {
                 return CustomRPC.RoleId.EvilSeer;
             }
-                 {
-                return CustomRPC.RoleId.Vampire;
-            }
+            else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
+            {
+                    return CustomRPC.RoleId.Vampire;
+            }  
             else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.DarkKiller;
@@ -1384,10 +1367,6 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Fox;
-            }
-            else if (Roles.RoleClass.Traitor.TraitorPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Traitor;
             }
             //ロールチェック
 

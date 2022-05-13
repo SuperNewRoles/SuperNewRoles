@@ -99,7 +99,6 @@ namespace SuperNewRoles.CustomRPC
         Vampire,
         DarkKiller,
         Fox,
-        Traitor,
         Seer,
         MadSeer,
         EvilSeer,

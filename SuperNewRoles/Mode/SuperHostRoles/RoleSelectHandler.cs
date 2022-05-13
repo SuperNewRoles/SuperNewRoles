@@ -148,16 +148,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-            if (RoleClass.Traitor.IsUseVent)
-            {
-                foreach (PlayerControl p in RoleClass.Traitor.TraitorPlayer)
-                {
-                    if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
-                    {
-                        p.RpcSetRoleDesync(RoleTypes.Engineer);
-                    }
-                }
-            }
 
             foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
             {
@@ -643,22 +633,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.FoxOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Fox;
-                if (OptionDate == 10)
-                {
-                    Neutonepar.Add(ThisRoleId);
-                }
-                else
-                {
-                    for (int i = 1; i <= OptionDate; i++)
-                    {
-                        Neutnotonepar.Add(ThisRoleId);
-                    }
-                }
-            }
-            if (!(CustomOption.CustomOptions.TraitorOption.getString().Replace("0%", "") == ""))
-            {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.TraitorOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.Traitor;
                 if (OptionDate == 10)
                 {
                     Neutonepar.Add(ThisRoleId);

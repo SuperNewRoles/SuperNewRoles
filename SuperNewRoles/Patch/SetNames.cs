@@ -339,29 +339,6 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
-                if (Traitor.CheckFox(PlayerControl.LocalPlayer))
-                {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        if (p.isFox())
-                        {
-                            SetNamesClass.SetPlayerNameColor(p, RoleClass.FoxPurple);
-                        }
-                    }
-                }
-                if (PlayerControl.LocalPlayer.isRole(RoleId.Traitor) && RoleClass.Traitor.IsFoxCheck)
-                {
-                    foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
-                    {
-                        SetNamesClass.SetPlayerNameColors(p);
-                        SetNamesClass.SetPlayerRoleNames(p);
-                    }
-                    //foreach (PlayerControl p in RoleClass.Traitor.TraitorPlayer)
-                    {
-                  //      SetNamesClass.SetPlayerNameColors(p);
-                    //    SetNamesClass.SetPlayerRoleNames(p);
-                    }
-                }
                 if (MadSeer.CheckImpostor(PlayerControl.LocalPlayer) || PlayerControl.LocalPlayer.isRole(RoleId.MadKiller))
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)

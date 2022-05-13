@@ -130,23 +130,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
                         }
-                        bool IsTraitorCheck = Traitor.CheckFox(p);
-                        //  SuperNewRolesPlugin.Logger.LogInfo("背信者がチェックできるか:"+IsTraitorCheck);
-                        if (IsTraitorCheck)
-                        {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (!p2.Data.Disconnected && !p2.isFox())
-                                {
-                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
-                                }
-                                else if (!p2.Data.Disconnected && p2.isFox())
-                                {
-                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.FoxPurple, p2.getDefaultName()), p);
-                                }
-                            }
-                            //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
-                        }
                         if (p.IsLovers() && p.isAlive())
                         {
                             Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");

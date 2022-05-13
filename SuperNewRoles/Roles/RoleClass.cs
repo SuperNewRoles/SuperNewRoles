@@ -39,7 +39,6 @@ namespace SuperNewRoles.Roles
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new List<byte>();
             Roles.MadMayor.CheckedImpostor = new List<byte>();
-            Roles.Traitor.CheckedFox = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
@@ -115,7 +114,6 @@ namespace SuperNewRoles.Roles
             Observer.ClearAndReload();
             Vampire.ClearAndReload();
             Fox.ClearAndReload();
-            Traitor.ClearAndReload();
             DarkKiller.ClearAndReload();
             Seer.ClearAndReload();
             MadSeer.ClearAndReload();
@@ -1568,33 +1566,6 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.FoxIsUseVent.getBool();
                 UseReport = CustomOptions.FoxReport.getBool();
                 IsImpostorLight = CustomOptions.FoxIsImpostorLight.getBool();
-            }
-        }
-        public static class Traitor
-        {
-            public static List<PlayerControl> TraitorPlayer;
-            public static Color32 color = FoxPurple;
-            public static bool IsFoxCheck;
-            public static int FoxCheckTask;
-            public static bool IsUseVent;
-            public static bool IsImpostorLight;
-            public static void ClearAndReload()
-            {
-                TraitorPlayer = new List<PlayerControl>();
-                IsFoxCheck = CustomOptions.TraitorIsCheckFox.getBool();
-                IsUseVent = CustomOptions.TraitorIsUseVent.getBool();
-                IsImpostorLight = CustomOptions.TraitorIsImpostorLight.getBool();
-                int Common = (int)CustomOptions.TraitorCommonTask.getFloat();
-                int Long = (int)CustomOptions.TraitorLongTask.getFloat();
-                int Short = (int)CustomOptions.TraitorShortTask.getFloat();
-                int AllTask = Common + Long + Short;
-                if (AllTask == 0)
-                {
-                    Common = PlayerControl.GameOptions.NumCommonTasks;
-                    Long = PlayerControl.GameOptions.NumLongTasks;
-                    Short = PlayerControl.GameOptions.NumShortTasks;
-                }
-                FoxCheckTask = (int)(AllTask * (int.Parse(CustomOptions.TraitorCheckFoxTask.getString().Replace("%", "")) / 100f));
             }
         }
         public static class DarkKiller
