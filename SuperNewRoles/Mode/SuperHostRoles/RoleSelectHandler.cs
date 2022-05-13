@@ -138,6 +138,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            if (RoleClass.Fox.IsUseVent)
+            {
+                foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
+                {
+                    if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
+                }
+            }
 
             foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
             {
@@ -616,6 +626,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.FoxOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.FoxOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Fox;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
                     }
                 }
             }

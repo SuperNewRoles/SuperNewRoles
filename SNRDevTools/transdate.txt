@@ -569,3 +569,8 @@ MadSeerName,MadSeer,マッドシーア
 MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう
 EvilSeerName,EvilSeer,イビルシーア
 EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう
+SeerSoulDuration,Soul Duration,幽霊が見える時間
+DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム
+VampireKillDelay,Kill Delay,キル遅延
+FoxName,Fox,妖狐
+FoxTitle1,I am Fox!,私は狐です!

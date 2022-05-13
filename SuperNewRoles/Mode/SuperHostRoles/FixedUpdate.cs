@@ -174,6 +174,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
                         }
                     }
+                    if (!p.isFox())
+                    {
+                        try
+                        {
+                            if (commsActive)
+                            {
+                                var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
+                                TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
+                            }
+                            else
+                            {
+                                var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
+                                TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+                    }
                     string NewName = "";
                     if ((p.isDead() || p.isRole(RoleId.God)) && !IsUnchecked)
                     {
