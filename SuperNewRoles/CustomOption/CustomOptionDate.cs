@@ -77,6 +77,15 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SheriffLoversKill;
         public static CustomOption SheriffKillMaxCount;
 
+        public static CustomRoleOption RemoteSheriffOption;
+        public static CustomOption RemoteSheriffPlayerCount;
+        public static CustomOption RemoteSheriffCoolTime;
+        public static CustomOption RemoteSheriffMadRoleKill;
+        public static CustomOption RemoteSheriffNeutralKill;
+        public static CustomOption RemoteSheriffLoversKill;
+        public static CustomOption RemoteSheriffKillMaxCount;
+        public static CustomOption RemoteSheriffIsKillTeleportSetting;
+
         public static CustomRoleOption MeetingSheriffOption;
         public static CustomOption MeetingSheriffPlayerCount;
         public static CustomOption MeetingSheriffMadRoleKill;
@@ -562,6 +571,15 @@ namespace SuperNewRoles.CustomOption
             SheriffMadRoleKill = CustomOption.Create(29, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, SheriffOption);
             SheriffKillMaxCount = CustomOption.Create(30, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, SheriffOption, format: "unitSeconds");
             
+            RemoteSheriffOption = new CustomRoleOption(395, true, CustomOptionType.Crewmate, "RemoteSheriffName", RoleClass.RemoteSheriff.color, 1);
+            RemoteSheriffPlayerCount = CustomOption.Create(396, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RemoteSheriffOption);
+            RemoteSheriffCoolTime = CustomOption.Create(397, true, CustomOptionType.Crewmate, ModTranslation.getString("SheriffCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, RemoteSheriffOption, format: "unitSeconds");
+            RemoteSheriffNeutralKill = CustomOption.Create(398, true, CustomOptionType.Crewmate, "SheriffIsKillNewtralSetting", false, RemoteSheriffOption);
+            RemoteSheriffLoversKill = CustomOption.Create(399, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, RemoteSheriffOption);
+            RemoteSheriffMadRoleKill = CustomOption.Create(400, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, RemoteSheriffOption);
+            RemoteSheriffKillMaxCount = CustomOption.Create(401, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, RemoteSheriffOption, format: "unitSeconds");
+            RemoteSheriffIsKillTeleportSetting = CustomOption.Create(402, true, CustomOptionType.Crewmate, "RemoteSheriffIsKillTeleportSetting", false, RemoteSheriffOption);
+
             MeetingSheriffOption = new CustomRoleOption(31, false, CustomOptionType.Crewmate, "MeetingSheriffName", RoleClass.MeetingSheriff.color, 1);
             MeetingSheriffPlayerCount = CustomOption.Create(32, false, CustomOptionType.Crewmate, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MeetingSheriffOption);
             MeetingSheriffNeutralKill = CustomOption.Create(174, false, CustomOptionType.Crewmate, "MeetingSheriffIsKillNeutralSetting", false, MeetingSheriffOption);
@@ -910,7 +928,7 @@ namespace SuperNewRoles.CustomOption
             MadSeerPlayerCount = CustomOption.Create(370, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadSeerOption);
             MadSeerMode = CustomOption.Create(371, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, MadSeerOption);
             MadSeerLimitSoulDuration = CustomOption.Create(372, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, MadSeerOption);
-            MadSeerSoulDuration = CustomOption.Create(392, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, MadSeerLimitSoulDuration, format: "unitCouples");
+            MadSeerSoulDuration = CustomOption.Create(394, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, MadSeerLimitSoulDuration, format: "unitCouples");
             MadSeerIsUseVent = CustomOption.Create(374, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadSeerOption);
             MadSeerIsImpostorLight = CustomOption.Create(375, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadSeerOption);
             MadSeerIsCheckImpostor = CustomOption.Create(376, false, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, MadSeerOption);
