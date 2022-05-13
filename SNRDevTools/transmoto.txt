@@ -559,7 +559,6 @@ DarkKillerKillCoolSetting
 VampireKillDelay
 FoxName
 FoxTitle1
-DarkKillerKillCoolSetting
 SeerName
 SeerTitle1
 SeerMode
@@ -572,3 +571,6 @@ MadSeerName
 MadSeerTitle1
 EvilSeerName
 EvilSeerTitle1
+RemoteSheriffName
+RemoteSheriffTitle1
+RemoteSheriffIsKillTeleportSetting

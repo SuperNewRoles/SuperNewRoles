@@ -47,6 +47,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }, 5f, "AntiBlack");*/
+
+            SuperNewRolesPlugin.Logger.LogInfo("WrapUp");
+            foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("ALL");
+                if (p.isAlive() && !p.IsMod())
+                {
+                    p.RpcProtectPlayer(p, 0);
+                    SuperNewRolesPlugin.Logger.LogInfo("プロテクト");
+                    new LateTask(() =>
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("マーダー");
+                        p.RpcMurderPlayer(p);
+                    }, 0.5f);
+                }
+            }
             AmongUsClient.Instance.StartCoroutine(nameof(ResetName));
             IEnumerator ResetName()
             {
