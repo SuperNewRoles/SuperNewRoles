@@ -532,8 +532,8 @@ namespace SuperNewRoles.EndGame
                 EgoistWin = EndData == CustomGameOverReason.EgoistWin;
                 WorkpersonWin = EndData == CustomGameOverReason.WorkpersonWin;
                 FalseChargesWin = EndData == CustomGameOverReason.FalseChargesWin;
+                QuarreledWin = EndData == CustomGameOverReason.QuarreledWin;
                 FoxWin = EndData == CustomGameOverReason.FoxWin;
-                SuperNewRolesPlugin.Logger.LogInfo("いず:"+FalseChargesWin);
             }
 
 

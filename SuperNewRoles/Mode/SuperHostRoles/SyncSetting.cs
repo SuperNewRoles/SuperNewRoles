@@ -167,11 +167,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.CrewLightMod /= 5;
                     }
                     break;
+                case RoleId.SelfBomber:
+                    optdata.RoleOptions.ShapeshifterCooldown = 0.000001f;
+                    optdata.RoleOptions.ShapeshifterDuration = 0.000001f
+                      break;
                 case RoleId.Survivor:
                     optdata.killCooldown = KillCoolSet(RoleClass.Survivor.KillCoolTime);
                     break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
+            optdata.RoleOptions.ShapeshifterLeaveSkin = false;
             if (player.AmOwner) PlayerControl.GameOptions = optdata;
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.Reliable, player.getClientId());
             writer.WriteBytesAndSize(optdata.ToBytes(5));
