@@ -20,7 +20,7 @@ using System.Text;
 namespace SuperNewRoles.Roles
 {
     class Seer
-        //&MadSeer
+        //&MadSeer&EvilSeer
     {
 
 
@@ -124,6 +124,38 @@ namespace SuperNewRoles.Roles
                         RoleClass.MadSeer.deadBodyPositions = new List<Vector3>();
                     }
                 }
+                foreach (PlayerControl EvilSeerPlayer in RoleClass.EvilSeer.EvilSeerPlayer)
+                {
+                    if (RoleClass.EvilSeer.deadBodyPositions != null && RoleClass.EvilSeer.EvilSeerPlayer != null && PlayerControl.LocalPlayer == EvilSeerPlayer && (RoleClass.EvilSeer.mode == 0 || RoleClass.EvilSeer.mode == 2))
+
+
+                    {
+                        foreach (Vector3 pos in RoleClass.EvilSeer.deadBodyPositions)
+                        {
+                            GameObject soul = new GameObject();
+                            soul.transform.position = pos;
+                            soul.layer = 5;
+                            var rend = soul.AddComponent<SpriteRenderer>();
+                            rend.sprite = Seer.getSoulSprite();
+
+                            if (RoleClass.EvilSeer.limitSoulDuration)
+                            {
+                                HudManager.Instance.StartCoroutine(Effects.Lerp(RoleClass.EvilSeer.soulDuration, new Action<float>((p) =>
+                                {
+                                    if (rend != null)
+                                    {
+                                        var tmp = rend.color;
+                                        tmp.a = Mathf.Clamp01(1 - p);
+                                        rend.color = tmp;
+                                    }
+                                    if (p == 1f && rend != null && rend.gameObject != null) UnityEngine.Object.Destroy(rend.gameObject);
+                                })));
+                            }
+                        }
+                        RoleClass.EvilSeer.deadBodyPositions = new List<Vector3>();
+                    }
+                }
+
             }
 
             [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
@@ -158,6 +190,20 @@ namespace SuperNewRoles.Roles
 
 
                         if (RoleClass.MadSeer.deadBodyPositions != null) RoleClass.MadSeer.deadBodyPositions.Add(target.transform.position);
+                    }
+
+                    foreach (PlayerControl EvilSeerPlayer in RoleClass.EvilSeer.EvilSeerPlayer)
+                    {
+                        // Seer show flash and add dead player position
+
+
+                        if (EvilSeerPlayer != null && PlayerControl.LocalPlayer == EvilSeerPlayer && !EvilSeerPlayer.Data.IsDead && EvilSeerPlayer != target && RoleClass.EvilSeer.mode <= 1)
+                        {
+                            RoleHelpers.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+                        }
+
+
+                        if (RoleClass.EvilSeer.deadBodyPositions != null) RoleClass.EvilSeer.deadBodyPositions.Add(target.transform.position);
                     }
 
                 }

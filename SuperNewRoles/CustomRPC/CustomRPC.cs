@@ -98,8 +98,10 @@ namespace SuperNewRoles.CustomRPC
         Observer,
         Vampire,
         DarkKiller,
+        Fox,
         Seer,
         MadSeer,
+        EvilSeer,
         //RoleId
     }
 
