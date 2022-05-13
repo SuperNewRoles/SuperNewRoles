@@ -115,6 +115,7 @@ namespace SuperNewRoles.Roles
             Seer.ClearAndReload();
             MadSeer.ClearAndReload();
             EvilSeer.ClearAndReload();
+            RemoteSheriff.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1641,7 +1642,16 @@ namespace SuperNewRoles.Roles
                 mode = CustomOptions.EvilSeerMode.getSelection();
             }
         }
-            //新ロールクラス
+        public static class RemoteSheriff
+        {
+            public static List<PlayerControl> RemoteSheriffPlayer;
+            public static Color32 color = Color.yellow;
+            public static void ClearAndReload()
+            {
+                RemoteSheriffPlayer = new List<PlayerControl>();
+            }
+        }
+        //新ロールクラス
             public static class Quarreled
         {
             public static List<List<PlayerControl>> QuarreledPlayer;

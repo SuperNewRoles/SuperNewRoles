@@ -568,3 +568,5 @@ MadSeer
 Feel the success of your husband
 EvilSeer
 You will see players die
+Remote Sheriff
+Let's do a Remote Sheriff kill!

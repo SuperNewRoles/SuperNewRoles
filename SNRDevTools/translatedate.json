@@ -2279,6 +2279,14 @@
  "EvilSeerTitle1" : {
         "0" : "You will see players die" ,
         "11" : "\u8239\u54e1\u306e\u6c17\u914d\u3092\u611f\u3058\u53d6\u308d\u3046"
+        } ,
+ "RemoteSheriffName" : {
+        "0" : "Remote Sheriff" ,
+        "11" : "\u30ea\u30e2\u30fc\u30c8\u30b7\u30a7\u30ea\u30d5"
+        } ,
+ "RemoteSheriffTitle1" : {
+        "0" : "Let's do a Remote Sheriff kill!" ,
+        "11" : "\u9060\u9694\u3067\u30b7\u30a7\u30ea\u30d5\u30ad\u30eb\u3092\u3057\u3088\u3046"
         } 
 
 }

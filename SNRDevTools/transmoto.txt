@@ -568,3 +568,5 @@ MadSeerName
 MadSeerTitle1
 EvilSeerName
 EvilSeerTitle1
+RemoteSheriffName
+RemoteSheriffTitle1
