@@ -11,6 +11,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix()
             {
+                if (RoleClass.Vampire.target == null) return;
                 var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Vampire.KillDelay);
                 RoleClass.Vampire.Timer = (float)((Roles.RoleClass.Vampire.KillTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
                 SuperNewRolesPlugin.Logger.LogInfo("ヴァンパイア:" + RoleClass.Vampire.Timer);
