@@ -496,6 +496,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilSeer):
                     Roles.RoleClass.EvilSeer.EvilSeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.RemoteSheriff):
+                    Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -748,6 +751,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilSeer):
                     Roles.RoleClass.EvilSeer.EvilSeerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.RemoteSheriff):
+                    Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -830,7 +836,7 @@ namespace SuperNewRoles
                     break; 
                 //タスククリアか
             }
-            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
+            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
                 IsTaskClear = true;
             }
@@ -1348,28 +1354,31 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Seer;
                 }
-            else if (Roles.RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MadSeer;
-            }
-            else if (Roles.RoleClass.EvilSeer.EvilSeerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.EvilSeer;
-            }
-            else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
-            {
+                else if (Roles.RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadSeer;
+                }
+                else if (Roles.RoleClass.EvilSeer.EvilSeerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.EvilSeer;
+                }
+                else if (Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.RemoteSheriff;
+                }
+                else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
+                {
                     return CustomRPC.RoleId.Vampire;
-            }  
-            else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.DarkKiller;
-            }
-            else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Fox;
-            }
+                }
+                else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.DarkKiller;
+                }
+                else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Fox;
+                }
             //ロールチェック
-
             }
             catch (Exception e)
             {

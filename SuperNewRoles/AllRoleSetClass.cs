@@ -125,6 +125,24 @@ namespace SuperNewRoles
                         player.RpcSetRole(RoleTypes.Crewmate);
                     }
                 }
+
+                try
+                {
+                    AllRoleSetClass.QuarreledRandomSelect();
+                }
+                catch (Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                }
+
+                try
+                {
+                    AllRoleSetClass.LoversRandomSelect();
+                }
+                catch (Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                }
                 return false;
             } else if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
@@ -237,20 +255,22 @@ namespace SuperNewRoles
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
                 }
-            }
-            try
-            {
-                LoversRandomSelect();
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+
+                try
+                {
+                    LoversRandomSelect();
+                }
+                catch (Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                }
             }
 
         }
         public static void QuarreledRandomSelect()
         {
             if (!CustomOption.CustomOptions.QuarreledOption.getBool()) return;
+            SuperNewRolesPlugin.Logger.LogInfo("クラードセレクト");
             List<PlayerControl> SelectPlayers = new List<PlayerControl>();
             if (CustomOption.CustomOptions.QuarreledOnlyCrewMate.getBool())
             {
@@ -804,11 +824,13 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.DarkKillerPlayerCount.getFloat();
                 case (RoleId.Seer):
                     return CustomOption.CustomOptions.SeerPlayerCount.getFloat();
-                    case (RoleId.MadSeer):
+                case (RoleId.MadSeer):
                     return CustomOption.CustomOptions.MadSeerPlayerCount.getFloat();
-                    case (RoleId.EvilSeer):
+                case (RoleId.EvilSeer):
                     return CustomOption.CustomOptions.EvilSeerPlayerCount.getFloat();
-                    case (RoleId.Fox):
+                case (RoleId.RemoteSheriff):
+                    return CustomOption.CustomOptions.RemoteSheriffPlayerCount.getFloat();
+                case (RoleId.Fox):
                     return CustomOption.CustomOptions.FoxPlayerCount.getFloat();
                     //プレイヤーカウント
             }
@@ -2116,6 +2138,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.RemoteSheriffOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.RemoteSheriffOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.RemoteSheriff;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
                     }
                 }
             }

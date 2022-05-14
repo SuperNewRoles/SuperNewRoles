@@ -28,11 +28,11 @@ namespace SuperNewRoles
             {
                 if (p.IsQuarreled(false))
                 {
-                    LoversChache[p.PlayerId] = p.GetOneSideQuarreled(false);
+                    QuarreledChache[p.PlayerId] = p.GetOneSideQuarreled(false);
                 }
                 else
                 {
-                    LoversChache[p.PlayerId] = null;
+                    QuarreledChache[p.PlayerId] = null;
                 }
             }
         }

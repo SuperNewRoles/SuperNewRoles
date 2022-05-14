@@ -39,6 +39,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
 			if (player.isRole(RoleId.Sheriff)) return true;
             if (player.isRole(RoleId.truelover)) return true;
             if (player.isRole(RoleId.FalseCharges)) return true;
+            if (player.isRole(RoleId.RemoteSheriff)) return true;
             return false;
         }
         public static void ResetPlayerCam(this PlayerControl pc, float delay = 0f)
