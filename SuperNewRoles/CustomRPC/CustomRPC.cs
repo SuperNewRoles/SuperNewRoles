@@ -151,7 +151,8 @@ namespace SuperNewRoles.CustomRPC
         UseStuntmanCount,
         UseMadStuntmanCount,
         CustomEndGame,
-        UncheckedProtect
+        UncheckedProtect,
+        TimeMasterShield
     }
     public static class RPCProcedure
     {
@@ -613,6 +614,13 @@ namespace SuperNewRoles.CustomRPC
                 player.Exiled();
                 FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.NekomataExiled;
             }
+        }
+        public static void TimeMasterShield()
+        {
+            RoleClass.TimeMaster.ShieldActive = true;
+            HudManager.Instance.StartCoroutine(Effects.Lerp(RoleClass.TimeMaster.ShieldDuration, new Action<float>((p) => {
+                if (p == 1f) RoleClass.TimeMaster.ShieldActive = false;
+            })));
         }
         [HarmonyPatch(typeof(KillAnimation), nameof(KillAnimation.CoPerformKill))]
         class KillAnimationCoPerformKillPatch

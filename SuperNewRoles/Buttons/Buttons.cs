@@ -43,7 +43,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ImpostorSidekickButton;
         public static CustomButton SideKillerSidekickButton;
         public static CustomButton FalseChargesFalseChargeButton;
-        public static CustomButton TimeMasterShieldButton;
+        public static CustomButton TimeMasterTimeMasterShieldButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -773,64 +773,59 @@ namespace SuperNewRoles.Buttons
                 KeyCode.F,
                 49
             );
+            
+            SideKillerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
+            SideKillerSidekickButton.showButtonText = true;
 
-            TimeMasterShieldButton = new Buttons.CustomButton(
+/*            TimeMasterTimeMasterShieldButton = new Buttons.CustomButton(
             () =>
             {
-                RoleClass.ñêEñº.IsÉ{É^Éìñº = true;
-                Roles.RoleClass.ñêEñº.ButtonTimer = DateTime.Now;
-                ñêEñºÉ{É^ÉìñºButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
-                ñêEñº.É{É^Éìñº Start();
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TimeMasterShield, Hazel.SendOption.Reliable, -1);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.TimeMasterShield();
             },
-            () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && ñêEñº.isñêEñº(PlayerControl.LocalPlayer); },
-            () =>
-            {
-                if (ñêEñºÉ{É^Éìñº.Timer <= 0)
-                {
-                    return true;
-                }
-                return false;
-            },
-
-
-            () => { ñêEñº.EndMeeting(); },
-            RoleClass.ñêEñº.getButtonSprite(),
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.SideKiller) && !RoleClass.TimeMaster.IsRewinding; },
+                () => { return PlayerControl.LocalPlayer.CanMove; },
+                () => {
+                    TimeMasterTimeMasterShieldButton.Timer = TimeMasterTimeMasterShieldButton.MaxTimer;
+                    TimeMasterTimeMasterShieldButton.isEffectActive = false;
+                    TimeMasterTimeMasterShieldButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                },
+            RoleClass.TimeMaster.GetButtonSprite(),
             new Vector3(-1.8f, -0.06f, 0),
             __instance,
             __instance.AbilityButton,
             KeyCode.F,
             49
-            );
-
-            ñêEñºÉ{É^ÉìñºButton.buttonText = ModTranslation.getString("ñêEñºButtonName");
-            ñêEñºÉ{É^ÉìñºButton.showButtonText = true;
+            );*/
 
 
-            // Time Master Rewind Time
-            timeMasterShieldButton = new CustomButton(
-                () => {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TimeMasterShield, Hazel.SendOption.Reliable, -1);
-                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.timeMasterShield();
+
+            TimeMasterTimeMasterShieldButton = new Buttons.CustomButton(
+                () =>
+                {
+                    if (!PlayerControl.LocalPlayer.CanMove) return;
+                    RoleClass.TimeMaster.ButtonTimer = DateTime.Now;
+                    TimeMasterTimeMasterShieldButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    TimeMaster.TimeShieldStart();
+                    TimeMaster.ResetCoolDown();
                 },
-                () => { return TimeMaster.timeMaster != null && TimeMaster.timeMaster == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
-                () => { return PlayerControl.LocalPlayer.CanMove; },
-                () => {
-                    timeMasterShieldButton.Timer = timeMasterShieldButton.MaxTimer;
-                    timeMasterShieldButton.isEffectActive = false;
-                    timeMasterShieldButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (TimeMaster.IsTimeMaster(PlayerControl.LocalPlayer)); },
+                () =>
+                {
+                    return true && PlayerControl.LocalPlayer.CanMove;
                 },
-                TimeMaster.getButtonSprite(),
+                () => { TimeMaster.EndMeeting(); },
+                RoleClass.TimeMaster.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
+                __instance.AbilityButton,
                 KeyCode.F,
-                true,
-                TimeMaster.shieldDuration,
-                () => { timeMasterShieldButton.Timer = timeMasterShieldButton.MaxTimer; }
+                49
             );
 
-            SideKillerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
-            SideKillerSidekickButton.showButtonText = true;
+            TimeMasterTimeMasterShieldButton.buttonText = ModTranslation.getString("TimeMasterShieldButton");
+            TimeMasterTimeMasterShieldButton.showButtonText = true;
 
             RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(HudManager.Instance.KillButton.cooldownTimerText, HudManager.Instance.KillButton.cooldownTimerText.transform.parent);
             RoleClass.SerialKiller.SuicideKillText.text = "";
