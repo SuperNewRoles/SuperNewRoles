@@ -953,14 +953,14 @@ namespace SuperNewRoles.CustomOption
             EvilSeerLimitSoulDuration = CustomOption.Create(385, false, CustomOptionType.Impostor, "SeerLimitSoulDuration", false, EvilSeerOption);
             EvilSeerSoulDuration = CustomOption.Create(386, false, CustomOptionType.Impostor, "SeerSoulDuration", 15f, 0f, 120f, 5f, EvilSeerLimitSoulDuration, format: "unitCouples");
 
-            TeleportingJackalOption = new CustomRoleOption(36, false, CustomOptionType.Neutral, "TeleportingJackalName", RoleClass.TeleportingJackal.color, 1);
-            TeleportingJackalPlayerCount = CustomOption.Create(37, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TeleportingJackalOption);
-            TeleportingJackalKillCoolDown = CustomOption.Create(38, false, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
-            TeleportingJackalUseVent = CustomOption.Create(160, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, TeleportingJackalOption);
-            TeleportingJackalIsImpostorLight = CustomOption.Create(375, false, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, TeleportingJackalOption);
-            TeleportingJackalUseSabo = CustomOption.Create(161, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, TeleportingJackalOption);
-            TeleportingJackalCoolTime = CustomOption.Create(43, false, CustomOptionType.Neutral, "TeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
-            TeleportingJackalDurationTime = CustomOption.Create(44, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
+            TeleportingJackalOption = new CustomRoleOption(403, false, CustomOptionType.Neutral, "TeleportingJackalName", RoleClass.TeleportingJackal.color, 1);
+            TeleportingJackalPlayerCount = CustomOption.Create(404, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TeleportingJackalOption);
+            TeleportingJackalKillCoolDown = CustomOption.Create(405, false, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
+            TeleportingJackalUseVent = CustomOption.Create(406, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, TeleportingJackalOption);
+            TeleportingJackalIsImpostorLight = CustomOption.Create(407, false, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, TeleportingJackalOption);
+            TeleportingJackalUseSabo = CustomOption.Create(408, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, TeleportingJackalOption);
+            TeleportingJackalCoolTime = CustomOption.Create(409, false, CustomOptionType.Neutral, "TeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
+            TeleportingJackalDurationTime = CustomOption.Create(410, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
