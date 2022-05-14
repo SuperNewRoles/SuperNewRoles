@@ -180,6 +180,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 Writer.EndRPC();
                 CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JackalWin);
                 __instance.enabled = false;
+                SuperNewRolesPlugin.Logger.LogInfo("じゃっかるうぃん");
                 CustomEndGame(__instance,GameOverReason.ImpostorByKill, false);
                 return true;
             }
@@ -251,6 +252,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.EgoistWin);
                     }
+                    SuperNewRolesPlugin.Logger.LogInfo("いんぽすたーうぃん");
                     CustomEndGame(__instance,endReason, !SaveManager.BoughtNoAds);
                     return true;
                 }

@@ -273,6 +273,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
                 DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
             }
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal))
+            {
+                HudManager.Instance.KillButton.gameObject.SetActive(true);
+                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
+                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                }
+            }
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             if (!AmongUsClient.Instance.AmHost) return;
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)

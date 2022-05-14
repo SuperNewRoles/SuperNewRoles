@@ -27,6 +27,7 @@ namespace SuperNewRoles
         public static bool isImpostor(this PlayerControl player)
         {
             if (player.isRole(RoleId.Sheriff)) return false;
+            if (player.isRole(RoleId.Jackal)) return false;
             return player != null && player.Data.Role.IsImpostor;
         }
 
