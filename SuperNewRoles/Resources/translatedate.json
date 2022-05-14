@@ -2299,6 +2299,14 @@
  "RemoteSheriffIsKillTeleportSetting" : {
         "0" : "Kill Teleport" ,
         "11" : "\u30ad\u30eb\u30c6\u30ec\u30dd\u30fc\u30c8"
-        } 
+        } ,
+ "TeleportingJackalName" : {
+        "0" : "TeleportingJackal" ,
+        "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\u30b8\u30e3\u30c3\u30ab\u30eb"
+        } ,
+ "TeleportingJackalTitle1" : {
+        "0" : "Teleport and kill all crewmates and impostors!" ,
+        "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\u3057\u3066\u5168\u54e1\u3076\u3061\u6bba\u305d\u3046"
+        } ,
 
 }

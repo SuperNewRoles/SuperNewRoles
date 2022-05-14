@@ -119,6 +119,7 @@ namespace SuperNewRoles.Roles
             MadSeer.ClearAndReload();
             EvilSeer.ClearAndReload();
             RemoteSheriff.ClearAndReload();
+            TeleportingJackal.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1689,8 +1690,37 @@ namespace SuperNewRoles.Roles
                 KillCoolTime = CustomOptions.RemoteSheriffCoolTime.getFloat();
             }
         }
+        public static class TeleportingJackal
+        {
+            public static List<PlayerControl> TeleportingJackalPlayer;
+            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+            public static float KillCoolDown;
+            public static bool IsUseVent;
+            public static bool IsUseSabo;
+            public static bool IsImpostorLight;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static DateTime ButtonTimer;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                return ButtonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                TeleportingJackalPlayer = new List<PlayerControl>();
+                KillCoolDown = CustomOptions.TeleportingJackalKillCoolDown.getFloat();
+                IsUseVent = CustomOptions.TeleportingJackalUseVent.getBool();
+                IsUseSabo = CustomOptions.TeleportingJackalUseSabo.getBool();
+                IsImpostorLight = CustomOptions.TeleportingJackalIsImpostorLight.getBool();
+                CoolTime = CustomOptions.TeleportingJackalCoolTime.getFloat();
+                DurationTime = CustomOptions.TeleportingJackalDurationTime.getFloat();
+            }
+        }
         //新ロールクラス
-            public static class Quarreled
+        public static class Quarreled
         {
             public static List<List<PlayerControl>> QuarreledPlayer;
             public static Color32 color = new Color32(210, 105, 30, byte.MaxValue);
