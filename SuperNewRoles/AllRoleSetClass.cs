@@ -2061,7 +2061,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            if (!(CustomOption.CustomOptions.FoxOption.getString().Replace("0%", "") == ""));
+            if (!(CustomOption.CustomOptions.FoxOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.FoxOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Fox;
