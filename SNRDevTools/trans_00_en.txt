@@ -573,3 +573,5 @@ You will see players die
 Remote Sheriff
 Let's do a Remote Sheriff kill!
 Kill Teleport
+TeleportingJackal
+Teleport and kill all crewmates and impostors!

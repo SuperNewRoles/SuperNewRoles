@@ -574,3 +574,5 @@ EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう
 RemoteSheriffName,Remote Sheriff,リモートシェリフ
 RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート
+TeleportingJackalName,TeleportingJackal,テレポートジャッカル
+TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう

@@ -1690,8 +1690,6 @@ namespace SuperNewRoles.Roles
                 KillCoolTime = CustomOptions.RemoteSheriffCoolTime.getFloat();
             }
         }
-        //新ロールクラス
-            public static class Quarreled
         public static class TeleportingJackal
         {
             public static List<PlayerControl> TeleportingJackalPlayer;
