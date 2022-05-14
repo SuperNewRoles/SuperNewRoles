@@ -191,6 +191,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            if (RoleClass.JackalFriends.IsUseVent)
+            {
+                foreach (PlayerControl p in RoleClass.JackalFriends.JackalFriendsPlayer)
+                {
+                    if (!p.IsMod())
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
+                }
+            }
             if (RoleClass.MadMate.IsUseVent)
             {
                 foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
