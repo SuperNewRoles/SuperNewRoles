@@ -21,11 +21,11 @@ namespace SuperNewRoles
 
             Bot.SetName(name);
             Bot.SetColor(1);
-            Bot.SetHat("hat_Empty", 1);
-            Bot.SetPet("pet_Empty", 1);
-            Bot.SetVisor("visor_Empty");
-            Bot.SetNamePlate("NamePlate_Empty");
-            Bot.SetSkin("skin_Empty", 1);
+            Bot.SetHat("hat_NoHat", 1);
+            Bot.SetPet("peet_EmptyPet", 1);
+            Bot.SetVisor("visor_EmptyVisor");
+            Bot.SetNamePlate("nameplate_NoPlate");
+            Bot.SetSkin("skin_None", 1);
             GameData.Instance.RpcSetTasks(Bot.PlayerId, new byte[0]);
             SuperNewRolesPlugin.Logger.LogInfo("botスポーン！\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
         }
