@@ -30,10 +30,7 @@ namespace SuperNewRoles
             return player != null && player.Data.Role.IsImpostor;
         }
 
-        public static bool isFox(this PlayerControl player)
-        {
-            return player != null && !player.IsFox();
-        }
+
         public static bool IsQuarreled(this PlayerControl player,bool IsChache = true)
         {
             if (IsChache)
@@ -963,16 +960,6 @@ namespace SuperNewRoles
                 //第三か
             }
             return IsNeutral;
-        }
-        public static bool IsFox(this PlayerControl player)
-        {
-            var IsFox = false;
-            switch (player.getRole())
-            {
-
-                //狐か
-            }
-            return IsFox;
         }
         public static bool isRole(this PlayerControl p,RoleId role,bool IsChache = true) {
             RoleId MyRole;

@@ -193,7 +193,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
                     string TaskText = "";
-                    if (!p.isImpostor() && !p.isFox())
+                    if (!p.isImpostor())
                     {
                         try
                         {
