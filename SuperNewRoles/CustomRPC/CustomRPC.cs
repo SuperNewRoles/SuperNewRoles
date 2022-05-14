@@ -103,6 +103,7 @@ namespace SuperNewRoles.CustomRPC
         MadSeer,
         EvilSeer,
         RemoteSheriff,
+        TeleportingJackal,
         //RoleId
     }
 
