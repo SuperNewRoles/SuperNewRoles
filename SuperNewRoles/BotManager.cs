@@ -31,8 +31,7 @@ namespace SuperNewRoles
 
             Bot.RpcSetName(name);
             Bot.RpcSetColor(1);
-            // Bot.RpcSetHat("hat_NoHat");
-            Bot.RpcSetHat(PlayerControl.LocalPlayer.CurrentOutfit.HatId);
+            Bot.RpcSetHat("hat_NoHat");
             Bot.RpcSetPet("peet_EmptyPet");
             Bot.RpcSetVisor("visor_EmptyVisor");
             Bot.RpcSetNamePlate("nameplate_NoPlate");
