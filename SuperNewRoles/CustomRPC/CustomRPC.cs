@@ -153,10 +153,18 @@ namespace SuperNewRoles.CustomRPC
         UseStuntmanCount,
         UseMadStuntmanCount,
         CustomEndGame,
-        UncheckedProtect
+        UncheckedProtect,
+        SetBot
     }
     public static class RPCProcedure
     {
+        public static void SetBot(byte playerid)
+        {
+            PlayerControl player = ModHelpers.playerById(playerid);
+            if (player == null) return;
+            BotManager.AllBots.Add(player);
+
+        }
         public static void UncheckedProtect(byte sourceid, byte playerid,byte colorid)
         {
             PlayerControl player = ModHelpers.playerById(playerid);
@@ -857,6 +865,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.UncheckedProtect:
                         UncheckedProtect(reader.ReadByte(),reader.ReadByte(),reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetBot:
+                        SetBot(reader.ReadByte());
                         break;
                 }
             }

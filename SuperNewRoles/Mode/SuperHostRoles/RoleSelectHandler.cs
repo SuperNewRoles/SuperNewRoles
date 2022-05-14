@@ -40,7 +40,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SpawnBots()
         {
-            BotManager.AllBots = new List<PlayerControl>();
             if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
 
             bool IsJackalSpawned = false;

@@ -445,36 +445,39 @@ namespace SuperNewRoles.EndGame
 
             foreach (var p in GameData.Instance.AllPlayers)
             {
-                //var p = pc.Data;
-                var roles = Intro.IntroDate.GetIntroDate(p.Object.getRole(), p.Object);
-                var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
-                if (p.Object.isImpostor())
+                if (p.Object.IsPlayer())
                 {
-                    tasksCompleted = 0;
-                    tasksTotal = 0;
+                    //var p = pc.Data;
+                    var roles = Intro.IntroDate.GetIntroDate(p.Object.getRole(), p.Object);
+                    var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
+                    if (p.Object.isImpostor())
+                    {
+                        tasksCompleted = 0;
+                        tasksTotal = 0;
+                    }
+                    var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
+                        p.Disconnected == true ? FinalStatus.Disconnected :
+                        FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId) ? FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] :
+                        p.IsDead == true ? FinalStatus.Exiled :
+                        gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor ? FinalStatus.Sabotage :
+                        FinalStatus.Alive;
+                    string namesuffix = "";
+                    if (p.Object.IsLovers())
+                    {
+                        namesuffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                    }
+                    AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
+                    {
+                        PlayerName = p.DefaultOutfit.PlayerName,
+                        NameSuffix = namesuffix,
+                        PlayerId = p.PlayerId,
+                        ColorId = p.DefaultOutfit.ColorId,
+                        TasksTotal = tasksTotal,
+                        TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
+                        Status = finalStatus,
+                        IntroDate = roles
+                    });
                 }
-                var finalStatus = FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] =
-                    p.Disconnected == true ? FinalStatus.Disconnected :
-                    FinalStatusPatch.FinalStatusData.FinalStatuses.ContainsKey(p.PlayerId) ? FinalStatusPatch.FinalStatusData.FinalStatuses[p.PlayerId] :
-                    p.IsDead == true ? FinalStatus.Exiled :
-                    gameOverReason == GameOverReason.ImpostorBySabotage && !p.Role.IsImpostor ? FinalStatus.Sabotage :
-                    FinalStatus.Alive;
-                string namesuffix = "";
-                if (p.Object.IsLovers())
-                {
-                    namesuffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
-                }
-                AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
-                {
-                    PlayerName = p.DefaultOutfit.PlayerName,
-                    NameSuffix = namesuffix,
-                    PlayerId = p.PlayerId,
-                    ColorId = p.DefaultOutfit.ColorId,
-                    TasksTotal = tasksTotal,
-                    TasksCompleted = gameOverReason == GameOverReason.HumansByTask ? tasksTotal : tasksCompleted,
-                    Status = finalStatus,
-                    IntroDate = roles
-                });
             }
             // Remove Jester, Arsonist, Vulture, Jackal, former Jackals and Sidekick from winners (if they win, they'll be readded)
             List<PlayerControl> notWinners = new List<PlayerControl>();
@@ -498,6 +501,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.MadSeer.MadSeerPlayer);
             notWinners.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
             notWinners.AddRange(RoleClass.Fox.FoxPlayer);
+            notWinners.AddRange(BotManager.AllBots);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -595,7 +599,6 @@ namespace SuperNewRoles.EndGame
             }
             else if (WorkpersonWin)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("仕事人勝利");
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
                 TempData.winners.Add(wpd);

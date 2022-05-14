@@ -69,6 +69,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 FixedUpdate.SetRoleNames();
             }
             Roles.BestFalseCharge.WrapUp();
+            new LateTask(() => { 
+                foreach (PlayerControl p in BotManager.AllBots)
+                {
+                    p.NetTransform.RpcSnapTo(new Vector2(99999,99999));
+                }
+            },0.25f);
             if (exiled == null) return;
             exiled.Object.Exiled();
             if (exiled.Object.isRole(RoleId.Sheriff) || exiled.Object.isRole(RoleId.truelover))

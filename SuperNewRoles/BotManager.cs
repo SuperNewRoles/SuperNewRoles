@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Hazel;
+using SuperNewRoles.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -50,6 +52,9 @@ namespace SuperNewRoles
             GameData.Instance.RpcSetTasks(Bot.PlayerId, new byte[0]);
             SuperNewRolesPlugin.Logger.LogInfo("botスポーン！\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
             AllBots.Add(Bot);
+            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetBot);
+            writer.Write(Bot.PlayerId);
+            writer.EndRPC();
             return Bot;
         }
         public static void Despawn(PlayerControl Bot)
