@@ -969,9 +969,7 @@ namespace SuperNewRoles
             var IsFox = false;
             switch (player.getRole())
             {
-                case (RoleId.Fox):
-                    IsFox = true;
-                    break;
+
                 //狐か
             }
             return IsFox;
