@@ -28,7 +28,7 @@ namespace SuperNewRoles.Patches
             SyncSetting.CustomSyncSettings();
             if (__instance.PlayerId == target.PlayerId)
             {
-                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                if (ModeHandler.isMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
                 {
                     if (__instance.isRole(RoleId.RemoteSheriff))
                     {
