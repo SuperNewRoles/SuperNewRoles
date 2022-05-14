@@ -8,6 +8,14 @@ namespace SuperNewRoles
     public class BotManager
     {
         public static List<PlayerControl> AllBots = new List<PlayerControl>();
+        public static bool IsBot(PlayerControl player)
+        {
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                if (p.PlayerId == player.PlayerId) return true;
+            }
+            return false;
+        }
         public static void Spawn(string name = "Bot", byte BotPlayerId = 1)
         {
             byte id = 0;
