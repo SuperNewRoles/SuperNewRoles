@@ -253,7 +253,6 @@ namespace SuperNewRoles.Patches
         {
             SuperNewRolesPlugin.Logger.LogInfo("キル:" + __instance.name + "(" + __instance.PlayerId + ")" + " => " + target.name + "(" + target.PlayerId + ")");
             if (__instance.isDead()) return false;
-            SyncSetting.CustomSyncSettings();
             if (__instance.PlayerId == target.PlayerId) { __instance.RpcMurderPlayer(target); return false; }
             if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 return false;
@@ -261,6 +260,7 @@ namespace SuperNewRoles.Patches
             {
                 return true;
             }
+            SyncSetting.CustomSyncSettings();
             if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
                 if (isKill)
