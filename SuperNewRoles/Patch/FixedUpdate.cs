@@ -147,7 +147,10 @@ namespace SuperNewRoles.Patch
                             {
                                 DarkKiller.FixedUpdate.Postfix();
                             }
-                            Fox.FixedUpdate.Postfix();
+                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
+                            {
+                                Fox.FixedUpdate.Postfix();
+                            }                            
                         }
                         else if (PlayerControl.LocalPlayer.isDead())
                         {
