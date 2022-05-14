@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace SuperNewRoles.Roles
         public static PassiveButton RightButton;
         public static PassiveButton LeftButton;
         public static bool IsFlag;
+        public static bool IsSHRFlag;
         private static Sprite m_Meeting_AreaTabChange;
         public static Sprite Meeting_AreaTabChange
         {
@@ -168,6 +170,7 @@ namespace SuperNewRoles.Roles
             }
 
             MeetingUpdatePatch.IsFlag = false;
+            MeetingUpdatePatch.IsSHRFlag = false;
             if (PlayerControl.AllPlayerControls.Count > 15)
             {
                 MeetingUpdatePatch.IsFlag = true;
@@ -189,6 +192,23 @@ namespace SuperNewRoles.Roles
                 }
                 meetingsheriff_updatepatch.index = 1;
                 CreateAreaButton(__instance);
+            }
+            if(ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count != 0)
+            {
+                List<PlayerVoteArea> newareas = new List<PlayerVoteArea>();
+                int i = 0;
+                foreach (PlayerVoteArea area in __instance.playerStates)
+                {
+                    if (ModHelpers.playerById(area.TargetPlayerId).IsPlayer()) {
+                        newareas.Add(area);
+                        area.transform.localPosition = meetingsheriff_updatepatch.Positions[i];
+                        i++;
+                    } else
+                    {
+                        area.gameObject.SetActive(false);
+                    }
+                }
+                __instance.playerStates = newareas.ToArray();
             }
 
             Event(__instance);

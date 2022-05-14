@@ -741,8 +741,11 @@ namespace SuperNewRoles.EndGame
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
-                    TempData.winners.Add(wpd);
+                    if (p.IsPlayer())
+                    {
+                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                        TempData.winners.Add(wpd);
+                    }
                 }
                 AdditionalTempData.winCondition = WinCondition.HAISON;
             }

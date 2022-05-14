@@ -15,7 +15,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             Chat.WinCond = null;
 
-            BotManager.AllBots = new List<PlayerControl>();
             EndGame.OnGameEndPatch.EndData = null;
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {

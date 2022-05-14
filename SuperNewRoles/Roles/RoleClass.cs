@@ -32,6 +32,7 @@ namespace SuperNewRoles.Roles
 
         public static void clearAndReloadRoles()
         {
+            BotManager.AllBots = new List<PlayerControl>();
             IsMeeting = false;
             IsCoolTimeSetted = false;
             IsStart = false;
