@@ -1,4 +1,4 @@
-# SuperNewRoles
+# SuperNewRoles-KibouEdition
 ![SNRImage](/images/SNRImage.png)
 
 <center>
