@@ -193,27 +193,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
                     string TaskText = "";
-                    if (!p.isImpostor())
-                    {
-                        try
-                        {
-                            if (commsActive)
-                            {
-                                var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
-                                TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
-                            }
-                            else
-                            {
-                                var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                                TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
-                            }
-                        }
-                        catch
-                        {
-
-                        }
-                    }
-                    if (!p.isFox())
+                    if (!p.isImpostor() && !p.isFox())
                     {
                         try
                         {
