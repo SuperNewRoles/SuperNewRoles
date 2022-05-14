@@ -17,7 +17,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
             if (target == null) {
                 //会議ボタンのみで起こる処理
-
                 return true;
             };
 

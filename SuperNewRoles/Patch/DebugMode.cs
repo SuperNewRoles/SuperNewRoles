@@ -123,7 +123,7 @@ namespace SuperNewRoles.Patch
                 */
                 if (Input.GetKeyDown(KeyCode.F10))
                 {
-                    BotManager.Spawn($"bot{(byte)GameData.Instance.GetAvailableId()}", (byte)GameData.Instance.GetAvailableId());                    
+                    BotManager.Spawn($"bot{(byte)GameData.Instance.GetAvailableId()}");                
                 }
                 if (Input.GetKeyDown(KeyCode.F11))
                 {
