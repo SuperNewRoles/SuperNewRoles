@@ -17,15 +17,15 @@ namespace SuperNewRoles
             GameData.Instance.AddPlayer(Bot);
             AmongUsClient.Instance.Spawn(Bot, -2, InnerNet.SpawnFlags.IsClientCharacter);
             Bot.transform.position = new Vector3(9999f, 9999f, 0);
-            Bot.NetTransform.enabled = false;
+            Bot.NetTransform.enabled = true;
 
-            Bot.SetName(name);
-            Bot.SetColor(1);
-            Bot.SetHat("hat_NoHat", 1);
-            Bot.SetPet("peet_EmptyPet", 1);
-            Bot.SetVisor("visor_EmptyVisor");
-            Bot.SetNamePlate("nameplate_NoPlate");
-            Bot.SetSkin("skin_None", 1);
+            Bot.RpcSetName(name);
+            Bot.RpcSetColor(1);
+            Bot.RpcSetHat("hat_NoHat");
+            Bot.RpcSetPet("peet_EmptyPet");
+            Bot.RpcSetVisor("visor_EmptyVisor");
+            Bot.RpcSetNamePlate("nameplate_NoPlate");
+            Bot.RpcSetSkin("skin_None");
             GameData.Instance.RpcSetTasks(Bot.PlayerId, new byte[0]);
             SuperNewRolesPlugin.Logger.LogInfo("botスポーン！\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
         }
