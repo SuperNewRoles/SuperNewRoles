@@ -30,10 +30,7 @@ namespace SuperNewRoles
             return player != null && player.Data.Role.IsImpostor;
         }
 
-        public static bool isFox(this PlayerControl player)
-        {
-            return player != null && !player.IsFox();
-        }
+
         public static bool IsQuarreled(this PlayerControl player,bool IsChache = true)
         {
             if (IsChache)
@@ -496,6 +493,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilSeer):
                     Roles.RoleClass.EvilSeer.EvilSeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.RemoteSheriff):
+                    Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.TeleportingJackal):
                     Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.Add(player);
                     break;
@@ -754,6 +754,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.TeleportingJackal):
                     Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.RemoteSheriff):
+                    Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -839,7 +842,7 @@ namespace SuperNewRoles
                     break; 
                 //タスククリアか
             }
-            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
+            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
                 IsTaskClear = true;
             }
@@ -972,18 +975,6 @@ namespace SuperNewRoles
                 //第三か
             }
             return IsNeutral;
-        }
-        public static bool IsFox(this PlayerControl player)
-        {
-            var IsFox = false;
-            switch (player.getRole())
-            {
-                case (RoleId.Fox):
-                    IsFox = true;
-                    break;
-                //狐か
-            }
-            return IsFox;
         }
         public static bool isRole(this PlayerControl p,RoleId role,bool IsChache = true) {
             RoleId MyRole;
@@ -1363,16 +1354,20 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Seer;
                 }
-            else if (Roles.RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MadSeer;
-            }
-            else if (Roles.RoleClass.EvilSeer.EvilSeerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.EvilSeer;
-            }
-            else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
-            {
+                else if (Roles.RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadSeer;
+                }
+                else if (Roles.RoleClass.EvilSeer.EvilSeerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.EvilSeer;
+                }
+                else if (Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.RemoteSheriff;
+                }
+                else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
+                {
                     return CustomRPC.RoleId.Vampire;
             }  
             else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
@@ -1388,7 +1383,6 @@ namespace SuperNewRoles
                 return CustomRPC.RoleId.TeleportingJackal;
             }
             //ロールチェック
-
             }
             catch (Exception e)
             {

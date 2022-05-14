@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using SuperNewRoles.Roles;
 using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Patch

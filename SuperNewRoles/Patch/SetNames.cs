@@ -97,7 +97,7 @@ namespace SuperNewRoles.Patch
                                 player.NameText.color = Palette.ImpostorRed;
                         }
                 }
-                if (PlayerControl.LocalPlayer.isFox())
+            /*    if (PlayerControl.LocalPlayer.isFox())
                 {
                     List<PlayerControl> foxes = PlayerControl.AllPlayerControls.ToArray().ToList();
                     foxes.RemoveAll(x => !x.isRole(CustomRPC.RoleId.Fox));
@@ -110,7 +110,7 @@ namespace SuperNewRoles.Patch
                             if (playerControl != null && (playerControl.isRole(CustomRPC.RoleId.Fox)))
                                 player.NameText.color = Palette.Purple;
                         }
-                }
+                }*/
             }
             public static void SetPlayerRoleInfoView(PlayerControl p, Color roleColors, string roleNames)
             {

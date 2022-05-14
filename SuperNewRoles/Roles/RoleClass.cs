@@ -118,6 +118,7 @@ namespace SuperNewRoles.Roles
             Seer.ClearAndReload();
             MadSeer.ClearAndReload();
             EvilSeer.ClearAndReload();
+            RemoteSheriff.ClearAndReload();
             TeleportingJackal.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -1662,6 +1663,35 @@ namespace SuperNewRoles.Roles
                 mode = CustomOptions.EvilSeerMode.getSelection();
             }
         }
+        public static class RemoteSheriff
+        {
+            public static List<PlayerControl> RemoteSheriffPlayer;
+            public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
+            public static float CoolTime;
+            public static bool IsNeutralKill;
+            public static bool IsLoversKill;
+            public static bool IsMadRoleKill;
+            public static bool MadRoleKill;
+            public static float KillMaxCount;
+            public static Dictionary<int, int> KillCount;
+            public static bool IsKillTeleport;
+            public static float KillCoolTime;
+            public static void ClearAndReload()
+            {
+                RemoteSheriffPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.RemoteSheriffCoolTime.getFloat();
+                IsNeutralKill = CustomOptions.RemoteSheriffNeutralKill.getBool();
+                IsLoversKill = CustomOptions.RemoteSheriffLoversKill.getBool();
+                IsMadRoleKill = CustomOptions.RemoteSheriffMadRoleKill.getBool();
+                MadRoleKill = CustomOptions.RemoteSheriffMadRoleKill.getBool();
+                KillMaxCount = CustomOptions.RemoteSheriffKillMaxCount.getFloat();
+                KillCount = new Dictionary<int, int>();
+                IsKillTeleport = CustomOptions.RemoteSheriffIsKillTeleportSetting.getBool();
+                KillCoolTime = CustomOptions.RemoteSheriffCoolTime.getFloat();
+            }
+        }
+        //新ロールクラス
+            public static class Quarreled
         public static class TeleportingJackal
         {
             public static List<PlayerControl> TeleportingJackalPlayer;

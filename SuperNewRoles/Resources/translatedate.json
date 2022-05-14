@@ -889,8 +889,8 @@
         "11" : "\u4eba\u5916\u3092\u30ad\u30eb\u3057\u3066\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3092\u52dd\u5229\u306b\u5c0e\u3053\u3046"
         } ,
  "SheriffCoolDownSetting" : {
-        "0" : "Sheriff's Kill Cooldown" ,
-        "11" : "\u30b7\u30a7\u30ea\u30d5\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        "0" : "Kill Cooldown" ,
+        "11" : "\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } ,
  "SheriffIsKillNewtralSetting" : {
         "0" : "Can Kill a Neutral" ,
@@ -913,8 +913,8 @@
         "11" : "\u3067\u304d\u306a\u3044"
         } ,
  "SheriffMaxKillCountSetting" : {
-        "0" : "Maximum number of kills for Sheriff" ,
-        "11" : "\u30b7\u30a7\u30ea\u30d5\u306e\u6700\u5927\u30ad\u30eb\u6570"
+        "0" : "Maximum number of kills" ,
+        "11" : "\u6700\u5927\u30ad\u30eb\u6570"
         } ,
  "SheriffKillButtonName" : {
         "0" : "Kill" ,
@@ -2232,6 +2232,14 @@
         "0" : "Dark Killer's Kill Cool Time" ,
         "11" : "\u30c0\u30fc\u30af\u30ad\u30e9\u30fc\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
+ "FoxName" : {
+        "0" : "Fox" ,
+        "11" : "\u5996\u72d0"
+        } ,
+ "FoxTitle1" : {
+        "0" : "I am Fox!" ,
+        "11" : "\u79c1\u306f\u72d0\u3067\u3059!"
+        } ,
  "SeerName" : {
         "0" : "Seer" ,
         "11" : "\u30b7\u30fc\u30a2"
@@ -2280,26 +2288,19 @@
         "0" : "You will see players die" ,
         "11" : "\u8239\u54e1\u306e\u6c17\u914d\u3092\u611f\u3058\u53d6\u308d\u3046"
         } ,
- "SeerSoulDuration" : {
-        "0" : "Soul Duration" ,
-        "11" : "\u5e7d\u970a\u304c\u898b\u3048\u308b\u6642\u9593"
+ "RemoteSheriffName" : {
+        "0" : "Remote Sheriff" ,
+        "11" : "\u30ea\u30e2\u30fc\u30c8\u30b7\u30a7\u30ea\u30d5"
         } ,
- "DarkKillerKillCoolSetting" : {
-        "0" : "Dark Killer's Kill Cool Time" ,
-        "11" : "\u30c0\u30fc\u30af\u30ad\u30e9\u30fc\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+ "RemoteSheriffTitle1" : {
+        "0" : "Let's do a Remote Sheriff kill!" ,
+        "11" : "\u9060\u9694\u3067\u30b7\u30a7\u30ea\u30d5\u30ad\u30eb\u3092\u3057\u3088\u3046"
         } ,
- "VampireKillDelay" : {
-        "0" : "Kill Delay" ,
-        "11" : "\u30ad\u30eb\u9045\u5ef6"
-        } ,
- "FoxName" : {
-        "0" : "Fox" ,
-        "11" : "\u5996\u72d0"
-        } ,
- "FoxTitle1" : {
-        "0" : "I am Fox!" ,
-        "11" : "\u79c1\u306f\u72d0\u3067\u3059!"
-        } ,
+ "RemoteSheriffIsKillTeleportSetting" : {
+        "0" : "Kill Teleport" ,
+        "11" : "\u30ad\u30eb\u30c6\u30ec\u30dd\u30fc\u30c8"
+        } 
+
  "TeleportingJackalName" : {
         "0" : "TeleportingJackal" ,
         "11" : "\u30c6\u30ec\u30dd\u30fc\u30c6\u30a3\u30f3\u30b0\u30b8\u30e3\u30c3\u30ab\u30eb"

@@ -89,6 +89,7 @@ namespace SuperNewRoles.Patch
                     }
                     else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
+                        Mode.SuperHostRoles.FixedUpdate.Update();
                         Fox.FixedUpdate.Postfix();
                     }
                     else if (ModeHandler.isMode(ModeId.Default))

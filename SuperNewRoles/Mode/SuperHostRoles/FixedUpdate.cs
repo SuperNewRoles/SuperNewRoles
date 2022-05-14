@@ -138,7 +138,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                         if (p.IsLovers() && p.isAlive())
                         {
-                            Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                            var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
                             PlayerControl Side = p.GetOneSideLovers();
                             string name = Side.getDefaultName();
                             if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
@@ -148,8 +148,35 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             {
                                 name = ModHelpers.cs(RoleClass.Celebrity.color, name);
                             }
-                            Side.RpcSetNamePrivate(name + Suffix, p);
+                            Side.RpcSetNamePrivate(name + suffix, p);
                         }
+                        if (p.IsQuarreled() && p.isAlive())
+                        {
+                            var suffix = ModHelpers.cs(RoleClass.Quarreled.color, "○");
+                            PlayerControl Side = p.GetOneSideQuarreled();
+                            string name = Side.getDefaultName();
+                            if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
+                            {
+                                name = ModHelpers.cs(RoleClass.ImpostorRed, name);
+                            }
+                            else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
+                            {
+                                name = ModHelpers.cs(RoleClass.Celebrity.color, name);
+                            }
+                            if (Side.IsLovers())
+                            {
+                                suffix += ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                            }
+                            Side.RpcSetNamePrivate(name + suffix, p);
+                        }
+                    }
+                    if (p.IsLovers())
+                    {
+                        Suffix += ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                    }
+                    if (p.IsQuarreled())
+                    {
+                        Suffix += ModHelpers.cs(RoleClass.Quarreled.color, "○");
                     }
                     if (p.isRole(RoleId.Sheriff))
                     {
@@ -157,30 +184,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         {
                             Suffix += "(残り" + RoleClass.Sheriff.KillCount[p.PlayerId] + "発)";
                         }
+                    } else if (p.isRole(RoleId.RemoteSheriff))
+                    {
+                        if (RoleClass.RemoteSheriff.KillCount.ContainsKey(p.PlayerId))
+                        {
+                            Suffix += "(残り" + RoleClass.RemoteSheriff.KillCount[p.PlayerId] + "発)";
+                        }
                     }
                     var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
                     string TaskText = "";
                     if (!p.isImpostor())
-                    {
-                        try
-                        {
-                            if (commsActive)
-                            {
-                                var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
-                                TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
-                            }
-                            else
-                            {
-                                var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                                TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
-                            }
-                        }
-                        catch
-                        {
-
-                        }
-                    }
-                    if (!p.isFox())
                     {
                         try
                         {
@@ -232,6 +245,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     HudManager.Instance.KillButton.gameObject.SetActive(true);
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                    }
                 }
                 else
                 {
@@ -239,7 +256,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = false;
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
-            } else if (PlayerControl.LocalPlayer.isRole(RoleId.Egoist))
+            }
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
+            {
+                HudManager.Instance.KillButton.gameObject.SetActive(true);
+                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
+                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControl.LocalPlayer);
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                }
+            }
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.Egoist))
             {
                 HudManager.Instance.KillButton.gameObject.SetActive(true);
                 PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;

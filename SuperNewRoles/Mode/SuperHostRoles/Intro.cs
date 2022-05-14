@@ -65,6 +65,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.getDefaultName() ?? ""));
             }
+            if (PlayerControl.LocalPlayer.IsQuarreled())
+            {
+                __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
+            }
             /**
 
             if (PlayerControl.LocalPlayer.IsQuarreled())

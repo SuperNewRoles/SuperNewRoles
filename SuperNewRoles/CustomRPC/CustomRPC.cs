@@ -102,6 +102,7 @@ namespace SuperNewRoles.CustomRPC
         Seer,
         MadSeer,
         EvilSeer,
+        RemoteSheriff,
         TeleportingJackal,
         //RoleId
     }
@@ -422,9 +423,11 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SheriffKill(byte SheriffId,byte TargetId,bool MissFire)
         {
+            SuperNewRolesPlugin.Logger.LogInfo("シェリフ");
             PlayerControl sheriff = ModHelpers.playerById(SheriffId);
             PlayerControl target = ModHelpers.playerById(TargetId);
             if (sheriff == null || target == null) return;
+            SuperNewRolesPlugin.Logger.LogInfo("通過");
 
             if (MissFire)
             {
@@ -432,7 +435,20 @@ namespace SuperNewRoles.CustomRPC
                 FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.SheriffMisFire;
             } else
             {
-                sheriff.MurderPlayer(target);
+                if (sheriff.isRole(RoleId.RemoteSheriff) && !RoleClass.RemoteSheriff.IsKillTeleport)
+                {
+                    if (PlayerControl.LocalPlayer.PlayerId == SheriffId)
+                    {
+                        target.MurderPlayer(target);
+                    } else
+                    {
+                        sheriff.MurderPlayer(target);
+                    }
+                }
+                else
+                {
+                    sheriff.MurderPlayer(target);
+                }
                 FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.SheriffKill;
             }
 
