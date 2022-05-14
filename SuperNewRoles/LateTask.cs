@@ -18,6 +18,7 @@ namespace SuperNewRoles
         public float timer;
         public Action action;
         public static List<LateTask> Tasks = new List<LateTask>();
+        public static List<LateTask> AddTasks = new List<LateTask>();
         public bool run(float deltaTime)
         {
             timer -= deltaTime;
@@ -33,20 +34,26 @@ namespace SuperNewRoles
             this.action = action;
             this.timer = time;
             this.name = name;
-            Tasks.Add(this);
+            AddTasks.Add(this);
             //Logger.info("New LateTask \"" + name + "\" is created");
         }
         public static void Update(float deltaTime)
         {
             var TasksToRemove = new List<LateTask>();
             Tasks.ForEach((task) => {
+                //SuperNewRolesPlugin.Logger.LogInfo("LateTask \"" + task.name + "\" Start");
                 if (task.run(deltaTime))
                 {
-                    //Logger.info("LateTask \"" + task.name + "\" is finished");
+                    //SuperNewRolesPlugin.Logger.LogInfo("LateTask \"" + task.name + "\" is finished");
                     TasksToRemove.Add(task);
                 }
             });
             TasksToRemove.ForEach(task => Tasks.Remove(task));
+            foreach (LateTask task in AddTasks)
+            {
+                Tasks.Add(task);
+            }
+            AddTasks = new List<LateTask>();
         }
     }
     [HarmonyPatch(typeof(HudManager),nameof(HudManager.Update))]

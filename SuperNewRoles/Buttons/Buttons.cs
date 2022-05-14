@@ -424,7 +424,7 @@ namespace SuperNewRoles.Buttons
                         SelfBomber.SelfBomb();
                     }
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && SelfBomber.isSelfBomber(PlayerControl.LocalPlayer); },
+                () => { return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && SelfBomber.isSelfBomber(PlayerControl.LocalPlayer); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
@@ -550,32 +550,63 @@ namespace SuperNewRoles.Buttons
             SheriffKillButton = new Buttons.CustomButton(
                 () =>
                 {
-                    if (RoleClass.Sheriff.KillMaxCount >= 1 && setTarget())
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
                     {
-                        RoleClass.Sheriff.KillMaxCount--;
-                        var Target = PlayerControlFixedUpdatePatch.setTarget();
-                        var misfire = !Roles.Sheriff.IsSheriffKill(Target);
-                        var TargetID = Target.PlayerId;
-                        var LocalID = PlayerControl.LocalPlayer.PlayerId;
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        {
+                            p.Data.Role.NameColor = Color.white;
+                        }
+                        PlayerControl.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        {
+                            if (p.isImpostor())
+                            {
+                                p.Data.Role.NameColor = RoleClass.ImpostorRed;
+                            }
+                        }
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                    }
+                    else if (PlayerControl.LocalPlayer.isRole(RoleId.Sheriff))
+                    {
+                        if (RoleClass.Sheriff.KillMaxCount >= 1 && setTarget())
+                        {
+                            RoleClass.Sheriff.KillMaxCount--;
+                            var Target = PlayerControlFixedUpdatePatch.setTarget();
+                            var misfire = !Roles.Sheriff.IsSheriffKill(Target);
+                            var TargetID = Target.PlayerId;
+                            var LocalID = PlayerControl.LocalPlayer.PlayerId;
 
-                        CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
+                            CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
 
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
-                        killWriter.Write(LocalID);
-                        killWriter.Write(TargetID);
-                        killWriter.Write(misfire);
-                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        Sheriff.ResetKillCoolDown();
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
+                            killWriter.Write(LocalID);
+                            killWriter.Write(TargetID);
+                            killWriter.Write(misfire);
+                            AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                            Sheriff.ResetKillCoolDown();
+                        }
                     }
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && ModeHandler.isMode(ModeId.Default) && Sheriff.IsSheriff(PlayerControl.LocalPlayer) && RoleClass.Sheriff.KillMaxCount >= 1; },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && ModeHandler.isMode(ModeId.Default) && Sheriff.IsSheriffButton(PlayerControl.LocalPlayer); },
                 () =>
                 {
-                    if (RoleClass.Sheriff.KillMaxCount > 0)
-                        sheriffNumShotsText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), RoleClass.Sheriff.KillMaxCount);
+                    float killcount = 0f;
+                    bool flag = false;
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
+                    {
+                        killcount = RoleClass.RemoteSheriff.KillMaxCount;
+                        flag = true;
+                    } else if (PlayerControl.LocalPlayer.isRole(RoleId.Sheriff))
+                    {
+                        killcount = RoleClass.Sheriff.KillMaxCount;
+                        flag = PlayerControlFixedUpdatePatch.setTarget() && PlayerControl.LocalPlayer.CanMove;
+                    }
+                    if (killcount > 0)
+                        sheriffNumShotsText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), killcount);
                     else
                         sheriffNumShotsText.text = "";
-                    return PlayerControlFixedUpdatePatch.setTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return flag;
                 },
                 () => { Sheriff.EndMeeting(); },
                 RoleClass.Sheriff.getButtonSprite(),
@@ -593,7 +624,7 @@ namespace SuperNewRoles.Buttons
             sheriffNumShotsText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
 
             
-            SheriffKillButton.buttonText = ModTranslation.getString("SherifKillButtonName");
+            SheriffKillButton.buttonText = ModTranslation.getString("SheriffKillButtonName");
             SheriffKillButton.showButtonText = true;
 
             ClergymanLightOutButton = new Buttons.CustomButton(

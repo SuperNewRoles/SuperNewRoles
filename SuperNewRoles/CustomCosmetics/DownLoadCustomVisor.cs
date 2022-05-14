@@ -29,16 +29,20 @@ namespace SuperNewRoles.CustomCosmetics
     public static class DownLoadClassVisor
     {
         public static bool IsEndDownload = false;
+        public static bool running = false;
         public static List<string> fetchs = new List<string>();
         public static List<CustomVisors.CustomVisor> Visordetails = new List<CustomVisors.CustomVisor>();
         public static void Load()
         {
+            if (running)
+                return;
             IsEndDownload = false;
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\");
             SuperNewRolesPlugin.Logger.LogInfo("バイザーダウンロード開始");
             FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
             FetchHats("https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master");
+            running = true;
         }
         private static string sanitizeResourcePath(string res)
         {

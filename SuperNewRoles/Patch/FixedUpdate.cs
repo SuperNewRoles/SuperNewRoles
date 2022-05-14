@@ -87,6 +87,11 @@ namespace SuperNewRoles.Patch
                     {
                         Mode.NotImpostorCheck.NameSet.Postfix();
                     }
+                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    {
+                        Mode.SuperHostRoles.FixedUpdate.Update();
+                        Fox.FixedUpdate.Postfix();
+                    }
                     else if (ModeHandler.isMode(ModeId.Default))
                     {
                         SabotageManager.Update();
@@ -94,7 +99,7 @@ namespace SuperNewRoles.Patch
                         Jackal.JackalFixedPatch.Postfix(__instance);
                         if (PlayerControl.LocalPlayer.isAlive())
                         {
-                            if (PlayerControl.LocalPlayer.isImpostor()) {SetTarget.ImpostorSetTarget();}
+                            if (PlayerControl.LocalPlayer.isImpostor()) {SetTarget.ImpostorSetTarget(); }
                             if (RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                             {
                                 Researcher.ReseUseButtonSetTargetPatch.Postfix(__instance);
@@ -139,6 +144,11 @@ namespace SuperNewRoles.Patch
                             {
                                 Vampire.FixedUpdate.Postfix();
                             }
+                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DarkKiller))
+                            {
+                                DarkKiller.FixedUpdate.Postfix();
+                            }
+                            Fox.FixedUpdate.Postfix();
                         }
                         else if (PlayerControl.LocalPlayer.isDead())
                         {
