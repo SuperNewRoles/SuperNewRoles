@@ -11,14 +11,14 @@ namespace SuperNewRoles
         public static void Spawn(string name = "Bot", byte BotPlayerId = 1)
         {
             var Bot = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
-           
+
             AllBots.Add(Bot);
             Bot.PlayerId = BotPlayerId;
             GameData.Instance.AddPlayer(Bot);
             AmongUsClient.Instance.Spawn(Bot, -2, InnerNet.SpawnFlags.IsClientCharacter);
             Bot.transform.position = new Vector3(9999f, 9999f, 0);
             Bot.NetTransform.enabled = false;
-            
+
             Bot.SetName(name);
             Bot.SetColor(1);
             Bot.SetHat("hat_Empty", 1);
