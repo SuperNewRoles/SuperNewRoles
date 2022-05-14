@@ -596,13 +596,13 @@ namespace SuperNewRoles.CustomOption
             MeetingSheriffKillMaxCount = CustomOption.Create(201, false, CustomOptionType.Crewmate, "MeetingSheriffMaxKillCountSetting", 1f, 1f, 20f, 1f, MeetingSheriffOption, format: "unitSeconds");
             MeetingSheriffOneMeetingMultiKill = CustomOption.Create(35, false, CustomOptionType.Crewmate, "MeetingSheriffMeetingmultipleKillSetting", false, MeetingSheriffOption);
             
-            JackalOption = new CustomRoleOption(36, false, CustomOptionType.Neutral, "JackalName", RoleClass.Jackal.color, 1);
-            JackalPlayerCount = CustomOption.Create(37, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalOption);
-            JackalKillCoolDown = CustomOption.Create(38, false, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, JackalOption, format: "unitSeconds");
-            JackalUseVent = CustomOption.Create(160, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalOption);
-            JackalUseSabo = CustomOption.Create(161, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalOption);
-            JackalCreateSidekick = CustomOption.Create(39, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalOption);
-            JackalNewJackalCreateSidekick = CustomOption.Create(40, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalOption);
+            JackalOption = new CustomRoleOption(36, true, CustomOptionType.Neutral, "JackalName", RoleClass.Jackal.color, 1);
+            JackalPlayerCount = CustomOption.Create(37, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalOption);
+            JackalKillCoolDown = CustomOption.Create(38, true, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, JackalOption, format: "unitSeconds");
+            JackalUseVent = CustomOption.Create(160, true, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalOption);
+            JackalUseSabo = CustomOption.Create(161, true, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalOption);
+            JackalCreateSidekick = CustomOption.Create(39, true, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalOption);
+            JackalNewJackalCreateSidekick = CustomOption.Create(40, true, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalOption);
 
             TeleporterOption = new CustomRoleOption(41, false, CustomOptionType.Impostor, "TeleporterName", RoleClass.ImpostorRed, 1);
             TeleporterPlayerCount = CustomOption.Create(42, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], TeleporterOption);

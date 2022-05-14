@@ -72,7 +72,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<PlayerControl> DiePlayers = new List<PlayerControl>();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (!p.Data.Disconnected && p.PlayerId != 0)
+                if (!p.Data.Disconnected && p.PlayerId != 0 && p.IsPlayer())
                 {
                     if (p.isDead() || p.isRole(RoleId.God))
                     {
@@ -82,7 +82,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (!p.Data.Disconnected)
+                if (!p.Data.Disconnected && p.IsPlayer())
                 {
                     string Suffix = "";
                     if (!p.IsMod() && p.isAlive())
@@ -101,7 +101,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         {
                             foreach (PlayerControl p2 in RoleClass.Celebrity.CelebrityPlayer)
                             {
-                                if( p.PlayerId != p2.PlayerId )
+                                if(p.PlayerId != p2.PlayerId)
                                 {
                                     p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p2.getDefaultName()), p);
                                 }

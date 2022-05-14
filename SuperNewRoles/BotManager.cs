@@ -5,18 +5,22 @@ using UnityEngine;
 
 namespace SuperNewRoles
 {
-    public class BotManager
+    public static class BotManager
     {
         public static List<PlayerControl> AllBots = new List<PlayerControl>();
-        public static bool IsBot(PlayerControl player)
+        public static bool IsBot(this PlayerControl player)
         {
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in BotManager.AllBots)
             {
                 if (p.PlayerId == player.PlayerId) return true;
             }
             return false;
         }
-        public static void Spawn(string name = "Bot", byte BotPlayerId = 1)
+        public static bool IsPlayer(this PlayerControl player)
+        {
+            return !IsBot(player);
+        }
+        public static PlayerControl Spawn(string name = "Bot", byte BotPlayerId = 1)
         {
             byte id = 0;
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
@@ -29,7 +33,6 @@ namespace SuperNewRoles
             id++;
             var Bot = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
 
-            AllBots.Add(Bot);
             Bot.PlayerId = id;
            // Bot.PlayerId = BotPlayerId;
             GameData.Instance.AddPlayer(Bot);
@@ -46,12 +49,15 @@ namespace SuperNewRoles
             Bot.RpcSetSkin("skin_None");
             GameData.Instance.RpcSetTasks(Bot.PlayerId, new byte[0]);
             SuperNewRolesPlugin.Logger.LogInfo("botスポーン！\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
+            AllBots.Add(Bot);
+            return Bot;
         }
         public static void Despawn(PlayerControl Bot)
         {
             SuperNewRolesPlugin.Logger.LogInfo("botデスポーン！\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
             GameData.Instance.RemovePlayer(Bot.PlayerId);
             AmongUsClient.Instance.Despawn(Bot);
+            Bot.Despawn();
             SuperNewRolesPlugin.Logger.LogInfo("完了！");
             AllBots.Remove(Bot);
         }
@@ -61,7 +67,7 @@ namespace SuperNewRoles
             {
                 SuperNewRolesPlugin.Logger.LogInfo("botデスポーン！\nID:" + Bots.PlayerId + "\nBotName:" + Bots.name);
                 GameData.Instance.RemovePlayer(Bots.PlayerId);
-                AmongUsClient.Instance.Despawn(Bots);
+                Bots.Despawn();
                 SuperNewRolesPlugin.Logger.LogInfo("完了！");
             }
             AllBots = new List<PlayerControl>();

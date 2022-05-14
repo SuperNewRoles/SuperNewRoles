@@ -374,7 +374,7 @@ namespace SuperNewRoles.Buttons
                         Jackal.resetCoolDown();
                     }
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal) && RoleClass.Jackal.IsCreateSidekick; },
+                () => { return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal) && RoleClass.Jackal.IsCreateSidekick; },
                 () =>
                 {
                     return Jackal.JackalFixedPatch.JackalsetTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -406,7 +406,7 @@ namespace SuperNewRoles.Buttons
                         TeleportingJackal.resetCoolDown();
                     }
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) || RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer); },
+                () => { return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) || RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer); },
                 () =>
                 {
                     return Jackal.JackalFixedPatch.JackalsetTarget() && PlayerControl.LocalPlayer.CanMove;

@@ -534,6 +534,7 @@ namespace SuperNewRoles.EndGame
                 FalseChargesWin = EndData == CustomGameOverReason.FalseChargesWin;
                 QuarreledWin = EndData == CustomGameOverReason.QuarreledWin;
                 FoxWin = EndData == CustomGameOverReason.FoxWin;
+                JackalWin = EndData == CustomGameOverReason.JackalWin;
             }
 
 
@@ -1103,8 +1104,7 @@ namespace SuperNewRoles.EndGame
         {
             if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard())
             {
-
-                        __instance.enabled = false;
+                __instance.enabled = false;
                 GameOverReason endReason;
                 switch (TempData.LastDeathReason)
                 {
@@ -1224,7 +1224,7 @@ namespace SuperNewRoles.EndGame
                 for (int i = 0; i < GameData.Instance.PlayerCount; i++)
                 {
                     GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
-                    if (!playerInfo.Disconnected)
+                    if (!playerInfo.Disconnected && playerInfo.Object.IsPlayer())
                     {
                         if (playerInfo.Object.isAlive())
                         {

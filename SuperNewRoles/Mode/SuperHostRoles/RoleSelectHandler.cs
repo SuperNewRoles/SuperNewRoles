@@ -1,4 +1,5 @@
-﻿using SuperNewRoles.CustomRPC;
+﻿using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
@@ -19,7 +20,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             AllRoleSetClass.AllRoleSet();
             SetCustomRoles();
             SyncSetting.CustomSyncSettings();
-
             ChacheManager.ResetChache();
             FixedUpdate.SetRoleNames();
             main.SendAllRoleChat();
@@ -37,6 +37,27 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }, 3f, "SetImpostor");
+        }
+        public static void SpawnBots()
+        {
+            BotManager.AllBots = new List<PlayerControl>();
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
+
+            //ジャッカルがいるなら
+            if (CustomOptions.JackalOption.getSelection() != 0)
+            {
+                for (int i = 0; i < (1 * PlayerControl.GameOptions.NumImpostors + 2); i++)
+                {
+                    PlayerControl bot = BotManager.Spawn("暗転対策BOT"+ (i + 1));
+                    if (i == 0)
+                    {
+                        bot.RpcSetRole(RoleTypes.Impostor);
+                    }
+                    if (i > 0) {
+                        bot.RpcSetRole(RoleTypes.Crewmate);
+                    }
+                }
+            }
         }
         public static void SetCustomRoles() {
             List<PlayerControl> DesyncImpostorPlayers = new List<PlayerControl>();
@@ -76,6 +97,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 else
                 {
                     RemoteSheriffPlayer.RpcSetRole(RoleTypes.Crewmate);
+                }
+                //SheriffPlayer.Data.IsDead = true;
+            }
+            foreach (PlayerControl JackalPlayer in RoleClass.Jackal.JackalPlayer)
+            {
+                if (!JackalPlayer.IsMod())
+                {
+                    JackalPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != JackalPlayer.PlayerId)
+                        {
+                            JackalPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, JackalPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    JackalPlayer.RpcSetRole(RoleTypes.Crewmate);
                 }
                 //SheriffPlayer.Data.IsDead = true;
             }
@@ -213,13 +254,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             AllRoleSetClass.ImpostorPlayers = new List<PlayerControl>();
             foreach (PlayerControl Player in PlayerControl.AllPlayerControls)
             {
-                if (AllRoleSetClass.impostors.IsCheckListPlayerControl(Player))
+                if (Player.IsPlayer())
                 {
-                    AllRoleSetClass.ImpostorPlayers.Add(Player);
-                }
-                else
-                {
-                    AllRoleSetClass.CrewMatePlayers.Add(Player);
+                    if (AllRoleSetClass.impostors.IsCheckListPlayerControl(Player))
+                    {
+                        AllRoleSetClass.ImpostorPlayers.Add(Player);
+                    }
+                    else
+                    {
+                        AllRoleSetClass.CrewMatePlayers.Add(Player);
+                    }
                 }
             }
         }
@@ -700,6 +744,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.JackalOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Jackal;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutonepar.Add(ThisRoleId);
                     }
                 }
             }

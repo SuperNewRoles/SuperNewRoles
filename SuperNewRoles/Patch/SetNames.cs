@@ -17,6 +17,7 @@ namespace SuperNewRoles.Patch
 
         public static void SetPlayerNameColor(PlayerControl p, Color color)
         {
+            if (p.IsBot()) return;
             p.nameText.color = color;
             try
             {
@@ -32,6 +33,7 @@ namespace SuperNewRoles.Patch
         }
         public static void SetPlayerNameText(PlayerControl p, string text)
         {
+            if (p.IsBot()) return;
             p.nameText.text = text;
             if (MeetingHud.Instance)
             {
@@ -113,8 +115,9 @@ namespace SuperNewRoles.Patch
                 }*/
             }
             public static void SetPlayerRoleInfoView(PlayerControl p, Color roleColors, string roleNames)
-            {
-                bool commsActive = false;
+        {
+            if (p.IsBot()) return;
+            bool commsActive = false;
                 foreach (PlayerTask t in PlayerControl.LocalPlayer.myTasks)
                 {
                     if (t.TaskType == TaskTypes.FixComms)
@@ -183,6 +186,7 @@ namespace SuperNewRoles.Patch
             }
             public static void SetPlayerRoleInfo(PlayerControl p)
             {
+            if (p.IsBot()) return;
                 string roleNames;
                 Color roleColors;
                 var role = p.getRole();

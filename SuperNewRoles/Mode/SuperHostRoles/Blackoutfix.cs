@@ -21,7 +21,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void EndMeetingPatch()
         {
-            BotManager.Spawn("暗転対策");
+            //BotManager.Spawn("暗転対策");
         }
     }
 }
