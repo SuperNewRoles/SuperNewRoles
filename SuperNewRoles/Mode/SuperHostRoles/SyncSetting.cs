@@ -252,7 +252,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (!p.Data.Disconnected)
+                if (!p.Data.Disconnected && p.IsPlayer())
                 {
                     CustomSyncSettings(p);
                 }
