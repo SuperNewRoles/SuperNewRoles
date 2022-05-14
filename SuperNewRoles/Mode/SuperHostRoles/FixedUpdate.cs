@@ -136,6 +136,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
                         }
+
+                        if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (!p2.Data.Disconnected && !p2.isRole(RoleId.Jackal))
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
+                                else if (!p2.Data.Disconnected && p2.isRole(RoleId.Jackal))
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Jackal.color, p2.getDefaultName()), p);
+                                }
+                            }
+                            //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
+                        }
                         if (p.IsLovers() && p.isAlive())
                         {
                             var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
@@ -147,6 +163,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             } else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
                             {
                                 name = ModHelpers.cs(RoleClass.Celebrity.color, name);
+                            } else if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck && Side.isRole(RoleId.Jackal))
+                            {
+                                name = ModHelpers.cs(RoleClass.Jackal.color, name);
                             }
                             Side.RpcSetNamePrivate(name + suffix, p);
                         }
@@ -162,6 +181,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
                             {
                                 name = ModHelpers.cs(RoleClass.Celebrity.color, name);
+                            }
+                            else if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck && Side.isRole(RoleId.Jackal))
+                            {
+                                name = ModHelpers.cs(RoleClass.Jackal.color, name);
                             }
                             if (Side.IsLovers())
                             {
