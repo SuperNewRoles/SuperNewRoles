@@ -142,6 +142,20 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = JackalTeams;
                 }
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
+                {
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> FoxTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    int FoxNum = 0;
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.isRole(CustomRPC.RoleId.Fox))
+                        {
+                            FoxNum++;
+                            FoxTeams.Add(player);
+                        }
+                    }
+                    yourTeam = FoxTeams;
+                }
             } else
             {
                 var a = ModeHandler.TeamHandler(__instance);

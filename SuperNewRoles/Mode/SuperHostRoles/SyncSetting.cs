@@ -109,6 +109,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                     break;
+                case RoleId.Fox:
+                    if (RoleClass.Fox.IsUseVent)
+                    {
+                        optdata.RoleOptions.EngineerCooldown = 0f;
+                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+                    }
+                    if (RoleClass.Fox.IsImpostorLight)
+                    {
+                        optdata.CrewLightMod = optdata.ImpostorLightMod;
+                        var switchSystem2 = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                        if (switchSystem2 != null && switchSystem2.IsActive)
+                        {
+                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
+                        }
+                    }
+                    break;
                 case RoleId.truelover:
                     optdata.ImpostorLightMod = optdata.CrewLightMod;
                     var switchSystemtruelover = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
@@ -144,6 +160,36 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     optdata.killCooldown = KillCoolSet(RoleClass.FalseCharges.CoolTime);
                     break;
+                case RoleId.RemoteSheriff:
+                    optdata.ImpostorLightMod = optdata.CrewLightMod;
+                    var switchSystemRemoteSheriff = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    if (switchSystemRemoteSheriff != null && switchSystemRemoteSheriff.IsActive)
+                    {
+                        optdata.ImpostorLightMod /= 5;
+                    }
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    optdata.RoleOptions.ShapeshifterCooldown = KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime);
+                    SuperNewRolesPlugin.Logger.LogInfo("ｼﾝｸ");
+                    if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId))
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("ｼﾝｸ:"+RoleClass.RemoteSheriff.KillCount[player.PlayerId]);
+                    }
+                    if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId) && RoleClass.RemoteSheriff.KillCount[player.PlayerId] < 1)
+                    {
+                        optdata.RoleOptions.ShapeshifterDuration = 1f;
+                        optdata.RoleOptions.ShapeshifterCooldown = -1f;
+
+                        SuperNewRolesPlugin.Logger.LogInfo("変更！");
+                    }
+                    if (player.IsMod())
+                    {
+                        optdata.killCooldown = KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime);
+                    }
+                    else
+                    {
+                        optdata.killCooldown = -1f;
+                    }
+                    break;
                 case RoleId.Nocturnality:
                     var switchSystemNocturnality = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                     if (switchSystemNocturnality == null || !switchSystemNocturnality.IsActive)
@@ -151,8 +197,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.CrewLightMod /= 5;
                     }
                     break;
+                case RoleId.SelfBomber:
+                    optdata.RoleOptions.ShapeshifterCooldown = 0.000001f;
+                    optdata.RoleOptions.ShapeshifterDuration = 0.000001f;
+                      break;
+                case RoleId.Survivor:
+                    optdata.killCooldown = KillCoolSet(RoleClass.Survivor.KillCoolTime);
+                    break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
+            optdata.RoleOptions.ShapeshifterLeaveSkin = false;
             if (player.AmOwner) PlayerControl.GameOptions = optdata;
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.Reliable, player.getClientId());
             writer.WriteBytesAndSize(optdata.ToBytes(5));

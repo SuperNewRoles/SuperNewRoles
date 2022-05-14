@@ -29,6 +29,11 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.Sheriff)) return false;
             return player != null && player.Data.Role.IsImpostor;
         }
+
+        public static bool isFox(this PlayerControl player)
+        {
+            return player != null && !player.IsFox();
+        }
         public static bool IsQuarreled(this PlayerControl player,bool IsChache = true)
         {
             if (IsChache)
@@ -220,6 +225,9 @@ namespace SuperNewRoles
                 case RoleId.MadSeer:
                     returntext = CustomOptions.MadSeerIsUseVent.name + ":" + CustomOptions.MadSeerIsUseVent.getString() + "\n";
                     returntext += CustomOptions.MadSeerIsCheckImpostor.name + ":" + CustomOptions.MadSeerIsCheckImpostor.getString() + "\n";
+                    break;
+                case RoleId.Fox:
+                    returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
             }
             return returntext;
@@ -473,6 +481,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Vampire):
                     Roles.RoleClass.Vampire.VampirePlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Fox):
+                    Roles.RoleClass.Fox.FoxPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.DarkKiller):
                     Roles.RoleClass.DarkKiller.DarkKillerPlayer.Add(player);
                     break;
@@ -481,6 +492,12 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.MadSeer):
                     Roles.RoleClass.MadSeer.MadSeerPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.EvilSeer):
+                    Roles.RoleClass.EvilSeer.EvilSeerPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.RemoteSheriff):
+                    Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -719,6 +736,9 @@ namespace SuperNewRoles
                     case (CustomRPC.RoleId.Vampire):
                     Roles.RoleClass.Vampire.VampirePlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Fox):
+                    Roles.RoleClass.Fox.FoxPlayer.RemoveAll(ClearRemove);
+                    break;
                 case (CustomRPC.RoleId.DarkKiller):
                     Roles.RoleClass.DarkKiller.DarkKillerPlayer.RemoveAll(ClearRemove);
                     break;
@@ -727,6 +747,12 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.MadSeer):
                     Roles.RoleClass.MadSeer.MadSeerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.EvilSeer):
+                    Roles.RoleClass.EvilSeer.EvilSeerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.RemoteSheriff):
+                    Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
 
@@ -781,7 +807,7 @@ namespace SuperNewRoles
                 case (RoleId.Workperson):
                     IsTaskClear = true;
                     break;
-                    case (RoleId.truelover):
+                case (RoleId.truelover):
                     IsTaskClear = true;
                     break; 
                 case (RoleId.Amnesiac):
@@ -802,12 +828,15 @@ namespace SuperNewRoles
                 case (RoleId.MadJester):
                     IsTaskClear = true;
                     break;
-                    case (RoleId.FalseCharges):
+                case (RoleId.FalseCharges):
+                    IsTaskClear = true;
+                    break; 
+                case (RoleId.Fox):
                     IsTaskClear = true;
                     break; 
                 //タスククリアか
             }
-            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && player.isRole(RoleId.Sheriff))
+            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
                 IsTaskClear = true;
             }
@@ -838,6 +867,7 @@ namespace SuperNewRoles
             if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadStuntMan.IsUseVent) return true;
             if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadHawk.IsUseVent) return true;
             if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadSeer.IsUseVent) return true;
+            if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Fox.IsUseVent) return true;
             return false;
         }
         public static bool IsSabotage()
@@ -883,6 +913,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.MadHawk) && RoleClass.MadHawk.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadJester) && RoleClass.MadJester.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadSeer) && RoleClass.MadSeer.IsImpostorLight) return true;
+            if (player.isRole(RoleId.Fox) && RoleClass.Fox.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -926,9 +957,24 @@ namespace SuperNewRoles
                 case (RoleId.FalseCharges):
                     IsNeutral = true;
                     break;
+                case (RoleId.Fox):
+                    IsNeutral = true;
+                    break;
                 //第三か
             }
             return IsNeutral;
+        }
+        public static bool IsFox(this PlayerControl player)
+        {
+            var IsFox = false;
+            switch (player.getRole())
+            {
+                case (RoleId.Fox):
+                    IsFox = true;
+                    break;
+                //狐か
+            }
+            return IsFox;
         }
         public static bool isRole(this PlayerControl p,RoleId role,bool IsChache = true) {
             RoleId MyRole;
@@ -1308,12 +1354,31 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Seer;
                 }
-            else if (Roles.RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MadSeer;
-            }
+                else if (Roles.RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadSeer;
+                }
+                else if (Roles.RoleClass.EvilSeer.EvilSeerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.EvilSeer;
+                }
+                else if (Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.RemoteSheriff;
+                }
+                else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Vampire;
+                }
+                else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.DarkKiller;
+                }
+                else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Fox;
+                }
             //ロールチェック
-
             }
             catch (Exception e)
             {
