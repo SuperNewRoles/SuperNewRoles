@@ -67,7 +67,6 @@ namespace SuperNewRoles.Sabotage.Blizzard.Patch
             Object_ONDO0.localPosition = new Vector3(1.1f, 0.5f, -0.1f);//座標セット
             Object_ONDO0.GetComponent<SpriteRenderer>().sprite = ImageManager.ONDOgetSprite("ONDO");//見た目
             Object_ONDO0.gameObject.AddComponent<PolygonCollider2D>();//判定
-            //Object_ONDO0.gameObject.AddComponent<BoxCollider2D>();
             Object_ONDO0.name = "ONDO";
 
             GameObject.Destroy(Template.gameObject);

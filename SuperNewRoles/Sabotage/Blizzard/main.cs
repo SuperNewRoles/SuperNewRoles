@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 using static UnityEngine.UI.Button;
+using SuperNewRoles.Sabotage.Blizzard.Task;
 
 namespace SuperNewRoles.Sabotage.Blizzard
 {
@@ -17,6 +18,8 @@ namespace SuperNewRoles.Sabotage.Blizzard
         {
             IsLocalEnd = false;
             SuperNewRolesPlugin.Logger.LogInfo("スタートサボ！");
+            TaskConsole.ONDOColliderON();
+            //OpenTask.VisibleTask();
             SabotageManager.thisSabotage = SabotageManager.CustomSabotage.Blizzard;
             foreach (Arrow aw in ArrowDatas)
             {

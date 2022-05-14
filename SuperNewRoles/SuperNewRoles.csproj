@@ -22,6 +22,8 @@
 		<EmbeddedResource Include="Resources\*.json" />
         <EmbeddedResource Include="Resources\TricksterAnimation\*.png" />
         <EmbeddedResource Include="Resources\Blizzard\*.png" />
+        <EmbeddedResource Include="Resources\Blizzard\Temp\*.png" />
+        <EmbeddedResource Include="Resources\Blizzard\Sounds\*.wav" />
     </ItemGroup>
 
     <ItemGroup>

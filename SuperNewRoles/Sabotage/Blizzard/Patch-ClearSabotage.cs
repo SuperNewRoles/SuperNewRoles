@@ -16,8 +16,10 @@ namespace SuperNewRoles.Sabotage.Blizzard
             //ブリザードって解除されるの？ん？
             if (SabotageClearFlag[1] && SabotageClearFlag[2])
             {
-                SabotageManager.thisSabotage = SabotageManager.CustomSabotage.None;
-                SuperNewRolesPlugin.Logger.LogInfo("あれ...？あったかくなってきた....");
+                //SabotageManager.thisSabotage = SabotageManager.CustomSabotage.None;
+                //SuperNewRolesPlugin.Logger.LogInfo("あれ...？あったかくなってきた....");
+                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 16 | 0);
+                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 16 | 1);
             }
         }
     }

@@ -14,7 +14,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
             {
                 if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.Blizzard)
                 {
-                    __instance.body.velocity /= main.BlizzardSlowSpeedmagnification;
+                    __instance.body.velocity *= main.BlizzardSlowSpeedmagnification;
                 }
             }
         }

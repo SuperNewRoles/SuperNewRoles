@@ -25,6 +25,7 @@ namespace SuperNewRoles.Sabotage.Blizzard
             {
                 //SuperNewRolesPlugin.Logger.LogInfo(main.Timer);
                 ModHelpers.ShowFlash(new Color(0, 255, 255));
+                //SoundManager.Instance.PlaySound(ModHelpers.loadAudioClipFromResources("SuperNewRoles.Resources.Blizzard.Sounds.Alarm_sabotage.wav"), false, 1f);
                 main.OverlayTimer = DateTime.Now;
                 main.Timer = 2f;
             }
