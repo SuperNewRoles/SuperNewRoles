@@ -777,43 +777,22 @@ namespace SuperNewRoles.Buttons
             SideKillerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
             SideKillerSidekickButton.showButtonText = true;
 
-/*            TimeMasterTimeMasterShieldButton = new Buttons.CustomButton(
-            () =>
-            {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TimeMasterShield, Hazel.SendOption.Reliable, -1);
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
-                RPCProcedure.TimeMasterShield();
-            },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.SideKiller) && !RoleClass.TimeMaster.IsRewinding; },
-                () => { return PlayerControl.LocalPlayer.CanMove; },
-                () => {
-                    TimeMasterTimeMasterShieldButton.Timer = TimeMasterTimeMasterShieldButton.MaxTimer;
-                    TimeMasterTimeMasterShieldButton.isEffectActive = false;
-                    TimeMasterTimeMasterShieldButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
-                },
-            RoleClass.TimeMaster.GetButtonSprite(),
-            new Vector3(-1.8f, -0.06f, 0),
-            __instance,
-            __instance.AbilityButton,
-            KeyCode.F,
-            49
-            );*/
-
-
-
-            TimeMasterTimeMasterShieldButton = new Buttons.CustomButton(
+            TimeMasterTimeMasterShieldButton  = new Buttons.CustomButton(
                 () =>
                 {
-                    if (!PlayerControl.LocalPlayer.CanMove) return;
-                    RoleClass.TimeMaster.ButtonTimer = DateTime.Now;
-                    TimeMasterTimeMasterShieldButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    RoleClass.TimeMaster.ShieldActive = true;
+                    Roles.RoleClass.TimeMaster.ButtonTimer = DateTime.Now;
+                    TimeMasterTimeMasterShieldButton .actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     TimeMaster.TimeShieldStart();
-                    TimeMaster.ResetCoolDown();
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (TimeMaster.IsTimeMaster(PlayerControl.LocalPlayer)); },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && TimeMaster.IsTimeMaster(PlayerControl.LocalPlayer); },
                 () =>
                 {
-                    return true && PlayerControl.LocalPlayer.CanMove;
+                    if (TimeMasterTimeMasterShieldButton .Timer <= 0)
+                    {
+                        return true;
+                    }
+                    return false;
                 },
                 () => { TimeMaster.EndMeeting(); },
                 RoleClass.TimeMaster.GetButtonSprite(),

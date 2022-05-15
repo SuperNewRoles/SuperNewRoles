@@ -1,34 +1,22 @@
+using HarmonyLib;
 using Hazel;
-using SuperNewRoles.Buttons;
 using System;
+using SuperNewRoles.Patches;
+using System.Collections;
 using System.Collections.Generic;
-using System.Text;
+using UnityEngine;
+using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Roles
 {
     class TimeMaster
     {
+
         public static void ResetCoolDown()
         {
             HudManagerStartPatch.TimeMasterTimeMasterShieldButton.MaxTimer = RoleClass.TimeMaster.Cooldown;
             RoleClass.TimeMaster.ButtonTimer = DateTime.Now;
-        }
-        public static void TimeShieldStart()
-        {
-            List<PlayerControl> aliveplayers = new List<PlayerControl>();
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-            {
-                if (p.isAlive() && p.CanMove)
-                {
-                    aliveplayers.Add(p);
-                }
-            }
-            var player = ModHelpers.GetRandom<PlayerControl>(aliveplayers);
-            CustomRPC.RPCProcedure.TimeMasterShield();
-
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TimeMasterShield, Hazel.SendOption.Reliable, -1);
-            Writer.Write(player.PlayerId);
-            AmongUsClient.Instance.FinishRpcImmediately(Writer);
         }
         public static bool IsTimeMaster(PlayerControl Player)
         {
@@ -41,10 +29,23 @@ namespace SuperNewRoles.Roles
                 return false;
             }
         }
+        public static void TimeShieldStart()
+        {
+            RoleClass.TimeMaster.ShieldActive = true;
+            CustomRPC.RPCProcedure.TimeMasterShield();
+        }
+
+        public static void TimeShieldEnd()
+        {
+            if (!RoleClass.TimeMaster.ShieldActive) return;
+            RoleClass.TimeMaster.ShieldActive = false;
+        }
         public static void EndMeeting()
         {
             HudManagerStartPatch.TimeMasterTimeMasterShieldButton.MaxTimer = RoleClass.TimeMaster.Cooldown;
             RoleClass.TimeMaster.ButtonTimer = DateTime.Now;
+            RoleClass.TimeMaster.ShieldActive = false;
+            HudManagerStartPatch.TimeMasterTimeMasterShieldButton.isEffectActive = false;
         }
     }
 }

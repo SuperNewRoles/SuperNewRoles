@@ -1649,9 +1649,9 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(112, 142, 239, byte.MaxValue);
 
             public static bool ReviveDuringRewind = false;
-            public static float RewindTime = 3f;
-            public static float ShieldDuration = 3f;
-            public static float Cooldown = 30f;
+            public static float RewindTime;
+            public static float ShieldDuration;
+            public static float Cooldown;
 
             public static bool ShieldActive = false;
             public static bool IsRewinding = false;
@@ -1668,6 +1668,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 TimeMasterPlayer = new List<PlayerControl>();
+                ReviveDuringRewind = false;
                 IsRewinding = false;
                 ShieldActive = false;
                 RewindTime = CustomOptions.TimeMasterRewindTime.getFloat();

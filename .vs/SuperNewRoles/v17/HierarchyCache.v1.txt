@@ -5,7 +5,7 @@ i:{00000000-0000-0000-0000-000000000000}:SuperNewRoles
 ++Properties
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\properties\
 ++依存関係
-i:{e45ef77f-0757-4e24-8992-97cea5e17313}:>4553
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:>1037
 ++Buttons
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\buttons\
 ++Buttons.cs
@@ -759,7 +759,7 @@ i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\s
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\map\agartha\patch\minimappatch.cs
 ++SetSprite.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\map\agartha\patch\setsprite.cs
-++Traitor.cs
-++新しいテキスト ドキュメント.txt
 ++TimeMaster.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\timemaster.cs
+++TimeShieldButton.png
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\resources\timeshieldbutton.png
