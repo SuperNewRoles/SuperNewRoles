@@ -218,7 +218,7 @@ namespace SuperNewRoles.Patch
                         {
                             if (ps == null) continue;
                             var voter = ModHelpers.playerById(ps.TargetPlayerId);
-                            if (voter == null || voter.Data == null || voter.Data.Disconnected) continue;
+                            if (voter == null || voter.Data == null || voter.Data.Disconnected || voter.IsBot()) continue;
                             //BOTならスキップ判定
                             if (ps.VotedFor != 253 && ps.VotedFor != 254 && ModHelpers.playerById(ps.VotedFor).IsBot())
                             {
