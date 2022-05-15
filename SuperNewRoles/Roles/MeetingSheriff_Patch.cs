@@ -171,7 +171,7 @@ namespace SuperNewRoles.Roles
 
             MeetingUpdatePatch.IsFlag = false;
             MeetingUpdatePatch.IsSHRFlag = false;
-            if (PlayerControl.AllPlayerControls.Count > 15)
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles) && PlayerControl.AllPlayerControls.Count > 15)
             {
                 MeetingUpdatePatch.IsFlag = true;
                 meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();

@@ -162,6 +162,7 @@ namespace SuperNewRoles.CustomRPC
         {
             PlayerControl player = ModHelpers.playerById(playerid);
             if (player == null) return;
+            if (BotManager.AllBots == null) BotManager.AllBots = new List<PlayerControl>();
             BotManager.AllBots.Add(player);
 
         }
