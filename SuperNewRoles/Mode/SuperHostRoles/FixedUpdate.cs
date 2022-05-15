@@ -310,7 +310,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!AmongUsClient.Instance.AmHost) return;
             foreach (PlayerControl p in BotManager.AllBots)
             {
-                p.transform.position = new Vector3(99999, 99999);
+                p.NetTransform.RpcSnapTo(new Vector2(99999, 99999));
             }
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {

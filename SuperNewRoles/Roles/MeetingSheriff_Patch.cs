@@ -196,17 +196,33 @@ namespace SuperNewRoles.Roles
             if(ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count != 0)
             {
                 List<PlayerVoteArea> newareas = new List<PlayerVoteArea>();
-                int i = 0;
+                List<PlayerVoteArea> deadareas = new List<PlayerVoteArea>();
                 foreach (PlayerVoteArea area in __instance.playerStates)
                 {
-                    if (ModHelpers.playerById(area.TargetPlayerId).IsPlayer()) {
-                        newareas.Add(area);
-                        area.transform.localPosition = meetingsheriff_updatepatch.Positions[i];
-                        i++;
+                    if (ModHelpers.playerById(area.TargetPlayerId).IsPlayer())
+                    {
+                        if (ModHelpers.playerById(area.TargetPlayerId).isAlive())
+                        {
+                            newareas.Add(area);
+                        }
+                        else
+                        {
+                            deadareas.Add(area);
+                        }
                     } else
                     {
                         area.gameObject.SetActive(false);
                     }
+                }
+                foreach (PlayerVoteArea area in deadareas)
+                {
+                    newareas.Add(area);
+                }
+                int i = 0;
+                foreach (PlayerVoteArea area in newareas)
+                {
+                    area.transform.localPosition = meetingsheriff_updatepatch.Positions[i];
+                    i++;
                 }
                 __instance.playerStates = newareas.ToArray();
             }

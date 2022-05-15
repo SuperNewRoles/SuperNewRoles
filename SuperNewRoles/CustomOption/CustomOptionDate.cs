@@ -752,10 +752,10 @@ namespace SuperNewRoles.CustomOption
             EvilNekomataOption = new CustomRoleOption(157, true, CustomOptionType.Impostor, "EvilNekomataName", RoleClass.EvilNekomata.color, 1);
             EvilNekomataPlayerCount = CustomOption.Create(158, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilNekomataOption);
 
-            JackalFriendsOption = new CustomRoleOption(162, false, CustomOptionType.Crewmate, "JackalFriendsName", RoleClass.JackalFriends.color, 1);
-            JackalFriendsPlayerCount = CustomOption.Create(163, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalFriendsOption);
-            JackalFriendsIsCheckJackal = CustomOption.Create(164, false, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, JackalFriendsOption);
-            JackalFriendsIsUseVent = CustomOption.Create(165, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, JackalFriendsOption);
+            JackalFriendsOption = new CustomRoleOption(162, true, CustomOptionType.Crewmate, "JackalFriendsName", RoleClass.JackalFriends.color, 1);
+            JackalFriendsPlayerCount = CustomOption.Create(163, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalFriendsOption);
+            JackalFriendsIsCheckJackal = CustomOption.Create(164, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, JackalFriendsOption);
+            JackalFriendsIsUseVent = CustomOption.Create(165, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, JackalFriendsOption);
             
             DoctorOption = new CustomRoleOption(166, false, CustomOptionType.Crewmate, "DoctorName", RoleClass.Doctor.color, 1);
             DoctorPlayerCount = CustomOption.Create(167, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
