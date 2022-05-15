@@ -278,7 +278,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (!p.Data.Role.IsImpostor && !p.isNeutral())
+                    if (!p.Data.Role.IsImpostor && !p.isNeutral() && p.IsPlayer())
                     {
                         SelectPlayers.Add(p);
                     }
@@ -287,7 +287,10 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    SelectPlayers.Add(p);
+                    if (p.IsPlayer())
+                    {
+                        SelectPlayers.Add(p);
+                    }
                 }
             }
             for (int i = 0; i < CustomOptions.QuarreledTeamCount.getFloat(); i++)
@@ -334,7 +337,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (!p.isImpostor() && !p.isNeutral() && !p.isRole(RoleId.truelover))
+                    if (!p.isImpostor() && !p.isNeutral() && !p.isRole(RoleId.truelover) && p.IsPlayer())
                     {
                         if (!IsQuarreledDup || !p.IsQuarreled())
                         {
@@ -347,7 +350,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (!IsQuarreledDup || !p.IsQuarreled())
+                    if (!IsQuarreledDup || !p.IsQuarreled() && p.IsPlayer())
                     {
                         if (!p.isRole(RoleId.truelover))
                         {

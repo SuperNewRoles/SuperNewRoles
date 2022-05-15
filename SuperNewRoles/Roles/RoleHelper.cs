@@ -34,6 +34,7 @@ namespace SuperNewRoles
 
         public static bool IsQuarreled(this PlayerControl player,bool IsChache = true)
         {
+            if (player.IsBot()) return false;
             if (IsChache)
             {
                 try
@@ -61,6 +62,7 @@ namespace SuperNewRoles
         }
         public static bool IsLovers(this PlayerControl player,bool IsChache = true)
         {
+            if (player.IsBot()) return false;
             if (IsChache)
             {
                 try
