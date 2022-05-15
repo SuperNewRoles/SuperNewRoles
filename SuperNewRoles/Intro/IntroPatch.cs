@@ -142,6 +142,20 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = JackalTeams;
                 }
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
+                {
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> FoxTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    int FoxNum = 0;
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.isRole(CustomRPC.RoleId.Fox))
+                        {
+                            FoxNum++;
+                            FoxTeams.Add(player);
+                        }
+                    }
+                    yourTeam = FoxTeams;
+                }
             } else
             {
                 var a = ModeHandler.TeamHandler(__instance);
@@ -223,7 +237,7 @@ namespace SuperNewRoles.Patches
                         }
                         if (PlayerControl.LocalPlayer.IsQuarreled())
                         {
-                            __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
                         }
                     }
                     else if (ModeHandler.isMode(ModeId.SuperHostRoles))

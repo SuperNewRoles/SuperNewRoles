@@ -1,6 +1,7 @@
 ﻿using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using System;
@@ -46,6 +47,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }, 5f, "AntiBlack");*/
+            SuperNewRolesPlugin.Logger.LogInfo("WrapUp");
+            foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("ALL");
+                if (p.isAlive() && !p.IsMod())
+                {
+                    p.RpcProtectPlayer(p, 0);
+                    SuperNewRolesPlugin.Logger.LogInfo("プロテクト");
+                    new LateTask(() =>
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("マーダー");
+                        p.RpcMurderPlayer(p);
+                    }, 0.5f);
+                }
+            }
             AmongUsClient.Instance.StartCoroutine(nameof(ResetName));
             IEnumerator ResetName()
             {
@@ -67,6 +83,33 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (SideLoverPlayer.isAlive())
                     {
                         SideLoverPlayer.RpcMurderPlayer(SideLoverPlayer);
+                    }
+                }
+            }
+            if (exiled.Object.IsQuarreled())
+            {
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    var Side = RoleHelpers.GetOneSideQuarreled(exiled.Object);
+                    if (Side.isDead())
+                    {
+                        RPCProcedure.ShareWinner(exiled.Object.PlayerId);
+
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        Writer.Write(exiled.Object.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                        Writer.Write((byte)CustomGameOverReason.QuarreledWin);
+                        Writer.EndRPC();
+                        CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
+                        var winplayers = new List<PlayerControl>();
+                        winplayers.Add(exiled.Object);
+                        //EndGameCheck.WinNeutral(winplayers);
+                        Chat.WinCond = CustomGameOverReason.QuarreledWin;
+                        Chat.Winner = new List<PlayerControl>();
+                        Chat.Winner.Add(exiled.Object);
+                        RoleClass.Quarreled.IsQuarreledWin = true;
+                        SuperHostRoles.EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByTask, false);
                     }
                 }
             }

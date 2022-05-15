@@ -221,13 +221,13 @@ EvilScientistDurationSetting,Evil Scientist's Invisibility Duration,イビルサ
 SheriffName,Sheriff,シェリフ
 SheriffTitle1,Kill the outsider!,人外をキルしよう
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう
-SheriffCoolDownSetting,Sheriff's Kill Cooldown,シェリフのキルクールダウン
+SheriffCoolDownSetting,Kill Cooldown,キルクールダウン
 SheriffIsKillNewtralSetting,Can Kill a Neutral,第三陣営をキルできる
 SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる
 SheriffIsKillMadRoleSetting,Can Kill a MadRole,マッド系役職をキルできる
 SheriffYes,Yes,できる
 SheriffNo,No,できない
-SheriffMaxKillCountSetting,Maximum number of kills for Sheriff,シェリフの最大キル数
+SheriffMaxKillCountSetting,Maximum number of kills,最大キル数
 SheriffKillButtonName,Kill,キル
 SheriffNumTextName,{0} shots remaining.,残り{0}発
 MeetingSheriffName,Meeting Sheriff,ミーティング シェリフ
@@ -557,6 +557,8 @@ VampireKillDelay,Kill Delay,キル遅延
 DarkKillerName,DarkKiller,ダークキラー
 DarkKillerTitle1,Let's kill in the dark,闇に紛れて殺そう
 DarkKillerKillCoolSetting,Dark Killer's Kill Cool Time,ダークキラーのキルクールタイム
+FoxName,Fox,妖狐
+FoxTitle1,I am Fox!,私は狐です!
 SeerName,Seer,シーア
 SeerTitle1,You will see players die,船員の気配を感じ取ろう
 SeerMode,Mode,モード
@@ -567,3 +569,10 @@ SeerLimitSoulDuration,Limit Soul Duration,時間経過で幽霊が消える
 SeerSoulDuration,Soul Duration,幽霊が見える時間
 MadSeerName,MadSeer,マッドシーア
 MadSeerTitle1,Feel the success of your husband,ご主人の活躍を感じ取ろう
+EvilSeerName,EvilSeer,イビルシーア
+EvilSeerTitle1,You will see players die,船員の気配を感じ取ろう
+RemoteSheriffName,Remote Sheriff,リモートシェリフ
+RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキルをしよう
+RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート
+TeleportingJackalName,TeleportingJackal,テレポートジャッカル
+TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう

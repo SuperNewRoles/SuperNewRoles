@@ -17,6 +17,7 @@ namespace SuperNewRoles.Patch
 
         public static void SetPlayerNameColor(PlayerControl p, Color color)
         {
+            if (p.IsBot()) return;
             p.nameText.color = color;
             try
             {
@@ -32,6 +33,7 @@ namespace SuperNewRoles.Patch
         }
         public static void SetPlayerNameText(PlayerControl p, string text)
         {
+            if (p.IsBot()) return;
             p.nameText.text = text;
             if (MeetingHud.Instance)
             {
@@ -97,10 +99,25 @@ namespace SuperNewRoles.Patch
                                 player.NameText.color = Palette.ImpostorRed;
                         }
                 }
+            /*    if (PlayerControl.LocalPlayer.isFox())
+                {
+                    List<PlayerControl> foxes = PlayerControl.AllPlayerControls.ToArray().ToList();
+                    foxes.RemoveAll(x => !x.isRole(CustomRPC.RoleId.Fox));
+                    foreach (PlayerControl player in foxes)
+                        player.nameText.color = Palette.Purple;
+                    if (MeetingHud.Instance != null)
+                        foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
+                        {
+                            PlayerControl playerControl = ModHelpers.playerById((byte)player.TargetPlayerId);
+                            if (playerControl != null && (playerControl.isRole(CustomRPC.RoleId.Fox)))
+                                player.NameText.color = Palette.Purple;
+                        }
+                }*/
             }
             public static void SetPlayerRoleInfoView(PlayerControl p, Color roleColors, string roleNames)
-            {
-                bool commsActive = false;
+        {
+            if (p.IsBot()) return;
+            bool commsActive = false;
                 foreach (PlayerTask t in PlayerControl.LocalPlayer.myTasks)
                 {
                     if (t.TaskType == TaskTypes.FixComms)
@@ -169,6 +186,7 @@ namespace SuperNewRoles.Patch
             }
             public static void SetPlayerRoleInfo(PlayerControl p)
             {
+            if (p.IsBot()) return;
                 string roleNames;
                 Color roleColors;
                 var role = p.getRole();

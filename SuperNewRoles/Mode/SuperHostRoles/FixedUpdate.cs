@@ -72,7 +72,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<PlayerControl> DiePlayers = new List<PlayerControl>();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (!p.Data.Disconnected && p.PlayerId != 0)
+                if (!p.Data.Disconnected && p.PlayerId != 0 && p.IsPlayer())
                 {
                     if (p.isDead() || p.isRole(RoleId.God))
                     {
@@ -82,23 +82,29 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (!p.Data.Disconnected)
+                if (!p.Data.Disconnected && p.IsPlayer())
                 {
                     string Suffix = "";
                     if (!p.IsMod() && p.isAlive())
                     {
                         if (RoleClass.Celebrity.ChangeRoleView)
                         {
-                            foreach (PlayerControl Celebrity in RoleClass.Celebrity.ViewPlayers)
+                            foreach (PlayerControl p2 in RoleClass.Celebrity.ViewPlayers)
                             {
-                                Celebrity.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p.getDefaultName()));
+                                if( p.PlayerId != p2.PlayerId )
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p2.getDefaultName()), p);
+                                }
                             }
                         }
                         else
                         {
-                            foreach (PlayerControl Celebrity in RoleClass.Celebrity.CelebrityPlayer)
+                            foreach (PlayerControl p2 in RoleClass.Celebrity.CelebrityPlayer)
                             {
-                                Celebrity.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p.getDefaultName()),p);
+                                if(p.PlayerId != p2.PlayerId)
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p2.getDefaultName()), p);
+                                }
                             }
                         }
                         bool IsMadmateCheck = Madmate.CheckImpostor(p);
@@ -130,9 +136,25 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
                         }
+
+                        if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (!p2.Data.Disconnected && !p2.isRole(RoleId.Jackal))
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
+                                else if (!p2.Data.Disconnected && p2.isRole(RoleId.Jackal))
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Jackal.color, p2.getDefaultName()), p);
+                                }
+                            }
+                            //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
+                        }
                         if (p.IsLovers() && p.isAlive())
                         {
-                            Suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                            var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
                             PlayerControl Side = p.GetOneSideLovers();
                             string name = Side.getDefaultName();
                             if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
@@ -141,15 +163,55 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             } else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
                             {
                                 name = ModHelpers.cs(RoleClass.Celebrity.color, name);
+                            } else if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck && Side.isRole(RoleId.Jackal))
+                            {
+                                name = ModHelpers.cs(RoleClass.Jackal.color, name);
                             }
-                            Side.RpcSetNamePrivate(name + Suffix, p);
+                            Side.RpcSetNamePrivate(name + suffix, p);
                         }
+                        if (p.IsQuarreled() && p.isAlive())
+                        {
+                            var suffix = ModHelpers.cs(RoleClass.Quarreled.color, "○");
+                            PlayerControl Side = p.GetOneSideQuarreled();
+                            string name = Side.getDefaultName();
+                            if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
+                            {
+                                name = ModHelpers.cs(RoleClass.ImpostorRed, name);
+                            }
+                            else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
+                            {
+                                name = ModHelpers.cs(RoleClass.Celebrity.color, name);
+                            }
+                            else if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck && Side.isRole(RoleId.Jackal))
+                            {
+                                name = ModHelpers.cs(RoleClass.Jackal.color, name);
+                            }
+                            if (Side.IsLovers())
+                            {
+                                suffix += ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                            }
+                            Side.RpcSetNamePrivate(name + suffix, p);
+                        }
+                    }
+                    if (p.IsLovers())
+                    {
+                        Suffix += ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                    }
+                    if (p.IsQuarreled())
+                    {
+                        Suffix += ModHelpers.cs(RoleClass.Quarreled.color, "○");
                     }
                     if (p.isRole(RoleId.Sheriff))
                     {
                         if (RoleClass.Sheriff.KillCount.ContainsKey(p.PlayerId))
                         {
                             Suffix += "(残り" + RoleClass.Sheriff.KillCount[p.PlayerId] + "発)";
+                        }
+                    } else if (p.isRole(RoleId.RemoteSheriff))
+                    {
+                        if (RoleClass.RemoteSheriff.KillCount.ContainsKey(p.PlayerId))
+                        {
+                            Suffix += "(残り" + RoleClass.RemoteSheriff.KillCount[p.PlayerId] + "発)";
                         }
                     }
                     var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
@@ -206,6 +268,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     HudManager.Instance.KillButton.gameObject.SetActive(true);
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                    if (Input.GetKeyDown(KeyCode.Q))
+                    {
+                        DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                    }
                 }
                 else
                 {
@@ -213,14 +279,39 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = false;
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
-            } else if (PlayerControl.LocalPlayer.isRole(RoleId.Egoist))
+            }
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
+            {
+                HudManager.Instance.KillButton.gameObject.SetActive(true);
+                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
+                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControl.LocalPlayer);
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                }
+            }
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.Egoist))
             {
                 HudManager.Instance.KillButton.gameObject.SetActive(true);
                 PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
                 DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
             }
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal))
+            {
+                HudManager.Instance.KillButton.gameObject.SetActive(true);
+                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
+                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                }
+            }
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             if (!AmongUsClient.Instance.AmHost) return;
+            foreach (PlayerControl p in BotManager.AllBots)
+            {
+                p.NetTransform.RpcSnapTo(new Vector2(99999, 99999));
+            }
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
                 UpdateDate--;
