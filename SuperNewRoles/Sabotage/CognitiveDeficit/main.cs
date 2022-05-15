@@ -15,6 +15,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
         public static void StartSabotage()
         {
             IsLocalEnd = false;
+            Blizzard.Task.OpenTask.CreateTask();
             SuperNewRolesPlugin.Logger.LogInfo("スタートサボ！");
             SabotageManager.thisSabotage = SabotageManager.CustomSabotage.CognitiveDeficit;
             foreach (Arrow aw in ArrowDatas)

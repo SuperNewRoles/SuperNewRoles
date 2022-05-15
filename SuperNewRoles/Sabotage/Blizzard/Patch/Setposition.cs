@@ -57,7 +57,7 @@ namespace SuperNewRoles.Sabotage.Blizzard.Patch
                 }
             }
         }
-
+        public static List<Console> AddConsoles;
         public static void SetObject0(Transform Skeld)
         {
             Transform Template = GameObject.Instantiate(Skeld.FindChild("Cockpit").FindChild("DivertPowerConsole"));//クローン
@@ -67,6 +67,14 @@ namespace SuperNewRoles.Sabotage.Blizzard.Patch
             Object_ONDO0.localPosition = new Vector3(1.1f, 0.5f, -0.1f);//座標セット
             Object_ONDO0.GetComponent<SpriteRenderer>().sprite = ImageManager.ONDOgetSprite("ONDO");//見た目
             Object_ONDO0.gameObject.AddComponent<PolygonCollider2D>();//判定
+
+            //AddConsoles = new List<Console>();
+            //AddConsoles.Add(Object_ONDO0.GetComponent<Console>());
+            Object_ONDO0.gameObject.AddComponent<Console>();
+            Object_ONDO0.gameObject.AddComponent<PassiveButton>();
+            Object_ONDO0.gameObject.AddComponent<BoxCollider2D>();
+            Object_ONDO0.gameObject.AddComponent<SystemConsole>();
+
             Object_ONDO0.name = "ONDO";
 
             GameObject.Destroy(Template.gameObject);

@@ -8,10 +8,10 @@ namespace SuperNewRoles.Sabotage
     public static class SetSprite
     {
         private static Sprite ONDOSprite;
-        public static Sprite ONDOgetSprite()
+        public static Sprite ONDOgetSprite(string id)
         {
             if (ONDOSprite) return ONDOSprite;
-            ONDOSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Blizzard.ONDO.png", 115f);
+            ONDOSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Blizzard.Temp." + id +".png", 115f);
             return ONDOSprite;
         }
     }
