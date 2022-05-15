@@ -82,6 +82,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SetCustomRoles() {
             List<PlayerControl> DesyncImpostorPlayers = new List<PlayerControl>();
+            foreach (PlayerControl JackalPlayer in RoleClass.Jackal.JackalPlayer)
+            {
+                if (!JackalPlayer.IsMod())
+                {
+                    JackalPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != JackalPlayer.PlayerId && p.IsPlayer())
+                        {
+                            JackalPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, JackalPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    JackalPlayer.RpcSetRole(RoleTypes.Crewmate);
+                }
+                //SheriffPlayer.Data.IsDead = true;
+            }
             foreach (PlayerControl SheriffPlayer in RoleClass.Sheriff.SheriffPlayer)
             {
                 if (!SheriffPlayer.IsMod())
@@ -89,7 +109,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     SheriffPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != SheriffPlayer.PlayerId)
+                        if (p.PlayerId != SheriffPlayer.PlayerId && p.IsPlayer())
                         {
                             SheriffPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
                             p.RpcSetRoleDesync(RoleTypes.Scientist, SheriffPlayer);
@@ -108,7 +128,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     RemoteSheriffPlayer.RpcSetRoleDesync(RoleTypes.Shapeshifter);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != RemoteSheriffPlayer.PlayerId)
+                        if (p.PlayerId != RemoteSheriffPlayer.PlayerId && p.IsPlayer())
                         {
                             RemoteSheriffPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
                             p.RpcSetRoleDesync(RoleTypes.Scientist, RemoteSheriffPlayer);
@@ -121,26 +141,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 //SheriffPlayer.Data.IsDead = true;
             }
-            foreach (PlayerControl JackalPlayer in RoleClass.Jackal.JackalPlayer)
-            {
-                if (!JackalPlayer.IsMod())
-                {
-                    JackalPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        if (p.PlayerId != JackalPlayer.PlayerId)
-                        {
-                            JackalPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                            p.RpcSetRoleDesync(RoleTypes.Scientist, JackalPlayer);
-                        }
-                    }
-                }
-                else
-                {
-                    JackalPlayer.RpcSetRole(RoleTypes.Crewmate);
-                }
-                //SheriffPlayer.Data.IsDead = true;
-            }
             foreach (PlayerControl trueloverPlayer in RoleClass.truelover.trueloverPlayer)
             {
                 if (!trueloverPlayer.IsMod())
@@ -148,7 +148,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     trueloverPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != trueloverPlayer.PlayerId && !p.isRole(RoleId.Sheriff))
+                        if (p.PlayerId != trueloverPlayer.PlayerId && p.IsPlayer())
                         {
                             trueloverPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
                             p.RpcSetRoleDesync(RoleTypes.Scientist, trueloverPlayer);
@@ -168,7 +168,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     Player.RpcSetRoleDesync(RoleTypes.Impostor);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != Player.PlayerId && !p.isRole(RoleId.Sheriff))
+                        if (p.PlayerId != Player.PlayerId && p.IsPlayer())
                         {
                             Player.RpcSetRoleDesync(RoleTypes.Scientist, p);
                             p.RpcSetRoleDesync(RoleTypes.Scientist, Player);
@@ -249,7 +249,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     p.RpcSetRole(RoleTypes.Impostor);
                     foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                     {
-                        if (p2.PlayerId != p.PlayerId && !p.isRole(RoleId.Sheriff) && !p.isRole(RoleId.truelover))
+                        if (p2.PlayerId != p.PlayerId && !p.isRole(RoleId.Sheriff) && !p.isRole(RoleId.truelover) && p.IsPlayer())
                         {
                             p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
                         }
