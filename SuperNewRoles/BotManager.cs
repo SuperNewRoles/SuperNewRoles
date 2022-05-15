@@ -12,11 +12,19 @@ namespace SuperNewRoles
         public static List<PlayerControl> AllBots = new List<PlayerControl>();
         public static bool IsBot(this PlayerControl player)
         {
-            foreach (PlayerControl p in BotManager.AllBots)
+            try
             {
-                if (p.PlayerId == player.PlayerId) return true;
+                foreach (PlayerControl p in BotManager.AllBots)
+                {
+                    if (p.PlayerId == player.PlayerId) return true;
+                }
+                return false;
             }
-            return false;
+            catch(Exception e)
+            {
+                if (player == null) return true;
+                return player.PlayerId > 14;
+            }
         }
         public static bool IsPlayer(this PlayerControl player)
         {
@@ -32,9 +40,14 @@ namespace SuperNewRoles
                     id = p.PlayerId;
                 }
             }
-            id++;
             var Bot = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
 
+            id++;
+            /*
+            if (id < 14) {
+                id = 15;
+            }
+            */
             Bot.PlayerId = id;
            // Bot.PlayerId = BotPlayerId;
             GameData.Instance.AddPlayer(Bot);
@@ -62,7 +75,6 @@ namespace SuperNewRoles
             SuperNewRolesPlugin.Logger.LogInfo("botデスポーン！\nID:" + Bot.PlayerId + "\nBotName:" + Bot.name);
             GameData.Instance.RemovePlayer(Bot.PlayerId);
             AmongUsClient.Instance.Despawn(Bot);
-            Bot.Despawn();
             SuperNewRolesPlugin.Logger.LogInfo("完了！");
             AllBots.Remove(Bot);
         }

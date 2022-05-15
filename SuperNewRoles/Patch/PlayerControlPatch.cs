@@ -26,6 +26,7 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
         {
             SyncSetting.CustomSyncSettings();
+            if (target.IsBot()) return true;
             if (__instance.PlayerId == target.PlayerId)
             {
                 if (ModeHandler.isMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
@@ -126,7 +127,7 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(ShapeshifterMinigame __instance, [HarmonyArgument(0)] PlayerControl player)
         {
-            
+            if (player.IsBot()) return false;
             if (PlayerControl.LocalPlayer.inVent)
             {
                 __instance.Close();
