@@ -47,7 +47,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }, 5f, "AntiBlack");*/
-
             SuperNewRolesPlugin.Logger.LogInfo("WrapUp");
             foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
             {

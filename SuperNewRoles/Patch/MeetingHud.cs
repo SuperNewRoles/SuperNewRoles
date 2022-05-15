@@ -193,7 +193,7 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (var ps in __instance.playerStates)
                     {
-                        if (!(ps.AmDead || ps.DidVote))//死んでいないプレイヤーが投票していない
+                        if (ModHelpers.playerById(ps.TargetPlayerId).IsPlayer() && !(ps.AmDead || ps.DidVote))//死んでいないプレイヤーが投票していない
                             return false;
                     }
                 }
@@ -219,6 +219,11 @@ namespace SuperNewRoles.Patch
                             if (ps == null) continue;
                             var voter = ModHelpers.playerById(ps.TargetPlayerId);
                             if (voter == null || voter.Data == null || voter.Data.Disconnected) continue;
+                            //BOTならスキップ判定
+                            if (ps.VotedFor != 253 && ps.VotedFor != 254 && ModHelpers.playerById(ps.VotedFor).IsBot())
+                            {
+                                ps.VotedFor = 253;
+                            }
                             statesList.Add(new MeetingHud.VoterState()
                             {
                                 VoterId = ps.TargetPlayerId,

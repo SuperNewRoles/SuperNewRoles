@@ -26,9 +26,10 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
         {
             SyncSetting.CustomSyncSettings();
+            if (target.IsBot()) return true;
             if (__instance.PlayerId == target.PlayerId)
             {
-                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                if (ModeHandler.isMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
                 {
                     if (__instance.isRole(RoleId.RemoteSheriff))
                     {
@@ -126,7 +127,7 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(ShapeshifterMinigame __instance, [HarmonyArgument(0)] PlayerControl player)
         {
-            
+            if (player.IsBot()) return false;
             if (PlayerControl.LocalPlayer.inVent)
             {
                 __instance.Close();
@@ -252,6 +253,8 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             SuperNewRolesPlugin.Logger.LogInfo("キル:" + __instance.name + "(" + __instance.PlayerId + ")" + " => " + target.name + "(" + target.PlayerId + ")");
+            if (__instance.IsBot() || target.IsBot()) return false;
+
             if (__instance.isDead()) return false;
             if (__instance.PlayerId == target.PlayerId) { __instance.RpcMurderPlayer(target); return false; }
             if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
@@ -378,7 +381,7 @@ namespace SuperNewRoles.Patches
                         {
                             RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
                             target.RpcProtectPlayer(target, 0);
-                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
                             return false;
                         }
                         else
@@ -387,20 +390,20 @@ namespace SuperNewRoles.Patches
                             {
                                 RoleClass.StuntMan.GuardCount[target.PlayerId]--;
                                 target.RpcProtectPlayer(target, 0);
-                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
                                 return false;
                             }
                         }
                     }
                 }
-                if (target.isRole(RoleId.MadStuntMan) && !__instance.isRole(RoleId.OverKiller))
+                else if (target.isRole(RoleId.MadStuntMan) && !__instance.isRole(RoleId.OverKiller))
                 {
                     if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, __instance))
                     {
                         if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
                         {
                             target.RpcProtectPlayer(target, 0);
-                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
                             return false;
                         }
                         else
@@ -409,20 +412,20 @@ namespace SuperNewRoles.Patches
                             {
                                 RoleClass.MadStuntMan.GuardCount[target.PlayerId]--;
                                 target.RpcProtectPlayer(target, 0);
-                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
                                 return false;
                             }
                         }
                     }
                 }
-                if (target.isRole(RoleId.Fox))
+                else if (target.isRole(RoleId.Fox))
                 {
                     if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, __instance))
                     {
                         if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
                         {
                             target.RpcProtectPlayer(target, 0);
-                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
                             return false;
                         }
                         else
@@ -431,11 +434,16 @@ namespace SuperNewRoles.Patches
                             {
                                 RoleClass.Fox.KillGuard[target.PlayerId]--;
                                 target.RpcProtectPlayer(target, 0);
-                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.1f);
+                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
                                 return false;
                             }
                         }
                     }
+                }
+                else if (__instance.isRole(RoleId.Jackal))
+                {
+                    __instance.RpcMurderPlayer(target);
+                    return false;
                 }
             }
             if (__instance.isRole(RoleId.OverKiller))

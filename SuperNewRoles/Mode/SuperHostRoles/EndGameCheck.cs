@@ -19,7 +19,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (CheckAndEndGameForDefaultWin(__instance)) return false;
+            if (CheckAndEndGameForDefaultWin(__instance,statistics)) return false;
+            if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
@@ -72,43 +73,53 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 p.RpcSetRole(RoleTypes.GuardianAngel);
             }
-            if (reason == GameOverReason.ImpostorByKill || reason == GameOverReason.ImpostorBySabotage || reason == GameOverReason.ImpostorByVote || reason == GameOverReason.ImpostorDisconnect)
+            if (OnGameEndPatch.EndData == null && (reason == GameOverReason.ImpostorByKill || reason == GameOverReason.ImpostorBySabotage || reason == GameOverReason.ImpostorByVote || reason == GameOverReason.ImpostorDisconnect))
             {
                 foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
                 {
-                    if (p.isDead()) {
+                    if (p.isDead())
+                    {
                         p.RpcSetRole(RoleTypes.GuardianAngel);
                     }
                 }
             }
-            /*
-                foreach (PlayerControl p in RoleClass.Opportunist.OpportunistPlayer)
+            else if (OnGameEndPatch.EndData == CustomGameOverReason.JackalWin)
+            {
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (p.isAlive())
-                    {
-                        if (IsCrewmateWin)
-                        {
-                            p.RpcSetRoleDesync(RoleTypes.Crewmate);
-                        }
-                        else
-                        {
-                            p.RpcSetRoleDesync(RoleTypes.Impostor);
-                        }
-                    }
-                    else
-                    {
-                        if (IsCrewmateWin)
-                        {
-                            p.RpcSetRoleDesync(RoleTypes.Impostor);
-                        }
-                        else
-                        {
-                            p.RpcSetRoleDesync(RoleTypes.Crewmate);
-                        }
+                    if (!p.isRole(RoleId.Jackal)) {
+                        p.RpcSetRole(RoleTypes.GuardianAngel);
                     }
                 }
-            */
-            __instance.enabled = false;
+            }
+                /*
+                    foreach (PlayerControl p in RoleClass.Opportunist.OpportunistPlayer)
+                    {
+                        if (p.isAlive())
+                        {
+                            if (IsCrewmateWin)
+                            {
+                                p.RpcSetRoleDesync(RoleTypes.Crewmate);
+                            }
+                            else
+                            {
+                                p.RpcSetRoleDesync(RoleTypes.Impostor);
+                            }
+                        }
+                        else
+                        {
+                            if (IsCrewmateWin)
+                            {
+                                p.RpcSetRoleDesync(RoleTypes.Impostor);
+                            }
+                            else
+                            {
+                                p.RpcSetRoleDesync(RoleTypes.Crewmate);
+                            }
+                        }
+                    }
+                */
+                __instance.enabled = false;
                     ShipStatus.RpcEndGame(reason, showAd);
 
             //変更した設定を直す
@@ -160,8 +171,23 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             return false;
         }
+        public static bool CheckAndEndGameForJackalWin(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            if (statistics.TeamJackalAlive >= statistics.TotalAlive - statistics.TeamJackalAlive && statistics.TeamImpostorsAlive == 0)
+            {
+                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                Writer.Write((byte)CustomGameOverReason.JackalWin);
+                Writer.EndRPC();
+                CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JackalWin);
+                __instance.enabled = false;
+                SuperNewRolesPlugin.Logger.LogInfo("じゃっかるうぃん");
+                CustomEndGame(__instance,GameOverReason.ImpostorByKill, false);
+                return true;
+            }
+            return false;
+        }
 
-        public static bool CheckAndEndGameForDefaultWin(ShipStatus __instance)
+        public static bool CheckAndEndGameForDefaultWin(ShipStatus __instance, PlayerStatistics statistics)
         {
             int num1 = 0;
             int num2 = 0;
@@ -169,25 +195,29 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             for (int index = 0; index < GameData.Instance.PlayerCount; ++index)
             {
                 GameData.PlayerInfo allPlayer = GameData.Instance.AllPlayers[index];
-                if (!allPlayer.Disconnected)
+                if (!allPlayer.Disconnected && allPlayer.Object.IsPlayer())
                 {
+                    //インポスター判定ならnum3にカウント
                     if (allPlayer.Object.isImpostor() || allPlayer.Object.isRole(RoleId.Egoist))
                         ++num3;
+                    //生存しているかつ
                     if (!allPlayer.IsDead)
                     {
-                        if (allPlayer.Object.isImpostor())
+                        //インポスターならnum2に追加
+                        if (allPlayer.Object.isImpostor() || allPlayer.Object.isRole(RoleId.Egoist))
                             ++num2;
+                        //違うならnum1に追加
                         else
                             ++num1;
                     }
                 }
             }
-            if (num2 <= 0 && (!DestroyableSingleton<TutorialManager>.InstanceExists || num3 > 0))
+            if (num2 <= 0 && statistics.TeamJackalAlive <= 0 && (!DestroyableSingleton<TutorialManager>.InstanceExists || num3 > 0))
             {
                 __instance.BeginCalled = false;
                 CustomEndGame(__instance,GameOverReason.HumansByVote, !SaveManager.BoughtNoAds);
             }
-            else if (num1 <= num2)
+            else if (num1 <= num2 && statistics.TeamJackalAlive < 1)
             {
                 if (!DestroyableSingleton<TutorialManager>.InstanceExists)
                 {
@@ -222,6 +252,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.EgoistWin);
                     }
+                    SuperNewRolesPlugin.Logger.LogInfo("いんぽすたーうぃん");
                     CustomEndGame(__instance,endReason, !SaveManager.BoughtNoAds);
                     return true;
                 }
@@ -232,7 +263,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.CrewAlive > 0 && statistics.TeamImpostorsAlive == 0)// && Chat.WinCond == null)
+            if (statistics.CrewAlive > 0 && statistics.TeamImpostorsAlive < 1 && statistics.TeamJackalAlive < 1)// && Chat.WinCond == null)
             {
                 Chat.WinCond = CustomGameOverReason.CrewmateWin;
                 CustomEndGame(__instance, GameOverReason.HumansByVote, false);

@@ -18,7 +18,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                        if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId && p.IsPlayer())
                         {
                             Teams.Add(p);
                         }
@@ -28,7 +28,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.isImpostor() && p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                        if (p.isImpostor() && p.PlayerId != PlayerControl.LocalPlayer.PlayerId && p.IsPlayer())
                         {
                             Teams.Add(p);
                         }

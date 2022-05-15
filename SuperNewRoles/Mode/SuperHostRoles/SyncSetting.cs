@@ -204,6 +204,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.Survivor:
                     optdata.killCooldown = KillCoolSet(RoleClass.Survivor.KillCoolTime);
                     break;
+                case RoleId.Jackal:
+                    optdata.ImpostorLightMod = optdata.CrewLightMod;
+                    var switchSystemJackal = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    if (switchSystemJackal != null && switchSystemJackal.IsActive)
+                    {
+                        optdata.ImpostorLightMod /= 5;
+                    }
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCoolDown);
+                    break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;
@@ -243,7 +252,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (!p.Data.Disconnected)
+                if (!p.Data.Disconnected && p.IsPlayer())
                 {
                     CustomSyncSettings(p);
                 }

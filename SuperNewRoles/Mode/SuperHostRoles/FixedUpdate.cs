@@ -72,7 +72,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<PlayerControl> DiePlayers = new List<PlayerControl>();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (!p.Data.Disconnected && p.PlayerId != 0)
+                if (!p.Data.Disconnected && p.PlayerId != 0 && p.IsPlayer())
                 {
                     if (p.isDead() || p.isRole(RoleId.God))
                     {
@@ -82,7 +82,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (!p.Data.Disconnected)
+                if (!p.Data.Disconnected && p.IsPlayer())
                 {
                     string Suffix = "";
                     if (!p.IsMod() && p.isAlive())
@@ -101,7 +101,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         {
                             foreach (PlayerControl p2 in RoleClass.Celebrity.CelebrityPlayer)
                             {
-                                if( p.PlayerId != p2.PlayerId )
+                                if(p.PlayerId != p2.PlayerId)
                                 {
                                     p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p2.getDefaultName()), p);
                                 }
@@ -136,6 +136,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
                         }
+
+                        if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (!p2.Data.Disconnected && !p2.isRole(RoleId.Jackal))
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
+                                else if (!p2.Data.Disconnected && p2.isRole(RoleId.Jackal))
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Jackal.color, p2.getDefaultName()), p);
+                                }
+                            }
+                            //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
+                        }
                         if (p.IsLovers() && p.isAlive())
                         {
                             var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
@@ -147,6 +163,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             } else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
                             {
                                 name = ModHelpers.cs(RoleClass.Celebrity.color, name);
+                            } else if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck && Side.isRole(RoleId.Jackal))
+                            {
+                                name = ModHelpers.cs(RoleClass.Jackal.color, name);
                             }
                             Side.RpcSetNamePrivate(name + suffix, p);
                         }
@@ -162,6 +181,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
                             {
                                 name = ModHelpers.cs(RoleClass.Celebrity.color, name);
+                            }
+                            else if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck && Side.isRole(RoleId.Jackal))
+                            {
+                                name = ModHelpers.cs(RoleClass.Jackal.color, name);
                             }
                             if (Side.IsLovers())
                             {
@@ -273,8 +296,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
                 DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
             }
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal))
+            {
+                HudManager.Instance.KillButton.gameObject.SetActive(true);
+                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
+                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                }
+            }
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             if (!AmongUsClient.Instance.AmHost) return;
+            foreach (PlayerControl p in BotManager.AllBots)
+            {
+                p.NetTransform.RpcSnapTo(new Vector2(99999, 99999));
+            }
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
                 UpdateDate--;

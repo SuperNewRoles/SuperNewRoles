@@ -66,6 +66,8 @@ namespace SuperNewRoles
         {
             RPCHelper.StartRPC(CustomRPC.CustomRPC.StartGameRPC).EndRPC();
             CustomRPC.RPCProcedure.StartGameRPC();
+
+            RoleSelectHandler.SpawnBots();
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
@@ -99,7 +101,7 @@ namespace SuperNewRoles
                 AllRoleSetClass.impostors = new List<PlayerControl>();
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    if (!player.Data.Disconnected)
+                    if (!player.Data.Disconnected && player.IsPlayer())
                     {
                         SelectPlayers.Add(player);
                     }
