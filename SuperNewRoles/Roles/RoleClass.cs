@@ -1723,8 +1723,8 @@ namespace SuperNewRoles.Roles
         }
         public static class Camouflager
         {
-            public static PlayerControl camouflager;
-            public static Color color = Palette.ImpostorRed;
+            public static List<PlayerControl> CamouflagerPlayer;
+            public static Color32 color = ImpostorRed;
             public static float CoolTime = 30f;
             public static float DurationTime = 10f;
             public static float CamouflageTimer = 0f;

@@ -823,19 +823,19 @@ namespace SuperNewRoles.Buttons
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.CamouflagerCamouflage();
                 },
-                () => { return Camouflager.Camouflager != null && Camouflager.Camouflager == PlayerControl.LocalPlayer && !PlayerControl.LocalPlayer.Data.IsDead; },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Camouflager.isCamouflager(PlayerControl.LocalPlayer); },
                 () => { return PlayerControl.LocalPlayer.CanMove; },
                 () => {
                     CamouflageButton.Timer = CamouflageButton.MaxTimer;
                     CamouflageButton.isEffectActive = false;
                     CamouflageButton.actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 },
-                Camouflager.GetButtonSprite(),
+                RoleClass.Camouflager.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 KeyCode.F,
                 true,
-                Camouflager.DurationTime,
+                RoleClass.Camouflager.DurationTime,
                 () => { CamouflageButton.Timer = CamouflageButton.MaxTimer; }
             );
 

@@ -11,7 +11,7 @@ using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles
 {
-    class Camouflager
+    public static class Camouflager
     {
 
         public static void ResetCoolDown()

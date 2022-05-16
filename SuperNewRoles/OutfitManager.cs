@@ -37,5 +37,6 @@ namespace SuperNewRoles
             changeToPlayer(pc, pc);
             pc.CurrentOutfitType = PlayerOutfitType.Default;
         }
+
     }
 }
