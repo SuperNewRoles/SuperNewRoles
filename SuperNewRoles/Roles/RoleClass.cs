@@ -1723,11 +1723,35 @@ namespace SuperNewRoles.Roles
         }
         public static class Camouflager
         {
-            public static List<PlayerControl> CamouflagerPlayer;
-            public static Color32 color = ImpostorRed;
+            public static PlayerControl camouflager;
+            public static Color color = Palette.ImpostorRed;
+            public static float CoolTime = 30f;
+            public static float DurationTime = 10f;
+            public static float CamouflageTimer = 0f;
+            public static DateTime ButtonTimer;
+
+            private static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton", 115f);
+                return buttonSprite;
+            }
+
+            public static void ResetCamouflage()
+            {
+                CamouflageTimer = 0f;
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    p.resetChange();
+            }
+
             public static void ClearAndReload()
             {
-                CamouflagerPlayer = new List<PlayerControl>();
+                ResetCamouflage();
+                camouflager = null;
+                CamouflageTimer = 0f;
+                CoolTime = CustomOptions.CamouflagerCoolTime.getFloat();
+                DurationTime = CustomOptions.CamouflagerDurationTime.getFloat();
             }
         }
         //新ロールクラス

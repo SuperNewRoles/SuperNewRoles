@@ -686,6 +686,16 @@ namespace SuperNewRoles.CustomRPC
             }
             new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"),p.nameText.text), 3);
         }
+
+        public static void CamouflagerCamouflage()
+        {
+            if (Camouflager.Camouflager == null) return;
+
+            Camouflager.camouflageTimer = Camouflager.DurationTime;
+            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                player.setLook("", 6, "", "", "", "");
+        }
+
         public static void SetWinCond(byte Cond)
         {
             OnGameEndPatch.EndData = (CustomGameOverReason)Cond;
