@@ -116,6 +116,11 @@ SuperHostRolesModeName
 ZombieModeName
 RandomColorModeName
 NotImpostorCheckModeName
+CopsRobbersModeName
+CopsRobbersModeCrewName
+CopsRobbersModeCrewTitle1
+CopsRobbersModeImpostorName
+CopsRobbersModeImpostorTitle1
 DetectiveModeName
 DetectiveModeIsWinNotCheckSetting
 DetectiveModeIsNotTaskSetting
@@ -573,5 +578,3 @@ EvilSeerTitle1
 RemoteSheriffName
 RemoteSheriffTitle1
 RemoteSheriffIsKillTeleportSetting
-TeleportingJackalName
-TeleportingJackalTitle1

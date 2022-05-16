@@ -68,6 +68,10 @@ namespace SuperNewRoles
             CustomRPC.RPCProcedure.StartGameRPC();
 
             RoleSelectHandler.SpawnBots();
+            if (ModeHandler.isMode(ModeId.CopsRobbers))
+            {
+                BotManager.Spawn();
+            }
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
@@ -149,6 +153,10 @@ namespace SuperNewRoles
             } else if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
                 Mode.BattleRoyal.main.ChangeRole.Postfix();
+                return false;
+            } else if (ModeHandler.isMode(ModeId.CopsRobbers))
+            {
+                Mode.CopsRobbers.RoleSelectHandler.Handler();
                 return false;
             }
             return true;

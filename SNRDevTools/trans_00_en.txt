@@ -116,6 +116,11 @@ Super Host Roles
 Zombie Mode
 Random Color Mode
 Not Impostor Check Mode
+CopsRobbers
+Thief
+Finish the task and win without getting caught by the police!
+Police
+Catch all the thieves and win!
 Detective Mode
 Not include the detective in the win condition determination.
 No tasks for detective
@@ -573,5 +578,3 @@ You will see players die
 Remote Sheriff
 Let's do a Remote Sheriff kill!
 Kill Teleport
-TeleportingJackal
-Teleport and kill all crewmates and impostors!
