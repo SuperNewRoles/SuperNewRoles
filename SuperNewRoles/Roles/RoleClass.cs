@@ -121,6 +121,7 @@ namespace SuperNewRoles.Roles
             EvilSeer.ClearAndReload();
             RemoteSheriff.ClearAndReload();
             TeleportingJackal.ClearAndReload();
+            Camouflager.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1718,6 +1719,15 @@ namespace SuperNewRoles.Roles
                 IsImpostorLight = CustomOptions.TeleportingJackalIsImpostorLight.getBool();
                 CoolTime = CustomOptions.TeleportingJackalCoolTime.getFloat();
                 DurationTime = CustomOptions.TeleportingJackalDurationTime.getFloat();
+            }
+        }
+        public static class Camouflager
+        {
+            public static List<PlayerControl> CamouflagerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                CamouflagerPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

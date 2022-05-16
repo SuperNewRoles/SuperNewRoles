@@ -182,6 +182,8 @@ namespace SuperNewRoles.Intro
                     return RemoteSheriffIntro;
                 case (CustomRPC.RoleId.TeleportingJackal):
                     return TeleportingJackalIntro;
+                case (CustomRPC.RoleId.Camouflager):
+                    return CamouflagerIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -282,6 +284,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate EvilSeerIntro = new IntroDate("EvilSeer", RoleClass.EvilSeer.color, 1, CustomRPC.RoleId.EvilSeer);
         public static IntroDate RemoteSheriffIntro = new IntroDate("RemoteSheriff", RoleClass.RemoteSheriff.color, 1, CustomRPC.RoleId.RemoteSheriff);
         public static IntroDate TeleportingJackalIntro = new IntroDate("TeleportingJackal", RoleClass.TeleportingJackal.color, 1, CustomRPC.RoleId.TeleportingJackal);
+        public static IntroDate CamouflagerIntro = new IntroDate("Camouflager", RoleClass.Camouflager.color, 1, CustomRPC.RoleId.Camouflager);
         //イントロオブジェ
     }
 }

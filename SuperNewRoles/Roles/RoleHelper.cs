@@ -502,6 +502,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.TeleportingJackal):
                     Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Camouflager):
+                    Roles.RoleClass.Camouflager.CamouflagerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -759,6 +762,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.RemoteSheriff):
                     Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Camouflager):
+                    Roles.RoleClass.Camouflager.CamouflagerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
 
@@ -1383,6 +1389,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.TeleportingJackal;
+            }
+            else if (Roles.RoleClass.Camouflager.CamouflagerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Camouflager;
             }
             //ロールチェック
             }

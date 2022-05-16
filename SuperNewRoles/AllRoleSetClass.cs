@@ -839,6 +839,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.FoxPlayerCount.getFloat();
                     case (RoleId.TeleportingJackal):
                     return CustomOption.CustomOptions.TeleportingJackalPlayerCount.getFloat();
+                    case (RoleId.Camouflager):
+                    return CustomOption.CustomOptions.CamouflagerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -2177,6 +2179,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.CamouflagerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.CamouflagerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Camouflager;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }
