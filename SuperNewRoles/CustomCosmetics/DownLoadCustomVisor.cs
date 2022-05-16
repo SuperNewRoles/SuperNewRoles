@@ -24,6 +24,7 @@ namespace SuperNewRoles.CustomCosmetics
             public string name { get; set; }
             public string resource { get; set; }
             public string reshasha { get; set; }
+            public bool IsTOP { get; set; }
         }
     }
     public static class DownLoadClassVisor
@@ -42,6 +43,7 @@ namespace SuperNewRoles.CustomCosmetics
             SuperNewRolesPlugin.Logger.LogInfo("バイザーダウンロード開始");
             FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
             FetchHats("https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master");
+            FetchHats("https://raw.githubusercontent.com/Ujet222/TOPVisors/main",true);
             running = true;
         }
         private static string sanitizeResourcePath(string res)
@@ -66,7 +68,7 @@ namespace SuperNewRoles.CustomCosmetics
                 return !reshash.Equals(hash);
             }
         }
-        public static async Task<HttpStatusCode> FetchHats(string repo)
+        public static async Task<HttpStatusCode> FetchHats(string repo, bool IsTOP = false)
         {
             fetchs.Add(repo);
             SuperNewRolesPlugin.Logger.LogInfo("バイザーダウンロード開始:"+repo);
@@ -113,6 +115,7 @@ namespace SuperNewRoles.CustomCosmetics
                         info.resource = sanitizeResourcePath(current["resource"]?.ToString());
                         if (info.resource == null || info.name == null) // required
                             continue;
+                        info.IsTOP = IsTOP;
                         info.author = current["author"]?.ToString();
                         info.reshasha = current["name"]?.ToString();
                         Visordatas.Add(info);
