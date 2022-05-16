@@ -41,6 +41,19 @@ namespace SuperNewRoles
             player.killTimer = time;
             DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(time, max);
         }
+
+        public static Sprite CreateSprite(string path, bool fromDisk = false)
+        {
+            Texture2D texture = fromDisk ? ModHelpers.loadTextureFromDisk(path) : ModHelpers.loadTextureFromResources(path);
+            if (texture == null)
+                return null;
+            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
+            if (sprite == null)
+                return null;
+            texture.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
+            sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
+            return sprite;
+        }
         public static byte? GetKey(this Dictionary<byte, byte> dec, byte Value)
         {
             foreach (var data in dec)
