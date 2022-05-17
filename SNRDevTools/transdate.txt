@@ -576,3 +576,8 @@ RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキル�
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート
 TeleportingJackalName,TeleportingJackal,テレポートジャッカル
 TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう
+RamdomMapSetting,RandomMap,ランダムマップ
+RMSkeldSetting,Skeld,スケルドが有効
+RMMiraSetting,Mira,ミラが有効
+RMPolusSetting,Polus,ポーラスが有効
+RMAirshipSetting,AirShip,エアーシップが有効

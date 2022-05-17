@@ -575,3 +575,8 @@ RemoteSheriffTitle1
 RemoteSheriffIsKillTeleportSetting
 TeleportingJackalName
 TeleportingJackalTitle1
+RamdomMapSetting
+RMSkeldSetting
+RMMiraSetting
+RMPolusSetting
+RMAirshipSetting
