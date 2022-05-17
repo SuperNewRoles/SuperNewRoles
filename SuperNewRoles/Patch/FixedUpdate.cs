@@ -150,6 +150,7 @@ namespace SuperNewRoles.Patch
                                 DarkKiller.FixedUpdate.Postfix();
                             }
                             Fox.FixedUpdate.Postfix();
+                            DoubralKiller.FixedUpdate2nd.Postfix();
                         }
                         else if (PlayerControl.LocalPlayer.isDead())
                         {

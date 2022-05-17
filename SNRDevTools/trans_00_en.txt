@@ -583,5 +583,5 @@ Time to suicide（Plus　Button）
 Kill time（Normal Button）
 Kill time（Plus Button）
 Resets when you enter a meeting.
-{0} seconds to suicide（N）
-{0} seconds to suicide（P）
+{0} seconds to suicide
+{0} seconds to suicide

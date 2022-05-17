@@ -19,9 +19,21 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.DoubralKiller.NoKill == true)
                 {
+                    HudManager.Instance.KillButton.gameObject.SetActiveRecursively(false);
                     HudManager.Instance.KillButton.gameObject.SetActive(false);
+                    HudManager.Instance.KillButton.graphic.enabled = false;
+                    HudManager.Instance.KillButton.enabled = false;
+                    HudManager.Instance.KillButton.graphic.sprite = null;
+
                     //純正キルボタンばいばい
                 }
+            }
+        }
+        public class FixedUpdate2nd
+        {
+            public static void Postfix()
+            {
+                SetDoubralKillerButton();
             }
         }
         public static void resetNormalCoolDown()
@@ -47,7 +59,6 @@ namespace SuperNewRoles.Roles
             bool IsViewButtonRText = false;
             static void Postfix()
             {
-                SetDoubralKillerButton();
                 SuperNewRolesPlugin.Logger.LogInfo(RoleClass.DoubralKiller.SuicideLTime);
                 SuperNewRolesPlugin.Logger.LogInfo(RoleClass.DoubralKiller.SuicideRTime);
             }

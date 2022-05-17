@@ -836,7 +836,7 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
-                50
+                49
             );
 
             DoubralKillerNormalKillButton.buttonText = ModTranslation.getString("DoubralKillerSuicideRText");
@@ -863,7 +863,7 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.KillButton,
                 KeyCode.E,
-                51
+                49
             );
 
             DoubralKillerSecondKillButton.buttonText = ModTranslation.getString("DoubralKillerSuicideLText");

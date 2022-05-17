@@ -584,5 +584,5 @@ DoubralKillerSuicideLTimeSetting,自殺までの時間（追加ボタン）
 DoubralKillerKillLTimeSetting,会議に入るとリセットされる
 DoubralKillerSecondKillTimeSetting,キルクールタイム（ノーマルボタン）
 DoubralKillerIsMeetingResetSetting,キルクールタイム（追加ボタン）
-DoubralKillerSuicideRText,自殺まで後{0}秒（通常）
-DoubralKillerSuicideLText,自殺まで後{0}秒（追加）
+DoubralKillerSuicideRText,自殺まで後{0}秒
+DoubralKillerSuicideLText,自殺まで後{0}秒
