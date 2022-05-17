@@ -20,11 +20,12 @@ namespace SuperNewRoles.Roles
                 if (RoleClass.DoubralKiller.NoKill == true)
                 {
                     HudManager.Instance.KillButton.gameObject.SetActiveRecursively(false);
-                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                //    HudManager.Instance.KillButton.gameObject.SetActive(false);
                     HudManager.Instance.KillButton.graphic.enabled = false;
                     HudManager.Instance.KillButton.enabled = false;
                     HudManager.Instance.KillButton.graphic.sprite = null;
-
+                //    HudManager.Instance.KillButton.buttonLabelText.enabled = false;
+                //    HudManager.Instance.KillButton.buttonLabelText.SetText("");
                     //純正キルボタンばいばい
                 }
             }
