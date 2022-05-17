@@ -85,8 +85,7 @@ namespace SuperNewRoles.CustomRPC
         MadKiller,
         Survivor,
         MadMayor,
-        DoubralKiller
-        MadMayor,
+        DoubralKiller,
         NiceHawk,
         Bakery,
         Neta,

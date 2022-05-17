@@ -971,40 +971,27 @@ namespace SuperNewRoles.CustomOption
             TeleportingJackalCoolTime = CustomOption.Create(409, false, CustomOptionType.Neutral, "TeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
             TeleportingJackalDurationTime = CustomOption.Create(410, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
 
-            DoubralKillerOption = new CustomRoleOption(311, "DoubralKillerName", RoleClass.DoubralKiller.color, 1);
-            DoubralKillerPlayerCount = CustomOption.Create(312, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoubralKillerOption);
-            DoubralKillerSuicideRTime = CustomOption.Create(313, cs(Color.white, "DoubralKillerSuicideRTimeSetting"), 60f, 0f, 180f, 2.5f, DoubralKillerOption);
-            DoubralKillerSuicideLTime = CustomOption.Create(314, cs(Color.white, "DoubralKillerSuicideLTimeSetting"), 60f, 0f, 180f, 2.5f, DoubralKillerOption);
-            DoubralKillerKillTime = CustomOption.Create(315, cs(Color.white, "DoubralKillerKillLTimeSetting"), 15f, 0f, 60f, 2.5f, DoubralKillerOption);
-            DoubralKillerSecondKillTime = CustomOption.Create(316, cs(Color.white, "DoubralKillerSecondKillTimeSetting"), 15f, 0f, 60f, 2.5f, DoubralKillerOption);
-            DoubralKillerIsMeetingReset = CustomOption.Create(317, cs(Color.white, "DoubralKillerIsMeetingResetSetting"), true, DoubralKillerOption);
+            DoubralKillerOption = new CustomRoleOption(311, false, CustomOptionType.Impostor, "DoubralKillerName", RoleClass.DoubralKiller.color, 1);
+            DoubralKillerPlayerCount = CustomOption.Create(312, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoubralKillerOption);
+            DoubralKillerSuicideRTime = CustomOption.Create(313, false, CustomOptionType.Impostor, "DoubralKillerSuicideRTimeSetting", 20f, 2.5f, 60f, 2.5f, DoubralKillerOption);
+            DoubralKillerSuicideLTime = CustomOption.Create(314 ,false, CustomOptionType.Impostor, "DoubralKillerSuicideLTimeSetting", 60f, 0f, 180f, 2.5f, DoubralKillerOption);
+            DoubralKillerKillTime = CustomOption.Create(315, false, CustomOptionType.Impostor, "DoubralKillerKillLTimeSetting", 15f, 0f, 60f, 2.5f, DoubralKillerOption);
+            DoubralKillerSecondKillTime = CustomOption.Create(316, false, CustomOptionType.Impostor,"DoubralKillerSecondKillTimeSetting", 15f, 0f, 60f, 2.5f, DoubralKillerOption);
+            DoubralKillerIsMeetingReset = CustomOption.Create(317, false, CustomOptionType.Impostor,"DoubralKillerIsMeetingResetSetting", true, DoubralKillerOption);
 
-            QuarreledOption = CustomOption.Create(122, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
-            QuarreledTeamCount = CustomOption.Create(124, cs(Color.white, "QuarreledTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
-            QuarreledOnlyCrewMate = CustomOption.Create(123, cs(Color.white, "QuarreledOnlyCrewMateSetting"), false, QuarreledOption);
-
-            LoversOption = CustomOption.Create(221, cs(RoleClass.Lovers.color, "LoversName"), false, null, isHeader: true);
-            LoversTeamCount = CustomOption.Create(222, cs(Color.white, "LoversTeamCountSetting"), QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], LoversOption);
-            LoversPar = CustomOption.Create(223, cs(Color.white, "LoversParSetting"), rates , LoversOption);
-            LoversOnlyCrewMate = CustomOption.Create(224, cs(Color.white, "LoversOnlyCrewMateSetting"), false, LoversOption);
-            LoversSingleTeam = CustomOption.Create(225, cs(Color.white, "LoversSingleTeamSetting"), true, LoversOption);
-            LoversSameDie = CustomOption.Create(226, cs(Color.white, "LoversSameDieSetting"), true, LoversOption);
-            LoversAliveTaskCount = CustomOption.Create(227, cs(Color.white, "LoversAliveTaskCountSetting"), false, LoversOption);
-            LoversDuplicationQuarreled = CustomOption.Create(228, cs(Color.white, "LoversDuplicationQuarreledSetting"), true, LoversOption);
-            var loversoption = SelectTask.TaskSetting(268, 269, 270,LoversOption);
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, false, CustomOptionType.Neutral, "QuarreledOnlyCrewMateSetting", false, QuarreledOption);
-            
+
             LoversOption = CustomOption.Create(221, true, CustomOptionType.Neutral, cs(RoleClass.Lovers.color, "LoversName"), false, null, isHeader: true);
             LoversTeamCount = CustomOption.Create(222, true, CustomOptionType.Neutral, "LoversTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], LoversOption);
-            LoversPar = CustomOption.Create(223, true, CustomOptionType.Neutral, "LoversParSetting", rates , LoversOption);
+            LoversPar = CustomOption.Create(223, true, CustomOptionType.Neutral, "LoversParSetting", rates, LoversOption);
             LoversOnlyCrewMate = CustomOption.Create(224, true, CustomOptionType.Neutral, "LoversOnlyCrewMateSetting", false, LoversOption);
             LoversSingleTeam = CustomOption.Create(225, true, CustomOptionType.Neutral, "LoversSingleTeamSetting", true, LoversOption);
             LoversSameDie = CustomOption.Create(226, true, CustomOptionType.Neutral, "LoversSameDieSetting", true, LoversOption);
             LoversAliveTaskCount = CustomOption.Create(227, true, CustomOptionType.Neutral, "LoversAliveTaskCountSetting", false, LoversOption);
             LoversDuplicationQuarreled = CustomOption.Create(228, true, CustomOptionType.Neutral, "LoversDuplicationQuarreledSetting", true, LoversOption);
-            var loversoption = SelectTask.TaskSetting(268, 269, 270,LoversOption, CustomOptionType.Neutral, true);
+            var loversoption = SelectTask.TaskSetting(268, 269, 270, LoversOption, CustomOptionType.Neutral, true);
             LoversCommonTask = loversoption.Item1;
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
