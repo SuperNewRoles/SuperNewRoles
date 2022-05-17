@@ -33,6 +33,7 @@ namespace SuperNewRoles.CustomCosmetics
 
         public static Dictionary<string, HatExtension> CustomHatRegistry = new Dictionary<string, HatExtension>();
         public static HatExtension TestExt = null;
+        public static bool IsEnd = false;
 
         public class HatExtension
         {
@@ -210,6 +211,7 @@ namespace SuperNewRoles.CustomCosmetics
 
             static void Prefix(HatManager __instance)
             {
+                if (!IsEnd) return;
                 if (RUNNING) return;
                 RUNNING = true; // prevent simultanious execution
 
@@ -465,6 +467,8 @@ namespace SuperNewRoles.CustomCosmetics
         public static string[] hatRepos = new string[]
         {
             "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master",
+            "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master",
+            "https://raw.githubusercontent.com/Ujet222/TOPHats/main"
             /*
             "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master",
             "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master",
@@ -491,12 +495,18 @@ namespace SuperNewRoles.CustomCosmetics
             SuperNewRolesPlugin.Logger.LogInfo("フェチ");
             foreach (string repo in repos)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("スタート:"+repo);
+                Repos.Add(repo);
+            }
+            foreach (string repo in repos)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("ハットスタート:"+repo);
                 try
                 {
                     HttpStatusCode status = await FetchHats(repo);
                     if (status != HttpStatusCode.OK)
                         System.Console.WriteLine($"Custom hats could not be loaded from repo: {repo}\n");
+                    else
+                        SuperNewRolesPlugin.Logger.LogInfo("ハット終了:" + repo);
                 }
                 catch (System.Exception e)
                 {
@@ -517,6 +527,7 @@ namespace SuperNewRoles.CustomCosmetics
                      .Replace("..", "");
             return res;
         }
+        public static List<string> Repos = new List<string>();
 
         public static async Task<HttpStatusCode> FetchHats(string repo)
         {
@@ -544,10 +555,11 @@ namespace SuperNewRoles.CustomCosmetics
                         CustomHatOnline info = new CustomHatOnline();
 
                         info.name = current["name"]?.ToString();
+                        info.author = current["author"]?.ToString();
                         info.resource = sanitizeResourcePath(current["resource"]?.ToString());
                         if (info.resource == null || info.name == null) // required
                             continue;
-                        info.reshasha = current["reshasha"]?.ToString();
+                        info.reshasha = info.resource+info.name+info.author;
                         info.backresource = sanitizeResourcePath(current["backresource"]?.ToString());
                         info.reshashb = current["reshashb"]?.ToString();
                         info.climbresource = sanitizeResourcePath(current["climbresource"]?.ToString());
@@ -557,7 +569,6 @@ namespace SuperNewRoles.CustomCosmetics
                         info.backflipresource = sanitizeResourcePath(current["backflipresource"]?.ToString());
                         info.reshashbf = current["reshashbf"]?.ToString();
 
-                        info.author = current["author"]?.ToString();
                         info.package = current["package"]?.ToString();
                         info.condition = current["condition"]?.ToString();
                         info.bounce = current["bounce"] != null;
@@ -607,6 +618,11 @@ namespace SuperNewRoles.CustomCosmetics
                 }
 
                 hatDetails.AddRange(hatdatas);
+                Repos.Remove(repo);
+                if (Repos.Count < 1)
+                {
+                    CustomHats.IsEnd = true;
+                }
             }
             catch (System.Exception ex)
             {

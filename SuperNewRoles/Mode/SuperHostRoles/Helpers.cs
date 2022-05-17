@@ -15,6 +15,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 player.RpcSetRoleDesync(role,p);
             }
         }
+        //TownOfHostより！！
         public static void RpcSetRoleDesync(this PlayerControl player, RoleTypes role, PlayerControl seer = null)
         {
             //player: 名前の変更対象

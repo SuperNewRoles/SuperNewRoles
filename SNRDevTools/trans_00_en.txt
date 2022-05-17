@@ -220,13 +220,13 @@ Evil Scientist's Invisibility Duration
 Sheriff
 Kill the outsider!
 Kill the outsider and lead your crewmates to victory!
-Sheriff's Kill Cooldown
+Kill Cooldown
 Can Kill a Neutral
 Can Kill a Lovers
 Can Kill a MadRole
 Yes
 No
-Maximum number of kills for Sheriff
+Maximum number of kills
 Kill
 {0} shots remaining.
 Meeting Sheriff
@@ -556,6 +556,8 @@ Kill Delay
 DarkKiller
 Let's kill in the dark
 Dark Killer's Kill Cool Time
+Fox
+I am Fox!
 Seer
 You will see players die
 Mode
@@ -564,3 +566,12 @@ Show Death Flash
 Show Souls
 Limit Soul Duration
 Soul Duration
+MadSeer
+Feel the success of your husband
+EvilSeer
+You will see players die
+Remote Sheriff
+Let's do a Remote Sheriff kill!
+Kill Teleport
+TeleportingJackal
+Teleport and kill all crewmates and impostors!

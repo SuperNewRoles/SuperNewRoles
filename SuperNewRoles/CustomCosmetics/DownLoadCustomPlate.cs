@@ -29,15 +29,19 @@ namespace SuperNewRoles.CustomCosmetics
     public static class DownLoadClass
     {
         public static bool IsEndDownload = false;
+        public static bool running = false;
         public static List<string> fetchs = new List<string>();
         public static List<CustomPlates.CustomPlate> platedetails = new List<CustomPlates.CustomPlate>();
         public static void Load()
         {
+            if (running)
+                return;
             IsEndDownload = false;
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath)+@"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\");
             SuperNewRolesPlugin.Logger.LogInfo("ダウンロード開始");
             FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
+            running = true;
         }
         private static string sanitizeResourcePath(string res)
         {

@@ -174,6 +174,26 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
+        public static bool IsChangeMadSeer(this PlayerControl p)
+        {
+            var getroledata = GetRoleType(p);
+            if (getroledata == TeamRoleType.Crewmate)
+            {
+                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(CustomRPC.RoleId.MadSeer)) return true;
+                }
+                else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(CustomRPC.RoleId.MadSeer)) return true;
+                }
+                else
+                {
+                    return p.isRole(CustomRPC.RoleId.MadSeer);
+                }
+            }
+            return false;
+        }
         public static int? GetKey(this Dictionary<int,int> dics,int id)
         {
             foreach (var data in dics)

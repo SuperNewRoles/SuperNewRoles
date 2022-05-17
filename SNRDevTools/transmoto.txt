@@ -556,6 +556,8 @@ VampireKillDelay
 DarkKillerName
 DarkKillerTitle1
 DarkKillerKillCoolSetting
+FoxName
+FoxTitle1
 SeerName
 SeerTitle1
 SeerMode
@@ -564,3 +566,12 @@ SeerModeFlash
 SeerModeSouls
 SeerLimitSoulDuration
 SeerSoulDuration
+MadSeerName
+MadSeerTitle1
+EvilSeerName
+EvilSeerTitle1
+RemoteSheriffName
+RemoteSheriffTitle1
+RemoteSheriffIsKillTeleportSetting
+TeleportingJackalName
+TeleportingJackalTitle1

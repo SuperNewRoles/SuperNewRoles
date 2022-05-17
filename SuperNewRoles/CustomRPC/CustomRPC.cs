@@ -98,7 +98,12 @@ namespace SuperNewRoles.CustomRPC
         Observer,
         Vampire,
         DarkKiller,
+        Fox,
         Seer,
+        MadSeer,
+        EvilSeer,
+        RemoteSheriff,
+        TeleportingJackal,
         //RoleId
     }
 
@@ -148,10 +153,19 @@ namespace SuperNewRoles.CustomRPC
         UseStuntmanCount,
         UseMadStuntmanCount,
         CustomEndGame,
-        UncheckedProtect
+        UncheckedProtect,
+        SetBot
     }
     public static class RPCProcedure
     {
+        public static void SetBot(byte playerid)
+        {
+            PlayerControl player = ModHelpers.playerById(playerid);
+            if (player == null) return;
+            if (BotManager.AllBots == null) BotManager.AllBots = new List<PlayerControl>();
+            BotManager.AllBots.Add(player);
+
+        }
         public static void UncheckedProtect(byte sourceid, byte playerid,byte colorid)
         {
             PlayerControl player = ModHelpers.playerById(playerid);
@@ -418,9 +432,11 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SheriffKill(byte SheriffId,byte TargetId,bool MissFire)
         {
+            SuperNewRolesPlugin.Logger.LogInfo("シェリフ");
             PlayerControl sheriff = ModHelpers.playerById(SheriffId);
             PlayerControl target = ModHelpers.playerById(TargetId);
             if (sheriff == null || target == null) return;
+            SuperNewRolesPlugin.Logger.LogInfo("通過");
 
             if (MissFire)
             {
@@ -428,7 +444,20 @@ namespace SuperNewRoles.CustomRPC
                 FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.SheriffMisFire;
             } else
             {
-                sheriff.MurderPlayer(target);
+                if (sheriff.isRole(RoleId.RemoteSheriff) && !RoleClass.RemoteSheriff.IsKillTeleport)
+                {
+                    if (PlayerControl.LocalPlayer.PlayerId == SheriffId)
+                    {
+                        target.MurderPlayer(target);
+                    } else
+                    {
+                        sheriff.MurderPlayer(target);
+                    }
+                }
+                else
+                {
+                    sheriff.MurderPlayer(target);
+                }
                 FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.SheriffKill;
             }
 
@@ -837,6 +866,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.UncheckedProtect:
                         UncheckedProtect(reader.ReadByte(),reader.ReadByte(),reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetBot:
+                        SetBot(reader.ReadByte());
                         break;
                 }
             }

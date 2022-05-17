@@ -7,10 +7,11 @@ using UnhollowerBaseLib;
 
 namespace SuperNewRoles.MapOptions
 {
+
+    [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
     class RandomMap
     {
-        [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.BeginGame))]
-        public static bool Prefix(RandomMap __instance)
+        public static bool Prefix()
         {
             bool continueStart = true;
             if (MapOption.RandomMapOption.getBool())
