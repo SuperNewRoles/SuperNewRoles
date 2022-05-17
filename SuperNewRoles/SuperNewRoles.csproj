@@ -29,7 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Roles\DoubralKiller.cs~RF2915056.TMP" />
+      <None Remove="Roles\NiceHawk.cs~RF28e5343.TMP" />
     </ItemGroup>
 
     <ItemGroup>

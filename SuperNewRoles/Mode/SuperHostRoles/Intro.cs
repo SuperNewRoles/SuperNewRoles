@@ -18,7 +18,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                        if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId && p.IsPlayer())
                         {
                             Teams.Add(p);
                         }
@@ -28,7 +28,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.isImpostor() && p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                        if (p.isImpostor() && p.PlayerId != PlayerControl.LocalPlayer.PlayerId && p.IsPlayer())
                         {
                             Teams.Add(p);
                         }
@@ -64,6 +64,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (PlayerControl.LocalPlayer.IsLovers())
             {
                 __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.getDefaultName() ?? ""));
+            }
+            if (PlayerControl.LocalPlayer.IsQuarreled())
+            {
+                __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
             }
             /**
 

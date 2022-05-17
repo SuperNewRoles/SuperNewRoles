@@ -91,6 +91,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {ModTranslation.getString("MayorName"),IntroDate.MayorIntro },
                 {ModTranslation.getString("trueloverName"),IntroDate.trueloverIntro },
                 {ModTranslation.getString("TechnicianName"),IntroDate.TechnicianIntro },
+                {ModTranslation.getString("MadStuntmanName"),IntroDate.MadStuntManIntro },
             };
             foreach (var data in NameData)
             {

@@ -1,9 +1,11 @@
 ﻿
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using System.Collections.Generic;
+using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.BattleRoyal
@@ -12,8 +14,76 @@ namespace SuperNewRoles.Mode.BattleRoyal
     {
         public static void FixedUpdate()
         {
-            HudManager.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.setTarget());
+            if (!AmongUsClient.Instance.AmHost) return;
+            if (IsStart)
+            {
+                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
+                if (!IsTeamBattle)
+                {
+                    HudManager.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.setTarget());
+                }
+                int alives = 0;
+                int allplayer = 0;
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    allplayer++;
+                    if (p.isAlive())
+                    {
+                        alives++;
+                    }
+                }
+                if (AlivePlayer != alives || AllPlayer != allplayer)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (!p.Data.Disconnected)
+                        {
+                            p.RpcSetNamePrivate("(" + alives + "/" + allplayer + ")");
+                        }
+                    }
+                    AlivePlayer = alives;
+                    AllPlayer = allplayer;
+                }
+            } else
+            {
+                if (IsCountOK)
+                {
+                    StartSeconds -= Time.fixedDeltaTime;
+                }
+                UpdateTime -= Time.fixedDeltaTime;
+                if (UpdateTime <= 0)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (!p.Data.Disconnected)
+                        {
+                            p.RpcSetNamePrivate("キルができるようになるまで残り" + ((int)StartSeconds + 1) + "秒");
+                        }
+                    }
+                    UpdateTime += 1f;
+                }
+                if (StartSeconds <= 0)
+                {
+                    IsStart = true;
+                    foreach (List<PlayerControl> team in Teams)
+                    {
+                        if (team.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
+                        {
+                            foreach (PlayerControl p in team)
+                            {
+                                if (p.PlayerId != 0)
+                                {
+                                    PlayerControl.LocalPlayer.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed,"プレイヤー"),p);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
+        public static int AlivePlayer;
+        public static int AllPlayer;
+        public static bool IsStart;
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoExitVent))]
         class CoExitVentPatch
         {
@@ -105,47 +175,127 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         }
                     }
                 }, 0.1f, "TecExitVent");
-                SyncSetting.CustomSyncSettings();
-            }
-        }
-        public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
-        {
-            var alives = 0;
-            HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-            {
-                if (p.isAlive())
+                if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
-                    alives++;
+                    SyncSetting.CustomSyncSettings();
                 }
             }
-            if (alives == 1)
+        }
+        public static List<PlayerControl> Winners;
+        public static bool IsViewAlivePlayer;
+        public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            if (IsTeamBattle)
             {
-                __instance.enabled = false;
+                if (!IsSeted) return false;
+                List<PlayerControl> players = new List<PlayerControl>();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     if (p.isAlive())
                     {
-                        p.RpcSetRole(RoleTypes.Impostor);
-                    }
-                    else
-                    {
-                        p.RpcSetRole(RoleTypes.GuardianAngel);
+                        players.Add(p);
                     }
                 }
-                ShipStatus.RpcEndGame(GameOverReason.ImpostorByKill, false);
-                return true;
-            }
-            else if (alives == 0)
-            {
+                if (players.Count <= 0)
+                {
+                    __instance.enabled = false;
+                    ShipStatus.RpcEndGame(GameOverReason.HumansByVote, false);
+                    return true;
+                }
+                foreach (List<PlayerControl> teams in Teams)
+                {
+                    if (teams.IsCheckListPlayerControl(players[0])){
+                        foreach (PlayerControl p in players)
+                        {
+                            if (!teams.IsCheckListPlayerControl(p))
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+                Winners = new List<PlayerControl>();
+                try
+                {
+                    foreach (List<PlayerControl> teams in Teams)
+                    {
+                        if (teams.IsCheckListPlayerControl(players[0]))
+                        {
+                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            {
+                                p.RpcSetRole(RoleTypes.GuardianAngel);
+                                if (teams.IsCheckListPlayerControl(p))
+                                {
+                                    p.Data.IsDead = false;
+                                    Winners.Add(p);
+                                    var writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
+                                    writer.Write(p.PlayerId);
+                                    writer.EndRPC();
+                                }
+                            }
+                        }
+                    }
+                }
+                catch { SuperNewRolesPlugin.Logger.LogInfo("Winnersエラー"); }
                 __instance.enabled = false;
-                ShipStatus.RpcEndGame(GameOverReason.HumansByVote, false);
+                ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                 return true;
+            } else
+            {
+                var alives = 0;
+                HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.isAlive())
+                    {
+                        alives++;
+                    }
+                }
+                if (alives == 1)
+                {
+                    __instance.enabled = false;
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.isAlive())
+                        {
+                            p.RpcSetRole(RoleTypes.Impostor);
+                        }
+                        else
+                        {
+                            p.RpcSetRole(RoleTypes.GuardianAngel);
+                        }
+                    }
+                    ShipStatus.RpcEndGame(GameOverReason.ImpostorByKill, false);
+                    return true;
+                }
+                else if (alives == 0)
+                {
+                    __instance.enabled = false;
+                    ShipStatus.RpcEndGame(GameOverReason.HumansByVote, false);
+                    return true;
+                }
             }
             return false;
         }
+        public static float StartSeconds;
+        public static bool IsCountOK;
+        static float UpdateTime;
+        public static bool IsTeamBattle;
+        public static List<List<PlayerControl>> Teams;
+        static bool IsSeted;
         public static void ClearAndReload()
         {
+            IsViewAlivePlayer = BROption.IsViewAlivePlayer.getBool();
+            AlivePlayer = 0;
+            AllPlayer = 0;
+            IsStart = false;
+            StartSeconds = BROption.StartSeconds.getFloat()+4.5f;
+            IsCountOK = false;
+            UpdateTime = 0f;
+            IsTeamBattle = BROption.IsTeamBattle.getBool();
+            Teams = new List<List<PlayerControl>>();
+            IsSeted = false;
+            Winners = new List<PlayerControl>();
         }
         public static class ChangeRole
         {
@@ -153,29 +303,119 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.Crewmate);
-                    foreach (PlayerControl p1 in PlayerControl.AllPlayerControls)
+                    if (IsTeamBattle)
                     {
-                        if (p1.PlayerId != 0)
+                        float count = BROption.TeamAmount.getFloat();
+                        var oneteamcount = Mathf.CeilToInt(PlayerControl.AllPlayerControls.Count / count);
+                        List<PlayerControl> target = new List<PlayerControl>();
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            DestroyableSingleton<RoleManager>.Instance.SetRole(p1, RoleTypes.Crewmate);
-                            p1.RpcSetRoleDesync(RoleTypes.Impostor);
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            target.Add(p);
+                        }
+                        List<PlayerControl> TempTeam = new List<PlayerControl>();
+                        var counttemp = target.Count;
+                        for (int i = 0;i < counttemp; i++)
+                        {
+                            SuperNewRolesPlugin.Logger.LogInfo("oneTeamCount:"+oneteamcount);
+                            SuperNewRolesPlugin.Logger.LogInfo("index:"+i);
+                            if (target.Count > 0)
                             {
-                                if (p1.PlayerId != p2.PlayerId && p2.PlayerId != 0)
+                                var index = ModHelpers.GetRandomIndex(target);
+                                TempTeam.Add(target[index]);
+                                target.RemoveAt(index);
+                                SuperNewRolesPlugin.Logger.LogInfo("ついか");
+                                SuperNewRolesPlugin.Logger.LogInfo("てんぷちーむ:"+ TempTeam.Count);
+                                if (TempTeam.Count >= oneteamcount)
                                 {
-                                    p1.RpcSetRoleDesync(RoleTypes.Scientist, p2);
-                                    p2.RpcSetRoleDesync(RoleTypes.Scientist, p1);
+                                    Teams.Add(TempTeam);
+                                    TempTeam = new List<PlayerControl>();
+                                    SuperNewRolesPlugin.Logger.LogInfo("リセット");
                                 }
                             }
                         }
-                        else
+                        if (TempTeam.Count > 0)
                         {
-                            p1.RpcSetRole(RoleTypes.Crewmate);
+                            Teams.Add(TempTeam);
+                            TempTeam = new List<PlayerControl>();
+                            SuperNewRolesPlugin.Logger.LogInfo("リセット");
+                        }
+                        SuperNewRolesPlugin.Logger.LogInfo("チーム数:"+Teams.Count);
+                        foreach (List<PlayerControl> teamlist in Teams)
+                        {
+                            foreach (PlayerControl p in teamlist)
+                            {
+                                if (p.PlayerId != 0)
+                                {
+                                    foreach (PlayerControl p2 in teamlist)
+                                    {
+                                        if (p2.PlayerId != 0)
+                                        {
+                                            SuperNewRolesPlugin.Logger.LogInfo("セットチーム内");
+                                            p.RpcSetRoleDesync(RoleTypes.Impostor, p2);
+                                        }
+                                        else
+                                        {
+                                            p.SetRole(RoleTypes.Impostor);
+                                        }
+                                    }
+                                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                                    {
+                                        if (!teamlist.IsCheckListPlayerControl(p2))
+                                        {
+                                            p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                                            p.RpcSetRoleDesync(RoleTypes.Scientist, p2);
+                                        }
+                                    }
+                                } else
+                                {
+                                    p.SetRole(RoleTypes.Impostor);
+                                    p.RpcSetRole(RoleTypes.Crewmate);
+                                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
+                                    PlayerControl.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
+                                }
+                            }
                         }
                     }
-                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
-                    PlayerControl.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
+                    else
+                    {
+                        foreach (PlayerControl p1 in PlayerControl.AllPlayerControls)
+                        {
+                            if (p1.PlayerId != 0)
+                            {
+                                DestroyableSingleton<RoleManager>.Instance.SetRole(p1, RoleTypes.Crewmate);
+                                p1.RpcSetRoleDesync(RoleTypes.Impostor);
+                                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                                {
+                                    if (p1.PlayerId != p2.PlayerId && p2.PlayerId != 0)
+                                    {
+                                        p1.RpcSetRoleDesync(RoleTypes.Scientist, p2);
+                                        p2.RpcSetRoleDesync(RoleTypes.Scientist, p1);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                p1.RpcSetRole(RoleTypes.Crewmate);
+                            }
+                        }
+                        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
+                        PlayerControl.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
+                    }
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        p.getDefaultName();
+                        p.RpcSetName("");//Playing on SuperNewRoles!");
+                    }
+                    new LateTask(() => {
+                        if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
+                        {
+                            foreach (var pc in PlayerControl.AllPlayerControls)
+                            {
+                                pc.RpcSetRole(RoleTypes.Shapeshifter);
+                            }
+                        }
+                    }, 3f, "SetImpostor");
+                    IsSeted = true;
                 }
             }
         }

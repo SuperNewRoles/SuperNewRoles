@@ -88,6 +88,11 @@ namespace SuperNewRoles.Patch
                     {
                         Mode.NotImpostorCheck.NameSet.Postfix();
                     }
+                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    {
+                        Mode.SuperHostRoles.FixedUpdate.Update();
+                        Fox.FixedUpdate.Postfix();
+                    }
                     else if (ModeHandler.isMode(ModeId.Default))
                     {
                         SabotageManager.Update();
@@ -95,7 +100,7 @@ namespace SuperNewRoles.Patch
                         Jackal.JackalFixedPatch.Postfix(__instance);
                         if (PlayerControl.LocalPlayer.isAlive())
                         {
-                            if (PlayerControl.LocalPlayer.isImpostor()) {SetTarget.ImpostorSetTarget();}
+                            if (PlayerControl.LocalPlayer.isImpostor()) {SetTarget.ImpostorSetTarget(); }
                             if (RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                             {
                                 Researcher.ReseUseButtonSetTargetPatch.Postfix(__instance);
@@ -127,7 +132,24 @@ namespace SuperNewRoles.Patch
                             {
                                 Hawk.FixedUpdate.Postfix();
                             }
+                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk))
+                            {
+                                NiceHawk.FixedUpdate.Postfix();
+                            }
+                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk))
+                            {
+                                MadHawk.FixedUpdate.Postfix();
+                            }
                             Minimalist.FixedUpdate.Postfix();
+                            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
+                            {
+                                Vampire.FixedUpdate.Postfix();
+                            }
+                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DarkKiller))
+                            {
+                                DarkKiller.FixedUpdate.Postfix();
+                            }
+                            Fox.FixedUpdate.Postfix();
                         }
                         else if (PlayerControl.LocalPlayer.isDead())
                         {

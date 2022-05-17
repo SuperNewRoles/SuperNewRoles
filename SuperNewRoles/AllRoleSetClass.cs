@@ -66,6 +66,8 @@ namespace SuperNewRoles
         {
             RPCHelper.StartRPC(CustomRPC.CustomRPC.StartGameRPC).EndRPC();
             CustomRPC.RPCProcedure.StartGameRPC();
+
+            RoleSelectHandler.SpawnBots();
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
@@ -99,7 +101,7 @@ namespace SuperNewRoles
                 AllRoleSetClass.impostors = new List<PlayerControl>();
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    if (!player.Data.Disconnected)
+                    if (!player.Data.Disconnected && player.IsPlayer())
                     {
                         SelectPlayers.Add(player);
                     }
@@ -125,19 +127,28 @@ namespace SuperNewRoles
                         player.RpcSetRole(RoleTypes.Crewmate);
                     }
                 }
+
+                try
+                {
+                    AllRoleSetClass.QuarreledRandomSelect();
+                }
+                catch (Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                }
+
+                try
+                {
+                    AllRoleSetClass.LoversRandomSelect();
+                }
+                catch (Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
+                }
                 return false;
             } else if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
                 Mode.BattleRoyal.main.ChangeRole.Postfix();
-                new LateTask(() => {
-                    if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
-                    {
-                        foreach (var pc in PlayerControl.AllPlayerControls)
-                        {
-                            pc.RpcSetRole(RoleTypes.Shapeshifter);
-                        }
-                    }
-                }, 3f, "SetImpostor");
                 return false;
             }
             return true;
@@ -214,7 +225,7 @@ namespace SuperNewRoles
                 ImpostorRandomSelect();
             } catch (Exception e)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:"+e);
+                SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
             }
 
 
@@ -246,7 +257,7 @@ namespace SuperNewRoles
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
                 }
-            }
+
                 try
                 {
                     LoversRandomSelect();
@@ -255,17 +266,19 @@ namespace SuperNewRoles
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
                 }
-            
+            }
+
         }
         public static void QuarreledRandomSelect()
         {
             if (!CustomOption.CustomOptions.QuarreledOption.getBool()) return;
+            SuperNewRolesPlugin.Logger.LogInfo("クラードセレクト");
             List<PlayerControl> SelectPlayers = new List<PlayerControl>();
             if (CustomOption.CustomOptions.QuarreledOnlyCrewMate.getBool())
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (!p.Data.Role.IsImpostor && !p.isNeutral())
+                    if (!p.Data.Role.IsImpostor && !p.isNeutral() && p.IsPlayer())
                     {
                         SelectPlayers.Add(p);
                     }
@@ -274,7 +287,10 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    SelectPlayers.Add(p);
+                    if (p.IsPlayer())
+                    {
+                        SelectPlayers.Add(p);
+                    }
                 }
             }
             for (int i = 0; i < CustomOptions.QuarreledTeamCount.getFloat(); i++)
@@ -288,8 +304,8 @@ namespace SuperNewRoles
                         Listdate.Add(SelectPlayers[player]);
                         SelectPlayers.RemoveAt(player);
                     }
-                    RoleHelpers.SetQuarreled(Listdate[0],Listdate[1]);
-                    RoleHelpers.SetQuarreledRPC(Listdate[0],Listdate[1]);
+                    RoleHelpers.SetQuarreled(Listdate[0], Listdate[1]);
+                    RoleHelpers.SetQuarreledRPC(Listdate[0], Listdate[1]);
                 }
             }
             ChacheManager.ResetQuarreledChache();
@@ -301,7 +317,7 @@ namespace SuperNewRoles
             if (!(CustomOptions.LoversPar.getString() == "100%"))
             {
                 var a = new List<string>();
-                var SucPar = int.Parse(CustomOptions.LoversPar.getString().Replace("0%",""));
+                var SucPar = int.Parse(CustomOptions.LoversPar.getString().Replace("0%", ""));
                 for (int i = 0; i < SucPar; i++)
                 {
                     a.Add("Suc");
@@ -321,7 +337,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (!p.isImpostor() && !p.isNeutral() && !p.isRole(RoleId.truelover))
+                    if (!p.isImpostor() && !p.isNeutral() && !p.isRole(RoleId.truelover) && p.IsPlayer())
                     {
                         if (!IsQuarreledDup || !p.IsQuarreled())
                         {
@@ -334,7 +350,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (!IsQuarreledDup || !p.IsQuarreled())
+                    if (!IsQuarreledDup || !p.IsQuarreled() && p.IsPlayer())
                     {
                         if (!p.isRole(RoleId.truelover))
                         {
@@ -372,14 +388,14 @@ namespace SuperNewRoles
             {
                 return;
             }
-            bool IsNotEndRandomSelect= true;
+            bool IsNotEndRandomSelect = true;
             while (IsNotEndRandomSelect)
             {
                 if (Impoonepar.Count != 0)
                 {
                     int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Impoonepar);
                     RoleId SelectRoleDate = Impoonepar[SelectRoleDateIndex];
-                    
+
                     if (SelectRoleDate == RoleId.EvilSpeedBooster)
                     {
                         try
@@ -411,7 +427,7 @@ namespace SuperNewRoles
                             ImpostorPlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
-                        
+
                     } else if (PlayerCount >= ImpostorPlayers.Count)
                     {
                         foreach (PlayerControl Player in ImpostorPlayers)
@@ -446,7 +462,7 @@ namespace SuperNewRoles
                             ImpostorPlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
-                        
+
                     } else if (PlayerCount >= ImpostorPlayers.Count) {
                         foreach (PlayerControl Player in ImpostorPlayers)
                         {
@@ -464,7 +480,7 @@ namespace SuperNewRoles
                             ImpostorPlayers.Remove(p);
                         }
                     }
-                    for (int i1 = 1; i1<= 15; i1++)
+                    for (int i1 = 1; i1 <= 15; i1++)
                     {
                         for (int i = 1; i <= Imponotonepar.Count; i++)
                         {
@@ -787,6 +803,42 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SurvivorPlayerCount.getFloat();
                 case (RoleId.MadMayor):
                     return CustomOption.CustomOptions.MadMayorPlayerCount.getFloat();
+                case (RoleId.NiceHawk):
+                    return CustomOption.CustomOptions.NiceHawkPlayerCount.getFloat();
+                case (RoleId.Bakery):
+                    return CustomOption.CustomOptions.BakeryPlayerCount.getFloat();
+                case (RoleId.MadJester):
+                    return CustomOption.CustomOptions.MadJesterPlayerCount.getFloat();
+                case (RoleId.MadStuntMan):
+                    return CustomOption.CustomOptions.MadStuntManPlayerCount.getFloat();
+                case (RoleId.MadHawk):
+                    return CustomOption.CustomOptions.MadHawkPlayerCount.getFloat();
+                case (RoleId.FalseCharges):
+                    return CustomOption.CustomOptions.FalseChargesPlayerCount.getFloat();
+                case (RoleId.NiceTeleporter):
+                    return CustomOption.CustomOptions.NiceTeleporterPlayerCount.getFloat();
+                case (RoleId.Celebrity):
+                    return CustomOption.CustomOptions.CelebrityPlayerCount.getFloat();
+                case (RoleId.Nocturnality):
+                    return CustomOption.CustomOptions.NocturnalityPlayerCount.getFloat();
+                case (RoleId.Observer):
+                    return CustomOption.CustomOptions.ObserverPlayerCount.getFloat();
+                case (RoleId.Vampire):
+                    return CustomOption.CustomOptions.VampirePlayerCount.getFloat();
+                case (RoleId.DarkKiller):
+                    return CustomOption.CustomOptions.DarkKillerPlayerCount.getFloat();
+                case (RoleId.Seer):
+                    return CustomOption.CustomOptions.SeerPlayerCount.getFloat();
+                case (RoleId.MadSeer):
+                    return CustomOption.CustomOptions.MadSeerPlayerCount.getFloat();
+                case (RoleId.EvilSeer):
+                    return CustomOption.CustomOptions.EvilSeerPlayerCount.getFloat();
+                case (RoleId.RemoteSheriff):
+                    return CustomOption.CustomOptions.RemoteSheriffPlayerCount.getFloat();
+                case (RoleId.Fox):
+                    return CustomOption.CustomOptions.FoxPlayerCount.getFloat();
+                    case (RoleId.TeleportingJackal):
+                    return CustomOption.CustomOptions.TeleportingJackalPlayerCount.getFloat();
                 case (RoleId.DoubralKiller):
                     return CustomOption.CustomOptions.DoubralKillerPlayerCount.getFloat();
                     //プレイヤーカウント
@@ -797,7 +849,7 @@ namespace SuperNewRoles
         {
             CrewMatePlayers = new List<PlayerControl>();
             ImpostorPlayers = new List<PlayerControl>();
-            foreach(PlayerControl Player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl Player in PlayerControl.AllPlayerControls)
             {
                 if (Player.Data.Role.IsSimpleRole)
                 {
@@ -827,7 +879,8 @@ namespace SuperNewRoles
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);
-                } else
+                }
+                else
                 {
                     for (int i = 1; i <= OptionDate; i++)
                     {
@@ -851,7 +904,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-             if (!(CustomOption.CustomOptions.LighterOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.LighterOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.LighterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Lighter;
@@ -1374,7 +1427,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.GodOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.GodOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.GodOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.God;
@@ -1390,25 +1443,25 @@ namespace SuperNewRoles
                     }
                 }
             }
-        /**
-        if (!(CustomOption.CustomOptions.AllCleanerOption.getString().Replace("0%", "") == ""))
-            {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.AllCleanerOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.AllCleaner;
-                if (OptionDate == 10)
+            /**
+            if (!(CustomOption.CustomOptions.AllCleanerOption.getString().Replace("0%", "") == ""))
                 {
-                    Impoonepar.Add(ThisRoleId);
-                }
-                else
-                {
-                    for (int i = 1; i <= OptionDate; i++)
+                    int OptionDate = int.Parse(CustomOption.CustomOptions.AllCleanerOption.getString().Replace("0%", ""));
+                    RoleId ThisRoleId = RoleId.AllCleaner;
+                    if (OptionDate == 10)
                     {
-                        Imponotonepar.Add(ThisRoleId);
+                        Impoonepar.Add(ThisRoleId);
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= OptionDate; i++)
+                        {
+                            Imponotonepar.Add(ThisRoleId);
+                        }
                     }
                 }
-            }
-            **/
-        if (!(CustomOption.CustomOptions.NiceNekomataOption.getString().Replace("0%", "") == ""))
+                **/
+            if (!(CustomOption.CustomOptions.NiceNekomataOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.NiceNekomataOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.NiceNekomata;
@@ -1424,7 +1477,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.EvilNekomataOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.EvilNekomataOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.EvilNekomataOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.EvilNekomata;
@@ -1440,7 +1493,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.JackalFriendsOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.JackalFriendsOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.JackalFriendsOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.JackalFriends;
@@ -1456,7 +1509,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.DoctorOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.DoctorOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.DoctorOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Doctor;
@@ -1472,7 +1525,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.CountChangerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.CountChangerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.CountChangerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.CountChanger;
@@ -1488,7 +1541,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.PursuerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.PursuerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.PursuerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Pursuer;
@@ -1504,7 +1557,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.MinimalistOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.MinimalistOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MinimalistOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Minimalist;
@@ -1520,7 +1573,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.HawkOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.HawkOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.HawkOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Hawk;
@@ -1536,7 +1589,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.EgoistOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.EgoistOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.EgoistOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Egoist;
@@ -1552,7 +1605,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.NiceRedRidingHoodOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.NiceRedRidingHoodOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.NiceRedRidingHoodOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.NiceRedRidingHood;
@@ -1568,7 +1621,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.EvilEraserOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.EvilEraserOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.EvilEraserOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.EvilEraser;
@@ -1584,7 +1637,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.WorkpersonOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.WorkpersonOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.WorkpersonOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Workperson;
@@ -1600,7 +1653,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.MagazinerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.MagazinerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MagazinerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Magaziner;
@@ -1616,7 +1669,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.MayorOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.MayorOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MayorOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Mayor;
@@ -1632,7 +1685,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.trueloverOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.trueloverOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.trueloverOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.truelover;
@@ -1648,7 +1701,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.TechnicianOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.TechnicianOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.TechnicianOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Technician;
@@ -1664,7 +1717,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.SerialKillerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.SerialKillerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SerialKillerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.SerialKiller;
@@ -1680,7 +1733,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.OverKillerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.OverKillerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.OverKillerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.OverKiller;
@@ -1696,7 +1749,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.LevelingerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.LevelingerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.LevelingerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Levelinger;
@@ -1712,7 +1765,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.EvilMovingOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.EvilMovingOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.EvilMovingOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.EvilMoving;
@@ -1728,7 +1781,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.AmnesiacOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.AmnesiacOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.AmnesiacOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Amnesiac;
@@ -1744,7 +1797,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.SideKillerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.SideKillerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SideKillerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.SideKiller;
@@ -1760,7 +1813,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.SurvivorOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.SurvivorOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SurvivorOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Survivor;
@@ -1792,6 +1845,344 @@ namespace SuperNewRoles
                     }
                 }
             }
+            if (!(CustomOption.CustomOptions.NiceHawkOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NiceHawkOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.NiceHawk;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.BakeryOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.BakeryOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Bakery;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.MadHawkOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadHawkOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadHawk;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.FalseCharges;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.NiceTeleporter;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.MadStuntManOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadStuntManOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadStuntMan;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.MadHawkOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadHawkOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadHawk;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.MadJesterOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadJesterOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadJester;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.FalseChargesOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.FalseCharges;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NiceTeleporterOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.NiceTeleporter;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.CelebrityOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.CelebrityOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Celebrity;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+
+            }
+            if (!(CustomOption.CustomOptions.NocturnalityOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.NocturnalityOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Nocturnality;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.ObserverOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.ObserverOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Observer;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.VampireOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.VampireOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Vampire;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.FoxOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.FoxOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Fox;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.DarkKillerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.DarkKillerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.DarkKiller;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.SeerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SeerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Seer;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.MadSeerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadSeerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadSeer;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.EvilSeerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.EvilSeerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.EvilSeer;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.RemoteSheriffOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.RemoteSheriffOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.RemoteSheriff;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.TeleportingJackalOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.TeleportingJackalOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.TeleportingJackal;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        //セットクラス
             if (!(CustomOption.CustomOptions.DoubralKillerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.DoubralKillerOption.getString().Replace("0%", ""));

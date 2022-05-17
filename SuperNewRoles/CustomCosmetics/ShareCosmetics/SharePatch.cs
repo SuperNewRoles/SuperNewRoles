@@ -18,6 +18,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
         {
             public static void Postfix()
             {
+                return;
                 if (PlayerControl.LocalPlayer != null && ConfigRoles.IsShareCosmetics.Value && ConfigRoles.ShareCosmeticsNamePlatesURL.Value != "")
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, Hazel.SendOption.Reliable, -1);

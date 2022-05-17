@@ -11,11 +11,13 @@ namespace SuperNewRoles.Roles
         public enum BlockTypes
         {
             StuntmanGuard,
+            MadStuntmanGuard,
             ClergymanLightOut,
             BaitReport,
             RedRidingHoodRevive,
             JackalSidekick,
-            NekomataExiled
+            NekomataExiled,
+            FoxGuard
         }
         public static bool IsBlock(BlockTypes blocktype,PlayerControl player = null)
         {
@@ -38,6 +40,8 @@ namespace SuperNewRoles.Roles
                 case (BlockTypes.JackalSidekick):
                     return true;
                 case (BlockTypes.NekomataExiled):
+                    return true;
+                case (BlockTypes.FoxGuard):
                     return true;
             }
             return false;
@@ -86,6 +90,36 @@ namespace SuperNewRoles.Roles
             } else
             {
                 IsWinGodGuard = true;
+                UseCount(player);
+            }
+            return false;
+        }
+
+        public static bool IsWinFoxGuard = false;
+        public static bool IsFoxWinGuard()
+        {
+            bool IsAlive = false;
+            foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
+            {
+                if (p.isAlive())
+                {
+                    IsAlive = true;
+                }
+            }
+            if (!IsAlive)
+            {
+                return false;
+            }
+            if (IsWinFoxGuard)
+            {
+                return true;
+            }
+            PlayerControl player = GetOnCount();
+            if (player == null){
+                return false;
+            } else
+            {
+                IsWinFoxGuard = true;
                 UseCount(player);
             }
             return false;

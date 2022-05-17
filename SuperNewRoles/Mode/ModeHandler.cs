@@ -1,4 +1,5 @@
-﻿using SuperNewRoles.CustomOption;
+﻿using HarmonyLib;
+using SuperNewRoles.CustomOption;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Patch;
 using System;
@@ -9,6 +10,16 @@ using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode
 {
+    [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CloseDoorsOfType))]
+    class CloseDoorsPatch
+    {
+        public static bool Prefix(ShipStatus __instance)
+        {
+            if (ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.Werewolf) || 
+                ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.HideAndSeek)) return false;
+            return true;
+        }
+    }
     enum ModeId
     {
         No,
@@ -159,8 +170,8 @@ namespace SuperNewRoles.Mode
         }
         public static void OptionLoad() {
             Mode = new CustomOptionBlank(null);
-            ModeSetting = CustomOption.CustomOption.Create(132, CustomOptions.cs(Color.white, "ModeSetting"), false, Mode, isHeader: true);
-            ThisModeSetting = CustomOption.CustomOption.Create(133, CustomOptions.cs(Color.white, "SettingMode"), modes , ModeSetting);
+            ModeSetting = CustomOption.CustomOption.Create(132, true, CustomOptionType.Generic, "ModeSetting", false, Mode, isHeader: true);
+            ThisModeSetting = CustomOption.CustomOption.Create(133, true, CustomOptionType.Generic, "SettingMode", modes , ModeSetting);
             HideAndSeek.ZombieOptions.Load();
             BattleRoyal.BROption.Load();
             Zombie.ZombieOptions.Load();

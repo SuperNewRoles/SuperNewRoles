@@ -146,6 +146,42 @@ namespace SuperNewRoles.Intro
                     return SurvivorIntro;
                 case (CustomRPC.RoleId.MadMayor):
                     return MadMayorIntro;
+                case (CustomRPC.RoleId.NiceHawk):
+                    return NiceHawkIntro;
+                case (CustomRPC.RoleId.Bakery):
+                    return BakeryIntro;
+                case (CustomRPC.RoleId.MadStuntMan):
+                    return MadStuntManIntro;
+                case (CustomRPC.RoleId.MadHawk):
+                    return MadHawkIntro;
+                case (CustomRPC.RoleId.MadJester):
+                    return MadJesterIntro;
+                case (CustomRPC.RoleId.FalseCharges):
+                    return FalseChargesIntro;
+                case (CustomRPC.RoleId.NiceTeleporter):
+                    return NiceTeleporterIntro;
+                case (CustomRPC.RoleId.Celebrity):
+                    return CelebrityIntro;
+                case (CustomRPC.RoleId.Nocturnality):
+                    return NocturnalityIntro;
+                case (CustomRPC.RoleId.Observer):
+                    return ObserverIntro;
+                case (CustomRPC.RoleId.Vampire):
+                    return VampireIntro;
+                case (CustomRPC.RoleId.Fox):
+                    return FoxIntro;
+                case (CustomRPC.RoleId.DarkKiller):
+                    return DarkKillerIntro;
+                case (CustomRPC.RoleId.Seer):
+                    return SeerIntro;
+                case (CustomRPC.RoleId.MadSeer):
+                    return MadSeerIntro;
+                case (CustomRPC.RoleId.EvilSeer):
+                    return EvilSeerIntro;
+                case (CustomRPC.RoleId.RemoteSheriff):
+                    return RemoteSheriffIntro;
+                case (CustomRPC.RoleId.TeleportingJackal):
+                    return TeleportingJackalIntro;
                 case (CustomRPC.RoleId.DoubralKiller):
                     return DoubralKillerIntro;
                 //イントロ検知
@@ -230,6 +266,24 @@ namespace SuperNewRoles.Intro
         public static IntroDate MadKillerIntro = new IntroDate("MadKiller", RoleClass.SideKiller.color, 1, CustomRPC.RoleId.MadKiller);
         public static IntroDate SurvivorIntro = new IntroDate("Survivor", RoleClass.Survivor.color, 1, CustomRPC.RoleId.Survivor);
         public static IntroDate MadMayorIntro = new IntroDate("MadMayor", RoleClass.MadMayor.color, 1, CustomRPC.RoleId.MadMayor, TeamRoleType.Impostor);
+        public static IntroDate NiceHawkIntro = new IntroDate("NiceHawk", RoleClass.NiceHawk.color, 2, CustomRPC.RoleId.NiceHawk);
+        public static IntroDate BakeryIntro = new IntroDate("Bakery", RoleClass.Bakery.color, 1, CustomRPC.RoleId.Bakery);
+        public static IntroDate MadStuntManIntro = new IntroDate("MadStuntMan", RoleClass.MadStuntMan.color, 1, CustomRPC.RoleId.MadStuntMan, TeamRoleType.Impostor);
+        public static IntroDate MadHawkIntro = new IntroDate("MadHawk", RoleClass.MadHawk.color, 1, CustomRPC.RoleId.MadHawk);
+        public static IntroDate MadJesterIntro = new IntroDate("MadJester", RoleClass.MadJester.color, 1, CustomRPC.RoleId.MadJester);
+        public static IntroDate FalseChargesIntro = new IntroDate("FalseCharges", RoleClass.FalseCharges.color, 1, CustomRPC.RoleId.FalseCharges);
+        public static IntroDate NiceTeleporterIntro = new IntroDate("NiceTeleporter", RoleClass.NiceTeleporter.color, 1, CustomRPC.RoleId.NiceTeleporter);
+        public static IntroDate CelebrityIntro = new IntroDate("Celebrity", RoleClass.Celebrity.color, 1, CustomRPC.RoleId.Celebrity);
+        public static IntroDate NocturnalityIntro = new IntroDate("Nocturnality", RoleClass.Nocturnality.color, 1, CustomRPC.RoleId.Nocturnality);
+        public static IntroDate ObserverIntro = new IntroDate("Observer", RoleClass.Observer.color, 1, CustomRPC.RoleId.Observer);
+        public static IntroDate VampireIntro = new IntroDate("Vampire", RoleClass.Vampire.color, 1, CustomRPC.RoleId.Vampire);
+        public static IntroDate FoxIntro = new IntroDate("Fox", RoleClass.Fox.color, 1, CustomRPC.RoleId.Fox);
+        public static IntroDate DarkKillerIntro = new IntroDate("DarkKiller", RoleClass.DarkKiller.color, 1, CustomRPC.RoleId.DarkKiller);
+        public static IntroDate SeerIntro = new IntroDate("Seer", RoleClass.Seer.color, 1, CustomRPC.RoleId.Seer);
+        public static IntroDate MadSeerIntro = new IntroDate("MadSeer", RoleClass.MadSeer.color, 1, CustomRPC.RoleId.MadSeer);
+        public static IntroDate EvilSeerIntro = new IntroDate("EvilSeer", RoleClass.EvilSeer.color, 1, CustomRPC.RoleId.EvilSeer);
+        public static IntroDate RemoteSheriffIntro = new IntroDate("RemoteSheriff", RoleClass.RemoteSheriff.color, 1, CustomRPC.RoleId.RemoteSheriff);
+        public static IntroDate TeleportingJackalIntro = new IntroDate("TeleportingJackal", RoleClass.TeleportingJackal.color, 1, CustomRPC.RoleId.TeleportingJackal);
         public static IntroDate DoubralKillerIntro = new IntroDate("DoubralKiller", RoleClass.DoubralKiller.color, 1, CustomRPC.RoleId.DoubralKiller);
         //イントロオブジェ
     }

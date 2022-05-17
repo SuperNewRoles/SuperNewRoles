@@ -20,21 +20,14 @@ namespace SuperNewRoles.Roles
                     if (player.IsLovers())
                     {
                         RoleClass.Lovers.LoversPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
+                        ChacheManager.ResetLoversChache();
                     }
-                    if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    if (player.IsQuarreled() && player.isAlive())
                     {
-                        Madmate.CheckedImpostor = new List<byte>();
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                        {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (p.PlayerId != p2.PlayerId && !p2.Data.Disconnected)
-                                {
-                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
-                                }
-                            }
-                        }
-                    } else if (ModeHandler.isMode(ModeId.Default))
+                        RoleClass.Quarreled.QuarreledPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
+                        ChacheManager.ResetQuarreledChache();
+                    }
+                    if (ModeHandler.isMode(ModeId.Default))
                     {
                         if (player.isRole(CustomRPC.RoleId.SideKiller))
                         {
@@ -52,7 +45,7 @@ namespace SuperNewRoles.Roles
                             var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
                             if (sideplayer != null)
                             {
-                                PlayerControl.LocalPlayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
+                                player.RPCSetRoleUnchecked(RoleTypes.Impostor);
                             }
                         }
                     }

@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -67,25 +68,40 @@ namespace SuperNewRoles.Patch
         [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]
         private static class GameDataRecomputeTaskCountsPatch
         {
-            public static bool Prefix(GameData __instance)
+            public static void Postfix(GameData __instance)
             {
-                if (!Mode.ModeHandler.isMode(Mode.ModeId.Default))
+                if (!AmongUsClient.Instance.AmHost) return;
+                switch (ModeHandler.GetMode())
                 {
-                    return true;
+                    case ModeId.SuperHostRoles:
+                    case ModeId.Default:
+                        CountDefaultTask(__instance);
+                        return;
+                    case ModeId.Zombie:
+                        Mode.Zombie.main.CountTaskZombie(__instance);
+                        return;
+                    case ModeId.Detective:
+                        Mode.Detective.Task.TaskCountDetective(__instance);
+                        return;
+                    case ModeId.HideAndSeek:
+                        Mode.HideAndSeek.Task.TaskCountHideAndSeek(__instance);
+                        return;
                 }
-                __instance.TotalTasks = 0;
-                __instance.CompletedTasks = 0;
-                for (int i = 0; i < __instance.AllPlayers.Count; i++)
+            }
+        }
+        static void CountDefaultTask(GameData __instance)
+        {
+            __instance.TotalTasks = 0;
+            __instance.CompletedTasks = 0;
+            for (int i = 0; i < __instance.AllPlayers.Count; i++)
+            {
+                GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
+                if (!RoleHelpers.isClearTask(playerInfo.Object) && playerInfo.Object.IsPlayer())
                 {
-                    GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
-                    var (playerCompleted, playerTotal) = TaskDate(playerInfo);
-                    if (!RoleHelpers.isClearTask(playerInfo.Object))
-                    {
-                        __instance.TotalTasks += playerTotal;
-                        __instance.CompletedTasks += playerCompleted;
-                    }
+                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
+                    __instance.TotalTasks += playerTotal;
+                    __instance.CompletedTasks += playerCompleted;
                 }
-                return false;
             }
         }
     }

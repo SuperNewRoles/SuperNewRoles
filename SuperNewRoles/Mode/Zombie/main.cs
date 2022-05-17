@@ -16,33 +16,34 @@ namespace SuperNewRoles.Mode.Zombie
         public static Color Policecolor = Color.blue;
         public static List<int> ZombiePlayers;
         public static bool IsZombie(this PlayerControl player) {
-            if (player.Data.Role.IsImpostor || ZombiePlayers.Contains(player.PlayerId)) return true;
-            return false;
-        }
-        [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]
-        private static class GameDataRecomputeTaskCountsPatch
-        {
-            public static void Postfix(GameData __instance)
+            try
             {
-                if (!Mode.ModeHandler.isMode(Mode.ModeId.Zombie) || !AmongUsClient.Instance.AmHost) return;
-                __instance.TotalTasks = 0;
-                __instance.CompletedTasks = 0;
-                for (int i = 0; i < __instance.AllPlayers.Count; i++)
+                if (player.Data.Disconnected) return true;
+                if (player.Data.Role.IsImpostor || ZombiePlayers.Contains(player.PlayerId)) return true;
+                return false;
+            }
+            catch { return false; }
+        }
+        public static void CountTaskZombie(GameData __instance)
+        {
+            __instance.TotalTasks = 0;
+            __instance.CompletedTasks = 0;
+            for (int i = 0; i < __instance.AllPlayers.Count; i++)
+            {
+                GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
+                if (!playerInfo.Object.IsZombie())
                 {
-                    GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
-                    if (!playerInfo.Object.IsZombie())
-                    {
-                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
-                        __instance.TotalTasks += playerTotal;
-                        __instance.CompletedTasks += playerCompleted;
-                    }
+                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
+                    __instance.TotalTasks += playerTotal;
+                    __instance.CompletedTasks += playerCompleted;
                 }
             }
         }
         public static void SetZombie(this PlayerControl player)
         {
+            
+            //player.RpcSetHat("");
             /*
-            player.RpcSetHat("");
             player.RpcSetSkin("");
             */
             player.RpcSetColor(2);
@@ -60,6 +61,7 @@ namespace SuperNewRoles.Mode.Zombie
             RPCHelper.RPCGameOptionsPrivate(Data,player);
             */
             if (!ZombiePlayers.Contains(player.PlayerId)) ZombiePlayers.Add(player.PlayerId);
+            ZombieOptions.ChengeSetting(player);
         }
         public static void SetNotZombie(this PlayerControl player)
         {
@@ -91,10 +93,20 @@ namespace SuperNewRoles.Mode.Zombie
         }
         public static void ClearAndReload()
         {
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                p.SetHat("",0);
+            }
             /*
             PlayerControl.GameOptions.ImpostorLightMod = ZombieOptions.ZombieLight.getFloat();
             PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
             */
+            SyncSetting.OptionData = PlayerControl.GameOptions;
+            ZombieOptions.ZombieLight = ZombieOptions.ZombieLightOption.getFloat();
+            ZombieOptions.ZombieSpeed = ZombieOptions.ZombieSpeedOption.getFloat();
+            ZombieOptions.PoliceLight = ZombieOptions.PoliceLightOption.getFloat();
+            ZombieOptions.PoliceSpeed = ZombieOptions.PoliceSpeedOption.getFloat();
+            if (!AmongUsClient.Instance.AmHost) return;
             ZombiePlayers = new List<int>();
             if (AmongUsClient.Instance.AmHost) { 
                 FixedUpdate.IsStart = false;
@@ -104,12 +116,16 @@ namespace SuperNewRoles.Mode.Zombie
                     /*
                     p.UncheckSetVisor("visor_EmptyVisor");
                     */
+                    
+                    //p.RpcSetHat("");
+                    
                     /*
-                    p.RpcSetHat("");
                     p.RpcSetSkin("");
                     */
+                    
                 }
             }
+            ZombieOptions.FirstChangeSettings();
         }
         public static void SetTimer()
         {
@@ -124,7 +140,7 @@ namespace SuperNewRoles.Mode.Zombie
                     }
                 }
             }
-            FixedUpdate.NameChangeTimer = 5f;
+            FixedUpdate.NameChangeTimer = ZombieOptions.StartSecondOption.getFloat();
         }
     }
 }
