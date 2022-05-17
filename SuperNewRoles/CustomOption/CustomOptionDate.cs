@@ -468,6 +468,14 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption TeleportingJackalCoolTime;
         public static CustomOption TeleportingJackalDurationTime;
 
+        public static CustomRoleOption ScavengerOption;
+        public static CustomOption ScavengerPlayerCount;
+        public static CustomOption ScavengerNeedReportCount;
+        public static CustomOption ScavengerIsUseVent;
+        public static CustomOption ScavengerInVentTime;
+        public static CustomOption ScavengerOutVentTime;
+        public static CustomOption ScavengerVentCoolTime;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -961,6 +969,13 @@ namespace SuperNewRoles.CustomOption
             TeleportingJackalUseSabo = CustomOption.Create(408, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, TeleportingJackalOption);
             TeleportingJackalCoolTime = CustomOption.Create(409, false, CustomOptionType.Neutral, "TeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
             TeleportingJackalDurationTime = CustomOption.Create(410, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
+
+            ScavengerOption = new CustomRoleOption(320, true, CustomOptionType.Neutral, "ScavengerName", RoleClass.Scavenger.color, 1);
+            ScavengerPlayerCount = CustomOption.Create(321, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ScavengerOption);
+            ScavengerNeedReportCount = CustomOption.Create(322, true, CustomOptionType.Neutral, "ScavengerNeedReportCountSetting", 1f, 1f, 10f, 1f, ScavengerOption, format: "unitSeconds");
+            ScavengerIsUseVent = CustomOption.Create(322, true, CustomOptionType.Neutral, "ScavengerIsUseVentSetting", false, ScavengerOption);
+            ScavengerOutVentTime = CustomOption.Create(323, true, CustomOptionType.Neutral, "ScavengerOutVentTimeSetting", 10f, 3f, 100f, 2.5f, ScavengerIsUseVent);
+            ScavengerVentCoolTime = CustomOption.Create(324, true, CustomOptionType.Neutral, "ScavengerVentCoolTimeSetting", 10f, 0f, 100f, 2.5f, ScavengerIsUseVent);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

@@ -34,6 +34,7 @@ namespace SuperNewRoles.EndGame
         MadJesterWin,
         FalseChargesWin,
         FoxWin,
+        ScavengerWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -212,6 +213,12 @@ namespace SuperNewRoles.EndGame
                 text = "WorkpersonName";
                 textRenderer.color = RoleClass.Workperson.color;
                 __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.ScavengerWin)
+            {
+                text = "ScavengerName";
+                textRenderer.color = Roles.RoleClass.Scavenger.color;
+                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Scavenger.color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.MadJesterWin)
             {
@@ -500,6 +507,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.MadJester.MadJesterPlayer);
             notWinners.AddRange(RoleClass.MadSeer.MadSeerPlayer);
             notWinners.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
+            notWinners.AddRange(RoleClass.Scavenger.ScavengerPlayer);
             notWinners.AddRange(RoleClass.Fox.FoxPlayer);
             notWinners.AddRange(BotManager.AllBots);
 
@@ -529,6 +537,7 @@ namespace SuperNewRoles.EndGame
             bool WorkpersonWin = gameOverReason == (GameOverReason)CustomGameOverReason.WorkpersonWin;
             bool FalseChargesWin = gameOverReason == (GameOverReason)CustomGameOverReason.FalseChargesWin;
             bool FoxWin = gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
+            bool ScavengerWin = gameOverReason == (GameOverReason)CustomGameOverReason.ScavengerWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -539,6 +548,7 @@ namespace SuperNewRoles.EndGame
                 QuarreledWin = EndData == CustomGameOverReason.QuarreledWin;
                 FoxWin = EndData == CustomGameOverReason.FoxWin;
                 JackalWin = EndData == CustomGameOverReason.JackalWin;
+                ScavengerWin = EndData == CustomGameOverReason.ScavengerWin;
             }
 
 
@@ -611,6 +621,13 @@ namespace SuperNewRoles.EndGame
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.FalseChargesWin;
             }
+            else if (ScavengerWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
+                TempData.winners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.ScavengerWin;
+            }
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
                 foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
@@ -682,6 +699,21 @@ namespace SuperNewRoles.EndGame
                         WinningPlayerData wpd = new WinningPlayerData(p.Data);
                         TempData.winners.Add(wpd);
                         AdditionalTempData.winCondition = WinCondition.GodWin;
+                    }
+                }
+            }
+            foreach (PlayerControl p in RoleClass.Scavenger.ScavengerPlayer)
+            {
+                if (p.isAlive())
+                {
+                    if (RoleClass.Scavenger.NeedReportCount <= 0)
+                    {
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                        TempData.winners.Add(wpd);
+                        AdditionalTempData.winCondition = WinCondition.ScavengerWin;
                     }
                 }
             }

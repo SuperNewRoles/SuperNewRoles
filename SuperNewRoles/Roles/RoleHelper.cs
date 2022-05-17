@@ -502,6 +502,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.TeleportingJackal):
                     Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Scavenger):
+                    Roles.RoleClass.Scavenger.ScavengerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -760,6 +763,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.RemoteSheriff):
                     Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Scavenger):
+                    Roles.RoleClass.Scavenger.ScavengerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -843,6 +849,9 @@ namespace SuperNewRoles
                 case (RoleId.TeleportingJackal):
                     IsTaskClear = true;
                     break; 
+                case (RoleId.Scavenger):
+                    IsTaskClear = true;
+                    break; 
                 //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
@@ -877,6 +886,7 @@ namespace SuperNewRoles
             if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadHawk.IsUseVent) return true;
             if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadSeer.IsUseVent) return true;
             if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Fox.IsUseVent) return true;
+            if (RoleClass.Scavenger.ScavengerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Scavenger.IsUseVent) return true;
             return false;
         }
         public static bool IsSabotage()
@@ -972,6 +982,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.TeleportingJackal):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Scavenger):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1383,6 +1396,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.TeleportingJackal;
+            }
+            else if (Roles.RoleClass.Scavenger.ScavengerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Scavenger;
             }
             //ロールチェック
             }

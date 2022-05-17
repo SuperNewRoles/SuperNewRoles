@@ -161,6 +161,25 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 //trueloverPlayer.Data.IsDead = true;
             }
+            foreach (PlayerControl ScavengerPlayer in RoleClass.Scavenger.ScavengerPlayer)
+            {
+                if (!ScavengerPlayer.IsMod())
+                {
+                    ScavengerPlayer.RpcSetRoleDesync(RoleTypes.Crewmate);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != ScavengerPlayer.PlayerId && p.IsPlayer())
+                        {
+                            ScavengerPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, ScavengerPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    ScavengerPlayer.RpcSetRole(RoleTypes.Shapeshifter);
+                }
+            }
             foreach (PlayerControl Player in RoleClass.FalseCharges.FalseChargesPlayer)
             {
                 if (!Player.IsMod())
@@ -234,6 +253,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.Fox.IsUseVent)
             {
                 foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
+                {
+                    if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
+                }
+            }
+
+            if (RoleClass.Scavenger.IsUseVent)
+            {
+                foreach (PlayerControl p in RoleClass.Scavenger.ScavengerPlayer)
                 {
                     if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
                     {
@@ -807,6 +837,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.ScavengerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.ScavengerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Scavenger;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutonepar.Add(ThisRoleId);
                     }
                 }
             }

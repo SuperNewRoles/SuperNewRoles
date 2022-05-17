@@ -104,6 +104,7 @@ namespace SuperNewRoles.CustomRPC
         EvilSeer,
         RemoteSheriff,
         TeleportingJackal,
+        Scavenger,
         //RoleId
     }
 
