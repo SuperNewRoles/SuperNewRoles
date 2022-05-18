@@ -46,6 +46,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton MadMakerSidekickButton;
         public static CustomButton TimeMasterTimeMasterShieldButton;
 
+
         public static TMPro.TMP_Text sheriffNumShotsText;
 
         public static void setCustomButtonCooldowns()

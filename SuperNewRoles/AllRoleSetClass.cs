@@ -2194,6 +2194,7 @@ namespace SuperNewRoles
                 }
             }
             if (!(CustomOption.CustomOptions.MadMakerOption.getString().Replace("0%", "") == ""))
+
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MadMakerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.MadMaker;

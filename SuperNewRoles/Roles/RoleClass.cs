@@ -1739,7 +1739,6 @@ namespace SuperNewRoles.Roles
                 CreatePlayers = new List<int>();
             }
         }
-
         public static class TimeMaster
         {
             public static List<PlayerControl> TimeMasterPlayer;
