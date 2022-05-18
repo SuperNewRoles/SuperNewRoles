@@ -5,7 +5,7 @@ i:{00000000-0000-0000-0000-000000000000}:SuperNewRoles
 ++Properties
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\properties\
 ++依存関係
-i:{e45ef77f-0757-4e24-8992-97cea5e17313}:>1037
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:>3402
 ++Buttons
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\buttons\
 ++Buttons.cs
@@ -40,6 +40,12 @@ i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\s
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\discordstatus\
 ++EndGame
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\endgame\
+++CustomEndReason.cs
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\endgame\customendreason.cs
+++EndGame.cs
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\endgame\endgame.cs
+++FinalStatus.cs
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\endgame\finalstatus.cs
 ++Helpers
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\helpers\
 ++Intro
@@ -100,6 +106,8 @@ i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\s
 ++BestFalseCharge.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\mode\superhostroles\roles\bestfalsecharge.cs
 ++Fox.cs
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\mode\superhostroles\roles\fox.cs
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\fox.cs
 ++GetRoleText.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\mode\superhostroles\roles\getroletext.cs
 ++Jackal.cs
@@ -113,6 +121,8 @@ i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\s
 ++Nekomata.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\mode\superhostroles\roles\nekomata.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\nekomata.cs
+++Blackoutfix.cs
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\mode\superhostroles\blackoutfix.cs
 ++BlockTool.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\mode\superhostroles\blocktool.cs
 ++BotHandler.cs
@@ -155,9 +165,6 @@ i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\s
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\mode\werewolf\roleselecthandler.cs
 ++RPCSetTask.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\mode\superhostroles\rpcsettask.cs
-++Seer.cs
-i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\mode\superhostroles\seer.cs
-i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\seer.cs
 ++ShipStatus.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\mode\superhostroles\shipstatus.cs
 ++SyncSetting.cs
@@ -204,6 +211,8 @@ i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\s
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\patch\debugmode.cs
 ++DefaultCustomSettingChangePatch.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\patch\defaultcustomsettingchangepatch.cs
+++Fastboot.cs
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\patch\fastboot.cs
 ++InversionMap.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\patch\inversionmap.cs
 ++LightPatch.cs
@@ -293,6 +302,8 @@ i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\s
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\resources\speedupbutton.png
 ++TabIcon.png
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\resources\tabicon.png
+++TimeShieldButton.png
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\resources\timeshieldbutton.png
 ++translatedate.json
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\resources\translatedate.json
 ++trueloverloveButton.png
@@ -365,6 +376,8 @@ i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\s
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\roletemplate.cs
 ++Scientist.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\scientist.cs
+++Seer.cs
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\seer.cs
 ++SelfBomber.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\selfbomber.cs
 ++SerialKiller.cs
@@ -385,6 +398,10 @@ i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\s
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\teamroletype.cs
 ++Teleporter.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\teleporter.cs
+++TeleportingJackal.cs
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\teleportingjackal.cs
+++TimeMaster.cs
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\timemaster.cs
 ++Vampire.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\vampire.cs
 ++Workperson.cs
@@ -395,6 +412,8 @@ i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\s
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\allrolesetclass.cs
 ++AutoUpdate.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\autoupdate.cs
+++BotManager.cs
+i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\botmanager.cs
 ++Config.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\config.cs
 ++CustomMsg.cs
@@ -445,12 +464,6 @@ i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\s
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\mode\hideandseek\patch.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\sabotage\patch.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\sabotage\cognitivedeficit\patch.cs
-++CustomEndReason.cs
-i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\endgame\customendreason.cs
-++EndGame.cs
-i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\endgame\endgame.cs
-++FinalStatus.cs
-i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\endgame\finalstatus.cs
 ++DesyncHelpers.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\helpers\desynchelpers.cs
 ++PolygonColliderHelper.cs
@@ -759,7 +772,3 @@ i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\s
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\map\agartha\patch\minimappatch.cs
 ++SetSprite.cs
 i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\map\agartha\patch\setsprite.cs
-++TimeMaster.cs
-i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\roles\timemaster.cs
-++TimeShieldButton.png
-i:{e45ef77f-0757-4e24-8992-97cea5e17313}:d:\06-program\amongus_mod_development\snr_kt\supernewroles_kt\supernewroles\resources\timeshieldbutton.png
