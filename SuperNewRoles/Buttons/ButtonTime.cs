@@ -242,34 +242,5 @@ namespace SuperNewRoles.Buttons
                 if (Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer <= 0f) Buttons.HudManagerStartPatch.EvilSpeedBoosterBoostButton.Timer = 0f; return;
             }
         }
-
-        public static void TimeMasterButton()
-        {
-            if (Roles.RoleClass.TimeMaster.ShieldActive)
-            {
-                var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.TimeMaster.ShieldDuration);
-                Buttons.HudManagerStartPatch.TimeMasterTimeMasterShieldButton.MaxTimer = Roles.RoleClass.TimeMaster.ShieldDuration;
-                Buttons.HudManagerStartPatch.TimeMasterTimeMasterShieldButton.Timer = (float)((Roles.RoleClass.TimeMaster.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
-                if (Buttons.HudManagerStartPatch.TimeMasterTimeMasterShieldButton.Timer <= 0f)
-                {
-                    Roles.TimeMaster.TimeShieldEnd();
-                    Roles.TimeMaster.ResetCoolDown();
-                    Buttons.HudManagerStartPatch.TimeMasterTimeMasterShieldButton.MaxTimer = Roles.RoleClass.TimeMaster.Cooldown;
-                    Roles.RoleClass.TimeMaster.ShieldActive = false;
-                    Buttons.HudManagerStartPatch.TimeMasterTimeMasterShieldButton.actionButton.cooldownTimerText.color = Color.white;
-                    Roles.RoleClass.TimeMaster.ButtonTimer = DateTime.Now;
-                }
-            }
-            else
-            {
-                if (Roles.RoleClass.TimeMaster.ButtonTimer == null)
-                {
-                    Roles.RoleClass.TimeMaster.ButtonTimer = DateTime.Now;
-                }
-                var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.TimeMaster.Cooldown);
-                Buttons.HudManagerStartPatch.TimeMasterTimeMasterShieldButton.Timer = (float)((Roles.RoleClass.TimeMaster.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
-                if (Buttons.HudManagerStartPatch.TimeMasterTimeMasterShieldButton.Timer <= 0f) Buttons.HudManagerStartPatch.TimeMasterTimeMasterShieldButton.Timer = 0f; return;
-            }
-        }
     }
 }
