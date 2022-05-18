@@ -848,7 +848,7 @@ namespace SuperNewRoles.Buttons
             MadMakerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
             MadMakerSidekickButton.showButtonText = true;
 
-            DoubralKillerNormalKillButton = new CustomButton(
+      /*      DoubralKillerNormalKillButton = new CustomButton(
                 () =>
                 {
                     if (DoubralKiller.DoubralKillerFixedPatch.DoubralKillersetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
@@ -870,11 +870,11 @@ namespace SuperNewRoles.Buttons
                 KeyCode.Q,
                 49
             );
-
+      
             DoubralKillerNormalKillButton.buttonText = ModTranslation.getString("DoubralKillerSuicideRText");
             DoubralKillerNormalKillButton.buttonText = HudManager.Instance.KillButton.buttonLabelText.text;
             DoubralKillerNormalKillButton.showButtonText = true;
-
+      */
             DoubralKillerSecondKillButton = new CustomButton(
                 () =>
                 {

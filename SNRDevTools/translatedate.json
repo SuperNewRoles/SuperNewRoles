@@ -2338,6 +2338,14 @@
         } ,
  "DoubralKillerSuicideLText" : {
         "0" : "\u81ea\u6bba\u307e\u3067\u5f8c{0}\u79d2"
+        } ,
+ "MadMakerName" : {
+        "0" : "MadMaker" ,
+        "11" : "\u30de\u30c3\u30c9\u30e1\u30fc\u30ab\u30fc"
+        } ,
+ "MadMakerTitle1" : {
+        "0" : "Let's get more lunatics!" ,
+        "11" : "\u72c2\u4eba\u3092\u5897\u3084\u305d\u3046\uff01"
         } 
 
 }
