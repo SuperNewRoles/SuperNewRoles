@@ -17,7 +17,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
             if (target == null) {
                 //会議ボタンのみで起こる処理
-
                 return true;
             };
 
@@ -28,6 +27,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (__instance.isRole(CustomRPC.RoleId.Minimalist))
             {
                 var a = RoleClass.Minimalist.UseReport;
+                return a;
+            }
+            if (__instance.isRole(CustomRPC.RoleId.Fox))
+            {
+                var a = RoleClass.Fox.UseReport;
                 return a;
             }
             //if (target.Object.isRole(CustomRPC.RoleId.Bait) && (!deadPlayer.killerIfExisting.isRole(CustomRPC.RoleId.Minimalist) || RoleClass.Minimalist.UseReport)) if (!RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) { return false; } else { return true; }
