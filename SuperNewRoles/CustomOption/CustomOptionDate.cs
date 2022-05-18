@@ -468,6 +468,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption TeleportingJackalCoolTime;
         public static CustomOption TeleportingJackalDurationTime;
 
+        public static CustomRoleOption MadMakerOption;
+        public static CustomOption MadMakerPlayerCount;
+        public static CustomOption MadMakerIsUseVent;
+        public static CustomOption MadMakerIsImpostorLight;
+
         public static CustomRoleOption TimeMasterOption;
         public static CustomOption TimeMasterPlayerCount;
         public static CustomOption TimeMasterCooldown;
@@ -967,6 +972,11 @@ namespace SuperNewRoles.CustomOption
             TeleportingJackalUseSabo = CustomOption.Create(408, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, TeleportingJackalOption);
             TeleportingJackalCoolTime = CustomOption.Create(409, false, CustomOptionType.Neutral, "TeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
             TeleportingJackalDurationTime = CustomOption.Create(410, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
+
+            MadMakerOption = new CustomRoleOption(411, true, CustomOptionType.Crewmate, "MadMakerName", RoleClass.MadMaker.color, 1);
+            MadMakerPlayerCount = CustomOption.Create(412, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMakerOption);
+            MadMakerIsUseVent = CustomOption.Create(413, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadMakerOption);
+            MadMakerIsImpostorLight = CustomOption.Create(414, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadMakerOption);
 
             TimeMasterOption = new CustomRoleOption(900, false, CustomOptionType.Crewmate, "TimeMasterName", RoleClass.TimeMaster.color, 1);
             TimeMasterPlayerCount = CustomOption.Create(901, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TimeMasterOption);

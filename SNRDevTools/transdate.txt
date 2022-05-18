@@ -576,3 +576,5 @@ RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキル�
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート
 TeleportingJackalName,TeleportingJackal,テレポートジャッカル
 TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう
+MadMakerName,MadMaker,マッドメーカー
+MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！
