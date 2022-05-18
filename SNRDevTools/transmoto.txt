@@ -575,3 +575,5 @@ RemoteSheriffTitle1
 RemoteSheriffIsKillTeleportSetting
 TeleportingJackalName
 TeleportingJackalTitle1
+MadMakerName
+MadMakerTitle1
