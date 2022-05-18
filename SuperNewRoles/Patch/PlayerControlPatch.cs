@@ -377,7 +377,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (!target.Data.Role.IsImpostor)
                     {
-                        if (target == null) return false;
+                        if (target == null || RoleClass.MadMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
                         RoleClass.MadMaker.CreatePlayers.Add(__instance.PlayerId);
                         target.SetRole(RoleTypes.GuardianAngel);
                         target.setRoleRPC(RoleId.MadMate);
