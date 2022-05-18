@@ -233,6 +233,18 @@ namespace SuperNewRoles
                     }
                 }
             }
+            // Block Time Master with time shield kill
+            if (target.isRole(RoleId.TimeMaster) && RoleClass.TimeMaster.TimeMasterPlayer != null && RoleClass.TimeMaster.ShieldActive)
+            //else if (TimeMaster.shieldActive && TimeMaster.timeMaster != null && TimeMaster.timeMaster == target) _Ver.TOR
+            {
+                if (!blockRewind)
+                { // Only rewind the attempt was not called because a meeting startet 
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)CustomRPC.CustomRPC.TimeMasterRewindTime, Hazel.SendOption.Reliable, -1);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.TimeMasterRewindTime();
+                }
+                return MurderAttemptResult.SuppressKill;
+            }
             return MurderAttemptResult.PerformKill;
         }
         public static void generateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)

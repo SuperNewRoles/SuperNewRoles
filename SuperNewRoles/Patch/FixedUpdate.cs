@@ -10,6 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using System.Linq;
+
+
 
 namespace SuperNewRoles.Patch
 {
@@ -175,6 +178,59 @@ namespace SuperNewRoles.Patch
                 {
 
                 }
+            }
+        }
+        public static void bendTimeUpdate()
+        {
+            if (RoleClass.TimeMaster.IsRewinding)
+            {
+                if (EndGame.FinalStatusPatch.FinalStatusData.localPlayerPositions.Count > 0)
+                {
+                    // Set position
+                    var next = EndGame.FinalStatusPatch.FinalStatusData.localPlayerPositions[0];
+                    if (next.Item2 == true)
+                    {
+                        // Exit current vent if necessary
+                        if (PlayerControl.LocalPlayer.inVent)
+                        {
+                            foreach (Vent vent in ShipStatus.Instance.AllVents)
+                            {
+                                bool canUse;
+                                bool couldUse;
+                                vent.CanUse(PlayerControl.LocalPlayer.Data, out canUse, out couldUse);
+                                if (canUse)
+                                {
+                                    PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(vent.Id);
+                                    vent.SetButtons(false);
+                                }
+                            }
+                        }
+                        // Set position
+                        PlayerControl.LocalPlayer.transform.position = next.Item1;
+                    }
+                    else if (EndGame.FinalStatusPatch.FinalStatusData.localPlayerPositions.Any(x => x.Item2 == true))
+                    {
+                        PlayerControl.LocalPlayer.transform.position = next.Item1;
+                    }
+                    if (SubmergedCompatibility.isSubmerged())
+                    {
+                        SubmergedCompatibility.ChangeFloor(next.Item1.y > -7);
+                    }
+
+                    EndGame.FinalStatusPatch.FinalStatusData.localPlayerPositions.RemoveAt(0);
+
+                    if (EndGame.FinalStatusPatch.FinalStatusData.localPlayerPositions.Count > 1) EndGame.FinalStatusPatch.FinalStatusData.localPlayerPositions.RemoveAt(0); // Skip every second position to rewinde twice as fast, but never skip the last position
+                }
+                else
+                {
+                    RoleClass.TimeMaster.IsRewinding = false;
+                    PlayerControl.LocalPlayer.moveable = true;
+                }
+            }
+            else
+            {
+                while (EndGame.FinalStatusPatch.FinalStatusData.localPlayerPositions.Count >= Mathf.Round(RoleClass.TimeMaster.RewindTime / Time.fixedDeltaTime)) EndGame.FinalStatusPatch.FinalStatusData.localPlayerPositions.RemoveAt(EndGame.FinalStatusPatch.FinalStatusData.localPlayerPositions.Count - 1);
+                EndGame.FinalStatusPatch.FinalStatusData.localPlayerPositions.Insert(0, new Tuple<Vector3, bool>(PlayerControl.LocalPlayer.transform.position, PlayerControl.LocalPlayer.CanMove)); // CanMove = CanMove
             }
         }
     }
