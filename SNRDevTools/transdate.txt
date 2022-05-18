@@ -586,3 +586,5 @@ DoubralKillerSecondKillTimeSetting,キルクールタイム（ノーマルボタ
 DoubralKillerIsMeetingResetSetting,キルクールタイム（追加ボタン）
 DoubralKillerSuicideRText,自殺まで後{0}秒
 DoubralKillerSuicideLText,自殺まで後{0}秒
+MadMakerName,MadMaker,マッドメーカー
+MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！

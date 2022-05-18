@@ -477,6 +477,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption TeleportingJackalCoolTime;
         public static CustomOption TeleportingJackalDurationTime;
 
+        public static CustomRoleOption MadMakerOption;
+        public static CustomOption MadMakerPlayerCount;
+        public static CustomOption MadMakerIsUseVent;
+        public static CustomOption MadMakerIsImpostorLight;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -970,6 +975,11 @@ namespace SuperNewRoles.CustomOption
             TeleportingJackalUseSabo = CustomOption.Create(408, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, TeleportingJackalOption);
             TeleportingJackalCoolTime = CustomOption.Create(409, false, CustomOptionType.Neutral, "TeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
             TeleportingJackalDurationTime = CustomOption.Create(410, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
+
+            MadMakerOption = new CustomRoleOption(411, true, CustomOptionType.Crewmate, "MadMakerName", RoleClass.MadMaker.color, 1);
+            MadMakerPlayerCount = CustomOption.Create(412, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMakerOption);
+            MadMakerIsUseVent = CustomOption.Create(413, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadMakerOption);
+            MadMakerIsImpostorLight = CustomOption.Create(414, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadMakerOption);
 
             DoubralKillerOption = new CustomRoleOption(311, false, CustomOptionType.Impostor, "DoubralKillerName", RoleClass.DoubralKiller.color, 1);
             DoubralKillerPlayerCount = CustomOption.Create(312, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoubralKillerOption);

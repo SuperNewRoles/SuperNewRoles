@@ -502,6 +502,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.TeleportingJackal):
                     Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.MadMaker):
+                    Roles.RoleClass.MadMaker.MadMakerPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.DoubralKiller):
                     Roles.RoleClass.DoubralKiller.DoubralKillerPlayer.Add(player);
                     break;
@@ -763,6 +766,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.RemoteSheriff):
                     Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.MadMaker):
+                    Roles.RoleClass.MadMaker.MadMakerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
                 case (CustomRPC.RoleId.DoubralKiller):
@@ -884,6 +890,7 @@ namespace SuperNewRoles
             if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadHawk.IsUseVent) return true;
             if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadSeer.IsUseVent) return true;
             if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Fox.IsUseVent) return true;
+            if (RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMaker.IsUseVent) return true;
             return false;
         }
         public static bool IsSabotage()
@@ -932,6 +939,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.MadSeer) && RoleClass.MadSeer.IsImpostorLight) return true;
             if (player.isRole(RoleId.Fox) && RoleClass.Fox.IsImpostorLight) return true;
             if (player.isRole(RoleId.TeleportingJackal) && RoleClass.TeleportingJackal.IsImpostorLight) return true;
+            if (player.isRole(RoleId.MadMaker) && RoleClass.MadMaker.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -1378,6 +1386,24 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.Vampire;
+            }  
+            else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.DarkKiller;
+            }
+            else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Fox;
+            }
+            else if (Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.TeleportingJackal;
+            }
+            else if (Roles.RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.MadMaker;
+            }
+            //ロールチェック
                 }
                 else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
                 {

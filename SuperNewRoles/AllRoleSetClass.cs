@@ -839,6 +839,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.FoxPlayerCount.getFloat();
                     case (RoleId.TeleportingJackal):
                     return CustomOption.CustomOptions.TeleportingJackalPlayerCount.getFloat();
+                    case (RoleId.MadMaker):
+                    return CustomOption.CustomOptions.MadMakerPlayerCount.getFloat();
                 case (RoleId.DoubralKiller):
                     return CustomOption.CustomOptions.DoubralKillerPlayerCount.getFloat();
                     //プレイヤーカウント
@@ -2179,6 +2181,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.MadMakerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadMakerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadMaker;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
                     }
                 }
             }

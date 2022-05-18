@@ -585,3 +585,5 @@ Kill timeiPlus Buttonj
 Resets when you enter a meeting.
 {0} seconds to suicide
 {0} seconds to suicide
+MadMaker
+Let's get more lunatics!

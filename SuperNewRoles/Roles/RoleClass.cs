@@ -121,6 +121,7 @@ namespace SuperNewRoles.Roles
             EvilSeer.ClearAndReload();
             RemoteSheriff.ClearAndReload();
             TeleportingJackal.ClearAndReload();
+            MadMaker.ClearAndReload();
             DoubralKiller.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -1719,6 +1720,23 @@ namespace SuperNewRoles.Roles
                 IsImpostorLight = CustomOptions.TeleportingJackalIsImpostorLight.getBool();
                 CoolTime = CustomOptions.TeleportingJackalCoolTime.getFloat();
                 DurationTime = CustomOptions.TeleportingJackalDurationTime.getFloat();
+            }
+        }
+        public static class MadMaker
+        {
+            public static List<PlayerControl> MadMakerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static bool IsCreateMadmate;
+            public static List<int> CreatePlayers;
+            public static void ClearAndReload()
+            {
+                MadMakerPlayer = new List<PlayerControl>();
+                IsUseVent = CustomOptions.MadMakerIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadMakerIsImpostorLight.getBool();
+                IsCreateMadmate = false;
+                CreatePlayers = new List<int>();
             }
         }
         public static class DoubralKiller

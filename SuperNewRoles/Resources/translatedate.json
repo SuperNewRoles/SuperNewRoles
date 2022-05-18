@@ -2308,6 +2308,14 @@
         "0" : "Teleport and kill all crewmates and impostors!" ,
         "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\u3057\u3066\u5168\u54e1\u3076\u3061\u6bba\u305d\u3046"
         } ,
+ "MadMakerName" : {
+        "0" : "MadMaker" ,
+        "11" : "\u30de\u30c3\u30c9\u30e1\u30fc\u30ab\u30fc"
+        } ,
+ "MadMakerTitle1" : {
+        "0" : "Let's get more lunatics!" ,
+        "11" : "\u72c2\u4eba\u3092\u5897\u3084\u305d\u3046\uff01"
+        } 
  "DoubralKillerName" : {
         "0" : "\u30c0\u30d6\u30e9\u30eb\u30ad\u30e9\u30fc"
         } ,

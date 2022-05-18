@@ -576,6 +576,9 @@ RemoteSheriffTitle1
 RemoteSheriffIsKillTeleportSetting
 TeleportingJackalName
 TeleportingJackalTitle1
+MadMakerName
+MadMakerTitle1
+TeleportingJackalTitle1
 DoubralKillerName
 DoubralKillerTitle1
 DoubralKillerSuicideRTimeSetting
