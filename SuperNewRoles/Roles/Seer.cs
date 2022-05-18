@@ -93,6 +93,7 @@ namespace SuperNewRoles.Roles
                         RoleClass.Seer.deadBodyPositions = new List<Vector3>();
                     }
                 }
+
                 foreach (PlayerControl MadSeerPlayer in RoleClass.MadSeer.MadSeerPlayer)
                 {
                     if (RoleClass.MadSeer.deadBodyPositions != null && RoleClass.MadSeer.MadSeerPlayer != null && PlayerControl.LocalPlayer == MadSeerPlayer && (RoleClass.MadSeer.mode == 0 || RoleClass.MadSeer.mode == 2))
