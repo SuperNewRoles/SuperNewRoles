@@ -155,10 +155,9 @@ namespace SuperNewRoles.CustomRPC
         UseMadStuntmanCount,
         CustomEndGame,
         UncheckedProtect,
-        SetBot
-        UncheckedProtect,
+        SetBot,
         TimeMasterShield,
-        TimeMasterRewindTime,
+        TimeMasterRewindTime
     }
     public static class RPCProcedure
     {
