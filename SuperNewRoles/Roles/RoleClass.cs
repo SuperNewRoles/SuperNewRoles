@@ -1730,6 +1730,7 @@ namespace SuperNewRoles.Roles
             public static float OutVentTime;
             public static float VentCoolTime;
             public static float NeedReportCount;
+            public static bool IsCheck;
 
             public static void ClearAndReload()
             {
@@ -1738,6 +1739,7 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.ScavengerIsUseVent.getBool();
                 OutVentTime = CustomOptions.ScavengerOutVentTime.getFloat();
                 VentCoolTime = CustomOptions.ScavengerVentCoolTime.getFloat();
+                IsCheck = CustomOptions.ScavengerIsCheck.getBool();
             }
         }
         //新ロールクラス

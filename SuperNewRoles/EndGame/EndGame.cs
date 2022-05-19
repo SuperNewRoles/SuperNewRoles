@@ -708,8 +708,6 @@ namespace SuperNewRoles.EndGame
                 {
                     if (RoleClass.Scavenger.NeedReportCount <= 0)
                     {
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                         WinningPlayerData wpd = new WinningPlayerData(p.Data);
                         TempData.winners.Add(wpd);
@@ -1088,6 +1086,7 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
+                if (CheckAndEndGameForScavengerWin(__instance)) return false;
                 if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             }
             return false;
@@ -1190,7 +1189,29 @@ namespace SuperNewRoles.EndGame
             }
             return false;
         }
-        
+        public static bool CheckAndEndGameForScavengerWin(ShipStatus __instance)
+        {
+            foreach (PlayerControl p in RoleClass.Scavenger.ScavengerPlayer)
+            {
+                if (!p.Data.Disconnected)
+                {
+                    if (p.isAlive())
+                    {
+                        if (RoleClass.Scavenger.NeedReportCount <= 0)
+                        {
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            Writer.Write(p.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                            CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
+                            __instance.enabled = false;
+                            CustomEndGame((GameOverReason)CustomGameOverReason.ScavengerWin, false);
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
 
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {

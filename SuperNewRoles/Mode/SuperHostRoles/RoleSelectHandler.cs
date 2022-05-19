@@ -161,25 +161,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 //trueloverPlayer.Data.IsDead = true;
             }
-            foreach (PlayerControl ScavengerPlayer in RoleClass.Scavenger.ScavengerPlayer)
-            {
-                if (!ScavengerPlayer.IsMod())
-                {
-                    ScavengerPlayer.RpcSetRoleDesync(RoleTypes.Crewmate);
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        if (p.PlayerId != ScavengerPlayer.PlayerId && p.IsPlayer())
-                        {
-                            ScavengerPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                            p.RpcSetRoleDesync(RoleTypes.Scientist, ScavengerPlayer);
-                        }
-                    }
-                }
-                else
-                {
-                    ScavengerPlayer.RpcSetRole(RoleTypes.Shapeshifter);
-                }
-            }
             foreach (PlayerControl Player in RoleClass.FalseCharges.FalseChargesPlayer)
             {
                 if (!Player.IsMod())

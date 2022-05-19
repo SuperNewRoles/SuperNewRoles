@@ -576,3 +576,10 @@ RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキル�
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート
 TeleportingJackalName,TeleportingJackal,テレポートジャッカル
 TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう
+ScavengerName,Scavenger,スカベンジャー
+ScavengerTitle1,Lets Collect Dead Body!,沢山死体を集めよう!
+ScavengerNeedReportSetting,Need Reporting Body Count,勝利に必要な死体発見数
+ScavengerIsUseVentSetting,Use Vent,ベントの使用
+ScavengerOutVentTimeSetting,Venting Time,ベントに入れる時間
+ScavengerVentCoolTimeSetting,Vent CoolTime,ベントのクールタイム
+ScavengerIsCheckSetting,Check for Impostor and Sheriff and Jackal,インポスター、シェリフ、ジャッカルを確認できる
