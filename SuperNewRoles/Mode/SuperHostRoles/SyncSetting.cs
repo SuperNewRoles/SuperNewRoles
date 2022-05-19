@@ -109,6 +109,25 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                     break;
+                case RoleId.MadMaker:
+                    if (RoleClass.MadMaker.IsImpostorLight)
+                    {
+                        optdata.ImpostorLightMod = optdata.CrewLightMod;
+                        var switchSystemMadMaker = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                        if (switchSystemMadMaker != null && switchSystemMadMaker.IsActive)
+                        {
+                            optdata.ImpostorLightMod /= 5;
+                        }
+                    }
+                    if (RoleClass.MadMaker.CreatePlayers.Contains(player.PlayerId))
+                    {
+                        optdata.KillCooldown = -1f;
+                    }
+                    else
+                    {
+                        optdata.KillCooldown = 0.001f;
+                    }
+                    break;
                 case RoleId.Fox:
                     if (RoleClass.Fox.IsUseVent)
                     {

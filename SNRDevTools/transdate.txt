@@ -576,6 +576,9 @@ RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキル�
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート
 TeleportingJackalName,TeleportingJackal,テレポートジャッカル
 TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう
+MadMakerName,MadMaker,マッドメーカー
+MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！
+TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう
 ScavengerName,Scavenger,スカベンジャー
 ScavengerTitle1,Lets Collect Dead Body!,沢山死体を集めよう!
 ScavengerNeedReportSetting,Need Reporting Body Count,勝利に必要な死体発見数

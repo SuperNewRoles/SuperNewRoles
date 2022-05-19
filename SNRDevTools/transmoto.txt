@@ -575,6 +575,9 @@ RemoteSheriffTitle1
 RemoteSheriffIsKillTeleportSetting
 TeleportingJackalName
 TeleportingJackalTitle1
+MadMakerName
+MadMakerTitle1
+TeleportingJackalTitle1
 ScavengerName
 ScavengerTitle1
 ScavengerNeedReportSetting

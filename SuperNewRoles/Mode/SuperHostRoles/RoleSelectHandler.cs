@@ -65,7 +65,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     CustomOptions.SheriffOption.getSelection() != 0 ||
                     CustomOptions.trueloverOption.getSelection() != 0 ||
                     CustomOptions.FalseChargesOption.getSelection() != 0 ||
-                    CustomOptions.RemoteSheriffOption.getSelection() != 0
+                    CustomOptions.RemoteSheriffOption.getSelection() != 0 ||
+                    CustomOptions.MadMakerOption.getSelection() != 0
                     );
                 if (flag)
                 {
@@ -180,6 +181,25 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     Player.RpcSetRole(RoleTypes.Crewmate);
                 }
                 //trueloverPlayer.Data.IsDead = true;
+            }
+            foreach (PlayerControl MadMakerPlayer in RoleClass.MadMaker.MadMakerPlayer)
+            {
+                if (!MadMakerPlayer.IsMod())
+                {
+                    MadMakerPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != MadMakerPlayer.PlayerId && p.IsPlayer())
+                        {
+                            MadMakerPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, MadMakerPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    MadMakerPlayer.RpcSetRole(RoleTypes.Crewmate);
+                }
             }
             if (RoleClass.Jester.IsUseVent)
             {
@@ -809,6 +829,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.JackalFriendsOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.JackalFriends;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.MadMakerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadMakerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.MadMaker;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);

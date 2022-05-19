@@ -575,6 +575,9 @@ Let's do a Remote Sheriff kill!
 Kill Teleport
 TeleportingJackal
 Teleport and kill all crewmates and impostors!
+MadMaker
+Let's get more lunatics!
+Teleport and kill all crewmates and impostors!
 Scavenger
 Need Reporting Body Count
 Use Vent

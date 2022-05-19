@@ -246,6 +246,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             Suffix += "(残り" + RoleClass.RemoteSheriff.KillCount[p.PlayerId] + "発)";
                         }
                     }
+                    if (p.isRole(RoleId.MadMate))
+                    {
+                        Suffix += ModHelpers.cs(RoleClass.MadMate.color, "");
+                    }
                     var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
                     string TaskText = "";
                     if (!p.isImpostor())
@@ -337,6 +341,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
                 }
+            }
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.MadMaker))
+            {
+                HudManager.Instance.KillButton.gameObject.SetActive(true);
+                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
+                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
             }
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             if (!AmongUsClient.Instance.AmHost) return;
