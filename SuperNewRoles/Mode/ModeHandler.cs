@@ -31,7 +31,8 @@ namespace SuperNewRoles.Mode
         RandomColor,
         NotImpostorCheck,
         Detective,
-        Werewolf
+        Werewolf,
+        LevelUp
     }
     class ModeHandler
     {
@@ -82,6 +83,11 @@ namespace SuperNewRoles.Mode
                 thisMode = ModeId.Werewolf;
                 Werewolf.main.ClearAndReload();
             }
+            else if (isMode(ModeId.LevelUp))
+            {
+                thisMode = ModeId.LevelUp;
+                LevelUp.main.ClearAndReloads();
+            }
             else {
                 thisMode = ModeId.Default;
             }
@@ -90,7 +96,7 @@ namespace SuperNewRoles.Mode
                 SuperHostRoles.BlockTool.IsCom = false;
             }
         }
-        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName"), ModTranslation.getString("DetectiveModeName"), };//ModTranslation.getString("WerewolfModeName") };
+        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName"), ModTranslation.getString("DetectiveModeName"), ModTranslation.getString("LevelUpModeName") };
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;
@@ -119,6 +125,12 @@ namespace SuperNewRoles.Mode
             else if (isMode(ModeId.Detective))
             {
                 return SuperHostRoles.Intro.ModeHandler(__instance);
+            }
+            else if (isMode(ModeId.Werewolf))
+            {
+                var Data = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                Data.Add(PlayerControl.LocalPlayer);
+                return Data;
             }
             else if (isMode(ModeId.Werewolf))
             {
@@ -202,9 +214,9 @@ namespace SuperNewRoles.Mode
             {
                 RandomColor.FixedUpdate.Update();
             }
-            else if (isMode(ModeId.Werewolf))
+            else if (isMode(ModeId.LevelUp))
             {
-
+                LevelUp.main.FixedUpdate();
             }
         }
         public static void Wrapup(GameData.PlayerInfo exiled)
@@ -223,6 +235,7 @@ namespace SuperNewRoles.Mode
             if (isMode(ModeId.NotImpostorCheck)) return ModeId.NotImpostorCheck;
             if (isMode(ModeId.Detective)) return ModeId.Detective;
             if (isMode(ModeId.Werewolf)) return ModeId.Werewolf;
+            if (isMode(ModeId.LevelUp)) return ModeId.Werewolf;
             return ModeId.No;
         }
         public static string GetThisModeIntro() {
@@ -257,8 +270,8 @@ namespace SuperNewRoles.Mode
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[5];
                 case ModeId.Detective:
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[6];
-                case ModeId.Werewolf:
-                    return false;//ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
+                case ModeId.LevelUp:
+                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
             }
             return false;
         }
