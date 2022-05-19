@@ -577,3 +577,11 @@ TeleportingJackalName
 TeleportingJackalTitle1
 MadMakerName
 MadMakerTitle1
+TeleportingJackalTitle1
+ScavengerName
+ScavengerTitle1
+ScavengerNeedReportSetting
+ScavengerIsUseVentSetting
+ScavengerOutVentTimeSetting
+ScavengerVentCoolTimeSetting
+ScavengerIsCheckSetting

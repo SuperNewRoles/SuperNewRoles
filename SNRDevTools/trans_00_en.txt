@@ -577,3 +577,10 @@ TeleportingJackal
 Teleport and kill all crewmates and impostors!
 MadMaker
 Let's get more lunatics!
+Teleport and kill all crewmates and impostors!
+Scavenger
+Need Reporting Body Count
+Use Vent
+Venting Time
+Vent CoolTime
+Check for Impostor and Sheriff and Jackal
