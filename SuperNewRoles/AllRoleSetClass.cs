@@ -837,9 +837,9 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.RemoteSheriffPlayerCount.getFloat();
                 case (RoleId.Fox):
                     return CustomOption.CustomOptions.FoxPlayerCount.getFloat();
-                    case (RoleId.TeleportingJackal):
+                case (RoleId.TeleportingJackal):
                     return CustomOption.CustomOptions.TeleportingJackalPlayerCount.getFloat();
-                    case (RoleId.Scavenger):
+                case (RoleId.Scavenger):
                     return CustomOption.CustomOptions.ScavengerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
