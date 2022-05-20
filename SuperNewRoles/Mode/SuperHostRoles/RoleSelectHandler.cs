@@ -245,10 +245,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != ShapeshifterPlayer.PlayerId && p.IsPlayer())
+                        if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
                         {
-                            ShapeshifterPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                            p.RpcSetRoleDesync(RoleTypes.Scientist, ShapeshifterPlayer);
+                            p.RpcSetRoleDesync(RoleTypes.Engineer);
                         }
                     }
                 }
@@ -262,6 +261,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 foreach (PlayerControl p in RoleClass.Jester.JesterPlayer)
                 {
                     if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
+                }
+            }
+            if (RoleClass.JackalFriends.IsUseVent)
+            {
+                foreach (PlayerControl p in RoleClass.JackalFriends.JackalFriendsPlayer)
+                {
+                    if (!p.IsMod())
                     {
                         p.RpcSetRoleDesync(RoleTypes.Engineer);
                     }
