@@ -243,7 +243,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (!ShapeshifterPlayer.IsMod())
                 {
-                    ShapeshifterPlayer.RpcSetRoleDesync(RoleTypes.Shapeshifter);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         if (p.PlayerId != ShapeshifterPlayer.PlayerId && p.IsPlayer())
