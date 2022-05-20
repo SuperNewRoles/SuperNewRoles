@@ -91,7 +91,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         {
                             foreach (PlayerControl p2 in RoleClass.Celebrity.ViewPlayers)
                             {
-                                if( p.PlayerId != p2.PlayerId )
+                                if (p.PlayerId != p2.PlayerId)
                                 {
                                     p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p2.getDefaultName()), p);
                                 }
@@ -101,7 +101,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         {
                             foreach (PlayerControl p2 in RoleClass.Celebrity.CelebrityPlayer)
                             {
-                                if(p.PlayerId != p2.PlayerId)
+                                if (p.PlayerId != p2.PlayerId)
                                 {
                                     p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p2.getDefaultName()), p);
                                 }
@@ -184,7 +184,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                         }
 
-                        if (p.IsLovers() && p.isAlive())
+                        if (p.isRole(RoleId.Shapeshifter))
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (!p2.Data.Disconnected && !p2.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
+                                else if (!p2.Data.Disconnected && p2.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
+                                }
+                            }
+                        }
+                            if (p.IsLovers() && p.isAlive())
                         {
                             var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
                             PlayerControl Side = p.GetOneSideLovers();

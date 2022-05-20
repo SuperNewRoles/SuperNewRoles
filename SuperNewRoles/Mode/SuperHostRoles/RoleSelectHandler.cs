@@ -247,7 +247,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (p.PlayerId != ShapeshifterPlayer.PlayerId && p.IsPlayer())
                     {
                         ShapeshifterPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                        p.RpcSetRoleDesync(RoleTypes.Scientist, ShapeshifterPlayer);
                     }
                     else
                     {
