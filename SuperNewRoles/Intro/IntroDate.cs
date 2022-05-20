@@ -184,6 +184,8 @@ namespace SuperNewRoles.Intro
                     return TeleportingJackalIntro;
                 case (CustomRPC.RoleId.MadMaker):
                     return MadMakerIntro;
+                case (CustomRPC.RoleId.Scavenger):
+                    return ScavengerIntro;
                 case (CustomRPC.RoleId.Engineer):
                     return EngineerIntro;
                 case (CustomRPC.RoleId.Scientist):
@@ -291,6 +293,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate RemoteSheriffIntro = new IntroDate("RemoteSheriff", RoleClass.RemoteSheriff.color, 1, CustomRPC.RoleId.RemoteSheriff);
         public static IntroDate TeleportingJackalIntro = new IntroDate("TeleportingJackal", RoleClass.TeleportingJackal.color, 1, CustomRPC.RoleId.TeleportingJackal);
         public static IntroDate MadMakerIntro = new IntroDate("MadMaker", RoleClass.MadMaker.color, 1, CustomRPC.RoleId.MadMaker);
+        public static IntroDate ScavengerIntro = new IntroDate("Scavenger", RoleClass.Scavenger.color, 1, CustomRPC.RoleId.Scavenger);
         public static IntroDate EngineerIntro = new IntroDate("Engineer", RoleClass.Engineer.color, 1, CustomRPC.RoleId.Engineer);
         public static IntroDate ScientistIntro = new IntroDate("Scientist", RoleClass.Scientist.color, 1, CustomRPC.RoleId.Scientist);
         public static IntroDate ShapeshifterIntro = new IntroDate("Shapeshifter", RoleClass.Shapeshifter.color, 1, CustomRPC.RoleId.Shapeshifter);

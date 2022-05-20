@@ -505,6 +505,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMaker):
                     Roles.RoleClass.MadMaker.MadMakerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Scavenger):
+                    Roles.RoleClass.Scavenger.ScavengerPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.Engineer):
                     Roles.RoleClass.Engineer.EngineerPlayer.Add(player);
                     break;
@@ -775,6 +778,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMaker):
                     Roles.RoleClass.MadMaker.MadMakerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Scavenger):
+                    Roles.RoleClass.Scavenger.ScavengerPlayer.RemoveAll(ClearRemove);
+                    break;
                 case (CustomRPC.RoleId.Engineer):
                     Roles.RoleClass.Engineer.EngineerPlayer.RemoveAll(ClearRemove);
                     break;
@@ -867,6 +873,9 @@ namespace SuperNewRoles
                 case (RoleId.TeleportingJackal):
                     IsTaskClear = true;
                     break; 
+                case (RoleId.Scavenger):
+                    IsTaskClear = true;
+                    break; 
                 //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
@@ -902,6 +911,7 @@ namespace SuperNewRoles
             if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadSeer.IsUseVent) return true;
             if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Fox.IsUseVent) return true;
             if (RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMaker.IsUseVent) return true;
+            if (RoleClass.Scavenger.ScavengerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Scavenger.IsUseVent) return true;
             if (!RoleClass.Shapeshifter.IsUseVent && player.isRole(RoleId.Shapeshifter)) return false;
             return false;
         }
@@ -999,6 +1009,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.TeleportingJackal):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Scavenger):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1414,6 +1427,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.MadMaker;
+            }
+            else if (Roles.RoleClass.Scavenger.ScavengerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Scavenger;
             }
             else if (Roles.RoleClass.Engineer.EngineerPlayer.IsCheckListPlayerControl(player))
             {

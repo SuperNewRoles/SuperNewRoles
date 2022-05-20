@@ -490,6 +490,15 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadMakerIsUseVent;
         public static CustomOption MadMakerIsImpostorLight;
 
+        public static CustomRoleOption ScavengerOption;
+        public static CustomOption ScavengerPlayerCount;
+        public static CustomOption ScavengerNeedReportCount;
+        public static CustomOption ScavengerIsUseVent;
+        public static CustomOption ScavengerInVentTime;
+        public static CustomOption ScavengerOutVentTime;
+        public static CustomOption ScavengerVentCoolTime;
+        public static CustomOption ScavengerIsCheck;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -988,6 +997,14 @@ namespace SuperNewRoles.CustomOption
             MadMakerPlayerCount = CustomOption.Create(412, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMakerOption);
             MadMakerIsUseVent = CustomOption.Create(413, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadMakerOption);
             MadMakerIsImpostorLight = CustomOption.Create(414, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadMakerOption);
+
+            ScavengerOption = new CustomRoleOption(320, true, CustomOptionType.Neutral, "ScavengerName", RoleClass.Scavenger.color, 1);
+            ScavengerPlayerCount = CustomOption.Create(321, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ScavengerOption);
+            ScavengerNeedReportCount = CustomOption.Create(322, true, CustomOptionType.Neutral, "ScavengerNeedReportCountSetting", 1f, 0f, 10f, 1f, ScavengerOption, format: "unitSeconds");
+            ScavengerIsUseVent = CustomOption.Create(322, true, CustomOptionType.Neutral, "ScavengerIsUseVentSetting", false, ScavengerOption);
+            ScavengerOutVentTime = CustomOption.Create(323, true, CustomOptionType.Neutral, "ScavengerOutVentTimeSetting", 10f, 3f, 100f, 2.5f, ScavengerIsUseVent);
+            ScavengerVentCoolTime = CustomOption.Create(324, true, CustomOptionType.Neutral, "ScavengerVentCoolTimeSetting", 10f, 0f, 100f, 2.5f, ScavengerIsUseVent);
+            ScavengerIsCheck = CustomOption.Create(325, true, CustomOptionType.Neutral, "ScavengerIsCheckSetting", false, ScavengerOption);
 
             EngineerOption = new CustomRoleOption(001, true, CustomOptionType.Crewmate, "EngineerName", RoleClass.Engineer.color, 1);
             EngineerPlayerCount = CustomOption.Create(002, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], EngineerOption);

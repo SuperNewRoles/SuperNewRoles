@@ -105,6 +105,7 @@ namespace SuperNewRoles.CustomRPC
         RemoteSheriff,
         TeleportingJackal,
         MadMaker,
+        Scavenger,
         Engineer,
         Scientist,
         Shapeshifter,

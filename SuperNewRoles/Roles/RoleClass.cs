@@ -122,6 +122,7 @@ namespace SuperNewRoles.Roles
             RemoteSheriff.ClearAndReload();
             TeleportingJackal.ClearAndReload();
             MadMaker.ClearAndReload();
+            Scavenger.ClearAndReload();
             Engineer.ClearAndReload();
             Scientist.ClearAndReload();
             Shapeshifter.ClearAndReload();
@@ -1739,6 +1740,27 @@ namespace SuperNewRoles.Roles
                 IsImpostorLight = CustomOptions.MadMakerIsImpostorLight.getBool();
                 IsCreateMadmate = false;
                 CreatePlayers = new List<int>();
+            }
+        }
+
+        public static class Scavenger
+        {
+            public static List<PlayerControl> ScavengerPlayer;
+            public static Color32 color = new Color32(208, 80, 80, byte.MaxValue);
+            public static bool IsUseVent;
+            public static float OutVentTime;
+            public static float VentCoolTime;
+            public static float NeedReportCount;
+            public static bool IsCheck;
+
+            public static void ClearAndReload()
+            {
+                ScavengerPlayer = new List<PlayerControl>();
+                NeedReportCount = CustomOptions.ScavengerNeedReportCount.getFloat();
+                IsUseVent = CustomOptions.ScavengerIsUseVent.getBool();
+                OutVentTime = CustomOptions.ScavengerOutVentTime.getFloat();
+                VentCoolTime = CustomOptions.ScavengerVentCoolTime.getFloat();
+                IsCheck = CustomOptions.ScavengerIsCheck.getBool();
             }
         }
         public static class Engineer

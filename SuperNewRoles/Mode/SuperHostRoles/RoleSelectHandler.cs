@@ -319,6 +319,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
 
+            if (RoleClass.Scavenger.IsUseVent)
+            {
+                foreach (PlayerControl p in RoleClass.Scavenger.ScavengerPlayer)
+                {
+                    if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Engineer);
+                    }
+                }
+            }
+
             foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
             {
                 if (!p.IsMod())
@@ -932,6 +943,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.ScavengerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.ScavengerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Scavenger;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutonepar.Add(ThisRoleId);
                     }
                 }
             }

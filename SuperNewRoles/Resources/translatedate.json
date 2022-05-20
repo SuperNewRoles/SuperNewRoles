@@ -2316,6 +2316,34 @@
         "0": "Let's get more lunatics!",
         "11": "\u72c2\u4eba\u3092\u5897\u3084\u305d\u3046\uff01"
     },
+    "ScavengerName": {
+        "0": "Scavenger",
+        "11": "\u30b9\u30ab\u30d9\u30f3\u30b8\u30e3\u30fc"
+    },
+    "ScavengerTitle1": {
+        "0": "Lets Collect Dead Body!",
+        "11": "\u6ca2\u5c71\u6b7b\u4f53\u3092\u96c6\u3081\u3088\u3046\u0021"
+    },
+    "ScavengerNeedReportCountSetting": {
+        "0": "Need Reporting Body Count",
+        "11": "\u52dd\u5229\u306b\u5fc5\u8981\u306a\u6b7b\u4f53\u767a\u898b\u6570"
+    },
+    "ScavengerIsUseVentSetting": {
+        "0": "Use Vent",
+        "11": "\u30d9\u30f3\u30c8\u306e\u4f7f\u7528"
+    },
+    "ScavengerOutVentTimeSetting": {
+        "0": "Venting Time",
+        "11": "\u30d9\u30f3\u30c8\u306b\u5165\u308c\u308b\u6642\u9593"
+    },
+    "ScavengerVentCoolTimeSetting": {
+        "0": "Vent CoolTime",
+        "11": "\u30d9\u30f3\u30c8\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+    },
+    "ScavengerIsCheckSetting": {
+        "0": "Check for Impostor and Sheriff and Jackal",
+        "11": "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3001\u30b7\u30a7\u30ea\u30d5\u3001\u30b8\u30e3\u30c3\u30ab\u30eb\u3092\u78ba\u8a8d\u3067\u304d\u308b"
+    },
     "EngineerName": {
         "0": "Engineer",
         "11": "\u30a8\u30f3\u30b8\u30cb\u30a2"

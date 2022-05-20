@@ -232,6 +232,20 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCoolDown);
                     break;
+                case RoleId.Scavenger:
+                    if (RoleClass.Scavenger.IsUseVent)
+                    {
+                        optdata.RoleOptions.EngineerCooldown = CustomOptions.ScavengerVentCoolTime.getFloat();
+                        optdata.RoleOptions.EngineerInVentMaxTime = CustomOptions.ScavengerOutVentTime.getFloat();
+                        optdata.CrewLightMod *= 5;
+                    }
+                        var switchSystemScavenger = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    if (switchSystemScavenger != null && switchSystemScavenger.IsActive)
+                    {
+                            optdata.CrewLightMod /= 30;
+                            optdata.playerSpeedMod = 0.75f;
+                    }
+                    break;
                 case RoleId.Engineer:
                     optdata.RoleOptions.EngineerCooldown = CustomOptions.EngineerCoolTime.getFloat();
                     optdata.RoleOptions.EngineerInVentMaxTime = CustomOptions.EngineerVentTime.getFloat();
