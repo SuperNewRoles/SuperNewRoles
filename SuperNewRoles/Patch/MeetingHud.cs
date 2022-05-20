@@ -193,7 +193,7 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (var ps in __instance.playerStates)
                     {
-                        if (ModHelpers.playerById(ps.TargetPlayerId).IsPlayer() && !(ps.AmDead || ps.DidVote))//死んでいないプレイヤーが投票していない
+                        if (!(ps.AmDead || ps.DidVote) && ModHelpers.playerById(ps.TargetPlayerId).IsPlayer())//死んでいないプレイヤーが投票していない
                             return false;
                     }
                 }
