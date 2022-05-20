@@ -505,6 +505,15 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMaker):
                     Roles.RoleClass.MadMaker.MadMakerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Engineer):
+                    Roles.RoleClass.Engineer.EngineerPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Scientist):
+                    Roles.RoleClass.Scientist.ScientistPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Shapeshifter):
+                    Roles.RoleClass.Shapeshifter.ShapeshifterPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -766,6 +775,15 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMaker):
                     Roles.RoleClass.MadMaker.MadMakerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Engineer):
+                    Roles.RoleClass.Engineer.EngineerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Scientist):
+                    Roles.RoleClass.Scientist.ScientistPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Shapeshifter):
+                    Roles.RoleClass.Shapeshifter.ShapeshifterPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -884,6 +902,7 @@ namespace SuperNewRoles
             if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadSeer.IsUseVent) return true;
             if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Fox.IsUseVent) return true;
             if (RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMaker.IsUseVent) return true;
+            if (!RoleClass.Shapeshifter.IsUseVent && player.isRole(RoleId.Shapeshifter)) return false;
             return false;
         }
         public static bool IsSabotage()
@@ -1395,6 +1414,18 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.MadMaker;
+            }
+            else if (Roles.RoleClass.Engineer.EngineerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Engineer;
+            }
+            else if (Roles.RoleClass.Scientist.ScientistPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Scientist;
+            }
+            else if (Roles.RoleClass.Shapeshifter.ShapeshifterPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Shapeshifter;
             }
             //ロールチェック
             }

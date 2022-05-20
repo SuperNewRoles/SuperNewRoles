@@ -468,6 +468,23 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption TeleportingJackalCoolTime;
         public static CustomOption TeleportingJackalDurationTime;
 
+        public static CustomRoleOption EngineerOption;
+        public static CustomOption EngineerPlayerCount;
+        public static CustomOption EngineerCoolTime;
+        public static CustomOption EngineerVentTime;
+
+        public static CustomRoleOption ScientistOption;
+        public static CustomOption ScientistPlayerCount;
+        public static CustomOption ScientistCoolTime;
+        public static CustomOption ScientistVitalTime;
+
+        public static CustomRoleOption ShapeshifterOption;
+        public static CustomOption ShapeshifterPlayerCount;
+        public static CustomOption ShapeshifterKillCoolDown;
+        public static CustomOption ShapeshifterIsUseVent;
+        public static CustomOption ShapeshifterCoolTime;
+        public static CustomOption ShapeshifterDurationTime;
+
         public static CustomRoleOption MadMakerOption;
         public static CustomOption MadMakerPlayerCount;
         public static CustomOption MadMakerIsUseVent;
@@ -971,6 +988,23 @@ namespace SuperNewRoles.CustomOption
             MadMakerPlayerCount = CustomOption.Create(412, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMakerOption);
             MadMakerIsUseVent = CustomOption.Create(413, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadMakerOption);
             MadMakerIsImpostorLight = CustomOption.Create(414, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadMakerOption);
+
+            EngineerOption = new CustomRoleOption(001, true, CustomOptionType.Crewmate, "EngineerName", RoleClass.Engineer.color, 1);
+            EngineerPlayerCount = CustomOption.Create(002, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], EngineerOption);
+            EngineerCoolTime = CustomOption.Create(003, true, CustomOptionType.Crewmate, "EngineerCoolTimeSetting", 30f, 0f, 100f, 5f, EngineerOption);
+            EngineerVentTime = CustomOption.Create(004, true, CustomOptionType.Crewmate, "EngineerVentTimeSetting", 30f, 3f, 150f, 3f, EngineerOption);
+
+            ScientistOption = new CustomRoleOption(005, true, CustomOptionType.Crewmate, "ScientistName", RoleClass.Scientist.color, 1);
+            ScientistPlayerCount = CustomOption.Create(006, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ScientistOption);
+            ScientistCoolTime = CustomOption.Create(007, true, CustomOptionType.Crewmate, "ScientistCoolTimeSetting", 30f, 0f, 100f, 5f, ScientistOption);
+            ScientistVitalTime = CustomOption.Create(008, true, CustomOptionType.Crewmate, "ScientistVitalTimeSetting", 30f, 3f, 150f, 3f, ScientistOption);
+
+            ShapeshifterOption = new CustomRoleOption(009, true, CustomOptionType.Impostor, "ShapeshifterName", RoleClass.Shapeshifter.color, 1);
+            ShapeshifterPlayerCount = CustomOption.Create(010, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ShapeshifterOption);
+            ShapeshifterKillCoolDown = CustomOption.Create(011, true, CustomOptionType.Impostor, "ShapeshifterKillCoolDownSetting", 20f, 0f, 75f, 2.5f, ShapeshifterOption);
+            ShapeshifterIsUseVent = CustomOption.Create(012, true, CustomOptionType.Impostor, "ShapeshifterIsUseVentSetting", false , ShapeshifterOption);
+            ShapeshifterCoolTime = CustomOption.Create(013, true, CustomOptionType.Impostor, "ShapeshifterCoolTimeSetting", 30f, 15f, 75f, 5f, ShapeshifterOption);
+            ShapeshifterDurationTime = CustomOption.Create(014, true, CustomOptionType.Impostor, "ShapeshifterDurationTimeSetting", 30f, 5f, 75f, 2.5f, ShapeshifterOption);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

@@ -841,6 +841,12 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.TeleportingJackalPlayerCount.getFloat();
                     case (RoleId.MadMaker):
                     return CustomOption.CustomOptions.MadMakerPlayerCount.getFloat();
+                    case (RoleId.Engineer):
+                    return CustomOption.CustomOptions.EngineerPlayerCount.getFloat();
+                    case (RoleId.Scientist):
+                    return CustomOption.CustomOptions.ScientistPlayerCount.getFloat();
+                    case (RoleId.Shapeshifter):
+                    return CustomOption.CustomOptions.ShapeshifterPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -2195,6 +2201,54 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.EngineerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.EngineerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Engineer;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.ScientistOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.ScientistOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Scientist;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.ShapeshifterOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.ShapeshifterOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Shapeshifter;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }

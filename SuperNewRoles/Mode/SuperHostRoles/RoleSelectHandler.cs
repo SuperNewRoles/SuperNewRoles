@@ -201,7 +201,64 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     MadMakerPlayer.RpcSetRole(RoleTypes.Crewmate);
                 }
             }
-            if (RoleClass.Jester.IsUseVent)
+            foreach (PlayerControl EngineerPlayer in RoleClass.Engineer.EngineerPlayer)
+            {
+                if (!EngineerPlayer.IsMod())
+                {
+                    EngineerPlayer.RpcSetRoleDesync(RoleTypes.Engineer);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != EngineerPlayer.PlayerId && p.IsPlayer())
+                        {
+                            EngineerPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, EngineerPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    EngineerPlayer.RpcSetRole(RoleTypes.Engineer);
+                }
+            }
+            foreach (PlayerControl ScientistPlayer in RoleClass.Scientist.ScientistPlayer)
+            {
+                if (!ScientistPlayer.IsMod())
+                {
+                    ScientistPlayer.RpcSetRoleDesync(RoleTypes.Scientist);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != ScientistPlayer.PlayerId && p.IsPlayer())
+                        {
+                            ScientistPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, ScientistPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    ScientistPlayer.RpcSetRole(RoleTypes.Scientist);
+                }
+            }
+            foreach (PlayerControl ShapeshifterPlayer in RoleClass.Shapeshifter.ShapeshifterPlayer)
+            {
+                if (!ShapeshifterPlayer.IsMod())
+                {
+                    ShapeshifterPlayer.RpcSetRoleDesync(RoleTypes.Shapeshifter);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != ShapeshifterPlayer.PlayerId && p.IsPlayer())
+                        {
+                            ShapeshifterPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, ShapeshifterPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    ShapeshifterPlayer.RpcSetRole(RoleTypes.Shapeshifter);
+                }
+            }
+                if (RoleClass.Jester.IsUseVent)
             {
                 foreach (PlayerControl p in RoleClass.Jester.JesterPlayer)
                 {
@@ -281,7 +338,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 //p.Data.IsDead = true;
             }
-            foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
+                foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
             {
                 if (!p.IsMod())
                 {
@@ -843,6 +900,54 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.EngineerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.EngineerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Engineer;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.ScientistOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.ScientistOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Scientist;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.ShapeshifterOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.ShapeshifterOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Shapeshifter;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }

@@ -577,3 +577,17 @@ TeleportingJackal
 Teleport and kill all crewmates and impostors!
 MadMaker
 Let's get more lunatics!
+Engineer
+Use Vent
+Vent CoolTime
+Vent Time
+Scientist
+Use Vital
+Vital CoolTime
+Vital Time
+Shapeshifter
+Use Shape
+Kill CoolTime
+Use Vent
+Shape CoolTime
+Shape Duration Time

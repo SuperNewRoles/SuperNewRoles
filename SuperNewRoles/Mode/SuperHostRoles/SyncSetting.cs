@@ -232,6 +232,19 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCoolDown);
                     break;
+                case RoleId.Engineer:
+                    optdata.RoleOptions.EngineerCooldown = CustomOptions.EngineerCoolTime.getFloat();
+                    optdata.RoleOptions.EngineerInVentMaxTime = CustomOptions.EngineerVentTime.getFloat();
+                    break;
+                case RoleId.Scientist:
+                    optdata.RoleOptions.ScientistCooldown = CustomOptions.ScientistCoolTime.getFloat();
+                    optdata.RoleOptions.ScientistBatteryCharge = CustomOptions.ScientistVitalTime.getFloat();
+                    break;
+                case RoleId.Shapeshifter:
+                    optdata.KillCooldown = KillCoolSet(CustomOptions.ShapeshifterKillCoolDown.getFloat());
+                    optdata.RoleOptions.ShapeshifterCooldown = CustomOptions.ShapeshifterCoolTime.getFloat();
+                    optdata.RoleOptions.ShapeshifterDuration = CustomOptions.ShapeshifterDurationTime.getFloat();
+                    break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;

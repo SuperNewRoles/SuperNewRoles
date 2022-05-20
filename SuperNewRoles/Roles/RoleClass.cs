@@ -122,6 +122,9 @@ namespace SuperNewRoles.Roles
             RemoteSheriff.ClearAndReload();
             TeleportingJackal.ClearAndReload();
             MadMaker.ClearAndReload();
+            Engineer.ClearAndReload();
+            Scientist.ClearAndReload();
+            Shapeshifter.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1736,6 +1739,50 @@ namespace SuperNewRoles.Roles
                 IsImpostorLight = CustomOptions.MadMakerIsImpostorLight.getBool();
                 IsCreateMadmate = false;
                 CreatePlayers = new List<int>();
+            }
+        }
+        public static class Engineer
+        {
+            public static List<PlayerControl> EngineerPlayer;
+            public static Color32 color = new Color32(50, 255, 200, byte.MaxValue);
+            public static float CoolTime;
+            public static float VentTime;
+            public static void ClearAndReload()
+            {
+                EngineerPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.EngineerCoolTime.getFloat();
+                VentTime = CustomOptions.EngineerVentTime.getFloat();
+            }
+        }
+        public static class Scientist
+        {
+            public static List<PlayerControl> ScientistPlayer;
+            public static Color32 color = new Color32(50, 180, 255, byte.MaxValue);
+            public static float CoolTime;
+            public static float VitalTime;
+            public static void ClearAndReload()
+            {
+                ScientistPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.ScientistCoolTime.getFloat();
+                VitalTime = CustomOptions.ScientistVitalTime.getFloat();
+            }
+        }
+        public static class Shapeshifter
+        {
+            public static List<PlayerControl> ShapeshifterPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolDown;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static bool IsUseVent;
+
+            public static void ClearAndReload()
+            {
+                ShapeshifterPlayer = new List<PlayerControl>();
+                KillCoolDown = CustomOptions.ShapeshifterKillCoolDown.getFloat();
+                CoolTime = CustomOptions.ShapeshifterCoolTime.getFloat();
+                DurationTime = CustomOptions.ShapeshifterDurationTime.getFloat();
+                IsUseVent = CustomOptions.ShapeshifterIsUseVent.getBool();
             }
         }
         //新ロールクラス

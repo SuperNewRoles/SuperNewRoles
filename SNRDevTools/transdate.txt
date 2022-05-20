@@ -578,3 +578,17 @@ TeleportingJackalName,TeleportingJackal,テレポートジャッカル
 TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう
 MadMakerName,MadMaker,マッドメーカー
 MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！
+EngineerName,Engineer,エンジニア
+EngineerTitle1,Use Vent,通気口を使える
+EngineerCoolTimeSetting,Vent CoolTime,ベントのクールタイム
+EngineerVentTimeSetting,Vent Time,ベントに入れる時間
+ScientistName,Scientist,サイエンティスト
+ScientistTitle1,Use Vital,バイタルを使える
+ScientistCoolTimeSetting,Vital CoolTime,バイタルクールタイム
+ScientistVitalTimeSetting,Vital Time,バイタルを見ることのできる時間
+ShapeshifterName,Shapeshifter,シェイプシフター
+ShapeshifterTitle1,Use Shape,変身する
+ShapeshifterKillCoolDownSetting,Kill CoolTime,キルのクールダウン
+ShapeshifterIsUseVentSetting,Use Vent,ベントを使える
+ShapeshifterCoolTimeSetting,Shape CoolTime,シェイプシフトクールタイム
+ShapeshifterDurationTimeSetting,Shape Duration Time,シェイプシフト持続時間

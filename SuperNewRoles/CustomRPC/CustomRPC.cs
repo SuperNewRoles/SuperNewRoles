@@ -105,6 +105,9 @@ namespace SuperNewRoles.CustomRPC
         RemoteSheriff,
         TeleportingJackal,
         MadMaker,
+        Engineer,
+        Scientist,
+        Shapeshifter,
         //RoleId
     }
 

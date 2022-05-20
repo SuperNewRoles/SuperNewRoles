@@ -577,3 +577,17 @@ TeleportingJackalName
 TeleportingJackalTitle1
 MadMakerName
 MadMakerTitle1
+EngineerName
+EngineerTitle1
+EngineerCoolTimeSetting
+EngineerVentTimeSetting
+ScientistName
+ScientistTitle1
+ScientistCoolTimeSetting
+ScientistVitalTimeSetting
+ShapeshifterName
+ShapeshifterTitle1
+ShapeshifterKillCoolDownSetting
+ShapeshifterIsUseVentSetting
+ShapeshifterCoolTimeSetting
+ShapeshifterDurationTimeSetting
