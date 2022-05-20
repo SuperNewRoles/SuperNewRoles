@@ -597,6 +597,5 @@ ScientistVitalTimeSetting
 ShapeshifterName
 ShapeshifterTitle1
 ShapeshifterKillCoolDownSetting
-ShapeshifterIsUseVentSetting
 ShapeshifterCoolTimeSetting
 ShapeshifterDurationTimeSetting

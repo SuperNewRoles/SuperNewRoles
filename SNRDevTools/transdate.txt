@@ -598,6 +598,5 @@ ScientistVitalTimeSetting,Vital Time,バイタルを見ることのできる時�
 ShapeshifterName,Shapeshifter,シェイプシフター
 ShapeshifterTitle1,Use Shape,変身する
 ShapeshifterKillCoolDownSetting,Kill CoolTime,キルのクールダウン
-ShapeshifterIsUseVentSetting,Use Vent,ベントを使える
 ShapeshifterCoolTimeSetting,Shape CoolTime,シェイプシフトクールタイム
 ShapeshifterDurationTimeSetting,Shape Duration Time,シェイプシフト持続時間

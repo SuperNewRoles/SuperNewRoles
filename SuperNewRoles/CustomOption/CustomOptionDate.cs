@@ -1019,9 +1019,8 @@ namespace SuperNewRoles.CustomOption
             ShapeshifterOption = new CustomRoleOption(009, true, CustomOptionType.Impostor, "ShapeshifterName", RoleClass.Shapeshifter.color, 1);
             ShapeshifterPlayerCount = CustomOption.Create(010, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ShapeshifterOption);
             ShapeshifterKillCoolDown = CustomOption.Create(011, true, CustomOptionType.Impostor, "ShapeshifterKillCoolDownSetting", 20f, 0f, 75f, 2.5f, ShapeshifterOption);
-            ShapeshifterIsUseVent = CustomOption.Create(012, true, CustomOptionType.Impostor, "ShapeshifterIsUseVentSetting", false , ShapeshifterOption);
-            ShapeshifterCoolTime = CustomOption.Create(013, true, CustomOptionType.Impostor, "ShapeshifterCoolTimeSetting", 30f, 15f, 75f, 5f, ShapeshifterOption);
-            ShapeshifterDurationTime = CustomOption.Create(014, true, CustomOptionType.Impostor, "ShapeshifterDurationTimeSetting", 30f, 5f, 75f, 2.5f, ShapeshifterOption);
+            ShapeshifterCoolTime = CustomOption.Create(012, true, CustomOptionType.Impostor, "ShapeshifterCoolTimeSetting", 30f, 15f, 75f, 5f, ShapeshifterOption);
+            ShapeshifterDurationTime = CustomOption.Create(013, true, CustomOptionType.Impostor, "ShapeshifterDurationTimeSetting", 30f, 5f, 75f, 2.5f, ShapeshifterOption);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

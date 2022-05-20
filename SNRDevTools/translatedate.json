@@ -2388,10 +2388,6 @@
         "0": "Kill CoolTime",
         "11": "\u30ad\u30eb\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
     },
-    "ShapeshifterIsUseVentSetting": {
-        "0": "Use Vent",
-        "11": "\u30d9\u30f3\u30c8\u3092\u4f7f\u3048\u308b"
-    },
     "ShapeshifterCoolTimeSetting": {
         "0": "Shape CoolTime",
         "11": "\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"

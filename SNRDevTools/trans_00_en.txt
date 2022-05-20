@@ -596,6 +596,5 @@ Vital Time
 Shapeshifter
 Use Shape
 Kill CoolTime
-Use Vent
 Shape CoolTime
 Shape Duration Time

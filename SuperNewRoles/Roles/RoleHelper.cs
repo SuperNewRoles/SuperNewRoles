@@ -912,7 +912,6 @@ namespace SuperNewRoles
             if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Fox.IsUseVent) return true;
             if (RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMaker.IsUseVent) return true;
             if (RoleClass.Scavenger.ScavengerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Scavenger.IsUseVent) return true;
-            if (!RoleClass.Shapeshifter.IsUseVent && player.isRole(RoleId.Shapeshifter)) return false;
             return false;
         }
         public static bool IsSabotage()

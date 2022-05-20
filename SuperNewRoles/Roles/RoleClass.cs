@@ -1796,7 +1796,6 @@ namespace SuperNewRoles.Roles
             public static float KillCoolDown;
             public static float CoolTime;
             public static float DurationTime;
-            public static bool IsUseVent;
 
             public static void ClearAndReload()
             {
@@ -1804,7 +1803,6 @@ namespace SuperNewRoles.Roles
                 KillCoolDown = CustomOptions.ShapeshifterKillCoolDown.getFloat();
                 CoolTime = CustomOptions.ShapeshifterCoolTime.getFloat();
                 DurationTime = CustomOptions.ShapeshifterDurationTime.getFloat();
-                IsUseVent = CustomOptions.ShapeshifterIsUseVent.getBool();
             }
         }
         //新ロールクラス

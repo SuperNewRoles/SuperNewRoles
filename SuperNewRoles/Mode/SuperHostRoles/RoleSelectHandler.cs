@@ -243,7 +243,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (!ShapeshifterPlayer.IsMod())
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in RoleClass.Shapeshifter.ShapeshifterPlayer)
                     {
                         if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
                         {
