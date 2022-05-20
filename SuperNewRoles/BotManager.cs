@@ -14,6 +14,8 @@ namespace SuperNewRoles
         {
             try
             {
+                if (player == null) return false;
+                if (player.Data.Disconnected) return false;
                 foreach (PlayerControl p in BotManager.AllBots)
                 {
                     if (p.PlayerId == player.PlayerId) return true;
@@ -22,8 +24,7 @@ namespace SuperNewRoles
             }
             catch(Exception e)
             {
-                if (player == null) return true;
-                return player.PlayerId > 14;
+                return false;
             }
         }
         public static bool IsPlayer(this PlayerControl player)

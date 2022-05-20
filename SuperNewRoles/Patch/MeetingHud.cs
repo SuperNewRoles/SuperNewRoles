@@ -319,7 +319,7 @@ namespace SuperNewRoles.Patch
                 PlayerVoteArea ps = __instance.playerStates[i];
                 if (ps == null) continue;
                 if (AmongUsClient.Instance.GameMode == GameModes.FreePlay && ps.TargetPlayerId != PlayerControl.LocalPlayer.PlayerId) continue;
-                if (ps.VotedFor != (byte)252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != (byte)254 && ModHelpers.playerById(ps.TargetPlayerId).isAlive() && ModHelpers.playerById(ps.TargetPlayerId).IsPlayer())
+                if (ps != null && ModHelpers.playerById(ps.TargetPlayerId) != null && ps.VotedFor != 252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != (byte)254 && ModHelpers.playerById(ps.TargetPlayerId).isAlive() && ModHelpers.playerById(ps.TargetPlayerId).IsPlayer())
                 {
                     int num;
                     int VoteNum = 1;

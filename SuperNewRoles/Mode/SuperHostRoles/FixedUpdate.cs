@@ -53,14 +53,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
         }*/
+        //public static Dictionary<byte, float> UpdateTime;
         private static int a = 0;
         public static void SetRoleName(PlayerControl player, bool IsUnchecked = false)
         {
             SetRoleName(player, RoleHelpers.IsComms() , IsUnchecked);
         }
+
+        //短時間で何回も呼ばれると重くなるため更新可能までの時間を指定
+        const float UpdateDefaultTime = 0.5f;
+
         public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false)
         {
             if (player.Data.Disconnected || player.IsBot() || !AmongUsClient.Instance.AmHost) return;
+            //if (UpdateTime.ContainsKey(player.PlayerId) && UpdateTime[player.PlayerId] > 0) return;
+
+            //UpdateTime[player.PlayerId] = UpdateDefaultTime;
 
             List<PlayerControl> DiePlayers = new List<PlayerControl>();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
@@ -286,23 +294,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
             }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
-            {
-                HudManager.Instance.KillButton.gameObject.SetActive(true);
-                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
-                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControl.LocalPlayer);
-                if (Input.GetKeyDown(KeyCode.Q))
-                {
-                    DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
-                }
-            }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.Egoist))
-            {
-                HudManager.Instance.KillButton.gameObject.SetActive(true);
-                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
-                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
-            }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal))
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal) ||
+                PlayerControl.LocalPlayer.isRole(RoleId.MadMaker) ||
+                PlayerControl.LocalPlayer.isRole(RoleId.Egoist) ||
+                PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff)
+                )
             {
                 HudManager.Instance.KillButton.gameObject.SetActive(true);
                 PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
@@ -311,23 +307,28 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
                 }
-            }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.MadMaker))
-            {
-                HudManager.Instance.KillButton.gameObject.SetActive(true);
-                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
-                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
             }
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             if (!AmongUsClient.Instance.AmHost) return;
             foreach (PlayerControl p in BotManager.AllBots)
             {
-                p.NetTransform.RpcSnapTo(new Vector2(99999, 99999));
+                if (p.transform.position.x < 600)
+                {
+                    p.NetTransform.RpcSnapTo(new Vector2(99999, 99999));
+                }
             }
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
                 UpdateDate--;
                 RoleFixedUpdate();
+                /*
+                if (UpdateTime != null)
+                {
+                    foreach (var UpdateTimeData in UpdateTime){
+                        UpdateTime[UpdateTimeData.Key] -= Time.fixedDeltaTime;
+                    }
+                }
+                */
                 if (AmongUsClient.Instance.AmHost)
                 {
                     BlockTool.FixedUpdate();
@@ -340,7 +341,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                         else
                         {
-                            SetRoleNames();
+                            //SetRoleNames();
                         }
                     }
                 }

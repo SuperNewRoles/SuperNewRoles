@@ -12,11 +12,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     class MorePatch
     {
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CompleteTask))]
+        class PlayerControlCompleteTaskPatch
+        {
+            public static void Postfix(PlayerControl __instance)
+            {
+                FixedUpdate.SetRoleName(__instance);
+            }
+        }
+
         public static bool RepairSystem(ShipStatus __instance,
                 SystemTypes systemType,
                 PlayerControl player,
                 byte amount)
         {
+            FixedUpdate.SetRoleNames();
             SyncSetting.CustomSyncSettings();
             if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {
@@ -39,7 +49,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!AmongUsClient.Instance.AmHost) return;
             FixedUpdate.SetRoleNames(true);
             RoleClass.IsMeeting = true;
-            FixedUpdate.SetRoleNames(true);
             new LateTask(() => {
                 FixedUpdate.SetDefaultNames();
             }, 5f, "SetMeetingName");

@@ -82,6 +82,7 @@ namespace SuperNewRoles.Patches
                                             __instance.RpcMurderPlayer(__instance);
                                         }, 0.5f);
                                     }
+                                    Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
                                     return true;
                                 }
                             }
@@ -141,10 +142,6 @@ namespace SuperNewRoles.Patches
                         new LateTask(() =>
                         {
                             PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
-                            new LateTask(() =>
-                            {
-                                PlayerControl.LocalPlayer.transform.localScale *= 1.4f;
-                            }, 1.1f);
                         }, 1.5f);
                         PlayerControl.LocalPlayer.RpcShapeshift(player, true);
                     } else if (ModeHandler.isMode(ModeId.Default))
@@ -263,7 +260,8 @@ namespace SuperNewRoles.Patches
             {
                 return true;
             }
-            SyncSetting.CustomSyncSettings();
+            SyncSetting.CustomSyncSettings(__instance);
+            SyncSetting.CustomSyncSettings(target);
             if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
                 if (isKill)
@@ -272,7 +270,6 @@ namespace SuperNewRoles.Patches
                 }
                 if (Mode.BattleRoyal.main.StartSeconds <= 0)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("キルでした:" + __instance.name + "(" + __instance.PlayerId + ")" + " => " + target.name + "(" + target.PlayerId + ")");
                     if (Mode.BattleRoyal.main.IsTeamBattle)
                     {
                         foreach (List<PlayerControl> teams in Mode.BattleRoyal.main.Teams)
@@ -340,7 +337,8 @@ namespace SuperNewRoles.Patches
                         RoleHelpers.SetLovers(__instance, target);
                         RoleHelpers.SetLoversRPC(__instance, target);
                         //__instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
-                        Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
                     }
                     return false;
                 }
@@ -366,6 +364,7 @@ namespace SuperNewRoles.Patches
                                 RoleClass.Sheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.SheriffKillMaxCount.getFloat() - 1;
                             }
                             __instance.RpcMurderPlayer(target);
+                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
                             return false;
                         }
                     } else
@@ -375,14 +374,14 @@ namespace SuperNewRoles.Patches
                 }
                 else if (__instance.isRole(RoleId.MadMaker))
                 {
-                    if (!target.Data.Role.IsImpostor)
+                    if (!target.isImpostor())
                     {
                         if (target == null || RoleClass.MadMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
                         RoleClass.MadMaker.CreatePlayers.Add(__instance.PlayerId);
-                        target.SetRole(RoleTypes.GuardianAngel);
+                        target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
                         target.setRoleRPC(RoleId.MadMate);
                         //__instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
-                        Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
                     }
                     else
                     {

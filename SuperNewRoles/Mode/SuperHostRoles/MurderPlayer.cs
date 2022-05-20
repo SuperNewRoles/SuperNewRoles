@@ -61,6 +61,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
             Roles.Bait.MurderPostfix(__instance,target);
+            FixedUpdate.SetRoleName(target);
         }
     }
 }

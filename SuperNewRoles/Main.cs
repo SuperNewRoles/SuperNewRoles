@@ -100,14 +100,30 @@ namespace SuperNewRoles
             {
                 SaveManager.chatModeType = 1;
                 SaveManager.isGuest = false;
+
                 if (Input.GetKeyDown(KeyCode.F1))
                 {
                     if (!__instance.isActiveAndEnabled) return;
+                    __instance.Toggle();
+                } else if (Input.GetKeyDown(KeyCode.F2)) { 
+                    
                     __instance.SetVisible(false);
                     new LateTask(() =>
                     {
                         __instance.SetVisible(true);
                     }, 0f,"AntiChatBag");
+                    
+                }
+                if (__instance.IsOpen)
+                {
+                    if (__instance.animating)
+                    {
+                        __instance.BanButton.MenuButton.enabled = false;
+                    }
+                    else
+                    {
+                        __instance.BanButton.MenuButton.enabled = true;
+                    }
                 }
             }
         }
