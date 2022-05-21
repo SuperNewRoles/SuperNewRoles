@@ -45,7 +45,10 @@ namespace SuperNewRoles.Patch
         public static void Prefix(GameData.PlayerInfo exiled)
         {
             RoleClass.IsCoolTimeSetted = false;
-            FalseCharges.WrapUp(exiled.Object);
+            if (exiled != null)
+            {
+                FalseCharges.WrapUp(exiled.Object);
+            }
             if (ModeHandler.isMode(ModeId.Default))
             {
                 if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit)
@@ -75,12 +78,9 @@ namespace SuperNewRoles.Patch
 
         public static void Postfix(GameData.PlayerInfo exiled)
         {
-            Seer.ExileControllerWrapUpPatch.WrapUpPostfix(exiled);
             SerialKiller.WrapUp();
             CountChanger.CountChangerPatch.WrapUpPatch();
-            RedRidingHood.WrapUp(exiled);
             CustomButton.MeetingEndedUpdate();
-            Nekomata.NekomataEnd(exiled);
 
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             new LateTask(() => {
@@ -89,6 +89,11 @@ namespace SuperNewRoles.Patch
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
             ModeHandler.Wrapup(exiled);
             if (exiled == null) return;
+
+            Seer.ExileControllerWrapUpPatch.WrapUpPostfix(exiled);
+            RedRidingHood.WrapUp(exiled);
+            Nekomata.NekomataEnd(exiled);
+
             exiled.Object.Exiled();
             exiled.IsDead = true;
             FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
