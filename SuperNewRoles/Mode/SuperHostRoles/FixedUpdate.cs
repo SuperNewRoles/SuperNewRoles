@@ -184,20 +184,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                         }
 
-                        if (p.isRole(RoleId.Shapeshifter))
-                        {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (!p2.Data.Disconnected && !p2.isImpostor())
-                                {
-                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
-                                }
-                                else if (!p2.Data.Disconnected && p2.isImpostor())
-                                {
-                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
-                                }
-                            }
-                        }
                             if (p.IsLovers() && p.isAlive())
                         {
                             var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");

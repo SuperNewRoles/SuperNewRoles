@@ -241,19 +241,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             foreach (PlayerControl ShapeshifterPlayer in RoleClass.Shapeshifter.ShapeshifterPlayer)
             {
-                ShapeshifterPlayer.RpcSetRoleDesync(RoleTypes.Shapeshifter);
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                {
-                    if (p.PlayerId != ShapeshifterPlayer.PlayerId && p.IsPlayer())
-                    {
-                        ShapeshifterPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                        p.RpcSetRoleDesync(RoleTypes.Scientist, ShapeshifterPlayer);
-                    }
-                    else
-                    {
-                        ShapeshifterPlayer.RpcSetRole(RoleTypes.Shapeshifter);
-                    }
-                }
+                ShapeshifterPlayer.RpcSetRole(RoleTypes.Shapeshifter);
+
             }
             if (RoleClass.Jester.IsUseVent)
             {
