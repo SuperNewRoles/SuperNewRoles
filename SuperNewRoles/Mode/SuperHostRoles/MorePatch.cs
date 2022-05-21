@@ -26,7 +26,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 PlayerControl player,
                 byte amount)
         {
-            FixedUpdate.SetRoleNames();
+            if (systemType == SystemTypes.Comms)
+            {
+                FixedUpdate.SetRoleNames();
+            }
             SyncSetting.CustomSyncSettings();
             if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {

@@ -1421,12 +1421,12 @@ namespace SuperNewRoles
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
                 return RoleId.DefaultRole;
             }
-            return SuperNewRoles.CustomRPC.RoleId.DefaultRole;
+            return RoleId.DefaultRole;
 
         }
         public static bool isDead(this PlayerControl player)
         {
-            return player.Data.IsDead || player.Data.Disconnected;
+            return player == null || player.Data.Disconnected || player.Data.IsDead;
         }
 
         public static bool isAlive(this PlayerControl player)
