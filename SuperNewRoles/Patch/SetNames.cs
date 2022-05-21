@@ -373,32 +373,6 @@ namespace SuperNewRoles.Patch
                         SetNamesClass.SetPlayerRoleNames(p);
                     }
                 }
-                if (PlayerControl.LocalPlayer.isRole(RoleId.Scavenger) && RoleClass.Scavenger.IsCheck)
-                {
-                    foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
-                    {
-                        SetNamesClass.SetPlayerNameColors(p);
-                        SetNamesClass.SetPlayerRoleNames(p);
-                    }
-                    foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer)
-                    {
-                        SetNamesClass.SetPlayerNameColors(p);
-                        SetNamesClass.SetPlayerRoleNames(p);
-                    }
-                    foreach (PlayerControl p in RoleClass.Sheriff.SheriffPlayer)
-                    {
-                        SetNamesClass.SetPlayerNameColors(p);
-                        SetNamesClass.SetPlayerRoleNames(p);
-                    }
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        if (p.isImpostor())
-                        {
-                            SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
-                            SetNamesClass.SetPlayerRoleNames(p);
-                        }
-                    }
-                }
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sidekick))
                 {
                     foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
