@@ -943,6 +943,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.Fox) && RoleClass.Fox.IsImpostorLight) return true;
             if (player.isRole(RoleId.TeleportingJackal) && RoleClass.TeleportingJackal.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadMaker) && RoleClass.MadMaker.IsImpostorLight) return true;
+            if (player.isRole(RoleId.Jackal) && RoleClass.Jackal.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)

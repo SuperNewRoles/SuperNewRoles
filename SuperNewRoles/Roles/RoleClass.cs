@@ -309,6 +309,7 @@ namespace SuperNewRoles.Roles
             public static float KillCoolDown;
             public static bool IsUseVent;
             public static bool IsUseSabo;
+            public static bool IsImpostorLight;
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
             public static bool IsCreateSidekick;
@@ -330,6 +331,7 @@ namespace SuperNewRoles.Roles
                 CreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 IsCreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
+                IsImpostorLight = CustomOptions.JackalIsImpostorLight.getBool();
             }
 
         }
