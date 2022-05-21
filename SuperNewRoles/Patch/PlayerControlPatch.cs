@@ -535,6 +535,7 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static void Prefix(PlayerControl __instance, PlayerControl target)
         {
+            EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
             if (ModeHandler.isMode(ModeId.Default))
             {
                 target.resetChange();
@@ -565,6 +566,16 @@ namespace SuperNewRoles.Patches
                         }
                     }
                 }
+
+                if (AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId)
+                {
+                    switch (target.getRole())
+                    {
+                        case RoleId.Fox:
+                            Fox.FoxMurderPatch.Prefix(__instance, target);
+                            break;
+                    }
+                }
             }
         }
         public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
@@ -576,6 +587,7 @@ namespace SuperNewRoles.Patches
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
             SerialKiller.MurderPlayer(__instance,target);
+            Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(__instance, target);
 
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {

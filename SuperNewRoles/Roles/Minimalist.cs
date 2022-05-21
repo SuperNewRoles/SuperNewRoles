@@ -62,17 +62,5 @@ namespace SuperNewRoles.Roles
                 SetMinimalistButton();
             }
         }
-        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-        class MinimalistDestroyPatch
-        {
-            public static void Prefix(IntroCutscene __instance)
-            {
-
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Minimalist))
-                {
-                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Minimalist.KillCoolTime);
-                }
-            }
-        }
     }
 }

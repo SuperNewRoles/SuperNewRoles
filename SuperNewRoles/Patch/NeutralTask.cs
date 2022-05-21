@@ -6,22 +6,5 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
-    
-    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-    class NeutralTask
-    {
-        public static void Prefix(IntroCutscene __instance)
-        {
-            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-            if (Roles.RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
-            {
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                {
-                    task.Complete();
-                }
-            }
-            PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
-        }
-    }
 }
 

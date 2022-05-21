@@ -44,8 +44,8 @@ namespace SuperNewRoles.Roles
             //HudManager.Instance.KillButton.SetCoolDown(EvilGamblerMurder.temp, EvilGamblerMurder.temp);
             //PlayerControl.LocalPlayer.SetKillTimer(EvilGamblerMurder.temp);
         }
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
-        public class EvilGamblerMurder
+
+        public static class EvilGamblerMurder
         {
             public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {

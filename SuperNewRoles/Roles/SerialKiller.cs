@@ -15,53 +15,50 @@ namespace SuperNewRoles.Roles
             bool IsViewButtonText = false;
             if (!RoleClass.IsMeeting)
             {
-                if (!RoleClass.IsMeeting)
+                if (ModeHandler.isMode(ModeId.Default))
                 {
-                    if (ModeHandler.isMode(ModeId.Default))
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.SerialKiller) && RoleClass.SerialKiller.IsSuicideView)
                     {
-                        if (PlayerControl.LocalPlayer.isRole(RoleId.SerialKiller) && RoleClass.SerialKiller.IsSuicideView)
+                        IsViewButtonText = true;
+                        RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
+                        if (RoleClass.SerialKiller.SuicideTime <= 0)
                         {
-                            IsViewButtonText = true;
-                            RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
-                            if (RoleClass.SerialKiller.SuicideTime <= 0)
-                            {
-                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-                                writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                                writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                                writer.Write(byte.MaxValue);
-                                AmongUsClient.Instance.FinishRpcImmediately(writer);
-                                RPCProcedure.RPCMurderPlayer(PlayerControl.LocalPlayer.PlayerId, PlayerControl.LocalPlayer.PlayerId, byte.MaxValue);
-                            }
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            writer.Write(byte.MaxValue);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            RPCProcedure.RPCMurderPlayer(PlayerControl.LocalPlayer.PlayerId, PlayerControl.LocalPlayer.PlayerId, byte.MaxValue);
                         }
                     }
-                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                }
+                else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                {
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.SerialKiller))
                     {
-                        if (PlayerControl.LocalPlayer.isRole(RoleId.SerialKiller))
+                        IsViewButtonText = true;
+                    }
+                    if (AmongUsClient.Instance.AmHost)
+                    {
+                        foreach (PlayerControl p in RoleClass.SerialKiller.SerialKillerPlayer)
                         {
-                            IsViewButtonText = true;
-                        }
-                        if (AmongUsClient.Instance.AmHost)
-                        {
-                            foreach (PlayerControl p in RoleClass.SerialKiller.SerialKillerPlayer)
+                            if (p.isAlive())
                             {
-                                if (p.isAlive())
+                                if (RoleClass.SerialKiller.IsSuicideViews.TryGetValue(p.PlayerId, out bool IsView) && IsView)
                                 {
-                                    if (RoleClass.SerialKiller.IsSuicideViews.TryGetValue(p.PlayerId, out bool IsView) && IsView)
+                                    if (!RoleClass.SerialKiller.SuicideTimers.ContainsKey(p.PlayerId)) RoleClass.SerialKiller.SuicideTimers[p.PlayerId] = RoleClass.SerialKiller.SuicideDefaultTime;
+                                    RoleClass.SerialKiller.SuicideTimers[p.PlayerId] -= Time.fixedDeltaTime;
+                                    if (RoleClass.SerialKiller.SuicideTimers[p.PlayerId] <= 0)
                                     {
-                                        if (!RoleClass.SerialKiller.SuicideTimers.ContainsKey(p.PlayerId)) RoleClass.SerialKiller.SuicideTimers[p.PlayerId] = RoleClass.SerialKiller.SuicideDefaultTime;
-                                        RoleClass.SerialKiller.SuicideTimers[p.PlayerId] -= Time.fixedDeltaTime;
-                                        if (RoleClass.SerialKiller.SuicideTimers[p.PlayerId] <= 0)
-                                        {
-                                            p.RpcMurderPlayer(p);
-                                        }
+                                        p.RpcMurderPlayer(p);
                                     }
                                 }
                             }
                         }
-                        if (PlayerControl.LocalPlayer.isRole(RoleId.SerialKiller) && RoleClass.SerialKiller.IsSuicideView)
-                        {
-                            RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
-                        }
+                    }
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.SerialKiller) && RoleClass.SerialKiller.IsSuicideView)
+                    {
+                        RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
                     }
                 }
             }

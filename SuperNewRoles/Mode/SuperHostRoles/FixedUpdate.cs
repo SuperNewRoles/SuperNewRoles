@@ -73,7 +73,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<PlayerControl> DiePlayers = new List<PlayerControl>();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (!p.Data.Disconnected && p.PlayerId != 0 && p.PlayerId != player.PlayerId  && p.IsPlayer())
+                if (p.PlayerId != 0 && p.PlayerId != player.PlayerId  && p.IsPlayer())
                 {
                     if (p.isDead() || p.isRole(RoleId.God))
                     {
@@ -81,7 +81,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-            //必要がないなら、処理しない
+            //必要がないなら処理しない
             if (player.IsMod() && DiePlayers.Count < 1) return;
 
             string Name = player.getDefaultName();
@@ -94,8 +94,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.cs(RoleClass.Celebrity.color, CelebrityPlayer.getDefaultName()));
             }
 
-            bool IsMadmateCheck = Madmate.CheckImpostor(player);
-            if (IsMadmateCheck)
+            if (Madmate.CheckImpostor(player))
             {
                 foreach (PlayerControl Impostor in PlayerControl.AllPlayerControls)
                 {
@@ -107,9 +106,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                 }
-            }
-
-            if (player.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+            } else if (player.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
             {
                 foreach (PlayerControl Jackal in RoleClass.Jackal.JackalPlayer)
                 {
@@ -125,10 +122,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                 }
-                //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
             }
-
-            if (player.isRole(RoleId.Scavenger) && RoleClass.Scavenger.IsCheck)
+            else if (player.isRole(RoleId.Scavenger) && RoleClass.Scavenger.IsCheck)
             {
                 foreach (PlayerControl Jackal in RoleClass.Jackal.JackalPlayer)
                 {

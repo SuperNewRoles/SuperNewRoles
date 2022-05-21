@@ -1,4 +1,5 @@
 using HarmonyLib;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
@@ -39,18 +40,6 @@ namespace SuperNewRoles.Roles
             public static void Postfix()
             {
                 SetDarkKillerButton();
-            }
-        }
-        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-        class DarkKillerDestroyPatch
-        {
-            public static void Prefix(IntroCutscene __instance)
-            {
-
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DarkKiller))
-                {
-                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.DarkKiller.KillCoolTime);
-                }
             }
         }
     }
