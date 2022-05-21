@@ -119,6 +119,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             optdata.ImpostorLightMod /= 5;
                         }
                     }
+
                     if (RoleClass.MadMaker.CreatePlayers.Contains(player.PlayerId))
                     {
                         optdata.KillCooldown = -1f;
