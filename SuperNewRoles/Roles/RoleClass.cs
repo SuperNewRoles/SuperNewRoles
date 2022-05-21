@@ -849,13 +849,30 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> JackalFriendsPlayer;
             public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
-            public static bool IsJackalCheck;
             public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static bool IsJackalCheck;
+            public static int JackalCheckTask;
             public static void ClearAndReload()
             {
                 JackalFriendsPlayer = new List<PlayerControl>();
                 IsJackalCheck = CustomOptions.JackalFriendsIsCheckJackal.getBool();
+
+                IsJackalCheck = CustomOptions.JackalFriendsIsCheckJackal.getBool();
                 IsUseVent = CustomOptions.JackalFriendsIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.JackalFriendsIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.JackalFriendsCommonTask.getFloat();
+                int Long = (int)CustomOptions.JackalFriendsLongTask.getFloat();
+                int Short = (int)CustomOptions.JackalFriendsShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.JackalFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
+                Roles.JackalFriends.CheckedJackal = new List<byte>();
             }
         }
         public static class Doctor

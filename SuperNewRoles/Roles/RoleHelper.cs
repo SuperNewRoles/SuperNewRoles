@@ -226,6 +226,10 @@ namespace SuperNewRoles
                     returntext = CustomOptions.MadSeerIsUseVent.name + ":" + CustomOptions.MadSeerIsUseVent.getString() + "\n";
                     returntext += CustomOptions.MadSeerIsCheckImpostor.name + ":" + CustomOptions.MadSeerIsCheckImpostor.getString() + "\n";
                     break;
+                case RoleId.JackalFriends:
+                    returntext = CustomOptions.JackalFriendsIsUseVent.name + ":" + CustomOptions.JackalFriendsIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.JackalFriendsIsCheckJackal.name + ":" + CustomOptions.JackalFriendsIsCheckJackal.getString() + "\n";
+                    break;
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
@@ -933,6 +937,7 @@ namespace SuperNewRoles
             if (player.isRole(RoleId.Fox) && RoleClass.Fox.IsImpostorLight) return true;
             if (player.isRole(RoleId.TeleportingJackal) && RoleClass.TeleportingJackal.IsImpostorLight) return true;
             if (player.isRole(RoleId.MadMaker) && RoleClass.MadMaker.IsImpostorLight) return true;
+            if (player.isRole(RoleId.JackalFriends) && RoleClass.MadMate.IsImpostorLight) return true;
             return false;
         }
         public static bool isNeutral(this PlayerControl player)

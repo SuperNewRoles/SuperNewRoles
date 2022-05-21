@@ -136,7 +136,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
                         }
-
+//
                         if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
                         {
                             foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
@@ -214,6 +214,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             Suffix += "(残り" + RoleClass.RemoteSheriff.KillCount[p.PlayerId] + "発)";
                         }
                     }
+                    //
                     if (p.isRole(RoleId.MadMate))
                     {
                         Suffix += ModHelpers.cs(RoleClass.MadMate.color, "");
