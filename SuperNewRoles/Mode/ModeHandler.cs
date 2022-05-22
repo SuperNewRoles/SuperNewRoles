@@ -83,7 +83,7 @@ namespace SuperNewRoles.Mode
                 thisMode = ModeId.Werewolf;
                 Werewolf.main.ClearAndReload();
             }
-            else if (isMode(ModeId.LevelUp))
+            else if (isMode(ModeId.LevelUp, false))
             {
                 thisMode = ModeId.LevelUp;
                 LevelUp.main.ClearAndReloads();
