@@ -20,13 +20,7 @@ namespace SuperNewRoles.Roles
             {
                 if (!RoleClass.Fox.UseReport)
                 {
-                    HudManager.Instance.ReportButton.gameObject.SetActiveRecursively(false);
                     HudManager.Instance.ReportButton.SetActive(false);
-                    HudManager.Instance.ReportButton.graphic.enabled = false;
-                    HudManager.Instance.ReportButton.enabled = false;
-                    HudManager.Instance.ReportButton.graphic.sprite = null;
-                    HudManager.Instance.ReportButton.buttonLabelText.enabled = false;
-                    HudManager.Instance.ReportButton.buttonLabelText.SetText("");
                 }
             }
         }
