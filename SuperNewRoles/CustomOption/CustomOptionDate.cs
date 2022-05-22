@@ -986,7 +986,7 @@ namespace SuperNewRoles.CustomOption
 
             DemonOption = new CustomRoleOption(415, true, CustomOptionType.Neutral, "DemonName", RoleClass.Demon.color, 1);
             DemonPlayerCount = CustomOption.Create(416, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DemonOption);
-            DemonCoolTime = CustomOption.Create(417, true, CustomOptionType.Neutral, "TeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, DemonOption, format: "unitSeconds");
+            DemonCoolTime = CustomOption.Create(417, true, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 30f, 2.5f, 60f, 2.5f, DemonOption, format: "unitSeconds");
             DemonIsUseVent = CustomOption.Create(418, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, DemonOption);
             DemonIsCheckImpostor = CustomOption.Create(419, true, CustomOptionType.Neutral, "MadMateIsCheckImpostorSetting", false, DemonOption);
 
