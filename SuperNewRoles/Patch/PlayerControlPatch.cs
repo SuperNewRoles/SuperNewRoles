@@ -141,7 +141,10 @@ namespace SuperNewRoles.Patches
                     {
                         new LateTask(() =>
                         {
-                            PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
+                            if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
+                            {
+                                PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
+                            }
                         }, 1.5f);
                         PlayerControl.LocalPlayer.RpcShapeshift(player, true);
                     } else if (ModeHandler.isMode(ModeId.Default))

@@ -86,14 +86,9 @@ namespace SuperNewRoles.Roles
         {
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                if (player.PlayerId != Demon.PlayerId)
+                if (player.PlayerId != Demon.PlayerId && !IsCursed(Demon, player))
                 {
-                    var data = !IsCursed(Demon, player);
-                    SuperNewRolesPlugin.Logger.LogInfo("チェック: "+Demon.name +" => "+player.name+" : "+!data);
-                    if (data)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
             return true;
@@ -105,11 +100,9 @@ namespace SuperNewRoles.Roles
             {
                 if (IsWin(player))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("trueを返しました");
                     return true;
                 }
             }
-            SuperNewRolesPlugin.Logger.LogInfo("falseを返しました");
             return false;
         }
     }

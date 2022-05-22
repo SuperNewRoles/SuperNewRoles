@@ -66,7 +66,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     CustomOptions.trueloverOption.getSelection() != 0 ||
                     CustomOptions.FalseChargesOption.getSelection() != 0 ||
                     CustomOptions.RemoteSheriffOption.getSelection() != 0 ||
-                    CustomOptions.MadMakerOption.getSelection() != 0
+                    CustomOptions.MadMakerOption.getSelection() != 0 ||
+                    CustomOptions.DemonOption.getSelection() != 0 
                     );
                 if (flag)
                 {

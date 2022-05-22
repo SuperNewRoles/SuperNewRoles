@@ -120,7 +120,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 */
                 __instance.enabled = false;
-                new LateTask(()=>ShipStatus.RpcEndGame(reason, showAd),0.25f);
+            ShipStatus.RpcEndGame(reason, showAd);
 
             //変更した設定を直す
             /*
