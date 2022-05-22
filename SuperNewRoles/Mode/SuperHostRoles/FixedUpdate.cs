@@ -152,7 +152,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                         else
                         {
-                            ChangePlayers[CursePlayer.PlayerId] = CursePlayer.getDefaultName() + ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                            ChangePlayers[CursePlayer.PlayerId] = ChangePlayers[CursePlayer.PlayerId] + ModHelpers.cs(RoleClass.Demon.color, " ▲");
                         }
                     }
                 }

@@ -256,6 +256,7 @@ namespace SuperNewRoles.Patches
             if (__instance.IsBot() || target.IsBot()) return false;
 
             if (__instance.isDead()) return false;
+            if (target.isDead()) return false;
             if (__instance.PlayerId == target.PlayerId) { __instance.RpcMurderPlayer(target); return false; }
             if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 return false;
@@ -370,7 +371,8 @@ namespace SuperNewRoles.Patches
                             Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
                             return false;
                         }
-                    } else
+                    }
+                    else
                     {
                         return false;
                     }
@@ -470,9 +472,9 @@ namespace SuperNewRoles.Patches
                     {
                         Demon.DemonCurse(target, __instance);
                         target.RpcProtectPlayerPrivate(target, 0, __instance);
-                        SyncSetting.MurderSyncSetting(__instance);
                         new LateTask(() =>
                         {
+                            SyncSetting.MurderSyncSetting(__instance);
                             __instance.RPCMurderPlayerPrivate(target);
                         }, 0.5f);
                         Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
@@ -491,9 +493,10 @@ namespace SuperNewRoles.Patches
                         {
                             for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
                             {
-                                __instance.RPCMurderPlayerPrivate(target,p);
+                                __instance.RPCMurderPlayerPrivate(target, p);
                             }
-                        } else
+                        }
+                        else
                         {
                             for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
                             {
@@ -504,14 +507,8 @@ namespace SuperNewRoles.Patches
                 }
                 return false;
             }
-            if (!ModeHandler.isMode(ModeId.Default))
-            {
-                __instance.RpcMurderPlayer(target);
-                return false;
-            } else
-            {
-                return true;
-            }
+            __instance.RpcMurderPlayer(target);
+            return false;
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]

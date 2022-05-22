@@ -175,8 +175,13 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SetBot(byte playerid)
         {
+            SuperNewRolesPlugin.Logger.LogInfo("セットボット！！！！！！！！！");
             PlayerControl player = ModHelpers.playerById(playerid);
-            if (player == null) return;
+            if (player == null) {
+                SuperNewRolesPlugin.Logger.LogInfo("nullなのでreturn");
+                return;
+            }
+            SuperNewRolesPlugin.Logger.LogInfo("通過:"+player.name);
             if (BotManager.AllBots == null) BotManager.AllBots = new List<PlayerControl>();
             BotManager.AllBots.Add(player);
 

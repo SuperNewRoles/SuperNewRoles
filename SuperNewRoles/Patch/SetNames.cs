@@ -256,7 +256,7 @@ namespace SuperNewRoles.Patch
                     SetPlayerNameText(side, side.nameText.text + suffix);
                 }
             }
-            if (PlayerControl.LocalPlayer.isDead() && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
+            if ((PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God))&& RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
             {
                 foreach (List<PlayerControl> ps in RoleClass.Lovers.LoversPlayer)
                 {
@@ -272,21 +272,16 @@ namespace SuperNewRoles.Patch
         }
         public static void DemonSet()
         {
-            if (PlayerControl.LocalPlayer.isAlive())
+            if (PlayerControl.LocalPlayer.isRole(RoleId.Demon) || PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God))
             {
-                if (PlayerControl.LocalPlayer.isRole(RoleId.Demon))
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
-                    foreach (PlayerControl player in Demon.GetIconPlayers())
+                    if (Demon.IsViewIcon(player))
                     {
-                        SetNamesClass.SetPlayerNameText(player, player.nameText.text + ModHelpers.cs(RoleClass.Demon.color, " ▲"));
-                    }
-                }
-            } else { 
-                foreach (PlayerControl DemonPlayer in RoleClass.Demon.DemonPlayer)
-                {
-                    foreach (PlayerControl player in Demon.GetIconPlayers(DemonPlayer))
-                    {
-                        SetNamesClass.SetPlayerNameText(player, player.nameText.text + ModHelpers.cs(RoleClass.Demon.color, " ▲"));
+                        if (!player.nameText.text.Contains(ModHelpers.cs(RoleClass.Demon.color, " ▲")))
+                        {
+                            SetNamesClass.SetPlayerNameText(player, player.nameText.text + ModHelpers.cs(RoleClass.Demon.color, " ▲"));
+                        }
                     }
                 }
             }

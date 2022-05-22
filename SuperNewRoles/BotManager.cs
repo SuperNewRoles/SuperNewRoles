@@ -68,7 +68,7 @@ namespace SuperNewRoles
             AllBots.Add(Bot);
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetBot);
             writer.Write(Bot.PlayerId);
-            writer.EndRPC();
+            new LateTask(()=>writer.EndRPC(),0.5f);
             return Bot;
         }
         public static void Despawn(PlayerControl Bot)
