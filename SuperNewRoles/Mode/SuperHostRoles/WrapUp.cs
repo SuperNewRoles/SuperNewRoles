@@ -71,7 +71,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             Roles.BestFalseCharge.WrapUp();
             if (exiled == null) return;
             exiled.Object.Exiled();
-            if (exiled.Object.isRole(RoleId.Sheriff) || exiled.Object.isRole(RoleId.truelover))
+            if (exiled.Object.isRole(RoleId.Sheriff) || exiled.Object.isRole(RoleId.truelover) || exiled.Object.isRole(RoleId.MadMaker))
             {
                 exiled.Object.RpcSetRoleDesync(RoleTypes.GuardianAngel);
             }

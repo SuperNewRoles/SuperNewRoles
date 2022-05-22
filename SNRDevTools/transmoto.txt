@@ -580,3 +580,5 @@ RMSkeldSetting
 RMMiraSetting
 RMPolusSetting
 RMAirshipSetting
+MadMakerName
+MadMakerTitle1
