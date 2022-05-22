@@ -577,3 +577,6 @@ TeleportingJackal
 Teleport and kill all crewmates and impostors!
 MadMaker
 Let's get more lunatics!
+Demon
+Curse the Crew and Help the Imposter!
+Curse

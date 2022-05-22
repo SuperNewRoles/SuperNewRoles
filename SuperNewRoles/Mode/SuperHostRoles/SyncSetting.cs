@@ -188,17 +188,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     optdata.RoleOptions.ShapeshifterCooldown = KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime);
-                    SuperNewRolesPlugin.Logger.LogInfo("ｼﾝｸ");
-                    if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId))
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("ｼﾝｸ:"+RoleClass.RemoteSheriff.KillCount[player.PlayerId]);
-                    }
                     if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId) && RoleClass.RemoteSheriff.KillCount[player.PlayerId] < 1)
                     {
                         optdata.RoleOptions.ShapeshifterDuration = 1f;
                         optdata.RoleOptions.ShapeshifterCooldown = -1f;
-
-                        SuperNewRolesPlugin.Logger.LogInfo("変更！");
                     }
                     if (player.IsMod())
                     {

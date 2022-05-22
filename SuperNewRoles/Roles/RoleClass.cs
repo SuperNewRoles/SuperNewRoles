@@ -122,6 +122,7 @@ namespace SuperNewRoles.Roles
             RemoteSheriff.ClearAndReload();
             TeleportingJackal.ClearAndReload();
             MadMaker.ClearAndReload();
+            Demon.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1736,6 +1737,31 @@ namespace SuperNewRoles.Roles
                 IsImpostorLight = CustomOptions.MadMakerIsImpostorLight.getBool();
                 IsCreateMadmate = false;
                 CreatePlayers = new List<int>();
+            }
+        }
+        public static class Demon
+        {
+            public static List<PlayerControl> DemonPlayer;
+            public static Dictionary<byte, List<PlayerControl>> CurseDatas;
+            public static Color32 color = new Color32(110, 0, 165, byte.MaxValue);
+            public static bool IsUseVent;
+            public static bool IsCheckImpostor;
+            public static float CoolTime;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.DemonButton.png", 115f);
+                return buttonSprite;
+            }
+
+            public static void ClearAndReload()
+            {
+                DemonPlayer = new List<PlayerControl>();
+                CurseDatas = new Dictionary<byte, List<PlayerControl>>();
+                IsUseVent = CustomOptions.DemonIsUseVent.getBool();
+                CoolTime = CustomOptions.DemonCoolTime.getFloat();
+                IsCheckImpostor = CustomOptions.DemonIsCheckImpostor.getBool();
             }
         }
         //新ロールクラス

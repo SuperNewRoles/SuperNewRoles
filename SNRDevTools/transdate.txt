@@ -578,3 +578,6 @@ TeleportingJackalName,TeleportingJackal,テレポートジャッカル
 TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう
 MadMakerName,MadMaker,マッドメーカー
 MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！
+DemonName,Demon,悪魔
+DemonTitle1,Curse the Crew and Help the Imposter!,クルーを呪いながらインポスターを手助けせよ
+DemonButtonName,Curse,呪う

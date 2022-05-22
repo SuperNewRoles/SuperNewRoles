@@ -105,6 +105,7 @@ namespace SuperNewRoles.CustomRPC
         RemoteSheriff,
         TeleportingJackal,
         MadMaker,
+        Demon,
         //RoleId
     }
 
@@ -155,10 +156,22 @@ namespace SuperNewRoles.CustomRPC
         UseMadStuntmanCount,
         CustomEndGame,
         UncheckedProtect,
-        SetBot
+        SetBot,
+        DemonCurse
     }
     public static class RPCProcedure
     {
+        public static void DemonCurse(byte source, byte target)
+        {
+            PlayerControl TargetPlayer = ModHelpers.playerById(target);
+            PlayerControl SourcePlayer = ModHelpers.playerById(source);
+            if (TargetPlayer == null || SourcePlayer == null) return;
+            if (!RoleClass.Demon.CurseDatas.ContainsKey(source)) RoleClass.Demon.CurseDatas[source] = new List<PlayerControl>();
+            if (!Demon.IsCursed(SourcePlayer, TargetPlayer))
+            {
+                RoleClass.Demon.CurseDatas[source].Add(TargetPlayer);
+            }
+        }
         public static void SetBot(byte playerid)
         {
             PlayerControl player = ModHelpers.playerById(playerid);
@@ -870,6 +883,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.SetBot:
                         SetBot(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.DemonCurse:
+                        DemonCurse(reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }

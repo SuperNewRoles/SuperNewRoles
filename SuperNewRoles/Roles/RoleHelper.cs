@@ -505,6 +505,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMaker):
                     Roles.RoleClass.MadMaker.MadMakerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Demon):
+                    Roles.RoleClass.Demon.DemonPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -766,6 +769,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMaker):
                     Roles.RoleClass.MadMaker.MadMakerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Demon):
+                    Roles.RoleClass.Demon.DemonPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -849,6 +855,9 @@ namespace SuperNewRoles
                 case (RoleId.TeleportingJackal):
                     IsTaskClear = true;
                     break; 
+                case (RoleId.Demon):
+                    IsTaskClear = true;
+                    break; 
                 //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
@@ -900,6 +909,8 @@ namespace SuperNewRoles
                     return RoleClass.MadMaker.IsUseVent;
                 case RoleId.Fox:
                     return RoleClass.Fox.IsUseVent;
+                case RoleId.Demon:
+                    return RoleClass.Demon.IsUseVent;
                 /*
                 case RoleId.Scavenger:
                     return RoleClass.Scavenger.IsUseVent;
@@ -1021,6 +1032,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.TeleportingJackal):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Demon):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1453,6 +1467,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.MadMaker;
+            }
+            else if (Roles.RoleClass.Demon.DemonPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Demon;
             }
             //ロールチェック
             }

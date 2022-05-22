@@ -2315,6 +2315,18 @@
  "MadMakerTitle1" : {
         "0" : "Let's get more lunatics!" ,
         "11" : "\u72c2\u4eba\u3092\u5897\u3084\u305d\u3046\uff01"
+        } ,
+ "DemonName" : {
+        "0" : "Demon" ,
+        "11" : "\u60aa\u9b54"
+        } ,
+ "DemonTitle1" : {
+        "0" : "Curse the Crew and Help the Imposter!" ,
+        "11" : "\u30af\u30eb\u30fc\u3092\u546a\u3044\u306a\u304c\u3089\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u624b\u52a9\u3051\u305b\u3088"
+        } ,
+ "DemonButtonName" : {
+        "0" : "Curse" ,
+        "11" : "\u546a\u3046"
         } 
 
 }

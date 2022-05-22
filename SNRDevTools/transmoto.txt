@@ -577,3 +577,6 @@ TeleportingJackalName
 TeleportingJackalTitle1
 MadMakerName
 MadMakerTitle1
+DemonName
+DemonTitle1
+DemonButtonName
