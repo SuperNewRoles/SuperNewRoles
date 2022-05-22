@@ -600,15 +600,13 @@ namespace SuperNewRoles.CustomOption
         {
             if (option.isHidden) return true;
             if (option.isSHROn) { return false; }
-            else { return ModeHandler.isMode(ModeId.SuperHostRoles); }
+            else { return ModeHandler.isMode(ModeId.SuperHostRoles, false); }
             return false;
         }
         public static void Postfix(GameOptionsMenu __instance)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("名前:"+__instance.name);
             var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
             if (gameSettingMenu.RegularGameSettings.active || gameSettingMenu.RolesSettings.gameObject.active) return;
-            SuperNewRolesPlugin.Logger.LogInfo("通過");
 
             timer += Time.deltaTime;
             if (timer < 0.1f) return;
@@ -620,7 +618,6 @@ namespace SuperNewRoles.CustomOption
             CustomOptionType type = getCustomOptionType(__instance.name);
             foreach (CustomOption option in CustomOption.options)
             {
-                //SuperNewRolesPlugin.Logger.LogInfo(option.type);
                 if (option.type != type) continue;
                 if (option?.optionBehaviour != null && option.optionBehaviour.gameObject != null)
                 {

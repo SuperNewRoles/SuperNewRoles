@@ -17,6 +17,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void WrapUp(GameData.PlayerInfo exiled)
         {
             if (!AmongUsClient.Instance.AmHost) return;
+            FixedUpdate.SetRoleNames();
             /*
             new LateTask(() =>
             {

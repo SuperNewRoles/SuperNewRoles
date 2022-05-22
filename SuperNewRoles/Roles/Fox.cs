@@ -20,13 +20,7 @@ namespace SuperNewRoles.Roles
             {
                 if (!RoleClass.Fox.UseReport)
                 {
-                    HudManager.Instance.ReportButton.gameObject.SetActiveRecursively(false);
                     HudManager.Instance.ReportButton.SetActive(false);
-                    HudManager.Instance.ReportButton.graphic.enabled = false;
-                    HudManager.Instance.ReportButton.enabled = false;
-                    HudManager.Instance.ReportButton.graphic.sprite = null;
-                    HudManager.Instance.ReportButton.buttonLabelText.enabled = false;
-                    HudManager.Instance.ReportButton.buttonLabelText.SetText("");
                 }
             }
         }
@@ -44,52 +38,26 @@ namespace SuperNewRoles.Roles
                 SetFoxButton();
             }
         }
-        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-        class FoxDestroyPatch
-        {
-            public static void Prefix(IntroCutscene __instance)
-            {
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
-                {
-                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Minimalist.KillCoolTime);
-                }
-            }
-        }
-        public class FoxFixedPatch
-        {
 
-
-        }
-
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
-        class FoxMurderPatch
+        public static class FoxMurderPatch
         {
             public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
-                if (AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId)
+                if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, __instance))
                 {
-                    if (target.isRole(CustomRPC.RoleId.Fox))
+                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
                     {
-                        if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, __instance))
+                        target.RpcProtectPlayer(target, 0);
+                    }
+                    else
+                    {
+                        if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
                         {
-                            if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
-                            {
-                                target.RpcProtectPlayer(target, 0);
-                            }
-                            else
-                            {
-                                if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
-                                {
-                                    RoleClass.Fox.KillGuard[target.PlayerId]--;
-                                    target.RpcProtectPlayer(target, 0);
-                                }
-                            }
+                            RoleClass.Fox.KillGuard[target.PlayerId]--;
+                            target.RpcProtectPlayer(target, 0);
                         }
                     }
                 }
-            }
-            public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
-            {
             }
         }
 
