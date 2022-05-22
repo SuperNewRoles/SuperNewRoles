@@ -82,6 +82,19 @@ namespace SuperNewRoles.Patch
                     }
                 }
             }
+            else if (p.isRole(RoleId.JackalFriends))
+            {
+                if (CustomOptions.JackalFriendsIsCheckJackal.getBool())
+                {
+                    int commont = (int)CustomOptions.JackalFriendsCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.JackalFriendsShortTask.getFloat();
+                    int longt = (int)CustomOptions.JackalFriendsLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }
             else if (p.isRole(RoleId.Jester))
             {
                 if (CustomOptions.JesterIsWinCleartask.getBool())

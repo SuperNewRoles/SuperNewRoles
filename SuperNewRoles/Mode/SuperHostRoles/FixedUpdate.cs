@@ -136,8 +136,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
                         }
-//
-                        if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+
+                        bool IsJackalFriendsCheck = JackalFriends.CheckJackal(p);
+                        if (IsJackalFriendsCheck)
                         {
                             foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
                             {
@@ -150,7 +151,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                     p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Jackal.color, p2.getDefaultName()), p);
                                 }
                             }
-                            //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
                         }
                         if (p.IsLovers() && p.isAlive())
                         {

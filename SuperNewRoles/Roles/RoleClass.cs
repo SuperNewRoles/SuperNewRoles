@@ -40,6 +40,8 @@ namespace SuperNewRoles.Roles
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new List<byte>();
             Roles.MadMayor.CheckedImpostor = new List<byte>();
+            Roles.MadSeer.CheckedImpostor = new List<byte>();
+            Roles.JackalFriends.CheckedJackal = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
