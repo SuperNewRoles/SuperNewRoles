@@ -34,7 +34,6 @@ namespace SuperNewRoles.EndGame
         MadJesterWin,
         FalseChargesWin,
         FoxWin,
-        ScavengerWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -213,12 +212,6 @@ namespace SuperNewRoles.EndGame
                 text = "WorkpersonName";
                 textRenderer.color = RoleClass.Workperson.color;
                 __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.ScavengerWin)
-            {
-                text = "ScavengerName";
-                textRenderer.color = Roles.RoleClass.Scavenger.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Scavenger.color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.MadJesterWin)
             {
@@ -507,7 +500,6 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.MadJester.MadJesterPlayer);
             notWinners.AddRange(RoleClass.MadSeer.MadSeerPlayer);
             notWinners.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
-            notWinners.AddRange(RoleClass.Scavenger.ScavengerPlayer);
             notWinners.AddRange(RoleClass.Fox.FoxPlayer);
             notWinners.AddRange(BotManager.AllBots);
             notWinners.AddRange(RoleClass.MadMaker.MadMakerPlayer);
@@ -538,7 +530,6 @@ namespace SuperNewRoles.EndGame
             bool WorkpersonWin = gameOverReason == (GameOverReason)CustomGameOverReason.WorkpersonWin;
             bool FalseChargesWin = gameOverReason == (GameOverReason)CustomGameOverReason.FalseChargesWin;
             bool FoxWin = gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
-            bool ScavengerWin = gameOverReason == (GameOverReason)CustomGameOverReason.ScavengerWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -549,7 +540,6 @@ namespace SuperNewRoles.EndGame
                 QuarreledWin = EndData == CustomGameOverReason.QuarreledWin;
                 FoxWin = EndData == CustomGameOverReason.FoxWin;
                 JackalWin = EndData == CustomGameOverReason.JackalWin;
-                ScavengerWin = EndData == CustomGameOverReason.ScavengerWin;
             }
 
 
@@ -621,13 +611,6 @@ namespace SuperNewRoles.EndGame
                 WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.FalseChargesWin;
-            }
-            else if (ScavengerWin)
-            {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
-                TempData.winners.Add(wpd);
-                AdditionalTempData.winCondition = WinCondition.ScavengerWin;
             }
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
@@ -705,19 +688,6 @@ namespace SuperNewRoles.EndGame
                         WinningPlayerData wpd = new WinningPlayerData(p.Data);
                         TempData.winners.Add(wpd);
                         AdditionalTempData.winCondition = WinCondition.GodWin;
-                    }
-                }
-            }
-            foreach (PlayerControl p in RoleClass.Scavenger.ScavengerPlayer)
-            {
-                if (p.isAlive())
-                {
-                    if (RoleClass.Scavenger.NeedReportCount <= 0)
-                    {
-                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
-                        TempData.winners.Add(wpd);
-                        AdditionalTempData.winCondition = WinCondition.ScavengerWin;
                     }
                 }
             }
@@ -866,58 +836,6 @@ namespace SuperNewRoles.EndGame
             }
         }
     }
-    [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
-    public class CheckEndGamePatch
-    {
-        public static void Prefix(ExileController __instance)
-        {
-            try
-            {
-                WrapUpClass.Prefix(__instance.exiled);
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
-            }
-        }
-        public static void Postfix(ExileController __instance)
-        {
-            try
-            {
-                WrapUpClass.WrapUpPostfix(__instance.exiled);
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
-            }
-        }
-    }
-    [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-    public class CheckAirShipEndGamePatch
-    {
-        public static void Prefix(AirshipExileController __instance)
-        {
-            try
-            {
-                WrapUpClass.Prefix(__instance.exiled);
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
-            }
-        }
-        public static void Postfix(AirshipExileController __instance)
-        {
-            try
-            {
-                WrapUpClass.WrapUpPostfix(__instance.exiled);
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:"+e);
-            }
-        }
-    }
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
     class ExileControllerMessagePatch
     {
@@ -948,117 +866,8 @@ namespace SuperNewRoles.EndGame
         {
             PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer),RoleHelpers.GetEndMeetingKillCoolTime(PlayerControl.LocalPlayer));
         }
-        public static void Prefix(GameData.PlayerInfo exiled)
-        {
-            RoleClass.IsCoolTimeSetted = false;
-            FalseCharges.WrapUp(exiled.Object);
-            if (!ModeHandler.isMode(ModeId.Default)) return;
-            if (ModeHandler.isMode(ModeId.Default))
-            {
-                if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit){
-                    if (!Sabotage.CognitiveDeficit.main.IsLocalEnd)
-                    {
-                        Sabotage.CognitiveDeficit.main.UpdateTime = 0;
-                    }
-                }
-            }
-            if (exiled == null) return;
-            FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.Object.PlayerId] = FinalStatus.Exiled;
-            if (exiled.Object.PlayerId != PlayerControl.LocalPlayer.PlayerId) return;
-            if (exiled.Object.isRole(RoleId.SideKiller))
-            {
-                var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
-                if (sideplayer != null)
-                {
-                    if (!RoleClass.SideKiller.IsUpMadKiller)
-                    {
-                        sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
-                        RoleClass.SideKiller.IsUpMadKiller = true;
-                    }
-                }
-            }
-        }
         public static void WrapUpPostfix(GameData.PlayerInfo exiled)
         {
-            SerialKiller.WrapUp();
-            PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
-            new LateTask(() => {
-                RoleClass.IsMeeting = false;
-            }, 0.1f, "SetIsMeeting");
-            if (ModeHandler.isMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
-            ModeHandler.Wrapup(exiled);
-            if (exiled == null) return;
-            exiled.Object.Exiled();
-            exiled.IsDead = true;
-            FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.PlayerId] = FinalStatus.Exiled;
-            var Player = ModHelpers.playerById(exiled.PlayerId);
-            if (ModeHandler.isMode(ModeId.Default))
-            {
-                if (RoleClass.Lovers.SameDie && Player.IsLovers())
-                {
-                    if (AmongUsClient.Instance.AmHost)
-                    {
-                        PlayerControl SideLoverPlayer = Player.GetOneSideLovers();
-                        if (SideLoverPlayer.isAlive())
-                        {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
-                            writer.Write(SideLoverPlayer.PlayerId);
-                            writer.Write(SideLoverPlayer.PlayerId);
-                            writer.Write(byte.MaxValue);
-                            AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.RPCMurderPlayer(SideLoverPlayer.PlayerId, SideLoverPlayer.PlayerId, byte.MaxValue);
-                        }
-                    }
-                }
-            }
-            if (ModeHandler.isMode(ModeId.Default))
-            {
-                EvilEraser.IsWinGodGuard = false;
-                EvilEraser.IsWinFoxGuard = false;
-                if (RoleHelpers.IsQuarreled(Player))
-                {
-                    var Side = RoleHelpers.GetOneSideQuarreled(Player);
-                    if (Side.isDead())
-                    {
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                        Writer.Write(Player.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
-                        RoleClass.Quarreled.IsQuarreledWin = true;
-                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
-                    }
-                }
-
-                if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(Player))
-                {
-
-                    if (!Roles.RoleClass.Jester.IsJesterTaskClearWin || (Roles.RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
-                    {
-                        CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
-
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                        Writer.Write(Player.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        Roles.RoleClass.Jester.IsJesterWin = true;
-                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
-                    }
-                }
-
-                if (Roles.RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(Player))
-                {
-
-                    if (!Roles.RoleClass.MadJester.IsMadJesterTaskClearWin || (Roles.RoleClass.MadJester.IsMadJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
-                    {
-                        CustomRPC.RPCProcedure.ShareWinner(Player.PlayerId);
-
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                        Writer.Write(Player.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        Roles.RoleClass.MadJester.IsMadJesterWin = true;
-                        CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.MadJesterWin, false);
-                    }
-                }
-            }
         }
     }
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
@@ -1092,7 +901,6 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
-                if (CheckAndEndGameForScavengerWin(__instance)) return false;
                 if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             }
             return false;
@@ -1195,29 +1003,7 @@ namespace SuperNewRoles.EndGame
             }
             return false;
         }
-        public static bool CheckAndEndGameForScavengerWin(ShipStatus __instance)
-        {
-            foreach (PlayerControl p in RoleClass.Scavenger.ScavengerPlayer)
-            {
-                if (!p.Data.Disconnected)
-                {
-                    if (p.isAlive())
-                    {
-                        if (RoleClass.Scavenger.NeedReportCount <= 0)
-                        {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                            Writer.Write(p.PlayerId);
-                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                            CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
-                            __instance.enabled = false;
-                            CustomEndGame((GameOverReason)CustomGameOverReason.ScavengerWin, false);
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
+        
 
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {

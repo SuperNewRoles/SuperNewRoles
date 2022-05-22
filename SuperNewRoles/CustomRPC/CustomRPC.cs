@@ -105,7 +105,7 @@ namespace SuperNewRoles.CustomRPC
         RemoteSheriff,
         TeleportingJackal,
         MadMaker,
-        Scavenger,
+        TaskManager,
         //RoleId
     }
 

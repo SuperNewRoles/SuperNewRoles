@@ -122,7 +122,7 @@ namespace SuperNewRoles.Roles
             RemoteSheriff.ClearAndReload();
             TeleportingJackal.ClearAndReload();
             MadMaker.ClearAndReload();
-            Scavenger.ClearAndReload();
+            TaskManager.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1739,25 +1739,23 @@ namespace SuperNewRoles.Roles
                 CreatePlayers = new List<int>();
             }
         }
-
-        public static class Scavenger
+        public static class TaskManager
         {
-            public static List<PlayerControl> ScavengerPlayer;
-            public static Color32 color = new Color32(208, 80, 80, byte.MaxValue);
-            public static bool IsUseVent;
-            public static float OutVentTime;
-            public static float VentCoolTime;
-            public static float NeedReportCount;
-            public static bool IsCheck;
-
+            public static List<PlayerControl> TaskManagerPlayer;
+            public static Color32 color = new Color32(153, 255, 255, byte.MaxValue);
             public static void ClearAndReload()
             {
-                ScavengerPlayer = new List<PlayerControl>();
-                NeedReportCount = CustomOptions.ScavengerNeedReportCount.getFloat();
-                IsUseVent = CustomOptions.ScavengerIsUseVent.getBool();
-                OutVentTime = CustomOptions.ScavengerOutVentTime.getFloat();
-                VentCoolTime = CustomOptions.ScavengerVentCoolTime.getFloat();
-                IsCheck = CustomOptions.ScavengerIsCheck.getBool();
+                TaskManagerPlayer = new List<PlayerControl>();
+                int Common = (int)CustomOptions.TaskManagerCommonTask.getFloat();
+                int Long = (int)CustomOptions.TaskManagerLongTask.getFloat();
+                int Short = (int)CustomOptions.TaskManagerShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
             }
         }
         //新ロールクラス
