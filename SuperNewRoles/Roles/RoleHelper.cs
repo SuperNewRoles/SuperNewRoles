@@ -876,24 +876,42 @@ namespace SuperNewRoles
         }
         public static bool IsUseVent(this PlayerControl player)
         {
-            if (!RoleClass.Minimalist.UseVent && player.isRole(RoleId.Minimalist)) return false;
-            if (player.Data.Role.IsImpostor) return true; if ((RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player) ||
-                 RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) && Roles.RoleClass.Jackal.IsUseVent) return true;
-            if (ModeHandler.isMode(ModeId.SuperHostRoles) && IsComms()) return false;
-            if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Jester.IsUseVent) return true;
-            if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMate.IsUseVent) return true;
-            if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.TeleportingJackal.IsUseVent) return true;
-            if (player.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsUseVent) return true;
-            if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.UseVent) return true;
-            if (player.isRole(RoleId.Technician) && IsSabotage()) return true;
-            if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMayor.IsUseVent) return true;
-            if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadJester.IsUseVent) return true;
-            if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadStuntMan.IsUseVent) return true;
-            if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadHawk.IsUseVent) return true;
-            if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadSeer.IsUseVent) return true;
-            if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Fox.IsUseVent) return true;
-            if (RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMaker.IsUseVent) return true;
-            if (RoleClass.Scavenger.ScavengerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Scavenger.IsUseVent) return true;
+            RoleId role = player.getRole();
+            if (role == RoleId.Minimalist) return RoleClass.Minimalist.UseVent;
+            else if (player.isImpostor()) return true;
+            else if (player.isRole(RoleId.Jackal) || player.isRole(RoleId.Sidekick)) return RoleClass.Jackal.IsUseVent;
+            else if (ModeHandler.isMode(ModeId.SuperHostRoles) && IsComms()) return false;
+            switch (role)
+            {
+                case RoleId.Jester:
+                    return RoleClass.Jester.IsUseVent;
+                case RoleId.MadMate:
+                    return RoleClass.MadMate.IsUseVent;
+                case RoleId.TeleportingJackal:
+                    return RoleClass.TeleportingJackal.IsUseVent;
+                case RoleId.JackalFriends:
+                    return RoleClass.JackalFriends.IsUseVent;
+                case RoleId.Egoist:
+                    return RoleClass.Egoist.UseVent;
+                case RoleId.Technician:
+                    return IsSabotage();
+                case RoleId.MadMayor:
+                    return RoleClass.MadMayor.IsUseVent;
+                case RoleId.MadJester:
+                    return RoleClass.MadJester.IsUseVent;
+                case RoleId.MadStuntMan:
+                    return RoleClass.MadStuntMan.IsUseVent;
+                case RoleId.MadHawk:
+                    return RoleClass.MadHawk.IsUseVent;
+                case RoleId.MadSeer:
+                    return RoleClass.MadSeer.IsUseVent;
+                case RoleId.MadMaker:
+                    return RoleClass.MadMaker.IsUseVent;
+                case RoleId.Fox:
+                    return RoleClass.Fox.IsUseVent;
+                case RoleId.Scavenger:
+                    return RoleClass.Scavenger.IsUseVent;
+            }
             return false;
         }
         public static bool IsSabotage()
@@ -913,7 +931,6 @@ namespace SuperNewRoles
             {
                 foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                     if (task.TaskType == TaskTypes.FixComms)
-                    if (task.TaskType == TaskTypes.FixComms)
                         return true;
             }
             catch { }
@@ -921,28 +938,49 @@ namespace SuperNewRoles
         }
         public static bool IsUseSabo(this PlayerControl player)
         {
-            if (!RoleClass.Minimalist.UseSabo && player.isRole(RoleId.Minimalist)) return false;
-            if (player.Data.Role.IsImpostor) return true;
-            if (Roles.RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Jester.IsUseSabo && !ModeHandler.isMode(ModeId.SuperHostRoles)) return true;
-            if ((RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player) ||
-                RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) && Roles.RoleClass.Jackal.IsUseSabo) return true;
-            if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.UseSabo) return true;
-            if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.TeleportingJackal.IsUseSabo) return true;
+            RoleId role = player.getRole();
+            if (role == RoleId.Minimalist) return RoleClass.Minimalist.UseSabo;
+            else if (player.isImpostor()) return true;
+            switch (role)
+            {
+                case RoleId.Jester:
+                    return RoleClass.Jester.IsUseSabo;
+                case RoleId.Sidekick:
+                case RoleId.Jackal:
+                    return RoleClass.Jackal.IsUseSabo;
+                case RoleId.TeleportingJackal:
+                    return RoleClass.TeleportingJackal.IsUseSabo;
+                case RoleId.Egoist:
+                    return RoleClass.Egoist.UseSabo;
+            }
             return false;
         }
         public static bool IsImpostorLight(this PlayerControl player)
         {
-            if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.ImpostorLight) return true;
+            RoleId role = player.getRole();
+            if (role == RoleId.Egoist) return RoleClass.Egoist.ImpostorLight;
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) return false;
-            if (player.isRole(RoleId.MadMate) && RoleClass.MadMate.IsImpostorLight) return true;
-            if (player.isRole(RoleId.MadMayor) && RoleClass.MadMayor.IsImpostorLight) return true;
-            if (player.isRole(RoleId.MadStuntMan) && RoleClass.MadStuntMan.IsImpostorLight) return true;
-            if (player.isRole(RoleId.MadHawk) && RoleClass.MadHawk.IsImpostorLight) return true;
-            if (player.isRole(RoleId.MadJester) && RoleClass.MadJester.IsImpostorLight) return true;
-            if (player.isRole(RoleId.MadSeer) && RoleClass.MadSeer.IsImpostorLight) return true;
-            if (player.isRole(RoleId.Fox) && RoleClass.Fox.IsImpostorLight) return true;
-            if (player.isRole(RoleId.TeleportingJackal) && RoleClass.TeleportingJackal.IsImpostorLight) return true;
-            if (player.isRole(RoleId.MadMaker) && RoleClass.MadMaker.IsImpostorLight) return true;
+            switch (role)
+            {
+                case RoleId.MadMate:
+                    return RoleClass.MadMate.IsImpostorLight;
+                case RoleId.MadMayor:
+                    return RoleClass.MadMayor.IsImpostorLight;
+                case RoleId.MadStuntMan:
+                    return RoleClass.MadStuntMan.IsImpostorLight;
+                case RoleId.MadHawk:
+                    return RoleClass.MadHawk.IsImpostorLight;
+                case RoleId.MadJester:
+                    return RoleClass.MadJester.IsImpostorLight;
+                case RoleId.MadSeer:
+                    return RoleClass.MadSeer.IsImpostorLight;
+                case RoleId.Fox:
+                    return RoleClass.Fox.IsImpostorLight;
+                case RoleId.TeleportingJackal:
+                    return RoleClass.TeleportingJackal.IsImpostorLight;
+                case RoleId.MadMaker:
+                    return RoleClass.MadMaker.IsImpostorLight;
+            }
             return false;
         }
         public static bool isNeutral(this PlayerControl player)
@@ -1022,20 +1060,37 @@ namespace SuperNewRoles
             else {
                 return false;
             }
-            return false;
         }
         public static float getCoolTime(PlayerControl __instance)
         {
             float addition = PlayerControl.GameOptions.killCooldown;
             if (ModeHandler.isMode(ModeId.Default))
             {
-                if (__instance.isRole(RoleId.SerialKiller)) addition = RoleClass.SerialKiller.KillTime;
-                else if (__instance.isRole(RoleId.OverKiller)) addition = RoleClass.OverKiller.KillCoolTime;
-                else if (__instance.isRole(RoleId.SideKiller)) addition = RoleClass.SideKiller.KillCoolTime;
-                else if (__instance.isRole(RoleId.MadKiller)) addition = RoleClass.SideKiller.MadKillerCoolTime;
-                else if (__instance.isRole(RoleId.Minimalist)) addition = RoleClass.Minimalist.KillCoolTime;
-                else if (__instance.isRole(RoleId.Survivor)) addition = RoleClass.Survivor.KillCoolTime;
-                else if (__instance.isRole(RoleId.DarkKiller)) addition = RoleClass.DarkKiller.KillCoolTime;
+                RoleId role = __instance.getRole();
+                switch (role)
+                {
+                    case RoleId.SerialKiller:
+                        addition = RoleClass.SerialKiller.KillTime;
+                        break;
+                    case RoleId.OverKiller:
+                        addition = RoleClass.OverKiller.KillCoolTime;
+                        break;
+                    case RoleId.SideKiller:
+                        addition = RoleClass.SideKiller.KillCoolTime;
+                        break;
+                    case RoleId.MadKiller:
+                        addition = RoleClass.SideKiller.MadKillerCoolTime;
+                        break;
+                    case RoleId.Minimalist:
+                        addition = RoleClass.Minimalist.KillCoolTime;
+                        break;
+                    case RoleId.Survivor:
+                        addition = RoleClass.Survivor.KillCoolTime;
+                        break;
+                    case RoleId.DarkKiller:
+                        addition = RoleClass.DarkKiller.KillCoolTime;
+                        break;
+                }
             }
             return addition;
         }
