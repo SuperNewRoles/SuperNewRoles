@@ -110,7 +110,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     break;
                 case RoleId.MadMaker:
-                    if (RoleClass.MadMaker.IsImpostorLight)
+                    if (!RoleClass.MadMaker.IsImpostorLight)
                     {
                         optdata.ImpostorLightMod = optdata.CrewLightMod;
                         var switchSystemMadMaker = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
