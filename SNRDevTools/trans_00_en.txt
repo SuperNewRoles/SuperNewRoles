@@ -577,3 +577,5 @@ TeleportingJackal
 Teleport and kill all crewmates and impostors!
 MadMaker
 Let's get more lunatics!
+TaskManager
+Finish the task and mount up!

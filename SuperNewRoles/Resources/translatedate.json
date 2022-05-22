@@ -2315,6 +2315,14 @@
  "MadMakerTitle1" : {
         "0" : "Let's get more lunatics!" ,
         "11" : "\u72c2\u4eba\u3092\u5897\u3084\u305d\u3046\uff01"
+        } ,
+ "TaskManagerName" : {
+        "0" : "TaskManager" ,
+        "11" : "\u30bf\u30b9\u30af\u30de\u30cd\u30fc\u30b8\u30e3\u30fc"
+        } ,
+ "TaskManagerTitle1" : {
+        "0" : "Finish the task and mount up!" ,
+        "11" : "\u30bf\u30b9\u30af\u3092\u7d42\u308f\u3089\u305b\u3001\u30de\u30a6\u30f3\u30c8\u3092\u53d6\u308d\u3046"
         } 
 
 }
