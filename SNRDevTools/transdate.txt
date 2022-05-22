@@ -134,6 +134,7 @@ CrewMateDescription,Default Crewmate.,通常のクルーメイトです。
 ImpostorName,Impostor,インポスター
 ImpostorTitle1,Use Sabotage & Vent,サボタージュ＆ベントを行う
 ImpostorDescription,Default Impostor.,通常のインポスターです。
+LevelUpModeName,Level Up,レベルアップ
 ZombieZombieName,Zombie,ゾンビ
 ZombieZombieTitle1,Infect other players!,他のプレイヤーを感染させよう
 ZombiePoliceName,Police,警察

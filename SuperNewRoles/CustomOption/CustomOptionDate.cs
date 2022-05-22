@@ -992,9 +992,9 @@ namespace SuperNewRoles.CustomOption
             DemonIsCheckImpostor = CustomOption.Create(419, true, CustomOptionType.Neutral, "MadMateIsCheckImpostorSetting", false, DemonOption);
             DemonIsAliveWin = CustomOption.Create(420, true, CustomOptionType.Neutral, "DemonIsAliveWinSetting", false, DemonOption);
 
-            TaskManagerOption = new CustomRoleOption(420, true, CustomOptionType.Crewmate, "TaskManagerName", RoleClass.TaskManager.color, 1);
+            TaskManagerOption = new CustomRoleOption(423, true, CustomOptionType.Crewmate, "TaskManagerName", RoleClass.TaskManager.color, 1);
             TaskManagerPlayerCount = CustomOption.Create(421, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TaskManagerOption);
-            var taskmanageroption = SelectTask.TaskSetting(422, 423, 424, TaskManagerOption, CustomOptionType.Crewmate, true);
+            var taskmanageroption = SelectTask.TaskSetting(422, 425, 424, TaskManagerOption, CustomOptionType.Crewmate, true);
             TaskManagerCommonTask = taskmanageroption.Item1;
             TaskManagerShortTask = taskmanageroption.Item2;
             TaskManagerLongTask = taskmanageroption.Item3;
