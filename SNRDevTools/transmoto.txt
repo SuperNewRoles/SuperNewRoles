@@ -133,6 +133,7 @@ CrewMateDescription
 ImpostorName
 ImpostorTitle1
 ImpostorDescription
+LevelUpModeName
 ZombieZombieName
 ZombieZombieTitle1
 ZombiePoliceName

@@ -40,26 +40,27 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SpawnBots()
         {
-            if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
 
-            bool IsJackalSpawned = false;
-            //ジャッカルがいるなら
-            if (CustomOptions.JackalOption.getSelection() != 0)
-            {
-                IsJackalSpawned = true;
-                for (int i = 0; i < (1 * PlayerControl.GameOptions.NumImpostors + 2); i++)
+                bool IsJackalSpawned = false;
+                //ジャッカルがいるなら
+                if (CustomOptions.JackalOption.getSelection() != 0)
                 {
-                    PlayerControl bot = BotManager.Spawn("暗転対策BOT"+ (i + 1));
-                    if (i == 0)
+                    IsJackalSpawned = true;
+                    for (int i = 0; i < (1 * PlayerControl.GameOptions.NumImpostors + 2); i++)
                     {
-                        bot.RpcSetRole(RoleTypes.Impostor);
+                        PlayerControl bot = BotManager.Spawn("暗転対策BOT" + (i + 1));
+                        if (i == 0)
+                        {
+                            bot.RpcSetRole(RoleTypes.Impostor);
+                        }
+                        if (i > 0) {
+                            bot.RpcSetRole(RoleTypes.Crewmate);
+                        }
                     }
-                    if (i > 0) {
-                        bot.RpcSetRole(RoleTypes.Crewmate);
-                    }
-                }
-            } else
-            {
+                } else
+                {
                 bool flag = !IsJackalSpawned && (
                     CustomOptions.EgoistOption.getSelection() != 0 ||
                     CustomOptions.SheriffOption.getSelection() != 0 ||
@@ -69,17 +70,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     CustomOptions.MadMakerOption.getSelection() != 0 ||
                     CustomOptions.DemonOption.getSelection() != 0 
                     );
-                if (flag)
-                {
-                    PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
-                    bot1.RpcSetRole(RoleTypes.Impostor);
+                    if (flag)
+                    {
+                        PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
+                        bot1.RpcSetRole(RoleTypes.Impostor);
 
-                    PlayerControl bot2 = BotManager.Spawn("暗転対策BOT2");
-                    bot2.RpcSetRole(RoleTypes.Crewmate);
+                        PlayerControl bot2 = BotManager.Spawn("暗転対策BOT2");
+                        bot2.RpcSetRole(RoleTypes.Crewmate);
 
-                    PlayerControl bot3 = BotManager.Spawn("暗転対策BOT3");
-                    bot3.RpcSetRole(RoleTypes.Crewmate);
+                        PlayerControl bot3 = BotManager.Spawn("暗転対策BOT3");
+                        bot3.RpcSetRole(RoleTypes.Crewmate);
+                    }
                 }
+            } else if (ModeHandler.isMode(ModeId.LevelUp))
+            {
+                BotManager.Spawn("キルされてしまうかわいそうなBOT");
             }
         }
         public static void SetCustomRoles() {

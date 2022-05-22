@@ -133,6 +133,7 @@ Default Crewmate.
 Impostor
 Use Sabotage & Vent
 Default Impostor.
+Level Up
 Zombie
 Infect other players!
 Police
