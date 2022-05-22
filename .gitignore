@@ -3,5 +3,5 @@ SuperNewRoles/obj/
 SuperNewRoles/bin/
 *.dll
 SuperNewRoles/SuperNewRoles.csproj.user
-.vs/*
+.vs/
 SuperNewRoles/obj/*
