@@ -1,4 +1,5 @@
 ﻿using Hazel;
+using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -40,6 +41,18 @@ namespace SuperNewRoles.Helpers
             writer.Write(NewName);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
+
+        public static void RpcProtectPlayerPrivate(this PlayerControl SourcePlayer, PlayerControl target, int colorId, PlayerControl SeePlayer = null)
+        {
+            if (SourcePlayer == null || target == null || !AmongUsClient.Instance.AmHost) return;
+            if (SeePlayer == null) SeePlayer = SourcePlayer;
+            var clientId = SeePlayer.getClientId();
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(SourcePlayer.NetId, (byte)RpcCalls.ProtectPlayer, SendOption.Reliable, clientId);
+            val.WriteNetObject(target);
+            val.Write(colorId);
+            AmongUsClient.Instance.FinishRpcImmediately(val);
+        }
+
         public static void RPCSendChatPrivate(this PlayerControl TargetPlayer,string Chat,PlayerControl SeePlayer = null)
         {
             if (TargetPlayer == null || Chat == null) return;

@@ -123,47 +123,41 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-            /*
-            else if (player.isRole(RoleId.Scavenger) && RoleClass.Scavenger.IsCheck)
+            else if (player.isRole(RoleId.Demon))
             {
-                foreach (PlayerControl Jackal in RoleClass.Jackal.JackalPlayer)
+                if (RoleClass.Demon.IsCheckImpostor)
                 {
-                    if (!ChangePlayers.ContainsKey(Jackal.PlayerId))
+                    foreach (PlayerControl Impostor in PlayerControl.AllPlayerControls)
                     {
-                        ChangePlayers.Add(Jackal.PlayerId, ModHelpers.cs(RoleClass.Jackal.color, Jackal.getDefaultName()));
-                    }
-                    else
-                    {
-                        ChangePlayers[Jackal.PlayerId] = ModHelpers.cs(RoleClass.Jackal.color, ChangePlayers[Jackal.PlayerId]);
-                    }
-                }
-                foreach (PlayerControl Sheriff in RoleClass.Sheriff.SheriffPlayer)
-                {
-                    if (!ChangePlayers.ContainsKey(Sheriff.PlayerId))
-                    {
-                        ChangePlayers.Add(Sheriff.PlayerId, ModHelpers.cs(RoleClass.Sheriff.color, Sheriff.getDefaultName()));
-                    }
-                    else
-                    {
-                        ChangePlayers[Sheriff.PlayerId] = ModHelpers.cs(RoleClass.Sheriff.color, ChangePlayers[Sheriff.PlayerId]);
-                    }
-                }
-                foreach (PlayerControl Impostor in PlayerControl.AllPlayerControls)
-                {
-                    if (Impostor.isImpostor() && Impostor.IsPlayer())
-                    {
-                        if (!ChangePlayers.ContainsKey(Impostor.PlayerId))
+                        if (Impostor.isImpostor() && Impostor.IsPlayer())
                         {
-                            ChangePlayers.Add(Impostor.PlayerId, ModHelpers.cs(RoleClass.ImpostorRed, Impostor.getDefaultName()));
+                            if (!ChangePlayers.ContainsKey(Impostor.PlayerId))
+                            {
+                                ChangePlayers.Add(Impostor.PlayerId, ModHelpers.cs(RoleClass.ImpostorRed, Impostor.getDefaultName()));
+                            }
+                            else
+                            {
+                                ChangePlayers[Impostor.PlayerId] = ModHelpers.cs(RoleClass.ImpostorRed, ChangePlayers[Impostor.PlayerId]);
+                            }
+                        }
+                    }
+                }
+                foreach (PlayerControl CursePlayer in Demon.GetIconPlayers(player))
+                {
+                    if (CursePlayer.IsPlayer())
+                    {
+                        if (!ChangePlayers.ContainsKey(CursePlayer.PlayerId))
+                        {
+                            ChangePlayers.Add(CursePlayer.PlayerId, CursePlayer.getDefaultName() + ModHelpers.cs(RoleClass.Demon.color, " ▲"));
                         }
                         else
                         {
-                            ChangePlayers[Impostor.PlayerId] = ModHelpers.cs(RoleClass.ImpostorRed, ChangePlayers[Impostor.PlayerId]);
+                            ChangePlayers[CursePlayer.PlayerId] = ChangePlayers[CursePlayer.PlayerId] + ModHelpers.cs(RoleClass.Demon.color, " ▲");
                         }
                     }
                 }
             }
-            */
+            
             if (player.IsLovers())
             {
                 var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
@@ -231,13 +225,24 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
                 }
             }
-
+            bool IsDemonVIew = false;
             if ((player.isDead() || player.isRole(RoleId.God)) && !IsUnchecked)
             {
+                if (Demon.IsViewIcon(player))
+                {
+                    MySuffix = ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                    IsDemonVIew = true;
+                }
                 NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, Name + MySuffix);
             }
             else if (player.isAlive() || IsUnchecked)
             {
+                if ((player.isDead() || player.isRole(RoleId.God)) && Demon.IsViewIcon(player))
+                {
+                    MySuffix = ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                    IsDemonVIew = true;
+                }
+
                 NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, Name + MySuffix);
             }
             if (!player.IsMod())
@@ -253,6 +258,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            string DieSuffix = "";
+            if (!IsDemonVIew && Demon.IsViewIcon(player))
+            {
+                DieSuffix += ModHelpers.cs(RoleClass.Demon.color, " ▲");
+            }
+            NewName += DieSuffix;
             foreach (PlayerControl DiePlayer in DiePlayers)
             {
                 if (player.PlayerId != DiePlayer.PlayerId && !DiePlayer.IsMod() && !DiePlayer.Data.Disconnected)
@@ -294,7 +305,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal) ||
                 PlayerControl.LocalPlayer.isRole(RoleId.MadMaker) ||
                 PlayerControl.LocalPlayer.isRole(RoleId.Egoist) ||
-                PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff)
+                PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff) ||
+                PlayerControl.LocalPlayer.isRole(RoleId.Demon)
                 )
             {
                 HudManager.Instance.KillButton.gameObject.SetActive(true);

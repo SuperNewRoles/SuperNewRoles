@@ -14,10 +14,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     class MurderPlayer
     {
-        public static void Postfix(PlayerControl __instance,PlayerControl target)
+        public static void Postfix(PlayerControl __instance, PlayerControl target)
         {
             if (!AmongUsClient.Instance.AmHost) return;
             if (target.isAlive()) return;
+            FixedUpdate.SetRoleNames();
             if (target.isRole(RoleId.Sheriff) || target.isRole(RoleId.truelover) || target.isRole(RoleId.MadMaker))
             {
                 target.RpcSetRoleDesync(RoleTypes.GuardianAngel);

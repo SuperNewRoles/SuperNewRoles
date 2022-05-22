@@ -34,6 +34,7 @@ namespace SuperNewRoles.EndGame
         MadJesterWin,
         FalseChargesWin,
         FoxWin,
+        DemonWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -232,6 +233,12 @@ namespace SuperNewRoles.EndGame
                 textRenderer.color = RoleClass.Fox.color;
                 __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Fox.color);
             }
+            else if (AdditionalTempData.winCondition == WinCondition.DemonWin)
+            {
+                text = "DemonName";
+                textRenderer.color = RoleClass.Demon.color;
+                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Demon.color);
+            }
             else if (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask || AdditionalTempData.gameOverReason == GameOverReason.HumansByVote)
             {
                 text = "CrewMateName";
@@ -249,8 +256,8 @@ namespace SuperNewRoles.EndGame
             } else if (text == "BUG") {
                 haison = true;
                 text = "不具合が発生したので強制的に終了しました";
-            }else{
-                    text = ModTranslation.getString(text);
+            } else {
+                text = ModTranslation.getString(text);
             }
             bool IsOpptexton = false;
             foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer) {
@@ -503,6 +510,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Fox.FoxPlayer);
             notWinners.AddRange(BotManager.AllBots);
             notWinners.AddRange(RoleClass.MadMaker.MadMakerPlayer);
+            notWinners.AddRange(RoleClass.Demon.DemonPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -530,6 +538,7 @@ namespace SuperNewRoles.EndGame
             bool WorkpersonWin = gameOverReason == (GameOverReason)CustomGameOverReason.WorkpersonWin;
             bool FalseChargesWin = gameOverReason == (GameOverReason)CustomGameOverReason.FalseChargesWin;
             bool FoxWin = gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
+            bool DemonWin = gameOverReason == (GameOverReason)CustomGameOverReason.DemonWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -540,6 +549,7 @@ namespace SuperNewRoles.EndGame
                 QuarreledWin = EndData == CustomGameOverReason.QuarreledWin;
                 FoxWin = EndData == CustomGameOverReason.FoxWin;
                 JackalWin = EndData == CustomGameOverReason.JackalWin;
+                DemonWin = EndData == CustomGameOverReason.DemonWin;
             }
 
 
@@ -612,6 +622,20 @@ namespace SuperNewRoles.EndGame
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.FalseChargesWin;
             }
+            else if (DemonWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                foreach (PlayerControl player in RoleClass.Demon.DemonPlayer)
+                {
+                    if (Demon.IsWin(player))
+                    {
+                        WinningPlayerData wpd = new WinningPlayerData(player.Data);
+                        TempData.winners.Add(wpd);
+                    }
+                }
+                AdditionalTempData.winCondition = WinCondition.DemonWin;
+            }
+
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
                 foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
@@ -742,19 +766,6 @@ namespace SuperNewRoles.EndGame
                 }
                 AdditionalTempData.winCondition = WinCondition.QuarreledWin;
             }
-            else if (HAISON)
-            {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                {
-                    if (p.IsPlayer())
-                    {
-                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
-                        TempData.winners.Add(wpd);
-                    }
-                }
-                AdditionalTempData.winCondition = WinCondition.HAISON;
-            }
             else if (BUGEND)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
@@ -833,6 +844,19 @@ namespace SuperNewRoles.EndGame
                         }
                     }
                 }
+            }
+            if (HAISON)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.IsPlayer())
+                    {
+                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                        TempData.winners.Add(wpd);
+                    }
+                }
+                AdditionalTempData.winCondition = WinCondition.HAISON;
             }
         }
     }
@@ -968,6 +992,11 @@ namespace SuperNewRoles.EndGame
                     default:
                         endReason = GameOverReason.ImpostorByVote;
                         break;
+                }
+
+                if (Demon.IsDemonWinFlag())
+                {
+                    endReason = (GameOverReason)CustomGameOverReason.DemonWin;
                 }
 
                 CustomEndGame(endReason, false);

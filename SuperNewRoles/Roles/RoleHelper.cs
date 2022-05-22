@@ -505,6 +505,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMaker):
                     Roles.RoleClass.MadMaker.MadMakerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Demon):
+                    Roles.RoleClass.Demon.DemonPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.TaskManager):
                     Roles.RoleClass.TaskManager.TaskManagerPlayer.Add(player);
                     break;
@@ -769,6 +772,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMaker):
                     Roles.RoleClass.MadMaker.MadMakerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Demon):
+                    Roles.RoleClass.Demon.DemonPlayer.RemoveAll(ClearRemove);
+                    break;
                 case (CustomRPC.RoleId.TaskManager):
                     Roles.RoleClass.TaskManager.TaskManagerPlayer.RemoveAll(ClearRemove);
                     break;
@@ -855,6 +861,9 @@ namespace SuperNewRoles
                 case (RoleId.TeleportingJackal):
                     IsTaskClear = true;
                     break; 
+                case (RoleId.Demon):
+                    IsTaskClear = true;
+                    break; 
                 //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
@@ -906,6 +915,8 @@ namespace SuperNewRoles
                     return RoleClass.MadMaker.IsUseVent;
                 case RoleId.Fox:
                     return RoleClass.Fox.IsUseVent;
+                case RoleId.Demon:
+                    return RoleClass.Demon.IsUseVent;
                 /*
                 case RoleId.Scavenger:
                     return RoleClass.Scavenger.IsUseVent;
@@ -1027,6 +1038,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.TeleportingJackal):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Demon):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1443,27 +1457,31 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.Vampire;
-            }  
-            else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.DarkKiller;
-            }
-            else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Fox;
-            }
-            else if (Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.TeleportingJackal;
-            }
-            else if (Roles.RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MadMaker;
-            }
-            else if (Roles.RoleClass.TaskManager.TaskManagerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.TaskManager;
-            }
+                }
+                else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.DarkKiller;
+                }
+                else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Fox;
+                }
+                else if (Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.TeleportingJackal;
+                }
+                else if (Roles.RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadMaker;
+                }
+                else if (Roles.RoleClass.Demon.DemonPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Demon;
+                }
+                else if (Roles.RoleClass.TaskManager.TaskManagerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.TaskManager;
+                }
             //ロールチェック
             }
             catch (Exception e)
