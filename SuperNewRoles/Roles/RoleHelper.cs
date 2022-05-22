@@ -900,8 +900,10 @@ namespace SuperNewRoles
                     return RoleClass.MadMaker.IsUseVent;
                 case RoleId.Fox:
                     return RoleClass.Fox.IsUseVent;
+                /*
                 case RoleId.Scavenger:
                     return RoleClass.Scavenger.IsUseVent;
+                */
             }
             return false;
         }

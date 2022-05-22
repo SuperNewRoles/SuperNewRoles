@@ -123,6 +123,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            /*
             else if (player.isRole(RoleId.Scavenger) && RoleClass.Scavenger.IsCheck)
             {
                 foreach (PlayerControl Jackal in RoleClass.Jackal.JackalPlayer)
@@ -162,6 +163,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            */
             if (player.IsLovers())
             {
                 var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
