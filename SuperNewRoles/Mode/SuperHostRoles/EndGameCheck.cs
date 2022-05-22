@@ -24,7 +24,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
-            if (CheckAndEndGameForScavengerWin(__instance)) return false;
             return false;
         }
         public static void WinNeutral(List<PlayerControl> players)
@@ -301,35 +300,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             return false;
         }
-        public static bool CheckAndEndGameForScavengerWin(ShipStatus __instance)
-        {
-            foreach (PlayerControl p in RoleClass.Scavenger.ScavengerPlayer)
-            {
-                if (!p.Data.Disconnected)
-                {
-                    if (p.isAlive())
-                    {
-                        if (RoleClass.Scavenger.NeedReportCount <= 0)
-                        {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                            Writer.Write(p.PlayerId);
-                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                            CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
-                            Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
-                            Writer.Write((byte)CustomGameOverReason.ScavengerWin);
-                            Writer.EndRPC();
-                            CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.ScavengerWin);
-                            Chat.WinCond = CustomGameOverReason.ScavengerWin;
-                            __instance.enabled = false;
-                            CustomEndGame(__instance, (GameOverReason)CustomGameOverReason.CrewmateWin, false);
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
         public static void EndGameForSabotage(ShipStatus __instance)
         {
             if (true)//Chat.WinCond == null)

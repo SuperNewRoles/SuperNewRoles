@@ -505,9 +505,6 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMaker):
                     Roles.RoleClass.MadMaker.MadMakerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Scavenger):
-                    Roles.RoleClass.Scavenger.ScavengerPlayer.Add(player);
-                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -769,9 +766,6 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMaker):
                     Roles.RoleClass.MadMaker.MadMakerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Scavenger):
-                    Roles.RoleClass.Scavenger.ScavengerPlayer.RemoveAll(ClearRemove);
-                    break;
                 //ロールリモベ
 
             }
@@ -855,9 +849,6 @@ namespace SuperNewRoles
                 case (RoleId.TeleportingJackal):
                     IsTaskClear = true;
                     break; 
-                case (RoleId.Scavenger):
-                    IsTaskClear = true;
-                    break; 
                 //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
@@ -876,6 +867,7 @@ namespace SuperNewRoles
         }
         public static bool IsUseVent(this PlayerControl player)
         {
+<<<<<<< HEAD
             RoleId role = player.getRole();
             if (role == RoleId.Minimalist) return RoleClass.Minimalist.UseVent;
             else if (player.isImpostor()) return true;
@@ -912,6 +904,25 @@ namespace SuperNewRoles
                 case RoleId.Scavenger:
                     return RoleClass.Scavenger.IsUseVent;
             }
+=======
+            if (!RoleClass.Minimalist.UseVent && player.isRole(RoleId.Minimalist)) return false;
+            if (player.Data.Role.IsImpostor) return true; if ((RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player) ||
+                 RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) && Roles.RoleClass.Jackal.IsUseVent) return true;
+            if (ModeHandler.isMode(ModeId.SuperHostRoles) && IsComms()) return false;
+            if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Jester.IsUseVent) return true;
+            if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMate.IsUseVent) return true;
+            if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.TeleportingJackal.IsUseVent) return true;
+            if (player.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsUseVent) return true;
+            if (player.isRole(RoleId.Egoist) && RoleClass.Egoist.UseVent) return true;
+            if (player.isRole(RoleId.Technician) && IsSabotage()) return true;
+            if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMayor.IsUseVent) return true;
+            if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadJester.IsUseVent) return true;
+            if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadStuntMan.IsUseVent) return true;
+            if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadHawk.IsUseVent) return true;
+            if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadSeer.IsUseVent) return true;
+            if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.Fox.IsUseVent) return true;
+            if (RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player) && Roles.RoleClass.MadMaker.IsUseVent) return true;
+>>>>>>> master
             return false;
         }
         public static bool IsSabotage()
@@ -1028,9 +1039,6 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.TeleportingJackal):
-                    IsNeutral = true;
-                    break;
-                case (RoleId.Scavenger):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1463,10 +1471,6 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.MadMaker;
-            }
-            else if (Roles.RoleClass.Scavenger.ScavengerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Scavenger;
             }
             //ロールチェック
             }

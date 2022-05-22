@@ -100,6 +100,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (Impostor.isImpostor() && Impostor.IsPlayer())
                     {
+<<<<<<< HEAD
                         if (!ChangePlayers.ContainsKey(Impostor.PlayerId))
                         {
                             ChangePlayers.Add(Impostor.PlayerId, ModHelpers.cs(RoleClass.ImpostorRed, Impostor.getDefaultName()));
@@ -113,6 +114,74 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (!Jackal.Data.Disconnected)
                     {
                         if (!ChangePlayers.ContainsKey(Jackal.PlayerId))
+=======
+                        if (RoleClass.Celebrity.ChangeRoleView)
+                        {
+                            foreach (PlayerControl p2 in RoleClass.Celebrity.ViewPlayers)
+                            {
+                                if( p.PlayerId != p2.PlayerId )
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p2.getDefaultName()), p);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (PlayerControl p2 in RoleClass.Celebrity.CelebrityPlayer)
+                            {
+                                if(p.PlayerId != p2.PlayerId)
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p2.getDefaultName()), p);
+                                }
+                            }
+                        }
+                        bool IsMadmateCheck = Madmate.CheckImpostor(p);
+                        if (IsMadmateCheck)
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (!p2.Data.Disconnected && p2.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
+                                }
+                            }
+                            //Madmate.CheckedImpostor.Add(p.PlayerId);
+                        }
+                        bool IsMadStuntManCheck = MadStuntMan.CheckImpostor(p);
+                        //  SuperNewRolesPlugin.Logger.LogInfo("マッドスタントマンがチェックできるか:"+IsMadStuntManCheck);
+                        if (IsMadStuntManCheck)
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (!p2.Data.Disconnected && !p2.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
+                                else if (!p2.Data.Disconnected && p2.isImpostor())
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
+                                }
+                            }
+                            //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
+                        }
+
+                        if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (!p2.Data.Disconnected && !p2.isRole(RoleId.Jackal))
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
+                                else if (!p2.Data.Disconnected && p2.isRole(RoleId.Jackal))
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Jackal.color, p2.getDefaultName()), p);
+                                }
+                            }
+                            //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
+                        }
+                        if (p.IsLovers() && p.isAlive())
+>>>>>>> master
                         {
                             ChangePlayers.Add(Jackal.PlayerId, ModHelpers.cs(RoleClass.Jackal.color, Jackal.getDefaultName()));
                         }
