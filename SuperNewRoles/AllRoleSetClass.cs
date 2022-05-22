@@ -841,6 +841,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.TeleportingJackalPlayerCount.getFloat();
                     case (RoleId.MadMaker):
                     return CustomOption.CustomOptions.MadMakerPlayerCount.getFloat();
+                    case (RoleId.TaskManager):
+                    return CustomOption.CustomOptions.TaskManagerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -2186,6 +2188,22 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MadMakerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.MadMaker;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.TaskManagerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.TaskManagerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.TaskManager;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);
