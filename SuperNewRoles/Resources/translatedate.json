@@ -2316,6 +2316,22 @@
         "0" : "Let's get more lunatics!" ,
         "11" : "\u72c2\u4eba\u3092\u5897\u3084\u305d\u3046\uff01"
         } ,
+ "DemonName" : {
+        "0" : "Demon" ,
+        "11" : "\u60aa\u9b54"
+        } ,
+ "DemonTitle1" : {
+        "0" : "Curse the Crew and Help the Imposter!" ,
+        "11" : "\u30af\u30eb\u30fc\u3092\u546a\u3044\u306a\u304c\u3089\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u624b\u52a9\u3051\u305b\u3088"
+        } ,
+ "DemonIsAliveWinSetting" : {
+        "0" : "You have to be alive to win." ,
+        "11" : "\u751f\u5b58\u3057\u3066\u3044\u306a\u3044\u3068\u52dd\u5229\u3067\u304d\u306a\u3044"
+        } ,
+ "DemonButtonName" : {
+        "0" : "Curse" ,
+        "11" : "\u546a\u3046"
+        } ,
  "TaskManagerName" : {
         "0" : "TaskManager" ,
         "11" : "\u30bf\u30b9\u30af\u30de\u30cd\u30fc\u30b8\u30e3\u30fc"

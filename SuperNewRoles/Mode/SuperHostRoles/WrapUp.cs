@@ -48,14 +48,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }, 5f, "AntiBlack");*/
-            SuperNewRolesPlugin.Logger.LogInfo("WrapUp");
             foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("ALL");
                 if (p.isAlive() && !p.IsMod())
                 {
                     p.RpcProtectPlayer(p, 0);
-                    SuperNewRolesPlugin.Logger.LogInfo("プロテクト");
                     new LateTask(() =>
                     {
                         SuperNewRolesPlugin.Logger.LogInfo("マーダー");
@@ -71,7 +68,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             Roles.BestFalseCharge.WrapUp();
             if (exiled == null) return;
-            exiled.Object.Exiled();
             if (exiled.Object.isRole(RoleId.Sheriff) || exiled.Object.isRole(RoleId.truelover) || exiled.Object.isRole(RoleId.MadMaker))
             {
                 exiled.Object.RpcSetRoleDesync(RoleTypes.GuardianAngel);

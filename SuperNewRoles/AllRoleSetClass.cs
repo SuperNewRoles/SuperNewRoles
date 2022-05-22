@@ -837,11 +837,13 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.RemoteSheriffPlayerCount.getFloat();
                 case (RoleId.Fox):
                     return CustomOption.CustomOptions.FoxPlayerCount.getFloat();
-                    case (RoleId.TeleportingJackal):
+                case (RoleId.TeleportingJackal):
                     return CustomOption.CustomOptions.TeleportingJackalPlayerCount.getFloat();
-                    case (RoleId.MadMaker):
+                case (RoleId.MadMaker):
                     return CustomOption.CustomOptions.MadMakerPlayerCount.getFloat();
-                    case (RoleId.TaskManager):
+                case (RoleId.Demon):
+                    return CustomOption.CustomOptions.DemonPlayerCount.getFloat();
+                case (RoleId.TaskManager):
                     return CustomOption.CustomOptions.TaskManagerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
@@ -2200,6 +2202,22 @@ namespace SuperNewRoles
                     }
                 }
             }
+            if (!(CustomOption.CustomOptions.DemonOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.DemonOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Demon;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                } else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+
         if (!(CustomOption.CustomOptions.TaskManagerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.TaskManagerOption.getString().Replace("0%", ""));
