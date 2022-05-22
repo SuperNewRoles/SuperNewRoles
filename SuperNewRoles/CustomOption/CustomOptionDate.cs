@@ -478,6 +478,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption DemonCoolTime;
         public static CustomOption DemonIsUseVent;
         public static CustomOption DemonIsCheckImpostor;
+        public static CustomOption DemonIsAliveWin;
 
         public static CustomRoleOption TaskManagerOption;
         public static CustomOption TaskManagerPlayerCount;
@@ -989,6 +990,7 @@ namespace SuperNewRoles.CustomOption
             DemonCoolTime = CustomOption.Create(417, true, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 30f, 2.5f, 60f, 2.5f, DemonOption, format: "unitSeconds");
             DemonIsUseVent = CustomOption.Create(418, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, DemonOption);
             DemonIsCheckImpostor = CustomOption.Create(419, true, CustomOptionType.Neutral, "MadMateIsCheckImpostorSetting", false, DemonOption);
+            DemonIsAliveWin = CustomOption.Create(420, true, CustomOptionType.Neutral, "DemonIsAliveWinSetting", false, DemonOption);
 
             TaskManagerOption = new CustomRoleOption(420, true, CustomOptionType.Crewmate, "TaskManagerName", RoleClass.TaskManager.color, 1);
             TaskManagerPlayerCount = CustomOption.Create(421, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TaskManagerOption);

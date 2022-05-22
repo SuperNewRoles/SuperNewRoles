@@ -91,6 +91,7 @@ namespace SuperNewRoles.Roles
                     return false;
                 }
             }
+            if (RoleClass.Demon.IsAliveWin && Demon.isDead()) return false;
             return true;
         }
 

@@ -1747,6 +1747,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(110, 0, 165, byte.MaxValue);
             public static bool IsUseVent;
             public static bool IsCheckImpostor;
+            public static bool IsAliveWin;
             public static float CoolTime;
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
@@ -1763,6 +1764,7 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.DemonIsUseVent.getBool();
                 CoolTime = CustomOptions.DemonCoolTime.getFloat();
                 IsCheckImpostor = CustomOptions.DemonIsCheckImpostor.getBool();
+                IsAliveWin = CustomOptions.DemonIsAliveWin.getBool();
             }
         }
 
