@@ -123,6 +123,7 @@ namespace SuperNewRoles.Roles
             TeleportingJackal.ClearAndReload();
             MadMaker.ClearAndReload();
             Demon.ClearAndReload();
+            TaskManager.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1762,6 +1763,26 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.DemonIsUseVent.getBool();
                 CoolTime = CustomOptions.DemonCoolTime.getFloat();
                 IsCheckImpostor = CustomOptions.DemonIsCheckImpostor.getBool();
+            }
+        }
+
+        public static class TaskManager
+        {
+            public static List<PlayerControl> TaskManagerPlayer;
+            public static Color32 color = new Color32(153, 255, 255, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                TaskManagerPlayer = new List<PlayerControl>();
+                int Common = (int)CustomOptions.TaskManagerCommonTask.getFloat();
+                int Long = (int)CustomOptions.TaskManagerLongTask.getFloat();
+                int Short = (int)CustomOptions.TaskManagerShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
             }
         }
         //新ロールクラス

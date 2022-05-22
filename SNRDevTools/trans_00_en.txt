@@ -580,3 +580,5 @@ Let's get more lunatics!
 Demon
 Curse the Crew and Help the Imposter!
 Curse
+TaskManager
+Finish the task and mount up!

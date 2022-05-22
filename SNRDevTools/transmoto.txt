@@ -580,3 +580,5 @@ MadMakerTitle1
 DemonName
 DemonTitle1
 DemonButtonName
+TaskManagerName
+TaskManagerTitle1

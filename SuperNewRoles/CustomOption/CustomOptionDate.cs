@@ -479,6 +479,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption DemonIsUseVent;
         public static CustomOption DemonIsCheckImpostor;
 
+        public static CustomRoleOption TaskManagerOption;
+        public static CustomOption TaskManagerPlayerCount;
+        public static CustomOption TaskManagerCommonTask;
+        public static CustomOption TaskManagerShortTask;
+        public static CustomOption TaskManagerLongTask;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -984,6 +990,13 @@ namespace SuperNewRoles.CustomOption
             DemonIsUseVent = CustomOption.Create(418, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, DemonOption);
             DemonIsCheckImpostor = CustomOption.Create(419, true, CustomOptionType.Neutral, "MadMateIsCheckImpostorSetting", false, DemonOption);
 
+            TaskManagerOption = new CustomRoleOption(420, true, CustomOptionType.Crewmate, "TaskManagerName", RoleClass.TaskManager.color, 1);
+            TaskManagerPlayerCount = CustomOption.Create(421, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TaskManagerOption);
+            var taskmanageroption = SelectTask.TaskSetting(422, 423, 424, TaskManagerOption, CustomOptionType.Crewmate, true);
+            TaskManagerCommonTask = taskmanageroption.Item1;
+            TaskManagerShortTask = taskmanageroption.Item2;
+            TaskManagerLongTask = taskmanageroption.Item3;
+            
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, true, CustomOptionType.Neutral, "QuarreledOnlyCrewMateSetting", false, QuarreledOption);

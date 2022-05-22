@@ -106,6 +106,7 @@ namespace SuperNewRoles.CustomRPC
         TeleportingJackal,
         MadMaker,
         Demon,
+        TaskManager,
         //RoleId
     }
 

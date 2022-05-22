@@ -508,6 +508,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Demon):
                     Roles.RoleClass.Demon.DemonPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.TaskManager):
+                    Roles.RoleClass.TaskManager.TaskManagerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -771,6 +774,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.Demon):
                     Roles.RoleClass.Demon.DemonPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.TaskManager):
+                    Roles.RoleClass.TaskManager.TaskManagerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
 
@@ -1451,27 +1457,31 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.Vampire;
-            }  
-            else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.DarkKiller;
-            }
-            else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Fox;
-            }
-            else if (Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.TeleportingJackal;
-            }
-            else if (Roles.RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MadMaker;
-            }
-            else if (Roles.RoleClass.Demon.DemonPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Demon;
-            }
+                }
+                else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.DarkKiller;
+                }
+                else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Fox;
+                }
+                else if (Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.TeleportingJackal;
+                }
+                else if (Roles.RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadMaker;
+                }
+                else if (Roles.RoleClass.Demon.DemonPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Demon;
+                }
+                else if (Roles.RoleClass.TaskManager.TaskManagerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.TaskManager;
+                }
             //ロールチェック
             }
             catch (Exception e)
