@@ -42,7 +42,8 @@ namespace SuperNewRoles.Roles
 
         public static bool IsCursed(this PlayerControl source, PlayerControl target)
         {
-            if (source == null || source.Data.Disconnected || target == null || target.Data.Disconnected) return true;
+            if (source == null || source.Data.Disconnected || target == null || target.Data.Disconnected || target.IsBot()) return true;
+            if (source.PlayerId == target.PlayerId) return true;
             if (RoleClass.Demon.CurseDatas.ContainsKey(source.PlayerId))
             {
                 if (RoleClass.Demon.CurseDatas[source.PlayerId].IsCheckListPlayerControl(target))
@@ -62,6 +63,20 @@ namespace SuperNewRoles.Roles
             }
             return new List<PlayerControl>();
         }
+        public static bool IsViewIcon(PlayerControl player) {
+            if (player == null) return false;
+            foreach (var data in RoleClass.Demon.CurseDatas)
+            {
+                foreach (PlayerControl Player in data.Value)
+                {
+                    if (player.PlayerId == Player.PlayerId)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         public static bool IsButton() {
             return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Demon) && ModeHandler.isMode(ModeId.Default);
@@ -69,12 +84,16 @@ namespace SuperNewRoles.Roles
 
         public static bool IsWin(PlayerControl Demon)
         {
-            if (!Demon.isRole(RoleId.Demon)) return false;
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                if (player.PlayerId != Demon.PlayerId && !IsCursed(Demon, player))
+                if (player.PlayerId != Demon.PlayerId)
                 {
-                    return false;
+                    var data = !IsCursed(Demon, player);
+                    SuperNewRolesPlugin.Logger.LogInfo("チェック: "+Demon.name +" => "+player.name+" : "+!data);
+                    if (data)
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -86,9 +105,11 @@ namespace SuperNewRoles.Roles
             {
                 if (IsWin(player))
                 {
+                    SuperNewRolesPlugin.Logger.LogInfo("trueを返しました");
                     return true;
                 }
             }
+            SuperNewRolesPlugin.Logger.LogInfo("falseを返しました");
             return false;
         }
     }

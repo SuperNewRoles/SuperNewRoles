@@ -313,7 +313,7 @@ namespace SuperNewRoles.Patches
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 if (__instance.isRole(RoleId.RemoteSheriff)) return false;
-                if (__instance.isRole(RoleId.FalseCharges))
+                else if (__instance.isRole(RoleId.FalseCharges))
                 {
                     target.RpcMurderPlayer(__instance);
                     RoleClass.FalseCharges.FalseChargePlayers[__instance.PlayerId] = target.PlayerId;
@@ -389,7 +389,7 @@ namespace SuperNewRoles.Patches
                     }
                     return false;
                 }
-                if (target.isRole(RoleId.StuntMan) && !__instance.isRole(RoleId.OverKiller))
+                else if (target.isRole(RoleId.StuntMan) && !__instance.isRole(RoleId.OverKiller))
                 {
                     if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
                     {
@@ -459,6 +459,21 @@ namespace SuperNewRoles.Patches
                 else if (__instance.isRole(RoleId.Jackal))
                 {
                     __instance.RpcMurderPlayer(target);
+                    return false;
+                }
+                else if (__instance.isRole(RoleId.Demon))
+                {
+                    if (!__instance.IsCursed(target))
+                    {
+                        Demon.DemonCurse(target, __instance);
+                        target.RpcProtectPlayerPrivate(target, 0, __instance);
+                        SyncSetting.MurderSyncSetting(__instance);
+                        new LateTask(() =>
+                        {
+                            __instance.RPCMurderPlayerPrivate(target);
+                        }, 0.5f);
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                    }
                     return false;
                 }
             }
