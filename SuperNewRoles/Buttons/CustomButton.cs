@@ -181,34 +181,4 @@ namespace SuperNewRoles.Buttons {
             ButtonTime.Update();
         }
     }
-    [HarmonyPatch(typeof(ExileController),nameof(ExileController.WrapUp))]
-    class ExileControllerPatch
-    {
-        public static void Postfix(ExileController __instance)
-        {
-            try 
-            {
-                CustomButton.MeetingEndedUpdate();
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("MeetingEnd:" + e);
-            }
-        }
-    }
-    [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-    class AirshipExileControllerPatch
-    {
-        public static void Postfix(AirshipExileController __instance)
-        {
-            try
-            {
-                CustomButton.MeetingEndedUpdate();
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("MeetingEnd:" + e);
-            }
-        }
-    }
 }

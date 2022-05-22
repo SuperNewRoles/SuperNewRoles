@@ -22,22 +22,20 @@ namespace SuperNewRoles.Buttons
                 {
                     return false;
                 }
-                if (Mode.ModeHandler.isMode(Mode.ModeId.Default))
-                {
-                    Vector3 vector = PlayerControl.LocalPlayer.transform.position;
-                    vector /= ShipStatus.Instance.MapScale;
-                    vector.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
-                    vector.z = -1f;
-                    __instance.HerePoint.transform.localPosition = vector;
-                    PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
-                }
+                Vector3 vector = PlayerControl.LocalPlayer.transform.position;
+                vector /= ShipStatus.Instance.MapScale;
+                vector.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
+                vector.z = -1f;
+                __instance.HerePoint.transform.localPosition = vector;
+                PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
                 return false;
             }
             [HarmonyPrefix]
             [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
             static bool Prefix3(MapBehaviour __instance)
             {
-                if (!MeetingHud.Instance) {
+                if (!MeetingHud.Instance)
+                {
                     if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons && !__instance.IsOpen)
                     {
                         __instance.Close();
@@ -47,6 +45,7 @@ namespace SuperNewRoles.Buttons
                     return true;
                 }  // Only run in meetings and when the map is closed
                 if (__instance.IsOpen) return true;
+                if (!Mode.ModeHandler.isMode(Mode.ModeId.Default)) return true;
                 PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
                 __instance.GenericShow();
                 __instance.taskOverlay.Show();
