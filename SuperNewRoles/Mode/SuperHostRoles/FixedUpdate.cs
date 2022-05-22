@@ -150,6 +150,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 {
                                     p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Jackal.color, p2.getDefaultName()), p);
                                 }
+                                if (!p2.Data.Disconnected && !p2.isRole(RoleId.TeleportingJackal))
+                                {
+                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
+                                }
+                                else if (!p2.Data.Disconnected && p2.isRole(RoleId.TeleportingJackal))
+                                {
+                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Jackal.color, p2.getDefaultName()), p);
+                                }
                             }
                         }
                         if (p.IsLovers() && p.isAlive())
@@ -160,10 +168,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
                             {
                                 name = ModHelpers.cs(RoleClass.ImpostorRed, name);
-                            } else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
+                            }
+                            else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
                             {
                                 name = ModHelpers.cs(RoleClass.Celebrity.color, name);
-                            } else if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck && Side.isRole(RoleId.Jackal))
+                            }
+                            //else if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
+                            else if (JackalFriends.CheckJackal(p) && Side.isRole(RoleId.Jackal) || Side.isRole(RoleId.Sidekick))
                             {
                                 name = ModHelpers.cs(RoleClass.Jackal.color, name);
                             }
@@ -182,7 +193,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             {
                                 name = ModHelpers.cs(RoleClass.Celebrity.color, name);
                             }
-                            else if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck && Side.isRole(RoleId.Jackal))
+                            else if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck && Side.isRole(RoleId.Jackal) && Side.isRole(RoleId.Sidekick) && Side.isRole(RoleId.TeleportingJackal))
                             {
                                 name = ModHelpers.cs(RoleClass.Jackal.color, name);
                             }
