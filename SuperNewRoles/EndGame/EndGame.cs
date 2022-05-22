@@ -34,7 +34,6 @@ namespace SuperNewRoles.EndGame
         MadJesterWin,
         FalseChargesWin,
         FoxWin,
-        ScavengerWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -213,12 +212,6 @@ namespace SuperNewRoles.EndGame
                 text = "WorkpersonName";
                 textRenderer.color = RoleClass.Workperson.color;
                 __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.ScavengerWin)
-            {
-                text = "ScavengerName";
-                textRenderer.color = Roles.RoleClass.Scavenger.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Scavenger.color);
             }
             else if (AdditionalTempData.winCondition == WinCondition.MadJesterWin)
             {
@@ -507,7 +500,6 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.MadJester.MadJesterPlayer);
             notWinners.AddRange(RoleClass.MadSeer.MadSeerPlayer);
             notWinners.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
-            notWinners.AddRange(RoleClass.Scavenger.ScavengerPlayer);
             notWinners.AddRange(RoleClass.Fox.FoxPlayer);
             notWinners.AddRange(BotManager.AllBots);
             notWinners.AddRange(RoleClass.MadMaker.MadMakerPlayer);
@@ -538,7 +530,6 @@ namespace SuperNewRoles.EndGame
             bool WorkpersonWin = gameOverReason == (GameOverReason)CustomGameOverReason.WorkpersonWin;
             bool FalseChargesWin = gameOverReason == (GameOverReason)CustomGameOverReason.FalseChargesWin;
             bool FoxWin = gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
-            bool ScavengerWin = gameOverReason == (GameOverReason)CustomGameOverReason.ScavengerWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -549,7 +540,6 @@ namespace SuperNewRoles.EndGame
                 QuarreledWin = EndData == CustomGameOverReason.QuarreledWin;
                 FoxWin = EndData == CustomGameOverReason.FoxWin;
                 JackalWin = EndData == CustomGameOverReason.JackalWin;
-                ScavengerWin = EndData == CustomGameOverReason.ScavengerWin;
             }
 
 
@@ -621,13 +611,6 @@ namespace SuperNewRoles.EndGame
                 WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.FalseChargesWin;
-            }
-            else if (ScavengerWin)
-            {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
-                TempData.winners.Add(wpd);
-                AdditionalTempData.winCondition = WinCondition.ScavengerWin;
             }
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))
             {
@@ -705,19 +688,6 @@ namespace SuperNewRoles.EndGame
                         WinningPlayerData wpd = new WinningPlayerData(p.Data);
                         TempData.winners.Add(wpd);
                         AdditionalTempData.winCondition = WinCondition.GodWin;
-                    }
-                }
-            }
-            foreach (PlayerControl p in RoleClass.Scavenger.ScavengerPlayer)
-            {
-                if (p.isAlive())
-                {
-                    if (RoleClass.Scavenger.NeedReportCount <= 0)
-                    {
-                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                        WinningPlayerData wpd = new WinningPlayerData(p.Data);
-                        TempData.winners.Add(wpd);
-                        AdditionalTempData.winCondition = WinCondition.ScavengerWin;
                     }
                 }
             }
@@ -1092,7 +1062,6 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
-                if (CheckAndEndGameForScavengerWin(__instance)) return false;
                 if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             }
             return false;
@@ -1195,29 +1164,7 @@ namespace SuperNewRoles.EndGame
             }
             return false;
         }
-        public static bool CheckAndEndGameForScavengerWin(ShipStatus __instance)
-        {
-            foreach (PlayerControl p in RoleClass.Scavenger.ScavengerPlayer)
-            {
-                if (!p.Data.Disconnected)
-                {
-                    if (p.isAlive())
-                    {
-                        if (RoleClass.Scavenger.NeedReportCount <= 0)
-                        {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
-                            Writer.Write(p.PlayerId);
-                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                            CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
-                            __instance.enabled = false;
-                            CustomEndGame((GameOverReason)CustomGameOverReason.ScavengerWin, false);
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
+        
 
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
