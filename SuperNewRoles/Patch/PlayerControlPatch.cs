@@ -481,6 +481,21 @@ namespace SuperNewRoles.Patches
                     }
                     return false;
                 }
+                else if (__instance.isRole(RoleId.Arsonist))
+                {
+                    if (!__instance.IsDoused(target))
+                    {
+                        Arsonist.ArsonistDouse(target, __instance);
+                        target.RpcProtectPlayerPrivate(target, 0, __instance);
+                        new LateTask(() =>
+                        {
+                            SyncSetting.MurderSyncSetting(__instance);
+                            __instance.RPCMurderPlayerPrivate(target);
+                        }, 0.5f);
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                    }
+                    return false;
+                }
             }
             if (__instance.isRole(RoleId.OverKiller))
             {

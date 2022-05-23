@@ -124,6 +124,7 @@ namespace SuperNewRoles.Roles
             MadMaker.ClearAndReload();
             Demon.ClearAndReload();
             TaskManager.ClearAndReload();
+            Arsonist.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1785,6 +1786,35 @@ namespace SuperNewRoles.Roles
                     Long = PlayerControl.GameOptions.NumLongTasks;
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
+            }
+        }
+        public static class Arsonist
+        {
+            public static List<PlayerControl> ArsonistPlayer;
+            public static Dictionary<byte, List<PlayerControl>> DouseDatas;
+            public static Color32 color = new Color32(238, 112, 46, byte.MaxValue);
+            public static bool IsUseVent;
+            public static float CoolTime;
+            private static Sprite buttonSprite;
+            public static Sprite getDouseButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistDouse.png", 115f);
+                return buttonSprite;
+            }
+            public static Sprite getIgniteButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistIgnite.png", 115f);
+                return buttonSprite;
+            }
+
+            public static void ClearAndReload()
+            {
+                ArsonistPlayer = new List<PlayerControl>();
+                DouseDatas = new Dictionary<byte, List<PlayerControl>>();
+                IsUseVent = CustomOptions.ArsonistIsUseVent.getBool();
+                CoolTime = CustomOptions.ArsonistCoolTime.getFloat();
             }
         }
         //新ロールクラス

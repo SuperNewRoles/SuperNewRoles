@@ -68,7 +68,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     CustomOptions.FalseChargesOption.getSelection() != 0 ||
                     CustomOptions.RemoteSheriffOption.getSelection() != 0 ||
                     CustomOptions.MadMakerOption.getSelection() != 0 ||
-                    CustomOptions.DemonOption.getSelection() != 0 
+                    CustomOptions.DemonOption.getSelection() != 0 ||
+                    CustomOptions.ArsonistOption.getSelection() != 0
                     );
                     if (flag)
                     {
@@ -147,6 +148,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     DemonPlayer.RpcSetRole(RoleTypes.Crewmate);
                 }
                 //DemonPlayer.Data.IsDead = true;
+            }
+            foreach (PlayerControl ArsonistPlayer in RoleClass.Arsonist.ArsonistPlayer)
+            {
+                if (!ArsonistPlayer.IsMod())
+                {
+                    ArsonistPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != ArsonistPlayer.PlayerId && p.IsPlayer())
+                        {
+                            ArsonistPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, ArsonistPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    ArsonistPlayer.RpcSetRole(RoleTypes.Crewmate);
+                }
+                //ArsonistPlayer.Data.IsDead = true;
             }
             foreach (PlayerControl RemoteSheriffPlayer in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
             {

@@ -35,6 +35,7 @@ namespace SuperNewRoles.EndGame
         FalseChargesWin,
         FoxWin,
         DemonWin,
+        ArsonistWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -238,6 +239,12 @@ namespace SuperNewRoles.EndGame
                 text = "DemonName";
                 textRenderer.color = RoleClass.Demon.color;
                 __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Demon.color);
+            }
+            else if (AdditionalTempData.winCondition == WinCondition.ArsonistWin)
+            {
+                text = "ArsonistName";
+                textRenderer.color = RoleClass.Arsonist.color;
+                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Arsonist.color);
             }
             else if (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask || AdditionalTempData.gameOverReason == GameOverReason.HumansByVote)
             {
@@ -511,6 +518,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(BotManager.AllBots);
             notWinners.AddRange(RoleClass.MadMaker.MadMakerPlayer);
             notWinners.AddRange(RoleClass.Demon.DemonPlayer);
+            notWinners.AddRange(RoleClass.Arsonist.ArsonistPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -539,6 +547,7 @@ namespace SuperNewRoles.EndGame
             bool FalseChargesWin = gameOverReason == (GameOverReason)CustomGameOverReason.FalseChargesWin;
             bool FoxWin = gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
             bool DemonWin = gameOverReason == (GameOverReason)CustomGameOverReason.DemonWin;
+            bool ArsonistWin = gameOverReason == (GameOverReason)CustomGameOverReason.ArsonistWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -634,6 +643,19 @@ namespace SuperNewRoles.EndGame
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.DemonWin;
+            }
+            else if (ArsonistWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
+                {
+                    if (Arsonist.IsWin(player))
+                    {
+                        WinningPlayerData wpd = new WinningPlayerData(player.Data);
+                        TempData.winners.Add(wpd);
+                    }
+                }
+                AdditionalTempData.winCondition = WinCondition.ArsonistWin;
             }
 
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))

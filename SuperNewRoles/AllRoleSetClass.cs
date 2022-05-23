@@ -845,6 +845,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.DemonPlayerCount.getFloat();
                 case (RoleId.TaskManager):
                     return CustomOption.CustomOptions.TaskManagerPlayerCount.getFloat();
+                    case (RoleId.Arsonist):
+                    return CustomOption.CustomOptions.ArsonistPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -2231,6 +2233,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.ArsonistOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.ArsonistOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Arsonist;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
                     }
                 }
             }

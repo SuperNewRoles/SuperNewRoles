@@ -107,6 +107,7 @@ namespace SuperNewRoles.CustomRPC
         MadMaker,
         Demon,
         TaskManager,
+        Arsonist,
         //RoleId
     }
 
@@ -158,10 +159,22 @@ namespace SuperNewRoles.CustomRPC
         CustomEndGame,
         UncheckedProtect,
         SetBot,
-        DemonCurse
+        DemonCurse,
+        ArsonistDouse,
     }
     public static class RPCProcedure
     {
+        public static void ArsonistDouse(byte source, byte target)
+        {
+            PlayerControl TargetPlayer = ModHelpers.playerById(target);
+            PlayerControl SourcePlayer = ModHelpers.playerById(source);
+            if (TargetPlayer == null || SourcePlayer == null) return;
+            if (!RoleClass.Arsonist.DouseDatas.ContainsKey(source)) RoleClass.Arsonist.DouseDatas[source] = new List<PlayerControl>();
+            if (!Demon.IsCursed(SourcePlayer, TargetPlayer))
+            {
+                RoleClass.Arsonist.DouseDatas[source].Add(TargetPlayer);
+            }
+        }
         public static void DemonCurse(byte source, byte target)
         {
             PlayerControl TargetPlayer = ModHelpers.playerById(target);
@@ -892,6 +905,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.DemonCurse:
                         DemonCurse(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.ArsonistDouse:
+                        ArsonistDouse(reader.ReadByte(), reader.ReadByte());
                         break;
                 }
             }

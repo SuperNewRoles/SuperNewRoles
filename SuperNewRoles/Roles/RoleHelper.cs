@@ -511,6 +511,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.TaskManager):
                     Roles.RoleClass.TaskManager.TaskManagerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Arsonist):
+                    Roles.RoleClass.Arsonist.ArsonistPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -778,6 +781,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.TaskManager):
                     Roles.RoleClass.TaskManager.TaskManagerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Arsonist):
+                    Roles.RoleClass.Arsonist.ArsonistPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -864,6 +870,9 @@ namespace SuperNewRoles
                 case (RoleId.Demon):
                     IsTaskClear = true;
                     break; 
+                case (RoleId.Arsonist):
+                    IsTaskClear = true;
+                    break; 
                 //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
@@ -917,10 +926,12 @@ namespace SuperNewRoles
                     return RoleClass.Fox.IsUseVent;
                 case RoleId.Demon:
                     return RoleClass.Demon.IsUseVent;
-                /*
-                case RoleId.Scavenger:
-                    return RoleClass.Scavenger.IsUseVent;
-                */
+                case RoleId.Arsonist:
+                    return RoleClass.Arsonist.IsUseVent;
+                    /*
+                    case RoleId.Scavenger:
+                        return RoleClass.Scavenger.IsUseVent;
+                    */
             }
             return false;
         }
@@ -1041,6 +1052,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.Demon):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Arsonist):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1482,7 +1496,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.TaskManager;
                 }
-            //ロールチェック
+                else if (Roles.RoleClass.Arsonist.ArsonistPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Arsonist;
+                }
+                //ロールチェック
             }
             catch (Exception e)
             {

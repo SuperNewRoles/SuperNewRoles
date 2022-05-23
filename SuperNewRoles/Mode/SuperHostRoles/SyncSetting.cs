@@ -232,6 +232,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.Demon:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime);
                     break;
+                case RoleId.Arsonist:
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Arsonist.CoolTime);
+                    break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;
@@ -260,6 +263,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 case RoleId.Demon:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime) * 2;
+                    break;
+                case RoleId.Arsonist:
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Arsonist.CoolTime) * 2;
                     break;
                 default:
                     return;

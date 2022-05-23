@@ -45,6 +45,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton FalseChargesFalseChargeButton;
         public static CustomButton MadMakerSidekickButton;
         public static CustomButton DemonButton;
+        public static CustomButton ArsonistDouseButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -878,6 +879,33 @@ namespace SuperNewRoles.Buttons
 
             DemonButton.buttonText = ModTranslation.getString("DemonButtonName");
             DemonButton.showButtonText = true;
+
+            ArsonistDouseButton = new CustomButton(
+                () =>
+                {
+
+                    Arsonist.ArsonistDouse(setTarget(untarget: Arsonist.GetUntarget()));
+                    ArsonistDouseButton.Timer = DemonButton.MaxTimer;
+                },
+                () => { return Arsonist.IsButton(); },
+                () =>
+                {
+                    return setTarget(untarget: Arsonist.GetUntarget()) && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => {
+                    ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.CoolTime;
+                    ArsonistDouseButton.Timer = RoleClass.Arsonist.CoolTime;
+                },
+                RoleClass.Arsonist.getDouseButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            ArsonistDouseButton.buttonText = ModTranslation.getString("ArsonistDouseButtonName");
+            ArsonistDouseButton.showButtonText = true;
 
             setCustomButtonCooldowns();
         }
