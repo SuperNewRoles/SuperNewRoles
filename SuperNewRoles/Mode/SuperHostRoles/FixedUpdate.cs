@@ -106,9 +106,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                 }
-            } else if (JackalFriends.CheckImpostor(player))
+            } else if (JackalFriends.CheckJackal(player))
             {
-                foreach (PlayerControl Jackal in RoleClass.Jackal.JackalFriends)
+                foreach (PlayerControl Jackal in RoleClass.Jackal.JackalPlayer)
                 {
                     if (!Jackal.Data.Disconnected)
                     {

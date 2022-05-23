@@ -860,7 +860,6 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 JackalFriendsPlayer = new List<PlayerControl>();
-                IsJackalCheck = CustomOptions.JackalFriendsIsCheckJackal.getBool();
 
                 IsJackalCheck = CustomOptions.JackalFriendsIsCheckJackal.getBool();
                 IsUseVent = CustomOptions.JackalFriendsIsUseVent.getBool();
