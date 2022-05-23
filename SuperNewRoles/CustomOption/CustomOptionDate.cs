@@ -473,6 +473,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadMakerIsUseVent;
         public static CustomOption MadMakerIsImpostorLight;
 
+        public static CustomRoleOption VentMakerOption;
+        public static CustomOption VentMakerPlayerCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -971,6 +974,9 @@ namespace SuperNewRoles.CustomOption
             MadMakerPlayerCount = CustomOption.Create(412, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadMakerOption);
             MadMakerIsUseVent = CustomOption.Create(413, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadMakerOption);
             MadMakerIsImpostorLight = CustomOption.Create(414, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadMakerOption);
+
+            VentMakerOption = new CustomRoleOption(415, false, CustomOptionType.Impostor, "VentMakerName", RoleClass.VentMaker.color, 1);
+            VentMakerPlayerCount = CustomOption.Create(416, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VentMakerOption);
 
             QuarreledOption = CustomOption.Create(122, false, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, false, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

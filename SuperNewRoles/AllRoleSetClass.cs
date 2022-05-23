@@ -841,6 +841,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.TeleportingJackalPlayerCount.getFloat();
                     case (RoleId.MadMaker):
                     return CustomOption.CustomOptions.MadMakerPlayerCount.getFloat();
+                    case (RoleId.VentMaker):
+                    return CustomOption.CustomOptions.VentMakerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -2195,6 +2197,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.VentMakerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.VentMakerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.VentMaker;
+                if (OptionDate == 10)
+                {
+                    Impoonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Imponotonepar.Add(ThisRoleId);
                     }
                 }
             }

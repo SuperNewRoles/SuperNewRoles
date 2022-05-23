@@ -44,6 +44,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SideKillerSidekickButton;
         public static CustomButton FalseChargesFalseChargeButton;
         public static CustomButton MadMakerSidekickButton;
+        public static CustomButton VentMakerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -845,6 +846,34 @@ namespace SuperNewRoles.Buttons
 
             MadMakerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
             MadMakerSidekickButton.showButtonText = true;
+
+            VentMakerButton = new CustomButton(
+                () =>
+                {
+                    RoleClass.VentMaker.VentCount++;
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetVent);
+                    writer.Write(true);
+                    writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    CustomRPC.RPCProcedure.SetVent(PlayerControl.LocalPlayer.PlayerId);
+                    if (RoleClass.VentMaker.VentCount == 2) RoleClass.VentMaker.IsMakeVent = false;
+                },
+                () => { return RoleClass.VentMaker.IsMakeVent && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.VentMaker); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { },
+                RoleClass.Jackal.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            VentMakerButton.buttonText = ModTranslation.getString("VentMakerButtonName");
+            VentMakerButton.showButtonText = true;
 
             RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(HudManager.Instance.KillButton.cooldownTimerText, HudManager.Instance.KillButton.cooldownTimerText.transform.parent);
             RoleClass.SerialKiller.SuicideKillText.text = "";

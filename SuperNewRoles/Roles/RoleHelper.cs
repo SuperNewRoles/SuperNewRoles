@@ -505,6 +505,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMaker):
                     Roles.RoleClass.MadMaker.MadMakerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.VentMaker):
+                    Roles.RoleClass.VentMaker.VentMakerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -765,6 +768,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.MadMaker):
                     Roles.RoleClass.MadMaker.MadMakerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.VentMaker):
+                    Roles.RoleClass.VentMaker.VentMakerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
 
@@ -1395,6 +1401,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.MadMaker;
+            }
+            else if (Roles.RoleClass.VentMaker.VentMakerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.VentMaker;
             }
             //ロールチェック
             }

@@ -122,6 +122,7 @@ namespace SuperNewRoles.Roles
             RemoteSheriff.ClearAndReload();
             TeleportingJackal.ClearAndReload();
             MadMaker.ClearAndReload();
+            VentMaker.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1736,6 +1737,21 @@ namespace SuperNewRoles.Roles
                 IsImpostorLight = CustomOptions.MadMakerIsImpostorLight.getBool();
                 IsCreateMadmate = false;
                 CreatePlayers = new List<int>();
+            }
+        }
+        public static class VentMaker
+        {
+            public static List<PlayerControl> VentMakerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static Vent Vent;
+            public static int VentCount;
+            public static bool IsMakeVent;
+            public static void ClearAndReload()
+            {
+                VentMakerPlayer = new List<PlayerControl>();
+                Vent = null;
+                VentCount = 0;
+                IsMakeVent = true;
             }
         }
         //新ロールクラス

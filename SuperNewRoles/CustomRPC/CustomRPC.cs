@@ -105,6 +105,7 @@ namespace SuperNewRoles.CustomRPC
         RemoteSheriff,
         TeleportingJackal,
         MadMaker,
+        VentMaker,
         //RoleId
     }
 
@@ -155,7 +156,8 @@ namespace SuperNewRoles.CustomRPC
         UseMadStuntmanCount,
         CustomEndGame,
         UncheckedProtect,
-        SetBot
+        SetBot,
+        SetVent
     }
     public static class RPCProcedure
     {
@@ -690,6 +692,35 @@ namespace SuperNewRoles.CustomRPC
         {
             OnGameEndPatch.EndData = (CustomGameOverReason)Cond;
         }
+        public static void SetVent(byte sourceId)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceId);
+            Vent template = UnityEngine.Object.FindObjectOfType<Vent>();
+            Vent VentMakerVent = UnityEngine.Object.Instantiate<Vent>(template);
+
+            if (RoleClass.VentMaker.VentCount == 2)
+            {
+                RoleClass.VentMaker.Vent.Right = VentMakerVent;
+                VentMakerVent.Right = RoleClass.VentMaker.Vent;
+                VentMakerVent.Left = null;
+                VentMakerVent.Center = null;
+            }
+            else {
+                VentMakerVent.Right = null;
+                VentMakerVent.Left = null;
+                VentMakerVent.Center = null;
+            }
+
+            VentMakerVent.transform.position = source.transform.position;
+            VentMakerVent.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            VentMakerVent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1;
+            var allVentsList = ShipStatus.Instance.AllVents.ToList();
+            allVentsList.Add(VentMakerVent);
+            ShipStatus.Instance.AllVents = allVentsList.ToArray();
+            VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
+            RoleClass.VentMaker.Vent = VentMakerVent;
+            VentMakerVent.gameObject.SetActive(true);
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -870,6 +901,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.SetBot:
                         SetBot(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetVent:
+                        SetVent(reader.ReadByte());
                         break;
                 }
             }
