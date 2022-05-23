@@ -1,4 +1,5 @@
-﻿using SuperNewRoles.Helpers;
+﻿using SuperNewRoles.CustomOption;
+using SuperNewRoles.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,35 +13,42 @@ namespace SuperNewRoles.Mode.LevelUp
         {
             UpdateTime = 12f;
             Count = 0;
+            MurderCount = (int)LevelUpMurder.getFloat();
         }
         public static float UpdateTime = 2f;
         public static float Count = 0;
+        public static int MurderCount = 0;
+        public static CustomOption.CustomOption LevelUpMurder;
+        public static void Load()
+        {
+            LevelUpMurder = CustomOption.CustomOption.Create(426, false, CustomOptionType.Generic, "レベルアップモード:1秒あたりのキル回数", 25, 5,100,5, ModeHandler.ModeSetting);
+        }
         public static void FixedUpdate()
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             UpdateTime -= Time.fixedDeltaTime;
             if (UpdateTime <= 0)
             {
                 Count++;
-                UpdateTime = 2f;
+                UpdateTime = 1f;
                 foreach(PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (!player.Data.Disconnected && player.IsPlayer())
                     {
-                        for (int i = 0; i < 100; i++)
+                        for (int i = 0; i < MurderCount; i++)
                         {
-                            player.RpcMurderPlayer(BotManager.AllBots[0]);
+                            player.RPCMurderPlayerPrivate(BotManager.AllBots[0]);
                         }
                     }
                 }
                 if (Count > 5)
                 {
-                    MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
-                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
-                    PlayerControl.LocalPlayer.RpcStartMeeting(null);
-                    
                     new LateTask(() =>
                     {
-                        MeetingHud.Instance.RpcClose();
+                        if (MeetingHud.Instance && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+                        {
+                            MeetingHud.Instance.RpcClose();
+                        }
                     }, 2f);
                     Count = 0;
                 }

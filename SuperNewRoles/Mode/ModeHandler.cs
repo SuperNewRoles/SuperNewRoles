@@ -190,12 +190,14 @@ namespace SuperNewRoles.Mode
             RandomColor.RandomColorOptions.Load();
             Detective.DetectiveOptions.Load();
             Werewolf.WerewolfOptions.Load();
+            LevelUp.main.Load();
 
             PlusMode.Options.Load();
         }
         public static void FixedUpdate(PlayerControl __instance) {
             if (isMode(ModeId.SuperHostRoles))
             {
+                //PlayerControl.LocalPlayer.RpcSetName("<size=>次のターゲット:よッキング</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                 SuperHostRoles.FixedUpdate.Update();
             }
             else if (isMode(ModeId.HideAndSeek))
