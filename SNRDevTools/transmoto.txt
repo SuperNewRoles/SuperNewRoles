@@ -133,6 +133,7 @@ CrewMateDescription
 ImpostorName
 ImpostorTitle1
 ImpostorDescription
+LevelUpModeName
 ZombieZombieName
 ZombieZombieTitle1
 ZombiePoliceName
@@ -577,3 +578,9 @@ TeleportingJackalName
 TeleportingJackalTitle1
 MadMakerName
 MadMakerTitle1
+DemonName
+DemonTitle1
+DemonIsAliveWinSetting
+DemonButtonName
+TaskManagerName
+TaskManagerTitle1

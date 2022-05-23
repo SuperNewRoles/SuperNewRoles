@@ -129,6 +129,16 @@ namespace SuperNewRoles.Patch
                     return (commont, shortt, longt);
                 }
             }
+            else if (p.isRole(RoleId.TaskManager))
+            {
+                int commont = (int)CustomOptions.TaskManagerCommonTask.getFloat();
+                int shortt = (int)CustomOptions.TaskManagerShortTask.getFloat();
+                int longt = (int)CustomOptions.TaskManagerLongTask.getFloat();
+                if (!(commont == 0 && shortt == 0 && longt == 0))
+                {
+                    return (commont, shortt, longt);
+                }
+            }
 
             else if (p.IsLovers() && !p.isImpostor())
             {

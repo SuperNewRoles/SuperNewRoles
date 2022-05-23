@@ -133,6 +133,7 @@ Default Crewmate.
 Impostor
 Use Sabotage & Vent
 Default Impostor.
+Level Up
 Zombie
 Infect other players!
 Police
@@ -577,3 +578,9 @@ TeleportingJackal
 Teleport and kill all crewmates and impostors!
 MadMaker
 Let's get more lunatics!
+Demon
+Curse the Crew and Help the Imposter!
+You have to be alive to win.
+Curse
+TaskManager
+Finish the task and mount up!
