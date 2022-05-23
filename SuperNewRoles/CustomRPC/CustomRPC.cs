@@ -170,7 +170,7 @@ namespace SuperNewRoles.CustomRPC
             PlayerControl SourcePlayer = ModHelpers.playerById(source);
             if (TargetPlayer == null || SourcePlayer == null) return;
             if (!RoleClass.Arsonist.DouseDatas.ContainsKey(source)) RoleClass.Arsonist.DouseDatas[source] = new List<PlayerControl>();
-            if (!Demon.IsCursed(SourcePlayer, TargetPlayer))
+            if (!Arsonist.IsDoused(SourcePlayer, TargetPlayer))
             {
                 RoleClass.Arsonist.DouseDatas[source].Add(TargetPlayer);
             }

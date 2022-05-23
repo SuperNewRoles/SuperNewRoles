@@ -274,7 +274,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             else if (player.isAlive() || IsUnchecked)
             {
-                if ((player.isDead() || player.isRole(RoleId.God)) && Demon.IsViewIcon(player))
+                if ((player.isDead() || player.isRole(RoleId.God)) && Arsonist.IsViewIcon(player))
                 {
                     MySuffix = ModHelpers.cs(RoleClass.Arsonist.color, " §");
                     IsArsonistVIew = true;

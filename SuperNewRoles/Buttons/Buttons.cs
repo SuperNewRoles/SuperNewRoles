@@ -885,7 +885,7 @@ namespace SuperNewRoles.Buttons
                 {
 
                     Arsonist.ArsonistDouse(setTarget(untarget: Arsonist.GetUntarget()));
-                    ArsonistDouseButton.Timer = DemonButton.MaxTimer;
+                    ArsonistDouseButton.Timer = ArsonistDouseButton.MaxTimer;
                 },
                 () => { return Arsonist.IsButton(); },
                 () =>

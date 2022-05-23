@@ -82,16 +82,16 @@ namespace SuperNewRoles.Roles
             return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist) && ModeHandler.isMode(ModeId.Default);
         }
 
-        public static bool IsWin(PlayerControl Demon)
+        public static bool IsWin(PlayerControl Arsonist)
         {
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
-                if (player.PlayerId != Demon.PlayerId && !IsDoused(Demon, player))
+                if (player.PlayerId != Arsonist.PlayerId && !IsDoused(Arsonist, player))
                 {
                     return false;
                 }
             }
-            if (Demon.isDead()) return false;
+            if (Arsonist.isDead()) return false;
             return true;
         }
 
