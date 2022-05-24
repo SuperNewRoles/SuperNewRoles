@@ -19,6 +19,7 @@ namespace SuperNewRoles.MapOptions
         public static bool UseCamera;
         public static bool UseDeadBodyReport;
         public static bool UseMeetingButton;
+        public static bool IsRandomMap;
         public static bool ValidationSkeld;
         public static bool ValidationMira;
         public static bool ValidationPolus;
@@ -33,17 +34,29 @@ namespace SuperNewRoles.MapOptions
                     UseAdmin = DeviceUseAdmin.getBool();
                     UseVitalOrDoorLog = DeviceUseVitalOrDoorLog.getBool();
                     UseCamera = DeviceUseCamera.getBool();
-                    ValidationSkeld = RandomMapSkeld.getBool();
-                    ValidationMira = RandomMapMira.getBool();
-                    ValidationPolus = RandomMapPolus.getBool();
-                    ValidationAirship = RandomMapAirship.getBool();
-                    ValidationSubmerged = RandomMapSubmerged.getBool();
                 }
                 else
                 {
                     UseAdmin = true;
                     UseVitalOrDoorLog = true;
                     UseCamera = true;
+                }
+                if (RandomMapOption.getBool())
+                {
+                    IsRandomMap = true;
+                    ValidationSkeld = RandomMapSkeld.getBool();
+                    ValidationMira = RandomMapMira.getBool();
+                    ValidationPolus = RandomMapPolus.getBool();
+                    ValidationAirship = RandomMapAirship.getBool();
+                    ValidationSubmerged = RandomMapSubmerged.getBool();
+                } else
+                {
+                    IsRandomMap = false;
+                    ValidationSkeld = false;
+                    ValidationMira = false;
+                    ValidationPolus = false;
+                    ValidationAirship = false;
+                    ValidationSubmerged = false;
                 }
                 UseDeadBodyReport = !NotUseReportDeadBody.getBool();
                 UseMeetingButton = !NotUseMeetingButton.getBool();
@@ -54,7 +67,14 @@ namespace SuperNewRoles.MapOptions
                 UseCamera = true;
                 UseDeadBodyReport = true;
                 UseMeetingButton = true;
+                IsRandomMap = false;
+                ValidationSkeld = false;
+                ValidationMira = false;
+                ValidationPolus = false;
+                ValidationAirship = false;
+                ValidationSubmerged = false;
             }
+            RandomMap.Prefix();
             BlockTool.CameraPlayers = new List<byte>();
             //BlockTool.VitalPlayers = new List<byte>();
             //BlockTool.AdminPlayers = new List<byte>();
@@ -111,12 +131,13 @@ namespace SuperNewRoles.MapOptions
             //DeviceUseCameraTime = CustomOption.CustomOption.Create(272, cs(Color.white, "DeviceTimeSetting"), 10f,0f,60f,1f, DeviceUseCamera);
             NotUseReportDeadBody = CustomOption.CustomOption.Create(247, true, CustomOptionType.Generic, "NotUseReportSetting", false, MapOptionSetting);
             NotUseMeetingButton = CustomOption.CustomOption.Create(248, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, MapOptionSetting);
-            RandomMapOption = CustomOption.CustomOption.Create(369, true, CustomOptionType.Generic, "RamdomMapSetting", true, MapOptionSetting);
-            RandomMapSkeld = CustomOption.CustomOption.Create(370, true, CustomOptionType.Generic, "RMSkeldSetting", true, RandomMapOption);
-            RandomMapMira = CustomOption.CustomOption.Create(371, true, CustomOptionType.Generic, "RMMiraSetting", true, RandomMapOption);
-            RandomMapPolus = CustomOption.CustomOption.Create(372, true, CustomOptionType.Generic, "RMPolusSetting", true, RandomMapOption);
-            RandomMapAirship = CustomOption.CustomOption.Create(373, true, CustomOptionType.Generic, "RMAirshipSetting", true, RandomMapOption);
-            RandomMapSubmerged = CustomOption.CustomOption.Create(373, true, CustomOptionType.Generic, "RMSubmergedSetting", true, RandomMapOption);
+            
+            RandomMapOption = CustomOption.CustomOption.Create(433, true, CustomOptionType.Generic, "RamdomMapSetting", true, MapOptionSetting);
+            RandomMapSkeld = CustomOption.CustomOption.Create(434, true, CustomOptionType.Generic, "RMSkeldSetting", true, RandomMapOption);
+            RandomMapMira = CustomOption.CustomOption.Create(435, true, CustomOptionType.Generic, "RMMiraSetting", true, RandomMapOption);
+            RandomMapPolus = CustomOption.CustomOption.Create(436, true, CustomOptionType.Generic, "RMPolusSetting", true, RandomMapOption);
+            RandomMapAirship = CustomOption.CustomOption.Create(437, true, CustomOptionType.Generic, "RMAirshipSetting", true, RandomMapOption);
+            RandomMapSubmerged = CustomOption.CustomOption.Create(438, true, CustomOptionType.Generic, "RMSubmergedSetting", true, RandomMapOption);
             //RM‚ÍRandomMap‚Ì—ª‚Å‚·()
         }
     }

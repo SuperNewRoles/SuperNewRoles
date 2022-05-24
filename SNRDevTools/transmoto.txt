@@ -576,13 +576,13 @@ RemoteSheriffTitle1
 RemoteSheriffIsKillTeleportSetting
 TeleportingJackalName
 TeleportingJackalTitle1
+MadMakerName
+MadMakerTitle1
 RamdomMapSetting
 RMSkeldSetting
 RMMiraSetting
 RMPolusSetting
 RMAirshipSetting
-MadMakerName
-MadMakerTitle1
 DemonName
 DemonTitle1
 DemonIsAliveWinSetting
