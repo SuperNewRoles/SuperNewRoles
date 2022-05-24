@@ -583,6 +583,7 @@ RMSkeldSetting
 RMMiraSetting
 RMPolusSetting
 RMAirshipSetting
+RMSubmergedSetting
 DemonName
 DemonTitle1
 DemonIsAliveWinSetting
