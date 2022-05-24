@@ -226,6 +226,10 @@ namespace SuperNewRoles
                     returntext = CustomOptions.MadSeerIsUseVent.name + ":" + CustomOptions.MadSeerIsUseVent.getString() + "\n";
                     returntext += CustomOptions.MadSeerIsCheckImpostor.name + ":" + CustomOptions.MadSeerIsCheckImpostor.getString() + "\n";
                     break;
+                case RoleId.JackalFriends:
+                    returntext = CustomOptions.JackalFriendsIsUseVent.name + ":" + CustomOptions.JackalFriendsIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.JackalFriendsIsCheckJackal.name + ":" + CustomOptions.JackalFriendsIsCheckJackal.getString() + "\n";
+                    break;
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
@@ -991,6 +995,10 @@ namespace SuperNewRoles
                     return RoleClass.TeleportingJackal.IsImpostorLight;
                 case RoleId.MadMaker:
                     return RoleClass.MadMaker.IsImpostorLight;
+                case RoleId.Jackal:
+                    return RoleClass.Jackal.IsImpostorLight;
+                case RoleId.JackalFriends:
+                    return RoleClass.JackalFriends.IsImpostorLight;
             }
             return false;
         }
