@@ -892,6 +892,7 @@ namespace SuperNewRoles
                 case RoleId.Jester:
                     return RoleClass.Jester.IsUseVent;
                 case RoleId.MadMate:
+                    if (PlayerControl.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return false;
                     return RoleClass.MadMate.IsUseVent;
                 case RoleId.TeleportingJackal:
                     return RoleClass.TeleportingJackal.IsUseVent;
