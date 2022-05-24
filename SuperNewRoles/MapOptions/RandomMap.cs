@@ -11,7 +11,7 @@ namespace SuperNewRoles.MapOptions
     {
         public static void Prefix()
         {
-            bool continueStart = true;
+            if (!AmongUsClient.Instance.AmHost) return;
             if (MapOption.IsRandomMap)
             {
                 var rand = new System.Random();
