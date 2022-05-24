@@ -576,6 +576,11 @@ Let's do a Remote Sheriff kill!
 Kill Teleport
 TeleportingJackal
 Teleport and kill all crewmates and impostors!
+RandomMap
+Skeld
+Mira
+Polus
+AirShip
 MadMaker
 Let's get more lunatics!
 Demon

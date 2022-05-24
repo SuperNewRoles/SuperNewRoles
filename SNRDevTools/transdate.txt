@@ -577,8 +577,13 @@ RemoteSheriffTitle1,Let's do a Remote Sheriff kill!,遠隔でシェリフキル�
 RemoteSheriffIsKillTeleportSetting,Kill Teleport,キルテレポート
 TeleportingJackalName,TeleportingJackal,テレポートジャッカル
 TeleportingJackalTitle1,Teleport and kill all crewmates and impostors!,テレポートして全員ぶち殺そう
-MadMakerName,MadMaker,マッドメーカー
-MadMakerTitle1,Let's get more lunatics!,狂人を増やそう！
+MadMakerName,RandomMap,マッドメーカー
+MadMakerTitle1,Skeld,狂人を増やそう！
+RamdomMapSetting,Mira,ランダムマップ
+RMSkeldSetting,Polus,スケルドが有効
+RMMiraSetting,AirShip,ミラが有効
+RMPolusSetting,MadMaker,ポーラスが有効
+RMAirshipSetting,Let's get more lunatics!,エアーシップが有効
 DemonName,Demon,悪魔
 DemonTitle1,Curse the Crew and Help the Imposter!,クルーを呪いながらインポスターを手助けせよ
 DemonIsAliveWinSetting,You have to be alive to win.,生存していないと勝利できない
