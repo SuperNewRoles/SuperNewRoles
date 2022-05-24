@@ -540,6 +540,10 @@
         "0" : "Default Impostor." ,
         "11" : "\u901a\u5e38\u306e\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3067\u3059\u3002"
         } ,
+ "LevelUpModeName" : {
+        "0" : "Level Up" ,
+        "11" : "\u30ec\u30d9\u30eb\u30a2\u30c3\u30d7"
+        } ,
  "ZombieZombieName" : {
         "0" : "Zombie" ,
         "11" : "\u30be\u30f3\u30d3"
@@ -2309,32 +2313,56 @@
         "11" : "\u30c6\u30ec\u30dd\u30fc\u30c8\u3057\u3066\u5168\u54e1\u3076\u3061\u6bba\u305d\u3046"
         } ,
  "MadMakerName" : {
-        "0" : "MadMaker" ,
+        "0" : "RandomMap" ,
         "11" : "\u30de\u30c3\u30c9\u30e1\u30fc\u30ab\u30fc"
         } ,
  "MadMakerTitle1" : {
-        "0" : "Let's get more lunatics!" ,
+        "0" : "Skeld" ,
         "11" : "\u72c2\u4eba\u3092\u5897\u3084\u305d\u3046\uff01"
         } ,
  "RamdomMapSetting" : {
-        "0" : "RandomMap" ,
+        "0" : "Mira" ,
         "11" : "\u30e9\u30f3\u30c0\u30e0\u30de\u30c3\u30d7"
         } ,
  "RMSkeldSetting" : {
-        "0" : "Skeld" ,
+        "0" : "Polus" ,
         "11" : "\u30b9\u30b1\u30eb\u30c9\u304c\u6709\u52b9"
         } ,
  "RMMiraSetting" : {
-        "0" : "Mira" ,
+        "0" : "AirShip" ,
         "11" : "\u30df\u30e9\u304c\u6709\u52b9"
         } ,
  "RMPolusSetting" : {
-        "0" : "Polus" ,
+        "0" : "MadMaker" ,
         "11" : "\u30dd\u30fc\u30e9\u30b9\u304c\u6709\u52b9"
         } ,
  "RMAirshipSetting" : {
-        "0" : "AirShip" ,
+        "0" : "Let's get more lunatics!" ,
         "11" : "\u30a8\u30a2\u30fc\u30b7\u30c3\u30d7\u304c\u6709\u52b9"
+        } ,
+ "DemonName" : {
+        "0" : "Demon" ,
+        "11" : "\u60aa\u9b54"
+        } ,
+ "DemonTitle1" : {
+        "0" : "Curse the Crew and Help the Imposter!" ,
+        "11" : "\u30af\u30eb\u30fc\u3092\u546a\u3044\u306a\u304c\u3089\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u624b\u52a9\u3051\u305b\u3088"
+        } ,
+ "DemonIsAliveWinSetting" : {
+        "0" : "You have to be alive to win." ,
+        "11" : "\u751f\u5b58\u3057\u3066\u3044\u306a\u3044\u3068\u52dd\u5229\u3067\u304d\u306a\u3044"
+        } ,
+ "DemonButtonName" : {
+        "0" : "Curse" ,
+        "11" : "\u546a\u3046"
+        } ,
+ "TaskManagerName" : {
+        "0" : "TaskManager" ,
+        "11" : "\u30bf\u30b9\u30af\u30de\u30cd\u30fc\u30b8\u30e3\u30fc"
+        } ,
+ "TaskManagerTitle1" : {
+        "0" : "Finish the task and mount up!" ,
+        "11" : "\u30bf\u30b9\u30af\u3092\u7d42\u308f\u3089\u305b\u3001\u30de\u30a6\u30f3\u30c8\u3092\u53d6\u308d\u3046"
         } 
 
 }

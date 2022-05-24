@@ -82,6 +82,19 @@ namespace SuperNewRoles.Patch
                     }
                 }
             }
+            else if (p.isRole(RoleId.JackalFriends))
+            {
+                if (CustomOptions.JackalFriendsIsCheckJackal.getBool())
+                {
+                    int commont = (int)CustomOptions.JackalFriendsCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.JackalFriendsShortTask.getFloat();
+                    int longt = (int)CustomOptions.JackalFriendsLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }
             else if (p.isRole(RoleId.Jester))
             {
                 if (CustomOptions.JesterIsWinCleartask.getBool())
@@ -111,6 +124,16 @@ namespace SuperNewRoles.Patch
                 int commont = (int)CustomOptions.WorkpersonCommonTask.getFloat();
                 int shortt = (int)CustomOptions.WorkpersonShortTask.getFloat();
                 int longt = (int)CustomOptions.WorkpersonLongTask.getFloat();
+                if (!(commont == 0 && shortt == 0 && longt == 0))
+                {
+                    return (commont, shortt, longt);
+                }
+            }
+            else if (p.isRole(RoleId.TaskManager))
+            {
+                int commont = (int)CustomOptions.TaskManagerCommonTask.getFloat();
+                int shortt = (int)CustomOptions.TaskManagerShortTask.getFloat();
+                int longt = (int)CustomOptions.TaskManagerLongTask.getFloat();
                 if (!(commont == 0 && shortt == 0 && longt == 0))
                 {
                     return (commont, shortt, longt);

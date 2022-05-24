@@ -40,6 +40,8 @@ namespace SuperNewRoles.Roles
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new List<byte>();
             Roles.MadMayor.CheckedImpostor = new List<byte>();
+            Roles.MadSeer.CheckedImpostor = new List<byte>();
+            Roles.JackalFriends.CheckedJackal = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
@@ -122,6 +124,8 @@ namespace SuperNewRoles.Roles
             RemoteSheriff.ClearAndReload();
             TeleportingJackal.ClearAndReload();
             MadMaker.ClearAndReload();
+            Demon.ClearAndReload();
+            TaskManager.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -308,6 +312,7 @@ namespace SuperNewRoles.Roles
             public static float KillCoolDown;
             public static bool IsUseVent;
             public static bool IsUseSabo;
+            public static bool IsImpostorLight;
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
             public static bool IsCreateSidekick;
@@ -326,6 +331,7 @@ namespace SuperNewRoles.Roles
                 KillCoolDown = CustomOptions.JackalKillCoolDown.getFloat();
                 IsUseVent = CustomOptions.JackalUseVent.getBool();
                 IsUseSabo = CustomOptions.JackalUseSabo.getBool();
+                IsImpostorLight = CustomOptions.JackalIsImpostorLight.getBool();
                 CreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 IsCreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
@@ -849,13 +855,29 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> JackalFriendsPlayer;
             public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
-            public static bool IsJackalCheck;
             public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static bool IsJackalCheck;
+            public static int JackalCheckTask;
             public static void ClearAndReload()
             {
                 JackalFriendsPlayer = new List<PlayerControl>();
+
                 IsJackalCheck = CustomOptions.JackalFriendsIsCheckJackal.getBool();
                 IsUseVent = CustomOptions.JackalFriendsIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.JackalFriendsIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.JackalFriendsCommonTask.getFloat();
+                int Long = (int)CustomOptions.JackalFriendsLongTask.getFloat();
+                int Short = (int)CustomOptions.JackalFriendsShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.JackalFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
+                Roles.JackalFriends.CheckedJackal = new List<byte>();
             }
         }
         public static class Doctor
@@ -1736,6 +1758,53 @@ namespace SuperNewRoles.Roles
                 IsImpostorLight = CustomOptions.MadMakerIsImpostorLight.getBool();
                 IsCreateMadmate = false;
                 CreatePlayers = new List<int>();
+            }
+        }
+        public static class Demon
+        {
+            public static List<PlayerControl> DemonPlayer;
+            public static Dictionary<byte, List<PlayerControl>> CurseDatas;
+            public static Color32 color = new Color32(110, 0, 165, byte.MaxValue);
+            public static bool IsUseVent;
+            public static bool IsCheckImpostor;
+            public static bool IsAliveWin;
+            public static float CoolTime;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.DemonButton.png", 115f);
+                return buttonSprite;
+            }
+
+            public static void ClearAndReload()
+            {
+                DemonPlayer = new List<PlayerControl>();
+                CurseDatas = new Dictionary<byte, List<PlayerControl>>();
+                IsUseVent = CustomOptions.DemonIsUseVent.getBool();
+                CoolTime = CustomOptions.DemonCoolTime.getFloat();
+                IsCheckImpostor = CustomOptions.DemonIsCheckImpostor.getBool();
+                IsAliveWin = CustomOptions.DemonIsAliveWin.getBool();
+            }
+        }
+
+        public static class TaskManager
+        {
+            public static List<PlayerControl> TaskManagerPlayer;
+            public static Color32 color = new Color32(153, 255, 255, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                TaskManagerPlayer = new List<PlayerControl>();
+                int Common = (int)CustomOptions.TaskManagerCommonTask.getFloat();
+                int Long = (int)CustomOptions.TaskManagerLongTask.getFloat();
+                int Short = (int)CustomOptions.TaskManagerShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
             }
         }
         //新ロールクラス
