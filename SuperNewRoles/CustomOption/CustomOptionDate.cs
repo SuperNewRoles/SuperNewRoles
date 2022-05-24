@@ -625,7 +625,7 @@ namespace SuperNewRoles.CustomOption
             JackalKillCoolDown = CustomOption.Create(38, true, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, JackalOption, format: "unitSeconds");
             JackalUseVent = CustomOption.Create(160, true, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalOption);
             JackalUseSabo = CustomOption.Create(161, true, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalOption);
-            JackalIsImpostorLight = CustomOption.Create(430, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, JackalOption);
+            JackalIsImpostorLight = CustomOption.Create(432, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, JackalOption);
             JackalCreateSidekick = CustomOption.Create(39, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalOption);
             JackalNewJackalCreateSidekick = CustomOption.Create(40, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalOption);
 
@@ -781,12 +781,12 @@ namespace SuperNewRoles.CustomOption
             JackalFriendsPlayerCount = CustomOption.Create(163, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalFriendsOption);
             JackalFriendsIsUseVent = CustomOption.Create(164, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, JackalFriendsOption);
             JackalFriendsIsImpostorLight = CustomOption.Create(165, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, JackalFriendsOption);
-            JackalFriendsIsCheckJackal = CustomOption.Create(425, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, JackalFriendsOption);
-            var JackalFriendsoption = SelectTask.TaskSetting(426, 427, 428, JackalFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
+            JackalFriendsIsCheckJackal = CustomOption.Create(427, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, JackalFriendsOption);
+            var JackalFriendsoption = SelectTask.TaskSetting(428, 429, 430, JackalFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
             JackalFriendsCommonTask = JackalFriendsoption.Item1;
             JackalFriendsShortTask = JackalFriendsoption.Item2;
             JackalFriendsLongTask = JackalFriendsoption.Item3;
-            JackalFriendsCheckJackalTask = CustomOption.Create(429, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, JackalFriendsIsCheckJackal);
+            JackalFriendsCheckJackalTask = CustomOption.Create(431, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, JackalFriendsIsCheckJackal);
 
             DoctorOption = new CustomRoleOption(166, false, CustomOptionType.Crewmate, "DoctorName", RoleClass.Doctor.color, 1);
             DoctorPlayerCount = CustomOption.Create(167, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
