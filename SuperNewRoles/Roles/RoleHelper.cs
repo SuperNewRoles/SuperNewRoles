@@ -994,6 +994,8 @@ namespace SuperNewRoles
                     return RoleClass.TeleportingJackal.IsImpostorLight;
                 case RoleId.MadMaker:
                     return RoleClass.MadMaker.IsImpostorLight;
+                case RoleId.Jackal:
+                    return RoleClass.Jackal.IsImpostorLight;
                 case RoleId.JackalFriends:
                     return RoleClass.JackalFriends.IsImpostorLight;
             }
