@@ -7,15 +7,27 @@ using HarmonyLib;
 using Hazel;
 using System.Reflection;
 using System.Text;
+using UnityEngine.Events;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.CustomOption
 {
+    public enum CustomOptionType { 
+        Generic,
+        Impostor,
+        Neutral,
+        Crewmate
+
+    }
+    
     public class CustomOption
     {
         public static List<CustomOption> options = new List<CustomOption>();
         public static int preset = 0;
 
         public int id;
+        public bool isSHROn;
+        public CustomOptionType type;
         public string name;
         public string format;
         public System.Object[] selections;
@@ -43,9 +55,11 @@ namespace SuperNewRoles.CustomOption
 
         }
 
-        public CustomOption(int id, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
+        public CustomOption(int id, bool IsSHROn,CustomOptionType type,string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
         {
             this.id = id;
+            this.isSHROn = IsSHROn;
+            this.type = type;
             this.name = name;
             this.format = format;
             this.selections = selections;
@@ -79,22 +93,22 @@ namespace SuperNewRoles.CustomOption
         }
         public static int Max = 0;
 
-        public static CustomOption Create(int id, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+        public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, string[] selections, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
         {
-            return new CustomOption(id, name, selections, "", parent, isHeader, isHidden, format);
+            return new CustomOption(id, IsSHROn, type, name, selections, "", parent, isHeader, isHidden, format);
         }
 
-        public static CustomOption Create(int id, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+        public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, float defaultValue, float min, float max, float step, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
         {
             List<float> selections = new List<float>();
             for (float s = min; s <= max; s += step)
                 selections.Add(s);
-            return new CustomOption(id, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format);
+            return new CustomOption(id, IsSHROn, type, name, selections.Cast<object>().ToArray(), defaultValue, parent, isHeader, isHidden, format);
         }
 
-        public static CustomOption Create(int id, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
+        public static CustomOption Create(int id, bool IsSHROn, CustomOptionType type, string name, bool defaultValue, CustomOption parent = null, bool isHeader = false, bool isHidden = false, string format = "")
         {
-            return new CustomOption(id, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
+            return new CustomOption(id, IsSHROn, type, name, new string[] { "optionOff", "optionOn" }, defaultValue ? "optionOn" : "optionOff", parent, isHeader, isHidden, format);
         }
 
         // Static behaviour
@@ -214,11 +228,11 @@ namespace SuperNewRoles.CustomOption
             }
         }
 
-        public CustomRoleOption(int id, string name, Color color, int max = 15) :
-            base(id, CustomOptions.cs(color, name), CustomOptions.rates, "", null, true, false, "")
+        public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15) :
+            base(id, isSHROn, type, CustomOptions.cs(color, name), CustomOptions.rates, "", null, true, false, "")
         {
             if (max > 1)
-                countOption = CustomOption.Create(id + 10000, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
+                countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
         }
     }
     public class CustomOptionBlank : CustomOption
@@ -285,44 +299,108 @@ namespace SuperNewRoles.CustomOption
         {
             if (GameObject.Find("SNRSettings") != null)
             { // Settings setup has already been performed, fixing the title of the tab and returning
-                GameObject.Find("SNRSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingSuperNewRolesSetting"));
+                GameObject.Find("SNRSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingSuperNewRoles"));
                 return;
             }
-
+            if (GameObject.Find("ImpostorSettings") != null)
+            {
+                GameObject.Find("ImpostorSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingImpostor"));
+                return;
+            }
+            if (GameObject.Find("NeutralSettings") != null)
+            {
+                GameObject.Find("NeutralSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingNeutral"));
+                return;
+            }
+            if (GameObject.Find("CrewmateSettings") != null)
+            {
+                GameObject.Find("CrewmateSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingCrewmate"));
+                return;
+            }
             // Setup TOR tab
             var template = UnityEngine.Object.FindObjectsOfType<StringOption>().FirstOrDefault();
             if (template == null) return;
             var gameSettings = GameObject.Find("Game Settings");
             var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
-            var snrSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
-            var torMenu = snrSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
-            snrSettings.name = "SNRSettings";
 
+            SuperNewRolesPlugin.Logger.LogInfo("a");
+            var snrSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
+            var snrMenu = snrSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
+            snrSettings.name = "SNRSettings";
+            snrSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "GenericSetting";
+
+            SuperNewRolesPlugin.Logger.LogInfo("a");
+            var impostorSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
+            var impostorMenu = impostorSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
+            impostorSettings.name = "ImpostorSettings";
+            impostorSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "ImpostorSetting";
+
+            var neutralSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
+            var neutralMenu = neutralSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
+            neutralSettings.name = "NeutralSettings";
+            neutralSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "NeutralSetting";
+
+            var crewmateSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
+            var crewmateMenu = crewmateSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
+            crewmateSettings.name = "CrewmateSettings";
+            crewmateSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "CrewmateSetting";
+
+            SuperNewRolesPlugin.Logger.LogInfo("a");
             var roleTab = GameObject.Find("RoleTab");
             var gameTab = GameObject.Find("GameTab");
 
-            var torTab = UnityEngine.Object.Instantiate(roleTab, roleTab.transform.parent);
-            var torTabHighlight = torTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-            torTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CrewMateSetting.png", 100f);
-           
-            gameTab.transform.position += Vector3.left * 0.5f;
-            torTab.transform.position += Vector3.right * 0.5f;
-            roleTab.transform.position += Vector3.left * 0.5f;
+            var snrTab = UnityEngine.Object.Instantiate(roleTab, roleTab.transform.parent);
+            var snrTabHighlight = snrTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
+            snrTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.TabIcon.png", 100f);
 
-            var tabs = new GameObject[] { gameTab, roleTab, torTab };
+            var impostorTab = UnityEngine.Object.Instantiate(roleTab, snrTab.transform);
+            var impostorTabHighlight = impostorTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
+            impostorTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Setting_Impostor.png", 100f);
+            impostorTab.name = "ImpostorTab";
+
+            var neutralTab = UnityEngine.Object.Instantiate(roleTab, impostorTab.transform);
+            var neutralTabHighlight = neutralTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
+            neutralTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Setting_Neutral.png", 100f);
+            neutralTab.name = "NeutralTab";
+
+            var crewmateTab = UnityEngine.Object.Instantiate(roleTab, neutralTab.transform);
+            var crewmateTabHighlight = crewmateTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
+            crewmateTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
+            crewmateTab.name = "CrewmateTab";
+
+            SuperNewRolesPlugin.Logger.LogInfo("a");
+            // Position of Tab Icons
+            gameTab.transform.position += Vector3.left * 3f;
+            roleTab.transform.position += Vector3.left * 3f;
+            snrTab.transform.position += Vector3.left * 2f;
+            impostorTab.transform.localPosition = Vector3.right * 1f;
+            neutralTab.transform.localPosition = Vector3.right * 1f;
+            crewmateTab.transform.localPosition = Vector3.right * 0.95f;
+
+            SuperNewRolesPlugin.Logger.LogInfo("a");
+            var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab};
             for (int i = 0; i < tabs.Length; i++)
             {
+                SuperNewRolesPlugin.Logger.LogInfo("a");
                 var button = tabs[i].GetComponentInChildren<PassiveButton>();
-                if (button == null) continue;
+                SuperNewRolesPlugin.Logger.LogInfo("c");
                 int copiedIndex = i;
+                SuperNewRolesPlugin.Logger.LogInfo("d");
                 button.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
-                button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => {
+                SuperNewRolesPlugin.Logger.LogInfo("e");
+                button.OnClick.AddListener((UnityAction)(() => {
                     gameSettingMenu.RegularGameSettings.SetActive(false);
                     gameSettingMenu.RolesSettings.gameObject.SetActive(false);
                     snrSettings.gameObject.SetActive(false);
+                    impostorSettings.gameObject.SetActive(false);
+                    neutralSettings.gameObject.SetActive(false);
+                    crewmateSettings.gameObject.SetActive(false);
                     gameSettingMenu.GameSettingsHightlight.enabled = false;
                     gameSettingMenu.RolesSettingsHightlight.enabled = false;
-                    torTabHighlight.enabled = false;
+                    snrTabHighlight.enabled = false;
+                    impostorTabHighlight.enabled = false;
+                    neutralTabHighlight.enabled = false;
+                    crewmateTabHighlight.enabled = false;
                     if (copiedIndex == 0)
                     {
                         gameSettingMenu.RegularGameSettings.SetActive(true);
@@ -336,22 +414,61 @@ namespace SuperNewRoles.CustomOption
                     else if (copiedIndex == 2)
                     {
                         snrSettings.gameObject.SetActive(true);
-                        torTabHighlight.enabled = true;
+                        snrTabHighlight.enabled = true;
                     }
+                    else if (copiedIndex == 3)
+                    {
+                        impostorSettings.gameObject.SetActive(true);
+                        impostorTabHighlight.enabled = true;
+                    }
+                    else if (copiedIndex == 4)
+                    {
+                        neutralSettings.gameObject.SetActive(true);
+                        neutralTabHighlight.enabled = true;
+                    }
+                    else if (copiedIndex == 5)
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("a");
+                        crewmateSettings.gameObject.SetActive(true);
+                        crewmateTabHighlight.enabled = true;
+                    }
+                    /*
+                    else if (copiedIndex == 6)
+                    {
+                        modifierSettings.gameObject.SetActive(true);
+                        modifierTabHighlight.enabled = true;
+                    }
+                    */
                 }));
             }
+            SuperNewRolesPlugin.Logger.LogInfo("a");
 
-            foreach (OptionBehaviour option in torMenu.GetComponentsInChildren<OptionBehaviour>())
+
+            foreach (OptionBehaviour option in snrMenu.GetComponentsInChildren<OptionBehaviour>())
                 UnityEngine.Object.Destroy(option.gameObject);
-            List<OptionBehaviour> torOptions = new List<OptionBehaviour>();
+            foreach (OptionBehaviour option in impostorMenu.GetComponentsInChildren<OptionBehaviour>())
+                UnityEngine.Object.Destroy(option.gameObject);
+            foreach (OptionBehaviour option in neutralMenu.GetComponentsInChildren<OptionBehaviour>())
+                UnityEngine.Object.Destroy(option.gameObject);
+            foreach (OptionBehaviour option in crewmateMenu.GetComponentsInChildren<OptionBehaviour>())
+                UnityEngine.Object.Destroy(option.gameObject);
+            List<OptionBehaviour> snrOptions = new List<OptionBehaviour>();
+            List<OptionBehaviour> impostorOptions = new List<OptionBehaviour>();
+            List<OptionBehaviour> neutralOptions = new List<OptionBehaviour>();
+            List<OptionBehaviour> crewmateOptions = new List<OptionBehaviour>();
 
+            SuperNewRolesPlugin.Logger.LogInfo("b");
+            List<Transform> menus = new List<Transform>() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform };
+            List<List<OptionBehaviour>> optionBehaviours = new List<List<OptionBehaviour>>() { snrOptions, impostorOptions, neutralOptions, crewmateOptions };
+
+            SuperNewRolesPlugin.Logger.LogInfo("a");
             for (int i = 0; i < CustomOption.options.Count; i++)
             {
                 CustomOption option = CustomOption.options[i];
                 if (option.optionBehaviour == null)
                 {
-                    StringOption stringOption = UnityEngine.Object.Instantiate(template, torMenu.transform);
-                    torOptions.Add(stringOption);
+                    StringOption stringOption = UnityEngine.Object.Instantiate(template, menus[(int)option.type]);
+                    optionBehaviours[(int)option.type].Add(stringOption);
                     stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
                     stringOption.TitleText.text = option.name;
                     stringOption.Value = stringOption.oldValue = option.selection;
@@ -362,11 +479,21 @@ namespace SuperNewRoles.CustomOption
                 option.optionBehaviour.gameObject.SetActive(true);
             }
 
-            torMenu.Children = torOptions.ToArray();
+            snrMenu.Children = snrOptions.ToArray();
             snrSettings.gameObject.SetActive(false);
 
-                       var numImpostorsOption = __instance.Children.FirstOrDefault(x => x.name == "NumImpostors").TryCast<NumberOption>();
-                        if (numImpostorsOption != null) numImpostorsOption.ValidRange = new FloatRange(0f, 15f);
+            impostorMenu.Children = impostorOptions.ToArray();
+            impostorSettings.gameObject.SetActive(false);
+
+            neutralMenu.Children = neutralOptions.ToArray();
+            neutralSettings.gameObject.SetActive(false);
+
+            crewmateMenu.Children = crewmateOptions.ToArray();
+            crewmateSettings.gameObject.SetActive(false);
+
+            var numImpostorsOption = __instance.Children.FirstOrDefault(x => x.name == "NumImpostors").TryCast<NumberOption>();
+            if (numImpostorsOption != null) numImpostorsOption.ValidRange = new FloatRange(0f, 15f);
+
             var killCoolOption = __instance.Children.FirstOrDefault(x => x.name == "KillCooldown").TryCast<NumberOption>();
             if (killCoolOption != null) killCoolOption.ValidRange = new FloatRange(2.5f, 60f);
 
@@ -451,13 +578,36 @@ namespace SuperNewRoles.CustomOption
 
 
     [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Update))]
-    class GameOptionsMenuUpdatePatch
+   static class GameOptionsMenuUpdatePatch
     {
         private static float timer = 1f;
+        public static CustomOptionType getCustomOptionType(string name)
+        {
+            switch (name)
+            {
+                case "GenericSetting":
+                    return CustomOptionType.Generic;
+                case "ImpostorSetting":
+                    return CustomOptionType.Impostor;
+                case "NeutralSetting":
+                    return CustomOptionType.Neutral;
+                case "CrewmateSetting":
+                    return CustomOptionType.Crewmate;
+            }
+            return CustomOptionType.Crewmate;
+        }
+        public static bool isHidden(this CustomOption option)
+        {
+            if (option.isHidden) return true;
+            if (option.isSHROn) { return false; }
+            else { return ModeHandler.isMode(ModeId.SuperHostRoles, false); }
+            return false;
+        }
         public static void Postfix(GameOptionsMenu __instance)
         {
-            if (__instance.Children.Length < 30) return; // TODO: Introduce a cleaner way to seperate the TOR settings from the game settings
-           
+            var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
+            if (gameSettingMenu.RegularGameSettings.active || gameSettingMenu.RolesSettings.gameObject.active) return;
+
             timer += Time.deltaTime;
             if (timer < 0.1f) return;
             timer = 0f;
@@ -465,8 +615,10 @@ namespace SuperNewRoles.CustomOption
             float numItems = __instance.Children.Length;
 
             float offset = 2.75f;
+            CustomOptionType type = getCustomOptionType(__instance.name);
             foreach (CustomOption option in CustomOption.options)
             {
+                if (option.type != type) continue;
                 if (option?.optionBehaviour != null && option.optionBehaviour.gameObject != null)
                 {
                     bool enabled = true;
@@ -477,7 +629,7 @@ namespace SuperNewRoles.CustomOption
                         enabled = false;
                     }
 
-                    if (option.isHidden)
+                    if (option.isHidden())
                     {
                         enabled = false;
                     }
@@ -522,18 +674,8 @@ namespace SuperNewRoles.CustomOption
             // Setup mapNameTransform
             var mapNameTransform = __instance.AllItems.FirstOrDefault(x => x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
             if (mapNameTransform == null) return;
-
-            var options = new Il2CppSystem.Collections.Generic.List<Il2CppSystem.Collections.Generic.KeyValuePair<string, int>>();
-            for (int i = 0; i < Constants.MapNames.Length; i++)
-            {
-                if (i == 3) continue; // ignore dleks
-                var kvp = new Il2CppSystem.Collections.Generic.KeyValuePair<string, int>();
-                kvp.key = Constants.MapNames[i];
-                kvp.value = i;
-                options.Add(kvp);
-            }
-            mapNameTransform.GetComponent<KeyValueOption>().Values = options;
             mapNameTransform.gameObject.active = true;
+
             foreach (Transform i in __instance.AllItems.ToList())
             {
                 float num = -0.5f;
@@ -587,6 +729,79 @@ namespace SuperNewRoles.CustomOption
         }
     }
 
+    [HarmonyPatch(typeof(GameOptionsData),nameof(GameOptionsData.ToHudString))]
+    class tohudstring
+    {
+        public static bool Prefix(ref string __result,GameOptionsData __instance, [HarmonyArgument(0)] int numPlayers)
+        {
+            __instance.settings.Length = 0;
+            try
+            {
+                __instance.settings.AppendLine(DestroyableSingleton<TranslationController>.Instance.GetString(__instance.isDefaults ? StringNames.GameRecommendedSettings : StringNames.GameCustomSettings));
+                int num = 0;
+                try
+                {
+                    num = GameOptionsData.MaxImpostors[numPlayers];
+                }
+                catch
+                {
+                    num = __instance.NumImpostors;
+                }
+                int num2 = ((__instance.MapId == 0 && Constants.ShouldFlipSkeld()) ? 3 : __instance.MapId);
+                string value = Constants.MapNames[num2];
+                __instance.AppendItem(__instance.settings, StringNames.GameMapName, value);
+                __instance.settings.Append($"{DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameNumImpostors)}: {__instance.NumImpostors}");
+                if (__instance.NumImpostors > num)
+                {
+                    __instance.settings.Append($" ({DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Limit)}: {num})");
+                }
+                __instance.settings.AppendLine();
+                if (__instance.gameType == GameType.Normal)
+                {
+                    __instance.AppendItem(__instance.settings, StringNames.GameConfirmImpostor, __instance.ConfirmImpostor);
+                    __instance.AppendItem(__instance.settings, StringNames.GameNumMeetings, __instance.NumEmergencyMeetings);
+                    __instance.AppendItem(__instance.settings, StringNames.GameAnonymousVotes, __instance.AnonymousVotes);
+                    __instance.AppendItem(__instance.settings, StringNames.GameEmergencyCooldown, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.EmergencyCooldown));
+                    __instance.AppendItem(__instance.settings, StringNames.GameDiscussTime, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.DiscussionTime));
+                    if (__instance.VotingTime > 0)
+                    {
+                        __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.VotingTime));
+                    }
+                    else
+                    {
+                        __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev, "∞"));
+                    }
+                    __instance.AppendItem(__instance.settings, StringNames.GamePlayerSpeed, __instance.PlayerSpeedMod, "x");
+                    __instance.AppendItem(__instance.settings, StringNames.GameCrewLight, __instance.CrewLightMod, "x");
+                    __instance.AppendItem(__instance.settings, StringNames.GameImpostorLight, __instance.ImpostorLightMod, "x");
+                    __instance.AppendItem(__instance.settings, StringNames.GameKillCooldown, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.KillCooldown));
+                    __instance.AppendItem(__instance.settings, StringNames.GameKillDistance, DestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(204 + __instance.KillDistance)));
+                    __instance.AppendItem(__instance.settings, StringNames.GameTaskBarMode, DestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(277 + __instance.TaskBarMode)));
+                    __instance.AppendItem(__instance.settings, StringNames.GameVisualTasks, __instance.VisualTasks);
+                    __instance.AppendItem(__instance.settings, StringNames.GameCommonTasks, __instance.NumCommonTasks);
+                    __instance.AppendItem(__instance.settings, StringNames.GameLongTasks, __instance.NumLongTasks);
+                    __instance.AppendItem(__instance.settings, StringNames.GameShortTasks, __instance.NumShortTasks);
+                    if (__instance.gameType == GameType.Normal)
+                    {
+                        RoleBehaviour[] allRoles = DestroyableSingleton<RoleManager>.Instance.AllRoles;
+                        foreach (RoleBehaviour roleBehaviour in allRoles)
+                        {
+                            if (roleBehaviour.Role != 0 && roleBehaviour.Role != RoleTypes.Impostor)
+                            {
+                                __instance.AppendItem(__instance.settings, DestroyableSingleton<TranslationController>.Instance.GetString(roleBehaviour.StringName) + ": " + string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.RoleChanceAndQuantity), __instance.RoleOptions.GetNumPerGame(roleBehaviour.Role), __instance.RoleOptions.GetChancePerGame(roleBehaviour.Role)));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
+            }
+            __result = __instance.settings.ToString();
+            return false;
+        }
+    }
     [HarmonyPatch]
     class GameOptionsDataPatch
     {
@@ -611,7 +826,7 @@ namespace SuperNewRoles.CustomOption
             if (option == null) return "";
 
             List<string> options = new List<string>();
-            if (!option.isHidden && !skipFirst) options.Add(optionToString(option));
+            if (!GameOptionsMenuUpdatePatch.isHidden(option) && !skipFirst) options.Add(optionToString(option));
             if (option.enabled)
             {
                 foreach (CustomOption op in option.children)
@@ -669,7 +884,7 @@ namespace SuperNewRoles.CustomOption
 
                 foreach (var child in option.children)
                 {
-                    if (!child.isHidden)
+                    if (!GameOptionsMenuUpdatePatch.isHidden(option))
                         entry.AppendLine((indent ? "    " : "") + optionToString(child));
                     addChildren(child, ref entry, indent);
                 }
@@ -680,7 +895,8 @@ namespace SuperNewRoles.CustomOption
                 if ((option == CustomOptions.presetSelection) ||
                     (option == CustomOptions.crewmateRolesCountMax) ||
                     (option == CustomOptions.neutralRolesCountMax) ||
-                    (option == CustomOptions.impostorRolesCountMax))
+                    (option == CustomOptions.impostorRolesCountMax) ||
+                    (option == CustomOptions.hideSettings))
                 {
                     continue;
                 }
@@ -693,14 +909,17 @@ namespace SuperNewRoles.CustomOption
                     }
 
                     entry = new StringBuilder();
-                    if (!option.isHidden)
+                    if (!GameOptionsMenuUpdatePatch.isHidden(option))
+                    {
                         entry.AppendLine(optionToString(option));
-
-                    addChildren(option, ref entry, !option.isHidden);
-                    entries.Add(entry.ToString().Trim('\r', '\n'));
+                    }
+                    addChildren(option, ref entry, !GameOptionsMenuUpdatePatch.isHidden(option));
+                    if (entry.ToString().Trim('\n', '\r') != "\r" && entry.ToString().Trim('\n', '\r') != "")
+                    {
+                        entries.Add(entry.ToString().Trim('\n', '\r'));
+                    }
                 }
             }
-
             int maxLines = 28;
             int lineCount = 0;
             string page = "";

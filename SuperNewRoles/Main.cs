@@ -16,12 +16,13 @@ using UnityEngine;
 namespace SuperNewRoles
 {
     [BepInPlugin(Id, "SuperNewRoles", VersionString)]
+    [BepInDependency(SubmergedCompatibility.SUBMERGED_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInProcess("Among Us.exe")]
     public class SuperNewRolesPlugin : BasePlugin
     {
         public const string Id = "jp.ykundesu.supernewroles";
 
-        public const string VersionString = "1.3.9.1";
+        public const string VersionString = "1.4.0.3";
 
         public static System.Version Version = System.Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
@@ -33,6 +34,7 @@ namespace SuperNewRoles
         public static bool IsUpdate = false;
         public static string NewVersion = "" ;
         public static string thisname;
+
         public override void Load()
         {
             Logger = Log;
@@ -41,8 +43,6 @@ namespace SuperNewRoles
             ModTranslation.Load();
             ChacheManager.Load();
             CustomCosmetics.CustomColors.Load();
-            CustomCosmetics.DownLoadClass.Load();
-            CustomCosmetics.DownLoadClassVisor.Load();
             ConfigRoles.Load();
             CustomOption.CustomOptions.Load();
             // All Load() End
@@ -69,6 +69,7 @@ namespace SuperNewRoles
         
             StringDATE = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();
+            SubmergedCompatibility.Initialize();
         }
         /*
         [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
@@ -99,14 +100,30 @@ namespace SuperNewRoles
             {
                 SaveManager.chatModeType = 1;
                 SaveManager.isGuest = false;
+
                 if (Input.GetKeyDown(KeyCode.F1))
                 {
                     if (!__instance.isActiveAndEnabled) return;
+                    __instance.Toggle();
+                } else if (Input.GetKeyDown(KeyCode.F2)) { 
+                    
                     __instance.SetVisible(false);
                     new LateTask(() =>
                     {
                         __instance.SetVisible(true);
                     }, 0f,"AntiChatBag");
+                    
+                }
+                if (__instance.IsOpen)
+                {
+                    if (__instance.animating)
+                    {
+                        __instance.BanButton.MenuButton.enabled = false;
+                    }
+                    else
+                    {
+                        __instance.BanButton.MenuButton.enabled = true;
+                    }
                 }
             }
         }

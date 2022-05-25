@@ -9,6 +9,51 @@ namespace SuperNewRoles.Buttons
 {
     public static class VentAndSabo
     {
+
+        [HarmonyPatch(typeof(MapBehaviour))]
+        class MapBehaviourPatch
+        {
+
+            [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.FixedUpdate))]
+            static bool Prefix(MapBehaviour __instance)
+            {
+                if (!MeetingHud.Instance) return true;  // Only run in meetings, and then set the Position of the HerePoint to the Position before the Meeting!
+                if (!ShipStatus.Instance)
+                {
+                    return false;
+                }
+                Vector3 vector = PlayerControl.LocalPlayer.transform.position;
+                vector /= ShipStatus.Instance.MapScale;
+                vector.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
+                vector.z = -1f;
+                __instance.HerePoint.transform.localPosition = vector;
+                PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
+                return false;
+            }
+            [HarmonyPrefix]
+            [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
+            static bool Prefix3(MapBehaviour __instance)
+            {
+                if (!MeetingHud.Instance)
+                {
+                    if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons && !__instance.IsOpen)
+                    {
+                        __instance.Close();
+                        DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                        return false;
+                    }
+                    return true;
+                }  // Only run in meetings and when the map is closed
+                if (__instance.IsOpen) return true;
+                if (!Mode.ModeHandler.isMode(Mode.ModeId.Default)) return true;
+                PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
+                __instance.GenericShow();
+                __instance.taskOverlay.Show();
+                __instance.ColorControl.SetColor(new Color(0.05f, 0.2f, 1f, 1f));
+                DestroyableSingleton<HudManager>.Instance.SetHudActive(false);
+                return false;
+            }
+        }
         [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
         public static class VentCanUsePatch
         {
@@ -21,6 +66,36 @@ namespace SuperNewRoles.Buttons
                 bool roleCouldUse = @object.IsUseVent();
 
                 var usableDistance = __instance.UsableDistance;
+
+
+                if (SubmergedCompatibility.isSubmerged())
+                {
+                    // as submerged does, only change stuff for vents 9 and 14 of submerged. Code partially provided by AlexejheroYTB
+                    if (SubmergedCompatibility.getInTransition())
+                    {
+                        __result = float.MaxValue;
+                        return canUse = couldUse = false;
+                    }
+                    switch (__instance.Id)
+                    {
+                        case 9:  // Cannot enter vent 9 (Engine Room Exit Only Vent)!
+                            if (PlayerControl.LocalPlayer.inVent) break;
+                            __result = float.MaxValue;
+                            return canUse = couldUse = false;
+                        case 14: // Lower Central
+                            __result = float.MaxValue;
+                            couldUse = roleCouldUse && !pc.IsDead && (@object.CanMove || @object.inVent);
+                            canUse = couldUse;
+                            if (canUse)
+                            {
+                                Vector3 center = @object.Collider.bounds.center;
+                                Vector3 position = __instance.transform.position;
+                                __result = Vector2.Distance(center, position);
+                                canUse &= __result <= __instance.UsableDistance;
+                            }
+                            return false;
+                    }
+                }
 
                 couldUse = (@object.inVent || roleCouldUse) && !pc.IsDead && (@object.CanMove || @object.inVent);
                 canUse = couldUse;
@@ -94,18 +169,6 @@ namespace SuperNewRoles.Buttons
 
                 DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                 return false;
-            }
-        }
-        [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
-        public static class MapButtonDoClickPatch
-        {
-            public static void Postfix(MapBehaviour __instance)
-            {
-                if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons)
-                {
-                    __instance.Close();
-                    DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
-                }
             }
         }
     }

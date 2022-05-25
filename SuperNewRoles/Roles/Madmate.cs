@@ -12,18 +12,36 @@ namespace SuperNewRoles.Roles
         public static List<byte> CheckedImpostor;
         public static bool CheckImpostor(PlayerControl p)
         {
-            if (!RoleClass.MadMate.IsImpostorCheck) return false;
-            if (!p.isRole(RoleId.MadMate)) return false;
+            if (!p.isRole(RoleId.MadMayor) && !p.isRole(RoleId.MadMate) && !p.isRole(RoleId.MadJester) && !p.isRole(RoleId.MadSeer)) return false;
             if (CheckedImpostor.Contains(p.PlayerId)) return true;
-            /*
-            SuperNewRolesPlugin.Logger.LogInfo("インポスターチェックタスク量:"+RoleClass.MadMate.ImpostorCheckTask);
-            SuperNewRolesPlugin.Logger.LogInfo("終了タスク量:"+TaskCount.TaskDate(p.Data).Item1);*/
-            SuperNewRolesPlugin.Logger.LogInfo("有効か:" + (RoleClass.MadMate.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1));
-            if (RoleClass.MadMate.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1) {
-                SuperNewRolesPlugin.Logger.LogInfo("有効を返しました");
-                return true; 
+            var taskdata = TaskCount.TaskDate(p.Data).Item1;
+            if (p.isRole(RoleId.MadMate))
+            {
+                if (!RoleClass.MadMate.IsImpostorCheck) return false;
+                if (RoleClass.MadMate.ImpostorCheckTask <= taskdata)
+                {
+                    CheckedImpostor.Add(p.PlayerId);
+                    return true;
+                }
             }
-           // SuperNewRolesPlugin.Logger.LogInfo("一番下まで通過");
+            else if (p.isRole(RoleId.MadJester))
+            {
+                if (!RoleClass.MadJester.IsImpostorCheck) return false;
+                if (RoleClass.MadJester.ImpostorCheckTask <= taskdata)
+                {
+                    CheckedImpostor.Add(p.PlayerId);
+                    return true;
+                }
+            }
+            else if (p.isRole(RoleId.MadSeer))
+            {
+                if (!RoleClass.MadSeer.IsImpostorCheck) return false;
+                if (RoleClass.MadSeer.ImpostorCheckTask <= taskdata)
+                {
+                    CheckedImpostor.Add(p.PlayerId);
+                    return true;
+                }
+            }
             return false;
         }
     }

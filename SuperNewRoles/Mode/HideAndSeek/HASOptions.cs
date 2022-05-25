@@ -14,10 +14,10 @@ namespace SuperNewRoles.Mode.HideAndSeek
         public static CustomOption.CustomOption HASUseVent;
         public static void Load()
         {
-            HideAndSeekMode = CustomOption.CustomOption.Create(101, CustomOptions.cs(Color.white, "SettingHideAndSeekMode"), false, ModeHandler.ModeSetting);
-            HASDeathTask = CustomOption.CustomOption.Create(128, CustomOptions.cs(Color.white, "HASDeathTaskSetting"), false, HideAndSeekMode);
-            HASUseSabo = CustomOption.CustomOption.Create(129, CustomOptions.cs(Color.white, "HASUseSaboSetting"), false, HideAndSeekMode);
-            HASUseVent = CustomOption.CustomOption.Create(130, CustomOptions.cs(Color.white, "HASUseVentSetting"), false, HideAndSeekMode);
+            HideAndSeekMode = CustomOption.CustomOption.Create(101, true, CustomOptionType.Generic, "SettingHideAndSeekMode", false, ModeHandler.ModeSetting);
+            HASDeathTask = CustomOption.CustomOption.Create(128, true, CustomOptionType.Generic, "HASDeathTaskSetting", false, HideAndSeekMode);
+            HASUseSabo = CustomOption.CustomOption.Create(129, true, CustomOptionType.Generic, "HASUseSaboSetting", false, HideAndSeekMode);
+            HASUseVent = CustomOption.CustomOption.Create(130, true, CustomOptionType.Generic, "HASUseVentSetting", false, HideAndSeekMode);
         }
     }
 }

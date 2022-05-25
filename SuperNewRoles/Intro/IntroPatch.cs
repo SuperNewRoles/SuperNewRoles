@@ -11,6 +11,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.HideAndSeek;
 using System.Collections;
 using TMPro;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Patches
 {
@@ -68,7 +69,37 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
-                if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && MadMayor.CheckImpostor(PlayerControl.LocalPlayer))
+                if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
+                {
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    int ImpostorNum = 0;
+                    ImpostorTeams.Add(PlayerControl.LocalPlayer);
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.Data.Role.IsImpostor)
+                        {
+                            ImpostorNum++;
+                            ImpostorTeams.Add(player);
+                        }
+                    }
+                    yourTeam = ImpostorTeams;
+                }
+                if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && MadJester.CheckImpostor(PlayerControl.LocalPlayer))
+                {
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    int ImpostorNum = 0;
+                    ImpostorTeams.Add(PlayerControl.LocalPlayer);
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.Data.Role.IsImpostor)
+                        {
+                            ImpostorNum++;
+                            ImpostorTeams.Add(player);
+                        }
+                    }
+                    yourTeam = ImpostorTeams;
+                }
+                if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && MadSeer.CheckImpostor(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int ImpostorNum = 0;
@@ -111,6 +142,20 @@ namespace SuperNewRoles.Patches
                         }
                     }
                     yourTeam = JackalTeams;
+                }
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
+                {
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> FoxTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    int FoxNum = 0;
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.isRole(CustomRPC.RoleId.Fox))
+                        {
+                            FoxNum++;
+                            FoxTeams.Add(player);
+                        }
+                    }
+                    yourTeam = FoxTeams;
                 }
             } else
             {
@@ -162,6 +207,43 @@ namespace SuperNewRoles.Patches
             }
             //SetUpRoleTextPatch.Postfix(__instance);
         }
+
+
+
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
+        class IntroCutsceneDestroyPatch
+        {
+            public static void Prefix(IntroCutscene __instance)
+            {
+                float SetTime = 0;
+                bool Flag = true;
+                switch (PlayerControl.LocalPlayer.getRole())
+                {
+                    case RoleId.DarkKiller:
+                        SetTime = RoleClass.DarkKiller.KillCoolTime;
+                        break;
+                    case RoleId.Minimalist:
+                        SetTime = RoleClass.Minimalist.KillCoolTime;
+                        break;
+                    case RoleId.HomeSecurityGuard:
+                        foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                        {
+                            task.Complete();
+                        }
+                        Flag = false;
+                        break;
+                    default:
+                        Flag = false;
+                        break;
+                }
+                if (Flag)
+                {
+                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(SetTime);
+                }
+                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            }
+        }
+
         [HarmonyPatch(typeof(IntroCutscene),nameof(IntroCutscene.ShowRole))]
         class SetUpRoleTextPatch
         {
@@ -193,7 +275,7 @@ namespace SuperNewRoles.Patches
                         }
                         if (PlayerControl.LocalPlayer.IsQuarreled())
                         {
-                            __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
                         }
                     }
                     else if (ModeHandler.isMode(ModeId.SuperHostRoles))

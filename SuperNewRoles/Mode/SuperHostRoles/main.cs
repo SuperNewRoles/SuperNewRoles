@@ -14,6 +14,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void ClearAndReloads()
         {
             Chat.WinCond = null;
+           // FixedUpdate.UpdateTime = new Dictionary<byte, float>();
             EndGame.OnGameEndPatch.EndData = null;
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {

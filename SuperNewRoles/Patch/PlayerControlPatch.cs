@@ -16,9 +16,103 @@ using System.Threading.Tasks;
 using UnityEngine;
 using SuperNewRoles.Helpers;
 using static SuperNewRoles.ModHelpers;
+using InnerNet;
 
 namespace SuperNewRoles.Patches
 {
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
+    class RpcShapesihftPatch
+    {
+        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
+        {
+            SyncSetting.CustomSyncSettings();
+            if (target.IsBot()) return true;
+            if (__instance.PlayerId == target.PlayerId)
+            {
+                if (ModeHandler.isMode(ModeId.SuperHostRoles) && AmongUsClient.Instance.AmHost)
+                {
+                    if (__instance.isRole(RoleId.RemoteSheriff))
+                    {
+                        __instance.RpcProtectPlayer(__instance, 0);
+                        new LateTask(() =>
+                        {
+                            __instance.RpcMurderPlayer(__instance);
+                        }, 0.5f);
+                    }
+                }
+                return true;
+            }
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
+                switch (__instance.getRole())
+                {
+                    case RoleId.RemoteSheriff:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            if (target.isDead()) return true;
+                            if (!RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId) || RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] >= 1)
+                            {
+                                if (!Sheriff.IsRemoteSheriffKill(target) || target.isRole(RoleId.RemoteSheriff))
+                                {
+                                    FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.SheriffMisFire;
+                                    __instance.RpcMurderPlayer(__instance);
+                                    return true;
+                                }
+                                else
+                                {
+                                    FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
+                                    if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
+                                    {
+                                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
+                                    }
+                                    else
+                                    {
+                                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.RemoteSheriffKillMaxCount.getFloat() - 1;
+                                    }
+                                    if (RoleClass.RemoteSheriff.IsKillTeleport)
+                                    {
+                                        __instance.RpcMurderPlayer(target);
+                                    }
+                                    else
+                                    {
+                                        target.RpcMurderPlayer(target);
+                                        __instance.RpcProtectPlayer(__instance, 0);
+                                        new LateTask(() =>
+                                        {
+                                            __instance.RpcMurderPlayer(__instance);
+                                        }, 0.5f);
+                                    }
+                                    Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                                    return true;
+                                }
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        }
+                        return true;
+                    case RoleId.SelfBomber:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            {
+                                if (p.isAlive() && p.PlayerId != __instance.PlayerId)
+                                {
+                                    if (SelfBomber.GetIsBomb(__instance, p))
+                                    {
+                                        __instance.RpcMurderPlayer(p);
+                                    }
+                                }
+                            }
+                            __instance.RpcMurderPlayer(__instance);
+                        }
+                        return false;
+                }
+            }
+            return true;
+        }
+    }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
     class CheckProtectPatch
     {
@@ -29,14 +123,109 @@ namespace SuperNewRoles.Patches
         }
     }
 
+    [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Shapeshift))]
+    class ShapeshifterMinigameShapeshiftPatch
+    {
+        public static bool Prefix(ShapeshifterMinigame __instance, [HarmonyArgument(0)] PlayerControl player)
+        {
+            if (player.IsBot()) return false;
+            if (PlayerControl.LocalPlayer.inVent)
+            {
+                __instance.Close();
+                return false;
+            }
+            if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff)){
+                if (RoleClass.RemoteSheriff.KillMaxCount > 0)
+                {
+                    if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    {
+                        new LateTask(() =>
+                        {
+                            if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
+                            {
+                                PlayerControl.LocalPlayer.RpcRevertShapeshift(true);
+                            }
+                        }, 1.5f);
+                        PlayerControl.LocalPlayer.RpcShapeshift(player, true);
+                    } else if (ModeHandler.isMode(ModeId.Default))
+                    {
+                        if (player.isAlive())
+                        {
+                            var Target = player;
+                            var misfire = !Roles.Sheriff.IsRemoteSheriffKill(Target);
+                            var TargetID = Target.PlayerId;
+                            var LocalID = PlayerControl.LocalPlayer.PlayerId;
+
+                            PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
+                            new LateTask(() =>
+                            {
+                                PlayerControl.LocalPlayer.transform.localScale *= 1.4f;
+                            }, 1.1f);
+
+                            CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
+
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
+                            killWriter.Write(LocalID);
+                            killWriter.Write(TargetID);
+                            killWriter.Write(misfire);
+                            AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                            RoleClass.RemoteSheriff.KillMaxCount--;
+                        }
+                        Sheriff.ResetKillCoolDown();
+                    };
+                } 
+                __instance.Close();
+                return false;
+            }
+            PlayerControl.LocalPlayer.RpcShapeshift(player,true);
+            __instance.Close();
+            return false;
+            
+        }
+    }
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
     class KillButtonDoClickPatch
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (!ModeHandler.isMode(ModeId.Default)) return true;
+            if (!ModeHandler.isMode(ModeId.Default)) {
+                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                {
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
+                    {
+                        if (__instance.isActiveAndEnabled && PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.CanMove && !__instance.isCoolingDown && RoleClass.RemoteSheriff.KillMaxCount > 0)
+                        {
+                            DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
+                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            {
+                                p.Data.Role.NameColor = Color.white;
+                            }
+                            PlayerControl.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            {
+                                if (p.isImpostor())
+                                {
+                                    p.Data.Role.NameColor = RoleClass.ImpostorRed;
+                                }
+                            }
+                            DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
+                            PlayerControl.LocalPlayer.killTimer = 0.001f;
+                        }
+                        return false;
+                    }
+                }
+                return true;
+            }
             if (__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.CanMove)
             {
+                if (!(__instance.currentTarget.isRole(CustomRPC.RoleId.Bait) || __instance.currentTarget.isRole(CustomRPC.RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
+                {
+                    PlayerControl.LocalPlayer.killTimer = RoleHelpers.getCoolTime(PlayerControl.LocalPlayer);
+                    RoleClass.Vampire.target = __instance.currentTarget;
+                    RoleClass.Vampire.KillTimer = DateTime.Now;
+                    RoleClass.Vampire.Timer = RoleClass.Vampire.KillDelay;
+                    return false;
+                }
                 bool showAnimation = true;
                 /*
                 if (PlayerControl.LocalPlayer.isRole(RoleType.Ninja) && Ninja.isStealthed(PlayerControl.LocalPlayer))
@@ -60,9 +249,14 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckMurder))]
     class CheckMurderPatch
     {
+        public static bool isKill = false;
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
+            SuperNewRolesPlugin.Logger.LogInfo("キル:" + __instance.name + "(" + __instance.PlayerId + ")" + " => " + target.name + "(" + target.PlayerId + ")");
+            if (__instance.IsBot() || target.IsBot()) return false;
+
             if (__instance.isDead()) return false;
+            if (target.isDead()) return false;
             if (__instance.PlayerId == target.PlayerId) { __instance.RpcMurderPlayer(target); return false; }
             if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 return false;
@@ -70,27 +264,65 @@ namespace SuperNewRoles.Patches
             {
                 return true;
             }
-            if (ModeHandler.isMode(ModeId.BattleRoyal)) return true;
-            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            SyncSetting.CustomSyncSettings(__instance);
+            SyncSetting.CustomSyncSettings(target);
+            if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
-                if (target.isRole(RoleId.StuntMan) && !__instance.isRole(RoleId.OverKiller))
+                if (isKill)
                 {
-                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
+                    return false;
+                }
+                if (Mode.BattleRoyal.main.StartSeconds <= 0)
+                {
+                    if (Mode.BattleRoyal.main.IsTeamBattle)
                     {
-                        if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
+                        foreach (List<PlayerControl> teams in Mode.BattleRoyal.main.Teams)
                         {
-                            RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
-                            target.RpcProtectPlayer(target, 0);
-                        }
-                        else
-                        {
-                            if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
+                            if (teams.Count > 0)
                             {
-                                RoleClass.StuntMan.GuardCount[target.PlayerId]--;
-                                target.RpcProtectPlayer(target, 0);
+                                if (teams.IsCheckListPlayerControl(__instance) && teams.IsCheckListPlayerControl(target))
+                                {
+                                    return false;
+                                }
                             }
                         }
                     }
+                    if (__instance.PlayerId != 0)
+                    {
+                        if (__instance.isAlive() && target.isAlive())
+                        {
+                            __instance.RpcMurderPlayer(target);
+                            target.Data.IsDead = true;
+                        }
+                    } else
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("レートタスク:"+ (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                        isKill = true;
+                        new LateTask(() => {
+                            if (__instance.isAlive() && target.isAlive())
+                            {
+                                __instance.RpcMurderPlayer(target);
+                            }
+                            isKill = false;
+                            }, (AmongUsClient.Instance.Ping / 1000f)* 1.1f);
+                    }
+                    return false;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            if (ModeHandler.isMode(ModeId.Zombie)) return false;
+            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
+                if (__instance.isRole(RoleId.RemoteSheriff)) return false;
+                else if (__instance.isRole(RoleId.FalseCharges))
+                {
+                    target.RpcMurderPlayer(__instance);
+                    RoleClass.FalseCharges.FalseChargePlayers[__instance.PlayerId] = target.PlayerId;
+                    RoleClass.FalseCharges.AllTurns[__instance.PlayerId] = RoleClass.FalseCharges.DefaultTurn;
+                    return false;
                 }
             }
             if (ModeHandler.isMode(ModeId.Detective) && target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
@@ -109,7 +341,8 @@ namespace SuperNewRoles.Patches
                         RoleHelpers.SetLovers(__instance, target);
                         RoleHelpers.SetLoversRPC(__instance, target);
                         //__instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
-                        Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
                     }
                     return false;
                 }
@@ -135,12 +368,118 @@ namespace SuperNewRoles.Patches
                                 RoleClass.Sheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.SheriffKillMaxCount.getFloat() - 1;
                             }
                             __instance.RpcMurderPlayer(target);
+                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
                             return false;
                         }
-                    } else
+                    }
+                    else
                     {
                         return false;
                     }
+                }
+                else if (__instance.isRole(RoleId.MadMaker))
+                {
+                    if (!target.isImpostor())
+                    {
+                        if (target == null || RoleClass.MadMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                        RoleClass.MadMaker.CreatePlayers.Add(__instance.PlayerId);
+                        target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+                        target.setRoleRPC(RoleId.MadMate);
+                        //__instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
+                    }
+                    else
+                    {
+                        __instance.RpcMurderPlayer(__instance);
+                    }
+                    return false;
+                }
+                else if (target.isRole(RoleId.StuntMan) && !__instance.isRole(RoleId.OverKiller))
+                {
+                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, __instance))
+                    {
+                        if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
+                        {
+                            RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
+                            target.RpcProtectPlayer(target, 0);
+                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                            return false;
+                        }
+                        else
+                        {
+                            if (!(RoleClass.StuntMan.GuardCount[target.PlayerId] <= 0))
+                            {
+                                RoleClass.StuntMan.GuardCount[target.PlayerId]--;
+                                target.RpcProtectPlayer(target, 0);
+                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                                return false;
+                            }
+                        }
+                    }
+                }
+                else if (target.isRole(RoleId.MadStuntMan) && !__instance.isRole(RoleId.OverKiller))
+                {
+                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, __instance))
+                    {
+                        if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId))
+                        {
+                            target.RpcProtectPlayer(target, 0);
+                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                            return false;
+                        }
+                        else
+                        {
+                            if (!(RoleClass.MadStuntMan.GuardCount[target.PlayerId] <= 0))
+                            {
+                                RoleClass.MadStuntMan.GuardCount[target.PlayerId]--;
+                                target.RpcProtectPlayer(target, 0);
+                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                                return false;
+                            }
+                        }
+                    }
+                }
+                else if (target.isRole(RoleId.Fox))
+                {
+                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, __instance))
+                    {
+                        if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
+                        {
+                            target.RpcProtectPlayer(target, 0);
+                            new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                            return false;
+                        }
+                        else
+                        {
+                            if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
+                            {
+                                RoleClass.Fox.KillGuard[target.PlayerId]--;
+                                target.RpcProtectPlayer(target, 0);
+                                new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
+                                return false;
+                            }
+                        }
+                    }
+                }
+                else if (__instance.isRole(RoleId.Jackal))
+                {
+                    __instance.RpcMurderPlayer(target);
+                    return false;
+                }
+                else if (__instance.isRole(RoleId.Demon))
+                {
+                    if (!__instance.IsCursed(target))
+                    {
+                        Demon.DemonCurse(target, __instance);
+                        target.RpcProtectPlayerPrivate(target, 0, __instance);
+                        new LateTask(() =>
+                        {
+                            SyncSetting.MurderSyncSetting(__instance);
+                            __instance.RPCMurderPlayerPrivate(target);
+                        }, 0.5f);
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                    }
+                    return false;
                 }
             }
             if (__instance.isRole(RoleId.OverKiller))
@@ -154,9 +493,10 @@ namespace SuperNewRoles.Patches
                         {
                             for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
                             {
-                                __instance.RPCMurderPlayerPrivate(target,p);
+                                __instance.RPCMurderPlayerPrivate(target, p);
                             }
-                        } else
+                        }
+                        else
                         {
                             for (int i = 0; i < RoleClass.OverKiller.KillCount - 1; i++)
                             {
@@ -167,14 +507,8 @@ namespace SuperNewRoles.Patches
                 }
                 return false;
             }
-            if (!ModeHandler.isMode(ModeId.Default))
-            {
-                __instance.RpcMurderPlayer(target);
-                return false;
-            } else
-            {
-                return true;
-            }
+            __instance.RpcMurderPlayer(target);
+            return false;
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
@@ -216,6 +550,7 @@ namespace SuperNewRoles.Patches
         public static bool resetToDead = false;
         public static void Prefix(PlayerControl __instance, PlayerControl target)
         {
+            EvilGambler.EvilGamblerMurder.Prefix(__instance, target);
             if (ModeHandler.isMode(ModeId.Default))
             {
                 target.resetChange();
@@ -246,6 +581,16 @@ namespace SuperNewRoles.Patches
                         }
                     }
                 }
+
+                if (AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId)
+                {
+                    switch (target.getRole())
+                    {
+                        case RoleId.Fox:
+                            Fox.FoxMurderPatch.Prefix(__instance, target);
+                            break;
+                    }
+                }
             }
         }
         public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
@@ -257,6 +602,7 @@ namespace SuperNewRoles.Patches
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
             SerialKiller.MurderPlayer(__instance,target);
+            Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(__instance, target);
 
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {

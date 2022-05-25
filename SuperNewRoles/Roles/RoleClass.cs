@@ -27,16 +27,21 @@ namespace SuperNewRoles.Roles
         public static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
         public static Color ImpostorRed = Palette.ImpostorRed;
         public static Color CrewmateWhite = Color.white;
+        public static Color FoxPurple = Palette.Purple;
         public static bool IsStart;
 
         public static void clearAndReloadRoles()
         {
+            BotManager.AllBots = new List<PlayerControl>();
             IsMeeting = false;
             IsCoolTimeSetted = false;
             IsStart = false;
             Map.Data.ClearAndReloads();
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new List<byte>();
+            Roles.MadMayor.CheckedImpostor = new List<byte>();
+            Roles.MadSeer.CheckedImpostor = new List<byte>();
+            Roles.JackalFriends.CheckedJackal = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
@@ -101,6 +106,26 @@ namespace SuperNewRoles.Roles
             Survivor.ClearAndReload();
             MadMayor.ClearAndReload();
             NiceHawk.ClearAndReload();
+            Bakery.ClearAndReload();
+            MadStuntMan.ClearAndReload();
+            MadHawk.ClearAndReload();
+            MadJester.ClearAndReload();
+            FalseCharges.ClearAndReload();
+            NiceTeleporter.ClearAndReload();
+            Celebrity.ClearAndReload();
+            Nocturnality.ClearAndReload();
+            Observer.ClearAndReload();
+            Vampire.ClearAndReload();
+            Fox.ClearAndReload();
+            DarkKiller.ClearAndReload();
+            Seer.ClearAndReload();
+            MadSeer.ClearAndReload();
+            EvilSeer.ClearAndReload();
+            RemoteSheriff.ClearAndReload();
+            TeleportingJackal.ClearAndReload();
+            MadMaker.ClearAndReload();
+            Demon.ClearAndReload();
+            TaskManager.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -172,7 +197,7 @@ namespace SuperNewRoles.Roles
             {
                 LighterPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.LighterCoolTime.getFloat();
-                DurationTime = CustomOptions.LighterDurationTime.getFloat(); 
+                DurationTime = CustomOptions.LighterDurationTime.getFloat();
                 UpVision = CustomOptions.LighterUpVision.getFloat();
                 DefaultCrewVision = PlayerControl.GameOptions.CrewLightMod;
             }
@@ -222,9 +247,10 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static bool IsNeutralKill;
             public static bool IsLoversKill;
-            public static bool IsMadMateKill;
+            public static bool IsMadRoleKill;
+            public static bool MadRoleKill;
             public static float KillMaxCount;
-            public static Dictionary<int,int> KillCount;
+            public static Dictionary<int, int> KillCount;
             public static DateTime ButtonTimer;
 
             private static Sprite buttonSprite;
@@ -242,7 +268,8 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.SheriffCoolTime.getFloat();
                 IsNeutralKill = CustomOptions.SheriffNeutralKill.getBool();
                 IsLoversKill = CustomOptions.SheriffLoversKill.getBool();
-                IsMadMateKill = CustomOptions.SheriffMadMateKill.getBool();
+                IsMadRoleKill = CustomOptions.SheriffMadRoleKill.getBool();
+                MadRoleKill = CustomOptions.SheriffMadRoleKill.getBool();
                 KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
                 KillCount = new Dictionary<int, int>();
             }
@@ -253,7 +280,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> MeetingSheriffPlayer;
             public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
             public static bool NeutralKill;
-            public static bool MadMateKill;
+            public static bool MadRoleKill;
             public static float KillMaxCount;
             public static bool OneMeetingMultiKill;
 
@@ -269,7 +296,8 @@ namespace SuperNewRoles.Roles
             {
                 MeetingSheriffPlayer = new List<PlayerControl>();
                 NeutralKill = CustomOptions.MeetingSheriffNeutralKill.getBool();
-                MadMateKill = CustomOptions.MeetingSheriffMadMateKill.getBool();
+                MadRoleKill = CustomOptions.MeetingSheriffMadRoleKill.getBool();
+                MadRoleKill = CustomOptions.MeetingSheriffMadRoleKill.getBool();
                 KillMaxCount = CustomOptions.MeetingSheriffKillMaxCount.getFloat();
                 OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.getBool();
             }
@@ -280,13 +308,14 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> JackalPlayer;
             public static List<PlayerControl> SidekickPlayer;
             public static List<PlayerControl> FakeSidekickPlayer;
-            public static Color32 color = new Color32(0,255,255, byte.MaxValue);
+            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
             public static float KillCoolDown;
             public static bool IsUseVent;
             public static bool IsUseSabo;
+            public static bool IsImpostorLight;
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
-            public static bool IsCreateSidekick; 
+            public static bool IsCreateSidekick;
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
@@ -302,6 +331,7 @@ namespace SuperNewRoles.Roles
                 KillCoolDown = CustomOptions.JackalKillCoolDown.getFloat();
                 IsUseVent = CustomOptions.JackalUseVent.getBool();
                 IsUseSabo = CustomOptions.JackalUseSabo.getBool();
+                IsImpostorLight = CustomOptions.JackalIsImpostorLight.getBool();
                 CreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 IsCreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
@@ -356,18 +386,19 @@ namespace SuperNewRoles.Roles
             public static DateTime ButtonTimer;
             public static bool IsSpeedBoost;
             public static Dictionary<int, bool> IsBoostPlayers;
-            public static Sprite GetSpeedBoostButtonSprite() {
+            public static Sprite GetSpeedBoostButtonSprite()
+            {
                 if (SpeedBoostButtonSprite) return SpeedBoostButtonSprite;
                 SpeedBoostButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
                 return SpeedBoostButtonSprite;
             }
-            
+
             public static void clearAndReload()
             {
                 SpeedBoosterPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.SpeedBoosterCoolTime.getFloat();
                 DurationTime = CustomOptions.SpeedBoosterDurationTime.getFloat();
-                Speed = CustomOptions.SpeedBoosterSpeed.getFloat() / 100f;
+                Speed = CustomOptions.SpeedBoosterSpeed.getFloat();
                 IsSpeedBoost = false;
                 IsBoostPlayers = new Dictionary<int, bool>();
             }
@@ -593,7 +624,7 @@ namespace SuperNewRoles.Roles
                     Long = PlayerControl.GameOptions.NumLongTasks;
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
-                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMateCheckImpostorTask.getString().Replace("%",""))/100f));
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMateCheckImpostorTask.getString().Replace("%", "")) / 100f));
             }
         }
         public static class Bait
@@ -615,7 +646,7 @@ namespace SuperNewRoles.Roles
         public static class HomeSecurityGuard
         {
             public static List<PlayerControl> HomeSecurityGuardPlayer;
-            public static Color32 color = new Color32(0,255,0, byte.MaxValue);
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
 
             public static void ClearAndReload()
             {
@@ -626,7 +657,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> StuntManPlayer;
             public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
-            public static Dictionary<int,int> GuardCount;
+            public static Dictionary<int, int> GuardCount;
 
             public static void ClearAndReload()
             {
@@ -658,7 +689,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MovingPlayer = new List<PlayerControl>();
-                setpostion = new Vector3(0,0,0);
+                setpostion = new Vector3(0, 0, 0);
                 CoolTime = CustomOptions.MovingCoolTime.getFloat();
             }
         }
@@ -700,14 +731,17 @@ namespace SuperNewRoles.Roles
                 if (temp == "")
                 {
                     SucPar = 0;
-                } else
+                }
+                else
                 {
                     SucPar = int.Parse(temp);
                 }
             }
-            public static bool GetSuc() {
+            public static bool GetSuc()
+            {
                 var a = new List<string>();
-                for (int i = 0; i < SucPar; i++) {
+                for (int i = 0; i < SucPar; i++)
+                {
                     a.Add("Suc");
                 }
                 for (int i = 0; i < 10 - SucPar; i++)
@@ -718,7 +752,8 @@ namespace SuperNewRoles.Roles
                 {
                     return true;
                 }
-                else {
+                else
+                {
                     return false;
                 }
             }
@@ -820,13 +855,29 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> JackalFriendsPlayer;
             public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
-            public static bool IsJackalCheck;
             public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static bool IsJackalCheck;
+            public static int JackalCheckTask;
             public static void ClearAndReload()
             {
                 JackalFriendsPlayer = new List<PlayerControl>();
+
                 IsJackalCheck = CustomOptions.JackalFriendsIsCheckJackal.getBool();
                 IsUseVent = CustomOptions.JackalFriendsIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.JackalFriendsIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.JackalFriendsCommonTask.getFloat();
+                int Long = (int)CustomOptions.JackalFriendsLongTask.getFloat();
+                int Short = (int)CustomOptions.JackalFriendsShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.JackalFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
+                Roles.JackalFriends.CheckedJackal = new List<byte>();
             }
         }
         public static class Doctor
@@ -914,7 +965,7 @@ namespace SuperNewRoles.Roles
             public static float DurationTime;
             public static bool IsHawkOn;
             public static float Timer;
-            public static DateTime ButtonTimer; 
+            public static DateTime ButtonTimer;
             private static Sprite buttonSprite;
             public static float Default;
             public static float CameraDefault;
@@ -970,7 +1021,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> EvilEraserPlayer;
             public static Color32 color = ImpostorRed;
-            public static Dictionary<int,int> Counts;
+            public static Dictionary<int, int> Counts;
             public static int Count;
             public static void ClearAndReload()
             {
@@ -982,7 +1033,7 @@ namespace SuperNewRoles.Roles
         public static class Workperson
         {
             public static List<PlayerControl> WorkpersonPlayer;
-            public static Color32 color = new Color32(210, 180, 140,byte.MaxValue);
+            public static Color32 color = new Color32(210, 180, 140, byte.MaxValue);
             public static bool IsAliveWin;
             public static void ClearAndReload()
             {
@@ -997,7 +1048,7 @@ namespace SuperNewRoles.Roles
             public static int MyPlayerCount;
             public static float SetTime;
             public static bool IsOKSet;
-            private static Sprite GetbuttonSprite; 
+            private static Sprite GetbuttonSprite;
             private static Sprite AddbuttonSprite;
             public static Sprite getGetButtonSprite()
             {
@@ -1129,7 +1180,7 @@ namespace SuperNewRoles.Roles
                     IsCreateMadmate = false;
                     SuperNewRolesPlugin.Logger.LogInfo("d");
                     OneKillXP = (int)CustomOptions.LevelingerOneKillXP.getFloat();
-                    SuperNewRolesPlugin.Logger.LogInfo("ONEKILLXP:"+ (int)CustomOptions.LevelingerOneKillXP.getFloat());
+                    SuperNewRolesPlugin.Logger.LogInfo("ONEKILLXP:" + (int)CustomOptions.LevelingerOneKillXP.getFloat());
                     SuperNewRolesPlugin.Logger.LogInfo("e");
                     UpLevelXp = (int)CustomOptions.LevelingerUpLevelXP.getFloat();
                     SuperNewRolesPlugin.Logger.LogInfo("f");
@@ -1160,7 +1211,7 @@ namespace SuperNewRoles.Roles
                             getdata = CustomOptions.LevelingerLevelFiveGetPower.getString();
                         }
                         GetPowerData.Add(GetLevelPowerType(getdata));
-                        SuperNewRolesPlugin.Logger.LogInfo("data:"+GetLevelPowerType(getdata));
+                        SuperNewRolesPlugin.Logger.LogInfo("data:" + GetLevelPowerType(getdata));
                     }
                     SuperNewRolesPlugin.Logger.LogInfo("k");
                     IsUseOKRevive = CustomOptions.LevelingerReviveXP.getBool();
@@ -1175,7 +1226,7 @@ namespace SuperNewRoles.Roles
             {
                 return GetThisPower() == power;
             }
-            public static LevelPowerTypes GetThisPower(int Level = 0,PlayerControl player = null)
+            public static LevelPowerTypes GetThisPower(int Level = 0, PlayerControl player = null)
             {
                 if (player == null) player = PlayerControl.LocalPlayer;
                 if (!player.isRole(CustomRPC.RoleId.Levelinger)) return LevelPowerTypes.None;
@@ -1184,7 +1235,7 @@ namespace SuperNewRoles.Roles
                     Level = ThisXP / UpLevelXp;
                 }
                 LevelPowerTypes thispowertype = LevelPowerTypes.None;
-                if (Level <= 0) {return thispowertype; }
+                if (Level <= 0) { return thispowertype; }
                 thispowertype = GetPowerData[Level - 1];
                 return thispowertype;
             }
@@ -1257,7 +1308,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SideKillerPlayer;
             public static List<PlayerControl> MadKillerPlayer;
-            public static Dictionary<byte,byte> MadKillerPair;
+            public static Dictionary<byte, byte> MadKillerPair;
             public static Color32 color = ImpostorRed;
             public static float KillCoolTime;
             public static float MadKillerCoolTime;
@@ -1278,7 +1329,8 @@ namespace SuperNewRoles.Roles
                 if (MadKillerPair.ContainsKey(p.PlayerId))
                 {
                     return ModHelpers.playerById(MadKillerPair[p.PlayerId]);
-                } else if (MadKillerPair.ContainsValue(p.PlayerId))
+                }
+                else if (MadKillerPair.ContainsValue(p.PlayerId))
                 {
                     var key = MadKillerPair.GetKey(p.PlayerId);
                     if (key == null) return null;
@@ -1325,7 +1377,8 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadMayorCheckImpostorTask.getString().Replace("%", "")) / 100f));
-             }
+                Roles.MadMayor.CheckedImpostor = new List<byte>();
+            }
         }
         public static class NiceHawk
         {
@@ -1354,11 +1407,411 @@ namespace SuperNewRoles.Roles
                 Timer2 = DateTime.Now;
             }
         }
+        public static class Bakery
+        {
+            public static List<PlayerControl> BakeryPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                BakeryPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class MadStuntMan
+        {
+            public static List<PlayerControl> MadStuntManPlayer;
+            public static Color32 color = ImpostorRed;
+            public static Dictionary<int, int> GuardCount;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static void ClearAndReload()
+            {
+                MadStuntManPlayer = new List<PlayerControl>();
+                IsUseVent = CustomOptions.MadStuntManIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadStuntManIsImpostorLight.getBool();
+            }
+        }
+
+
+        public static class MadHawk
+        {
+            public static List<PlayerControl> MadHawkPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static float Timer;
+            public static DateTime ButtonTimer;
+            public static float Default;
+            public static float CameraDefault;
+            public static Vector3 Postion;
+            public static float timer1;
+            public static DateTime Timer2;
+            public static void ClearAndReload()
+            {
+                MadHawkPlayer = new List<PlayerControl>();
+                IsUseVent = CustomOptions.MadHawkIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadHawkIsImpostorLight.getBool();
+                MadHawkPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.MadHawkCoolTime.getFloat();
+                DurationTime = CustomOptions.MadHawkDurationTime.getFloat();
+                Timer = 0;
+                ButtonTimer = DateTime.Now;
+                CameraDefault = Camera.main.orthographicSize;
+                Default = HudManager.Instance.UICamera.orthographicSize;
+                Postion = new Vector3(0, 0, 0);
+                timer1 = 0;
+                Timer2 = DateTime.Now;
+            }
+        }
+        public static class MadJester
+        {
+            public static List<PlayerControl> MadJesterPlayer;
+            public static bool IsMadJesterWin;
+            public static Color32 color = ImpostorRed;
+            public static bool IsImpostorCheck;
+            public static int ImpostorCheckTask;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static bool IsMadJesterTaskClearWin;
+            public static void ClearAndReload()
+            {
+                MadJesterPlayer = new List<PlayerControl>();
+                IsMadJesterWin = false;
+                IsUseVent = CustomOptions.MadJesterIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.getBool();
+                IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.getBool();
+            }
+        }
+        public static class FalseCharges
+        {
+            public static List<PlayerControl> FalseChargesPlayer;
+            public static Dictionary<byte, int> AllTurns;
+            public static Dictionary<byte, byte> FalseChargePlayers;
+            public static byte FalseChargePlayer;
+            public static int Turns;
+            public static int DefaultTurn;
+            public static float CoolTime;
+            public static Color32 color = Color.green;
+            public static void ClearAndReload()
+            {
+                FalseChargesPlayer = new List<PlayerControl>();
+                AllTurns = new Dictionary<byte, int>();
+                FalseChargePlayers = new Dictionary<byte, byte>();
+                FalseChargePlayer = 255;
+                Turns = 255;
+                DefaultTurn = (int)CustomOptions.FalseChargesExileTurn.getFloat();
+                CoolTime = CustomOptions.FalseChargesCoolTime.getFloat();
+
+            }
+        }
+        public static class NiceTeleporter
+        {
+            public static List<PlayerControl> NiceTeleporterPlayer;
+            public static Color32 color = new Color32(0, 0, 128, byte.MaxValue);
+            public static float CoolTime;
+            public static float DurationTime;
+            public static DateTime ButtonTimer;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                return ButtonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                NiceTeleporterPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.NiceTeleporterCoolTime.getFloat();
+                DurationTime = CustomOptions.NiceTeleporterDurationTime.getFloat();
+            }
+        }
+        public static class Celebrity
+        {
+            public static List<PlayerControl> CelebrityPlayer;
+            public static Color32 color = Color.yellow;
+            public static bool ChangeRoleView;
+            public static List<PlayerControl> ViewPlayers;
+
+            public static void ClearAndReload()
+            {
+                CelebrityPlayer = new List<PlayerControl>();
+                ChangeRoleView = CustomOptions.CelebrityChangeRoleView.getBool();
+                ViewPlayers = new List<PlayerControl>();
+            }
+        }
+        public static class Nocturnality
+        {
+            public static List<PlayerControl> NocturnalityPlayer;
+            public static Color32 color = new Color32(255, 0, 255, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                NocturnalityPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class Observer
+        {
+            public static List<PlayerControl> ObserverPlayer;
+            public static Color32 color = new Color32(127, 127, 127, byte.MaxValue);
+            public static bool IsVoteView;
+            public static void ClearAndReload()
+            {
+                ObserverPlayer = new List<PlayerControl>();
+                IsVoteView = true;
+            }
+        }
+        public static class Vampire
+        {
+            public static List<PlayerControl> VampirePlayer;
+            public static Color32 color = ImpostorRed;
+            public static PlayerControl target;
+            public static float KillDelay;
+            public static float Timer;
+            public static DateTime KillTimer;
+            public static void ClearAndReload()
+            {
+                VampirePlayer = new List<PlayerControl>();
+                target = null;
+                KillDelay = CustomOptions.VampireKillDelay.getFloat();
+                Timer = 0;
+                KillTimer = DateTime.Now;
+            }
+        }
+        public static class Fox
+        {
+            public static List<PlayerControl> FoxPlayer;
+            public static Color32 color = FoxPurple;
+            public static Dictionary<int, int> KillGuard;
+            public static bool IsUseVent;
+            public static bool UseReport;
+            public static bool IsImpostorLight;
+            public static void ClearAndReload()
+            {
+                FoxPlayer = new List<PlayerControl>();
+                KillGuard = new Dictionary<int, int>();
+                IsUseVent = CustomOptions.FoxIsUseVent.getBool();
+                UseReport = CustomOptions.FoxReport.getBool();
+                IsImpostorLight = CustomOptions.FoxIsImpostorLight.getBool();
+            }
+        }
+        public static class DarkKiller
+        {
+            public static List<PlayerControl> DarkKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static bool KillButtonDisable;
+            public static void ClearAndReload()
+            {
+                DarkKillerPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.DarkKillerKillCoolTime.getFloat();
+                KillButtonDisable = false;
+            }
+        }
+        public static class Seer
+        {
+            public static List<PlayerControl> SeerPlayer;
+            public static Color color = new Color32(97, 178, 108, byte.MaxValue);
+            public static List<Vector3> deadBodyPositions;
+
+            public static float soulDuration;
+            public static bool limitSoulDuration;
+            public static int mode;
+
+            public static void ClearAndReload()
+            {
+                SeerPlayer = new List<PlayerControl>();
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.SeerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.SeerSoulDuration.getFloat();
+                mode = CustomOptions.SeerMode.getSelection();
+            }
+
+        }
+        public static class MadSeer
+        {
+            public static List<PlayerControl> MadSeerPlayer;
+            public static Color color = ImpostorRed;
+            public static List<Vector3> deadBodyPositions;
+
+            public static float soulDuration;
+            public static bool limitSoulDuration;
+            public static int mode;
+
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static bool IsImpostorCheck;
+            public static int ImpostorCheckTask;
+
+
+            public static void ClearAndReload()
+            {
+                MadSeerPlayer = new List<PlayerControl>();
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.MadSeerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.MadSeerSoulDuration.getFloat();
+                mode = CustomOptions.MadSeerMode.getSelection();
+
+                IsImpostorCheck = CustomOptions.MadSeerIsCheckImpostor.getBool();
+                IsUseVent = CustomOptions.MadSeerIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadSeerIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.MadSeerCommonTask.getFloat();
+                int Long = (int)CustomOptions.MadSeerLongTask.getFloat();
+                int Short = (int)CustomOptions.MadSeerShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MadSeerCheckImpostorTask.getString().Replace("%", "")) / 100f));
+                Roles.MadSeer.CheckedImpostor = new List<byte>();
+            }
+        }
+
+        public static class EvilSeer
+        {
+            public static List<PlayerControl> EvilSeerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static List<Vector3> deadBodyPositions;
+
+            public static float soulDuration;
+            public static bool limitSoulDuration;
+            public static int mode;
+            public static void ClearAndReload()
+            {
+                EvilSeerPlayer = new List<PlayerControl>();
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.EvilSeerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.EvilSeerSoulDuration.getFloat();
+                mode = CustomOptions.EvilSeerMode.getSelection();
+            }
+        }
+        public static class RemoteSheriff
+        {
+            public static List<PlayerControl> RemoteSheriffPlayer;
+            public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
+            public static float CoolTime;
+            public static bool IsNeutralKill;
+            public static bool IsLoversKill;
+            public static bool IsMadRoleKill;
+            public static bool MadRoleKill;
+            public static float KillMaxCount;
+            public static Dictionary<int, int> KillCount;
+            public static bool IsKillTeleport;
+            public static float KillCoolTime;
+            public static void ClearAndReload()
+            {
+                RemoteSheriffPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.RemoteSheriffCoolTime.getFloat();
+                IsNeutralKill = CustomOptions.RemoteSheriffNeutralKill.getBool();
+                IsLoversKill = CustomOptions.RemoteSheriffLoversKill.getBool();
+                IsMadRoleKill = CustomOptions.RemoteSheriffMadRoleKill.getBool();
+                MadRoleKill = CustomOptions.RemoteSheriffMadRoleKill.getBool();
+                KillMaxCount = CustomOptions.RemoteSheriffKillMaxCount.getFloat();
+                KillCount = new Dictionary<int, int>();
+                IsKillTeleport = CustomOptions.RemoteSheriffIsKillTeleportSetting.getBool();
+                KillCoolTime = CustomOptions.RemoteSheriffCoolTime.getFloat();
+            }
+        }
+        public static class TeleportingJackal
+        {
+            public static List<PlayerControl> TeleportingJackalPlayer;
+            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+            public static float KillCoolDown;
+            public static bool IsUseVent;
+            public static bool IsUseSabo;
+            public static bool IsImpostorLight;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static DateTime ButtonTimer;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                return ButtonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                TeleportingJackalPlayer = new List<PlayerControl>();
+                KillCoolDown = CustomOptions.TeleportingJackalKillCoolDown.getFloat();
+                IsUseVent = CustomOptions.TeleportingJackalUseVent.getBool();
+                IsUseSabo = CustomOptions.TeleportingJackalUseSabo.getBool();
+                IsImpostorLight = CustomOptions.TeleportingJackalIsImpostorLight.getBool();
+                CoolTime = CustomOptions.TeleportingJackalCoolTime.getFloat();
+                DurationTime = CustomOptions.TeleportingJackalDurationTime.getFloat();
+            }
+        }
+        public static class MadMaker
+        {
+            public static List<PlayerControl> MadMakerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static bool IsCreateMadmate;
+            public static List<int> CreatePlayers;
+            public static void ClearAndReload()
+            {
+                MadMakerPlayer = new List<PlayerControl>();
+                IsUseVent = CustomOptions.MadMakerIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadMakerIsImpostorLight.getBool();
+                IsCreateMadmate = false;
+                CreatePlayers = new List<int>();
+            }
+        }
+        public static class Demon
+        {
+            public static List<PlayerControl> DemonPlayer;
+            public static Dictionary<byte, List<PlayerControl>> CurseDatas;
+            public static Color32 color = new Color32(110, 0, 165, byte.MaxValue);
+            public static bool IsUseVent;
+            public static bool IsCheckImpostor;
+            public static bool IsAliveWin;
+            public static float CoolTime;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.DemonButton.png", 115f);
+                return buttonSprite;
+            }
+
+            public static void ClearAndReload()
+            {
+                DemonPlayer = new List<PlayerControl>();
+                CurseDatas = new Dictionary<byte, List<PlayerControl>>();
+                IsUseVent = CustomOptions.DemonIsUseVent.getBool();
+                CoolTime = CustomOptions.DemonCoolTime.getFloat();
+                IsCheckImpostor = CustomOptions.DemonIsCheckImpostor.getBool();
+                IsAliveWin = CustomOptions.DemonIsAliveWin.getBool();
+            }
+        }
+
+        public static class TaskManager
+        {
+            public static List<PlayerControl> TaskManagerPlayer;
+            public static Color32 color = new Color32(153, 255, 255, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                TaskManagerPlayer = new List<PlayerControl>();
+                int Common = (int)CustomOptions.TaskManagerCommonTask.getFloat();
+                int Long = (int)CustomOptions.TaskManagerLongTask.getFloat();
+                int Short = (int)CustomOptions.TaskManagerShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+            }
+        }
         //新ロールクラス
         public static class Quarreled
         {
             public static List<List<PlayerControl>> QuarreledPlayer;
-            public static Color32 color = new Color32(210,105, 30, byte.MaxValue);
+            public static Color32 color = new Color32(210, 105, 30, byte.MaxValue);
             public static bool IsQuarreledWin;
             public static void ClearAndReload()
             {
@@ -1380,3 +1833,4 @@ namespace SuperNewRoles.Roles
         }
     }
 }
+

@@ -193,7 +193,7 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (var ps in __instance.playerStates)
                     {
-                        if (!(ps.AmDead || ps.DidVote))//死んでいないプレイヤーが投票していない
+                        if (!(ps.AmDead || ps.DidVote) && ModHelpers.playerById(ps.TargetPlayerId).IsPlayer())//死んでいないプレイヤーが投票していない
                             return false;
                     }
                 }
@@ -218,7 +218,12 @@ namespace SuperNewRoles.Patch
                         {
                             if (ps == null) continue;
                             var voter = ModHelpers.playerById(ps.TargetPlayerId);
-                            if (voter == null || voter.Data == null || voter.Data.Disconnected) continue;
+                            if (voter == null || voter.Data == null || voter.Data.Disconnected || voter.IsBot() || voter.isDead()) continue;
+                            //BOTならスキップ判定
+                            if (ps.VotedFor != 253 && ps.VotedFor != 254 && ModHelpers.playerById(ps.VotedFor).IsBot())
+                            {
+                                ps.VotedFor = 253;
+                            }
                             statesList.Add(new MeetingHud.VoterState()
                             {
                                 VoterId = ps.TargetPlayerId,
@@ -314,7 +319,7 @@ namespace SuperNewRoles.Patch
                 PlayerVoteArea ps = __instance.playerStates[i];
                 if (ps == null) continue;
                 if (AmongUsClient.Instance.GameMode == GameModes.FreePlay && ps.TargetPlayerId != PlayerControl.LocalPlayer.PlayerId) continue;
-                if (ps.VotedFor != (byte)252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != (byte)254)
+                if (ps != null && ModHelpers.playerById(ps.TargetPlayerId) != null && ps.VotedFor != 252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != (byte)254 && ModHelpers.playerById(ps.TargetPlayerId).isAlive() && ModHelpers.playerById(ps.TargetPlayerId).IsPlayer())
                 {
                     int num;
                     int VoteNum = 1;

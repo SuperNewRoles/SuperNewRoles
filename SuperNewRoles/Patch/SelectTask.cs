@@ -19,6 +19,10 @@ namespace SuperNewRoles.Patch
             [HarmonyArgument(0)] byte playerId,
             [HarmonyArgument(1)] ref UnhollowerBaseLib.Il2CppStructArray<byte> taskTypeIds)
             {
+                if (GameData.Instance.GetPlayerById(playerId).Object.IsBot() || taskTypeIds.Length == 0) {
+                    taskTypeIds = new byte[0];
+                    return; 
+                }
                 if (ModeHandler.isMode(ModeId.SuperHostRoles) || ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 {
                     PlayerControl.GameOptions.NumCommonTasks = 100;
@@ -51,7 +55,47 @@ namespace SuperNewRoles.Patch
                         return (commont, shortt, longt);
                     }
                 }
-            } else if (p.isRole(RoleId.Jester))
+            }
+            else if (p.isRole(RoleId.MadMayor))
+            {
+                if (CustomOptions.MadMayorIsCheckImpostor.getBool())
+                {
+                    int commont = (int)CustomOptions.MadMayorCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.MadMayorShortTask.getFloat();
+                    int longt = (int)CustomOptions.MadMayorLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }
+            else if (p.isRole(RoleId.MadSeer))
+            {
+                if (CustomOptions.MadSeerIsCheckImpostor.getBool())
+                {
+                    int commont = (int)CustomOptions.MadSeerCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.MadSeerShortTask.getFloat();
+                    int longt = (int)CustomOptions.MadSeerLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }
+            else if (p.isRole(RoleId.JackalFriends))
+            {
+                if (CustomOptions.JackalFriendsIsCheckJackal.getBool())
+                {
+                    int commont = (int)CustomOptions.JackalFriendsCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.JackalFriendsShortTask.getFloat();
+                    int longt = (int)CustomOptions.JackalFriendsLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }
+            else if (p.isRole(RoleId.Jester))
             {
                 if (CustomOptions.JesterIsWinCleartask.getBool())
                 {
@@ -85,6 +129,16 @@ namespace SuperNewRoles.Patch
                     return (commont, shortt, longt);
                 }
             }
+            else if (p.isRole(RoleId.TaskManager))
+            {
+                int commont = (int)CustomOptions.TaskManagerCommonTask.getFloat();
+                int shortt = (int)CustomOptions.TaskManagerShortTask.getFloat();
+                int longt = (int)CustomOptions.TaskManagerLongTask.getFloat();
+                if (!(commont == 0 && shortt == 0 && longt == 0))
+                {
+                    return (commont, shortt, longt);
+                }
+            }
 
             else if (p.IsLovers() && !p.isImpostor())
             {
@@ -98,11 +152,11 @@ namespace SuperNewRoles.Patch
             }
             return (SyncSetting.OptionData.NumCommonTasks, SyncSetting.OptionData.NumShortTasks, SyncSetting.OptionData.NumLongTasks);
         }
-        public static (CustomOption.CustomOption, CustomOption.CustomOption, CustomOption.CustomOption) TaskSetting(int commonid,int shortid,int longid,CustomOption.CustomOption Child = null)
+        public static (CustomOption.CustomOption, CustomOption.CustomOption, CustomOption.CustomOption) TaskSetting(int commonid,int shortid,int longid,CustomOption.CustomOption Child = null, CustomOptionType type = CustomOptionType.Generic,bool IsSHROn = false)
         {
-            CustomOption.CustomOption CommonOption = CustomOption.CustomOption.Create(commonid, "GameCommonTasks", 1, 0, 12, 1, Child);
-            CustomOption.CustomOption ShortOption = CustomOption.CustomOption.Create(shortid, "GameShortTasks", 1, 0, 69, 1, Child); ;
-            CustomOption.CustomOption LongOption = CustomOption.CustomOption.Create(longid, "GameLongTasks", 1, 0, 45, 1, Child);
+            CustomOption.CustomOption CommonOption = CustomOption.CustomOption.Create(commonid, IsSHROn, type, "GameCommonTasks", 1, 0, 12, 1, Child);
+            CustomOption.CustomOption ShortOption = CustomOption.CustomOption.Create(shortid, IsSHROn, type,"GameShortTasks", 1, 0, 69, 1, Child);
+            CustomOption.CustomOption LongOption = CustomOption.CustomOption.Create(longid, IsSHROn, type, "GameLongTasks", 1, 0, 45, 1, Child);
             return (CommonOption, ShortOption, LongOption);
         }
     }

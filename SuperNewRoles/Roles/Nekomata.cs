@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
 using SuperNewRoles.EndGame;
+using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,7 @@ namespace SuperNewRoles.Roles
     class Nekomata
     {
         public static void NekomataEnd(GameData.PlayerInfo __instance) {
+            if (!ModeHandler.isMode(ModeId.Default)) return;
             if (__instance == null) return; 
             if (AmongUsClient.Instance.AmHost) {
                 if (__instance != null && RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(__instance.Object) || RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object))
@@ -55,36 +57,6 @@ namespace SuperNewRoles.Roles
                         Roles.RoleClass.Jester.IsJesterWin = true;
                         ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
                     }
-                }
-            }
-        }
-        [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
-        public class CheckEndGamePatch
-        {
-            public static void Postfix(ExileController __instance)
-            {
-                try
-                {
-                    NekomataEnd(__instance.exiled);
-                }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
-                }
-            }
-        }
-        [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-        public class CheckAirShipEndGamePatch
-        {
-            public static void Postfix(AirshipExileController __instance)
-            {
-                try
-                {
-                    NekomataEnd(__instance.exiled);
-                }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
                 }
             }
         }

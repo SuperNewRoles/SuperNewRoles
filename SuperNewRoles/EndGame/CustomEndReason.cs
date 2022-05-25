@@ -16,6 +16,10 @@ namespace SuperNewRoles.EndGame
         EgoistWin,
         WorkpersonWin,
         LoversWin,
+        MadJesterWin,
+        FalseChargesWin,
+        FoxWin,
+        DemonWin,
         BugEnd
     }
 }
