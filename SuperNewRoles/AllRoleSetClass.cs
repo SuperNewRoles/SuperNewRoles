@@ -845,6 +845,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.DemonPlayerCount.getFloat();
                 case (RoleId.TaskManager):
                     return CustomOption.CustomOptions.TaskManagerPlayerCount.getFloat();
+                    case (RoleId.SeerFriends):
+                    return CustomOption.CustomOptions.SeerFriendsPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -2222,6 +2224,22 @@ namespace SuperNewRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.TaskManagerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.TaskManager;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.SeerFriendsOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SeerFriendsOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.SeerFriends;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);

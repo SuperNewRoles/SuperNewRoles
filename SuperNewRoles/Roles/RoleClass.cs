@@ -42,6 +42,7 @@ namespace SuperNewRoles.Roles
             Roles.MadMayor.CheckedImpostor = new List<byte>();
             Roles.MadSeer.CheckedImpostor = new List<byte>();
             Roles.JackalFriends.CheckedJackal = new List<byte>();
+            Roles.SeerFriends.CheckedJackal = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
@@ -126,6 +127,7 @@ namespace SuperNewRoles.Roles
             MadMaker.ClearAndReload();
             Demon.ClearAndReload();
             TaskManager.ClearAndReload();
+            SeerFriends.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1807,6 +1809,48 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
+        public static class SeerFriends
+        {
+            public static List<PlayerControl> SeerFriendsPlayer;
+            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+
+            public static List<Vector3> deadBodyPositions;
+
+            public static float soulDuration;
+            public static bool limitSoulDuration;
+            public static int mode;
+
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static bool IsJackalCheck;
+            public static int JackalCheckTask;
+            public static void ClearAndReload()
+            {
+                SeerFriendsPlayer = new List<PlayerControl>();
+
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.SeerFriendsLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.SeerFriendsSoulDuration.getFloat();
+                mode = CustomOptions.SeerFriendsMode.getSelection();
+
+                IsJackalCheck = CustomOptions.SeerFriendsIsCheckJackal.getBool();
+                IsUseVent = CustomOptions.SeerFriendsIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.SeerFriendsIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.SeerFriendsCommonTask.getFloat();
+                int Long = (int)CustomOptions.SeerFriendsLongTask.getFloat();
+                int Short = (int)CustomOptions.SeerFriendsShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.SeerFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
+                Roles.SeerFriends.CheckedJackal = new List<byte>();
+            }
+        }
+
         //新ロールクラス
         public static class Quarreled
         {

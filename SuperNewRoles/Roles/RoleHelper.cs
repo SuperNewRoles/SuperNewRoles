@@ -515,6 +515,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.TaskManager):
                     Roles.RoleClass.TaskManager.TaskManagerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.SeerFriends):
+                    Roles.RoleClass.SeerFriends.SeerFriendsPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -781,6 +784,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.TaskManager):
                     Roles.RoleClass.TaskManager.TaskManagerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.SeerFriends):
+                    Roles.RoleClass.SeerFriends.SeerFriendsPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
 
@@ -1491,6 +1497,10 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.TaskManager;
                 }
+            else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.SeerFriends;
+            }
             //ロールチェック
             }
             catch (Exception e)
