@@ -160,7 +160,7 @@ namespace SuperNewRoles.CustomRPC
         UncheckedProtect,
         SetBot,
         DemonCurse,
-        SetVent,
+        MakeVent,
     }
     public static class RPCProcedure
     {
@@ -711,12 +711,10 @@ namespace SuperNewRoles.CustomRPC
         {
             OnGameEndPatch.EndData = (CustomGameOverReason)Cond;
         }
-        public static void SetVent(byte sourceId)
+        public static void MakeVent(float x, float y, float z)
         {
-            PlayerControl source = ModHelpers.playerById(sourceId);
             Vent template = UnityEngine.Object.FindObjectOfType<Vent>();
             Vent VentMakerVent = UnityEngine.Object.Instantiate<Vent>(template);
-
             if (RoleClass.VentMaker.VentCount == 2)
             {
                 RoleClass.VentMaker.Vent.Right = VentMakerVent;
@@ -730,7 +728,7 @@ namespace SuperNewRoles.CustomRPC
                 VentMakerVent.Center = null;
             }
 
-            VentMakerVent.transform.position = source.transform.position;
+            VentMakerVent.transform.position = new Vector3(x,y,z);
             VentMakerVent.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
             VentMakerVent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1;
             var allVentsList = ShipStatus.Instance.AllVents.ToList();
@@ -924,8 +922,8 @@ namespace SuperNewRoles.CustomRPC
                     case (byte)CustomRPC.DemonCurse:
                         DemonCurse(reader.ReadByte(), reader.ReadByte());
                         break;
-                    case (byte)CustomRPC.SetVent:
-                        SetVent(reader.ReadByte());
+                    case (byte)CustomRPC.MakeVent:
+                        MakeVent(reader.ReadSingle(),reader.ReadSingle(),reader.ReadSingle());
                         break;
                 }
             }

@@ -885,11 +885,12 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     RoleClass.VentMaker.VentCount++;
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetVent);
-                    writer.Write(true);
-                    writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    CustomRPC.RPCProcedure.SetVent(PlayerControl.LocalPlayer.PlayerId);
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.MakeVent);
+                    writer.Write(PlayerControl.LocalPlayer.transform.position.x);
+                    writer.Write(PlayerControl.LocalPlayer.transform.position.y);
+                    writer.Write(PlayerControl.LocalPlayer.transform.position.z);
+                    writer.EndRPC();
+                    CustomRPC.RPCProcedure.MakeVent(PlayerControl.LocalPlayer.transform.position.x,PlayerControl.LocalPlayer.transform.position.y,PlayerControl.LocalPlayer.transform.position.z);
                     if (RoleClass.VentMaker.VentCount == 2) RoleClass.VentMaker.IsMakeVent = false;
                 },
                 () => { return RoleClass.VentMaker.IsMakeVent && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.VentMaker); },
