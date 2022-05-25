@@ -735,7 +735,6 @@ namespace SuperNewRoles.CustomRPC
             allVentsList.Add(VentMakerVent);
             ShipStatus.Instance.AllVents = allVentsList.ToArray();
             VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
-            RoleClass.VentMaker.Vent = VentMakerVent;
             VentMakerVent.gameObject.SetActive(true);
         }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]

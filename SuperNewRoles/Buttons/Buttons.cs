@@ -891,6 +891,8 @@ namespace SuperNewRoles.Buttons
                     writer.Write(PlayerControl.LocalPlayer.transform.position.z);
                     writer.EndRPC();
                     CustomRPC.RPCProcedure.MakeVent(PlayerControl.LocalPlayer.transform.position.x,PlayerControl.LocalPlayer.transform.position.y,PlayerControl.LocalPlayer.transform.position.z);
+                    GameObject Vent = GameObject.Find("VentMakerVent" + ShipStatus.Instance.AllVents.Select(x => x.Id).Max().ToString());
+                    RoleClass.VentMaker.Vent = Vent.GetComponent<Vent>();
                     if (RoleClass.VentMaker.VentCount == 2) RoleClass.VentMaker.IsMakeVent = false;
                 },
                 () => { return RoleClass.VentMaker.IsMakeVent && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.VentMaker); },
