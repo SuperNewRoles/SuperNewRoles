@@ -31,7 +31,8 @@ namespace SuperNewRoles.Mode
         RandomColor,
         NotImpostorCheck,
         Detective,
-        Werewolf
+        Werewolf,
+        LevelUp
     }
     class ModeHandler
     {
@@ -39,26 +40,26 @@ namespace SuperNewRoles.Mode
         public static void ClearAndReload()
         {
             PlusModeHandler.ClearAndReload();
-            if (isMode(ModeId.HideAndSeek))
+            if (isMode(ModeId.HideAndSeek, false))
             {
                 thisMode = ModeId.HideAndSeek;
                 HideAndSeek.main.ClearAndReload();
-            } else if (isMode(ModeId.BattleRoyal))
+            } else if (isMode(ModeId.BattleRoyal, false))
             {
                 thisMode = ModeId.BattleRoyal;
                 BattleRoyal.main.ClearAndReload();
             }
-            else if (isMode(ModeId.SuperHostRoles))
+            else if (isMode(ModeId.SuperHostRoles, false))
             {
                 thisMode = ModeId.SuperHostRoles;
                 SuperHostRoles.main.ClearAndReloads();
             }
-            else if (isMode(ModeId.Zombie))
+            else if (isMode(ModeId.Zombie, false))
             {
                 thisMode = ModeId.Zombie;
                 Zombie.main.ClearAndReload();
             }
-            else if (isMode(ModeId.RandomColor))
+            else if (isMode(ModeId.RandomColor, false))
             {
                 thisMode = ModeId.RandomColor;
                 RandomColor.FixedUpdate.UpdateTime = 0f;
@@ -67,20 +68,25 @@ namespace SuperNewRoles.Mode
                 RandomColor.FixedUpdate.IsRandomColorMeeting = RandomColor.RandomColorOptions.RandomColorMeeting.getBool();
                 RandomColor.FixedUpdate.IsHideNameSet = false;
             }
-            else if (isMode(ModeId.NotImpostorCheck))
+            else if (isMode(ModeId.NotImpostorCheck, false))
             {
                 thisMode = ModeId.NotImpostorCheck;
                 NotImpostorCheck.main.ClearAndReload();
             }
-            else if (isMode(ModeId.Detective))
+            else if (isMode(ModeId.Detective, false))
             {
                 thisMode = ModeId.Detective;
                 Detective.main.ClearAndReload();
             }
-            else if (isMode(ModeId.Werewolf))
+            else if (isMode(ModeId.Werewolf, false))
             {
                 thisMode = ModeId.Werewolf;
                 Werewolf.main.ClearAndReload();
+            }
+            else if (isMode(ModeId.LevelUp, false))
+            {
+                thisMode = ModeId.LevelUp;
+                LevelUp.main.ClearAndReloads();
             }
             else {
                 thisMode = ModeId.Default;
@@ -90,7 +96,7 @@ namespace SuperNewRoles.Mode
                 SuperHostRoles.BlockTool.IsCom = false;
             }
         }
-        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName"), ModTranslation.getString("DetectiveModeName"), };//ModTranslation.getString("WerewolfModeName") };
+        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName"), ModTranslation.getString("DetectiveModeName"), ModTranslation.getString("LevelUpModeName") };
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;
@@ -119,6 +125,12 @@ namespace SuperNewRoles.Mode
             else if (isMode(ModeId.Detective))
             {
                 return SuperHostRoles.Intro.ModeHandler(__instance);
+            }
+            else if (isMode(ModeId.Werewolf))
+            {
+                var Data = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                Data.Add(PlayerControl.LocalPlayer);
+                return Data;
             }
             else if (isMode(ModeId.Werewolf))
             {
@@ -178,12 +190,14 @@ namespace SuperNewRoles.Mode
             RandomColor.RandomColorOptions.Load();
             Detective.DetectiveOptions.Load();
             Werewolf.WerewolfOptions.Load();
+            LevelUp.main.Load();
 
             PlusMode.Options.Load();
         }
         public static void FixedUpdate(PlayerControl __instance) {
             if (isMode(ModeId.SuperHostRoles))
             {
+                //PlayerControl.LocalPlayer.RpcSetName("<size=>次のターゲット:よッキング</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                 SuperHostRoles.FixedUpdate.Update();
             }
             else if (isMode(ModeId.HideAndSeek))
@@ -202,9 +216,9 @@ namespace SuperNewRoles.Mode
             {
                 RandomColor.FixedUpdate.Update();
             }
-            else if (isMode(ModeId.Werewolf))
+            else if (isMode(ModeId.LevelUp))
             {
-
+                LevelUp.main.FixedUpdate();
             }
         }
         public static void Wrapup(GameData.PlayerInfo exiled)
@@ -212,24 +226,29 @@ namespace SuperNewRoles.Mode
             if (isMode(ModeId.Default)) return;
             if (isMode(ModeId.Werewolf)) Werewolf.main.Wrapup(exiled); return;
         }
-        public static ModeId GetMode() {
+        public static ModeId GetMode(bool IsChache = true) {
             if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)) return ModeId.Default;
-            if (!ModeSetting.getBool()) return ModeId.Default;
-            if (isMode(ModeId.HideAndSeek)) return ModeId.HideAndSeek;
-            if (isMode(ModeId.SuperHostRoles)) return ModeId.SuperHostRoles;
-            if (isMode(ModeId.BattleRoyal)) return ModeId.BattleRoyal;
-            if (isMode(ModeId.Zombie)) return ModeId.Zombie;
-            if (isMode(ModeId.RandomColor)) return ModeId.RandomColor;
-            if (isMode(ModeId.NotImpostorCheck)) return ModeId.NotImpostorCheck;
-            if (isMode(ModeId.Detective)) return ModeId.Detective;
-            if (isMode(ModeId.Werewolf)) return ModeId.Werewolf;
+            if (IsChache)
+            {
+                return thisMode;
+            }
+            if (isMode(ModeId.Default, false)) return ModeId.Default;
+            if (isMode(ModeId.HideAndSeek, false)) return ModeId.HideAndSeek;
+            if (isMode(ModeId.SuperHostRoles, false)) return ModeId.SuperHostRoles;
+            if (isMode(ModeId.BattleRoyal, false)) return ModeId.BattleRoyal;
+            if (isMode(ModeId.Zombie, false)) return ModeId.Zombie;
+            if (isMode(ModeId.RandomColor, false)) return ModeId.RandomColor;
+            if (isMode(ModeId.NotImpostorCheck, false)) return ModeId.NotImpostorCheck;
+            if (isMode(ModeId.Detective, false)) return ModeId.Detective;
+            if (isMode(ModeId.Werewolf, false)) return ModeId.Werewolf;
+            if (isMode(ModeId.LevelUp, false)) return ModeId.LevelUp;
             return ModeId.No;
         }
         public static string GetThisModeIntro() {
             return ThisModeSetting.getString();
         }
-        public static bool isMode(ModeId mode) {
-            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || !ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
+        public static bool isMode(ModeId mode,bool IsChache = true) {
+            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)))
             {
                 if (mode == ModeId.Default)
                 {
@@ -238,6 +257,10 @@ namespace SuperNewRoles.Mode
                 {
                     return false;
                 }
+            }
+            if (IsChache)
+            {
+                return mode == thisMode;
             }
             switch (mode)
             {
@@ -257,8 +280,8 @@ namespace SuperNewRoles.Mode
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[5];
                 case ModeId.Detective:
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[6];
-                case ModeId.Werewolf:
-                    return false;//ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
+                case ModeId.LevelUp:
+                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
             }
             return false;
         }

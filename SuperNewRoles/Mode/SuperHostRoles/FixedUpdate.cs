@@ -53,26 +53,27 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
         }*/
+        //public static Dictionary<byte, float> UpdateTime;
         private static int a = 0;
-        public static void SetRoleNames(bool IsUnchecked = false)
+        public static void SetRoleName(PlayerControl player, bool IsUnchecked = false)
         {
-            if (!AmongUsClient.Instance.AmHost) return;
-            bool commsActive = false;
-            if (RoleClass.Technician.TechnicianPlayer.Count != 0)
-            {
-                foreach (PlayerTask t in PlayerControl.LocalPlayer.myTasks)
-                {
-                    if (t.TaskType == TaskTypes.FixComms)
-                    {
-                        commsActive = true;
-                        break;
-                    }
-                }
-            }
+            SetRoleName(player, RoleHelpers.IsComms() , IsUnchecked);
+        }
+
+        //短時間で何回も呼ばれると重くなるため更新可能までの時間を指定
+        const float UpdateDefaultTime = 0.5f;
+
+        public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false)
+        {
+            if (player.Data.Disconnected || player.IsBot() || !AmongUsClient.Instance.AmHost) return;
+            //if (UpdateTime.ContainsKey(player.PlayerId) && UpdateTime[player.PlayerId] > 0) return;
+
+            //UpdateTime[player.PlayerId] = UpdateDefaultTime;
+
             List<PlayerControl> DiePlayers = new List<PlayerControl>();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                if (!p.Data.Disconnected && p.PlayerId != 0 && p.IsPlayer())
+                if (p.PlayerId != 0 && p.PlayerId != player.PlayerId  && p.IsPlayer())
                 {
                     if (p.isDead() || p.isRole(RoleId.God))
                     {
@@ -80,187 +81,204 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            //必要がないなら処理しない
+            if (player.IsMod() && DiePlayers.Count < 1) return;
+
+            string Name = player.getDefaultName();
+            string NewName = "";
+            string MySuffix = "";
+            Dictionary<byte, string> ChangePlayers = new Dictionary<byte, string>();
+
+            foreach (PlayerControl CelebrityPlayer in RoleClass.Celebrity.CelebrityPlayer)
             {
-                if (!p.Data.Disconnected && p.IsPlayer())
+                ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.cs(RoleClass.Celebrity.color, CelebrityPlayer.getDefaultName()));
+            }
+
+            if (Madmate.CheckImpostor(player))
+            {
+                foreach (PlayerControl Impostor in PlayerControl.AllPlayerControls)
                 {
-                    string Suffix = "";
-                    if (!p.IsMod() && p.isAlive())
+                    if (Impostor.isImpostor() && Impostor.IsPlayer())
                     {
-                        if (RoleClass.Celebrity.ChangeRoleView)
+                        if (!ChangePlayers.ContainsKey(Impostor.PlayerId))
                         {
-                            foreach (PlayerControl p2 in RoleClass.Celebrity.ViewPlayers)
-                            {
-                                if( p.PlayerId != p2.PlayerId )
-                                {
-                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p2.getDefaultName()), p);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            foreach (PlayerControl p2 in RoleClass.Celebrity.CelebrityPlayer)
-                            {
-                                if(p.PlayerId != p2.PlayerId)
-                                {
-                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Celebrity.color, p2.getDefaultName()), p);
-                                }
-                            }
-                        }
-                        bool IsMadmateCheck = Madmate.CheckImpostor(p);
-                        if (IsMadmateCheck)
-                        {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (!p2.Data.Disconnected && p2.isImpostor())
-                                {
-                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
-                                }
-                            }
-                            //Madmate.CheckedImpostor.Add(p.PlayerId);
-                        }
-                        bool IsMadStuntManCheck = MadStuntMan.CheckImpostor(p);
-                        //  SuperNewRolesPlugin.Logger.LogInfo("マッドスタントマンがチェックできるか:"+IsMadStuntManCheck);
-                        if (IsMadStuntManCheck)
-                        {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (!p2.Data.Disconnected && !p2.isImpostor())
-                                {
-                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
-                                }
-                                else if (!p2.Data.Disconnected && p2.isImpostor())
-                                {
-                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p2.getDefaultName()), p);
-                                }
-                            }
-                            //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
-                        }
-
-                        if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
-                        {
-                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                            {
-                                if (!p2.Data.Disconnected && !p2.isRole(RoleId.Jackal))
-                                {
-                                    p2.RpcSetNamePrivate(p2.getDefaultName(), p);
-                                }
-                                else if (!p2.Data.Disconnected && p2.isRole(RoleId.Jackal))
-                                {
-                                    p2.RpcSetNamePrivate(ModHelpers.cs(RoleClass.Jackal.color, p2.getDefaultName()), p);
-                                }
-                            }
-                            //MadStuntMan.CheckedImpostor.Add(p.PlayerId);
-                        }
-                        if (p.IsLovers() && p.isAlive())
-                        {
-                            var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
-                            PlayerControl Side = p.GetOneSideLovers();
-                            string name = Side.getDefaultName();
-                            if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
-                            {
-                                name = ModHelpers.cs(RoleClass.ImpostorRed, name);
-                            } else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
-                            {
-                                name = ModHelpers.cs(RoleClass.Celebrity.color, name);
-                            } else if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck && Side.isRole(RoleId.Jackal))
-                            {
-                                name = ModHelpers.cs(RoleClass.Jackal.color, name);
-                            }
-                            Side.RpcSetNamePrivate(name + suffix, p);
-                        }
-                        if (p.IsQuarreled() && p.isAlive())
-                        {
-                            var suffix = ModHelpers.cs(RoleClass.Quarreled.color, "○");
-                            PlayerControl Side = p.GetOneSideQuarreled();
-                            string name = Side.getDefaultName();
-                            if (Madmate.CheckImpostor(p) && (Side.isImpostor() || Side.isRole(RoleId.Egoist)))
-                            {
-                                name = ModHelpers.cs(RoleClass.ImpostorRed, name);
-                            }
-                            else if (Side.isRole(RoleId.Celebrity) || (RoleClass.Celebrity.ChangeRoleView && RoleClass.Celebrity.ViewPlayers.IsCheckListPlayerControl(Side)))
-                            {
-                                name = ModHelpers.cs(RoleClass.Celebrity.color, name);
-                            }
-                            else if (p.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck && Side.isRole(RoleId.Jackal))
-                            {
-                                name = ModHelpers.cs(RoleClass.Jackal.color, name);
-                            }
-                            if (Side.IsLovers())
-                            {
-                                suffix += ModHelpers.cs(RoleClass.Lovers.color, " ♥");
-                            }
-                            Side.RpcSetNamePrivate(name + suffix, p);
-                        }
-                    }
-                    if (p.IsLovers())
-                    {
-                        Suffix += ModHelpers.cs(RoleClass.Lovers.color, " ♥");
-                    }
-                    if (p.IsQuarreled())
-                    {
-                        Suffix += ModHelpers.cs(RoleClass.Quarreled.color, "○");
-                    }
-                    if (p.isRole(RoleId.Sheriff))
-                    {
-                        if (RoleClass.Sheriff.KillCount.ContainsKey(p.PlayerId))
-                        {
-                            Suffix += "(残り" + RoleClass.Sheriff.KillCount[p.PlayerId] + "発)";
-                        }
-                    } else if (p.isRole(RoleId.RemoteSheriff))
-                    {
-                        if (RoleClass.RemoteSheriff.KillCount.ContainsKey(p.PlayerId))
-                        {
-                            Suffix += "(残り" + RoleClass.RemoteSheriff.KillCount[p.PlayerId] + "発)";
-                        }
-                    }
-                    if (p.isRole(RoleId.MadMate))
-                    {
-                        Suffix += ModHelpers.cs(RoleClass.MadMate.color, "");
-                    }
-                    var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(p.getRole(), p);
-                    string TaskText = "";
-                    if (!p.isImpostor())
-                    {
-                        try
-                        {
-                            if (commsActive)
-                            {
-                                var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
-                                TaskText = ModHelpers.cs(Color.yellow, "(?/" + all + ")");
-                            }
-                            else
-                            {
-                                var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                                TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
-                            }
-                        }
-                        catch
-                        {
-
-                        }
-                    }
-                    string NewName = "";
-                    if ((p.isDead() || p.isRole(RoleId.God)) && !IsUnchecked)
-                    {
-                        NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>)" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
-                    }
-                    else if (p.isAlive() || IsUnchecked)
-                    {
-                        NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + GetRoleTextClass.GetRoleTextPostfix(p) + "</size>\n" + ModHelpers.cs(introdate.color, p.getDefaultName() + Suffix);
-                    }
-                    if (!p.IsMod())
-                    {
-                        p.RpcSetNamePrivate(NewName);
-                    }
-                    foreach (PlayerControl p2 in DiePlayers)
-                    {
-                        if (p.PlayerId != p2.PlayerId && !p2.IsMod() && !p2.Data.Disconnected)
-                        {
-                            p.RpcSetNamePrivate(NewName, p2);
+                            ChangePlayers.Add(Impostor.PlayerId, ModHelpers.cs(RoleClass.ImpostorRed, Impostor.getDefaultName()));
                         }
                     }
                 }
+            } else if (player.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+            {
+                foreach (PlayerControl Jackal in RoleClass.Jackal.JackalPlayer)
+                {
+                    if (!Jackal.Data.Disconnected)
+                    {
+                        if (!ChangePlayers.ContainsKey(Jackal.PlayerId))
+                        {
+                            ChangePlayers.Add(Jackal.PlayerId, ModHelpers.cs(RoleClass.Jackal.color, Jackal.getDefaultName()));
+                        }
+                        else
+                        {
+                            ChangePlayers[Jackal.PlayerId] = ModHelpers.cs(RoleClass.Jackal.color, ChangePlayers[Jackal.PlayerId]);
+                        }
+                    }
+                }
+            }
+            else if (player.isRole(RoleId.Demon))
+            {
+                if (RoleClass.Demon.IsCheckImpostor)
+                {
+                    foreach (PlayerControl Impostor in PlayerControl.AllPlayerControls)
+                    {
+                        if (Impostor.isImpostor() && Impostor.IsPlayer())
+                        {
+                            if (!ChangePlayers.ContainsKey(Impostor.PlayerId))
+                            {
+                                ChangePlayers.Add(Impostor.PlayerId, ModHelpers.cs(RoleClass.ImpostorRed, Impostor.getDefaultName()));
+                            }
+                            else
+                            {
+                                ChangePlayers[Impostor.PlayerId] = ModHelpers.cs(RoleClass.ImpostorRed, ChangePlayers[Impostor.PlayerId]);
+                            }
+                        }
+                    }
+                }
+                foreach (PlayerControl CursePlayer in Demon.GetIconPlayers(player))
+                {
+                    if (CursePlayer.IsPlayer())
+                    {
+                        if (!ChangePlayers.ContainsKey(CursePlayer.PlayerId))
+                        {
+                            ChangePlayers.Add(CursePlayer.PlayerId, CursePlayer.getDefaultName() + ModHelpers.cs(RoleClass.Demon.color, " ▲"));
+                        }
+                        else
+                        {
+                            ChangePlayers[CursePlayer.PlayerId] = ChangePlayers[CursePlayer.PlayerId] + ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                        }
+                    }
+                }
+            }
+            
+            if (player.IsLovers())
+            {
+                var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                PlayerControl Side = player.GetOneSideLovers();
+                string name = Side.getDefaultName();
+                if (!ChangePlayers.ContainsKey(Side.PlayerId))
+                {
+                    ChangePlayers.Add(Side.PlayerId, Side.getDefaultName() + suffix);
+                }
+                else
+                {
+                    ChangePlayers[Side.PlayerId] = ChangePlayers[Side.PlayerId] + suffix;
+                }
+                MySuffix += suffix;
+            }
+            if (player.IsQuarreled())
+            {
+                var suffix = ModHelpers.cs(RoleClass.Quarreled.color, "○");
+                PlayerControl Side = player.GetOneSideQuarreled();
+                string name = Side.getDefaultName();
+                if (!ChangePlayers.ContainsKey(Side.PlayerId))
+                {
+                    ChangePlayers.Add(Side.PlayerId, Side.getDefaultName() + suffix);
+                }
+                else
+                {
+                    ChangePlayers[Side.PlayerId] = ChangePlayers[Side.PlayerId] + suffix;
+                }
+                MySuffix += suffix;
+            }
+
+            if (player.isRole(RoleId.Sheriff))
+            {
+                if (RoleClass.Sheriff.KillCount.ContainsKey(player.PlayerId))
+                {
+                    MySuffix += "(残り" + RoleClass.Sheriff.KillCount[player.PlayerId] + "発)";
+                }
+            }
+            else if (player.isRole(RoleId.RemoteSheriff))
+            {
+                if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId))
+                {
+                    MySuffix += "(残り" + RoleClass.RemoteSheriff.KillCount[player.PlayerId] + "発)";
+                }
+            }
+
+            var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(player.getRole(), player);
+            string TaskText = "";
+            if (!player.isImpostor())
+            {
+                try
+                {
+                    if (commsActive)
+                    {
+                        TaskText = ModHelpers.cs(Color.yellow, "(?/" + TaskCount.TaskDateNoClearCheck(player.Data).Item2 + ")");
+                    }
+                    else
+                    {
+                        var (complate, all) = TaskCount.TaskDateNoClearCheck(player.Data);
+                        TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+            bool IsDemonVIew = false;
+            if ((player.isDead() || player.isRole(RoleId.God)) && !IsUnchecked)
+            {
+                if (Demon.IsViewIcon(player))
+                {
+                    MySuffix = ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                    IsDemonVIew = true;
+                }
+                NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, Name + MySuffix);
+            }
+            else if (player.isAlive() || IsUnchecked)
+            {
+                if ((player.isDead() || player.isRole(RoleId.God)) && Demon.IsViewIcon(player))
+                {
+                    MySuffix = ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                    IsDemonVIew = true;
+                }
+
+                NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, Name + MySuffix);
+            }
+            if (!player.IsMod())
+            {
+                player.RpcSetNamePrivate(NewName);
+                foreach (var ChangePlayerData in ChangePlayers)
+                {
+                    PlayerControl ChangePlayer = ModHelpers.playerById(ChangePlayerData.Key);
+                    if (ChangePlayer != null)
+                    {
+                        ChangePlayer.RpcSetNamePrivate(ChangePlayerData.Value, player);
+                        SuperNewRolesPlugin.Logger.LogInfo(ChangePlayerData.Value);
+                    }
+                }
+            }
+            string DieSuffix = "";
+            if (!IsDemonVIew && Demon.IsViewIcon(player))
+            {
+                DieSuffix += ModHelpers.cs(RoleClass.Demon.color, " ▲");
+            }
+            NewName += DieSuffix;
+            foreach (PlayerControl DiePlayer in DiePlayers)
+            {
+                if (player.PlayerId != DiePlayer.PlayerId && !DiePlayer.IsMod() && !DiePlayer.Data.Disconnected)
+                {
+                    player.RpcSetNamePrivate(NewName, DiePlayer);
+                }
+            }
+        }
+
+        public static void SetRoleNames(bool IsUnchecked = false)
+        {
+            bool commsActive = RoleHelpers.IsComms();
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                SetRoleName(p, commsActive, IsUnchecked);
             }
         }
         public static void Update()
@@ -284,23 +302,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
             }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
-            {
-                HudManager.Instance.KillButton.gameObject.SetActive(true);
-                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
-                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControl.LocalPlayer);
-                if (Input.GetKeyDown(KeyCode.Q))
-                {
-                    DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
-                }
-            }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.Egoist))
-            {
-                HudManager.Instance.KillButton.gameObject.SetActive(true);
-                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
-                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
-            }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal))
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal) ||
+                PlayerControl.LocalPlayer.isRole(RoleId.MadMaker) ||
+                PlayerControl.LocalPlayer.isRole(RoleId.Egoist) ||
+                PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff) ||
+                PlayerControl.LocalPlayer.isRole(RoleId.Demon)
+                )
             {
                 HudManager.Instance.KillButton.gameObject.SetActive(true);
                 PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
@@ -309,12 +316,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
                 }
-            }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.MadMaker))
-            {
-                HudManager.Instance.KillButton.gameObject.SetActive(true);
-                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
-                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
             }
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
             if (!AmongUsClient.Instance.AmHost) return;
@@ -326,6 +327,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 UpdateDate--;
                 RoleFixedUpdate();
+                /*
+                if (UpdateTime != null)
+                {
+                    foreach (var UpdateTimeData in UpdateTime){
+                        UpdateTime[UpdateTimeData.Key] -= Time.fixedDeltaTime;
+                    }
+                }
+                */
                 if (AmongUsClient.Instance.AmHost)
                 {
                     BlockTool.FixedUpdate();
@@ -338,7 +347,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                         else
                         {
-                            SetRoleNames();
+                            //SetRoleNames();
                         }
                     }
                 }

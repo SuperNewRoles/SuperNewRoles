@@ -11,6 +11,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.HideAndSeek;
 using System.Collections;
 using TMPro;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Patches
 {
@@ -206,6 +207,43 @@ namespace SuperNewRoles.Patches
             }
             //SetUpRoleTextPatch.Postfix(__instance);
         }
+
+
+
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
+        class IntroCutsceneDestroyPatch
+        {
+            public static void Prefix(IntroCutscene __instance)
+            {
+                float SetTime = 0;
+                bool Flag = true;
+                switch (PlayerControl.LocalPlayer.getRole())
+                {
+                    case RoleId.DarkKiller:
+                        SetTime = RoleClass.DarkKiller.KillCoolTime;
+                        break;
+                    case RoleId.Minimalist:
+                        SetTime = RoleClass.Minimalist.KillCoolTime;
+                        break;
+                    case RoleId.HomeSecurityGuard:
+                        foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                        {
+                            task.Complete();
+                        }
+                        Flag = false;
+                        break;
+                    default:
+                        Flag = false;
+                        break;
+                }
+                if (Flag)
+                {
+                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(SetTime);
+                }
+                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            }
+        }
+
         [HarmonyPatch(typeof(IntroCutscene),nameof(IntroCutscene.ShowRole))]
         class SetUpRoleTextPatch
         {

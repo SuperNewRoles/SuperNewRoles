@@ -50,7 +50,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         optdata.RoleOptions.EngineerCooldown = 0f;
                         optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }                    
+                    }
                     if (RoleClass.MadMate.IsImpostorLight)
                     {
                         optdata.CrewLightMod = optdata.ImpostorLightMod;
@@ -110,7 +110,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     break;
                 case RoleId.MadMaker:
-                    if (RoleClass.MadMaker.IsImpostorLight)
+                    if (!RoleClass.MadMaker.IsImpostorLight)
                     {
                         optdata.ImpostorLightMod = optdata.CrewLightMod;
                         var switchSystemMadMaker = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
@@ -188,17 +188,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     optdata.RoleOptions.ShapeshifterCooldown = KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime);
-                    SuperNewRolesPlugin.Logger.LogInfo("ｼﾝｸ");
-                    if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId))
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("ｼﾝｸ:"+RoleClass.RemoteSheriff.KillCount[player.PlayerId]);
-                    }
                     if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId) && RoleClass.RemoteSheriff.KillCount[player.PlayerId] < 1)
                     {
                         optdata.RoleOptions.ShapeshifterDuration = 1f;
                         optdata.RoleOptions.ShapeshifterCooldown = -1f;
-
-                        SuperNewRolesPlugin.Logger.LogInfo("変更！");
                     }
                     if (player.IsMod())
                     {
@@ -215,11 +208,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         optdata.CrewLightMod /= 5;
                     }
+                    else
+                    {
+                        optdata.CrewLightMod *= 5;
+                    }
                     break;
                 case RoleId.SelfBomber:
                     optdata.RoleOptions.ShapeshifterCooldown = 0.000001f;
                     optdata.RoleOptions.ShapeshifterDuration = 0.000001f;
-                      break;
+                    break;
                 case RoleId.Survivor:
                     optdata.killCooldown = KillCoolSet(RoleClass.Survivor.KillCoolTime);
                     break;
@@ -231,6 +228,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.ImpostorLightMod /= 5;
                     }
                     optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCoolDown);
+                    break;
+                case RoleId.Demon:
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime);
                     break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
@@ -249,6 +249,27 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 return cool;
             }
+        }
+        public static void MurderSyncSetting(PlayerControl player)
+        {
+            if (!AmongUsClient.Instance.AmHost) return;
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
+            var role = player.getRole();
+            var optdata = OptionData.DeepCopy();
+            switch (role)
+            {
+                case RoleId.Demon:
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime) * 2;
+                    break;
+                default:
+                    return;
+            }
+            if (player.isDead()) optdata.AnonymousVotes = false;
+            optdata.RoleOptions.ShapeshifterLeaveSkin = false;
+            if (player.AmOwner) PlayerControl.GameOptions = optdata;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.Reliable, player.getClientId());
+            writer.WriteBytesAndSize(optdata.ToBytes(5));
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
         public static void GamblersetCool(PlayerControl p)
         {

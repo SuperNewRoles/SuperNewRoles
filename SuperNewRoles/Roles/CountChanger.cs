@@ -11,40 +11,9 @@ namespace SuperNewRoles.Roles
         {
             public static void WrapUpPatch()
             {
-                    RoleClass.CountChanger.IsSet = false;
-                    RoleClass.CountChanger.ChangeData = RoleClass.CountChanger.Setdata;
-                    RoleClass.CountChanger.Setdata = new Dictionary<int, int>();
-            }
-            [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
-            public class CountChange
-            {
-                
-                public static void Postfix(ExileController __instance)
-                {
-                    try
-                    {
-                        WrapUpPatch();
-                    }
-                    catch (Exception e)
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
-                    }
-                }
-            }
-            [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-            public class CountChangeairship
-            {
-                public static void Postfix(AirshipExileController __instance)
-                {
-                    try
-                    {
-                        WrapUpPatch();
-                    }
-                    catch (Exception e)
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
-                    }
-                }
+                RoleClass.CountChanger.IsSet = false;
+                RoleClass.CountChanger.ChangeData = RoleClass.CountChanger.Setdata;
+                RoleClass.CountChanger.Setdata = new Dictionary<int, int>();
             }
         }
         public static bool isChange(this PlayerControl p)
