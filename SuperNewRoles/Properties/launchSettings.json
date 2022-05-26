@@ -2,7 +2,7 @@
   "profiles": {
     "SuperNewRoles": {
       "commandName": "Executable",
-      "executablePath": "C:\\Program Files\\Epic Games\\AmongUs_mymod\\Among Us.exe"
+      "executablePath": "G:\\SteamLibrary\\steamapps\\common\\Among Us kaihatu\\Among Us.exe"
     },
     "ビルドのみ": {
       "commandName": "Project"

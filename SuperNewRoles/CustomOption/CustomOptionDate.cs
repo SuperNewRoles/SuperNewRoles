@@ -514,6 +514,10 @@ namespace SuperNewRoles.CustomOption
         public static List<float> CrewPlayers = new List<float> { 1f,1f,15f,1f};
         public static List<float> ImpostorPlayers = new List<float> { 1f, 1f, 5f, 1f };
         public static List<float> QuarreledPlayers = new List<float> { 1f,1f,7f,1f};
+
+        public static CustomOption ShadowWarriorOption;
+        public static CustomOption ShadowWarriorPlayerCount;
+        public static CustomOption ShadowWarriorIsMadMate;
         // public static CustomOption ;
 
         internal static Dictionary<byte, byte[]> blockedRolePairings = new Dictionary<byte, byte[]>();
@@ -1029,6 +1033,9 @@ namespace SuperNewRoles.CustomOption
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
 
+            ShadowWarriorOption = new CustomRoleOption(426, false, CustomOptionType.Crewmate, "ShadowWarriorName", RoleClass.ShadowWarrior.color,1);
+            ShadowWarriorPlayerCount = CustomOption.Create(427, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ShadowWarriorOption);
+            ShadowWarriorIsMadMate = CustomOption.Create(428, false, CustomOptionType.Crewmate, "IsMadMateName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ShadowWarriorOption);
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:"+CustomOption.Max);
         }
     }

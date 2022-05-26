@@ -126,6 +126,7 @@ namespace SuperNewRoles.Roles
             MadMaker.ClearAndReload();
             Demon.ClearAndReload();
             TaskManager.ClearAndReload();
+            ShadowWarrior.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1805,6 +1806,15 @@ namespace SuperNewRoles.Roles
                     Long = PlayerControl.GameOptions.NumLongTasks;
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
+            }
+        }
+        public static class ShadowWarrior
+        {
+            public static List<PlayerControl> ShadowWarriorPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                ShadowWarriorPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス
