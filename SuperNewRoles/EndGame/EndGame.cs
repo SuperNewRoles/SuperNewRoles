@@ -559,6 +559,7 @@ namespace SuperNewRoles.EndGame
                 FoxWin = EndData == CustomGameOverReason.FoxWin;
                 JackalWin = EndData == CustomGameOverReason.JackalWin;
                 DemonWin = EndData == CustomGameOverReason.DemonWin;
+                ArsonistWin = EndData == CustomGameOverReason.ArsonistWin;
             }
 
 

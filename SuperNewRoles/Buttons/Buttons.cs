@@ -46,6 +46,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton MadMakerSidekickButton;
         public static CustomButton DemonButton;
         public static CustomButton ArsonistDouseButton;
+        public static CustomButton ArsonistIgniteButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -907,7 +908,31 @@ namespace SuperNewRoles.Buttons
             ArsonistDouseButton.buttonText = ModTranslation.getString("ArsonistDouseButtonName");
             ArsonistDouseButton.showButtonText = true;
 
+            ArsonistIgniteButton = new CustomButton(
+                  () =>
+                  {
+
+                  },
+                  () => { return Arsonist.IsButton(); },
+                  () =>
+                  {
+                      return PlayerControl.LocalPlayer.CanMove && setTarget();
+                  },
+                  () => { trueloverLoveButton.Timer = 0f; trueloverLoveButton.MaxTimer = 0f; },
+                  RoleClass.Arsonist.getIgniteButtonSprite(),
+                  new Vector3(-1.8f, -0.06f, 0),
+                  __instance,
+                  __instance.AbilityButton,
+                  KeyCode.F,
+                  49
+              );
+
+            ArsonistIgniteButton.buttonText = ModTranslation.getString("ArsonistIgniteButtonName");
+            ArsonistIgniteButton.showButtonText = true;
+
             setCustomButtonCooldowns();
+
+
         }
 
     }
