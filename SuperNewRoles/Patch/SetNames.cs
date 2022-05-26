@@ -363,6 +363,11 @@ namespace SuperNewRoles.Patch
                         SetNamesClass.SetPlayerNameColors(p);
                         SetNamesClass.SetPlayerRoleNames(p);
                     }
+                    foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer)
+                    {
+                        SetNamesClass.SetPlayerNameColors(p);
+                        SetNamesClass.SetPlayerRoleNames(p);
+                    }
                 }
                 if (SeerFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
@@ -377,6 +382,11 @@ namespace SuperNewRoles.Patch
                         SetNamesClass.SetPlayerRoleNames(p);
                     }
                     foreach (PlayerControl p in RoleClass.TeleportingJackal.TeleportingJackalPlayer)
+                    {
+                        SetNamesClass.SetPlayerNameColors(p);
+                        SetNamesClass.SetPlayerRoleNames(p);
+                    }
+                    foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer)
                     {
                         SetNamesClass.SetPlayerNameColors(p);
                         SetNamesClass.SetPlayerRoleNames(p);
@@ -404,6 +414,14 @@ namespace SuperNewRoles.Patch
                     {
                         SetNamesClass.SetPlayerNameColor(p, RoleClass.Jackal.color);
                         SetNamesClass.SetPlayerRoleInfoView(p, RoleClass.Jackal.color, Intro.IntroDate.SidekickIntro.NameKey + "Name");
+                    }
+                    foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer)
+                    {
+                        if (p != PlayerControl.LocalPlayer)
+                        {
+                            SetNamesClass.SetPlayerNameColors(p);
+                            SetNamesClass.SetPlayerRoleNames(p);
+                        }
                     }
                 }
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
