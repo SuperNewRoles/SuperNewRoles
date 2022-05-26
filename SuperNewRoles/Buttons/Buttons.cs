@@ -897,7 +897,7 @@ namespace SuperNewRoles.Buttons
                     ArsonistDouseButton.Timer = RoleClass.Arsonist.CoolTime;
                 },
                 RoleClass.Arsonist.getDouseButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new Vector3(0f, 1f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,

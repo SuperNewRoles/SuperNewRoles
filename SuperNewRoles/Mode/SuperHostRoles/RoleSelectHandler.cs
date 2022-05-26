@@ -925,6 +925,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
+            if (!(CustomOption.CustomOptions.ArsonistOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.ArsonistOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Arsonist;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutonepar.Add(ThisRoleId);
+                    }
+                }
+            }
             AllRoleSetClass.Impoonepar = Impoonepar;
             AllRoleSetClass.Imponotonepar = Imponotonepar;
             AllRoleSetClass.Neutonepar = Neutonepar;
