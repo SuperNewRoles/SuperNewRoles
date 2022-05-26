@@ -12,14 +12,14 @@ namespace SuperNewRoles.Roles
         public static List<byte> CheckedJackal;
         public static bool CheckJackal(PlayerControl p)
         {
-            if (!RoleClass.MadSeer.IsImpostorCheck) return false;
-            if (!p.isRole(RoleId.MadSeer)) return false;
+            if (!RoleClass.SeerFriends.IsJackalCheck) return false;
+            if (!p.isRole(RoleId.SeerFriends)) return false;
             if (CheckedJackal.Contains(p.PlayerId)) return true;
             /*
-            SuperNewRolesPlugin.Logger.LogInfo("インポスターチェックタスク量:"+RoleClass.MadSeer.ImpostorCheckTask);
+            SuperNewRolesPlugin.Logger.LogInfo("ジャッカルチェックタスク量:"+RoleClass.SeerFriends.JackalCheckTask);
             SuperNewRolesPlugin.Logger.LogInfo("終了タスク量:"+TaskCount.TaskDate(p.Data).Item1);*/
-            SuperNewRolesPlugin.Logger.LogInfo("有効か:" + (RoleClass.MadSeer.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1));
-            if (RoleClass.MadSeer.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1)
+            SuperNewRolesPlugin.Logger.LogInfo("有効か:" + (RoleClass.SeerFriends.JackalCheckTask <= TaskCount.TaskDate(p.Data).Item1));
+            if (RoleClass.SeerFriends.JackalCheckTask <= TaskCount.TaskDate(p.Data).Item1)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("有効を返しました");
                 return true;

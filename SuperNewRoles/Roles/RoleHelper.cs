@@ -230,6 +230,10 @@ namespace SuperNewRoles
                     returntext = CustomOptions.JackalFriendsIsUseVent.name + ":" + CustomOptions.JackalFriendsIsUseVent.getString() + "\n";
                     returntext += CustomOptions.JackalFriendsIsCheckJackal.name + ":" + CustomOptions.JackalFriendsIsCheckJackal.getString() + "\n";
                     break;
+                case RoleId.SeerFriends:
+                    returntext = CustomOptions.SeerFriendsIsUseVent.name + ":" + CustomOptions.SeerFriendsIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.SeerFriendsIsCheckJackal.name + ":" + CustomOptions.SeerFriendsIsCheckJackal.getString() + "\n";
+                    break;
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
@@ -873,8 +877,11 @@ namespace SuperNewRoles
                     break; 
                 case (RoleId.Demon):
                     IsTaskClear = true;
-                    break; 
-                //タスククリアか
+                    break;
+                case (RoleId.SeerFriends):
+                    IsTaskClear = true;
+                    break;
+                    //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
@@ -928,10 +935,12 @@ namespace SuperNewRoles
                     return RoleClass.Fox.IsUseVent;
                 case RoleId.Demon:
                     return RoleClass.Demon.IsUseVent;
-                /*
-                case RoleId.Scavenger:
-                    return RoleClass.Scavenger.IsUseVent;
-                */
+                case RoleId.SeerFriends:
+                    return RoleClass.SeerFriends.IsUseVent;
+                    /*
+                    case RoleId.Scavenger:
+                        return RoleClass.Scavenger.IsUseVent;
+                    */
             }
             return false;
         }
@@ -1005,6 +1014,8 @@ namespace SuperNewRoles
                     return RoleClass.Jackal.IsImpostorLight;
                 case RoleId.JackalFriends:
                     return RoleClass.JackalFriends.IsImpostorLight;
+                case RoleId.SeerFriends:
+                    return RoleClass.SeerFriends.IsImpostorLight;
             }
             return false;
         }
