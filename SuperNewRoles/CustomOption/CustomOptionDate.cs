@@ -1032,8 +1032,8 @@ namespace SuperNewRoles.CustomOption
             SeerFriendsPlayerCount = CustomOption.Create(163, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerFriendsOption);
             SeerFriendsMode = CustomOption.Create(366, false, CustomOptionType.Crewmate, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, SeerFriendsOption);
             SeerFriendsLimitSoulDuration = CustomOption.Create(367, false, CustomOptionType.Crewmate, "SeerLimitSoulDuration", false, SeerFriendsOption);
-            SeerFriendsSoulDuration = CustomOption.Create(368, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerLimitSoulDuration, format: "unitCouples");
-            SeerFriendsIsUseVent = CustomOption.Create(164, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, JackalFriendsOption);
+            SeerFriendsSoulDuration = CustomOption.Create(368, false, CustomOptionType.Crewmate, "SeerSoulDuration", 15f, 0f, 120f, 5f, SeerFriendsLimitSoulDuration/*(変更忘れでSeerの設定に出るようになってしまっていた())*/, format: "unitCouples");
+            SeerFriendsIsUseVent = CustomOption.Create(164, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, SeerFriendsOption);
             SeerFriendsIsImpostorLight = CustomOption.Create(165, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, SeerFriendsOption);
             SeerFriendsIsCheckJackal = CustomOption.Create(427, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, SeerFriendsOption);
             var SeerFriendsoption = SelectTask.TaskSetting(428, 429, 430, SeerFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
@@ -1041,8 +1041,6 @@ namespace SuperNewRoles.CustomOption
             SeerFriendsShortTask = SeerFriendsoption.Item2;
             SeerFriendsLongTask = SeerFriendsoption.Item3;
             SeerFriendsCheckJackalTask = CustomOption.Create(431, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, SeerFriendsIsCheckJackal);
-
-
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
