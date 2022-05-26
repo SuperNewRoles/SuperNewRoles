@@ -128,6 +128,7 @@ namespace SuperNewRoles.Roles
             Demon.ClearAndReload();
             TaskManager.ClearAndReload();
             SeerFriends.ClearAndReload();
+            JackalSeer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1851,6 +1852,54 @@ namespace SuperNewRoles.Roles
             }
         }
 
+        public static class JackalSeer
+        {
+            public static List<PlayerControl> JackalSeerPlayer;
+            public static List<PlayerControl> SidekickPlayer;
+            public static List<PlayerControl> FakeSidekickPlayer;
+            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+
+            public static List<Vector3> deadBodyPositions;
+            public static float soulDuration;
+            public static bool limitSoulDuration;
+            public static int mode;
+
+            public static float KillCoolDown;
+            public static bool IsUseVent;
+            public static bool IsUseSabo;
+            public static bool IsImpostorLight;
+            public static bool CreateSidekick;
+            public static bool NewJackalCreateSidekick;
+            public static bool IsCreateSidekick;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                JackalSeerPlayer = new List<PlayerControl>();
+
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.JackalSeerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.JackalSeerSoulDuration.getFloat();
+                mode = CustomOptions.JackalSeerMode.getSelection();
+
+                JackalSeerPlayer = new List<PlayerControl>();
+                SidekickPlayer = new List<PlayerControl>();
+                FakeSidekickPlayer = new List<PlayerControl>();
+                KillCoolDown = CustomOptions.JackalSeerKillCoolDown.getFloat();
+                IsUseVent = CustomOptions.JackalSeerUseVent.getBool();
+                IsUseSabo = CustomOptions.JackalSeerUseSabo.getBool();
+                IsImpostorLight = CustomOptions.JackalSeerIsImpostorLight.getBool();
+                CreateSidekick = CustomOptions.JackalSeerCreateSidekick.getBool();
+                IsCreateSidekick = CustomOptions.JackalSeerCreateSidekick.getBool();
+                NewJackalCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.getBool();
+            }
+
+        }
         //新ロールクラス
         public static class Quarreled
         {

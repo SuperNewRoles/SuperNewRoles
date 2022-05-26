@@ -847,6 +847,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.TaskManagerPlayerCount.getFloat();
                 case (RoleId.SeerFriends):
                     return CustomOption.CustomOptions.SeerFriendsPlayerCount.getFloat();
+                    case (RoleId.JackalSeer):
+                    return CustomOption.CustomOptions.JackalSeerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -2249,6 +2251,22 @@ namespace SuperNewRoles
                     for (int i = 1; i <= OptionDate; i++)
                     {
                         Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.JackalSeerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.JackalSeerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.JackalSeer;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
                     }
                 }
             }

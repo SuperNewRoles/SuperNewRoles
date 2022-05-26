@@ -190,6 +190,8 @@ namespace SuperNewRoles.Intro
                     return TaskManagerIntro;
                 case (CustomRPC.RoleId.SeerFriends):
                     return SeerFriendsIntro;
+                case (CustomRPC.RoleId.JackalSeer):
+                    return JackalSeerIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -294,6 +296,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate DemonIntro = new IntroDate("Demon", RoleClass.Demon.color, 1, CustomRPC.RoleId.Demon);
         public static IntroDate TaskManagerIntro = new IntroDate("TaskManager", RoleClass.TaskManager.color, 1, CustomRPC.RoleId.TaskManager);
         public static IntroDate SeerFriendsIntro = new IntroDate("SeerFriends", RoleClass.SeerFriends.color, 1, CustomRPC.RoleId.SeerFriends, TeamRoleType.Neutral);
+        public static IntroDate JackalSeerIntro = new IntroDate("JackalSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.JackalSeer);
         //イントロオブジェ
     }
 }

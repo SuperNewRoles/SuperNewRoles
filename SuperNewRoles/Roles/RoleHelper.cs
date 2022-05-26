@@ -522,6 +522,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.SeerFriends):
                     Roles.RoleClass.SeerFriends.SeerFriendsPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.JackalSeer):
+                    Roles.RoleClass.JackalSeer.JackalSeerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -792,6 +795,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.SeerFriends):
                     Roles.RoleClass.SeerFriends.SeerFriendsPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.JackalSeer):
+                    Roles.RoleClass.JackalSeer.JackalSeerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -881,7 +887,10 @@ namespace SuperNewRoles
                 case (RoleId.SeerFriends):
                     IsTaskClear = true;
                     break;
-                    //タスククリアか
+                    case (RoleId.JackalSeer):
+                    IsTaskClear = true;
+                    break; 
+                //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
@@ -1069,6 +1078,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.Demon):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.JackalSeer):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1513,6 +1525,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.SeerFriends;
+            }
+            else if (Roles.RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.JackalSeer;
             }
             //ロールチェック
             }
