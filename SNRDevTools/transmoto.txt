@@ -590,3 +590,5 @@ DemonIsAliveWinSetting
 DemonButtonName
 TaskManagerName
 TaskManagerTitle1
+ArsonistName
+ArsonistTitle1
