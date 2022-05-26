@@ -591,3 +591,5 @@ DemonIsAliveWinSetting,You have to be alive to win.,生存していないと勝�
 DemonButtonName,Curse,呪う
 TaskManagerName,TaskManager,タスクマネージャー
 TaskManagerTitle1,Finish the task and mount up!,タスクを終わらせ、マウントを取ろう
+SeerFriendsName,SeerFriends,シーアフレンズ
+SeerFriendsTitle1,Let's feel the activity of Jackal,ジャッカルの活躍を感じ取ろう
