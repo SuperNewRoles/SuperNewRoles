@@ -106,7 +106,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                 }
-            } else if (player.isRole(RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+            } else if (JackalFriends.CheckJackal(player))
             {
                 foreach (PlayerControl Jackal in RoleClass.Jackal.JackalPlayer)
                 {

@@ -39,10 +39,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             if (PlayerControl.LocalPlayer.IsUseVent() && RoleHelpers.IsComms())
             {
-                var data = BattleRoyal.main.VentData[PlayerControl.LocalPlayer.PlayerId];
-                if (data != null)
+                if (BattleRoyal.main.VentData.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
                 {
-                    PlayerControl.LocalPlayer.MyPhysics.RpcExitVent((int)data);
+                    var data = BattleRoyal.main.VentData[PlayerControl.LocalPlayer.PlayerId];
+                    if (data != null)
+                    {
+                        PlayerControl.LocalPlayer.MyPhysics.RpcExitVent((int)data);
+                    }
                 }
             }
             return true;

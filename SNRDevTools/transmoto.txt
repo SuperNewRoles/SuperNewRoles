@@ -578,6 +578,12 @@ TeleportingJackalName
 TeleportingJackalTitle1
 MadMakerName
 MadMakerTitle1
+RamdomMapSetting
+RMSkeldSetting
+RMMiraSetting
+RMPolusSetting
+RMAirshipSetting
+RMSubmergedSetting
 DemonName
 DemonTitle1
 DemonIsAliveWinSetting

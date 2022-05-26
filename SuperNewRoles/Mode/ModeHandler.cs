@@ -96,7 +96,7 @@ namespace SuperNewRoles.Mode
                 SuperHostRoles.BlockTool.IsCom = false;
             }
         }
-        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName"), ModTranslation.getString("DetectiveModeName"), ModTranslation.getString("LevelUpModeName") };
+        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName"), ModTranslation.getString("DetectiveModeName"), };//ModTranslation.getString("LevelUpModeName") };
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;
@@ -227,7 +227,7 @@ namespace SuperNewRoles.Mode
             if (isMode(ModeId.Werewolf)) Werewolf.main.Wrapup(exiled); return;
         }
         public static ModeId GetMode(bool IsChache = true) {
-            if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)) return ModeId.SuperHostRoles;
+            if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)) return ModeId.Default;
             if (IsChache)
             {
                 return thisMode;
@@ -248,9 +248,9 @@ namespace SuperNewRoles.Mode
             return ThisModeSetting.getString();
         }
         public static bool isMode(ModeId mode,bool IsChache = true) {
-            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || !ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
+            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)))
             {
-                if (mode == ModeId.SuperHostRoles)
+                if (mode == ModeId.Default)
                 {
                     return true;
                 } else
@@ -281,7 +281,7 @@ namespace SuperNewRoles.Mode
                 case ModeId.Detective:
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[6];
                 case ModeId.LevelUp:
-                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
+                    return false;// ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
             }
             return false;
         }

@@ -578,6 +578,12 @@ TeleportingJackal
 Teleport and kill all crewmates and impostors!
 MadMaker
 Let's get more lunatics!
+RandomMap
+Skeld
+Mira
+Polus
+AirShip
+Submerged
 Demon
 Curse the Crew and Help the Imposter!
 You have to be alive to win.

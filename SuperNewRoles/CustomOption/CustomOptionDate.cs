@@ -98,6 +98,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption JackalKillCoolDown;
         public static CustomOption JackalUseVent;
         public static CustomOption JackalUseSabo;
+        public static CustomOption JackalIsImpostorLight;
         public static CustomOption JackalCreateSidekick;
         public static CustomOption JackalNewJackalCreateSidekick;
 
@@ -249,7 +250,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption JackalFriendsOption;
         public static CustomOption JackalFriendsPlayerCount;
         public static CustomOption JackalFriendsIsCheckJackal;
+        public static CustomOption JackalFriendsCommonTask;
+        public static CustomOption JackalFriendsShortTask;
+        public static CustomOption JackalFriendsLongTask;
+        public static CustomOption JackalFriendsCheckJackalTask;
         public static CustomOption JackalFriendsIsUseVent;
+        public static CustomOption JackalFriendsIsImpostorLight;
 
         public static CustomRoleOption DoctorOption;
         public static CustomOption DoctorPlayerCount;
@@ -624,6 +630,7 @@ namespace SuperNewRoles.CustomOption
             JackalKillCoolDown = CustomOption.Create(38, true, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, JackalOption, format: "unitSeconds");
             JackalUseVent = CustomOption.Create(160, true, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalOption);
             JackalUseSabo = CustomOption.Create(161, true, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalOption);
+            JackalIsImpostorLight = CustomOption.Create(432, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, JackalOption);
             JackalCreateSidekick = CustomOption.Create(39, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalOption);
             JackalNewJackalCreateSidekick = CustomOption.Create(40, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalOption);
 
@@ -777,9 +784,15 @@ namespace SuperNewRoles.CustomOption
 
             JackalFriendsOption = new CustomRoleOption(162, true, CustomOptionType.Crewmate, "JackalFriendsName", RoleClass.JackalFriends.color, 1);
             JackalFriendsPlayerCount = CustomOption.Create(163, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalFriendsOption);
-            JackalFriendsIsCheckJackal = CustomOption.Create(164, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, JackalFriendsOption);
-            JackalFriendsIsUseVent = CustomOption.Create(165, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, JackalFriendsOption);
-            
+            JackalFriendsIsUseVent = CustomOption.Create(164, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, JackalFriendsOption);
+            JackalFriendsIsImpostorLight = CustomOption.Create(165, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, JackalFriendsOption);
+            JackalFriendsIsCheckJackal = CustomOption.Create(427, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, JackalFriendsOption);
+            var JackalFriendsoption = SelectTask.TaskSetting(428, 429, 430, JackalFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
+            JackalFriendsCommonTask = JackalFriendsoption.Item1;
+            JackalFriendsShortTask = JackalFriendsoption.Item2;
+            JackalFriendsLongTask = JackalFriendsoption.Item3;
+            JackalFriendsCheckJackalTask = CustomOption.Create(431, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, JackalFriendsIsCheckJackal);
+
             DoctorOption = new CustomRoleOption(166, false, CustomOptionType.Crewmate, "DoctorName", RoleClass.Doctor.color, 1);
             DoctorPlayerCount = CustomOption.Create(167, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], DoctorOption);
 
