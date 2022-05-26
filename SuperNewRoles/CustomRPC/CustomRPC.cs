@@ -336,7 +336,7 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void StartGameRPC()
         {
-            RoleClass.clearAndReloadRoles();
+            RoleClass.ClearAndReloadRoles();
         }
         public static void UseEraserCount(byte playerid)
         {
