@@ -364,6 +364,24 @@ namespace SuperNewRoles.Patch
                         SetNamesClass.SetPlayerRoleNames(p);
                     }
                 }
+                if (SeerFriends.CheckJackal(PlayerControl.LocalPlayer))
+                {
+                    foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
+                    {
+                        SetNamesClass.SetPlayerNameColors(p);
+                        SetNamesClass.SetPlayerRoleNames(p);
+                    }
+                    foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer)
+                    {
+                        SetNamesClass.SetPlayerNameColors(p);
+                        SetNamesClass.SetPlayerRoleNames(p);
+                    }
+                    foreach (PlayerControl p in RoleClass.TeleportingJackal.TeleportingJackalPlayer)
+                    {
+                        SetNamesClass.SetPlayerNameColors(p);
+                        SetNamesClass.SetPlayerRoleNames(p);
+                    }
+                }
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sidekick))
                 {
                     foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)

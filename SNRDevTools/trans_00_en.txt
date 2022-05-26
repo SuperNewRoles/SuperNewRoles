@@ -590,3 +590,5 @@ You have to be alive to win.
 Curse
 TaskManager
 Finish the task and mount up!
+SeerFriends
+Let's feel the activity of Jackal
