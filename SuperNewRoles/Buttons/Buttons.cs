@@ -37,6 +37,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SpeederSpeedDownButton;
         public static CustomButton JackalKillButton;
         public static CustomButton JackalSidekickButton;
+        public static CustomButton JackalSeerKillButton;
+        public static CustomButton JackalSeerSidekickButton;
         public static CustomButton MagazinerAddButton;
         public static CustomButton MagazinerGetButton;
         public static CustomButton trueloverLoveButton;
@@ -54,6 +56,7 @@ namespace SuperNewRoles.Buttons
             Clergyman.ResetCoolDown();
             Teleporter.ResetCoolDown();
             Jackal.resetCoolDown();
+            JackalSeer.resetCoolDown();
         }
 
         public static PlayerControl setTarget(List<PlayerControl> untarget = null,bool Crewmateonly = false)
@@ -407,12 +410,18 @@ namespace SuperNewRoles.Buttons
                         ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, TeleportingJackal.JackalFixedPatch.TeleportingJackalsetTarget());
                         TeleportingJackal.resetCoolDown();
                     }
+                    if (JackalSeer.JackalSeerFixedPatch.JackalSeersetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, JackalSeer.JackalSeerFixedPatch.JackalSeersetTarget());
+                        JackalSeer.resetCoolDown();
+                    }
                 },
-                () => { return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) || RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer); },
+                () => { return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) || RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer ) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) || RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer); },
                 () =>
                 {
                     return Jackal.JackalFixedPatch.JackalsetTarget() && PlayerControl.LocalPlayer.CanMove;
                     return TeleportingJackal.JackalFixedPatch.TeleportingJackalsetTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return JackalSeer.JackalSeerFixedPatch.JackalSeersetTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Jackal.EndMeeting(); },
                 __instance.KillButton.graphic.sprite,
