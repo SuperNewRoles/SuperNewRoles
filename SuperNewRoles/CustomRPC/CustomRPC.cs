@@ -608,9 +608,15 @@ namespace SuperNewRoles.CustomRPC
                 RoleClass.Jackal.JackalPlayer.Add(RoleClass.Jackal.SidekickPlayer[i]);
                 RoleClass.Jackal.SidekickPlayer.RemoveAt(i);
             }
+            for (int i = 0; i < RoleClass.JackalSeer.SidekickPlayer.Count; i++)
+            {
+                RoleClass.JackalSeer.JackalSeerPlayer.Add(RoleClass.JackalSeer.SidekickPlayer[i]);
+                RoleClass.Jackal.SidekickPlayer.RemoveAt(i);
+            }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
+
         public static void CreateSidekick(byte playerid,bool IsFake) {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;

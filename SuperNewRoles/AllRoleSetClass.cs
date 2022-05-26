@@ -847,7 +847,7 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.TaskManagerPlayerCount.getFloat();
                 case (RoleId.SeerFriends):
                     return CustomOption.CustomOptions.SeerFriendsPlayerCount.getFloat();
-                    case (RoleId.JackalSeer):
+                case (RoleId.JackalSeer):
                     return CustomOption.CustomOptions.JackalSeerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
