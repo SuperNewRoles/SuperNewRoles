@@ -108,6 +108,22 @@ namespace SuperNewRoles.Patches
                             __instance.RpcMurderPlayer(__instance);
                         }
                         return false;
+                    case RoleId.Arsonist:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            {
+                                if (p.isAlive() && p.PlayerId != __instance.PlayerId)
+                                {
+                                    if (Arsonist.IsArsonistWinFlag());
+                                    {
+                                        RoleClass.Arsonist.TriggerArsonistWin = true;
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        return false;
                 }
             }
             return true;

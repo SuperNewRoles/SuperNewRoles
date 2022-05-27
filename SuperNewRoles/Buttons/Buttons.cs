@@ -913,7 +913,7 @@ namespace SuperNewRoles.Buttons
                 {
                     RPCProcedure.SetWinArsonist();
                 },
-                () => { return Arsonist.IsButton(); },
+                () => { return ModeHandler.isMode(ModeId.Default) &&  Arsonist.IsButton(); },
                 () =>
                 {
                     if (Arsonist.IsArsonistWinFlag())

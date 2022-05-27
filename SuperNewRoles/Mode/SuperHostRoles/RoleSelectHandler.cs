@@ -339,6 +339,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 p.RpcSetRole(RoleTypes.Shapeshifter);
             }
+            foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
+            {
+                p.RpcSetRole(RoleTypes.Shapeshifter);
+            }
             /*
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
