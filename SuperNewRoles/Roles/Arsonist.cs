@@ -107,9 +107,20 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
-        public static void SetArsonistWin()
+        public static bool SetArsonistWin()
         {
-            RoleClass.Arsonist.IsWin = true;
+            if (IsArsonistWinFlag()) 
+            {
+                return true;
+            }
+            return false;
+        }
+        public static void ArsonistWin()
+        {
+            if (RoleClass.Arsonist.ArsonistWin)
+            {
+                RPCProcedure.SetWinArsonist();
+            }
         }
     }
 }

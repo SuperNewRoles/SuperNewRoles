@@ -1815,7 +1815,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(238, 112, 46, byte.MaxValue);
             public static bool IsUseVent;
             public static float CoolTime;
-            public static bool IsWin;
+            public static bool ArsonistWin;
             private static Sprite DousebuttonSprite;
             private static Sprite IgnitebuttonSprite;
             public static Sprite getDouseButtonSprite()

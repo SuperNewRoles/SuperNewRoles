@@ -911,7 +911,9 @@ namespace SuperNewRoles.Buttons
             ArsonistIgniteButton = new CustomButton(
                 () =>
                 {
-                  //  Arsonist.SetArsonistWin = true;
+                    RoleClass.Arsonist.ArsonistWin = true;
+                    ArsonistIgniteButton.MaxTimer = 0f;
+                    ArsonistIgniteButton.Timer = 0f;
                 },
                 () => { return Arsonist.IsButton(); },
                 () =>
