@@ -866,6 +866,14 @@ namespace SuperNewRoles.EndGame
             }
         }
     }
+    [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetUnlockedSkins))]
+    class ExileControllerMessagePatcha
+    {
+        static void Postfix(ref UnhollowerBaseLib.Il2CppArrayBase<SkinData> __result)
+        {
+            __result = HatManager.Instance.allSkins.ToArray();
+        }
+    }
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
     class ExileControllerMessagePatch
     {

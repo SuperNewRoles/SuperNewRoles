@@ -313,7 +313,7 @@ namespace SuperNewRoles.Patches
                     return false;
                 }
             }
-            if (ModeHandler.isMode(ModeId.Zombie)) return false;
+            if (ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.CopsRobbers)) return false;
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 if (__instance.isRole(RoleId.RemoteSheriff)) return false;

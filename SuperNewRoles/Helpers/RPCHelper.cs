@@ -1,8 +1,10 @@
-﻿using Hazel;
+﻿using HarmonyLib;
+using Hazel;
 using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace SuperNewRoles.Helpers
 {
@@ -14,7 +16,7 @@ namespace SuperNewRoles.Helpers
         }
         public static MessageWriter StartRPC(byte RPCId,PlayerControl SendTarget = null) {
             var target = SendTarget != null ? SendTarget.getClientId() : -1;
-           return AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, RPCId, Hazel.SendOption.Reliable, target);
+           return AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, RPCId, Hazel.SendOption.None, target);
         }
         public static void EndRPC(this MessageWriter Writer)
         {
@@ -95,6 +97,24 @@ namespace SuperNewRoles.Helpers
             writer.Write((byte)roletype);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             CustomRPC.RPCProcedure.UncheckedSetVanilaRole(player.PlayerId,(byte)roletype);
+        }
+
+        [HarmonyPatch(typeof(CustomNetworkTransform),nameof(CustomNetworkTransform.RpcSnapTo))]
+        class RpcSnapToPatch
+        {
+            public static bool Prefix(CustomNetworkTransform __instance, [HarmonyArgument(0)] Vector2 position)
+            {
+                ushort minSid = (ushort)(__instance.lastSequenceId + 5);
+                if (AmongUsClient.Instance.AmClient)
+                {
+                    __instance.SnapTo(position, minSid);
+                }
+                MessageWriter val = AmongUsClient.Instance.StartRpc(__instance.NetId, 21, SendOption.None);
+                __instance.WriteVector2(position, val);
+                val.Write(__instance.lastSequenceId);
+                val.EndMessage();
+                return false;
+            }
         }
     }
 }

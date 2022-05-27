@@ -41,6 +41,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                    // player.RpcSetName("");
                 }
             }
+            main.ChangeCosmetics();
         }
     }
 }

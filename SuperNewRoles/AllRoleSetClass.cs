@@ -68,10 +68,6 @@ namespace SuperNewRoles
             CustomRPC.RPCProcedure.StartGameRPC();
 
             RoleSelectHandler.SpawnBots();
-            if (ModeHandler.isMode(ModeId.CopsRobbers))
-            {
-                BotManager.Spawn();
-            }
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
