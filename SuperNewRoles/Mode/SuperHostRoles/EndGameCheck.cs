@@ -120,7 +120,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 */
                 __instance.enabled = false;
-                    ShipStatus.RpcEndGame(reason, showAd);
+            ShipStatus.RpcEndGame(reason, showAd);
 
             //変更した設定を直す
             /*
@@ -252,7 +252,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.EgoistWin);
                     }
-                    SuperNewRolesPlugin.Logger.LogInfo("いんぽすたーうぃん");
+                    if (Demon.IsDemonWinFlag())
+                    {
+                        MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                        Writer.Write((byte)CustomGameOverReason.DemonWin);
+                        Writer.EndRPC();
+                        RPCProcedure.SetWinCond((byte)CustomGameOverReason.DemonWin);
+                    }
                     CustomEndGame(__instance,endReason, !SaveManager.BoughtNoAds);
                     return true;
                 }
