@@ -207,7 +207,7 @@ AdvanceTab = psg.Tab("詳細設定", [
                 [psg.Check("設定を追加する",key="AddSetting")],
                 [psg.Text(), psg.Text("タブ:"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut")],
                 [psg.Text(), psg.Check("SHR対応",key="IsSHRON")],
-                [psg.Text(), psg.Text("役職ID"), psg.Input("",key="OptionNumber")],
+                [psg.Text(), psg.Text("設定ID(int)"), psg.Input("",key="OptionNumber")],
                 [psg.Check("ベントを使える",key="A_CanVent")],
                 [], ])
 CreateTab = psg.Tab("作成", [
