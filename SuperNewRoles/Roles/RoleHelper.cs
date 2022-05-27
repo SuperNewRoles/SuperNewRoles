@@ -1530,11 +1530,10 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.TaskManager;
                 }
-            else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.SeerFriends;
-            }
-            //ロールチェック
+                else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SeerFriends;
+                }
                 else if (Roles.RoleClass.Arsonist.ArsonistPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.Arsonist;
