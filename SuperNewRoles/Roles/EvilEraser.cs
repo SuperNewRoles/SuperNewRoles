@@ -16,6 +16,7 @@ namespace SuperNewRoles.Roles
             BaitReport,
             RedRidingHoodRevive,
             JackalSidekick,
+            JackalSeerSidekick,
             NekomataExiled,
             FoxGuard
         }
