@@ -2375,6 +2375,18 @@
  "ArsonistTitle1" : {
         "0" : "Douse Douse burn" ,
         "11" : "\u5857\u3063\u3066\u5857\u3063\u3066\u71c3\u3084\u305b"
+        } ,
+ "ArsonistDurationTimeSetting" : {
+        "0" : "Douse Duration" ,
+        "11" : "\u5857\u308a\u6642\u9593"
+        } ,
+ "ArsonistDouseButtonName" : {
+        "0" : "Douse" ,
+        "11" : "\u5857\u308b"
+        } ,
+ "ArsonistIgniteButtonName" : {
+        "0" : "Ignite" ,
+        "11" : "\u71c3\u3084\u3059"
         } 
 
 }

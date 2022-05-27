@@ -592,3 +592,6 @@ TaskManager
 Finish the task and mount up!
 Arsonist
 Douse Douse burn
+Douse Duration
+Douse
+Ignite
