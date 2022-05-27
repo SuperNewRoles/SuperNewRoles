@@ -729,7 +729,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.MadStuntMan):
+                case (CustomRPC.RoleId.MadStuntMan):
                     Roles.RoleClass.MadStuntMan.MadStuntManPlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.MadHawk):
@@ -759,7 +759,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Observer):
                     Roles.RoleClass.Observer.ObserverPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.Vampire):
+                case (CustomRPC.RoleId.Vampire):
                     Roles.RoleClass.Vampire.VampirePlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.Fox):
@@ -798,7 +798,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.JackalSeer):
                     Roles.RoleClass.JackalSeer.JackalSeerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                case (CustomRPC.RoleId.SidekickSeer):
+                    Roles.RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAll(ClearRemove);
+                    break;
+                    //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -887,10 +890,13 @@ namespace SuperNewRoles
                 case (RoleId.SeerFriends):
                     IsTaskClear = true;
                     break;
-                    case (RoleId.JackalSeer):
+                case (RoleId.JackalSeer):
                     IsTaskClear = true;
-                    break; 
-                //タスククリアか
+                    break;
+                case (RoleId.SidekickSeer):
+                    IsTaskClear = true;
+                    break;
+                    //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
@@ -946,6 +952,9 @@ namespace SuperNewRoles
                     return RoleClass.Demon.IsUseVent;
                 case RoleId.SeerFriends:
                     return RoleClass.SeerFriends.IsUseVent;
+                case RoleId.SidekickSeer:
+                case RoleId.JackalSeer:
+                    return RoleClass.Jackal.IsUseVent;
                     /*
                     case RoleId.Scavenger:
                         return RoleClass.Scavenger.IsUseVent;
@@ -989,6 +998,9 @@ namespace SuperNewRoles
                     return RoleClass.Jackal.IsUseSabo;
                 case RoleId.TeleportingJackal:
                     return RoleClass.TeleportingJackal.IsUseSabo;
+                case RoleId.SidekickSeer:
+                case RoleId.JackalSeer:
+                    return RoleClass.Jackal.IsUseSabo;
                 case RoleId.Egoist:
                     return RoleClass.Egoist.UseSabo;
             }
@@ -1020,7 +1032,6 @@ namespace SuperNewRoles
                 case RoleId.MadMaker:
                     return RoleClass.MadMaker.IsImpostorLight;
                 case RoleId.Jackal:
-                    return RoleClass.Jackal.IsImpostorLight;
                 case RoleId.Sidekick:
                     return RoleClass.Jackal.IsImpostorLight;
                 case RoleId.JackalFriends:
@@ -1083,7 +1094,10 @@ namespace SuperNewRoles
                 case (RoleId.JackalSeer):
                     IsNeutral = true;
                     break;
-                //第三か
+                case (RoleId.SidekickSeer):
+                    IsNeutral = true;
+                    break;
+                    //第三か
             }
             return IsNeutral;
         }
@@ -1522,15 +1536,19 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.TaskManager;
                 }
-            else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.SeerFriends;
-            }
-            else if (Roles.RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.JackalSeer;
-            }
-            //ロールチェック
+                else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SeerFriends;
+                }
+                else if (Roles.RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.JackalSeer;
+                }
+                else if (Roles.RoleClass.JackalSeer.SidekickSeerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SidekickSeer;
+                }
+                //ロールチェック
             }
             catch (Exception e)
             {

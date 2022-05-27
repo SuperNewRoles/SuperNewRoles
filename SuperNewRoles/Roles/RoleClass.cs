@@ -1855,8 +1855,8 @@ namespace SuperNewRoles.Roles
         public static class JackalSeer
         {
             public static List<PlayerControl> JackalSeerPlayer;
-            public static List<PlayerControl> SidekickPlayer;
-            public static List<PlayerControl> FakeSidekickPlayer;
+            public static List<PlayerControl> SidekickSeerPlayer;
+            public static List<PlayerControl> FakeSidekickSeerPlayer;
             public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
 
             public static List<Vector3> deadBodyPositions;
@@ -1888,8 +1888,8 @@ namespace SuperNewRoles.Roles
                 mode = CustomOptions.JackalSeerMode.getSelection();
 
                 JackalSeerPlayer = new List<PlayerControl>();
-                SidekickPlayer = new List<PlayerControl>();
-                FakeSidekickPlayer = new List<PlayerControl>();
+                SidekickSeerPlayer = new List<PlayerControl>();
+                FakeSidekickSeerPlayer = new List<PlayerControl>();
                 KillCoolDown = CustomOptions.JackalSeerKillCoolDown.getFloat();
                 IsUseVent = CustomOptions.JackalSeerUseVent.getBool();
                 IsUseSabo = CustomOptions.JackalSeerUseSabo.getBool();

@@ -513,7 +513,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Demon.DemonPlayer);
             notWinners.AddRange(RoleClass.SeerFriends.SeerFriendsPlayer);
             notWinners.AddRange(RoleClass.JackalSeer.JackalSeerPlayer);
-            notWinners.AddRange(RoleClass.JackalSeer.JackalSeerPlayer);
+            notWinners.AddRange(RoleClass.JackalSeer.SidekickSeerPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -601,6 +601,11 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(wpd);
                 }
                 foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer)
+                {
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                }
+                foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer)
                 {
                     WinningPlayerData wpd = new WinningPlayerData(p.Data);
                     TempData.winners.Add(wpd);
