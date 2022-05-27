@@ -1028,6 +1028,16 @@ namespace SuperNewRoles.EndGame
             return false;
         }
 
+        public static bool CheckAndEndGameForArsonistWin(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            GameOverReason endReason;
+            if (Arsonist.IsArsonistWinFlag())
+            {
+                endReason = (GameOverReason)CustomGameOverReason.ArsonistWin;
+                return true;
+            }
+            return false;
+        }
         public static bool CheckAndEndGameForEgoistWin(ShipStatus __instance, PlayerStatistics statistics)
         {
             if (statistics.EgoistAlive >= statistics.TotalAlive - statistics.EgoistAlive && statistics.EgoistAlive != 0 && statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)

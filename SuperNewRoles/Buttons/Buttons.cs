@@ -909,23 +909,27 @@ namespace SuperNewRoles.Buttons
             ArsonistDouseButton.showButtonText = true;
 
             ArsonistIgniteButton = new CustomButton(
-                  () =>
-                  {
-
-                  },
-                  () => { return Arsonist.IsButton(); },
-                  () =>
-                  {
-                      return PlayerControl.LocalPlayer.CanMove && setTarget();
-                  },
-                  () => { trueloverLoveButton.Timer = 0f; trueloverLoveButton.MaxTimer = 0f; },
-                  RoleClass.Arsonist.getIgniteButtonSprite(),
-                  new Vector3(-1.8f, -0.06f, 0),
-                  __instance,
-                  __instance.AbilityButton,
-                  KeyCode.F,
-                  49
-              );
+                () =>
+                {
+                  //  Arsonist.SetArsonistWin = true;
+                },
+                () => { return Arsonist.IsButton(); },
+                () =>
+                {
+                    if (Arsonist.IsArsonistWinFlag())
+                    {
+                        return true;
+                    }
+                    return false;
+                },
+                () => { },
+                RoleClass.Arsonist.getIgniteButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
 
             ArsonistIgniteButton.buttonText = ModTranslation.getString("ArsonistIgniteButtonName");
             ArsonistIgniteButton.showButtonText = true;

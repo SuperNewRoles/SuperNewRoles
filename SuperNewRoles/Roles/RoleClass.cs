@@ -1815,18 +1815,20 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(238, 112, 46, byte.MaxValue);
             public static bool IsUseVent;
             public static float CoolTime;
-            private static Sprite buttonSprite;
+            public static bool IsWin;
+            private static Sprite DousebuttonSprite;
+            private static Sprite IgnitebuttonSprite;
             public static Sprite getDouseButtonSprite()
             {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistDouse.png", 115f);
-                return buttonSprite;
+                if (DousebuttonSprite) return DousebuttonSprite;
+                DousebuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistDouse.png", 115f);
+                return DousebuttonSprite;
             }
             public static Sprite getIgniteButtonSprite()
             {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistIgnite.png", 115f);
-                return buttonSprite;
+                if (IgnitebuttonSprite) return IgnitebuttonSprite;
+                IgnitebuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistIgnite.png", 115f);
+                return IgnitebuttonSprite;
             }
 
             public static void ClearAndReload()

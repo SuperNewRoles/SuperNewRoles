@@ -265,7 +265,19 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             return false;
         }
-            
+        public static bool CheckAndEndGameForArsonistWin(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            if (Arsonist.IsArsonistWinFlag())
+            {
+                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                Writer.Write((byte)CustomGameOverReason.ArsonistWin);
+                Writer.EndRPC();
+                RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
+                return true;
+            }
+            return false;
+        }
+
 
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {

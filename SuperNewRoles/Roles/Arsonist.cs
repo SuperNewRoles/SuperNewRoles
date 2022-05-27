@@ -5,6 +5,7 @@ using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.EndGame;
 
 namespace SuperNewRoles.Roles
 {
@@ -95,6 +96,20 @@ namespace SuperNewRoles.Roles
             return true;
         }
 
-
+        public static bool IsArsonistWinFlag()
+        {
+            foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
+            {
+                if (IsWin(player))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static void SetArsonistWin()
+        {
+            RoleClass.Arsonist.IsWin = true;
+        }
     }
 }
