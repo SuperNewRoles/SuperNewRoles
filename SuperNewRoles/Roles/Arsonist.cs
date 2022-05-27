@@ -96,6 +96,18 @@ namespace SuperNewRoles.Roles
             return true;
         }
 
+        public static void Duration()
+        {
+            if (ModeHandler.isMode(ModeId.Default));
+            {
+                
+            }
+            if (ModeHandler.isMode(ModeId.SuperHostRoles));
+            {
+
+            }
+        }
+
         public static bool IsArsonistWinFlag()
         {
             foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
@@ -107,12 +119,13 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
+
         public static bool CheckAndEndGameForArsonistWin(ShipStatus __instance)
         {
             if (RoleClass.Arsonist.TriggerArsonistWin)
             {
                 __instance.enabled = false;
-                ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
+                ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, true);
                 return true;
             }
             return false;

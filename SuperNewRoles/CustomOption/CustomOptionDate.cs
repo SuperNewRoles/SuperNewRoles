@@ -495,6 +495,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption ArsonistOption;
         public static CustomOption ArsonistPlayerCount;
         public static CustomOption ArsonistCoolTime;
+        public static CustomOption ArsonistDurationTime;
         public static CustomOption ArsonistIsUseVent;
 
         public static CustomOption QuarreledOption;
@@ -1020,7 +1021,8 @@ namespace SuperNewRoles.CustomOption
             ArsonistOption = new CustomRoleOption(425, true, CustomOptionType.Neutral, "ArsonistName", RoleClass.Arsonist.color, 1);
             ArsonistPlayerCount = CustomOption.Create(426, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ArsonistOption);
             ArsonistCoolTime = CustomOption.Create(427, true, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 30f, 2.5f, 60f, 2.5f, ArsonistOption, format: "unitSeconds");
-            ArsonistIsUseVent = CustomOption.Create(428, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, ArsonistOption);
+            ArsonistDurationTime = CustomOption.Create(428, true, CustomOptionType.Neutral, "ArsonistDurationTimeSetting", 30f, 2.5f, 60f, 2.5f, ArsonistOption, format: "unitSeconds");
+            ArsonistIsUseVent = CustomOption.Create(42, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, ArsonistOption);
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

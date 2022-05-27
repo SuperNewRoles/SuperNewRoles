@@ -1815,6 +1815,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(238, 112, 46, byte.MaxValue);
             public static bool IsUseVent;
             public static float CoolTime;
+            public static float DurationTime;
             public static bool TriggerArsonistWin;
             private static Sprite DousebuttonSprite;
             private static Sprite IgnitebuttonSprite;
@@ -1837,6 +1838,7 @@ namespace SuperNewRoles.Roles
                 DouseDatas = new Dictionary<byte, List<PlayerControl>>();
                 IsUseVent = CustomOptions.ArsonistIsUseVent.getBool();
                 CoolTime = CustomOptions.ArsonistCoolTime.getFloat();
+                DurationTime = CustomOptions.ArsonistDurationTime.getFloat();
                 TriggerArsonistWin = false;
             }
         }

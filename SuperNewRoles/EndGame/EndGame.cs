@@ -1033,7 +1033,8 @@ namespace SuperNewRoles.EndGame
             GameOverReason endReason;
             if (Arsonist.IsArsonistWinFlag())
             {
-                endReason = (GameOverReason)CustomGameOverReason.ArsonistWin;
+                __instance.enabled = false;
+                CustomEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
                 return true;
             }
             return false;
