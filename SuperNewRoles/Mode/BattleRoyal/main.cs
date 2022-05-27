@@ -150,7 +150,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 {
                     return false;
                 }
-                if (ModeHandler.isMode(ModeId.SuperHostRoles) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors))
+                if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
                     bool returndata = MorePatch.RepairSystem(__instance, systemType, player, amount);
                     return returndata;

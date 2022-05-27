@@ -60,35 +60,5 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
-        [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
-        public class CheckEndGamePatch
-        {
-            public static void Postfix(ExileController __instance)
-            {
-                try
-                {
-                    NekomataEnd(__instance.exiled);
-                }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
-                }
-            }
-        }
-        [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-        public class CheckAirShipEndGamePatch
-        {
-            public static void Postfix(AirshipExileController __instance)
-            {
-                try
-                {
-                    NekomataEnd(__instance.exiled);
-                }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
-                }
-            }
-        }
     }
 }

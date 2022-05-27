@@ -45,6 +45,10 @@ namespace SuperNewRoles.Roles
             if (CountChanger.IsChangeMadStuntMan(PlayerControl.LocalPlayer)) return true;
             if (CountChanger.IsChangeMadHawk(PlayerControl.LocalPlayer)) return true;
             if (CountChanger.IsChangeMadSeer(PlayerControl.LocalPlayer)) return true;
+            if (CountChanger.IsChangeMadMaker(PlayerControl.LocalPlayer)) return true;
+            if (CountChanger.IsChangeJackal(PlayerControl.LocalPlayer)) return true;
+            if (CountChanger.IsChangeJackalFriends(PlayerControl.LocalPlayer)) return true;
+            if (CountChanger.IsChangeSeerFriends(PlayerControl.LocalPlayer)) return true;
 
             return false;
         }

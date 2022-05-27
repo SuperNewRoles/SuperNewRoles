@@ -138,6 +138,7 @@ CrewMateDescription
 ImpostorName
 ImpostorTitle1
 ImpostorDescription
+LevelUpModeName
 ZombieZombieName
 ZombieZombieTitle1
 ZombiePoliceName
@@ -578,3 +579,22 @@ EvilSeerTitle1
 RemoteSheriffName
 RemoteSheriffTitle1
 RemoteSheriffIsKillTeleportSetting
+TeleportingJackalName
+TeleportingJackalTitle1
+MadMakerName
+MadMakerTitle1
+RamdomMapSetting
+RMSkeldSetting
+RMMiraSetting
+RMPolusSetting
+RMAirshipSetting
+RMSubmergedSetting
+DemonName
+DemonTitle1
+DemonIsAliveWinSetting
+DemonButtonName
+TaskManagerName
+TaskManagerTitle1
+SeerFriendsName
+SeerFriendsTitle1
+>>>>>>> master
