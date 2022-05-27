@@ -725,7 +725,7 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SetWinArsonist()
         {
-            OnGameEndPatch.EndData = CustomGameOverReason.ArsonistWin;
+            RoleClass.Arsonist.TriggerArsonistWin = true;
         }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME

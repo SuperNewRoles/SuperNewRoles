@@ -107,20 +107,15 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
-        public static bool SetArsonistWin()
+        public static bool CheckAndEndGameForArsonistWin(ShipStatus __instance)
         {
-            if (IsArsonistWinFlag()) 
+            if (RoleClass.Arsonist.TriggerArsonistWin)
             {
+                __instance.enabled = false;
+                ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
                 return true;
             }
             return false;
-        }
-        public static void ArsonistWin()
-        {
-            if (RoleClass.Arsonist.ArsonistWin)
-            {
-                RPCProcedure.SetWinArsonist();
-            }
         }
     }
 }

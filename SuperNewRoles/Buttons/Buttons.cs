@@ -911,9 +911,7 @@ namespace SuperNewRoles.Buttons
             ArsonistIgniteButton = new CustomButton(
                 () =>
                 {
-                    RoleClass.Arsonist.ArsonistWin = true;
-                    ArsonistIgniteButton.MaxTimer = 0f;
-                    ArsonistIgniteButton.Timer = 0f;
+                    RPCProcedure.SetWinArsonist();
                 },
                 () => { return Arsonist.IsButton(); },
                 () =>
@@ -924,7 +922,11 @@ namespace SuperNewRoles.Buttons
                     }
                     return false;
                 },
-                () => { },
+                () => 
+                {
+                    ArsonistIgniteButton.MaxTimer = 0f;
+                    ArsonistIgniteButton.Timer = 0f;
+                },
                 RoleClass.Arsonist.getIgniteButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
