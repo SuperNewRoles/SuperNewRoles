@@ -141,14 +141,16 @@ class AllCheck:
         if (MainClass.GetInput("AddSetting") == True):
             if (MainClass.GetInput("TeamImpo") == True):
                 MainClass.WriteCodes("CustomOption/CustomOptionData", "//表示設定", 
-        """ROLENAMEOption = new CustomRoleOption(444, true, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
-            ROLENAMEPlayerCount = CustomOption.Create(445, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+                """ROLENAMEOption = new CustomRoleOption(IDNOM, true, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
+            ROLENAMEPlayerCount = CustomOption.Create(IDNUM, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName"))).replace("IDNUM",MainClass.GetInput("OptionNumber"))
             elif (MainClass.GetInput("TeamCrew") == True):
-                """ROLENAMEOption = new CustomRoleOption(444, true, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
-            ROLENAMEPlayerCount = CustomOption.Create(445, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName"))
+                MainClass.WriteCodes("CustomOption/CustomOptionData", "//表示設定", 
+                """ROLENAMEOption = new CustomRoleOption(IDNUM, true, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
+            ROLENAMEPlayerCount = CustomOption.Create(IDNUM, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.GetInput("OptionNumber")))
             elif (MainClass.GetInput("TeamNeut") == True):
-                """ROLENAMEOption = new CustomRoleOption(444, true, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
-            ROLENAMEPlayerCount = CustomOption.Create(445, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName"))
+                MainClass.WriteCodes("CustomOption/CustomOptionData", "//表示設定", 
+                """ROLENAMEOption = new CustomRoleOption(IDNUM, true, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
+            ROLENAMEPlayerCount = CustomOption.Create(IDNUM, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.GetInput("OptionNumber")))
 
     #エラーウィンドウ作成
     def CreateErrorWindow(self, text):
@@ -200,6 +202,7 @@ AdvanceTab = psg.Tab("詳細設定", [
                 [psg.Check("設定を追加する",key="AddSetting")],
                 [psg.Text(), psg.Text("タブ:"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut")],
                 [psg.Text(), psg.Check("SHR対応",key="AddSetting")],
+                [psg.Text(), psg.Text("役職ID"), psg.Input("",key="OptionNomber")],
                 [psg.Check("ベントを使える",key="A_CanVent")],
                 [], ])
 CreateTab = psg.Tab("作成", [
