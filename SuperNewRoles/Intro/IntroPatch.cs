@@ -114,7 +114,7 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int JackalNum = 0;
@@ -122,6 +122,21 @@ namespace SuperNewRoles.Patches
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
                         if (player.isRole(CustomRPC.RoleId.JackalFriends))
+                        {
+                            JackalNum++;
+                            JackalTeams.Add(player);
+                        }
+                    }
+                    yourTeam = JackalTeams;
+                }
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.SeerFriends) && SeerFriends.CheckJackal(PlayerControl.LocalPlayer))
+                {
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    int JackalNum = 0;
+                    JackalTeams.Add(PlayerControl.LocalPlayer);
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.isRole(CustomRPC.RoleId.SeerFriends))
                         {
                             JackalNum++;
                             JackalTeams.Add(player);
@@ -201,7 +216,16 @@ namespace SuperNewRoles.Patches
                     __instance.TeamTitle.color = Intro.color;
                     __instance.ImpostorText.text = "";
                 }
-            } else
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.SeerFriends) && CustomOption.CustomOptions.SeerFriendsIsCheckJackal.getBool())
+                {
+                    IntroDate Intro = IntroDate.SeerFriendsIntro;
+                    __instance.BackgroundBar.material.color = Intro.color;
+                    __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
+                    __instance.TeamTitle.color = Intro.color;
+                    __instance.ImpostorText.text = "";
+                }
+            }
+            else
             {
                 ModeHandler.IntroHandler(__instance);
             }

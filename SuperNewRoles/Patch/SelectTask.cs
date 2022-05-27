@@ -95,6 +95,19 @@ namespace SuperNewRoles.Patch
                     }
                 }
             }
+            else if (p.isRole(RoleId.SeerFriends))
+            {
+                if (CustomOptions.SeerFriendsIsCheckJackal.getBool())
+                {
+                    int commont = (int)CustomOptions.SeerFriendsCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.SeerFriendsShortTask.getFloat();
+                    int longt = (int)CustomOptions.SeerFriendsLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }
             else if (p.isRole(RoleId.Jester))
             {
                 if (CustomOptions.JesterIsWinCleartask.getBool())

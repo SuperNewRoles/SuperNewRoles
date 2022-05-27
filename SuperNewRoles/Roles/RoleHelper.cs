@@ -230,6 +230,10 @@ namespace SuperNewRoles
                     returntext = CustomOptions.JackalFriendsIsUseVent.name + ":" + CustomOptions.JackalFriendsIsUseVent.getString() + "\n";
                     returntext += CustomOptions.JackalFriendsIsCheckJackal.name + ":" + CustomOptions.JackalFriendsIsCheckJackal.getString() + "\n";
                     break;
+                case RoleId.SeerFriends:
+                    returntext = CustomOptions.SeerFriendsIsUseVent.name + ":" + CustomOptions.SeerFriendsIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.SeerFriendsIsCheckJackal.name + ":" + CustomOptions.SeerFriendsIsCheckJackal.getString() + "\n";
+                    break;
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
@@ -515,6 +519,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.TaskManager):
                     Roles.RoleClass.TaskManager.TaskManagerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.SeerFriends):
+                    Roles.RoleClass.SeerFriends.SeerFriendsPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.Arsonist):
                     Roles.RoleClass.Arsonist.ArsonistPlayer.Add(player);
                     break;
@@ -785,6 +792,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.TaskManager):
                     Roles.RoleClass.TaskManager.TaskManagerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.SeerFriends):
+                    Roles.RoleClass.SeerFriends.SeerFriendsPlayer.RemoveAll(ClearRemove);
+                    break;
                 case (CustomRPC.RoleId.Arsonist):
                     Roles.RoleClass.Arsonist.ArsonistPlayer.RemoveAll(ClearRemove);
                     break;
@@ -873,6 +883,11 @@ namespace SuperNewRoles
                     break; 
                 case (RoleId.Demon):
                     IsTaskClear = true;
+                    break;
+                case (RoleId.SeerFriends):
+                    IsTaskClear = true;
+                    break;
+                    //タスククリアか
                     break; 
                 case (RoleId.Arsonist):
                     IsTaskClear = true;
@@ -931,6 +946,12 @@ namespace SuperNewRoles
                     return RoleClass.Fox.IsUseVent;
                 case RoleId.Demon:
                     return RoleClass.Demon.IsUseVent;
+                case RoleId.SeerFriends:
+                    return RoleClass.SeerFriends.IsUseVent;
+                    /*
+                    case RoleId.Scavenger:
+                        return RoleClass.Scavenger.IsUseVent;
+                    */
                 case RoleId.Arsonist:
                     return RoleClass.Arsonist.IsUseVent;
                     /*
@@ -1008,8 +1029,12 @@ namespace SuperNewRoles
                     return RoleClass.MadMaker.IsImpostorLight;
                 case RoleId.Jackal:
                     return RoleClass.Jackal.IsImpostorLight;
+                case RoleId.Sidekick:
+                    return RoleClass.Jackal.IsImpostorLight;
                 case RoleId.JackalFriends:
                     return RoleClass.JackalFriends.IsImpostorLight;
+                case RoleId.SeerFriends:
+                    return RoleClass.SeerFriends.IsImpostorLight;
             }
             return false;
         }
@@ -1505,6 +1530,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.TaskManager;
                 }
+            else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.SeerFriends;
+            }
+            //ロールチェック
                 else if (Roles.RoleClass.Arsonist.ArsonistPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.Arsonist;

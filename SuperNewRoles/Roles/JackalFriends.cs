@@ -16,6 +16,7 @@ namespace SuperNewRoles.Roles
             if (!p.isRole(RoleId.JackalFriends)) return false;
             if (CheckedJackal.Contains(p.PlayerId)) return true;
             var taskdata = TaskCount.TaskDate(p.Data).Item1;
+
             if (p.isRole(RoleId.JackalFriends))
             {
                 if (!RoleClass.JackalFriends.IsJackalCheck) return false;
@@ -25,6 +26,17 @@ namespace SuperNewRoles.Roles
                     return true;
                 }
             }
+
+            else if (p.isRole(RoleId.SeerFriends))
+            {
+                if (!RoleClass.SeerFriends.IsJackalCheck) return false;
+                if (RoleClass.SeerFriends.JackalCheckTask <= taskdata)
+                {
+                    CheckedJackal.Add(p.PlayerId);
+                    return true;
+                }
+            }
+
             return false;
         }
     }

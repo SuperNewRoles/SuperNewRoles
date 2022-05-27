@@ -590,6 +590,8 @@ DemonIsAliveWinSetting
 DemonButtonName
 TaskManagerName
 TaskManagerTitle1
+SeerFriendsName
+SeerFriendsTitle1
 ArsonistName
 ArsonistTitle1
 ArsonistDurationTimeSetting
