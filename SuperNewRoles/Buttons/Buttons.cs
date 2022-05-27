@@ -913,7 +913,7 @@ namespace SuperNewRoles.Buttons
                 {
                     RPCProcedure.SetWinArsonist();
                 },
-                () => { return ModeHandler.isMode(ModeId.Default) &&  Arsonist.IsButton(); },
+                () => {return Arsonist.IsButton(); },
                 () =>
                 {
                     if (Arsonist.IsArsonistWinFlag())
@@ -924,8 +924,8 @@ namespace SuperNewRoles.Buttons
                 },
                 () => 
                 {
-                    ArsonistIgniteButton.MaxTimer = 0f;
-                    ArsonistIgniteButton.Timer = 0f;
+                    ArsonistIgniteButton.MaxTimer = 0;
+                    ArsonistIgniteButton.Timer = 0;
                 },
                 RoleClass.Arsonist.getIgniteButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
