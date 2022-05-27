@@ -21,7 +21,7 @@ class ReturnClass:
                 Template = Template.replace(OldCode, NewCode)
                 print("ファイルを書き込みました:"+Template)
                 print("パス:"+BasePath+Path)
-                #w.write(Template)
+                w.write(Template)
     #入力をゲット+戻り値として返す
     def GetInput(self, key):
         if values[key] == "":
@@ -69,8 +69,9 @@ class ReturnClass:
 class AllCheck:
     #すべて書く
     def AllWrite(self):
+        # CustomRPC/CustomRPC.cs
         MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//RoleId", MainClass.GetInput("RoleName")+",\n        //RoleId")
-        '''MainClass.WriteCodes(r"CustomRPC\\CustomRPC.cs", "//新ロールクラス", 
+        MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//新ロールクラス", 
                                 """public static class ROLE!!
         {
             public static List<PlayerControl> ROLE!!Player;
@@ -80,7 +81,8 @@ class AllCheck:
                 ROLE!!Player = new List<PlayerControl>();
             }
         }\n        //新ロールクラス""".replace("ROLE!!",MainClass.GetInput("RoleName")).replace("COLORS",MainClass.GetRoleColor()))
-        MainClass.WriteCodes(r"AllRoleSetClass.cs", "//セットクラス",
+        # AllRoleSetClass.cs
+        MainClass.WriteCodes("AllRoleSetClass.cs", "//セットクラス",
                                 """if (!(CustomOption.CustomOptions.ROLEID!!Option.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.ROLEID!!Option.getString().Replace("0%", ""));
@@ -96,7 +98,42 @@ class AllCheck:
                         TEAMnotonepar.Add(ThisRoleId);
                     }
                 }
-            }\n        //セットクラス""".replace("ROLEID!!",MainClass.GetInput("RoleName")).replace("TEAM",MainClass.GetTeam()))'''
+            }\n        //セットクラス""".replace("ROLEID!!",MainClass.GetInput("RoleName")).replace("TEAM",MainClass.GetTeam()))
+        MainClass.WriteCodes("AllRoleSetClass.cs", "//プレイヤーカウント","""case (RoleId.ROLENAME):
+                return CustomOption.CustomOptions.ROLENAMEPlayerCount.getFloat();\n                    //プレイヤーカウント""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+
+        # Roles/RoleHelper.cs
+        MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールチェック",
+                                """else if (Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.ROLENAME;
+            }\n            //ロールチェック""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+        MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールアド",
+                                """case (CustomRPC.RoleId.ROLENAME):
+                    Roles.RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
+                    break;\n                //ロールアド""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+        MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールリモベ",
+                                """case (CustomRPC.RoleId.ROLENAME):
+                    Roles.RoleClass.ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
+                    break;\n                //ロールリモベ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+        if (MainClass.GetInput("Neut") == True):
+            MainClass.WriteCodes("Roles/RoleHelper.cs", "//第三か",
+                                """case (RoleId.ROLENAME):
+                    IsNeutral = true;
+                    break;\n                //第三か""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes("Roles/RoleHelper.cs", "//タスククリアか",
+                                """case (RoleId.ROLENAME):
+                    IsTaskClear = true;
+                    break; 
+                //タスククリアか""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+
+        #Intro/IntroData.cs
+        MainClass.WriteCodes("Intro/IntroData.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME);
+        //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+        MainClass.WriteCodes("Intro/IntroData.cs", "//イントロ検知","""case (CustomRPC.RoleId.ROLENAME):
+                    return ROLENAMEIntro;
+                //イントロ検知""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+
     #エラーウィンドウ作成
     def CreateErrorWindow(self, text):
         ErrorPop = psg.popup_error(text,title="エラー")
