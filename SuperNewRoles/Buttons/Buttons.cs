@@ -884,7 +884,6 @@ namespace SuperNewRoles.Buttons
             ArsonistDouseButton = new CustomButton(
                 () =>
                 {
-
                     Arsonist.ArsonistDouse(setTarget(untarget: Arsonist.GetUntarget()));
                     ArsonistDouseButton.Timer = ArsonistDouseButton.MaxTimer;
                 },
@@ -911,7 +910,7 @@ namespace SuperNewRoles.Buttons
             ArsonistIgniteButton = new CustomButton(
                 () =>
                 {
-                    RPCProcedure.SetWinArsonist();
+                    Arsonist.SetWinArsonist();
                 },
                 () => {return Arsonist.IsButton(); },
                 () =>

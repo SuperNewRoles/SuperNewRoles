@@ -273,9 +273,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (Arsonist.IsArsonistWinFlag())
             {
-                MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinArsonist);
-                Writer.Write((byte)CustomGameOverReason.ArsonistWin);
-                Writer.EndRPC();
+                Chat.WinCond = CustomGameOverReason.ArsonistWin;
                 RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
                 return true;
             }

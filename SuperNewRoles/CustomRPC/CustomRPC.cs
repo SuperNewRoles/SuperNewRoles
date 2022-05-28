@@ -162,7 +162,6 @@ namespace SuperNewRoles.CustomRPC
         SetBot,
         DemonCurse,
         ArsonistDouse,
-        SetWinArsonist,
     }
     public static class RPCProcedure
     {
@@ -724,10 +723,6 @@ namespace SuperNewRoles.CustomRPC
         {
             OnGameEndPatch.EndData = (CustomGameOverReason)Cond;
         }
-        public static void SetWinArsonist()
-        {
-            RoleClass.Arsonist.TriggerArsonistWin = true;
-        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -914,9 +909,6 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.ArsonistDouse:
                         ArsonistDouse(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SetWinArsonist:
-                        SetWinArsonist();
                         break;
                 }
             }
