@@ -18,10 +18,10 @@ class ReturnClass:
             Template = r.read()
             print(Template)
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
-                Template = Template.replace(OldCode, NewCode)
+                #Template = Template.replace(OldCode, NewCode)
                 print("ファイルを書き込みました:"+Template)
                 print("パス:"+BasePath+Path)
-                #w.write(Template)
+                w.write(Template)
     #入力をゲット+戻り値として返す
     def GetInput(self, key):
         if values[key] == "":
@@ -31,7 +31,7 @@ class ReturnClass:
             print("入力した値を読み込みました:" + values[key])
             return values[key]
     def GetBool(self, key):
-        if values[key] == True:
+        if values[key]:
             return True
         else:
             return False
@@ -50,10 +50,10 @@ class ReturnClass:
             Template = "new Color32(",MainClass.HashToRGB(),"byte.MaxValue)"
             print("ハッシュを取得しました:", Template)
             return Template
-        elif (MainClass.GetBool("ImpoColor") == True):
+        elif (MainClass.GetBool("ImpoColor")):
             print("インポ色を取得しました")
             return "ImpostorRed"
-        elif (MainClass.GetBool("CrewColor") == True):
+        elif (MainClass.GetBool("CrewColor")):
             print("クルー色を取得しました")
             return "new Color32(0, 255, 0, byte.MaxValue)"
     #ハッシュをRGBに変換
@@ -64,12 +64,18 @@ class ReturnClass:
         return RGB
     #チーム取得
     def GetTeam(self):
-        if (MainClass.GetBool("Impo") == True):
+        if (MainClass.GetBool("Impo")):
             return "Impo"
-        elif (MainClass.GetBool("Crew") == True):
+        elif (MainClass.GetBool("Crew")):
             return "Crew"
-        elif (MainClass.GetBool("Neut") == True):
+        elif (MainClass.GetBool("Neut")):
             return "Neut"
+    # チェックボックス、ラジオを更新
+    def UpdateBool(self, key, bool):
+        MainWindow[key].Update(value = bool)
+    # 上の表示板
+    #def UpdateGUI(self, key, bool):
+        #MainWindow[key].Update(disabled = bool)
 # 戻り値なし
 class AllCheck:
     #すべて書く
@@ -121,7 +127,7 @@ class AllCheck:
                                 """case (CustomRPC.RoleId.ROLENAME):
                     Roles.RoleClass.ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
                     break;\n                //ロールリモベ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
-        if (MainClass.GetBool("Neut") == True):
+        if (MainClass.GetBool("Neut")):
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//第三か",
                                 """case (RoleId.ROLENAME):
                     IsNeutral = true;
@@ -143,16 +149,16 @@ class AllCheck:
         MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//CustomOption", 
         """public static CustomRoleOption ROLENAMEOption;
         public static CustomOption ROLENAMEPlayerCount;\n        //CustomOption""".replace("ROLENAME",MainClass.GetInput("RoleName")))
-        if (MainClass.GetBool("AddSetting") == True):
-            if (MainClass.GetBool("TeamImpo") == True):
+        if (MainClass.GetBool("AddSetting")):
+            if (MainClass.GetBool("TeamImpo")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
                 """ROLENAMEOption = new CustomRoleOption(IDNOM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.GetInput("OptionNumber")))
-            elif (MainClass.GetBool("TeamCrew") == True):
+            elif (MainClass.GetBool("TeamCrew")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
                 """ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.GetInput("OptionNumber")))
-            elif (MainClass.GetBool("TeamNeut") == True):
+            elif (MainClass.GetBool("TeamNeut")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
                 """ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.GetInput("OptionNumber")).replace("SHRON",MainClass.GetBool("IsSHRON")))
@@ -202,12 +208,12 @@ MainTab = psg.Tab("メイン", [
                 [psg.Text("イントロ:",key="IntroText"), psg.Combo(("役職のみ表示","陣営でも表示"),size=(30,2),default_value=MainClass.GetConfig("MainDefaultSetting", "Intro"))],
                 [psg.Text("陣営:    ",key="TeamText"),psg.Radio("インポ陣営","TeamName",key="Impo",default=True),psg.Radio("クルー陣営","TeamName",key="Crew"),psg.Radio("第三陣営","TeamName",key="Neut")],
                 [psg.Text("役職カラー:",key="ColorText"), psg.Radio("インポ色","RoleColor",key="ImpoColor",default=True), psg.Radio("ナイス緑色","RoleColor",key="CrewColor"),  psg.ColorChooserButton("色選択",key="ColorButton",target="ColorHash")],
-                [psg.Text("取得ハッシュ:",key="ColorHashText"), psg.Input("ImposterRed",key="ColorHash")] ])
-AdvanceTab = psg.Tab("詳細設定", [ 
+                [psg.Text("取得ハッシュ:",key="ColorHashText"), psg.Input("ImposterRed",key="ColorHash")],
                 [psg.Check("設定を追加する",key="AddSetting")],
-                [psg.Text(), psg.Text("タブ:"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut")],
+                [psg.Text(), psg.Text("タブ:",key="SettingTabText"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut")],
                 [psg.Text(), psg.Check("SHR対応",key="IsSHRON")],
-                [psg.Text(), psg.Text("設定ID(int)"), psg.Input("",key="OptionNumber")],
+                [psg.Text(), psg.Text("設定ID(int)",key="OptionNumberIDText"), psg.Input("",key="OptionNumber")], ])
+AdvanceTab = psg.Tab("詳細設定", [
                 [psg.Check("ベントを使える",key="A_CanVent")],
                 [], ])
 CreateTab = psg.Tab("作成", [
@@ -224,5 +230,23 @@ while True:
         LastClicked = psg.popup_ok_cancel("役職を作成します。よろしいですか？",title="確認")
         if LastClicked == "OK":
             AllActClass.AllWrite()
+    
+    '''# チェックボックス、ラジオ検知
+    if (MainClass.GetBool("AddSetting") == True):
+        MainClass.UpdateGUI("SettingTabText", True)
+        MainClass.UpdateGUI("TeamImpo", True)
+        MainClass.UpdateGUI("TeamCrew", True)
+        MainClass.UpdateGUI("TeamNeut", True)
+        MainClass.UpdateGUI("IsSHRON", True)
+        MainClass.UpdateGUI("OptionNumberIDText", True)
+        MainClass.UpdateGUI("OptionNumber", True)
+    else:
+        MainClass.UpdateGUI("SettingTabText", False)
+        MainClass.UpdateGUI("TeamImpo", False)
+        MainClass.UpdateGUI("TeamCrew", False)
+        MainClass.UpdateGUI("TeamNeut", False)
+        MainClass.UpdateGUI("IsSHRON", False)
+        MainClass.UpdateGUI("OptionNumberIDText", False)
+        MainClass.UpdateGUI("OptionNumber", False)'''
 
 MainWindow.close()
