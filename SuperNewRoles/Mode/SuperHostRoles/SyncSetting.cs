@@ -226,21 +226,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         optdata.ImpostorLightMod /= 5;
                     }
-                    optdata.RoleOptions.ShapeshifterDuration = 1f;
-                    if (Arsonist.IsArsonistWinFlag())
-                    {
-                        optdata.RoleOptions.ShapeshifterDuration = 1f;
-                        optdata.RoleOptions.ShapeshifterCooldown = -1f;
-                    }
-                    if (player.IsMod())
-                    {
-                        optdata.killCooldown = KillCoolSet(RoleClass.Arsonist.CoolTime);
-                    }
-                    else
-                    {
-                        optdata.killCooldown = -1f;
-                    }
+                    optdata.RoleOptions.ShapeshifterCooldown = 0.000001f;
+                    optdata.RoleOptions.ShapeshifterDuration = 0.000001f;
                     break;
+                    
                 case RoleId.Nocturnality:
                     var switchSystemNocturnality = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                     if (switchSystemNocturnality == null || !switchSystemNocturnality.IsActive)
