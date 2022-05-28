@@ -1038,6 +1038,9 @@ namespace SuperNewRoles
                     return RoleClass.JackalFriends.IsImpostorLight;
                 case RoleId.SeerFriends:
                     return RoleClass.SeerFriends.IsImpostorLight;
+                case RoleId.JackalSeer:
+                case RoleId.SidekickSeer:
+                    return RoleClass.Jackal.IsImpostorLight;
             }
             return false;
         }
