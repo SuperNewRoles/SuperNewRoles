@@ -913,6 +913,21 @@ namespace SuperNewRoles.Buttons
                 {
                     Arsonist.SetWinArsonist();
                     SuperNewRolesPlugin.Logger.LogInfo("アーソニストが燃やすボタンを押した");
+                    if (Arsonist.IsArsonistWinFlag())
+                    {
+                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
+                        {
+                            SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
+                            WinningPlayerData wpd = new WinningPlayerData(player.Data);
+                            TempData.winners.Add(wpd);
+                        }
+                        EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
+                        SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                        __instance.enabled = false;
+                        ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
+                    }
+
                 },
                 () => {return Arsonist.IsButton(); },
                 () =>
