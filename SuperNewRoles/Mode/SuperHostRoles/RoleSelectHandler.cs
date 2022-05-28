@@ -219,7 +219,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         if (p.PlayerId != ArsonistPlayer.PlayerId && p.IsPlayer())
                         {
                             ArsonistPlayer.RpcSetRoleDesync(RoleTypes.Shapeshifter, p);
-                            p.RpcSetRoleDesync(RoleTypes.Scientist, ArsonistPlayer);
+                            p.RpcSetRoleDesync(RoleTypes.Shapeshifter, ArsonistPlayer);
                         }
                     }
                 }
