@@ -1057,17 +1057,17 @@ namespace SuperNewRoles.CustomOption
             SeerFriendsLongTask = SeerFriendsoption.Item3;
             SeerFriendsCheckJackalTask = CustomOption.Create(455, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, SeerFriendsIsCheckJackal);
 
-            JackalSeerOption = new CustomRoleOption(900, false, CustomOptionType.Neutral, "JackalSeerName", RoleClass.JackalSeer.color, 1);
-            JackalSeerPlayerCount = CustomOption.Create(901, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
-            JackalSeerMode = CustomOption.Create(908, false, CustomOptionType.Neutral, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, JackalSeerOption);
-            JackalSeerLimitSoulDuration = CustomOption.Create(909, false, CustomOptionType.Neutral, "SeerLimitSoulDuration", false, JackalSeerOption);
-            JackalSeerSoulDuration = CustomOption.Create(910, false, CustomOptionType.Neutral, "SeerSoulDuration", 15f, 0f, 120f, 5f, JackalSeerLimitSoulDuration, format: "unitCouples");
-            JackalSeerKillCoolDown = CustomOption.Create(902, false, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, JackalSeerOption, format: "unitSeconds");
-            JackalSeerUseVent = CustomOption.Create(903, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalSeerOption);
-            JackalSeerUseSabo = CustomOption.Create(904, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalSeerOption);
-            JackalSeerIsImpostorLight = CustomOption.Create(905, false, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, JackalSeerOption);
-            JackalSeerCreateSidekick = CustomOption.Create(906, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalSeerOption);
-            JackalSeerNewJackalCreateSidekick = CustomOption.Create(907, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
+            JackalSeerOption = new CustomRoleOption(456, false, CustomOptionType.Neutral, "JackalSeerName", RoleClass.JackalSeer.color, 1);
+            JackalSeerPlayerCount = CustomOption.Create(457, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalSeerOption);
+            JackalSeerMode = CustomOption.Create(458, false, CustomOptionType.Neutral, "SeerMode", new string[] { "SeerModeBoth", "SeerModeFlash", "SeerModeSouls" }, JackalSeerOption);
+            JackalSeerLimitSoulDuration = CustomOption.Create(459, false, CustomOptionType.Neutral, "SeerLimitSoulDuration", false, JackalSeerOption);
+            JackalSeerSoulDuration = CustomOption.Create(460, false, CustomOptionType.Neutral, "SeerSoulDuration", 15f, 0f, 120f, 5f, JackalSeerLimitSoulDuration, format: "unitCouples");
+            JackalSeerKillCoolDown = CustomOption.Create(461, false, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, JackalSeerOption, format: "unitSeconds");
+            JackalSeerUseVent = CustomOption.Create(462, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalSeerOption);
+            JackalSeerUseSabo = CustomOption.Create(463, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalSeerOption);
+            JackalSeerIsImpostorLight = CustomOption.Create(464, false, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, JackalSeerOption);
+            JackalSeerCreateSidekick = CustomOption.Create(465, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalSeerOption);
+            JackalSeerNewJackalCreateSidekick = CustomOption.Create(466, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
