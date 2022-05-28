@@ -73,6 +73,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 p.RpcSetRole(RoleTypes.GuardianAngel);
             }
+            foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
+            {
+                p.RpcSetRole(RoleTypes.GuardianAngel);
+            }
             if (OnGameEndPatch.EndData == null && (reason == GameOverReason.ImpostorByKill || reason == GameOverReason.ImpostorBySabotage || reason == GameOverReason.ImpostorByVote || reason == GameOverReason.ImpostorDisconnect))
             {
                 foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
