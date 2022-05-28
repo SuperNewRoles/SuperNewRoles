@@ -19,7 +19,7 @@ using SuperNewRoles.CustomRPC;
 namespace SuperNewRoles.Roles
 {
     class Seer
-    //&MadSeer & EvilSeer & SeerFriends & JackalSeer
+    //&MadSeer & EvilSeer & SeerFriends & JackalSeer & Sidekick(Seer)
     {
 
 
@@ -37,7 +37,7 @@ namespace SuperNewRoles.Roles
             public static void WrapUpPostfix(GameData.PlayerInfo exiled)
             {
                 var role = PlayerControl.LocalPlayer.getRole();
-                if (role == RoleId.Seer || role == RoleId.MadSeer || role == RoleId.EvilSeer || role == RoleId.SeerFriends || role == RoleId.JackalSeer)
+                if (role == RoleId.Seer || role == RoleId.MadSeer || role == RoleId.EvilSeer || role == RoleId.SeerFriends || role == RoleId.JackalSeer || role == RoleId.SidekickSeer)
                 {
                     List<Vector3> DeadBodyPositions = new List<Vector3>();
                     bool limitSoulDuration = false;
@@ -73,6 +73,7 @@ namespace SuperNewRoles.Roles
                             if (RoleClass.SeerFriends.mode != 0 && RoleClass.SeerFriends.mode != 2) return;
                             break;
                         case RoleId.JackalSeer:
+                        case RoleId.SidekickSeer:
                             DeadBodyPositions = RoleClass.JackalSeer.deadBodyPositions;
                             RoleClass.JackalSeer.deadBodyPositions = new List<Vector3>();
                             limitSoulDuration = RoleClass.JackalSeer.limitSoulDuration;
@@ -110,7 +111,7 @@ namespace SuperNewRoles.Roles
                 public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
                 {
                     var role = PlayerControl.LocalPlayer.getRole();
-                    if (role == RoleId.Seer || role == RoleId.MadSeer || role == RoleId.EvilSeer || role == RoleId.SeerFriends || role == RoleId.JackalSeer)
+                    if (role == RoleId.Seer || role == RoleId.MadSeer || role == RoleId.EvilSeer || role == RoleId.SeerFriends || role == RoleId.JackalSeer || role == RoleId.SidekickSeer)
                     {
                         bool ModeFlag = false;
                         switch (role)
@@ -132,6 +133,7 @@ namespace SuperNewRoles.Roles
                                 ModeFlag = RoleClass.SeerFriends.mode <= 1;
                                 break;
                             case RoleId.JackalSeer:
+                            case RoleId.SidekickSeer:
                                 if (RoleClass.JackalSeer.deadBodyPositions != null) RoleClass.JackalSeer.deadBodyPositions.Add(target.transform.position);
                                 ModeFlag = RoleClass.JackalSeer.mode <= 1;
                                 break;
