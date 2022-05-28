@@ -100,7 +100,7 @@ namespace SuperNewRoles.Roles
         {
             if (ModeHandler.isMode(ModeId.Default));
             {
-                //あ
+                
             }
             if (ModeHandler.isMode(ModeId.SuperHostRoles));
             {
