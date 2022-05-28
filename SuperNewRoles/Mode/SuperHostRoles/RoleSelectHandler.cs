@@ -153,7 +153,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (!ArsonistPlayer.IsMod())
                 {
-                    ArsonistPlayer.RpcSetRoleDesync(RoleTypes.Impostor);
+                    ArsonistPlayer.RpcSetRoleDesync(RoleTypes.Shapeshifter);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         if (p.PlayerId != ArsonistPlayer.PlayerId && p.IsPlayer())
