@@ -24,6 +24,15 @@ namespace SuperNewRoles.Roles
                     return true;
                 }
             }
+            if (p.isRole(RoleId.MadMayor))
+            {
+                if (!RoleClass.MadMayor.IsImpostorCheck) return false;
+                if (RoleClass.MadMayor.ImpostorCheckTask <= taskdata)
+                {
+                    CheckedImpostor.Add(p.PlayerId);
+                    return true;
+                }
+            }
             else if (p.isRole(RoleId.MadJester))
             {
                 if (!RoleClass.MadJester.IsImpostorCheck) return false;

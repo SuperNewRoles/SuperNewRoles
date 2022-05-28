@@ -106,7 +106,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                 }
-            } else if (JackalFriends.CheckJackal(player))
+            }
+            else if (MadMayor.CheckImpostor(player))
+            {
+                foreach (PlayerControl Impostor in PlayerControl.AllPlayerControls)
+                {
+                    if (Impostor.isImpostor() && Impostor.IsPlayer())
+                    {
+                        if (!ChangePlayers.ContainsKey(Impostor.PlayerId))
+                        {
+                            ChangePlayers.Add(Impostor.PlayerId, ModHelpers.cs(RoleClass.ImpostorRed, Impostor.getDefaultName()));
+                        }
+                    }
+                }
+            }
+            else if (JackalFriends.CheckJackal(player))
             {
                 foreach (PlayerControl Jackal in RoleClass.Jackal.JackalPlayer)
                 {
