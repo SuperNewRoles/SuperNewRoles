@@ -656,8 +656,9 @@ namespace SuperNewRoles.EndGame
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
                 {
-                    if (Arsonist.IsWin(player))
+                    if (Arsonist.IsArsonistWinFlag())
                     {
+                        SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
                         WinningPlayerData wpd = new WinningPlayerData(player.Data);
                         TempData.winners.Add(wpd);
                     }

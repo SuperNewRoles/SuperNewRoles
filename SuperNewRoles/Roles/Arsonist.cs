@@ -114,7 +114,7 @@ namespace SuperNewRoles.Roles
             {
                 if (IsWin(player))
                 {
-                    //SuperNewRolesPlugin.Logger.LogInfo("アーソニストが勝利条件を達成");
+                    SuperNewRolesPlugin.Logger.LogInfo("アーソニストが勝利条件を達成");
                     return true;
                 }
             }
@@ -125,7 +125,7 @@ namespace SuperNewRoles.Roles
         {
             if (RoleClass.Arsonist.TriggerArsonistWin)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("アーソニストが勝利を検知");
+                SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
                 __instance.enabled = false;
                 ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
                 return true;

@@ -886,6 +886,7 @@ namespace SuperNewRoles.Buttons
                 {
                     Arsonist.ArsonistDouse(setTarget(untarget: Arsonist.GetUntarget()));
                     ArsonistDouseButton.Timer = ArsonistDouseButton.MaxTimer;
+                    SuperNewRolesPlugin.Logger.LogInfo("アーソニストが塗るボタンを押した");
                 },
                 () => { return Arsonist.IsButton(); },
                 () =>
@@ -911,6 +912,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     Arsonist.SetWinArsonist();
+                    SuperNewRolesPlugin.Logger.LogInfo("アーソニストが燃やすボタンを押した");
                 },
                 () => {return Arsonist.IsButton(); },
                 () =>

@@ -1883,7 +1883,7 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.ArsonistIsUseVent.getBool();
                 CoolTime = CustomOptions.ArsonistCoolTime.getFloat();
                 DurationTime = CustomOptions.ArsonistDurationTime.getFloat();
-                TriggerArsonistWin = false;
+                TriggerArsonistWin = true;
             }
         }
         //新ロールクラス
