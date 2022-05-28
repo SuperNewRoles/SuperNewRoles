@@ -299,7 +299,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate TaskManagerIntro = new IntroDate("TaskManager", RoleClass.TaskManager.color, 1, CustomRPC.RoleId.TaskManager);
         public static IntroDate SeerFriendsIntro = new IntroDate("SeerFriends", RoleClass.SeerFriends.color, 1, CustomRPC.RoleId.SeerFriends, TeamRoleType.Neutral);
         public static IntroDate JackalSeerIntro = new IntroDate("JackalSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.JackalSeer, TeamRoleType.Neutral);
-        public static IntroDate SidekickSeerIntro = new IntroDate("JackalSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.JackalSeer, TeamRoleType.Neutral);
+        public static IntroDate SidekickSeerIntro = new IntroDate("SidekickSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.SidekickSeer, TeamRoleType.Neutral);
         //イントロオブジェ
     }
 }
