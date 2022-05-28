@@ -592,3 +592,7 @@ TaskManagerName
 TaskManagerTitle1
 SeerFriendsName
 SeerFriendsTitle1
+JackalSeerName
+JackalSeerTitle1
+SidekickSeerName
+SidekickSeerTitle1

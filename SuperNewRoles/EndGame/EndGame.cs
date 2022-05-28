@@ -1127,7 +1127,7 @@ namespace SuperNewRoles.EndGame
                         if (playerInfo.Object.isAlive())
                         {
                             numTotalAlive++;
-                            if (playerInfo.Object.isRole(RoleId.Jackal) || playerInfo.Object.isRole(CustomRPC.RoleId.Sidekick))
+                            if (playerInfo.Object.isRole(RoleId.Jackal) || playerInfo.Object.isRole(CustomRPC.RoleId.Sidekick) || playerInfo.Object.isRole(CustomRPC.RoleId.TeleportingJackal) || playerInfo.Object.isRole(CustomRPC.RoleId.JackalSeer) || playerInfo.Object.isRole(CustomRPC.RoleId.SidekickSeer))
                             {
                                 numTotalJackalTeam++;
                             }
