@@ -887,8 +887,6 @@ namespace SuperNewRoles
                 case (RoleId.SeerFriends):
                     IsTaskClear = true;
                     break;
-                    //タスククリアか
-                    break; 
                 case (RoleId.Arsonist):
                     IsTaskClear = true;
                     break; 
