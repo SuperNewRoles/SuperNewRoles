@@ -915,6 +915,9 @@ namespace SuperNewRoles.CustomRPC
                     case (byte)CustomRPC.ArsonistDouse:
                         ArsonistDouse(reader.ReadByte(), reader.ReadByte());
                         break;
+                    case (byte)CustomRPC.SetWinArsonist:
+                        SetWinArsonist();
+                        break;
                 }
             }
         }
