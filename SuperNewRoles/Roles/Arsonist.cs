@@ -125,7 +125,7 @@ namespace SuperNewRoles.Roles
             if (RoleClass.Arsonist.TriggerArsonistWin)
             {
                 __instance.enabled = false;
-                ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, true);
+                ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
                 return true;
             }
             return false;

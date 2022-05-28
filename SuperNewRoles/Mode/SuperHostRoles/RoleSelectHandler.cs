@@ -149,26 +149,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 //DemonPlayer.Data.IsDead = true;
             }
-            foreach (PlayerControl ArsonistPlayer in RoleClass.Arsonist.ArsonistPlayer)
-            {
-                if (!ArsonistPlayer.IsMod())
-                {
-                    ArsonistPlayer.RpcSetRoleDesync(RoleTypes.Shapeshifter);
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        if (p.PlayerId != ArsonistPlayer.PlayerId && p.IsPlayer())
-                        {
-                            ArsonistPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                            p.RpcSetRoleDesync(RoleTypes.Scientist, ArsonistPlayer);
-                        }
-                    }
-                }
-                else
-                {
-                    ArsonistPlayer.RpcSetRole(RoleTypes.Crewmate);
-                }
-                //ArsonistPlayer.Data.IsDead = true;
-            }
             foreach (PlayerControl RemoteSheriffPlayer in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
             {
                 if (!RemoteSheriffPlayer.IsMod())
@@ -238,7 +218,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         if (p.PlayerId != ArsonistPlayer.PlayerId && p.IsPlayer())
                         {
-                            ArsonistPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            ArsonistPlayer.RpcSetRoleDesync(RoleTypes.Shapeshifter, p);
                             p.RpcSetRoleDesync(RoleTypes.Scientist, ArsonistPlayer);
                         }
                     }
