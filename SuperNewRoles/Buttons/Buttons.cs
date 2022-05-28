@@ -901,7 +901,7 @@ namespace SuperNewRoles.Buttons
                 new Vector3(0f, 1f, 0),
                 __instance,
                 __instance.AbilityButton,
-                KeyCode.F,
+                KeyCode.Q,
                 49
             );
 
