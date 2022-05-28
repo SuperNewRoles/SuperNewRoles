@@ -592,3 +592,7 @@ TaskManager
 Finish the task and mount up!
 SeerFriends
 Let's feel the activity of Jackal
+SeerJackal
+Detect the dead and bring victory to your camp!
+Sidekick(Seer)
+Let's help Jackal with the dead detection ability that we got
