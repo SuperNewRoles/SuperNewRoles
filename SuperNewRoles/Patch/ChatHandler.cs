@@ -1,11 +1,41 @@
 ﻿using HarmonyLib;
+using SuperNewRoles.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
-{/**
+{
+    [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
+    class AddChatPatch
+    {
+        static string SNR = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
+        static string SNRCommander = "<size=150%>"+SNR+"</size>";
+
+        public static void Postfix(PlayerControl sourcePlayer, string chatText)
+        {
+            if (chatText.Equals("/version", StringComparison.OrdinalIgnoreCase) || chatText.Equals("/v", StringComparison.OrdinalIgnoreCase))
+            {
+                SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu");
+            }
+        }
+        static void SendCommand(PlayerControl target,string command)
+        {
+            command = "\n" + command + "\n";
+            if (target.AmOwner)
+            {
+                string name = target.name;
+                target.SetName(SNRCommander);
+                new LateTask(() => HudManager.Instance.Chat.AddChat(target, command), 0.1f);
+                new LateTask(() => target.SetName(name), 0.2f);
+            } else { 
+                target.RpcSetNamePrivate(SNRCommander);
+                new LateTask(() => target.RPCSendChatPrivate(command), 0.1f);
+                new LateTask(() => target.RpcSetName(target.name), 0.2f);
+            }
+        }
+    }/**
     [HarmonyPatch(typeof(ChatController),nameof(ChatController.AddChat))]
     class ChatHandler
     {
