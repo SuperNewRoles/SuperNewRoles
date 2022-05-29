@@ -1174,6 +1174,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            */
             if (!(CustomOption.CustomOptions.GuesserOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.GuesserOption.getString().Replace("0%", ""));
@@ -1206,6 +1207,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            /*
             if (!(CustomOption.CustomOptions.VultureOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.VultureOption.getString().Replace("0%", ""));
