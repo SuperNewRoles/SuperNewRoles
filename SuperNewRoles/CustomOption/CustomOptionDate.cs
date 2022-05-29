@@ -713,13 +713,13 @@ namespace SuperNewRoles.CustomOption
             */
             GuesserOption = new CustomRoleOption(81, false, CustomOptionType.Crewmate, "GuesserName", RoleClass.Guesser.color, 1);
             GuesserPlayerCount = CustomOption.Create(82, false, CustomOptionType.Crewmate, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GuesserOption);
-            GuesserShortMaxCount = CustomOption.Create(83, false, CustomOptionType.Crewmate, ModTranslation.getString("GuesserShortMaxCountSetting"), 30f, 2.5f, 60f, 2.5f, GuesserOption);
-            GuesserShortOneMeetingCount = CustomOption.Create(84, false, CustomOptionType.Crewmate, cs(Color.white, "GuesserOneMeetingShortSetting"), GuesserCount, GuesserOption);
+            GuesserShortMaxCount = CustomOption.Create(83, false, CustomOptionType.Crewmate, ModTranslation.getString("GuesserShortMaxCountSetting"), GuesserCount, GuesserOption);
+            GuesserShortOneMeetingCount = CustomOption.Create(84, false, CustomOptionType.Crewmate, cs(Color.white, "GuesserOneMeetingShortSetting"), false, GuesserOption);
 
             EvilGuesserOption = new CustomRoleOption(85, false, CustomOptionType.Impostor, "EvilGuesserName", RoleClass.ImpostorRed, 1);
             EvilGuesserPlayerCount = CustomOption.Create(86, false, CustomOptionType.Impostor, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilGuesserOption);
-            EvilGuesserShortMaxCount = CustomOption.Create(87, false, CustomOptionType.Impostor, ModTranslation.getString("EvilGuesserShortMaxCountSetting"), 30f, 2.5f, 60f, 2.5f, EvilGuesserOption);
-            EvilGuesserShortOneMeetingCount = CustomOption.Create(88, false, CustomOptionType.Impostor, cs(Color.white, "EvilGuesserOneMeetingShortSetting"), GuesserCount, EvilGuesserOption);
+            EvilGuesserShortMaxCount = CustomOption.Create(87, false, CustomOptionType.Impostor, ModTranslation.getString("GuesserShortMaxCountSetting"), GuesserCount, EvilGuesserOption);
+            EvilGuesserShortOneMeetingCount = CustomOption.Create(88, false, CustomOptionType.Impostor, cs(Color.white, "GuesserOneMeetingShortSetting"), false, EvilGuesserOption);
             /*
             VultureOption = new CustomRoleOption(89, "VultureName", RoleClass.Vulture.color, 1);
             VulturePlayerCount = CustomOption.Create(90, cs(Color.white, "SettingPlayerCountName"), CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], VultureOption);

@@ -74,16 +74,16 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleSelect != null)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("ページ切り替え");
+                   // SuperNewRolesPlugin.Logger.LogInfo("ページ切り替え");
                     if (i <= RoleSelectPage * 45 && i >= 45 * (RoleSelectPage - 1))
                     {
                         RoleSelect.gameObject.SetActive(true);
-                        SuperNewRolesPlugin.Logger.LogInfo("ページ切り替え(true)");
+                       // SuperNewRolesPlugin.Logger.LogInfo("ページ切り替え(true)");
                     }
                     else
                     {
                         RoleSelect.gameObject.SetActive(false);
-                        SuperNewRolesPlugin.Logger.LogInfo("ページ切り替え(false)");
+                       // SuperNewRolesPlugin.Logger.LogInfo("ページ切り替え(false)");
                     }
                     i++;
                 }

@@ -324,8 +324,6 @@ GuesserOneMeetingShortSetting
 GuesserShortMaxCountSetting
 EvilGuesserName
 EvilGuesserTitle1
-EvilGuesserOneMeetingShortSetting
-EvilGuesserShortMaxCountSetting
 VultureName
 VultureTitle1
 VultureCoolDownSetting

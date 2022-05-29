@@ -1304,14 +1304,6 @@
         "0" : "Guess the position of the camp other than Imposter." ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u4ee5\u5916\u306e\u9663\u55b6\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046"
         } ,
- "EvilGuesserOneMeetingShortSetting" : {
-        "0" : "Multiple hits in one meeting" ,
-        "11" : "\u4eba\u5916\u306e\u5f79\u8077\u3092\u5f53\u3066\u3088\u3046"
-        } ,
- "EvilGuesserShortMaxCountSetting" : {
-        "0" : "Number of times you can hit" ,
-        "11" : "1\u4f1a\u8b70\u306b\u8907\u6570\u56de\u6253\u3066\u308b"
-        } ,
  "VultureName" : {
         "0" : "Vulture" ,
         "11" : "\u30f4\u30a1\u30eb\u30c1\u30e3\u30fc"

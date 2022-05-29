@@ -324,8 +324,6 @@ Multiple hits in one meeting
 Number of times you can hit
 Evil Guesser
 Guess the position of the camp other than Imposter.
-Multiple hits in one meeting
-Number of times you can hit
 Vulture
 Let's eat a corpse.
 Corpse cooldown
