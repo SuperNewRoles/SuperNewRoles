@@ -38,6 +38,8 @@ namespace SuperNewRoles.EndGame
         BySelfBomb,
         Disconnected,
         Dead,
-        Sabotage
+        Sabotage,
+        GuesserKill,
+        GuesserMisFire,
     }
 }

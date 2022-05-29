@@ -522,18 +522,33 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> GuesserPlayer;
             public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
+            public static float KillMaxCount;
+            public static bool OneMeetingMultiKill;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.NiceScientistButton.png", 115f);
+                return ButtonSprite;
+            }
             public static void ClearAndReload()
             {
                 GuesserPlayer = new List<PlayerControl>();
+                KillMaxCount = CustomOptions.GuesserShortMaxCount.getFloat();
+                OneMeetingMultiKill = CustomOptions.GuesserShortOneMeetingCount.getBool();
             }
         }
         public static class EvilGuesser
         {
             public static List<PlayerControl> EvilGuesserPlayer;
             public static Color32 color = ImpostorRed;
+            public static float KillMaxCount;
+            public static bool OneMeetingMultiKill;
             public static void ClearAndReload()
             {
                 EvilGuesserPlayer = new List<PlayerControl>();
+                KillMaxCount = CustomOptions.GuesserShortMaxCount.getFloat();
+                OneMeetingMultiKill = CustomOptions.GuesserShortOneMeetingCount.getBool();
             }
         }
         public static class Vulture

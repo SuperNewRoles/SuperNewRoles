@@ -8,13 +8,15 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
+using SuperNewRoles.CustomRPC;
+using System.Runtime.InteropServices;
 
 namespace SuperNewRoles.Roles
 {
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
     class Guesser
     {
-        public static void Postfix(MeetingHud __instance)
+        /*public static void Postfix(MeetingHud __instance)
         {
             if (!IsFlag) return;
             if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -28,9 +30,9 @@ namespace SuperNewRoles.Roles
             GuesserUpdatePatch.Change(__instance, false);
         }
         public static PassiveButton RightButton;
-        public static PassiveButton LeftButton;
-        public static bool IsFlag;
-        public static bool IsSHRFlag;
+        public static PassiveButton LeftButton;*/
+        //public static bool IsFlag;
+        //public static bool IsSHRFlag;
         private static Sprite m_Meeting_AreaTabChange;
         public static Sprite Meeting_AreaTabChange
         {
@@ -47,92 +49,175 @@ namespace SuperNewRoles.Roles
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
     class GuesserUpdatePatch
     {
+        public static int RoleSelectPage = 1;
+        public static List<Transform> buttons = new List<Transform>();
         static void Postfix(MeetingHud __instance)
         {
             if (PlayerControl.LocalPlayer.isDead())
             {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+                if (__instance.transform.Find("GuesserShootHud").gameObject != null) UnityEngine.Object.Destroy(__instance.transform.Find("GuesserShootHud").gameObject);
+                if (Guesser_Patch.Left != null) UnityEngine.Object.Destroy(Guesser_Patch.Left);
+                if (Guesser_Patch.Right != null) UnityEngine.Object.Destroy(Guesser_Patch.Right);
             }
-        }
-        public static void Change(MeetingHud __instance, bool right)
-        {
-            if (!(meetingsheriff_updatepatch.index < (PlayerControl.AllPlayerControls.Count / 15) + 1))
+            if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                Guesser_Patch.Right.SetActive(false);
+                MeetingSheriff_Patch.right();
             }
-            else
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                Guesser_Patch.Right.SetActive(true);
+                MeetingSheriff_Patch.left();
             }
-            if (index <= 1)
+            // meetingsheriff_updatepatch.Change(__instance, false);
+            int i = 1;
+            foreach (Transform RoleSelect in buttons)
             {
-                Guesser_Patch.Left.SetActive(false);
-            }
-            else
-            {
-                Guesser_Patch.Left.SetActive(true);
-            }
-            int i = 0;
-            foreach (PlayerVoteArea area in PlayerVoteAreas)
-            {
-                try
+                if (RoleSelect != null)
                 {
-                    if (!(index * 15 < i && i >= 15 * (index - 1)))
+                    SuperNewRolesPlugin.Logger.LogInfo("ページ切り替え");
+                    if (i <= RoleSelectPage * 45 && i >= 45 * (RoleSelectPage - 1))
                     {
-                        area.transform.localPosition = Positions[i - ((index - 1) * 15)];
+                        RoleSelect.gameObject.SetActive(true);
+                        SuperNewRolesPlugin.Logger.LogInfo("ページ切り替え(true)");
                     }
                     else
                     {
-                        area.transform.localPosition = new Vector3(100, 100, 100);
+                        RoleSelect.gameObject.SetActive(false);
+                        SuperNewRolesPlugin.Logger.LogInfo("ページ切り替え(false)");
+                    }
+                    i++;
+                }
+            }
+        }
+        /*public static void Change(MeetingHud __instance, bool right)
+        {
+            int i = 0;
+            foreach (Transform RoleSelect in buttons)
+            {
+                if (i >= /*RoleSelectPage*///45)
+                /*{
+                    RoleSelect.gameObject.SetActive(true);
+                }
+                else
+                {
+                    RoleSelect.gameObject.SetActive(false);
+                }
+                i++;*/
+                /*try
+                {
+                    if (!(RoleSelectPage * 45 < i && i >= 45 * (RoleSelectPage - 1)))
+                    {
+                        RoleSelect.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        RoleSelect.gameObject.SetActive(false);
                     }
                 }
                 catch
                 {
-                    area.transform.localPosition = new Vector3(100, 100, 100);
+                    RoleSelect.gameObject.SetActive(false);
                 }
-                i++;
-            }
-        }
+                i++;*/
+           /* }
+        }*/
         public static int index;
-        public static List<PlayerVoteArea> PlayerVoteAreas;
-        public static Vector3[] Positions = new Vector3[] {
+        //public static List<GameObject> RoleSelectAreas;
+        /*public static Vector3[] Positions = new Vector3[] {
             new Vector3(-3.1f, 1.5f, -0.9f), new Vector3(-0.2f, 1.5f, -0.9f), new Vector3(2.7f, 1.5f, -0.9f), new Vector3(-3.1f, 0.74f, -0.91f), new Vector3(-0.2f, 0.74f, -0.91f),
             new Vector3(2.7f, 0.74f, -0.91f), new Vector3(-3.1f, -0.02f, -0.92f), new Vector3(-0.2f, -0.02f, -0.92f), new Vector3(2.7f, -0.02f, -0.92f), new Vector3(-3.1f, -0.78f, -0.93f),
             new Vector3(-0.2f, -0.78f, -0.93f), new Vector3(2.7f, -0.78f, -0.93f), new Vector3(-3.1f, -1.54f, -0.94f), new Vector3(-0.2f, -1.54f, -0.94f), new Vector3(2.7f, -1.54f, -0.94f)
-        };
+        };*/
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     class Guesser_Patch
     {
-        public static bool IsGuesserKill(PlayerControl Target)
+        public static bool IsGuesserKill(PlayerControl Target,RoleId Role)
         {
-            if (RoleClass.Guesser.GuesserPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            SuperNewRolesPlugin.Logger.LogInfo(Target.getRole() + $"{Role}");
+            if ((int)Target.getRole() == (int)Role) return true;
             return false;
         }
-        static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
+        static void GuesserOnClick(int Index,MeetingHud __instance)
         {
-            var Target = ModHelpers.playerById((byte)__instance.playerStates[Index].TargetPlayerId);
-            var misfire = !IsGuesserKill(Target);
-            var TargetID = Target.PlayerId;
-            var LocalID = PlayerControl.LocalPlayer.PlayerId;
-
-            CustomRPC.RPCProcedure.MeetingSheriffKill(LocalID, TargetID, misfire);
-
-            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.MeetingSheriffKill, Hazel.SendOption.Reliable, -1);
-            killWriter.Write(LocalID);
-            killWriter.Write(TargetID);
-            killWriter.Write(misfire);
-            AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-            RoleClass.MeetingSheriff.KillMaxCount--;
-            if (RoleClass.MeetingSheriff.KillMaxCount <= 0 || !RoleClass.MeetingSheriff.OneMeetingMultiKill || misfire)
+            if (GameObject.Find("GuesserShootHud") != null) return;
+            int p = 0;
+            var buttonTemplate = __instance.playerStates[0].transform.FindChild("votePlayerBase");
+            var maskTemplate = __instance.playerStates[0].transform.FindChild("MaskArea");
+            var smallButtonTemplate = __instance.playerStates[0].Buttons.transform.Find("CancelButton");
+            var textTemplate = __instance.playerStates[0].NameText;
+            RoleId Role = 0;
+            CreateAreaButton(__instance);
+            Transform template = MeetingHud.Instance.transform.FindChild("PhoneUI");
+            Transform GuesserShootHud = UnityEngine.Object.Instantiate(template, __instance.transform);
+            GuesserShootHud.localScale = new Vector3(0.975f, 0.975f, 10);
+            GuesserShootHud.localPosition = new Vector3(0, 0, -5f);
+            GuesserShootHud.gameObject.layer = 5;
+            GuesserShootHud.name = "GuesserShootHud";
+            GuesserUpdatePatch.buttons = new List<Transform>();
+            Transform exitButtonParent = (new GameObject()).transform;
+            exitButtonParent.SetParent(GuesserShootHud);
+            Transform exitButton = UnityEngine.Object.Instantiate(buttonTemplate.transform, exitButtonParent);
+            Transform exitButtonMask = UnityEngine.Object.Instantiate(maskTemplate, exitButtonParent);
+            exitButton.gameObject.GetComponent<SpriteRenderer>().sprite = smallButtonTemplate.GetComponent<SpriteRenderer>().sprite;
+            exitButtonParent.transform.localPosition = new Vector3(3.88f, 2.1f, -15);
+            exitButtonParent.transform.localScale = new Vector3(0.5f, 0.5f, 1);
+            exitButton.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
+            exitButton.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() =>
             {
-                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+                __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true));
+                UnityEngine.Object.Destroy(GuesserShootHud.gameObject);
+                UnityEngine.Object.Destroy(Guesser_Patch.Left);
+                UnityEngine.Object.Destroy(Guesser_Patch.Right);
+            }));
+            int Count = 0;
+            Count = System.Enum.GetValues(typeof(RoleId)).Length - 1;
+            for (int i = 1; i <= Count; i++)
+            {
+                Role++;
+                if (!(Role == RoleId.AllCleaner || Role == RoleId.Hunter || Role == RoleId.Speeder || Role == RoleId.Freezer || Role == RoleId.Tasker || Role == RoleId.EvilLighter || Role == RoleId.Sealdor || Role == RoleId.Vulture || Role == RoleId.NiceGambler || Role == RoleId.Neta))
+                {
+                    if (p == 45) p = 0;
+                    p++;
+                    RoleId buttonRole;
+                    buttonRole = Role;
+                    Transform buttonParent = (new GameObject()).transform;
+                    buttonParent.SetParent(GuesserShootHud);
+                    Transform button = UnityEngine.Object.Instantiate(buttonTemplate, buttonParent);
+                    Transform buttonMask = UnityEngine.Object.Instantiate(maskTemplate, buttonParent);
+                    TMPro.TextMeshPro label = UnityEngine.Object.Instantiate(textTemplate, button);
+                    button.GetComponent<SpriteRenderer>().sprite = DestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
+                    GuesserUpdatePatch.buttons.Add(button);
+                    int row = p / 5, col = p % 5;
+                    buttonParent.localPosition = new Vector3(-3.47f + 1.75f * col, 1.5f - 0.45f * row, -5);
+                    buttonParent.localScale = new Vector3(0.55f, 0.55f, 1f);
+                    label.alignment = TMPro.TextAlignmentOptions.Center;
+                    label.transform.localPosition = new Vector3(0, 0, label.transform.localPosition.z);
+                    label.transform.localScale *= 1.7f;
+                    label.text = ModTranslation.getString(Role.ToString() + "Name");
+                    button.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
+                    button.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() =>
+                    {
+                        var Target = ModHelpers.playerById((byte)__instance.playerStates[Index].TargetPlayerId);
+                        var misfire = !IsGuesserKill(Target, buttonRole);
+                        var TargetID = Target.PlayerId;
+                        var LocalID = PlayerControl.LocalPlayer.PlayerId;
+
+                        CustomRPC.RPCProcedure.GuesserKill(LocalID, TargetID, misfire);
+
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.GuesserKill, Hazel.SendOption.Reliable, -1);
+                        killWriter.Write(LocalID);
+                        killWriter.Write(TargetID);
+                        killWriter.Write(misfire);
+                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                    }));
+                }
             }
 
         }
         static void Event(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilGuesser) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Guesser) && PlayerControl.LocalPlayer.isAlive() && RoleClass.Guesser.KillMaxCount >= 1)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -149,7 +234,7 @@ namespace SuperNewRoles.Roles
                         PassiveButton button = targetBox.GetComponent<PassiveButton>();
                         button.OnClick.RemoveAllListeners();
                         int copiedIndex = i;
-                        button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => MeetingSheriffOnClick(copiedIndex, __instance)));
+                        button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => GuesserOnClick(copiedIndex, __instance)));
                     }
                 }
             }
@@ -157,7 +242,7 @@ namespace SuperNewRoles.Roles
 
         static void Postfix(MeetingHud __instance)
         {
-            RoleClass.IsMeeting = true;
+            /*RoleClass.IsMeeting = true;
             if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
             {
                 Mode.SuperHostRoles.MorePatch.StartMeeting(__instance);
@@ -168,24 +253,13 @@ namespace SuperNewRoles.Roles
             if (!ModeHandler.isMode(ModeId.SuperHostRoles) && PlayerControl.AllPlayerControls.Count > 15)
             {
                 MeetingUpdatePatch.IsFlag = true;
-                meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();
-                List<PlayerVoteArea> deadareas = new List<PlayerVoteArea>();
-                foreach (PlayerVoteArea area in __instance.playerStates)
+                GuesserUpdatePatch.RoleSelectAreas = new List<GameObject>();
+                List<GameObject> deadareas = new List<GameObject>();
+                /*foreach (Transform RoleSelectbutton in deadareas)
                 {
-                    if (ModHelpers.playerById(area.TargetPlayerId).isAlive())
-                    {
-                        meetingsheriff_updatepatch.PlayerVoteAreas.Add(area);
-                    }
-                    else
-                    {
-                        deadareas.Add(area);
-                    }
+                    GuesserUpdatePatch.PlayerVoteAreas.Add(area);
                 }
-                foreach (PlayerVoteArea area in deadareas)
-                {
-                    meetingsheriff_updatepatch.PlayerVoteAreas.Add(area);
-                }
-                meetingsheriff_updatepatch.index = 1;
+                GuesserUpdatePatch.index = 1;
                 CreateAreaButton(__instance);
             }
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count != 0)
@@ -215,13 +289,8 @@ namespace SuperNewRoles.Roles
                     newareas.Add(area);
                 }
                 int i = 0;
-                foreach (PlayerVoteArea area in newareas)
-                {
-                    area.transform.localPosition = meetingsheriff_updatepatch.Positions[i];
-                    i++;
-                }
                 __instance.playerStates = newareas.ToArray();
-            }
+            }*/
 
             Event(__instance);
         }
@@ -251,7 +320,7 @@ namespace SuperNewRoles.Roles
             targetBoxl.name = "LeftButton";
             targetBoxl.gameObject.SetActive(true);
             targetBoxl.transform.localPosition = new Vector3(-4.75f, 0f, -3f);
-            targetBoxl.transform.localScale = new Vector3(-0.075f, 0.075f, 0.075f);
+            targetBoxl.transform.localScale = new Vector3(-0.05f, 0.05f, 0.075f);
             Left = targetBoxl;
             GameObject.Destroy(targetBoxl.transform.FindChild("Text_TMP").gameObject);
             SpriteRenderer rendererl = targetBoxl.GetComponent<SpriteRenderer>();
@@ -266,17 +335,17 @@ namespace SuperNewRoles.Roles
         }
         public static void right()
         {
-            if (meetingsheriff_updatepatch.index < (PlayerControl.AllPlayerControls.Count / 15) + 1)
-            {
-                meetingsheriff_updatepatch.index++;
-            }
+            //if (GuesserUpdatePatch.index < (PlayerControl.AllPlayerControls.Count / 15) + 1)
+            //{
+            GuesserUpdatePatch.RoleSelectPage++;
+            //}
         }
         public static void left()
         {
-            if (meetingsheriff_updatepatch.index > 1)
-            {
-                meetingsheriff_updatepatch.index--;
-            }
+            //if (GuesserUpdatePatch.index > 1)
+            //{
+            GuesserUpdatePatch.RoleSelectPage--;
+            //}
         }
     }
 }

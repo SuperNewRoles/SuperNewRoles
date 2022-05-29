@@ -163,7 +163,8 @@ namespace SuperNewRoles.CustomRPC
         CustomEndGame,
         UncheckedProtect,
         SetBot,
-        DemonCurse
+        DemonCurse,
+        GuesserKill,
     }
     public static class RPCProcedure
     {
@@ -741,6 +742,63 @@ namespace SuperNewRoles.CustomRPC
         {
             OnGameEndPatch.EndData = (CustomGameOverReason)Cond;
         }
+        public static void GuesserKill(byte GuesserId, byte TargetId, bool MissFire)
+        {
+            PlayerControl Guesser = ModHelpers.playerById(GuesserId);
+            PlayerControl target = ModHelpers.playerById(TargetId);
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
+            if (Guesser == null || target == null) return;
+            if (!PlayerControl.LocalPlayer.isAlive())
+            {
+                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(Guesser, Guesser.name + "は" + target.name + "をゲッサーキルした！");
+                if (MissFire)
+                {
+                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(Guesser, Guesser.name + "は誤爆した！");
+                }
+                else
+                {
+                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(Guesser, Guesser.name + "は成功した！");
+                }
+            }
+            if (MissFire)
+            {
+                Guesser.Exiled();
+                FinalStatusData.FinalStatuses[Guesser.PlayerId] = FinalStatus.GuesserMisFire;
+                if (PlayerControl.LocalPlayer == Guesser)
+                {
+                    HudManager.Instance.KillOverlay.ShowKillAnimation(Guesser.Data, Guesser.Data);
+                }
+
+            }
+            else
+            {
+                target.Exiled();
+                FinalStatusData.FinalStatuses[Guesser.PlayerId] = FinalStatus.GuesserKill;
+                if (PlayerControl.LocalPlayer == target)
+                {
+                    HudManager.Instance.KillOverlay.ShowKillAnimation(target.Data, Guesser.Data);
+                }
+            }
+            if (MeetingHud.Instance)
+            {
+                foreach (PlayerVoteArea pva in MeetingHud.Instance.playerStates)
+                {
+                    if (pva.TargetPlayerId == GuesserId && MissFire)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                    else if (pva.TargetPlayerId == TargetId && !MissFire)
+                    {
+                        pva.SetDead(pva.DidReport, true);
+                        pva.Overlay.gameObject.SetActive(true);
+                    }
+                }
+                if (AmongUsClient.Instance.AmHost)
+                    MeetingHud.Instance.CheckForEndVoting();
+            }
+
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -930,6 +988,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.CreateSidekickSeer:
                         RPCProcedure.CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case (byte)CustomRPC.GuesserKill:
+                        GuesserKill(reader.ReadByte(),reader.ReadByte(),reader.ReadBoolean());
                         break;
                 }
             }
