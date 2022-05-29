@@ -18,7 +18,7 @@ class ReturnClass:
             Template = r.read()
             print(Template)
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
-                Template = Template.replace(OldCode, NewCode)
+                #Template = Template.replace(OldCode, NewCode)
                 print("ファイルを書き込みました:"+Template)
                 print("パス:"+BasePath+Path)
                 w.write(Template)
@@ -76,6 +76,14 @@ class ReturnClass:
     # 上の表示板
     #def UpdateGUI(self, key, bool):
         #MainWindow[key].Update(disabled = bool)
+        #エラーウィンドウ作成
+    def CreateErrorWindow(self, text):
+        ErrorPop = psg.popup_error(text,title="エラー")
+        print("エラー:"+text)
+        while True:
+            if ErrorPop == "Error":
+                MainWindow.close()
+                sys.exit()
 # 戻り値なし
 class AllCheck:
     #すべて書く
@@ -162,15 +170,8 @@ class AllCheck:
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
                 """ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.GetInput("OptionNumber")).replace("SHRON",MainClass.GetBool("IsSHRON")))
-
-    #エラーウィンドウ作成
-    def CreateErrorWindow(self, text):
-        ErrorPop = psg.popup_error(text,title="エラー")
-        print("エラー:"+text)
-        while True:
-            if ErrorPop == "Error":
-                MainWindow.close()
-                sys.exit()
+            else:
+                MainClass.CreateErrorWindow("設定タブの値が空白です")
 
 ## 変数
 '''DevPath = Path(__file__).parent
