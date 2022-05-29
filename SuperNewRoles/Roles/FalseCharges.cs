@@ -24,7 +24,7 @@ namespace SuperNewRoles.Roles
                         {
                             CustomRPC.RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
 
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.None, -1);
                             Writer.Write(PlayerControl.LocalPlayer.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             if (AmongUsClient.Instance.AmHost)
@@ -32,7 +32,7 @@ namespace SuperNewRoles.Roles
                                 CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.FalseChargesWin, false);
                             } else
                             {
-                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.None, -1);
                                 writer.Write((byte)CustomGameOverReason.FalseChargesWin);
                                 writer.Write(false);
                                 AmongUsClient.Instance.FinishRpcImmediately(writer);

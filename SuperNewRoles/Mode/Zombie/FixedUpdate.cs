@@ -48,9 +48,11 @@ namespace SuperNewRoles.Mode.Zombie
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
         class TimerUpdate
         {
-            public static void Postfix()
+            public static void Postfix(HudManager __instance)
             {
-                if (IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.Zombie) && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !HudManager.Instance.IsIntroDisplayed)
+                if (!(AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)) return;
+                Mode.ModeHandler.HudUpdate(__instance);
+                if (IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.Zombie) && !HudManager.Instance.IsIntroDisplayed)
                 {
                     if (NameChangeTimer >= 0f)
                     {

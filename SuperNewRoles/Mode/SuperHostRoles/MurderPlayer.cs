@@ -34,7 +34,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         {
                             RPCProcedure.ShareWinner(target.PlayerId);
 
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.None, -1);
                             Writer.Write(target.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);

@@ -44,13 +44,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 default:
                     return true;
             }
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.None, -1);
             writer.WritePacked(127);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             new LateTask(() =>
             {
                 int clientId = __instance.myPlayer.getClientId();
-                MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, clientId);
+                MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.None, clientId);
                 writer2.Write(id);
                 AmongUsClient.Instance.FinishRpcImmediately(writer2);
             }, 0.5f, "Anti Vent");

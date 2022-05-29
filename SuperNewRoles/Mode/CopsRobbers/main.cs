@@ -10,10 +10,14 @@ namespace SuperNewRoles.Mode.CopsRobbers
     {
         public static void ClearAndReloads()
         {
+            IsStart = false;
             ArrestPositions = new Dictionary<int, SystemTypes?>();
             Arrest = new List<int>();
-            TeleportIDs = new List<byte>();
+            IsMove = false;
+            SpawnPosition = new Dictionary<int, SystemTypes?>();
+            LastCount = 0;
         }
+        public static bool IsStart;
         public static PlayerControl GetBot()
         {
             if (BotManager.AllBots.Count != 0)
@@ -26,7 +30,9 @@ namespace SuperNewRoles.Mode.CopsRobbers
             return null;
         }
         public static List<int> Arrest;
-        public static Dictionary<int,SystemTypes?> ArrestPositions;
+        public static Dictionary<int, SystemTypes?> ArrestPositions;
+        public static bool IsMove;
+        public static Dictionary<int, SystemTypes?> SpawnPosition;
         public static bool IsArrest(this PlayerControl player)
         {
             if (Arrest.Contains(player.PlayerId)) return true;
@@ -54,7 +60,6 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     if (!p.isImpostor() && !p.IsArrest())
                     {
                         impostorwin = false;
-                        break;
                     }
                 }
             }
@@ -95,11 +100,21 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 }
             }
         }
+        public static SystemTypes GetRandomSpawnPosition(PlayerControl player)
+        {
+            if (!SpawnPosition.ContainsKey(player.PlayerId))
+            {
+                var type = ModHelpers.GetRandom(Rooms[GetMap()]);
+                SpawnPosition[player.PlayerId] = type;
+            }
+            return (SystemTypes)SpawnPosition[player.PlayerId];
+        }
         public static SystemTypes SetRandomArrestPosition(PlayerControl player)
         {
             var type = ModHelpers.GetRandom(Rooms[GetMap()]);
             ArrestPositions[player.PlayerId] = type;
             Arrest.Add(player.PlayerId);
+            //player.MyPhysics.RpcClimbLadder(null);
 
             player.RpcSetColor(5);
             player.RpcSetHat("");
@@ -151,11 +166,11 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 case SystemTypes.Storage:
                     return new Vector2(19.53f, 2.48f);
                 case SystemTypes.Electrical:
-                    return new Vector2();
+                    return new Vector2(8.79f, -12.1f);
                 case SystemTypes.Specimens:
-                    return new Vector2();
+                    return new Vector2(36.70f, -20.84f);
                 case SystemTypes.Weapons:
-                    return new Vector2();
+                    return new Vector2(12.05f, -23.33f);
                 case SystemTypes.Records:
                     return new Vector2(20f, 10.5f);
                 case SystemTypes.VaultRoom:
@@ -164,6 +179,9 @@ namespace SuperNewRoles.Mode.CopsRobbers
             return new Vector2(0, 0);
         }
         static bool IsTeleport = false;
+        static float ImpostorMoveTime;
+        static int LastCount;
+        static float LastUpdate;
         public static List<byte> TeleportIDs = new List<byte>();
         public static void Teleport(PlayerControl player,Vector2 position)
         {
@@ -194,8 +212,130 @@ namespace SuperNewRoles.Mode.CopsRobbers
             }
             */
         }
-        public static void FixedUpdate()
+        public static void HudUpdate()
         {
+            if (!AmongUsClient.Instance.AmHost) return;
+            if (!IsStart) return;
+            if (!IsMove)
+            {
+                bool IsMoveOK = true;
+                List<PlayerControl> players = new List<PlayerControl>();
+                int NotLoadedCount = 0;
+                if (PlayerControl.GameOptions.MapId == 4)
+                {
+                    /*
+                    if (PlayerControl.LocalPlayer.name != "　" && PlayerControl.LocalPlayer.name != "<color=black><size=7500%>■</size></color>")
+                    {
+                        PlayerControl.LocalPlayer.RpcSetName("<color=black><size=7500%>■</size></color>");
+                    }*/
+
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (ModHelpers.IsPositionDistance(p.transform.position, new Vector2(3, 6),0.5f) || 
+                            ModHelpers.IsPositionDistance(p.transform.position, new Vector2(-25, 40), 0.5f) || 
+                            ModHelpers.IsPositionDistance(p.transform.position, new Vector2(-1.4f, 2.3f), 0.5f)
+                            )
+                        {
+                            IsMoveOK = false;
+                            NotLoadedCount++;
+                        }
+                        else
+                        {
+                            players.Add(p);
+                        }
+                    }
+                }
+                if (LastCount != players.Count)
+                {
+                    LastCount = players.Count;
+                    string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>全プレイヤーのスポーンを待っています...\nロドー中:残り"+NotLoadedCount+"人</color></size>";
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        p.RpcSetNamePrivate(name);
+                    }
+                }
+                /*
+                if (!ModHelpers.IsPositionDistance(PlayerControl.LocalPlayer.transform.position, new Vector2(9990, 8551f), 0.5f) &&
+                    !ModHelpers.IsPositionDistance(PlayerControl.LocalPlayer.transform.position, new Vector2(9990, 8550f), 0.5f))
+                {
+                    if (players.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
+                    {
+                        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(9991, 8551f));
+                        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(9990, 8550f));
+                    }
+                    else
+                    {
+                        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(9991, 8552f));
+                        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(new Vector2(9990, 8551f));
+                    }
+                }
+                */
+                int i = 0;
+                foreach (PlayerControl p in players)
+                {
+                    p.NetTransform.RpcSnapTo(new Vector2(-30, 30));
+                    i++;
+                }
+                if (IsMoveOK)
+                {
+                    IsMove = true;
+                    ImpostorMoveTime = 5;
+                    LastUpdate = 6;
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (!p.isImpostor())
+                        {
+                            p.NetTransform.RpcSnapTo(getPosition(GetRandomSpawnPosition(p)));
+                        }
+                    }
+                }
+                return;
+            }
+
+            if (ImpostorMoveTime >= 0)
+            {
+                ImpostorMoveTime -= Time.deltaTime;
+                SuperNewRolesPlugin.Logger.LogInfo(ImpostorMoveTime - LastUpdate);
+                if (LastUpdate - ImpostorMoveTime >= 1)
+                {
+                    //string name = "\n\n\n\n\n<size=300%><color=white>" + SuperNewRoles.Mode.ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>インポスターが来るまで残り5秒</size>";
+                    //PlayerControl.LocalPlayer.RpcSetName(name);
+                    LastUpdate = ImpostorMoveTime;
+                    string name = "\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>インポスターが来るまで残り" + ((int)(LastUpdate + 1)).ToString() + "秒</size>";
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (!p.AmOwner)
+                        {
+                            p.RpcSetNamePrivate(name);
+                        }
+                        else
+                        {
+                            p.SetName(name);
+                        }
+                    }
+                }
+                int i = 0;
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                {
+                    if (p.isImpostor())
+                    {
+                        p.NetTransform.RpcSnapTo(new Vector2(-30, 30));
+                        i++;
+                    }
+                }
+                if (ImpostorMoveTime <= 0)
+                {
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        p.RpcSetName("　");
+                        if (p.isImpostor())
+                        {
+                            p.NetTransform.RpcSnapTo(getPosition(GetRandomSpawnPosition(p)));
+                        }
+                    }
+                }
+                return;
+            }
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
                 if (player.isImpostor())

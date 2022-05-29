@@ -105,6 +105,8 @@ namespace SuperNewRoles.Mode
         }
         public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName"), ModTranslation.getString("DetectiveModeName"), ModTranslation.getString("CopsRobbersModeName") };//ModTranslation.getString("WerewolfModeName") };
 
+        public const string PlayingOnSuperNewRoles = "Playing on <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
+
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;
@@ -172,7 +174,6 @@ namespace SuperNewRoles.Mode
                 SuperHostRoles.Intro.IntroHandler(__instance);
             }
         }
-
         public static void YouAreIntroHandler(IntroCutscene __instance)
         {
             if (isMode(ModeId.Zombie))
@@ -202,6 +203,14 @@ namespace SuperNewRoles.Mode
 
             PlusMode.Options.Load();
         }
+        public static void HudUpdate(HudManager __instance)
+        {
+            switch(GetMode()){
+                case ModeId.CopsRobbers:
+                    CopsRobbers.main.HudUpdate();
+                    break;
+            }
+        }
         public static void FixedUpdate(PlayerControl __instance) {
             if (isMode(ModeId.SuperHostRoles))
             {
@@ -226,7 +235,6 @@ namespace SuperNewRoles.Mode
             }
             else if (isMode(ModeId.CopsRobbers))
             {
-                CopsRobbers.main.FixedUpdate();
             }
             else if (isMode(ModeId.LevelUp))
             {

@@ -23,7 +23,7 @@ namespace SuperNewRoles.Roles
                         RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
                         if (RoleClass.SerialKiller.SuicideTime <= 0)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.None, -1);
                             writer.Write(PlayerControl.LocalPlayer.PlayerId);
                             writer.Write(PlayerControl.LocalPlayer.PlayerId);
                             writer.Write(byte.MaxValue);

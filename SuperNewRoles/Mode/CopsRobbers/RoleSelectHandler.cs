@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SuperNewRoles.Mode.SuperHostRoles;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -29,6 +30,16 @@ namespace SuperNewRoles.Mode.CopsRobbers
             foreach (PlayerControl player in impostors)
             {
                 player.RpcSetRole(RoleTypes.Impostor);
+                foreach (PlayerControl player2 in PlayerControl.AllPlayerControls)
+                {
+                    if (!player2.Data.Disconnected)
+                    {
+                        if (!impostors.IsCheckListPlayerControl(player2))
+                        {
+                            player2.RpcSetRoleDesync(RoleTypes.GuardianAngel, player);
+                        }
+                    }
+                }
             }
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
             {
