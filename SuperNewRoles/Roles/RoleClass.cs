@@ -509,13 +509,23 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SpeederPlayer;
             public static Color32 color = ImpostorRed;
-            //public static float CoolTime;
-            //public static float DurationTime;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static bool IsSpeedDown;
+            public static DateTime ButtonTimer;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedDownButton.png", 115f);
+                return ButtonSprite;
+            }
             public static void ClearAndReload()
             {
                 SpeederPlayer = new List<PlayerControl>();
-                //CoolTime = CustomOptions.SpeederCoolTime.getFloat();
-                //DurationTime = CustomOptions.SpeederDurationTime.getFloat();
+                CoolTime = CustomOptions.SpeederCoolTime.getFloat();
+                DurationTime = CustomOptions.SpeederDurationTime.getFloat();
+                IsSpeedDown = false;
             }
         }
         public static class Guesser

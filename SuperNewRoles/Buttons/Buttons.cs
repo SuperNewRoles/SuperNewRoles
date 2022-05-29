@@ -47,6 +47,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton FalseChargesFalseChargeButton;
         public static CustomButton MadMakerSidekickButton;
         public static CustomButton DemonButton;
+        public static CustomButton SpeederButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -934,6 +935,35 @@ namespace SuperNewRoles.Buttons
 
             DemonButton.buttonText = ModTranslation.getString("DemonButtonName");
             DemonButton.showButtonText = true;
+
+            SpeederButton = new Buttons.CustomButton(
+                () =>
+                {
+                    RoleClass.Speeder.ButtonTimer = DateTime.Now;
+                    SpeederButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    Speeder.DownStart();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Speeder.IsSpeeder(PlayerControl.LocalPlayer); },
+                () =>
+                {
+                    if (SpeederButton.Timer <= 0)
+                    {
+                        return true;
+                    }
+                    return false;
+                },
+                () => { Speeder.EndMeeting(); },
+                RoleClass.Speeder.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            SpeederButton.buttonText = ModTranslation.getString("SpeederButtonName");
+            SpeederButton.showButtonText = true;
+            SpeederButton.HasEffect = true;
 
             setCustomButtonCooldowns();
         }
