@@ -117,7 +117,17 @@ namespace SuperNewRoles.Patches
                                 {
                                     if (Arsonist.IsArsonistWinFlag());
                                     {
-                                        RoleClass.Arsonist.TriggerArsonistWin = true;
+                                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                                        foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
+                                        {
+                                            SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
+                                            WinningPlayerData wpd = new WinningPlayerData(player.Data);
+                                            TempData.winners.Add(wpd);
+                                        }
+                                        EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
+                                        SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                                        __instance.enabled = false;
+                                        ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
                                         return true;
                                     }
                                 }

@@ -227,7 +227,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     ArsonistPlayer.RpcSetRole(RoleTypes.Crewmate);
                 }
-                //ArsonistPlayer.Data.IsDead = true;
+                //SheriffPlayer.Data.IsDead = true;
             }
             foreach (PlayerControl MadMakerPlayer in RoleClass.MadMaker.MadMakerPlayer)
             {
