@@ -6,6 +6,8 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -66,7 +68,7 @@ namespace SuperNewRoles.Patch
         private static bool ProDown = false;
         public static bool IsProDown;
 
-        public static void Postfix(PlayerControl __instance)
+        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             if (__instance == PlayerControl.LocalPlayer)
             {
@@ -99,7 +101,7 @@ namespace SuperNewRoles.Patch
                         Jackal.JackalFixedPatch.Postfix(__instance);
                         if (PlayerControl.LocalPlayer.isAlive())
                         {
-                            if (PlayerControl.LocalPlayer.isImpostor()) {SetTarget.ImpostorSetTarget(); }
+                            if (PlayerControl.LocalPlayer.isImpostor()) { SetTarget.ImpostorSetTarget(); }
                             var MyRole = PlayerControl.LocalPlayer.getRole();
                             switch (MyRole)
                             {
@@ -155,7 +157,8 @@ namespace SuperNewRoles.Patch
                                     Bait.BaitUpdate.Postfix(__instance);
 
                                 }
-                            } else if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
+                            }
+                            else if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
                             {
                                 var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
                                 if (sideplayer != null)
@@ -169,7 +172,8 @@ namespace SuperNewRoles.Patch
                             }
                         }
                     }
-                    else {
+                    else
+                    {
                         ModeHandler.FixedUpdate(__instance);
                     }
                 }
@@ -177,6 +181,41 @@ namespace SuperNewRoles.Patch
                 {
 
                 }
+          /*    if (AmongUsClient.Instance.AmHost)
+                {
+                    if (Arsonist.ArsonistTimer.ContainsKey(__instance.PlayerId))
+                    {
+                        var ar_target = Arsonist.ArsonistTimer[__instance.PlayerId].Item1;
+                       if (Arsonist.ArsonistTimer[__instance.PlayerId].Item2 >= CustomOptions.ArsonistDurationTime.getFloat())
+                        {
+                            if (!__instance.IsDoused(target))
+                            {
+                                Arsonist.ArsonistDouse(target, __instance);
+                                target.RpcProtectPlayerPrivate(target, 0, __instance);
+                                new LateTask(() =>
+                                {
+                                    SyncSetting.MurderSyncSetting(__instance);
+                                    __instance.RPCMurderPlayerPrivate(target);
+                                }, 0.5f);
+                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                            }
+                        }
+                        else
+                        {
+                            float dis;
+                            dis = Vector2.Distance(__instance.transform.position, ar_target.transform.position);
+                            if (dis <= 1.75f)
+                            {
+                                Arsonist.ArsonistTimer[__instance.PlayerId] =
+                                (Arsonist.ArsonistTimer[__instance.PlayerId].Item1, Arsonist.ArsonistTimer[__instance.PlayerId].Item2 + Time.fixedDeltaTime);
+                            }
+                            else
+                            {
+                                Arsonist.ArsonistTimer.Remove(__instance.PlayerId);
+                            }
+                        }
+                    }
+                }*/
             }
         }
     }

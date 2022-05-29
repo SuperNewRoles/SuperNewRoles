@@ -137,5 +137,7 @@ namespace SuperNewRoles.Roles
         {
             RoleClass.Arsonist.TriggerArsonistWin = true;
         }
+        public static Dictionary<byte, (PlayerControl, float)> ArsonistTimer;
+
     }
 }
