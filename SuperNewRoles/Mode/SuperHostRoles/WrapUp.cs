@@ -55,7 +55,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     p.RpcProtectPlayer(p, 0);
                     new LateTask(() =>
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("マーダー");
                         p.RpcMurderPlayer(p);
                     }, 0.5f);
                 }
@@ -79,7 +78,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     PlayerControl SideLoverPlayer = exiled.Object.GetOneSideLovers();
                     if (SideLoverPlayer.isAlive())
                     {
-                        SideLoverPlayer.RpcMurderPlayer(SideLoverPlayer);
+                        SideLoverPlayer.RpcInnerExiled();
                     }
                 }
             }
@@ -106,7 +105,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Chat.Winner = new List<PlayerControl>();
                         Chat.Winner.Add(exiled.Object);
                         RoleClass.Quarreled.IsQuarreledWin = true;
-                        SuperHostRoles.EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByTask, false);
+                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByTask, false);
                     }
                 }
             }

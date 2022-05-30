@@ -17,7 +17,7 @@ namespace SuperNewRoles.Patch
     {
         public static void Postfix(PlayerPhysics __instance, LobbyBehaviour lobby)
         {
-            if (AmongUsClient.Instance.AmHost)
+            if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {
                 string text = "SuperNewRolesへようこそ！" + "\n" +
                     "SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！" + "\n" +
@@ -28,8 +28,12 @@ namespace SuperNewRoles.Patch
                     "コマンド一覧を表示するにはこのコマンドを送信してください。" + "\n" +
                     "/commands" +
                     " " + "\n.";
-                new LateTask(()=>
-                AddChatPatch.SendCommand(__instance.myPlayer, text, AddChatPatch.WelcomeToSuperNewRoles)
+                new LateTask(() => {
+                    if (__instance.myPlayer.IsPlayer())
+                    {
+                        AddChatPatch.SendCommand(__instance.myPlayer, text, AddChatPatch.WelcomeToSuperNewRoles);
+                    }
+                }
                 , 1f);
                 return;
             }
@@ -321,7 +325,7 @@ namespace SuperNewRoles.Patch
                     }, time + 0.1f);
                     new LateTask(() =>
                     {
-                        PlayerControl.LocalPlayer.RpcSetNamePrivate(name, target);
+                        PlayerControl.LocalPlayer.RpcSetName(name);
                     }, time + 0.15f);
                 }
                 else
@@ -339,9 +343,10 @@ namespace SuperNewRoles.Patch
         {
             if (SendName == "NONE") SendName = SNRCommander;
             command = $"\n{command}\n";
+            if (target != null && target.Data.Disconnected) return;
             if (target == null)
             {
-                string name = PlayerControl.LocalPlayer.name;
+                string name = PlayerControl.LocalPlayer.getDefaultName();
                 PlayerControl.LocalPlayer.RpcSetName(SendName);
                 new LateTask(() => PlayerControl.LocalPlayer.RpcSendChat(command), 0.1f);
                 new LateTask(() => PlayerControl.LocalPlayer.RpcSetName(name), 0.2f);
@@ -355,8 +360,18 @@ namespace SuperNewRoles.Patch
                 new LateTask(() => target.SetName(name), 0.2f);
             } else { 
                 target.RpcSetNamePrivate(SendName);
-                new LateTask(() => target.RPCSendChatPrivate(command), 0.1f);
-                new LateTask(() => target.RpcSetName(target.name), 0.2f);
+                new LateTask(() =>
+                {
+                    if (target != null && !target.Data.Disconnected)
+                    { target.RPCSendChatPrivate(command); }
+                }
+                , 0.1f);
+                new LateTask(() => {
+                    if (target != null && !target.Data.Disconnected)
+                    {
+                        target.RpcSetName(target.name);
+                    }
+                }, 0.2f);
             }
         }
     }/**

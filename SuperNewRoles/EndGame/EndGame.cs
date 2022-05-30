@@ -156,107 +156,95 @@ namespace SuperNewRoles.EndGame
             textRenderer = bonusTextObject.GetComponent<TMPro.TMP_Text>();
             textRenderer.text = "";
             var text = "";
-            if (AdditionalTempData.winCondition == WinCondition.LoversWin)
+            switch (AdditionalTempData.winCondition)
             {
-                text = "LoversName";
-                textRenderer.color = RoleClass.Lovers.color;
-                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Lovers.color);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.GodWin)
-            {
-                text = "GodName";
-                textRenderer.color = RoleClass.God.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.God.color);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.HAISON)
-            {
-                //bonusText = "jesterWin";
-                text = "HAISON";
-                textRenderer.color = Color.white;
-                __instance.BackgroundBar.material.SetColor("_Color", Color.white);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.BugEnd)
-            {
-                //bonusText = "jesterWin";
-                text = "BUG";
-                textRenderer.color = Color.white;
-                __instance.BackgroundBar.material.SetColor("_Color", Color.white);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.JesterWin)
-            {
-                //bonusText = "jesterWin";
-                text = "JesterName";
-                textRenderer.color = Roles.RoleClass.Jester.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Jester.color);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.QuarreledWin)
-            {
-                text = "QuarreledName";
-                textRenderer.color = Roles.RoleClass.Quarreled.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Quarreled.color);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.JackalWin)
-            {
-                text = "JackalName";
-                textRenderer.color = Roles.RoleClass.Jackal.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Jackal.color);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.EgoistWin)
-            {
-                text = "EgoistName";
-                textRenderer.color = Roles.RoleClass.Egoist.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Egoist.color);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.WorkpersonWin)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("仕事人勝利文字");
-                text = "WorkpersonName";
-                textRenderer.color = RoleClass.Workperson.color;
-                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.MadJesterWin)
-            {
-                text = "MadJesterName";
-                textRenderer.color = RoleClass.Workperson.color;
-                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.MadJester.color);
-            }
-            else if(AdditionalTempData.winCondition == WinCondition.FalseChargesWin)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("テキストぉ");
-                text = "FalseChargesName";
-                textRenderer.color = RoleClass.FalseCharges.color;
-                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.FalseCharges.color);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.FoxWin)
-            {
-                text = "FoxName";
-                textRenderer.color = RoleClass.Fox.color;
-                __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Fox.color);
-            }
-            else if (AdditionalTempData.winCondition == WinCondition.DemonWin)
-            {
-                text = "DemonName";
-                textRenderer.color = RoleClass.Demon.color;
-                __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Demon.color);
-            }
-            else if (AdditionalTempData.gameOverReason == GameOverReason.HumansByTask || AdditionalTempData.gameOverReason == GameOverReason.HumansByVote)
-            {
-                text = "CrewMateName";
-                textRenderer.color = Palette.White;
-            }
-            else if (AdditionalTempData.gameOverReason == GameOverReason.ImpostorByKill || AdditionalTempData.gameOverReason == GameOverReason.ImpostorBySabotage || AdditionalTempData.gameOverReason == GameOverReason.ImpostorByVote)
-            {
-                text = "ImpostorName";
-                textRenderer.color = RoleClass.ImpostorRed;
+                case WinCondition.LoversWin:
+                    text = "LoversName";
+                    textRenderer.color = RoleClass.Lovers.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Lovers.color);
+                    break;
+                case WinCondition.GodWin:
+                    text = "GodName";
+                    textRenderer.color = RoleClass.God.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.God.color);
+                    break;
+                case WinCondition.HAISON:
+                    text = "HAISON";
+                    textRenderer.color = Color.white;
+                    __instance.BackgroundBar.material.SetColor("_Color", Color.white);
+                    break;
+                case WinCondition.JesterWin:
+                    text = "JesterName";
+                    textRenderer.color = Roles.RoleClass.Jester.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Jester.color);
+                    break;
+                case WinCondition.JackalWin:
+                    text = "JackalName";
+                    textRenderer.color = Roles.RoleClass.Jackal.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Jackal.color);
+                    break;
+                case WinCondition.QuarreledWin:
+                    text = "QuarreledName";
+                    textRenderer.color = Roles.RoleClass.Quarreled.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Quarreled.color);
+                    break;
+                case WinCondition.EgoistWin:
+                    text = "EgoistName";
+                    textRenderer.color = Roles.RoleClass.Egoist.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Egoist.color);
+                    break;
+                case WinCondition.WorkpersonWin:
+                    text = "WorkpersonName";
+                    textRenderer.color = RoleClass.Workperson.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Workperson.color);
+                    break;
+                case WinCondition.MadJesterWin:
+                    text = "MadJesterName";
+                    textRenderer.color = RoleClass.Workperson.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", RoleClass.MadJester.color);
+                    break;
+                case WinCondition.FalseChargesWin:
+                    text = "FalseChargesName";
+                    textRenderer.color = RoleClass.FalseCharges.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", RoleClass.FalseCharges.color);
+                    break;
+                case WinCondition.FoxWin:
+                    text = "FoxName";
+                    textRenderer.color = RoleClass.Fox.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", Roles.RoleClass.Fox.color);
+                    break;
+                case WinCondition.DemonWin:
+                    text = "DemonName";
+                    textRenderer.color = RoleClass.Demon.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Demon.color);
+                    break;
+                default:
+                    switch (AdditionalTempData.gameOverReason)
+                    {
+                        case GameOverReason.HumansByTask:
+                        case GameOverReason.HumansByVote:
+                        case GameOverReason.HumansDisconnect:
+                            text = "CrewMateName";
+                            textRenderer.color = Palette.White;
+                            break;
+                        case GameOverReason.ImpostorByKill:
+                        case GameOverReason.ImpostorBySabotage:
+                        case GameOverReason.ImpostorByVote:
+                        case GameOverReason.ImpostorDisconnect:
+                            text = "ImpostorName";
+                            textRenderer.color = RoleClass.ImpostorRed;
+                            break;
+                    }
+                    break;
             }
             var haison = false;
-            if (text == "HAISON") {
+            if (text == "HAISON")
+            {
                 haison = true;
                 text = ModTranslation.getString("HaisonName");
-            } else if (text == "BUG") {
-                haison = true;
-                text = "不具合が発生したので強制的に終了しました";
-            } else {
+            }
+            else
+            {
                 text = ModTranslation.getString(text);
             }
             bool IsOpptexton = false;
@@ -305,7 +293,7 @@ namespace SuperNewRoles.EndGame
                     textRenderer.color = Mode.Zombie.main.Policecolor;
                 }
             }
-            if (ModeHandler.isMode(ModeId.BattleRoyal))
+            else if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
