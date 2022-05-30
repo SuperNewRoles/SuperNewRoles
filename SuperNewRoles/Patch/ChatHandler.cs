@@ -17,7 +17,7 @@ namespace SuperNewRoles.Patch
     {
         public static void Postfix(PlayerPhysics __instance, LobbyBehaviour lobby)
         {
-            if (AmongUsClient.Instance.AmHost)
+            if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {
                 string text = "SuperNewRolesへようこそ！" + "\n" +
                     "SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！" + "\n" +
