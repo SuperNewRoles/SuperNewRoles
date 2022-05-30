@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using SuperNewRoles.EndGame;
+using HarmonyLib;
+using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles
 {
@@ -96,11 +98,33 @@ namespace SuperNewRoles.Roles
             return true;
         }
 
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+        public class HudManagerUpdatePatch
+        {
+            public static void Postfix()
+            {
+                if (RoleClass.Arsonist.DouseTarget == null) return;
+                if (RoleClass.Arsonist.IsDouse && HudManagerStartPatch.ArsonistDouseButton.Timer <= 0.1f)
+                {
+                    RoleClass.Arsonist.DouseTarget.ArsonistDouse();
+                    HudManagerStartPatch.ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.CoolTime;
+                    HudManagerStartPatch.ArsonistDouseButton.Timer = HudManagerStartPatch.ArsonistDouseButton.MaxTimer;
+                    SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗った:" + RoleClass.Arsonist.DouseTarget);
+                }
+                if (!(RoleClass.Arsonist.DouseTarget == HudManagerStartPatch.setTarget(untarget: Arsonist.GetUntarget())))
+                {
+                    RoleClass.Arsonist.IsDouse = false;
+                    HudManagerStartPatch.ArsonistDouseButton.Timer = 0;
+                    SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗るのをやめた");
+                }
+            }
+        }
+
         public static void Duration()
         {
             if (ModeHandler.isMode(ModeId.Default));
             {
-                
+
             }
             if (ModeHandler.isMode(ModeId.SuperHostRoles));
             {

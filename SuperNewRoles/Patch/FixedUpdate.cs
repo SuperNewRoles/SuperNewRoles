@@ -68,7 +68,7 @@ namespace SuperNewRoles.Patch
         private static bool ProDown = false;
         public static bool IsProDown;
 
-        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+        public static void Postfix(PlayerControl __instance)
         {
             if (__instance == PlayerControl.LocalPlayer)
             {

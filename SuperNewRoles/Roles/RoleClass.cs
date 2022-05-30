@@ -1861,6 +1861,8 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float DurationTime;
             public static bool TriggerArsonistWin;
+            public static bool IsDouse;
+            public static PlayerControl DouseTarget;
             private static Sprite DousebuttonSprite;
             private static Sprite IgnitebuttonSprite;
             public static Sprite getDouseButtonSprite()
@@ -1884,6 +1886,8 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.ArsonistCoolTime.getFloat();
                 DurationTime = CustomOptions.ArsonistDurationTime.getFloat();
                 TriggerArsonistWin = true;
+                IsDouse = false;
+                DouseTarget = null;
             }
         }
         //新ロールクラス

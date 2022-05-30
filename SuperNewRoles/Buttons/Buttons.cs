@@ -884,9 +884,13 @@ namespace SuperNewRoles.Buttons
             ArsonistDouseButton = new CustomButton(
                 () =>
                 {
-                    Arsonist.ArsonistDouse(setTarget(untarget: Arsonist.GetUntarget()));
+                    var Target = setTarget(untarget: Arsonist.GetUntarget());
+                    RoleClass.Arsonist.DouseTarget = Target;
+                    ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.DurationTime;
                     ArsonistDouseButton.Timer = ArsonistDouseButton.MaxTimer;
-                    SuperNewRolesPlugin.Logger.LogInfo("ƒA[ƒ\ƒjƒXƒg‚ª“h‚éƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½");
+                    ArsonistDouseButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    RoleClass.Arsonist.IsDouse = true;
+                    SuperNewRolesPlugin.Logger.LogInfo("ã‚¢ãƒ¼ã‚½ãƒ‹ã‚¹ãƒˆãŒå¡—ã‚‹ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸ");
                 },
                 () => { return Arsonist.IsButton(); },
                 () =>
@@ -912,13 +916,13 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     Arsonist.SetWinArsonist();
-                    SuperNewRolesPlugin.Logger.LogInfo("ƒA[ƒ\ƒjƒXƒg‚ª”R‚â‚·ƒ{ƒ^ƒ“‚ð‰Ÿ‚µ‚½");
+                    SuperNewRolesPlugin.Logger.LogInfo("ã‚¢ãƒ¼ã‚½ãƒ‹ã‚¹ãƒˆãŒç‡ƒã‚„ã™ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸ");
                     if (Arsonist.IsArsonistWinFlag())
                     {
                         TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                         foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("ƒA[ƒ\ƒjƒXƒg‚ªEndGame");
+                            SuperNewRolesPlugin.Logger.LogInfo("ã‚¢ãƒ¼ã‚½ãƒ‹ã‚¹ãƒˆãŒEndGame");
                             WinningPlayerData wpd = new WinningPlayerData(player.Data);
                             TempData.winners.Add(wpd);
                         }
