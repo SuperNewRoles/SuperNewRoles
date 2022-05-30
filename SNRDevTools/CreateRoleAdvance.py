@@ -173,6 +173,13 @@ class AllCheck:
             else:
                 MainClass.CreateErrorWindow("設定タブの値が空白です")
 
+        # 
+        if (MainClass.GetBool("A_CanVent")):
+            MainClass.CreateErrorWindow("まだできてませぇぇん(´;ω;｀)")
+
+        if (MainClass.GetBool("A_CanKill")):
+            MainClass.CreateErrorWindow("まだできてませぇぇん(´;ω;｀)")
+
 ## 変数
 '''DevPath = Path(__file__).parent
 DevPath /= "../SNRDevTools/" 
@@ -216,7 +223,7 @@ MainTab = psg.Tab("メイン", [
                 [psg.Text(), psg.Text("設定ID(int)",key="OptionNumberIDText"), psg.Input("",key="OptionNumber")], ])
 AdvanceTab = psg.Tab("詳細設定", [
                 [psg.Check("ベントを使える",key="A_CanVent")],
-                [], ])
+                [psg.Check("キルができる", key="A_CanKill")], ])
 CreateTab = psg.Tab("作成", [
                 [psg.Button("作成",key="Main_CreateButton", pad=((10,10),(10,10)), size=(15,2))] ])
 MainLayOut = [[psg.TabGroup ([[MainTab, AdvanceTab, CreateTab]])]]
