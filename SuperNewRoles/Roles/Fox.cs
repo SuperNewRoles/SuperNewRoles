@@ -16,11 +16,13 @@ namespace SuperNewRoles.Roles
     {
         public static void SetFoxButton()
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
+            if (PlayerControl.LocalPlayer.isRole(RoleId.Fox))
             {
                 if (!RoleClass.Fox.UseReport)
                 {
-                    HudManager.Instance.ReportButton.SetActive(false);
+                    if (HudManager.Instance.ReportButton.gameObject.active) {
+                        HudManager.Instance.ReportButton.SetActive(false);
+                    }
                 }
             }
         }
