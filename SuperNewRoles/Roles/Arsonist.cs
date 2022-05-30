@@ -85,6 +85,12 @@ namespace SuperNewRoles.Roles
             return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist);
         }
 
+        public static bool IseveryButton()
+        {
+            return ModeHandler.isMode(ModeId.SuperHostRoles) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist) || ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist);
+
+        }
+
         public static bool IsWin(PlayerControl Arsonist)
         {
             foreach (PlayerControl player in PlayerControl.AllPlayerControls)
@@ -108,7 +114,7 @@ namespace SuperNewRoles.Roles
                 {
                     RoleClass.Arsonist.DouseTarget.ArsonistDouse();
                     HudManagerStartPatch.ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.CoolTime;
-                    HudManagerStartPatch.ArsonistDouseButton.Timer = HudManagerStartPatch.ArsonistDouseButton.MaxTimer;
+                    HudManagerStartPatch.ArsonistDouseButton.Timer = RoleClass.Arsonist.CoolTime;
                     SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗った:" + RoleClass.Arsonist.DouseTarget);
                 }
                 if (!(RoleClass.Arsonist.DouseTarget == HudManagerStartPatch.setTarget(untarget: Arsonist.GetUntarget())))

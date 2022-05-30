@@ -933,7 +933,7 @@ namespace SuperNewRoles.Buttons
                     }
 
                 },
-                () => {return Arsonist.IsButton(); },
+                () => {return Arsonist.IseveryButton(); },
                 () =>
                 {
                     if (Arsonist.IsArsonistWinFlag())
