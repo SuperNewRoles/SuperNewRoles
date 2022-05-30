@@ -77,7 +77,7 @@ namespace SuperNewRoles.Helpers
         public static void RpcInnerExiled(this PlayerControl TargetPlayer)
         {
             if (TargetPlayer == null) return;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.Exiled, Hazel.SendOption.Reliable);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.Exiled, SendOption.None);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             TargetPlayer.Exiled();
         }

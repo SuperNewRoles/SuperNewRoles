@@ -28,8 +28,12 @@ namespace SuperNewRoles.Patch
                     "コマンド一覧を表示するにはこのコマンドを送信してください。" + "\n" +
                     "/commands" +
                     " " + "\n.";
-                new LateTask(()=>
-                AddChatPatch.SendCommand(__instance.myPlayer, text, AddChatPatch.WelcomeToSuperNewRoles)
+                new LateTask(() => {
+                    if (__instance.myPlayer.IsPlayer())
+                    {
+                        AddChatPatch.SendCommand(__instance.myPlayer, text, AddChatPatch.WelcomeToSuperNewRoles);
+                    }
+                }
                 , 1f);
                 return;
             }
