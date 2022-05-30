@@ -222,6 +222,7 @@ EvilScientistDurationSetting,Evil Scientist's Invisibility Duration,イビルサ
 SheriffName,Sheriff,シェリフ
 SheriffTitle1,Kill the outsider!,人外をキルしよう
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう
+SheriffDescription,Can shoot and kill an imposter if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します
 SheriffCoolDownSetting,Kill Cooldown,キルクールダウン
 SheriffIsKillNewtralSetting,Can Kill a Neutral,第三陣営をキルできる
 SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる
@@ -387,6 +388,7 @@ NiceGamblerTitle1,Lets' Gambler!,ギャンブルをしよう
 NiceGamblerUseCountSetting,Use Count,使える回数
 EvilGamblerName,Evil Gambler,イビルギャンブラー
 EvilGamblerTitle1,Lets' Kill!,キルをしよう
+EvilGamblerDescription,Changes the kill rules every time you kill.,キルする毎にキルクールタイムが変化します
 EvilGamblerSucTimeSetting,Kill cool time on success,成功時のキルクールタイム
 EvilGamblerNotSucTimeSetting,Kill Cool Time on Failure,失敗時のキルクールタイム
 EvilGamblerSucParSetting,Success probability,成功確率
@@ -395,6 +397,7 @@ ResearcherTitle1,Let's do some research.,研究をしよう
 ResearcherOneTurnSetting,Maximum number of samples per turn,1ターンの最大サンプル数
 SelfBomberName,Self Bomber,自爆魔
 SelfBomberTitle1,Lets' Self Bomb!,自爆をしよう
+SelfBomberDescription,Shapeshifting causes self-destruction. If you self-destruct you will die involving everyone around you.,シェイプシフトをすることで、自爆します。自爆をすると周りの人を巻き込んで死亡します。
 SelfBomberScopeSetting,Range (radius),範囲(半径)
 SelfBomberButtonName,Self Bomb,自爆
 GodName,God,神
@@ -418,6 +421,7 @@ EvilNekomataDescription,If you are expelled from the meeting you will take one p
 JackalFriendsName,Jackal Friends,ジャッカルフレンズ
 JackalFriendsTitle1,Help Jackal.,ジャッカルを助けよう
 JackalFriendsTitle2,I'll help you kill them all.,全員ぶち殺す手伝いをしよう
+JackalFriendsDescription,It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. Jackal Friends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。ジャッカルフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。
 JackalFriendsIsCheckJackalSetting,Is Check Jackal,ジャッカルをチェックできる
 DoctorName,Doctor,ドクター
 DoctorTitle1,Check Vitals,バイタルをチェックしよう
@@ -435,6 +439,7 @@ PursuerTitle3,Let's go after him and kill him.,後を追ってキルしよう
 MinimalistName,Minimalist,ミニマリスト
 MinimalistTitle1,Let's Kill.,キルをしよう
 MinimalistTitle2,Get rid of unnecessary stuff and kill efficiently!,不必要なものを捨て、効率よくキルしよう
+MinimalistDescription,Instead of less kill cooling. some buttons are not available.,キルクールが少ない代わりに、一部のボタンが使えません。
 MinimalistKillCoolSetting,Minimalist Kill Cool Time,ミニマリストのキルクールタイムの設定
 MinimalistVentSetting,Use Vent,ベントが使える
 MinimalistSaboSetting,Use Sabotage,サボタージュが使える
@@ -459,6 +464,7 @@ EvilEraserTitle1,Let's wipe out their abilities.,能力を消し去ろう
 EvilEraserMaxCountSetting,Max Erase Count,最大削除回数
 WorkpersonName,Work person,仕事人
 WorkpersonTitle1,Let's do the work and win!,仕事をして勝利しよう
+WorkpersonDescription,Wins if you finish the task,タスクを終わらせることで勝利できます。 
 WorkpersonIsAliveWinSetting,You have to be alive to win,生存していないと勝利できない
 MagazinerName,Magaziner,マガジナー
 MagazinerTitle1,Save your kills!,キルを貯めよう
@@ -467,6 +473,7 @@ MagazinerAddButtonName,Save,貯める
 MagazinerGetButtonName,Set,セット
 LoversName,Lovers.,ラバーズ
 LoversIntro,I'm in love with {0}!,{0}と恋に落ちてしまった！
+LoversDescription,Lovers is a duplicate position given in addition to other positions. Lovers person will see a heart mark next to their name.,恋人は他の役職に重複して与えられ、恋人同士は名前の後のハートマークで確認することが出来ます。
 LoversTeamCountSetting,Number of couples,カップル数
 LoversParSetting,Discharge probability,排出確率
 LoversOnlyCrewMateSetting,Chosen only by Cluemate,クルーメイトのみに選ばれる
@@ -476,20 +483,25 @@ LoversAliveTaskCountSetting,Tasks are counted when surviving,生存時、タス�
 LoversDuplicationQuarreledSetting,Does not overlap with Quarreled,クラードと重複しない
 MayorName,Mayor,メイヤー
 MayorTitle1,Let's add our vote at the meeting.,会議で票を追加で入れよう
+MayorDescription,Has more votes than usual when voting,票する時に通常よりも多くの票を持ちます。
 MayorVoteCountSetting,Mayer's vote count,メイヤーの票数
 trueloverName,True Lover,純愛者
 trueloverTitle1,Let's fall in love at first sight,一目惚れしよう
+trueloverDescription,Can be Lovers with any person. wins if survives with Lovers,誰かを愛することが出来、愛する相手と生きていた場合、その相手と勝利します
 trueloverloveButtonName,Love,一目惚れ
 TechnicianName,Technician,技術者
 TechnicianTitle1,Use technology to repair sabotage!,技術を駆使してサボタージュを修理しよう
+TechnicianDescription,Can only enter the vent during sabotage,サボタージュの間のみベントに入れます
 SerialKillerName,Serial Killer,シリアルキラー
 SerialKillerTitle1,Kill and Survive!,キルをして生存しよう
+SerialKillerDescription,If you don't get a kill within a certain amount of time you will self-destruct,設定された時間内にキルを出来なかった場合、自爆します
 SerialKillerSuicideTimeSetting,Time to suicide,自殺までの時間
 SerialKillerKillTimeSetting,Kill time,キルクールタイム
 SerialKillerIsMeetingResetSetting,Resets when you enter a meeting.,会議に入るとリセットされる
 SerialKillerSuicideText,{0} seconds to suicide,自殺まで後{0}秒
 OverKillerName,OverKiller,オーバーキラー
 OverKillerTitle1,Let's cover up the other kills.,他のキルを隠蔽しよう
+OverKillerDescription,A lot of corpses appear when you kill,キルした際に沢山の死体を作ります
 OverKillerKillCoolTimeSetting,OverKiller Kill Cool Time,オーバーキラーのキルクールタイム
 OverKillerKillCountSetting,Number of bodies per,一回あたりの死体数
 LevelingerName,Levelinger,レベリンガー
@@ -513,6 +525,7 @@ MadKillerName,MadKiller,マッドキラー
 MadKillerTitle1,Let's promote and kill!,昇格してキルをしよう
 SurvivorName,Survivor,サバイバー
 SurvivorTitle1,Survive and Kill!,生き残りながらキルをしよう
+SurvivorDescription,If you do not survive you will not win even if the imposter wins.,生き残っていないとインポスターが勝利しても勝利できません。
 SurvivorKillCoolTimeSetting,Kill Cool Time,キルクールタイム
 MadMayorName,MadMayor,マッドメイヤー
 MadMayorTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう
@@ -531,14 +544,17 @@ BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？
 BakeryExileText,Bakery baked some breads for crewmates.,パン屋によってパンが振舞われました。
 MadStuntManName,MadStuntman,マッドスタントマン
 MadStuntManTitle1,Prevent kills and connect with impostors.,キルを防いでインポスターと繋がろう
+MadStuntManDescription,Can prevent himself from being killed,自分自身へのキルを防ぐことが出来ます
 MadStuntManUseVentSetting,UseVent,ベントを使える
 MadStuntManImpostorLightSetting,Impostor Light,インポスターの視界
 MadHawkName,MadHawk,マッドホーク
 MadHawkTitle1,See it all.,すべてを見渡そう
 MadJesterName,MadJester,マッドてるてる
 MadJesterTitle1,Get voted out and win with the Imposters!,投票で追放されてインポスターと勝利しよう
+MadJesterDescription,It is a crewmate decision. but it is in the Imposter camp. \nThe imposter wins by being expelled at the meeting.,クルーメイトの判定ですが、インポスター陣営です。\n会議で追放されることでインポスターの勝利になります。
 FalseChargesName,FalseCharges,冤罪師
 FalseChargesTitle1,Let the false accusations win!,冤罪をさせて勝利しよう
+FalseChargesDescription,You can make the opponent who presses the button kill you. \nYou will win if the opponent you have killed is expelled by the conference.,ボタンを押した相手に自分をキルさせることができます。\nキルさせた相手が会議で追放されたら勝利できます、
 FalseChargesExileTurn,Turn of the false accusation range,冤罪の範囲のターン
 FalseChargesCoolTime,Cool Time,クールタイム
 FalseChargesButtonTitle,False Charge,冤罪
@@ -547,11 +563,14 @@ NiceTeleporterTitle1,Teleport and uncover impostors!,テレポートしてイン
 NiceTeleporterCoolDownSetting,Teleport cool down,テレポートのクールダウン
 CelebrityName,Celebrity,スター
 CelebrityTitle1,A Celebrity for everyone!,みんなのスター！！
+CelebrityDescription,You can tell from all of them that you are the star.,全員から自分がスターと分かります。
 CelebrityChangeRoleViewSetting,Name color will remain Celebrity even if the position changes.,役職が変わっても名前の色がスターのままになる
 NocturnalityName,Nocturnality,夜行性
 NocturnalityTitle1,You live in darkness.,あなたは暗闇の中で生きている
+NocturnalityDescription,The view during power outage and normal view are opposite.,停電中と通常の視界が反対になっています。
 ObserverName,Observer,選挙管理委員
 ObserverTitle1,Let's monitor everything.,すべてを監視しよう
+ObserverDescription,You can see where everyone is voting during the meeting.,会議中に全員の投票先を確認できます。
 VampireName,Vampire,ヴァンパイア
 VampireTitle1,Let's do a delayed kill.,遅延キルしよう
 VampireKillDelay,Kill Delay,キル遅延
@@ -593,6 +612,10 @@ TaskManagerName,TaskManager,タスクマネージャー
 TaskManagerTitle1,Finish the task and mount up!,タスクを終わらせ、マウントを取ろう
 SeerFriendsName,SeerFriends,シーアフレンズ
 SeerFriendsTitle1,Let's feel the activity of Jackal,ジャッカルの活躍を感じ取ろう
+JackalSeerName,SeerJackal,ジャッカルシーア
+JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!
+SidekickSeerName,Sidekick(Seer),サイドキック(シーア)
+SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう
 ArsonistName,Arsonist,アーソニスト
 ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ
 ArsonistDurationTimeSetting,Douse Duration,塗り時間

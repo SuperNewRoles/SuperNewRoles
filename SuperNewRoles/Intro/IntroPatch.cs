@@ -114,7 +114,8 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
+                if ((PlayerControl.LocalPlayer.isRole(RoleId.JackalFriends) || 
+                    PlayerControl.LocalPlayer.isRole(RoleId.SeerFriends)) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int JackalNum = 0;
@@ -129,21 +130,6 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = JackalTeams;
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.SeerFriends) && SeerFriends.CheckJackal(PlayerControl.LocalPlayer))
-                {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
-                    int JackalNum = 0;
-                    JackalTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
-                    {
-                        if (player.isRole(CustomRPC.RoleId.SeerFriends))
-                        {
-                            JackalNum++;
-                            JackalTeams.Add(player);
-                        }
-                    }
-                    yourTeam = JackalTeams;
-                }
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
@@ -151,6 +137,20 @@ namespace SuperNewRoles.Patches
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
                         if (player.isRole(CustomRPC.RoleId.Jackal))
+                        {
+                            JackalNum++;
+                            JackalTeams.Add(player);
+                        }
+                    }
+                    yourTeam = JackalTeams;
+                }
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalSeer))
+                {
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    int JackalNum = 0;
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.isRole(CustomRPC.RoleId.JackalSeer))
                         {
                             JackalNum++;
                             JackalTeams.Add(player);

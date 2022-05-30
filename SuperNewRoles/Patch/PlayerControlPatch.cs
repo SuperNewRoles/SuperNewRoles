@@ -492,6 +492,11 @@ namespace SuperNewRoles.Patches
                     __instance.RpcMurderPlayer(target);
                     return false;
                 }
+                else if (__instance.isRole(RoleId.JackalSeer))
+                {
+                    __instance.RpcMurderPlayer(target);
+                    return false;
+                }
                 else if (__instance.isRole(RoleId.Demon))
                 {
                     if (!__instance.IsCursed(target))

@@ -522,6 +522,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.SeerFriends):
                     Roles.RoleClass.SeerFriends.SeerFriendsPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.JackalSeer):
+                    Roles.RoleClass.JackalSeer.JackalSeerPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.Arsonist):
                     Roles.RoleClass.Arsonist.ArsonistPlayer.Add(player);
                     break;
@@ -729,7 +732,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadMayor):
                     Roles.RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.MadStuntMan):
+                case (CustomRPC.RoleId.MadStuntMan):
                     Roles.RoleClass.MadStuntMan.MadStuntManPlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.MadHawk):
@@ -759,7 +762,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Observer):
                     Roles.RoleClass.Observer.ObserverPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.Vampire):
+                case (CustomRPC.RoleId.Vampire):
                     Roles.RoleClass.Vampire.VampirePlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.Fox):
@@ -794,6 +797,12 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.SeerFriends):
                     Roles.RoleClass.SeerFriends.SeerFriendsPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.JackalSeer):
+                    Roles.RoleClass.JackalSeer.JackalSeerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.SidekickSeer):
+                    Roles.RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.Arsonist):
                     Roles.RoleClass.Arsonist.ArsonistPlayer.RemoveAll(ClearRemove);
@@ -890,7 +899,13 @@ namespace SuperNewRoles
                 case (RoleId.Arsonist):
                     IsTaskClear = true;
                     break; 
-                //タスククリアか
+                case (RoleId.JackalSeer):
+                    IsTaskClear = true;
+                    break;
+                case (RoleId.SidekickSeer):
+                    IsTaskClear = true;
+                    break;
+                    //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
@@ -946,6 +961,9 @@ namespace SuperNewRoles
                     return RoleClass.Demon.IsUseVent;
                 case RoleId.SeerFriends:
                     return RoleClass.SeerFriends.IsUseVent;
+                case RoleId.SidekickSeer:
+                case RoleId.JackalSeer:
+                    return RoleClass.Jackal.IsUseVent;
                     /*
                     case RoleId.Scavenger:
                         return RoleClass.Scavenger.IsUseVent;
@@ -995,6 +1013,9 @@ namespace SuperNewRoles
                     return RoleClass.Jackal.IsUseSabo;
                 case RoleId.TeleportingJackal:
                     return RoleClass.TeleportingJackal.IsUseSabo;
+                case RoleId.SidekickSeer:
+                case RoleId.JackalSeer:
+                    return RoleClass.Jackal.IsUseSabo;
                 case RoleId.Egoist:
                     return RoleClass.Egoist.UseSabo;
             }
@@ -1026,13 +1047,15 @@ namespace SuperNewRoles
                 case RoleId.MadMaker:
                     return RoleClass.MadMaker.IsImpostorLight;
                 case RoleId.Jackal:
-                    return RoleClass.Jackal.IsImpostorLight;
                 case RoleId.Sidekick:
                     return RoleClass.Jackal.IsImpostorLight;
                 case RoleId.JackalFriends:
                     return RoleClass.JackalFriends.IsImpostorLight;
                 case RoleId.SeerFriends:
                     return RoleClass.SeerFriends.IsImpostorLight;
+                case RoleId.JackalSeer:
+                case RoleId.SidekickSeer:
+                    return RoleClass.Jackal.IsImpostorLight;
             }
             return false;
         }
@@ -1084,6 +1107,12 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.Demon):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.JackalSeer):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.SidekickSeer):
                     IsNeutral = true;
                     break;
                 case (RoleId.Arsonist):
@@ -1527,6 +1556,18 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.TaskManager.TaskManagerPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.TaskManager;
+                }
+                else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SeerFriends;
+                }
+                else if (Roles.RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.JackalSeer;
+                }
+                else if (Roles.RoleClass.JackalSeer.SidekickSeerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SidekickSeer;
                 }
                 else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
                 {

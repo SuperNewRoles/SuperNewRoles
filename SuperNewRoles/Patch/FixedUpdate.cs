@@ -24,14 +24,12 @@ namespace SuperNewRoles.Patch
         }
     }
     [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]
-    public class AbilityUpdate { 
+    public class AbilityUpdate {
         public static void Postfix(AbilityButton __instance)
         {
-            if (!ModeHandler.IsBlockVanilaRole()) {
-                if (PlayerControl.LocalPlayer.Data.Role.IsSimpleRole)
-                {
-                    __instance.commsDown.SetActive(false);
-                }
+            if (PlayerControl.LocalPlayer.Data.Role.IsSimpleRole && __instance.commsDown.active)
+            {
+                __instance.commsDown.SetActive(false);
             }
         }
     }
@@ -46,7 +44,7 @@ namespace SuperNewRoles.Patch
                 if (AmongUsClient.Instance.AmHost && Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift))
                 {
                     RPCHelper.StartRPC(CustomRPC.CustomRPC.SetHaison).EndRPC();
-                    CustomRPC.RPCProcedure.SetHaison();
+                    RPCProcedure.SetHaison();
                     ShipStatus.Instance.enabled = false;
                     ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                 }
@@ -99,6 +97,7 @@ namespace SuperNewRoles.Patch
                         SabotageManager.Update();
                         SetNameUpdate.Postfix(__instance);
                         Jackal.JackalFixedPatch.Postfix(__instance);
+                        JackalSeer.JackalSeerFixedPatch.Postfix(__instance);
                         if (PlayerControl.LocalPlayer.isAlive())
                         {
                             if (PlayerControl.LocalPlayer.isImpostor()) { SetTarget.ImpostorSetTarget(); }
@@ -148,7 +147,7 @@ namespace SuperNewRoles.Patch
                             Fox.FixedUpdate.Postfix();
                             Minimalist.FixedUpdate.Postfix();
                         }
-                        else if (PlayerControl.LocalPlayer.isDead())
+                        else
                         {
                             if (PlayerControl.LocalPlayer.isRole(RoleId.Bait))
                             {

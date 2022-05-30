@@ -15,6 +15,7 @@ using SuperNewRoles.CustomObject;
 using TMPro;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Sabotage;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
 {
@@ -32,6 +33,10 @@ namespace SuperNewRoles.Roles
 
         public static void ClearAndReloadRoles()
         {
+            SetNamesClass.MeetingPlayerInfos = new Dictionary<byte, TextMeshPro>();
+            SetNamesClass.PlayerInfos = new Dictionary<byte, TextMeshPro>();
+            LateTask.Tasks = new List<LateTask>();
+            LateTask.AddTasks = new List<LateTask>();
             BotManager.AllBots = new List<PlayerControl>();
             IsMeeting = false;
             IsCoolTimeSetted = false;
@@ -42,7 +47,6 @@ namespace SuperNewRoles.Roles
             Roles.MadMayor.CheckedImpostor = new List<byte>();
             Roles.MadSeer.CheckedImpostor = new List<byte>();
             Roles.JackalFriends.CheckedJackal = new List<byte>();
-            Roles.SeerFriends.CheckedJackal = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
@@ -128,6 +132,7 @@ namespace SuperNewRoles.Roles
             Demon.ClearAndReload();
             TaskManager.ClearAndReload();
             SeerFriends.ClearAndReload();
+            JackalSeer.ClearAndReload();
             Arsonist.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -1848,10 +1853,57 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.SeerFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
-                Roles.SeerFriends.CheckedJackal = new List<byte>();
             }
         }
 
+        public static class JackalSeer
+        {
+            public static List<PlayerControl> JackalSeerPlayer;
+            public static List<PlayerControl> SidekickSeerPlayer;
+            public static List<PlayerControl> FakeSidekickSeerPlayer;
+            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+
+            public static List<Vector3> deadBodyPositions;
+            public static float soulDuration;
+            public static bool limitSoulDuration;
+            public static int mode;
+
+            public static float KillCoolDown;
+            public static bool IsUseVent;
+            public static bool IsUseSabo;
+            public static bool IsImpostorLight;
+            public static bool CreateSidekick;
+            public static bool NewJackalCreateSidekick;
+            public static bool IsCreateSidekick;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                JackalSeerPlayer = new List<PlayerControl>();
+
+                deadBodyPositions = new List<Vector3>();
+                limitSoulDuration = CustomOptions.JackalSeerLimitSoulDuration.getBool();
+                soulDuration = CustomOptions.JackalSeerSoulDuration.getFloat();
+                mode = CustomOptions.JackalSeerMode.getSelection();
+
+                JackalSeerPlayer = new List<PlayerControl>();
+                SidekickSeerPlayer = new List<PlayerControl>();
+                FakeSidekickSeerPlayer = new List<PlayerControl>();
+                KillCoolDown = CustomOptions.JackalSeerKillCoolDown.getFloat();
+                IsUseVent = CustomOptions.JackalSeerUseVent.getBool();
+                IsUseSabo = CustomOptions.JackalSeerUseSabo.getBool();
+                IsImpostorLight = CustomOptions.JackalSeerIsImpostorLight.getBool();
+                CreateSidekick = CustomOptions.JackalSeerCreateSidekick.getBool();
+                IsCreateSidekick = CustomOptions.JackalSeerCreateSidekick.getBool();
+                NewJackalCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.getBool();
+            }
+
+        }
         public static class Arsonist
         {
             public static List<PlayerControl> ArsonistPlayer;
