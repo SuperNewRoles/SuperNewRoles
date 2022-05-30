@@ -505,6 +505,7 @@ namespace SuperNewRoles
             }
             return null;
         }
+
         public static bool IsCheckListPlayerControl(this List<PlayerControl> ListDate,PlayerControl CheckPlayer)
         {
             foreach(PlayerControl Player in ListDate)

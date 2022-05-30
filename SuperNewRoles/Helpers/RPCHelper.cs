@@ -58,7 +58,7 @@ namespace SuperNewRoles.Helpers
             if (TargetPlayer == null || Chat == null) return;
             if (SeePlayer == null) SeePlayer = TargetPlayer;
             var clientId = SeePlayer.getClientId();
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SendChat, SendOption.Reliable, clientId);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SendChat, SendOption.None, clientId);
             writer.Write(Chat);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }

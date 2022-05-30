@@ -10,6 +10,7 @@ namespace SuperNewRoles.Intro
 {
     public class IntroDate
     {
+        public static List<IntroDate> IntroDatas = new List<IntroDate>();
         public string NameKey;
         public string Name;
         public Int16 TitleNum;
@@ -28,6 +29,7 @@ namespace SuperNewRoles.Intro
             this.TitleDesc = Intro.IntroDate.GetTitle(NameKey, TitleNum);
             this.Description = ModTranslation.getString(NameKey+"Description");
             this.Team = team;
+            IntroDatas.Add(this);
         }
         public static IntroDate GetIntroDate(CustomRPC.RoleId RoleId,PlayerControl p = null)
         {
@@ -238,7 +240,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate VultureIntro = new IntroDate("Vulture", RoleClass.Vulture.color, 1, CustomRPC.RoleId.Vulture, TeamRoleType.Neutral);
         public static IntroDate NiceScientistIntro = new IntroDate("NiceScientist",RoleClass.NiceScientist.color,2,CustomRPC.RoleId.NiceScientist);
         public static IntroDate ClergymanIntro = new IntroDate("Clergyman", RoleClass.Clergyman.color, 2, CustomRPC.RoleId.Clergyman);
-        public static IntroDate MadMateIntro = new IntroDate("MadMate", RoleClass.MadMate.color, 1, CustomRPC.RoleId.MadMate, TeamRoleType.Impostor);
+        public static IntroDate MadMateIntro = new IntroDate("MadMate", RoleClass.MadMate.color, 1, CustomRPC.RoleId.MadMate);
         public static IntroDate BaitIntro = new IntroDate("Bait", RoleClass.Bait.color, 1, CustomRPC.RoleId.Bait);
         public static IntroDate HomeSecurityGuardIntro = new IntroDate("HomeSecurityGuard", RoleClass.HomeSecurityGuard.color, 1, CustomRPC.RoleId.HomeSecurityGuard);
         public static IntroDate StuntManIntro = new IntroDate("StuntMan", RoleClass.StuntMan.color, 1, CustomRPC.RoleId.StuntMan);
@@ -275,7 +277,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate SideKillerIntro = new IntroDate("SideKiller", RoleClass.SideKiller.color, 1, CustomRPC.RoleId.SideKiller);
         public static IntroDate MadKillerIntro = new IntroDate("MadKiller", RoleClass.SideKiller.color, 1, CustomRPC.RoleId.MadKiller);
         public static IntroDate SurvivorIntro = new IntroDate("Survivor", RoleClass.Survivor.color, 1, CustomRPC.RoleId.Survivor);
-        public static IntroDate MadMayorIntro = new IntroDate("MadMayor", RoleClass.MadMayor.color, 1, CustomRPC.RoleId.MadMayor, TeamRoleType.Impostor);
+        public static IntroDate MadMayorIntro = new IntroDate("MadMayor", RoleClass.MadMayor.color, 1, CustomRPC.RoleId.MadMayor);
         public static IntroDate NiceHawkIntro = new IntroDate("NiceHawk", RoleClass.NiceHawk.color, 2, CustomRPC.RoleId.NiceHawk);
         public static IntroDate BakeryIntro = new IntroDate("Bakery", RoleClass.Bakery.color, 1, CustomRPC.RoleId.Bakery);
         public static IntroDate MadStuntManIntro = new IntroDate("MadStuntMan", RoleClass.MadStuntMan.color, 1, CustomRPC.RoleId.MadStuntMan, TeamRoleType.Impostor);
