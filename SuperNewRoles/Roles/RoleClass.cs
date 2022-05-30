@@ -34,8 +34,9 @@ namespace SuperNewRoles.Roles
         public static void ClearAndReloadRoles()
         {
             SetNamesClass.MeetingPlayerInfos = new Dictionary<byte, TextMeshPro>();
-            SetNamesClass.PlayerInfos = new Dictionary<byte, TextMeshPro>(9);
-
+            SetNamesClass.PlayerInfos = new Dictionary<byte, TextMeshPro>();
+            LateTask.Tasks = new List<LateTask>();
+            LateTask.AddTasks = new List<LateTask>();
             BotManager.AllBots = new List<PlayerControl>();
             IsMeeting = false;
             IsCoolTimeSetted = false;
