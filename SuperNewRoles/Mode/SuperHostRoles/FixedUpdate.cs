@@ -65,6 +65,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false)
         {
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
             if (player.Data.Disconnected || player.IsBot() || !AmongUsClient.Instance.AmHost) return;
             //if (UpdateTime.ContainsKey(player.PlayerId) && UpdateTime[player.PlayerId] > 0) return;
 

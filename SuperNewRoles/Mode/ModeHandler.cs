@@ -306,7 +306,7 @@ namespace SuperNewRoles.Mode
                 case ModeId.Werewolf:
                     return false;//ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
                 case ModeId.LevelUp:
-                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
+                    return false;//ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
             }
             return false;
         }

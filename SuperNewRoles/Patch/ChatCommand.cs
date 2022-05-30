@@ -53,7 +53,8 @@ namespace SuperNewRoles.Patch
                                 }
                             }
                         }
-                    } else if (text.ToLower().StartsWith("/kc "))
+                    }
+                    else if (text.ToLower().StartsWith("/kc "))
                     { // Unfortunately server holds this - need to do more trickery
                         if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.CanBan())
                         {
@@ -67,11 +68,16 @@ namespace SuperNewRoles.Patch
                             {
                                 settime = 0.00001f;
                             }
-                            
+
                             PlayerControl.GameOptions.KillCooldown = settime;
                             PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
                             __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
                         }
+                    }
+                    else if (text.ToLower().StartsWith("/rename "))
+                    {
+                        handled = true;
+                        PlayerControl.LocalPlayer.RpcSetName(text.ToLower().Replace("/rename ", ""));
                     }
                     else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
