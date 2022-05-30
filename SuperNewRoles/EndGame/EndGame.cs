@@ -219,6 +219,11 @@ namespace SuperNewRoles.EndGame
                     textRenderer.color = RoleClass.Demon.color;
                     __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Demon.color);
                     break;
+                case WinCondition.ArsonistWin:
+                    text = "ArsonistName";
+                    textRenderer.color = RoleClass.Arsonist.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Arsonist.color);
+                    break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
                     {
