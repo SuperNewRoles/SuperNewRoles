@@ -33,7 +33,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             else
             {
-                DefaultName[playerid] = player.nameText.text;
+                DefaultName[playerid] = player.Data.PlayerName;
                 return DefaultName[playerid];
             }
         }

@@ -356,8 +356,18 @@ namespace SuperNewRoles.Patch
                 new LateTask(() => target.SetName(name), 0.2f);
             } else { 
                 target.RpcSetNamePrivate(SendName);
-                new LateTask(() => target.RPCSendChatPrivate(command), 0.1f);
-                new LateTask(() => target.RpcSetName(target.name), 0.2f);
+                new LateTask(() =>
+                {
+                    if (target != null && !target.Data.Disconnected)
+                    { target.RPCSendChatPrivate(command); }
+                }
+                , 0.1f);
+                new LateTask(() => {
+                    if (target != null && !target.Data.Disconnected)
+                    {
+                        target.RpcSetName(target.name);
+                    }
+                }, 0.2f);
             }
         }
     }/**
