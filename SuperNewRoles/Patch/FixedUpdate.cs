@@ -100,7 +100,7 @@ namespace SuperNewRoles.Patch
                         JackalSeer.JackalSeerFixedPatch.Postfix(__instance);
                         if (PlayerControl.LocalPlayer.isAlive())
                         {
-                            if (PlayerControl.LocalPlayer.isImpostor()) {SetTarget.ImpostorSetTarget(); }
+                            if (PlayerControl.LocalPlayer.isImpostor()) { SetTarget.ImpostorSetTarget(); }
                             var MyRole = PlayerControl.LocalPlayer.getRole();
                             switch (MyRole)
                             {

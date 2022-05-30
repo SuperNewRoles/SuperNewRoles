@@ -15,6 +15,7 @@ using SuperNewRoles.CustomObject;
 using TMPro;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Sabotage;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
 {
@@ -32,6 +33,9 @@ namespace SuperNewRoles.Roles
 
         public static void ClearAndReloadRoles()
         {
+            SetNamesClass.MeetingPlayerInfos = new Dictionary<byte, TextMeshPro>();
+            SetNamesClass.PlayerInfos = new Dictionary<byte, TextMeshPro>(9);
+
             BotManager.AllBots = new List<PlayerControl>();
             IsMeeting = false;
             IsCoolTimeSetted = false;
@@ -42,7 +46,6 @@ namespace SuperNewRoles.Roles
             Roles.MadMayor.CheckedImpostor = new List<byte>();
             Roles.MadSeer.CheckedImpostor = new List<byte>();
             Roles.JackalFriends.CheckedJackal = new List<byte>();
-            Roles.SeerFriends.CheckedJackal = new List<byte>();
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
@@ -1848,7 +1851,6 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.SeerFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
-                Roles.SeerFriends.CheckedJackal = new List<byte>();
             }
         }
 
