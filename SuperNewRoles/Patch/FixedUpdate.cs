@@ -181,41 +181,6 @@ namespace SuperNewRoles.Patch
                 {
 
                 }
-          /*    if (AmongUsClient.Instance.AmHost)
-                {
-                    if (Arsonist.ArsonistTimer.ContainsKey(__instance.PlayerId))
-                    {
-                        var ar_target = Arsonist.ArsonistTimer[__instance.PlayerId].Item1;
-                       if (Arsonist.ArsonistTimer[__instance.PlayerId].Item2 >= CustomOptions.ArsonistDurationTime.getFloat())
-                        {
-                            if (!__instance.IsDoused(target))
-                            {
-                                Arsonist.ArsonistDouse(target, __instance);
-                                target.RpcProtectPlayerPrivate(target, 0, __instance);
-                                new LateTask(() =>
-                                {
-                                    SyncSetting.MurderSyncSetting(__instance);
-                                    __instance.RPCMurderPlayerPrivate(target);
-                                }, 0.5f);
-                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
-                            }
-                        }
-                        else
-                        {
-                            float dis;
-                            dis = Vector2.Distance(__instance.transform.position, ar_target.transform.position);
-                            if (dis <= 1.75f)
-                            {
-                                Arsonist.ArsonistTimer[__instance.PlayerId] =
-                                (Arsonist.ArsonistTimer[__instance.PlayerId].Item1, Arsonist.ArsonistTimer[__instance.PlayerId].Item2 + Time.fixedDeltaTime);
-                            }
-                            else
-                            {
-                                Arsonist.ArsonistTimer.Remove(__instance.PlayerId);
-                            }
-                        }
-                    }
-                }*/
             }
         }
     }
