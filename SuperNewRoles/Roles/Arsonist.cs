@@ -118,6 +118,7 @@ namespace SuperNewRoles.Roles
                         RoleClass.Arsonist.IsDouse = false;
                         HudManagerStartPatch.ArsonistDouseButton.Timer = 0;
                         SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗るのをやめた");
+                        return;
                     }
                     if (HudManagerStartPatch.ArsonistDouseButton.Timer <= 0.1f)
                     {
