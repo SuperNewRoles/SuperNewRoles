@@ -1,4 +1,5 @@
 ## import
+import string
 import PySimpleGUI as psg
 import configparser
 import sys
@@ -18,14 +19,14 @@ class ReturnClass:
             Template = r.read()
             print(Template)
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
-                #Template = Template.replace(OldCode, NewCode)
+                Template = Template.replace(OldCode, NewCode)
                 print("ファイルを書き込みました:"+Template)
                 print("パス:"+BasePath+Path)
                 w.write(Template)
     #入力をゲット+戻り値として返す
     def GetInput(self, key):
         if values[key] == "":
-            AllActClass.CreateErrorWindow("エラーが発生しました。\n値が空白です\n" + "Key:" + key)
+            MainClass.CreateErrorWindow("エラーが発生しました。\n値が空白です\n" + "Key:" + key)
             return
         else:
             print("入力した値を読み込みました:" + values[key])
@@ -47,7 +48,7 @@ class ReturnClass:
     #選択から色を返す
     def GetRoleColor(self):
         if (MainClass.GetInput("ColorHash") != "ImposterRed"):
-            Template = "new Color32(",MainClass.HashToRGB(),"byte.MaxValue)"
+            Template = "new Color32(RGBCOLOR, byte.MaxValue)".replace("RGBCOLOR", str(MainClass.HashToRGB()))
             print("ハッシュを取得しました:", Template)
             return Template
         elif (MainClass.GetBool("ImpoColor")):
