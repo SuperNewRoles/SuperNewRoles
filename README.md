@@ -51,19 +51,28 @@ It is already on the Discord server.
 | [Pursuer](#追跡者) | [Home Security Guard](#自宅警備員) |  [True Lover](#純愛者) |  |
 | [EvilScientist](#イビルサイエンティスト) | [Stuntman](#スタントマン) | [Amnesiac](#忘却者) |  |
 | [Hawk](#ホーク) | [Moving](#ムービング) |[Jackal Friends](#ジャッカルフレンズ)  |  |
-| [Minimalist](#ミニマリスト) | [Best False Charge](#ベスト冤罪ヤー) |  |  |
-| [Magaziner](#マガジナー)| [Nice Nekomata](#ナイス猫又) |  |  |
-| [SerialKiller](#シリアルキラー) | [Doctor](#ドクター)
-| [EvilEraser](#イビルイレイサー) | [MeetingSheriff](#ミーティングシェリフ)
-| [OverKiller](#オーバーキラー) | [NicScientist](#ナイスサイエンティスト)
-| [EvilMoving](#イビルムービング) |[NiceRedRidingHood](#ナイス赤ずきん)
+| [Minimalist](#ミニマリスト) | [Best False Charge](#ベスト冤罪ヤー) | [FalseCharges](#冤罪師) |  |
+| [Magaziner](#マガジナー)| [Nice Nekomata](#ナイス猫又) | [Fox](#妖狐) |  |
+| [SerialKiller](#シリアルキラー) | [Doctor](#ドクター)|[TeleportingJackal](#テレポートジャッカル)
+| [EvilEraser](#イビルイレイサー) | [MeetingSheriff](#ミーティングシェリフ)| [Demon](#悪魔)
+| [OverKiller](#オーバーキラー) | [NicScientist](#ナイスサイエンティスト)| [JackalSeer](#ジャッカルシーア)
+| [EvilMoving](#イビルムービング) |[NiceRedRidingHood](#ナイス赤ずきん)| [Sidekick(Seer)](#サイドキック(シーア))
 | [Levelinger](#レベリンガー) | [Mayor](#メイヤー)
 | [SideKiller](#サイドキラー) | [Technician](#技術者)
 | [Survivor](#サバイバー) | [SoothSayer](#占い師)
-| |[Spirit Medium](#霊媒師)
-| |[MadMayor](#マッドメイヤー)
-| |[NiceHawk](#ナイスホーク)
+| [EvilSeer](#イビルシーア)|[Spirit Medium](#霊媒師)
+| [DarkKiller](#ダークキラー)|[MadMayor](#マッドメイヤー)
+| [Vampire](#ヴァンパイア)|[NiceHawk](#ナイスホーク)
 | |[MadStuntman](#マッドスタントマン)
 | |[MadHawk](#マッドホーク)
 | |[Bakery](#パン屋)
 | |[MadJester](#マッドてるてる)
+| |[NiceTeleporter](#ナイステレポーター)
+| |[Celebrity](#スター)
+| |[Nocturnality](#夜行性)
+| |[Observer](#選挙管理委員)
+| |[Seer](#シーア)
+| |[MadSeer](#マッドシーア)
+| |[RemoteSheriff](#リモートシェリフ)
+| |[TaskManager](#タスクマネージャー)
+| |[MadMaker](#マッドメーカー)
