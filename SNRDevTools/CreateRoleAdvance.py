@@ -218,6 +218,7 @@ MainTab = psg.Tab("メイン", [
                 [psg.Text("陣営:    ",key="TeamText"),psg.Radio("インポ陣営","TeamName",key="Impo",default=True),psg.Radio("クルー陣営","TeamName",key="Crew"),psg.Radio("第三陣営","TeamName",key="Neut")],
                 [psg.Text("役職カラー:",key="ColorText"), psg.Radio("インポ色","RoleColor",key="ImpoColor",default=True), psg.Radio("ナイス緑色","RoleColor",key="CrewColor"),  psg.ColorChooserButton("色選択",key="ColorButton",target="ColorHash")],
                 [psg.Text("取得ハッシュ:",key="ColorHashText"), psg.Input("ImposterRed",key="ColorHash")],
+                [psg.Text()],
                 [psg.Check("設定を追加する",key="AddSetting")],
                 [psg.Text(), psg.Text("タブ:",key="SettingTabText"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut")],
                 [psg.Text(), psg.Check("SHR対応",key="IsSHRON")],
