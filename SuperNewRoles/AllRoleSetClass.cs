@@ -839,10 +839,16 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.FoxPlayerCount.getFloat();
                 case (RoleId.TeleportingJackal):
                     return CustomOption.CustomOptions.TeleportingJackalPlayerCount.getFloat();
-                    case (RoleId.MadMaker):
+                case (RoleId.MadMaker):
                     return CustomOption.CustomOptions.MadMakerPlayerCount.getFloat();
-                case (RoleId.Scavenger):
-                    return CustomOption.CustomOptions.ScavengerPlayerCount.getFloat();
+                case (RoleId.Demon):
+                    return CustomOption.CustomOptions.DemonPlayerCount.getFloat();
+                case (RoleId.TaskManager):
+                    return CustomOption.CustomOptions.TaskManagerPlayerCount.getFloat();
+                case (RoleId.SeerFriends):
+                    return CustomOption.CustomOptions.SeerFriendsPlayerCount.getFloat();
+                case (RoleId.JackalSeer):
+                    return CustomOption.CustomOptions.JackalSeerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -1136,6 +1142,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            */
             if (!(CustomOption.CustomOptions.SpeederOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.SpeederOption.getString().Replace("0%", ""));
@@ -1152,6 +1159,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+            /*
             if (!(CustomOption.CustomOptions.FreezerOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.FreezerOption.getString().Replace("0%", ""));
@@ -2200,10 +2208,58 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.ScavengerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.DemonOption.getString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.ScavengerOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.Scavenger;
+                int OptionDate = int.Parse(CustomOption.CustomOptions.DemonOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Demon;
+                if (OptionDate == 10)
+                {
+                    Neutonepar.Add(ThisRoleId);
+                } else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Neutnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+
+        if (!(CustomOption.CustomOptions.TaskManagerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.TaskManagerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.TaskManager;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.SeerFriendsOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SeerFriendsOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.SeerFriends;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+        if (!(CustomOption.CustomOptions.JackalSeerOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.JackalSeerOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.JackalSeer;
                 if (OptionDate == 10)
                 {
                     Neutonepar.Add(ThisRoleId);

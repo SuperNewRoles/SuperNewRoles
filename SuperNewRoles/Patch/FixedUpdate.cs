@@ -22,14 +22,12 @@ namespace SuperNewRoles.Patch
         }
     }
     [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]
-    public class AbilityUpdate { 
+    public class AbilityUpdate {
         public static void Postfix(AbilityButton __instance)
         {
-            if (!ModeHandler.IsBlockVanilaRole()) {
-                if (PlayerControl.LocalPlayer.Data.Role.IsSimpleRole)
-                {
-                    __instance.commsDown.SetActive(false);
-                }
+            if (PlayerControl.LocalPlayer.Data.Role.IsSimpleRole && __instance.commsDown.active)
+            {
+                __instance.commsDown.SetActive(false);
             }
         }
     }
@@ -44,7 +42,7 @@ namespace SuperNewRoles.Patch
                 if (AmongUsClient.Instance.AmHost && Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift))
                 {
                     RPCHelper.StartRPC(CustomRPC.CustomRPC.SetHaison).EndRPC();
-                    CustomRPC.RPCProcedure.SetHaison();
+                    RPCProcedure.SetHaison();
                     ShipStatus.Instance.enabled = false;
                     ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                 }
@@ -97,62 +95,59 @@ namespace SuperNewRoles.Patch
                         SabotageManager.Update();
                         SetNameUpdate.Postfix(__instance);
                         Jackal.JackalFixedPatch.Postfix(__instance);
+                        JackalSeer.JackalSeerFixedPatch.Postfix(__instance);
                         if (PlayerControl.LocalPlayer.isAlive())
                         {
-                            if (PlayerControl.LocalPlayer.isImpostor()) {SetTarget.ImpostorSetTarget(); }
-                            if (RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
+                            if (PlayerControl.LocalPlayer.isImpostor()) { SetTarget.ImpostorSetTarget(); }
+                            var MyRole = PlayerControl.LocalPlayer.getRole();
+                            switch (MyRole)
                             {
-                                Researcher.ReseUseButtonSetTargetPatch.Postfix(__instance);
-                            }
-                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Pursuer))
-                            {
-                                Pursuer.PursureUpdate.Postfix();
-                            }
-                            else if (PlayerControl.LocalPlayer.isRole(RoleId.Levelinger))
-                            {
-                                if (RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Pursuer))
-                                {
-                                    if (!RoleClass.Pursuer.arrow.arrow.active)
-                                    {
-                                        RoleClass.Pursuer.arrow.arrow.SetActive(true);
-                                    }
+                                case RoleId.Researcher:
+                                    Researcher.ReseUseButtonSetTargetPatch.Postfix(PlayerControl.LocalPlayer);
+                                    break;
+                                case RoleId.Pursuer:
                                     Pursuer.PursureUpdate.Postfix();
-
-                                }
-                                else
-                                {
-                                    if (RoleClass.Pursuer.arrow.arrow.active)
+                                    break;
+                                case RoleId.Levelinger:
+                                    if (RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Pursuer))
                                     {
-                                        RoleClass.Pursuer.arrow.arrow.SetActive(false);
+                                        if (!RoleClass.Pursuer.arrow.arrow.active)
+                                        {
+                                            RoleClass.Pursuer.arrow.arrow.SetActive(true);
+                                        }
+                                        Pursuer.PursureUpdate.Postfix();
+
                                     }
-                                }
-                            }
-                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
-                            {
-                                Hawk.FixedUpdate.Postfix();
-                            }
-                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk))
-                            {
-                                NiceHawk.FixedUpdate.Postfix();
-                            }
-                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk))
-                            {
-                                MadHawk.FixedUpdate.Postfix();
-                            }
-                            Minimalist.FixedUpdate.Postfix();
-                            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
-                            {
-                                Vampire.FixedUpdate.Postfix();
-                            }
-                            else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DarkKiller))
-                            {
-                                DarkKiller.FixedUpdate.Postfix();
+                                    else
+                                    {
+                                        if (RoleClass.Pursuer.arrow.arrow.active)
+                                        {
+                                            RoleClass.Pursuer.arrow.arrow.SetActive(false);
+                                        }
+                                    }
+                                    break;
+                                case RoleId.Hawk:
+                                    Hawk.FixedUpdate.Postfix();
+                                    break;
+                                case RoleId.NiceHawk:
+                                    NiceHawk.FixedUpdate.Postfix();
+                                    break;
+                                case RoleId.MadHawk:
+                                    MadHawk.FixedUpdate.Postfix();
+                                    break;
+                                case RoleId.Vampire:
+                                    Vampire.FixedUpdate.Postfix();
+                                    break;
+                                case RoleId.DarkKiller:
+                                    DarkKiller.FixedUpdate.Postfix();
+                                    break;
                             }
                             Fox.FixedUpdate.Postfix();
+                            Minimalist.FixedUpdate.Postfix();
                         }
-                        else if (PlayerControl.LocalPlayer.isDead())
+                        else
                         {
-                            if (RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
+                            if (PlayerControl.LocalPlayer.isRole(RoleId.Bait))
                             {
                                 if (!RoleClass.Bait.Reported)
                                 {

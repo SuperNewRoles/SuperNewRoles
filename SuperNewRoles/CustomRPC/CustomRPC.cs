@@ -105,7 +105,11 @@ namespace SuperNewRoles.CustomRPC
         RemoteSheriff,
         TeleportingJackal,
         MadMaker,
-        Scavenger,
+        Demon,
+        TaskManager,
+        SeerFriends,
+        JackalSeer,
+        SidekickSeer,
         //RoleId
     }
 
@@ -127,7 +131,9 @@ namespace SuperNewRoles.CustomRPC
         ShareWinner,
         TeleporterTP,
         SidekickPromotes,
+        SidekickSeerPromotes,
         CreateSidekick,
+        CreateSidekickSeer,
         SetSpeedBoost,
         ShareCosmetics,
         SetShareNamePlate,
@@ -156,14 +162,32 @@ namespace SuperNewRoles.CustomRPC
         UseMadStuntmanCount,
         CustomEndGame,
         UncheckedProtect,
-        SetBot
+        SetBot,
+        DemonCurse,
+        SetSpeedDown,
     }
     public static class RPCProcedure
     {
+        public static void DemonCurse(byte source, byte target)
+        {
+            PlayerControl TargetPlayer = ModHelpers.playerById(target);
+            PlayerControl SourcePlayer = ModHelpers.playerById(source);
+            if (TargetPlayer == null || SourcePlayer == null) return;
+            if (!RoleClass.Demon.CurseDatas.ContainsKey(source)) RoleClass.Demon.CurseDatas[source] = new List<PlayerControl>();
+            if (!Demon.IsCursed(SourcePlayer, TargetPlayer))
+            {
+                RoleClass.Demon.CurseDatas[source].Add(TargetPlayer);
+            }
+        }
         public static void SetBot(byte playerid)
         {
+            SuperNewRolesPlugin.Logger.LogInfo("セットボット！！！！！！！！！");
             PlayerControl player = ModHelpers.playerById(playerid);
-            if (player == null) return;
+            if (player == null) {
+                SuperNewRolesPlugin.Logger.LogInfo("nullなのでreturn");
+                return;
+            }
+            SuperNewRolesPlugin.Logger.LogInfo("通過:"+player.name);
             if (BotManager.AllBots == null) BotManager.AllBots = new List<PlayerControl>();
             BotManager.AllBots.Add(player);
 
@@ -317,7 +341,7 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void StartGameRPC()
         {
-            RoleClass.clearAndReloadRoles();
+            RoleClass.ClearAndReloadRoles();
         }
         public static void UseEraserCount(byte playerid)
         {
@@ -591,6 +615,16 @@ namespace SuperNewRoles.CustomRPC
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
+        public static void SidekickSeerPromotes()
+        {
+            for (int i = 0; i < RoleClass.JackalSeer.SidekickSeerPlayer.Count; i++)
+            {
+                RoleClass.JackalSeer.JackalSeerPlayer.Add(RoleClass.JackalSeer.SidekickSeerPlayer[i]);
+                RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAt(i);
+            }
+            PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            ChacheManager.ResetMyRoleChache();
+        }
         public static void CreateSidekick(byte playerid,bool IsFake) {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
@@ -603,6 +637,23 @@ namespace SuperNewRoles.CustomRPC
                 DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
                 player.ClearRole();
                 RoleClass.Jackal.SidekickPlayer.Add(player);
+                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+                ChacheManager.ResetMyRoleChache();
+            }
+        }
+        public static void CreateSidekickSeer(byte playerid, bool IsFake)
+        {
+            var player = ModHelpers.playerById(playerid);
+            if (player == null) return;
+            if (IsFake)
+            {
+                RoleClass.JackalSeer.FakeSidekickSeerPlayer.Add(player);
+            }
+            else
+            {
+                DestroyableSingleton<RoleManager>.Instance.SetRole(player, RoleTypes.Crewmate);
+                player.ClearRole();
+                RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
                 PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
                 ChacheManager.ResetMyRoleChache();
             }
@@ -690,6 +741,10 @@ namespace SuperNewRoles.CustomRPC
         public static void SetWinCond(byte Cond)
         {
             OnGameEndPatch.EndData = (CustomGameOverReason)Cond;
+        }
+        public static void SetSpeedDown(bool Is)
+        {
+            RoleClass.Speeder.IsSpeedDown = Is;
         }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
@@ -871,6 +926,18 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.SetBot:
                         SetBot(reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.DemonCurse:
+                        DemonCurse(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SidekickSeerPromotes:
+                        RPCProcedure.SidekickSeerPromotes();
+                        break;
+                    case (byte)CustomRPC.CreateSidekickSeer:
+                        RPCProcedure.CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case (byte)CustomRPC.SetSpeedDown:
+                        SetSpeedDown(reader.ReadBoolean());
                         break;
                 }
             }

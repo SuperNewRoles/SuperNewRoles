@@ -9,6 +9,8 @@ using System.Reflection;
 using System.Text;
 using UnityEngine.Events;
 using SuperNewRoles.Mode;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Intro;
 
 namespace SuperNewRoles.CustomOption
 {
@@ -196,16 +198,35 @@ namespace SuperNewRoles.CustomOption
             }
         }
     }
-
     public class CustomRoleOption : CustomOption
     {
+        public static List<CustomRoleOption> RoleOptions = new List<CustomRoleOption>();
+
         public CustomOption countOption = null;
+
+        public RoleId RoleId;
 
         public int rate
         {
             get
             {
                 return getSelection();
+            }
+        }
+
+        public bool isRoleEnable
+        {
+            get
+            {
+                return getSelection() != 0;
+            }
+        }
+
+        public IntroDate Intro
+        {
+            get
+            {
+                return IntroDate.GetIntroDate(RoleId);
             }
         }
 
@@ -231,6 +252,14 @@ namespace SuperNewRoles.CustomOption
         public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15) :
             base(id, isSHROn, type, CustomOptions.cs(color, name), CustomOptions.rates, "", null, true, false, "")
         {
+            try
+            {
+                this.RoleId = IntroDate.IntroDatas.FirstOrDefault((_) => {
+                    return _.NameKey + "Name" == name;
+                }).RoleId;
+            }
+            catch { }
+            RoleOptions.Add(this);
             if (max > 1)
                 countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
         }
@@ -600,15 +629,13 @@ namespace SuperNewRoles.CustomOption
         {
             if (option.isHidden) return true;
             if (option.isSHROn) { return false; }
-            else { return ModeHandler.isMode(ModeId.SuperHostRoles); }
+            else { return ModeHandler.isMode(ModeId.SuperHostRoles, false); }
             return false;
         }
         public static void Postfix(GameOptionsMenu __instance)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("名前:"+__instance.name);
             var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
             if (gameSettingMenu.RegularGameSettings.active || gameSettingMenu.RolesSettings.gameObject.active) return;
-            SuperNewRolesPlugin.Logger.LogInfo("通過");
 
             timer += Time.deltaTime;
             if (timer < 0.1f) return;
@@ -620,7 +647,6 @@ namespace SuperNewRoles.CustomOption
             CustomOptionType type = getCustomOptionType(__instance.name);
             foreach (CustomOption option in CustomOption.options)
             {
-                //SuperNewRolesPlugin.Logger.LogInfo(option.type);
                 if (option.type != type) continue;
                 if (option?.optionBehaviour != null && option.optionBehaviour.gameObject != null)
                 {
@@ -993,7 +1019,7 @@ namespace SuperNewRoles.CustomOption
     {
         public static void Postfix(KeyboardJoystick __instance)
         {
-            if ((Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7)) && (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined || AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started))
+            if ((Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7)))
             {
                 SuperNewRolesPlugin.optionsPage = SuperNewRolesPlugin.optionsPage + 1;
             }

@@ -11,6 +11,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.HideAndSeek;
 using System.Collections;
 using TMPro;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Patches
 {
@@ -113,7 +114,8 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.JackalFriends.IsJackalCheck)
+                if ((PlayerControl.LocalPlayer.isRole(RoleId.JackalFriends) || 
+                    PlayerControl.LocalPlayer.isRole(RoleId.SeerFriends)) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int JackalNum = 0;
@@ -135,6 +137,20 @@ namespace SuperNewRoles.Patches
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
                         if (player.isRole(CustomRPC.RoleId.Jackal))
+                        {
+                            JackalNum++;
+                            JackalTeams.Add(player);
+                        }
+                    }
+                    yourTeam = JackalTeams;
+                }
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalSeer))
+                {
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    int JackalNum = 0;
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.isRole(CustomRPC.RoleId.JackalSeer))
                         {
                             JackalNum++;
                             JackalTeams.Add(player);
@@ -200,12 +216,58 @@ namespace SuperNewRoles.Patches
                     __instance.TeamTitle.color = Intro.color;
                     __instance.ImpostorText.text = "";
                 }
-            } else
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.SeerFriends) && CustomOption.CustomOptions.SeerFriendsIsCheckJackal.getBool())
+                {
+                    IntroDate Intro = IntroDate.SeerFriendsIntro;
+                    __instance.BackgroundBar.material.color = Intro.color;
+                    __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
+                    __instance.TeamTitle.color = Intro.color;
+                    __instance.ImpostorText.text = "";
+                }
+            }
+            else
             {
                 ModeHandler.IntroHandler(__instance);
             }
             //SetUpRoleTextPatch.Postfix(__instance);
         }
+
+
+
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
+        class IntroCutsceneDestroyPatch
+        {
+            public static void Prefix(IntroCutscene __instance)
+            {
+                float SetTime = 0;
+                bool Flag = true;
+                switch (PlayerControl.LocalPlayer.getRole())
+                {
+                    case RoleId.DarkKiller:
+                        SetTime = RoleClass.DarkKiller.KillCoolTime;
+                        break;
+                    case RoleId.Minimalist:
+                        SetTime = RoleClass.Minimalist.KillCoolTime;
+                        break;
+                    case RoleId.HomeSecurityGuard:
+                        foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                        {
+                            task.Complete();
+                        }
+                        Flag = false;
+                        break;
+                    default:
+                        Flag = false;
+                        break;
+                }
+                if (Flag)
+                {
+                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(SetTime);
+                }
+                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            }
+        }
+
         [HarmonyPatch(typeof(IntroCutscene),nameof(IntroCutscene.ShowRole))]
         class SetUpRoleTextPatch
         {

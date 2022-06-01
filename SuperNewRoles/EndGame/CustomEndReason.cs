@@ -19,7 +19,7 @@ namespace SuperNewRoles.EndGame
         MadJesterWin,
         FalseChargesWin,
         FoxWin,
-        ScavengerWin,
+        DemonWin,
         BugEnd
     }
 }

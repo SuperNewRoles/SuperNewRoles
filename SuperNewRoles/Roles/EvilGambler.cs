@@ -10,42 +10,7 @@ namespace SuperNewRoles.Roles
 {
     class EvilGambler
     {
-        [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
-        public class CheckEndGamePatch
-        {
-            public static void Postfix(ExileController __instance)
-            {
-                try
-                {
-                    endm();
-                }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("EvilGambler:" + e);
-                }
-            }
-        }
-        [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-        public class CheckAirShipEndGamePatch
-        {
-            public static void Postfix(AirshipExileController __instance)
-            {
-                try
-                {
-                    endm();
-                }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("EvilGambler:" + e);
-                }
-            }
-        }
-        public static void endm() {
-            //HudManager.Instance.KillButton.SetCoolDown(EvilGamblerMurder.temp, EvilGamblerMurder.temp);
-            //PlayerControl.LocalPlayer.SetKillTimer(EvilGamblerMurder.temp);
-        }
-        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
-        public class EvilGamblerMurder
+        public static class EvilGamblerMurder
         {
             public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
@@ -57,7 +22,7 @@ namespace SuperNewRoles.Roles
                     }
                     return;
                 }
-                else if (__instance == PlayerControl.LocalPlayer && RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(__instance)) {
+                else if (__instance == PlayerControl.LocalPlayer && __instance.isRole(CustomRPC.RoleId.EvilGambler)) {
                     if (RoleClass.EvilGambler.GetSuc()) {
                         //成功
                         PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);
