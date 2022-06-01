@@ -299,7 +299,7 @@ namespace SuperNewRoles.Buttons
 
                        CustomRPC.RPCProcedure.CountChangerSetRPC(LocalID, TargetID);
 
-                       MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CountChangerSetRPC, Hazel.SendOption.None, -1);
+                       MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CountChangerSetRPC, Hazel.SendOption.Reliable, -1);
                        killWriter.Write(LocalID);
                        killWriter.Write(TargetID);
                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -367,7 +367,7 @@ namespace SuperNewRoles.Buttons
                     if (target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.IsCreateSidekick)
                     {
                         bool IsFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CreateSidekick, Hazel.SendOption.None, -1);
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CreateSidekick, Hazel.SendOption.Reliable, -1);
                         killWriter.Write(target.PlayerId);
                         killWriter.Write(IsFakeSidekick);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -588,7 +588,7 @@ namespace SuperNewRoles.Buttons
 
                             CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
 
-                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.None, -1);
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
                             killWriter.Write(LocalID);
                             killWriter.Write(TargetID);
                             killWriter.Write(misfire);

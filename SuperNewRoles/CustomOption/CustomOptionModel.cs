@@ -134,7 +134,7 @@ namespace SuperNewRoles.CustomOption
         {
             if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null) return;
 
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareOptions, Hazel.SendOption.None);
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareOptions, Hazel.SendOption.Reliable);
             messageWriter.WritePacked((uint)CustomOption.options.Count);
             foreach (CustomOption option in CustomOption.options)
             {
@@ -579,7 +579,7 @@ namespace SuperNewRoles.CustomOption
             {
                 PlayerControl.GameOptions = gameOptions;
                 SaveManager.GameHostOptions = gameOptions;
-                MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 2, SendOption.None);
+                MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 2, SendOption.Reliable);
                 obj.WriteBytesAndSize(gameOptions.ToBytes(6));
                 obj.EndMessage();
             }

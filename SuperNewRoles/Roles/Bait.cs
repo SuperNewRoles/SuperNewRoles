@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles
                 {
 
                     if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.BaitReport)) { 
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ReportDeadBody, Hazel.SendOption.None, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ReportDeadBody, Hazel.SendOption.Reliable, -1);
                         writer.Write(deadPlayer.killerIfExisting.PlayerId);
                         writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);

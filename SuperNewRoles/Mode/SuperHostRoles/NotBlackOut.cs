@@ -54,21 +54,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
 
             
             new LateTask(() => {
-                MessageWriter MurderWriter = AmongUsClient.Instance.StartRpcImmediately(pc.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, clientId);
+                MessageWriter MurderWriter = AmongUsClient.Instance.StartRpcImmediately(pc.NetId, (byte)RpcCalls.MurderPlayer, SendOption.Reliable, clientId);
                 MessageExtensions.WriteNetObject(MurderWriter, pc);
                 AmongUsClient.Instance.FinishRpcImmediately(MurderWriter);
             }, delay, "Murder To Reset Cam");
             
             new LateTask(() => {
                 SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
-                MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.None, clientId);
+                MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
                 SabotageWriter.Write(reactorId);
                 MessageExtensions.WriteNetObject(SabotageWriter, pc);
                 SabotageWriter.Write((byte)128);
                 AmongUsClient.Instance.FinishRpcImmediately(SabotageWriter);
             }, delay, "Reactor Desync");
             new LateTask(() => {
-                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.None, clientId);
+                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
                 SabotageFixWriter.Write(reactorId);
                 MessageExtensions.WriteNetObject(SabotageFixWriter, pc);
                 SabotageFixWriter.Write((byte)16);
@@ -77,7 +77,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
 
             if (PlayerControl.GameOptions.MapId == 4) //Airship用
                 new LateTask(() => {
-                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.None, clientId);
+                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
                     SabotageFixWriter.Write(reactorId);
                     MessageExtensions.WriteNetObject(SabotageFixWriter, pc);
                     SabotageFixWriter.Write((byte)17);

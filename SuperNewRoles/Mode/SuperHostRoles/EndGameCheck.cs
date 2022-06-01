@@ -288,7 +288,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.None, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);

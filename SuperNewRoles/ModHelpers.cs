@@ -291,7 +291,7 @@ namespace SuperNewRoles
 
             List<byte> taskTypeIds = generateTasks(numCommon, numShort, numLong);
 
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetTasks, Hazel.SendOption.None, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetTasks, Hazel.SendOption.Reliable, -1);
             writer.Write(player.PlayerId);
             writer.WriteBytesAndSize(taskTypeIds.ToArray());
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -340,7 +340,7 @@ namespace SuperNewRoles
             {
                 if (tien <= 0)
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.None, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
                     writer.Write(killer.PlayerId);
                     writer.Write(target.PlayerId);
                     writer.Write(showAnimation ? byte.MaxValue : 0);
@@ -350,7 +350,7 @@ namespace SuperNewRoles
                 {
                     new LateTask(() =>
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.None, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
                         writer.Write(killer.PlayerId);
                         writer.Write(target.PlayerId);
                         writer.Write(showAnimation ? byte.MaxValue : 0);
@@ -363,7 +363,7 @@ namespace SuperNewRoles
         }
         public static void UncheckedMurderPlayer(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.None, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
             writer.Write(killer.PlayerId);
             writer.Write(target.PlayerId);
             writer.Write(showAnimation ? byte.MaxValue : 0);
@@ -375,7 +375,7 @@ namespace SuperNewRoles
             if (player == null) return;
             if (seer == null) seer = player;
             var clientId = seer.getClientId();
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, Hazel.SendOption.None, clientId);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, Hazel.SendOption.Reliable, clientId);
             writer.Write((ushort)role);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }

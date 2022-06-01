@@ -105,13 +105,13 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     */
                     if (ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.CopsRobbers))
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.None, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
                         writer.WritePacked(127);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         new LateTask(() =>
                         {
                             int clientId = __instance.myPlayer.getClientId();
-                            MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.None, clientId);
+                            MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, clientId);
                             writer2.Write(id);
                             AmongUsClient.Instance.FinishRpcImmediately(writer2);
                             __instance.myPlayer.inVent = false;
