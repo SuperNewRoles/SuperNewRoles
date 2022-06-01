@@ -166,6 +166,7 @@ namespace SuperNewRoles.CustomRPC
         SetBot,
         DemonCurse,
         ArsonistDouse,
+        SetSpeedDown,
     }
     public static class RPCProcedure
     {
@@ -754,6 +755,10 @@ namespace SuperNewRoles.CustomRPC
         {
             OnGameEndPatch.EndData = (CustomGameOverReason)Cond;
         }
+        public static void SetSpeedDown(bool Is)
+        {
+            RoleClass.Speeder.IsSpeedDown = Is;
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -946,6 +951,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.ArsonistDouse:
                         ArsonistDouse(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.SetSpeedDown:
+                        SetSpeedDown(reader.ReadBoolean());
                         break;
                 }
             }

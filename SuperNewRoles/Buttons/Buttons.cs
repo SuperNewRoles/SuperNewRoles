@@ -34,7 +34,6 @@ namespace SuperNewRoles.Buttons
 
         public static CustomButton HawkHawkEyeButton;
         public static CustomButton FreezerFreezeButton;
-        public static CustomButton SpeederSpeedDownButton;
         public static CustomButton JackalKillButton;
         public static CustomButton JackalSidekickButton;
         public static CustomButton JackalSeerKillButton;
@@ -49,6 +48,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton DemonButton;
         public static CustomButton ArsonistDouseButton;
         public static CustomButton ArsonistIgniteButton;
+        public static CustomButton SpeederButton;
+
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -998,7 +999,7 @@ namespace SuperNewRoles.Buttons
                     }
                     return false;
                 },
-                () => 
+                () =>
                 {
                     ArsonistIgniteButton.MaxTimer = 0;
                     ArsonistIgniteButton.Timer = 0;
@@ -1013,6 +1014,35 @@ namespace SuperNewRoles.Buttons
 
             ArsonistIgniteButton.buttonText = ModTranslation.getString("ArsonistIgniteButtonName");
             ArsonistIgniteButton.showButtonText = true;
+
+            SpeederButton = new Buttons.CustomButton(
+                () =>
+                {
+                    SpeederButton.MaxTimer = RoleClass.Speeder.DurationTime;
+                    SpeederButton.Timer = SpeederButton.MaxTimer;
+                    SpeederButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    Speeder.DownStart();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Speeder.IsSpeeder(PlayerControl.LocalPlayer); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { Speeder.EndMeeting(); },
+                RoleClass.Speeder.GetButtonSprite(),
+
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+            
+
+            SpeederButton.buttonText = ModTranslation.getString("SpeederButtonName");
+            SpeederButton.showButtonText = true;
+            SpeederButton.HasEffect = true;
+
 
             setCustomButtonCooldowns();
 

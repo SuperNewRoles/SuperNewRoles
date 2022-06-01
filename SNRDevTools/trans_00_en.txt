@@ -318,6 +318,7 @@ Slow everyone down and sabotage your crewmates!
 Try to slow everyone down and sabotage the task!
 Sabotage Cool Time
 Sabotage duration
+SpeedDown
 Guesser
 Let's punch out the outsider.
 Guess the position of the outsider
