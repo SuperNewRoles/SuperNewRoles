@@ -196,6 +196,8 @@ namespace SuperNewRoles.Intro
                     return JackalSeerIntro;
                 case (CustomRPC.RoleId.SidekickSeer):
                     return SidekickSeerIntro;
+                case (CustomRPC.RoleId.Speeder):
+                    return SpeederIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {

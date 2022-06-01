@@ -163,7 +163,8 @@ namespace SuperNewRoles.CustomRPC
         CustomEndGame,
         UncheckedProtect,
         SetBot,
-        DemonCurse
+        DemonCurse,
+        SetSpeedDown,
     }
     public static class RPCProcedure
     {
@@ -741,6 +742,10 @@ namespace SuperNewRoles.CustomRPC
         {
             OnGameEndPatch.EndData = (CustomGameOverReason)Cond;
         }
+        public static void SetSpeedDown(bool Is)
+        {
+            RoleClass.Speeder.IsSpeedDown = Is;
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -930,6 +935,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.CreateSidekickSeer:
                         RPCProcedure.CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case (byte)CustomRPC.SetSpeedDown:
+                        SetSpeedDown(reader.ReadBoolean());
                         break;
                 }
             }
