@@ -87,20 +87,20 @@ class ReturnClass:
                 sys.exit()
 # 戻り値なし
 class AllCheck:
-    #すべて書く
+    # すべて書く
     def AllWrite(self):
         # CustomRPC/CustomRPC.cs
         MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//RoleId", MainClass.GetInput("RoleName")+",\n        //RoleId")
         MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//新ロールクラス", 
-                                """public static class ROLE!!
+                                """public static class ROLENAME
         {
-            public static List<PlayerControl> ROLE!!Player;
+            public static List<PlayerControl> ROLENAMEPlayer;
             public static Color32 color = COLORS;
             public static void ClearAndReload()
             {
-                ROLE!!Player = new List<PlayerControl>();
+                ROLENAMEPlayer = new List<PlayerControl>();
             }
-        }\n        //新ロールクラス""".replace("ROLE!!",MainClass.GetInput("RoleName")).replace("COLORS",MainClass.GetRoleColor()))
+        }\n        //新ロールクラス""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("COLORS",MainClass.GetRoleColor()))
         # AllRoleSetClass.cs
         MainClass.WriteCodes("AllRoleSetClass.cs", "//セットクラス",
                                 """if (!(CustomOption.CustomOptions.ROLEID!!Option.getString().Replace("0%", "") == ""))
@@ -147,6 +147,19 @@ class AllCheck:
                     break; 
                 //タスククリアか""".replace("ROLENAME",MainClass.GetInput("RoleName")))
 
+        # Roles/RoleClass.cs
+        MainClass.WriteCodes("Roles/RoleClass.cs", "//ロールクリア", MainClass.GetInput("RoleName")+".ClearAndReload();\n            //ロールクリア")
+        MainClass.WriteCodes("Roles/RoleClass.cs", "//新ロールクラス",
+                                """public static class ROLENAME
+        {
+            public static List<PlayerControl> ROLENAMEPlayer;
+            public static Color32 color = COLORS;
+            public static void ClearAndReload()
+            {
+                ROLENAMEPlayer = new List<PlayerControl>();
+            }
+        }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))
+
         # Intro/IntroDate.cs
         MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME);
         //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
@@ -180,13 +193,17 @@ class AllCheck:
 
         if (MainClass.GetBool("A_CanKill")):
             MainClass.CreateErrorWindow("まだできてませぇぇん(´;ω;｀)")
+
+    # 値確認
     def AllCheck(self):
         MainClass.GetInput("RoleName")
         MainClass.GetRoleColor()
         MainClass.GetTeam()
         if (MainClass.GetBool("AddSetting")):
             MainClass.GetInput("OptionNumber")
-        
+        MainClass.GetBool("A_CanVent")
+        MainClass.GetBool("A_CanKill")
+
         AllActClass.AllWrite()
 
 ## 変数
