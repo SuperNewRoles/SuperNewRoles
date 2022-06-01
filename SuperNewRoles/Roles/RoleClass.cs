@@ -512,7 +512,6 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float DurationTime;
             public static bool IsSpeedDown;
-            public static DateTime ButtonTimer;
             private static Sprite ButtonSprite;
             public static Sprite GetButtonSprite()
             {

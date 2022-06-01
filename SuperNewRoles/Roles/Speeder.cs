@@ -16,7 +16,8 @@ namespace SuperNewRoles.Roles
         public static void ResetCoolDown()
         {
             HudManagerStartPatch.SpeederButton.MaxTimer = RoleClass.Speeder.CoolTime;
-            RoleClass.Speeder.ButtonTimer = DateTime.Now;
+            HudManagerStartPatch.SpeederButton.Timer = HudManagerStartPatch.SpeederButton.MaxTimer;
+            HudManagerStartPatch.SpeederButton.actionButton.cooldownTimerText.color = Color.white;
         }
         public static void DownStart()
         {
@@ -24,7 +25,6 @@ namespace SuperNewRoles.Roles
             writer.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             CustomRPC.RPCProcedure.SetSpeedDown(true);
-            Speeder.ResetCoolDown();
         }
         public static void ResetSpeed()
         {
@@ -36,6 +36,7 @@ namespace SuperNewRoles.Roles
         public static void SpeedDownEnd()
         {
             ResetSpeed();
+            Speeder.ResetCoolDown();
         }
         public static bool IsSpeeder(PlayerControl Player)
         {
@@ -50,8 +51,7 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            HudManagerStartPatch.SpeederButton.MaxTimer = RoleClass.Speeder.CoolTime;
-            RoleClass.Speeder.ButtonTimer = DateTime.Now;
+            Speeder.ResetCoolDown();
             ResetSpeed();
         }
     }
@@ -78,8 +78,6 @@ namespace SuperNewRoles.Roles
             if (HudManagerStartPatch.SpeederButton.Timer <= 0.1 && RoleClass.Speeder.IsSpeedDown)
             {
                 Speeder.SpeedDownEnd();
-                HudManagerStartPatch.SpeederButton.MaxTimer = RoleClass.Speeder.CoolTime;
-                RoleClass.Speeder.ButtonTimer = DateTime.Now;
             }
         }
     }

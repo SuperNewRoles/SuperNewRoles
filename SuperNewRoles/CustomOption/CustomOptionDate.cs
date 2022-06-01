@@ -708,7 +708,7 @@ namespace SuperNewRoles.CustomOption
             */
             SpeederOption = new CustomRoleOption(77, false, CustomOptionType.Impostor, "SpeederName", RoleClass.ImpostorRed, 1);
             SpeederPlayerCount = CustomOption.Create(78, false, CustomOptionType.Impostor,  "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpeederOption);
-            SpeederCoolTime = CustomOption.Create(79, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 30f, 2.5f, 60f, 2.5f, SpeederOption, format: "unitSeconds");
+            SpeederCoolTime = CustomOption.Create(79, false, CustomOptionType.Impostor, "SpeederCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SpeederOption, format: "unitSeconds");
             SpeederDurationTime = CustomOption.Create(80, false, CustomOptionType.Impostor, "SpeederDurationTimeSetting", 10f, 2.5f, 20f, 2.5f, SpeederOption, format: "unitSeconds");
             /*
             GuesserOption = new CustomRoleOption(81, "GuesserName", RoleClass.Guesser.color, 1);

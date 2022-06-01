@@ -317,6 +317,7 @@ SpeederTitle1
 SpeederTitle2
 SpeederCoolTimeSetting
 SpeederDurationTimeSetting
+SpeederButtonName
 GuesserName
 GuesserTitle1
 GuesserTitle2

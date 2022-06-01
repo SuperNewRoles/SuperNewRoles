@@ -318,6 +318,7 @@ SpeederTitle1,Slow everyone down and sabotage your crewmates!,みんなを遅く
 SpeederTitle2,Try to slow everyone down and sabotage the task!,みんなを遅くしてタスクの妨害をしよう
 SpeederCoolTimeSetting,Sabotage Cool Time,サボタージュクールタイム
 SpeederDurationTimeSetting,Sabotage duration,サボタージュ継続時間
+SpeederButtonName,SpeedDown,スピードダウン
 GuesserName,Guesser,ゲッサー
 GuesserTitle1,Let's punch out the outsider.,人外を打ち抜こう
 GuesserTitle2,Guess the position of the outsider,人外の役職を当てよう

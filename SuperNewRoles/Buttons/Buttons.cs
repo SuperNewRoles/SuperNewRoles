@@ -34,7 +34,6 @@ namespace SuperNewRoles.Buttons
 
         public static CustomButton HawkHawkEyeButton;
         public static CustomButton FreezerFreezeButton;
-        public static CustomButton SpeederSpeedDownButton;
         public static CustomButton JackalKillButton;
         public static CustomButton JackalSidekickButton;
         public static CustomButton JackalSeerKillButton;
@@ -941,7 +940,6 @@ namespace SuperNewRoles.Buttons
                 {
                     SpeederButton.MaxTimer = RoleClass.Speeder.DurationTime;
                     SpeederButton.Timer = SpeederButton.MaxTimer;
-                    RoleClass.Speeder.ButtonTimer = DateTime.Now;
                     SpeederButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Speeder.DownStart();
                 },
