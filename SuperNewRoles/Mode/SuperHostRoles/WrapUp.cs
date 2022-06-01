@@ -18,6 +18,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (!AmongUsClient.Instance.AmHost) return;
             FixedUpdate.SetRoleNames();
+            foreach (PlayerControl p in BotManager.AllBots)
+            {
+                p.RpcSetName(p.getDefaultName());
+            }
             /*
             new LateTask(() =>
             {
