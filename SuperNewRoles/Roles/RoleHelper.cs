@@ -896,6 +896,9 @@ namespace SuperNewRoles
                 case (RoleId.SidekickSeer):
                     IsTaskClear = true;
                     break;
+                case (RoleId.MadMaker):
+                    IsTaskClear = true;
+                    break;
                     //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
