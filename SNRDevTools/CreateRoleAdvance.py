@@ -127,7 +127,7 @@ class AllCheck:
                                 """else if (Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.ROLENAME;
-            }\n            //ロールチェック""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+            }\n                //ロールチェック""".replace("ROLENAME",MainClass.GetInput("RoleName")))
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールアド",
                                 """case (CustomRPC.RoleId.ROLENAME):
                     Roles.RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
@@ -162,11 +162,11 @@ class AllCheck:
             if (MainClass.GetBool("TeamImpo")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
                 """ROLENAMEOption = new CustomRoleOption(IDNOM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
-            ROLENAMEPlayerCount = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.GetInput("OptionNumber")))
+            ROLENAMEPlayerCount = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.GetInput("OptionNumber")).replace("SHRON",MainClass.GetBool("IsSHRON")))
             elif (MainClass.GetBool("TeamCrew")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
                 """ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
-            ROLENAMEPlayerCount = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.GetInput("OptionNumber")))
+            ROLENAMEPlayerCount = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.GetInput("OptionNumber")).replace("SHRON",MainClass.GetBool("IsSHRON")))
             elif (MainClass.GetBool("TeamNeut")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
                 """ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
@@ -180,6 +180,14 @@ class AllCheck:
 
         if (MainClass.GetBool("A_CanKill")):
             MainClass.CreateErrorWindow("まだできてませぇぇん(´;ω;｀)")
+    def AllCheck(self):
+        MainClass.GetInput("RoleName")
+        MainClass.GetRoleColor()
+        MainClass.GetTeam()
+        if (MainClass.GetBool("AddSetting")):
+            MainClass.GetInput("OptionNumber")
+        
+        AllActClass.AllWrite()
 
 ## 変数
 '''DevPath = Path(__file__).parent
@@ -222,7 +230,7 @@ MainTab = psg.Tab("メイン", [
                 [psg.Check("設定を追加する",key="AddSetting")],
                 [psg.Text(), psg.Text("タブ:",key="SettingTabText"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut")],
                 [psg.Text(), psg.Check("SHR対応",key="IsSHRON")],
-                [psg.Text(), psg.Text("設定ID(int)",key="OptionNumberIDText"), psg.Input("",key="OptionNumber")], ])
+                [psg.Text(), psg.Text("設定ID(int)",key="OptionNumberIDText"), psg.Input("",key="OptionNumber",size=(10,3))], ])
 AdvanceTab = psg.Tab("詳細設定", [
                 [psg.Check("ベントを使える",key="A_CanVent")],
                 [psg.Check("キルができる", key="A_CanKill")], ])
@@ -239,7 +247,7 @@ while True:
     elif event == "Main_CreateButton":
         LastClicked = psg.popup_ok_cancel("役職を作成します。よろしいですか？",title="確認")
         if LastClicked == "OK":
-            AllActClass.AllWrite()
+            AllActClass.AllCheck()
     
     '''# チェックボックス、ラジオ検知
     if (MainClass.GetBool("AddSetting") == True):

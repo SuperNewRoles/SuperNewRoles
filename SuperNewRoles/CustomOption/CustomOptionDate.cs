@@ -508,6 +508,8 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SeerFriendsIsUseVent;
         public static CustomOption SeerFriendsIsImpostorLight;
 
+        public static CustomRoleOption aOption;
+        public static CustomOption aPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;

@@ -108,6 +108,7 @@ namespace SuperNewRoles.CustomRPC
         Demon,
         TaskManager,
         SeerFriends,
+        a,
         //RoleId
     }
 
