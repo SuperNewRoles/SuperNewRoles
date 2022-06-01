@@ -20,19 +20,20 @@ namespace SuperNewRoles.Roles
         }
         public static void DownStart()
         {
-            RoleClass.Speeder.IsSpeedDown = true;
-      /*    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedDown, SendOption.Reliable, -1);
             writer.Write(true);
-            writer.Write(PlayerControl.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetSpeedBoost(true, PlayerControl.LocalPlayer.PlayerId);*/
+            CustomRPC.RPCProcedure.SetSpeedDown(true);
             Speeder.ResetCoolDown();
         }
         public static void ResetSpeed()
         {
-            RoleClass.Speeder.IsSpeedDown = false;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedDown, SendOption.Reliable, -1);
+            writer.Write(false);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            CustomRPC.RPCProcedure.SetSpeedDown(false);
         }
-        public static void SpeedBoostEnd()
+        public static void SpeedDownEnd()
         {
             ResetSpeed();
         }
@@ -49,7 +50,6 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-
             HudManagerStartPatch.SpeederButton.MaxTimer = RoleClass.Speeder.CoolTime;
             RoleClass.Speeder.ButtonTimer = DateTime.Now;
             ResetSpeed();
@@ -65,8 +65,21 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.Speeder.IsSpeedDown)
                 {
-                    __instance.body.velocity = __instance.body.velocity * 0.0001f;
+                    __instance.body.velocity /= 10f;
                 }
+            }
+        }
+    }
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    public static class HudManagerUpdatePatch
+    {
+        public static void Postfix()
+        {
+            if (HudManagerStartPatch.SpeederButton.Timer <= 0.1 && RoleClass.Speeder.IsSpeedDown)
+            {
+                Speeder.SpeedDownEnd();
+                HudManagerStartPatch.SpeederButton.MaxTimer = RoleClass.Speeder.CoolTime;
+                RoleClass.Speeder.ButtonTimer = DateTime.Now;
             }
         }
     }

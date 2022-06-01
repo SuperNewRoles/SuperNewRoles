@@ -939,6 +939,8 @@ namespace SuperNewRoles.Buttons
             SpeederButton = new Buttons.CustomButton(
                 () =>
                 {
+                    SpeederButton.MaxTimer = RoleClass.Speeder.DurationTime;
+                    SpeederButton.Timer = SpeederButton.MaxTimer;
                     RoleClass.Speeder.ButtonTimer = DateTime.Now;
                     SpeederButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Speeder.DownStart();
@@ -946,11 +948,7 @@ namespace SuperNewRoles.Buttons
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Speeder.IsSpeeder(PlayerControl.LocalPlayer); },
                 () =>
                 {
-                    if (SpeederButton.Timer <= 0)
-                    {
-                        return true;
-                    }
-                    return false;
+                    return PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Speeder.EndMeeting(); },
                 RoleClass.Speeder.GetButtonSprite(),
