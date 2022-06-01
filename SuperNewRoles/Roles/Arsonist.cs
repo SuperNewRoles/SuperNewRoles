@@ -8,6 +8,7 @@ using System.Text;
 using SuperNewRoles.EndGame;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
@@ -110,18 +111,23 @@ namespace SuperNewRoles.Roles
             public static void Postfix()
             {
                 if (RoleClass.Arsonist.DouseTarget == null) return;
-                if (RoleClass.Arsonist.IsDouse && HudManagerStartPatch.ArsonistDouseButton.Timer <= 0.1f)
+                if (RoleClass.Arsonist.IsDouse)
                 {
-                    RoleClass.Arsonist.DouseTarget.ArsonistDouse();
-                    HudManagerStartPatch.ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.CoolTime;
-                    HudManagerStartPatch.ArsonistDouseButton.Timer = RoleClass.Arsonist.CoolTime;
-                    SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗った:" + RoleClass.Arsonist.DouseTarget);
-                }
-                if (!(RoleClass.Arsonist.DouseTarget == HudManagerStartPatch.setTarget(untarget: Arsonist.GetUntarget())))
-                {
-                    RoleClass.Arsonist.IsDouse = false;
-                    HudManagerStartPatch.ArsonistDouseButton.Timer = 0;
-                    SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗るのをやめた");
+                    if (!(RoleClass.Arsonist.DouseTarget == HudManagerStartPatch.setTarget(untarget: Arsonist.GetUntarget())))
+                    {
+                        RoleClass.Arsonist.IsDouse = false;
+                        HudManagerStartPatch.ArsonistDouseButton.Timer = 0;
+                        SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗るのをやめた");
+                        return;
+                    }
+                    if (HudManagerStartPatch.ArsonistDouseButton.Timer <= 0.1f)
+                    {
+                        HudManagerStartPatch.ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.CoolTime;
+                        HudManagerStartPatch.ArsonistDouseButton.Timer = HudManagerStartPatch.ArsonistDouseButton.MaxTimer;
+                        HudManagerStartPatch.ArsonistDouseButton.actionButton.cooldownTimerText.color = Color.white;
+                        RoleClass.Arsonist.DouseTarget.ArsonistDouse();
+                        SuperNewRolesPlugin.Logger.LogInfo("アーソ二ストが塗った:" + RoleClass.Arsonist.DouseTarget);
+                    }
                 }
             }
         }
