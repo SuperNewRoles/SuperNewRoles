@@ -621,3 +621,4 @@ ArsonistTitle1
 ArsonistDurationTimeSetting
 ArsonistDouseButtonName
 ArsonistIgniteButtonName
+ArsonistDescription
