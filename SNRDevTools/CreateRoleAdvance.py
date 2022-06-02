@@ -201,7 +201,7 @@ class AllCheck:
             MainClass.CreateErrorWindow("まだできてませぇぇん(´;ω;｀)")
 
         # 終了報告
-        MainClass.CreateNotify("役職の作成が終了しました")
+        MainClass.CreateNotify("CreateRoleAdvance.py:\n役職の作成が終了しました")
 
     # 値確認
     def AllCheck(self):
