@@ -523,6 +523,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption JackalSeerCreateSidekick;
         public static CustomOption JackalSeerNewJackalCreateSidekick;
 
+        public static CustomRoleOption ChiefOption;
+        public static CustomOption ChiefPlayerCount;
+        
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -1069,6 +1072,9 @@ namespace SuperNewRoles.CustomOption
             JackalSeerCreateSidekick = CustomOption.Create(465, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalSeerOption);
             JackalSeerNewJackalCreateSidekick = CustomOption.Create(466, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
 
+            ChiefOption = new CustomRoleOption(467, false, CustomOptionType.Crewmate, "ChiefName", RoleClass.Chief.color, 1);
+            ChiefPlayerCount = CustomOption.Create(468, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
+            
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, true, CustomOptionType.Neutral, "QuarreledOnlyCrewMateSetting", false, QuarreledOption);

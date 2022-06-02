@@ -198,6 +198,8 @@ namespace SuperNewRoles.Intro
                     return SidekickSeerIntro;
                 case (CustomRPC.RoleId.Speeder):
                     return SpeederIntro;
+                case (CustomRPC.RoleId.Chief):
+                    return ChiefIntro;
                 //イントロ検知
                 case (CustomRPC.RoleId.DefaultRole):
                     if (p != null && p.Data.Role.IsImpostor) {
@@ -304,6 +306,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate SeerFriendsIntro = new IntroDate("SeerFriends", RoleClass.SeerFriends.color, 1, CustomRPC.RoleId.SeerFriends, TeamRoleType.Neutral);
         public static IntroDate JackalSeerIntro = new IntroDate("JackalSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.JackalSeer, TeamRoleType.Neutral);
         public static IntroDate SidekickSeerIntro = new IntroDate("SidekickSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.SidekickSeer, TeamRoleType.Neutral);
+        public static IntroDate ChiefIntro = new IntroDate("Chief", RoleClass.Chief.color, 1, CustomRPC.RoleId.Chief);
         //イントロオブジェ
     }
 }

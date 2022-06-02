@@ -525,6 +525,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.JackalSeer):
                     Roles.RoleClass.JackalSeer.JackalSeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Chief):
+                    Roles.RoleClass.Chief.ChiefPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -801,7 +804,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.SidekickSeer):
                     Roles.RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (CustomRPC.RoleId.Chief):
+                    Roles.RoleClass.Chief.ChiefPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -1554,7 +1560,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.SidekickSeer;
                 }
-                //ロールチェック
+                else if (Roles.RoleClass.Chief.ChiefPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Chief;
+            }
+            //ロールチェック
             }
             catch (Exception e)
             {
