@@ -19,7 +19,7 @@ class ReturnClass:
             Template = r.read()
             print(Template)
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
-                Template = Template.replace(OldCode, NewCode)
+                #Template = Template.replace(OldCode, NewCode)
                 print("ファイルを書き込みました:"+Template)
                 print("パス:"+BasePath+Path)
                 w.write(Template)
@@ -76,8 +76,8 @@ class ReturnClass:
         MainWindow[key].Update(value = bool)
     # 上の表示板
     #def UpdateGUI(self, key, bool):
-        #MainWindow[key].Update(disabled = bool)
-        #エラーウィンドウ作成
+        #MainWindow[key].Update(disabled = bool)        
+    #エラーウィンドウ作成
     def CreateErrorWindow(self, text):
         ErrorPop = psg.popup_error(text,title="エラー")
         print("エラー:"+text)
@@ -85,6 +85,11 @@ class ReturnClass:
             if ErrorPop == "Error":
                 MainWindow.close()
                 sys.exit()
+    def CreateNotify(self, text):
+        psg.popup_notify(text)
+                
+                
+
 # 戻り値なし
 class AllCheck:
     # すべて書く
@@ -101,6 +106,7 @@ class AllCheck:
                 ROLENAMEPlayer = new List<PlayerControl>();
             }
         }\n        //新ロールクラス""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("COLORS",MainClass.GetRoleColor()))
+
         # AllRoleSetClass.cs
         MainClass.WriteCodes("AllRoleSetClass.cs", "//セットクラス",
                                 """if (!(CustomOption.CustomOptions.ROLEID!!Option.getString().Replace("0%", "") == ""))
@@ -194,6 +200,9 @@ class AllCheck:
         if (MainClass.GetBool("A_CanKill")):
             MainClass.CreateErrorWindow("まだできてませぇぇん(´;ω;｀)")
 
+        # 終了報告
+        MainClass.CreateNotify("役職の作成が終了しました")
+
     # 値確認
     def AllCheck(self):
         MainClass.GetInput("RoleName")
@@ -255,6 +264,8 @@ CreateTab = psg.Tab("作成", [
                 [psg.Button("作成",key="Main_CreateButton", pad=((10,10),(10,10)), size=(15,2))] ])
 MainLayOut = [[psg.TabGroup ([[MainTab, AdvanceTab, CreateTab]])]]
 MainWindow = psg.Window(title=MainClass.GetConfig("Main", "WindowName"), layout=MainLayOut, size=(MainClass.GetConfig("Main", "SizeX"), MainClass.GetConfig("Main", "SizeY")), icon=MainClass.GetResource("icon.png"))
+
+
 ## イベントループ
 while True:
     event, values = MainWindow.read()
