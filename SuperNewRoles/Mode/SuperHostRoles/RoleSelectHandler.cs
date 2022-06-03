@@ -82,9 +82,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         bot3.RpcSetRole(RoleTypes.Crewmate);
                     }
                 }
-            } else if (ModeHandler.isMode(ModeId.LevelUp))
-            {
-                BotManager.Spawn("キルされてしまうかわいそうなBOT");
+                if (CustomOptions.BakeryOption.getSelection() != 0)
+                {
+                    BotManager.Spawn("パン屋BOT").Exiled();
+                }
             }
         }
         public static void SetCustomRoles() {
@@ -892,6 +893,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.TaskManagerOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.TaskManager;
+                if (OptionDate == 10)
+                {
+                    Crewonepar.Add(ThisRoleId);
+                }
+                else
+                {
+                    for (int i = 1; i <= OptionDate; i++)
+                    {
+                        Crewnotonepar.Add(ThisRoleId);
+                    }
+                }
+            }
+            if (!(CustomOption.CustomOptions.BakeryOption.getString().Replace("0%", "") == ""))
+            {
+                int OptionDate = int.Parse(CustomOption.CustomOptions.BakeryOption.getString().Replace("0%", ""));
+                RoleId ThisRoleId = RoleId.Bakery;
                 if (OptionDate == 10)
                 {
                     Crewonepar.Add(ThisRoleId);
