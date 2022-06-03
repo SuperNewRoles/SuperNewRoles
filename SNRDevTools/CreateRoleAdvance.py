@@ -76,8 +76,9 @@ class ReturnClass:
         MainWindow[key].Update(value = bool)
     # 上の表示板
     #def UpdateGUI(self, key, bool):
-        #MainWindow[key].Update(disabled = bool)        
-    #エラーウィンドウ作成
+        #MainWindow[key].Update(disabled = bool)     
+       
+    # エラーウィンドウ作成
     def CreateErrorWindow(self, text):
         ErrorPop = psg.popup_error(text,title="エラー")
         print("エラー:"+text)
@@ -85,10 +86,24 @@ class ReturnClass:
             if ErrorPop == "Error":
                 MainWindow.close()
                 sys.exit()
-    def CreateNotify(self, text):
-        psg.popup_notify(text)
-                
-                
+    # 通知作成
+    def CreateNotify(self, Title, Text):
+        psg.popup_notify(Text,title=Title)
+    # OK_Cancel系統
+    def CreateOKCancelWindow(self, Title, Text):
+        ComfirmPop = psg.popup_ok_cancel(Text, title=Title)
+        while True:
+            if ComfirmPop == "OK":
+                return "OK"
+            else:
+                return "Cancel"
+    # OK系統
+    def CreateOKWindow(self, Title, Text):
+        OKPop = psg.popup_ok(Text, title=Title)
+        while True:
+            if OKPop == "OK":
+                return "OK"
+
 
 # 戻り値なし
 class AllCheck:
@@ -201,7 +216,7 @@ class AllCheck:
             MainClass.CreateErrorWindow("まだできてませぇぇん(´;ω;｀)")
 
         # 終了報告
-        MainClass.CreateNotify("CreateRoleAdvance.py:\n役職の作成が終了しました")
+        MainClass.CreateNotify("CreateRoleAdvance.py", "役職の作成が終了しました")
 
     # 値確認
     def AllCheck(self):
@@ -212,6 +227,15 @@ class AllCheck:
             MainClass.GetInput("OptionNumber")
         MainClass.GetBool("A_CanVent")
         MainClass.GetBool("A_CanKill")
+        # 一部値がかぶっていないか(例:インポ+キル可能)
+        if (MainClass.GetBool("A_CanVent")):
+            if (MainClass.GetBool("Impo")):
+                MainClass.CreateOKWindow("警告", "インポスターはデフォルトで\nキルボタンが作成されます")
+                return
+        if (MainClass.GetBool("A_CanKill")):
+            if (MainClass.GetBool("Impo")):
+                MainClass.CreateOKWindow("警告", "インポスターはデフォルトで\nベントボタンが作成されます")
+                return
 
         AllActClass.AllWrite()
 
@@ -263,7 +287,7 @@ AdvanceTab = psg.Tab("詳細設定", [
 CreateTab = psg.Tab("作成", [
                 [psg.Button("作成",key="Main_CreateButton", pad=((10,10),(10,10)), size=(15,2))] ])
 MainLayOut = [[psg.TabGroup ([[MainTab, AdvanceTab, CreateTab]])]]
-MainWindow = psg.Window(title=MainClass.GetConfig("Main", "WindowName"), layout=MainLayOut, size=(MainClass.GetConfig("Main", "SizeX"), MainClass.GetConfig("Main", "SizeY")), icon=MainClass.GetResource("icon.png"))
+MainWindow = psg.Window(title=MainClass.GetConfig("Main", "WindowName"), layout=MainLayOut, size=(MainClass.GetConfig("Main", "SizeX"), MainClass.GetConfig("Main", "SizeY")), icon=MainClass.GetResource("pictures/icon.png"))
 
 
 ## イベントループ
@@ -273,7 +297,7 @@ while True:
         break
 
     elif event == "Main_CreateButton":
-        LastClicked = psg.popup_ok_cancel("役職を作成します。よろしいですか？",title="確認")
+        LastClicked = MainClass.CreateOKCancelWindow("確認", "役職を作成します。よろしいですか？")
         if LastClicked == "OK":
             AllActClass.AllCheck()
     
