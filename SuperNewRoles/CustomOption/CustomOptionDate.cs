@@ -1074,7 +1074,8 @@ namespace SuperNewRoles.CustomOption
 
             ChiefOption = new CustomRoleOption(467, false, CustomOptionType.Crewmate, "ChiefName", RoleClass.Chief.color, 1);
             ChiefPlayerCount = CustomOption.Create(468, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
-            
+            SheriffCoolTime = CustomOption.Create(28, true, CustomOptionType.Crewmate, ModTranslation.getString("SheriffCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
+
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, true, CustomOptionType.Neutral, "QuarreledOnlyCrewMateSetting", false, QuarreledOption);

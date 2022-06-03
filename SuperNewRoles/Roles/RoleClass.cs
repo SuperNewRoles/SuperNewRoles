@@ -1915,10 +1915,19 @@ namespace SuperNewRoles.Roles
         public static class Chief
         {
             public static List<PlayerControl> ChiefPlayer;
-            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
+            public static bool IsCreateSheriff;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ChiefSidekickButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 ChiefPlayer = new List<PlayerControl>();
+                IsCreateSheriff = false;
             }
         }
         //新ロールクラス
