@@ -117,15 +117,16 @@ namespace SuperNewRoles.Patches
                                 {
                                     if (Arsonist.IsArsonistWinFlag())
                                     {
+                                        RoleClass.Arsonist.TriggerArsonistWin = true;
                                         TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                                         foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
                                         {
-                                         //   SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
+                                            //   SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
                                             WinningPlayerData wpd = new WinningPlayerData(player.Data);
                                             TempData.winners.Add(wpd);
                                         }
                                         EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
-                                       // SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                                        // SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
                                         __instance.enabled = false;
                                         ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
                                         return true;
@@ -142,7 +143,7 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
     class CheckProtectPatch
     {
-        public static bool Prefix(PlayerControl __instance,[HarmonyArgument(0)] PlayerControl target)
+        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) return false;
             return true;
@@ -160,7 +161,8 @@ namespace SuperNewRoles.Patches
                 __instance.Close();
                 return false;
             }
-            if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff)){
+            if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
+            {
                 if (RoleClass.RemoteSheriff.KillMaxCount > 0)
                 {
                     if (ModeHandler.isMode(ModeId.SuperHostRoles))
@@ -173,7 +175,8 @@ namespace SuperNewRoles.Patches
                             }
                         }, 1.5f);
                         PlayerControl.LocalPlayer.RpcShapeshift(player, true);
-                    } else if (ModeHandler.isMode(ModeId.Default))
+                    }
+                    else if (ModeHandler.isMode(ModeId.Default))
                     {
                         if (player.isAlive())
                         {
@@ -199,14 +202,14 @@ namespace SuperNewRoles.Patches
                         }
                         Sheriff.ResetKillCoolDown();
                     };
-                } 
+                }
                 __instance.Close();
                 return false;
             }
-            PlayerControl.LocalPlayer.RpcShapeshift(player,true);
+            PlayerControl.LocalPlayer.RpcShapeshift(player, true);
             __instance.Close();
             return false;
-            
+
         }
     }
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
@@ -214,7 +217,8 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(KillButton __instance)
         {
-            if (!ModeHandler.isMode(ModeId.Default)) {
+            if (!ModeHandler.isMode(ModeId.Default))
+            {
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
                     if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
@@ -320,17 +324,19 @@ namespace SuperNewRoles.Patches
                             __instance.RpcMurderPlayer(target);
                             target.Data.IsDead = true;
                         }
-                    } else
+                    }
+                    else
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("レートタスク:"+ (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                        SuperNewRolesPlugin.Logger.LogInfo("レートタスク:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
                         isKill = true;
-                        new LateTask(() => {
+                        new LateTask(() =>
+                        {
                             if (__instance.isAlive() && target.isAlive())
                             {
                                 __instance.RpcMurderPlayer(target);
                             }
                             isKill = false;
-                            }, (AmongUsClient.Instance.Ping / 1000f)* 1.1f);
+                        }, (AmongUsClient.Instance.Ping / 1000f) * 1.1f);
                     }
                     return false;
                 }
@@ -640,14 +646,16 @@ namespace SuperNewRoles.Patches
                             }
                         }
                     }
-                } else if(__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                }
+                else if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                 {
                     if (__instance.isRole(RoleId.EvilGambler))
                     {
                         if (RoleClass.EvilGambler.GetSuc())
                         {
                             PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);
-                        } else
+                        }
+                        else
                         {
                             PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.NotSucCool);
                         }
@@ -673,7 +681,7 @@ namespace SuperNewRoles.Patches
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
-            SerialKiller.MurderPlayer(__instance,target);
+            SerialKiller.MurderPlayer(__instance, target);
             Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(__instance, target);
 
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
@@ -689,7 +697,7 @@ namespace SuperNewRoles.Patches
             }
             else if (ModeHandler.isMode(ModeId.Default))
             {
-                Levelinger.MurderPlayer(__instance,target);
+                Levelinger.MurderPlayer(__instance, target);
                 if (RoleClass.Lovers.SameDie && target.IsLovers())
                 {
                     if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
@@ -729,7 +737,7 @@ namespace SuperNewRoles.Patches
             {
                 if (__instance.isImpostor() && !__instance.isRole(RoleId.EvilGambler))
                 {
-                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.getCoolTime(__instance),RoleHelpers.getCoolTime(__instance));
+                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleHelpers.getCoolTime(__instance), RoleHelpers.getCoolTime(__instance));
                 }
             }
         }

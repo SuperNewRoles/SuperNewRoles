@@ -973,6 +973,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     Arsonist.SetWinArsonist();
+                    RoleClass.Arsonist.TriggerArsonistWin = true;
                     //SuperNewRolesPlugin.Logger.LogInfo("アーソニストが燃やすボタンを押した");
                     if (Arsonist.IsArsonistWinFlag())
                     {

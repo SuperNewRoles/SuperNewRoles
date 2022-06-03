@@ -168,18 +168,9 @@ namespace SuperNewRoles.Roles
 
         public static void ArsonistFinalStatus(PlayerControl __instance)
         {
-            foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
+            if (RoleClass.Arsonist.TriggerArsonistWin)
             {
-                foreach (PlayerControl Arsonist in PlayerControl.AllPlayerControls)
-                {
-                    if (IsWin(player))
-                    {
-                        if (Arsonist.isAlive())
-                        {
-                            FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Ignite;
-                        }
-                    }
-                }
+                FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Ignite;
             }
         }
     }
