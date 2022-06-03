@@ -133,6 +133,7 @@ namespace SuperNewRoles.Roles
             TaskManager.ClearAndReload();
             SeerFriends.ClearAndReload();
             JackalSeer.ClearAndReload();
+            Chief.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1910,6 +1911,24 @@ namespace SuperNewRoles.Roles
                 NewJackalCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.getBool();
             }
 
+        }
+        public static class Chief
+        {
+            public static List<PlayerControl> ChiefPlayer;
+            public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
+            public static bool IsCreateSheriff;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ChiefSidekickButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                ChiefPlayer = new List<PlayerControl>();
+                IsCreateSheriff = false;
+            }
         }
         //新ロールクラス
         public static class Quarreled

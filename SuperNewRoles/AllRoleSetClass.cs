@@ -850,6 +850,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SeerFriendsPlayerCount.getFloat();
                 case (RoleId.JackalSeer):
                     return CustomOption.CustomOptions.JackalSeerPlayerCount.getFloat();
+                    case (RoleId.Chief):
+                    return CustomOption.CustomOptions.ChiefPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;

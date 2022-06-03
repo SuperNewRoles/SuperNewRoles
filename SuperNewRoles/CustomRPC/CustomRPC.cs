@@ -110,6 +110,7 @@ namespace SuperNewRoles.CustomRPC
         SeerFriends,
         JackalSeer,
         SidekickSeer,
+        Chief,
         //RoleId
     }
 
