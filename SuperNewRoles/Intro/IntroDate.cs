@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SuperNewRoles.Roles;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Intro
 {
@@ -33,185 +35,26 @@ namespace SuperNewRoles.Intro
         }
         public static IntroDate GetIntroDate(CustomRPC.RoleId RoleId,PlayerControl p = null)
         {
-            switch (RoleId) {
-                case (CustomRPC.RoleId.SoothSayer):
-                    return SoothSayerIntro;
-                case (CustomRPC.RoleId.Jester):
-                    return JesterIntro;
-                case (CustomRPC.RoleId.Lighter):
-                    return LighterIntro;
-                case (CustomRPC.RoleId.EvilLighter):
-                    return EvilLighterIntro;
-                case (CustomRPC.RoleId.EvilScientist):
-                    return EvilScientist;
-                case (CustomRPC.RoleId.Sheriff):
-                    return SheriffIntro;
-                case (CustomRPC.RoleId.MeetingSheriff):
-                    return MeetingSheriffIntro;
-                case (CustomRPC.RoleId.Jackal):
-                    return JackalIntro;
-                case (CustomRPC.RoleId.Sidekick):
-                    return SidekickIntro;
-                case (CustomRPC.RoleId.Teleporter):
-                    return TeleporterIntro;
-                case (CustomRPC.RoleId.SpiritMedium):
-                    return SpiritMediumIntro;
-                case (CustomRPC.RoleId.SpeedBooster):
-                    return SpeedBoosterIntro;
-                case (CustomRPC.RoleId.EvilSpeedBooster):
-                    return EvilSpeedBoosterIntro;
-                case (CustomRPC.RoleId.Tasker):
-                    return TaskerIntro;
-                case (CustomRPC.RoleId.Doorr):
-                    return DoorrIntro;
-                case (CustomRPC.RoleId.EvilDoorr):
-                    return EvilDoorrIntro;
-                case (CustomRPC.RoleId.Sealdor):
-                    return SealdorIntro;
-                case (CustomRPC.RoleId.Clergyman):
-                    return ClergymanIntro;
-                case (CustomRPC.RoleId.MadMate):
-                    return MadMateIntro;
-                case (CustomRPC.RoleId.Bait):
-                    return BaitIntro;
-                case (CustomRPC.RoleId.HomeSecurityGuard):
-                    return HomeSecurityGuardIntro;
-                case (CustomRPC.RoleId.StuntMan):
-                    return StuntManIntro;
-                case (CustomRPC.RoleId.Moving):
-                    return MovingIntro;
-                case (CustomRPC.RoleId.Opportunist):
-                    return OpportunistIntro;
-                case (CustomRPC.RoleId.NiceGambler):
-                    return NiceGamblerIntro;
-                case (CustomRPC.RoleId.EvilGambler):
-                    return EvilGamblerIntro;
-                case (CustomRPC.RoleId.Bestfalsecharge):
-                    return BestfalsechargeIntro;
-                case (CustomRPC.RoleId.Researcher):
-                    return ResearcherIntro;
-                case (CustomRPC.RoleId.SelfBomber):
-                    return SelfBomberIntro;
-                case (CustomRPC.RoleId.God):
-                    return GodIntro;
-                case (CustomRPC.RoleId.AllCleaner):
-                    return AllCleanerIntro;
-                case (CustomRPC.RoleId.NiceNekomata):
-                    return NiceNekomataIntro;
-                case (CustomRPC.RoleId.EvilNekomata):
-                    return EvilNekomataIntro;
-                case (CustomRPC.RoleId.JackalFriends):
-                    return JackalFriendsIntro;
-                case (CustomRPC.RoleId.Doctor):
-                    return DoctorIntro;
-                case (CustomRPC.RoleId.CountChanger):
-                    return CountChangerIntro;
-                case (CustomRPC.RoleId.Pursuer):
-                    return PursuerIntro;
-                case (CustomRPC.RoleId.Minimalist):
-                    return MinimalistIntro;
-                case (CustomRPC.RoleId.Hawk):
-                    return HawkIntro;
-                case (CustomRPC.RoleId.Egoist):
-                    return EgoistIntro;
-                case (CustomRPC.RoleId.NiceRedRidingHood):
-                    return NiceRedRidingHoodIntro;
-                case (CustomRPC.RoleId.EvilEraser):
-                    return EvilEraserIntro;
-                case (CustomRPC.RoleId.Workperson):
-                    return WorkpersonIntro;
-                case (CustomRPC.RoleId.Magaziner):
-                    return MagazinerIntro;
-                case (CustomRPC.RoleId.Mayor):
-                    return MayorIntro;
-                case (CustomRPC.RoleId.NiceScientist):
-                    return NiceScientistIntro;
-                case (CustomRPC.RoleId.truelover):
-                    return trueloverIntro;
-                case (CustomRPC.RoleId.Technician):
-                    return TechnicianIntro;
-                case (CustomRPC.RoleId.SerialKiller):
-                    return SerialKillerIntro;
-                case (CustomRPC.RoleId.OverKiller):
-                    return OverKillerIntro;
-                case (CustomRPC.RoleId.Levelinger):
-                    return LevelingerIntro;
-                case (CustomRPC.RoleId.EvilMoving):
-                    return EvilMovingIntro;
-                case (CustomRPC.RoleId.Amnesiac):
-                    return AmnesiacIntro;
-                case (CustomRPC.RoleId.SideKiller):
-                    return SideKillerIntro;
-                case (CustomRPC.RoleId.MadKiller):
-                    return MadKillerIntro;
-                case (CustomRPC.RoleId.Survivor):
-                    return SurvivorIntro;
-                case (CustomRPC.RoleId.MadMayor):
-                    return MadMayorIntro;
-                case (CustomRPC.RoleId.NiceHawk):
-                    return NiceHawkIntro;
-                case (CustomRPC.RoleId.Bakery):
-                    return BakeryIntro;
-                case (CustomRPC.RoleId.MadStuntMan):
-                    return MadStuntManIntro;
-                case (CustomRPC.RoleId.MadHawk):
-                    return MadHawkIntro;
-                case (CustomRPC.RoleId.MadJester):
-                    return MadJesterIntro;
-                case (CustomRPC.RoleId.FalseCharges):
-                    return FalseChargesIntro;
-                case (CustomRPC.RoleId.NiceTeleporter):
-                    return NiceTeleporterIntro;
-                case (CustomRPC.RoleId.Celebrity):
-                    return CelebrityIntro;
-                case (CustomRPC.RoleId.Nocturnality):
-                    return NocturnalityIntro;
-                case (CustomRPC.RoleId.Observer):
-                    return ObserverIntro;
-                case (CustomRPC.RoleId.Vampire):
-                    return VampireIntro;
-                case (CustomRPC.RoleId.Fox):
-                    return FoxIntro;
-                case (CustomRPC.RoleId.DarkKiller):
-                    return DarkKillerIntro;
-                case (CustomRPC.RoleId.Seer):
-                    return SeerIntro;
-                case (CustomRPC.RoleId.MadSeer):
-                    return MadSeerIntro;
-                case (CustomRPC.RoleId.EvilSeer):
-                    return EvilSeerIntro;
-                case (CustomRPC.RoleId.RemoteSheriff):
-                    return RemoteSheriffIntro;
-                case (CustomRPC.RoleId.TeleportingJackal):
-                    return TeleportingJackalIntro;
-                case (CustomRPC.RoleId.MadMaker):
-                    return MadMakerIntro;
-                case (CustomRPC.RoleId.Demon):
-                    return DemonIntro;
-                case (CustomRPC.RoleId.TaskManager):
-                    return TaskManagerIntro;
-                case (CustomRPC.RoleId.SeerFriends):
-                    return SeerFriendsIntro;
-                case (CustomRPC.RoleId.JackalSeer):
-                    return JackalSeerIntro;
-                case (CustomRPC.RoleId.SidekickSeer):
-                    return SidekickSeerIntro;
-                case (CustomRPC.RoleId.Speeder):
-                    return SpeederIntro;
-                case (CustomRPC.RoleId.Chief):
-                    return ChiefIntro;
-                //イントロ検知
-                case (CustomRPC.RoleId.DefaultRole):
-                    if (p != null && p.Data.Role.IsImpostor) {
-                        return ImpostorIntro;
-                    } else
+                if (RoleId == CustomRPC.RoleId.DefaultRole)
+                {
+                    if (p != null && p.isImpostor())
                     {
-                        return CrewmateIntro;
+                        return ImpostorIntro;
                     }
-                    
-            }
+                else
+                {
+                    return CrewmateIntro;
+                }
 
-            return SheriffIntro;
+                }
+            var data = IntroDatas.FirstOrDefault((_) => _.RoleId == RoleId);
+            if (data == null) return SheriffIntro;
+            return data;
+        }
+        public static CustomRoleOption GetOption(RoleId roleId)
+        {
+            var option = CustomRoleOption.RoleOptions.FirstOrDefault((_) => _.RoleId == roleId);
+            return option;
         }
         public static string GetTitle(string name,Int16 num)
         {

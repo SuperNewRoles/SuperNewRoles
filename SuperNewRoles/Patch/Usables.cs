@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,8 @@ using UnityEngine;
 namespace SuperNewRoles.Patch
 {
     class Usables
-    {/*
+    {
+        /*
         [HarmonyPatch(typeof(Console), nameof(Console.CanUse))]
         public static class ConsoleCanUsePatch
         {
