@@ -195,26 +195,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 p.RpcSetRole(RoleTypes.Shapeshifter);
             }
-            /*
-            foreach (PlayerControl ArsonistPlayer in RoleClass.Arsonist.ArsonistPlayer)
-            {
-                if (!ArsonistPlayer.IsMod())
-                {
-                    ArsonistPlayer.RpcSetRoleDesync(RoleTypes.Shapeshifter);
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        if (p.PlayerId != ArsonistPlayer.PlayerId && p.IsPlayer())
-                        {
-                            ArsonistPlayer.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                            p.RpcSetRoleDesync(RoleTypes.Scientist, ArsonistPlayer);
-                        }
-                    }
-                }
-                else
-                {
-                    ArsonistPlayer.RpcSetRole(RoleTypes.Crewmate);
-                }
-            }*/
         }
         public static void CrewOrImpostorSet()
         {
