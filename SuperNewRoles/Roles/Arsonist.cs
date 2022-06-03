@@ -166,5 +166,21 @@ namespace SuperNewRoles.Roles
         }
         public static Dictionary<byte, float> ArsonistTimer = new Dictionary<byte, float>();
 
+        public static void ArsonistFinalStatus(PlayerControl __instance)
+        {
+            foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
+            {
+                foreach (PlayerControl Arsonist in PlayerControl.AllPlayerControls)
+                {
+                    if (IsWin(player))
+                    {
+                        if (Arsonist.isAlive())
+                        {
+                            FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Ignite;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
