@@ -135,18 +135,6 @@ namespace SuperNewRoles.Roles
             }
         }
 
-        public static void Duration()
-        {
-            if (ModeHandler.isMode(ModeId.Default)) ;
-            {
-
-            }
-            if (ModeHandler.isMode(ModeId.SuperHostRoles)) ;
-            {
-
-            }
-        }
-
         public static bool IsArsonistWinFlag()
         {
             foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)

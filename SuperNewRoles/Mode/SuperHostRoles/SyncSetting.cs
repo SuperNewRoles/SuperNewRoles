@@ -229,7 +229,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterCooldown = 0.000001f;
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
-                    
                 case RoleId.Nocturnality:
                     var switchSystemNocturnality = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                     if (switchSystemNocturnality == null || !switchSystemNocturnality.IsActive)
