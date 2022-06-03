@@ -1894,15 +1894,14 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 JackalSeerPlayer = new List<PlayerControl>();
+                SidekickSeerPlayer = new List<PlayerControl>();
+                FakeSidekickSeerPlayer = new List<PlayerControl>();
 
                 deadBodyPositions = new List<Vector3>();
                 limitSoulDuration = CustomOptions.JackalSeerLimitSoulDuration.getBool();
                 soulDuration = CustomOptions.JackalSeerSoulDuration.getFloat();
                 mode = CustomOptions.JackalSeerMode.getSelection();
 
-                JackalSeerPlayer = new List<PlayerControl>();
-                SidekickSeerPlayer = new List<PlayerControl>();
-                FakeSidekickSeerPlayer = new List<PlayerControl>();
                 KillCoolDown = CustomOptions.JackalSeerKillCoolDown.getFloat();
                 IsUseVent = CustomOptions.JackalSeerUseVent.getBool();
                 IsUseSabo = CustomOptions.JackalSeerUseSabo.getBool();

@@ -57,6 +57,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         private static int a = 0;
         public static void SetRoleName(PlayerControl player, bool IsUnchecked = false)
         {
+
+            var caller = new System.Diagnostics.StackFrame(1, false);
+            var callerMethod = caller.GetMethod();
+            string callerMethodName = callerMethod.Name;
+            string callerClassName = callerMethod.DeclaringType.FullName;
+            SuperNewRolesPlugin.Logger.LogInfo(player.name + "への(IsCommsなしの)SetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
             SetRoleName(player, RoleHelpers.IsComms() , IsUnchecked);
         }
 
@@ -66,6 +72,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false)
         {
             if (player.Data.Disconnected || player.IsBot() || !AmongUsClient.Instance.AmHost) return;
+
+            var caller = new System.Diagnostics.StackFrame(1, false);
+            var callerMethod = caller.GetMethod();
+            string callerMethodName = callerMethod.Name;
+            string callerClassName = callerMethod.DeclaringType.FullName;
+            SuperNewRolesPlugin.Logger.LogInfo(player.name+"へのSetRoleNameが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+
             //if (UpdateTime.ContainsKey(player.PlayerId) && UpdateTime[player.PlayerId] > 0) return;
 
             //UpdateTime[player.PlayerId] = UpdateDefaultTime;
@@ -330,6 +343,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static void SetRoleNames(bool IsUnchecked = false)
         {
+            var caller = new System.Diagnostics.StackFrame(1, false);
+            var callerMethod = caller.GetMethod();
+            string callerMethodName = callerMethod.Name;
+            string callerClassName = callerMethod.DeclaringType.FullName;
+            SuperNewRolesPlugin.Logger.LogInfo("SetRoleNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
+
             bool commsActive = RoleHelpers.IsComms();
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
@@ -399,7 +418,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         UpdateDate = 15;
                         if (RoleClass.IsMeeting)
                         {
-                            SetDefaultNames();
+                            //SetDefaultNames();
                         }
                         else
                         {
@@ -411,6 +430,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SetDefaultNames()
         {
+            var caller = new System.Diagnostics.StackFrame(1, false);
+            var callerMethod = caller.GetMethod();
+            string callerMethodName = callerMethod.Name;
+            string callerClassName = callerMethod.DeclaringType.FullName;
+            SuperNewRolesPlugin.Logger.LogInfo("SetDefaultNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
                 p.RpcSetName(p.getDefaultName());
