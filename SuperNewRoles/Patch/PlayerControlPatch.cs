@@ -115,7 +115,7 @@ namespace SuperNewRoles.Patches
                             {
                                 if (p.isAlive() && p.PlayerId != __instance.PlayerId)
                                 {
-                                    if (Arsonist.IsArsonistWinFlag());
+                                    if (Arsonist.IsArsonistWinFlag())
                                     {
                                         TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                                         foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
@@ -514,33 +514,42 @@ namespace SuperNewRoles.Patches
                 }
                 else if (__instance.isRole(RoleId.Arsonist))
                 {
-                    if (Arsonist.ArsonistTimer[__instance.PlayerId].Item2 >= CustomOptions.ArsonistDurationTime.getFloat())//時間以上一緒にいて塗れた時
+                    try
                     {
-                        if (!__instance.IsDoused(target))
+                        Arsonist.ArsonistTimer[__instance.PlayerId] =
+                                (Arsonist.ArsonistTimer[__instance.PlayerId] = RoleClass.Arsonist.DurationTime);
+                        if (Arsonist.ArsonistTimer[__instance.PlayerId] <= RoleClass.Arsonist.DurationTime)//時間以上一緒にいて塗れた時
                         {
-                            Arsonist.ArsonistDouse(target, __instance);
-                            target.RpcProtectPlayerPrivate(target, 0, __instance);
-                            new LateTask(() =>
+                            if (!__instance.IsDoused(target))
                             {
-                                SyncSetting.MurderSyncSetting(__instance);
-                                __instance.RPCMurderPlayerPrivate(target);
-                            }, 0.5f);
-                            Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                                Arsonist.ArsonistDouse(target, __instance);
+                                target.RpcProtectPlayerPrivate(target, 0, __instance);
+                                new LateTask(() =>
+                                {
+                                    SyncSetting.MurderSyncSetting(__instance);
+                                    __instance.RPCMurderPlayerPrivate(target);
+                                }, 0.5f);
+                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                            }
+                        }
+                        else
+                        {
+                            float dis;
+                            dis = Vector2.Distance(__instance.transform.position, target.transform.position);//距離を出す
+                            if (dis <= 1.75f)//一定の距離にターゲットがいるならば時間をカウント
+                            {
+                                Arsonist.ArsonistTimer[__instance.PlayerId] =
+                                (Arsonist.ArsonistTimer[__instance.PlayerId] - Time.fixedDeltaTime);
+                            }
+                            else//それ以外は削除
+                            {
+                                Arsonist.ArsonistTimer.Remove(__instance.PlayerId);
+                            }
                         }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        float dis;
-                        dis = Vector2.Distance(__instance.transform.position, target.transform.position);//距離を出す
-                        if (dis <= 1.75f)//一定の距離にターゲットがいるならば時間をカウント
-                        {
-                            Arsonist.ArsonistTimer[__instance.PlayerId] =
-                            (Arsonist.ArsonistTimer[__instance.PlayerId].Item1, Arsonist.ArsonistTimer[__instance.PlayerId].Item2 + Time.fixedDeltaTime);
-                        }
-                        else//それ以外は削除
-                        {
-                            Arsonist.ArsonistTimer.Remove(__instance.PlayerId);
-                        }
+                        SuperNewRolesPlugin.Logger.LogError(e);
                     }
                     return false;
                 }

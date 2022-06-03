@@ -227,7 +227,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.ImpostorLightMod /= 5;
                     }
                     optdata.RoleOptions.ShapeshifterCooldown = 0.000001f;
-                    optdata.RoleOptions.ShapeshifterDuration = 0.000001f;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
                     
                 case RoleId.Nocturnality:
