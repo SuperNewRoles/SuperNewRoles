@@ -318,6 +318,7 @@ SpeederTitle1
 SpeederTitle2
 SpeederCoolTimeSetting
 SpeederDurationTimeSetting
+SpeederButtonName
 GuesserName
 GuesserTitle1
 GuesserTitle2
@@ -620,3 +621,4 @@ ArsonistTitle1
 ArsonistDurationTimeSetting
 ArsonistDouseButtonName
 ArsonistIgniteButtonName
+ArsonistDescription

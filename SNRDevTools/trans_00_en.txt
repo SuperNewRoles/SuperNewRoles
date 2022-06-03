@@ -318,6 +318,7 @@ Slow everyone down and sabotage your crewmates!
 Try to slow everyone down and sabotage the task!
 Sabotage Cool Time
 Sabotage duration
+SpeedDown
 Guesser
 Let's punch out the outsider.
 Guess the position of the outsider
@@ -620,3 +621,4 @@ Douse Douse burn
 Douse Duration
 Douse
 Ignite
+If you oil them all and burn them, you win alone.

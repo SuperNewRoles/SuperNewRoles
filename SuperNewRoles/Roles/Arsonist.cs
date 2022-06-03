@@ -24,7 +24,8 @@ namespace SuperNewRoles.Roles
                 Writer.Write(target.PlayerId);
                 Writer.EndRPC();
                 RPCProcedure.ArsonistDouse(source.PlayerId, target.PlayerId);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 SuperNewRolesPlugin.Logger.LogError(e);
             }
@@ -67,7 +68,8 @@ namespace SuperNewRoles.Roles
             }
             return new List<PlayerControl>();
         }
-        public static bool IsViewIcon(PlayerControl player) {
+        public static bool IsViewIcon(PlayerControl player)
+        {
             if (player == null) return false;
             foreach (var data in RoleClass.Arsonist.DouseDatas)
             {
@@ -82,13 +84,14 @@ namespace SuperNewRoles.Roles
             return false;
         }
 
-        public static bool IsButton() {
+        public static bool IsButton()
+        {
             return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist);
         }
 
         public static bool IseveryButton()
         {
-            return ModeHandler.isMode(ModeId.SuperHostRoles) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist) || ModeHandler.isMode(ModeId.Default)&& RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist);
+            return ModeHandler.isMode(ModeId.SuperHostRoles) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist) || ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist);
 
         }
 
@@ -134,11 +137,11 @@ namespace SuperNewRoles.Roles
 
         public static void Duration()
         {
-            if (ModeHandler.isMode(ModeId.Default));
+            if (ModeHandler.isMode(ModeId.Default)) ;
             {
 
             }
-            if (ModeHandler.isMode(ModeId.SuperHostRoles));
+            if (ModeHandler.isMode(ModeId.SuperHostRoles)) ;
             {
 
             }

@@ -1280,6 +1280,10 @@
         "0" : "Sabotage duration" ,
         "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u7d99\u7d9a\u6642\u9593"
         } ,
+ "SpeederButtonName" : {
+        "0" : "SpeedDown" ,
+        "11" : "\u30b9\u30d4\u30fc\u30c9\u30c0\u30a6\u30f3"
+        } ,
  "GuesserName" : {
         "0" : "Guesser" ,
         "11" : "\u30b2\u30c3\u30b5\u30fc"

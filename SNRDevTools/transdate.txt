@@ -319,6 +319,7 @@ SpeederTitle1,Slow everyone down and sabotage your crewmates!,みんなを遅く
 SpeederTitle2,Try to slow everyone down and sabotage the task!,みんなを遅くしてタスクの妨害をしよう
 SpeederCoolTimeSetting,Sabotage Cool Time,サボタージュクールタイム
 SpeederDurationTimeSetting,Sabotage duration,サボタージュ継続時間
+SpeederButtonName,SpeedDown,スピードダウン
 GuesserName,Guesser,ゲッサー
 GuesserTitle1,Let's punch out the outsider.,人外を打ち抜こう
 GuesserTitle2,Guess the position of the outsider,人外の役職を当てよう
@@ -621,3 +622,4 @@ ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ
 ArsonistDurationTimeSetting,Douse Duration,塗り時間
 ArsonistDouseButtonName,Douse,塗る
 ArsonistIgniteButtonName,Ignite,燃やす
+ArsonistDescription,If you oil them all and burn them, you win alone.,油を全員に塗り燃やしたら単独勝利です。
