@@ -530,6 +530,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Arsonist):
                     Roles.RoleClass.Arsonist.ArsonistPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Chief):
+                    Roles.RoleClass.Chief.ChiefPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -809,7 +812,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Arsonist):
                     Roles.RoleClass.Arsonist.ArsonistPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                case (CustomRPC.RoleId.Chief):
+                    Roles.RoleClass.Chief.ChiefPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -1577,6 +1583,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.Arsonist.ArsonistPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.Arsonist;
+                }
+                else if (Roles.RoleClass.Chief.ChiefPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Chief;
                 }
                 //ロールチェック
             }

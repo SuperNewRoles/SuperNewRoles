@@ -35,18 +35,18 @@ namespace SuperNewRoles.Intro
         }
         public static IntroDate GetIntroDate(CustomRPC.RoleId RoleId, PlayerControl p = null)
         {
-            if (RoleId == CustomRPC.RoleId.DefaultRole)
-            {
-                if (p != null && p.isImpostor())
+                if (RoleId == CustomRPC.RoleId.DefaultRole)
                 {
-                    return ImpostorIntro;
-                }
+                    if (p != null && p.isImpostor())
+                    {
+                        return ImpostorIntro;
+                    }
                 else
                 {
                     return CrewmateIntro;
                 }
 
-            }
+                }
             var data = IntroDatas.FirstOrDefault((_) => _.RoleId == RoleId);
             if (data == null) return SheriffIntro;
             return data;
@@ -150,6 +150,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate JackalSeerIntro = new IntroDate("JackalSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.JackalSeer, TeamRoleType.Neutral);
         public static IntroDate SidekickSeerIntro = new IntroDate("SidekickSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.SidekickSeer, TeamRoleType.Neutral);
         public static IntroDate ArsonistIntro = new IntroDate("Arsonist", RoleClass.Arsonist.color, 1, CustomRPC.RoleId.Arsonist);
+        public static IntroDate ChiefIntro = new IntroDate("Chief", RoleClass.Chief.color, 1, CustomRPC.RoleId.Chief);
         //イントロオブジェ
     }
 }

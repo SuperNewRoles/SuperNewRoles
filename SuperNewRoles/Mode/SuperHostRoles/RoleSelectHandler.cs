@@ -105,7 +105,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             //インポスターにDesync
 
 
-
             List<PlayerControl> SetRoleEngineers = new List<PlayerControl>();
             if (RoleClass.Jester.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Jester.JesterPlayer);
             if (RoleClass.JackalFriends.IsUseVent) SetRoleEngineers.AddRange(RoleClass.JackalFriends.JackalFriendsPlayer);
@@ -117,12 +116,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             //エンジニアに役職設定
 
 
-
             List<PlayerControl> DesyncShapeshifters = new List<PlayerControl>();
             DesyncShapeshifters.AddRange(RoleClass.Arsonist.ArsonistPlayer);
             DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
             //シェイプシフターにDesync
-
 
 
             foreach (PlayerControl Player in DesyncImpostors)

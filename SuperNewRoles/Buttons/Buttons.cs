@@ -49,6 +49,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ArsonistDouseButton;
         public static CustomButton ArsonistIgniteButton;
         public static CustomButton SpeederButton;
+        public static CustomButton ChiefSidekickButton;
 
 
         public static TMPro.TMP_Text sheriffNumShotsText;
@@ -1044,6 +1045,38 @@ namespace SuperNewRoles.Buttons
             SpeederButton.showButtonText = true;
             SpeederButton.HasEffect = true;
 
+
+            ChiefSidekickButton = new CustomButton(
+               () =>
+               {
+                   var target = setTarget();
+                   if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Chief.IsCreateSheriff)
+                   {
+                       target.RpcSetRole(RoleTypes.Crewmate);
+                       target.setRoleRPC(RoleId.Sheriff);
+                       RoleClass.Chief.IsCreateSheriff = true;
+                   }
+                   else if (target.Data.Role.IsImpostor)
+                   {
+                       PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                   }
+               },
+               () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Chief) && ModeHandler.isMode(ModeId.Default) && !RoleClass.Chief.IsCreateSheriff; },
+               () =>
+               {
+                   return setTarget() && PlayerControl.LocalPlayer.CanMove;
+               },
+               () => { },
+               RoleClass.Chief.getButtonSprite(),
+               new Vector3(-1.8f, -0.06f, 0),
+               __instance,
+               __instance.AbilityButton,
+               KeyCode.F,
+               49
+           );
+
+            ChiefSidekickButton.buttonText = ModTranslation.getString("SidekickName");
+            ChiefSidekickButton.showButtonText = true;
 
             setCustomButtonCooldowns();
 

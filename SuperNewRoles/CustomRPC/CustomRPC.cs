@@ -111,6 +111,7 @@ namespace SuperNewRoles.CustomRPC
         JackalSeer,
         SidekickSeer,
         Arsonist,
+        Chief,
         //RoleId
     }
 
