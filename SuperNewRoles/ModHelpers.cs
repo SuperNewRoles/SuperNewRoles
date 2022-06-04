@@ -246,6 +246,15 @@ namespace SuperNewRoles
                     }
                 }
             }
+            if (target.isRole(RoleId.Shielder) && !killer.isRole(RoleId.OverKiller) && RoleClass.Shielder.IsShield[target.PlayerId])
+            {
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShielderProtect);
+                writer.Write(target.PlayerId);
+                writer.Write(target.PlayerId);
+                writer.Write(0);
+                writer.EndRPC();
+                RPCProcedure.ShielderProtect(target.PlayerId, target.PlayerId, 0);
+            }
             if (target.isRole(RoleId.Fox) && !killer.isRole(RoleId.OverKiller) && (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId) || RoleClass.Fox.KillGuard[target.PlayerId] >= 1))
             {
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, killer))

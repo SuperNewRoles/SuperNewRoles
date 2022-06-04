@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using HarmonyLib;
 using Hazel;
 using System;
@@ -51,6 +52,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SpeederButton;
         public static CustomButton ChiefSidekickButton;
         public static CustomButton VultureButton;
+        public static CustomButton ShielderButton;
 
 
         public static TMPro.TMP_Text sheriffNumShotsText;
@@ -1146,6 +1148,38 @@ namespace SuperNewRoles.Buttons
 
             VultureButton.buttonText = ModTranslation.getString("VultureButtonName");
             VultureButton.showButtonText = true;
+
+            ShielderButton = new CustomButton(
+                () =>
+                {
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetShielder, SendOption.Reliable, -1);
+                    Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    Writer.Write(true);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                    RPCProcedure.SetShielder(PlayerControl.LocalPlayer.PlayerId, true);
+                    ShielderButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    ShielderButton.MaxTimer = RoleClass.Shielder.DurationTime;
+                    ShielderButton.Timer = ShielderButton.MaxTimer;
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Shielder); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => {
+                    ShielderButton.MaxTimer = RoleClass.Shielder.CoolTime;
+                    ShielderButton.Timer = RoleClass.Shielder.CoolTime;
+                },
+                RoleClass.Shielder.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            ShielderButton.buttonText = ModTranslation.getString("ShielderButtonName");
+            ShielderButton.showButtonText = true;
 
             setCustomButtonCooldowns();
 

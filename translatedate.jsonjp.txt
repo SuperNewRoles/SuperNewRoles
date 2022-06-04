@@ -1312,7 +1312,7 @@
 
         } ,
 
- "SealdorName" : {
+ "ShielderName" : {
 
         "0" : "Sealder" ,
 
@@ -1320,7 +1320,7 @@
 
         } ,
 
- "SealdorTitle1" : {
+ "ShielderTitle1" : {
 
         "0" : "Prevent outsider kills." ,
 
@@ -1328,7 +1328,7 @@
 
         } ,
 
- "SealdorTitle2" : {
+ "ShielderTitle2" : {
 
         "0" : "Shield yourself!" ,
 
@@ -1336,7 +1336,7 @@
 
         } ,
 
- "SealdorTitle3" : {
+ "ShielderTitle3" : {
 
         "0" : "Try to block a foreigner's kill!" ,
 
@@ -1344,7 +1344,7 @@
 
         } ,
 
- "SealdorCoolTimeSetting" : {
+ "ShielderCoolTimeSetting" : {
 
         "0" : "Shield Cool Time" ,
 
@@ -1352,7 +1352,7 @@
 
         } ,
 
- "SealdorDurationSetting" : {
+ "ShielderDurationSetting" : {
 
         "0" : "Shield duration" ,
 
