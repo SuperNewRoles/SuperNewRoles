@@ -35,6 +35,7 @@ namespace SuperNewRoles.EndGame
         FalseChargesWin,
         FoxWin,
         DemonWin,
+        VultureWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -217,6 +218,11 @@ namespace SuperNewRoles.EndGame
                     text = "DemonName";
                     textRenderer.color = RoleClass.Demon.color;
                     __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Demon.color);
+                    break;
+                case WinCondition.VultureWin:
+                    text = "VultureName";
+                    textRenderer.color = RoleClass.Vulture.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Vulture.color);
                     break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
@@ -502,6 +508,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.SeerFriends.SeerFriendsPlayer);
             notWinners.AddRange(RoleClass.JackalSeer.JackalSeerPlayer);
             notWinners.AddRange(RoleClass.JackalSeer.SidekickSeerPlayer);
+            notWinners.AddRange(RoleClass.Vulture.VulturePlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -530,6 +537,7 @@ namespace SuperNewRoles.EndGame
             bool FalseChargesWin = gameOverReason == (GameOverReason)CustomGameOverReason.FalseChargesWin;
             bool FoxWin = gameOverReason == (GameOverReason)CustomGameOverReason.FoxWin;
             bool DemonWin = gameOverReason == (GameOverReason)CustomGameOverReason.DemonWin;
+            bool VultureWin = gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -541,6 +549,7 @@ namespace SuperNewRoles.EndGame
                 FoxWin = EndData == CustomGameOverReason.FoxWin;
                 JackalWin = EndData == CustomGameOverReason.JackalWin;
                 DemonWin = EndData == CustomGameOverReason.DemonWin;
+                VultureWin = EndData == CustomGameOverReason.VultureWin;
             }
 
 
@@ -640,6 +649,13 @@ namespace SuperNewRoles.EndGame
                     }
                 }
                 AdditionalTempData.winCondition = WinCondition.DemonWin;
+            }
+            else if (VultureWin)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                WinningPlayerData wpd = new WinningPlayerData(WinnerPlayer.Data);
+                TempData.winners.Add(wpd);
+                AdditionalTempData.winCondition = WinCondition.VultureWin;
             }
 
             if (TempData.winners.ToArray().Any(x => x.IsImpostor))

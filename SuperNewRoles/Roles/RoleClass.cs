@@ -554,9 +554,21 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> VulturePlayer;
             public static Color32 color = new Color32(205, 133, 63, byte.MaxValue);
+            public static int DeadBodyMaxCount;
+            public static float CoolTime;
+            public static int DeadBodyCount;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 VulturePlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.VultureCoolDown.getFloat();
+                DeadBodyCount = (int)CustomOptions.VultureDeadBodyMaxCount.getFloat();
             }
         }
         public static class NiceScientist

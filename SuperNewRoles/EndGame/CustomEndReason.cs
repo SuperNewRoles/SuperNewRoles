@@ -20,6 +20,7 @@ namespace SuperNewRoles.EndGame
         FalseChargesWin,
         FoxWin,
         DemonWin,
+        VultureWin,
         BugEnd
     }
 }
