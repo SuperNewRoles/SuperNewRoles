@@ -219,6 +219,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.killCooldown = -1f;
                     }
                     break;
+                case RoleId.Arsonist:
+                    optdata.ImpostorLightMod = optdata.CrewLightMod;
+                    var switchSystemArsonist = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    if (switchSystemArsonist != null && switchSystemArsonist.IsActive)
+                    {
+                        optdata.ImpostorLightMod /= 5;
+                    }
+                    optdata.RoleOptions.ShapeshifterCooldown = 1f;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    break;
                 case RoleId.Nocturnality:
                     var switchSystemNocturnality = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                     if (switchSystemNocturnality == null || !switchSystemNocturnality.IsActive)
@@ -265,6 +275,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.Demon:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime);
                     break;
+
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;
@@ -293,6 +304,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 case RoleId.Demon:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime) * 2;
+                    break;
+                case RoleId.Arsonist:
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Arsonist.CoolTime) * 2;
                     break;
                 default:
                     return;

@@ -73,6 +73,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 p.RpcSetRole(RoleTypes.GuardianAngel);
             }
+            foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
+            {
+                p.RpcSetRole(RoleTypes.GuardianAngel);
+            }
             if (OnGameEndPatch.EndData == null && (reason == GameOverReason.ImpostorByKill || reason == GameOverReason.ImpostorBySabotage || reason == GameOverReason.ImpostorByVote || reason == GameOverReason.ImpostorDisconnect))
             {
                 foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
@@ -265,7 +269,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             return false;
         }
-            
+        public static bool CheckAndEndGameForArsonistWin(ShipStatus __instance, PlayerStatistics statistics)
+        {
+            if (Arsonist.IsArsonistWinFlag())
+            {
+                Chat.WinCond = CustomGameOverReason.ArsonistWin;
+                RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
+                return true;
+            }
+            return false;
+        }
+
 
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {

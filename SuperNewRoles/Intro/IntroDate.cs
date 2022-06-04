@@ -33,7 +33,7 @@ namespace SuperNewRoles.Intro
             this.Team = team;
             IntroDatas.Add(this);
         }
-        public static IntroDate GetIntroDate(CustomRPC.RoleId RoleId,PlayerControl p = null)
+        public static IntroDate GetIntroDate(CustomRPC.RoleId RoleId, PlayerControl p = null)
         {
                 if (RoleId == CustomRPC.RoleId.DefaultRole)
                 {
@@ -149,6 +149,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate SeerFriendsIntro = new IntroDate("SeerFriends", RoleClass.SeerFriends.color, 1, CustomRPC.RoleId.SeerFriends, TeamRoleType.Neutral);
         public static IntroDate JackalSeerIntro = new IntroDate("JackalSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.JackalSeer, TeamRoleType.Neutral);
         public static IntroDate SidekickSeerIntro = new IntroDate("SidekickSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.SidekickSeer, TeamRoleType.Neutral);
+        public static IntroDate ArsonistIntro = new IntroDate("Arsonist", RoleClass.Arsonist.color, 1, CustomRPC.RoleId.Arsonist, TeamRoleType.Neutral);
         public static IntroDate ChiefIntro = new IntroDate("Chief", RoleClass.Chief.color, 1, CustomRPC.RoleId.Chief);
         //イントロオブジェ
     }

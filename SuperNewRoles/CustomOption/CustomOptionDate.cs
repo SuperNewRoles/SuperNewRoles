@@ -492,6 +492,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption TaskManagerShortTask;
         public static CustomOption TaskManagerLongTask;
 
+        public static CustomRoleOption ArsonistOption;
+        public static CustomOption ArsonistPlayerCount;
+        public static CustomOption ArsonistCoolTime;
+        public static CustomOption ArsonistDurationTime;
+        public static CustomOption ArsonistIsUseVent;
+
         public static CustomRoleOption SeerFriendsOption;
         public static CustomOption SeerFriendsPlayerCount;
         public static CustomOption SeerFriendsMode;
@@ -546,6 +552,7 @@ namespace SuperNewRoles.CustomOption
         public static string[] LevelingerTexts = new string[] { };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
         public static List<float> CrewPlayers = new List<float> { 1f,1f,15f,1f};
+        public static List<float> AlonePlayers = new List<float> { 1f,1f,1f,1f};
         public static List<float> ImpostorPlayers = new List<float> { 1f, 1f, 5f, 1f };
         public static List<float> QuarreledPlayers = new List<float> { 1f,1f,7f,1f};
         // public static CustomOption ;
@@ -1072,9 +1079,16 @@ namespace SuperNewRoles.CustomOption
             JackalSeerCreateSidekick = CustomOption.Create(465, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalSeerOption);
             JackalSeerNewJackalCreateSidekick = CustomOption.Create(466, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
 
+            ArsonistOption = new CustomRoleOption(469, true, CustomOptionType.Neutral, "ArsonistName", RoleClass.Arsonist.color, 1);
+            ArsonistPlayerCount = CustomOption.Create(470, true, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], ArsonistOption);
+            ArsonistCoolTime = CustomOption.Create(471, true, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 30f, 2.5f, 60f, 2.5f, ArsonistOption, format: "unitSeconds");
+            ArsonistDurationTime = CustomOption.Create(472, true, CustomOptionType.Neutral, "ArsonistDurationTimeSetting", 3f, 0.5f, 10f, 0.5f, ArsonistOption, format: "unitSeconds");
+            ArsonistIsUseVent = CustomOption.Create(473, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, ArsonistOption);
+
             ChiefOption = new CustomRoleOption(467, false, CustomOptionType.Crewmate, "ChiefName", RoleClass.Chief.color, 1);
             ChiefPlayerCount = CustomOption.Create(468, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
             SheriffCoolTime = CustomOption.Create(28, true, CustomOptionType.Crewmate, ModTranslation.getString("SheriffCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
+
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

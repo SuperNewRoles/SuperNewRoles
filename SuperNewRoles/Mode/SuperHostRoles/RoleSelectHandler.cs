@@ -72,7 +72,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         CustomOptions.FalseChargesOption.getSelection() != 0 ||
                         CustomOptions.RemoteSheriffOption.getSelection() != 0 ||
                         CustomOptions.MadMakerOption.getSelection() != 0 ||
-                        CustomOptions.DemonOption.getSelection() != 0
+                        CustomOptions.DemonOption.getSelection() != 0 ||
+                        CustomOptions.ArsonistOption.getSelection() != 0
                         );
                     if (flag)
                     {
@@ -101,7 +102,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             DesyncImpostors.AddRange(RoleClass.truelover.trueloverPlayer);
             DesyncImpostors.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
             DesyncImpostors.AddRange(RoleClass.MadMaker.MadMakerPlayer);
-            //インポスターDesync
+            //インポスターにDesync
+
 
             List<PlayerControl> SetRoleEngineers = new List<PlayerControl>();
             if (RoleClass.Jester.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Jester.JesterPlayer);
@@ -111,11 +113,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.MadJester.IsUseVent) SetRoleEngineers.AddRange(RoleClass.MadJester.MadJesterPlayer);
             if (RoleClass.Fox.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Fox.FoxPlayer);
             SetRoleEngineers.AddRange(RoleClass.Technician.TechnicianPlayer);
-            //エンジニア置き換え
+            //エンジニアに役職設定
+
 
             List<PlayerControl> DesyncShapeshifters = new List<PlayerControl>();
+            DesyncShapeshifters.AddRange(RoleClass.Arsonist.ArsonistPlayer);
             DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
-            //シェイプシフターDesync
+            //シェイプシフターにDesync
+
 
             foreach (PlayerControl Player in DesyncImpostors)
             {
