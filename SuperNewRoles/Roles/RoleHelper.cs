@@ -815,7 +815,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Chief):
                     Roles.RoleClass.Chief.ChiefPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -976,8 +976,14 @@ namespace SuperNewRoles
                 case RoleId.SidekickSeer:
                 case RoleId.JackalSeer:
                     return RoleClass.Jackal.IsUseVent;
+                    /*
+                    case RoleId.Scavenger:
+                        return RoleClass.Scavenger.IsUseVent;
+                    */
                 case RoleId.Arsonist:
                     return RoleClass.Arsonist.IsUseVent;
+                case RoleId.Vulture:
+                    return RoleClass.Vulture.IsUseVent;
             }
             return false;
         }
