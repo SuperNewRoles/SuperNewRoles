@@ -167,6 +167,8 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption VulturePlayerCount;
         public static CustomOption VultureCoolDown;
         public static CustomOption VultureDeadBodyMaxCount;
+        public static CustomOption VultureIsUseVent;
+        public static CustomOption VultureShowArrows;
 
         public static CustomRoleOption NiceScientistOption;
         public static CustomOption NiceScientistPlayerCount;
@@ -728,6 +730,8 @@ namespace SuperNewRoles.CustomOption
             VulturePlayerCount = CustomOption.Create(90, false, CustomOptionType.Neutral,  "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], VultureOption);
             VultureCoolDown = CustomOption.Create(91, false, CustomOptionType.Neutral, "VultureCoolDownSetting", 30f, 2.5f, 60f, 2.5f, VultureOption, format: "unitSeconds");
             VultureDeadBodyMaxCount = CustomOption.Create(92, false, CustomOptionType.Neutral, "VultureDeadBodyCountSetting", 3f, 1f, 6f, 1f, VultureOption);
+            VultureIsUseVent = CustomOption.Create(469, false, CustomOptionType.Neutral, "MadMateUseVentSetting", false, VultureOption);
+            VultureShowArrows = CustomOption.Create(470, false, CustomOptionType.Neutral, "VultureShowArrowsSetting", false, VultureOption);
             
             NiceScientistOption = new CustomRoleOption(202, false, CustomOptionType.Crewmate, "NiceScientistName", RoleClass.NiceScientist.color, 1);
             NiceScientistPlayerCount = CustomOption.Create(102, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceScientistOption);

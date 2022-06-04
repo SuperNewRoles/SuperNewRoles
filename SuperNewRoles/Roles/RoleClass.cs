@@ -557,6 +557,9 @@ namespace SuperNewRoles.Roles
             public static int DeadBodyMaxCount;
             public static float CoolTime;
             public static int DeadBodyCount;
+            public static bool IsUseVent;
+            public static bool ShowArrows;
+            public static Arrow Arrow;
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
@@ -569,6 +572,9 @@ namespace SuperNewRoles.Roles
                 VulturePlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.VultureCoolDown.getFloat();
                 DeadBodyCount = (int)CustomOptions.VultureDeadBodyMaxCount.getFloat();
+                IsUseVent = CustomOptions.VultureIsUseVent.getBool();
+                ShowArrows = CustomOptions.VultureShowArrows.getBool();
+                RoleClass.Vulture.Arrow = null;
             }
         }
         public static class NiceScientist

@@ -971,6 +971,8 @@ namespace SuperNewRoles
                     case RoleId.Scavenger:
                         return RoleClass.Scavenger.IsUseVent;
                     */
+                case RoleId.Vulture:
+                    return RoleClass.Vulture.IsUseVent;
             }
             return false;
         }
