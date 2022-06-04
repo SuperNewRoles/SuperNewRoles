@@ -627,3 +627,4 @@ ArsonistIgniteButtonName,Ignite,燃やす
 ArsonistDescription,If you oil them all and burn them, you win alone.,油を全員に塗り燃やしたら単独勝利です。
 ChiefName,Chief,村長
 ChiefTitle1,Appoint a sheriff to help your crew.,シェリフを任命してクルーを助けよう
+ChiefSheriffCoolDownSetting,Sheriff's killcool,シェリフのキルクールタイム

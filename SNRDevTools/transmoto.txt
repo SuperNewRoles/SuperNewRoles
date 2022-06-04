@@ -626,3 +626,4 @@ ArsonistIgniteButtonName
 ArsonistDescription
 ChiefName
 ChiefTitle1
+ChiefSheriffCoolDownSetting
