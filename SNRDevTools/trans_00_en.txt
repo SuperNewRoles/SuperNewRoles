@@ -617,5 +617,11 @@ SeerJackal
 Detect the dead and bring victory to your camp!
 Sidekick(Seer)
 Let's help Jackal with the dead detection ability that we got
+Arsonist
+Douse Douse burn
+Douse Duration
+Douse
+Ignite
+If you oil them all and burn them, you win alone.
 Chief
 Appoint a sheriff to help your crew.

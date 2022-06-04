@@ -27,6 +27,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.Demon:
                     if (RoleClass.Demon.IsUseVent) return true;
                     break;
+                case RoleId.Arsonist:
+                    if (RoleClass.Arsonist.IsUseVent) return true;
+                    break;
                 case RoleId.Jackal:
                     if (RoleClass.Jackal.IsUseVent) return true;
                     break;

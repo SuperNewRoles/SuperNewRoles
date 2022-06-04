@@ -2452,6 +2452,26 @@
         "0" : "Finish the task and mount up!" ,
         "11" : "\u30bf\u30b9\u30af\u3092\u7d42\u308f\u3089\u305b\u3001\u30de\u30a6\u30f3\u30c8\u3092\u53d6\u308d\u3046"
         } ,
+ "ArsonistName" : {
+        "0" : "Arsonist" ,
+        "11" : "\u30a2\u30fc\u30bd\u30cb\u30b9\u30c8"
+        } ,
+ "ArsonistTitle1" : {
+        "0" : "Douse Douse burn" ,
+        "11" : "\u5857\u3063\u3066\u5857\u3063\u3066\u71c3\u3084\u305b"
+        } ,
+ "ArsonistDurationTimeSetting" : {
+        "0" : "Douse Duration" ,
+        "11" : "\u5857\u308a\u6642\u9593"
+        } ,
+ "ArsonistDouseButtonName" : {
+        "0" : "Douse" ,
+        "11" : "\u5857\u308b"
+        } ,
+ "ArsonistIgniteButtonName" : {
+        "0" : "Ignite" ,
+        "11" : "\u71c3\u3084\u3059"
+        } ,
  "SeerFriendsName" : {
         "0" : "SeerFriends" ,
         "11" : "\u30b7\u30fc\u30a2\u30d5\u30ec\u30f3\u30ba"

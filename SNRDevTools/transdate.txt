@@ -618,5 +618,11 @@ JackalSeerName,SeerJackal,ジャッカルシーア
 JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!
 SidekickSeerName,Sidekick(Seer),サイドキック(シーア)
 SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう
+ArsonistName,Arsonist,アーソニスト
+ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ
+ArsonistDurationTimeSetting,Douse Duration,塗り時間
+ArsonistDouseButtonName,Douse,塗る
+ArsonistIgniteButtonName,Ignite,燃やす
+ArsonistDescription,If you oil them all and burn them, you win alone.,油を全員に塗り燃やしたら単独勝利です。
 ChiefName,Chief,村長
 ChiefTitle1,Appoint a sheriff to help your crew.,シェリフを任命してクルーを助けよう

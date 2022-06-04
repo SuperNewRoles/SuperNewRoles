@@ -133,6 +133,7 @@ namespace SuperNewRoles.Roles
             TaskManager.ClearAndReload();
             SeerFriends.ClearAndReload();
             JackalSeer.ClearAndReload();
+            Arsonist.ClearAndReload();
             Chief.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -1930,6 +1931,45 @@ namespace SuperNewRoles.Roles
             }
 
         }
+        public static class Arsonist
+        {
+            public static List<PlayerControl> ArsonistPlayer;
+            public static Dictionary<byte, List<PlayerControl>> DouseDatas;
+            public static Color32 color = new Color32(238, 112, 46, byte.MaxValue);
+            public static bool IsUseVent;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static bool TriggerArsonistWin;
+            public static bool IsDouse;
+            public static PlayerControl DouseTarget;
+            private static Sprite DousebuttonSprite;
+            private static Sprite IgnitebuttonSprite;
+            public static Sprite getDouseButtonSprite()
+            {
+                if (DousebuttonSprite) return DousebuttonSprite;
+                DousebuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistDouse.png", 115f);
+                return DousebuttonSprite;
+            }
+            public static Sprite getIgniteButtonSprite()
+            {
+                if (IgnitebuttonSprite) return IgnitebuttonSprite;
+                IgnitebuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistIgnite.png", 115f);
+                return IgnitebuttonSprite;
+            }
+
+            public static void ClearAndReload()
+            {
+                ArsonistPlayer = new List<PlayerControl>();
+                DouseDatas = new Dictionary<byte, List<PlayerControl>>();
+                IsUseVent = CustomOptions.ArsonistIsUseVent.getBool();
+                CoolTime = CustomOptions.ArsonistCoolTime.getFloat();
+                DurationTime = CustomOptions.ArsonistDurationTime.getFloat();
+                TriggerArsonistWin = true;
+                IsDouse = false;
+                DouseTarget = null;
+            }
+        }
+
         public static class Chief
         {
             public static List<PlayerControl> ChiefPlayer;

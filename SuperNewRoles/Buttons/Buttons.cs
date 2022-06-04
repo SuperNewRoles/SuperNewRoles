@@ -46,9 +46,12 @@ namespace SuperNewRoles.Buttons
         public static CustomButton FalseChargesFalseChargeButton;
         public static CustomButton MadMakerSidekickButton;
         public static CustomButton DemonButton;
+        public static CustomButton ArsonistDouseButton;
+        public static CustomButton ArsonistIgniteButton;
         public static CustomButton SpeederButton;
         public static CustomButton ChiefSidekickButton;
         public static CustomButton VultureButton;
+
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -941,6 +944,84 @@ namespace SuperNewRoles.Buttons
             DemonButton.buttonText = ModTranslation.getString("DemonButtonName");
             DemonButton.showButtonText = true;
 
+            ArsonistDouseButton = new CustomButton(
+                () =>
+                {
+                    var Target = setTarget(untarget: Arsonist.GetUntarget());
+                    RoleClass.Arsonist.DouseTarget = Target;
+                    ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.DurationTime;
+                    ArsonistDouseButton.Timer = ArsonistDouseButton.MaxTimer;
+                    ArsonistDouseButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    RoleClass.Arsonist.IsDouse = true;
+                    //SuperNewRolesPlugin.Logger.LogInfo("アーソニストが塗るボタンを押した");
+                },
+                () => { return Arsonist.IsButton(); },
+                () =>
+                {
+                    return setTarget(untarget: Arsonist.GetUntarget()) && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => {
+                    ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.CoolTime;
+                    ArsonistDouseButton.Timer = RoleClass.Arsonist.CoolTime;
+                },
+                RoleClass.Arsonist.getDouseButtonSprite(),
+                new Vector3(0f, 1f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                49
+            );
+
+            ArsonistDouseButton.buttonText = ModTranslation.getString("ArsonistDouseButtonName");
+            ArsonistDouseButton.showButtonText = true;
+
+            ArsonistIgniteButton = new CustomButton(
+                () =>
+                {
+                    Arsonist.SetWinArsonist();
+                    RoleClass.Arsonist.TriggerArsonistWin = true;
+                    //SuperNewRolesPlugin.Logger.LogInfo("アーソニストが燃やすボタンを押した");
+                    if (Arsonist.IsArsonistWinFlag())
+                    {
+                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
+                        {
+                            //SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
+                            WinningPlayerData wpd = new WinningPlayerData(player.Data);
+                            TempData.winners.Add(wpd);
+                        }
+                        EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
+                        //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                        __instance.enabled = false;
+                        ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
+                    }
+
+                },
+                () => {return Arsonist.IseveryButton(); },
+                () =>
+                {
+                    if (Arsonist.IsArsonistWinFlag())
+                    {
+                        return true;
+                    }
+                    return false;
+                },
+                () =>
+                {
+                    ArsonistIgniteButton.MaxTimer = 0;
+                    ArsonistIgniteButton.Timer = 0;
+                },
+                RoleClass.Arsonist.getIgniteButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            ArsonistIgniteButton.buttonText = ModTranslation.getString("ArsonistIgniteButtonName");
+            ArsonistIgniteButton.showButtonText = true;
+
             SpeederButton = new Buttons.CustomButton(
                 () =>
                 {
@@ -956,16 +1037,19 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { Speeder.EndMeeting(); },
                 RoleClass.Speeder.GetButtonSprite(),
+
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
             );
+            
 
             SpeederButton.buttonText = ModTranslation.getString("SpeederButtonName");
             SpeederButton.showButtonText = true;
             SpeederButton.HasEffect = true;
+
 
             ChiefSidekickButton = new CustomButton(
                () =>
@@ -1064,6 +1148,8 @@ namespace SuperNewRoles.Buttons
             VultureButton.showButtonText = true;
 
             setCustomButtonCooldowns();
+
+
         }
 
     }

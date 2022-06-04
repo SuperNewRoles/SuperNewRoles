@@ -110,6 +110,7 @@ namespace SuperNewRoles.CustomRPC
         SeerFriends,
         JackalSeer,
         SidekickSeer,
+        Arsonist,
         Chief,
         //RoleId
     }
@@ -165,10 +166,22 @@ namespace SuperNewRoles.CustomRPC
         UncheckedProtect,
         SetBot,
         DemonCurse,
+        ArsonistDouse,
         SetSpeedDown,
     }
     public static class RPCProcedure
     {
+        public static void ArsonistDouse(byte source, byte target)
+        {
+            PlayerControl TargetPlayer = ModHelpers.playerById(target);
+            PlayerControl SourcePlayer = ModHelpers.playerById(source);
+            if (TargetPlayer == null || SourcePlayer == null) return;
+            if (!RoleClass.Arsonist.DouseDatas.ContainsKey(source)) RoleClass.Arsonist.DouseDatas[source] = new List<PlayerControl>();
+            if (!Arsonist.IsDoused(SourcePlayer, TargetPlayer))
+            {
+                RoleClass.Arsonist.DouseDatas[source].Add(TargetPlayer);
+            }
+        }
         public static void DemonCurse(byte source, byte target)
         {
             PlayerControl TargetPlayer = ModHelpers.playerById(target);
@@ -936,6 +949,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.CreateSidekickSeer:
                         RPCProcedure.CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case (byte)CustomRPC.ArsonistDouse:
+                        ArsonistDouse(reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRPC.SetSpeedDown:
                         SetSpeedDown(reader.ReadBoolean());

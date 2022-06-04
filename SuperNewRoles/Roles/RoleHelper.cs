@@ -527,6 +527,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.JackalSeer):
                     Roles.RoleClass.JackalSeer.JackalSeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Arsonist):
+                    Roles.RoleClass.Arsonist.ArsonistPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.Chief):
                     Roles.RoleClass.Chief.ChiefPlayer.Add(player);
                     break;
@@ -806,6 +809,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.SidekickSeer):
                     Roles.RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Arsonist):
+                    Roles.RoleClass.Arsonist.ArsonistPlayer.RemoveAll(ClearRemove);
+                    break;
                 case (CustomRPC.RoleId.Chief):
                     Roles.RoleClass.Chief.ChiefPlayer.RemoveAll(ClearRemove);
                     break;
@@ -899,6 +905,9 @@ namespace SuperNewRoles
                 case (RoleId.SeerFriends):
                     IsTaskClear = true;
                     break;
+                case (RoleId.Arsonist):
+                    IsTaskClear = true;
+                    break;
                 case (RoleId.JackalSeer):
                     IsTaskClear = true;
                     break;
@@ -971,6 +980,8 @@ namespace SuperNewRoles
                     case RoleId.Scavenger:
                         return RoleClass.Scavenger.IsUseVent;
                     */
+                case RoleId.Arsonist:
+                    return RoleClass.Arsonist.IsUseVent;
                 case RoleId.Vulture:
                     return RoleClass.Vulture.IsUseVent;
             }
@@ -1112,6 +1123,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case (RoleId.SidekickSeer):
+                    IsNeutral = true;
+                    break;
+                case (RoleId.Arsonist):
                     IsNeutral = true;
                     break;
                     //第三か
@@ -1567,6 +1581,14 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.JackalSeer.SidekickSeerPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.SidekickSeer;
+                }
+                else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SeerFriends;
+                }
+                else if (Roles.RoleClass.Arsonist.ArsonistPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Arsonist;
                 }
                 else if (Roles.RoleClass.Chief.ChiefPlayer.IsCheckListPlayerControl(player))
                 {

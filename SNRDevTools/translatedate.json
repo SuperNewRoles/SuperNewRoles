@@ -2476,6 +2476,26 @@
         "0" : "Let's help Jackal with the dead detection ability that we got" ,
         "11" : "\u8cb0\u3063\u305f\u6b7b\u8005\u611f\u77e5\u80fd\u529b\u3067\u30b8\u30e3\u30c3\u30ab\u30eb\u3092\u52a9\u3051\u3088\u3046"
         } ,
+ "ArsonistName" : {
+        "0" : "Arsonist" ,
+        "11" : "\u30a2\u30fc\u30bd\u30cb\u30b9\u30c8"
+        } ,
+ "ArsonistTitle1" : {
+        "0" : "Douse Douse burn" ,
+        "11" : "\u5857\u3063\u3066\u5857\u3063\u3066\u71c3\u3084\u305b"
+        } ,
+ "ArsonistDurationTimeSetting" : {
+        "0" : "Douse Duration" ,
+        "11" : "\u5857\u308a\u6642\u9593"
+        } ,
+ "ArsonistDouseButtonName" : {
+        "0" : "Douse" ,
+        "11" : "\u5857\u308b"
+        } ,
+ "ArsonistIgniteButtonName" : {
+        "0" : "Ignite" ,
+        "11" : "\u71c3\u3084\u3059"
+        },
  "ChiefName" : {
         "0" : "Chief" ,
         "11" : "\u6751\u9577"
