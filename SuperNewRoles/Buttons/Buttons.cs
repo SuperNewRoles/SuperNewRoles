@@ -57,7 +57,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton MadCleanerButton;
 
 
-        public static TMPro.TMP_Text sheriffNumShotsText;
+        public static TMPro.TMP_Text sheriffNumShotsText;       
+        public static TMPro.TMP_Text CleanerNumCleanText;
 
         public static void setCustomButtonCooldowns()
         {
@@ -1211,16 +1212,31 @@ namespace SuperNewRoles.Buttons
                         }
                     }
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Cleaner); },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Cleaner)  && __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;; },
                 () =>
                 {
-                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                    float Cleancount = 0f;
+                    bool flag = false;
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.Cleaner))
+                    {
+                        Cleancount = RoleClass.Cleaner.CleanMaxCount;
+                        flag = true;
+                    }
+                    if (Cleancount > 0)
+                        CleanerNumCleanText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), Cleancount);
+                    else
+                        CleanerNumCleanText.text = "";
+                    return flag;
                 },
+
+                
                 () =>
                 {
                     CleanerButton.MaxTimer = RoleClass.Cleaner.CoolTime;
                     CleanerButton.Timer = RoleClass.Cleaner.CoolTime;
                 },
+                
+                
                 RoleClass.Cleaner.getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
@@ -1231,6 +1247,8 @@ namespace SuperNewRoles.Buttons
 
             CleanerButton.buttonText = ModTranslation.getString("VultureButtonName");
             CleanerButton.showButtonText = true;
+            CleanerNumCleanText = GameObject.Instantiate(CleanerButton.actionButton.cooldownTimerText, CleanerButton.actionButton.cooldownTimerText.transform.parent);
+            CleanerNumCleanText.text = "";
 
             MadCleanerButton = new CustomButton(
                 () =>

@@ -543,6 +543,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadCleanerCoolDown;
         public static CustomOption MadCleanerIsUseVent;
         public static CustomOption MadCleanerIsImpostorLight;
+        public static CustomOption CleanerDeadBodyMaxCount;
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -1107,6 +1108,7 @@ namespace SuperNewRoles.CustomOption
             CleanerOption = new CustomRoleOption(382, false, CustomOptionType.Impostor, "CleanerName", RoleClass.Cleaner.color, 1);
             CleanerPlayerCount = CustomOption.Create(383, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CleanerOption);
             CleanerCoolDown = CustomOption.Create(91, false, CustomOptionType.Impostor, "VultureCoolDownSetting", 30f, 2.5f, 60f, 2.5f, CleanerOption, format: "unitSeconds");
+            CleanerDeadBodyMaxCount = CustomOption.Create(92, false, CustomOptionType.Impostor, "DeadBodyMaxCountSetting", 3f, 1f, 6f, 1f, CleanerOption);
 
             MadCleanerOption = new CustomRoleOption(382, false, CustomOptionType.Crewmate, "MadCleanerName", RoleClass.MadCleaner.color, 1);
             MadCleanerPlayerCount = CustomOption.Create(383, false, CustomOptionType.Crewmate, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MadCleanerOption);

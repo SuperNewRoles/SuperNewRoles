@@ -2005,6 +2005,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> CleanerPlayer;
             public static Color32 color = ImpostorRed;
             public static float CoolTime;
+            public static int CleanMaxCount;
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
@@ -2016,6 +2017,7 @@ namespace SuperNewRoles.Roles
             {
                 CleanerPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.CleanerCoolDown.getFloat();
+                CleanMaxCount = (int)CustomOptions.CleanerDeadBodyMaxCount.getFloat();
             }
         }
         public static class MadCleaner
@@ -2025,6 +2027,7 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static bool IsUseVent;
             public static bool IsImpostorLight;
+
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
