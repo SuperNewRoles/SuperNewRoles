@@ -536,6 +536,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Cleaner):
                     Roles.RoleClass.Cleaner.CleanerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.MadCleaner):
+                    Roles.RoleClass.MadCleaner.MadCleanerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -821,6 +824,9 @@ namespace SuperNewRoles
                     case (CustomRPC.RoleId.Cleaner):
                     Roles.RoleClass.Cleaner.CleanerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.MadCleaner):
+                    Roles.RoleClass.MadCleaner.MadCleanerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -923,6 +929,9 @@ namespace SuperNewRoles
                 case (RoleId.MadMaker):
                     IsTaskClear = true;
                     break;
+                case (RoleId.MadCleaner):
+                    IsTaskClear = true;
+                    break;
                     //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
@@ -982,6 +991,8 @@ namespace SuperNewRoles
                 case RoleId.SidekickSeer:
                 case RoleId.JackalSeer:
                     return RoleClass.Jackal.IsUseVent;
+                case RoleId.MadCleaner:
+                    return RoleClass.MadCleaner.IsUseVent;
                 /*
                 case RoleId.Scavenger:
                     return RoleClass.Scavenger.IsUseVent;
@@ -1072,6 +1083,8 @@ namespace SuperNewRoles
                 case RoleId.JackalSeer:
                 case RoleId.SidekickSeer:
                     return RoleClass.Jackal.IsImpostorLight;
+                case RoleId.MadCleaner:
+                    return RoleClass.MadCleaner.IsImpostorLight;
             }
             return false;
         }
@@ -1603,6 +1616,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.Cleaner.CleanerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.Cleaner;
+            }
+            else if (Roles.RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.MadCleaner;
             }
             //ロールチェック
             }

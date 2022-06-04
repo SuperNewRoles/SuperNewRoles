@@ -152,6 +152,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate ArsonistIntro = new IntroDate("Arsonist", RoleClass.Arsonist.color, 1, CustomRPC.RoleId.Arsonist, TeamRoleType.Neutral);
         public static IntroDate ChiefIntro = new IntroDate("Chief", RoleClass.Chief.color, 1, CustomRPC.RoleId.Chief);
         public static IntroDate CleanerIntro = new IntroDate("Cleaner", RoleClass.Cleaner.color, 1, CustomRPC.RoleId.Cleaner, TeamRoleType.Impostor);
+        public static IntroDate MadCleanerIntro = new IntroDate("MadCleaner", RoleClass.MadCleaner.color, 1, CustomRPC.RoleId.MadCleaner);
         //イントロオブジェ
     }
 }

@@ -538,6 +538,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption CleanerPlayerCount;
         public static CustomOption CleanerCoolDown;
 
+        public static CustomRoleOption MadCleanerOption;
+        public static CustomOption MadCleanerPlayerCount;
+        public static CustomOption MadCleanerCoolDown;
+        public static CustomOption MadCleanerIsUseVent;
+        public static CustomOption MadCleanerIsImpostorLight;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -1101,6 +1107,12 @@ namespace SuperNewRoles.CustomOption
             CleanerOption = new CustomRoleOption(382, false, CustomOptionType.Impostor, "CleanerName", RoleClass.Cleaner.color, 1);
             CleanerPlayerCount = CustomOption.Create(383, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CleanerOption);
             CleanerCoolDown = CustomOption.Create(91, false, CustomOptionType.Impostor, "VultureCoolDownSetting", 30f, 2.5f, 60f, 2.5f, CleanerOption, format: "unitSeconds");
+
+            MadCleanerOption = new CustomRoleOption(382, false, CustomOptionType.Crewmate, "MadCleanerName", RoleClass.MadCleaner.color, 1);
+            MadCleanerPlayerCount = CustomOption.Create(383, false, CustomOptionType.Crewmate, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MadCleanerOption);
+            MadCleanerCoolDown = CustomOption.Create(91, false, CustomOptionType.Crewmate, "VultureCoolDownSetting", 30f, 2.5f, 60f, 2.5f, MadCleanerOption, format: "unitSeconds");
+            MadCleanerIsUseVent = CustomOption.Create(413, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadCleanerOption);
+            MadCleanerIsImpostorLight = CustomOption.Create(414, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadCleanerOption);
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

@@ -54,6 +54,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton VultureButton;
         public static CustomButton ShielderButton;
         public static CustomButton CleanerButton;
+        public static CustomButton MadCleanerButton;
 
 
         public static TMPro.TMP_Text sheriffNumShotsText;
@@ -1230,6 +1231,55 @@ namespace SuperNewRoles.Buttons
 
             CleanerButton.buttonText = ModTranslation.getString("VultureButtonName");
             CleanerButton.showButtonText = true;
+
+            MadCleanerButton = new CustomButton(
+                () =>
+                {
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    {
+                        if (collider2D.tag == "DeadBody")
+                        {
+                            DeadBody component = collider2D.GetComponent<DeadBody>();
+                            if (component && !component.Reported)
+                            {
+                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 truePosition2 = component.TruePosition;
+                                if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                {
+                                    GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
+
+                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CleanBody, Hazel.SendOption.Reliable, -1);
+                                    writer.Write(playerInfo.PlayerId);
+                                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                                    RPCProcedure.CleanBody(playerInfo.PlayerId);
+                                    MadCleanerButton.Timer = MadCleanerButton.MaxTimer;
+                                }
+
+                            }
+
+                        }
+                    }
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.MadCleaner); },
+                () =>
+                {
+                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    MadCleanerButton.MaxTimer = RoleClass.MadCleaner.CoolTime;
+                    MadCleanerButton.Timer = RoleClass.MadCleaner.CoolTime;
+                },
+                RoleClass.MadCleaner.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            MadCleanerButton.buttonText = ModTranslation.getString("VultureButtonName");
+            MadCleanerButton.showButtonText = true;
 
             setCustomButtonCooldowns();
 

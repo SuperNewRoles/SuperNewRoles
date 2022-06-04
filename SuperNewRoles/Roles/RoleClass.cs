@@ -136,6 +136,7 @@ namespace SuperNewRoles.Roles
             Arsonist.ClearAndReload();
             Chief.ClearAndReload();
             Cleaner.ClearAndReload();
+            MadCleaner.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2015,6 +2016,28 @@ namespace SuperNewRoles.Roles
             {
                 CleanerPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.CleanerCoolDown.getFloat();
+            }
+        }
+        public static class MadCleaner
+        {
+            public static List<PlayerControl> MadCleanerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                MadCleanerPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.MadCleanerCoolDown.getFloat();
+                IsUseVent = CustomOptions.MadCleanerIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadCleanerIsImpostorLight.getBool();
             }
         }
         //新ロールクラス

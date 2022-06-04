@@ -113,6 +113,7 @@ namespace SuperNewRoles.CustomRPC
         Arsonist,
         Chief,
         Cleaner,
+        MadCleaner,
         //RoleId
     }
 
