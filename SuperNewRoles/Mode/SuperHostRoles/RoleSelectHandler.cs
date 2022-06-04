@@ -24,9 +24,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             ChacheManager.ResetChache();
             FixedUpdate.SetRoleNames();
             main.SendAllRoleChat();
-            
+
             //BotHandler.AddBot(3, "キルされるBot");
-            new LateTask(() => {
+            new LateTask(() =>
+            {
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                 {
                     PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
@@ -56,21 +57,23 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         {
                             bot.RpcSetRole(RoleTypes.Impostor);
                         }
-                        if (i > 0) {
+                        if (i > 0)
+                        {
                             bot.RpcSetRole(RoleTypes.Crewmate);
                         }
                     }
-                } else
+                }
+                else
                 {
-                bool flag = !IsJackalSpawned && (
-                    CustomOptions.EgoistOption.getSelection() != 0 ||
-                    CustomOptions.SheriffOption.getSelection() != 0 ||
-                    CustomOptions.trueloverOption.getSelection() != 0 ||
-                    CustomOptions.FalseChargesOption.getSelection() != 0 ||
-                    CustomOptions.RemoteSheriffOption.getSelection() != 0 ||
-                    CustomOptions.MadMakerOption.getSelection() != 0 ||
-                    CustomOptions.DemonOption.getSelection() != 0 
-                    );
+                    bool flag = !IsJackalSpawned && (
+                        CustomOptions.EgoistOption.getSelection() != 0 ||
+                        CustomOptions.SheriffOption.getSelection() != 0 ||
+                        CustomOptions.trueloverOption.getSelection() != 0 ||
+                        CustomOptions.FalseChargesOption.getSelection() != 0 ||
+                        CustomOptions.RemoteSheriffOption.getSelection() != 0 ||
+                        CustomOptions.MadMakerOption.getSelection() != 0 ||
+                        CustomOptions.DemonOption.getSelection() != 0
+                        );
                     if (flag)
                     {
                         PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
@@ -89,16 +92,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
         }
-        public static void SetCustomRoles() {
+        public static void SetCustomRoles()
+        {
             List<PlayerControl> DesyncImpostors = new List<PlayerControl>();
             DesyncImpostors.AddRange(RoleClass.Jackal.JackalPlayer);
             DesyncImpostors.AddRange(RoleClass.Sheriff.SheriffPlayer);
             DesyncImpostors.AddRange(RoleClass.Demon.DemonPlayer);
-            DesyncImpostors.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
             DesyncImpostors.AddRange(RoleClass.truelover.trueloverPlayer);
             DesyncImpostors.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
             DesyncImpostors.AddRange(RoleClass.MadMaker.MadMakerPlayer);
-
+            //インポスターDesync
 
             List<PlayerControl> SetRoleEngineers = new List<PlayerControl>();
             if (RoleClass.Jester.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Jester.JesterPlayer);
@@ -108,12 +111,36 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.MadJester.IsUseVent) SetRoleEngineers.AddRange(RoleClass.MadJester.MadJesterPlayer);
             if (RoleClass.Fox.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Fox.FoxPlayer);
             SetRoleEngineers.AddRange(RoleClass.Technician.TechnicianPlayer);
+            //エンジニア置き換え
+
+            List<PlayerControl> DesyncShapeshifters = new List<PlayerControl>();
+            DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
+            //シェイプシフターDesync
 
             foreach (PlayerControl Player in DesyncImpostors)
             {
                 if (!Player.IsMod())
                 {
                     Player.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId != Player.PlayerId && p.IsPlayer())
+                        {
+                            Player.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, Player);
+                        }
+                    }
+                }
+                else
+                {
+                    Player.RpcSetRole(RoleTypes.Crewmate);
+                }
+            }
+            foreach (PlayerControl Player in DesyncShapeshifters)
+            {
+                if (!Player.IsMod())
+                {
+                    Player.RpcSetRoleDesync(RoleTypes.Shapeshifter);
                     foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                     {
                         if (p.PlayerId != Player.PlayerId && p.IsPlayer())
