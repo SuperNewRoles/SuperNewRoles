@@ -549,6 +549,7 @@ namespace SuperNewRoles.CustomOption
         public static string[] LevelingerTexts = new string[] { };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
         public static List<float> CrewPlayers = new List<float> { 1f,1f,15f,1f};
+        public static List<float> AlonePlayers = new List<float> { 1f,1f,1f,1f};
         public static List<float> ImpostorPlayers = new List<float> { 1f, 1f, 5f, 1f };
         public static List<float> QuarreledPlayers = new List<float> { 1f,1f,7f,1f};
         // public static CustomOption ;
@@ -1077,7 +1078,7 @@ namespace SuperNewRoles.CustomOption
 
 
             ArsonistOption = new CustomRoleOption(425, true, CustomOptionType.Neutral, "ArsonistName", RoleClass.Arsonist.color, 1);
-            ArsonistPlayerCount = CustomOption.Create(426, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ArsonistOption);
+            ArsonistPlayerCount = CustomOption.Create(426, true, CustomOptionType.Neutral, "SettingPlayerCountName", AlonePlayers[0], AlonePlayers[1], AlonePlayers[2], AlonePlayers[3], ArsonistOption);
             ArsonistCoolTime = CustomOption.Create(427, true, CustomOptionType.Neutral, "NiceScientistCoolDownSetting", 30f, 2.5f, 60f, 2.5f, ArsonistOption, format: "unitSeconds");
             ArsonistDurationTime = CustomOption.Create(428, true, CustomOptionType.Neutral, "ArsonistDurationTimeSetting", 3f, 0.5f, 10f, 0.5f, ArsonistOption, format: "unitSeconds");
             ArsonistIsUseVent = CustomOption.Create(429, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, ArsonistOption);
