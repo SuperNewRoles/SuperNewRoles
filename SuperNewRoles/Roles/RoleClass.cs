@@ -65,7 +65,7 @@ namespace SuperNewRoles.Roles
             Tasker.ClearAndReload();
             Doorr.ClearAndReload();
             EvilDoorr.ClearAndReload();
-            Sealdor.ClearAndReload();
+            Shielder.ClearAndReload();
             Speeder.ClearAndReload();
             Freezer.ClearAndReload();
             Guesser.ClearAndReload();
@@ -477,17 +477,27 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.EvilDoorrCoolTime.getFloat();
             }
         }
-        public static class Sealdor
+        public static class Shielder
         {
-            public static List<PlayerControl> SealdorPlayer;
+            public static List<PlayerControl> ShielderPlayer;
             public static Color32 color = new Color32(100, 149, 237, byte.MaxValue);
-            //public static float CoolTime;
-            //public static float DurationTime;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static Dictionary<byte,bool> IsShield;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ShielderButton.png", 115f);
+                return ButtonSprite;
+            }
             public static void ClearAndReload()
             {
-                SealdorPlayer = new List<PlayerControl>();
-                //CoolTime = CustomOptions.SealdorCoolTime.getFloat();
-                //DurationTime = CustomOptions.SealdorDurationTime.getFloat();
+                ShielderPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.ShielderCoolTime.getFloat();
+                DurationTime = CustomOptions.ShielderDurationTime.getFloat();
+                IsShield = new Dictionary<byte, bool>();
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls) RoleClass.Shielder.IsShield[p.PlayerId] = false;
             }
         }
         public static class Freezer
