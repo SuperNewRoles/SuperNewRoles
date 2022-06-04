@@ -17,7 +17,6 @@ class ReturnClass:
     # w→書く　r→読む　a→合成　r+既存を読む　w+→新規で書く　a+→追加読み書き　t→テキストモード　b→バイナリモード
         with open(BasePath+Path, mode="r", encoding="utf-8") as r:
             Template = r.read()
-            print(Template)
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
                 #Template = Template.replace(OldCode, NewCode)
                 print("ファイルを書き込みました:"+Template)
@@ -109,6 +108,20 @@ class ReturnClass:
 class AllCheck:
     # すべて書く
     def AllWrite(self):
+        # Roles/ROLENAME.cs
+        if (MainClass.GetBool("A_CreateFile")):
+            MainClass.WriteCodes("Roles/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), "", 
+"""using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SuperNewRoles.Roles
+{
+    internal class ROLENAME
+    {
+        //ここにコードを書きこんでください
+    }
+}""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         # CustomRPC/CustomRPC.cs
         MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//RoleId", MainClass.GetInput("RoleName")+",\n        //RoleId")
         MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//新ロールクラス", 
@@ -215,6 +228,7 @@ class AllCheck:
         if (MainClass.GetBool("A_CanKill")):
             MainClass.CreateErrorWindow("まだできてませぇぇん(´;ω;｀)")
 
+
         # 終了報告
         MainClass.CreateNotify("CreateRoleAdvance.py", "役職の作成が終了しました")
 
@@ -223,10 +237,10 @@ class AllCheck:
         MainClass.GetInput("RoleName")
         MainClass.GetRoleColor()
         MainClass.GetTeam()
+        MainClass.GetBool("A_CreateFile")
         if (MainClass.GetBool("AddSetting")):
             MainClass.GetInput("OptionNumber")
-        MainClass.GetBool("A_CanVent")
-        MainClass.GetBool("A_CanKill")
+        
         # 一部値がかぶっていないか(例:インポ+キル可能)
         if (MainClass.GetBool("A_CanVent")):
             if (MainClass.GetBool("Impo")):
@@ -236,6 +250,11 @@ class AllCheck:
             if (MainClass.GetBool("Impo")):
                 MainClass.CreateOKWindow("警告", "インポスターはデフォルトで\nベントボタンが作成されます")
                 return
+        if (MainClass.GetBool("A_ClearTask")):
+            if (MainClass.GetBool("Neut")):
+                MainClass.CreateOKWindow("警告", "第三陣営はデフォルトで\nタスクが削除されます")
+
+        
 
         AllActClass.AllWrite()
 
@@ -282,11 +301,14 @@ MainTab = psg.Tab("メイン", [
                 [psg.Text(), psg.Check("SHR対応",key="IsSHRON")],
                 [psg.Text(), psg.Text("設定ID(int)",key="OptionNumberIDText"), psg.Input("",key="OptionNumber",size=(10,3))], ])
 AdvanceTab = psg.Tab("詳細設定", [
-                [psg.Check("ベントを使える",key="A_CanVent")],
+                [psg.Check("役職ファイルを作成する", key="A_CreateFile")],
+                [psg.Check("タスクを削除する", key="A_ClearTask")],
+                [psg.Check("ベントを使える", key="A_CanVent")],
                 [psg.Check("キルができる", key="A_CanKill")], ])
 CreateTab = psg.Tab("作成", [
                 [psg.Button("作成",key="Main_CreateButton", pad=((10,10),(10,10)), size=(15,2))] ])
 MainLayOut = [[psg.TabGroup ([[MainTab, AdvanceTab, CreateTab]])]]
+
 MainWindow = psg.Window(title=MainClass.GetConfig("Main", "WindowName"), layout=MainLayOut, size=(MainClass.GetConfig("Main", "SizeX"), MainClass.GetConfig("Main", "SizeY")), icon=MainClass.GetResource("pictures/icon.png"))
 
 
