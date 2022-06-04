@@ -135,6 +135,7 @@ namespace SuperNewRoles.Roles
             JackalSeer.ClearAndReload();
             Arsonist.ClearAndReload();
             Chief.ClearAndReload();
+            Cleaner.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1996,6 +1997,24 @@ namespace SuperNewRoles.Roles
             {
                 ChiefPlayer = new List<PlayerControl>();
                 IsCreateSheriff = false;
+            }
+        }
+        public static class Cleaner
+        {
+            public static List<PlayerControl> CleanerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                CleanerPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.CleanerCoolDown.getFloat();
             }
         }
         //新ロールクラス

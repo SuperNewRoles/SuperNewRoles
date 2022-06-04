@@ -864,6 +864,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.ArsonistPlayerCount.getFloat();
                 case (RoleId.Chief):
                     return CustomOption.CustomOptions.ChiefPlayerCount.getFloat();
+                case (RoleId.Cleaner):
+                    return CustomOption.CustomOptions.CleanerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
