@@ -239,6 +239,7 @@ namespace SuperNewRoles.Roles
 
         MainClass.GetBool("A_CreateFile")
         MainClass.GetBool("A_ClearTask")
+
         # 未作成機能のブロック
         if (MainClass.GetBool("A_CanVisibleImpo")):
             MainClass.CreateOKWindow("インポの視認は現在対応していません")
@@ -255,7 +256,10 @@ namespace SuperNewRoles.Roles
         if (MainClass.GetBool("TeamTwo")):
             MainClass.CreateOKWindow("第三陣営(ペア)は現在対応していません")
             return
-        
+        if (MainClass.GetBool("A_CustomButton")):
+            MainClass.CreateOKWindow("は現在対応していません")
+        if (MainClass.GetBool("A_PersonalWin")):
+            MainClass.CreateOKWindow("は現在対応していません")
         # 一部値がかぶっていないか(例:インポ+キル可能)
         if (MainClass.GetBool("A_CanVent")):
             if (MainClass.GetBool("Impo")):
@@ -268,7 +272,7 @@ namespace SuperNewRoles.Roles
         if (MainClass.GetBool("A_ClearTask")):
             if (MainClass.GetBool("Neut")):
                 MainClass.CreateOKWindow("警告", "第三陣営はデフォルトで\nタスクが削除されます")
-
+        # 全部書く
         AllActClass.AllWrite()
 
 ## 変数
@@ -310,15 +314,21 @@ MainTab = psg.Tab("メイン", [
                 [psg.Text("取得ハッシュ:",key="ColorHashText"), psg.Input("ImposterRed",key="ColorHash")],
                 [psg.Text()],
                 [psg.Check("設定を追加する",key="AddSetting")],
-                [psg.Text(), psg.Text("タブ:",key="SettingTabText"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut"), psg.Radio("重複陣営(ペア)",group_id="OptionTab",key="TeamTwo"). psg.Radio("重複陣営(個人)",group_id="OptionTab",key="TeamOne")],
+                [psg.Text(), psg.Text("タブ:",key="SettingTabText"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut"), psg.Radio("重複陣営(ペア)",group_id="OptionTab",key="TeamTwo"), psg.Radio("重複陣営(個人)",group_id="OptionTab",key="TeamOne")],
                 [psg.Text(), psg.Check("SHR対応",key="IsSHRON")],
                 [psg.Text(), psg.Text("設定ID(int)",key="OptionNumberIDText"), psg.Input("",key="OptionNumber",size=(10,3))], ])
 AdvanceTab = psg.Tab("詳細設定", [
                 [psg.Check("役職ファイルを作成する", key="A_CreateFile")],
                 [psg.Check("タスクを削除する", key="A_ClearTask")],
-                [psg.Check("ベントを使える", key="A_CanVent")],
-                [psg.Check("キルができる", key="A_CanKill")],
-                [psg.Check("インポを視認可能", key="A_CanVisibleImpo")], ])
+                [psg.Text("ボタン")],
+                [psg.Text(),psg.Check("ベントを使える", key="A_CanVent")],
+                [psg.Text(),psg.Check("キルができる", key="A_CanKill")],
+                [psg.Text(),psg.Check("カスタムボタン",key="A_CustomButton")],
+                [psg.Text("    画像名:"),psg.InputText("", size=(15,1))],
+                [psg.Check("インポを視認可能", key="A_CanVisibleImpo")],
+                [psg.Check("独自勝利", key="A_PersonalWin")],
+                [],
+                [], ])
 '''TeachingTab = psg.Tab("即席コードチェック", [
                 [psg.Button("Harmony一覧")],
                 [], ])'''#←いらなくね？
