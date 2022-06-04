@@ -332,6 +332,7 @@ Vulture
 Let's eat a corpse.
 Corpse cooldown
 Victory corpse count
+Show arrows pointing to dead bodies
 Nice Scientist
 Turn invisible and find the bodies!
 Use the power of science to win!

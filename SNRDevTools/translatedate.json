@@ -1336,6 +1336,10 @@
         "0" : "Victory corpse count" ,
         "11" : "\u52dd\u5229\u6b7b\u4f53\u6570"
         } ,
+ "VultureShowArrowsSetting" : {
+        "0" : "Show arrows pointing to dead bodies" ,
+        "11" : "\u6b7b\u4f53\u3092\u6307\u3059\u77e2\u5370\u3092\u8868\u793a\u3059\u308b"
+        } ,
  "NiceScientistName" : {
         "0" : "Nice Scientist" ,
         "11" : "\u30ca\u30a4\u30b9\u30b5\u30a4\u30a8\u30f3\u30c6\u30a3\u30b9\u30c8"

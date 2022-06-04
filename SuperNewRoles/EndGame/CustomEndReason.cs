@@ -21,6 +21,7 @@ namespace SuperNewRoles.EndGame
         FoxWin,
         DemonWin,
         ArsonistWin,
+        VultureWin,
         BugEnd
     }
 }

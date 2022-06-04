@@ -143,6 +143,9 @@ namespace SuperNewRoles.Patch
                                 case RoleId.DarkKiller:
                                     DarkKiller.FixedUpdate.Postfix();
                                     break;
+                                case RoleId.Vulture:
+                                    Vulture.FixedUpdate.Postfix();
+                                    break;
                             }
                             Fox.FixedUpdate.Postfix();
                             Minimalist.FixedUpdate.Postfix();
