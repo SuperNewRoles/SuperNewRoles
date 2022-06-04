@@ -319,8 +319,8 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilDoorr):
                     Roles.RoleClass.EvilDoorr.EvilDoorrPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Sealdor):
-                    Roles.RoleClass.Sealdor.SealdorPlayer.Add(player);
+                case (CustomRPC.RoleId.Shielder):
+                    Roles.RoleClass.Shielder.ShielderPlayer.Add(player);
                     break;
                 case (CustomRPC.RoleId.Speeder):
                     Roles.RoleClass.Speeder.SpeederPlayer.Add(player);
@@ -599,8 +599,8 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilDoorr):
                     Roles.RoleClass.EvilDoorr.EvilDoorrPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Sealdor):
-                    Roles.RoleClass.Sealdor.SealdorPlayer.RemoveAll(ClearRemove);
+                case (CustomRPC.RoleId.Shielder):
+                    Roles.RoleClass.Shielder.ShielderPlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.Speeder):
                     Roles.RoleClass.Speeder.SpeederPlayer.RemoveAll(ClearRemove);
@@ -976,10 +976,10 @@ namespace SuperNewRoles
                 case RoleId.SidekickSeer:
                 case RoleId.JackalSeer:
                     return RoleClass.Jackal.IsUseVent;
-                    /*
-                    case RoleId.Scavenger:
-                        return RoleClass.Scavenger.IsUseVent;
-                    */
+                /*
+                case RoleId.Scavenger:
+                    return RoleClass.Scavenger.IsUseVent;
+                */
                 case RoleId.Arsonist:
                     return RoleClass.Arsonist.IsUseVent;
                 case RoleId.Vulture:
@@ -1286,13 +1286,13 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.EvilDoorr;
                 }
-                else if (Roles.RoleClass.Sealdor.SealdorPlayer.IsCheckListPlayerControl(player))
+                else if (Roles.RoleClass.Shielder.ShielderPlayer.IsCheckListPlayerControl(player))
                 {
-                    return CustomRPC.RoleId.Sealdor;
+                    return CustomRPC.RoleId.Shielder;
                 }
-                else if (Roles.RoleClass.Sealdor.SealdorPlayer.IsCheckListPlayerControl(player))
+                else if (Roles.RoleClass.Shielder.ShielderPlayer.IsCheckListPlayerControl(player))
                 {
-                    return CustomRPC.RoleId.Sealdor;
+                    return CustomRPC.RoleId.Shielder;
                 }
                 else if (Roles.RoleClass.Speeder.SpeederPlayer.IsCheckListPlayerControl(player))
                 {

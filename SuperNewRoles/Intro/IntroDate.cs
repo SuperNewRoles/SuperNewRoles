@@ -21,32 +21,32 @@ namespace SuperNewRoles.Intro
         public CustomRPC.RoleId RoleId;
         public string Description;
         public TeamRoleType Team;
-        IntroDate(string NameKey, Color color , Int16 TitleNum ,CustomRPC.RoleId RoleId,TeamRoleType team = TeamRoleType.Crewmate)
+        IntroDate(string NameKey, Color color, Int16 TitleNum, CustomRPC.RoleId RoleId, TeamRoleType team = TeamRoleType.Crewmate)
         {
             this.color = color;
             this.NameKey = NameKey;
-            this.Name = ModTranslation.getString(NameKey+"Name");
+            this.Name = ModTranslation.getString(NameKey + "Name");
             this.RoleId = RoleId;
             this.TitleNum = TitleNum;
             this.TitleDesc = Intro.IntroDate.GetTitle(NameKey, TitleNum);
-            this.Description = ModTranslation.getString(NameKey+"Description");
+            this.Description = ModTranslation.getString(NameKey + "Description");
             this.Team = team;
             IntroDatas.Add(this);
         }
         public static IntroDate GetIntroDate(CustomRPC.RoleId RoleId, PlayerControl p = null)
         {
-                if (RoleId == CustomRPC.RoleId.DefaultRole)
+            if (RoleId == CustomRPC.RoleId.DefaultRole)
+            {
+                if (p != null && p.isImpostor())
                 {
-                    if (p != null && p.isImpostor())
-                    {
-                        return ImpostorIntro;
-                    }
+                    return ImpostorIntro;
+                }
                 else
                 {
                     return CrewmateIntro;
                 }
 
-                }
+            }
             var data = IntroDatas.FirstOrDefault((_) => _.RoleId == RoleId);
             if (data == null) return SheriffIntro;
             return data;
@@ -56,43 +56,43 @@ namespace SuperNewRoles.Intro
             var option = CustomRoleOption.RoleOptions.FirstOrDefault((_) => _.RoleId == roleId);
             return option;
         }
-        public static string GetTitle(string name,Int16 num)
+        public static string GetTitle(string name, Int16 num)
         {
             System.Random r1 = new System.Random();
             return ModTranslation.getString(name + "Title" + r1.Next(1, num + 1).ToString());
         }
         public static IntroDate CrewmateIntro = new IntroDate("CrewMate", Color.white, 1, CustomRPC.RoleId.DefaultRole);
-        public static IntroDate ImpostorIntro = new IntroDate("Impostor", RoleClass.ImpostorRed, 1, CustomRPC.RoleId.DefaultRole,TeamRoleType.Impostor);
+        public static IntroDate ImpostorIntro = new IntroDate("Impostor", RoleClass.ImpostorRed, 1, CustomRPC.RoleId.DefaultRole, TeamRoleType.Impostor);
         public static IntroDate SoothSayerIntro = new IntroDate("SoothSayer", RoleClass.SoothSayer.color, 1, CustomRPC.RoleId.SoothSayer);
         public static IntroDate JesterIntro = new IntroDate("Jester", RoleClass.Jester.color, 1, CustomRPC.RoleId.Jester, TeamRoleType.Neutral);
-        public static IntroDate LighterIntro = new IntroDate("Lighter",RoleClass.Lighter.color,1,CustomRPC.RoleId.Lighter);
-        public static IntroDate EvilLighterIntro = new IntroDate("EvilLighter",RoleClass.EvilLighter.color,2,CustomRPC.RoleId.EvilLighter, TeamRoleType.Impostor);
-        public static IntroDate EvilScientist = new IntroDate("EvilScientist",RoleClass.EvilScientist.color,2,CustomRPC.RoleId.EvilScientist, TeamRoleType.Impostor);
+        public static IntroDate LighterIntro = new IntroDate("Lighter", RoleClass.Lighter.color, 1, CustomRPC.RoleId.Lighter);
+        public static IntroDate EvilLighterIntro = new IntroDate("EvilLighter", RoleClass.EvilLighter.color, 2, CustomRPC.RoleId.EvilLighter, TeamRoleType.Impostor);
+        public static IntroDate EvilScientist = new IntroDate("EvilScientist", RoleClass.EvilScientist.color, 2, CustomRPC.RoleId.EvilScientist, TeamRoleType.Impostor);
         public static IntroDate SheriffIntro = new IntroDate("Sheriff", RoleClass.Sheriff.color, 2, CustomRPC.RoleId.Sheriff);
-        public static IntroDate MeetingSheriffIntro = new IntroDate("MeetingSheriff",RoleClass.MeetingSheriff.color,4,CustomRPC.RoleId.MeetingSheriff);
-        public static IntroDate JackalIntro = new IntroDate("Jackal",RoleClass.Jackal.color,3,CustomRPC.RoleId.Jackal, TeamRoleType.Neutral);
+        public static IntroDate MeetingSheriffIntro = new IntroDate("MeetingSheriff", RoleClass.MeetingSheriff.color, 4, CustomRPC.RoleId.MeetingSheriff);
+        public static IntroDate JackalIntro = new IntroDate("Jackal", RoleClass.Jackal.color, 3, CustomRPC.RoleId.Jackal, TeamRoleType.Neutral);
         public static IntroDate SidekickIntro = new IntroDate("Sidekick", RoleClass.Jackal.color, 1, CustomRPC.RoleId.Sidekick, TeamRoleType.Neutral);
-        public static IntroDate TeleporterIntro = new IntroDate("Teleporter",RoleClass.Teleporter.color,2,CustomRPC.RoleId.Teleporter, TeamRoleType.Impostor);
-        public static IntroDate SpiritMediumIntro = new IntroDate("SpiritMedium",RoleClass.SpiritMedium.color,1,CustomRPC.RoleId.SpiritMedium);
-        public static IntroDate SpeedBoosterIntro = new IntroDate("SpeedBooster",RoleClass.SpeedBooster.color,2,CustomRPC.RoleId.SpeedBooster);
+        public static IntroDate TeleporterIntro = new IntroDate("Teleporter", RoleClass.Teleporter.color, 2, CustomRPC.RoleId.Teleporter, TeamRoleType.Impostor);
+        public static IntroDate SpiritMediumIntro = new IntroDate("SpiritMedium", RoleClass.SpiritMedium.color, 1, CustomRPC.RoleId.SpiritMedium);
+        public static IntroDate SpeedBoosterIntro = new IntroDate("SpeedBooster", RoleClass.SpeedBooster.color, 2, CustomRPC.RoleId.SpeedBooster);
         public static IntroDate EvilSpeedBoosterIntro = new IntroDate("EvilSpeedBooster", RoleClass.EvilSpeedBooster.color, 4, CustomRPC.RoleId.EvilSpeedBooster, TeamRoleType.Impostor);
         public static IntroDate TaskerIntro = new IntroDate("Tasker", RoleClass.Tasker.color, 2, CustomRPC.RoleId.Tasker, TeamRoleType.Impostor);
-        public static IntroDate DoorrIntro = new IntroDate("Doorr",RoleClass.Doorr.color,2,CustomRPC.RoleId.Doorr);
+        public static IntroDate DoorrIntro = new IntroDate("Doorr", RoleClass.Doorr.color, 2, CustomRPC.RoleId.Doorr);
         public static IntroDate EvilDoorrIntro = new IntroDate("EvilDoorr", RoleClass.EvilDoorr.color, 3, CustomRPC.RoleId.EvilDoorr, TeamRoleType.Impostor);
-        public static IntroDate SealdorIntro = new IntroDate("Sealdor",RoleClass.Sealdor.color,3,CustomRPC.RoleId.Sealdor);
+        public static IntroDate ShielderIntro = new IntroDate("Shielder", RoleClass.Shielder.color, 3, CustomRPC.RoleId.Shielder);
         public static IntroDate FreezerIntro = new IntroDate("Freezer", RoleClass.Freezer.color, 3, CustomRPC.RoleId.Freezer, TeamRoleType.Impostor);
         public static IntroDate SpeederIntro = new IntroDate("Speeder", RoleClass.Speeder.color, 2, CustomRPC.RoleId.Speeder, TeamRoleType.Impostor);
         public static IntroDate GuesserIntro = new IntroDate("Guesser", RoleClass.Guesser.color, 2, CustomRPC.RoleId.Guesser);
         public static IntroDate EvilGuesserIntro = new IntroDate("EvilGuesser", RoleClass.EvilGuesser.color, 1, CustomRPC.RoleId.EvilGuesser, TeamRoleType.Impostor);
         public static IntroDate VultureIntro = new IntroDate("Vulture", RoleClass.Vulture.color, 1, CustomRPC.RoleId.Vulture, TeamRoleType.Neutral);
-        public static IntroDate NiceScientistIntro = new IntroDate("NiceScientist",RoleClass.NiceScientist.color,2,CustomRPC.RoleId.NiceScientist);
+        public static IntroDate NiceScientistIntro = new IntroDate("NiceScientist", RoleClass.NiceScientist.color, 2, CustomRPC.RoleId.NiceScientist);
         public static IntroDate ClergymanIntro = new IntroDate("Clergyman", RoleClass.Clergyman.color, 2, CustomRPC.RoleId.Clergyman);
         public static IntroDate MadMateIntro = new IntroDate("MadMate", RoleClass.MadMate.color, 1, CustomRPC.RoleId.MadMate);
         public static IntroDate BaitIntro = new IntroDate("Bait", RoleClass.Bait.color, 1, CustomRPC.RoleId.Bait);
         public static IntroDate HomeSecurityGuardIntro = new IntroDate("HomeSecurityGuard", RoleClass.HomeSecurityGuard.color, 1, CustomRPC.RoleId.HomeSecurityGuard);
         public static IntroDate StuntManIntro = new IntroDate("StuntMan", RoleClass.StuntMan.color, 1, CustomRPC.RoleId.StuntMan);
         public static IntroDate MovingIntro = new IntroDate("Moving", RoleClass.Moving.color, 1, CustomRPC.RoleId.Moving);
-        public static IntroDate OpportunistIntro = new IntroDate("Opportunist",RoleClass.Opportunist.color,2,CustomRPC.RoleId.Opportunist, TeamRoleType.Neutral);
+        public static IntroDate OpportunistIntro = new IntroDate("Opportunist", RoleClass.Opportunist.color, 2, CustomRPC.RoleId.Opportunist, TeamRoleType.Neutral);
         public static IntroDate NiceGamblerIntro = new IntroDate("NiceGambler", RoleClass.NiceGambler.color, 1, CustomRPC.RoleId.NiceGambler);
         public static IntroDate EvilGamblerIntro = new IntroDate("EvilGambler", RoleClass.EvilGambler.color, 1, CustomRPC.RoleId.EvilGambler, TeamRoleType.Impostor);
         public static IntroDate BestfalsechargeIntro = new IntroDate("Bestfalsecharge", RoleClass.Bestfalsecharge.color, 1, CustomRPC.RoleId.Bestfalsecharge);

@@ -301,12 +301,13 @@ Open and close doors!
 Try to sabotage your crewmates!
 Open and close the door immediately to block your crewmate!
 Door Cool Time
-Sealder
+Shielder
 Prevent outsider kills.
 Shield yourself!
 Try to block a foreigner's kill!
 Shield Cool Time
 Shield duration
+Shield
 Freezer
 Stop everyone and sabotage your crewmates!
 Try to stop everyone and sabotage the task!
