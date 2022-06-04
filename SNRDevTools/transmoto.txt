@@ -332,6 +332,7 @@ VultureName
 VultureTitle1
 VultureCoolDownSetting
 VultureDeadBodyCountSetting
+VultureShowArrowsSetting
 NiceScientistName
 NiceScientistTitle1
 NiceScientistTitle2

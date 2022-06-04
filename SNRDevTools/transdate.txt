@@ -333,6 +333,7 @@ VultureName,Vulture,ヴァルチャー
 VultureTitle1,Let's eat a corpse.,死体を食べよう
 VultureCoolDownSetting,Corpse cooldown,死体クールダウン
 VultureDeadBodyCountSetting,Victory corpse count,勝利死体数
+VultureShowArrowsSetting,Show arrows pointing to dead bodies,死体を指す矢印を表示する
 NiceScientistName,Nice Scientist,ナイスサイエンティスト
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう

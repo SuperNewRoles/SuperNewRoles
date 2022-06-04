@@ -50,6 +50,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ArsonistIgniteButton;
         public static CustomButton SpeederButton;
         public static CustomButton ChiefSidekickButton;
+        public static CustomButton VultureButton;
 
 
         public static TMPro.TMP_Text sheriffNumShotsText;
@@ -94,7 +95,8 @@ namespace SuperNewRoles.Buttons
                 {
                     return setTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
-                () => {
+                () =>
+                {
                     FalseChargesFalseChargeButton.MaxTimer = RoleClass.FalseCharges.CoolTime;
                     FalseChargesFalseChargeButton.Timer = RoleClass.FalseCharges.CoolTime;
                 },
@@ -824,7 +826,8 @@ namespace SuperNewRoles.Buttons
                 {
                     return setTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
                 },
-                () => {
+                () =>
+                {
                     ImpostorSidekickButton.MaxTimer = PlayerControl.GameOptions.KillCooldown;
                     ImpostorSidekickButton.Timer = PlayerControl.GameOptions.KillCooldown;
                 },
@@ -859,7 +862,8 @@ namespace SuperNewRoles.Buttons
                 {
                     return setTarget(Crewmateonly: true) && PlayerControl.LocalPlayer.CanMove;
                 },
-                () => {
+                () =>
+                {
                     SideKillerSidekickButton.MaxTimer = RoleClass.SideKiller.KillCoolTime;
                     SideKillerSidekickButton.Timer = RoleClass.SideKiller.KillCoolTime;
                 },
@@ -924,7 +928,8 @@ namespace SuperNewRoles.Buttons
                 {
                     return setTarget(untarget: Demon.GetUntarget()) && PlayerControl.LocalPlayer.CanMove;
                 },
-                () => {
+                () =>
+                {
                     DemonButton.MaxTimer = RoleClass.Demon.CoolTime;
                     DemonButton.Timer = RoleClass.Demon.CoolTime;
                 },
@@ -1077,6 +1082,70 @@ namespace SuperNewRoles.Buttons
 
             ChiefSidekickButton.buttonText = ModTranslation.getString("SidekickName");
             ChiefSidekickButton.showButtonText = true;
+
+            VultureButton = new CustomButton(
+                () =>
+                {
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), PlayerControl.LocalPlayer.MaxReportDistance, Constants.PlayersOnlyMask))
+                    {
+                        if (collider2D.tag == "DeadBody")
+                        {
+                            DeadBody component = collider2D.GetComponent<DeadBody>();
+                            if (component && !component.Reported)
+                            {
+                                Vector2 truePosition = PlayerControl.LocalPlayer.GetTruePosition();
+                                Vector2 truePosition2 = component.TruePosition;
+                                if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
+                                {
+                                    GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
+
+                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CleanBody, Hazel.SendOption.Reliable, -1);
+                                    writer.Write(playerInfo.PlayerId);
+                                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                                    RPCProcedure.CleanBody(playerInfo.PlayerId);
+                                    RoleClass.Vulture.DeadBodyCount--;
+                                    SuperNewRolesPlugin.Logger.LogInfo("DeadBodyCount:" + RoleClass.Vulture.DeadBodyCount);
+                                    VultureButton.Timer = VultureButton.MaxTimer;
+                                }
+
+                            }
+
+                        }
+                    }
+                    if (RoleClass.Vulture.DeadBodyCount < 0)
+                    {
+                        CustomRPC.RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
+
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                        writer.Write((byte)EndGame.CustomGameOverReason.VultureWin);
+                        writer.Write(false);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        EndGame.CheckGameEndPatch.CustomEndGame((GameOverReason)EndGame.CustomGameOverReason.VultureWin, false);
+                    }
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Vulture); },
+                () =>
+                {
+                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    VultureButton.MaxTimer = RoleClass.Vulture.CoolTime;
+                    VultureButton.Timer = RoleClass.Vulture.CoolTime;
+                },
+                RoleClass.Vulture.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            VultureButton.buttonText = ModTranslation.getString("VultureButtonName");
+            VultureButton.showButtonText = true;
 
             setCustomButtonCooldowns();
 
