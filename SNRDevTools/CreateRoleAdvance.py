@@ -180,6 +180,12 @@ namespace SuperNewRoles.Roles
                     IsTaskClear = true;
                     break; 
                 //タスククリアか""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+        if (MainClass.GetBool("A_ClearTask")):
+            MainClass.WriteCodes("Roles/RoleHelper.cs", "//タスククリアか",
+                                """case (RoleId.ROLENAME):
+                    IsTaskClear = true;
+                    break; 
+                //タスククリアか""".replace("ROLENAME",MainClass.GetInput("RoleName")))
 
         # Roles/RoleClass.cs
         MainClass.WriteCodes("Roles/RoleClass.cs", "//ロールクリア", MainClass.GetInput("RoleName")+".ClearAndReload();\n            //ロールクリア")
@@ -218,28 +224,37 @@ namespace SuperNewRoles.Roles
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
                 """ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.GetInput("OptionNumber")).replace("SHRON",MainClass.GetBool("IsSHRON")))
-            else:
-                MainClass.CreateErrorWindow("設定タブの値が空白です")
-
-        # 
-        if (MainClass.GetBool("A_CanVent")):
-            MainClass.CreateErrorWindow("まだできてませぇぇん(´;ω;｀)")
-
-        if (MainClass.GetBool("A_CanKill")):
-            MainClass.CreateErrorWindow("まだできてませぇぇん(´;ω;｀)")
-
-
+            #else:
+                #MainClass.CreateErrorWindow("設定タブの値が空白です")
         # 終了報告
         MainClass.CreateNotify("CreateRoleAdvance.py", "役職の作成が終了しました")
 
-    # 値確認
+    # 確認(空白だったりしたらエラーを起こすように)
     def AllCheck(self):
         MainClass.GetInput("RoleName")
         MainClass.GetRoleColor()
         MainClass.GetTeam()
-        MainClass.GetBool("A_CreateFile")
         if (MainClass.GetBool("AddSetting")):
             MainClass.GetInput("OptionNumber")
+
+        MainClass.GetBool("A_CreateFile")
+        MainClass.GetBool("A_ClearTask")
+        # 未作成機能のブロック
+        if (MainClass.GetBool("A_CanVisibleImpo")):
+            MainClass.CreateOKWindow("インポの視認は現在対応していません")
+            return
+        if (MainClass.GetBool("A_CanVent")):
+            MainClass.CreateOKWindow("ベントは現在対応していません")
+            return
+        if (MainClass.GetBool("A_CanKill")):
+            MainClass.CreateOKWindow("キルは現在対応していません")
+            return
+        if (MainClass.GetBool("TeamOne")):
+            MainClass.CreateOKWindow("第三陣営(個人)は現在対応していません")
+            return
+        if (MainClass.GetBool("TeamTwo")):
+            MainClass.CreateOKWindow("第三陣営(ペア)は現在対応していません")
+            return
         
         # 一部値がかぶっていないか(例:インポ+キル可能)
         if (MainClass.GetBool("A_CanVent")):
@@ -253,8 +268,6 @@ namespace SuperNewRoles.Roles
         if (MainClass.GetBool("A_ClearTask")):
             if (MainClass.GetBool("Neut")):
                 MainClass.CreateOKWindow("警告", "第三陣営はデフォルトで\nタスクが削除されます")
-
-        
 
         AllActClass.AllWrite()
 
@@ -297,14 +310,18 @@ MainTab = psg.Tab("メイン", [
                 [psg.Text("取得ハッシュ:",key="ColorHashText"), psg.Input("ImposterRed",key="ColorHash")],
                 [psg.Text()],
                 [psg.Check("設定を追加する",key="AddSetting")],
-                [psg.Text(), psg.Text("タブ:",key="SettingTabText"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut")],
+                [psg.Text(), psg.Text("タブ:",key="SettingTabText"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut"), psg.Radio("重複陣営(ペア)",group_id="OptionTab",key="TeamTwo"). psg.Radio("重複陣営(個人)",group_id="OptionTab",key="TeamOne")],
                 [psg.Text(), psg.Check("SHR対応",key="IsSHRON")],
                 [psg.Text(), psg.Text("設定ID(int)",key="OptionNumberIDText"), psg.Input("",key="OptionNumber",size=(10,3))], ])
 AdvanceTab = psg.Tab("詳細設定", [
                 [psg.Check("役職ファイルを作成する", key="A_CreateFile")],
                 [psg.Check("タスクを削除する", key="A_ClearTask")],
                 [psg.Check("ベントを使える", key="A_CanVent")],
-                [psg.Check("キルができる", key="A_CanKill")], ])
+                [psg.Check("キルができる", key="A_CanKill")],
+                [psg.Check("インポを視認可能", key="A_CanVisibleImpo")], ])
+'''TeachingTab = psg.Tab("即席コードチェック", [
+                [psg.Button("Harmony一覧")],
+                [], ])'''#←いらなくね？
 CreateTab = psg.Tab("作成", [
                 [psg.Button("作成",key="Main_CreateButton", pad=((10,10),(10,10)), size=(15,2))] ])
 MainLayOut = [[psg.TabGroup ([[MainTab, AdvanceTab, CreateTab]])]]
