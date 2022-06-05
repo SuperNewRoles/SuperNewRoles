@@ -534,6 +534,17 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption ChiefOption;
         public static CustomOption ChiefPlayerCount;
 
+        public static CustomRoleOption CleanerOption;
+        public static CustomOption CleanerPlayerCount;
+        public static CustomOption CleanerCoolDown;
+        public static CustomOption CleanerKillCoolTime;
+
+        public static CustomRoleOption MadCleanerOption;
+        public static CustomOption MadCleanerPlayerCount;
+        public static CustomOption MadCleanerCoolDown;
+        public static CustomOption MadCleanerIsUseVent;
+        public static CustomOption MadCleanerIsImpostorLight;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -708,17 +719,17 @@ namespace SuperNewRoles.CustomOption
             EvilDoorrOption = new CustomRoleOption(66, false, CustomOptionType.Impostor, "EvilDoorrName", RoleClass.ImpostorRed, 1);
             EvilDoorrPlayerCount = CustomOption.Create(67, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilDoorrOption);
             EvilDoorrCoolTime = CustomOption.Create(68, false, CustomOptionType.Impostor, "EvilDoorrCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, EvilDoorrOption);
-            
+
             ShielderOption = new CustomRoleOption(69, false, CustomOptionType.Crewmate, "ShielderName", RoleClass.Shielder.color, 1);
             ShielderPlayerCount = CustomOption.Create(70, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ShielderOption);
-            ShielderCoolTime = CustomOption.Create(71, false, CustomOptionType.Crewmate,"ShielderCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, ShielderOption, format: "unitCouples");
+            ShielderCoolTime = CustomOption.Create(71, false, CustomOptionType.Crewmate, "ShielderCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, ShielderOption, format: "unitCouples");
             ShielderDurationTime = CustomOption.Create(72, false, CustomOptionType.Crewmate, "ShielderDurationSetting", 10f, 2.5f, 30f, 2.5f, ShielderOption, format: "unitCouples");
-            /*
-            FreezerOption = new CustomRoleOption(73, "FreezerName", RoleClass.ImpostorRed, 1);
-            FreezerPlayerCount = CustomOption.Create(74, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FreezerOption);
-            FreezerCoolTime = CustomOption.Create(75, ModTranslation.getString("FreezerCoolTimeSetting"), 1f, 1f, 7f, 1f, FreezerOption, format: "unitCouples");
-            FreezerDurationTime = CustomOption.Create(76, ModTranslation.getString("FreezerDurationSetting"), 1f, 1f, 7f, 1f, FreezerOption, format: "unitCouples");
-            */
+
+            FreezerOption = new CustomRoleOption(73, false, CustomOptionType.Impostor, "FreezerName", RoleClass.ImpostorRed, 1);
+            FreezerPlayerCount = CustomOption.Create(74, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FreezerOption);
+            FreezerCoolTime = CustomOption.Create(75, false, CustomOptionType.Impostor, "FreezerCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, FreezerOption, format: "unitSeconds");
+            FreezerDurationTime = CustomOption.Create(76, false, CustomOptionType.Impostor, "FreezerDurationSetting", 1f, 1f, 7f, 1f, FreezerOption, format: "unitSeconds");
+
             SpeederOption = new CustomRoleOption(77, false, CustomOptionType.Impostor, "SpeederName", RoleClass.ImpostorRed, 1);
             SpeederPlayerCount = CustomOption.Create(78, false, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpeederOption);
             SpeederCoolTime = CustomOption.Create(79, false, CustomOptionType.Impostor, "SpeederCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SpeederOption, format: "unitSeconds");
@@ -1094,6 +1105,17 @@ namespace SuperNewRoles.CustomOption
             ChiefPlayerCount = CustomOption.Create(468, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
             SheriffCoolTime = CustomOption.Create(28, true, CustomOptionType.Crewmate, ModTranslation.getString("SheriffCoolDownSetting"), 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
 
+            CleanerOption = new CustomRoleOption(382, false, CustomOptionType.Impostor, "CleanerName", RoleClass.Cleaner.color, 1);
+            CleanerPlayerCount = CustomOption.Create(383, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CleanerOption);
+            CleanerKillCoolTime = CustomOption.Create(91, false, CustomOptionType.Impostor, "CleanerKillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, CleanerOption, format: "unitSeconds");
+            CleanerCoolDown = CustomOption.Create(91, false, CustomOptionType.Impostor, "CleanerCoolDownSetting", 60f, 40f, 70f, 2.5f, CleanerOption, format: "unitSeconds");
+
+
+            MadCleanerOption = new CustomRoleOption(382, false, CustomOptionType.Crewmate, "MadCleanerName", RoleClass.MadCleaner.color, 1);
+            MadCleanerPlayerCount = CustomOption.Create(383, false, CustomOptionType.Crewmate, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MadCleanerOption);
+            MadCleanerCoolDown = CustomOption.Create(91, false, CustomOptionType.Crewmate, "CleanerCoolDownSetting", 30f, 2.5f, 60f, 2.5f, MadCleanerOption, format: "unitSeconds");
+            MadCleanerIsUseVent = CustomOption.Create(413, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadCleanerOption);
+            MadCleanerIsImpostorLight = CustomOption.Create(414, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadCleanerOption);
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

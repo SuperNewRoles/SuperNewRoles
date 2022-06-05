@@ -135,6 +135,8 @@ namespace SuperNewRoles.Roles
             JackalSeer.ClearAndReload();
             Arsonist.ClearAndReload();
             Chief.ClearAndReload();
+            Cleaner.ClearAndReload();
+            MadCleaner.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -504,20 +506,22 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> FreezerPlayer;
             public static Color32 color = ImpostorRed;
-            //public static float CoolTime;
-            //public static float DurationTime;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static bool IsSpeedDown;
             private static Sprite ButtonSprite;
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.FreezerButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
             {
                 FreezerPlayer = new List<PlayerControl>();
-                //CoolTime = CustomOptions.FreezerCoolTime.getFloat();
-                //DurationTime = CustomOptions.FreezerDurationTime.getFloat();
+                CoolTime = CustomOptions.FreezerCoolTime.getFloat();
+                DurationTime = CustomOptions.FreezerDurationTime.getFloat();
+                IsSpeedDown = false;
             }
         }
 
@@ -1996,6 +2000,51 @@ namespace SuperNewRoles.Roles
             {
                 ChiefPlayer = new List<PlayerControl>();
                 IsCreateSheriff = false;
+            }
+        }
+        public static class Cleaner
+        {
+            public static List<PlayerControl> CleanerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static int CleanMaxCount;
+            public static float KillCoolTime;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                CleanerPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.CleanerCoolDown.getFloat();
+                KillCoolTime = CustomOptions.CleanerKillCoolTime.getFloat();
+
+            }
+        }
+        public static class MadCleaner
+        {
+            public static List<PlayerControl> MadCleanerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                MadCleanerPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.MadCleanerCoolDown.getFloat();
+                IsUseVent = CustomOptions.MadCleanerIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadCleanerIsImpostorLight.getBool();
             }
         }
         //新ロールクラス

@@ -533,6 +533,12 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Chief):
                     Roles.RoleClass.Chief.ChiefPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Cleaner):
+                    Roles.RoleClass.Cleaner.CleanerPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.MadCleaner):
+                    Roles.RoleClass.MadCleaner.MadCleanerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -815,7 +821,13 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Chief):
                     Roles.RoleClass.Chief.ChiefPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (CustomRPC.RoleId.Cleaner):
+                    Roles.RoleClass.Cleaner.CleanerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.MadCleaner):
+                    Roles.RoleClass.MadCleaner.MadCleanerPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -917,6 +929,9 @@ namespace SuperNewRoles
                 case (RoleId.MadMaker):
                     IsTaskClear = true;
                     break;
+                case (RoleId.MadCleaner):
+                    IsTaskClear = true;
+                    break;
                     //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
@@ -976,6 +991,8 @@ namespace SuperNewRoles
                 case RoleId.SidekickSeer:
                 case RoleId.JackalSeer:
                     return RoleClass.Jackal.IsUseVent;
+                case RoleId.MadCleaner:
+                    return RoleClass.MadCleaner.IsUseVent;
                 /*
                 case RoleId.Scavenger:
                     return RoleClass.Scavenger.IsUseVent;
@@ -1066,6 +1083,8 @@ namespace SuperNewRoles
                 case RoleId.JackalSeer:
                 case RoleId.SidekickSeer:
                     return RoleClass.Jackal.IsImpostorLight;
+                case RoleId.MadCleaner:
+                    return RoleClass.MadCleaner.IsImpostorLight;
             }
             return false;
         }
@@ -1188,6 +1207,9 @@ namespace SuperNewRoles
                     case RoleId.DarkKiller:
                         addition = RoleClass.DarkKiller.KillCoolTime;
                         break;
+                    case RoleId.Cleaner:
+                        addition = RoleClass.Cleaner.KillCoolTime;
+                        break;
                 }
             }
             return addition;
@@ -1203,6 +1225,7 @@ namespace SuperNewRoles
                 case RoleId.MadKiller:
                 case RoleId.OverKiller:
                 case RoleId.SerialKiller:
+                case RoleId.Cleaner:
                     return getCoolTime(p);
             }
             return PlayerControl.GameOptions.killCooldown;
@@ -1594,7 +1617,15 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Chief;
                 }
-                //ロールチェック
+                else if (Roles.RoleClass.Cleaner.CleanerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Cleaner;
+            }
+            else if (Roles.RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.MadCleaner;
+            }
+            //ロールチェック
             }
             catch (Exception e)
             {

@@ -315,6 +315,7 @@ FreezerTitle2,Try to stop everyone and sabotage the task!,みんなを止めて�
 FreezerTitle3,Let's put them all on ice.,全員を氷漬けにしよう
 FreezerCoolTimeSetting,Freeze Cool Time,フリーズクールタイム
 FreezerDurationSetting,Freeze duration,フリーズ継続時間
+FreezerButtonName,Freeze,フリーズ
 SpeederName,Speeder,スピーダー
 SpeederTitle1,Slow everyone down and sabotage your crewmates!,みんなを遅くしてクルーメイトを妨害しよう
 SpeederTitle2,Try to slow everyone down and sabotage the task!,みんなを遅くしてタスクの妨害をしよう
@@ -627,3 +628,10 @@ ArsonistIgniteButtonName,Ignite,燃やす
 ArsonistDescription,If you oil them all and burn them, you win alone.,油を全員に塗り燃やしたら単独勝利です。
 ChiefName,Chief,村長
 ChiefTitle1,Appoint a sheriff to help your crew.,シェリフを任命してクルーを助けよう
+CleanerName,Cleaner,クリーナー
+CleanerTitle1,Let's destroy the evidence!,証拠を隠滅しよう!
+CleanerButtonName,CleanButton,死体を消す!
+CleanerCoolDownSetting,CoolDown,死体消しのクールダウン
+MadCleanerName,MadCleaner,マッドクリーナー
+MadCleanerTitle1,Destroy the evidence and help impostors to win!,証拠を隠滅してインポスターを勝利に導こう!
+CleanerKillCoolTimeSetting,Kill CoolDown,クリーナーのキルクールダウン

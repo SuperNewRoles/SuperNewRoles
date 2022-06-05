@@ -314,7 +314,7 @@ Try to stop everyone and sabotage the task!
 Let's put them all on ice.
 Freeze Cool Time
 Freeze duration
-Speeder
+Freeze
 Slow everyone down and sabotage your crewmates!
 Try to slow everyone down and sabotage the task!
 Sabotage Cool Time
@@ -626,3 +626,10 @@ Ignite
 If you oil them all and burn them, you win alone.
 Chief
 Appoint a sheriff to help your crew.
+Cleaner
+Let's destroy the evidence!
+CleanButton
+CoolDown
+MadCleaner
+Destroy the evidence and help impostors to win!
+Kill CoolDown

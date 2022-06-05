@@ -314,6 +314,7 @@ FreezerTitle2
 FreezerTitle3
 FreezerCoolTimeSetting
 FreezerDurationSetting
+FreezerButtonName
 SpeederName
 SpeederTitle1
 SpeederTitle2
@@ -626,3 +627,10 @@ ArsonistIgniteButtonName
 ArsonistDescription
 ChiefName
 ChiefTitle1
+CleanerName
+CleanerTitle1
+CleanerButtonName
+CleanerCoolDownSetting
+MadCleanerName
+MadCleanerTitle1
+CleanerKillCoolTimeSetting
