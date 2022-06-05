@@ -2011,7 +2011,7 @@ namespace SuperNewRoles.Roles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -2034,7 +2034,7 @@ namespace SuperNewRoles.Roles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()

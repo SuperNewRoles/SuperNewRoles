@@ -632,3 +632,4 @@ CleanerButtonName
 CleanerCoolDownSetting
 MadCleanerName
 MadCleanerTitle1
+CleanerKillCoolTimeSetting

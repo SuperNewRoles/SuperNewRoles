@@ -1107,7 +1107,7 @@ namespace SuperNewRoles.CustomOption
 
             CleanerOption = new CustomRoleOption(382, false, CustomOptionType.Impostor, "CleanerName", RoleClass.Cleaner.color, 1);
             CleanerPlayerCount = CustomOption.Create(383, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CleanerOption);
-            CleanerKillCoolTime = CustomOption.Create(91, false, CustomOptionType.Impostor, "OverKillerKillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, CleanerOption, format: "unitSeconds");
+            CleanerKillCoolTime = CustomOption.Create(91, false, CustomOptionType.Impostor, "CleanerKillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, CleanerOption, format: "unitSeconds");
             CleanerCoolDown = CustomOption.Create(91, false, CustomOptionType.Impostor, "CleanerCoolDownSetting", 60f, 40f, 70f, 2.5f, CleanerOption, format: "unitSeconds");
 
 
