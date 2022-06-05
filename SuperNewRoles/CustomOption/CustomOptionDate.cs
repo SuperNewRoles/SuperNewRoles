@@ -719,17 +719,17 @@ namespace SuperNewRoles.CustomOption
             EvilDoorrOption = new CustomRoleOption(66, false, CustomOptionType.Impostor, "EvilDoorrName", RoleClass.ImpostorRed, 1);
             EvilDoorrPlayerCount = CustomOption.Create(67, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilDoorrOption);
             EvilDoorrCoolTime = CustomOption.Create(68, false, CustomOptionType.Impostor, "EvilDoorrCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, EvilDoorrOption);
-            
+
             ShielderOption = new CustomRoleOption(69, false, CustomOptionType.Crewmate, "ShielderName", RoleClass.Shielder.color, 1);
             ShielderPlayerCount = CustomOption.Create(70, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ShielderOption);
-            ShielderCoolTime = CustomOption.Create(71, false, CustomOptionType.Crewmate,"ShielderCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, ShielderOption, format: "unitCouples");
+            ShielderCoolTime = CustomOption.Create(71, false, CustomOptionType.Crewmate, "ShielderCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, ShielderOption, format: "unitCouples");
             ShielderDurationTime = CustomOption.Create(72, false, CustomOptionType.Crewmate, "ShielderDurationSetting", 10f, 2.5f, 30f, 2.5f, ShielderOption, format: "unitCouples");
-            /*
-            FreezerOption = new CustomRoleOption(73, "FreezerName", RoleClass.ImpostorRed, 1);
-            FreezerPlayerCount = CustomOption.Create(74, cs(Color.white, "SettingPlayerCountName"), ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FreezerOption);
-            FreezerCoolTime = CustomOption.Create(75, ModTranslation.getString("FreezerCoolTimeSetting"), 1f, 1f, 7f, 1f, FreezerOption, format: "unitCouples");
-            FreezerDurationTime = CustomOption.Create(76, ModTranslation.getString("FreezerDurationSetting"), 1f, 1f, 7f, 1f, FreezerOption, format: "unitCouples");
-            */
+
+            FreezerOption = new CustomRoleOption(73, false, CustomOptionType.Impostor, "FreezerName", RoleClass.ImpostorRed, 1);
+            FreezerPlayerCount = CustomOption.Create(74, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FreezerOption);
+            FreezerCoolTime = CustomOption.Create(75, false, CustomOptionType.Impostor, "FreezerCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, FreezerOption, format: "unitSeconds");
+            FreezerDurationTime = CustomOption.Create(76, false, CustomOptionType.Impostor, "FreezerDurationSetting", 1f, 1f, 7f, 1f, FreezerOption, format: "unitSeconds");
+
             SpeederOption = new CustomRoleOption(77, false, CustomOptionType.Impostor, "SpeederName", RoleClass.ImpostorRed, 1);
             SpeederPlayerCount = CustomOption.Create(78, false, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpeederOption);
             SpeederCoolTime = CustomOption.Create(79, false, CustomOptionType.Impostor, "SpeederCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SpeederOption, format: "unitSeconds");
