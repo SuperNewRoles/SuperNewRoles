@@ -125,9 +125,6 @@ class AllCheck:
         if (MainClass.GetBool("A_CanVent")):
             MainClass.CreateOKWindow("ベントは現在対応していません")
             return
-        if (MainClass.GetBool("A_CanKill")):
-            MainClass.CreateOKWindow("キルは現在対応していません")
-            return
         if (MainClass.GetBool("TeamOne")):
             MainClass.CreateOKWindow("第三陣営(個人)は現在対応していません")
             return
@@ -291,6 +288,8 @@ namespace SuperNewRoles.Roles
         }\n        //ここにコードを書き込んでください""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         
         ## ベントボタン
+        if (MainClass.GetBool("A_CanVent")):
+            print("")
         # 終了報告
         MainClass.CreateNotify("CreateRoleAdvance.py", "役職の作成が終了しました")
 
