@@ -1290,7 +1290,7 @@ namespace SuperNewRoles.Buttons
                 49
             );
 
-            MadCleanerButton.buttonText = ModTranslation.getString("VultureButtonName");
+            MadCleanerButton.buttonText = ModTranslation.getString("CleanerButtonName");
             MadCleanerButton.showButtonText = true;
 
             setCustomButtonCooldowns();
