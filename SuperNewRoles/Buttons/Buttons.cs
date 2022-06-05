@@ -1213,22 +1213,11 @@ namespace SuperNewRoles.Buttons
                     }
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Cleaner)  && __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;; },
+
                 () =>
                 {
-                    float Cleancount = 0f;
-                    bool flag = false;
-                    if (PlayerControl.LocalPlayer.isRole(RoleId.Cleaner))
-                    {
-                        Cleancount = RoleClass.Cleaner.CleanMaxCount;
-                        flag = true;
-                    }
-                    if (Cleancount > 0)
-                        CleanerNumCleanText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), Cleancount);
-                    else
-                        CleanerNumCleanText.text = "";
-                    return flag;
+                    return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
                 },
-
                 
                 () =>
                 {
