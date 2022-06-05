@@ -65,7 +65,7 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.Freezer.IsSpeedDown)
                 {
-                    __instance.body.velocity /= 0.1f;
+                    __instance.body.velocity = new Vector2(0f, 0f);
                 }
             }
         }
