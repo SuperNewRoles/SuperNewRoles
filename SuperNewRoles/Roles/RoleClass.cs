@@ -2017,7 +2017,6 @@ namespace SuperNewRoles.Roles
             {
                 CleanerPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.CleanerCoolDown.getFloat();
-                CleanMaxCount = (int)CustomOptions.CleanerDeadBodyMaxCount.getFloat();
             }
         }
         public static class MadCleaner

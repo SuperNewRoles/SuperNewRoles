@@ -1208,6 +1208,9 @@ namespace SuperNewRoles.Buttons
                                     RoleClass.Cleaner.CleanMaxCount--;
                                     SuperNewRolesPlugin.Logger.LogInfo("DeadBodyCount:" + RoleClass.Cleaner.CleanMaxCount);
                                     CleanerButton.Timer = CleanerButton.MaxTimer;
+
+                                    RoleClass.Cleaner.CoolTime = CleanerButton.Timer = CleanerButton.MaxTimer;
+                                    PlayerControl.LocalPlayer.killTimer = RoleClass.Cleaner.CoolTime;
                                 }
 
                             }
