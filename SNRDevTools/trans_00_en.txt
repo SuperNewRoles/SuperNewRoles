@@ -626,3 +626,10 @@ Ignite
 If you oil them all and burn them, you win alone.
 Chief
 Appoint a sheriff to help your crew.
+Cleaner
+Let's destroy the evidence!
+CleanButton
+CoolDown
+MadCleaner
+Destroy the evidence and help impostors to win!
+Kill CoolDown

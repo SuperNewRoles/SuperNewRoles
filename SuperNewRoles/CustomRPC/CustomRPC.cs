@@ -112,6 +112,8 @@ namespace SuperNewRoles.CustomRPC
         SidekickSeer,
         Arsonist,
         Chief,
+        Cleaner,
+        MadCleaner,
         //RoleId
     }
 
