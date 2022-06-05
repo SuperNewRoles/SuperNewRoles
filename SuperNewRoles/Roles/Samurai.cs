@@ -66,26 +66,22 @@ namespace SuperNewRoles.Roles
                 return false;
             }
         }
-        public static void SelfBomb() {
+        public static void SamuraiKill() {
             foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
                 if (p.isAlive() && p.PlayerId!= PlayerControl.LocalPlayer.PlayerId) {
-                    if (GetIsBomb(PlayerControl.LocalPlayer, p)) {
+                    if (Getsword(PlayerControl.LocalPlayer, p)) {
 
-                        CustomRPC.RPCProcedure.ByBomKillRPC(PlayerControl.LocalPlayer.PlayerId, p.PlayerId);
+                        CustomRPC.RPCProcedure.BySamuraiKillRPC(PlayerControl.LocalPlayer.PlayerId, p.PlayerId);
 
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ByBomKillRPC, Hazel.SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BySamuraiKillRPC, Hazel.SendOption.Reliable, -1);
                         Writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         Writer.Write(p.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                     }
                 }
             }
-            CustomRPC.RPCProcedure.BomKillRPC(PlayerControl.LocalPlayer.PlayerId);
-            MessageWriter Writer2 = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BomKillRPC, Hazel.SendOption.Reliable, -1);
-            Writer2.Write(PlayerControl.LocalPlayer.PlayerId);
-            AmongUsClient.Instance.FinishRpcImmediately(Writer2);
         }
-        public static bool GetIsBomb(PlayerControl source,PlayerControl player)
+        public static bool Getsword(PlayerControl source,PlayerControl player)
         {
             Vector3 position = source.transform.position;
                 Vector3 playerposition = player.transform.position;

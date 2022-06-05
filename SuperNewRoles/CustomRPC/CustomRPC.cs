@@ -174,6 +174,7 @@ namespace SuperNewRoles.CustomRPC
         ShielderProtect,
         SetShielder,
         SetSpeedFreeze,
+        BySamuraiKillRPC,
     }
     public static class RPCProcedure
     {
@@ -713,6 +714,16 @@ namespace SuperNewRoles.CustomRPC
             {
                 source.MurderPlayer(target);
                 FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.BySelfBomb;
+            }
+        }
+        public static void BySamuraiKillRPC(byte sourceId, byte targetId)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceId);
+            PlayerControl target = ModHelpers.playerById(targetId);
+            if (source != null && target != null)
+            {
+                source.MurderPlayer(target);
+                FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
             }
         }
         public static void ExiledRPC(byte playerid)
