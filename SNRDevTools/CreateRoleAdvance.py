@@ -283,14 +283,12 @@ namespace SuperNewRoles.Roles
             # Roles/ROLENAME.cs
             MainClass.WriteCodes("Roles/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), "//ここにコードを書きこんでください",
             """        public static void resetCoolDown() {
-            HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.Jackal.KillCoolDown;
-            HudManagerStartPatch.JackalKillButton.Timer = RoleClass.Jackal.KillCoolDown;
-            HudManagerStartPatch.JackalSidekickButton.MaxTimer = RoleClass.Jackal.KillCoolDown;
-            HudManagerStartPatch.JackalSidekickButton.Timer = RoleClass.Jackal.KillCoolDown;
+            HudManagerStartPatch.ROLENAMEKillButton.MaxTimer = RoleClass.ROLENAME.KillCoolDown;
+            HudManagerStartPatch.ROLENAMEKillButton.Timer = RoleClass.ROLENAME.KillCoolDown;
         }
         public static void EndMeeting() {
             resetCoolDown();
-        }\n        //ここにコードを書き込んでください""")
+        }\n        //ここにコードを書き込んでください""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         
         ## ベントボタン
         # 終了報告
