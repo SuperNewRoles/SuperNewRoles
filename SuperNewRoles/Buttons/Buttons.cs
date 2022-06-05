@@ -1216,7 +1216,7 @@ namespace SuperNewRoles.Buttons
                     }
                     
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Cleaner)  && __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;; },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Cleaner) ; },
 
                 () =>
                 {
