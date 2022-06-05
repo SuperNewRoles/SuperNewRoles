@@ -507,9 +507,6 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SeerFriendsCheckJackalTask;
         public static CustomOption SeerFriendsIsUseVent;
         public static CustomOption SeerFriendsIsImpostorLight;
-
-        public static CustomRoleOption aOption;
-        public static CustomOption aPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1045,7 +1042,6 @@ namespace SuperNewRoles.CustomOption
             SeerFriendsShortTask = SeerFriendsoption.Item2;
             SeerFriendsLongTask = SeerFriendsoption.Item3;
             SeerFriendsCheckJackalTask = CustomOption.Create(455, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, SeerFriendsIsCheckJackal);
-
             //表示設定
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

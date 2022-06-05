@@ -7,16 +7,21 @@
 　　・Roles/ロール名.cs　　  　 　　　→//ここにソースを書き込んでください
 　　・CustomRPC/CustomRPC.cs 　 　　　→//新ロールクラス
 　　・CustomRPC/CustomRPC.cs 　 　　　→//セットクラス
+
 　　・Roles/RoleHelper.cs　　　 　　　→//ロールチェック
 　　・Roles/RoleHelper.cs　　　 　　　→//ロールアド
 　　・Roles/RoleHelper.cs　　　 　　　→//ろーるりもべ
 　　・Roles/RoleHelper.cs　　　 　　　→//第三か
 　　・Roles/RoleHelper.cs　　　 　　　→//タスククリアか
+　　・Roles/RoleHelper.cs　　　　　   →//ベントが使える
+
 　　・Roles/RoleClass.cs　　 　　 　　→//新ロールクラス
 　　・Roles/RoleClass.cs　 　　　　 　→//ロールクリア
+
 　　・Intro/IntroData.cs 　　　　　　 →//イントロオブジェ
 　　・Intro/IntroData.cs 　　　　　　 →//イントロ検知
+
 　　・CustomOption/CustomOptionDate.cs→//CustomOption
 　　・CustomOption/CustomOptionDate.cs→//表示設定
+
 　　・Buttons/CustomButton.cs　　　　 →//カスタムなボタン達
-　　・

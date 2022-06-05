@@ -237,6 +237,7 @@ namespace SuperNewRoles
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
+                //ベント設定可視化
             }
             return returntext;
         }
@@ -937,6 +938,7 @@ namespace SuperNewRoles
                     return RoleClass.Demon.IsUseVent;
                 case RoleId.SeerFriends:
                     return RoleClass.SeerFriends.IsUseVent;
+                //ベントが使える
                     /*
                     case RoleId.Scavenger:
                         return RoleClass.Scavenger.IsUseVent;
