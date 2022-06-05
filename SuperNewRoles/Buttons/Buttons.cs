@@ -1205,12 +1205,16 @@ namespace SuperNewRoles.Buttons
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                                     RPCProcedure.CleanBody(playerInfo.PlayerId);
                                     CleanerButton.Timer = CleanerButton.MaxTimer;
+                                    RoleClass.Cleaner.CleanMaxCount--;
+                                    SuperNewRolesPlugin.Logger.LogInfo("DeadBodyCount:" + RoleClass.Cleaner.CleanMaxCount);
+                                    CleanerButton.Timer = CleanerButton.MaxTimer;
                                 }
 
                             }
 
                         }
                     }
+                    
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Cleaner)  && __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;; },
 
@@ -1259,7 +1263,7 @@ namespace SuperNewRoles.Buttons
                                     writer.Write(playerInfo.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                                     RPCProcedure.CleanBody(playerInfo.PlayerId);
-                                    MadCleanerButton.Timer = MadCleanerButton.MaxTimer;
+
                                 }
 
                             }
