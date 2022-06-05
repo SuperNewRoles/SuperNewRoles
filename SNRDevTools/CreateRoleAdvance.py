@@ -243,6 +243,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 ROLENAMEPlayer = new List<PlayerControl>();
+                //くりあぁあんどりろぉどぉ
             }
         }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))
 
@@ -311,7 +312,9 @@ namespace SuperNewRoles.Roles
                 # Roles/RoleClass.cs
                 MainClass.WriteCodes("Roles/RoleClass.cs", "//その他Option", 
                 """public static bool IsUseVent;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            else:
+                MainClass.WriteCodes("Roles/RoleClass.cs", "//くりあぁあんどりろぉどぉ",
+                """IsUseVent = true""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            '''else:
                 # Roles/RoleHelper.cs
                 MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベントが使える",
                 """case RoleId.ROLENAME:
@@ -319,15 +322,17 @@ namespace SuperNewRoles.Roles
                 # Roles/RoleClass.cs
                 MainClass.WriteCodes("Roles/RoleClass.cs", "//その他Option", 
                 """public static bool IsUseVent;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            # Roles/RoleHelper.cs
+                # Roles/RoleHelper.cs
                 MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベント設定可視化",
                 """case RoleId.ROLENAME:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.ROLENAMEIsUseVent.getString() + "\n";
-                    break;\n                //ベント設定可視化""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                    break;\n                //ベント設定可視化""".replace("ROLENAME", MainClass.GetInput("RoleName")))'''
 
         # いらないやつ(次実行するときに複数書いてしまうため)の削除　(例:Jackal→//その他Option, NewRole→//その他Optionの場合、二つに書かれてしまうため重複する)
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベント設定可視化", "")
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//その他Option", "")
+        MainClass.WriteCodes("Roles/RoleHelper.cs", "//くりあぁあんどりろぉどぉ", "")
+        #MainClass.WriteCodes("Roles/RoleHelper.cs", "", "")
         # 終了報告
         MainClass.CreateNotify("CreateRoleAdvance.py", "役職の作成が終了しました")
 
@@ -378,7 +383,7 @@ AdvanceTab = psg.Tab("詳細設定", [
                 [psg.Check("タスクを削除する", key="A_ClearTask")],
                 [psg.Text("ボタン")],
                 [psg.Text(),psg.Check("ベントを使える", key="A_CanVent")],
-                [psg.Text(),psg.Check("ベント設定の追加", key="A_CanVentOption")],
+                #[psg.Text(),psg.Check("ベント設定の追加", key="A_CanVentOption")],
                 [psg.Text(),psg.Check("キルができる", key="A_CanKill")],
                 [psg.Text(),psg.Check("カスタムボタン",key="A_CustomButton")],
                 [psg.Text("    画像名:"),psg.InputText("", size=(15,1))],
