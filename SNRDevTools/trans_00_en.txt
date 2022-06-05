@@ -632,4 +632,4 @@ CleanButton
 CoolDown
 MadCleaner
 Destroy the evidence and help impostors to win!
-Kill Cool Down
+Kill CoolDown

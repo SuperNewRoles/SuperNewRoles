@@ -633,4 +633,4 @@ CleanerButtonName,CleanButton,死体を消す!
 CleanerCoolDownSetting,CoolDown,死体消しのクールダウン
 MadCleanerName,MadCleaner,マッドクリーナー
 MadCleanerTitle1,Destroy the evidence and help impostors to win!,証拠を隠滅してインポスターを勝利に導こう!
-CleanerKillCoolTimeSetting,Kill Cool Down,クリーナーのキルクールダウン
+CleanerKillCoolTimeSetting,Kill CoolDown,クリーナーのキルクールダウン
