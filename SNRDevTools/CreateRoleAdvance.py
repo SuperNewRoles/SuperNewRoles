@@ -177,6 +177,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 ROLENAMEPlayer = new List<PlayerControl>();
+                //その他クリｱァ
             }
         }\n        //新ロールクラス""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("COLORS",MainClass.GetRoleColor()))
 
@@ -324,6 +325,9 @@ namespace SuperNewRoles.Roles
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.ROLENAMEIsUseVent.getString() + "\n";
                     break;\n                //ベント設定可視化""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
+        # いらないやつ(次実行するときに複数書いてしまうため)の削除　(例:Jackal→//その他Option, NewRole→//その他Optionの場合、二つに書かれてしまうため重複する)
+        MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベント設定可視化", "")
+        MainClass.WriteCodes("Roles/RoleHelper.cs", "//その他Option", "")
         # 終了報告
         MainClass.CreateNotify("CreateRoleAdvance.py", "役職の作成が終了しました")
 
