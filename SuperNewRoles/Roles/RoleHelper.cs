@@ -1207,6 +1207,9 @@ namespace SuperNewRoles
                     case RoleId.DarkKiller:
                         addition = RoleClass.DarkKiller.KillCoolTime;
                         break;
+                    case RoleId.Cleaner:
+                        addition = RoleClass.Cleaner.KillCoolTime;
+                        break;
                 }
             }
             return addition;
@@ -1222,6 +1225,7 @@ namespace SuperNewRoles
                 case RoleId.MadKiller:
                 case RoleId.OverKiller:
                 case RoleId.SerialKiller:
+                case RoleId.Cleaner:
                     return getCoolTime(p);
             }
             return PlayerControl.GameOptions.killCooldown;
