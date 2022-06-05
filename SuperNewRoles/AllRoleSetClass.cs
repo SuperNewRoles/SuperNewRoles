@@ -868,6 +868,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.CleanerPlayerCount.getFloat();
                 case (RoleId.MadCleaner):
                     return CustomOption.CustomOptions.MadCleanerPlayerCount.getFloat();
+                    case (RoleId.Samurai):
+                    return CustomOption.CustomOptions.SamuraiPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;

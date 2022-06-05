@@ -539,6 +539,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadCleaner):
                     Roles.RoleClass.MadCleaner.MadCleanerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Samurai):
+                    Roles.RoleClass.Samurai.SamuraiPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -826,6 +829,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.MadCleaner):
                     Roles.RoleClass.MadCleaner.MadCleanerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Samurai):
+                    Roles.RoleClass.Samurai.SamuraiPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
 
@@ -1624,6 +1630,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.MadCleaner;
+            }
+            else if (Roles.RoleClass.Samurai.SamuraiPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Samurai;
             }
             //ロールチェック
             }

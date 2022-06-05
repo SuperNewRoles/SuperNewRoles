@@ -137,6 +137,7 @@ namespace SuperNewRoles.Roles
             Chief.ClearAndReload();
             Cleaner.ClearAndReload();
             MadCleaner.ClearAndReload();
+            Samurai.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2045,6 +2046,15 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.MadCleanerCoolDown.getFloat();
                 IsUseVent = CustomOptions.MadCleanerIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadCleanerIsImpostorLight.getBool();
+            }
+        }
+        public static class Samurai
+        {
+            public static List<PlayerControl> SamuraiPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                SamuraiPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス
