@@ -626,3 +626,9 @@ ArsonistIgniteButtonName
 ArsonistDescription
 ChiefName
 ChiefTitle1
+CleanerName
+CleanerTitle1
+CleanerButtonName
+CleanerCoolDownSetting
+MadCleanerName
+MadCleanerTitle1

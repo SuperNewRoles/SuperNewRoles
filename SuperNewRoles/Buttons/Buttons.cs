@@ -1245,7 +1245,7 @@ namespace SuperNewRoles.Buttons
                 49
             );
 
-            CleanerButton.buttonText = ModTranslation.getString("VultureButtonName");
+            CleanerButton.buttonText = ModTranslation.getString("CleanerButtonName");
             CleanerButton.showButtonText = true;
 
             MadCleanerButton = new CustomButton(
