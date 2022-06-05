@@ -22,22 +22,20 @@ namespace SuperNewRoles.Buttons
                 {
                     return false;
                 }
-                if (Mode.ModeHandler.isMode(Mode.ModeId.Default))
-                {
-                    Vector3 vector = PlayerControl.LocalPlayer.transform.position;
-                    vector /= ShipStatus.Instance.MapScale;
-                    vector.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
-                    vector.z = -1f;
-                    __instance.HerePoint.transform.localPosition = vector;
-                    PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
-                }
+                Vector3 vector = PlayerControl.LocalPlayer.transform.position;
+                vector /= ShipStatus.Instance.MapScale;
+                vector.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
+                vector.z = -1f;
+                __instance.HerePoint.transform.localPosition = vector;
+                PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
                 return false;
             }
             [HarmonyPrefix]
             [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
             static bool Prefix3(MapBehaviour __instance)
             {
-                if (!MeetingHud.Instance) {
+                if (!MeetingHud.Instance)
+                {
                     if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons && !__instance.IsOpen)
                     {
                         __instance.Close();
@@ -47,6 +45,7 @@ namespace SuperNewRoles.Buttons
                     return true;
                 }  // Only run in meetings and when the map is closed
                 if (__instance.IsOpen) return true;
+                if (!Mode.ModeHandler.isMode(Mode.ModeId.Default)) return true;
                 PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
                 __instance.GenericShow();
                 __instance.taskOverlay.Show();
@@ -115,25 +114,45 @@ namespace SuperNewRoles.Buttons
         }
         public class VentButtonVisibilityPatch
         {
-            public static void Postfix(PlayerControl __instance) {
-                HudManager.Instance.ImpostorVentButton.Hide();
-                HudManager.Instance.SabotageButton.Hide();
+            public static void Postfix(PlayerControl __instance)
+            {
+                var ImpostorVentButton = HudManager.Instance.ImpostorVentButton;
+                var ImpostorSabotageButton = HudManager.Instance.SabotageButton;
 
                 if (PlayerControl.LocalPlayer.IsUseVent())
                 {
-                    HudManager.Instance.ImpostorVentButton.Show();
+                    if (!ImpostorVentButton.gameObject.active)
+                    {
+                        ImpostorVentButton.Show();
+                    }
                     if (Input.GetKeyDown(KeyCode.V) || KeyboardJoystick.player.GetButtonDown(50))
                     {
-                        HudManager.Instance.ImpostorVentButton.DoClick();
+                        ImpostorVentButton.DoClick();
+                    }
+                }
+                else
+                {
+                    if (ImpostorVentButton.gameObject.active)
+                    {
+                        ImpostorVentButton.Hide();
                     }
                 }
 
                 if (PlayerControl.LocalPlayer.IsUseSabo())
                 {
-                    HudManager.Instance.SabotageButton.Show();
-                    HudManager.Instance.SabotageButton.gameObject.SetActive(true);
+                    if (!ImpostorSabotageButton.gameObject.active)
+                    {
+                        ImpostorSabotageButton.Show();
+                    }
                 }
-           }
+                else
+                {
+                    if (ImpostorSabotageButton.gameObject.active)
+                    {
+                        ImpostorSabotageButton.Hide();
+                    }
+                }
+            }
         }
         [HarmonyPatch(typeof(Vent), nameof(Vent.Use))]
         public static class VentUsePatch

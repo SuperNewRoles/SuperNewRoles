@@ -25,7 +25,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                 List<PlayerControl> p = new List<PlayerControl>();
                 foreach (PlayerControl p1 in PlayerControl.AllPlayerControls)
                 {
-                    if (p1.Data.PlayerId != exiled.PlayerId && p1.isAlive())
+                    if (p1.Data.PlayerId != exiled.PlayerId && p1.isAlive() && p1.IsPlayer())
                     {
                         p.Add(p1);
                     }
@@ -36,7 +36,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         {
             var rdm = ModHelpers.GetRandomIndex(p);
             var random = p[rdm];
-            random.RpcMurderPlayer(random);
+            random.RpcInnerExiled();
             if ((random.isRole(CustomRPC.RoleId.NiceNekomata) || random.isRole(CustomRPC.RoleId.EvilNekomata)) && RoleClass.NiceNekomata.IsChain)
             {
                 p.RemoveAt(rdm);

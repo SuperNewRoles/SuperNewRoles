@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 namespace SuperNewRoles
 {
+    //TownOfHostより！！
     class LateTask
     {
         public string name;

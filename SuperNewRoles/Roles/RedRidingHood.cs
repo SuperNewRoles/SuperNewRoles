@@ -11,36 +11,6 @@ namespace SuperNewRoles.Roles
 {
     public class RedRidingHood
     {
-        [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
-        public class CheckEndGamePatch
-        {
-            public static void Postfix(ExileController __instance)
-            {
-                try
-                {
-                    WrapUp(__instance.exiled);
-                }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
-                }
-            }
-        }
-        [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-        public class CheckAirShipEndGamePatch
-        {
-            public static void Postfix(AirshipExileController __instance)
-            {
-                try
-                {
-                    WrapUp(__instance.exiled);
-                }
-                catch (Exception e)
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("CHECKERROR:" + e);
-                }
-            }
-        }
         public static void WrapUp(GameData.PlayerInfo player)
         {
             if (PlayerControl.LocalPlayer.isDead() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceRedRidingHood))

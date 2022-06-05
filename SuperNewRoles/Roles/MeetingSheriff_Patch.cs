@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Hazel;
+using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace SuperNewRoles.Roles
         public static PassiveButton RightButton;
         public static PassiveButton LeftButton;
         public static bool IsFlag;
+        public static bool IsSHRFlag;
         private static Sprite m_Meeting_AreaTabChange;
         public static Sprite Meeting_AreaTabChange
         {
@@ -111,6 +113,8 @@ namespace SuperNewRoles.Roles
             if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            if (RoleClass.JackalFriends.JackalFriendsPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            if (RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
             return false;
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
@@ -168,7 +172,8 @@ namespace SuperNewRoles.Roles
             }
 
             MeetingUpdatePatch.IsFlag = false;
-            if (PlayerControl.AllPlayerControls.Count > 15)
+            MeetingUpdatePatch.IsSHRFlag = false;
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles) && PlayerControl.AllPlayerControls.Count > 15)
             {
                 MeetingUpdatePatch.IsFlag = true;
                 meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();
@@ -189,6 +194,39 @@ namespace SuperNewRoles.Roles
                 }
                 meetingsheriff_updatepatch.index = 1;
                 CreateAreaButton(__instance);
+            }
+            if(ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count != 0)
+            {
+                List<PlayerVoteArea> newareas = new List<PlayerVoteArea>();
+                List<PlayerVoteArea> deadareas = new List<PlayerVoteArea>();
+                foreach (PlayerVoteArea area in __instance.playerStates)
+                {
+                    if (ModHelpers.playerById(area.TargetPlayerId).IsPlayer())
+                    {
+                        if (ModHelpers.playerById(area.TargetPlayerId).isAlive())
+                        {
+                            newareas.Add(area);
+                        }
+                        else
+                        {
+                            deadareas.Add(area);
+                        }
+                    } else
+                    {
+                        area.gameObject.SetActive(false);
+                    }
+                }
+                foreach (PlayerVoteArea area in deadareas)
+                {
+                    newareas.Add(area);
+                }
+                int i = 0;
+                foreach (PlayerVoteArea area in newareas)
+                {
+                    area.transform.localPosition = meetingsheriff_updatepatch.Positions[i];
+                    i++;
+                }
+                __instance.playerStates = newareas.ToArray();
             }
 
             Event(__instance);

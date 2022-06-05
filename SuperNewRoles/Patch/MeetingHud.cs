@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
@@ -12,10 +13,11 @@ using System.Linq;
 using System.Text;
 using UnhollowerBaseLib;
 using UnityEngine;
+using static MeetingHud;
 
 namespace SuperNewRoles.Patch
 {
-    
+
     /*
     [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.SetCosmetics))]
     class PlayerVoteAreaCosmetics
@@ -36,13 +38,24 @@ namespace SuperNewRoles.Patch
             updateNameplate(__instance, playerInfo.PlayerId);
         }
     }*/
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
+    class VotingComplete
+    {
+        public static void Prefix(MeetingHud __instance, [HarmonyArgument(0)] VoterState[] states, [HarmonyArgument(1)] ref GameData.PlayerInfo exiled, [HarmonyArgument(2)] bool tie)
+        {
+            if (exiled != null && exiled.Object.IsBot())
+            {
+                exiled = null;
+            }
+        }
+    }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
     class CheckForEndVotingPatch
     {
         public static bool Prefix(MeetingHud __instance)
         {
             try
-            {                
+            {
                 if (!AmongUsClient.Instance.AmHost) return true;
                 if (ModeHandler.isMode(ModeId.Detective) && Mode.Detective.main.IsNotDetectiveVote)
                 {
@@ -51,7 +64,8 @@ namespace SuperNewRoles.Patch
                         if (ps.TargetPlayerId == Mode.Detective.main.DetectivePlayer.PlayerId && !ps.DidVote)
                         {
                             return false;
-                        } else if(ps.TargetPlayerId == Mode.Detective.main.DetectivePlayer.PlayerId && ps.DidVote)
+                        }
+                        else if (ps.TargetPlayerId == Mode.Detective.main.DetectivePlayer.PlayerId && ps.DidVote)
                         {
                             MeetingHud.VoterState[] statesdetective;
                             GameData.PlayerInfo exiledPlayerdetective = PlayerControl.LocalPlayer.Data;
@@ -72,7 +86,8 @@ namespace SuperNewRoles.Patch
                                 exiledPlayerdetective = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == ps.VotedFor);
 
                                 __instance.RpcVotingComplete(statesdetective, exiledPlayerdetective, tiedetective); //RPC
-                            } else
+                            }
+                            else
                             {
 
                                 statesListdetective.Add(new MeetingHud.VoterState()
@@ -124,7 +139,8 @@ namespace SuperNewRoles.Patch
                         }
                         __instance.RpcVotingComplete(new List<MeetingHud.VoterState>().ToArray(), null, false);
                         return false;
-                    } else
+                    }
+                    else
                     {
                         foreach (var ps in __instance.playerStates)
                         {
@@ -193,7 +209,7 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (var ps in __instance.playerStates)
                     {
-                        if (!(ps.AmDead || ps.DidVote))//死んでいないプレイヤーが投票していない
+                        if (!(ps.AmDead || ps.DidVote) && ModHelpers.playerById(ps.TargetPlayerId).IsPlayer())//死んでいないプレイヤーが投票していない
                             return false;
                     }
                 }
@@ -218,7 +234,12 @@ namespace SuperNewRoles.Patch
                         {
                             if (ps == null) continue;
                             var voter = ModHelpers.playerById(ps.TargetPlayerId);
-                            if (voter == null || voter.Data == null || voter.Data.Disconnected) continue;
+                            if (voter == null || voter.Data == null || voter.Data.Disconnected || voter.IsBot() || voter.isDead()) continue;
+                            //BOTならスキップ判定
+                            if (ps.VotedFor != 253 && ps.VotedFor != 254 && ModHelpers.playerById(ps.VotedFor).IsBot())
+                            {
+                                ps.VotedFor = 253;
+                            }
                             statesList.Add(new MeetingHud.VoterState()
                             {
                                 VoterId = ps.TargetPlayerId,
@@ -226,7 +247,7 @@ namespace SuperNewRoles.Patch
                             });
                             if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
                             {
-                                for (var i2 = 0; i2 < RoleClass.Mayor.AddVote-1; i2++)
+                                for (var i2 = 0; i2 < RoleClass.Mayor.AddVote - 1; i2++)
                                 {
                                     statesList.Add(new MeetingHud.VoterState()
                                     {
@@ -237,7 +258,7 @@ namespace SuperNewRoles.Patch
                             }
                             else if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MadMayor))
                             {
-                                for (var i2 = 0; i2 < RoleClass.MadMayor.AddVote-1; i2++)
+                                for (var i2 = 0; i2 < RoleClass.MadMayor.AddVote - 1; i2++)
                                 {
                                     statesList.Add(new MeetingHud.VoterState()
                                     {
@@ -271,6 +292,38 @@ namespace SuperNewRoles.Patch
 
                 exiledPlayer = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tie && info.PlayerId == exileId);
 
+                if (ModeHandler.isMode(ModeId.SuperHostRoles) && Bakery.BakeryAlive())
+                {
+                    if (exiledPlayer == null)
+                    {
+                        foreach (PlayerControl p in BotManager.AllBots)
+                        {
+                            if (p.isDead())
+                            {
+                                p.getDefaultName();
+                                exiledPlayer = p.Data;
+                                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                                {
+                                    if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
+                                    {
+                                        p.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + TranslationController.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    } else
+                    {
+                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                        {
+                            if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
+                            {
+                                exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n"+exiledPlayer.Object.getDefaultName(), p2);
+                            }
+                        }
+                    }
+                }
+
                 __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
 
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
@@ -279,7 +332,8 @@ namespace SuperNewRoles.Patch
                     {
                         foreach (var pc in PlayerControl.AllPlayerControls)
                             if (NotBlackOut.IsAntiBlackOut(pc) && (pc.isDead() || pc.PlayerId == exiledPlayer?.PlayerId)) pc.ResetPlayerCam(19f);
-                    } else
+                    }
+                    else
                     {
                         foreach (var pc in PlayerControl.AllPlayerControls)
                             if (NotBlackOut.IsAntiBlackOut(pc) && (pc.isDead() || pc.PlayerId == exiledPlayer?.PlayerId)) pc.ResetPlayerCam(15f);
@@ -289,7 +343,7 @@ namespace SuperNewRoles.Patch
             }
             catch (Exception ex)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("エラー:"+ex);
+                SuperNewRolesPlugin.Logger.LogInfo("エラー:" + ex);
                 throw;
             }
             return false;
@@ -314,7 +368,7 @@ namespace SuperNewRoles.Patch
                 PlayerVoteArea ps = __instance.playerStates[i];
                 if (ps == null) continue;
                 if (AmongUsClient.Instance.GameMode == GameModes.FreePlay && ps.TargetPlayerId != PlayerControl.LocalPlayer.PlayerId) continue;
-                if (ps.VotedFor != (byte)252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != (byte)254)
+                if (ps != null && ModHelpers.playerById(ps.TargetPlayerId) != null && ps.VotedFor != 252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != (byte)254 && ModHelpers.playerById(ps.TargetPlayerId).isAlive() && ModHelpers.playerById(ps.TargetPlayerId).IsPlayer())
                 {
                     int num;
                     int VoteNum = 1;
@@ -336,7 +390,8 @@ namespace SuperNewRoles.Patch
         {
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
-                new LateTask(() => {
+                new LateTask(() =>
+                {
                     SyncSetting.CustomSyncSettings();
                 }, 3f, "StartMeeting_CustomSyncSetting");
             }

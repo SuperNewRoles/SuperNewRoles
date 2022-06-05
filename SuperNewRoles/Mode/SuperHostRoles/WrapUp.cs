@@ -17,6 +17,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void WrapUp(GameData.PlayerInfo exiled)
         {
             if (!AmongUsClient.Instance.AmHost) return;
+            FixedUpdate.SetRoleNames();
+            foreach (PlayerControl p in BotManager.AllBots)
+            {
+                p.RpcSetName(p.getDefaultName());
+            }
             /*
             new LateTask(() =>
             {
@@ -47,15 +52,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }, 5f, "AntiBlack");*/
-
-            SuperNewRolesPlugin.Logger.LogInfo("WrapUp");
             foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("ALL");
                 if (p.isAlive() && !p.IsMod())
                 {
                     p.RpcProtectPlayer(p, 0);
-                    SuperNewRolesPlugin.Logger.LogInfo("プロテクト");
+                    new LateTask(() =>
+                    {
+                        p.RpcMurderPlayer(p);
+                    }, 0.5f);
+                }
+            }
+            foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
+            {
+                if (p.isAlive() && !p.IsMod())
+                {
+                    p.RpcProtectPlayer(p, 0);
                     new LateTask(() =>
                     {
                         SuperNewRolesPlugin.Logger.LogInfo("マーダー");
@@ -71,8 +83,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             Roles.BestFalseCharge.WrapUp();
             if (exiled == null) return;
-            exiled.Object.Exiled();
-            if (exiled.Object.isRole(RoleId.Sheriff) || exiled.Object.isRole(RoleId.truelover))
+            if (exiled.Object.isRole(RoleId.Sheriff) || exiled.Object.isRole(RoleId.truelover) || exiled.Object.isRole(RoleId.MadMaker))
             {
                 exiled.Object.RpcSetRoleDesync(RoleTypes.GuardianAngel);
             }
@@ -83,7 +94,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     PlayerControl SideLoverPlayer = exiled.Object.GetOneSideLovers();
                     if (SideLoverPlayer.isAlive())
                     {
-                        SideLoverPlayer.RpcMurderPlayer(SideLoverPlayer);
+                        SideLoverPlayer.RpcInnerExiled();
                     }
                 }
             }
@@ -110,7 +121,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Chat.Winner = new List<PlayerControl>();
                         Chat.Winner.Add(exiled.Object);
                         RoleClass.Quarreled.IsQuarreledWin = true;
-                        SuperHostRoles.EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByTask, false);
+                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByTask, false);
                     }
                 }
             }
