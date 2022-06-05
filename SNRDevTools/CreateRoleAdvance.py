@@ -345,7 +345,7 @@ AdvanceTab = psg.Tab("詳細設定", [
                 [psg.Text(),psg.Check("カスタムボタン",key="A_CustomButton")],
                 [psg.Text("    画像名:"),psg.InputText("", size=(15,1))],
                 [psg.Check("インポを視認可能", key="A_CanVisibleImpo")],
-                [psg.Check("独自勝利", key="A_PersonalWin")],
+                [psg.Check("独自勝利辞書追加", key="A_PersonalWin")],
                 [],
                 [], ])
 '''TeachingTab = psg.Tab("即席コードチェック", [
