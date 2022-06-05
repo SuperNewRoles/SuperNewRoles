@@ -2471,6 +2471,42 @@
  "SidekickSeerTitle1" : {
         "0" : "Let's help Jackal with the dead detection ability that we got" ,
         "11" : "\u8cb0\u3063\u305f\u6b7b\u8005\u611f\u77e5\u80fd\u529b\u3067\u30b8\u30e3\u30c3\u30ab\u30eb\u3092\u52a9\u3051\u3088\u3046"
+        } ,
+ "AssassinAndMarineName" : {
+        "0" : "<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>" ,
+        "11" : "<color=#ff0000>\u30a2\u30b5\u30b7\u30f3</color>\u3068<color=#AFDFE4>\u30de\u30fc\u30ea\u30f3</color>"
+        } ,
+ "AssassinSettingPlayerCountName" : {
+        "0" : "Number of <color=#ff0000>Assassin</color>" ,
+        "11" : "<color=#ff0000>\u30a2\u30b5\u30b7\u30f3</color>\u306e\u4eba\u6570"
+        } ,
+ "MarineSettingPlayerCountName" : {
+        "0" : "Number of <color=#AFDFE4>Merine</color>" ,
+        "11" : "<color=#AFDFE4>\u30de\u30fc\u30ea\u30f3</color>\u306e\u4eba\u6570"
+        } ,
+ "AssassinName" : {
+        "0" : "Assassin" ,
+        "11" : "\u30a2\u30b5\u30b7\u30f3"
+        } ,
+ "AssassinTitle1" : {
+        "0" : "<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!" ,
+        "11" : "<color=#AFDFE4>\u30de\u30fc\u30ea\u30f3</color>\u3092\u5f53\u3066\u3066\u9006\u8ee2\u52dd\u5229\u3057\u3088\u3046"
+        } ,
+ "AssassinSucsess" : {
+        "0" : "was marine." ,
+        "11" : "\u306f\u30de\u30fc\u30ea\u30f3\u3060\u3063\u305f"
+        } ,
+ "AssassinFail" : {
+        "0" : "was not marine." ,
+        "11" : "\u306f\u30de\u30fc\u30ea\u30f3\u3067\u306f\u306a\u304b\u3063\u305f"
+        } ,
+ "MarineName" : {
+        "0" : "Merine" ,
+        "11" : "\u30de\u30fc\u30ea\u30f3"
+        } ,
+ "MarineTitle1" : {
+        "0" : "Let's not let <color=#ff0000>Assassin</color> find out." ,
+        "11" : "<color=#ff0000>\u30a2\u30b5\u30b7\u30f3</color>\u306b\u30d0\u30ec\u306a\u3044\u3088\u3046\u306b\u3057\u3088\u3046\u3002"
         } 
 
 }

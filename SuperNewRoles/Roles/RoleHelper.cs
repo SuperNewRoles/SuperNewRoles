@@ -525,6 +525,12 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.JackalSeer):
                     Roles.RoleClass.JackalSeer.JackalSeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Assassin):
+                    Roles.RoleClass.Assassin.AssassinPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Marine):
+                    Roles.RoleClass.Marine.MarinePlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -801,7 +807,13 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.SidekickSeer):
                     Roles.RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (CustomRPC.RoleId.Assassin):
+                    Roles.RoleClass.Assassin.AssassinPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Marine):
+                    Roles.RoleClass.Marine.MarinePlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -1554,7 +1566,15 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.SidekickSeer;
                 }
-                //ロールチェック
+                else if (Roles.RoleClass.Assassin.AssassinPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Assassin;
+            }
+            else if (Roles.RoleClass.Marine.MarinePlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Marine;
+            }
+            //ロールチェック
             }
             catch (Exception e)
             {

@@ -73,8 +73,8 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
-        public static Dictionary<byte, TMPro.TextMeshPro> PlayerInfos = new Dictionary<byte, TMPro.TextMeshPro>();
-        public static Dictionary<byte, TMPro.TextMeshPro> MeetingPlayerInfos = new Dictionary<byte, TMPro.TextMeshPro>();
+        public static Dictionary<byte, TextMeshPro> PlayerInfos = new Dictionary<byte, TextMeshPro>();
+        public static Dictionary<byte, TextMeshPro> MeetingPlayerInfos = new Dictionary<byte, TextMeshPro>();
 
         public static void SetPlayerRoleInfoView(PlayerControl p, Color roleColors, string roleNames)
         {
@@ -283,6 +283,7 @@ namespace SuperNewRoles.Patch
             {
                 if (Madmate.CheckImpostor(PlayerControl.LocalPlayer) ||
                     LocalRole == RoleId.MadKiller ||
+                    LocalRole == RoleId.Marine ||
                     (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon)
                     )
                 {

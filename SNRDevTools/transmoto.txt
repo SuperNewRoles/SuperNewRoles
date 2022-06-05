@@ -616,3 +616,12 @@ JackalSeerName
 JackalSeerTitle1
 SidekickSeerName
 SidekickSeerTitle1
+AssassinAndMarineName
+AssassinSettingPlayerCountName
+MarineSettingPlayerCountName
+AssassinName
+AssassinTitle1
+AssassinSucsess
+AssassinFail
+MarineName
+MarineTitle1

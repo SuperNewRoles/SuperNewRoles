@@ -616,3 +616,12 @@ SuperHostRoles
 死者を感知し自陣営に勝利をもたらせ!
 サイドキック(シーア)
 貰った死者感知能力でジャッカルを助けよう
+<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>
+<color=#ff0000>アサシン</color>の人数
+<color=#AFDFE4>マーリン</color>の人数
+アサシン
+<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう
+はマーリンだった
+はマーリンではなかった
+マーリン
+<color=#ff0000>アサシン</color>にバレないようにしよう。

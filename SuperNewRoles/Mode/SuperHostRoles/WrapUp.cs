@@ -3,6 +3,7 @@ using InnerNet;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using System;
 using System.Collections;
@@ -82,7 +83,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     PlayerControl SideLoverPlayer = exiled.Object.GetOneSideLovers();
                     if (SideLoverPlayer.isAlive())
                     {
-                        SideLoverPlayer.RpcInnerExiled();
+                        SideLoverPlayer.RpcCheckExile();
                     }
                 }
             }

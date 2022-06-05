@@ -149,6 +149,8 @@ namespace SuperNewRoles.Intro
         public static IntroDate SeerFriendsIntro = new IntroDate("SeerFriends", RoleClass.SeerFriends.color, 1, CustomRPC.RoleId.SeerFriends, TeamRoleType.Neutral);
         public static IntroDate JackalSeerIntro = new IntroDate("JackalSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.JackalSeer, TeamRoleType.Neutral);
         public static IntroDate SidekickSeerIntro = new IntroDate("SidekickSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.SidekickSeer, TeamRoleType.Neutral);
+        public static IntroDate AssassinIntro = new IntroDate("Assassin", RoleClass.Assassin.color, 1, CustomRPC.RoleId.Assassin);
+        public static IntroDate MarineIntro = new IntroDate("Marine", RoleClass.Marine.color, 1, CustomRPC.RoleId.Marine);
         //イントロオブジェ
     }
 }

@@ -112,16 +112,29 @@ namespace SuperNewRoles.Patch
                 /*
                 if (Input.GetKeyDown(KeyCode.I))
                 {
-                    MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
-                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
-                    PlayerControl.LocalPlayer.RpcStartMeeting(PlayerControl.LocalPlayer.Data);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p == PlayerControl.LocalPlayer) continue;
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.MyPhysics.NetId, (byte)RpcCalls.EnterVent, SendOption.None, p.getClientId());
+                        writer.WritePacked(ShipStatus.Instance.AllVents[0].Id);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        SuperNewRolesPlugin.Logger.LogInfo(ShipStatus.Instance.AllVents[0].transform);
+                    }
                 }
-                if (Input.GetKeyDown(KeyCode.C))
-                {
-                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
-                }
-                */
-                if (Input.GetKeyDown(KeyCode.F10))
+                    
+                    if (Input.GetKeyDown(KeyCode.C))
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("CHANGE!!!");
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        {
+                            RoleManager.Instance.SetRole(p, RoleTypes.Engineer);
+                            AmongUsClient.Instance.Spawn(GameData.Instance, -2, SpawnFlags.IsClientCharacter);
+                            AmongUsClient.Instance.Spawn(p, p.OwnerId, SpawnFlags.IsClientCharacter);
+                        }
+                    }
+                    */
+
+                    if (Input.GetKeyDown(KeyCode.F10))
                 {
                     BotManager.Spawn($"bot{(byte)GameData.Instance.GetAvailableId()}");                
                 }

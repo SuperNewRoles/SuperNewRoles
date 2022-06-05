@@ -120,7 +120,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-            else if (MadMayor.CheckImpostor(player))
+            else if (MadMayor.CheckImpostor(player) || player.isRole(RoleId.Marine))
             {
                 foreach (PlayerControl Impostor in PlayerControl.AllPlayerControls)
                 {
