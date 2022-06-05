@@ -56,6 +56,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton CleanerButton;
         public static CustomButton MadCleanerButton;
         public static CustomButton FreezerButton;
+        public static CustomButton SamuraiButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
@@ -1317,6 +1318,32 @@ namespace SuperNewRoles.Buttons
                 KeyCode.F,
                 49
             );
+
+
+            SamuraiButton = new Buttons.CustomButton(
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.CanMove)
+                    {
+                        Samurai.SelfBomb();
+                    }
+                },
+                () => { return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Samurai.isSamurai(PlayerControl.LocalPlayer); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { Samurai.EndMeeting(); },
+                RoleClass.Samurai.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            SamuraiButton.buttonText = ModTranslation.getString("SelfBomberButtonName");
+            SamuraiButton.showButtonText = true;
 
 
             FreezerButton.buttonText = ModTranslation.getString("FreezerButtonName");

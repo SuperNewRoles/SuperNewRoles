@@ -7,6 +7,7 @@ using System.Text;
 namespace SuperNewRoles.Roles
 {
     public class Minimalist
+    
     {
         public class MurderPatch
         {
