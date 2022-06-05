@@ -2052,9 +2052,22 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SamuraiPlayer;
             public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static bool UseVent;
+            public static bool UseSabo;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
+                return ButtonSprite;
+            }
             public static void ClearAndReload()
             {
                 SamuraiPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.SamuraiKillCoolTime.getFloat();
+                UseVent = CustomOptions.SamuraiVent.getBool();
+                UseSabo = CustomOptions.SamuraiSabo.getBool();
             }
         }
         //新ロールクラス
