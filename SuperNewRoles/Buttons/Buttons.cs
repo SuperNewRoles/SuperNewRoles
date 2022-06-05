@@ -1199,7 +1199,7 @@ namespace SuperNewRoles.Buttons
                                 if (Vector2.Distance(truePosition2, truePosition) <= PlayerControl.LocalPlayer.MaxReportDistance && PlayerControl.LocalPlayer.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false))
                                 {
                                     GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
-
+                                    PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Cleaner.NewKillCoolTime);
                                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CleanBody, Hazel.SendOption.Reliable, -1);
                                     writer.Write(playerInfo.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -1243,8 +1243,6 @@ namespace SuperNewRoles.Buttons
 
             CleanerButton.buttonText = ModTranslation.getString("VultureButtonName");
             CleanerButton.showButtonText = true;
-            CleanerNumCleanText = GameObject.Instantiate(CleanerButton.actionButton.cooldownTimerText, CleanerButton.actionButton.cooldownTimerText.transform.parent);
-            CleanerNumCleanText.text = "";
 
             MadCleanerButton = new CustomButton(
                 () =>
