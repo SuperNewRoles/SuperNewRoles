@@ -1259,6 +1259,10 @@
     "0": "Freeze duration",
     "11": "\u30d5\u30ea\u30fc\u30ba\u7d99\u7d9a\u6642\u9593"
   },
+  "FreezerButtonName": {
+    "0": "Freeze",
+    "11": "\u30d5\u30ea\u30fc\u30ba"
+  },
   "SpeederName": {
     "0": "Speeder",
     "11": "\u30b9\u30d4\u30fc\u30c0\u30fc"

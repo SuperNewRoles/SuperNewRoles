@@ -315,6 +315,7 @@ FreezerTitle2,Try to stop everyone and sabotage the task!,みんなを止めて�
 FreezerTitle3,Let's put them all on ice.,全員を氷漬けにしよう
 FreezerCoolTimeSetting,Freeze Cool Time,フリーズクールタイム
 FreezerDurationSetting,Freeze duration,フリーズ継続時間
+FreezerButtonName,Freeze,フリーズ
 SpeederName,Speeder,スピーダー
 SpeederTitle1,Slow everyone down and sabotage your crewmates!,みんなを遅くしてクルーメイトを妨害しよう
 SpeederTitle2,Try to slow everyone down and sabotage the task!,みんなを遅くしてタスクの妨害をしよう

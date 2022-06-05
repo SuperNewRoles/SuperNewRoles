@@ -314,6 +314,7 @@ FreezerTitle2
 FreezerTitle3
 FreezerCoolTimeSetting
 FreezerDurationSetting
+FreezerButtonName
 SpeederName
 SpeederTitle1
 SpeederTitle2

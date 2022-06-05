@@ -172,6 +172,7 @@ namespace SuperNewRoles.CustomRPC
         SetSpeedDown,
         ShielderProtect,
         SetShielder,
+        SetSpeedFreeze,
     }
     public static class RPCProcedure
     {
@@ -783,6 +784,10 @@ namespace SuperNewRoles.CustomRPC
         {
             RoleClass.Speeder.IsSpeedDown = Is;
         }
+        public static void SetSpeedFreeze(bool Is)
+        {
+            RoleClass.Freezer.IsSpeedDown = Is;
+        }
         public static void ShielderProtect(byte sourceId, byte targetId, byte colorid)
         {
             PlayerControl source = ModHelpers.playerById(sourceId);
@@ -793,7 +798,7 @@ namespace SuperNewRoles.CustomRPC
             source.ProtectPlayer(target, colorid);
             if (targetId == PlayerControl.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
         }
-        public static void SetShielder(byte PlayerId,bool Is)
+        public static void SetShielder(byte PlayerId, bool Is)
         {
             RoleClass.Shielder.IsShield[PlayerId] = (RoleClass.Shielder.IsShield[PlayerId] = Is);
         }
@@ -994,10 +999,13 @@ namespace SuperNewRoles.CustomRPC
                         SetSpeedDown(reader.ReadBoolean());
                         break;
                     case (byte)CustomRPC.ShielderProtect:
-                        ShielderProtect(reader.ReadByte(),reader.ReadByte(),reader.ReadByte());
+                        ShielderProtect(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRPC.SetShielder:
-                        SetShielder(reader.ReadByte(),reader.ReadBoolean());
+                        SetShielder(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case (byte)CustomRPC.SetSpeedFreeze:
+                        SetSpeedFreeze(reader.ReadBoolean());
                         break;
                 }
             }

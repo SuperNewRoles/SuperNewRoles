@@ -55,9 +55,9 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ShielderButton;
         public static CustomButton CleanerButton;
         public static CustomButton MadCleanerButton;
+        public static CustomButton FreezerButton;
 
-
-        public static TMPro.TMP_Text sheriffNumShotsText;       
+        public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
 
         public static void setCustomButtonCooldowns()
@@ -965,7 +965,8 @@ namespace SuperNewRoles.Buttons
                 {
                     return setTarget(untarget: Arsonist.GetUntarget()) && PlayerControl.LocalPlayer.CanMove;
                 },
-                () => {
+                () =>
+                {
                     ArsonistDouseButton.MaxTimer = RoleClass.Arsonist.CoolTime;
                     ArsonistDouseButton.Timer = RoleClass.Arsonist.CoolTime;
                 },
@@ -1002,7 +1003,7 @@ namespace SuperNewRoles.Buttons
                     }
 
                 },
-                () => {return Arsonist.IseveryButton(); },
+                () => { return Arsonist.IseveryButton(); },
                 () =>
                 {
                     if (Arsonist.IsArsonistWinFlag())
@@ -1027,7 +1028,7 @@ namespace SuperNewRoles.Buttons
             ArsonistIgniteButton.buttonText = ModTranslation.getString("ArsonistIgniteButtonName");
             ArsonistIgniteButton.showButtonText = true;
 
-            SpeederButton = new Buttons.CustomButton(
+            SpeederButton = new CustomButton(
                 () =>
                 {
                     SpeederButton.MaxTimer = RoleClass.Speeder.DurationTime;
@@ -1049,7 +1050,7 @@ namespace SuperNewRoles.Buttons
                 KeyCode.F,
                 49
             );
-            
+
 
             SpeederButton.buttonText = ModTranslation.getString("SpeederButtonName");
             SpeederButton.showButtonText = true;
@@ -1169,7 +1170,8 @@ namespace SuperNewRoles.Buttons
                 {
                     return PlayerControl.LocalPlayer.CanMove;
                 },
-                () => {
+                () =>
+                {
                     ShielderButton.MaxTimer = RoleClass.Shielder.CoolTime;
                     ShielderButton.Timer = RoleClass.Shielder.CoolTime;
                 },
@@ -1217,22 +1219,22 @@ namespace SuperNewRoles.Buttons
 
                         }
                     }
-                    
+
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Cleaner) ; },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Cleaner); },
 
                 () =>
                 {
                     return __instance.ReportButton.graphic.color == Palette.EnabledColor && PlayerControl.LocalPlayer.CanMove;
                 },
-                
+
                 () =>
                 {
                     CleanerButton.MaxTimer = RoleClass.Cleaner.CoolTime;
                     CleanerButton.Timer = RoleClass.Cleaner.CoolTime;
                 },
-                
-                
+
+
                 RoleClass.Cleaner.getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
@@ -1292,6 +1294,34 @@ namespace SuperNewRoles.Buttons
 
             MadCleanerButton.buttonText = ModTranslation.getString("CleanerButtonName");
             MadCleanerButton.showButtonText = true;
+
+            FreezerButton = new Buttons.CustomButton(
+                () =>
+                {
+                    FreezerButton.MaxTimer = RoleClass.Freezer.DurationTime;
+                    FreezerButton.Timer = FreezerButton.MaxTimer;
+                    FreezerButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    Freezer.DownStart();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Freezer.IsFreezer(PlayerControl.LocalPlayer); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { Freezer.EndMeeting(); },
+                RoleClass.Freezer.GetButtonSprite(),
+
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+
+            FreezerButton.buttonText = ModTranslation.getString("FreezerButtonName");
+            FreezerButton.showButtonText = true;
+            FreezerButton.HasEffect = true;
 
             setCustomButtonCooldowns();
 

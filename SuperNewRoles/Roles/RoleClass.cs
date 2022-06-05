@@ -506,20 +506,22 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> FreezerPlayer;
             public static Color32 color = ImpostorRed;
-            //public static float CoolTime;
-            //public static float DurationTime;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static bool IsSpeedDown;
             private static Sprite ButtonSprite;
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.FreezerButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
             {
                 FreezerPlayer = new List<PlayerControl>();
-                //CoolTime = CustomOptions.FreezerCoolTime.getFloat();
-                //DurationTime = CustomOptions.FreezerDurationTime.getFloat();
+                CoolTime = CustomOptions.FreezerCoolTime.getFloat();
+                DurationTime = CustomOptions.FreezerDurationTime.getFloat();
+                IsSpeedDown = false;
             }
         }
 
