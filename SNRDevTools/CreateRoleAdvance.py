@@ -18,7 +18,7 @@ class ReturnClass:
         with open(BasePath+Path, mode="r", encoding="utf-8") as r:
             Template = r.read()
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
-                #Template = Template.replace(OldCode, NewCode)
+                Template = Template.replace(OldCode, NewCode)
                 print("ファイルを書き込みました:"+Template)
                 print("パス:"+BasePath+Path)
                 w.write(Template)
@@ -122,9 +122,6 @@ class AllCheck:
         if (MainClass.GetBool("A_CanVisibleImpo")):
             MainClass.CreateOKWindow("インポの視認は現在対応していません")
             return
-        if (MainClass.GetBool("A_CanVent")):
-            MainClass.CreateOKWindow("ベントは現在対応していません")
-            return
         if (MainClass.GetBool("TeamOne")):
             MainClass.CreateOKWindow("第三陣営(個人)は現在対応していません")
             return
@@ -132,9 +129,11 @@ class AllCheck:
             MainClass.CreateOKWindow("第三陣営(ペア)は現在対応していません")
             return
         if (MainClass.GetBool("A_CustomButton")):
-            MainClass.CreateOKWindow("は現在対応していません")
+            MainClass.CreateOKWindow("カスタムボタンは現在対応していません")
         if (MainClass.GetBool("A_PersonalWin")):
-            MainClass.CreateOKWindow("は現在対応していません")
+            MainClass.CreateOKWindow("独自勝利辞書追加は現在対応していません")
+        if (MainClass.GetBool("A_ImpoVisible")):
+            MainClass.CreateOKWindow("インポの視界は現在対応していません")
         # 一部値がかぶっていないか(例:インポ+キル可能)
         if (MainClass.GetBool("A_CanVent")):
             if (MainClass.GetBool("Impo")):
@@ -327,6 +326,7 @@ namespace SuperNewRoles.Roles
                 """case RoleId.ROLENAME:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.ROLENAMEIsUseVent.getString() + "\n";
                     break;\n                //ベント設定可視化""".replace("ROLENAME", MainClass.GetInput("RoleName")))'''
+        if (MainClass.GetBool("A_ImpoVisible"))
 
         # いらないやつ(次実行するときに複数書いてしまうため)の削除　(例:Jackal→//その他Option, NewRole→//その他Optionの場合、二つに書かれてしまうため重複する)
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベント設定可視化", "")
@@ -387,9 +387,9 @@ AdvanceTab = psg.Tab("詳細設定", [
                 [psg.Text(),psg.Check("キルができる", key="A_CanKill")],
                 [psg.Text(),psg.Check("カスタムボタン",key="A_CustomButton")],
                 [psg.Text("    画像名:"),psg.InputText("", size=(15,1))],
+                [psg.Check("インポの視界", key="A_ImpoVisible")],
                 [psg.Check("インポを視認可能", key="A_CanVisibleImpo")],
                 [psg.Check("独自勝利辞書追加", key="A_PersonalWin")],
-                [],
                 [], ])
 '''TeachingTab = psg.Tab("即席コードチェック", [
                 [psg.Button("Harmony一覧")],
