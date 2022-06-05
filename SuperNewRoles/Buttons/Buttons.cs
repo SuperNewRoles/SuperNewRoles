@@ -45,6 +45,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton FalseChargesFalseChargeButton;
         public static CustomButton MadMakerSidekickButton;
         public static CustomButton DemonButton;
+        //カスタムなボタン達
 
         public static TMPro.TMP_Text sheriffNumShotsText;
 
@@ -54,6 +55,7 @@ namespace SuperNewRoles.Buttons
             Clergyman.ResetCoolDown();
             Teleporter.ResetCoolDown();
             Jackal.resetCoolDown();
+            //クールダウンリセット
         }
 
         public static PlayerControl setTarget(List<PlayerControl> untarget = null,bool Crewmateonly = false)

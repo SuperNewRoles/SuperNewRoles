@@ -106,6 +106,53 @@ class ReturnClass:
 
 # 戻り値なし
 class AllCheck:
+    
+    # 確認(空白だったりしたらエラーを起こすように)
+    def AllCheck(self):
+        MainClass.GetInput("RoleName")
+        MainClass.GetRoleColor()
+        MainClass.GetTeam()
+        if (MainClass.GetBool("AddSetting")):
+            MainClass.GetInput("OptionNumber")
+
+        MainClass.GetBool("A_CreateFile")
+        MainClass.GetBool("A_ClearTask")
+
+        # 未作成機能のブロック
+        if (MainClass.GetBool("A_CanVisibleImpo")):
+            MainClass.CreateOKWindow("インポの視認は現在対応していません")
+            return
+        if (MainClass.GetBool("A_CanVent")):
+            MainClass.CreateOKWindow("ベントは現在対応していません")
+            return
+        if (MainClass.GetBool("A_CanKill")):
+            MainClass.CreateOKWindow("キルは現在対応していません")
+            return
+        if (MainClass.GetBool("TeamOne")):
+            MainClass.CreateOKWindow("第三陣営(個人)は現在対応していません")
+            return
+        if (MainClass.GetBool("TeamTwo")):
+            MainClass.CreateOKWindow("第三陣営(ペア)は現在対応していません")
+            return
+        if (MainClass.GetBool("A_CustomButton")):
+            MainClass.CreateOKWindow("は現在対応していません")
+        if (MainClass.GetBool("A_PersonalWin")):
+            MainClass.CreateOKWindow("は現在対応していません")
+        # 一部値がかぶっていないか(例:インポ+キル可能)
+        if (MainClass.GetBool("A_CanVent")):
+            if (MainClass.GetBool("Impo")):
+                MainClass.CreateOKWindow("警告", "インポスターはデフォルトで\nキルボタンが作成されます")
+                return
+        if (MainClass.GetBool("A_CanKill")):
+            if (MainClass.GetBool("Impo")):
+                MainClass.CreateOKWindow("警告", "インポスターはデフォルトで\nベントボタンが作成されます")
+                return
+        if (MainClass.GetBool("A_ClearTask")):
+            if (MainClass.GetBool("Neut")):
+                MainClass.CreateOKWindow("警告", "第三陣営はデフォルトで\nタスクが削除されます")
+        # 全部書く
+        AllActClass.AllWrite()
+
     # すべて書く
     def AllWrite(self):
         # Roles/ROLENAME.cs
@@ -226,54 +273,28 @@ namespace SuperNewRoles.Roles
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.GetInput("OptionNumber")).replace("SHRON",MainClass.GetBool("IsSHRON")))
             #else:
                 #MainClass.CreateErrorWindow("設定タブの値が空白です")
+        ## キルボタン
+        if (MainClass.GetBool("A_CanKill")):
+            # Buttons/CustomButton.cs
+            MainClass.WriteCodes("Buttons/Buttons.cs", "//カスタムなボタン達",
+            """        public static CustomButton ROLENAMEKillButton""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes("Buttons/Buttons.cs", "//クールダウンリセット",
+            """        ROLENAME.resetCoolDown();\n        //クールダウンリセット""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            # Roles/ROLENAME.cs
+            MainClass.WriteCodes("Roles/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), "//ここにコードを書きこんでください",
+            """        public static void resetCoolDown() {
+            HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.Jackal.KillCoolDown;
+            HudManagerStartPatch.JackalKillButton.Timer = RoleClass.Jackal.KillCoolDown;
+            HudManagerStartPatch.JackalSidekickButton.MaxTimer = RoleClass.Jackal.KillCoolDown;
+            HudManagerStartPatch.JackalSidekickButton.Timer = RoleClass.Jackal.KillCoolDown;
+        }
+        public static void EndMeeting() {
+            resetCoolDown();
+        }\n        //ここにコードを書き込んでください""")
+        
+        ## ベントボタン
         # 終了報告
         MainClass.CreateNotify("CreateRoleAdvance.py", "役職の作成が終了しました")
-
-    # 確認(空白だったりしたらエラーを起こすように)
-    def AllCheck(self):
-        MainClass.GetInput("RoleName")
-        MainClass.GetRoleColor()
-        MainClass.GetTeam()
-        if (MainClass.GetBool("AddSetting")):
-            MainClass.GetInput("OptionNumber")
-
-        MainClass.GetBool("A_CreateFile")
-        MainClass.GetBool("A_ClearTask")
-
-        # 未作成機能のブロック
-        if (MainClass.GetBool("A_CanVisibleImpo")):
-            MainClass.CreateOKWindow("インポの視認は現在対応していません")
-            return
-        if (MainClass.GetBool("A_CanVent")):
-            MainClass.CreateOKWindow("ベントは現在対応していません")
-            return
-        if (MainClass.GetBool("A_CanKill")):
-            MainClass.CreateOKWindow("キルは現在対応していません")
-            return
-        if (MainClass.GetBool("TeamOne")):
-            MainClass.CreateOKWindow("第三陣営(個人)は現在対応していません")
-            return
-        if (MainClass.GetBool("TeamTwo")):
-            MainClass.CreateOKWindow("第三陣営(ペア)は現在対応していません")
-            return
-        if (MainClass.GetBool("A_CustomButton")):
-            MainClass.CreateOKWindow("は現在対応していません")
-        if (MainClass.GetBool("A_PersonalWin")):
-            MainClass.CreateOKWindow("は現在対応していません")
-        # 一部値がかぶっていないか(例:インポ+キル可能)
-        if (MainClass.GetBool("A_CanVent")):
-            if (MainClass.GetBool("Impo")):
-                MainClass.CreateOKWindow("警告", "インポスターはデフォルトで\nキルボタンが作成されます")
-                return
-        if (MainClass.GetBool("A_CanKill")):
-            if (MainClass.GetBool("Impo")):
-                MainClass.CreateOKWindow("警告", "インポスターはデフォルトで\nベントボタンが作成されます")
-                return
-        if (MainClass.GetBool("A_ClearTask")):
-            if (MainClass.GetBool("Neut")):
-                MainClass.CreateOKWindow("警告", "第三陣営はデフォルトで\nタスクが削除されます")
-        # 全部書く
-        AllActClass.AllWrite()
 
 ## 変数
 '''DevPath = Path(__file__).parent
