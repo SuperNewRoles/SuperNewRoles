@@ -1217,10 +1217,6 @@ namespace SuperNewRoles.Buttons
 
                         }
                     }
-                    if (PlayerControl.LocalPlayer.CanMove)
-                    {
-                        PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Cleaner.KillCoolTime);
-                    }
                     
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Cleaner) ; },
