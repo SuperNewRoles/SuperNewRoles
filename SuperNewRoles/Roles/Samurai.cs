@@ -47,13 +47,13 @@ namespace SuperNewRoles.Roles
          //自爆魔関連
         public static void EndMeeting()
         {
-            HudManagerStartPatch.SamuraiButton.MaxTimer = PlayerControl.GameOptions.KillCooldown;
-            HudManagerStartPatch.SamuraiButton.Timer = PlayerControl.GameOptions.KillCooldown;
+            HudManagerStartPatch.SamuraiButton.MaxTimer = RoleClass.Samurai.SwordCoolTime;
+            HudManagerStartPatch.SamuraiButton.Timer = RoleClass.Samurai.SwordCoolTime;
         }
         public static void ResetCoolDown()
         {
-            HudManagerStartPatch.SamuraiButton.MaxTimer = PlayerControl.GameOptions.KillCooldown;
-            HudManagerStartPatch.SamuraiButton.Timer = PlayerControl.GameOptions.KillCooldown;
+            HudManagerStartPatch.SamuraiButton.MaxTimer = RoleClass.Samurai.SwordCoolTime;
+            HudManagerStartPatch.SamuraiButton.Timer = RoleClass.Samurai.SwordCoolTime;
         }
         public static bool isSamurai(PlayerControl Player)
         {
@@ -76,6 +76,7 @@ namespace SuperNewRoles.Roles
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BySamuraiKillRPC, Hazel.SendOption.Reliable, -1);
                         Writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         Writer.Write(p.PlayerId);
+                        RoleClass.Samurai.Sword = true;
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                     }
                 }

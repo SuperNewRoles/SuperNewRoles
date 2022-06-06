@@ -2534,5 +2534,29 @@
   "CleanerKillCoolTimeSetting": {
     "0": "Kill CoolDown",
     "11": "\u30af\u30ea\u30fc\u30ca\u30fc\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+  },
+  "SamuraiName": {
+    "0": "Samurai",
+    "11": "\u4f8d"
+  },
+  "SamuraiTitle1": {
+    "0": "Let's cut through the crew!",
+    "11": "\u30af\u30eb\u30fc\u3092\u5207\u308a\u88c2\u3053\u3046!"
+  },
+  "SamuraiKillCoolSetting": {
+    "0": "KillCoolTime",
+    "11": "\u4f8d\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+  },
+  "SamuraiSwordCoolSetting": {
+    "0": "AttackCoolTime",
+    "11": "\u5fc5\u6bba\u6280\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+  },
+  "SamuraiScorpSetting": {
+    "0": "Attack range",
+    "11": "\u5fc5\u6bba\u6280\u306e\u653b\u6483\u7bc4\u56f2"
+  },
+  "SamuraiButtonName": {
+    "0": "Attack!",
+    "11": "\u5fc5\u6bba\u6280!"
   }
 }

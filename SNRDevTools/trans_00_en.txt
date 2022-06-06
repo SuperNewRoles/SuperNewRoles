@@ -633,3 +633,9 @@ CoolDown
 MadCleaner
 Destroy the evidence and help impostors to win!
 Kill CoolDown
+Samurai
+Let's cut through the crew!
+KillCoolTime
+AttackCoolTime
+SamuraiScope
+UseSword!

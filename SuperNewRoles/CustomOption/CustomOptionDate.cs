@@ -548,6 +548,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption SamuraiOption;
         public static CustomOption SamuraiPlayerCount;
         public static CustomOption SamuraiKillCoolTime;
+        public static CustomOption SamuraiSwordCoolTime;
         public static CustomOption SamuraiVent;
         public static CustomOption SamuraiSabo;
         public static CustomOption SamuraiScope;
@@ -1123,12 +1124,13 @@ namespace SuperNewRoles.CustomOption
             MadCleanerIsUseVent = CustomOption.Create(413, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadCleanerOption);
             MadCleanerIsImpostorLight = CustomOption.Create(414, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadCleanerOption);
 
-            SamuraiOption = new CustomRoleOption(177, false, CustomOptionType.Impostor, "SamuraiName", RoleClass.Minimalist.color, 1);
+            SamuraiOption = new CustomRoleOption(177, false, CustomOptionType.Impostor, "SamuraiName", RoleClass.Samurai.color, 1);
             SamuraiPlayerCount = CustomOption.Create(178, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SamuraiOption);
             SamuraiKillCoolTime = CustomOption.Create(179, false, CustomOptionType.Impostor, "SamuraiKillCoolSetting", 30f, 2.5f, 60f, 2.5f, SamuraiOption);
+            SamuraiSwordCoolTime = CustomOption.Create(179, false, CustomOptionType.Impostor, "SamuraiSwordCoolSetting", 50f, 30f, 70f, 2.5f, SamuraiOption);
             SamuraiVent = CustomOption.Create(180, false, CustomOptionType.Impostor, "MinimalistVentSetting", false, SamuraiOption);
             SamuraiSabo = CustomOption.Create(181, false, CustomOptionType.Impostor, "MinimalistSaboSetting", false, SamuraiOption);
-            SamuraiScope = CustomOption.Create(148, false, CustomOptionType.Impostor, "SelfBomberScopeSetting", 1f, 0.5f, 3f, 0.5f, SamuraiOption);
+            SamuraiScope = CustomOption.Create(148, false, CustomOptionType.Impostor, "SamuraiScopeSetting", 1f, 0.5f, 3f, 0.5f, SamuraiOption);
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

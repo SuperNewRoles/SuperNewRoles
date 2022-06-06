@@ -634,3 +634,9 @@ CleanerCoolDownSetting
 MadCleanerName
 MadCleanerTitle1
 CleanerKillCoolTimeSetting
+SamuraiName
+SamuraiTitle1
+SamuraiKillCoolSetting
+SamuraiSwordCoolSetting
+SamuraiScorpSetting
+SamuraiButtonName
