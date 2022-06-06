@@ -57,7 +57,6 @@ namespace SuperNewRoles.Buttons
         public static CustomButton MadCleanerButton;
         public static CustomButton FreezerButton;
         public static CustomButton SamuraiButton;
-
         public static CustomButton VentMakerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
@@ -1029,6 +1028,8 @@ namespace SuperNewRoles.Buttons
                 49
             );
 
+            VentMakerButton.buttonText = ModTranslation.getString("VentMakerButtonName");
+            VentMakerButton.showButtonText = true;
             ArsonistIgniteButton.buttonText = ModTranslation.getString("ArsonistIgniteButtonName");
             ArsonistIgniteButton.showButtonText = true;
 
