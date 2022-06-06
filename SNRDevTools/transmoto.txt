@@ -649,6 +649,12 @@ CleanerCoolDownSetting
 MadCleanerName
 MadCleanerTitle1
 CleanerKillCoolTimeSetting
+SamuraiName
+SamuraiTitle1
+SamuraiKillCoolSetting
+SamuraiSwordCoolSetting
+SamuraiScorpSetting
+SamuraiButtonName
 MayorFriendsName
 MayorFriendsTitle1
 MayorFriendsDescription

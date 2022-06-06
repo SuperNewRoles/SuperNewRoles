@@ -649,6 +649,12 @@ CoolDown
 MadCleaner
 Destroy the evidence and help impostors to win!
 Kill CoolDown
+Samurai
+Let's cut through the crew!
+KillCoolTime
+AttackCoolTime
+SamuraiScope
+UseSword!
 MayorFriends
 Let's abuse our power at the meeting.
 It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!

@@ -56,7 +56,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton CleanerButton;
         public static CustomButton MadCleanerButton;
         public static CustomButton FreezerButton;
-
+        public static CustomButton SamuraiButton;
         public static CustomButton VentMakerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
@@ -1028,6 +1028,8 @@ namespace SuperNewRoles.Buttons
                 49
             );
 
+            VentMakerButton.buttonText = ModTranslation.getString("VentMakerButtonName");
+            VentMakerButton.showButtonText = true;
             ArsonistIgniteButton.buttonText = ModTranslation.getString("ArsonistIgniteButtonName");
             ArsonistIgniteButton.showButtonText = true;
 
@@ -1321,10 +1323,37 @@ namespace SuperNewRoles.Buttons
                 49
             );
 
-
             FreezerButton.buttonText = ModTranslation.getString("FreezerButtonName");
             FreezerButton.showButtonText = true;
             FreezerButton.HasEffect = true;
+
+            SamuraiButton = new Buttons.CustomButton(
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.CanMove)
+                    {
+                        Samurai.SamuraiKill();
+                    }
+                },
+                () => { return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Samurai.isSamurai(PlayerControl.LocalPlayer) && !RoleClass.Samurai.Sword; },
+
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+
+                () => { Samurai.EndMeeting(); },
+                
+                RoleClass.Samurai.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            SamuraiButton.buttonText = ModTranslation.getString("SamuraiButtonName");
+            SamuraiButton.showButtonText = true;
 
             VentMakerButton = new CustomButton(
                 () =>
@@ -1356,6 +1385,7 @@ namespace SuperNewRoles.Buttons
 
             VentMakerButton.buttonText = ModTranslation.getString("VentMakerButtonName");
             VentMakerButton.showButtonText = true;
+
 
             setCustomButtonCooldowns();
 

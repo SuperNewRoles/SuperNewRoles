@@ -549,6 +549,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadCleaner):
                     Roles.RoleClass.MadCleaner.MadCleanerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Samurai):
+                    Roles.RoleClass.Samurai.SamuraiPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.MayorFriends):
                     Roles.RoleClass.MayorFriends.MayorFriendsPlayer.Add(player);
                     break;
@@ -843,11 +846,14 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Chief):
                     Roles.RoleClass.Chief.ChiefPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.Cleaner):
+                case (CustomRPC.RoleId.Cleaner):
                     Roles.RoleClass.Cleaner.CleanerPlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.MadCleaner):
                     Roles.RoleClass.MadCleaner.MadCleanerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Samurai):
+                    Roles.RoleClass.Samurai.SamuraiPlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.MayorFriends):
                     Roles.RoleClass.MayorFriends.MayorFriendsPlayer.RemoveAll(ClearRemove);
@@ -983,6 +989,7 @@ namespace SuperNewRoles
         {
             RoleId role = player.getRole();
             if (role == RoleId.Minimalist) return RoleClass.Minimalist.UseVent;
+            if (role == RoleId.Samurai) return RoleClass.Samurai.UseVent;
             else if (player.isImpostor()) return true;
             else if (player.isRole(RoleId.Jackal) || player.isRole(RoleId.Sidekick)) return RoleClass.Jackal.IsUseVent;
             else if (ModeHandler.isMode(ModeId.SuperHostRoles) && IsComms()) return false;
@@ -1063,6 +1070,7 @@ namespace SuperNewRoles
         {
             RoleId role = player.getRole();
             if (role == RoleId.Minimalist) return RoleClass.Minimalist.UseSabo;
+            if (role == RoleId.Samurai) return RoleClass.Samurai.UseSabo;
             else if (player.isImpostor()) return true;
             switch (role)
             {
@@ -1248,6 +1256,9 @@ namespace SuperNewRoles
                     case RoleId.Cleaner:
                         addition = RoleClass.Cleaner.KillCoolTime;
                         break;
+                    case RoleId.Samurai:
+                        addition = RoleClass.Samurai.KillCoolTime;
+                        break;
                 }
             }
             return addition;
@@ -1264,6 +1275,7 @@ namespace SuperNewRoles
                 case RoleId.OverKiller:
                 case RoleId.SerialKiller:
                 case RoleId.Cleaner:
+                case RoleId.Samurai:
                     return getCoolTime(p);
             }
             return PlayerControl.GameOptions.killCooldown;
@@ -1682,6 +1694,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.Cleaner.CleanerPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.Cleaner;
+                }
+                else if (Roles.RoleClass.Samurai.SamuraiPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Samurai;
                 }
                 else if (Roles.RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player))
                 {
