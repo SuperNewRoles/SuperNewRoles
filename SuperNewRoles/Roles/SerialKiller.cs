@@ -61,16 +61,16 @@ namespace SuperNewRoles.Roles
                         RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
                     }
                 }
-            }
-            if (IsViewButtonText && RoleClass.SerialKiller.IsSuicideView && PlayerControl.LocalPlayer.isAlive())
-            {
-                RoleClass.SerialKiller.SuicideKillText.text = string.Format(ModTranslation.getString("SerialKillerSuicideText"), ((int)RoleClass.SerialKiller.SuicideTime) + 1);
-            }
-            else
-            {
-                if (RoleClass.SerialKiller.SuicideKillText.text != "")
+                if (IsViewButtonText && RoleClass.SerialKiller.IsSuicideView && PlayerControl.LocalPlayer.isAlive())
                 {
-                    RoleClass.SerialKiller.SuicideKillText.text = "";
+                    RoleClass.SerialKiller.SuicideKillText.text = string.Format(ModTranslation.getString("SerialKillerSuicideText"), ((int)RoleClass.SerialKiller.SuicideTime) + 1);
+                }
+                else
+                {
+                    if (RoleClass.SerialKiller.SuicideKillText.text != "")
+                    {
+                        RoleClass.SerialKiller.SuicideKillText.text = "";
+                    }
                 }
             }
         }
@@ -88,7 +88,7 @@ namespace SuperNewRoles.Roles
                 {
                     RoleClass.SerialKiller.SuicideTimers[__instance.PlayerId] = RoleClass.SerialKiller.SuicideDefaultTime;
                 }
-                else if(ModeHandler.isMode(ModeId.Default))
+                else if (ModeHandler.isMode(ModeId.Default))
                 {
                     if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
                     {

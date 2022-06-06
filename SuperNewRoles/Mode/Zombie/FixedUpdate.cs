@@ -53,6 +53,7 @@ namespace SuperNewRoles.Mode.Zombie
                 if (!(AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)) return;
                 Mode.ModeHandler.HudUpdate(__instance);
                 if (IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.Zombie) && !HudManager.Instance.IsIntroDisplayed)
+                if (ModeHandler.isMode(ModeId.Zombie) && IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !HudManager.Instance.IsIntroDisplayed)
                 {
                     if (NameChangeTimer >= 0f)
                     {

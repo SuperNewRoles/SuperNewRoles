@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
@@ -12,10 +13,11 @@ using System.Linq;
 using System.Text;
 using UnhollowerBaseLib;
 using UnityEngine;
+using static MeetingHud;
 
 namespace SuperNewRoles.Patch
 {
-    
+
     /*
     [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.SetCosmetics))]
     class PlayerVoteAreaCosmetics
@@ -36,13 +38,24 @@ namespace SuperNewRoles.Patch
             updateNameplate(__instance, playerInfo.PlayerId);
         }
     }*/
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.VotingComplete))]
+    class VotingComplete
+    {
+        public static void Prefix(MeetingHud __instance, [HarmonyArgument(0)] VoterState[] states, [HarmonyArgument(1)] ref GameData.PlayerInfo exiled, [HarmonyArgument(2)] bool tie)
+        {
+            if (exiled != null && exiled.Object.IsBot() && RoleClass.Assassin.TriggerPlayer == null && main.RealExiled == null)
+            {
+                exiled = null;
+            }
+        }
+    }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
     class CheckForEndVotingPatch
     {
         public static bool Prefix(MeetingHud __instance)
         {
             try
-            {                
+            {
                 if (!AmongUsClient.Instance.AmHost) return true;
                 if (ModeHandler.isMode(ModeId.Detective) && Mode.Detective.main.IsNotDetectiveVote)
                 {
@@ -51,7 +64,8 @@ namespace SuperNewRoles.Patch
                         if (ps.TargetPlayerId == Mode.Detective.main.DetectivePlayer.PlayerId && !ps.DidVote)
                         {
                             return false;
-                        } else if(ps.TargetPlayerId == Mode.Detective.main.DetectivePlayer.PlayerId && ps.DidVote)
+                        }
+                        else if (ps.TargetPlayerId == Mode.Detective.main.DetectivePlayer.PlayerId && ps.DidVote)
                         {
                             MeetingHud.VoterState[] statesdetective;
                             GameData.PlayerInfo exiledPlayerdetective = PlayerControl.LocalPlayer.Data;
@@ -72,7 +86,8 @@ namespace SuperNewRoles.Patch
                                 exiledPlayerdetective = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == ps.VotedFor);
 
                                 __instance.RpcVotingComplete(statesdetective, exiledPlayerdetective, tiedetective); //RPC
-                            } else
+                            }
+                            else
                             {
 
                                 statesListdetective.Add(new MeetingHud.VoterState()
@@ -124,7 +139,8 @@ namespace SuperNewRoles.Patch
                         }
                         __instance.RpcVotingComplete(new List<MeetingHud.VoterState>().ToArray(), null, false);
                         return false;
-                    } else
+                    }
+                    else
                     {
                         foreach (var ps in __instance.playerStates)
                         {
@@ -189,6 +205,94 @@ namespace SuperNewRoles.Patch
                         return false;
                     }
                 }
+                else if (RoleClass.Assassin.TriggerPlayer != null)
+                {                    
+                    var (isVoteEnd, voteFor, voteArea) = assassinVoteState(__instance);
+
+                    SuperNewRolesPlugin.Logger.LogInfo(isVoteEnd+"、"+voteFor);
+                    if (isVoteEnd)
+                    {
+                        //GameData.PlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
+                        Il2CppStructArray<MeetingHud.VoterState> array =
+                            new Il2CppStructArray<MeetingHud.VoterState>(
+                                __instance.playerStates.Length);
+
+                        for (int i = 0; i < __instance.playerStates.Length; i++)
+                        {
+                            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                            if (playerVoteArea.TargetPlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId)
+                            {
+                                playerVoteArea.VotedFor = voteFor;
+                            }
+                            else
+                            {
+                                playerVoteArea.VotedFor = 254;
+                            }
+                            __instance.SetDirtyBit(1U);
+
+                            array[i] = new MeetingHud.VoterState
+                            {
+                                VoterId = playerVoteArea.TargetPlayerId,
+                                VotedForId = playerVoteArea.VotedFor
+                            };
+
+                        }
+                        GameData.PlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
+                        GameData.PlayerInfo exileplayer = null;
+                        if (target != null && target.Object.PlayerId != RoleClass.Assassin.TriggerPlayer.PlayerId && target.Object.IsPlayer())
+                        {
+                            var outfit = target.DefaultOutfit;
+                            exileplayer = target;
+                            PlayerControl exile = null;
+                            main.RealExiled = target.Object;
+                            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                            {
+                                foreach (PlayerControl p in BotManager.AllBots)
+                                {
+                                    if (p.isDead())
+                                    {
+                                        exileplayer = p.Data;
+                                        exile = p;
+                                        p.RpcSetColor((byte)outfit.ColorId);
+                                        p.RpcSetName(target.Object.getDefaultName() + 
+                                            ModTranslation.getString(target.Object.isRole(RoleId.Marine) ? 
+                                            "AssassinSucsess" : 
+                                            "AssassinFail")
+                                            + "<size=0%>");
+                                        p.RpcSetHat(outfit.HatId);
+                                        p.RpcSetVisor(outfit.VisorId);
+                                        p.RpcSetSkin(outfit.SkinId);
+                                        break;
+                                    }
+                                }
+                            }
+                            RoleClass.Assassin.MeetingEndPlayers.Add(RoleClass.Assassin.TriggerPlayer.PlayerId);
+                            if (target.Object.isRole(RoleId.Marine))
+                            {
+                                RoleClass.Assassin.IsImpostorWin = true;
+                            }
+                            else
+                            {
+                                RoleClass.Assassin.DeadPlayer = RoleClass.Assassin.TriggerPlayer;
+                            }
+                            new LateTask(() =>
+                            {
+                                if (exile != null)
+                                {
+                                    exile.RpcSetName(exile.getDefaultName());
+                                    exile.RpcSetColor(1);
+                                    exile.RpcSetHat("hat_NoHat");
+                                    exile.RpcSetPet("peet_EmptyPet");
+                                    exile.RpcSetVisor("visor_EmptyVisor");
+                                    exile.RpcSetNamePlate("nameplate_NoPlate");
+                                    exile.RpcSetSkin("skin_None");
+                                }
+                            }, 5f);
+                        }
+                        new LateTask(() => __instance.RpcVotingComplete(array, exileplayer, true), 0.2f);
+                    }
+                    return false;
+                }
                 else
                 {
                     foreach (var ps in __instance.playerStates)
@@ -231,7 +335,7 @@ namespace SuperNewRoles.Patch
                             });
                             if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor))
                             {
-                                for (var i2 = 0; i2 < RoleClass.Mayor.AddVote-1; i2++)
+                                for (var i2 = 0; i2 < RoleClass.Mayor.AddVote - 1; i2++)
                                 {
                                     statesList.Add(new MeetingHud.VoterState()
                                     {
@@ -242,7 +346,18 @@ namespace SuperNewRoles.Patch
                             }
                             else if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MadMayor))
                             {
-                                for (var i2 = 0; i2 < RoleClass.MadMayor.AddVote-1; i2++)
+                                for (var i2 = 0; i2 < RoleClass.MadMayor.AddVote - 1; i2++)
+                                {
+                                    statesList.Add(new MeetingHud.VoterState()
+                                    {
+                                        VoterId = ps.TargetPlayerId,
+                                        VotedForId = ps.VotedFor
+                                    });
+                                }
+                            }
+                            else if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MayorFriends))
+                            {
+                                for (var i2 = 0; i2 < RoleClass.MayorFriends.AddVote - 1; i2++)
                                 {
                                     statesList.Add(new MeetingHud.VoterState()
                                     {
@@ -276,6 +391,75 @@ namespace SuperNewRoles.Patch
 
                 exiledPlayer = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tie && info.PlayerId == exileId);
 
+                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                {
+                    if (exiledPlayer != null && exiledPlayer.Object.isRole(RoleId.Assassin))
+                    {
+                        main.RealExiled = exiledPlayer.Object;
+                        PlayerControl exile = null;
+                        PlayerControl defaultexile = exiledPlayer.Object;
+                        var outfit = defaultexile.Data.DefaultOutfit;
+                        foreach (PlayerControl p in BotManager.AllBots)
+                        {
+                            if (p.isDead())
+                            {
+                                exiledPlayer = p.Data;
+                                exile = p;
+                                exile.RpcSetColor((byte)outfit.ColorId);
+                                exile.RpcSetName(defaultexile.getDefaultName());
+                                exile.RpcSetHat(outfit.HatId);
+                                exile.RpcSetVisor(outfit.VisorId);
+                                exile.RpcSetSkin(outfit.SkinId);
+                                break;
+                            }
+                        }
+                        new LateTask(() => {
+                            if (exile != null)
+                            {
+                                exile.RpcSetName(exile.getDefaultName());
+                                exile.RpcSetColor(1);
+                                exile.RpcSetHat("hat_NoHat");
+                                exile.RpcSetPet("peet_EmptyPet");
+                                exile.RpcSetVisor("visor_EmptyVisor");
+                                exile.RpcSetNamePlate("nameplate_NoPlate");
+                                exile.RpcSetSkin("skin_None");
+                            }
+                        }, 5f);
+                    }
+                    if (Bakery.BakeryAlive())
+                    {
+                        if (exiledPlayer == null)
+                        {
+                            foreach (PlayerControl p in BotManager.AllBots)
+                            {
+                                if (p.isDead())
+                                {
+                                    p.getDefaultName();
+                                    exiledPlayer = p.Data;
+                                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                                    {
+                                        if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
+                                        {
+                                            p.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + TranslationController.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
+                                {
+                                    exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + exiledPlayer.Object.getDefaultName(), p2);
+                                }
+                            }
+                        }
+                    }
+                }
+
                 __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
 
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
@@ -284,7 +468,8 @@ namespace SuperNewRoles.Patch
                     {
                         foreach (var pc in PlayerControl.AllPlayerControls)
                             if (NotBlackOut.IsAntiBlackOut(pc) && (pc.isDead() || pc.PlayerId == exiledPlayer?.PlayerId)) pc.ResetPlayerCam(19f);
-                    } else
+                    }
+                    else
                     {
                         foreach (var pc in PlayerControl.AllPlayerControls)
                             if (NotBlackOut.IsAntiBlackOut(pc) && (pc.isDead() || pc.PlayerId == exiledPlayer?.PlayerId)) pc.ResetPlayerCam(15f);
@@ -294,10 +479,9 @@ namespace SuperNewRoles.Patch
             }
             catch (Exception ex)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("エラー:"+ex);
+                SuperNewRolesPlugin.Logger.LogInfo("エラー:" + ex);
                 throw;
             }
-            return false;
         }
         public static bool isMayor(byte id)
         {/*
@@ -305,6 +489,26 @@ namespace SuperNewRoles.Patch
             if (player == null) return false;
             */
             return false;
+        }
+        private static Tuple<bool, byte, PlayerVoteArea> assassinVoteState(MeetingHud __instance)
+        {
+            bool isVoteEnd = false;
+            byte voteFor = byte.MaxValue;
+            PlayerVoteArea area = null;
+
+            for (int i = 0; i < __instance.playerStates.Length; i++)
+            {
+                PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                if (playerVoteArea.TargetPlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId)
+                {
+                    isVoteEnd = playerVoteArea.DidVote || playerVoteArea.AmDead;
+                    voteFor = playerVoteArea.VotedFor;
+                    area = playerVoteArea;
+                    break;
+                }
+            }
+
+            return Tuple.Create(isVoteEnd, voteFor, area);
         }
     }
 
@@ -325,11 +529,56 @@ namespace SuperNewRoles.Patch
                     int VoteNum = 1;
                     if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor)) VoteNum = RoleClass.Mayor.AddVote;
                     else if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MadMayor)) VoteNum = RoleClass.MadMayor.AddVote;
+                    else if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MayorFriends)) VoteNum = RoleClass.MayorFriends.AddVote;
                     dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out num) ? VoteNum : num + VoteNum;
                 }
             }
             return dic;
         }
+    }
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.SetForegroundForDead))]
+    class MeetingHudSetForegroundForDeadPatch
+    {
+        public static bool Prefix(
+            MeetingHud __instance)
+        {
+
+            if (RoleClass.Assassin.TriggerPlayer == null) { return true; }
+
+            if (!RoleClass.Assassin.TriggerPlayer.AmOwner)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
+    class MeetingHudUpdateButtonsPatch
+    {
+        public static bool PreFix(MeetingHud __instance)
+        {
+            if (RoleClass.Assassin.TriggerPlayer == null) { return true; }
+
+            if (AmongUsClient.Instance.AmHost)
+            {
+                for (int i = 0; i < __instance.playerStates.Length; i++)
+                {
+                    PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                    GameData.PlayerInfo playerById = GameData.Instance.GetPlayerById(
+                        playerVoteArea.TargetPlayerId);
+                    if (playerById == null)
+                    {
+                        playerVoteArea.SetDisabled();
+                    }
+                }
+            }
+
+            return false;
+        }
+
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     class MeetingHudStartPatch
@@ -341,7 +590,8 @@ namespace SuperNewRoles.Patch
         {
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
-                new LateTask(() => {
+                new LateTask(() =>
+                {
                     SyncSetting.CustomSyncSettings();
                 }, 3f, "StartMeeting_CustomSyncSetting");
             }

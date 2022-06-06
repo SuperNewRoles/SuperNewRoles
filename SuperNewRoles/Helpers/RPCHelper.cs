@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using static MeetingHud;
 
 namespace SuperNewRoles.Helpers
 {
@@ -81,6 +82,19 @@ namespace SuperNewRoles.Helpers
                 writer.Write(id);
                 writer.EndRPC();
             }
+        }
+
+        public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, GameData.PlayerInfo exiled, bool tie, PlayerControl SeePlayer)
+        {
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 23, SendOption.None, SeePlayer.getClientId());
+            val.WritePacked(states.Length);
+            foreach (VoterState voterState in states)
+            {
+                voterState.Serialize(val);
+            }
+            val.Write(exiled?.PlayerId ?? byte.MaxValue);
+            val.Write(tie);
+            val.EndMessage();
         }
         /// <summary>
         /// 通常のRPCのExiled

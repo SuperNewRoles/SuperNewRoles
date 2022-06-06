@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles
                     }
                     return;
                 }
-                else if (__instance == PlayerControl.LocalPlayer && RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(__instance)) {
+                else if (__instance == PlayerControl.LocalPlayer && __instance.isRole(CustomRPC.RoleId.EvilGambler)) {
                     if (RoleClass.EvilGambler.GetSuc()) {
                         //成功
                         PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);

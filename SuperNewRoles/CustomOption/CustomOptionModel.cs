@@ -9,6 +9,8 @@ using System.Reflection;
 using System.Text;
 using UnityEngine.Events;
 using SuperNewRoles.Mode;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Intro;
 
 namespace SuperNewRoles.CustomOption
 {
@@ -196,16 +198,35 @@ namespace SuperNewRoles.CustomOption
             }
         }
     }
-
     public class CustomRoleOption : CustomOption
     {
+        public static List<CustomRoleOption> RoleOptions = new List<CustomRoleOption>();
+
         public CustomOption countOption = null;
+
+        public RoleId RoleId;
 
         public int rate
         {
             get
             {
                 return getSelection();
+            }
+        }
+
+        public bool isRoleEnable
+        {
+            get
+            {
+                return getSelection() != 0;
+            }
+        }
+
+        public IntroDate Intro
+        {
+            get
+            {
+                return IntroDate.GetIntroDate(RoleId);
             }
         }
 
@@ -231,6 +252,14 @@ namespace SuperNewRoles.CustomOption
         public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15) :
             base(id, isSHROn, type, CustomOptions.cs(color, name), CustomOptions.rates, "", null, true, false, "")
         {
+            try
+            {
+                this.RoleId = IntroDate.IntroDatas.FirstOrDefault((_) => {
+                    return _.NameKey + "Name" == name;
+                }).RoleId;
+            }
+            catch { }
+            RoleOptions.Add(this);
             if (max > 1)
                 countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
         }
@@ -1005,7 +1034,7 @@ namespace SuperNewRoles.CustomOption
     {
         public static void Postfix(KeyboardJoystick __instance)
         {
-            if ((Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7)) && (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined || AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started))
+            if ((Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7)))
             {
                 SuperNewRolesPlugin.optionsPage = SuperNewRolesPlugin.optionsPage + 1;
             }

@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
@@ -11,18 +11,18 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
-    class TeleportingJackal
+    class JackalSeer
     {
         public static void resetCoolDown()
         {
-            HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.TeleportingJackal.KillCoolDown;
-            HudManagerStartPatch.JackalKillButton.Timer = RoleClass.TeleportingJackal.KillCoolDown;
+            HudManagerStartPatch.JackalSeerKillButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
+            HudManagerStartPatch.JackalSeerKillButton.Timer = RoleClass.JackalSeer.KillCoolDown;
+            HudManagerStartPatch.JackalSeerSidekickButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
+            HudManagerStartPatch.JackalSeerSidekickButton.Timer = RoleClass.JackalSeer.KillCoolDown;
         }
-        public static void EndMeeting()
+       public static void EndMeeting()
         {
             resetCoolDown();
-            HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.TeleportingJackal.CoolTime;
-            RoleClass.TeleportingJackal.ButtonTimer = DateTime.Now;
         }
         public static void setPlayerOutline(PlayerControl target, Color color)
         {
@@ -31,9 +31,9 @@ namespace SuperNewRoles.Roles
             target.MyRend.material.SetFloat("_Outline", 1f);
             target.MyRend.material.SetColor("_OutlineColor", color);
         }
-        public class JackalFixedPatch
+        public class JackalSeerFixedPatch
         {
-            public static PlayerControl TeleportingJackalsetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+            public static PlayerControl JackalSeersetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
             {
                 PlayerControl result = null;
                 float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
@@ -74,55 +74,36 @@ namespace SuperNewRoles.Roles
                 }
                 return result;
             }
-            static void TeleportingJackalPlayerOutLineTarget()
+            static void JackalSeerPlayerOutLineTarget()
             {
-                setPlayerOutline(TeleportingJackalsetTarget(), RoleClass.TeleportingJackal.color);
+                setPlayerOutline(JackalSeersetTarget(), RoleClass.JackalSeer.color);
             }
             public static void Postfix(PlayerControl __instance)
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-
+                    if (RoleClass.JackalSeer.SidekickSeerPlayer.Count != 0)
+                    {
+                        var upflag = true;
+                        foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer)
+                        {
+                            if (p.isAlive())
+                            {
+                                upflag = false;
+                            }
+                        }
+                        if (upflag)
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SidekickSeerPromotes, Hazel.SendOption.Reliable, -1);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            RPCProcedure.SidekickSeerPromotes();
+                        }
+                    }
                 }
-                if (PlayerControl.LocalPlayer.isRole(RoleId.TeleportingJackal))
+                if (PlayerControl.LocalPlayer.isRole(RoleId.JackalSeer))
                 {
-                    TeleportingJackalPlayerOutLineTarget();
+                    JackalSeerPlayerOutLineTarget();
                 }
-            }
-        }
-    
-       
-        public static void ResetCoolDown()
-        {
-            HudManagerStartPatch.TeleporterButton.MaxTimer = RoleClass.TeleportingJackal.CoolTime;
-            RoleClass.TeleportingJackal.ButtonTimer = DateTime.Now;
-        }
-        public static void TeleportStart()
-        {
-            List<PlayerControl> aliveplayers = new List<PlayerControl>();
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-            {
-                if (p.isAlive() && p.CanMove)
-                {
-                    aliveplayers.Add(p);
-                }
-            }
-            var player = ModHelpers.GetRandom<PlayerControl>(aliveplayers);
-            CustomRPC.RPCProcedure.TeleporterTP(player.PlayerId);
-
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
-            Writer.Write(player.PlayerId);
-            AmongUsClient.Instance.FinishRpcImmediately(Writer);
-        }
-        public static bool IsTeleportingJackal(PlayerControl Player)
-        {
-            if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(Player))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
     }

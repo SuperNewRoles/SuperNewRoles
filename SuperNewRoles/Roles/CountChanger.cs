@@ -203,6 +203,26 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
+        public static bool IsChangeSidekick(this PlayerControl p)
+        {
+            var getroledata = GetRoleType(p);
+            if (getroledata == TeamRoleType.Crewmate)
+            {
+                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(CustomRPC.RoleId.Jackal)) return true;
+                }
+                else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(CustomRPC.RoleId.Jackal)) return true;
+                }
+                else
+                {
+                    return p.isRole(CustomRPC.RoleId.Sidekick);
+                }
+            }
+            return false;
+        }
         public static bool IsChangeJackalFriends(this PlayerControl p)
         {
             var getroledata = GetRoleType(p);
@@ -239,6 +259,46 @@ namespace SuperNewRoles.Roles
                 else
                 {
                     return p.isRole(CustomRPC.RoleId.SeerFriends);
+                }
+            }
+            return false;
+        }
+        public static bool IsChangeJackalSeer(this PlayerControl p)
+        {
+            var getroledata = GetRoleType(p);
+            if (getroledata == TeamRoleType.Crewmate)
+            {
+                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(CustomRPC.RoleId.Jackal)) return true;
+                }
+                else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(CustomRPC.RoleId.Jackal)) return true;
+                }
+                else
+                {
+                    return p.isRole(CustomRPC.RoleId.JackalSeer);
+                }
+            }
+            return false;
+        }
+        public static bool IsChangeSidekickSeer(this PlayerControl p)
+        {
+            var getroledata = GetRoleType(p);
+            if (getroledata == TeamRoleType.Crewmate)
+            {
+                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(CustomRPC.RoleId.Jackal)) return true;
+                }
+                else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(CustomRPC.RoleId.Jackal)) return true;
+                }
+                else
+                {
+                    return p.isRole(CustomRPC.RoleId.SidekickSeer);
                 }
             }
             return false;
