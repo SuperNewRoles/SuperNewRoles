@@ -96,7 +96,7 @@ namespace SuperNewRoles.Mode
                 SuperHostRoles.BlockTool.IsCom = false;
             }
         }
-        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName"), ModTranslation.getString("DetectiveModeName"), ModTranslation.getString("LevelUpModeName") };
+        public static string[] modes = new string[] { ModTranslation.getString("HideAndSeekModeName"), ModTranslation.getString("SuperHostRolesModeName"), ModTranslation.getString("BattleRoyalModeName"), ModTranslation.getString("ZombieModeName"), ModTranslation.getString("RandomColorModeName"), ModTranslation.getString("NotImpostorCheckModeName"), ModTranslation.getString("DetectiveModeName"), };//ModTranslation.getString("LevelUpModeName") };
         public static CustomOptionBlank Mode;
         public static CustomOption.CustomOption ModeSetting;
         public static CustomOption.CustomOption ThisModeSetting;
@@ -281,7 +281,7 @@ namespace SuperNewRoles.Mode
                 case ModeId.Detective:
                     return ModeSetting.getBool() && ThisModeSetting.getString() == modes[6];
                 case ModeId.LevelUp:
-                    return ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
+                    return false;// ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
             }
             return false;
         }

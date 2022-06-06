@@ -3,6 +3,7 @@ using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static MeetingHud;
 
 namespace SuperNewRoles.Helpers
 {
@@ -58,7 +59,7 @@ namespace SuperNewRoles.Helpers
             if (TargetPlayer == null || Chat == null) return;
             if (SeePlayer == null) SeePlayer = TargetPlayer;
             var clientId = SeePlayer.getClientId();
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SendChat, SendOption.Reliable, clientId);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SendChat, SendOption.None, clientId);
             writer.Write(Chat);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
@@ -71,13 +72,26 @@ namespace SuperNewRoles.Helpers
                 writer.EndRPC();
             }
         }
+
+        public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, GameData.PlayerInfo exiled, bool tie, PlayerControl SeePlayer)
+        {
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 23, SendOption.None, SeePlayer.getClientId());
+            val.WritePacked(states.Length);
+            foreach (VoterState voterState in states)
+            {
+                voterState.Serialize(val);
+            }
+            val.Write(exiled?.PlayerId ?? byte.MaxValue);
+            val.Write(tie);
+            val.EndMessage();
+        }
         /// <summary>
         /// 通常のRPCのExiled
         /// </summary>
         public static void RpcInnerExiled(this PlayerControl TargetPlayer)
         {
             if (TargetPlayer == null) return;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.Exiled, Hazel.SendOption.Reliable);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.Exiled, SendOption.None);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             TargetPlayer.Exiled();
         }

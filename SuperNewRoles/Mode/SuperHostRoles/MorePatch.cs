@@ -33,16 +33,19 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SyncSetting.CustomSyncSettings();
             if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {
-                if ((player.isRole(RoleId.Jackal) && !RoleClass.Jackal.IsUseSabo) || player.isRole(RoleId.Demon) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.Sheriff) || player.isRole(RoleId.truelover) || player.isRole(RoleId.FalseCharges) || player.isRole(RoleId.MadMaker)) return false;
+                if ((player.isRole(RoleId.Jackal) && !RoleClass.Jackal.IsUseSabo) || player.isRole(RoleId.Demon) || player.isRole(RoleId.Arsonist) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.Sheriff) || player.isRole(RoleId.truelover) || player.isRole(RoleId.FalseCharges) || player.isRole(RoleId.MadMaker)) return false;
                 if (!RoleClass.Minimalist.UseSabo && player.isRole(CustomRPC.RoleId.Minimalist)) return false;
                 if (!RoleClass.Egoist.UseSabo && player.isRole(CustomRPC.RoleId.Egoist)) return false;
             }
             if (PlayerControl.LocalPlayer.IsUseVent() && RoleHelpers.IsComms())
             {
-                var data = BattleRoyal.main.VentData[PlayerControl.LocalPlayer.PlayerId];
-                if (data != null)
+                if (BattleRoyal.main.VentData.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
                 {
-                    PlayerControl.LocalPlayer.MyPhysics.RpcExitVent((int)data);
+                    var data = BattleRoyal.main.VentData[PlayerControl.LocalPlayer.PlayerId];
+                    if (data != null)
+                    {
+                        PlayerControl.LocalPlayer.MyPhysics.RpcExitVent((int)data);
+                    }
                 }
             }
             return true;
@@ -58,7 +61,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void MeetingEnd()
         {
-            FixedUpdate.SetDefaultNames();
         }
     }
 }

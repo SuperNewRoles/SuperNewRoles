@@ -1,5 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using System;
@@ -16,6 +18,9 @@ namespace SuperNewRoles.Roles
     {
         public static void Postfix(MeetingHud __instance)
         {
+            if (RoleClass.Assassin.TriggerPlayer != null) {
+                __instance.TitleText.text = ModTranslation.getString("MarineWhois");
+            }
             if (!IsFlag) return;
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
@@ -113,6 +118,8 @@ namespace SuperNewRoles.Roles
             if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            if (RoleClass.JackalFriends.JackalFriendsPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            if (RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
             return false;
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)

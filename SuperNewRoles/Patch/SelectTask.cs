@@ -25,9 +25,6 @@ namespace SuperNewRoles.Patch
                 }
                 if (ModeHandler.isMode(ModeId.SuperHostRoles) || ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 {
-                    PlayerControl.GameOptions.NumCommonTasks = 100;
-                    PlayerControl.GameOptions.NumShortTasks = 100;
-                    PlayerControl.GameOptions.NumLongTasks = 100;
                     var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
                     var TasksList = ModHelpers.generateTasks(commont, shortt, longt);
                     taskTypeIds = new UnhollowerBaseLib.Il2CppStructArray<byte>(TasksList.Count);
@@ -35,9 +32,6 @@ namespace SuperNewRoles.Patch
                     {
                         taskTypeIds[i] = TasksList[i];
                     }
-                    PlayerControl.GameOptions.NumCommonTasks = SyncSetting.OptionData.NumCommonTasks;
-                    PlayerControl.GameOptions.NumShortTasks = SyncSetting.OptionData.NumShortTasks;
-                    PlayerControl.GameOptions.NumLongTasks = SyncSetting.OptionData.NumLongTasks;
                 }
             }
         }
@@ -76,6 +70,45 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.MadSeerCommonTask.getFloat();
                     int shortt = (int)CustomOptions.MadSeerShortTask.getFloat();
                     int longt = (int)CustomOptions.MadSeerLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }
+            else if (p.isRole(RoleId.JackalFriends))
+            {
+                if (CustomOptions.JackalFriendsIsCheckJackal.getBool())
+                {
+                    int commont = (int)CustomOptions.JackalFriendsCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.JackalFriendsShortTask.getFloat();
+                    int longt = (int)CustomOptions.JackalFriendsLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }
+            else if (p.isRole(RoleId.SeerFriends))
+            {
+                if (CustomOptions.SeerFriendsIsCheckJackal.getBool())
+                {
+                    int commont = (int)CustomOptions.SeerFriendsCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.SeerFriendsShortTask.getFloat();
+                    int longt = (int)CustomOptions.SeerFriendsLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }
+            else if (p.isRole(RoleId.MayorFriends))
+            {
+                if (CustomOptions.MayorFriendsIsCheckJackal.getBool())
+                {
+                    int commont = (int)CustomOptions.MayorFriendsCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.MayorFriendsShortTask.getFloat();
+                    int longt = (int)CustomOptions.MayorFriendsLongTask.getFloat();
                     if (!(commont == 0 && shortt == 0 && longt == 0))
                     {
                         return (commont, shortt, longt);
