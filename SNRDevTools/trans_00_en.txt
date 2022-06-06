@@ -634,3 +634,5 @@ CoolDown
 MadCleaner
 Destroy the evidence and help impostors to win!
 Kill CoolDown
+MayorFriends
+Let's abuse our power at the meeting.
