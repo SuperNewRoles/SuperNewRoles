@@ -315,6 +315,7 @@ Let's put them all on ice.
 Freeze Cool Time
 Freeze duration
 Freeze
+Speeder
 Slow everyone down and sabotage your crewmates!
 Try to slow everyone down and sabotage the task!
 Sabotage Cool Time
@@ -633,3 +634,5 @@ CoolDown
 MadCleaner
 Destroy the evidence and help impostors to win!
 Kill CoolDown
+MayorFriends
+Let's abuse our power at the meeting.
