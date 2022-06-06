@@ -57,6 +57,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton MadCleanerButton;
         public static CustomButton FreezerButton;
 
+        public static CustomButton VentMakerButton;
+
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
 
@@ -915,6 +917,7 @@ namespace SuperNewRoles.Buttons
             MadMakerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
             MadMakerSidekickButton.showButtonText = true;
 
+
             RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(HudManager.Instance.KillButton.cooldownTimerText, HudManager.Instance.KillButton.cooldownTimerText.transform.parent);
             RoleClass.SerialKiller.SuicideKillText.text = "";
             RoleClass.SerialKiller.SuicideKillText.enableWordWrapping = false;
@@ -1025,6 +1028,8 @@ namespace SuperNewRoles.Buttons
                 49
             );
 
+            VentMakerButton.buttonText = ModTranslation.getString("VentMakerButtonName");
+            VentMakerButton.showButtonText = true;
             ArsonistIgniteButton.buttonText = ModTranslation.getString("ArsonistIgniteButtonName");
             ArsonistIgniteButton.showButtonText = true;
 
@@ -1322,6 +1327,37 @@ namespace SuperNewRoles.Buttons
             FreezerButton.buttonText = ModTranslation.getString("FreezerButtonName");
             FreezerButton.showButtonText = true;
             FreezerButton.HasEffect = true;
+
+            VentMakerButton = new CustomButton(
+                () =>
+                {
+                    RoleClass.VentMaker.VentCount++;
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.MakeVent);
+                    writer.Write(PlayerControl.LocalPlayer.transform.position.x);
+                    writer.Write(PlayerControl.LocalPlayer.transform.position.y);
+                    writer.Write(PlayerControl.LocalPlayer.transform.position.z);
+                    writer.EndRPC();
+                    CustomRPC.RPCProcedure.MakeVent(PlayerControl.LocalPlayer.transform.position.x,PlayerControl.LocalPlayer.transform.position.y,PlayerControl.LocalPlayer.transform.position.z);
+                    GameObject Vent = GameObject.Find("VentMakerVent" + ShipStatus.Instance.AllVents.Select(x => x.Id).Max().ToString());
+                    RoleClass.VentMaker.Vent = Vent.GetComponent<Vent>();
+                    if (RoleClass.VentMaker.VentCount == 2) RoleClass.VentMaker.IsMakeVent = false;
+                },
+                () => { return RoleClass.VentMaker.IsMakeVent && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.VentMaker); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { },
+                RoleClass.VentMaker.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+
+            VentMakerButton.buttonText = ModTranslation.getString("VentMakerButtonName");
+            VentMakerButton.showButtonText = true;
 
             setCustomButtonCooldowns();
 

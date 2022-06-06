@@ -138,6 +138,7 @@ namespace SuperNewRoles.Roles
             Cleaner.ClearAndReload();
             MadCleaner.ClearAndReload();
             MayorFriends.ClearAndReload();
+            VentMaker.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -486,7 +487,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(100, 149, 237, byte.MaxValue);
             public static float CoolTime;
             public static float DurationTime;
-            public static Dictionary<byte,bool> IsShield;
+            public static Dictionary<byte, bool> IsShield;
             private static Sprite ButtonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -1811,6 +1812,7 @@ namespace SuperNewRoles.Roles
                 CreatePlayers = new List<int>();
             }
         }
+
         public static class Demon
         {
             public static List<PlayerControl> DemonPlayer;
@@ -2103,6 +2105,28 @@ namespace SuperNewRoles.Roles
                 }
                 JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MayorFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
                 AddVote = (int)CustomOptions.MayorFriendsVoteCount.getFloat();
+            }
+        }
+        public static class VentMaker
+        {
+            public static List<PlayerControl> VentMakerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static Vent Vent;
+            public static int VentCount;
+            public static bool IsMakeVent;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                VentMakerPlayer = new List<PlayerControl>();
+                Vent = null;
+                VentCount = 0;
+                IsMakeVent = true;
             }
         }
         //新ロールクラス
