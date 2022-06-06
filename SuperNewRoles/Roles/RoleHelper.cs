@@ -555,6 +555,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MayorFriends):
                     Roles.RoleClass.MayorFriends.MayorFriendsPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.VentMaker):
+                    Roles.RoleClass.VentMaker.VentMakerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -855,7 +858,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MayorFriends):
                     Roles.RoleClass.MayorFriends.MayorFriendsPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                case (CustomRPC.RoleId.VentMaker):
+                    Roles.RoleClass.VentMaker.VentMakerPlayer.RemoveAll(ClearRemove);
+                    break;
+                    //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -1629,6 +1635,22 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.MadMaker;
                 }
+                else if (Roles.RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.DarkKiller;
+                }
+                else if (Roles.RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Fox;
+                }
+                else if (Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.TeleportingJackal;
+                }
+                else if (Roles.RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadMaker;
+                }
                 else if (Roles.RoleClass.Demon.DemonPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.Demon;
@@ -1684,6 +1706,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.MayorFriends.MayorFriendsPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.MayorFriends;
+                }
+                else if (Roles.RoleClass.VentMaker.VentMakerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.VentMaker;
                 }
                 //ロールチェック
             }

@@ -653,3 +653,5 @@ SamuraiButtonName
 MayorFriendsName
 MayorFriendsTitle1
 MayorFriendsDescription
+VentMakerName
+VentMakerTitle1

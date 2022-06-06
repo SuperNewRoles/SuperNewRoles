@@ -2620,8 +2620,13 @@
       "SamuraiButtonName": {
         "0": "Attack!",
         "11": "\u5fc5\u6bba\u6280!"
+      },
+     "VentMakerName" : {
+       "0" : "VentMaker" ,
+        "11" : "\u30d9\u30f3\u30c8\u30e1\u30fc\u30ab\u30fc"
+      } ,
+    "VentMakerTitle1" : {
+        "0" : "Let's make a vent!" ,
+        "11" : "\u30d9\u30f3\u30c8\u3092\u4f5c\u308d\u3046\uff01"
       }
 }
-
-
-

@@ -915,6 +915,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SamuraiPlayerCount.getFloat();
                 case (RoleId.MayorFriends):
                     return CustomOption.CustomOptions.MayorFriendsPlayerCount.getFloat();
+                case (RoleId.VentMaker):
+                    return CustomOption.CustomOptions.VentMakerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -990,10 +992,11 @@ namespace SuperNewRoles
                         }
                     }
                 }
+
             }
 
             var Assassinselection = CustomOptions.AssassinAndMarineOption.getSelection();
-            SuperNewRolesPlugin.Logger.LogInfo("アサイン情報:"+Assassinselection+"、"+CrewMatePlayerNum+"、"+CrewMatePlayers.Count);
+            SuperNewRolesPlugin.Logger.LogInfo("アサイン情報:" + Assassinselection + "、" + CrewMatePlayerNum + "、" + CrewMatePlayers.Count);
             if (Assassinselection != 0 && CrewMatePlayerNum > 0 && CrewMatePlayers.Count > 0)
             {
                 if (Assassinselection == 10)
