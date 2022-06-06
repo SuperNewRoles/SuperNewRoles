@@ -315,6 +315,7 @@ Let's put them all on ice.
 Freeze Cool Time
 Freeze duration
 Freeze
+Speeder
 Slow everyone down and sabotage your crewmates!
 Try to slow everyone down and sabotage the task!
 Sabotage Cool Time
@@ -623,7 +624,7 @@ Douse Douse burn
 Douse Duration
 Douse
 Ignite
-If you oil them all and burn them, you win alone.
+If you oil them all and burn them. you win alone.
 Chief
 Appoint a sheriff to help your crew.
 Cleaner
