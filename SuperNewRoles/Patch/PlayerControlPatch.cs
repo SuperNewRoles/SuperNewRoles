@@ -580,7 +580,7 @@ namespace SuperNewRoles.Patches
                 }, 2f);
                 new LateTask(() =>
                 {
-                    __instance.RpcSendChat("\nマーリンは誰だ？");
+                    __instance.RpcSendChat($"\n{ModTranslation.getString("MarineWhois")}");
                 }, 2.5f);
                 new LateTask(() =>
                 {
@@ -611,7 +611,7 @@ namespace SuperNewRoles.Patches
                 }, 2f);
                 new LateTask(() =>
                 {
-                    target.RpcSendChat("\nマーリンは誰だ？");
+                    target.RpcSendChat($"\n{ModTranslation.getString("MarineWhois")}");
                 }, 2.5f);
                 new LateTask(() =>
                 {

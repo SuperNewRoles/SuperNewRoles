@@ -254,7 +254,11 @@ namespace SuperNewRoles.Patch
                                         exileplayer = p.Data;
                                         exile = p;
                                         p.RpcSetColor((byte)outfit.ColorId);
-                                        p.RpcSetName(target.Object.getDefaultName() + (target.Object.isRole(RoleId.Marine) ? ModTranslation.getString("AssassinSucsess") : ModTranslation.getString("AssassinFail")) + "<size=0%>");
+                                        p.RpcSetName(target.Object.getDefaultName() + 
+                                            ModTranslation.getString(target.Object.isRole(RoleId.Marine) ? 
+                                            "AssassinSucsess" : 
+                                            "AssassinFail")
+                                            + "<size=0%>");
                                         p.RpcSetHat(outfit.HatId);
                                         p.RpcSetVisor(outfit.VisorId);
                                         p.RpcSetSkin(outfit.SkinId);
