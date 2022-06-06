@@ -78,18 +78,6 @@ namespace SuperNewRoles.Patch
                     {
                         handled = true;
                         PlayerControl.LocalPlayer.RpcSetName(text.ToLower().Replace("/rename ", ""));
-                     else if (text.ToLower().StartsWith("/rename "))
-                        { // Unfortunately server holds this - need to do more trickery
-                            if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.CanBan())
-                            {
-                                handled = true;
-                                PlayerControl.LocalPlayer.RpcSetName(text.ToLower().Replace("/rename ", ""));
-                            }
-                        }
-                        else if (ModeHandler.isMode(ModeId.SuperHostRoles))
-                        {
-                            handled = Mode.SuperHostRoles.RoleChat.SendChat(__instance);
-                        }
                     }
 
                     if (AmongUsClient.Instance.GameMode == GameModes.FreePlay)
@@ -126,8 +114,8 @@ namespace SuperNewRoles.Patch
                         HudManager.Instance.Chat.TimeSinceLastMessage = 0f;
                         __instance.quickChatMenu.ResetGlyphs();
                     }
-                    return !handled;
                 }
+                return !handled;
             }
             [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.HostGame))]
             public static class InnerNetClientHostPatch
@@ -182,3 +170,4 @@ namespace SuperNewRoles.Patch
             }
         }
     }
+}
