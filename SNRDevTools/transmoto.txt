@@ -636,3 +636,4 @@ MadCleanerTitle1
 CleanerKillCoolTimeSetting
 MayorFriendsName
 MayorFriendsTitle1
+MayorFriendsDescription
