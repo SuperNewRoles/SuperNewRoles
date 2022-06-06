@@ -60,7 +60,7 @@ namespace SuperNewRoles
             return false;
         }
     }
-    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
+    [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]zs
     class startgamepatch
     {
         public static void Postfix()

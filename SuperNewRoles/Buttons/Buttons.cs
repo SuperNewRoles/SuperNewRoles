@@ -1319,6 +1319,10 @@ namespace SuperNewRoles.Buttons
                 49
             );
 
+            FreezerButton.buttonText = ModTranslation.getString("FreezerButtonName");
+            FreezerButton.showButtonText = true;
+            FreezerButton.HasEffect = true;
+
 
             SamuraiButton = new Buttons.CustomButton(
                 () =>
@@ -1328,12 +1332,13 @@ namespace SuperNewRoles.Buttons
                         Samurai.SamuraiKill();
                     }
                 },
-                () => { return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Samurai.isSamurai(PlayerControl.LocalPlayer); },
+                () => { return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Samurai.isSamurai(PlayerControl.LocalPlayer) && !RoleClass.Samurai.Sword; },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Samurai.EndMeeting(); },
+                
                 RoleClass.Samurai.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
@@ -1342,13 +1347,10 @@ namespace SuperNewRoles.Buttons
                 49
             );
 
-            SamuraiButton.buttonText = ModTranslation.getString("SelfBomberButtonName");
+            SamuraiButton.buttonText = ModTranslation.getString("SamuraiButtonName");
             SamuraiButton.showButtonText = true;
 
 
-            FreezerButton.buttonText = ModTranslation.getString("FreezerButtonName");
-            FreezerButton.showButtonText = true;
-            FreezerButton.HasEffect = true;
 
             setCustomButtonCooldowns();
 
