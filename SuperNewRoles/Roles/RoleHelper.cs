@@ -531,6 +531,12 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.JackalSeer):
                     Roles.RoleClass.JackalSeer.JackalSeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Assassin):
+                    Roles.RoleClass.Assassin.AssassinPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Marine):
+                    Roles.RoleClass.Marine.MarinePlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.Arsonist):
                     Roles.RoleClass.Arsonist.ArsonistPlayer.Add(player);
                     break;
@@ -821,6 +827,12 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.SidekickSeer):
                     Roles.RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Assassin):
+                    Roles.RoleClass.Assassin.AssassinPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Marine):
+                    Roles.RoleClass.Marine.MarinePlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.Arsonist):
                     Roles.RoleClass.Arsonist.ArsonistPlayer.RemoveAll(ClearRemove);
@@ -1625,6 +1637,14 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.SidekickSeer;
                 }
+                else if (Roles.RoleClass.Assassin.AssassinPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Assassin;
+                }
+                else if (Roles.RoleClass.Marine.MarinePlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Marine;
+                }
                 else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.SeerFriends;
@@ -1638,18 +1658,18 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.Chief;
                 }
                 else if (Roles.RoleClass.Cleaner.CleanerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Cleaner;
-            }
-            else if (Roles.RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MadCleaner;
-            }
-            else if (Roles.RoleClass.MayorFriends.MayorFriendsPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.MayorFriends;
-            }
-            //ロールチェック
+                {
+                    return CustomRPC.RoleId.Cleaner;
+                }
+                else if (Roles.RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MadCleaner;
+                }
+                else if (Roles.RoleClass.MayorFriends.MayorFriendsPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.MayorFriends;
+                }
+                //ロールチェック
             }
             catch (Exception e)
             {

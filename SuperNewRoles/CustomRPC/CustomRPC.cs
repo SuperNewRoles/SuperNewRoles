@@ -110,6 +110,8 @@ namespace SuperNewRoles.CustomRPC
         SeerFriends,
         JackalSeer,
         SidekickSeer,
+        Assassin,
+        Marine,
         Arsonist,
         Chief,
         Cleaner,
@@ -130,6 +132,7 @@ namespace SuperNewRoles.CustomRPC
         MeetingSheriffKill,
         CustomRPCKill,
         ReportDeadBody,
+        UncheckedMeeting,
         CleanBody,
         ExiledRPC,
         RPCMurderPlayer,
@@ -630,6 +633,11 @@ namespace SuperNewRoles.CustomRPC
             PlayerControl target = ModHelpers.playerById(targetId);
             if (source != null && target != null) source.ReportDeadBody(target.Data);
         }
+        public static void UncheckedMeeting(byte sourceId)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceId);
+            if (source != null) source.ReportDeadBody(null);
+        }
         public static void CleanBody(byte playerId)
         {
             DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
@@ -872,6 +880,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.ReportDeadBody:
                         RPCProcedure.ReportDeadBody(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.UncheckedMeeting:
+                        RPCProcedure.UncheckedMeeting(reader.ReadByte());
                         break;
                     case (byte)CustomRPC.CleanBody:
                         RPCProcedure.CleanBody(reader.ReadByte());

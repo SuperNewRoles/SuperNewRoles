@@ -81,6 +81,7 @@ namespace SuperNewRoles
         public static bool IsNotDesync = false;
         public static bool Prefix()
         {
+            AllRoleSetClass.SetPlayerNum();
             IsNotPrefix = false;
             IsSetRoleRpc = false;
             IsRPCSetRoleOK = true;
@@ -116,7 +117,7 @@ namespace SuperNewRoles
                         SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                     }
                 }
-                Mode.SuperHostRoles.RoleSelectHandler.RoleSelect();
+                RoleSelectHandler.RoleSelect();
                 foreach (PlayerControl player in AllRoleSetClass.impostors)
                 {
                     player.RpcSetRole(RoleTypes.Impostor);
@@ -162,7 +163,6 @@ namespace SuperNewRoles
             IsNotPrefix = true;
             if (ModeHandler.isMode(ModeId.Default))
             {
-                AllRoleSetClass.OneOrNotListSet();
                 AllRoleSetClass.AllRoleSet();
             }
             else if (ModeHandler.isMode(ModeId.Werewolf))
@@ -219,10 +219,10 @@ namespace SuperNewRoles
         public static void AllRoleSet()
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            SetPlayerNum();
             if (!ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 CrewOrImpostorSet();
+                OneOrNotListSet();
             }
             try
             {
@@ -394,6 +394,7 @@ namespace SuperNewRoles
             {
                 return;
             }
+            bool IsAssassinAssigned = false;
             bool IsNotEndRandomSelect = true;
             while (IsNotEndRandomSelect)
             {
@@ -422,6 +423,9 @@ namespace SuperNewRoles
                         {
 
                         }
+                    } else if (SelectRoleDate == RoleId.Assassin)
+                    {
+                        IsAssassinAssigned = true;
                     }
 
                     int PlayerCount = (int)GetPlayerCount(SelectRoleDate);
@@ -500,6 +504,41 @@ namespace SuperNewRoles
                                 Imponotonepar.RemoveAt(i - 1);
                             }
                         }
+                    }
+                }
+            }
+
+            //マーリンを選ぶ
+            if (IsAssassinAssigned)
+            {
+                int PlayerCount = (int)GetPlayerCount(RoleId.Marine);
+                SuperNewRolesPlugin.Logger.LogInfo("DATA:\n"+PlayerCount+"\n"+CrewMatePlayerNum+"\n"+CrewMatePlayers.Count);
+                if (PlayerCount >= CrewMatePlayerNum)
+                {
+                    for (int i = 1; i <= CrewMatePlayerNum; i++)
+                    {
+                        PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                        p.setRoleRPC(RoleId.Marine);
+                        CrewMatePlayers.Remove(p);
+                    }
+                    CrewMatePlayerNum = 0;
+                }
+                else if (PlayerCount >= CrewMatePlayers.Count)
+                {
+                    foreach (PlayerControl Player in CrewMatePlayers)
+                    {
+                        Player.setRoleRPC(RoleId.Marine);
+                    }
+                    CrewMatePlayerNum = 0;
+                }
+                else
+                {
+                    for (int i = 1; i <= PlayerCount; i++)
+                    {
+                        CrewMatePlayerNum--;
+                        PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
+                        p.setRoleRPC(RoleId.Marine);
+                        CrewMatePlayers.Remove(p);
                     }
                 }
             }
@@ -860,6 +899,10 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.SeerFriendsPlayerCount.getFloat();
                 case (RoleId.JackalSeer):
                     return CustomOption.CustomOptions.JackalSeerPlayerCount.getFloat();
+                case (RoleId.Assassin):
+                    return CustomOption.CustomOptions.AssassinPlayerCount.getFloat();
+                case (RoleId.Marine):
+                    return CustomOption.CustomOptions.MarinePlayerCount.getFloat();
                 case (RoleId.Arsonist):
                     return CustomOption.CustomOptions.ArsonistPlayerCount.getFloat();
                 case (RoleId.Chief):
@@ -932,13 +975,13 @@ namespace SuperNewRoles
                                 switch (intro.Team)
                                 {
                                     case TeamRoleType.Crewmate:
-                                        Crewonepar.Add(intro.RoleId);
+                                        Crewnotonepar.Add(intro.RoleId);
                                         break;
                                     case TeamRoleType.Impostor:
-                                        Impoonepar.Add(intro.RoleId);
+                                        Imponotonepar.Add(intro.RoleId);
                                         break;
                                     case TeamRoleType.Neutral:
-                                        Neutonepar.Add(intro.RoleId);
+                                        Neutnotonepar.Add(intro.RoleId);
                                         break;
                                 }
                             }
@@ -947,6 +990,22 @@ namespace SuperNewRoles
                 }
             }
 
+            var Assassinselection = CustomOptions.AssassinAndMarineOption.getSelection();
+            SuperNewRolesPlugin.Logger.LogInfo("アサイン情報:"+Assassinselection+"、"+CrewMatePlayerNum+"、"+CrewMatePlayers.Count);
+            if (Assassinselection != 0 && CrewMatePlayerNum > 0 && CrewMatePlayers.Count > 0)
+            {
+                if (Assassinselection == 10)
+                {
+                    Impoonepar.Add(RoleId.Assassin);
+                }
+                else
+                {
+                    for (int i = 1; i <= Assassinselection; i++)
+                    {
+                        Imponotonepar.Add(RoleId.Assassin);
+                    }
+                }
+            }
         }
     }
 }

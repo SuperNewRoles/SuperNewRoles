@@ -620,6 +620,16 @@ JackalSeerName,SeerJackal,ジャッカルシーア
 JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!
 SidekickSeerName,Sidekick(Seer),サイドキック(シーア)
 SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう
+AssassinAndMarineName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>
+AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=#ff0000>アサシン</color>の人数
+MarineSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数
+AssassinName,Assassin,アサシン
+AssassinTitle1,<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!,<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう
+AssassinSucsess,was marine.,はマーリンだった
+AssassinFail,was not marine.,はマーリンではなかった
+MarineName,Merine,マーリン
+MarineTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。
+MarineWhois,Who is Merine?,マーリンは誰だ？
 ArsonistName,Arsonist,アーソニスト
 ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ
 ArsonistDurationTimeSetting,Douse Duration,塗り時間
