@@ -287,7 +287,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     IsDemonVIew = true;
                 }
 
-                NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, Name + MySuffix);
+                NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "\n</size>" + ModHelpers.cs(introdate.color, Name + MySuffix);
             }
             bool IsArsonistVIew = false;
             if ((player.isDead() || player.isRole(RoleId.God)) && !IsUnchecked)
@@ -307,7 +307,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     IsArsonistVIew = true;
                 }
 
-                NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, Name + MySuffix);
+                NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "\n</size>" + ModHelpers.cs(introdate.color, Name + MySuffix);
             }
             if (!player.IsMod())
             {
