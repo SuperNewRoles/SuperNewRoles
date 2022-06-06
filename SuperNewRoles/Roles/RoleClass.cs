@@ -2114,6 +2114,13 @@ namespace SuperNewRoles.Roles
             public static Vent Vent;
             public static int VentCount;
             public static bool IsMakeVent;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 VentMakerPlayer = new List<PlayerControl>();

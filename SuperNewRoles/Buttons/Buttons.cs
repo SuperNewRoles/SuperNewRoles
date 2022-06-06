@@ -1348,7 +1348,7 @@ namespace SuperNewRoles.Buttons
                     return PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { },
-                RoleClass.Jackal.getButtonSprite(),
+                RoleClass.VentMaker.getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
