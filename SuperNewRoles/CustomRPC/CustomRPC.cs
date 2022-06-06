@@ -110,8 +110,13 @@ namespace SuperNewRoles.CustomRPC
         SeerFriends,
         JackalSeer,
         SidekickSeer,
+        Assassin,
+        Marine,
         Arsonist,
         Chief,
+        Cleaner,
+        MadCleaner,
+        MayorFriends,
         //RoleId
     }
 
@@ -127,6 +132,7 @@ namespace SuperNewRoles.CustomRPC
         MeetingSheriffKill,
         CustomRPCKill,
         ReportDeadBody,
+        UncheckedMeeting,
         CleanBody,
         ExiledRPC,
         RPCMurderPlayer,
@@ -170,6 +176,7 @@ namespace SuperNewRoles.CustomRPC
         SetSpeedDown,
         ShielderProtect,
         SetShielder,
+        SetSpeedFreeze,
     }
     public static class RPCProcedure
     {
@@ -626,6 +633,11 @@ namespace SuperNewRoles.CustomRPC
             PlayerControl target = ModHelpers.playerById(targetId);
             if (source != null && target != null) source.ReportDeadBody(target.Data);
         }
+        public static void UncheckedMeeting(byte sourceId)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceId);
+            if (source != null) source.ReportDeadBody(null);
+        }
         public static void CleanBody(byte playerId)
         {
             DeadBody[] array = UnityEngine.Object.FindObjectsOfType<DeadBody>();
@@ -781,6 +793,10 @@ namespace SuperNewRoles.CustomRPC
         {
             RoleClass.Speeder.IsSpeedDown = Is;
         }
+        public static void SetSpeedFreeze(bool Is)
+        {
+            RoleClass.Freezer.IsSpeedDown = Is;
+        }
         public static void ShielderProtect(byte sourceId, byte targetId, byte colorid)
         {
             PlayerControl source = ModHelpers.playerById(sourceId);
@@ -791,7 +807,7 @@ namespace SuperNewRoles.CustomRPC
             source.ProtectPlayer(target, colorid);
             if (targetId == PlayerControl.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
         }
-        public static void SetShielder(byte PlayerId,bool Is)
+        public static void SetShielder(byte PlayerId, bool Is)
         {
             RoleClass.Shielder.IsShield[PlayerId] = (RoleClass.Shielder.IsShield[PlayerId] = Is);
         }
@@ -864,6 +880,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.ReportDeadBody:
                         RPCProcedure.ReportDeadBody(reader.ReadByte(), reader.ReadByte());
+                        break;
+                    case (byte)CustomRPC.UncheckedMeeting:
+                        RPCProcedure.UncheckedMeeting(reader.ReadByte());
                         break;
                     case (byte)CustomRPC.CleanBody:
                         RPCProcedure.CleanBody(reader.ReadByte());
@@ -992,10 +1011,13 @@ namespace SuperNewRoles.CustomRPC
                         SetSpeedDown(reader.ReadBoolean());
                         break;
                     case (byte)CustomRPC.ShielderProtect:
-                        ShielderProtect(reader.ReadByte(),reader.ReadByte(),reader.ReadByte());
+                        ShielderProtect(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRPC.SetShielder:
-                        SetShielder(reader.ReadByte(),reader.ReadBoolean());
+                        SetShielder(reader.ReadByte(), reader.ReadBoolean());
+                        break;
+                    case (byte)CustomRPC.SetSpeedFreeze:
+                        SetSpeedFreeze(reader.ReadBoolean());
                         break;
                 }
             }

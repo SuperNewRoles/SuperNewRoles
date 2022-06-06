@@ -1,5 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
 using System;
@@ -16,6 +18,9 @@ namespace SuperNewRoles.Roles
     {
         public static void Postfix(MeetingHud __instance)
         {
+            if (RoleClass.Assassin.TriggerPlayer != null) {
+                __instance.TitleText.text = ModTranslation.getString("MarineWhois");
+            }
             if (!IsFlag) return;
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {

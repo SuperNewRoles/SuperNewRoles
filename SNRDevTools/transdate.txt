@@ -315,6 +315,7 @@ FreezerTitle2,Try to stop everyone and sabotage the task!,みんなを止めて�
 FreezerTitle3,Let's put them all on ice.,全員を氷漬けにしよう
 FreezerCoolTimeSetting,Freeze Cool Time,フリーズクールタイム
 FreezerDurationSetting,Freeze duration,フリーズ継続時間
+FreezerButtonName,Freeze,フリーズ
 SpeederName,Speeder,スピーダー
 SpeederTitle1,Slow everyone down and sabotage your crewmates!,みんなを遅くしてクルーメイトを妨害しよう
 SpeederTitle2,Try to slow everyone down and sabotage the task!,みんなを遅くしてタスクの妨害をしよう
@@ -619,11 +620,31 @@ JackalSeerName,SeerJackal,ジャッカルシーア
 JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!
 SidekickSeerName,Sidekick(Seer),サイドキック(シーア)
 SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう
+AssassinAndMarineName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>
+AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=#ff0000>アサシン</color>の人数
+MarineSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数
+AssassinName,Assassin,アサシン
+AssassinTitle1,<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!,<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう
+AssassinSucsess,was marine.,はマーリンだった
+AssassinFail,was not marine.,はマーリンではなかった
+MarineName,Merine,マーリン
+MarineTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。
+MarineWhois,Who is Merine?,マーリンは誰だ？
 ArsonistName,Arsonist,アーソニスト
 ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ
 ArsonistDurationTimeSetting,Douse Duration,塗り時間
 ArsonistDouseButtonName,Douse,塗る
 ArsonistIgniteButtonName,Ignite,燃やす
-ArsonistDescription,If you oil them all and burn them, you win alone.,油を全員に塗り燃やしたら単独勝利です。
+ArsonistDescription,If you oil them all and burn them. you win alone.,油を全員に塗り燃やしたら単独勝利です。
 ChiefName,Chief,村長
 ChiefTitle1,Appoint a sheriff to help your crew.,シェリフを任命してクルーを助けよう
+CleanerName,Cleaner,クリーナー
+CleanerTitle1,Let's destroy the evidence!,証拠を隠滅しよう!
+CleanerButtonName,CleanButton,死体を消す!
+CleanerCoolDownSetting,CoolDown,死体消しのクールダウン
+MadCleanerName,MadCleaner,マッドクリーナー
+MadCleanerTitle1,Destroy the evidence and help impostors to win!,証拠を隠滅してインポスターを勝利に導こう!
+CleanerKillCoolTimeSetting,Kill CoolDown,クリーナーのキルクールダウン
+MayorFriendsName,MayorFriends,メイヤーフレンズ
+MayorFriendsTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう
+MayorFriendsDescription,It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。メイヤーフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。

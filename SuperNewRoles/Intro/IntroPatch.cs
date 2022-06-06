@@ -115,14 +115,14 @@ namespace SuperNewRoles.Patches
                     yourTeam = ImpostorTeams;
                 }
                 if ((PlayerControl.LocalPlayer.isRole(RoleId.JackalFriends) || 
-                    PlayerControl.LocalPlayer.isRole(RoleId.SeerFriends)) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
+                    PlayerControl.LocalPlayer.isRole(RoleId.SeerFriends) || PlayerControl.LocalPlayer.isRole(RoleId.MayorFriends)) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int JackalNum = 0;
                     JackalTeams.Add(PlayerControl.LocalPlayer);
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
-                        if (player.isRole(CustomRPC.RoleId.JackalFriends))
+                        if (player.isRole(CustomRPC.RoleId.JackalFriends) || player.isRole(CustomRPC.RoleId.MayorFriends))
                         {
                             JackalNum++;
                             JackalTeams.Add(player);
@@ -219,6 +219,14 @@ namespace SuperNewRoles.Patches
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.SeerFriends) && CustomOption.CustomOptions.SeerFriendsIsCheckJackal.getBool())
                 {
                     IntroDate Intro = IntroDate.SeerFriendsIntro;
+                    __instance.BackgroundBar.material.color = Intro.color;
+                    __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
+                    __instance.TeamTitle.color = Intro.color;
+                    __instance.ImpostorText.text = "";
+                }
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MayorFriends) && CustomOption.CustomOptions.MayorFriendsIsCheckJackal.getBool())
+                {
+                    IntroDate Intro = IntroDate.MayorFriendsIntro;
                     __instance.BackgroundBar.material.color = Intro.color;
                     __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
                     __instance.TeamTitle.color = Intro.color;

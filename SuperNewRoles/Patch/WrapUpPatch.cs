@@ -79,6 +79,7 @@ namespace SuperNewRoles.Patch
         public static void Postfix(GameData.PlayerInfo exiled)
         {
             SerialKiller.WrapUp();
+            Assassin.WrapUp(exiled);
             CountChanger.CountChangerPatch.WrapUpPatch();
             CustomButton.MeetingEndedUpdate();
 
@@ -162,6 +163,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
             }
+            Mode.SuperHostRoles.main.RealExiled = null;
         }
     }
 }

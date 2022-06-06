@@ -80,30 +80,7 @@ namespace SuperNewRoles.Patch
                 // Spawn dummys
                 if (Input.GetKeyDown(KeyCode.G))
                 {
-                    var id = 0;
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo(p.PlayerId);
-                        if (id < p.PlayerId && p.PlayerId != 255)
-                        {
-                            SuperNewRolesPlugin.Logger.LogInfo("idセット:" + id);
-                            id = p.PlayerId;
-                        }
-                    }
-                    id++;
-                    var bot = UnityEngine.Object.Instantiate(AmongUsClient.Instance.PlayerPrefab);
-                    bot.PlayerId = (byte)id;
-                    GameData.Instance.AddPlayer(bot);
-                    AmongUsClient.Instance.Spawn(bot, -2, SpawnFlags.None);
-                    bot.transform.position = PlayerControl.LocalPlayer.transform.position;
-                    bot.NetTransform.enabled = true;
-                    GameData.Instance.RpcSetTasks(bot.PlayerId, new byte[0]);
-
-                    bot.RpcSetColor((byte)PlayerControl.LocalPlayer.CurrentOutfit.ColorId);
-                    bot.RpcSetName(PlayerControl.LocalPlayer.name);
-                    bot.RpcSetPet(PlayerControl.LocalPlayer.CurrentOutfit.PetId);
-                    bot.RpcSetSkin(PlayerControl.LocalPlayer.CurrentOutfit.SkinId);
-                    bot.RpcSetNamePlate(PlayerControl.LocalPlayer.CurrentOutfit.NamePlateId);
+                    PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.nameText.text);
 
                     new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
                     new LateTask(() => { foreach (var pc in PlayerControl.AllPlayerControls) pc.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
@@ -112,16 +89,29 @@ namespace SuperNewRoles.Patch
                 /*
                 if (Input.GetKeyDown(KeyCode.I))
                 {
-                    MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
-                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
-                    PlayerControl.LocalPlayer.RpcStartMeeting(PlayerControl.LocalPlayer.Data);
+                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p == PlayerControl.LocalPlayer) continue;
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.MyPhysics.NetId, (byte)RpcCalls.EnterVent, SendOption.None, p.getClientId());
+                        writer.WritePacked(ShipStatus.Instance.AllVents[0].Id);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        SuperNewRolesPlugin.Logger.LogInfo(ShipStatus.Instance.AllVents[0].transform);
+                    }
                 }
-                if (Input.GetKeyDown(KeyCode.C))
-                {
-                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Crewmate);
-                }
-                */
-                if (Input.GetKeyDown(KeyCode.F10))
+                    
+                    if (Input.GetKeyDown(KeyCode.C))
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("CHANGE!!!");
+                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        {
+                            RoleManager.Instance.SetRole(p, RoleTypes.Engineer);
+                            AmongUsClient.Instance.Spawn(GameData.Instance, -2, SpawnFlags.IsClientCharacter);
+                            AmongUsClient.Instance.Spawn(p, p.OwnerId, SpawnFlags.IsClientCharacter);
+                        }
+                    }
+                    */
+
+                    if (Input.GetKeyDown(KeyCode.F10))
                 {
                     BotManager.Spawn($"bot{(byte)GameData.Instance.GetAvailableId()}");                
                 }
