@@ -296,7 +296,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;
             if (player.AmOwner) PlayerControl.GameOptions = optdata;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.Reliable, player.getClientId());
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.getClientId());
             writer.WriteBytesAndSize(optdata.ToBytes(5));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
@@ -330,7 +330,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;
             if (player.AmOwner) PlayerControl.GameOptions = optdata;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.Reliable, player.getClientId());
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.getClientId());
             writer.WriteBytesAndSize(optdata.ToBytes(5));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
@@ -347,7 +347,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 optdata.KillCooldown = KillCoolSet(RoleClass.EvilGambler.NotSucCool);
             }
             if (p.AmOwner) PlayerControl.GameOptions = optdata;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.Reliable, p.getClientId());
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, p.getClientId());
             writer.WriteBytesAndSize(optdata.ToBytes(5));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }

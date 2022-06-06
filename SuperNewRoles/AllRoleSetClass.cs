@@ -153,6 +153,10 @@ namespace SuperNewRoles
             {
                 Mode.BattleRoyal.main.ChangeRole.Postfix();
                 return false;
+            } else if (ModeHandler.isMode(ModeId.CopsRobbers))
+            {
+                Mode.CopsRobbers.RoleSelectHandler.Handler();
+                return false;
             }
             return true;
         }

@@ -41,6 +41,10 @@ namespace SuperNewRoles.Roles
             {
                 Mode.Werewolf.main.IntroHandler();
             }
+            if (Mode.ModeHandler.isMode(Mode.ModeId.CopsRobbers))
+            {
+                Mode.CopsRobbers.main.IsStart = true;
+            }
         }
     }
 }
