@@ -33,6 +33,12 @@ class ReturnClass:
             return True
         else:
             return False
+    # Bool(C#用)
+    def GetCBool(self, key):
+        if values[key]:
+            return "true"
+        else:
+            return "false"
     #画像読み込み
     def GetResource(self, ResourceName):
         print("画像を読み込みました:" + ResourcePath + ResourceName)
