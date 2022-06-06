@@ -302,18 +302,20 @@ EvilDoorrTitle1,Open and close doors!,ドアを開け閉めしよう
 EvilDoorrTitle2,Try to sabotage your crewmates!,クルーメイトを妨害しよう
 EvilDoorrTitle3,Open and close the door immediately to block your crewmate!,すぐにドアを開け閉めしてクルーメイトを妨害しよう
 EvilDoorrCoolTimeSetting,Door Cool Time,ドアクールタイム
-SealdorName,Sealder,シールダー
-SealdorTitle1,Prevent outsider kills.,人外のキルを防ごう
-SealdorTitle2,Shield yourself!,自分にシールドを張ろう
-SealdorTitle3,Try to block a foreigner's kill!,人外のキルを妨害しよう
-SealdorCoolTimeSetting,Shield Cool Time,シールドクールタイム
-SealdorDurationSetting,Shield duration,シールド継続時間
+ShielderName,Shielder,シールダー
+ShielderTitle1,Prevent outsider kills.,人外のキルを防ごう
+ShielderTitle2,Shield yourself!,自分にシールドを張ろう
+ShielderTitle3,Try to block a foreigner's kill!,人外のキルを妨害しよう
+ShielderCoolTimeSetting,Shield Cool Time,シールドクールタイム
+ShielderDurationSetting,Shield duration,シールド継続時間
+ShielderButtonName,Shield,シールド
 FreezerName,Freezer,フリーザー
 FreezerTitle1,Stop everyone and sabotage your crewmates!,みんなを止めてクルーメイトを妨害しよう
 FreezerTitle2,Try to stop everyone and sabotage the task!,みんなを止めてタスクの妨害をしよう
 FreezerTitle3,Let's put them all on ice.,全員を氷漬けにしよう
 FreezerCoolTimeSetting,Freeze Cool Time,フリーズクールタイム
 FreezerDurationSetting,Freeze duration,フリーズ継続時間
+FreezerButtonName,Freeze,フリーズ
 SpeederName,Speeder,スピーダー
 SpeederTitle1,Slow everyone down and sabotage your crewmates!,みんなを遅くしてクルーメイトを妨害しよう
 SpeederTitle2,Try to slow everyone down and sabotage the task!,みんなを遅くしてタスクの妨害をしよう
@@ -333,6 +335,7 @@ VultureName,Vulture,ヴァルチャー
 VultureTitle1,Let's eat a corpse.,死体を食べよう
 VultureCoolDownSetting,Corpse cooldown,死体クールダウン
 VultureDeadBodyCountSetting,Victory corpse count,勝利死体数
+VultureShowArrowsSetting,Show arrows pointing to dead bodies,死体を指す矢印を表示する
 NiceScientistName,Nice Scientist,ナイスサイエンティスト
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう
@@ -626,3 +629,18 @@ AssassinSucsess,was marine.,はマーリンだった
 AssassinFail,was not marine.,はマーリンではなかった
 MarineName,Merine,マーリン
 MarineTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。
+ArsonistName,Arsonist,アーソニスト
+ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ
+ArsonistDurationTimeSetting,Douse Duration,塗り時間
+ArsonistDouseButtonName,Douse,塗る
+ArsonistIgniteButtonName,Ignite,燃やす
+ArsonistDescription,If you oil them all and burn them. you win alone.,油を全員に塗り燃やしたら単独勝利です。
+ChiefName,Chief,村長
+ChiefTitle1,Appoint a sheriff to help your crew.,シェリフを任命してクルーを助けよう
+CleanerName,Cleaner,クリーナー
+CleanerTitle1,Let's destroy the evidence!,証拠を隠滅しよう!
+CleanerButtonName,CleanButton,死体を消す!
+CleanerCoolDownSetting,CoolDown,死体消しのクールダウン
+MadCleanerName,MadCleaner,マッドクリーナー
+MadCleanerTitle1,Destroy the evidence and help impostors to win!,証拠を隠滅してインポスターを勝利に導こう!
+CleanerKillCoolTimeSetting,Kill CoolDown,クリーナーのキルクールダウン

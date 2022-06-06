@@ -301,18 +301,20 @@ Open and close doors!
 Try to sabotage your crewmates!
 Open and close the door immediately to block your crewmate!
 Door Cool Time
-Sealder
+Shielder
 Prevent outsider kills.
 Shield yourself!
 Try to block a foreigner's kill!
 Shield Cool Time
 Shield duration
+Shield
 Freezer
 Stop everyone and sabotage your crewmates!
 Try to stop everyone and sabotage the task!
 Let's put them all on ice.
 Freeze Cool Time
 Freeze duration
+Freeze
 Speeder
 Slow everyone down and sabotage your crewmates!
 Try to slow everyone down and sabotage the task!
@@ -332,6 +334,7 @@ Vulture
 Let's eat a corpse.
 Corpse cooldown
 Victory corpse count
+Show arrows pointing to dead bodies
 Nice Scientist
 Turn invisible and find the bodies!
 Use the power of science to win!
@@ -625,3 +628,18 @@ was marine.
 was not marine.
 Merine
 Let's not let <color=#ff0000>Assassin</color> find out.
+Arsonist
+Douse Douse burn
+Douse Duration
+Douse
+Ignite
+If you oil them all and burn them. you win alone.
+Chief
+Appoint a sheriff to help your crew.
+Cleaner
+Let's destroy the evidence!
+CleanButton
+CoolDown
+MadCleaner
+Destroy the evidence and help impostors to win!
+Kill CoolDown

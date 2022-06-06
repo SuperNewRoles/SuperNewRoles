@@ -64,6 +64,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }, 0.5f);
                 }
             }
+            foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
+            {
+                if (p.isAlive() && !p.IsMod())
+                {
+                    p.RpcProtectPlayer(p, 0);
+                    new LateTask(() =>
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("マーダー");
+                        p.RpcMurderPlayer(p);
+                    }, 0.5f);
+                }
+            }
             AmongUsClient.Instance.StartCoroutine(nameof(ResetName));
             IEnumerator ResetName()
             {

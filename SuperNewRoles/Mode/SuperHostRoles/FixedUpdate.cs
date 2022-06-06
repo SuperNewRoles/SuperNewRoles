@@ -184,7 +184,24 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-            
+            else if (player.isRole(RoleId.Arsonist))
+            {
+                foreach (PlayerControl DousePlayer in Arsonist.GetIconPlayers(player))
+                {
+                    if (DousePlayer.IsPlayer())
+                    {
+                        if (!ChangePlayers.ContainsKey(DousePlayer.PlayerId))
+                        {
+                            ChangePlayers.Add(DousePlayer.PlayerId, DousePlayer.getDefaultName() + ModHelpers.cs(RoleClass.Arsonist.color, " §"));
+                        }
+                        else
+                        {
+                            ChangePlayers[DousePlayer.PlayerId] = ChangePlayers[DousePlayer.PlayerId] + ModHelpers.cs(RoleClass.Arsonist.color, " §");
+                        }
+                    }
+                }
+            }
+
             if (player.IsLovers())
             {
                 var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
@@ -272,6 +289,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
                 NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, Name + MySuffix);
             }
+            bool IsArsonistVIew = false;
+            if ((player.isDead() || player.isRole(RoleId.God)) && !IsUnchecked)
+            {
+                if (Arsonist.IsViewIcon(player))
+                {
+                    MySuffix = ModHelpers.cs(RoleClass.Arsonist.color, " §");
+                    IsArsonistVIew = true;
+                }
+                NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, Name + MySuffix);
+            }
+            else if (player.isAlive() || IsUnchecked)
+            {
+                if ((player.isDead() || player.isRole(RoleId.God)) && Arsonist.IsViewIcon(player))
+                {
+                    MySuffix = ModHelpers.cs(RoleClass.Arsonist.color, " §");
+                    IsArsonistVIew = true;
+                }
+
+                NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, Name + MySuffix);
+            }
             if (!player.IsMod())
             {
                 player.RpcSetNamePrivate(NewName);
@@ -289,6 +326,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!IsDemonVIew && Demon.IsViewIcon(player))
             {
                 DieSuffix += ModHelpers.cs(RoleClass.Demon.color, " ▲");
+            }
+            if (!IsArsonistVIew && Arsonist.IsViewIcon(player))
+            {
+                DieSuffix += ModHelpers.cs(RoleClass.Arsonist.color, " §");
             }
             NewName += DieSuffix;
             foreach (PlayerControl DiePlayer in DiePlayers)
@@ -339,7 +380,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 PlayerControl.LocalPlayer.isRole(RoleId.MadMaker) ||
                 PlayerControl.LocalPlayer.isRole(RoleId.Egoist) ||
                 PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff) ||
-                PlayerControl.LocalPlayer.isRole(RoleId.Demon)
+                PlayerControl.LocalPlayer.isRole(RoleId.Demon) ||
+                PlayerControl.LocalPlayer.isRole(RoleId.Arsonist)
                 )
             {
                 HudManager.Instance.KillButton.gameObject.SetActive(true);

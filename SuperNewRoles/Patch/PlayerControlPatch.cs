@@ -104,6 +104,33 @@ namespace SuperNewRoles.Patches
                             __instance.RpcMurderPlayer(__instance);
                         }
                         return false;
+                    case RoleId.Arsonist:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            {
+                                if (p.isAlive() && p.PlayerId != __instance.PlayerId)
+                                {
+                                    if (Arsonist.IsArsonistWinFlag())
+                                    {
+                                        RoleClass.Arsonist.TriggerArsonistWin = true;
+                                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                                        foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
+                                        {
+                                            //   SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
+                                            WinningPlayerData wpd = new WinningPlayerData(player.Data);
+                                            TempData.winners.Add(wpd);
+                                        }
+                                        EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
+                                        // SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                                        __instance.enabled = false;
+                                        ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                        return false;
                 }
             }
             return true;
@@ -286,13 +313,16 @@ namespace SuperNewRoles.Patches
                                 }
                             }
                         }
+                    }
+                    else
+                    {
+                        SuperNewRolesPlugin.Logger.LogInfo("レートタスク:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                        isKill = true;
+
                         if (__instance.PlayerId != 0)
                         {
-                            if (__instance.isAlive() && target.isAlive())
-                            {
-                                __instance.RpcMurderPlayer(target);
-                                target.Data.IsDead = true;
-                            }
+                            __instance.RpcMurderPlayer(target);
+                            target.Data.IsDead = true;
                         }
                         else
                         {
@@ -408,6 +438,45 @@ namespace SuperNewRoles.Patches
                                         }
                                     }
                                 }
+                            }
+                            return false;
+                        case RoleId.Arsonist:
+                            try
+                            {
+                                Arsonist.ArsonistTimer[__instance.PlayerId] =
+                                        (Arsonist.ArsonistTimer[__instance.PlayerId] = RoleClass.Arsonist.DurationTime);
+                                if (Arsonist.ArsonistTimer[__instance.PlayerId] <= RoleClass.Arsonist.DurationTime)//時間以上一緒にいて塗れた時
+                                {
+                                    if (!__instance.IsDoused(target))
+                                    {
+                                        Arsonist.ArsonistDouse(target, __instance);
+                                        target.RpcProtectPlayerPrivate(target, 0, __instance);
+                                        new LateTask(() =>
+                                        {
+                                            SyncSetting.MurderSyncSetting(__instance);
+                                            __instance.RPCMurderPlayerPrivate(target);
+                                        }, 0.5f);
+                                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
+                                    }
+                                }
+                                else
+                                {
+                                    float dis;
+                                    dis = Vector2.Distance(__instance.transform.position, target.transform.position);//距離を出す
+                                    if (dis <= 1.75f)//一定の距離にターゲットがいるならば時間をカウント
+                                    {
+                                        Arsonist.ArsonistTimer[__instance.PlayerId] =
+                                        (Arsonist.ArsonistTimer[__instance.PlayerId] - Time.fixedDeltaTime);
+                                    }
+                                    else//それ以外は削除
+                                    {
+                                        Arsonist.ArsonistTimer.Remove(__instance.PlayerId);
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                SuperNewRolesPlugin.Logger.LogError(e);
                             }
                             return false;
                     }

@@ -63,7 +63,7 @@ namespace SuperNewRoles.Roles
             Tasker.ClearAndReload();
             Doorr.ClearAndReload();
             EvilDoorr.ClearAndReload();
-            Sealdor.ClearAndReload();
+            Shielder.ClearAndReload();
             Speeder.ClearAndReload();
             Freezer.ClearAndReload();
             Guesser.ClearAndReload();
@@ -133,6 +133,10 @@ namespace SuperNewRoles.Roles
             JackalSeer.ClearAndReload();
             Assassin.ClearAndReload();
             Marine.ClearAndReload();
+            Arsonist.ClearAndReload();
+            Chief.ClearAndReload();
+            Cleaner.ClearAndReload();
+            MadCleaner.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -475,37 +479,49 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.EvilDoorrCoolTime.getFloat();
             }
         }
-        public static class Sealdor
+        public static class Shielder
         {
-            public static List<PlayerControl> SealdorPlayer;
+            public static List<PlayerControl> ShielderPlayer;
             public static Color32 color = new Color32(100, 149, 237, byte.MaxValue);
-            //public static float CoolTime;
-            //public static float DurationTime;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static Dictionary<byte,bool> IsShield;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ShielderButton.png", 115f);
+                return ButtonSprite;
+            }
             public static void ClearAndReload()
             {
-                SealdorPlayer = new List<PlayerControl>();
-                //CoolTime = CustomOptions.SealdorCoolTime.getFloat();
-                //DurationTime = CustomOptions.SealdorDurationTime.getFloat();
+                ShielderPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.ShielderCoolTime.getFloat();
+                DurationTime = CustomOptions.ShielderDurationTime.getFloat();
+                IsShield = new Dictionary<byte, bool>();
+                foreach (PlayerControl p in PlayerControl.AllPlayerControls) RoleClass.Shielder.IsShield[p.PlayerId] = false;
             }
         }
         public static class Freezer
         {
             public static List<PlayerControl> FreezerPlayer;
             public static Color32 color = ImpostorRed;
-            //public static float CoolTime;
-            //public static float DurationTime;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static bool IsSpeedDown;
             private static Sprite ButtonSprite;
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.FreezerButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
             {
                 FreezerPlayer = new List<PlayerControl>();
-                //CoolTime = CustomOptions.FreezerCoolTime.getFloat();
-                //DurationTime = CustomOptions.FreezerDurationTime.getFloat();
+                CoolTime = CustomOptions.FreezerCoolTime.getFloat();
+                DurationTime = CustomOptions.FreezerDurationTime.getFloat();
+                IsSpeedDown = false;
             }
         }
 
@@ -553,9 +569,27 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> VulturePlayer;
             public static Color32 color = new Color32(205, 133, 63, byte.MaxValue);
+            public static int DeadBodyMaxCount;
+            public static float CoolTime;
+            public static int DeadBodyCount;
+            public static bool IsUseVent;
+            public static bool ShowArrows;
+            public static Arrow Arrow;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 VulturePlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.VultureCoolDown.getFloat();
+                DeadBodyCount = (int)CustomOptions.VultureDeadBodyMaxCount.getFloat();
+                IsUseVent = CustomOptions.VultureIsUseVent.getBool();
+                ShowArrows = CustomOptions.VultureShowArrows.getBool();
+                RoleClass.Vulture.Arrow = null;
             }
         }
         public static class NiceScientist
@@ -1911,6 +1945,7 @@ namespace SuperNewRoles.Roles
             }
 
         }
+
         public static class Assassin
         {
             public static List<PlayerControl> AssassinPlayer;
@@ -1935,6 +1970,109 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MarinePlayer = new List<PlayerControl>();
+            }
+        }
+
+        public static class Arsonist
+        {
+            public static List<PlayerControl> ArsonistPlayer;
+            public static Dictionary<byte, List<PlayerControl>> DouseDatas;
+            public static Color32 color = new Color32(238, 112, 46, byte.MaxValue);
+            public static bool IsUseVent;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static bool TriggerArsonistWin;
+            public static bool IsDouse;
+            public static PlayerControl DouseTarget;
+            private static Sprite DousebuttonSprite;
+            private static Sprite IgnitebuttonSprite;
+            public static Sprite getDouseButtonSprite()
+            {
+                if (DousebuttonSprite) return DousebuttonSprite;
+                DousebuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistDouse.png", 115f);
+                return DousebuttonSprite;
+            }
+            public static Sprite getIgniteButtonSprite()
+            {
+                if (IgnitebuttonSprite) return IgnitebuttonSprite;
+                IgnitebuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistIgnite.png", 115f);
+                return IgnitebuttonSprite;
+            }
+
+            public static void ClearAndReload()
+            {
+                ArsonistPlayer = new List<PlayerControl>();
+                DouseDatas = new Dictionary<byte, List<PlayerControl>>();
+                IsUseVent = CustomOptions.ArsonistIsUseVent.getBool();
+                CoolTime = CustomOptions.ArsonistCoolTime.getFloat();
+                DurationTime = CustomOptions.ArsonistDurationTime.getFloat();
+                TriggerArsonistWin = true;
+                IsDouse = false;
+                DouseTarget = null;
+            }
+        }
+
+        public static class Chief
+        {
+            public static List<PlayerControl> ChiefPlayer;
+            public static Color32 color = new Color32(255, 255, 0, byte.MaxValue);
+            public static bool IsCreateSheriff;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ChiefSidekickButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                ChiefPlayer = new List<PlayerControl>();
+                IsCreateSheriff = false;
+            }
+        }
+        public static class Cleaner
+        {
+            public static List<PlayerControl> CleanerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static int CleanMaxCount;
+            public static float KillCoolTime;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                CleanerPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.CleanerCoolDown.getFloat();
+                KillCoolTime = CustomOptions.CleanerKillCoolTime.getFloat();
+
+            }
+        }
+        public static class MadCleaner
+        {
+            public static List<PlayerControl> MadCleanerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                MadCleanerPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.MadCleanerCoolDown.getFloat();
+                IsUseVent = CustomOptions.MadCleanerIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadCleanerIsImpostorLight.getBool();
             }
         }
         //新ロールクラス

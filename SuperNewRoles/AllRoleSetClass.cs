@@ -15,7 +15,7 @@ using SuperNewRoles.Intro;
 
 namespace SuperNewRoles
 {
-    [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.RpcSetRole))]
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
     class RpcSetRolePatch
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
@@ -37,7 +37,7 @@ namespace SuperNewRoles
                         __instance.SetRole(roleType);
                     MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
                     messageWriter.Write((ushort)roleType);
-                    messageWriter.EndMessage();             
+                    messageWriter.EndMessage();
                 }
                 else
                 {
@@ -148,7 +148,8 @@ namespace SuperNewRoles
                     SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
                 }
                 return false;
-            } else if (ModeHandler.isMode(ModeId.BattleRoyal))
+            }
+            else if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
                 Mode.BattleRoyal.main.ChangeRole.Postfix();
                 return false;
@@ -176,7 +177,8 @@ namespace SuperNewRoles
             {
                 Mode.Detective.main.RoleSelect();
             }
-            if (!ModeHandler.isMode(ModeId.NotImpostorCheck) && !ModeHandler.isMode(ModeId.BattleRoyal) && !ModeHandler.isMode(ModeId.Default) && !ModeHandler.isMode(ModeId.SuperHostRoles)) {
+            if (!ModeHandler.isMode(ModeId.NotImpostorCheck) && !ModeHandler.isMode(ModeId.BattleRoyal) && !ModeHandler.isMode(ModeId.Default) && !ModeHandler.isMode(ModeId.SuperHostRoles))
+            {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     p.RpcSetRole(p.Data.Role.Role);
@@ -185,7 +187,8 @@ namespace SuperNewRoles
             }
             if (!ModeHandler.isMode(ModeId.SuperHostRoles))
             {
-                new LateTask(() => {
+                new LateTask(() =>
+                {
                     if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                     {
                         foreach (var pc in PlayerControl.AllPlayerControls)
@@ -224,7 +227,8 @@ namespace SuperNewRoles
             try
             {
                 ImpostorRandomSelect();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
             }
@@ -284,7 +288,8 @@ namespace SuperNewRoles
                         SelectPlayers.Add(p);
                     }
                 }
-            } else
+            }
+            else
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
@@ -413,7 +418,8 @@ namespace SuperNewRoles
                                 }
                             }
                             Crewonepar.Remove(RoleId.SpeedBooster);
-                        } catch
+                        }
+                        catch
                         {
 
                         }
@@ -433,7 +439,8 @@ namespace SuperNewRoles
                         }
                         IsNotEndRandomSelect = false;
 
-                    } else if (PlayerCount >= ImpostorPlayers.Count)
+                    }
+                    else if (PlayerCount >= ImpostorPlayers.Count)
                     {
                         foreach (PlayerControl Player in ImpostorPlayers)
                         {
@@ -453,7 +460,8 @@ namespace SuperNewRoles
                         }
                     }
                     Impoonepar.RemoveAt(SelectRoleDateIndex);
-                } else
+                }
+                else
                 {
                     int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Imponotonepar);
                     RoleId SelectRoleDate = Imponotonepar[SelectRoleDateIndex];
@@ -468,7 +476,9 @@ namespace SuperNewRoles
                         }
                         IsNotEndRandomSelect = false;
 
-                    } else if (PlayerCount >= ImpostorPlayers.Count) {
+                    }
+                    else if (PlayerCount >= ImpostorPlayers.Count)
+                    {
                         foreach (PlayerControl Player in ImpostorPlayers)
                         {
                             Player.setRoleRPC(SelectRoleDate);
@@ -753,8 +763,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.DoorrPlayerCount.getFloat();
                 case (RoleId.EvilDoorr):
                     return CustomOption.CustomOptions.EvilDoorrPlayerCount.getFloat();
-                case (RoleId.Sealdor):
-                    return CustomOption.CustomOptions.SealdorPlayerCount.getFloat();
+                case (RoleId.Shielder):
+                    return CustomOption.CustomOptions.ShielderPlayerCount.getFloat();
                 case (RoleId.Speeder):
                     return CustomOption.CustomOptions.SpeederPlayerCount.getFloat();
                 case (RoleId.Freezer):
@@ -893,6 +903,14 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.AssassinPlayerCount.getFloat();
                 case (RoleId.Marine):
                     return CustomOption.CustomOptions.MarinePlayerCount.getFloat();
+                case (RoleId.Arsonist):
+                    return CustomOption.CustomOptions.ArsonistPlayerCount.getFloat();
+                case (RoleId.Chief):
+                    return CustomOption.CustomOptions.ChiefPlayerCount.getFloat();
+                case (RoleId.Cleaner):
+                    return CustomOption.CustomOptions.CleanerPlayerCount.getFloat();
+                case (RoleId.MadCleaner):
+                    return CustomOption.CustomOptions.MadCleanerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;

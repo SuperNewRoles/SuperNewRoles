@@ -237,6 +237,22 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
+        public static void ArsonistSet()
+        {
+            if (PlayerControl.LocalPlayer.isRole(RoleId.Arsonist) || PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God))
+            {
+                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                {
+                    if (Arsonist.IsViewIcon(player))
+                    {
+                        if (!player.nameText.text.Contains(ModHelpers.cs(RoleClass.Arsonist.color, " §")))
+                        {
+                            SetNamesClass.SetPlayerNameText(player, player.nameText.text + ModHelpers.cs(RoleClass.Arsonist.color, " §"));
+                        }
+                    }
+                }
+            }
+        }
         public static void CelebritySet()
         {
             if (RoleClass.Celebrity.ChangeRoleView)
@@ -334,6 +350,7 @@ namespace SuperNewRoles.Patch
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
             }
+            SetNamesClass.ArsonistSet();
             SetNamesClass.DemonSet();
             SetNamesClass.CelebritySet();
             SetNamesClass.QuarreledSet();
