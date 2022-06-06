@@ -301,6 +301,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
                 NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, Name + MySuffix);
+                SuperNewRolesPlugin.Logger.LogInfo(NewName);
             }
             if (!player.IsMod())
             {
