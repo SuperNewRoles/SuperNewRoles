@@ -145,7 +145,7 @@ namespace SuperNewRoles.Roles
                     }, 12f);
                     new LateTask(() =>
                     {
-                        exile.RpcSendChat("\nマーリンは誰だ？");
+                        exile.RpcSendChat($"\n{ModTranslation.getString("MarineWhois")}");
                     }, 12.5f);
                     new LateTask(() =>
                     {

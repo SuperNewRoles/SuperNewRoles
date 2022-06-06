@@ -629,6 +629,7 @@ AssassinSucsess,was marine.,はマーリンだった
 AssassinFail,was not marine.,はマーリンではなかった
 MarineName,Merine,マーリン
 MarineTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。
+MarineWhois,Who is Merine?,マーリンは誰だ？
 ArsonistName,Arsonist,アーソニスト
 ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ
 ArsonistDurationTimeSetting,Douse Duration,塗り時間

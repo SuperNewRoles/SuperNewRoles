@@ -628,6 +628,7 @@ AssassinSucsess
 AssassinFail
 MarineName
 MarineTitle1
+MarineWhois
 ArsonistName
 ArsonistTitle1
 ArsonistDurationTimeSetting

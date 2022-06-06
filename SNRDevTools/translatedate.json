@@ -2520,6 +2520,10 @@
         "0" : "Let's not let <color=#ff0000>Assassin</color> find out." ,
         "11" : "<color=#ff0000>\u30a2\u30b5\u30b7\u30f3</color>\u306b\u30d0\u30ec\u306a\u3044\u3088\u3046\u306b\u3057\u3088\u3046\u3002"
         } ,
+ "MarineWhois" : {
+        "0" : "Who is Merine?" ,
+        "11" : "\u30de\u30fc\u30ea\u30f3\u306f\u8ab0\u3060\uff1f"
+        } ,
  "ArsonistName" : {
         "0" : "Arsonist" ,
         "11" : "\u30a2\u30fc\u30bd\u30cb\u30b9\u30c8"

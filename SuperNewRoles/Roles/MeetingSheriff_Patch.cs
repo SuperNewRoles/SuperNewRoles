@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles
         public static void Postfix(MeetingHud __instance)
         {
             if (RoleClass.Assassin.TriggerPlayer != null) {
-                __instance.TitleText.text = $"{CustomOptions.cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？";
+                __instance.TitleText.text = ModTranslation.getString("MarineWhois");
             }
             if (!IsFlag) return;
             if (Input.GetKeyDown(KeyCode.RightArrow))
