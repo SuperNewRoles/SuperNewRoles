@@ -137,6 +137,7 @@ namespace SuperNewRoles.Roles
             Chief.ClearAndReload();
             Cleaner.ClearAndReload();
             MadCleaner.ClearAndReload();
+            MayorFriends.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2045,6 +2046,35 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.MadCleanerCoolDown.getFloat();
                 IsUseVent = CustomOptions.MadCleanerIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadCleanerIsImpostorLight.getBool();
+            }
+        }
+        public static class MayorFriends
+        {
+            public static List<PlayerControl> MayorFriendsPlayer;
+            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static bool IsJackalCheck;
+            public static int JackalCheckTask;
+            public static int AddVote;
+            public static void ClearAndReload()
+            {
+                MayorFriendsPlayer = new List<PlayerControl>();
+                IsJackalCheck = CustomOptions.MayorFriendsIsCheckJackal.getBool();
+                IsUseVent = CustomOptions.MayorFriendsIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MayorFriendsIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.MayorFriendsCommonTask.getFloat();
+                int Long = (int)CustomOptions.MayorFriendsLongTask.getFloat();
+                int Short = (int)CustomOptions.MayorFriendsShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MayorFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
+                AddVote = (int)CustomOptions.MayorFriendsVoteCount.getFloat();
             }
         }
         //新ロールクラス

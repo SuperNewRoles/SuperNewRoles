@@ -114,6 +114,7 @@ namespace SuperNewRoles.CustomRPC
         Chief,
         Cleaner,
         MadCleaner,
+        MayorFriends,
         //RoleId
     }
 

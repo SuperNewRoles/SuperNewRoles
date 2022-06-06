@@ -236,6 +236,10 @@ namespace SuperNewRoles
                     returntext = CustomOptions.SeerFriendsIsUseVent.name + ":" + CustomOptions.SeerFriendsIsUseVent.getString() + "\n";
                     returntext += CustomOptions.SeerFriendsIsCheckJackal.name + ":" + CustomOptions.SeerFriendsIsCheckJackal.getString() + "\n";
                     break;
+                case RoleId.MayorFriends:
+                    returntext = CustomOptions.MayorFriendsIsUseVent.name + ":" + CustomOptions.MayorFriendsIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.MayorFriendsIsCheckJackal.name + ":" + CustomOptions.MayorFriendsIsCheckJackal.getString() + "\n";
+                    break;
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
@@ -539,6 +543,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadCleaner):
                     Roles.RoleClass.MadCleaner.MadCleanerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.MayorFriends):
+                    Roles.RoleClass.MayorFriends.MayorFriendsPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -827,6 +834,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.MadCleaner):
                     Roles.RoleClass.MadCleaner.MadCleanerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.MayorFriends):
+                    Roles.RoleClass.MayorFriends.MayorFriendsPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
 
             }
@@ -932,7 +942,10 @@ namespace SuperNewRoles
                 case (RoleId.MadCleaner):
                     IsTaskClear = true;
                     break;
-                    //タスククリアか
+                case (RoleId.MayorFriends):
+                    IsTaskClear = true;
+                    break;
+                //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
@@ -1001,6 +1014,8 @@ namespace SuperNewRoles
                     return RoleClass.Arsonist.IsUseVent;
                 case RoleId.Vulture:
                     return RoleClass.Vulture.IsUseVent;
+                case RoleId.MayorFriends:
+                    return RoleClass.MayorFriends.IsUseVent;
             }
             return false;
         }
@@ -1085,6 +1100,8 @@ namespace SuperNewRoles
                     return RoleClass.Jackal.IsImpostorLight;
                 case RoleId.MadCleaner:
                     return RoleClass.MadCleaner.IsImpostorLight;
+                case RoleId.MayorFriends:
+                    return RoleClass.MayorFriends.IsImpostorLight;
             }
             return false;
         }
@@ -1147,7 +1164,10 @@ namespace SuperNewRoles
                 case (RoleId.Arsonist):
                     IsNeutral = true;
                     break;
-                    //第三か
+                    case (RoleId.MayorFriends):
+                    IsNeutral = true;
+                    break;
+                //第三か
             }
             return IsNeutral;
         }
@@ -1624,6 +1644,10 @@ namespace SuperNewRoles
             else if (Roles.RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.MadCleaner;
+            }
+            else if (Roles.RoleClass.MayorFriends.MayorFriendsPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.MayorFriends;
             }
             //ロールチェック
             }
