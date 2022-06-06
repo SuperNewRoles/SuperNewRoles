@@ -43,7 +43,7 @@ namespace SuperNewRoles.Patch
     {
         public static void Prefix(MeetingHud __instance, [HarmonyArgument(0)] VoterState[] states, [HarmonyArgument(1)] ref GameData.PlayerInfo exiled, [HarmonyArgument(2)] bool tie)
         {
-            if (exiled != null && exiled.Object.IsBot())
+            if (exiled != null && exiled.Object.IsBot() && RoleClass.Assassin.TriggerPlayer == null && main.RealExiled == null)
             {
                 exiled = null;
             }
@@ -205,6 +205,94 @@ namespace SuperNewRoles.Patch
                         return false;
                     }
                 }
+                else if (RoleClass.Assassin.TriggerPlayer != null)
+                {                    
+                    var (isVoteEnd, voteFor, voteArea) = assassinVoteState(__instance);
+
+                    SuperNewRolesPlugin.Logger.LogInfo(isVoteEnd+"、"+voteFor);
+                    if (isVoteEnd)
+                    {
+                        //GameData.PlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
+                        Il2CppStructArray<MeetingHud.VoterState> array =
+                            new Il2CppStructArray<MeetingHud.VoterState>(
+                                __instance.playerStates.Length);
+
+                        for (int i = 0; i < __instance.playerStates.Length; i++)
+                        {
+                            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                            if (playerVoteArea.TargetPlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId)
+                            {
+                                playerVoteArea.VotedFor = voteFor;
+                            }
+                            else
+                            {
+                                playerVoteArea.VotedFor = 254;
+                            }
+                            __instance.SetDirtyBit(1U);
+
+                            array[i] = new MeetingHud.VoterState
+                            {
+                                VoterId = playerVoteArea.TargetPlayerId,
+                                VotedForId = playerVoteArea.VotedFor
+                            };
+
+                        }
+                        GameData.PlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
+                        GameData.PlayerInfo exileplayer = null;
+                        if (target != null && target.Object.PlayerId != RoleClass.Assassin.TriggerPlayer.PlayerId && target.Object.IsPlayer())
+                        {
+                            var outfit = target.DefaultOutfit;
+                            exileplayer = target;
+                            PlayerControl exile = null;
+                            main.RealExiled = target.Object;
+                            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                            {
+                                foreach (PlayerControl p in BotManager.AllBots)
+                                {
+                                    if (p.isDead())
+                                    {
+                                        exileplayer = p.Data;
+                                        exile = p;
+                                        p.RpcSetColor((byte)outfit.ColorId);
+                                        p.RpcSetName(target.Object.getDefaultName() + 
+                                            ModTranslation.getString(target.Object.isRole(RoleId.Marine) ? 
+                                            "AssassinSucsess" : 
+                                            "AssassinFail")
+                                            + "<size=0%>");
+                                        p.RpcSetHat(outfit.HatId);
+                                        p.RpcSetVisor(outfit.VisorId);
+                                        p.RpcSetSkin(outfit.SkinId);
+                                        break;
+                                    }
+                                }
+                            }
+                            RoleClass.Assassin.MeetingEndPlayers.Add(RoleClass.Assassin.TriggerPlayer.PlayerId);
+                            if (target.Object.isRole(RoleId.Marine))
+                            {
+                                RoleClass.Assassin.IsImpostorWin = true;
+                            }
+                            else
+                            {
+                                RoleClass.Assassin.DeadPlayer = RoleClass.Assassin.TriggerPlayer;
+                            }
+                            new LateTask(() =>
+                            {
+                                if (exile != null)
+                                {
+                                    exile.RpcSetName(exile.getDefaultName());
+                                    exile.RpcSetColor(1);
+                                    exile.RpcSetHat("hat_NoHat");
+                                    exile.RpcSetPet("peet_EmptyPet");
+                                    exile.RpcSetVisor("visor_EmptyVisor");
+                                    exile.RpcSetNamePlate("nameplate_NoPlate");
+                                    exile.RpcSetSkin("skin_None");
+                                }
+                            }, 5f);
+                        }
+                        new LateTask(() => __instance.RpcVotingComplete(array, exileplayer, true), 0.2f);
+                    }
+                    return false;
+                }
                 else
                 {
                     foreach (var ps in __instance.playerStates)
@@ -292,33 +380,70 @@ namespace SuperNewRoles.Patch
 
                 exiledPlayer = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tie && info.PlayerId == exileId);
 
-                if (ModeHandler.isMode(ModeId.SuperHostRoles) && Bakery.BakeryAlive())
+                if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
-                    if (exiledPlayer == null)
+                    if (exiledPlayer != null && exiledPlayer.Object.isRole(RoleId.Assassin))
                     {
+                        main.RealExiled = exiledPlayer.Object;
+                        PlayerControl exile = null;
+                        PlayerControl defaultexile = exiledPlayer.Object;
+                        var outfit = defaultexile.Data.DefaultOutfit;
                         foreach (PlayerControl p in BotManager.AllBots)
                         {
                             if (p.isDead())
                             {
-                                p.getDefaultName();
                                 exiledPlayer = p.Data;
-                                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                                {
-                                    if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
-                                    {
-                                        p.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + TranslationController.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
-                                    }
-                                }
+                                exile = p;
+                                exile.RpcSetColor((byte)outfit.ColorId);
+                                exile.RpcSetName(defaultexile.getDefaultName());
+                                exile.RpcSetHat(outfit.HatId);
+                                exile.RpcSetVisor(outfit.VisorId);
+                                exile.RpcSetSkin(outfit.SkinId);
                                 break;
                             }
                         }
-                    } else
-                    {
-                        foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
-                        {
-                            if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
+                        new LateTask(() => {
+                            if (exile != null)
                             {
-                                exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n"+exiledPlayer.Object.getDefaultName(), p2);
+                                exile.RpcSetName(exile.getDefaultName());
+                                exile.RpcSetColor(1);
+                                exile.RpcSetHat("hat_NoHat");
+                                exile.RpcSetPet("peet_EmptyPet");
+                                exile.RpcSetVisor("visor_EmptyVisor");
+                                exile.RpcSetNamePlate("nameplate_NoPlate");
+                                exile.RpcSetSkin("skin_None");
+                            }
+                        }, 5f);
+                    }
+                    if (Bakery.BakeryAlive())
+                    {
+                        if (exiledPlayer == null)
+                        {
+                            foreach (PlayerControl p in BotManager.AllBots)
+                            {
+                                if (p.isDead())
+                                {
+                                    p.getDefaultName();
+                                    exiledPlayer = p.Data;
+                                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                                    {
+                                        if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
+                                        {
+                                            p.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + TranslationController.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                            {
+                                if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
+                                {
+                                    exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + exiledPlayer.Object.getDefaultName(), p2);
+                                }
                             }
                         }
                     }
@@ -346,7 +471,6 @@ namespace SuperNewRoles.Patch
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + ex);
                 throw;
             }
-            return false;
         }
         public static bool isMayor(byte id)
         {/*
@@ -354,6 +478,26 @@ namespace SuperNewRoles.Patch
             if (player == null) return false;
             */
             return false;
+        }
+        private static Tuple<bool, byte, PlayerVoteArea> assassinVoteState(MeetingHud __instance)
+        {
+            bool isVoteEnd = false;
+            byte voteFor = byte.MaxValue;
+            PlayerVoteArea area = null;
+
+            for (int i = 0; i < __instance.playerStates.Length; i++)
+            {
+                PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                if (playerVoteArea.TargetPlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId)
+                {
+                    isVoteEnd = playerVoteArea.DidVote || playerVoteArea.AmDead;
+                    voteFor = playerVoteArea.VotedFor;
+                    area = playerVoteArea;
+                    break;
+                }
+            }
+
+            return Tuple.Create(isVoteEnd, voteFor, area);
         }
     }
 
@@ -379,6 +523,50 @@ namespace SuperNewRoles.Patch
             }
             return dic;
         }
+    }
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.SetForegroundForDead))]
+    class MeetingHudSetForegroundForDeadPatch
+    {
+        public static bool Prefix(
+            MeetingHud __instance)
+        {
+
+            if (RoleClass.Assassin.TriggerPlayer == null) { return true; }
+
+            if (!RoleClass.Assassin.TriggerPlayer.AmOwner)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
+    class MeetingHudUpdateButtonsPatch
+    {
+        public static bool PreFix(MeetingHud __instance)
+        {
+            if (RoleClass.Assassin.TriggerPlayer == null) { return true; }
+
+            if (AmongUsClient.Instance.AmHost)
+            {
+                for (int i = 0; i < __instance.playerStates.Length; i++)
+                {
+                    PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                    GameData.PlayerInfo playerById = GameData.Instance.GetPlayerById(
+                        playerVoteArea.TargetPlayerId);
+                    if (playerById == null)
+                    {
+                        playerVoteArea.SetDisabled();
+                    }
+                }
+            }
+
+            return false;
+        }
+
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     class MeetingHudStartPatch
