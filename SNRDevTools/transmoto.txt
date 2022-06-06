@@ -619,6 +619,16 @@ JackalSeerName
 JackalSeerTitle1
 SidekickSeerName
 SidekickSeerTitle1
+AssassinAndMarineName
+AssassinSettingPlayerCountName
+MarineSettingPlayerCountName
+AssassinName
+AssassinTitle1
+AssassinSucsess
+AssassinFail
+MarineName
+MarineTitle1
+MarineWhois
 ArsonistName
 ArsonistTitle1
 ArsonistDurationTimeSetting
@@ -640,3 +650,6 @@ SamuraiKillCoolSetting
 SamuraiSwordCoolSetting
 SamuraiScorpSetting
 SamuraiButtonName
+MayorFriendsName
+MayorFriendsTitle1
+MayorFriendsDescription

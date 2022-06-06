@@ -25,6 +25,10 @@ namespace SuperNewRoles.Roles
                     if (!RoleClass.SeerFriends.IsJackalCheck) return false;
                     CheckTask = RoleClass.SeerFriends.JackalCheckTask;
                     break;
+                case RoleId.MayorFriends:
+                    if (!RoleClass.MayorFriends.IsJackalCheck) return false;
+                    CheckTask = RoleClass.MayorFriends.JackalCheckTask;
+                    break;
                 default:
                     return false;
             }

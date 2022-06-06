@@ -33,8 +33,6 @@ namespace SuperNewRoles.Roles
 
         public static void ClearAndReloadRoles()
         {
-            SetNamesClass.MeetingPlayerInfos = new Dictionary<byte, TextMeshPro>();
-            SetNamesClass.PlayerInfos = new Dictionary<byte, TextMeshPro>();
             LateTask.Tasks = new List<LateTask>();
             LateTask.AddTasks = new List<LateTask>();
             BotManager.AllBots = new List<PlayerControl>();
@@ -133,11 +131,14 @@ namespace SuperNewRoles.Roles
             TaskManager.ClearAndReload();
             SeerFriends.ClearAndReload();
             JackalSeer.ClearAndReload();
+            Assassin.ClearAndReload();
+            Marine.ClearAndReload();
             Arsonist.ClearAndReload();
             Chief.ClearAndReload();
             Cleaner.ClearAndReload();
             MadCleaner.ClearAndReload();
             Samurai.ClearAndReload();
+            MayorFriends.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1946,6 +1947,34 @@ namespace SuperNewRoles.Roles
             }
 
         }
+
+        public static class Assassin
+        {
+            public static List<PlayerControl> AssassinPlayer;
+            public static Color32 color = ImpostorRed;
+            public static List<byte> MeetingEndPlayers;
+            public static PlayerControl TriggerPlayer;
+            public static PlayerControl DeadPlayer;
+            public static bool IsImpostorWin;
+            public static void ClearAndReload()
+            {
+                AssassinPlayer = new List<PlayerControl>();
+                MeetingEndPlayers = new List<byte>();
+                TriggerPlayer = null;
+                DeadPlayer = null;
+                IsImpostorWin = false;
+            }
+        }
+        public static class Marine
+        {
+            public static List<PlayerControl> MarinePlayer;
+            public static Color32 color = new Color32(175, 223, 228, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                MarinePlayer = new List<PlayerControl>();
+            }
+        }
+
         public static class Arsonist
         {
             public static List<PlayerControl> ArsonistPlayer;
@@ -2074,6 +2103,35 @@ namespace SuperNewRoles.Roles
                 Sword = false;
             }
         }
+        public static class MayorFriends
+        {
+            public static List<PlayerControl> MayorFriendsPlayer;
+            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static bool IsJackalCheck;
+            public static int JackalCheckTask;
+            public static int AddVote;
+            public static void ClearAndReload()
+            {
+                MayorFriendsPlayer = new List<PlayerControl>();
+                IsJackalCheck = CustomOptions.MayorFriendsIsCheckJackal.getBool();
+                IsUseVent = CustomOptions.MayorFriendsIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MayorFriendsIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.MayorFriendsCommonTask.getFloat();
+                int Long = (int)CustomOptions.MayorFriendsLongTask.getFloat();
+                int Short = (int)CustomOptions.MayorFriendsShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MayorFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
+                AddVote = (int)CustomOptions.MayorFriendsVoteCount.getFloat();
+            }
+        }
         //新ロールクラス
         public static class Quarreled
         {
@@ -2100,4 +2158,5 @@ namespace SuperNewRoles.Roles
         }
     }
 }
+
 
