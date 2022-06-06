@@ -25,7 +25,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
                         __instance.CmdReportDeadBody(target.Data);
                     }
-                },  0.15f, "ReportBaitBody");
+                },  RoleClass.Bait.ReportTime, "ReportBaitBody");
             }
         }
     }

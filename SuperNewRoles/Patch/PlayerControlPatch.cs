@@ -5,6 +5,7 @@ using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
@@ -504,6 +505,18 @@ namespace SuperNewRoles.Patches
                         __instance.RpcStartMeeting(null);
                     }
                 }, 0.5f);
+                new LateTask(() =>
+                {
+                    __instance.RpcSetName($"<size=200%>{CustomOptions.cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？</size>");
+                }, 2f);
+                new LateTask(() =>
+                {
+                    __instance.RpcSendChat("\nマーリンは誰だ？");
+                }, 2.5f);
+                new LateTask(() =>
+                {
+                    __instance.RpcSetName(__instance.getDefaultName());
+                }, 2f);
                 RoleClass.Assassin.TriggerPlayer = __instance;
                 return;
             }
@@ -523,6 +536,18 @@ namespace SuperNewRoles.Patches
                     }
                     RoleClass.Assassin.TriggerPlayer = target;
                 }, 0.5f);
+                new LateTask(() =>
+                {
+                    target.RpcSetName($"<size=200%>{CustomOptions.cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？</size>");
+                }, 2f);
+                new LateTask(() =>
+                {
+                    target.RpcSendChat("\nマーリンは誰だ？");
+                }, 2.5f);
+                new LateTask(() =>
+                {
+                    target.RpcSetName(target.getDefaultName());
+                }, 2f);
                 return;
             }
             __instance.RpcMurderPlayer(target);

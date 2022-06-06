@@ -239,7 +239,7 @@ namespace SuperNewRoles.Patch
                         }
                         GameData.PlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
                         GameData.PlayerInfo exileplayer = null;
-                        if (target != null)
+                        if (target != null && target.Object.PlayerId != RoleClass.Assassin.TriggerPlayer.PlayerId && target.Object.IsPlayer())
                         {
                             var outfit = target.DefaultOutfit;
                             exileplayer = target;
@@ -380,7 +380,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (exiledPlayer != null && exiledPlayer.Object.isRole(RoleId.Assassin))
                     {
-                        Mode.SuperHostRoles.main.RealExiled = exiledPlayer.Object;
+                        main.RealExiled = exiledPlayer.Object;
                         PlayerControl exile = null;
                         PlayerControl defaultexile = exiledPlayer.Object;
                         var outfit = defaultexile.Data.DefaultOutfit;
@@ -390,11 +390,11 @@ namespace SuperNewRoles.Patch
                             {
                                 exiledPlayer = p.Data;
                                 exile = p;
-                                p.RpcSetColor((byte)outfit.ColorId);
-                                p.RpcSetName(defaultexile.getDefaultName());
-                                p.RpcSetHat(outfit.HatId);
-                                p.RpcSetVisor(outfit.VisorId);
-                                p.RpcSetSkin(outfit.SkinId);
+                                exile.RpcSetColor((byte)outfit.ColorId);
+                                exile.RpcSetName(defaultexile.getDefaultName());
+                                exile.RpcSetHat(outfit.HatId);
+                                exile.RpcSetVisor(outfit.VisorId);
+                                exile.RpcSetSkin(outfit.SkinId);
                                 break;
                             }
                         }

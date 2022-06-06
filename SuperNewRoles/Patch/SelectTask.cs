@@ -25,9 +25,6 @@ namespace SuperNewRoles.Patch
                 }
                 if (ModeHandler.isMode(ModeId.SuperHostRoles) || ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 {
-                    PlayerControl.GameOptions.NumCommonTasks = 100;
-                    PlayerControl.GameOptions.NumShortTasks = 100;
-                    PlayerControl.GameOptions.NumLongTasks = 100;
                     var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
                     var TasksList = ModHelpers.generateTasks(commont, shortt, longt);
                     taskTypeIds = new UnhollowerBaseLib.Il2CppStructArray<byte>(TasksList.Count);
@@ -35,9 +32,6 @@ namespace SuperNewRoles.Patch
                     {
                         taskTypeIds[i] = TasksList[i];
                     }
-                    PlayerControl.GameOptions.NumCommonTasks = SyncSetting.OptionData.NumCommonTasks;
-                    PlayerControl.GameOptions.NumShortTasks = SyncSetting.OptionData.NumShortTasks;
-                    PlayerControl.GameOptions.NumLongTasks = SyncSetting.OptionData.NumLongTasks;
                 }
             }
         }

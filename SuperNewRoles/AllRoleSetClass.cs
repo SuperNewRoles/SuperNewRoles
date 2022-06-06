@@ -502,6 +502,7 @@ namespace SuperNewRoles
             if (IsAssassinAssigned)
             {
                 int PlayerCount = (int)GetPlayerCount(RoleId.Marine);
+                SuperNewRolesPlugin.Logger.LogInfo("DATA:\n"+PlayerCount+"\n"+CrewMatePlayerNum+"\n"+CrewMatePlayers.Count);
                 if (PlayerCount >= CrewMatePlayerNum)
                 {
                     for (int i = 1; i <= CrewMatePlayerNum; i++)
@@ -509,8 +510,8 @@ namespace SuperNewRoles
                         PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
                         p.setRoleRPC(RoleId.Marine);
                         CrewMatePlayers.Remove(p);
-                        CrewMatePlayerNum = 0;
                     }
+                    CrewMatePlayerNum = 0;
                 }
                 else if (PlayerCount >= CrewMatePlayers.Count)
                 {
