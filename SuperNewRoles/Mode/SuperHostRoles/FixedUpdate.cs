@@ -270,44 +270,37 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
             bool IsDemonVIew = false;
+            bool IsArsonistVIew = false;
             if ((player.isDead() || player.isRole(RoleId.God)) && !IsUnchecked)
             {
                 if (Demon.IsViewIcon(player))
                 {
-                    MySuffix = ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                    MySuffix += ModHelpers.cs(RoleClass.Demon.color, " ▲");
                     IsDemonVIew = true;
                 }
-                NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, Name + MySuffix);
-            }
-            else if (player.isAlive() || IsUnchecked)
-            {
-                if ((player.isDead() || player.isRole(RoleId.God)) && Demon.IsViewIcon(player))
-                {
-                    MySuffix = ModHelpers.cs(RoleClass.Demon.color, " ▲");
-                    IsDemonVIew = true;
-                }
-
-                NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "\n</size>" + ModHelpers.cs(introdate.color, Name + MySuffix);
-            }
-            bool IsArsonistVIew = false;
-            if ((player.isDead() || player.isRole(RoleId.God)) && !IsUnchecked)
-            {
                 if (Arsonist.IsViewIcon(player))
                 {
-                    MySuffix = ModHelpers.cs(RoleClass.Arsonist.color, " §");
+                    MySuffix += ModHelpers.cs(RoleClass.Arsonist.color, " §");
                     IsArsonistVIew = true;
                 }
                 NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, Name + MySuffix);
             }
             else if (player.isAlive() || IsUnchecked)
             {
-                if ((player.isDead() || player.isRole(RoleId.God)) && Arsonist.IsViewIcon(player))
+                if ((player.isDead() || player.isRole(RoleId.God)))
                 {
-                    MySuffix = ModHelpers.cs(RoleClass.Arsonist.color, " §");
-                    IsArsonistVIew = true;
+                    if (Demon.IsViewIcon(player))
+                    {
+                        MySuffix += ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                        IsDemonVIew = true;
+                    }
+                    if (Arsonist.IsViewIcon(player))
+                    {
+                        MySuffix += ModHelpers.cs(RoleClass.Arsonist.color, " §");
+                        IsArsonistVIew = true;
+                    }
                 }
-
-                NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "\n</size>" + ModHelpers.cs(introdate.color, Name + MySuffix);
+                NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, Name + MySuffix);
             }
             if (!player.IsMod())
             {
