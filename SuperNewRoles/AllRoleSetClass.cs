@@ -911,6 +911,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.CleanerPlayerCount.getFloat();
                 case (RoleId.MadCleaner):
                     return CustomOption.CustomOptions.MadCleanerPlayerCount.getFloat();
+                    case (RoleId.MayorFriends):
+                    return CustomOption.CustomOptions.MayorFriendsPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;

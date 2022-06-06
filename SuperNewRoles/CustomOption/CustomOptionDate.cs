@@ -549,6 +549,17 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadCleanerIsUseVent;
         public static CustomOption MadCleanerIsImpostorLight;
 
+        public static CustomRoleOption MayorFriendsOption;
+        public static CustomOption MayorFriendsPlayerCount;
+        public static CustomOption MayorFriendsIsCheckJackal;
+        public static CustomOption MayorFriendsCommonTask;
+        public static CustomOption MayorFriendsShortTask;
+        public static CustomOption MayorFriendsLongTask;
+        public static CustomOption MayorFriendsCheckJackalTask;
+        public static CustomOption MayorFriendsIsUseVent;
+        public static CustomOption MayorFriendsIsImpostorLight;
+        public static CustomOption MayorFriendsVoteCount;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -1123,6 +1134,18 @@ namespace SuperNewRoles.CustomOption
             MadCleanerCoolDown = CustomOption.Create(485, false, CustomOptionType.Crewmate, "CleanerCoolDownSetting", 30f, 2.5f, 60f, 2.5f, MadCleanerOption, format: "unitSeconds");
             MadCleanerIsUseVent = CustomOption.Create(486, false, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadCleanerOption);
             MadCleanerIsImpostorLight = CustomOption.Create(487, false, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadCleanerOption);
+
+            MayorFriendsOption = new CustomRoleOption(474, true, CustomOptionType.Crewmate, "MayorFriendsName", RoleClass.MayorFriends.color, 1);
+            MayorFriendsPlayerCount = CustomOption.Create(475, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MayorFriendsOption);
+            MayorFriendsIsUseVent = CustomOption.Create(476, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MayorFriendsOption);
+            MayorFriendsIsImpostorLight = CustomOption.Create(477, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MayorFriendsOption);
+            MayorFriendsIsCheckJackal = CustomOption.Create(478, true, CustomOptionType.Crewmate, "JackalFriendsIsCheckJackalSetting", false, MayorFriendsOption);
+            var MayorFriendsoption = SelectTask.TaskSetting(479, 480, 481, MayorFriendsIsCheckJackal, CustomOptionType.Crewmate, true);
+            MayorFriendsCommonTask = MayorFriendsoption.Item1;
+            MayorFriendsShortTask = MayorFriendsoption.Item2;
+            MayorFriendsLongTask = MayorFriendsoption.Item3;
+            MayorFriendsCheckJackalTask = CustomOption.Create(482, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, MayorFriendsIsCheckJackal);
+            MayorFriendsVoteCount = CustomOption.Create(483, true, CustomOptionType.Crewmate, "MayorVoteCountSetting", 2f, 1f, 100f, 1f, MayorFriendsOption);
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

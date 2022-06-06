@@ -645,3 +645,6 @@ CleanerCoolDownSetting,CoolDown,死体消しのクールダウン
 MadCleanerName,MadCleaner,マッドクリーナー
 MadCleanerTitle1,Destroy the evidence and help impostors to win!,証拠を隠滅してインポスターを勝利に導こう!
 CleanerKillCoolTimeSetting,Kill CoolDown,クリーナーのキルクールダウン
+MayorFriendsName,MayorFriends,メイヤーフレンズ
+MayorFriendsTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう
+MayorFriendsDescription,It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。メイヤーフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。
