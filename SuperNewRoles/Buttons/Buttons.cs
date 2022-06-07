@@ -12,6 +12,7 @@ using System.Collections;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.EndGame;
 
 namespace SuperNewRoles.Buttons
 {
@@ -989,22 +990,31 @@ namespace SuperNewRoles.Buttons
                 {
                     Arsonist.SetWinArsonist();
                     RoleClass.Arsonist.TriggerArsonistWin = true;
-                    //SuperNewRolesPlugin.Logger.LogInfo("アーソニストが燃やすボタンを押した");
-                    if (Arsonist.IsArsonistWinFlag())
-                    {
-                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                        foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
-                        {
-                            //SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
-                            WinningPlayerData wpd = new WinningPlayerData(player.Data);
-                            TempData.winners.Add(wpd);
-                        }
-                        EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
-                        //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
-                        __instance.enabled = false;
-                        ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
-                    }
+                    AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
+                    RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
 
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                    Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                    
+                    Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                    Writer.Write((byte)CustomGameOverReason.ArsonistWin);
+                    Writer.EndRPC();
+                    RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
+                    //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                    var reason = (GameOverReason)EndGame.CustomGameOverReason.ArsonistWin;
+                    if (ModeHandler.isMode(ModeId.SuperHostRoles)) reason = GameOverReason.ImpostorByKill;
+                    if (AmongUsClient.Instance.AmHost)
+                    {
+                        CheckGameEndPatch.CustomEndGame(reason, false);
+                    }
+                    else
+                    {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                        writer.Write((byte)reason);
+                        writer.Write(false);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    }
                 },
                 () => { return Arsonist.IseveryButton(); },
                 () =>
@@ -1128,11 +1138,17 @@ namespace SuperNewRoles.Buttons
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
-                        writer.Write((byte)EndGame.CustomGameOverReason.VultureWin);
-                        writer.Write(false);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        EndGame.CheckGameEndPatch.CustomEndGame((GameOverReason)EndGame.CustomGameOverReason.VultureWin, false);
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            CheckGameEndPatch.CustomEndGame((GameOverReason)EndGame.CustomGameOverReason.VultureWin, false);
+                        }
+                        else
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                            writer.Write((byte)EndGame.CustomGameOverReason.VultureWin);
+                            writer.Write(false);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        }
                     }
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Vulture); },

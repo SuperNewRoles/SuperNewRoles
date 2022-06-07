@@ -1027,6 +1027,7 @@ namespace SuperNewRoles.CustomRPC
                     case (byte)CustomRPC.CustomEndGame:
                         if (AmongUsClient.Instance.AmHost)
                         {
+                            ShipStatus.Instance.enabled = false;
                             CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
                         }
                         break;
