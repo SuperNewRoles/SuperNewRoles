@@ -237,11 +237,6 @@ namespace SuperNewRoles.Roles
                                 """case (RoleId.ROLENAME):
                     IsTaskClear = true;
                     break; \n                //タスククリアか""".replace("ROLENAME",MainClass.GetInput("RoleName")))
-            # Roles/Sheriff.cs
-            MainClass.WriteCodes("Roles/Sheriff.cs", "//シェリフキルゥ",
-            """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;""".replace("ROLENAME", MainClass.GetInput("RoleName")))
-            MainClass.WriteCodes("Roles/Sheriff.cs", "//リモシェリフキルゥ",
-            """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("A_ClearTask")):
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//タスククリアか",
                                 """case (RoleId.ROLENAME):
@@ -296,6 +291,14 @@ namespace SuperNewRoles.Roles
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
             #else:
                 #MainClass.CreateErrorWindow("設定タブの値が空白です")
+        ## シェリフキル
+        if (MainClass.GetBool("A_CanSheriffKill")):
+            # Roles/Sheriff.cs
+            MainClass.WriteCodes("Roles/Sheriff.cs", "//シェリフキルゥ",
+            """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes("Roles/Sheriff.cs", "//リモシェリフキルゥ",
+            """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+        
         ## キルボタン
         if (MainClass.GetBool("A_CanKill")):
             # Buttons/CustomButton.cs
@@ -415,6 +418,7 @@ MainTab = psg.Tab("メイン", [
 AdvanceTab = psg.Tab("詳細設定", [
                 [psg.Check("役職ファイルを作成する", key="A_CreateFile")],
                 [psg.Check("タスクを削除する", key="A_ClearTask")],
+                [psg.Check("シェリフがキルできる", key="A_CanSheriffKill")],
                 [psg.Text("ボタン")],
                 [psg.Text(),psg.Check("ベント", key="A_CanVent")],
                 #[psg.Text(),psg.Check("ベント設定の追加", key="A_CanVentOption")],
