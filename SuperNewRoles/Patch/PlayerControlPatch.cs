@@ -107,26 +107,27 @@ namespace SuperNewRoles.Patches
                     case RoleId.Arsonist:
                         if (AmongUsClient.Instance.AmHost)
                         {
-                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
                             {
-                                if (p.isAlive() && p.PlayerId != __instance.PlayerId)
+                                if (Arsonist.IsWin(p))
                                 {
-                                    if (Arsonist.IsArsonistWinFlag())
-                                    {
-                                        RoleClass.Arsonist.TriggerArsonistWin = true;
-                                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                                        foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
-                                        {
-                                            //   SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
-                                            WinningPlayerData wpd = new WinningPlayerData(player.Data);
-                                            TempData.winners.Add(wpd);
-                                        }
-                                        EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
-                                        // SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
-                                        __instance.enabled = false;
-                                        ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
-                                        return true;
-                                    }
+                                    RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
+
+                                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                                    Writer.Write(p.PlayerId);
+                                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+
+                                    Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                                    Writer.Write((byte)CustomGameOverReason.ArsonistWin);
+                                    Writer.EndRPC();
+                                    RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
+
+                                    RoleClass.Arsonist.TriggerArsonistWin = true;
+                                    EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
+                                    // SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                                    __instance.enabled = false;
+                                    ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
+                                    return true;
                                 }
                             }
                         }
