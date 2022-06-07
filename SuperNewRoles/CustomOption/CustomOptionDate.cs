@@ -1164,7 +1164,7 @@ namespace SuperNewRoles.CustomOption
             SamuraiOption = new CustomRoleOption(500, true, CustomOptionType.Impostor, "SamuraiName", RoleClass.Samurai.color, 1);
             SamuraiPlayerCount = CustomOption.Create(501, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SamuraiOption);
             SamuraiKillCoolTime = CustomOption.Create(502, true, CustomOptionType.Impostor, "SamuraiKillCoolSetting", 30f, 2.5f, 60f, 2.5f, SamuraiOption);
-            SamuraiSwordCoolTime = CustomOption.Create(503, true, CustomOptionType.Impostor, "SamuraiSwordCoolSetting", 50f, 30f, 70f, 2.5f, SamuraiOption);
+            SamuraiSwordCoolTime = CustomOption.Create(503, false, CustomOptionType.Impostor, "SamuraiSwordCoolSetting", 50f, 30f, 70f, 2.5f, SamuraiOption);
             SamuraiVent = CustomOption.Create(504, true, CustomOptionType.Impostor, "MinimalistVentSetting", false, SamuraiOption);
             SamuraiSabo = CustomOption.Create(505, true, CustomOptionType.Impostor, "MinimalistSaboSetting", false, SamuraiOption);
             SamuraiScope = CustomOption.Create(506, true, CustomOptionType.Impostor, "SamuraiScopeSetting", 1f, 0.5f, 3f, 0.5f, SamuraiOption);

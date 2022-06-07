@@ -114,6 +114,7 @@ namespace SuperNewRoles.Patches
                                     if (Samurai.Getsword(__instance, p))
                                     {
                                         __instance.RpcMurderPlayerCheck(p);
+                                        RoleClass.Samurai.Sword = true;
                                     }
                                 }
                             }

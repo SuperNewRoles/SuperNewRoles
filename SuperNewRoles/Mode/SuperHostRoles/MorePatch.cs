@@ -35,6 +35,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if ((player.isRole(RoleId.Jackal) && !RoleClass.Jackal.IsUseSabo) || player.isRole(RoleId.Demon) || player.isRole(RoleId.Arsonist) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.Sheriff) || player.isRole(RoleId.truelover) || player.isRole(RoleId.FalseCharges) || player.isRole(RoleId.MadMaker)) return false;
                 if (!RoleClass.Minimalist.UseSabo && player.isRole(CustomRPC.RoleId.Minimalist)) return false;
+                if (!RoleClass.Samurai.UseSabo && player.isRole(CustomRPC.RoleId.Samurai)) return false;
                 if (!RoleClass.Egoist.UseSabo && player.isRole(CustomRPC.RoleId.Egoist)) return false;
             }
             if (PlayerControl.LocalPlayer.IsUseVent() && RoleHelpers.IsComms())
