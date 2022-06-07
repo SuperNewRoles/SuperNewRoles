@@ -195,6 +195,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 p.RpcSetRole(RoleTypes.Shapeshifter);
             }
+            foreach (PlayerControl p in RoleClass.Samurai.SamuraiPlayer)
+            {
+                p.RpcSetRole(RoleTypes.Shapeshifter);
+            }
         }
         public static void CrewOrImpostorSet()
         {
