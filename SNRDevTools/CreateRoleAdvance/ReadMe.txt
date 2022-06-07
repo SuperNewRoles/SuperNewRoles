@@ -15,6 +15,7 @@
 　　・Roles/RoleHelper.cs　　　 　　　→//タスククリアか		IsClearTaskの後ろ
 　　・Roles/RoleHelper.cs　　　　　　 →//ベント設定可視化        GetOptionsTextの後ろ
 　　・Roles/RoleHelper.cs　　　　　   →//ベントが使える　　　　　IsUseVentの後ろ
+　　・Roles/RoleHelper.cs　　　　　　 →//インポの視界　　　　　　IsImpostorLightの後ろ
 
 　　・Roles/RoleClass.cs　　 　　 　　→//新ロールクラス　　　　　ClearAndReloadsの後ろ
 　　・Roles/RoleClass.cs　 　　　　 　→//ロールクリア　　　　　　下のほうにあるラバーズソースコードの上
@@ -25,5 +26,8 @@
 　　・CustomOption/CustomOptionDate.cs→//CustomOption　　　　　　クラードの上(上に空行はいれない)
 　　・CustomOption/CustomOptionDate.cs→//表示設定			下のほうのラバーズの上
 
-　　・Buttons/Button.cs　　　　 →//カスタムなボタン達　　　	CustomButtonの下
-　　・Buttons/Button.cs　　　　 →//クールダウンリセット　　　　　setCustomButtonCooldownsの下
+　　・Buttons/Button.cs　　　　　　　 →//カスタムなボタン達　　	CustomButtonの下
+　　・Buttons/Button.cs　　　　　　　 →//クールダウンリセット　　setCustomButtonCooldownsの下
+　　
+　　・Roles/Sheriff.cs　　　　　　　　→//シェリフゥゥ　　　　　　IsSheriffKillの下(return false;の前)
+    ・Roles/Sheriff.cs　　　　　　　　→//リモシェリフゥゥ　　　　IsRemoteSheriffKillの下(return false;の前)

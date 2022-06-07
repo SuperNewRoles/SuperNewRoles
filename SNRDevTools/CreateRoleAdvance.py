@@ -237,6 +237,11 @@ namespace SuperNewRoles.Roles
                                 """case (RoleId.ROLENAME):
                     IsTaskClear = true;
                     break; \n                //タスククリアか""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+            # Roles/Sheriff.cs
+            MainClass.WriteCodes("Roles/Sheriff.cs", "//シェリフキルゥ",
+            """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes("Roles/Sheriff.cs", "//リモシェリフキルゥ",
+            """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("A_ClearTask")):
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//タスククリアか",
                                 """case (RoleId.ROLENAME):
