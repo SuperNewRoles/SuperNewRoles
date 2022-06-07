@@ -104,6 +104,22 @@ namespace SuperNewRoles.Patches
                             __instance.RpcMurderPlayer(__instance);
                         }
                         return false;
+                    case RoleId.Samurai:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            {
+                                if (p.isAlive() && p.PlayerId != __instance.PlayerId)
+                                {
+                                    if (Samurai.Getsword(__instance, p))
+                                    {
+                                        __instance.RpcMurderPlayerCheck(p);
+                                    }
+                                }
+                            }
+                            __instance.RpcMurderPlayer(__instance);
+                        }
+                        return false;
                     case RoleId.Arsonist:
                         if (AmongUsClient.Instance.AmHost)
                         {
