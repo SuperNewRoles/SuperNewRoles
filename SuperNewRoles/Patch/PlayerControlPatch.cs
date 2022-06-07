@@ -105,7 +105,7 @@ namespace SuperNewRoles.Patches
                         }
                         return false;
                     case RoleId.Samurai:
-                        if (AmongUsClient.Instance.AmHost)
+                        if (AmongUsClient.Instance.AmHost || !RoleClass.Samurai.Sword)
                         {
                             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                             {
@@ -117,7 +117,6 @@ namespace SuperNewRoles.Patches
                                     }
                                 }
                             }
-                            __instance.RpcMurderPlayer(__instance);
                         }
                         return false;
                     case RoleId.Arsonist:
