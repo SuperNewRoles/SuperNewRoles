@@ -8,20 +8,22 @@
 　　・CustomRPC/CustomRPC.cs 　 　　　→//新ロールクラス
 　　・CustomRPC/CustomRPC.cs 　 　　　→//セットクラス
 
-　　・Roles/RoleHelper.cs　　　 　　　→//ロールチェック
-　　・Roles/RoleHelper.cs　　　 　　　→//ロールアド
-　　・Roles/RoleHelper.cs　　　 　　　→//ろーるりもべ
-　　・Roles/RoleHelper.cs　　　 　　　→//第三か
-　　・Roles/RoleHelper.cs　　　 　　　→//タスククリアか
-　　・Roles/RoleHelper.cs　　　　　   →//ベントが使える
+　　・Roles/RoleHelper.cs　　　 　　　→//ロールチェック		GetRoleの後ろ
+　　・Roles/RoleHelper.cs　　　 　　　→//ロールアド			SetRoleの後ろ
+　　・Roles/RoleHelper.cs　　　 　　　→//ロールリモベ　　　　　　ClearRoleの後ろ		
+　　・Roles/RoleHelper.cs　　　 　　　→//第三か　　　　　　　　　isNeutralの後ろ
+　　・Roles/RoleHelper.cs　　　 　　　→//タスククリアか		IsClearTaskの後ろ
+　　・Roles/RoleHelper.cs　　　　　　 →//ベント設定可視化        GetOptionsTextの後ろ
+　　・Roles/RoleHelper.cs　　　　　   →//ベントが使える　　　　　IsUseVentの後ろ
 
-　　・Roles/RoleClass.cs　　 　　 　　→//新ロールクラス
-　　・Roles/RoleClass.cs　 　　　　 　→//ロールクリア
+　　・Roles/RoleClass.cs　　 　　 　　→//新ロールクラス　　　　　ClearAndReloadsの後ろ
+　　・Roles/RoleClass.cs　 　　　　 　→//ロールクリア　　　　　　下のほうにあるラバーズソースコードの上
 
-　　・Intro/IntroData.cs 　　　　　　 →//イントロオブジェ
-　　・Intro/IntroData.cs 　　　　　　 →//イントロ検知
+　　・Intro/IntroData.cs 　　　　　　 →//イントロオブジェ　　　　一番下
+　　・Intro/IntroData.cs 　　　　　　 →//イントロ検知　　　　　　GetIntroDateの後ろ
 
-　　・CustomOption/CustomOptionDate.cs→//CustomOption
-　　・CustomOption/CustomOptionDate.cs→//表示設定
+　　・CustomOption/CustomOptionDate.cs→//CustomOption　　　　　　クラードの上(上に空行はいれない)
+　　・CustomOption/CustomOptionDate.cs→//表示設定			下のほうのラバーズの上
 
-　　・Buttons/CustomButton.cs　　　　 →//カスタムなボタン達
+　　・Buttons/Button.cs　　　　 →//カスタムなボタン達　　　	CustomButtonの下
+　　・Buttons/Button.cs　　　　 →//クールダウンリセット　　　　　setCustomButtonCooldownsの下
