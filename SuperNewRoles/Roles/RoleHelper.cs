@@ -882,7 +882,7 @@ namespace SuperNewRoles
                 case (RoleId.SeerFriends):
                     IsTaskClear = true;
                     break;
-                    //タスククリアか
+                //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
@@ -1020,6 +1020,7 @@ namespace SuperNewRoles
                     return RoleClass.JackalFriends.IsImpostorLight;
                 case RoleId.SeerFriends:
                     return RoleClass.SeerFriends.IsImpostorLight;
+                //インポの視界
             }
             return false;
         }

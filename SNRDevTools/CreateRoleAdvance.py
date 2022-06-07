@@ -236,8 +236,7 @@ namespace SuperNewRoles.Roles
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//タスククリアか",
                                 """case (RoleId.ROLENAME):
                     IsTaskClear = true;
-                    break; 
-                //タスククリアか""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+                    break; \n                //タスククリアか""".replace("ROLENAME",MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("A_ClearTask")):
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//タスククリアか",
                                 """case (RoleId.ROLENAME):
@@ -332,7 +331,7 @@ namespace SuperNewRoles.Roles
                 MainClass.WriteCodes("Roles/RoleClass.cs", "//その他Option", 
                 """public static bool IsUseVent;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
                 MainClass.WriteCodes("Roles/RoleClass.cs", "//くりあぁあんどりろぉどぉ",
-                """IsUseVent = true""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                """IsUseVent = true\n                //くりあぁあんどりろぉどぉ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             '''else:
                 # Roles/RoleHelper.cs
                 MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベントが使える",
@@ -348,7 +347,15 @@ namespace SuperNewRoles.Roles
                     break;\n                //ベント設定可視化""".replace("ROLENAME", MainClass.GetInput("RoleName")))'''
         ## インポの視界設定
         if (MainClass.GetBool("A_ImpoVisible")):
-            print("")
+            # Roles/RoleClass.cs
+            MainClass.WriteCodes("Roles/RoleClass.cs", "//その他Option", 
+                """public static bool IsImpostorLight;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes("Roles/RoleClass.cs", "//くりあぁあんどりろぉどぉ",
+                 "IsImpostorLight = CustomOptions.MayorFriendsIsImpostorLight.getBool();\n                //くりあぁあんどりろぉどぉ")
+            # Roles/RoleHelper.cs
+            MainClass.WriteCodes("Roles.RoleHelper.cs", "                //インポの視界",
+            """case RoleId.ROLENAME:
+                    return RoleClass.ROLENAME.IsImpostorLight;\n                //インポの視界""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # いらないやつ(次実行するときに複数書いてしまうため)の削除　(例:Jackal→//その他Option, NewRole→//その他Optionの場合、二つに書かれてしまうため重複する)
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベント設定可視化", "")
