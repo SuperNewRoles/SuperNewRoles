@@ -1286,12 +1286,20 @@ namespace SuperNewRoles
             {
                 try
                 {
-                    return ChacheManager.MyRoleChache[player.PlayerId];
+                    return ChacheManager.MyGhostRoleChache[player.PlayerId];
                 }
                 catch
                 {
                     return RoleId.DefaultRole;
                 }
+            }
+            try
+            {
+
+            }
+            catch
+            {
+
             }
             return RoleId.DefaultRole;
         }
@@ -1302,7 +1310,7 @@ namespace SuperNewRoles
             {
                 try
                 {
-                    MyRole = ChacheManager.MyRoleChache[p.PlayerId];
+                    MyRole = ChacheManager.MyGhostRoleChache[p.PlayerId];
                 }
                 catch
                 {
