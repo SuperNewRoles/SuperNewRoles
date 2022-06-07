@@ -1125,6 +1125,7 @@ namespace SuperNewRoles.Buttons
                                     RoleClass.Vulture.DeadBodyCount--;
                                     SuperNewRolesPlugin.Logger.LogInfo("DeadBodyCount:" + RoleClass.Vulture.DeadBodyCount);
                                     VultureButton.Timer = VultureButton.MaxTimer;
+                                    break;
                                 }
 
                             }
@@ -1232,8 +1233,8 @@ namespace SuperNewRoles.Buttons
 
                                     RoleClass.Cleaner.CoolTime = CleanerButton.Timer = CleanerButton.MaxTimer;
                                     PlayerControl.LocalPlayer.killTimer = RoleClass.Cleaner.CoolTime;
+                                    break;
                                 }
-
                             }
 
                         }
@@ -1285,7 +1286,7 @@ namespace SuperNewRoles.Buttons
                                     writer.Write(playerInfo.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                                     RPCProcedure.CleanBody(playerInfo.PlayerId);
-
+                                    break;
                                 }
 
                             }
