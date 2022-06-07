@@ -1009,7 +1009,7 @@ namespace SuperNewRoles.Buttons
                 () => { return Arsonist.IseveryButton(); },
                 () =>
                 {
-                    if (Arsonist.IsArsonistWinFlag())
+                    if (Arsonist.IsWin(PlayerControl.LocalPlayer))
                     {
                         return true;
                     }
