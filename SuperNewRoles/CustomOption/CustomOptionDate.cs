@@ -1167,7 +1167,7 @@ namespace SuperNewRoles.CustomOption
             SamuraiSwordCoolTime = CustomOption.Create(503, false, CustomOptionType.Impostor, "SamuraiSwordCoolSetting", 50f, 30f, 70f, 2.5f, SamuraiOption);
             SamuraiVent = CustomOption.Create(504, false, CustomOptionType.Impostor, "MinimalistVentSetting", false, SamuraiOption);
             SamuraiSabo = CustomOption.Create(505, false, CustomOptionType.Impostor, "MinimalistSaboSetting", false, SamuraiOption);
-            SamuraiScope = CustomOption.Create(506, false, CustomOptionType.Impostor, "SamuraiScopeSetting", 1f, 0.5f, 3f, 0.5f, SamuraiOption);
+            SamuraiScope = CustomOption.Create(506, false, CustomOptionType.Impostor, "SamuraiScorpSetting", 1f, 0.5f, 3f, 0.5f, SamuraiOption);
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
