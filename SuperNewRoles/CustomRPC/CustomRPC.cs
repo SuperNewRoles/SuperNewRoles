@@ -182,6 +182,7 @@ namespace SuperNewRoles.CustomRPC
         SetSpeedFreeze,
         BySamuraiKillRPC,
         MakeVent,
+        UseAdminTime,
     }
     public static class RPCProcedure
     {
@@ -857,6 +858,10 @@ namespace SuperNewRoles.CustomRPC
             VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
             VentMakerVent.gameObject.SetActive(true);
         }
+        public static void UseAdminTime(float time)
+        {
+            Patch.AdminPatch.RestrictAdminTime -= time;
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -1067,6 +1072,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.MakeVent:
                         MakeVent(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                        break;
+                    case (byte)CustomRPC.UseAdminTime:
+                        RPCProcedure.UseAdminTime(reader.ReadSingle());
                         break;
                 }
             }

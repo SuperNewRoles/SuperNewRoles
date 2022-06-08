@@ -10,7 +10,7 @@ using static SuperNewRoles.CustomOption.CustomOptions;
 using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.MapOptions
-{ 
+{
     [HarmonyPatch]
     public class MapOption
     {
@@ -25,6 +25,7 @@ namespace SuperNewRoles.MapOptions
         public static bool ValidationPolus;
         public static bool ValidationAirship;
         public static bool ValidationSubmerged;
+        public static bool IsRestrict;
         public static void ClearAndReload()
         {
             if (MapOptionSetting.getBool())
@@ -49,7 +50,8 @@ namespace SuperNewRoles.MapOptions
                     ValidationPolus = RandomMapPolus.getBool();
                     ValidationAirship = RandomMapAirship.getBool();
                     ValidationSubmerged = RandomMapSubmerged.getBool();
-                } else
+                }
+                else
                 {
                     IsRandomMap = false;
                     ValidationSkeld = false;
@@ -60,7 +62,8 @@ namespace SuperNewRoles.MapOptions
                 }
                 UseDeadBodyReport = !NotUseReportDeadBody.getBool();
                 UseMeetingButton = !NotUseMeetingButton.getBool();
-            } else
+            }
+            else
             {
                 UseAdmin = true;
                 UseVitalOrDoorLog = true;
@@ -120,7 +123,12 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption RandomMapAirship;
         public static CustomOption.CustomOption RandomMapSubmerged;
 
-        public static void LoadOption() {
+        public static CustomOption.CustomOption RestrictDevicesOption;
+        public static CustomOption.CustomOption RestrictAdmin;
+        public static CustomOption.CustomOption CanUseAdminTime;
+
+        public static void LoadOption()
+        {
             MapOptionSetting = CustomOption.CustomOption.Create(246, true, CustomOptionType.Generic, "MapOptionSetting", false, null, isHeader: true);
             DeviceOptions = CustomOption.CustomOption.Create(115, true, CustomOptionType.Generic, "DeviceOptionsSetting", false, MapOptionSetting);
             DeviceUseAdmin = CustomOption.CustomOption.Create(116, true, CustomOptionType.Generic, "DeviceUseAdminSetting", true, DeviceOptions);
@@ -131,14 +139,18 @@ namespace SuperNewRoles.MapOptions
             //DeviceUseCameraTime = CustomOption.CustomOption.Create(272, cs(Color.white, "DeviceTimeSetting"), 10f,0f,60f,1f, DeviceUseCamera);
             NotUseReportDeadBody = CustomOption.CustomOption.Create(247, true, CustomOptionType.Generic, "NotUseReportSetting", false, MapOptionSetting);
             NotUseMeetingButton = CustomOption.CustomOption.Create(248, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, MapOptionSetting);
-            
+
             RandomMapOption = CustomOption.CustomOption.Create(433, true, CustomOptionType.Generic, "RamdomMapSetting", true, MapOptionSetting);
             RandomMapSkeld = CustomOption.CustomOption.Create(434, true, CustomOptionType.Generic, "RMSkeldSetting", true, RandomMapOption);
             RandomMapMira = CustomOption.CustomOption.Create(435, true, CustomOptionType.Generic, "RMMiraSetting", true, RandomMapOption);
             RandomMapPolus = CustomOption.CustomOption.Create(436, true, CustomOptionType.Generic, "RMPolusSetting", true, RandomMapOption);
             RandomMapAirship = CustomOption.CustomOption.Create(437, true, CustomOptionType.Generic, "RMAirshipSetting", true, RandomMapOption);
             RandomMapSubmerged = CustomOption.CustomOption.Create(438, true, CustomOptionType.Generic, "RMSubmergedSetting", true, RandomMapOption);
-            //RM‚ÍRandomMap‚Ì—ª‚Å‚·()
+            //RM?¿½?¿½RandomMap?¿½Ì—ï¿½?¿½Å‚ï¿½()
+
+            RestrictDevicesOption = CustomOption.CustomOption.Create(600, true, CustomOptionType.Generic, "RestrictDevicesSetting", true, MapOptionSetting);
+            RestrictAdmin = CustomOption.CustomOption.Create(434, true, CustomOptionType.Generic, "RestrictAdminSetting", true, RestrictDevicesOption);
+            CanUseAdminTime = CustomOption.CustomOption.Create(274, true,CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictAdmin);
         }
     }
 }
