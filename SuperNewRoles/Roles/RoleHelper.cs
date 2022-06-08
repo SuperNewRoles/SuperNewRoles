@@ -1213,7 +1213,7 @@ namespace SuperNewRoles
                 case (RoleId.Arsonist):
                     IsNeutral = true;
                     break;
-                    case (RoleId.MayorFriends):
+                case (RoleId.MayorFriends):
                     IsNeutral = true;
                     break;
                 //第三か
@@ -1318,7 +1318,7 @@ namespace SuperNewRoles
             }
             try
             {
-
+                //ここが幽霊役職
             }
             catch
             {

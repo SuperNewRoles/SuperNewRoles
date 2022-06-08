@@ -348,8 +348,15 @@ namespace SuperNewRoles.Roles
                 """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Neutral, "MadMateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
                 # Roles/RoleHelper.cs
                 MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベントが使える",
-                """case RoleId.ROLENAME:
+                 """case RoleId.ROLENAME:
                     return RoleClass.ROLENAME.IsUseVent;\n                //ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                if (MainClass.GetBool("TeamGhost")):
+                    MainClass.WriteCodes("Roles/RoleHelper.cs", "//ここが幽霊役職",
+                 """if (SuperNewRoles.Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
+                    {
+                        return SuperNewRoles.CustomRPC.RoleId.ROLENAME;
+                    }\n                //ここが幽霊役職""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                    
                 # Roles/RoleClass.cs
                 MainClass.WriteCodes("Roles/RoleClass.cs", "//その他Option", 
                 """public static bool IsUseVent;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
