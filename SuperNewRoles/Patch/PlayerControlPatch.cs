@@ -854,7 +854,6 @@ namespace SuperNewRoles.Patches
                         // if that player is not targetable: skip check
                         continue;
                     }
-
                     if (@object && (!@object.inVent || targetPlayersInVents))
                     {
                         Vector2 vector = @object.GetTruePosition() - truePosition;

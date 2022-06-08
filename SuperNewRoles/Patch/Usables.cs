@@ -16,7 +16,6 @@ namespace SuperNewRoles.Patch
             {
                 if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo($"{data.PlayerName}(ClientID:{data.Id})が切断(理由:{reason})");
                 }
             }
         }
