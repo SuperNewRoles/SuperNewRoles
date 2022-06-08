@@ -571,6 +571,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption VentMakerOption;
         public static CustomOption VentMakerPlayerCount;
 
+        public static CustomRoleOption EvilHackerOption;
+        public static CustomOption EvilHackerPlayerCount;
+        public static CustomOption EvilHackerMadmateSetting;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -1168,6 +1172,10 @@ namespace SuperNewRoles.CustomOption
             SamuraiVent = CustomOption.Create(504, true, CustomOptionType.Impostor, "MinimalistVentSetting", false, SamuraiOption);
             SamuraiSabo = CustomOption.Create(505, true, CustomOptionType.Impostor, "MinimalistSaboSetting", false, SamuraiOption);
             SamuraiScope = CustomOption.Create(506, true, CustomOptionType.Impostor, "SamuraiScopeSetting", 1f, 0.5f, 3f, 0.5f, SamuraiOption);
+
+            EvilHackerOption = new CustomRoleOption(507, false, CustomOptionType.Impostor, "EvilHackerName", RoleClass.EvilHacker.color, 1);
+            EvilHackerPlayerCount = CustomOption.Create(508, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
+            EvilHackerMadmateSetting = CustomOption.Create(509, false, CustomOptionType.Impostor, "EvilHackerMadmateSetting", false, EvilHackerOption);
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);

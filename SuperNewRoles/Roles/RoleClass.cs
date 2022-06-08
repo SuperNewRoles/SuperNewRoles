@@ -140,6 +140,7 @@ namespace SuperNewRoles.Roles
             Samurai.ClearAndReload();
             MayorFriends.ClearAndReload();
             VentMaker.ClearAndReload();
+            EvilHacker.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2154,6 +2155,29 @@ namespace SuperNewRoles.Roles
                 Vent = null;
                 VentCount = 0;
                 IsMakeVent = true;
+            }
+        }
+        public static class EvilHacker
+        {
+            public static List<PlayerControl> EvilHackerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsCreateMadmate;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                byte mapId = PlayerControl.GameOptions.MapId;
+                UseButtonSettings button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
+                if (mapId == 0 || mapId == 3) button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
+                else if (mapId == 1) button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
+                else if (mapId == 4) button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
+                buttonSprite = button.Image;
+                return buttonSprite; //GMHからの引用
+            }
+            public static void ClearAndReload()
+            {
+                EvilHackerPlayer = new List<PlayerControl>();
+                IsCreateMadmate = CustomOptions.EvilHackerMadmateSetting.getBool();
             }
         }
         //新ロールクラス

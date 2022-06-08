@@ -117,6 +117,11 @@ SuperHostRolesModeName,Super Host Roles,SuperHostRoles
 ZombieModeName,Zombie Mode,ゾンビモード
 RandomColorModeName,Random Color Mode,ランダムカラー
 NotImpostorCheckModeName,Not Impostor Check Mode,インポスター視認不能モード
+CopsRobbersModeName,CopsRobbers,ケイドロ
+CopsRobbersModeCrewName,Thief,泥棒
+CopsRobbersModeCrewTitle1,Finish the task and win without getting caught by the police!,警察に捕まらないようにタスクを終わらせて勝利しよう
+CopsRobbersModeImpostorName,Police,警察
+CopsRobbersModeImpostorTitle1,Catch all the thieves and win!,泥棒を全員捕まえて勝利しよう
 DetectiveModeName,Detective Mode,探偵モード
 DetectiveModeIsWinNotCheckSetting,Not include the detective in the win condition determination.,探偵を勝利条件判定に入れない
 DetectiveModeIsNotTaskSetting,No tasks for detective,探偵にタスクがない
@@ -645,8 +650,18 @@ CleanerCoolDownSetting,CoolDown,死体消しのクールダウン
 MadCleanerName,MadCleaner,マッドクリーナー
 MadCleanerTitle1,Destroy the evidence and help impostors to win!,証拠を隠滅してインポスターを勝利に導こう!
 CleanerKillCoolTimeSetting,Kill CoolDown,クリーナーのキルクールダウン
+SamuraiName,Samurai,侍
+SamuraiTitle1,Let's cut through the crew!,クルーを切り裂こう!
+SamuraiKillCoolSetting,KillCoolTime,侍のキルクールダウン
+SamuraiSwordCoolSetting,AttackCoolTime,必殺技のクールダウン
+SamuraiScopeSetting,SamuraiScope,必殺技が及ぶ範囲
+SamuraiButtonName,UseSword!,必殺技!
 MayorFriendsName,MayorFriends,メイヤーフレンズ
 MayorFriendsTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう
 MayorFriendsDescription,It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。メイヤーフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。
 VentMakerName,VentMaker,ベントメーカー
 VentMakerTitle1,Let's make a vent!,ベントを作ろう！
+EvilHackerName,EvilHacker,イビルハッカー
+EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう
+EvilHackerMadmateSetting,Can an EvilHacker Make a Madmate,イビルハッカーがマッドメイトを作れるか
+ADMINButton,ADMIN,アドミン
