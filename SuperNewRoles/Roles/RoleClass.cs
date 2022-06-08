@@ -140,6 +140,7 @@ namespace SuperNewRoles.Roles
             Samurai.ClearAndReload();
             MayorFriends.ClearAndReload();
             VentMaker.ClearAndReload();
+            GhostMechanic.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2154,6 +2155,15 @@ namespace SuperNewRoles.Roles
                 Vent = null;
                 VentCount = 0;
                 IsMakeVent = true;
+            }
+        }
+        public static class GhostMechanic
+        {
+            public static List<PlayerControl> GhostMechanicPlayer;
+            public static Color32 color = Color.blue;
+            public static void ClearAndReload()
+            {
+                GhostMechanicPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

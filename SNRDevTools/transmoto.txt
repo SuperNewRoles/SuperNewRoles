@@ -660,3 +660,6 @@ MayorFriendsTitle1
 MayorFriendsDescription
 VentMakerName
 VentMakerTitle1
+GhostMechanicName
+GhostMechanicTitle1
+GhostMechanicRepairLimitSetting

@@ -119,6 +119,7 @@ namespace SuperNewRoles.CustomRPC
         Samurai,
         MayorFriends,
         VentMaker,
+        GhostMechanic,
         //RoleId
     }
 

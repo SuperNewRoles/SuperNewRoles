@@ -166,6 +166,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate SamuraiIntro = new IntroDate("Samurai", RoleClass.Samurai.color, 1, CustomRPC.RoleId.Samurai, TeamRoleType.Impostor);
         public static IntroDate MayorFriendsIntro = new IntroDate("MayorFriends", RoleClass.MayorFriends.color, 1, CustomRPC.RoleId.MayorFriends, TeamRoleType.Neutral);
         public static IntroDate VentMakerIntro = new IntroDate("VentMaker", RoleClass.VentMaker.color, 1, CustomRPC.RoleId.VentMaker, TeamRoleType.Impostor);
+        public static IntroDate GhostMechanicIntro = new IntroDate("GhostMechanic", RoleClass.GhostMechanic.color, 1, CustomRPC.RoleId.GhostMechanic, TeamRoleType.Crewmate, true);
         //イントロオブジェ
     }
 }

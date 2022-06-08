@@ -559,6 +559,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.VentMaker):
                     Roles.RoleClass.VentMaker.VentMakerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.GhostMechanic):
+                    Roles.RoleClass.GhostMechanic.GhostMechanicPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -877,7 +880,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.VentMaker):
                     Roles.RoleClass.VentMaker.VentMakerPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (CustomRPC.RoleId.GhostMechanic):
+                    Roles.RoleClass.GhostMechanic.GhostMechanicPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -1311,7 +1317,10 @@ namespace SuperNewRoles
             }
             try
             {
-
+                if (Roles.RoleClass.GhostMechanic.GhostMechanicPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.GhostMechanic;
+                }
             }
             catch
             {
@@ -1781,7 +1790,7 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.VentMaker;
                 }
-                //ロールチェック
+            //ロールチェック
             }
             catch (Exception e)
             {

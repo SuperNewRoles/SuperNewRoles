@@ -571,6 +571,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption VentMakerOption;
         public static CustomOption VentMakerPlayerCount;
 
+        public static CustomRoleOption GhostMechanicOption;
+        public static CustomOption GhostMechanicPlayerCount;
+        public static CustomOption GhostMechanicRepairLimit;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -1168,6 +1172,10 @@ namespace SuperNewRoles.CustomOption
             SamuraiVent = CustomOption.Create(504, false, CustomOptionType.Impostor, "MinimalistVentSetting", false, SamuraiOption);
             SamuraiSabo = CustomOption.Create(505, false, CustomOptionType.Impostor, "MinimalistSaboSetting", false, SamuraiOption);
             SamuraiScope = CustomOption.Create(506, false, CustomOptionType.Impostor, "SamuraiScopeSetting", 1f, 0.5f, 3f, 0.5f, SamuraiOption);
+
+            GhostMechanicOption = new CustomRoleOption(507, true, CustomOptionType.Crewmate, "GhostMechanicName", RoleClass.GhostMechanic.color, 1);
+            GhostMechanicPlayerCount = CustomOption.Create(508, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GhostMechanicOption);
+            GhostMechanicRepairLimit = CustomOption.Create(509, true, CustomOptionType.Crewmate, "GhostMechanicRepairLimitSetting", 1f, 1f, 30f, 1f, GhostMechanicOption);
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
