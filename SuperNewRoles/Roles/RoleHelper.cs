@@ -862,7 +862,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.VentMaker):
                     Roles.RoleClass.VentMaker.VentMakerPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
