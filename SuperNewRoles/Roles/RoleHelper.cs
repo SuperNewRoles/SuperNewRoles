@@ -12,6 +12,7 @@ using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Mode;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Intro;
 
 namespace SuperNewRoles
 {
@@ -1302,6 +1303,10 @@ namespace SuperNewRoles
 
             }
             return RoleId.DefaultRole;
+        }
+        public static bool isGhostRole(this RoleId role)
+        {
+            return IntroDate.GetIntroDate(role).IsGhostRole;
         }
         public static bool isGhostRole(this PlayerControl p, RoleId role, bool IsChache = true)
         {
