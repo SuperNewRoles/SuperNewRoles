@@ -1788,12 +1788,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.VentMaker;
                 }
-                //ロールチェック
                 else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.SeerFriends;
                 }
-            //ロールチェック
+                //ロールチェック
             }
             catch (Exception e)
             {

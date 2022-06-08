@@ -217,7 +217,8 @@ namespace SuperNewRoles.Roles
                 return CustomOption.CustomOptions.ROLENAMEPlayerCount.getFloat();\n                    //プレイヤーカウント""".replace("ROLENAME",MainClass.GetInput("RoleName")))
 
         # Roles/RoleHelper.cs
-        MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールチェック",
+        if (not MainClass.GetBool("TeamGhost")):
+            MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールチェック",
                                 """else if (Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
             {
                 return CustomRPC.RoleId.ROLENAME;
