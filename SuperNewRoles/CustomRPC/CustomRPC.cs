@@ -183,6 +183,7 @@ namespace SuperNewRoles.CustomRPC
         BySamuraiKillRPC,
         MakeVent,
         UseAdminTime,
+        UseCameraTime,
     }
     public static class RPCProcedure
     {
@@ -862,6 +863,10 @@ namespace SuperNewRoles.CustomRPC
         {
             Patch.AdminPatch.RestrictAdminTime -= time;
         }
+        public static void UseCameraTime(float time)
+        {
+            Patch.CameraPatch.RestrictCameraTime -= time;
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -1076,9 +1081,11 @@ namespace SuperNewRoles.CustomRPC
                     case (byte)CustomRPC.UseAdminTime:
                         RPCProcedure.UseAdminTime(reader.ReadSingle());
                         break;
+                    case (byte)CustomRPC.UseCameraTime:
+                        RPCProcedure.UseCameraTime(reader.ReadSingle());
+                        break;
                 }
             }
         }
-
     }
 }
