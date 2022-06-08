@@ -89,7 +89,7 @@ namespace SuperNewRoles
                 if (!player.isGhostRole(RoleId.DefaultRole))
                 {
                     var GhostRoleInfo = IntroDate.GetIntroDate(player.getGhostRole(), player);
-                    task.Text += "\n" + CustomOption.CustomOptions.cs(roleInfo.color, $"{ModTranslation.getString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
+                    task.Text += "\n" + CustomOption.CustomOptions.cs(GhostRoleInfo.color, $"{ModTranslation.getString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
                 }
                 /**
                 if (player.IsQuarreled())

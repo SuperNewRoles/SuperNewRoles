@@ -564,7 +564,22 @@ namespace SuperNewRoles
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
                     return;
             }
-            ChacheManager.ResetMyRoleChache();
+            bool flag = player.getRole() != role && player.PlayerId == PlayerControl.LocalPlayer.PlayerId;
+            if (role.isGhostRole())
+            {
+                ChacheManager.ResetMyGhostRoleChache();
+            }
+            else
+            {
+                ChacheManager.ResetMyRoleChache();
+            }
+
+            if (flag)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("リフレッシュ");
+                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            }
+            SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
         }
         private static PlayerControl ClearTarget;
         public static void ClearRole(this PlayerControl player)
