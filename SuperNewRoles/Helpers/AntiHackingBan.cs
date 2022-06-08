@@ -114,6 +114,5 @@ namespace SuperNewRoles.Helpers
                 return false;
             }
         }
-
     }
 }

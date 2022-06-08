@@ -75,7 +75,7 @@ namespace SuperNewRoles.Roles
     {
         public static void Postfix()
         {
-            if (HudManagerStartPatch.FreezerButton.Timer <= 0.1 && RoleClass.Freezer.IsSpeedDown)
+            if (HudManagerStartPatch.FreezerButton.Timer <= 0.1f && RoleClass.Freezer.IsSpeedDown)
             {
                 Freezer.SpeedDownEnd();
             }

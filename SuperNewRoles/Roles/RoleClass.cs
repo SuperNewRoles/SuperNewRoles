@@ -137,7 +137,9 @@ namespace SuperNewRoles.Roles
             Chief.ClearAndReload();
             Cleaner.ClearAndReload();
             MadCleaner.ClearAndReload();
+            Samurai.ClearAndReload();
             MayorFriends.ClearAndReload();
+            VentMaker.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -486,7 +488,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(100, 149, 237, byte.MaxValue);
             public static float CoolTime;
             public static float DurationTime;
-            public static Dictionary<byte,bool> IsShield;
+            public static Dictionary<byte, bool> IsShield;
             private static Sprite ButtonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -1811,6 +1813,7 @@ namespace SuperNewRoles.Roles
                 CreatePlayers = new List<int>();
             }
         }
+
         public static class Demon
         {
             public static List<PlayerControl> DemonPlayer;
@@ -2076,6 +2079,32 @@ namespace SuperNewRoles.Roles
                 IsImpostorLight = CustomOptions.MadCleanerIsImpostorLight.getBool();
             }
         }
+        public static class Samurai
+        {
+            public static List<PlayerControl> SamuraiPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static float SwordCoolTime;
+            public static bool Sword;
+            public static bool UseVent;
+            public static bool UseSabo;
+            private static Sprite ButtonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SamuraiButton.png", 115f);
+                return ButtonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                SamuraiPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.SamuraiKillCoolTime.getFloat();
+                SwordCoolTime =CustomOptions.SamuraiSwordCoolTime.getFloat();
+                UseVent = CustomOptions.SamuraiVent.getBool();
+                UseSabo = CustomOptions.SamuraiSabo.getBool();
+                Sword = false;
+            }
+        }
         public static class MayorFriends
         {
             public static List<PlayerControl> MayorFriendsPlayer;
@@ -2105,6 +2134,28 @@ namespace SuperNewRoles.Roles
                 AddVote = (int)CustomOptions.MayorFriendsVoteCount.getFloat();
             }
         }
+        public static class VentMaker
+        {
+            public static List<PlayerControl> VentMakerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static Vent Vent;
+            public static int VentCount;
+            public static bool IsMakeVent;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                VentMakerPlayer = new List<PlayerControl>();
+                Vent = null;
+                VentCount = 0;
+                IsMakeVent = true;
+            }
+        }
         //新ロールクラス
         public static class Quarreled
         {
@@ -2131,4 +2182,5 @@ namespace SuperNewRoles.Roles
         }
     }
 }
+
 
