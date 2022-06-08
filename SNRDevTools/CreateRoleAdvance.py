@@ -418,7 +418,7 @@ MainTab = psg.Tab("メイン", [
 AdvanceTab = psg.Tab("詳細設定", [
                 [psg.Check("役職ファイルを作成する", key="A_CreateFile")],
                 [psg.Check("タスクを削除する", key="A_ClearTask")],
-                [psg.Check("シェリフがキルできる", key="A_CanSheriffKill")],
+                [psg.Check("シェリフにキルされる", key="A_CanSheriffKill")],
                 [psg.Text("ボタン")],
                 [psg.Text(),psg.Check("ベント", key="A_CanVent")],
                 #[psg.Text(),psg.Check("ベント設定の追加", key="A_CanVentOption")],
