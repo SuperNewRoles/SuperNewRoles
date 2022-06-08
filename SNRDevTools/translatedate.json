@@ -2603,6 +2603,18 @@
  "VentMakerTitle1" : {
         "0" : "Let's make a vent!" ,
         "11" : "\u30d9\u30f3\u30c8\u3092\u4f5c\u308d\u3046\uff01"
-        } 
+        } ,
 
+  "EvilHackerName" : {
+        "0" : "EvilHacker" ,
+        "11" : "\u30a4\u30d3\u30eb\u30cf\u30c3\u30ab\u30fc"
+        } ,
+  "EvilHackerTitle1" : {
+        "0" : "Hack to Win!" ,
+        "11" : "\u30cf\u30c3\u30ad\u30f3\u30b0\u3057\u3066\u52dd\u5229\u3057\u3088\u3046"
+        } ,
+  "EvilHackerMadmateSetting" : {
+        "0" : "Can an EvilHacker Make a Madmate" ,
+        "11" : "\u30a4\u30d3\u30eb\u30cf\u30c3\u30ab\u30fc\u304c\u30de\u30c3\u30c9\u30e1\u30a4\u30c8\u3092\u4f5c\u308c\u308b\u304b"
+        } 
 }

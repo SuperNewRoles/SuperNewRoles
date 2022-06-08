@@ -921,6 +921,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.MayorFriendsPlayerCount.getFloat();
                 case (RoleId.VentMaker):
                     return CustomOption.CustomOptions.VentMakerPlayerCount.getFloat();
+                    case (RoleId.EvilHacker):
+                    return CustomOption.CustomOptions.EvilHackerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
