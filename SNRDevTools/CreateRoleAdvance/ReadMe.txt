@@ -29,5 +29,5 @@
 　　・Buttons/Button.cs　　　　　　　 →//カスタムなボタン達　　	CustomButtonの下
 　　・Buttons/Button.cs　　　　　　　 →//クールダウンリセット　　setCustomButtonCooldownsの下
 　　
-　　・Roles/Sheriff.cs　　　　　　　　→//シェリフゥゥ　　　　　　IsSheriffKillの下(return false;の前)
-    ・Roles/Sheriff.cs　　　　　　　　→//リモシェリフゥゥ　　　　IsRemoteSheriffKillの下(return false;の前)
+　　・Roles/Sheriff.cs　　　　　　　　→//シェリフキルゥ　　　　　　IsSheriffKillの下(return false;の前)
+    ・Roles/Sheriff.cs　　　　　　　　→//リモシェリフキルゥ　　　　IsRemoteSheriffKillの下(return false;の前)
