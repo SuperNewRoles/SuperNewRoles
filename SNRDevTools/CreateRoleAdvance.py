@@ -431,7 +431,8 @@ psg.theme(MainClass.GetConfig("Main", "Theme"))
 MainTab = psg.Tab("メイン", [  
                 [psg.Text("Role名(英名):",key="RoleNameText"),psg.InputText(MainClass.GetConfig("MainDefaultSetting", "RoleName"),size=(15,1),key="RoleName")],
                 [psg.Text("イントロ:",key="IntroText"), psg.Combo(("役職のみ表示","陣営でも表示"),size=(30,2),default_value=MainClass.GetConfig("MainDefaultSetting", "Intro"))],
-                [psg.Text("陣営:    ",key="TeamText"),psg.Radio("インポ陣営","TeamName",key="Impo",default=True),psg.Radio("クルー陣営","TeamName",key="Crew"),psg.Radio("第三陣営","TeamName",key="Neut"), psg.Radio("重複陣営(ペア)",group_id="TeamName",key="TeamTwo"), psg.Radio("重複陣営(個人)",group_id="TeamName",key="TeamOne"), psg.Radio("幽霊役職",group_id="TeamName",key="TeamGhost")],
+                [psg.Text("陣営:    ",key="TeamText"),psg.Radio("インポ陣営","TeamName",key="Impo",default=True),psg.Radio("クルー陣営","TeamName",key="Crew"),psg.Radio("第三陣営","TeamName",key="Neut")],
+                [psg.Radio("重複陣営(ペア)",group_id="TeamName",key="TeamTwo"), psg.Radio("重複陣営(個人)",group_id="TeamName",key="TeamOne"), psg.Radio("幽霊役職",group_id="TeamName",key="TeamGhost")],
                 [psg.Text("役職カラー:",key="ColorText"), psg.Radio("インポ色","RoleColor",key="ImpoColor",default=True), psg.Radio("ナイス緑色","RoleColor",key="CrewColor"),  psg.ColorChooserButton("色選択",key="ColorButton",target="ColorHash")],
                 [psg.Text("取得ハッシュ:",key="ColorHashText"), psg.Input("ImposterRed",key="ColorHash")],
                 [psg.Text()],
