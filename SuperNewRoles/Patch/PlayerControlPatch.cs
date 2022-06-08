@@ -105,7 +105,7 @@ namespace SuperNewRoles.Patches
                         }
                         return false;
                     case RoleId.Samurai:
-                        if (AmongUsClient.Instance.AmHost || !RoleClass.Samurai.Sword)
+                        if (AmongUsClient.Instance.AmHost || !RoleClass.Samurai.Sword )
                         {
                             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                             {
@@ -114,7 +114,7 @@ namespace SuperNewRoles.Patches
                                     if (Samurai.Getsword(__instance, p))
                                     {
                                         __instance.RpcMurderPlayerCheck(p);
-                                        RoleClass.Samurai.Sword = true;
+                                        Samurai.IsSword();
                                     }
                                 }
                             }

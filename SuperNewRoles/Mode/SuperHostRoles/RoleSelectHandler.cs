@@ -70,6 +70,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                   CustomOptions.FalseChargesOption.getSelection() != 0 ||
                   CustomOptions.RemoteSheriffOption.getSelection() != 0 ||
                   CustomOptions.MadMakerOption.getSelection() != 0 ||
+                  CustomOptions.SamuraiOption.getSelection() != 0 ||
                   CustomOptions.DemonOption.getSelection() != 0)
                 {
                     PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
@@ -121,7 +122,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<PlayerControl> DesyncShapeshifters = new List<PlayerControl>();
             DesyncShapeshifters.AddRange(RoleClass.Arsonist.ArsonistPlayer);
             DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
-            DesyncShapeshifters.AddRange(RoleClass.Samurai.SamuraiPlayer);
             //シェイプシフターにDesync
 
 
