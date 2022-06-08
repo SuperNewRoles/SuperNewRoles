@@ -6,6 +6,8 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,14 +24,12 @@ namespace SuperNewRoles.Patch
         }
     }
     [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]
-    public class AbilityUpdate { 
+    public class AbilityUpdate {
         public static void Postfix(AbilityButton __instance)
         {
-            if (!ModeHandler.IsBlockVanilaRole()) {
-                if (PlayerControl.LocalPlayer.Data.Role.IsSimpleRole)
-                {
-                    __instance.commsDown.SetActive(false);
-                }
+            if (PlayerControl.LocalPlayer.Data.Role.IsSimpleRole && __instance.commsDown.active)
+            {
+                __instance.commsDown.SetActive(false);
             }
         }
     }
@@ -44,7 +44,7 @@ namespace SuperNewRoles.Patch
                 if (AmongUsClient.Instance.AmHost && Input.GetKeyDown(KeyCode.H) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift))
                 {
                     RPCHelper.StartRPC(CustomRPC.CustomRPC.SetHaison).EndRPC();
-                    CustomRPC.RPCProcedure.SetHaison();
+                    RPCProcedure.SetHaison();
                     ShipStatus.Instance.enabled = false;
                     ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                 }
@@ -97,9 +97,10 @@ namespace SuperNewRoles.Patch
                         SabotageManager.Update();
                         SetNameUpdate.Postfix(__instance);
                         Jackal.JackalFixedPatch.Postfix(__instance);
+                        JackalSeer.JackalSeerFixedPatch.Postfix(__instance);
                         if (PlayerControl.LocalPlayer.isAlive())
                         {
-                            if (PlayerControl.LocalPlayer.isImpostor()) {SetTarget.ImpostorSetTarget(); }
+                            if (PlayerControl.LocalPlayer.isImpostor()) { SetTarget.ImpostorSetTarget(); }
                             var MyRole = PlayerControl.LocalPlayer.getRole();
                             switch (MyRole)
                             {
@@ -142,11 +143,14 @@ namespace SuperNewRoles.Patch
                                 case RoleId.DarkKiller:
                                     DarkKiller.FixedUpdate.Postfix();
                                     break;
+                                case RoleId.Vulture:
+                                    Vulture.FixedUpdate.Postfix();
+                                    break;
                             }
                             Fox.FixedUpdate.Postfix();
                             Minimalist.FixedUpdate.Postfix();
                         }
-                        else if (PlayerControl.LocalPlayer.isDead())
+                        else
                         {
                             if (PlayerControl.LocalPlayer.isRole(RoleId.Bait))
                             {
@@ -155,7 +159,8 @@ namespace SuperNewRoles.Patch
                                     Bait.BaitUpdate.Postfix(__instance);
 
                                 }
-                            } else if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
+                            }
+                            else if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
                             {
                                 var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
                                 if (sideplayer != null)
@@ -169,7 +174,8 @@ namespace SuperNewRoles.Patch
                             }
                         }
                     }
-                    else {
+                    else
+                    {
                         ModeHandler.FixedUpdate(__instance);
                     }
                 }
