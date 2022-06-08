@@ -653,10 +653,14 @@ SamuraiName
 SamuraiTitle1
 SamuraiKillCoolSetting
 SamuraiSwordCoolSetting
-SamuraiScorpSetting
+SamuraiScopeSetting
 SamuraiButtonName
 MayorFriendsName
 MayorFriendsTitle1
 MayorFriendsDescription
 VentMakerName
 VentMakerTitle1
+EvilHackerName
+EvilHackerTitle1
+EvilHackerMadmateSetting
+ADMINButton

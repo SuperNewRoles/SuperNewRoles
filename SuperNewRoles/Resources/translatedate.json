@@ -472,6 +472,26 @@
         "0" : "Not Impostor Check Mode" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u8996\u8a8d\u4e0d\u80fd\u30e2\u30fc\u30c9"
         } ,
+ "CopsRobbersModeName" : {
+        "0" : "CopsRobbers" ,
+        "11" : "\u30b1\u30a4\u30c9\u30ed"
+        } ,
+ "CopsRobbersModeCrewName" : {
+        "0" : "Thief" ,
+        "11" : "\u6ce5\u68d2"
+        } ,
+ "CopsRobbersModeCrewTitle1" : {
+        "0" : "Finish the task and win without getting caught by the police!" ,
+        "11" : "\u8b66\u5bdf\u306b\u6355\u307e\u3089\u306a\u3044\u3088\u3046\u306b\u30bf\u30b9\u30af\u3092\u7d42\u308f\u3089\u305b\u3066\u52dd\u5229\u3057\u3088\u3046"
+        } ,
+ "CopsRobbersModeImpostorName" : {
+        "0" : "Police" ,
+        "11" : "\u8b66\u5bdf"
+        } ,
+ "CopsRobbersModeImpostorTitle1" : {
+        "0" : "Catch all the thieves and win!" ,
+        "11" : "\u6ce5\u68d2\u3092\u5168\u54e1\u6355\u307e\u3048\u3066\u52dd\u5229\u3057\u3088\u3046"
+        } ,
  "DetectiveModeName" : {
         "0" : "Detective Mode" ,
         "11" : "\u63a2\u5075\u30e2\u30fc\u30c9"
@@ -2584,6 +2604,30 @@
         "0" : "Kill CoolDown" ,
         "11" : "\u30af\u30ea\u30fc\u30ca\u30fc\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } ,
+ "SamuraiName" : {
+        "0" : "Samurai" ,
+        "11" : "\u4f8d"
+        } ,
+ "SamuraiTitle1" : {
+        "0" : "Let's cut through the crew!" ,
+        "11" : "\u30af\u30eb\u30fc\u3092\u5207\u308a\u88c2\u3053\u3046!"
+        } ,
+ "SamuraiKillCoolSetting" : {
+        "0" : "KillCoolTime" ,
+        "11" : "\u4f8d\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "SamuraiSwordCoolSetting" : {
+        "0" : "AttackCoolTime" ,
+        "11" : "\u5fc5\u6bba\u6280\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "SamuraiScopeSetting" : {
+        "0" : "SamuraiScope" ,
+        "11" : "\u5fc5\u6bba\u6280\u304c\u53ca\u3076\u7bc4\u56f2"
+        } ,
+ "SamuraiButtonName" : {
+        "0" : "UseSword!" ,
+        "11" : "\u5fc5\u6bba\u6280!"
+        } ,
  "MayorFriendsName" : {
         "0" : "MayorFriends" ,
         "11" : "\u30e1\u30a4\u30e4\u30fc\u30d5\u30ec\u30f3\u30ba"
@@ -2604,21 +2648,21 @@
         "0" : "Let's make a vent!" ,
         "11" : "\u30d9\u30f3\u30c8\u3092\u4f5c\u308d\u3046\uff01"
         } ,
-
-  "EvilHackerName" : {
+ "EvilHackerName" : {
         "0" : "EvilHacker" ,
         "11" : "\u30a4\u30d3\u30eb\u30cf\u30c3\u30ab\u30fc"
         } ,
-  "EvilHackerTitle1" : {
+ "EvilHackerTitle1" : {
         "0" : "Hack to Win!" ,
         "11" : "\u30cf\u30c3\u30ad\u30f3\u30b0\u3057\u3066\u52dd\u5229\u3057\u3088\u3046"
         } ,
-  "EvilHackerMadmateSetting" : {
+ "EvilHackerMadmateSetting" : {
         "0" : "Can an EvilHacker Make a Madmate" ,
         "11" : "\u30a4\u30d3\u30eb\u30cf\u30c3\u30ab\u30fc\u304c\u30de\u30c3\u30c9\u30e1\u30a4\u30c8\u3092\u4f5c\u308c\u308b\u304b"
         } ,
-  "ADMINButton" : {
+ "ADMINButton" : {
         "0" : "ADMIN" ,
         "11" : "\u30a2\u30c9\u30df\u30f3"
         } 
+
 }
