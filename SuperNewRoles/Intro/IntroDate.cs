@@ -13,6 +13,7 @@ namespace SuperNewRoles.Intro
     public class IntroDate
     {
         public static List<IntroDate> IntroDatas = new List<IntroDate>();
+        public static List<IntroDate> GhostRoleDatas = new List<IntroDate>();
         public string NameKey;
         public string Name;
         public Int16 TitleNum;
@@ -21,7 +22,8 @@ namespace SuperNewRoles.Intro
         public CustomRPC.RoleId RoleId;
         public string Description;
         public TeamRoleType Team;
-        IntroDate(string NameKey, Color color, Int16 TitleNum, CustomRPC.RoleId RoleId, TeamRoleType team = TeamRoleType.Crewmate)
+        public bool IsGhostRole;
+        IntroDate(string NameKey, Color color, Int16 TitleNum, CustomRPC.RoleId RoleId, TeamRoleType team = TeamRoleType.Crewmate, bool IsGhostRole = false)
         {
             this.color = color;
             this.NameKey = NameKey;
@@ -31,11 +33,17 @@ namespace SuperNewRoles.Intro
             this.TitleDesc = Intro.IntroDate.GetTitle(NameKey, TitleNum);
             this.Description = ModTranslation.getString(NameKey + "Description");
             this.Team = team;
+            this.IsGhostRole = IsGhostRole;
+
+            if (IsGhostRole)
+            {
+                GhostRoleDatas.Add(this);
+            }
             IntroDatas.Add(this);
         }
         public static IntroDate GetIntroDate(CustomRPC.RoleId RoleId, PlayerControl p = null)
         {
-            if (RoleId == CustomRPC.RoleId.DefaultRole)
+            if (RoleId == RoleId.DefaultRole)
             {
                 if (p != null && p.isImpostor())
                 {
@@ -48,7 +56,7 @@ namespace SuperNewRoles.Intro
 
             }
             var data = IntroDatas.FirstOrDefault((_) => _.RoleId == RoleId);
-            if (data == null) return SheriffIntro;
+            if (data == null) return CrewmateIntro;
             return data;
         }
         public static CustomRoleOption GetOption(RoleId roleId)

@@ -8,11 +8,13 @@ namespace SuperNewRoles
     class ChacheManager
     {
         public static Dictionary<int, RoleId> MyRoleChache;
+        public static Dictionary<int, RoleId> MyGhostRoleChache;
         public static Dictionary<int, PlayerControl> LoversChache;
         public static Dictionary<int, PlayerControl> QuarreledChache;
         public static void Load()
         {
             MyRoleChache = new Dictionary<int, RoleId>();
+            MyGhostRoleChache = new Dictionary<int, RoleId>();
             LoversChache = new Dictionary<int, PlayerControl>();
             QuarreledChache = new Dictionary<int, PlayerControl>();
         }
@@ -21,6 +23,7 @@ namespace SuperNewRoles
             ResetQuarreledChache();
             ResetLoversChache();
             ResetMyRoleChache();
+            ResetMyGhostRoleChache();
         }
         public static void ResetQuarreledChache()
         {
@@ -53,8 +56,14 @@ namespace SuperNewRoles
         {
             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("SetLog");
                 MyRoleChache[p.PlayerId] = p.getRole(false);
+            }
+        }
+        public static void ResetMyGhostRoleChache()
+        {
+            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            {
+                MyGhostRoleChache[p.PlayerId] = p.getGhostRole(false);
             }
         }
     }

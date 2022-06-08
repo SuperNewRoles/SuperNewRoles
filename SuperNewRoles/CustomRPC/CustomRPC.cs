@@ -477,8 +477,12 @@ namespace SuperNewRoles.CustomRPC
         public static void SetRole(byte playerid, byte RPCRoleId)
         {
             var player = ModHelpers.playerById(playerid);
-            player.ClearRole();
-            player.setRole((RoleId)RPCRoleId);
+            var roleId = (RoleId)RPCRoleId;
+            if (!roleId.isGhostRole())
+            {
+                player.ClearRole();
+            }
+            player.setRole(roleId);
         }
         public static void SetQuarreled(byte playerid1, byte playerid2)
         {
