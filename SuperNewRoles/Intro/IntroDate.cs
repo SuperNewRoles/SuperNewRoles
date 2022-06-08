@@ -56,7 +56,7 @@ namespace SuperNewRoles.Intro
 
             }
             var data = IntroDatas.FirstOrDefault((_) => _.RoleId == RoleId);
-            if (data == null) return SheriffIntro;
+            if (data == null) return CrewmateIntro;
             return data;
         }
         public static CustomRoleOption GetOption(RoleId roleId)
