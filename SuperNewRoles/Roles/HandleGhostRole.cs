@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
+using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace SuperNewRoles.Roles
         {
             public static bool Prefix(RoleManager __instance, [HarmonyArgument(0)] PlayerControl player)
             {
+                if (!(ModeHandler.isMode(ModeId.Default) || ModeHandler.isMode(ModeId.SuperHostRoles))) return true;
                 //生存者と割り当て済みの人は弾く
                 if (player.isAlive() || !player.isGhostRole(RoleId.DefaultRole)) return false;
                 //幽霊役職がアサインされていたら守護天使をアサインしない
@@ -24,50 +26,21 @@ namespace SuperNewRoles.Roles
         public static bool HandleAssign(PlayerControl player)
         {
             //各役職にあったアサインをする
+            var Team = TeamRoleType.Error;
             if (player.isCrew())
             {
-                return HandleCrewAssign(player);
+                Team = TeamRoleType.Crewmate;
             } else if (player.isNeutral())
             {
-                return HandleNeutralAssign(player);
+                Team = TeamRoleType.Neutral;
             } else
             {
-                return HandleImpostorAssign(player);
+                Team = TeamRoleType.Impostor;
             }
-        }
-        //各役職のアサインを
-        public static bool HandleCrewAssign(PlayerControl player)
-        {
             List<IntroDate> GhostRoles = new List<IntroDate>();
             foreach (IntroDate intro in IntroDate.GhostRoleDatas)
             {
-                if (intro.Team != TeamRoleType.Crewmate) continue;
-                GhostRoles.Add(intro);
-            }
-            var assignrole = Assing(GhostRoles);
-            if (assignrole == RoleId.DefaultRole) return false;
-            player.setRoleRPC(assignrole);
-            return true;
-        }
-        public static bool HandleNeutralAssign(PlayerControl player)
-        {
-            List<IntroDate> GhostRoles = new List<IntroDate>();
-            foreach (IntroDate intro in IntroDate.GhostRoleDatas)
-            {
-                if (intro.Team != TeamRoleType.Neutral) continue;
-                GhostRoles.Add(intro);
-            }
-            var assignrole = Assing(GhostRoles);
-            if (assignrole == RoleId.DefaultRole) return false;
-            player.setRoleRPC(assignrole);
-            return true;
-        }
-        public static bool HandleImpostorAssign(PlayerControl player)
-        {
-            List<IntroDate> GhostRoles = new List<IntroDate>();
-            foreach (IntroDate intro in IntroDate.GhostRoleDatas)
-            {
-                if (intro.Team != TeamRoleType.Impostor) continue;
+                if (intro.Team != Team) continue;
                 GhostRoles.Add(intro);
             }
             var assignrole = Assing(GhostRoles);
@@ -81,15 +54,19 @@ namespace SuperNewRoles.Roles
         {
             List<RoleId> Assigns = new List<RoleId>();
             List<RoleId> Assignnos = new List<RoleId>();
+            ModeId mode = ModeHandler.GetMode();
             foreach (IntroDate data in datas)
             {
                 //その役職のプレイヤー数を取得
                 var count = AllRoleSetClass.GetPlayerCount(data.RoleId);
+                //設定を取得
+                var option = IntroDate.GetOption(data.RoleId);
                 //確率を取得
-                var selection = IntroDate.GetOption(data.RoleId).getSelection();
+                var selection = option.getSelection();
+
                 //確率が0%ではないかつ、
                 //もう割り当てきられてないか(最大人数まで割り当てられていないか)
-                if (selection != 0 && count > PlayerControl.AllPlayerControls.ToArray().ToList().Count((PlayerControl pc)=> pc.isGhostRole(data.RoleId)))
+                if ((option.isSHROn || mode != ModeId.SuperHostRoles) && selection != 0 && count > PlayerControl.AllPlayerControls.ToArray().ToList().Count((PlayerControl pc)=> pc.isGhostRole(data.RoleId)))
                 {
                     //100%なら100%アサインListに入れる
                     if (selection == 10)
