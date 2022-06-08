@@ -128,6 +128,8 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption CanUseAdminTime;
         public static CustomOption.CustomOption RestrictCamera;
         public static CustomOption.CustomOption CanUseCameraTime;
+        public static CustomOption.CustomOption RestrictVital;
+        public static CustomOption.CustomOption CanUseVitalTime;
 
         public static void LoadOption()
         {
@@ -155,6 +157,8 @@ namespace SuperNewRoles.MapOptions
             CanUseAdminTime = CustomOption.CustomOption.Create(274, true, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictAdmin);
             RestrictCamera = CustomOption.CustomOption.Create(434, true, CustomOptionType.Generic, "RestrictCameraSetting", true, RestrictDevicesOption);
             CanUseCameraTime = CustomOption.CustomOption.Create(274, true, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictCamera);
+            RestrictVital = CustomOption.CustomOption.Create(434, true, CustomOptionType.Generic, "RestrictVitalSetting", true, RestrictDevicesOption);
+            CanUseVitalTime = CustomOption.CustomOption.Create(274, true, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictVital);
         }
     }
 }

@@ -184,6 +184,7 @@ namespace SuperNewRoles.CustomRPC
         MakeVent,
         UseAdminTime,
         UseCameraTime,
+        UseVitalsTime,
     }
     public static class RPCProcedure
     {
@@ -867,6 +868,10 @@ namespace SuperNewRoles.CustomRPC
         {
             Patch.CameraPatch.RestrictCameraTime -= time;
         }
+        public static void UseVitalTime(float time)
+        {
+            Patch.VitalsPatch.RestrictVitalsTime -= time;
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -1083,6 +1088,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.UseCameraTime:
                         RPCProcedure.UseCameraTime(reader.ReadSingle());
+                        break;
+                    case (byte)CustomRPC.UseVitalsTime:
+                        RPCProcedure.UseVitalTime(reader.ReadSingle());
                         break;
                 }
             }
