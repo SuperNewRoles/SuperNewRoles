@@ -456,7 +456,7 @@ namespace SuperNewRoles.Patch
                                 {
                                     exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + exiledPlayer.Object.getDefaultName(), p2);
                                 }
-                                new LateTask(() => exiledPlayer.Object.RpcSetName(p.getDefaultName()), 5f);
+                                new LateTask(() => exiledPlayer.Object.RpcSetName(p2.getDefaultName()), 5f);
                             }
                         }
                     }
