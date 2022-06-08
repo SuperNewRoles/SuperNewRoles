@@ -144,8 +144,8 @@ class AllCheck:
             MainClass.CreateOKWindow("カスタムボタンは現在対応していません")
         if (MainClass.GetBool("A_PersonalWin")):
             MainClass.CreateOKWindow("独自勝利辞書追加は現在対応していません")
-        if (MainClass.GetBool("A_ImpoVisible")):
-            MainClass.CreateOKWindow("インポの視界は現在対応していません")
+        if (MainClass.GetBool("A_CanVisibleImpo")):
+            MainClass.CreateOKWindow("インポの視認は現在対応していません")
         # 一部値がかぶっていないか(例:インポ+キル可能)
         if (MainClass.GetBool("A_CanVent")):
             if (MainClass.GetBool("Impo")):
