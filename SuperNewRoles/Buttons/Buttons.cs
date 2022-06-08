@@ -58,6 +58,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton FreezerButton;
         public static CustomButton SamuraiButton;
         public static CustomButton VentMakerButton;
+        public static CustomButton EvilHackerButton;
+        public static CustomButton EvilHackerMadmateSetting;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
@@ -1384,6 +1386,66 @@ namespace SuperNewRoles.Buttons
             VentMakerButton.buttonText = ModTranslation.getString("VentMakerButtonName");
             VentMakerButton.showButtonText = true;
 
+            EvilHackerButton = new CustomButton(
+               () =>
+               {
+                   PlayerControl.LocalPlayer.NetTransform.Halt();
+                   Action<MapBehaviour> tmpAction = (MapBehaviour m) => { m.ShowCountOverlay(); };
+                   DestroyableSingleton<HudManager>.Instance.ShowMap(tmpAction);
+
+               },
+               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker) && PlayerControl.LocalPlayer.CanMove; },
+               () =>
+               {
+                   return PlayerControl.LocalPlayer.CanMove;
+               },
+                () =>
+                {
+                    EvilHackerButton.MaxTimer = 0f;
+                    EvilHackerButton.Timer = 0f;
+                },
+               RoleClass.EvilHacker.getButtonSprite(),
+               new Vector3(-1.8f, -0.06f, 0),
+               __instance,
+               __instance.AbilityButton,
+               KeyCode.F,
+               49
+            );
+
+            EvilHackerButton.buttonText = ModTranslation.getString("ADMINButton");
+            EvilHackerButton.showButtonText = true;
+
+            EvilHackerMadmateSetting = new CustomButton(
+                () =>
+                {
+                    var target = setTarget();
+                    if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.EvilHacker.IsCreateMadmate)
+                    {
+                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
+                        target.setRoleRPC(RoleId.MadMate);
+                        RoleClass.EvilHacker.IsCreateMadmate = false;
+                    }
+                    else if (target.Data.Role.IsImpostor)
+                    {
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    }
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.EvilHacker) && ModeHandler.isMode(ModeId.Default) && RoleClass.EvilHacker.IsCreateMadmate; },
+                () =>
+                {
+                    return setTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { },
+                RoleClass.Jackal.getButtonSprite(),
+                new Vector3(-2.7f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8
+            );
+
+            EvilHackerMadmateSetting.buttonText = ModTranslation.getString("SidekickName");
+            EvilHackerMadmateSetting.showButtonText = true;
 
             setCustomButtonCooldowns();
 
