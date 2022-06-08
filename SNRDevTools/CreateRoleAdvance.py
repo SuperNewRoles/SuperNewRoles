@@ -1,5 +1,6 @@
 ## import
 import string
+from tkinter import getboolean
 import PySimpleGUI as psg
 import configparser
 import sys
@@ -268,16 +269,25 @@ namespace SuperNewRoles.Roles
         elif (MainClass.GetBool("Neut")):
              MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Neutral);
             //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
-        MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロ検知","""case (CustomRPC.RoleId.ROLENAME):
+             '''MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロ検知","""case (CustomRPC.RoleId.ROLENAME):
                     return ROLENAMEIntro;
-                //イントロ検知""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+                //イントロ検知""".replace("ROLENAME",MainClass.GetInput("RoleName")))'''#⇐なにこれ？
+        elif (MainClass.GetBool("TeamOne")):
+            print()
+        elif (MainClass.GetBool("TeamTwo")):
+            print()
+        elif (MainClass.GetBool("TeamGhost")):
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Crewmate, true);
+            //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+
+        
 
         # CustomOption/CustomOptionDate.cs
         MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//CustomOption", 
         """\npublic static CustomRoleOption ROLENAMEOption;
         public static CustomOption ROLENAMEPlayerCount;\n        //CustomOption""".replace("ROLENAME",MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("AddSetting")):
-            if (MainClass.GetBool("TeamImpo")):
+            if (MainClass.GetBool("TeamImpo") or MainClass.GetBool("TeamGhost")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
                 """\nROLENAMEOption = new CustomRoleOption(IDNOM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
@@ -289,6 +299,11 @@ namespace SuperNewRoles.Roles
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
                 """\nROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Neutral, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
+            elif (MainClass.GetBool("TeamOne")):
+                print("まだできてねぇ")
+            elif (MainClass.GetBool("TeamTwo")):
+                print("まだできてねぇ")
+
             #else:
                 #MainClass.CreateErrorWindow("設定タブの値が空白です")
         ## シェリフキル
@@ -407,12 +422,12 @@ psg.theme(MainClass.GetConfig("Main", "Theme"))
 MainTab = psg.Tab("メイン", [  
                 [psg.Text("Role名(英名):",key="RoleNameText"),psg.InputText(MainClass.GetConfig("MainDefaultSetting", "RoleName"),size=(15,1),key="RoleName")],
                 [psg.Text("イントロ:",key="IntroText"), psg.Combo(("役職のみ表示","陣営でも表示"),size=(30,2),default_value=MainClass.GetConfig("MainDefaultSetting", "Intro"))],
-                [psg.Text("陣営:    ",key="TeamText"),psg.Radio("インポ陣営","TeamName",key="Impo",default=True),psg.Radio("クルー陣営","TeamName",key="Crew"),psg.Radio("第三陣営","TeamName",key="Neut")],
+                [psg.Text("陣営:    ",key="TeamText"),psg.Radio("インポ陣営","TeamName",key="Impo",default=True),psg.Radio("クルー陣営","TeamName",key="Crew"),psg.Radio("第三陣営","TeamName",key="Neut"), psg.Radio("重複陣営(ペア)",group_id="TeamName",key="TeamTwo"), psg.Radio("重複陣営(個人)",group_id="TeamName",key="TeamOne"), psg.Radio("幽霊役職",group_id="TeamName",key="TeamGhost")],
                 [psg.Text("役職カラー:",key="ColorText"), psg.Radio("インポ色","RoleColor",key="ImpoColor",default=True), psg.Radio("ナイス緑色","RoleColor",key="CrewColor"),  psg.ColorChooserButton("色選択",key="ColorButton",target="ColorHash")],
                 [psg.Text("取得ハッシュ:",key="ColorHashText"), psg.Input("ImposterRed",key="ColorHash")],
                 [psg.Text()],
                 [psg.Check("設定を追加する",key="AddSetting")],
-                [psg.Text(), psg.Text("タブ:",key="SettingTabText"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut"), psg.Radio("重複陣営(ペア)",group_id="OptionTab",key="TeamTwo"), psg.Radio("重複陣営(個人)",group_id="OptionTab",key="TeamOne")],
+                [psg.Text(), psg.Text("タブ:",key="SettingTabText"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut")],
                 [psg.Text(), psg.Check("SHR対応",key="IsSHRON")],
                 [psg.Text(), psg.Text("設定ID(int)",key="OptionNumberIDText"), psg.Input("",key="OptionNumber",size=(10,3))], ])
 AdvanceTab = psg.Tab("詳細設定", [
