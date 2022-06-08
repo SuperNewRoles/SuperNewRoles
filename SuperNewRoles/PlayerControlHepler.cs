@@ -1,4 +1,6 @@
 ﻿using InnerNet;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Intro;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using System;
@@ -83,6 +85,11 @@ namespace SuperNewRoles
                 if (player.IsLovers())
                 {
                     task.Text += "\n" + ModHelpers.cs(RoleClass.Lovers.color,ModTranslation.getString("LoversName")+": "+ string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                }
+                if (!player.isGhostRole(RoleId.DefaultRole))
+                {
+                    var GhostRoleInfo = IntroDate.GetIntroDate(player.getGhostRole(), player);
+                    task.Text += "\n" + CustomOption.CustomOptions.cs(GhostRoleInfo.color, $"{ModTranslation.getString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
                 }
                 /**
                 if (player.IsQuarreled())

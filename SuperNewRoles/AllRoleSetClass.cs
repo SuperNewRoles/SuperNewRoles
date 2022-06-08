@@ -954,7 +954,7 @@ namespace SuperNewRoles
             Crewnotonepar = new List<RoleId>();
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
-                if (intro.RoleId != RoleId.DefaultRole)
+                if (intro.RoleId != RoleId.DefaultRole && !intro.IsGhostRole)
                 {
                     var option = IntroDate.GetOption(intro.RoleId);
                     if (option == null) continue;

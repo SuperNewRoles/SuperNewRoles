@@ -12,6 +12,7 @@ using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Mode;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Intro;
 
 namespace SuperNewRoles
 {
@@ -564,7 +565,22 @@ namespace SuperNewRoles
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
                     return;
             }
-            ChacheManager.ResetMyRoleChache();
+            bool flag = player.getRole() != role && player.PlayerId == PlayerControl.LocalPlayer.PlayerId;
+            if (role.isGhostRole())
+            {
+                ChacheManager.ResetMyGhostRoleChache();
+            }
+            else
+            {
+                ChacheManager.ResetMyRoleChache();
+            }
+
+            if (flag)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("リフレッシュ");
+                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            }
+            SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
         }
         private static PlayerControl ClearTarget;
         public static void ClearRole(this PlayerControl player)
@@ -1286,6 +1302,60 @@ namespace SuperNewRoles
                     return getCoolTime(p);
             }
             return PlayerControl.GameOptions.killCooldown;
+        }
+        public static RoleId getGhostRole(this PlayerControl player, bool IsChache = true)
+        {
+            if (IsChache)
+            {
+                try
+                {
+                    return ChacheManager.MyGhostRoleChache[player.PlayerId];
+                }
+                catch
+                {
+                    return RoleId.DefaultRole;
+                }
+            }
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+            return RoleId.DefaultRole;
+        }
+        public static bool isGhostRole(this RoleId role)
+        {
+            return IntroDate.GetIntroDate(role).IsGhostRole;
+        }
+        public static bool isGhostRole(this PlayerControl p, RoleId role, bool IsChache = true)
+        {
+            RoleId MyRole;
+            if (IsChache)
+            {
+                try
+                {
+                    MyRole = ChacheManager.MyGhostRoleChache[p.PlayerId];
+                }
+                catch
+                {
+                    MyRole = RoleId.DefaultRole;
+                }
+            }
+            else
+            {
+                MyRole = p.getGhostRole(false);
+            }
+            if (MyRole == role)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public static RoleId getRole(this PlayerControl player, bool IsChache = true)
         {
