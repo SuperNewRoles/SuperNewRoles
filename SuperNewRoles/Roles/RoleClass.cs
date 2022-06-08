@@ -2086,9 +2086,9 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static float KillCoolTime;
             public static float SwordCoolTime;
-            public static bool Sword;
             public static bool UseVent;
             public static bool UseSabo;
+            public static bool Sword;
             private static Sprite ButtonSprite;
             public static Sprite GetButtonSprite()
             {
