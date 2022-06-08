@@ -523,6 +523,9 @@ namespace SuperNewRoles.CustomOption
             var numImpostorsOption = __instance.Children.FirstOrDefault(x => x.name == "NumImpostors").TryCast<NumberOption>();
             if (numImpostorsOption != null) numImpostorsOption.ValidRange = new FloatRange(0f, 15f);
 
+            var PlayerSpeedModOption = __instance.Children.FirstOrDefault(x => x.name == "PlayerSpeed").TryCast<NumberOption>();
+            if (PlayerSpeedModOption != null) PlayerSpeedModOption.ValidRange = new FloatRange(-5.5f, 5.5f);
+
             var killCoolOption = __instance.Children.FirstOrDefault(x => x.name == "KillCooldown").TryCast<NumberOption>();
             if (killCoolOption != null) killCoolOption.ValidRange = new FloatRange(2.5f, 60f);
 
@@ -599,6 +602,18 @@ namespace SuperNewRoles.CustomOption
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSyncSettings))]
     public class RpcSyncSettingsPatch
     {
+        public static bool Prefix(PlayerControl __instance,[HarmonyArgument(0)] GameOptionsData gameOptions)
+        {
+            if (AmongUsClient.Instance.AmHost && !DestroyableSingleton<TutorialManager>.InstanceExists)
+            {
+                PlayerControl.GameOptions = gameOptions;
+                SaveManager.GameHostOptions = gameOptions;
+                MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 2, SendOption.Reliable);
+                obj.WriteBytesAndSize(gameOptions.ToBytes(6));
+                obj.EndMessage();
+            }
+            return false;
+        }
         public static void Postfix()
         {
             CustomOption.ShareOptionSelections();

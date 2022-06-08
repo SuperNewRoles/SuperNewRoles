@@ -71,6 +71,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false)
         {
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
             if (player.Data.Disconnected || player.IsBot() || !AmongUsClient.Instance.AmHost) return;
 
             var caller = new System.Diagnostics.StackFrame(1, false);
@@ -104,6 +105,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
             foreach (PlayerControl CelebrityPlayer in RoleClass.Celebrity.CelebrityPlayer)
             {
+                if (CelebrityPlayer == player) continue;
                 ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.cs(RoleClass.Celebrity.color, CelebrityPlayer.getDefaultName()));
             }
 
@@ -120,7 +122,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-            else if (MadMayor.CheckImpostor(player))
+            else if (MadMayor.CheckImpostor(player) || player.isRole(RoleId.Marine))
             {
                 foreach (PlayerControl Impostor in PlayerControl.AllPlayerControls)
                 {
@@ -270,55 +272,52 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
             bool IsDemonVIew = false;
+            bool IsArsonistVIew = false;
             if ((player.isDead() || player.isRole(RoleId.God)) && !IsUnchecked)
             {
                 if (Demon.IsViewIcon(player))
                 {
-                    MySuffix = ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                    MySuffix += ModHelpers.cs(RoleClass.Demon.color, " ▲");
                     IsDemonVIew = true;
                 }
-                NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, Name + MySuffix);
-            }
-            else if (player.isAlive() || IsUnchecked)
-            {
-                if ((player.isDead() || player.isRole(RoleId.God)) && Demon.IsViewIcon(player))
-                {
-                    MySuffix = ModHelpers.cs(RoleClass.Demon.color, " ▲");
-                    IsDemonVIew = true;
-                }
-
-                NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, Name + MySuffix);
-            }
-            bool IsArsonistVIew = false;
-            if ((player.isDead() || player.isRole(RoleId.God)) && !IsUnchecked)
-            {
                 if (Arsonist.IsViewIcon(player))
                 {
-                    MySuffix = ModHelpers.cs(RoleClass.Arsonist.color, " §");
+                    MySuffix += ModHelpers.cs(RoleClass.Arsonist.color, " §");
                     IsArsonistVIew = true;
                 }
                 NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, Name + MySuffix);
             }
             else if (player.isAlive() || IsUnchecked)
             {
-                if ((player.isDead() || player.isRole(RoleId.God)) && Arsonist.IsViewIcon(player))
+                if ((player.isDead() || player.isRole(RoleId.God)))
                 {
-                    MySuffix = ModHelpers.cs(RoleClass.Arsonist.color, " §");
-                    IsArsonistVIew = true;
+                    if (Demon.IsViewIcon(player))
+                    {
+                        MySuffix += ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                        IsDemonVIew = true;
+                    }
+                    if (Arsonist.IsViewIcon(player))
+                    {
+                        MySuffix += ModHelpers.cs(RoleClass.Arsonist.color, " §");
+                        IsArsonistVIew = true;
+                    }
                 }
-
                 NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, Name + MySuffix);
+                SuperNewRolesPlugin.Logger.LogInfo(NewName);
             }
             if (!player.IsMod())
             {
                 player.RpcSetNamePrivate(NewName);
-                foreach (var ChangePlayerData in ChangePlayers)
+                if (player.isAlive())
                 {
-                    PlayerControl ChangePlayer = ModHelpers.playerById(ChangePlayerData.Key);
-                    if (ChangePlayer != null)
+                    foreach (var ChangePlayerData in ChangePlayers)
                     {
-                        ChangePlayer.RpcSetNamePrivate(ChangePlayerData.Value, player);
-                        SuperNewRolesPlugin.Logger.LogInfo(ChangePlayerData.Value);
+                        PlayerControl ChangePlayer = ModHelpers.playerById(ChangePlayerData.Key);
+                        if (ChangePlayer != null)
+                        {
+                            ChangePlayer.RpcSetNamePrivate(ChangePlayerData.Value, player);
+                            SuperNewRolesPlugin.Logger.LogInfo(ChangePlayerData.Value);
+                        }
                     }
                 }
             }

@@ -149,10 +149,15 @@ namespace SuperNewRoles.Intro
         public static IntroDate SeerFriendsIntro = new IntroDate("SeerFriends", RoleClass.SeerFriends.color, 1, CustomRPC.RoleId.SeerFriends, TeamRoleType.Neutral);
         public static IntroDate JackalSeerIntro = new IntroDate("JackalSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.JackalSeer, TeamRoleType.Neutral);
         public static IntroDate SidekickSeerIntro = new IntroDate("SidekickSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.SidekickSeer, TeamRoleType.Neutral);
+        public static IntroDate AssassinIntro = new IntroDate("Assassin", RoleClass.Assassin.color, 1, CustomRPC.RoleId.Assassin);
+        public static IntroDate MarineIntro = new IntroDate("Marine", RoleClass.Marine.color, 1, CustomRPC.RoleId.Marine);
         public static IntroDate ArsonistIntro = new IntroDate("Arsonist", RoleClass.Arsonist.color, 1, CustomRPC.RoleId.Arsonist, TeamRoleType.Neutral);
         public static IntroDate ChiefIntro = new IntroDate("Chief", RoleClass.Chief.color, 1, CustomRPC.RoleId.Chief);
         public static IntroDate CleanerIntro = new IntroDate("Cleaner", RoleClass.Cleaner.color, 1, CustomRPC.RoleId.Cleaner, TeamRoleType.Impostor);
         public static IntroDate MadCleanerIntro = new IntroDate("MadCleaner", RoleClass.MadCleaner.color, 1, CustomRPC.RoleId.MadCleaner);
+        public static IntroDate SamuraiIntro = new IntroDate("Samurai", RoleClass.Samurai.color, 1, CustomRPC.RoleId.Samurai, TeamRoleType.Impostor);
+        public static IntroDate MayorFriendsIntro = new IntroDate("MayorFriends", RoleClass.MayorFriends.color, 1, CustomRPC.RoleId.MayorFriends, TeamRoleType.Neutral);
+        public static IntroDate VentMakerIntro = new IntroDate("VentMaker", RoleClass.VentMaker.color, 1, CustomRPC.RoleId.VentMaker, TeamRoleType.Impostor);
         //イントロオブジェ
     }
 }

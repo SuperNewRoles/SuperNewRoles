@@ -529,6 +529,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Arsonist.ArsonistPlayer);
             notWinners.AddRange(RoleClass.Vulture.VulturePlayer);
             notWinners.AddRange(RoleClass.MadCleaner.MadCleanerPlayer);
+            notWinners.AddRange(RoleClass.MayorFriends.MayorFriendsPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -625,6 +626,11 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(wpd);
                 }
                 foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer)
+                {
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                }
+                foreach (PlayerControl p in RoleClass.MayorFriends.MayorFriendsPlayer)
                 {
                     WinningPlayerData wpd = new WinningPlayerData(p.Data);
                     TempData.winners.Add(wpd);
@@ -839,7 +845,7 @@ namespace SuperNewRoles.EndGame
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
-                    if (p.isImpostor() || p.isRole(CustomRPC.RoleId.Jackal) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(p) || p.isRole(CustomRPC.RoleId.JackalFriends) || p.isRole(CustomRPC.RoleId.SeerFriends))
+                    if (p.isImpostor() || p.isRole(CustomRPC.RoleId.Jackal) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(p) || p.isRole(CustomRPC.RoleId.JackalFriends) || p.isRole(CustomRPC.RoleId.SeerFriends) || p.isRole(CustomRPC.RoleId.MayorFriends))
                     {
                         WinningPlayerData wpd = new WinningPlayerData(p.Data);
                         TempData.winners.Add(wpd);
@@ -929,6 +935,14 @@ namespace SuperNewRoles.EndGame
             }
         }
     }
+    [HarmonyPatch(typeof(HatManager), nameof(HatManager.GetUnlockedSkins))]
+    class ExileControllerMessagePatcha
+    {
+        static void Postfix(ref UnhollowerBaseLib.Il2CppArrayBase<SkinData> __result)
+        {
+            __result = HatManager.Instance.allSkins.ToArray();
+        }
+    }
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.GetString), new Type[] { typeof(StringNames), typeof(Il2CppReferenceArray<Il2CppSystem.Object>) })]
     class ExileControllerMessagePatch
     {
@@ -982,6 +996,7 @@ namespace SuperNewRoles.EndGame
             if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
             if (!RoleManagerSelectRolesPatch.IsSetRoleRpc) return false;
             if (Patch.DebugMode.IsDebugMode()) return false;
+            if (RoleClass.Assassin.TriggerPlayer != null) return false;
             var statistics = new PlayerStatistics(__instance);
             if (!ModeHandler.isMode(ModeId.Default))
             {

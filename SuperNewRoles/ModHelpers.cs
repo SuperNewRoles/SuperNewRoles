@@ -526,5 +526,16 @@ namespace SuperNewRoles
             }
             return false;
         }
+        public static bool IsPosition(Vector3 pos,Vector2 pos2)
+        {
+            if (pos.x == pos2.x && pos.y == pos2.y) return true;
+            return false;
+        }
+        public static bool IsPositionDistance(Vector2 pos, Vector2 pos2,float distance)
+        {
+            float dis = Vector2.Distance(pos,pos2);
+            if (dis <= distance) return true;
+            return false;
+        }
     }
 }
