@@ -921,6 +921,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.MayorFriendsPlayerCount.getFloat();
                 case (RoleId.VentMaker):
                     return CustomOption.CustomOptions.VentMakerPlayerCount.getFloat();
+                    case (RoleId.EvilHacker):
+                    return CustomOption.CustomOptions.EvilHackerPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -954,7 +956,7 @@ namespace SuperNewRoles
             Crewnotonepar = new List<RoleId>();
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
-                if (intro.RoleId != RoleId.DefaultRole)
+                if (intro.RoleId != RoleId.DefaultRole && !intro.IsGhostRole)
                 {
                     var option = IntroDate.GetOption(intro.RoleId);
                     if (option == null) continue;

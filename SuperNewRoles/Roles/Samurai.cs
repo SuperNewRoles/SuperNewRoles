@@ -78,6 +78,7 @@ namespace SuperNewRoles.Roles
                         Writer.Write(p.PlayerId);
                         RoleClass.Samurai.Sword = true;
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        
                     }
                 }
             }
@@ -98,6 +99,10 @@ namespace SuperNewRoles.Roles
                     }
                 }
             return false;
+        }
+        public static void IsSword()
+        {
+            RoleClass.Samurai.Sword = true;
         }
     }
 }

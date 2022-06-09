@@ -12,6 +12,7 @@ using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Mode;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Intro;
 
 namespace SuperNewRoles
 {
@@ -558,12 +559,30 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.VentMaker):
                     Roles.RoleClass.VentMaker.VentMakerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.EvilHacker):
+                    Roles.RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
                     return;
             }
-            ChacheManager.ResetMyRoleChache();
+            bool flag = player.getRole() != role && player.PlayerId == PlayerControl.LocalPlayer.PlayerId;
+            if (role.isGhostRole())
+            {
+                ChacheManager.ResetMyGhostRoleChache();
+            }
+            else
+            {
+                ChacheManager.ResetMyRoleChache();
+            }
+
+            if (flag)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("リフレッシュ");
+                PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
+            }
+            SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
         }
         private static PlayerControl ClearTarget;
         public static void ClearRole(this PlayerControl player)
@@ -861,7 +880,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.VentMaker):
                     Roles.RoleClass.VentMaker.VentMakerPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (CustomRPC.RoleId.EvilHacker):
+                    Roles.RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -1279,6 +1301,60 @@ namespace SuperNewRoles
                     return getCoolTime(p);
             }
             return PlayerControl.GameOptions.killCooldown;
+        }
+        public static RoleId getGhostRole(this PlayerControl player, bool IsChache = true)
+        {
+            if (IsChache)
+            {
+                try
+                {
+                    return ChacheManager.MyGhostRoleChache[player.PlayerId];
+                }
+                catch
+                {
+                    return RoleId.DefaultRole;
+                }
+            }
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+            return RoleId.DefaultRole;
+        }
+        public static bool isGhostRole(this RoleId role)
+        {
+            return IntroDate.GetIntroDate(role).IsGhostRole;
+        }
+        public static bool isGhostRole(this PlayerControl p, RoleId role, bool IsChache = true)
+        {
+            RoleId MyRole;
+            if (IsChache)
+            {
+                try
+                {
+                    MyRole = ChacheManager.MyGhostRoleChache[p.PlayerId];
+                }
+                catch
+                {
+                    MyRole = RoleId.DefaultRole;
+                }
+            }
+            else
+            {
+                MyRole = p.getGhostRole(false);
+            }
+            if (MyRole == role)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public static RoleId getRole(this PlayerControl player, bool IsChache = true)
         {
@@ -1711,7 +1787,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.VentMaker;
                 }
-                //ロールチェック
+                else if (Roles.RoleClass.EvilHacker.EvilHackerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.EvilHacker;
+            }
+            //ロールチェック
             }
             catch (Exception e)
             {
