@@ -91,7 +91,7 @@ namespace SuperNewRoles.Patch
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.MapOption.RestrictDevicesOption.getBool())
+                    if (MapOptions.MapOption.RestrictCamera.getBool())
                     {
                         if (TimeRemaining == null)
                         {
@@ -202,7 +202,7 @@ namespace SuperNewRoles.Patch
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.MapOption.RestrictDevicesOption.getBool())
+                    if (MapOptions.MapOption.RestrictCamera.getBool())
                     {
                         if (TimeRemaining == null)
                         {
@@ -273,7 +273,7 @@ namespace SuperNewRoles.Patch
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.MapOption.RestrictDevicesOption.getBool())
+                    if (MapOptions.MapOption.RestrictCamera.getBool())
                     {
                         if (TimeRemaining == null)
                         {

@@ -32,7 +32,7 @@ namespace SuperNewRoles.Patch
         static void UseVitalsTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.MapOption.RestrictDevicesOption.getBool() && RestrictVitalsTime > 0f && PlayerControl.LocalPlayer.isAlive())
+            if (MapOptions.MapOption.RestrictVital.getBool() && RestrictVitalsTime > 0f && PlayerControl.LocalPlayer.isAlive())
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseVitalsTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(vitalsTimer);
@@ -60,7 +60,7 @@ namespace SuperNewRoles.Patch
                 if (vitalsTimer > 0.1f)
                     UseVitalsTime();
 
-                if (MapOptions.MapOption.RestrictDevicesOption.getBool())
+                if (MapOptions.MapOption.RestrictVital.getBool())
                 {
                     if (TimeRemaining == null)
                     {
