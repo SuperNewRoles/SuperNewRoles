@@ -117,16 +117,16 @@ namespace SuperNewRoles
                         SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                     }
                 }
-                RoleSelectHandler.RoleSelect();
+                var crs = RoleSelectHandler.RoleSelect();
                 foreach (PlayerControl player in AllRoleSetClass.impostors)
                 {
-                    player.RpcSetRole(RoleTypes.Impostor);
+                    player.RpcSetRole(crs, RoleTypes.Impostor);
                 }
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (!player.Data.Disconnected && !AllRoleSetClass.impostors.IsCheckListPlayerControl(player))
                     {
-                        player.RpcSetRole(RoleTypes.Crewmate);
+                        player.RpcSetRole(crs, RoleTypes.Crewmate);
                     }
                 }
 
@@ -147,6 +147,8 @@ namespace SuperNewRoles
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
                 }
+                FixedUpdate.SetRoleNames();
+                crs.SendMessage();
                 return false;
             }
             else if (ModeHandler.isMode(ModeId.BattleRoyal))
