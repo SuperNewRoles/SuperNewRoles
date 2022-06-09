@@ -27,8 +27,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption hideSettings;
 
         public static CustomOption crewmateRolesCountMax;
+        public static CustomOption crewmateGhostRolesCountMax;
         public static CustomOption impostorRolesCountMax;
+        public static CustomOption impostorGhostRolesCountMax;
         public static CustomOption neutralRolesCountMax;
+        public static CustomOption neutralGhostRolesCountMax;
 
         public static CustomOption enableMirroMap;
 
@@ -629,8 +632,11 @@ namespace SuperNewRoles.CustomOption
             hideSettings = CustomOption.Create(2, true, CustomOptionType.Generic, cs(Color.white, "SettingsHideSetting"), false, specialOptions);
 
             crewmateRolesCountMax = CustomOption.Create(3, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewRole"), 0f, 0f, 15f, 1f);
+            crewmateGhostRolesCountMax = CustomOption.Create(510, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewGhostRole"), 0f, 0f, 15f, 1f);
             neutralRolesCountMax = CustomOption.Create(4, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralRole"), 0f, 0f, 15f, 1f);
+            neutralGhostRolesCountMax = CustomOption.Create(511, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralGhostRole"), 0f, 0f, 15f, 1f);
             impostorRolesCountMax = CustomOption.Create(5, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 3f, 1f);
+            impostorGhostRolesCountMax = CustomOption.Create(512, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
 
             enableMirroMap = CustomOption.Create(338, false, CustomOptionType.Generic, "enableMirroMap", false);
 

@@ -2161,9 +2161,18 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> GhostMechanicPlayer;
             public static Color32 color = Color.blue;
+            public static int LimitCount;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 GhostMechanicPlayer = new List<PlayerControl>();
+                LimitCount = (int)CustomOptions.GhostMechanicRepairLimit.getFloat();
             }
         }
         //新ロールクラス

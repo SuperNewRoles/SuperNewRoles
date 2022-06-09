@@ -228,6 +228,14 @@
         "0" : "Maximum Crewmate Roles" ,
         "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u5f79\u8077\u4eba\u6570"
         } ,
+ "SettingMiniCrewGhostRole" : {
+        "0" : "Minimum Crewmate Ghost Roles" ,
+        "11" : "\u6700\u5c0f\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u5e7d\u970a\u5f79\u8077\u6570"
+        } ,
+ "SettingMaxCrewGhostRole" : {
+        "0" : "Maximum Crewmate Ghost Roles" ,
+        "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u5e7d\u970a\u5f79\u8077\u4eba\u6570"
+        } ,
  "SettingMiniNeutralRole" : {
         "0" : "Minimum Neutral Roles" ,
         "11" : "\u6700\u5c0f\u7b2c\u4e09\u9663\u55b6\u5f79\u8077\u6570"
@@ -236,6 +244,14 @@
         "0" : "Maximum Neutral Roles" ,
         "11" : "\u7b2c\u4e09\u9663\u55b6\u5f79\u8077\u4eba\u6570"
         } ,
+ "SettingMiniNeutralGhostRole" : {
+        "0" : "Minimum Neutral Ghost Roles" ,
+        "11" : "\u6700\u5c0f\u7b2c\u4e09\u9663\u55b6\u5e7d\u970a\u5f79\u8077\u6570"
+        } ,
+ "SettingMaxNeutralGhostRole" : {
+        "0" : "Maximum Neutral Ghost Roles" ,
+        "11" : "\u7b2c\u4e09\u9663\u55b6\u5e7d\u970a\u5f79\u8077\u4eba\u6570"
+        } ,
  "SettingMiniImpoRole" : {
         "0" : "Minimum Impostor Roles" ,
         "11" : "\u6700\u5c0f\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u5f79\u8077\u6570"
@@ -243,6 +259,14 @@
  "SettingMaxImpoRole" : {
         "0" : "Maximum Impostor Roles" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u5f79\u8077\u4eba\u6570"
+        } ,
+ "SettingMiniImpoGhostRole" : {
+        "0" : "Minimum Impostor Ghost Roles" ,
+        "11" : "\u6700\u5c0f\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u5e7d\u970a\u5f79\u8077\u6570"
+        } ,
+ "SettingMaxImpoGhostRole" : {
+        "0" : "Maximum Impostor GhostRoles" ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u5e7d\u970a\u5f79\u8077\u4eba\u6570"
         } ,
  "SettingsHideSetting" : {
         "0" : "Hide Setting" ,
@@ -376,13 +400,25 @@
         "0" : "CrewMate Setting" ,
         "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u306e\u4eba\u6570\u8a2d\u5b9a"
         } ,
+ "SettingCrewmateGhostRoles" : {
+        "0" : "CrewMate GhostRole Setting" ,
+        "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u306e\u5e7d\u970a\u5f79\u8077\u306e\u4eba\u6570\u8a2d\u5b9a"
+        } ,
  "SettingNeutralRoles" : {
         "0" : "Neutral Setting" ,
         "11" : "\u7b2c\u4e09\u9663\u55b6\u306e\u4eba\u6570\u8a2d\u5b9a"
         } ,
+ "SettingNeutralGhostRoles" : {
+        "0" : "Neutral GhostRole Setting" ,
+        "11" : "\u7b2c\u4e09\u9663\u55b6\u306e\u5e7d\u970a\u5f79\u8077\u306e\u4eba\u6570\u8a2d\u5b9a"
+        } ,
  "SettingImpostorRoles" : {
         "0" : "Impostor Setting" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u4eba\u6570\u8a2d\u5b9a"
+        } ,
+ "SettingImpostorGhostRoles" : {
+        "0" : "Impostor GhostRole Setting" ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u306e\u5e7d\u970a\u5f79\u8077\u306e\u4eba\u6570\u8a2d\u5b9a"
         } ,
  "SettingOptionOn" : {
         "0" : "On" ,
@@ -2659,6 +2695,14 @@
  "GhostMechanicRepairLimitSetting" : {
         "0" : "Number of times sabotage can be repaired" ,
         "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u4fee\u5fa9\u53ef\u80fd\u56de\u6570"
+        } ,
+ "GhostMechanicButtonName" : {
+        "0" : "Repair" ,
+        "11" : "\u4fee\u5fa9"
+        } ,
+ "GhostMechanicCountText" : {
+        "0" : "GhostMechanic" ,
+        "11" : "\u6b8b\u308a{0}\u56de"
         } 
 
 }
