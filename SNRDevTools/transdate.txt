@@ -663,7 +663,7 @@ SamuraiName,Samurai,侍
 SamuraiTitle1,Let's cut through the crew!,クルーを切り裂こう!
 SamuraiKillCoolSetting,KillCoolTime,侍のキルクールダウン
 SamuraiSwordCoolSetting,AttackCoolTime,必殺技のクールダウン
-SamuraiScorpSetting,SamuraiScope,必殺技が及ぶ範囲
+SamuraiScopeSetting,SamuraiScope,必殺技が及ぶ範囲
 SamuraiButtonName,UseSword!,必殺技!
 MayorFriendsName,MayorFriends,メイヤーフレンズ
 MayorFriendsTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう
