@@ -16,12 +16,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static Dictionary<int, string> DefaultName = new Dictionary<int, string>();
         private static int UpdateDate = 0;
 
-        [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
-        public class AmongUsClientOnPlayerJoinedPatch
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.CoShowIntro))]
+        class CoShowIntroPatch
         {
-            public static void Postfix()
+            public static void Prefix(HudManager __instance)
             {
                 DefaultName = new Dictionary<int, string>();
+                foreach (var pc in PlayerControl.AllPlayerControls)
+                {
+                    //SuperNewRolesPlugin.Logger.LogInfo($"{pc.PlayerId}:{pc.name}:{pc.nameText.text}");
+                    DefaultName[pc.PlayerId] = pc.name;
+                    pc.nameText.text = pc.name;
+                }
             }
         }
         public static string getDefaultName(this PlayerControl player)

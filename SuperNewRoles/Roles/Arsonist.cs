@@ -47,7 +47,7 @@ namespace SuperNewRoles.Roles
 
         public static bool IsDoused(this PlayerControl source, PlayerControl target)
         {
-            if (source == null || source.Data.Disconnected || target == null || target.Data.Disconnected || target.IsBot()) return true;
+            if (source == null || source.Data.Disconnected || target == null || target.isDead() || target.IsBot()) return true;
             if (source.PlayerId == target.PlayerId) return true;
             if (RoleClass.Arsonist.DouseDatas.ContainsKey(source.PlayerId))
             {

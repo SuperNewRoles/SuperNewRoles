@@ -153,7 +153,8 @@ namespace SuperNewRoles
             {
                 Mode.BattleRoyal.main.ChangeRole.Postfix();
                 return false;
-            } else if (ModeHandler.isMode(ModeId.CopsRobbers))
+            }
+            else if (ModeHandler.isMode(ModeId.CopsRobbers))
             {
                 Mode.CopsRobbers.RoleSelectHandler.Handler();
                 return false;
@@ -217,8 +218,11 @@ namespace SuperNewRoles
         public static List<PlayerControl> ImpostorPlayers;
 
         public static int ImpostorPlayerNum;
+        public static int ImpostorGhostRolePlayerNum;
         public static int NeutralPlayerNum;
+        public static int NeutralGhostRolePlayerNum;
         public static int CrewMatePlayerNum;
+        public static int CrewMateGhostRolePlayerNum;
 
         public static void AllRoleSet()
         {
@@ -388,9 +392,12 @@ namespace SuperNewRoles
         }
         public static void SetPlayerNum()
         {
-            ImpostorPlayerNum = (int)CustomOption.CustomOptions.impostorRolesCountMax.getFloat();
-            NeutralPlayerNum = (int)CustomOption.CustomOptions.neutralRolesCountMax.getFloat();
-            CrewMatePlayerNum = (int)CustomOption.CustomOptions.crewmateRolesCountMax.getFloat();
+            ImpostorPlayerNum = (int)CustomOptions.impostorRolesCountMax.getFloat();
+            ImpostorGhostRolePlayerNum = (int)CustomOptions.impostorGhostRolesCountMax.getFloat();
+            NeutralPlayerNum = (int)CustomOptions.neutralRolesCountMax.getFloat();
+            NeutralGhostRolePlayerNum = (int)CustomOptions.neutralGhostRolesCountMax.getFloat();
+            CrewMatePlayerNum = (int)CustomOptions.crewmateRolesCountMax.getFloat();
+            CrewMateGhostRolePlayerNum = (int)CustomOptions.crewmateGhostRolesCountMax.getFloat();
         }
         public static void ImpostorRandomSelect()
         {
@@ -427,7 +434,8 @@ namespace SuperNewRoles
                         {
 
                         }
-                    } else if (SelectRoleDate == RoleId.Assassin)
+                    }
+                    else if (SelectRoleDate == RoleId.Assassin)
                     {
                         IsAssassinAssigned = true;
                     }
@@ -516,7 +524,7 @@ namespace SuperNewRoles
             if (IsAssassinAssigned)
             {
                 int PlayerCount = (int)GetPlayerCount(RoleId.Marine);
-                SuperNewRolesPlugin.Logger.LogInfo("DATA:\n"+PlayerCount+"\n"+CrewMatePlayerNum+"\n"+CrewMatePlayers.Count);
+                SuperNewRolesPlugin.Logger.LogInfo("DATA:\n" + PlayerCount + "\n" + CrewMatePlayerNum + "\n" + CrewMatePlayers.Count);
                 if (PlayerCount >= CrewMatePlayerNum)
                 {
                     for (int i = 1; i <= CrewMatePlayerNum; i++)
@@ -921,7 +929,9 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.MayorFriendsPlayerCount.getFloat();
                 case (RoleId.VentMaker):
                     return CustomOption.CustomOptions.VentMakerPlayerCount.getFloat();
-                    case (RoleId.EvilHacker):
+                case (RoleId.GhostMechanic):
+                    return CustomOption.CustomOptions.GhostMechanicPlayerCount.getFloat();
+                case (RoleId.EvilHacker):
                     return CustomOption.CustomOptions.EvilHackerPlayerCount.getFloat();
                     //プレイヤーカウント
             }

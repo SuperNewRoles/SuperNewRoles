@@ -119,6 +119,7 @@ namespace SuperNewRoles.CustomRPC
         Samurai,
         MayorFriends,
         VentMaker,
+        GhostMechanic,
         EvilHacker,
         //RoleId
     }
@@ -182,9 +183,15 @@ namespace SuperNewRoles.CustomRPC
         SetSpeedFreeze,
         BySamuraiKillRPC,
         MakeVent,
+        FixLights
     }
     public static class RPCProcedure
     {
+        public static void FixLights()
+        {
+            SwitchSystem switchSystem = ShipStatus.Instance.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
+            switchSystem.ActualSwitches = switchSystem.ExpectedSwitches;
+        }
         public static void ArsonistDouse(byte source, byte target)
         {
             PlayerControl TargetPlayer = ModHelpers.playerById(target);
@@ -1032,6 +1039,7 @@ namespace SuperNewRoles.CustomRPC
                     case (byte)CustomRPC.CustomEndGame:
                         if (AmongUsClient.Instance.AmHost)
                         {
+                            ShipStatus.Instance.enabled = false;
                             CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
                         }
                         break;
@@ -1067,6 +1075,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.MakeVent:
                         MakeVent(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                        break;
+                    case (byte)CustomRPC.FixLights:
+                        FixLights();
                         break;
                 }
             }

@@ -55,10 +55,16 @@ Preset
 <color=#a9ceec>Crewmate</color> Settings
 Minimum Crewmate Roles
 Maximum Crewmate Roles
+Minimum Crewmate Ghost Roles
+Maximum Crewmate Ghost Roles
 Minimum Neutral Roles
 Maximum Neutral Roles
+Minimum Neutral Ghost Roles
+Maximum Neutral Ghost Roles
 Minimum Impostor Roles
 Maximum Impostor Roles
+Minimum Impostor Ghost Roles
+Maximum Impostor GhostRoles
 Hide Setting
 Position setting of crewmate camp
 Imposter camp position setting
@@ -92,8 +98,11 @@ Update Process Down
 Show players that are not in or have different versions.
 Horse mode (can be changed only outside the game including the lobby)
 CrewMate Setting
+CrewMate GhostRole Setting
 Neutral Setting
+Neutral GhostRole Setting
 Impostor Setting
+Impostor GhostRole Setting
 On
 Off
 Press Tab For More
@@ -660,6 +669,11 @@ Let's abuse our power at the meeting.
 It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!
 VentMaker
 Let's make a vent!
+GhostMechanic
+Let's get rid of the loose ends that we couldn't fix the machine.
+Number of times sabotage can be repaired
+Repair
+GhostMechanic
 EvilHacker
 Hack to Win!
 Can an EvilHacker Make a Madmate
