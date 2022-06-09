@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-
-namespace SuperNewRoles
-{
-    internal class CustomRPCSender
-    {
-        using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
 using InnerNet;
 using Hazel;
 using UnhollowerBaseLib;
+//TOHの開発者さんたち(主に空き瓶さん)ありがとうございます
 
-namespace TownOfHost
+namespace SuperNewRoles
+{
+    internal class CustomRPCSender
     {
         public class CustomRpcSender
         {
