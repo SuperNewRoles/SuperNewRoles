@@ -53,7 +53,7 @@ It is already on the Discord server.
 | [Hawk](#ホーク) | [Moving](#ムービング) |[Jackal Friends](#ジャッカルフレンズ)  |  |
 | [Minimalist](#ミニマリスト) | [Best False Charge](#ベスト冤罪ヤー) | [FalseCharges](#冤罪師) |  |
 | [Magaziner](#マガジナー)| [Nice Nekomata](#ナイス猫又) | [Fox](#妖狐) |  |
-| [SerialKiller](#シリアルキラー) | [Doctor](#ドクター)|[TeleportiJackal](#テレポートジャッカル)
+| [SerialKiller](#シリアルキラー) | [Doctor](#ドクター)|[TeleportingJackal](#テレポートジャッカル)
 | [EvilEraser](#イビルイレイサー) | [MeetingSheriff](#ミーティングシェリフ)| [Demon](#悪魔)
 | [OverKiller](#オーバーキラー) | [NicScientist](#ナイスサイエンティスト)| [JackalSeer](#ジャッカルシーア)
 | [EvilMoving](#イビルムービング) |[NiceRedRidingHood](#ナイス赤ずきん)| [Sidekick(Seer)](#サイドキック(シーア))
