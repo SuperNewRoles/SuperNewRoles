@@ -559,6 +559,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.VentMaker):
                     Roles.RoleClass.VentMaker.VentMakerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.GhostMechanic):
+                    Roles.RoleClass.GhostMechanic.GhostMechanicPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.EvilHacker):
                     Roles.RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
                     break;
@@ -880,10 +883,13 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.VentMaker):
                     Roles.RoleClass.VentMaker.VentMakerPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.EvilHacker):
+                case (CustomRPC.RoleId.GhostMechanic):
+                    Roles.RoleClass.GhostMechanic.GhostMechanicPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.EvilHacker):
                     Roles.RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -991,7 +997,7 @@ namespace SuperNewRoles
                 case (RoleId.MayorFriends):
                     IsTaskClear = true;
                     break;
-                //タスククリアか
+                    //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
@@ -1212,10 +1218,10 @@ namespace SuperNewRoles
                 case (RoleId.Arsonist):
                     IsNeutral = true;
                     break;
-                    case (RoleId.MayorFriends):
+                case (RoleId.MayorFriends):
                     IsNeutral = true;
                     break;
-                //第三か
+                    //第三か
             }
             return IsNeutral;
         }
@@ -1317,7 +1323,10 @@ namespace SuperNewRoles
             }
             try
             {
-
+                if (Roles.RoleClass.GhostMechanic.GhostMechanicPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.GhostMechanic;
+                }
             }
             catch
             {
@@ -1788,10 +1797,10 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.VentMaker;
                 }
                 else if (Roles.RoleClass.EvilHacker.EvilHackerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.EvilHacker;
-            }
-            //ロールチェック
+                {
+                    return CustomRPC.RoleId.EvilHacker;
+                }
+                //ロールチェック
             }
             catch (Exception e)
             {

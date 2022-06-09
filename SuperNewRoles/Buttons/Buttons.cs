@@ -59,11 +59,13 @@ namespace SuperNewRoles.Buttons
         public static CustomButton FreezerButton;
         public static CustomButton SamuraiButton;
         public static CustomButton VentMakerButton;
+        public static CustomButton GhostMechanicRepairButton;
         public static CustomButton EvilHackerButton;
         public static CustomButton EvilHackerMadmateSetting;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
+        public static TMPro.TMP_Text GhostMechanicNumRepairText;
 
         public static void setCustomButtonCooldowns()
         {
@@ -1402,6 +1404,79 @@ namespace SuperNewRoles.Buttons
 
             VentMakerButton.buttonText = ModTranslation.getString("VentMakerButtonName");
             VentMakerButton.showButtonText = true;
+
+            GhostMechanicRepairButton = new CustomButton(
+                () =>
+                {
+                    RoleClass.GhostMechanic.LimitCount--;
+
+                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                    {
+                        if (task.TaskType == TaskTypes.FixLights)
+                        {
+                            RPCHelper.StartRPC(CustomRPC.CustomRPC.FixLights).EndRPC();
+                            RPCProcedure.FixLights();
+                        }
+                        else if (task.TaskType == TaskTypes.RestoreOxy)
+                        {
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 0 | 64);
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 1 | 64);
+                        }
+                        else if (task.TaskType == TaskTypes.ResetReactor)
+                        {
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 16);
+                        }
+                        else if (task.TaskType == TaskTypes.ResetSeismic)
+                        {
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Laboratory, 16);
+                        }
+                        else if (task.TaskType == TaskTypes.FixComms)
+                        {
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
+                        }
+                        else if (task.TaskType == TaskTypes.StopCharles)
+                        {
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 0 | 16);
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 1 | 16);
+                        }
+                    }
+                    if (RoleClass.GhostMechanic.LimitCount <= 0)
+                    {
+                        GhostMechanicNumRepairText.text = "";
+                    }
+                },
+                () => { return PlayerControl.LocalPlayer.isGhostRole(RoleId.GhostMechanic) && RoleClass.GhostMechanic.LimitCount > 0; },
+                () =>
+                {
+                    bool sabotageActive = false;
+                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                        if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles
+                            || (SubmergedCompatibility.isSubmerged() && task.TaskType == SubmergedCompatibility.RetrieveOxygenMask))
+                        {
+                            sabotageActive = true;
+                            break;
+                        }
+                    GhostMechanicNumRepairText.text = String.Format(ModTranslation.getString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
+                    return sabotageActive && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { GhostMechanicRepairButton.MaxTimer = 0f; GhostMechanicRepairButton.Timer = 0f; },
+                RoleClass.GhostMechanic.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+            
+            GhostMechanicNumRepairText = GameObject.Instantiate(GhostMechanicRepairButton.actionButton.cooldownTimerText, GhostMechanicRepairButton.actionButton.cooldownTimerText.transform.parent);
+            GhostMechanicNumRepairText.text = "";
+            GhostMechanicNumRepairText.enableWordWrapping = false;
+            GhostMechanicNumRepairText.transform.localScale = Vector3.one * 0.5f;
+            GhostMechanicNumRepairText.transform.localPosition += new Vector3(0f, 0.7f, 0);
+
+            GhostMechanicRepairButton.buttonText = ModTranslation.getString("GhostMechanicButtonName");
+            GhostMechanicRepairButton .showButtonText = true;
 
             EvilHackerButton = new CustomButton(
                () =>
