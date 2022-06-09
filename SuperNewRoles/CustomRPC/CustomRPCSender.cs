@@ -6,6 +6,7 @@ using HarmonyLib;
 using InnerNet;
 using Hazel;
 using UnhollowerBaseLib;
+using SuperNewRolesPlugin;
 //TOHの開発者さんたち(主に空き瓶さん)ありがとうございます
 
 namespace SuperNewRoles
@@ -47,7 +48,7 @@ namespace SuperNewRoles
             {
                 if (currentState != State.Ready && !isUnsafe)
                 {
-                    Logger.Error("RPCを開始しようとしましたが、StateがReady(準備完了)ではありません", "CustomRpcSender.Error");
+                    SuperNewRolesPlugin.Logger.LogError("RPCを開始しようとしましたが、StateがReady(準備完了)ではありません");
                     return this;
                 }
 
@@ -75,7 +76,7 @@ namespace SuperNewRoles
             {
                 if (currentState != State.Writing && !isUnsafe)
                 {
-                    Logger.Error("RPCを終了しようとしましたが、StateがWriting(書き込み中)ではありません", "CustomRpcSender.Error");
+                    SuperNewRolesPlugin.Logger.LogError("RPCを終了しようとしましたが、StateがWriting(書き込み中)ではありません");
                     return;
                 }
 
@@ -87,7 +88,7 @@ namespace SuperNewRoles
             {
                 if (currentState != State.Ready && !isUnsafe)
                 {
-                    Logger.Error("RPCを終了しようとしましたが、StateがReady(準備完了)ではありません", "CustomRpcSender.Error");
+                    SuperNewRolesPlugin.Logger.LogError("RPCを終了しようとしましたが、StateがReady(準備完了)ではありません");
                     return;
                 }
 
@@ -117,7 +118,7 @@ namespace SuperNewRoles
             private CustomRpcSender Write(Action<MessageWriter> action)
             {
                 if (currentState != State.Writing && !isUnsafe)
-                    Logger.Error("RPCを書き込もうとしましたが、StateがWrite(書き込み中)ではありません", "CustomRpcSender.Error");
+                    SuperNewRolesPlugin.Logger.LogError("RPCを書き込もうとしましたが、StateがWrite(書き込み中)ではありません");
                 else
                     action(stream);
 
