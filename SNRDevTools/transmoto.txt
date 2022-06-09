@@ -679,3 +679,9 @@ EvilHackerTitle1
 EvilHackerMadmateSetting
 ADMINButton
 timeRemaining
+restrictOutOfTime
+RestrictDevicesSetting
+RestrictAdminSetting
+RestrictCameraSetting
+RestrictVitalSetting
+DeviceTimeSetting
