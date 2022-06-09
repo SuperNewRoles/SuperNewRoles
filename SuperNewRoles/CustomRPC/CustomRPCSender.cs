@@ -6,7 +6,6 @@ using HarmonyLib;
 using InnerNet;
 using Hazel;
 using UnhollowerBaseLib;
-using SuperNewRolesPlugin;
 //TOHの開発者さんたち(主に空き瓶さん)ありがとうございます
 
 namespace SuperNewRoles
@@ -134,5 +133,4 @@ namespace SuperNewRoles
             }
         }
     }
-}
 }
