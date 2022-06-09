@@ -12,8 +12,8 @@ namespace SuperNewRoles.Patch
     public class CameraPatch
     {
         static float cameraTimer = 0f;
-        public static float RestrictCameraTime = 600f;
-        public static float RestrictCameraTimeMax = 600f;
+        public static float RestrictCameraTime = MapOptions.MapOption.CanUseCameraTime.getFloat();
+        public static float RestrictCameraTimeMax = MapOptions.MapOption.CanUseCameraTime.getFloat();
 
         public static void ResetData()
         {

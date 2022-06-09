@@ -14,8 +14,8 @@ namespace SuperNewRoles.Patch
     public class VitalsPatch
     {
         static float vitalsTimer = 0f;
-        public static float RestrictVitalsTime = 600f;
-        public static float RestrictVitalsTimeMax = 600f;
+        public static float RestrictVitalsTime = MapOptions.MapOption.CanUseVitalTime.getFloat();
+        public static float RestrictVitalsTimeMax = MapOptions.MapOption.CanUseVitalTime.getFloat();
         static TMPro.TextMeshPro TimeRemaining;
 
 

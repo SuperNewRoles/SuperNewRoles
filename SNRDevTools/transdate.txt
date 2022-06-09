@@ -679,3 +679,4 @@ EvilHackerName,EvilHacker,イビルハッカー
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう
 EvilHackerMadmateSetting,Can an EvilHacker Make a Madmate,イビルハッカーがマッドメイトを作れるか
 ADMINButton,ADMIN,アドミン
+timeRemaining,Remaining: {0},残り{0}

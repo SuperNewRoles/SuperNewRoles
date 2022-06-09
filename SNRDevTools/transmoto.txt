@@ -678,3 +678,4 @@ EvilHackerName
 EvilHackerTitle1
 EvilHackerMadmateSetting
 ADMINButton
+timeRemaining

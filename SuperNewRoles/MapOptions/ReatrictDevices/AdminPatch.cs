@@ -9,8 +9,8 @@ namespace SuperNewRoles.Patch
     [Harmony]
     public class AdminPatch
     {
-        public static float RestrictAdminTime = 600f;
-        public static float RestrictAdminTimeMax = 600f;
+        public static float RestrictAdminTime = MapOptions.MapOption.CanUseAdminTime.getFloat();
+        public static float RestrictAdminTimeMax = MapOptions.MapOption.CanUseAdminTime.getFloat();
         public static bool canUseAdmin
         {
             get
