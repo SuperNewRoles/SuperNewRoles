@@ -45,6 +45,31 @@ namespace SuperNewRoles.Roles
             }
             var assignrole = Assing(GhostRoles);
             if (assignrole == RoleId.DefaultRole) return false;
+            switch (Team)
+            {
+                case TeamRoleType.Impostor:
+                    if (AllRoleSetClass.ImpostorGhostRolePlayerNum <= 0)
+                    {
+                        return false;
+                    }
+                    AllRoleSetClass.ImpostorGhostRolePlayerNum--;
+                    break;
+                case TeamRoleType.Neutral:
+                    if (AllRoleSetClass.NeutralGhostRolePlayerNum <= 0)
+                    {
+                        return false;
+                    }
+                    AllRoleSetClass.NeutralGhostRolePlayerNum--;
+                    break;
+                case TeamRoleType.Crewmate:
+                    if (AllRoleSetClass.CrewMateGhostRolePlayerNum <= 0)
+                    {
+                        return false;
+                    }
+                    AllRoleSetClass.CrewMateGhostRolePlayerNum--;
+                    break;
+
+            }
             player.setRoleRPC(assignrole);
             return true;
         }

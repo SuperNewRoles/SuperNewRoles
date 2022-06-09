@@ -104,29 +104,49 @@ namespace SuperNewRoles.Patches
                             __instance.RpcMurderPlayer(__instance);
                         }
                         return false;
-                    case RoleId.Arsonist:
-                        if (AmongUsClient.Instance.AmHost)
+                    case RoleId.Samurai:
+                        if (AmongUsClient.Instance.AmHost || !RoleClass.Samurai.Sword)
                         {
                             foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                             {
                                 if (p.isAlive() && p.PlayerId != __instance.PlayerId)
                                 {
-                                    if (Arsonist.IsArsonistWinFlag())
+                                    if (Samurai.Getsword(__instance, p))
                                     {
-                                        RoleClass.Arsonist.TriggerArsonistWin = true;
-                                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                                        foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
+                                        if (RoleClass.Samurai.Sword == false)
                                         {
-                                            //   SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
-                                            WinningPlayerData wpd = new WinningPlayerData(player.Data);
-                                            TempData.winners.Add(wpd);
+                                            __instance.RpcMurderPlayerCheck(p);
+                                            Samurai.IsSword();
                                         }
-                                        EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
-                                        // SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
-                                        __instance.enabled = false;
-                                        ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
-                                        return true;
                                     }
+                                }
+                            }
+                        }
+                        return false;
+                    case RoleId.Arsonist:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
+                            {
+                                if (Arsonist.IsWin(p))
+                                {
+                                    RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
+
+                                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                                    Writer.Write(p.PlayerId);
+                                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+
+                                    Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                                    Writer.Write((byte)CustomGameOverReason.ArsonistWin);
+                                    Writer.EndRPC();
+                                    RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
+
+                                    RoleClass.Arsonist.TriggerArsonistWin = true;
+                                    EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
+                                    // SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                                    __instance.enabled = false;
+                                    ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
+                                    return true;
                                 }
                             }
                         }
