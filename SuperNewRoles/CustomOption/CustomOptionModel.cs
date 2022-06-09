@@ -906,6 +906,13 @@ namespace SuperNewRoles.CustomOption
             var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
+            optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingCrewmateGhostRoles"));
+            min = CustomOptions.crewmateGhostRolesCountMax.getSelection();
+            max = CustomOptions.crewmateGhostRolesCountMax.getSelection();
+            if (min > max) min = max;
+            optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
+            entry.AppendLine($"{optionName}: {optionValue}");
+
             optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingNeutralRoles"));
             min = CustomOptions.neutralRolesCountMax.getSelection();
             max = CustomOptions.neutralRolesCountMax.getSelection();
@@ -913,9 +920,23 @@ namespace SuperNewRoles.CustomOption
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
+            optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingNeutralGhostRoles"));
+            min = CustomOptions.neutralGhostRolesCountMax.getSelection();
+            max = CustomOptions.neutralGhostRolesCountMax.getSelection();
+            if (min > max) min = max;
+            optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
+            entry.AppendLine($"{optionName}: {optionValue}");
+
             optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingImpostorRoles"));
             min = CustomOptions.impostorRolesCountMax.getSelection();
             max = CustomOptions.impostorRolesCountMax.getSelection();
+            if (min > max) min = max;
+            optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
+            entry.AppendLine($"{optionName}: {optionValue}");
+
+            optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingImpostorGhostRoles"));
+            min = CustomOptions.impostorGhostRolesCountMax.getSelection();
+            max = CustomOptions.impostorGhostRolesCountMax.getSelection();
             if (min > max) min = max;
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
@@ -938,8 +959,11 @@ namespace SuperNewRoles.CustomOption
             {
                 if ((option == CustomOptions.presetSelection) ||
                     (option == CustomOptions.crewmateRolesCountMax) ||
+                    (option == CustomOptions.crewmateGhostRolesCountMax) ||
                     (option == CustomOptions.neutralRolesCountMax) ||
+                    (option == CustomOptions.neutralGhostRolesCountMax) ||
                     (option == CustomOptions.impostorRolesCountMax) ||
+                    (option == CustomOptions.impostorGhostRolesCountMax) ||
                     (option == CustomOptions.hideSettings))
                 {
                     continue;

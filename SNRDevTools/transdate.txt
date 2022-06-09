@@ -56,10 +56,16 @@ SettingNeutral,<color=#808080>Neutral</color> Settings,<color=#808080>第三陣�
 SettingCrewmate,<color=#a9ceec>Crewmate</color> Settings,<color=#00ffff>クルーメイト</color>の設定
 SettingMiniCrewRole,Minimum Crewmate Roles,最小クルーメイト役職数
 SettingMaxCrewRole,Maximum Crewmate Roles,クルーメイト役職人数
+SettingMiniCrewGhostRole,Minimum Crewmate Ghost Roles,最小クルーメイト幽霊役職数
+SettingMaxCrewGhostRole,Maximum Crewmate Ghost Roles,クルーメイト幽霊役職人数
 SettingMiniNeutralRole,Minimum Neutral Roles,最小第三陣営役職数
 SettingMaxNeutralRole,Maximum Neutral Roles,第三陣営役職人数
+SettingMiniNeutralGhostRole,Minimum Neutral Ghost Roles,最小第三陣営幽霊役職数
+SettingMaxNeutralGhostRole,Maximum Neutral Ghost Roles,第三陣営幽霊役職人数
 SettingMiniImpoRole,Minimum Impostor Roles,最小インポスター役職数
 SettingMaxImpoRole,Maximum Impostor Roles,インポスター役職人数
+SettingMiniImpoGhostRole,Minimum Impostor Ghost Roles,最小インポスター幽霊役職数
+SettingMaxImpoGhostRole,Maximum Impostor GhostRoles,インポスター幽霊役職人数
 SettingsHideSetting,Hide Setting,設定を隠す
 SettingCrewMateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定
 SettingImpostorTeamRolesName,Imposter camp position setting,インポスター陣営の役職設定
@@ -93,8 +99,11 @@ CustomProcessDown,Update Process Down,処理回数を減らす
 CustomIsVersionErrorView,Show players that are not in or have different versions.,入っていない、バージョンが違うプレイヤーを表示する
 CustomHorseMode,Horse mode (can be changed only outside the game including the lobby),馬モード(ロビー含むゲーム外のみ変更可能)
 SettingCrewmateRoles,CrewMate Setting,クルーメイトの人数設定
+SettingCrewmateGhostRoles,CrewMate GhostRole Setting,クルーメイトの幽霊役職の人数設定
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定
+SettingNeutralGhostRoles,Neutral GhostRole Setting,第三陣営の幽霊役職の人数設定
 SettingImpostorRoles,Impostor Setting,インポスターの人数設定
+SettingImpostorGhostRoles,Impostor GhostRole Setting,インポスターの幽霊役職の人数設定
 SettingOptionOn,On,オン
 SettingOptionOff,Off,オフ
 SettingPressTabForMore,Press Tab For More,Tabを押して詳細を表示
@@ -661,6 +670,11 @@ MayorFriendsTitle1,Let's abuse our power at the meeting.,会議で権力を乱�
 MayorFriendsDescription,It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。メイヤーフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。
 VentMakerName,VentMaker,ベントメーカー
 VentMakerTitle1,Let's make a vent!,ベントを作ろう！
+GhostMechanicName,GhostMechanic,亡霊整備士
+GhostMechanicTitle1,Let's get rid of the loose ends that we couldn't fix the machine.,機械を治せなかった未練を解消しよう
+GhostMechanicRepairLimitSetting,Number of times sabotage can be repaired,サボタージュ修復可能回数
+GhostMechanicButtonName,Repair,修復
+GhostMechanicCountText,GhostMechanic,残り{0}回
 EvilHackerName,EvilHacker,イビルハッカー
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう
 EvilHackerMadmateSetting,Can an EvilHacker Make a Madmate,イビルハッカーがマッドメイトを作れるか

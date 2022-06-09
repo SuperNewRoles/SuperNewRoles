@@ -12,6 +12,7 @@ using System.Collections;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.EndGame;
 
 namespace SuperNewRoles.Buttons
 {
@@ -58,11 +59,13 @@ namespace SuperNewRoles.Buttons
         public static CustomButton FreezerButton;
         public static CustomButton SamuraiButton;
         public static CustomButton VentMakerButton;
+        public static CustomButton GhostMechanicRepairButton;
         public static CustomButton EvilHackerButton;
         public static CustomButton EvilHackerMadmateSetting;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
+        public static TMPro.TMP_Text GhostMechanicNumRepairText;
 
         public static void setCustomButtonCooldowns()
         {
@@ -991,27 +994,36 @@ namespace SuperNewRoles.Buttons
                 {
                     Arsonist.SetWinArsonist();
                     RoleClass.Arsonist.TriggerArsonistWin = true;
-                    //SuperNewRolesPlugin.Logger.LogInfo("アーソニストが燃やすボタンを押した");
-                    if (Arsonist.IsArsonistWinFlag())
-                    {
-                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                        foreach (PlayerControl player in RoleClass.Arsonist.ArsonistPlayer)
-                        {
-                            //SuperNewRolesPlugin.Logger.LogInfo("アーソニストがEndGame");
-                            WinningPlayerData wpd = new WinningPlayerData(player.Data);
-                            TempData.winners.Add(wpd);
-                        }
-                        EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
-                        //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
-                        __instance.enabled = false;
-                        ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
-                    }
+                    AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
+                    RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
 
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                    Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                    
+                    Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
+                    Writer.Write((byte)CustomGameOverReason.ArsonistWin);
+                    Writer.EndRPC();
+                    RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
+                    //SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                    var reason = (GameOverReason)EndGame.CustomGameOverReason.ArsonistWin;
+                    if (ModeHandler.isMode(ModeId.SuperHostRoles)) reason = GameOverReason.ImpostorByKill;
+                    if (AmongUsClient.Instance.AmHost)
+                    {
+                        CheckGameEndPatch.CustomEndGame(reason, false);
+                    }
+                    else
+                    {
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                        writer.Write((byte)reason);
+                        writer.Write(false);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    }
                 },
                 () => { return Arsonist.IseveryButton(); },
                 () =>
                 {
-                    if (Arsonist.IsArsonistWinFlag())
+                    if (Arsonist.IsWin(PlayerControl.LocalPlayer))
                     {
                         return true;
                     }
@@ -1117,6 +1129,7 @@ namespace SuperNewRoles.Buttons
                                     RoleClass.Vulture.DeadBodyCount--;
                                     SuperNewRolesPlugin.Logger.LogInfo("DeadBodyCount:" + RoleClass.Vulture.DeadBodyCount);
                                     VultureButton.Timer = VultureButton.MaxTimer;
+                                    break;
                                 }
 
                             }
@@ -1130,11 +1143,17 @@ namespace SuperNewRoles.Buttons
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(PlayerControl.LocalPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
-                        writer.Write((byte)EndGame.CustomGameOverReason.VultureWin);
-                        writer.Write(false);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        EndGame.CheckGameEndPatch.CustomEndGame((GameOverReason)EndGame.CustomGameOverReason.VultureWin, false);
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            CheckGameEndPatch.CustomEndGame((GameOverReason)EndGame.CustomGameOverReason.VultureWin, false);
+                        }
+                        else
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                            writer.Write((byte)EndGame.CustomGameOverReason.VultureWin);
+                            writer.Write(false);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                        }
                     }
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Vulture); },
@@ -1218,8 +1237,8 @@ namespace SuperNewRoles.Buttons
 
                                     RoleClass.Cleaner.CoolTime = CleanerButton.Timer = CleanerButton.MaxTimer;
                                     PlayerControl.LocalPlayer.killTimer = RoleClass.Cleaner.CoolTime;
+                                    break;
                                 }
-
                             }
 
                         }
@@ -1271,7 +1290,7 @@ namespace SuperNewRoles.Buttons
                                     writer.Write(playerInfo.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                                     RPCProcedure.CleanBody(playerInfo.PlayerId);
-
+                                    break;
                                 }
 
                             }
@@ -1385,6 +1404,79 @@ namespace SuperNewRoles.Buttons
 
             VentMakerButton.buttonText = ModTranslation.getString("VentMakerButtonName");
             VentMakerButton.showButtonText = true;
+
+            GhostMechanicRepairButton = new CustomButton(
+                () =>
+                {
+                    RoleClass.GhostMechanic.LimitCount--;
+
+                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                    {
+                        if (task.TaskType == TaskTypes.FixLights)
+                        {
+                            RPCHelper.StartRPC(CustomRPC.CustomRPC.FixLights).EndRPC();
+                            RPCProcedure.FixLights();
+                        }
+                        else if (task.TaskType == TaskTypes.RestoreOxy)
+                        {
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 0 | 64);
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 1 | 64);
+                        }
+                        else if (task.TaskType == TaskTypes.ResetReactor)
+                        {
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 16);
+                        }
+                        else if (task.TaskType == TaskTypes.ResetSeismic)
+                        {
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Laboratory, 16);
+                        }
+                        else if (task.TaskType == TaskTypes.FixComms)
+                        {
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
+                        }
+                        else if (task.TaskType == TaskTypes.StopCharles)
+                        {
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 0 | 16);
+                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 1 | 16);
+                        }
+                    }
+                    if (RoleClass.GhostMechanic.LimitCount <= 0)
+                    {
+                        GhostMechanicNumRepairText.text = "";
+                    }
+                },
+                () => { return PlayerControl.LocalPlayer.isGhostRole(RoleId.GhostMechanic) && RoleClass.GhostMechanic.LimitCount > 0; },
+                () =>
+                {
+                    bool sabotageActive = false;
+                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                        if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles
+                            || (SubmergedCompatibility.isSubmerged() && task.TaskType == SubmergedCompatibility.RetrieveOxygenMask))
+                        {
+                            sabotageActive = true;
+                            break;
+                        }
+                    GhostMechanicNumRepairText.text = String.Format(ModTranslation.getString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
+                    return sabotageActive && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { GhostMechanicRepairButton.MaxTimer = 0f; GhostMechanicRepairButton.Timer = 0f; },
+                RoleClass.GhostMechanic.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+            
+            GhostMechanicNumRepairText = GameObject.Instantiate(GhostMechanicRepairButton.actionButton.cooldownTimerText, GhostMechanicRepairButton.actionButton.cooldownTimerText.transform.parent);
+            GhostMechanicNumRepairText.text = "";
+            GhostMechanicNumRepairText.enableWordWrapping = false;
+            GhostMechanicNumRepairText.transform.localScale = Vector3.one * 0.5f;
+            GhostMechanicNumRepairText.transform.localPosition += new Vector3(0f, 0.7f, 0);
+
+            GhostMechanicRepairButton.buttonText = ModTranslation.getString("GhostMechanicButtonName");
+            GhostMechanicRepairButton .showButtonText = true;
 
             EvilHackerButton = new CustomButton(
                () =>

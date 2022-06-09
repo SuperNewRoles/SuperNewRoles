@@ -27,8 +27,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption hideSettings;
 
         public static CustomOption crewmateRolesCountMax;
+        public static CustomOption crewmateGhostRolesCountMax;
         public static CustomOption impostorRolesCountMax;
+        public static CustomOption impostorGhostRolesCountMax;
         public static CustomOption neutralRolesCountMax;
+        public static CustomOption neutralGhostRolesCountMax;
 
         public static CustomOption enableMirroMap;
 
@@ -571,6 +574,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption VentMakerOption;
         public static CustomOption VentMakerPlayerCount;
 
+
+        public static CustomRoleOption GhostMechanicOption;
+        public static CustomOption GhostMechanicPlayerCount;
+        public static CustomOption GhostMechanicRepairLimit;
+
         public static CustomRoleOption EvilHackerOption;
         public static CustomOption EvilHackerPlayerCount;
         public static CustomOption EvilHackerMadmateSetting;
@@ -629,8 +637,11 @@ namespace SuperNewRoles.CustomOption
             hideSettings = CustomOption.Create(2, true, CustomOptionType.Generic, cs(Color.white, "SettingsHideSetting"), false, specialOptions);
 
             crewmateRolesCountMax = CustomOption.Create(3, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewRole"), 0f, 0f, 15f, 1f);
+            crewmateGhostRolesCountMax = CustomOption.Create(510, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxCrewGhostRole"), 0f, 0f, 15f, 1f);
             neutralRolesCountMax = CustomOption.Create(4, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralRole"), 0f, 0f, 15f, 1f);
+            neutralGhostRolesCountMax = CustomOption.Create(511, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxNeutralGhostRole"), 0f, 0f, 15f, 1f);
             impostorRolesCountMax = CustomOption.Create(5, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoRole"), 0f, 0f, 3f, 1f);
+            impostorGhostRolesCountMax = CustomOption.Create(512, true, CustomOptionType.Generic, cs(new Color(204f / 255f, 204f / 255f, 0, 1f), "SettingMaxImpoGhostRole"), 0f, 0f, 15f, 1f);
 
             enableMirroMap = CustomOption.Create(338, false, CustomOptionType.Generic, "enableMirroMap", false);
 
@@ -1176,6 +1187,10 @@ namespace SuperNewRoles.CustomOption
             EvilHackerOption = new CustomRoleOption(507, false, CustomOptionType.Impostor, "EvilHackerName", RoleClass.EvilHacker.color, 1);
             EvilHackerPlayerCount = CustomOption.Create(508, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
             EvilHackerMadmateSetting = CustomOption.Create(509, false, CustomOptionType.Impostor, "EvilHackerMadmateSetting", false, EvilHackerOption);
+
+            GhostMechanicOption = new CustomRoleOption(510, false, CustomOptionType.Crewmate, "GhostMechanicName", RoleClass.GhostMechanic.color, 1);
+            GhostMechanicPlayerCount = CustomOption.Create(511, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GhostMechanicOption);
+            GhostMechanicRepairLimit = CustomOption.Create(512, false, CustomOptionType.Crewmate, "GhostMechanicRepairLimitSetting", 1f, 1f, 30f, 1f, GhostMechanicOption);
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
