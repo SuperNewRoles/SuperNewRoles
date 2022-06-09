@@ -140,6 +140,7 @@ namespace SuperNewRoles.Roles
             Samurai.ClearAndReload();
             MayorFriends.ClearAndReload();
             VentMaker.ClearAndReload();
+            GhostMechanic.ClearAndReload();
             EvilHacker.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -2100,7 +2101,7 @@ namespace SuperNewRoles.Roles
             {
                 SamuraiPlayer = new List<PlayerControl>();
                 KillCoolTime = CustomOptions.SamuraiKillCoolTime.getFloat();
-                SwordCoolTime =CustomOptions.SamuraiSwordCoolTime.getFloat();
+                SwordCoolTime = CustomOptions.SamuraiSwordCoolTime.getFloat();
                 UseVent = CustomOptions.SamuraiVent.getBool();
                 UseSabo = CustomOptions.SamuraiSabo.getBool();
                 Sword = false;
@@ -2155,6 +2156,24 @@ namespace SuperNewRoles.Roles
                 Vent = null;
                 VentCount = 0;
                 IsMakeVent = true;
+            }
+        }
+        public static class GhostMechanic
+        {
+            public static List<PlayerControl> GhostMechanicPlayer;
+            public static Color32 color = Color.blue;
+            public static int LimitCount;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                GhostMechanicPlayer = new List<PlayerControl>();
+                LimitCount = (int)CustomOptions.GhostMechanicRepairLimit.getFloat();
             }
         }
         public static class EvilHacker
