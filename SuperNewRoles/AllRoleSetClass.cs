@@ -149,6 +149,7 @@ namespace SuperNewRoles
                 }
                 FixedUpdate.SetRoleNames();
                 crs.SendMessage();
+                SuperNewRolesPlugin.Logger.LogInfo(false);
                 return false;
             }
             else if (ModeHandler.isMode(ModeId.BattleRoyal))

@@ -15,7 +15,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static CustomRpcSender RoleSelect()
         {
+            SuperNewRolesPlugin.Logger.LogInfo("ROLESELECT");
             if (!AmongUsClient.Instance.AmHost) return null;
+            SuperNewRolesPlugin.Logger.LogInfo("つうか");
             var crs = CustomRpcSender.Create();
             CrewOrImpostorSet();
             OneOrNotListSet();
