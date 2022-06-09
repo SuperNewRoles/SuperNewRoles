@@ -6,6 +6,8 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -141,6 +143,9 @@ namespace SuperNewRoles.Patch
                                 case RoleId.DarkKiller:
                                     DarkKiller.FixedUpdate.Postfix();
                                     break;
+                                case RoleId.Vulture:
+                                    Vulture.FixedUpdate.Postfix();
+                                    break;
                             }
                             Fox.FixedUpdate.Postfix();
                             Minimalist.FixedUpdate.Postfix();
@@ -154,7 +159,8 @@ namespace SuperNewRoles.Patch
                                     Bait.BaitUpdate.Postfix(__instance);
 
                                 }
-                            } else if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
+                            }
+                            else if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
                             {
                                 var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
                                 if (sideplayer != null)
@@ -168,7 +174,8 @@ namespace SuperNewRoles.Patch
                             }
                         }
                     }
-                    else {
+                    else
+                    {
                         ModeHandler.FixedUpdate(__instance);
                     }
                 }

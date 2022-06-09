@@ -116,6 +116,11 @@ Super Host Roles
 Zombie Mode
 Random Color Mode
 Not Impostor Check Mode
+CopsRobbers
+Thief
+Finish the task and win without getting caught by the police!
+Police
+Catch all the thieves and win!
 Detective Mode
 Not include the detective in the win condition determination.
 No tasks for detective
@@ -301,23 +306,26 @@ Open and close doors!
 Try to sabotage your crewmates!
 Open and close the door immediately to block your crewmate!
 Door Cool Time
-Sealder
+Shielder
 Prevent outsider kills.
 Shield yourself!
 Try to block a foreigner's kill!
 Shield Cool Time
 Shield duration
+Shield
 Freezer
 Stop everyone and sabotage your crewmates!
 Try to stop everyone and sabotage the task!
 Let's put them all on ice.
 Freeze Cool Time
 Freeze duration
+Freeze
 Speeder
 Slow everyone down and sabotage your crewmates!
 Try to slow everyone down and sabotage the task!
 Sabotage Cool Time
 Sabotage duration
+SpeedDown
 Guesser
 Let's punch out the outsider.
 Guess the position of the outsider
@@ -331,6 +339,7 @@ Vulture
 Let's eat a corpse.
 Corpse cooldown
 Victory corpse count
+Show arrows pointing to dead bodies
 Nice Scientist
 Turn invisible and find the bodies!
 Use the power of science to win!
@@ -615,3 +624,43 @@ SeerJackal
 Detect the dead and bring victory to your camp!
 Sidekick(Seer)
 Let's help Jackal with the dead detection ability that we got
+<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>
+Number of <color=#ff0000>Assassin</color>
+Number of <color=#AFDFE4>Merine</color>
+Assassin
+<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!
+was marine.
+was not marine.
+Merine
+Let's not let <color=#ff0000>Assassin</color> find out.
+Who is Merine?
+Arsonist
+Douse Douse burn
+Douse Duration
+Douse
+Ignite
+If you oil them all and burn them. you win alone.
+Chief
+Appoint a sheriff to help your crew.
+Cleaner
+Let's destroy the evidence!
+CleanButton
+CoolDown
+MadCleaner
+Destroy the evidence and help impostors to win!
+Kill CoolDown
+Samurai
+Let's cut through the crew!
+KillCoolTime
+AttackCoolTime
+SamuraiScope
+UseSword!
+MayorFriends
+Let's abuse our power at the meeting.
+It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!
+VentMaker
+Let's make a vent!
+EvilHacker
+Hack to Win!
+Can an EvilHacker Make a Madmate
+ADMIN

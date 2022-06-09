@@ -117,6 +117,11 @@ SuperHostRolesModeName,Super Host Roles,SuperHostRoles
 ZombieModeName,Zombie Mode,ゾンビモード
 RandomColorModeName,Random Color Mode,ランダムカラー
 NotImpostorCheckModeName,Not Impostor Check Mode,インポスター視認不能モード
+CopsRobbersModeName,CopsRobbers,ケイドロ
+CopsRobbersModeCrewName,Thief,泥棒
+CopsRobbersModeCrewTitle1,Finish the task and win without getting caught by the police!,警察に捕まらないようにタスクを終わらせて勝利しよう
+CopsRobbersModeImpostorName,Police,警察
+CopsRobbersModeImpostorTitle1,Catch all the thieves and win!,泥棒を全員捕まえて勝利しよう
 DetectiveModeName,Detective Mode,探偵モード
 DetectiveModeIsWinNotCheckSetting,Not include the detective in the win condition determination.,探偵を勝利条件判定に入れない
 DetectiveModeIsNotTaskSetting,No tasks for detective,探偵にタスクがない
@@ -302,23 +307,26 @@ EvilDoorrTitle1,Open and close doors!,ドアを開け閉めしよう
 EvilDoorrTitle2,Try to sabotage your crewmates!,クルーメイトを妨害しよう
 EvilDoorrTitle3,Open and close the door immediately to block your crewmate!,すぐにドアを開け閉めしてクルーメイトを妨害しよう
 EvilDoorrCoolTimeSetting,Door Cool Time,ドアクールタイム
-SealdorName,Sealder,シールダー
-SealdorTitle1,Prevent outsider kills.,人外のキルを防ごう
-SealdorTitle2,Shield yourself!,自分にシールドを張ろう
-SealdorTitle3,Try to block a foreigner's kill!,人外のキルを妨害しよう
-SealdorCoolTimeSetting,Shield Cool Time,シールドクールタイム
-SealdorDurationSetting,Shield duration,シールド継続時間
+ShielderName,Shielder,シールダー
+ShielderTitle1,Prevent outsider kills.,人外のキルを防ごう
+ShielderTitle2,Shield yourself!,自分にシールドを張ろう
+ShielderTitle3,Try to block a foreigner's kill!,人外のキルを妨害しよう
+ShielderCoolTimeSetting,Shield Cool Time,シールドクールタイム
+ShielderDurationSetting,Shield duration,シールド継続時間
+ShielderButtonName,Shield,シールド
 FreezerName,Freezer,フリーザー
 FreezerTitle1,Stop everyone and sabotage your crewmates!,みんなを止めてクルーメイトを妨害しよう
 FreezerTitle2,Try to stop everyone and sabotage the task!,みんなを止めてタスクの妨害をしよう
 FreezerTitle3,Let's put them all on ice.,全員を氷漬けにしよう
 FreezerCoolTimeSetting,Freeze Cool Time,フリーズクールタイム
 FreezerDurationSetting,Freeze duration,フリーズ継続時間
+FreezerButtonName,Freeze,フリーズ
 SpeederName,Speeder,スピーダー
 SpeederTitle1,Slow everyone down and sabotage your crewmates!,みんなを遅くしてクルーメイトを妨害しよう
 SpeederTitle2,Try to slow everyone down and sabotage the task!,みんなを遅くしてタスクの妨害をしよう
 SpeederCoolTimeSetting,Sabotage Cool Time,サボタージュクールタイム
 SpeederDurationTimeSetting,Sabotage duration,サボタージュ継続時間
+SpeederButtonName,SpeedDown,スピードダウン
 GuesserName,Guesser,ゲッサー
 GuesserTitle1,Let's punch out the outsider.,人外を打ち抜こう
 GuesserTitle2,Guess the position of the outsider,人外の役職を当てよう
@@ -332,6 +340,7 @@ VultureName,Vulture,ヴァルチャー
 VultureTitle1,Let's eat a corpse.,死体を食べよう
 VultureCoolDownSetting,Corpse cooldown,死体クールダウン
 VultureDeadBodyCountSetting,Victory corpse count,勝利死体数
+VultureShowArrowsSetting,Show arrows pointing to dead bodies,死体を指す矢印を表示する
 NiceScientistName,Nice Scientist,ナイスサイエンティスト
 NiceScientistTitle1,Turn invisible and find the bodies!,透明になって死体を発見しよう
 NiceScientistTitle2,Use the power of science to win!,科学の力で勝利しよう
@@ -616,3 +625,43 @@ JackalSeerName,SeerJackal,ジャッカルシーア
 JackalSeerTitle1,Detect the dead and bring victory to your camp!,死者を感知し自陣営に勝利をもたらせ!
 SidekickSeerName,Sidekick(Seer),サイドキック(シーア)
 SidekickSeerTitle1,Let's help Jackal with the dead detection ability that we got,貰った死者感知能力でジャッカルを助けよう
+AssassinAndMarineName,<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>,<color=#ff0000>アサシン</color>と<color=#AFDFE4>マーリン</color>
+AssassinSettingPlayerCountName,Number of <color=#ff0000>Assassin</color>,<color=#ff0000>アサシン</color>の人数
+MarineSettingPlayerCountName,Number of <color=#AFDFE4>Merine</color>,<color=#AFDFE4>マーリン</color>の人数
+AssassinName,Assassin,アサシン
+AssassinTitle1,<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!,<color=#AFDFE4>マーリン</color>を当てて逆転勝利しよう
+AssassinSucsess,was marine.,はマーリンだった
+AssassinFail,was not marine.,はマーリンではなかった
+MarineName,Merine,マーリン
+MarineTitle1,Let's not let <color=#ff0000>Assassin</color> find out.,<color=#ff0000>アサシン</color>にバレないようにしよう。
+MarineWhois,Who is Merine?,マーリンは誰だ？
+ArsonistName,Arsonist,アーソニスト
+ArsonistTitle1,Douse Douse burn,塗って塗って燃やせ
+ArsonistDurationTimeSetting,Douse Duration,塗り時間
+ArsonistDouseButtonName,Douse,塗る
+ArsonistIgniteButtonName,Ignite,燃やす
+ArsonistDescription,If you oil them all and burn them. you win alone.,油を全員に塗り燃やしたら単独勝利です。
+ChiefName,Chief,村長
+ChiefTitle1,Appoint a sheriff to help your crew.,シェリフを任命してクルーを助けよう
+CleanerName,Cleaner,クリーナー
+CleanerTitle1,Let's destroy the evidence!,証拠を隠滅しよう!
+CleanerButtonName,CleanButton,死体を消す!
+CleanerCoolDownSetting,CoolDown,死体消しのクールダウン
+MadCleanerName,MadCleaner,マッドクリーナー
+MadCleanerTitle1,Destroy the evidence and help impostors to win!,証拠を隠滅してインポスターを勝利に導こう!
+CleanerKillCoolTimeSetting,Kill CoolDown,クリーナーのキルクールダウン
+SamuraiName,Samurai,侍
+SamuraiTitle1,Let's cut through the crew!,クルーを切り裂こう!
+SamuraiKillCoolSetting,KillCoolTime,侍のキルクールダウン
+SamuraiSwordCoolSetting,AttackCoolTime,必殺技のクールダウン
+SamuraiScopeSetting,SamuraiScope,必殺技が及ぶ範囲
+SamuraiButtonName,UseSword!,必殺技!
+MayorFriendsName,MayorFriends,メイヤーフレンズ
+MayorFriendsTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう
+MayorFriendsDescription,It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。メイヤーフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。
+VentMakerName,VentMaker,ベントメーカー
+VentMakerTitle1,Let's make a vent!,ベントを作ろう！
+EvilHackerName,EvilHacker,イビルハッカー
+EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう
+EvilHackerMadmateSetting,Can an EvilHacker Make a Madmate,イビルハッカーがマッドメイトを作れるか
+ADMINButton,ADMIN,アドミン

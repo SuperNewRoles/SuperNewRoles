@@ -36,6 +36,7 @@ namespace SuperNewRoles.EndGame
         MeetingSheriffMisFire,
         SelfBomb,
         BySelfBomb,
+        Ignite,
         Disconnected,
         Dead,
         Sabotage

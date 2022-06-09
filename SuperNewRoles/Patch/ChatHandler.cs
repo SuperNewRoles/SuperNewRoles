@@ -49,6 +49,12 @@ namespace SuperNewRoles.Patch
         public static void Postfix(PlayerControl sourcePlayer, string chatText)
         {
             if (!AmongUsClient.Instance.AmHost) return;
+
+            if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
+            {
+                Assassin.AddChat(sourcePlayer, chatText);
+            }
+
             var Commands = chatText.Split(" ");
             if (Commands[0].Equals("/version", StringComparison.OrdinalIgnoreCase) ||
                 Commands[0].Equals("/v", StringComparison.OrdinalIgnoreCase))

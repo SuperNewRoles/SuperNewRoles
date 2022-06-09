@@ -472,6 +472,26 @@
         "0" : "Not Impostor Check Mode" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u8996\u8a8d\u4e0d\u80fd\u30e2\u30fc\u30c9"
         } ,
+ "CopsRobbersModeName" : {
+        "0" : "CopsRobbers" ,
+        "11" : "\u30b1\u30a4\u30c9\u30ed"
+        } ,
+ "CopsRobbersModeCrewName" : {
+        "0" : "Thief" ,
+        "11" : "\u6ce5\u68d2"
+        } ,
+ "CopsRobbersModeCrewTitle1" : {
+        "0" : "Finish the task and win without getting caught by the police!" ,
+        "11" : "\u8b66\u5bdf\u306b\u6355\u307e\u3089\u306a\u3044\u3088\u3046\u306b\u30bf\u30b9\u30af\u3092\u7d42\u308f\u3089\u305b\u3066\u52dd\u5229\u3057\u3088\u3046"
+        } ,
+ "CopsRobbersModeImpostorName" : {
+        "0" : "Police" ,
+        "11" : "\u8b66\u5bdf"
+        } ,
+ "CopsRobbersModeImpostorTitle1" : {
+        "0" : "Catch all the thieves and win!" ,
+        "11" : "\u6ce5\u68d2\u3092\u5168\u54e1\u6355\u307e\u3048\u3066\u52dd\u5229\u3057\u3088\u3046"
+        } ,
  "DetectiveModeName" : {
         "0" : "Detective Mode" ,
         "11" : "\u63a2\u5075\u30e2\u30fc\u30c9"
@@ -1212,29 +1232,33 @@
         "0" : "Door Cool Time" ,
         "11" : "\u30c9\u30a2\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "SealdorName" : {
-        "0" : "Sealder" ,
+ "ShielderName" : {
+        "0" : "Shielder" ,
         "11" : "\u30b7\u30fc\u30eb\u30c0\u30fc"
         } ,
- "SealdorTitle1" : {
+ "ShielderTitle1" : {
         "0" : "Prevent outsider kills." ,
         "11" : "\u4eba\u5916\u306e\u30ad\u30eb\u3092\u9632\u3054\u3046"
         } ,
- "SealdorTitle2" : {
+ "ShielderTitle2" : {
         "0" : "Shield yourself!" ,
         "11" : "\u81ea\u5206\u306b\u30b7\u30fc\u30eb\u30c9\u3092\u5f35\u308d\u3046"
         } ,
- "SealdorTitle3" : {
+ "ShielderTitle3" : {
         "0" : "Try to block a foreigner's kill!" ,
         "11" : "\u4eba\u5916\u306e\u30ad\u30eb\u3092\u59a8\u5bb3\u3057\u3088\u3046"
         } ,
- "SealdorCoolTimeSetting" : {
+ "ShielderCoolTimeSetting" : {
         "0" : "Shield Cool Time" ,
         "11" : "\u30b7\u30fc\u30eb\u30c9\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "SealdorDurationSetting" : {
+ "ShielderDurationSetting" : {
         "0" : "Shield duration" ,
         "11" : "\u30b7\u30fc\u30eb\u30c9\u7d99\u7d9a\u6642\u9593"
+        } ,
+ "ShielderButtonName" : {
+        "0" : "Shield" ,
+        "11" : "\u30b7\u30fc\u30eb\u30c9"
         } ,
  "FreezerName" : {
         "0" : "Freezer" ,
@@ -1260,6 +1284,10 @@
         "0" : "Freeze duration" ,
         "11" : "\u30d5\u30ea\u30fc\u30ba\u7d99\u7d9a\u6642\u9593"
         } ,
+ "FreezerButtonName" : {
+        "0" : "Freeze" ,
+        "11" : "\u30d5\u30ea\u30fc\u30ba"
+        } ,
  "SpeederName" : {
         "0" : "Speeder" ,
         "11" : "\u30b9\u30d4\u30fc\u30c0\u30fc"
@@ -1279,6 +1307,10 @@
  "SpeederDurationTimeSetting" : {
         "0" : "Sabotage duration" ,
         "11" : "\u30b5\u30dc\u30bf\u30fc\u30b8\u30e5\u7d99\u7d9a\u6642\u9593"
+        } ,
+ "SpeederButtonName" : {
+        "0" : "SpeedDown" ,
+        "11" : "\u30b9\u30d4\u30fc\u30c9\u30c0\u30a6\u30f3"
         } ,
  "GuesserName" : {
         "0" : "Guesser" ,
@@ -1331,6 +1363,10 @@
  "VultureDeadBodyCountSetting" : {
         "0" : "Victory corpse count" ,
         "11" : "\u52dd\u5229\u6b7b\u4f53\u6570"
+        } ,
+ "VultureShowArrowsSetting" : {
+        "0" : "Show arrows pointing to dead bodies" ,
+        "11" : "\u6b7b\u4f53\u3092\u6307\u3059\u77e2\u5370\u3092\u8868\u793a\u3059\u308b"
         } ,
  "NiceScientistName" : {
         "0" : "Nice Scientist" ,
@@ -2467,6 +2503,166 @@
  "SidekickSeerTitle1" : {
         "0" : "Let's help Jackal with the dead detection ability that we got" ,
         "11" : "\u8cb0\u3063\u305f\u6b7b\u8005\u611f\u77e5\u80fd\u529b\u3067\u30b8\u30e3\u30c3\u30ab\u30eb\u3092\u52a9\u3051\u3088\u3046"
+        } ,
+ "AssassinAndMarineName" : {
+        "0" : "<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>" ,
+        "11" : "<color=#ff0000>\u30a2\u30b5\u30b7\u30f3</color>\u3068<color=#AFDFE4>\u30de\u30fc\u30ea\u30f3</color>"
+        } ,
+ "AssassinSettingPlayerCountName" : {
+        "0" : "Number of <color=#ff0000>Assassin</color>" ,
+        "11" : "<color=#ff0000>\u30a2\u30b5\u30b7\u30f3</color>\u306e\u4eba\u6570"
+        } ,
+ "MarineSettingPlayerCountName" : {
+        "0" : "Number of <color=#AFDFE4>Merine</color>" ,
+        "11" : "<color=#AFDFE4>\u30de\u30fc\u30ea\u30f3</color>\u306e\u4eba\u6570"
+        } ,
+ "AssassinName" : {
+        "0" : "Assassin" ,
+        "11" : "\u30a2\u30b5\u30b7\u30f3"
+        } ,
+ "AssassinTitle1" : {
+        "0" : "<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!" ,
+        "11" : "<color=#AFDFE4>\u30de\u30fc\u30ea\u30f3</color>\u3092\u5f53\u3066\u3066\u9006\u8ee2\u52dd\u5229\u3057\u3088\u3046"
+        } ,
+ "AssassinSucsess" : {
+        "0" : "was marine." ,
+        "11" : "\u306f\u30de\u30fc\u30ea\u30f3\u3060\u3063\u305f"
+        } ,
+ "AssassinFail" : {
+        "0" : "was not marine." ,
+        "11" : "\u306f\u30de\u30fc\u30ea\u30f3\u3067\u306f\u306a\u304b\u3063\u305f"
+        } ,
+ "MarineName" : {
+        "0" : "Merine" ,
+        "11" : "\u30de\u30fc\u30ea\u30f3"
+        } ,
+ "MarineTitle1" : {
+        "0" : "Let's not let <color=#ff0000>Assassin</color> find out." ,
+        "11" : "<color=#ff0000>\u30a2\u30b5\u30b7\u30f3</color>\u306b\u30d0\u30ec\u306a\u3044\u3088\u3046\u306b\u3057\u3088\u3046\u3002"
+        } ,
+ "MarineWhois" : {
+        "0" : "Who is Merine?" ,
+        "11" : "\u30de\u30fc\u30ea\u30f3\u306f\u8ab0\u3060\uff1f"
+        } ,
+ "ArsonistName" : {
+        "0" : "Arsonist" ,
+        "11" : "\u30a2\u30fc\u30bd\u30cb\u30b9\u30c8"
+        } ,
+ "ArsonistTitle1" : {
+        "0" : "Douse Douse burn" ,
+        "11" : "\u5857\u3063\u3066\u5857\u3063\u3066\u71c3\u3084\u305b"
+        } ,
+ "ArsonistDurationTimeSetting" : {
+        "0" : "Douse Duration" ,
+        "11" : "\u5857\u308a\u6642\u9593"
+        } ,
+ "ArsonistDouseButtonName" : {
+        "0" : "Douse" ,
+        "11" : "\u5857\u308b"
+        } ,
+ "ArsonistIgniteButtonName" : {
+        "0" : "Ignite" ,
+        "11" : "\u71c3\u3084\u3059"
+        } ,
+ "ArsonistDescription" : {
+        "0" : "If you oil them all and burn them. you win alone." ,
+        "11" : "\u6cb9\u3092\u5168\u54e1\u306b\u5857\u308a\u71c3\u3084\u3057\u305f\u3089\u5358\u72ec\u52dd\u5229\u3067\u3059\u3002"
+        } ,
+ "ChiefName" : {
+        "0" : "Chief" ,
+        "11" : "\u6751\u9577"
+        } ,
+ "ChiefTitle1" : {
+        "0" : "Appoint a sheriff to help your crew." ,
+        "11" : "\u30b7\u30a7\u30ea\u30d5\u3092\u4efb\u547d\u3057\u3066\u30af\u30eb\u30fc\u3092\u52a9\u3051\u3088\u3046"
+        } ,
+ "CleanerName" : {
+        "0" : "Cleaner" ,
+        "11" : "\u30af\u30ea\u30fc\u30ca\u30fc"
+        } ,
+ "CleanerTitle1" : {
+        "0" : "Let's destroy the evidence!" ,
+        "11" : "\u8a3c\u62e0\u3092\u96a0\u6ec5\u3057\u3088\u3046!"
+        } ,
+ "CleanerButtonName" : {
+        "0" : "CleanButton" ,
+        "11" : "\u6b7b\u4f53\u3092\u6d88\u3059!"
+        } ,
+ "CleanerCoolDownSetting" : {
+        "0" : "CoolDown" ,
+        "11" : "\u6b7b\u4f53\u6d88\u3057\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "MadCleanerName" : {
+        "0" : "MadCleaner" ,
+        "11" : "\u30de\u30c3\u30c9\u30af\u30ea\u30fc\u30ca\u30fc"
+        } ,
+ "MadCleanerTitle1" : {
+        "0" : "Destroy the evidence and help impostors to win!" ,
+        "11" : "\u8a3c\u62e0\u3092\u96a0\u6ec5\u3057\u3066\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u52dd\u5229\u306b\u5c0e\u3053\u3046!"
+        } ,
+ "CleanerKillCoolTimeSetting" : {
+        "0" : "Kill CoolDown" ,
+        "11" : "\u30af\u30ea\u30fc\u30ca\u30fc\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "SamuraiName" : {
+        "0" : "Samurai" ,
+        "11" : "\u4f8d"
+        } ,
+ "SamuraiTitle1" : {
+        "0" : "Let's cut through the crew!" ,
+        "11" : "\u30af\u30eb\u30fc\u3092\u5207\u308a\u88c2\u3053\u3046!"
+        } ,
+ "SamuraiKillCoolSetting" : {
+        "0" : "KillCoolTime" ,
+        "11" : "\u4f8d\u306e\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "SamuraiSwordCoolSetting" : {
+        "0" : "AttackCoolTime" ,
+        "11" : "\u5fc5\u6bba\u6280\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "SamuraiScopeSetting" : {
+        "0" : "SamuraiScope" ,
+        "11" : "\u5fc5\u6bba\u6280\u304c\u53ca\u3076\u7bc4\u56f2"
+        } ,
+ "SamuraiButtonName" : {
+        "0" : "UseSword!" ,
+        "11" : "\u5fc5\u6bba\u6280!"
+        } ,
+ "MayorFriendsName" : {
+        "0" : "MayorFriends" ,
+        "11" : "\u30e1\u30a4\u30e4\u30fc\u30d5\u30ec\u30f3\u30ba"
+        } ,
+ "MayorFriendsTitle1" : {
+        "0" : "Let's abuse our power at the meeting." ,
+        "11" : "\u4f1a\u8b70\u3067\u6a29\u529b\u3092\u4e71\u7528\u3057\u3088\u3046"
+        } ,
+ "MayorFriendsDescription" : {
+        "0" : "It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!" ,
+        "11" : "\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3068\u5224\u5b9a\u3055\u308c\u307e\u3059\u304c\u3001\u30b8\u30e3\u30c3\u30ab\u30eb\u9663\u55b6\u3067\u3059\u3002\\n\u30b8\u30e3\u30c3\u30ab\u30eb\u304c\u52dd\u5229\u3059\u308b\u3068\u3001\u52dd\u5229\u3067\u304d\u307e\u3059\u3002\u30e1\u30a4\u30e4\u30fc\u30d5\u30ec\u30f3\u30ba\u306f\u30b8\u30e3\u30c3\u30ab\u30eb\u304b\u3089\u306f\u5206\u304b\u308a\u307e\u305b\u3093\u3002\\n\u30b8\u30e3\u30c3\u30ab\u30eb\u9663\u55b6\u304c\u52dd\u5229\u3059\u308b\u3088\u3046\u306b\u30b8\u30e3\u30c3\u30ab\u30eb\u3092\u52a9\u3051\u307e\u3057\u3087\u3046\uff01\u3002"
+        } ,
+ "VentMakerName" : {
+        "0" : "VentMaker" ,
+        "11" : "\u30d9\u30f3\u30c8\u30e1\u30fc\u30ab\u30fc"
+        } ,
+ "VentMakerTitle1" : {
+        "0" : "Let's make a vent!" ,
+        "11" : "\u30d9\u30f3\u30c8\u3092\u4f5c\u308d\u3046\uff01"
+        } ,
+ "EvilHackerName" : {
+        "0" : "EvilHacker" ,
+        "11" : "\u30a4\u30d3\u30eb\u30cf\u30c3\u30ab\u30fc"
+        } ,
+ "EvilHackerTitle1" : {
+        "0" : "Hack to Win!" ,
+        "11" : "\u30cf\u30c3\u30ad\u30f3\u30b0\u3057\u3066\u52dd\u5229\u3057\u3088\u3046"
+        } ,
+ "EvilHackerMadmateSetting" : {
+        "0" : "Can an EvilHacker Make a Madmate" ,
+        "11" : "\u30a4\u30d3\u30eb\u30cf\u30c3\u30ab\u30fc\u304c\u30de\u30c3\u30c9\u30e1\u30a4\u30c8\u3092\u4f5c\u308c\u308b\u304b"
+        } ,
+ "ADMINButton" : {
+        "0" : "ADMIN" ,
+        "11" : "\u30a2\u30c9\u30df\u30f3"
         } 
 
 }

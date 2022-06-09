@@ -6,39 +6,41 @@ using SuperNewRoles.Patches;
 using UnityEngine;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
+using System.Linq;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
 {
-    class Speeder
+    public class Speeder
     {
         public static void ResetCoolDown()
         {
-            HudManagerStartPatch.SpeedBoosterBoostButton.Timer = RoleClass.SpeedBooster.CoolTime;
+            HudManagerStartPatch.SpeederButton.MaxTimer = RoleClass.Speeder.CoolTime;
+            HudManagerStartPatch.SpeederButton.Timer = HudManagerStartPatch.SpeederButton.MaxTimer;
+            HudManagerStartPatch.SpeederButton.actionButton.cooldownTimerText.color = Color.white;
         }
-        public static void BoostStart()
+        public static void DownStart()
         {
-            PlayerControl.GameOptions.PlayerSpeedMod = RoleClass.SpeedBooster.Speed;
-            RoleClass.SpeedBooster.IsSpeedBoost = true;
-            SpeedBooster.ResetCoolDown();
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedDown, SendOption.Reliable, -1);
+            writer.Write(true);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            CustomRPC.RPCProcedure.SetSpeedDown(true);
         }
         public static void ResetSpeed()
         {
-            RoleClass.SpeedBooster.IsSpeedBoost = false;
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedDown, SendOption.Reliable, -1);
+            writer.Write(false);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            CustomRPC.RPCProcedure.SetSpeedDown(false);
         }
-
-        public static void SpeedBoostCheck()
-        {
-            if (!RoleClass.SpeedBooster.IsSpeedBoost) return;
-            if (HudManagerStartPatch.SpeedBoosterBoostButton.Timer + RoleClass.SpeedBooster.DurationTime <= RoleClass.SpeedBooster.CoolTime) SpeedBoostEnd();
-        }
-        public static void SpeedBoostEnd()
+        public static void SpeedDownEnd()
         {
             ResetSpeed();
+            Speeder.ResetCoolDown();
         }
-        public static bool IsSpeedBooster(PlayerControl Player)
+        public static bool IsSpeeder(PlayerControl Player)
         {
-            return true;
-            if (RoleClass.SpeedBooster.SpeedBoosterPlayer.IsCheckListPlayerControl(Player))
+            if (RoleClass.Speeder.SpeederPlayer.IsCheckListPlayerControl(Player))
             {
                 return true;
             }
@@ -49,10 +51,34 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-
-            ResetCoolDown();
+            Speeder.ResetCoolDown();
             ResetSpeed();
-
+        }
+    }
+    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
+    public static class PlayerPhysicsSpeedPatch
+    {
+        public static void Postfix(PlayerPhysics __instance)
+        {
+            if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+            if (ModeHandler.isMode(ModeId.Default))
+            {
+                if (RoleClass.Speeder.IsSpeedDown)
+                {
+                    __instance.body.velocity /= 10f;
+                }
+            }
+        }
+    }
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    public static class HudManagerUpdatePatch
+    {
+        public static void Postfix()
+        {
+            if (HudManagerStartPatch.SpeederButton.Timer <= 0.1 && RoleClass.Speeder.IsSpeedDown)
+            {
+                Speeder.SpeedDownEnd();
+            }
         }
     }
 }
