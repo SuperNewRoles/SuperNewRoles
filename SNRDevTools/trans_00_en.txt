@@ -674,3 +674,7 @@ Let's get rid of the loose ends that we couldn't fix the machine.
 Number of times sabotage can be repaired
 Repair
 GhostMechanic
+EvilHacker
+Hack to Win!
+Can an EvilHacker Make a Madmate
+ADMIN

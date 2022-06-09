@@ -120,6 +120,7 @@ namespace SuperNewRoles.CustomRPC
         MayorFriends,
         VentMaker,
         GhostMechanic,
+        EvilHacker,
         //RoleId
     }
 

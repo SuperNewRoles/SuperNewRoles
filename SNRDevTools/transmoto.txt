@@ -662,7 +662,7 @@ SamuraiName
 SamuraiTitle1
 SamuraiKillCoolSetting
 SamuraiSwordCoolSetting
-SamuraiScorpSetting
+SamuraiScopeSetting
 SamuraiButtonName
 MayorFriendsName
 MayorFriendsTitle1
@@ -674,3 +674,7 @@ GhostMechanicTitle1
 GhostMechanicRepairLimitSetting
 GhostMechanicButtonName
 GhostMechanicCountText
+EvilHackerName
+EvilHackerTitle1
+EvilHackerMadmateSetting
+ADMINButton

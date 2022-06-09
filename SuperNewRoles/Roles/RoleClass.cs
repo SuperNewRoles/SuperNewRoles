@@ -141,6 +141,7 @@ namespace SuperNewRoles.Roles
             MayorFriends.ClearAndReload();
             VentMaker.ClearAndReload();
             GhostMechanic.ClearAndReload();
+            EvilHacker.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2086,9 +2087,9 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static float KillCoolTime;
             public static float SwordCoolTime;
-            public static bool Sword;
             public static bool UseVent;
             public static bool UseSabo;
+            public static bool Sword;
             private static Sprite ButtonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -2100,7 +2101,7 @@ namespace SuperNewRoles.Roles
             {
                 SamuraiPlayer = new List<PlayerControl>();
                 KillCoolTime = CustomOptions.SamuraiKillCoolTime.getFloat();
-                SwordCoolTime =CustomOptions.SamuraiSwordCoolTime.getFloat();
+                SwordCoolTime = CustomOptions.SamuraiSwordCoolTime.getFloat();
                 UseVent = CustomOptions.SamuraiVent.getBool();
                 UseSabo = CustomOptions.SamuraiSabo.getBool();
                 Sword = false;
@@ -2173,6 +2174,29 @@ namespace SuperNewRoles.Roles
             {
                 GhostMechanicPlayer = new List<PlayerControl>();
                 LimitCount = (int)CustomOptions.GhostMechanicRepairLimit.getFloat();
+            }
+        }
+        public static class EvilHacker
+        {
+            public static List<PlayerControl> EvilHackerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsCreateMadmate;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                byte mapId = PlayerControl.GameOptions.MapId;
+                UseButtonSettings button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
+                if (mapId == 0 || mapId == 3) button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
+                else if (mapId == 1) button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
+                else if (mapId == 4) button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
+                buttonSprite = button.Image;
+                return buttonSprite; //GMHからの引用
+            }
+            public static void ClearAndReload()
+            {
+                EvilHackerPlayer = new List<PlayerControl>();
+                IsCreateMadmate = CustomOptions.EvilHackerMadmateSetting.getBool();
             }
         }
         //新ロールクラス

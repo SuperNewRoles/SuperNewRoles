@@ -257,6 +257,9 @@ namespace SuperNewRoles.Patches
                     case RoleId.Minimalist:
                         SetTime = RoleClass.Minimalist.KillCoolTime;
                         break;
+                    case RoleId.Samurai:
+                        SetTime = RoleClass.Samurai.KillCoolTime;
+                        break;
                     case RoleId.HomeSecurityGuard:
                         foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                         {

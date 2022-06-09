@@ -675,3 +675,7 @@ GhostMechanicTitle1,Let's get rid of the loose ends that we couldn't fix the mac
 GhostMechanicRepairLimitSetting,Number of times sabotage can be repaired,サボタージュ修復可能回数
 GhostMechanicButtonName,Repair,修復
 GhostMechanicCountText,GhostMechanic,残り{0}回
+EvilHackerName,EvilHacker,イビルハッカー
+EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう
+EvilHackerMadmateSetting,Can an EvilHacker Make a Madmate,イビルハッカーがマッドメイトを作れるか
+ADMINButton,ADMIN,アドミン

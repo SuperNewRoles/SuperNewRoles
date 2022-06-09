@@ -574,9 +574,14 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption VentMakerOption;
         public static CustomOption VentMakerPlayerCount;
 
+
         public static CustomRoleOption GhostMechanicOption;
         public static CustomOption GhostMechanicPlayerCount;
         public static CustomOption GhostMechanicRepairLimit;
+
+        public static CustomRoleOption EvilHackerOption;
+        public static CustomOption EvilHackerPlayerCount;
+        public static CustomOption EvilHackerMadmateSetting;
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -1171,13 +1176,17 @@ namespace SuperNewRoles.CustomOption
             VentMakerOption = new CustomRoleOption(498, false, CustomOptionType.Impostor, "VentMakerName", RoleClass.VentMaker.color, 1);
             VentMakerPlayerCount = CustomOption.Create(499, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], VentMakerOption);
 
-            SamuraiOption = new CustomRoleOption(500, false, CustomOptionType.Impostor, "SamuraiName", RoleClass.Samurai.color, 1);
-            SamuraiPlayerCount = CustomOption.Create(501, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SamuraiOption);
-            SamuraiKillCoolTime = CustomOption.Create(502, false, CustomOptionType.Impostor, "SamuraiKillCoolSetting", 30f, 2.5f, 60f, 2.5f, SamuraiOption);
-            SamuraiSwordCoolTime = CustomOption.Create(503, false, CustomOptionType.Impostor, "SamuraiSwordCoolSetting", 50f, 30f, 70f, 2.5f, SamuraiOption);
-            SamuraiVent = CustomOption.Create(504, false, CustomOptionType.Impostor, "MinimalistVentSetting", false, SamuraiOption);
-            SamuraiSabo = CustomOption.Create(505, false, CustomOptionType.Impostor, "MinimalistSaboSetting", false, SamuraiOption);
-            SamuraiScope = CustomOption.Create(506, false, CustomOptionType.Impostor, "SamuraiScopeSetting", 1f, 0.5f, 3f, 0.5f, SamuraiOption);
+            SamuraiOption = new CustomRoleOption(500, true, CustomOptionType.Impostor, "SamuraiName", RoleClass.Samurai.color, 1);
+            SamuraiPlayerCount = CustomOption.Create(501, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SamuraiOption);
+            SamuraiKillCoolTime = CustomOption.Create(502, true, CustomOptionType.Impostor, "SamuraiKillCoolSetting", 30f, 2.5f, 60f, 2.5f, SamuraiOption);
+            SamuraiSwordCoolTime = CustomOption.Create(503, true, CustomOptionType.Impostor, "SamuraiSwordCoolSetting", 50f, 30f, 70f, 2.5f, SamuraiOption);
+            SamuraiVent = CustomOption.Create(504, true, CustomOptionType.Impostor, "MinimalistVentSetting", false, SamuraiOption);
+            SamuraiSabo = CustomOption.Create(505, true, CustomOptionType.Impostor, "MinimalistSaboSetting", false, SamuraiOption);
+            SamuraiScope = CustomOption.Create(506, true, CustomOptionType.Impostor, "SamuraiScopeSetting", 1f, 0.5f, 3f, 0.5f, SamuraiOption);
+
+            EvilHackerOption = new CustomRoleOption(507, false, CustomOptionType.Impostor, "EvilHackerName", RoleClass.EvilHacker.color, 1);
+            EvilHackerPlayerCount = CustomOption.Create(508, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
+            EvilHackerMadmateSetting = CustomOption.Create(509, false, CustomOptionType.Impostor, "EvilHackerMadmateSetting", false, EvilHackerOption);
 
             GhostMechanicOption = new CustomRoleOption(507, true, CustomOptionType.Crewmate, "GhostMechanicName", RoleClass.GhostMechanic.color, 1);
             GhostMechanicPlayerCount = CustomOption.Create(508, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GhostMechanicOption);
