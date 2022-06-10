@@ -1193,9 +1193,9 @@ namespace SuperNewRoles.CustomOption
             EvilHackerPlayerCount = CustomOption.Create(508, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilHackerOption);
             EvilHackerMadmateSetting = CustomOption.Create(509, false, CustomOptionType.Impostor, "EvilHackerMadmateSetting", false, EvilHackerOption);
 
-            GhostMechanicOption = new CustomRoleOption(507, true, CustomOptionType.Crewmate, "GhostMechanicName", RoleClass.GhostMechanic.color, 1);
-            GhostMechanicPlayerCount = CustomOption.Create(508, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GhostMechanicOption);
-            GhostMechanicRepairLimit = CustomOption.Create(509, true, CustomOptionType.Crewmate, "GhostMechanicRepairLimitSetting", 1f, 1f, 30f, 1f, GhostMechanicOption);
+            GhostMechanicOption = new CustomRoleOption(520, false, CustomOptionType.Crewmate, "GhostMechanicName", RoleClass.GhostMechanic.color, 1);
+            GhostMechanicPlayerCount = CustomOption.Create(521, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GhostMechanicOption);
+            GhostMechanicRepairLimit = CustomOption.Create(522, false, CustomOptionType.Crewmate, "GhostMechanicRepairLimitSetting", 1f, 1f, 30f, 1f, GhostMechanicOption);
 
             //表示設定
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

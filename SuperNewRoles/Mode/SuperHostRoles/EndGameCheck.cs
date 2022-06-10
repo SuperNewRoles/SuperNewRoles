@@ -96,42 +96,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-                /*
-                    foreach (PlayerControl p in RoleClass.Opportunist.OpportunistPlayer)
-                    {
-                        if (p.isAlive())
-                        {
-                            if (IsCrewmateWin)
-                            {
-                                p.RpcSetRoleDesync(RoleTypes.Crewmate);
-                            }
-                            else
-                            {
-                                p.RpcSetRoleDesync(RoleTypes.Impostor);
-                            }
-                        }
-                        else
-                        {
-                            if (IsCrewmateWin)
-                            {
-                                p.RpcSetRoleDesync(RoleTypes.Impostor);
-                            }
-                            else
-                            {
-                                p.RpcSetRoleDesync(RoleTypes.Crewmate);
-                            }
-                        }
-                    }
-                */
-                __instance.enabled = false;
+            FixedUpdate.SetRoleNames(true);
+            __instance.enabled = false;
             ShipStatus.RpcEndGame(reason, showAd);
-
-            //変更した設定を直す
-            /*
-            PlayerControl.GameOptions = ChangeGameOptions.DefaultGameOption;
-            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
-            */
-            //終わり
         }
         public static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
         {
@@ -184,7 +151,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 Writer.EndRPC();
                 CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JackalWin);
                 __instance.enabled = false;
-                SuperNewRolesPlugin.Logger.LogInfo("じゃっかるうぃん");
                 CustomEndGame(__instance,GameOverReason.ImpostorByKill, false);
                 return true;
             }
