@@ -20,6 +20,12 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 ## 1役職に複数人設定できる
 クルーメイト全員がシェリフなどもできます!
 
+## 機器設定
+アドミンやバイタルなどの設定をすることができます。<br>
+通常モードにおいて、時間設定も可能になりました。<br>
+[ykundesuBeplnEx]設定も搭載しています!<br>
+現在SHRモードにおいては使える・使えないの設定のみ使えます。<br>
+
 ## モードがある
 通常とは別で、[かくれんぼモード](#かくれんぼモード)などが追加されています。
 
