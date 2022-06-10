@@ -753,8 +753,8 @@ namespace SuperNewRoles.Patches
                             DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(target);
                             target.RpcStartMeeting(null);
                         }
-                        RoleClass.Assassin.TriggerPlayer = target;
                     }, 0.5f);
+                    RoleClass.Assassin.TriggerPlayer = target;
                     return;
                 }
                 Levelinger.MurderPlayer(__instance, target);
@@ -825,8 +825,8 @@ namespace SuperNewRoles.Patches
                             DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                             __instance.RpcStartMeeting(null);
                         }
-                        RoleClass.Assassin.TriggerPlayer = __instance;
                     }, 0.5f);
+                    RoleClass.Assassin.TriggerPlayer = __instance;
                     return;
                 }
                 if (RoleClass.Lovers.SameDie && __instance.IsLovers())
