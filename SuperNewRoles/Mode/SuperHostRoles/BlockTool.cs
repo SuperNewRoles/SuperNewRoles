@@ -64,7 +64,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     try
                     {
-                        if (p.isAlive() && !p.IsMod() && !p.inVent)
+                        if (p.isAlive() && !p.IsMod())
                         {
                             var cid = p.getClientId();
                             bool IsGuard = false;
@@ -109,7 +109,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                     IsGuard = true;
                                 }
                             }
-                            if (IsGuard)
+                            if (IsGuard && !p.inVent)
                             {
                                 if (!OldDesyncCommsPlayers.Contains(p.PlayerId))
                                 {

@@ -1227,24 +1227,15 @@ namespace SuperNewRoles.Roles
             {
                 try
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("a");
                     LevelingerPlayer = new List<PlayerControl>();
-                    SuperNewRolesPlugin.Logger.LogInfo("b");
                     ThisXP = 0;
-                    SuperNewRolesPlugin.Logger.LogInfo("c");
                     IsCreateMadmate = false;
-                    SuperNewRolesPlugin.Logger.LogInfo("d");
                     OneKillXP = (int)CustomOptions.LevelingerOneKillXP.getFloat();
-                    SuperNewRolesPlugin.Logger.LogInfo("ONEKILLXP:" + (int)CustomOptions.LevelingerOneKillXP.getFloat());
-                    SuperNewRolesPlugin.Logger.LogInfo("e");
                     UpLevelXp = (int)CustomOptions.LevelingerUpLevelXP.getFloat();
-                    SuperNewRolesPlugin.Logger.LogInfo("f");
                     GetPowerData = new List<LevelPowerTypes>();
                     for (int i = 0; i < 5; i++)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("g");
                         string getdata = "";
-                        SuperNewRolesPlugin.Logger.LogInfo("h");
                         if (i == 0)
                         {
                             getdata = CustomOptions.LevelingerLevelOneGetPower.getString();
@@ -1266,11 +1257,8 @@ namespace SuperNewRoles.Roles
                             getdata = CustomOptions.LevelingerLevelFiveGetPower.getString();
                         }
                         GetPowerData.Add(GetLevelPowerType(getdata));
-                        SuperNewRolesPlugin.Logger.LogInfo("data:" + GetLevelPowerType(getdata));
                     }
-                    SuperNewRolesPlugin.Logger.LogInfo("k");
                     IsUseOKRevive = CustomOptions.LevelingerReviveXP.getBool();
-                    SuperNewRolesPlugin.Logger.LogInfo("l");
                     ReviveUseXP = (int)CustomOptions.LevelingerUseXPRevive.getFloat();
                 }
                 catch (Exception e)
