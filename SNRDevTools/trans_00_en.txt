@@ -55,10 +55,16 @@ Preset
 <color=#a9ceec>Crewmate</color> Settings
 Minimum Crewmate Roles
 Maximum Crewmate Roles
+Minimum Crewmate Ghost Roles
+Maximum Crewmate Ghost Roles
 Minimum Neutral Roles
 Maximum Neutral Roles
+Minimum Neutral Ghost Roles
+Maximum Neutral Ghost Roles
 Minimum Impostor Roles
 Maximum Impostor Roles
+Minimum Impostor Ghost Roles
+Maximum Impostor GhostRoles
 Hide Setting
 Position setting of crewmate camp
 Imposter camp position setting
@@ -92,8 +98,11 @@ Update Process Down
 Show players that are not in or have different versions.
 Horse mode (can be changed only outside the game including the lobby)
 CrewMate Setting
+CrewMate GhostRole Setting
 Neutral Setting
+Neutral GhostRole Setting
 Impostor Setting
+Impostor GhostRole Setting
 On
 Off
 Press Tab For More
@@ -116,6 +125,11 @@ Super Host Roles
 Zombie Mode
 Random Color Mode
 Not Impostor Check Mode
+CopsRobbers
+Thief
+Finish the task and win without getting caught by the police!
+Police
+Catch all the thieves and win!
 Detective Mode
 Not include the detective in the win condition determination.
 No tasks for detective
@@ -133,6 +147,7 @@ Default Crewmate.
 Impostor
 Use Sabotage & Vent
 Default Impostor.
+Level Up
 Zombie
 Infect other players!
 Police
@@ -220,13 +235,14 @@ Evil Scientist's Invisibility Duration
 Sheriff
 Kill the outsider!
 Kill the outsider and lead your crewmates to victory!
-Sheriff's Kill Cooldown
+Can shoot and kill an imposter if he is a crewmate. he will self-destruct.
+Kill Cooldown
 Can Kill a Neutral
 Can Kill a Lovers
 Can Kill a MadRole
 Yes
 No
-Maximum number of kills for Sheriff
+Maximum number of kills
 Kill
 {0} shots remaining.
 Meeting Sheriff
@@ -299,23 +315,26 @@ Open and close doors!
 Try to sabotage your crewmates!
 Open and close the door immediately to block your crewmate!
 Door Cool Time
-Sealder
+Shielder
 Prevent outsider kills.
 Shield yourself!
 Try to block a foreigner's kill!
 Shield Cool Time
 Shield duration
+Shield
 Freezer
 Stop everyone and sabotage your crewmates!
 Try to stop everyone and sabotage the task!
 Let's put them all on ice.
 Freeze Cool Time
 Freeze duration
+Freeze
 Speeder
 Slow everyone down and sabotage your crewmates!
 Try to slow everyone down and sabotage the task!
 Sabotage Cool Time
 Sabotage duration
+SpeedDown
 Guesser
 Let's punch out the outsider.
 Guess the position of the outsider
@@ -329,6 +348,7 @@ Vulture
 Let's eat a corpse.
 Corpse cooldown
 Victory corpse count
+Show arrows pointing to dead bodies
 Nice Scientist
 Turn invisible and find the bodies!
 Use the power of science to win!
@@ -385,6 +405,7 @@ Lets' Gambler!
 Use Count
 Evil Gambler
 Lets' Kill!
+Changes the kill rules every time you kill.
 Kill cool time on success
 Kill Cool Time on Failure
 Success probability
@@ -393,6 +414,7 @@ Let's do some research.
 Maximum number of samples per turn
 Self Bomber
 Lets' Self Bomb!
+Shapeshifting causes self-destruction. If you self-destruct you will die involving everyone around you.
 Range (radius)
 Self Bomb
 God
@@ -416,6 +438,7 @@ If you are expelled from the meeting you will take one person with you including
 Jackal Friends
 Help Jackal.
 I'll help you kill them all.
+It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. Jackal Friends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!
 Is Check Jackal
 Doctor
 Check Vitals
@@ -433,6 +456,7 @@ Let's go after him and kill him.
 Minimalist
 Let's Kill.
 Get rid of unnecessary stuff and kill efficiently!
+Instead of less kill cooling. some buttons are not available.
 Minimalist Kill Cool Time
 Use Vent
 Use Sabotage
@@ -457,6 +481,7 @@ Let's wipe out their abilities.
 Max Erase Count
 Work person
 Let's do the work and win!
+Wins if you finish the task
 You have to be alive to win
 Magaziner
 Save your kills!
@@ -465,6 +490,7 @@ Save
 Set
 Lovers.
 I'm in love with {0}!
+Lovers is a duplicate position given in addition to other positions. Lovers person will see a heart mark next to their name.
 Number of couples
 Discharge probability
 Chosen only by Cluemate
@@ -474,20 +500,25 @@ Tasks are counted when surviving
 Does not overlap with Quarreled
 Mayor
 Let's add our vote at the meeting.
+Has more votes than usual when voting
 Mayer's vote count
 True Lover
 Let's fall in love at first sight
+Can be Lovers with any person. wins if survives with Lovers
 Love
 Technician
 Use technology to repair sabotage!
+Can only enter the vent during sabotage
 Serial Killer
 Kill and Survive!
+If you don't get a kill within a certain amount of time you will self-destruct
 Time to suicide
 Kill time
 Resets when you enter a meeting.
 {0} seconds to suicide
 OverKiller
 Let's cover up the other kills.
+A lot of corpses appear when you kill
 OverKiller Kill Cool Time
 Number of bodies per
 Levelinger
@@ -511,6 +542,7 @@ MadKiller
 Let's promote and kill!
 Survivor
 Survive and Kill!
+If you do not survive you will not win even if the imposter wins.
 Kill Cool Time
 MadMayor
 Let's abuse our power at the meeting.
@@ -529,14 +561,17 @@ Would you like some breads?
 Bakery baked some breads for crewmates.
 MadStuntman
 Prevent kills and connect with impostors.
+Can prevent himself from being killed
 UseVent
 Impostor Light
 MadHawk
 See it all.
 MadJester
 Get voted out and win with the Imposters!
+It is a crewmate decision. but it is in the Imposter camp. \nThe imposter wins by being expelled at the meeting.
 FalseCharges
 Let the false accusations win!
+You can make the opponent who presses the button kill you. \nYou will win if the opponent you have killed is expelled by the conference.
 Turn of the false accusation range
 Cool Time
 False Charge
@@ -545,11 +580,101 @@ Teleport and uncover impostors!
 Teleport cool down
 Celebrity
 A Celebrity for everyone!
+You can tell from all of them that you are the star.
 Name color will remain Celebrity even if the position changes.
 Nocturnality
 You live in darkness.
+The view during power outage and normal view are opposite.
 Observer
 Let's monitor everything.
+You can see where everyone is voting during the meeting.
 Vampire
 Let's do a delayed kill.
 Kill Delay
+DarkKiller
+Let's kill in the dark
+Dark Killer's Kill Cool Time
+Fox
+I am Fox!
+Seer
+You will see players die
+Mode
+Show Death Flash + Souls
+Show Death Flash
+Show Souls
+Limit Soul Duration
+Soul Duration
+MadSeer
+Feel the success of your husband
+EvilSeer
+You will see players die
+Remote Sheriff
+Let's do a Remote Sheriff kill!
+Kill Teleport
+TeleportingJackal
+Teleport and kill all crewmates and impostors!
+MadMaker
+Let's get more lunatics!
+RandomMap
+Skeld
+Mira
+Polus
+AirShip
+Submerged
+Demon
+Curse the Crew and Help the Imposter!
+You have to be alive to win.
+Curse
+TaskManager
+Finish the task and mount up!
+SeerFriends
+Let's feel the activity of Jackal
+SeerJackal
+Detect the dead and bring victory to your camp!
+Sidekick(Seer)
+Let's help Jackal with the dead detection ability that we got
+<color=#ff0000>Assassin</color> and <color=#AFDFE4>Merine</color>
+Number of <color=#ff0000>Assassin</color>
+Number of <color=#AFDFE4>Merine</color>
+Assassin
+<color=#AFDFE4>Merine</color>Suppose you guessed it. let's turn the tables and win!
+was marine.
+was not marine.
+Merine
+Let's not let <color=#ff0000>Assassin</color> find out.
+Who is Merine?
+Arsonist
+Douse Douse burn
+Douse Duration
+Douse
+Ignite
+If you oil them all and burn them. you win alone.
+Chief
+Appoint a sheriff to help your crew.
+Cleaner
+Let's destroy the evidence!
+CleanButton
+CoolDown
+MadCleaner
+Destroy the evidence and help impostors to win!
+Kill CoolDown
+Samurai
+Let's cut through the crew!
+KillCoolTime
+AttackCoolTime
+SamuraiScope
+UseSword!
+MayorFriends
+Let's abuse our power at the meeting.
+It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!
+VentMaker
+Let's make a vent!
+GhostMechanic
+Let's get rid of the loose ends that we couldn't fix the machine.
+Number of times sabotage can be repaired
+Repair
+GhostMechanic
+EvilHacker
+Hack to Win!
+Can an EvilHacker Make a Madmate
+ADMIN

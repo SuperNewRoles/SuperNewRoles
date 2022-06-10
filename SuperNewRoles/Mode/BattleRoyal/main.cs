@@ -103,7 +103,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     /*
                     
                     */
-                    if (ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie))
+                    if (ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.CopsRobbers))
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
                         writer.WritePacked(127);
@@ -145,12 +145,12 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 {
                     return false;
                 }
-                if ((ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.HideAndSeek)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
+                if ((ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.HideAndSeek) || ModeHandler.isMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
                 if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.isRole(CustomRPC.RoleId.MadMate))
                 {
                     return false;
                 }
-                if (ModeHandler.isMode(ModeId.SuperHostRoles) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors))
+                if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
                     bool returndata = MorePatch.RepairSystem(__instance, systemType, player, amount);
                     return returndata;

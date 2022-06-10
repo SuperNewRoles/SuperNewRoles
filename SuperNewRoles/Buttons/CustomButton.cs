@@ -72,7 +72,7 @@ namespace SuperNewRoles.Buttons {
 
         void onClickEvent()
         {
-            if ((Timer <= 0f || (HasEffect && isEffectActive && effectCancellable) && HasButton() && CouldUse()))
+            if ((Timer <= 0f || (HasEffect && isEffectActive && effectCancellable)) && HasButton() && CouldUse())
             {
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 OnClick();
@@ -143,12 +143,14 @@ namespace SuperNewRoles.Buttons {
                 actionButton.transform.localPosition = pos + PositionOffset;
                 actionButton.transform.localScale = LocalScale;
             }
+            bool IsDisabled = false;
             if (CouldUse()) {
                 actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
                 actionButton.graphic.material.SetFloat("_Desat", 0f);
             } else {
                 actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.DisabledClear;
                 actionButton.graphic.material.SetFloat("_Desat", 1f);
+                IsDisabled = true;
             }
 
             if (Timer >= 0) {
@@ -179,36 +181,6 @@ namespace SuperNewRoles.Buttons {
 
             CustomButton.HudUpdate();
             ButtonTime.Update();
-        }
-    }
-    [HarmonyPatch(typeof(ExileController),nameof(ExileController.WrapUp))]
-    class ExileControllerPatch
-    {
-        public static void Postfix(ExileController __instance)
-        {
-            try 
-            {
-                CustomButton.MeetingEndedUpdate();
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("MeetingEnd:" + e);
-            }
-        }
-    }
-    [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
-    class AirshipExileControllerPatch
-    {
-        public static void Postfix(AirshipExileController __instance)
-        {
-            try
-            {
-                CustomButton.MeetingEndedUpdate();
-            }
-            catch (Exception e)
-            {
-                SuperNewRolesPlugin.Logger.LogInfo("MeetingEnd:" + e);
-            }
         }
     }
 }

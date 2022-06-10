@@ -57,7 +57,7 @@ namespace SuperNewRoles.Patch
                 timer = 600f;
                 RPCTimer = 1f;
                 notcreateroom = false;
-                RoleClass.clearAndReloadRoles();
+                RoleClass.ClearAndReloadRoles();
                 GameStartManagerUpdatePatch.Proce = 0;
                 GameStartManagerUpdatePatch.LastBlockStart = false;
                 GameStartManagerUpdatePatch.VersionPlayers = new Dictionary<int, PlayerVersion>();

@@ -53,7 +53,8 @@ namespace SuperNewRoles.Patch
                                 }
                             }
                         }
-                    } else if (text.ToLower().StartsWith("/kc "))
+                    }
+                    else if (text.ToLower().StartsWith("/kc "))
                     { // Unfortunately server holds this - need to do more trickery
                         if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.CanBan())
                         {
@@ -67,104 +68,105 @@ namespace SuperNewRoles.Patch
                             {
                                 settime = 0.00001f;
                             }
-                            
+
                             PlayerControl.GameOptions.KillCooldown = settime;
                             PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
                             __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
                         }
                     }
-                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    else if (text.ToLower().StartsWith("/rename "))
                     {
-                        handled = Mode.SuperHostRoles.RoleChat.SendChat(__instance);
+                        handled = true;
+                        PlayerControl.LocalPlayer.RpcSetName(text.ToLower().Replace("/rename ", ""));
                     }
-                }
 
-                if (AmongUsClient.Instance.GameMode == GameModes.FreePlay)
-                {
-                    if (text.ToLower().Equals("/murder"))
+                    if (AmongUsClient.Instance.GameMode == GameModes.FreePlay)
                     {
-                        PlayerControl.LocalPlayer.Exiled();
-                        HudManager.Instance.KillOverlay.ShowKillAnimation(PlayerControl.LocalPlayer.Data, PlayerControl.LocalPlayer.Data);
-                        handled = true;
-                    }
-                    else if (text.ToLower().StartsWith("/color "))
-                    {
-                        handled = true;
-                        int col;
-                        if (!Int32.TryParse(text.Substring(7), out col))
+                        if (text.ToLower().Equals("/murder"))
                         {
-                            __instance.AddChat(PlayerControl.LocalPlayer, "Unable to parse color id\nUsage: /color {id}");
+                            PlayerControl.LocalPlayer.Exiled();
+                            HudManager.Instance.KillOverlay.ShowKillAnimation(PlayerControl.LocalPlayer.Data, PlayerControl.LocalPlayer.Data);
+                            handled = true;
                         }
-                        col = Math.Clamp(col, 0, Palette.PlayerColors.Length - 1);
-                        PlayerControl.LocalPlayer.SetColor(col);
-                        __instance.AddChat(PlayerControl.LocalPlayer, "Changed color succesfully"); ;
+                        else if (text.ToLower().StartsWith("/color "))
+                        {
+                            handled = true;
+                            int col;
+                            if (!Int32.TryParse(text.Substring(7), out col))
+                            {
+                                __instance.AddChat(PlayerControl.LocalPlayer, "Unable to parse color id\nUsage: /color {id}");
+                            }
+                            col = Math.Clamp(col, 0, Palette.PlayerColors.Length - 1);
+                            PlayerControl.LocalPlayer.SetColor(col);
+                            __instance.AddChat(PlayerControl.LocalPlayer, "Changed color succesfully"); ;
+                        }
+                        else if (text.ToLower().StartsWith("/name "))
+                        {
+                            handled = true;
+                            string col = text.Substring(6);
+                            PlayerControl.LocalPlayer.SetName(col);
+                            __instance.AddChat(PlayerControl.LocalPlayer, "Changed name succesfully"); ;
+                        }
                     }
-                    else if (text.ToLower().StartsWith("/name "))
+                    if (handled)
                     {
-                        handled = true;
-                        string col = text.Substring(6);
-                        PlayerControl.LocalPlayer.SetName(col);
-                        __instance.AddChat(PlayerControl.LocalPlayer, "Changed name succesfully"); ;
+                        __instance.TextArea.Clear();
+                        HudManager.Instance.Chat.TimeSinceLastMessage = 0f;
+                        __instance.quickChatMenu.ResetGlyphs();
                     }
-                }
-                if (handled)
-                {
-                    __instance.TextArea.Clear();
-                    HudManager.Instance.Chat.TimeSinceLastMessage = 0f;
-                    __instance.quickChatMenu.ResetGlyphs();
                 }
                 return !handled;
             }
-        }
-        [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.HostGame))]
-        public static class InnerNetClientHostPatch
-        {
-            public static void Prefix(InnerNet.InnerNetClient __instance, [HarmonyArgument(0)] GameOptionsData settings)
+            [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.HostGame))]
+            public static class InnerNetClientHostPatch
             {
-                LobbyLimit = settings.MaxPlayers;
-                settings.MaxPlayers = 15; // Force 15 Player Lobby on Server
-                SaveManager.ChatModeType = InnerNet.QuickChatModes.FreeChatOrQuickChat;
-            }
-            public static void Postfix(InnerNet.InnerNetClient __instance, [HarmonyArgument(0)] GameOptionsData settings)
-            {
-                settings.MaxPlayers = LobbyLimit;
-            }
-        }
-        [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.JoinGame))]
-        public static class InnerNetClientJoinPatch
-        {
-            public static void Prefix(InnerNet.InnerNetClient __instance)
-            {
-                SaveManager.ChatModeType = InnerNet.QuickChatModes.FreeChatOrQuickChat;
-            }
-        }
-        [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
-        public static class AmongUsClientOnPlayerJoined
-        {
-            public static bool Prefix(AmongUsClient __instance, [HarmonyArgument(0)] ClientData client)
-            {
-                if (LobbyLimit < __instance.allClients.Count)
-                { // TODO: Fix this canceling start
-                    DisconnectPlayer(__instance, client.Id);
-                    return false;
-                }
-                return true;
-            }
-
-            private static void DisconnectPlayer(InnerNetClient _this, int clientId)
-            {
-                if (!_this.AmHost)
+                public static void Prefix(InnerNet.InnerNetClient __instance, [HarmonyArgument(0)] GameOptionsData settings)
                 {
-                    return;
+                    LobbyLimit = settings.MaxPlayers;
+                    settings.MaxPlayers = 15; // Force 15 Player Lobby on Server
+                    SaveManager.ChatModeType = InnerNet.QuickChatModes.FreeChatOrQuickChat;
                 }
-                MessageWriter messageWriter = MessageWriter.Get(SendOption.Reliable);
-                messageWriter.StartMessage(4);
-                messageWriter.Write(_this.GameId);
-                messageWriter.WritePacked(clientId);
-                messageWriter.Write((byte)DisconnectReasons.GameFull);
-                messageWriter.EndMessage();
-                _this.SendOrDisconnect(messageWriter);
-                messageWriter.Recycle();
+                public static void Postfix(InnerNet.InnerNetClient __instance, [HarmonyArgument(0)] GameOptionsData settings)
+                {
+                    settings.MaxPlayers = LobbyLimit;
+                }
+            }
+            [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.JoinGame))]
+            public static class InnerNetClientJoinPatch
+            {
+                public static void Prefix(InnerNet.InnerNetClient __instance)
+                {
+                    SaveManager.ChatModeType = InnerNet.QuickChatModes.FreeChatOrQuickChat;
+                }
+            }
+            [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
+            public static class AmongUsClientOnPlayerJoined
+            {
+                public static bool Prefix(AmongUsClient __instance, [HarmonyArgument(0)] ClientData client)
+                {
+                    if (LobbyLimit < __instance.allClients.Count)
+                    { // TODO: Fix this canceling start
+                        DisconnectPlayer(__instance, client.Id);
+                        return false;
+                    }
+                    return true;
+                }
+
+                private static void DisconnectPlayer(InnerNetClient _this, int clientId)
+                {
+                    if (!_this.AmHost)
+                    {
+                        return;
+                    }
+                    MessageWriter messageWriter = MessageWriter.Get(SendOption.Reliable);
+                    messageWriter.StartMessage(4);
+                    messageWriter.Write(_this.GameId);
+                    messageWriter.WritePacked(clientId);
+                    messageWriter.Write((byte)DisconnectReasons.GameFull);
+                    messageWriter.EndMessage();
+                    _this.SendOrDisconnect(messageWriter);
+                    messageWriter.Recycle();
+                }
             }
         }
     }

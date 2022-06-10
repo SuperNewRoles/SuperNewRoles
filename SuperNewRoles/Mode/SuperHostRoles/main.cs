@@ -13,13 +13,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static void ClearAndReloads()
         {
+            RealExiled = null;
             Chat.WinCond = null;
+           // FixedUpdate.UpdateTime = new Dictionary<byte, float>();
             EndGame.OnGameEndPatch.EndData = null;
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
-            {
-                p.getDefaultName();
-            }
+            FixedUpdate.DefaultName = new Dictionary<int, string>();
         }
+        public static PlayerControl RealExiled;
         public static void SendAllRoleChat()
         {/*
             if (ModeHandler.isMode(ModeId.SuperHostRoles))

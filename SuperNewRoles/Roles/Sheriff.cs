@@ -13,8 +13,18 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetKillCoolDown()
         {
-            HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
-            RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.RemoteSheriff))
+            {
+                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
+                HudManagerStartPatch.SheriffKillButton.Timer = RoleClass.RemoteSheriff.CoolTime;
+                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+            }
+            else
+            {
+                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
+                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+            }
+            SuperNewRolesPlugin.Logger.LogInfo("リセット！！！");
         }
         public static bool IsSheriffKill(PlayerControl Target)
         {
@@ -28,11 +38,35 @@ namespace SuperNewRoles.Roles
             if (Target.isRole(CustomRPC.RoleId.MadStuntMan) && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.MadMayor) && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.MadHawk) && RoleClass.Sheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadSeer) && RoleClass.Sheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadMaker) && RoleClass.Sheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.SeerFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MayorFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
+            return false;
+        }
+        public static bool IsRemoteSheriffKill(PlayerControl Target)
+        {
+            var roledata = CountChanger.GetRoleType(Target);
+            if (roledata == TeamRoleType.Impostor) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadMate) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadMate) && RoleClass.RemoteSheriff.MadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadJester) && RoleClass.RemoteSheriff.MadRoleKill) return true;
+            if (Target.isNeutral() && RoleClass.RemoteSheriff.IsNeutralKill) return true;
+            if (RoleClass.RemoteSheriff.IsLoversKill && Target.IsLovers()) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadStuntMan) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadMayor) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadHawk) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadSeer) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MadMaker) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.SeerFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.MayorFriends) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
             return false;
         }
         public static bool IsSheriff(PlayerControl Player)
         {
-            if (RoleClass.Sheriff.SheriffPlayer.IsCheckListPlayerControl(Player))
+            if (Player.isRole(CustomRPC.RoleId.Sheriff) || Player.isRole(CustomRPC.RoleId.RemoteSheriff))
             {
                 return true;
             }
@@ -41,10 +75,36 @@ namespace SuperNewRoles.Roles
                 return false;
             }
         }
+        public static bool IsSheriffButton(PlayerControl Player)
+        {
+            if (Player.isRole(CustomRPC.RoleId.Sheriff))
+            {
+                if (RoleClass.Sheriff.KillMaxCount > 0)
+                {
+                    return true;
+                }
+            }
+            else if (Player.isRole(CustomRPC.RoleId.RemoteSheriff))
+            {
+                if (RoleClass.RemoteSheriff.KillMaxCount > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public static void EndMeeting()
         {
-            HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
-            RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.RemoteSheriff))
+            {
+                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
+                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+            }
+            else
+            {
+                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
+                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+            }
         }
     }
 }

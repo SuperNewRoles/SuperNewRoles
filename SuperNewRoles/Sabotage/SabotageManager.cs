@@ -72,7 +72,6 @@ namespace SuperNewRoles.Sabotage
         }
         public static void ClearAndReloads()
         {
-            SuperNewRolesPlugin.Logger.LogInfo("クリアアンドリロード");
             InfectedOverlayInstance = null;
             thisSabotage = CustomSabotage.None;
             CustomButtons = new List<ButtonBehavior>();

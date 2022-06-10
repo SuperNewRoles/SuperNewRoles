@@ -41,6 +41,19 @@ namespace SuperNewRoles
             player.killTimer = time;
             DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(time, max);
         }
+
+        public static Sprite CreateSprite(string path, bool fromDisk = false)
+        {
+            Texture2D texture = fromDisk ? ModHelpers.loadTextureFromDisk(path) : ModHelpers.loadTextureFromResources(path);
+            if (texture == null)
+                return null;
+            Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
+            if (sprite == null)
+                return null;
+            texture.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
+            sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontUnloadUnusedAsset;
+            return sprite;
+        }
         public static byte? GetKey(this Dictionary<byte, byte> dec, byte Value)
         {
             foreach (var data in dec)
@@ -224,6 +237,52 @@ namespace SuperNewRoles
                     }
 
 
+                    if (IsSend)
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
+                        writer.Write(target.PlayerId);
+                        writer.EndRPC();
+                        RPCProcedure.UseStuntmanCount(target.PlayerId);
+                    }
+                }
+            }
+            if (target.isRole(RoleId.Shielder) && !killer.isRole(RoleId.OverKiller) && RoleClass.Shielder.IsShield[target.PlayerId])
+            {
+                MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShielderProtect);
+                writer.Write(target.PlayerId);
+                writer.Write(target.PlayerId);
+                writer.Write(0);
+                writer.EndRPC();
+                RPCProcedure.ShielderProtect(target.PlayerId, target.PlayerId, 0);
+            }
+            if (target.isRole(RoleId.Fox) && !killer.isRole(RoleId.OverKiller) && (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId) || RoleClass.Fox.KillGuard[target.PlayerId] >= 1))
+            {
+                if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, killer))
+                {
+                    bool IsSend = false;
+                    if (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId))
+                    {
+                        MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                        writer.Write(target.PlayerId);
+                        writer.Write(target.PlayerId);
+                        writer.Write(0);
+                        writer.EndRPC();
+                        RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
+                        IsSend = true;
+                    }
+                    else
+                    {
+                        if (!(RoleClass.Fox.KillGuard[target.PlayerId] <= 0))
+                        {
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UncheckedProtect);
+                            writer.Write(target.PlayerId);
+                            writer.Write(target.PlayerId);
+                            writer.Write(0);
+                            writer.EndRPC();
+                            RPCProcedure.UncheckedProtect(target.PlayerId, target.PlayerId, 0);
+                            IsSend = true;
+                        }
+                    }
                     if (IsSend)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
@@ -482,6 +541,7 @@ namespace SuperNewRoles
             }
             return null;
         }
+
         public static bool IsCheckListPlayerControl(this List<PlayerControl> ListDate,PlayerControl CheckPlayer)
         {
             foreach(PlayerControl Player in ListDate)
@@ -491,6 +551,17 @@ namespace SuperNewRoles
                     return true;
                 }
             }
+            return false;
+        }
+        public static bool IsPosition(Vector3 pos,Vector2 pos2)
+        {
+            if (pos.x == pos2.x && pos.y == pos2.y) return true;
+            return false;
+        }
+        public static bool IsPositionDistance(Vector2 pos, Vector2 pos2,float distance)
+        {
+            float dis = Vector2.Distance(pos,pos2);
+            if (dis <= distance) return true;
             return false;
         }
         public static void ShowFlash(Color color, float duration = 1f)

@@ -1,7 +1,11 @@
-﻿using Hazel;
+﻿using HarmonyLib;
+using Hazel;
+using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
+using static MeetingHud;
 
 namespace SuperNewRoles.Helpers
 {
@@ -21,7 +25,7 @@ namespace SuperNewRoles.Helpers
         }
         public static void RPCGameOptionsPrivate(GameOptionsData Data,PlayerControl target)
         {
-            MessageWriter messageWriter = StartRPC((byte)2,target);
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)2, Hazel.SendOption.None, target.getClientId());
             messageWriter.WriteBytesAndSize(Data.ToBytes((byte)5));
             messageWriter.EndMessage();
         }
@@ -40,12 +44,33 @@ namespace SuperNewRoles.Helpers
             writer.Write(NewName);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
+
+        public static void RpcSnapToPrivate(this CustomNetworkTransform __instance, Vector2 position, PlayerControl SeePlayer)
+        {
+            ushort minSid = (ushort)(__instance.lastSequenceId + 5);
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 21, SendOption.None, SeePlayer.getClientId());
+            __instance.WriteVector2(position, val);
+            val.Write(__instance.lastSequenceId);
+            val.EndMessage();
+        }
+
+        public static void RpcProtectPlayerPrivate(this PlayerControl SourcePlayer, PlayerControl target, int colorId, PlayerControl SeePlayer = null)
+        {
+            if (SourcePlayer == null || target == null || !AmongUsClient.Instance.AmHost) return;
+            if (SeePlayer == null) SeePlayer = SourcePlayer;
+            var clientId = SeePlayer.getClientId();
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(SourcePlayer.NetId, (byte)RpcCalls.ProtectPlayer, SendOption.Reliable, clientId);
+            val.WriteNetObject(target);
+            val.Write(colorId);
+            AmongUsClient.Instance.FinishRpcImmediately(val);
+        }
+
         public static void RPCSendChatPrivate(this PlayerControl TargetPlayer,string Chat,PlayerControl SeePlayer = null)
         {
             if (TargetPlayer == null || Chat == null) return;
             if (SeePlayer == null) SeePlayer = TargetPlayer;
             var clientId = SeePlayer.getClientId();
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SendChat, SendOption.Reliable, clientId);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SendChat, SendOption.None, clientId);
             writer.Write(Chat);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
@@ -58,13 +83,26 @@ namespace SuperNewRoles.Helpers
                 writer.EndRPC();
             }
         }
+
+        public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, GameData.PlayerInfo exiled, bool tie, PlayerControl SeePlayer)
+        {
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 23, SendOption.None, SeePlayer.getClientId());
+            val.WritePacked(states.Length);
+            foreach (VoterState voterState in states)
+            {
+                voterState.Serialize(val);
+            }
+            val.Write(exiled?.PlayerId ?? byte.MaxValue);
+            val.Write(tie);
+            val.EndMessage();
+        }
         /// <summary>
         /// 通常のRPCのExiled
         /// </summary>
         public static void RpcInnerExiled(this PlayerControl TargetPlayer)
         {
             if (TargetPlayer == null) return;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.Exiled, Hazel.SendOption.Reliable);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.Exiled, Hazel.SendOption.None);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             TargetPlayer.Exiled();
         }
@@ -82,6 +120,24 @@ namespace SuperNewRoles.Helpers
             writer.Write((byte)roletype);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             CustomRPC.RPCProcedure.UncheckedSetVanilaRole(player.PlayerId,(byte)roletype);
+        }
+
+        [HarmonyPatch(typeof(CustomNetworkTransform),nameof(CustomNetworkTransform.RpcSnapTo))]
+        class RpcSnapToPatch
+        {
+            public static bool Prefix(CustomNetworkTransform __instance, [HarmonyArgument(0)] Vector2 position)
+            {
+                ushort minSid = (ushort)(__instance.lastSequenceId + 5);
+                if (AmongUsClient.Instance.AmClient)
+                {
+                    __instance.SnapTo(position, minSid);
+                }
+                MessageWriter val = AmongUsClient.Instance.StartRpc(__instance.NetId, 21, SendOption.None);
+                __instance.WriteVector2(position, val);
+                val.Write(__instance.lastSequenceId);
+                val.EndMessage();
+                return false;
+            }
         }
     }
 }

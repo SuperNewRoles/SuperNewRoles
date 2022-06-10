@@ -22,7 +22,7 @@ namespace SuperNewRoles
     {
         public const string Id = "jp.ykundesu.supernewroles";
 
-        public const string VersionString = "1.3.9.8";
+        public const string VersionString = "1.4.0.4";
 
         public static System.Version Version = System.Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
@@ -43,8 +43,6 @@ namespace SuperNewRoles
             ModTranslation.Load();
             ChacheManager.Load();
             CustomCosmetics.CustomColors.Load();
-            CustomCosmetics.DownLoadClass.Load();
-            CustomCosmetics.DownLoadClassVisor.Load();
             ConfigRoles.Load();
             CustomOption.CustomOptions.Load();
             // All Load() End
@@ -102,14 +100,30 @@ namespace SuperNewRoles
             {
                 SaveManager.chatModeType = 1;
                 SaveManager.isGuest = false;
+
                 if (Input.GetKeyDown(KeyCode.F1))
                 {
                     if (!__instance.isActiveAndEnabled) return;
+                    __instance.Toggle();
+                } else if (Input.GetKeyDown(KeyCode.F2)) { 
+                    
                     __instance.SetVisible(false);
                     new LateTask(() =>
                     {
                         __instance.SetVisible(true);
                     }, 0f,"AntiChatBag");
+                    
+                }
+                if (__instance.IsOpen)
+                {
+                    if (__instance.animating)
+                    {
+                        __instance.BanButton.MenuButton.enabled = false;
+                    }
+                    else
+                    {
+                        __instance.BanButton.MenuButton.enabled = true;
+                    }
                 }
             }
         }

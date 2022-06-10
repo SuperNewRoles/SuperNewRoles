@@ -72,6 +72,10 @@ namespace SuperNewRoles.Patches
                         {
                             __instance.text.text += "\nデバッグモードが有効です";
                         }
+                        if (!Mode.ModeHandler.isMode(Mode.ModeId.Default))
+                        {
+                            __instance.text.text += "\n" + ModTranslation.getString("SettingMode") + ":" + Mode.ModeHandler.ThisModeSetting.getString();
+                        }
                     }
                     catch { }
                     if (PlayerControl.LocalPlayer.Data.IsDead)
@@ -99,6 +103,8 @@ namespace SuperNewRoles.Patches
             static void Postfix(PingTracker __instance)
             {
                 DownLoadCustomhat.Load();
+                CustomCosmetics.DownLoadClass.Load();
+                CustomCosmetics.DownLoadClassVisor.Load();
                 DestroyableSingleton<ModManager>.Instance.ShowModStamp();
 
                 var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");

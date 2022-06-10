@@ -9,6 +9,8 @@ using System.Reflection;
 using System.Text;
 using UnityEngine.Events;
 using SuperNewRoles.Mode;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Intro;
 
 namespace SuperNewRoles.CustomOption
 {
@@ -196,16 +198,35 @@ namespace SuperNewRoles.CustomOption
             }
         }
     }
-
     public class CustomRoleOption : CustomOption
     {
+        public static List<CustomRoleOption> RoleOptions = new List<CustomRoleOption>();
+
         public CustomOption countOption = null;
+
+        public RoleId RoleId;
 
         public int rate
         {
             get
             {
                 return getSelection();
+            }
+        }
+
+        public bool isRoleEnable
+        {
+            get
+            {
+                return getSelection() != 0;
+            }
+        }
+
+        public IntroDate Intro
+        {
+            get
+            {
+                return IntroDate.GetIntroDate(RoleId);
             }
         }
 
@@ -231,6 +252,14 @@ namespace SuperNewRoles.CustomOption
         public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15) :
             base(id, isSHROn, type, CustomOptions.cs(color, name), CustomOptions.rates, "", null, true, false, "")
         {
+            try
+            {
+                this.RoleId = IntroDate.IntroDatas.FirstOrDefault((_) => {
+                    return _.NameKey + "Name" == name;
+                }).RoleId;
+            }
+            catch { }
+            RoleOptions.Add(this);
             if (max > 1)
                 countOption = CustomOption.Create(id + 10000, isSHROn, type, "roleNumAssigned", 1f, 1f, 15f, 1f, this, format: "unitPlayers");
         }
@@ -494,6 +523,9 @@ namespace SuperNewRoles.CustomOption
             var numImpostorsOption = __instance.Children.FirstOrDefault(x => x.name == "NumImpostors").TryCast<NumberOption>();
             if (numImpostorsOption != null) numImpostorsOption.ValidRange = new FloatRange(0f, 15f);
 
+            var PlayerSpeedModOption = __instance.Children.FirstOrDefault(x => x.name == "PlayerSpeed").TryCast<NumberOption>();
+            if (PlayerSpeedModOption != null) PlayerSpeedModOption.ValidRange = new FloatRange(-5.5f, 5.5f);
+
             var killCoolOption = __instance.Children.FirstOrDefault(x => x.name == "KillCooldown").TryCast<NumberOption>();
             if (killCoolOption != null) killCoolOption.ValidRange = new FloatRange(2.5f, 60f);
 
@@ -570,6 +602,18 @@ namespace SuperNewRoles.CustomOption
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSyncSettings))]
     public class RpcSyncSettingsPatch
     {
+        public static bool Prefix(PlayerControl __instance,[HarmonyArgument(0)] GameOptionsData gameOptions)
+        {
+            if (AmongUsClient.Instance.AmHost && !DestroyableSingleton<TutorialManager>.InstanceExists)
+            {
+                PlayerControl.GameOptions = gameOptions;
+                SaveManager.GameHostOptions = gameOptions;
+                MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 2, SendOption.Reliable);
+                obj.WriteBytesAndSize(gameOptions.ToBytes(6));
+                obj.EndMessage();
+            }
+            return false;
+        }
         public static void Postfix()
         {
             CustomOption.ShareOptionSelections();
@@ -600,15 +644,13 @@ namespace SuperNewRoles.CustomOption
         {
             if (option.isHidden) return true;
             if (option.isSHROn) { return false; }
-            else { return ModeHandler.isMode(ModeId.SuperHostRoles); }
+            else { return ModeHandler.isMode(ModeId.SuperHostRoles, false); }
             return false;
         }
         public static void Postfix(GameOptionsMenu __instance)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("名前:" + __instance.name);
             var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
             if (gameSettingMenu.RegularGameSettings.active || gameSettingMenu.RolesSettings.gameObject.active) return;
-            SuperNewRolesPlugin.Logger.LogInfo("通過");
 
             timer += Time.deltaTime;
             if (timer < 0.1f) return;
@@ -620,7 +662,6 @@ namespace SuperNewRoles.CustomOption
             CustomOptionType type = getCustomOptionType(__instance.name);
             foreach (CustomOption option in CustomOption.options)
             {
-                //SuperNewRolesPlugin.Logger.LogInfo(option.type);
                 if (option.type != type) continue;
                 if (option?.optionBehaviour != null && option.optionBehaviour.gameObject != null)
                 {
@@ -865,6 +906,13 @@ namespace SuperNewRoles.CustomOption
             var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
+            optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingCrewmateGhostRoles"));
+            min = CustomOptions.crewmateGhostRolesCountMax.getSelection();
+            max = CustomOptions.crewmateGhostRolesCountMax.getSelection();
+            if (min > max) min = max;
+            optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
+            entry.AppendLine($"{optionName}: {optionValue}");
+
             optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingNeutralRoles"));
             min = CustomOptions.neutralRolesCountMax.getSelection();
             max = CustomOptions.neutralRolesCountMax.getSelection();
@@ -872,9 +920,23 @@ namespace SuperNewRoles.CustomOption
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
+            optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingNeutralGhostRoles"));
+            min = CustomOptions.neutralGhostRolesCountMax.getSelection();
+            max = CustomOptions.neutralGhostRolesCountMax.getSelection();
+            if (min > max) min = max;
+            optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
+            entry.AppendLine($"{optionName}: {optionValue}");
+
             optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingImpostorRoles"));
             min = CustomOptions.impostorRolesCountMax.getSelection();
             max = CustomOptions.impostorRolesCountMax.getSelection();
+            if (min > max) min = max;
+            optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
+            entry.AppendLine($"{optionName}: {optionValue}");
+
+            optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingImpostorGhostRoles"));
+            min = CustomOptions.impostorGhostRolesCountMax.getSelection();
+            max = CustomOptions.impostorGhostRolesCountMax.getSelection();
             if (min > max) min = max;
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
@@ -897,8 +959,11 @@ namespace SuperNewRoles.CustomOption
             {
                 if ((option == CustomOptions.presetSelection) ||
                     (option == CustomOptions.crewmateRolesCountMax) ||
+                    (option == CustomOptions.crewmateGhostRolesCountMax) ||
                     (option == CustomOptions.neutralRolesCountMax) ||
+                    (option == CustomOptions.neutralGhostRolesCountMax) ||
                     (option == CustomOptions.impostorRolesCountMax) ||
+                    (option == CustomOptions.impostorGhostRolesCountMax) ||
                     (option == CustomOptions.hideSettings))
                 {
                     continue;
@@ -993,7 +1058,7 @@ namespace SuperNewRoles.CustomOption
     {
         public static void Postfix(KeyboardJoystick __instance)
         {
-            if ((Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7)) && (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Joined || AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started))
+            if ((Input.GetKeyDown(KeyCode.Tab) || ConsoleJoystick.player.GetButtonDown(7)))
             {
                 SuperNewRolesPlugin.optionsPage = SuperNewRolesPlugin.optionsPage + 1;
             }
