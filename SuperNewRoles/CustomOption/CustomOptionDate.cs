@@ -1197,14 +1197,6 @@ namespace SuperNewRoles.CustomOption
             GhostMechanicPlayerCount = CustomOption.Create(508, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GhostMechanicOption);
             GhostMechanicRepairLimit = CustomOption.Create(509, true, CustomOptionType.Crewmate, "GhostMechanicRepairLimitSetting", 1f, 1f, 30f, 1f, GhostMechanicOption);
 
-
-            SamuraiOption = new CustomRoleOption(500, false, CustomOptionType.Impostor, "SamuraiName", RoleClass.Samurai.color, 1);
-            SamuraiPlayerCount = CustomOption.Create(501, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SamuraiOption);
-            SamuraiKillCoolTime = CustomOption.Create(502, false, CustomOptionType.Impostor, "SamuraiKillCoolSetting", 30f, 2.5f, 60f, 2.5f, SamuraiOption);
-            SamuraiSwordCoolTime = CustomOption.Create(503, false, CustomOptionType.Impostor, "SamuraiSwordCoolSetting", 50f, 30f, 70f, 2.5f, SamuraiOption);
-            SamuraiVent = CustomOption.Create(504, false, CustomOptionType.Impostor, "MinimalistVentSetting", false, SamuraiOption);
-            SamuraiSabo = CustomOption.Create(505, false, CustomOptionType.Impostor, "MinimalistSaboSetting", false, SamuraiOption);
-            SamuraiScope = CustomOption.Create(506, false, CustomOptionType.Impostor, "SamuraiScopeSetting", 1f, 0.5f, 3f, 0.5f, SamuraiOption);
             //表示設定
           　
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
