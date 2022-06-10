@@ -560,6 +560,12 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.VentMaker):
                     Roles.RoleClass.VentMaker.VentMakerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.GhostMechanic):
+                    Roles.RoleClass.GhostMechanic.GhostMechanicPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.EvilHacker):
+                    Roles.RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -878,7 +884,13 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.VentMaker):
                     Roles.RoleClass.VentMaker.VentMakerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                case (CustomRPC.RoleId.GhostMechanic):
+                    Roles.RoleClass.GhostMechanic.GhostMechanicPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.EvilHacker):
+                    Roles.RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
+                    break;
+                    //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -986,7 +998,7 @@ namespace SuperNewRoles
                 case (RoleId.MayorFriends):
                     IsTaskClear = true;
                     break;
-                //タスククリアか
+                    //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
@@ -1216,7 +1228,7 @@ namespace SuperNewRoles
                 case (RoleId.MayorFriends):
                     IsNeutral = true;
                     break;
-                //第三か
+                    //第三か
             }
             return IsNeutral;
         }
@@ -1318,6 +1330,10 @@ namespace SuperNewRoles
             }
             try
             {
+                if (Roles.RoleClass.GhostMechanic.GhostMechanicPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.GhostMechanic;
+                }
                 //ここが幽霊役職
             }
             catch
@@ -1788,9 +1804,9 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.VentMaker;
                 }
-                else if (Roles.RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
+                else if (Roles.RoleClass.EvilHacker.EvilHackerPlayer.IsCheckListPlayerControl(player))
                 {
-                    return CustomRPC.RoleId.SeerFriends;
+                    return CustomRPC.RoleId.EvilHacker;
                 }
                 //ロールチェック
             }

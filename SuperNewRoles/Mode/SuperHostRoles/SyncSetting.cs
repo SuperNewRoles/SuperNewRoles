@@ -40,6 +40,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.Minimalist:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Minimalist.KillCoolTime);
                     break;
+                case RoleId.Samurai:
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Samurai.KillCoolTime);
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.Samurai.SwordCoolTime;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    break;
                 case RoleId.God:
                     optdata.AnonymousVotes = !RoleClass.God.IsVoteView;
                     break;
