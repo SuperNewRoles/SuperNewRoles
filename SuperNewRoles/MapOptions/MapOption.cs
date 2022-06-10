@@ -78,6 +78,7 @@ namespace SuperNewRoles.MapOptions
                 ValidationSubmerged = false;
             }
             RandomMap.Prefix();
+            BlockTool.OldDesyncCommsPlayers = new List<byte>();
             BlockTool.CameraPlayers = new List<byte>();
             //BlockTool.VitalPlayers = new List<byte>();
             //BlockTool.AdminPlayers = new List<byte>();
