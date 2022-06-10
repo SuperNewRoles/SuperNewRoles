@@ -73,6 +73,7 @@ namespace SuperNewRoles.Buttons
             Clergyman.ResetCoolDown();
             Teleporter.ResetCoolDown();
             Jackal.resetCoolDown();
+            //クールダウンリセット
         }
 
         public static PlayerControl setTarget(List<PlayerControl> untarget = null, bool Crewmateonly = false)
