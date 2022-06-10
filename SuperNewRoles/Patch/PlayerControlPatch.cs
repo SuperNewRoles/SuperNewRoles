@@ -745,6 +745,7 @@ namespace SuperNewRoles.Patches
                 if (target.isRole(RoleId.Assassin))
                 {
                     target.Revive();
+                    target.Data.IsDead = false;
                     RPCProcedure.CleanBody(target.PlayerId);
                     new LateTask(() =>
                     {
@@ -817,6 +818,7 @@ namespace SuperNewRoles.Patches
                 if (__instance.isRole(RoleId.Assassin) && !RoleClass.Assassin.MeetingEndPlayers.Contains(__instance.PlayerId))
                 {
                     __instance.Revive();
+                    __instance.Data.IsDead = false;
                     RPCProcedure.CleanBody(__instance.PlayerId);
                     new LateTask(() =>
                     {
