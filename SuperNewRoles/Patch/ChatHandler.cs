@@ -322,7 +322,7 @@ namespace SuperNewRoles.Patch
                 AmongUsClient.Instance.StartCoroutine(AllSend(SendName, command, name));
                 return;
             }
-            else if (target.AmOwner)
+            else if (target.PlayerId == 0)
             {
                 string name = target.Data.PlayerName;
                 target.SetName(SendName);
@@ -339,11 +339,17 @@ namespace SuperNewRoles.Patch
             {
                 yield return new WaitForSeconds(time);
             }
-            PlayerControl.LocalPlayer.RpcSetName(SendName);
-            yield return new WaitForSeconds(0.1f);
-            PlayerControl.LocalPlayer.RpcSendChat(command);
-            yield return new WaitForSeconds(0.2f);
-            PlayerControl.LocalPlayer.RpcSetName(name);
+            var crs = CustomRpcSender.Create();
+            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
+                .Write(SendName)
+                .EndRpc();
+            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SendChat)
+                .Write(command)
+                .EndRpc(); ;
+            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
+                .Write(name)
+                .EndRpc();
+            crs.SendMessage();
         }
         static IEnumerator PrivateSend(PlayerControl target, string SendName, string command, float time = 0)
         {
@@ -351,13 +357,17 @@ namespace SuperNewRoles.Patch
             {
                 yield return new WaitForSeconds(time);
             }
-            target.RpcSetNamePrivate(SendName);
-            yield return new WaitForSeconds(0.1f);
-            if (target != null && !target.Data.Disconnected)
-                target.RPCSendChatPrivate(command);
-            yield return new WaitForSeconds(0.2f);
-            if (target != null && !target.Data.Disconnected)
-                target.RpcSetName(target.Data.PlayerName);
+            var crs = CustomRpcSender.Create(Hazel.SendOption.None);
+            crs.StartRpc(target.NetId, RpcCalls.SetName, target.getClientId())
+                .Write(SendName)
+                .EndRpc();
+            crs.StartRpc(target.NetId, RpcCalls.SendChat)
+                .Write(command)
+                .EndRpc();
+            crs.StartRpc(target.NetId, RpcCalls.SetName)
+                .Write(target.Data.PlayerName)
+                .EndRpc();
+            crs.SendMessage();
         }
     }/**
     [HarmonyPatch(typeof(ChatController),nameof(ChatController.AddChat))]
