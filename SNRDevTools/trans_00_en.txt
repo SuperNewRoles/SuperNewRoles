@@ -678,3 +678,10 @@ EvilHacker
 Hack to Win!
 Can an EvilHacker Make a Madmate
 ADMIN
+Remaining: {0}
+Time up
+Device Restrictions
+Admin Restrictions
+Camera Restrictions
+Vital Restrictions
+Can use time
