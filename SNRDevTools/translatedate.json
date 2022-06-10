@@ -2655,7 +2655,7 @@
               "0": "AttackCoolTime",
               "11": "\u5fc5\u6bba\u6280\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
        },
-       "SamuraiScorpSetting": {
+       "SamuraiScopeSetting": {
               "0": "SamuraiScope",
               "11": "\u5fc5\u6bba\u6280\u304c\u53ca\u3076\u7bc4\u56f2"
        },
@@ -2718,5 +2718,33 @@
        "ADMINButton": {
               "0": "ADMIN",
               "11": "\u30a2\u30c9\u30df\u30f3"
+       },
+       "timeRemaining": {
+              "0": "Remaining: {0}",
+              "11": "\u6b8b\u308a{0}"
+       },
+       "restrictOutOfTime": {
+              "0": "Time up",
+              "11": "\u6642\u9593\u5207\u308c"
+       },
+       "RestrictDevicesSetting": {
+              "0": "Device Restrictions",
+              "11": "\u6a5f\u5668\u306e\u5236\u9650"
+       },
+       "RestrictAdminSetting": {
+              "0": "Admin Restrictions",
+              "11": "\u30a2\u30c9\u30df\u30f3\u306e\u5236\u9650"
+       },
+       "RestrictCameraSetting": {
+              "0": "Camera Restrictions",
+              "11": "\u30ab\u30e1\u30e9\u306e\u5236\u9650"
+       },
+       "RestrictVitalSetting": {
+              "0": "Vital Restrictions",
+              "11": "\u30d0\u30a4\u30bf\u30eb\u306e\u5236\u9650"
+       },
+       "DeviceTimeSetting": {
+              "0": "Can use time",
+              "11": "\u4f7f\u7528\u53ef\u80fd\u6642\u9593"
        }
 }

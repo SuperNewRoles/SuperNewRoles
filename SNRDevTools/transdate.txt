@@ -663,7 +663,7 @@ SamuraiName,Samurai,侍
 SamuraiTitle1,Let's cut through the crew!,クルーを切り裂こう!
 SamuraiKillCoolSetting,KillCoolTime,侍のキルクールダウン
 SamuraiSwordCoolSetting,AttackCoolTime,必殺技のクールダウン
-SamuraiScorpSetting,SamuraiScope,必殺技が及ぶ範囲
+SamuraiScopeSetting,SamuraiScope,必殺技が及ぶ範囲
 SamuraiButtonName,UseSword!,必殺技!
 MayorFriendsName,MayorFriends,メイヤーフレンズ
 MayorFriendsTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう
@@ -679,3 +679,10 @@ EvilHackerName,EvilHacker,イビルハッカー
 EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう
 EvilHackerMadmateSetting,Can an EvilHacker Make a Madmate,イビルハッカーがマッドメイトを作れるか
 ADMINButton,ADMIN,アドミン
+timeRemaining,Remaining: {0},残り{0}
+restrictOutOfTime,Time up,時間切れ
+RestrictDevicesSetting,Device Restrictions,機器の制限
+RestrictAdminSetting,Admin Restrictions,アドミンの制限
+RestrictCameraSetting,Camera Restrictions,カメラの制限
+RestrictVitalSetting,Vital Restrictions,バイタルの制限
+DeviceTimeSetting,Can use time,使用可能時間
