@@ -686,3 +686,4 @@ SuperHostRoles
 バイタルの制限
 使用可能時間
 ykundesuBeplnEx
+ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい

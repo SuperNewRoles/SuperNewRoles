@@ -686,3 +686,4 @@ RestrictCameraSetting
 RestrictVitalSetting
 DeviceTimeSetting
 IsYkundesuBeplnExSetting
+restrictOutOfTimeVerYkundesuBeplnEx
