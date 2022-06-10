@@ -116,7 +116,14 @@ namespace SuperNewRoles.Patch
                     if (OutOfTime == null)
                     {
                         OutOfTime = UnityEngine.Object.Instantiate(__instance.SabotageText, __instance.SabotageText.transform.parent);
-                        OutOfTime.text = ModTranslation.getString("restrictOutOfTime");
+                        if (MapOptions.MapOption.IsYkundesuBeplnEx.getBool())
+                        {
+                            OutOfTime.text = ModTranslation.getString("restrictOutOfTimeVerYkundesuBeplnEx");
+                        }
+                        else
+                        {
+                            OutOfTime.text = ModTranslation.getString("restrictOutOfTime");
+                        }
                     }
 
                     if (TimeRemaining == null)
@@ -233,20 +240,20 @@ namespace SuperNewRoles.Patch
                 return false;
             }
         }
-      /*  public static bool IsBlocked(IUsable target, PlayerControl pc)
-        {
-            if (target == null) return false;
+        /*  public static bool IsBlocked(IUsable target, PlayerControl pc)
+          {
+              if (target == null) return false;
 
-            Console targetConsole = target.TryCast<Console>();
-            SystemConsole targetSysConsole = target.TryCast<SystemConsole>();
-            MapConsole targetMapConsole = target.TryCast<MapConsole>();
-            if ((targetConsole != null && IsBlocked(targetConsole, pc)) ||
-                (targetSysConsole != null && IsBlocked(targetSysConsole, pc)) ||
-                (targetMapConsole != null && !MapOptions.canUseAdmin))
-            {
-                return true;
-            }
-            return false;
-        }*/
+              Console targetConsole = target.TryCast<Console>();
+              SystemConsole targetSysConsole = target.TryCast<SystemConsole>();
+              MapConsole targetMapConsole = target.TryCast<MapConsole>();
+              if ((targetConsole != null && IsBlocked(targetConsole, pc)) ||
+                  (targetSysConsole != null && IsBlocked(targetSysConsole, pc)) ||
+                  (targetMapConsole != null && !MapOptions.canUseAdmin))
+              {
+                  return true;
+              }
+              return false;
+          }*/
     }
 }

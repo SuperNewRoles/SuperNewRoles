@@ -25,9 +25,9 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
         }
         public static async Task<bool> ShareCosmeticDateDownload(byte id,string url)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("a");
+             
             var dldata = await Download(url);
-            SuperNewRolesPlugin.Logger.LogInfo("b");
+             
             SuperNewRolesPlugin.Logger.LogInfo("DLDATA:"+dldata);
             SharePatch.PlayerDatas[id] = dldata;
             SuperNewRolesPlugin.Logger.LogInfo("c");

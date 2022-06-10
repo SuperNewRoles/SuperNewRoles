@@ -361,10 +361,10 @@ namespace SuperNewRoles.Patch
             crs.StartRpc(target.NetId, RpcCalls.SetName, target.getClientId())
                 .Write(SendName)
                 .EndRpc();
-            crs.StartRpc(target.NetId, RpcCalls.SendChat)
+            crs.StartRpc(target.NetId, RpcCalls.SendChat, target.getClientId())
                 .Write(command)
                 .EndRpc();
-            crs.StartRpc(target.NetId, RpcCalls.SetName)
+            crs.StartRpc(target.NetId, RpcCalls.SetName, target.getClientId())
                 .Write(target.Data.PlayerName)
                 .EndRpc();
             crs.SendMessage();

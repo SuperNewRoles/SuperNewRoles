@@ -105,15 +105,15 @@ namespace SuperNewRoles.Patches
                         }
                         return false;
                     case RoleId.Samurai:
-                        if (AmongUsClient.Instance.AmHost || !RoleClass.Samurai.Sword)
+                        if (!RoleClass.Samurai.SwordedPlayer.Contains(__instance.PlayerId))
                         {
-                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            if (AmongUsClient.Instance.AmHost || !RoleClass.Samurai.Sword)
                             {
-                                if (p.isAlive() && p.PlayerId != __instance.PlayerId)
+                                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                                 {
-                                    if (Samurai.Getsword(__instance, p))
+                                    if (p.isAlive() && p.PlayerId != __instance.PlayerId)
                                     {
-                                        if (RoleClass.Samurai.Sword == false)
+                                        if (Samurai.Getsword(__instance, p))
                                         {
                                             __instance.RpcMurderPlayerCheck(p);
                                             Samurai.IsSword();
@@ -121,6 +121,7 @@ namespace SuperNewRoles.Patches
                                     }
                                 }
                             }
+                            RoleClass.Samurai.SwordedPlayer.Add(__instance.PlayerId);
                         }
                         return false;
                     case RoleId.Arsonist:
@@ -744,6 +745,7 @@ namespace SuperNewRoles.Patches
                 if (target.isRole(RoleId.Assassin))
                 {
                     target.Revive();
+                    target.Data.IsDead = false;
                     RPCProcedure.CleanBody(target.PlayerId);
                     new LateTask(() =>
                     {
@@ -753,8 +755,8 @@ namespace SuperNewRoles.Patches
                             DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(target);
                             target.RpcStartMeeting(null);
                         }
-                        RoleClass.Assassin.TriggerPlayer = target;
                     }, 0.5f);
+                    RoleClass.Assassin.TriggerPlayer = target;
                     return;
                 }
                 Levelinger.MurderPlayer(__instance, target);
@@ -816,6 +818,7 @@ namespace SuperNewRoles.Patches
                 if (__instance.isRole(RoleId.Assassin) && !RoleClass.Assassin.MeetingEndPlayers.Contains(__instance.PlayerId))
                 {
                     __instance.Revive();
+                    __instance.Data.IsDead = false;
                     RPCProcedure.CleanBody(__instance.PlayerId);
                     new LateTask(() =>
                     {
@@ -825,8 +828,8 @@ namespace SuperNewRoles.Patches
                             DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                             __instance.RpcStartMeeting(null);
                         }
-                        RoleClass.Assassin.TriggerPlayer = __instance;
                     }, 0.5f);
+                    RoleClass.Assassin.TriggerPlayer = __instance;
                     return;
                 }
                 if (RoleClass.Lovers.SameDie && __instance.IsLovers())

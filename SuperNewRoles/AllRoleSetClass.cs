@@ -1030,6 +1030,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+        //セットクラス
         }
     }
 }
