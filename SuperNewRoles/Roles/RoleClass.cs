@@ -2078,6 +2078,7 @@ namespace SuperNewRoles.Roles
             public static bool UseVent;
             public static bool UseSabo;
             public static bool Sword;
+            public static List<byte> SwordedPlayer;
             private static Sprite ButtonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -2093,6 +2094,7 @@ namespace SuperNewRoles.Roles
                 UseVent = CustomOptions.SamuraiVent.getBool();
                 UseSabo = CustomOptions.SamuraiSabo.getBool();
                 Sword = false;
+                SwordedPlayer = new List<byte>();
             }
         }
         public static class MayorFriends
