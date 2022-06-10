@@ -43,6 +43,7 @@ namespace SuperNewRoles.Roles
             if (Target.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.SeerFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.MayorFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
+            //シェリフキルゥ
             return false;
         }
         public static bool IsRemoteSheriffKill(PlayerControl Target)
@@ -62,6 +63,7 @@ namespace SuperNewRoles.Roles
             if (Target.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.SeerFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.MayorFriends) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            //リモシェリフキルゥ
             return false;
         }
         public static bool IsSheriff(PlayerControl Player)

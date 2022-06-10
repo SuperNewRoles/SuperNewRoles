@@ -518,6 +518,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SeerFriendsCheckJackalTask;
         public static CustomOption SeerFriendsIsUseVent;
         public static CustomOption SeerFriendsIsImpostorLight;
+        //CustomOption
 
         public static CustomRoleOption JackalSeerOption;
         public static CustomOption JackalSeerPlayerCount;
@@ -1170,6 +1171,10 @@ namespace SuperNewRoles.CustomOption
             MayorFriendsCommonTask = MayorFriendsoption.Item1;
             MayorFriendsShortTask = MayorFriendsoption.Item2;
             MayorFriendsLongTask = MayorFriendsoption.Item3;
+            MayorFriendsCheckJackalTask = CustomOption.Create(482, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, MayorFriendsIsCheckJackal);
+            MayorFriendsVoteCount = CustomOption.Create(483, true, CustomOptionType.Crewmate, "MayorVoteCountSetting", 2f, 1f, 100f, 1f, MayorFriendsOption);
+            SeerFriendsCheckJackalTask = CustomOption.Create(455, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, SeerFriendsIsCheckJackal);
+            
             MayorFriendsCheckJackalTask = CustomOption.Create(496, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, MayorFriendsIsCheckJackal);
             MayorFriendsVoteCount = CustomOption.Create(497, true, CustomOptionType.Crewmate, "MayorVoteCountSetting", 2f, 1f, 100f, 1f, MayorFriendsOption);
 
@@ -1192,6 +1197,7 @@ namespace SuperNewRoles.CustomOption
             GhostMechanicPlayerCount = CustomOption.Create(521, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GhostMechanicOption);
             GhostMechanicRepairLimit = CustomOption.Create(522, false, CustomOptionType.Crewmate, "GhostMechanicRepairLimitSetting", 1f, 1f, 30f, 1f, GhostMechanicOption);
 
+            //表示設定
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(124, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
             QuarreledOnlyCrewMate = CustomOption.Create(123, true, CustomOptionType.Neutral, "QuarreledOnlyCrewMateSetting", false, QuarreledOption);
