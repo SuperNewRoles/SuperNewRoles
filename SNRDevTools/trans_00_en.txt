@@ -687,3 +687,7 @@ Vital Restrictions
 Can use time
 ykundesuBeplnEx
 ykundesuBeplnExDelicious
+Reactor Duration Time
+Polus Reactor Duration Time
+Mira Reactor Duration Time
+Airship  Reactor Duration Time

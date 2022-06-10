@@ -687,3 +687,7 @@ RestrictVitalSetting
 DeviceTimeSetting
 IsYkundesuBeplnExSetting
 restrictOutOfTimeVerYkundesuBeplnEx
+ReactorDurationSetting
+PolusReactorTime
+MiraReactorTime
+AirshipReactorTime
