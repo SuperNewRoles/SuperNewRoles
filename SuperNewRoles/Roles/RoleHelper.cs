@@ -249,7 +249,7 @@ namespace SuperNewRoles
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
-                //ベント設定可視化
+                
             }
             return returntext;
         }
@@ -573,6 +573,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.HauntedWolf):
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Netaa):
+                    Roles.RoleClass.Netaa.NetaaPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -900,6 +903,9 @@ namespace SuperNewRoles
                     break;
                     case (CustomRPC.RoleId.HauntedWolf):
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Netaa):
+                    Roles.RoleClass.Netaa.NetaaPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
 
@@ -1823,7 +1829,11 @@ namespace SuperNewRoles
             {
                 return CustomRPC.RoleId.HauntedWolf;
             }
-            //ロールチェック
+            else if (Roles.RoleClass.Netaa.NetaaPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Netaa;
+            }
+                //ロールチェック
             }
             catch (Exception e)
             {
