@@ -122,7 +122,6 @@ namespace SuperNewRoles.CustomRPC
         GhostMechanic,
         EvilHacker,
         HauntedWolf,
-        Netaa,
         //RoleId
     }
 

@@ -518,9 +518,6 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SeerFriendsCheckJackalTask;
         public static CustomOption SeerFriendsIsUseVent;
         public static CustomOption SeerFriendsIsImpostorLight;
-        
-public static CustomRoleOption NetaaOption;
-        public static CustomOption NetaaPlayerCount;
         //CustomOption
 
         public static CustomRoleOption JackalSeerOption;
