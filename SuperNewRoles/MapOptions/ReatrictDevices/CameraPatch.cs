@@ -11,9 +11,15 @@ namespace SuperNewRoles.Patch
     [Harmony]
     public class CameraPatch
     {
-        static float cameraTimer = 0f;
-        public static float RestrictCameraTime = MapOptions.MapOption.CanUseCameraTime.getFloat();
-        public static float RestrictCameraTimeMax = 600f;
+        static float cameraTimer;
+        public static float RestrictCameraTime;
+        public static float RestrictCameraTimeMax;
+        public static void ClearAndReload()
+        {
+            cameraTimer = 0f;
+            RestrictCameraTime = MapOptions.MapOption.CanUseCameraTime.getFloat();
+            RestrictCameraTimeMax = 600f;
+        }
 
         public static void ResetData()
         {

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.MapOptions
 {
-    class DeviceClass
+    public class DeviceClass
     {
         [HarmonyPatch(typeof(MapConsole), nameof(MapConsole.Use))]
         public static class MapConsoleUsePatch
