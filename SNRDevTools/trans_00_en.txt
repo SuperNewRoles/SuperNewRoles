@@ -687,6 +687,8 @@ Vital Restrictions
 Can use time
 ykundesuBeplnEx
 ykundesuBeplnExDelicious
+HauntedWolf
+Don't let the crew find out.
 Reactor Duration Time
 Polus Reactor Duration Time
 Mira Reactor Duration Time
