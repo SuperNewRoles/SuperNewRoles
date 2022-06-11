@@ -4,7 +4,7 @@
         <Version>1.2.3.0</Version>
         <Description>SuperNewRoles</Description>
         <Authors>ykundesu</Authors>
-     	<AmongUs Condition=" '$(AmongUs)' == '' ">C:/Program Files/Epic Games/AmongUs_mymod</AmongUs>
+        <AmongUs Condition=" '$(AmongUs)' == '' ">C:/Program Files/Epic Games/AmongUs_mymod</AmongUs>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -17,15 +17,24 @@
 
     <ItemGroup>
         <EmbeddedResource Include="Resources\CustomHats\*.png" />
-		<EmbeddedResource Include="Resources\*.png" />
-		<EmbeddedResource Include="Resources\Agartha\*.png" />
-		<EmbeddedResource Include="Resources\*.json" />
+        <EmbeddedResource Include="Resources\*.png" />
+        <EmbeddedResource Include="Resources\Agartha\*.png" />
+        <EmbeddedResource Include="Resources\*.json" />
         <EmbeddedResource Include="Resources\TricksterAnimation\*.png" />
     </ItemGroup>
 
+    <PropertyGroup>
+        <GamePlatform Condition="'$(GamePlatform)' == ''">Steam</GamePlatform>
+        <GameVersion Condition="'$(GamePlatform)' == 'Steam'">2022.3.29</GameVersion>
+        <GameVersion Condition="'$(GamePlatform)' == 'Itch'">2022.3.29</GameVersion>
+    </PropertyGroup>
+
     <ItemGroup>
-        <Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
-        <Reference Include="$(AmongUs)/BepInEx/unhollowed/*.dll" />
+        <PackageReference Include="BepInEx.IL2CPP" Version="6.0.0-be.540" />
+        <PackageReference Include="AmongUs.GameLibs.$(GamePlatform)" Version="$(GameVersion)" PrivateAssets="all" />
+
+        <PackageReference Include="BepInEx.AutoPlugin" Version="1.0.1" PrivateAssets="all" />
+        <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="1.0.2" PrivateAssets="all" />
     </ItemGroup>
 
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
