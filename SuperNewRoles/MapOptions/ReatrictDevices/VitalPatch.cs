@@ -13,9 +13,9 @@ namespace SuperNewRoles.Patch
     [Harmony]
     public class VitalsPatch
     {
-        static float vitalsTimer = 0f;
-        public static float RestrictVitalsTime;
-        public static float RestrictVitalsTimeMax;
+        static float vitalsTimer = MapOptions.MapOption.CanUseVitalTime.getFloat();
+        public static float RestrictVitalsTime = MapOptions.MapOption.CanUseVitalTime.getFloat();
+        public static float RestrictVitalsTimeMax = MapOptions.MapOption.CanUseVitalTime.getFloat();
         static TMPro.TextMeshPro TimeRemaining;
 
         public static void ClearAndReload()

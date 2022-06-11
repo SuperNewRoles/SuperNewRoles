@@ -86,7 +86,7 @@ namespace SuperNewRoles {
             {
                 if (!cachedPlayer.PlayerControl || !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform || !cachedPlayer.transform)
                 {
-                    SuperNewRolesPlugin.Logger.LogError($"CachedPlayer {cachedPlayer.PlayerControl.name} has null fields");
+                    SuperNewRolesPlugin.Logger.LogError("CachedPlayer {cachedPlayer.PlayerControl.name} has null fields");
                 }
             }
 #endif

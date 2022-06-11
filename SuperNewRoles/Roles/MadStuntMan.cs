@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles
 
             // SuperNewRolesPlugin.Logger.LogInfo("一番下まで通過");
 
-            return false;
+            //return false;
         }
 
 
@@ -34,7 +34,10 @@ namespace SuperNewRoles.Roles
                 {
                     if (target.isRole(CustomRPC.RoleId.MadStuntMan))
                     {
-                        if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, __instance)) ;
+                        if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, __instance))
+                        {
+
+                        }
 
 
                     }
