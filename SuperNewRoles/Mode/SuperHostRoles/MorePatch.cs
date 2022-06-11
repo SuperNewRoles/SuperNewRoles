@@ -40,9 +40,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             if (PlayerControl.LocalPlayer.IsUseVent() && RoleHelpers.IsComms())
             {
-                if (BattleRoyal.main.VentData.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
+                if (BattleRoyal.main.VentData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
                 {
-                    var data = BattleRoyal.main.VentData[PlayerControl.LocalPlayer.PlayerId];
+                    var data = BattleRoyal.main.VentData[CachedPlayer.LocalPlayer.PlayerId];
                     if (data != null)
                     {
                         PlayerControl.LocalPlayer.MyPhysics.RpcExitVent((int)data);

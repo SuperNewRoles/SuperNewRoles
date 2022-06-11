@@ -83,26 +83,26 @@ namespace SuperNewRoles.Patch
                     PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.nameText.text);
 
                     new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
-                    new LateTask(() => { foreach (var pc in PlayerControl.AllPlayerControls) pc.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
+                    new LateTask(() => { foreach (var pc in CachedPlayer.AllPlayers) pc.PlayerControl.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
                     new LateTask(() => bot.Despawn(), 0.6f, "Bot Despawn Task");
                 }
                 /*
                 if (Input.GetKeyDown(KeyCode.I))
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p == PlayerControl.LocalPlayer) continue;
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.MyPhysics.NetId, (byte)RpcCalls.EnterVent, SendOption.None, p.getClientId());
-                        writer.WritePacked(ShipStatus.Instance.AllVents[0].Id);
+                        writer.WritePacked(MapUtilities.CachedShipStatus.AllVents[0].Id);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        SuperNewRolesPlugin.Logger.LogInfo(ShipStatus.Instance.AllVents[0].transform);
+                        SuperNewRolesPlugin.Logger.LogInfo(MapUtilities.CachedShipStatus.AllVents[0].transform);
                     }
                 }
                     
                     if (Input.GetKeyDown(KeyCode.C))
                     {
                         SuperNewRolesPlugin.Logger.LogInfo("CHANGE!!!");
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             RoleManager.Instance.SetRole(p, RoleTypes.Engineer);
                             AmongUsClient.Instance.Spawn(GameData.Instance, -2, SpawnFlags.IsClientCharacter);

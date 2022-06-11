@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (PlayerControl.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Samurai))
+                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Samurai))
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Samurai.KillCoolTime);
                 }
@@ -29,11 +29,11 @@ namespace SuperNewRoles.Roles
             {
                 if (!RoleClass.Samurai.UseVent)
                 {
-                    HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
+                    FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
                 }
                 if (!RoleClass.Samurai.UseSabo)
                 {
-                    HudManager.Instance.SabotageButton.gameObject.SetActive(false);
+                    FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(false);
                 }
             }
         }
@@ -67,14 +67,14 @@ namespace SuperNewRoles.Roles
             }
         }
         public static void SamuraiKill() {
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls) {
-                if (p.isAlive() && p.PlayerId!= PlayerControl.LocalPlayer.PlayerId) {
+            foreach (PlayerControl p in CachedPlayer.AllPlayers) {
+                if (p.isAlive() && p.PlayerId!= CachedPlayer.LocalPlayer.PlayerId) {
                     if (Getsword(PlayerControl.LocalPlayer, p)) {
 
-                        CustomRPC.RPCProcedure.BySamuraiKillRPC(PlayerControl.LocalPlayer.PlayerId, p.PlayerId);
+                        CustomRPC.RPCProcedure.BySamuraiKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
 
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BySamuraiKillRPC, Hazel.SendOption.Reliable, -1);
-                        Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BySamuraiKillRPC, Hazel.SendOption.Reliable, -1);
+                        Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         Writer.Write(p.PlayerId);
                         RoleClass.Samurai.Sword = true;
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);

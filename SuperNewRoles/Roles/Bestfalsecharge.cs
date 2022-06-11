@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
             {
                 if (AmongUsClient.Instance.AmHost && !RoleClass.Bestfalsecharge.IsOnMeeting) {
                     foreach (PlayerControl p in RoleClass.Bestfalsecharge.BestfalsechargePlayer) {
-                        MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ExiledRPC, Hazel.SendOption.Reliable, -1);
+                        MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ExiledRPC, Hazel.SendOption.Reliable, -1);
                         RPCWriter.Write(p.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                         CustomRPC.RPCProcedure.ExiledRPC(p.PlayerId);

@@ -26,7 +26,7 @@ namespace SuperNewRoles.Mode.RandomColor
                 IsHideNameSet = true;
                 if (IsHideName)
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (!p.Data.Disconnected)
                         {
@@ -39,7 +39,7 @@ namespace SuperNewRoles.Mode.RandomColor
             if (UpdateTime <= 0)
             {
                 UpdateTime = 0.1f;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Disconnected)
                     {

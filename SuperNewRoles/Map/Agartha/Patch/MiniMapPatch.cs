@@ -18,7 +18,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             render.transform.localScale *= 0.75f;
             //AdminRoomName
             Transform AdminRoom = RoomNames.FindChild("Admin");
-            AdminRoom.GetComponent<TextMeshPro>().text = TranslationController.Instance.GetString(StringNames.Admin);
+            AdminRoom.GetComponent<TextMeshPro>().text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Admin);
             AdminRoom.localPosition = new Vector3(0.2f, -0.95f, 0f);
 
             //CommsRoomName
@@ -37,7 +37,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Transform SecurityRoom = RoomNames.FindChild("Storage");
             SecurityRoom.name = "Security";
             new LateTask(() =>
-            SecurityRoom.GetComponent<TextMeshPro>().text = TranslationController.Instance.GetString(StringNames.Security)
+            SecurityRoom.GetComponent<TextMeshPro>().text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Security)
             , 0f, "SetMapText");
             SecurityRoom.localPosition = new Vector3(1.38f, -0.95f, 0f);
             
@@ -45,7 +45,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Transform LifeSuppRoom = RoomNames.FindChild("Lockers");
             LifeSuppRoom.name = "LifeSupp";
             new LateTask(() =>
-            LifeSuppRoom.GetComponent<TextMeshPro>().text = TranslationController.Instance.GetString(StringNames.LifeSupp)
+            LifeSuppRoom.GetComponent<TextMeshPro>().text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.LifeSupp)
             , 0f, "SetMapText");
             LifeSuppRoom.localPosition = new Vector3(-1.72f, -0.48f, 0f);
 
@@ -53,7 +53,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Transform MeetingRoom = RoomNames.FindChild("Decontam");
             MeetingRoom.name = "Meeting";
             new LateTask(() =>
-            MeetingRoom.GetComponent<TextMeshPro>().text = TranslationController.Instance.GetString(StringNames.MeetingRoom)
+            MeetingRoom.GetComponent<TextMeshPro>().text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.MeetingRoom)
             , 0f, "SetMapText");
             MeetingRoom.localPosition = new Vector3(0.8f, 0.85f, 0f);
 
@@ -61,7 +61,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             Transform ElectricalRoom = RoomNames.FindChild("LaunchPad");
             ElectricalRoom.name = "Electrical";
             new LateTask(() =>
-            ElectricalRoom.GetComponent<TextMeshPro>().text = TranslationController.Instance.GetString(StringNames.Electrical)
+            ElectricalRoom.GetComponent<TextMeshPro>().text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Electrical)
             , 0f, "SetMapText");
             ElectricalRoom.localPosition = new Vector3(2.27f, 0.85f, 0);
 

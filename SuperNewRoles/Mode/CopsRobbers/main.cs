@@ -53,7 +53,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
         public static bool EndGameCheck(ShipStatus __instance)
         {
             bool impostorwin = true;
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (!p.Data.Disconnected)
                 {
@@ -82,7 +82,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
         }
         public static void ChangeCosmetics()
         {
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 p.RpcSetPet("");
                 p.RpcSetVisor("");
@@ -229,7 +229,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                         PlayerControl.LocalPlayer.RpcSetName("<color=black><size=7500%>■</size></color>");
                     }*/
 
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                     {
                         if (ModHelpers.IsPositionDistance(p.transform.position, new Vector2(3, 6),0.5f) || 
                             ModHelpers.IsPositionDistance(p.transform.position, new Vector2(-25, 40), 0.5f) || 
@@ -241,7 +241,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                         }
                         else
                         {
-                            players.Add(p);
+                            players.Add(p.PlayerControl);
                         }
                     }
                 }
@@ -249,14 +249,14 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 {
                     LastCount = players.Count;
                     string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>全プレイヤーのスポーンを待っています...\nロドー中:残り"+NotLoadedCount+"人</color></size>";
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetNamePrivate(name);
                     }
                 }
                 /*
-                if (!ModHelpers.IsPositionDistance(PlayerControl.LocalPlayer.transform.position, new Vector2(9990, 8551f), 0.5f) &&
-                    !ModHelpers.IsPositionDistance(PlayerControl.LocalPlayer.transform.position, new Vector2(9990, 8550f), 0.5f))
+                if (!ModHelpers.IsPositionDistance(CachedPlayer.LocalPlayer.transform.position, new Vector2(9990, 8551f), 0.5f) &&
+                    !ModHelpers.IsPositionDistance(CachedPlayer.LocalPlayer.transform.position, new Vector2(9990, 8550f), 0.5f))
                 {
                     if (players.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                     {
@@ -281,9 +281,9 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     IsMove = true;
                     ImpostorMoveTime = 5;
                     LastUpdate = 6;
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                     {
-                        if (!p.isImpostor())
+                        if (!p.PlayerControl.isImpostor())
                         {
                             p.NetTransform.RpcSnapTo(getPosition(GetRandomSpawnPosition(p)));
                         }
@@ -302,7 +302,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     //PlayerControl.LocalPlayer.RpcSetName(name);
                     LastUpdate = ImpostorMoveTime;
                     string name = "\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>インポスターが来るまで残り" + ((int)(LastUpdate + 1)).ToString() + "秒</size>";
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (!p.AmOwner)
                         {
@@ -315,9 +315,9 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     }
                 }
                 int i = 0;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                 {
-                    if (p.isImpostor())
+                    if (p.PlayerControl.isImpostor())
                     {
                         p.NetTransform.RpcSnapTo(new Vector2(-30, 30));
                         i++;
@@ -325,7 +325,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 }
                 if (ImpostorMoveTime <= 0)
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetName("　");
                         if (p.isImpostor())
@@ -336,17 +336,18 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 }
                 return;
             }
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.isImpostor())
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                     {
-                        if (!p.isImpostor() && p.IsPlayer())
+                        PlayerControl pc = p.PlayerControl;
+                        if (!pc.isImpostor() && pc.IsPlayer())
                         {
                             if (p != null && !p.Data.Disconnected)
                             {
-                                if (!p.IsArrest())
+                                if (!pc.IsArrest())
                                 {
                                     var DistanceData = Vector2.Distance(player.transform.position, p.transform.position);
                                     if (DistanceData <= 0.5f)
@@ -379,9 +380,10 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 }
                 else if (!player.IsArrest())
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                     {
-                        if (p.IsArrest())
+                        PlayerControl pc = p.PlayerControl;
+                        if (pc.IsArrest())
                         {
                             if (p != null && !p.Data.Disconnected)
                             {

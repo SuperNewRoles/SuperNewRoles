@@ -49,7 +49,8 @@ namespace SuperNewRoles.Roles
                 namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
             var name = ModTranslation.getString(namedate + "Name");
-            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"),Target.nameText.text,name));
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"),Target.nameText.text,name));
+
             RoleClass.SoothSayer.Count--;
             if (RoleClass.SoothSayer.Count <= 0) {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
@@ -63,11 +64,11 @@ namespace SuperNewRoles.Roles
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
                     var player = ModHelpers.playerById((byte)__instance.playerStates[i].TargetPlayerId);
-                    if (player.isAlive() && player.PlayerId != PlayerControl.LocalPlayer.PlayerId )
+                    if (player.isAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                         GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
-                        
+
                         targetBox.name = "SoothSayerButton";
                         targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
                         SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
@@ -80,12 +81,12 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
-        
+
         static void SpiritOnClick(int Index, MeetingHud __instance)
         {
             var Target = ModHelpers.playerById((byte)__instance.playerStates[Index].TargetPlayerId);
             var introdate = Target.getRole();
-            namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey; 
+            namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
             if (RoleClass.SpiritMedium.DisplayMode)
             {
                 if (Target.isImpostor())
@@ -106,7 +107,7 @@ namespace SuperNewRoles.Roles
                 namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
             var name = ModTranslation.getString(namedate + "Name");
-            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText.text, name));
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText.text, name));
             RoleClass.SpiritMedium.MaxCount--;
             if (RoleClass.SpiritMedium.MaxCount <= 0)
             {
@@ -122,7 +123,7 @@ namespace SuperNewRoles.Roles
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
 
                     var player = ModHelpers.playerById((byte)__instance.playerStates[i].TargetPlayerId);
-                    if (!player.Data.Disconnected && player.isDead() && player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                    if (!player.Data.Disconnected && player.isDead() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                         GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
