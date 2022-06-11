@@ -80,7 +80,7 @@ class ReturnClass:
         Return = MainClass.GetInput("OptionNumber")
         Now = -2
         Now = Now+1
-        Return = str(int(MainClass.GetInput("OptionNumber"))+Now)
+        Return = str(int(MainClass.GetInput("OptionNumber"))+int(Now))
         print("ID:",Return)
         return Return
     # チェックボックス、ラジオを更新
