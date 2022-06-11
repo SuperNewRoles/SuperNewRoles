@@ -20,14 +20,15 @@ namespace SuperNewRoles.Patch
 
         public static void ClearAndReload()
         {
-            vitalsTimer = 0f;
+            //vitalsTimer = 0f;
+            ResetData();
             RestrictVitalsTime = MapOptions.MapOption.CanUseVitalTime.getFloat();
             RestrictVitalsTimeMax = MapOptions.MapOption.CanUseVitalTime.getFloat();
         }
 
         public static void ResetData()
         {
-            vitalsTimer = 0f;
+            vitalsTimer = MapOptions.MapOption.CanUseVitalTime.getFloat();
             if (TimeRemaining != null)
             {
                 UnityEngine.Object.Destroy(TimeRemaining);

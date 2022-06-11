@@ -16,14 +16,15 @@ namespace SuperNewRoles.Patch
         public static float RestrictCameraTimeMax;
         public static void ClearAndReload()
         {
-            cameraTimer = 0f;
+            //cameraTimer = 0f;
+            ResetData();
             RestrictCameraTime = MapOptions.MapOption.CanUseCameraTime.getFloat();
-            RestrictCameraTimeMax = 600f;
+            RestrictCameraTimeMax = MapOptions.MapOption.CanUseCameraTime.getFloat();
         }
 
         public static void ResetData()
         {
-            cameraTimer = 0f;
+            cameraTimer = MapOptions.MapOption.CanUseCameraTime.getFloat();
             SurveillanceMinigamePatch.ResetData();
             PlanetSurveillanceMinigamePatch.ResetData();
         }

@@ -11,13 +11,13 @@ namespace SuperNewRoles.Patch
     {
         public static float RestrictAdminTime;
         public static float RestrictAdminTimeMax;
-    public static void ClearAndReload()
+        public static void ClearAndReload()
         {
             ResetData();
 
             RestrictAdminTime = MapOptions.MapOption.CanUseAdminTime.getFloat();
             RestrictAdminTimeMax = MapOptions.MapOption.CanUseAdminTime.getFloat();
-            OutOfTime.gameObject.SetActive(false);
+            //OutOfTime.gameObject.SetActive(false);
         }
 
         public static bool canUseAdmin
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Patch
 
         public static void ResetData()
         {
-            adminTimer = 0f;
+            adminTimer = MapOptions.MapOption.CanUseCameraTime.getFloat();
             if (TimeRemaining != null)
             {
                 UnityEngine.Object.Destroy(TimeRemaining);
