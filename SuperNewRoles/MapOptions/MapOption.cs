@@ -157,11 +157,11 @@ namespace SuperNewRoles.MapOptions
             RestrictDevicesOption = CustomOption.CustomOption.Create(513, false, CustomOptionType.Generic, "RestrictDevicesSetting", true, MapOptionSetting);
             RestrictAdmin = CustomOption.CustomOption.Create(514, false, CustomOptionType.Generic, "RestrictAdminSetting", true, RestrictDevicesOption);
             IsYkundesuBeplnEx = CustomOption.CustomOption.Create(515, false, CustomOptionType.Generic, "IsYkundesuBeplnExSetting", false, RestrictAdmin);
-            CanUseAdminTime = CustomOption.CustomOption.Create(516, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictAdmin);
+            CanUseAdminTime = CustomOption.CustomOption.Create(516, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 600f, 1f, RestrictAdmin);
             RestrictCamera = CustomOption.CustomOption.Create(517, false, CustomOptionType.Generic, "RestrictCameraSetting", true, RestrictDevicesOption);
-            CanUseCameraTime = CustomOption.CustomOption.Create(518, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictCamera);
+            CanUseCameraTime = CustomOption.CustomOption.Create(518, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 600f, 1f, RestrictCamera);
             RestrictVital = CustomOption.CustomOption.Create(519, false, CustomOptionType.Generic, "RestrictVitalSetting", true, RestrictDevicesOption);
-            CanUseVitalTime = CustomOption.CustomOption.Create(520, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictVital);
+            CanUseVitalTime = CustomOption.CustomOption.Create(520, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 600f, 1f, RestrictVital);
         }
     }
 }
