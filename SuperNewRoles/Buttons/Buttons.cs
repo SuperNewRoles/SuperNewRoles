@@ -895,13 +895,13 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = setTarget();
-                    if (!target.Data.Role.IsImpostor && !target.isHauntedWolf() && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.MadMaker.IsCreateMadmate)
+                    if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.MadMaker.IsCreateMadmate)
                     {
                         target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                         target.setRoleRPC(RoleId.MadMate);
                         RoleClass.MadMaker.IsCreateMadmate = true;
                     }
-                    else if (target.Data.Role.IsImpostor || target.isHauntedWolf())
+                    else if (target.Data.Role.IsImpostor)
                     {
                         PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
                     }
@@ -1079,13 +1079,13 @@ namespace SuperNewRoles.Buttons
                () =>
                {
                    var target = setTarget();
-                   if (!target.Data.Role.IsImpostor && !target.isHauntedWolf() && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Chief.IsCreateSheriff)
+                   if (!target.Data.Role.IsImpostor  && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Chief.IsCreateSheriff)
                    {
                        target.RpcSetRole(RoleTypes.Crewmate);
                        target.setRoleRPC(RoleId.Sheriff);
                        RoleClass.Chief.IsCreateSheriff = true;
                    }
-                   else if (target.Data.Role.IsImpostor || target.isHauntedWolf())
+                   else if (target.Data.Role.IsImpostor)
                    {
                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
                    }

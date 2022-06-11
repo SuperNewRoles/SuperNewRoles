@@ -411,7 +411,7 @@ namespace SuperNewRoles.Patches
                             }
                             return false;
                         case RoleId.MadMaker:
-                            if (!target.isImpostor() || !target.isHauntedWolf())
+                            if (!target.isImpostor())
                             {
                                 if (target == null || RoleClass.MadMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
                                 RoleClass.MadMaker.CreatePlayers.Add(__instance.PlayerId);
