@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles
                     {
                         RoleClass.Vulture.Arrow.arrow.SetActive(false);
                     }
-                    float target_distance = Vector3.Distance(PlayerControl.LocalPlayer.transform.position, db.transform.position);
+                    float target_distance = Vector3.Distance(CachedPlayer.LocalPlayer.transform.position, db.transform.position);
 
                     if (target_distance < min_target_distance)
                     {

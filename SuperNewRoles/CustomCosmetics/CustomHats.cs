@@ -293,7 +293,7 @@ namespace SuperNewRoles.CustomCosmetics
                     List<CustomHat> hats = createCustomHatDetails(filePaths, true);
                     if (hats.Count > 0)
                     {
-                        foreach (PlayerControl pc in PlayerControl.AllPlayerControls)
+                        foreach (PlayerControl pc in CachedPlayer.AllPlayers)
                         {
                             var color = pc.CurrentOutfit.ColorId;
                             pc.SetHat("hat_dusk", color);
@@ -354,7 +354,7 @@ namespace SuperNewRoles.CustomCosmetics
                     float ypos = offset - (i / __instance.NumPerRow) * __instance.YOffset;
                     ColorChip colorChip = UnityEngine.Object.Instantiate<ColorChip>(__instance.ColorTabPrefab, __instance.scroller.Inner);
 
-                    int color = __instance.HasLocalPlayer() ? PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId : SaveManager.BodyColor;
+                    int color = __instance.HasLocalPlayer() ? CachedPlayer.LocalPlayer.Data.DefaultOutfit.ColorId : SaveManager.BodyColor;
 
                     colorChip.transform.localPosition = new Vector3(xpos, ypos, inventoryZ);
                     if (ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard)

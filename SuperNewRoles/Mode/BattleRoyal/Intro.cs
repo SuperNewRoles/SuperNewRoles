@@ -11,9 +11,9 @@ namespace SuperNewRoles.Mode.BattleRoyal
         {
             Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
             Teams.Add(PlayerControl.LocalPlayer);
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isImpostor() && p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                if (p.isImpostor() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
                     Teams.Add(p);
                 }

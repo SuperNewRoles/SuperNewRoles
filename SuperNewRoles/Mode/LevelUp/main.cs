@@ -31,7 +31,7 @@ namespace SuperNewRoles.Mode.LevelUp
             {
                 Count++;
                 UpdateTime = 1f;
-                foreach(PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach(PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (!player.Data.Disconnected && player.IsPlayer())
                     {

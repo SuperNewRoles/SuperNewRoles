@@ -9,7 +9,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
     {
         public static void SetDesync()
         {
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.isImpostor())
                 {
@@ -17,14 +17,14 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                     main.Impostors.Add(p.PlayerId);
                 }
             }
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (main.Impostors.Contains(p.PlayerId))
                 {
                     if (p.PlayerId != 0)
                     {
                         p.RpcSetRoleDesync(RoleTypes.Impostor);//p.Data.Role.Role);
-                        foreach (var pc in PlayerControl.AllPlayerControls)
+                        foreach (var pc in CachedPlayer.AllPlayers)
                         {
                             if (main.Impostors.Contains(pc.PlayerId))
                             {
@@ -34,14 +34,14 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                             {
                                 p.RpcSetRoleDesync(RoleTypes.Impostor, pc);
                             }
-                            pc.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            pc.PlayerControl.RpcSetRoleDesync(RoleTypes.Scientist, p);
                             DestroyableSingleton<RoleManager>.Instance.SetRole(pc,RoleTypes.Crewmate);
                         }
                     }
                     else
                     {
                         DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);//p.Data.Role.Role);
-                        foreach (var pc in PlayerControl.AllPlayerControls)
+                        foreach (var pc in CachedPlayer.AllPlayers)
                         {
                             if (pc.PlayerId != 0)
                             {

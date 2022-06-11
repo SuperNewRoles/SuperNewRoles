@@ -45,7 +45,7 @@ namespace SuperNewRoles.Patch
             // Don't waste network traffic if we're out of time.
             if (MapOptions.MapOption.RestrictAdmin.getBool() && PlayerControl.LocalPlayer.isAlive())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseAdminTime, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseAdminTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(adminTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 CustomRPC.RPCProcedure.UseAdminTime(adminTimer);
@@ -128,7 +128,7 @@ namespace SuperNewRoles.Patch
 
                     if (TimeRemaining == null)
                     {
-                        TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskText, __instance.transform);
+                        TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
                         TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
                         TimeRemaining.transform.position = Vector3.zero;
                         TimeRemaining.transform.localPosition = new Vector3(3.25f, 5.25f);
@@ -158,7 +158,7 @@ namespace SuperNewRoles.Patch
                 }
 
                 bool commsActive = false;
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
                     if (task.TaskType == TaskTypes.FixComms) commsActive = true;
 
                 if (!__instance.isSab && commsActive)
@@ -186,7 +186,7 @@ namespace SuperNewRoles.Patch
 
                     if (!commsActive)
                     {
-                        PlainShipRoom plainShipRoom = ShipStatus.Instance.FastRooms[counterArea.RoomType];
+                        PlainShipRoom plainShipRoom = MapUtilities.CachedShipStatus.FastRooms[counterArea.RoomType];
 
                         if (plainShipRoom != null && plainShipRoom.roomArea)
                         {

@@ -17,14 +17,14 @@ namespace SuperNewRoles.Mode.BattleRoyal
             if (!AmongUsClient.Instance.AmHost) return;
             if (IsStart)
             {
-                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
+                CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = true;
                 if (!IsTeamBattle)
                 {
-                    HudManager.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.setTarget());
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.setTarget());
                 }
                 int alives = 0;
                 int allplayer = 0;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     allplayer++;
                     if (p.isAlive())
@@ -34,7 +34,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 }
                 if (AlivePlayer != alives || AllPlayer != allplayer)
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (!p.Data.Disconnected)
                         {
@@ -53,7 +53,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 UpdateTime -= Time.fixedDeltaTime;
                 if (UpdateTime <= 0)
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (!p.Data.Disconnected)
                         {
@@ -189,7 +189,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 if (!IsSeted) return false;
                 List<PlayerControl> players = new List<PlayerControl>();
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.isAlive())
                     {
@@ -221,7 +221,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         if (teams.IsCheckListPlayerControl(players[0]))
                         {
-                            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
                             {
                                 p.RpcSetRole(RoleTypes.GuardianAngel);
                                 if (teams.IsCheckListPlayerControl(p))
@@ -243,8 +243,8 @@ namespace SuperNewRoles.Mode.BattleRoyal
             } else
             {
                 var alives = 0;
-                HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.isAlive())
                     {
@@ -254,7 +254,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 if (alives == 1)
                 {
                     __instance.enabled = false;
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.isAlive())
                         {
@@ -306,9 +306,9 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     if (IsTeamBattle)
                     {
                         float count = BROption.TeamAmount.getFloat();
-                        var oneteamcount = Mathf.CeilToInt(PlayerControl.AllPlayerControls.Count / count);
+                        var oneteamcount = Mathf.CeilToInt(CachedPlayer.AllPlayers.Count / count);
                         List<PlayerControl> target = new List<PlayerControl>();
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             target.Add(p);
                         }
@@ -358,7 +358,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                             p.SetRole(RoleTypes.Impostor);
                                         }
                                     }
-                                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                                    foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                                     {
                                         if (!teamlist.IsCheckListPlayerControl(p2))
                                         {
@@ -371,20 +371,20 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                     p.SetRole(RoleTypes.Impostor);
                                     p.RpcSetRole(RoleTypes.Crewmate);
                                     DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
-                                    PlayerControl.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
+                                    CachedPlayer.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
                                 }
                             }
                         }
                     }
                     else
                     {
-                        foreach (PlayerControl p1 in PlayerControl.AllPlayerControls)
+                        foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
                         {
                             if (p1.PlayerId != 0)
                             {
                                 DestroyableSingleton<RoleManager>.Instance.SetRole(p1, RoleTypes.Crewmate);
                                 p1.RpcSetRoleDesync(RoleTypes.Impostor);
-                                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                                foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                                 {
                                     if (p1.PlayerId != p2.PlayerId && p2.PlayerId != 0)
                                     {
@@ -399,9 +399,9 @@ namespace SuperNewRoles.Mode.BattleRoyal
                             }
                         }
                         DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Impostor);
-                        PlayerControl.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
+                        CachedPlayer.LocalPlayer.Data.Role.Role = RoleTypes.Impostor;
                     }
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.getDefaultName();
                         p.RpcSetName("");//Playing on SuperNewRoles!");
@@ -409,9 +409,9 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     new LateTask(() => {
                         if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                         {
-                            foreach (var pc in PlayerControl.AllPlayerControls)
+                            foreach (var pc in CachedPlayer.AllPlayers)
                             {
-                                pc.RpcSetRole(RoleTypes.Shapeshifter);
+                                pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
                             }
                         }
                     }, 3f, "SetImpostor");
