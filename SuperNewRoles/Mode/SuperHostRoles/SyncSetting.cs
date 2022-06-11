@@ -30,7 +30,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.Sheriff:
                     optdata.ImpostorLightMod = optdata.CrewLightMod;
-                    var switchSystem = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    var switchSystem = MapUtilities.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                     if (switchSystem != null && switchSystem.IsActive)
                     {
                         optdata.ImpostorLightMod /= 5;
@@ -60,7 +60,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (RoleClass.MadMate.IsImpostorLight)
                     {
                         optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive)
                         {
                             optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (RoleClass.MadMayor.IsImpostorLight)
                     {
                         optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive)
                         {
                             optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
@@ -92,7 +92,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (RoleClass.MadStuntMan.IsImpostorLight)
                     {
                         optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive)
                         {
                             optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
@@ -108,7 +108,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (RoleClass.MadJester.IsImpostorLight)
                     {
                         optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive)
                         {
                             optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
@@ -119,7 +119,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (!RoleClass.MadMaker.IsImpostorLight)
                     {
                         optdata.ImpostorLightMod = optdata.CrewLightMod;
-                        var switchSystemMadMaker = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                        var switchSystemMadMaker = MapUtilities.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                         if (switchSystemMadMaker != null && switchSystemMadMaker.IsActive)
                         {
                             optdata.ImpostorLightMod /= 5;
@@ -143,7 +143,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (RoleClass.JackalFriends.IsImpostorLight)
                     {
                         optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                         if (switchSystem2 != null && switchSystem2.IsActive)
                         {
                             optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
