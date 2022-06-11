@@ -575,10 +575,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption VentMakerOption;
         public static CustomOption VentMakerPlayerCount;
 
-
         public static CustomRoleOption GhostMechanicOption;
         public static CustomOption GhostMechanicPlayerCount;
         public static CustomOption GhostMechanicRepairLimit;
+
+        public static CustomRoleOption HauntedWolfOption;
+        public static CustomOption HauntedWolfPlayerCount;
 
         public static CustomRoleOption EvilHackerOption;
         public static CustomOption EvilHackerPlayerCount;
@@ -1194,6 +1196,9 @@ namespace SuperNewRoles.CustomOption
             GhostMechanicOption = new CustomRoleOption(520, false, CustomOptionType.Crewmate, "GhostMechanicName", RoleClass.GhostMechanic.color, 1);
             GhostMechanicPlayerCount = CustomOption.Create(521, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], GhostMechanicOption);
             GhostMechanicRepairLimit = CustomOption.Create(522, false, CustomOptionType.Crewmate, "GhostMechanicRepairLimitSetting", 1f, 1f, 30f, 1f, GhostMechanicOption);
+
+            HauntedWolfOption = new CustomRoleOption(550, true, CustomOptionType.Crewmate, "HauntedWolfName", RoleClass.HauntedWolf.color, 1);
+            HauntedWolfPlayerCount = CustomOption.Create(551, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HauntedWolfOption);
 
             //表示設定
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

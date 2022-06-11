@@ -36,10 +36,16 @@ namespace SuperNewRoles.Roles
                 if (Target.isImpostor())
                 {
                     namedate = "Impostor";
-                } else if (Target.isNeutral())
+                }
+                if (Target.isHauntedWolf())
+                {
+                    namedate = "Impostor";
+                }
+                else if (Target.isNeutral())
                 {
                     namedate = "Neutral";
-                } else if (Target.isCrew())
+                }
+                else if (Target.isCrew())
                 {
                     namedate = "CrewMate";
                 }
@@ -49,10 +55,11 @@ namespace SuperNewRoles.Roles
                 namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
             var name = ModTranslation.getString(namedate + "Name");
-            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"),Target.nameText.text,name));
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText.text, name));
 
             RoleClass.SoothSayer.Count--;
-            if (RoleClass.SoothSayer.Count <= 0) {
+            if (RoleClass.SoothSayer.Count <= 0)
+            {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
             }
         }
@@ -90,6 +97,10 @@ namespace SuperNewRoles.Roles
             if (RoleClass.SpiritMedium.DisplayMode)
             {
                 if (Target.isImpostor())
+                {
+                    namedate = "Impostor";
+                }
+                if (Target.isHauntedWolf())
                 {
                     namedate = "Impostor";
                 }

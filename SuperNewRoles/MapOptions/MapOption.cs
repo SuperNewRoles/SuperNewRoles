@@ -133,6 +133,11 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption RestrictVital;
         public static CustomOption.CustomOption CanUseVitalTime;
 
+        public static CustomOption.CustomOption ReactorDurationOption;
+        public static CustomOption.CustomOption PolusReactorTimeLimit;
+        public static CustomOption.CustomOption MiraReactorTimeLimit;
+        public static CustomOption.CustomOption AirshipReactorTimeLimit;
+
         public static void LoadOption()
         {
             MapOptionSetting = CustomOption.CustomOption.Create(246, true, CustomOptionType.Generic, "MapOptionSetting", false, null, isHeader: true);
@@ -152,7 +157,7 @@ namespace SuperNewRoles.MapOptions
             RandomMapPolus = CustomOption.CustomOption.Create(436, true, CustomOptionType.Generic, "RMPolusSetting", true, RandomMapOption);
             RandomMapAirship = CustomOption.CustomOption.Create(437, true, CustomOptionType.Generic, "RMAirshipSetting", true, RandomMapOption);
             RandomMapSubmerged = CustomOption.CustomOption.Create(438, true, CustomOptionType.Generic, "RMSubmergedSetting", true, RandomMapOption);
-            //RM?��?��RandomMap?��̗�?��ł�()
+            //RM??��?��??��?��RandomMap??��?��̗�??��?��ł�()
 
             RestrictDevicesOption = CustomOption.CustomOption.Create(513, false, CustomOptionType.Generic, "RestrictDevicesSetting", true, MapOptionSetting);
             RestrictAdmin = CustomOption.CustomOption.Create(514, false, CustomOptionType.Generic, "RestrictAdminSetting", true, RestrictDevicesOption);

@@ -16,8 +16,6 @@ using SuperNewRoles.Intro;
 
 namespace SuperNewRoles
 {
-
-
     public static class RoleHelpers
     {
         public static bool isCrew(this PlayerControl player)
@@ -32,6 +30,11 @@ namespace SuperNewRoles
             return player != null && player.Data.Role.IsImpostor;
         }
 
+        public static bool isHauntedWolf(this PlayerControl player)
+        {
+            if (player.isRole(RoleId.HauntedWolf)) return true;
+            return player != null && !player.isImpostor() && !player.isNeutral() && !player.isCrew();
+        }
 
         public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
         {
@@ -244,7 +247,7 @@ namespace SuperNewRoles
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
-                //ベント設定可視化
+                    //ベント設定可視化
             }
             return returntext;
         }
@@ -565,6 +568,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.EvilHacker):
                     Roles.RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.HauntedWolf):
+                    Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -890,6 +896,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilHacker):
                     Roles.RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.HauntedWolf):
+                    Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
+                    break;
                     //ロールリモベ
 
             }
@@ -1070,7 +1079,7 @@ namespace SuperNewRoles
                     return RoleClass.Vulture.IsUseVent;
                 case RoleId.MayorFriends:
                     return RoleClass.MayorFriends.IsUseVent;
-                //ベントが使える
+                    //ベントが使える
                     /*
                     case RoleId.Scavenger:
                         return RoleClass.Scavenger.IsUseVent;
@@ -1162,7 +1171,7 @@ namespace SuperNewRoles
                     return RoleClass.MadCleaner.IsImpostorLight;
                 case RoleId.MayorFriends:
                     return RoleClass.MayorFriends.IsImpostorLight;
-                //インポの視界
+                    //インポの視界
             }
             return false;
         }
@@ -1807,6 +1816,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.EvilHacker.EvilHackerPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.EvilHacker;
+                }
+                else if (Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.HauntedWolf;
                 }
                 //ロールチェック
             }
