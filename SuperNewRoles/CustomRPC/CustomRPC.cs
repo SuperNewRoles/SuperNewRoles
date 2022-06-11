@@ -121,6 +121,7 @@ namespace SuperNewRoles.CustomRPC
         VentMaker,
         GhostMechanic,
         EvilHacker,
+        HauntedWolf,
         //RoleId
     }
 
@@ -183,7 +184,10 @@ namespace SuperNewRoles.CustomRPC
         SetSpeedFreeze,
         BySamuraiKillRPC,
         MakeVent,
-        FixLights
+        UseAdminTime,
+        UseCameraTime,
+        UseVitalsTime,
+        FixLights,
     }
     public static class RPCProcedure
     {
@@ -864,6 +868,18 @@ namespace SuperNewRoles.CustomRPC
             VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
             VentMakerVent.gameObject.SetActive(true);
         }
+        public static void UseAdminTime(float time)
+        {
+            Patch.AdminPatch.RestrictAdminTime -= time;
+        }
+        public static void UseCameraTime(float time)
+        {
+            Patch.CameraPatch.RestrictCameraTime -= time;
+        }
+        public static void UseVitalTime(float time)
+        {
+            Patch.VitalsPatch.RestrictVitalsTime -= time;
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -1076,12 +1092,20 @@ namespace SuperNewRoles.CustomRPC
                     case (byte)CustomRPC.MakeVent:
                         MakeVent(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
                         break;
+                    case (byte)CustomRPC.UseAdminTime:
+                        RPCProcedure.UseAdminTime(reader.ReadSingle());
+                        break;
+                    case (byte)CustomRPC.UseCameraTime:
+                        RPCProcedure.UseCameraTime(reader.ReadSingle());
+                        break;
+                    case (byte)CustomRPC.UseVitalsTime:
+                        RPCProcedure.UseVitalTime(reader.ReadSingle());
+                        break;
                     case (byte)CustomRPC.FixLights:
                         FixLights();
                         break;
                 }
             }
         }
-
     }
 }

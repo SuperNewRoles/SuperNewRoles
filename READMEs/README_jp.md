@@ -20,6 +20,12 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 ## 1役職に複数人設定できる
 クルーメイト全員がシェリフなどもできます!
 
+## 機器設定
+アドミンやバイタルなどの設定をすることができます。<br>
+通常モードにおいて、時間設定も可能になりました。<br>
+[ykundesuBeplnEx]設定も搭載しています!<br>
+現在SHRモードにおいては使える・使えないの設定のみ使えます。<br>
+
 ## モードがある
 通常とは別で、[かくれんぼモード](#かくれんぼモード)などが追加されています。
 
@@ -42,7 +48,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 [BepInEx](https://github.com/BepInEx) - modを適用するために使いました。<br>
 [JackalとSidekick](https://www.twitch.tv/dhalucard) - 元のアイデアは **Dhalucard**から来ています。(TheOtherRolesより)<br>
-[Town Of Host](https://github.com/tukasa0001/TownOfHost) - LateTaskやRpcSetRoleDesyncなどのコードを使用させてもらいました。 **tukasa0001**さんありがとうございます！<br>
+[Town Of Host](https://github.com/tukasa0001/TownOfHost) - LateTaskやRpcSetRoleDesync、CustomRPCSenderなどのコードを使用させてもらいました。 **tukasa0001**さんありがとうございます！<br>
 [Jester](https://github.com/Maartii/Jester) - Jester(てるてる)のアイデアは、 **Maartii** から来ています。(TheOtherRolesから引用)<br>
 [Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Lovers(ラバーズ)のアイデアは、**Woodi-dev**から来ています。(TheOtherRolesから引用)<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)<br>
@@ -88,6 +94,7 @@ Discordサーバーには全てすでに乗っています。
 | |[リモートシェリフ](#リモートシェリフ)
 | |[タスクマネージャー](#タスクマネージャー)
 | |[マッドメーカー](#マッドメーカー)
+| |[狐憑き](#狐憑き)
 
 # 役職の詳細
 
@@ -804,6 +811,18 @@ SuperHostRoles対応(キルボタンと置き換え)
 | クルーメイトのみ | クルーメイトのみにクラードが選ばれるか設定できます。
 -----------------------
 
+## 狐憑き
+### クルー陣営
+
+占い師やシェリフなどにはインポスターとして判定される。<br>
+タスクなどは普通のクルーと同じ。<br>
+SHR対応<br>
+
+### ゲーム設定
+| 名前 | 説明 |
+|----------|:-------------:|
+
+-----------------------
 ## ラバーズ
 ### 重複陣営
 

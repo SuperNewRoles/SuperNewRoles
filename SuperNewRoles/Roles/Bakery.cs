@@ -41,7 +41,7 @@ namespace SuperNewRoles.Roles
             string printStr;
 
             var exile = ModeHandler.isMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.main.RealExiled : exiled.Object;
-            if (exile.isRole(CustomRPC.RoleId.Marine))
+            if (exile != null && exile.isRole(CustomRPC.RoleId.Marine))
             {
                 printStr = player.Data.PlayerName + ModTranslation.getString(
                     "AssassinSucsess");

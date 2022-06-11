@@ -678,3 +678,18 @@ EvilHacker
 Hack to Win!
 Can an EvilHacker Make a Madmate
 ADMIN
+Remaining: {0}
+Time up
+Device Restrictions
+Admin Restrictions
+Camera Restrictions
+Vital Restrictions
+Can use time
+ykundesuBeplnEx
+ykundesuBeplnExDelicious
+HauntedWolf
+Don't let the crew find out.
+Reactor Duration Time
+Polus Reactor Duration Time
+Mira Reactor Duration Time
+Airship  Reactor Duration Time

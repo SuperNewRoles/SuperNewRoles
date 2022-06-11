@@ -117,16 +117,16 @@ namespace SuperNewRoles
                         SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                     }
                 }
-                RoleSelectHandler.RoleSelect();
+                var crs = RoleSelectHandler.RoleSelect();
                 foreach (PlayerControl player in AllRoleSetClass.impostors)
                 {
-                    player.RpcSetRole(RoleTypes.Impostor);
+                    player.RpcSetRole(crs, RoleTypes.Impostor);
                 }
                 foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                 {
                     if (!player.Data.Disconnected && !AllRoleSetClass.impostors.IsCheckListPlayerControl(player))
                     {
-                        player.RpcSetRole(RoleTypes.Crewmate);
+                        player.RpcSetRole(crs, RoleTypes.Crewmate);
                     }
                 }
 
@@ -147,6 +147,9 @@ namespace SuperNewRoles
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
                 }
+                FixedUpdate.SetRoleNames();
+                crs.SendMessage();
+                SuperNewRolesPlugin.Logger.LogInfo(false);
                 return false;
             }
             else if (ModeHandler.isMode(ModeId.BattleRoyal))
@@ -933,7 +936,9 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.GhostMechanicPlayerCount.getFloat();
                 case (RoleId.EvilHacker):
                     return CustomOption.CustomOptions.EvilHackerPlayerCount.getFloat();
-                    //プレイヤーカウント
+                case (RoleId.HauntedWolf):
+                    return CustomOption.CustomOptions.HauntedWolfPlayerCount.getFloat();
+                //プレイヤーカウント
             }
             return 1;
         }

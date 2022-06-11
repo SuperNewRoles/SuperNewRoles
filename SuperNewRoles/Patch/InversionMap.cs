@@ -45,7 +45,7 @@ namespace SuperNewRoles.Patch
                     ShipStatus.Instance.MeetingSpawnCenter = new Vector2(-3.4f, -28.35f);
                     ShipStatus.Instance.MeetingSpawnCenter2 = new Vector2(-3.4f, -28.35f);
                     ShipStatus.Instance.transform.localScale = new Vector3(-0.8f, 0.8f, 0.9412f);
-                    SuperNewRolesPlugin.Logger.LogInfo("a");
+                     
                 }
                 /*else if(PlayerControl.GameOptions.MapId == 4 && CustomOptionHolder.InversionAShip.getBool())
                 {

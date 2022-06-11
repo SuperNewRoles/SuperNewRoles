@@ -352,13 +352,11 @@ namespace SuperNewRoles.CustomOption
             var gameSettings = GameObject.Find("Game Settings");
             var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
 
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             var snrSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
             var snrMenu = snrSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
             snrSettings.name = "SNRSettings";
             snrSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "GenericSetting";
 
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             var impostorSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
             var impostorMenu = impostorSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
             impostorSettings.name = "ImpostorSettings";
@@ -374,7 +372,6 @@ namespace SuperNewRoles.CustomOption
             crewmateSettings.name = "CrewmateSettings";
             crewmateSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "CrewmateSetting";
 
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             var roleTab = GameObject.Find("RoleTab");
             var gameTab = GameObject.Find("GameTab");
 
@@ -397,7 +394,6 @@ namespace SuperNewRoles.CustomOption
             crewmateTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
             crewmateTab.name = "CrewmateTab";
 
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             // Position of Tab Icons
             gameTab.transform.position += Vector3.left * 3f;
             roleTab.transform.position += Vector3.left * 3f;
@@ -406,17 +402,12 @@ namespace SuperNewRoles.CustomOption
             neutralTab.transform.localPosition = Vector3.right * 1f;
             crewmateTab.transform.localPosition = Vector3.right * 0.95f;
 
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab};
             for (int i = 0; i < tabs.Length; i++)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("a");
                 var button = tabs[i].GetComponentInChildren<PassiveButton>();
-                SuperNewRolesPlugin.Logger.LogInfo("c");
                 int copiedIndex = i;
-                SuperNewRolesPlugin.Logger.LogInfo("d");
                 button.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
-                SuperNewRolesPlugin.Logger.LogInfo("e");
                 button.OnClick.AddListener((UnityAction)(() => {
                     gameSettingMenu.RegularGameSettings.SetActive(false);
                     gameSettingMenu.RolesSettings.gameObject.SetActive(false);
@@ -457,7 +448,6 @@ namespace SuperNewRoles.CustomOption
                     }
                     else if (copiedIndex == 5)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("a");
                         crewmateSettings.gameObject.SetActive(true);
                         crewmateTabHighlight.enabled = true;
                     }
@@ -470,7 +460,6 @@ namespace SuperNewRoles.CustomOption
                     */
                 }));
             }
-            SuperNewRolesPlugin.Logger.LogInfo("a");
 
 
             foreach (OptionBehaviour option in snrMenu.GetComponentsInChildren<OptionBehaviour>())
@@ -486,11 +475,9 @@ namespace SuperNewRoles.CustomOption
             List<OptionBehaviour> neutralOptions = new List<OptionBehaviour>();
             List<OptionBehaviour> crewmateOptions = new List<OptionBehaviour>();
 
-            SuperNewRolesPlugin.Logger.LogInfo("b");
             List<Transform> menus = new List<Transform>() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform };
             List<List<OptionBehaviour>> optionBehaviours = new List<List<OptionBehaviour>>() { snrOptions, impostorOptions, neutralOptions, crewmateOptions };
 
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             for (int i = 0; i < CustomOption.options.Count; i++)
             {
                 CustomOption option = CustomOption.options[i];

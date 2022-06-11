@@ -43,6 +43,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
         }
         public static List<byte> CameraPlayers;
+        public static List<byte> OldDesyncCommsPlayers;
         private static float UsableDistance = 1.5f;
         private static int Count = 0;
         public static bool IsCom;
@@ -52,52 +53,48 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void FixedUpdate()
         {
             Count--;
-            if (Count >= 1) return;
-            Count = 7;
-            if ((!MapOption.UseAdmin || !MapOption.UseVitalOrDoorLog || !MapOption.UseCamera) && !ModeHandler.isMode(ModeId.Default))
+            if (Count > 0) return;
+            Count = 3;
+            if ((!MapOption.UseAdmin ||
+                !MapOption.UseVitalOrDoorLog ||
+                !MapOption.UseCamera)
+                && !ModeHandler.isMode(ModeId.Default))
             {
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     try
                     {
-                        if (p.isAlive() && !p.IsMod() && !p.inVent)
+                        if (p.isAlive() && !p.IsMod())
                         {
                             var cid = p.getClientId();
                             bool IsGuard = false;
+                            Vector2 playerposition = p.GetTruePosition();
+                            //カメラチェック
+                            if (!MapOption.UseCamera)
+                            {
+                                if (CameraPlayers.Contains(p.PlayerId))
+                                {
+                                    IsGuard = true;
+                                }
+                            }
                             //アドミンチェック
                             if (!MapOption.UseAdmin)
                             {
-                                var AdminDistance = Vector2.Distance(p.GetTruePosition(), GetAdminTransform());
+                                var AdminDistance = Vector2.Distance(playerposition, GetAdminTransform());
                                 if (AdminDistance <= UsableDistance)
                                 {
                                     IsGuard = true;
                                 }
                             }
                             //Polus用のアドミンチェック。Polusはアドミンが2つあるから
-                            if (!IsGuard && PlayerControl.GameOptions.MapId == 2 && !MapOptions.MapOption.UseAdmin)
+                            if (!IsGuard && PlayerControl.GameOptions.MapId == 2 && !MapOption.UseAdmin)
                             {
-                                var AdminDistance = Vector2.Distance(p.GetTruePosition(), new Vector2(24.66107f, -21.523f));
+                                var AdminDistance = Vector2.Distance(playerposition, new Vector2(24.66107f, -21.523f));
                                 if (AdminDistance <= UsableDistance)
                                 {
                                     IsGuard = true;
                                 }
                             }
-                            //カメラチェック
-                            if (!IsGuard && !MapOption.UseCamera)
-                            {
-                                if (CameraPlayers.Contains(p.PlayerId))
-                                {
-                                    IsGuard = true;
-                                }
-                            }
-                            /*
-                            if (!IsGuard && CameraTime != -10 && CameraTime <= 0)
-                            {
-                                if (CameraPlayers.Contains(p.PlayerId))
-                                {
-                                    IsGuard = true;
-                                }
-                            }*/
                             //バイタルもしくはドアログを防ぐ
                             if (!IsGuard && !MapOption.UseVitalOrDoorLog)
                             {
@@ -106,14 +103,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 {
                                     distance += 0.5f;
                                 }
-                                var AdminDistance = Vector2.Distance(p.GetTruePosition(), GetVitalOrDoorLogTransform());
+                                var AdminDistance = Vector2.Distance(playerposition, GetVitalOrDoorLogTransform());
                                 if (AdminDistance <= distance)
                                 {
                                     IsGuard = true;
                                 }
                             }
-                            if (IsGuard)
+                            if (IsGuard && !p.inVent)
                             {
+                                if (!OldDesyncCommsPlayers.Contains(p.PlayerId))
+                                {
+                                    OldDesyncCommsPlayers.Add(p.PlayerId);
+                                }
                                 MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cid);
                                 SabotageWriter.Write((byte)SystemTypes.Comms);
                                 MessageExtensions.WriteNetObject(SabotageWriter, p);
@@ -122,8 +123,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                             else
                             {
-                                if (!IsCom)
+                                if (!IsCom && OldDesyncCommsPlayers.Contains(p.PlayerId))
                                 {
+                                    OldDesyncCommsPlayers.Remove(p.PlayerId);
                                     MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cid);
                                     SabotageFixWriter.Write((byte)SystemTypes.Comms);
                                     MessageExtensions.WriteNetObject(SabotageFixWriter, p);
@@ -142,7 +144,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                         }
                     }
-                    catch { }
+                    catch (Exception e){
+                        SuperNewRolesPlugin.Logger.LogError(e);
+                    }
                 }
             }
         }

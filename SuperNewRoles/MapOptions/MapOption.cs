@@ -10,7 +10,7 @@ using static SuperNewRoles.CustomOption.CustomOptions;
 using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.MapOptions
-{ 
+{
     [HarmonyPatch]
     public class MapOption
     {
@@ -25,6 +25,7 @@ namespace SuperNewRoles.MapOptions
         public static bool ValidationPolus;
         public static bool ValidationAirship;
         public static bool ValidationSubmerged;
+        public static bool IsRestrict;
         public static void ClearAndReload()
         {
             if (MapOptionSetting.getBool())
@@ -49,7 +50,8 @@ namespace SuperNewRoles.MapOptions
                     ValidationPolus = RandomMapPolus.getBool();
                     ValidationAirship = RandomMapAirship.getBool();
                     ValidationSubmerged = RandomMapSubmerged.getBool();
-                } else
+                }
+                else
                 {
                     IsRandomMap = false;
                     ValidationSkeld = false;
@@ -60,7 +62,8 @@ namespace SuperNewRoles.MapOptions
                 }
                 UseDeadBodyReport = !NotUseReportDeadBody.getBool();
                 UseMeetingButton = !NotUseMeetingButton.getBool();
-            } else
+            }
+            else
             {
                 UseAdmin = true;
                 UseVitalOrDoorLog = true;
@@ -75,6 +78,7 @@ namespace SuperNewRoles.MapOptions
                 ValidationSubmerged = false;
             }
             RandomMap.Prefix();
+            BlockTool.OldDesyncCommsPlayers = new List<byte>();
             BlockTool.CameraPlayers = new List<byte>();
             //BlockTool.VitalPlayers = new List<byte>();
             //BlockTool.AdminPlayers = new List<byte>();
@@ -120,7 +124,22 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption RandomMapAirship;
         public static CustomOption.CustomOption RandomMapSubmerged;
 
-        public static void LoadOption() {
+        public static CustomOption.CustomOption RestrictDevicesOption;
+        public static CustomOption.CustomOption RestrictAdmin;
+        public static CustomOption.CustomOption IsYkundesuBeplnEx;
+        public static CustomOption.CustomOption CanUseAdminTime;
+        public static CustomOption.CustomOption RestrictCamera;
+        public static CustomOption.CustomOption CanUseCameraTime;
+        public static CustomOption.CustomOption RestrictVital;
+        public static CustomOption.CustomOption CanUseVitalTime;
+
+        public static CustomOption.CustomOption ReactorDurationOption;
+        public static CustomOption.CustomOption PolusReactorTimeLimit;
+        public static CustomOption.CustomOption MiraReactorTimeLimit;
+        public static CustomOption.CustomOption AirshipReactorTimeLimit;
+
+        public static void LoadOption()
+        {
             MapOptionSetting = CustomOption.CustomOption.Create(246, true, CustomOptionType.Generic, "MapOptionSetting", false, null, isHeader: true);
             DeviceOptions = CustomOption.CustomOption.Create(115, true, CustomOptionType.Generic, "DeviceOptionsSetting", false, MapOptionSetting);
             DeviceUseAdmin = CustomOption.CustomOption.Create(116, true, CustomOptionType.Generic, "DeviceUseAdminSetting", true, DeviceOptions);
@@ -131,14 +150,28 @@ namespace SuperNewRoles.MapOptions
             //DeviceUseCameraTime = CustomOption.CustomOption.Create(272, cs(Color.white, "DeviceTimeSetting"), 10f,0f,60f,1f, DeviceUseCamera);
             NotUseReportDeadBody = CustomOption.CustomOption.Create(247, true, CustomOptionType.Generic, "NotUseReportSetting", false, MapOptionSetting);
             NotUseMeetingButton = CustomOption.CustomOption.Create(248, true, CustomOptionType.Generic, "NotUseMeetingSetting", false, MapOptionSetting);
-            
+
             RandomMapOption = CustomOption.CustomOption.Create(433, true, CustomOptionType.Generic, "RamdomMapSetting", true, MapOptionSetting);
             RandomMapSkeld = CustomOption.CustomOption.Create(434, true, CustomOptionType.Generic, "RMSkeldSetting", true, RandomMapOption);
             RandomMapMira = CustomOption.CustomOption.Create(435, true, CustomOptionType.Generic, "RMMiraSetting", true, RandomMapOption);
             RandomMapPolus = CustomOption.CustomOption.Create(436, true, CustomOptionType.Generic, "RMPolusSetting", true, RandomMapOption);
             RandomMapAirship = CustomOption.CustomOption.Create(437, true, CustomOptionType.Generic, "RMAirshipSetting", true, RandomMapOption);
             RandomMapSubmerged = CustomOption.CustomOption.Create(438, true, CustomOptionType.Generic, "RMSubmergedSetting", true, RandomMapOption);
-            //RM‚ÍRandomMap‚Ì—ª‚Å‚·()
+            //RM??¿½?¿½??¿½?¿½RandomMap??¿½?¿½Ì—ï¿½??¿½?¿½Å‚ï¿½()
+
+            RestrictDevicesOption = CustomOption.CustomOption.Create(513, false, CustomOptionType.Generic, "RestrictDevicesSetting", true, MapOptionSetting);
+            RestrictAdmin = CustomOption.CustomOption.Create(514, false, CustomOptionType.Generic, "RestrictAdminSetting", true, RestrictDevicesOption);
+            IsYkundesuBeplnEx = CustomOption.CustomOption.Create(515, false, CustomOptionType.Generic, "IsYkundesuBeplnExSetting", false, RestrictAdmin);
+            CanUseAdminTime = CustomOption.CustomOption.Create(516, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictAdmin);
+            RestrictCamera = CustomOption.CustomOption.Create(517, false, CustomOptionType.Generic, "RestrictCameraSetting", true, RestrictDevicesOption);
+            CanUseCameraTime = CustomOption.CustomOption.Create(518, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictCamera);
+            RestrictVital = CustomOption.CustomOption.Create(519, false, CustomOptionType.Generic, "RestrictVitalSetting", true, RestrictDevicesOption);
+            CanUseVitalTime = CustomOption.CustomOption.Create(520, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictVital);
+
+            ReactorDurationOption = CustomOption.CustomOption.Create(521, true, CustomOptionType.Generic, "ReactorDurationSetting", false, MapOptionSetting);
+            PolusReactorTimeLimit = CustomOption.CustomOption.Create(522, true, CustomOptionType.Generic, "PolusReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
+            MiraReactorTimeLimit = CustomOption.CustomOption.Create(523, true, CustomOptionType.Generic, "MiraReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
+            AirshipReactorTimeLimit = CustomOption.CustomOption.Create(524, true, CustomOptionType.Generic, "AirshipReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
         }
     }
 }
