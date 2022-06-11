@@ -694,3 +694,4 @@ ReactorDurationSetting,Reactor Duration Time,リアクター継続時間の設�
 PolusReactorTime,Polus Reactor Duration Time,ポーラスでのリアクター時間
 MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間
 AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間
+VentMakerButtonName,Make Vent,設置
