@@ -936,9 +936,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.GhostMechanicPlayerCount.getFloat();
                 case (RoleId.EvilHacker):
                     return CustomOption.CustomOptions.EvilHackerPlayerCount.getFloat();
-                    case (RoleId.HauntedWolf):
+                case (RoleId.HauntedWolf):
                     return CustomOption.CustomOptions.HauntedWolfPlayerCount.getFloat();
-                    //プレイヤーカウント
                 //プレイヤーカウント
             }
             return 1;
