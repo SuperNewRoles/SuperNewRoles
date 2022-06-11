@@ -574,9 +574,6 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.HauntedWolf):
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Netaa):
-                    Roles.RoleClass.Netaa.NetaaPlayer.Add(player);
-                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -901,11 +898,8 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilHacker):
                     Roles.RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.HauntedWolf):
+                case (CustomRPC.RoleId.HauntedWolf):
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
-                    break;
-                case (CustomRPC.RoleId.Netaa):
-                    Roles.RoleClass.Netaa.NetaaPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
 
@@ -1826,13 +1820,9 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.EvilHacker;
                 }
                 else if (Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player))
-            {
+                {
                 return CustomRPC.RoleId.HauntedWolf;
-            }
-            else if (Roles.RoleClass.Netaa.NetaaPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Netaa;
-            }
+                }
                 //ロールチェック
             }
             catch (Exception e)
