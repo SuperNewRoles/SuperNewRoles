@@ -126,6 +126,7 @@ class AllCheck:
         MainClass.GetTeam()
         if (MainClass.GetBool("AddSetting")):
             MainClass.GetInput("OptionNumber")
+            MainClass.PlusIDNum()
 
         MainClass.GetBool("A_CreateFile")
         MainClass.GetBool("A_ClearTask")
@@ -159,7 +160,6 @@ class AllCheck:
         if (MainClass.GetBool("A_CanSheriffKill")):
             if (MainClass.GetBool("Neut")):
                 MainClass.CreateOKWindow("警告", "第三陣営はデフォルトで\nシェリフがキルできます")
-        MainClass.PlusIDNum()
         # 全部書く
         AllActClass.AllWrite()
 
@@ -212,8 +212,9 @@ namespace SuperNewRoles.Roles
                     }
                 }
             }\n        //セットクラス""".replace("ROLEID!!",MainClass.GetInput("RoleName")).replace("TEAM",MainClass.GetTeam()))
-        MainClass.WriteCodes("AllRoleSetClass.cs", "//プレイヤーカウント","""case (RoleId.ROLENAME):
-                    return CustomOption.CustomOptions.ROLENAMEPlayerCount.getFloat();\n                //プレイヤーカウント""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+        MainClass.WriteCodes("AllRoleSetClass.cs", "//プレイヤーカウント",
+                    """case (RoleId.ROLENAME):
+                    \n                    return CustomOption.CustomOptions.ROLENAMEPlayerCount.getFloat();\n                //プレイヤーカウント""".replace("ROLENAME",MainClass.GetInput("RoleName")))
 
         # Roles/RoleHelper.cs
         if (not MainClass.GetBool("TeamGhost")):
