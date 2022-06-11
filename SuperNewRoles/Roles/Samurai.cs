@@ -29,11 +29,11 @@ namespace SuperNewRoles.Roles
             {
                 if (!RoleClass.Samurai.UseVent)
                 {
-                    HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
+                    FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
                 }
                 if (!RoleClass.Samurai.UseSabo)
                 {
-                    HudManager.Instance.SabotageButton.gameObject.SetActive(false);
+                    FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(false);
                 }
             }
         }

@@ -39,7 +39,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons && !__instance.IsOpen)
                     {
                         __instance.Close();
-                        DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                        FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                         return false;
                     }
                     return true;
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Buttons
                 __instance.GenericShow();
                 __instance.taskOverlay.Show();
                 __instance.ColorControl.SetColor(new Color(0.05f, 0.2f, 1f, 1f));
-                DestroyableSingleton<HudManager>.Instance.SetHudActive(false);
+                FastDestroyableSingleton<HudManager>.Instance.SetHudActive(false);
                 return false;
             }
         }
@@ -116,8 +116,8 @@ namespace SuperNewRoles.Buttons
         {
             public static void Postfix(PlayerControl __instance)
             {
-                var ImpostorVentButton = HudManager.Instance.ImpostorVentButton;
-                var ImpostorSabotageButton = HudManager.Instance.SabotageButton;
+                var ImpostorVentButton = FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton;
+                var ImpostorSabotageButton = FastDestroyableSingleton<HudManager>.Instance.SabotageButton;
 
                 if (PlayerControl.LocalPlayer.IsUseVent())
                 {
@@ -187,7 +187,7 @@ namespace SuperNewRoles.Buttons
                 // The sabotage button behaves just fine if it's a regular impostor
                 if (PlayerControl.LocalPlayer.Data.Role.TeamType == RoleTeamTypes.Impostor) return true;
 
-                DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                 return false;
             }
         }

@@ -57,7 +57,7 @@ namespace SuperNewRoles.Roles
             {
                 if (IsTarget())
                 {
-                    HudManager.Instance.UseButton.SetEnabled();
+                    FastDestroyableSingleton<HudManager>.Instance.UseButton.SetEnabled();
                 }
             }
         }

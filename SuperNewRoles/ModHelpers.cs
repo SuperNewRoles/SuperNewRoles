@@ -39,7 +39,7 @@ namespace SuperNewRoles
             if (max == float.NegativeInfinity) max = time;
 
             player.killTimer = time;
-            DestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(time, max);
+            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(time, max);
         }
 
         public static Sprite CreateSprite(string path, bool fromDisk = false)
@@ -424,8 +424,8 @@ namespace SuperNewRoles
 
         public static bool isCustomServer()
         {
-            if (DestroyableSingleton<ServerManager>.Instance == null) return false;
-            StringNames n = DestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
+            if (FastDestroyableSingleton<ServerManager>.Instance == null) return false;
+            StringNames n = FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
             return n != StringNames.ServerNA && n != StringNames.ServerEU && n != StringNames.ServerAS;
         }
         public static object TryCast(this Il2CppObjectBase self, Type type)

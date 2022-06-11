@@ -366,19 +366,19 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (RoleClass.Sheriff.KillMaxCount >= 1)
                 {
-                    HudManager.Instance.KillButton.gameObject.SetActive(true);
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
-                    DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
-                        DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                        FastDestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
                     }
                 }
                 else
                 {
-                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
                     PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = false;
-                    DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
             }
             else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal) ||
@@ -389,12 +389,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 PlayerControl.LocalPlayer.isRole(RoleId.Arsonist)
                 )
             {
-                HudManager.Instance.KillButton.gameObject.SetActive(true);
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
                 PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
-                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
                 if (Input.GetKeyDown(KeyCode.Q))
                 {
-                    DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
                 }
             }
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);

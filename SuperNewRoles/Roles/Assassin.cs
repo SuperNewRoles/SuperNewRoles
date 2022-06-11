@@ -136,7 +136,7 @@ namespace SuperNewRoles.Roles
                     new LateTask(() =>
                     {
                         MeetingRoomManager.Instance.AssignSelf(exile, null);
-                        DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(exile);
+                        FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(exile);
                         exile.RpcStartMeeting(null);
                     }, 10.5f);
                     new LateTask(() =>

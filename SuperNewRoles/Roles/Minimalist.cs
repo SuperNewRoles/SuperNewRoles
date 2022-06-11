@@ -25,15 +25,15 @@ namespace SuperNewRoles.Roles
             {
                 if (!RoleClass.Minimalist.UseVent)
                 {
-                    HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
+                    FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
                 }
                 if (!RoleClass.Minimalist.UseSabo)
                 {
-                    HudManager.Instance.SabotageButton.gameObject.SetActive(false);
+                    FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(false);
                 }
                 if (!RoleClass.Minimalist.UseReport)
                 {
-                    HudManager.Instance.ReportButton.SetActive(false);
+                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
                 }
             }
         }

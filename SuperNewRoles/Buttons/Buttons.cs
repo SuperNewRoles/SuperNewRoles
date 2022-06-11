@@ -156,7 +156,7 @@ namespace SuperNewRoles.Buttons
             MagazinerGetButton = new CustomButton(
                   () =>
                   {
-                      if (PlayerControl.LocalPlayer.CanMove && RoleClass.Magaziner.MyPlayerCount >= 1 && HudManager.Instance.KillButton.isCoolingDown && RoleClass.Magaziner.IsOKSet)
+                      if (PlayerControl.LocalPlayer.CanMove && RoleClass.Magaziner.MyPlayerCount >= 1 && FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown && RoleClass.Magaziner.IsOKSet)
                       {
                           PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Magaziner.SetTime);
                           RoleClass.Magaziner.MyPlayerCount--;
@@ -173,7 +173,7 @@ namespace SuperNewRoles.Buttons
                   () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Magaziner); },
                   () =>
                   {
-                      return PlayerControl.LocalPlayer.CanMove && HudManager.Instance.KillButton.isCoolingDown && RoleClass.Magaziner.MyPlayerCount >= 1;
+                      return PlayerControl.LocalPlayer.CanMove && FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown && RoleClass.Magaziner.MyPlayerCount >= 1;
                   },
                   () => { MagazinerGetButton.Timer = 0f; MagazinerGetButton.MaxTimer = 0f; },
                   RoleClass.Magaziner.getGetButtonSprite(),
@@ -190,7 +190,7 @@ namespace SuperNewRoles.Buttons
             MagazinerAddButton = new CustomButton(
                 () =>
                 {
-                    if (!HudManager.Instance.KillButton.isCoolingDown && PlayerControl.LocalPlayer.CanMove)
+                    if (!FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown && PlayerControl.LocalPlayer.CanMove)
                     {
                         PlayerControl.LocalPlayer.SetKillTimerUnchecked(PlayerControl.GameOptions.KillCooldown);
                         RoleClass.Magaziner.MyPlayerCount++;
@@ -199,7 +199,7 @@ namespace SuperNewRoles.Buttons
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Magaziner); },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove && !HudManager.Instance.KillButton.isCoolingDown;
+                    return PlayerControl.LocalPlayer.CanMove && !FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown;
                 },
                 () => { MagazinerAddButton.Timer = 0f; MagazinerAddButton.MaxTimer = 0f; },
                 RoleClass.Magaziner.getAddButtonSprite(),
@@ -493,7 +493,7 @@ namespace SuperNewRoles.Buttons
                 8
             );
 
-            JackalKillButton.buttonText = HudManager.Instance.KillButton.buttonLabelText.text;
+            JackalKillButton.buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text;
             JackalKillButton.showButtonText = true;
 
             SelfBomberButton = new Buttons.CustomButton(
@@ -924,7 +924,7 @@ namespace SuperNewRoles.Buttons
             MadMakerSidekickButton.showButtonText = true;
 
 
-            RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(HudManager.Instance.KillButton.cooldownTimerText, HudManager.Instance.KillButton.cooldownTimerText.transform.parent);
+            RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
             RoleClass.SerialKiller.SuicideKillText.text = "";
             RoleClass.SerialKiller.SuicideKillText.enableWordWrapping = false;
             RoleClass.SerialKiller.SuicideKillText.transform.localScale = Vector3.one * 0.5f;
@@ -1484,7 +1484,7 @@ namespace SuperNewRoles.Buttons
                {
                    PlayerControl.LocalPlayer.NetTransform.Halt();
                    Action<MapBehaviour> tmpAction = (MapBehaviour m) => { m.ShowCountOverlay(); };
-                   DestroyableSingleton<HudManager>.Instance.ShowMap(tmpAction);
+                   FastDestroyableSingleton<HudManager>.Instance.ShowMap(tmpAction);
 
                },
                () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker) && PlayerControl.LocalPlayer.CanMove; },

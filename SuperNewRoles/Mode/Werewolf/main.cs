@@ -50,7 +50,7 @@ namespace SuperNewRoles.Mode.Werewolf
                 PlayerControl.GameOptions.VotingTime = DiscussionTime;
                 PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
                 MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data);
-                DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
+                FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                 PlayerControl.LocalPlayer.RpcStartMeeting(PlayerControl.LocalPlayer.Data);
             }, 20, "DiscussionStartMeeting");
         }
@@ -130,7 +130,7 @@ namespace SuperNewRoles.Mode.Werewolf
                         target = PlayerControl.LocalPlayer.Data;
                     }
                     MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, target);
-                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
+                    FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcStartMeeting(target);
                     PlayerControl.LocalPlayer.RpcSetName("今回は会議タイムです。");
                     SetDefaultName();
@@ -148,7 +148,7 @@ namespace SuperNewRoles.Mode.Werewolf
             {
                 new LateTask(() => {
                     MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer,null);
-                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
+                    FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcStartMeeting(null);
                     PlayerControl.LocalPlayer.RpcSetName("今回は能力使用タイムです。");
                 }, 11, "AbilityStartMeeting");

@@ -20,7 +20,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
                 if (!IsTeamBattle)
                 {
-                    HudManager.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.setTarget());
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.setTarget());
                 }
                 int alives = 0;
                 int allplayer = 0;
@@ -243,7 +243,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             } else
             {
                 var alives = 0;
-                HudManager.Instance.ImpostorVentButton.gameObject.SetActive(false);
+                FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
                 foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                 {
                     if (p.isAlive())

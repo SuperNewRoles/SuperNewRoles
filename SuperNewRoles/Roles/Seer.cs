@@ -91,7 +91,7 @@ namespace SuperNewRoles.Roles
 
                         if (limitSoulDuration)
                         {
-                            HudManager.Instance.StartCoroutine(Effects.Lerp(soulDuration, new Action<float>((p) =>
+                            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(soulDuration, new Action<float>((p) =>
                             {
                                 if (rend != null)
                                 {

@@ -72,8 +72,8 @@ namespace SuperNewRoles.Mode.HideAndSeek
                     }
                     RepairSystemPatch.Postfix(__instance);
                 }
-                HudManager.Instance.ReportButton.Hide();
-                HudManager.Instance.AbilityButton.Hide();
+                FastDestroyableSingleton<HudManager>.Instance.ReportButton.Hide();
+                FastDestroyableSingleton<HudManager>.Instance.AbilityButton.Hide();
                 
             }
         }

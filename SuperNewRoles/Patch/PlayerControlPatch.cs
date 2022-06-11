@@ -591,7 +591,7 @@ namespace SuperNewRoles.Patches
                     if (AmongUsClient.Instance.AmHost)
                     {
                         MeetingRoomManager.Instance.AssignSelf(__instance, null);
-                        DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
+                        FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                         __instance.RpcStartMeeting(null);
                     }
                 }, 0.5f);
@@ -621,7 +621,7 @@ namespace SuperNewRoles.Patches
                     if (AmongUsClient.Instance.AmHost)
                     {
                         MeetingRoomManager.Instance.AssignSelf(target, null);
-                        DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(target);
+                        FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(target);
                         target.RpcStartMeeting(null);
                     }
                     RoleClass.Assassin.TriggerPlayer = target;
@@ -752,7 +752,7 @@ namespace SuperNewRoles.Patches
                         if (AmongUsClient.Instance.AmHost)
                         {
                             MeetingRoomManager.Instance.AssignSelf(target, null);
-                            DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(target);
+                            FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(target);
                             target.RpcStartMeeting(null);
                         }
                     }, 0.5f);
@@ -825,7 +825,7 @@ namespace SuperNewRoles.Patches
                         if (AmongUsClient.Instance.AmHost)
                         {
                             MeetingRoomManager.Instance.AssignSelf(__instance, null);
-                            DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
+                            FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
                             __instance.RpcStartMeeting(null);
                         }
                     }, 0.5f);

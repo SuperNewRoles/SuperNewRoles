@@ -440,7 +440,7 @@ namespace SuperNewRoles.Patch
                                     {
                                         if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
                                         {
-                                            p.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + TranslationController.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
+                                            p.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
                                         }
                                     }
                                     new LateTask(() => p.RpcSetName(p.getDefaultName()),5f);

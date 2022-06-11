@@ -52,7 +52,7 @@ namespace SuperNewRoles.Sabotage
                 {
                     __instance.state = 2;
                     __instance.ButtonActive = false;
-                    __instance.StatusText.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.EmergencyDuringCrisis);
+                    __instance.StatusText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.EmergencyDuringCrisis);
                     __instance.NumberText.text = string.Empty;
                     __instance.ClosedLid.gameObject.SetActive(true);
                     __instance.OpenLid.gameObject.SetActive(false);

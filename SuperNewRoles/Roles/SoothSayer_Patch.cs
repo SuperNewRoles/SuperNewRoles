@@ -49,7 +49,7 @@ namespace SuperNewRoles.Roles
                 namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
             var name = ModTranslation.getString(namedate + "Name");
-            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"),Target.nameText.text,name));
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"),Target.nameText.text,name));
             RoleClass.SoothSayer.Count--;
             if (RoleClass.SoothSayer.Count <= 0) {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
@@ -106,7 +106,7 @@ namespace SuperNewRoles.Roles
                 namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
             var name = ModTranslation.getString(namedate + "Name");
-            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText.text, name));
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText.text, name));
             RoleClass.SpiritMedium.MaxCount--;
             if (RoleClass.SpiritMedium.MaxCount <= 0)
             {

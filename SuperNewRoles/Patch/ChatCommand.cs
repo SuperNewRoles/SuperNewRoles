@@ -85,7 +85,7 @@ namespace SuperNewRoles.Patch
                         if (text.ToLower().Equals("/murder"))
                         {
                             PlayerControl.LocalPlayer.Exiled();
-                            HudManager.Instance.KillOverlay.ShowKillAnimation(PlayerControl.LocalPlayer.Data, PlayerControl.LocalPlayer.Data);
+                            FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(PlayerControl.LocalPlayer.Data, PlayerControl.LocalPlayer.Data);
                             handled = true;
                         }
                         else if (text.ToLower().StartsWith("/color "))
@@ -111,7 +111,7 @@ namespace SuperNewRoles.Patch
                     if (handled)
                     {
                         __instance.TextArea.Clear();
-                        HudManager.Instance.Chat.TimeSinceLastMessage = 0f;
+                        FastDestroyableSingleton<HudManager>.Instance.Chat.TimeSinceLastMessage = 0f;
                         __instance.quickChatMenu.ResetGlyphs();
                     }
                 }

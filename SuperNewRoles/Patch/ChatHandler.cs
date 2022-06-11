@@ -282,7 +282,7 @@ namespace SuperNewRoles.Patch
                 {
                     string name = PlayerControl.LocalPlayer.getDefaultName();
                     PlayerControl.LocalPlayer.SetName(SNRCommander);
-                    HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
                     PlayerControl.LocalPlayer.SetName(name);
                 }
                 return;
@@ -303,7 +303,7 @@ namespace SuperNewRoles.Patch
                 {
                     new LateTask(() => {
                         PlayerControl.LocalPlayer.SetName(SNRCommander);
-                        HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
+                        FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
                         PlayerControl.LocalPlayer.SetName(name);
                     }, time);
                 }
@@ -326,7 +326,7 @@ namespace SuperNewRoles.Patch
             {
                 string name = target.Data.PlayerName;
                 target.SetName(SendName);
-                HudManager.Instance.Chat.AddChat(target, command);
+                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(target, command);
                 target.SetName(name);
             } else
             {
@@ -384,7 +384,7 @@ namespace SuperNewRoles.Patch
                 return false;
             if (__instance.chatBubPool.NotInUse == 0)
                 __instance.chatBubPool.ReclaimOldest();
-            ChatBubble bubble = HudManager.Instance.Chat.chatBubPool.Get<ChatBubble>();
+            ChatBubble bubble = FastDestroyableSingleton<HudManager>.Instance.Chat.chatBubPool.Get<ChatBubble>();
             try
             {
                 bubble.transform.SetParent(__instance.scroller.Inner);
@@ -403,8 +403,8 @@ namespace SuperNewRoles.Patch
                 bubble.SetText(chatText);
                 bubble.AlignChildren();
                 __instance.AlignAllBubbles();
-                if (!HudManager.Instance.Chat.IsOpen && HudManager.Instance.Chat.notificationRoutine == null)
-                    HudManager.Instance.Chat.notificationRoutine = __instance.StartCoroutine(__instance.BounceDot());
+                if (!FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && FastDestroyableSingleton<HudManager>.Instance.Chat.notificationRoutine == null)
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.notificationRoutine = __instance.StartCoroutine(__instance.BounceDot());
                 if (num != 0)
                     return false;
                 SoundManager.Instance.PlaySound(__instance.MessageSound, false).pitch = (float)(0.5 + (double)sourcePlayer.PlayerId / 15.0);
@@ -412,7 +412,7 @@ namespace SuperNewRoles.Patch
             catch (Exception ex)
             {
                 SuperNewRolesPlugin.Logger.LogError((object)ex);
-                HudManager.Instance.Chat.chatBubPool.Reclaim((PoolableBehavior)bubble);
+                FastDestroyableSingleton<HudManager>.Instance.Chat.chatBubPool.Reclaim((PoolableBehavior)bubble);
             }
             return false;
         }
