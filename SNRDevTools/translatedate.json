@@ -2755,6 +2755,22 @@
  "restrictOutOfTimeVerYkundesuBeplnEx" : {
         "0" : "ykundesuBeplnExDelicious" ,
         "11" : "\uff96\uff6f\uff77\uff9d\uff78\uff9e\uff8d\uff9e\uff6f\uff8b\uff9f\uff9d\uff72\uff70\uff74\uff6f\uff78\uff7d\u304a\u3044\u3057\u3044"
+        } ,
+ "ReactorDurationSetting" : {
+        "0" : "Reactor Duration Time" ,
+        "11" : "\u30ea\u30a2\u30af\u30bf\u30fc\u7d99\u7d9a\u6642\u9593\u306e\u8a2d\u5b9a"
+        } ,
+ "PolusReactorTime" : {
+        "0" : "Polus Reactor Duration Time" ,
+        "11" : "\u30dd\u30fc\u30e9\u30b9\u3067\u306e\u30ea\u30a2\u30af\u30bf\u30fc\u6642\u9593"
+        } ,
+ "MiraReactorTime" : {
+        "0" : "Mira Reactor Duration Time" ,
+        "11" : "\u30df\u30e9\u3067\u306e\u30ea\u30a2\u30af\u30bf\u30fc\u6642\u9593"
+        } ,
+ "AirshipReactorTime" : {
+        "0" : "Airship  Reactor Duration Time" ,
+        "11" : "\u30a8\u30a2\u30fc\u30b7\u30c3\u30d7\u3067\u306e\u30ea\u30a2\u30af\u30bf\u30fc\u6642\u9593"
         } 
 
 }
