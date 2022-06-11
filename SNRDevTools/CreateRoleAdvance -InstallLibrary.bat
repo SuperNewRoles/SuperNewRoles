@@ -1,3 +1,4 @@
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
 pip install PySimpleGUI
 pip install configparser
 pip install pathlib
