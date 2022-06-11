@@ -291,15 +291,15 @@ namespace SuperNewRoles.Roles
         if (MainClass.GetBool("AddSetting")):
             if (MainClass.GetBool("TeamImpo") or MainClass.GetBool("TeamGhost")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
-                """\nROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
+                """\n            ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
             elif (MainClass.GetBool("TeamCrew")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
-                """\nROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Crewmate, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
+                """\n            ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Crewmate, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
             elif (MainClass.GetBool("TeamNeut")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
-                """\nROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Neutral, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
+                """\n            ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Neutral, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
             ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
             elif (MainClass.GetBool("TeamOne")):
                 print("まだできてねぇ")
