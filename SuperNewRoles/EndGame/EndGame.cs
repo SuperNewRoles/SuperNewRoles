@@ -104,7 +104,7 @@ namespace SuperNewRoles.EndGame
                 UnityEngine.Object.Destroy(pb.gameObject);
             }
             int num = Mathf.CeilToInt(7.5f);
-            List<WinningPlayerData> list = TempData.winners.ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
+            List<WinningPlayerData> list = TempData.winners.GetFastEnumerator().ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
             {
                 if (!b.IsYou)
                 {
@@ -468,7 +468,7 @@ namespace SuperNewRoles.EndGame
             var gameOverReason = AdditionalTempData.gameOverReason;
             AdditionalTempData.clear();
 
-            foreach (var p in GameData.Instance.AllPlayers)
+            foreach (var p in GameData.Instance.AllPlayers.GetFastEnumerator())
             {
                 if (p.Object.IsPlayer())
                 {
@@ -708,7 +708,7 @@ namespace SuperNewRoles.EndGame
                 AdditionalTempData.winCondition = WinCondition.VultureWin;
             }
 
-            if (TempData.winners.ToArray().Any(x => x.IsImpostor))
+            if (TempData.winners.GetFastEnumerator().ToArray().Any(x => x.IsImpostor))
             {
                 foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
                 {

@@ -83,7 +83,7 @@ namespace SuperNewRoles.Patch
 
                                 var VotingDatadetective = __instance.CustomCalculateVotes();
 
-                                exiledPlayerdetective = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == ps.VotedFor);
+                                exiledPlayerdetective = GameData.Instance.AllPlayers.GetFastEnumerator().ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == ps.VotedFor);
 
                                 __instance.RpcVotingComplete(statesdetective, exiledPlayerdetective, tiedetective); //RPC
                             }
@@ -98,7 +98,7 @@ namespace SuperNewRoles.Patch
                                 statesdetective = statesListdetective.ToArray();
 
                                 var VotingDatadetective = __instance.CustomCalculateVotes();
-                                exiledPlayerdetective = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == 253);
+                                exiledPlayerdetective = GameData.Instance.AllPlayers.GetFastEnumerator().ToArray().FirstOrDefault(info => !tiedetective && info.PlayerId == 253);
 
                                 __instance.RpcVotingComplete(statesdetective, exiledPlayerdetective, tiedetective); //RPC
                             }
@@ -120,7 +120,7 @@ namespace SuperNewRoles.Patch
                         {
                             PlayerVoteArea ps = __instance.playerStates[i];
                             PlayerControl player = ModHelpers.playerById(ps.TargetPlayerId);
-                            PlayerControl VoteTarget = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => info.PlayerId == ps.VotedFor)?.Object;
+                            PlayerControl VoteTarget = GameData.Instance.AllPlayers.GetFastEnumerator().ToArray().FirstOrDefault(info => info.PlayerId == ps.VotedFor)?.Object;
                             if (ps.VotedFor != 253 && ps.VotedFor != 254 && VoteTarget != null)
                             {
                                 if (player.isImpostor())
@@ -192,7 +192,7 @@ namespace SuperNewRoles.Patch
                                 tie1 = true;
                             }
                         }
-                        exiledPlayer1 = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tie1 && info.PlayerId == exileId1);
+                        exiledPlayer1 = GameData.Instance.AllPlayers.GetFastEnumerator().ToArray().FirstOrDefault(info => !tie1 && info.PlayerId == exileId1);
                         if (exiledPlayer1 != null && Mode.Werewolf.main.HunterPlayers.IsCheckListPlayerControl(exiledPlayer1.Object))
                         {
                             Mode.Werewolf.main.HunterExilePlayer = exiledPlayer1.Object;
@@ -389,7 +389,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
 
-                exiledPlayer = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(info => !tie && info.PlayerId == exileId);
+                exiledPlayer = GameData.Instance.AllPlayers.GetFastEnumerator().ToArray().FirstOrDefault(info => !tie && info.PlayerId == exileId);
 
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {

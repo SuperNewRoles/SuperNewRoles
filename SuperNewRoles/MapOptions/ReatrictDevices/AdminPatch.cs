@@ -158,7 +158,7 @@ namespace SuperNewRoles.Patch
                 }
 
                 bool commsActive = false;
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
                     if (task.TaskType == TaskTypes.FixComms) commsActive = true;
 
                 if (!__instance.isSab && commsActive)

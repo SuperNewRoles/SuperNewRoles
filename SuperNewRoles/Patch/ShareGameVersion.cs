@@ -10,6 +10,7 @@ using System.Collections;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Helpers;
+using System.Linq;
 
 namespace SuperNewRoles.Patch
 {
@@ -101,7 +102,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (CustomOptions.DisconnectNotPCOption.getBool())
                     {
-                        foreach (InnerNet.ClientData p in AmongUsClient.Instance.allClients)
+                        foreach (InnerNet.ClientData p in AmongUsClient.Instance.allClients.GetFastEnumerator())
                         {
                             if (p.PlatformData.Platform != Platforms.StandaloneEpicPC && p.PlatformData.Platform != Platforms.StandaloneSteamPC)
                             {
@@ -143,7 +144,7 @@ namespace SuperNewRoles.Patch
                         }
 
                     }
-                    foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.ToArray())
+                    foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.GetFastEnumerator().ToArray())
                     {
                         if (client.Id != AmongUsClient.Instance.HostId) {
                             if (!VersionPlayers.ContainsKey(client.Id))
