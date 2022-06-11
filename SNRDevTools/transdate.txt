@@ -690,3 +690,7 @@ IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx
 restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnExDelicious,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい
 HauntedWolfName,HauntedWolf,狼憑き
 HauntedWolfTitle1,Don't let the crew find out.,クルーにバレるな
+ReactorDurationSetting,Reactor Duration Time,リアクター継続時間の設定
+PolusReactorTime,Polus Reactor Duration Time,ポーラスでのリアクター時間
+MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間
+AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間
