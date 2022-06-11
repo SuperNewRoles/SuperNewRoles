@@ -37,7 +37,7 @@ namespace SuperNewRoles.Roles
             AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
         }
         public static bool IsLightOutVision() {
-            if (!(RoleClass.Clergyman.OldButtonTime > 0)) return false;
+            if (RoleClass.Clergyman.OldButtonTime <= 0) return false;
             if (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor) return true;
             if (CountChanger.IsChangeMadmate(PlayerControl.LocalPlayer)) return true;
             if (CountChanger.IsChangeMadMayor(PlayerControl.LocalPlayer)) return true;

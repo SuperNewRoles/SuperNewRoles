@@ -344,11 +344,10 @@ namespace SuperNewRoles.Patches
                         {
                             __instance.RpcMurderPlayer(target);
                             target.Data.IsDead = true;
+                            isKill = false;
                         }
                         else
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("レートタスク:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
-                            isKill = true;
                             new LateTask(() =>
                             {
                                 if (__instance.isAlive() && target.isAlive())
