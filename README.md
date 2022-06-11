@@ -19,7 +19,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [TheOtherRolesGM](https://github.com/yukinogatari/TheOtherRoles-GM) For the source code of the options and buttons. **Thanks to **yukinogatari**!
 
 [Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) - Custom game options
-**DorCoMaNdO**: 
+**DorCoMaNdO**:
 - Prior to v1.6: used default Essentials release
 - v1.6-v1.8: Made some changes to the default Essentials. Changes This branch has a fork.
 - Since v2.0.0: No longer uses Reactor, but uses its own implementation inspired by it. **DorCoMaNdO**.
@@ -67,3 +67,4 @@ It is already on the Discord server.
 | |[MadHawk](#マッドホーク)
 | |[Bakery](#パン屋)
 | |[MadJester](#マッドてるてる)
+| |[HauntedWolf](#狐憑き)
