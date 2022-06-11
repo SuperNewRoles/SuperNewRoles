@@ -91,7 +91,7 @@ namespace SuperNewRoles.Roles
 
                         if (limitSoulDuration)
                         {
-                            HudManager.Instance.StartCoroutine(Effects.Lerp(soulDuration, new Action<float>((p) =>
+                            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(soulDuration, new Action<float>((p) =>
                             {
                                 if (rend != null)
                                 {
@@ -138,7 +138,7 @@ namespace SuperNewRoles.Roles
                                 ModeFlag = RoleClass.JackalSeer.mode <= 1;
                                 break;
                         }
-                        if (PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.PlayerId != target.PlayerId && ModeFlag)
+                        if (PlayerControl.LocalPlayer.isAlive() && CachedPlayer.LocalPlayer.PlayerId != target.PlayerId && ModeFlag)
                         {
                             RoleHelpers.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
                         }

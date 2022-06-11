@@ -9,7 +9,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static void UnCheckedRpcSetRole(this PlayerControl player, RoleTypes role)
         {
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 player.RpcSetRoleDesync(role,p);
             }

@@ -41,9 +41,9 @@ namespace SuperNewRoles.Mode.Zombie
             var optdata = SyncSetting.OptionData.DeepCopy();
             optdata.CrewLightMod = GetSpeed(ZombieCommingLightOption.getFloat());
             optdata.ImpostorLightMod = GetSpeed(ZombieCommingSpeedOption.getFloat());
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls) {
+            foreach (PlayerControl player in CachedPlayer.AllPlayers) {
                 if (player.AmOwner) PlayerControl.GameOptions = optdata;
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.getClientId());
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.getClientId());
                 writer.WriteBytesAndSize(optdata.ToBytes(5));
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
             }
@@ -65,7 +65,7 @@ namespace SuperNewRoles.Mode.Zombie
                 optdata.PlayerSpeedMod = GetSpeed(PoliceSpeed);
             }
             if (player.AmOwner) PlayerControl.GameOptions = optdata;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.getClientId());
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.getClientId());
             writer.WriteBytesAndSize(optdata.ToBytes(5));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }

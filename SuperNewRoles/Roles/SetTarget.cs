@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles
         {
             List<PlayerControl> untarget = new List<PlayerControl>();
             untarget.AddRange(RoleClass.SideKiller.MadKillerPlayer);
-            HudManager.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget(untargetablePlayers: untarget, onlyCrewmates:true));
+            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget(untargetablePlayers: untarget, onlyCrewmates:true));
         }
     }
 }

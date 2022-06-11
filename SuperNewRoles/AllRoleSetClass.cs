@@ -69,6 +69,32 @@ namespace SuperNewRoles
             CustomRPC.RPCProcedure.StartGameRPC();
 
             RoleSelectHandler.SpawnBots();
+            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+            {
+                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
+            }
+        }
+    }
+    [HarmonyPatch(typeof(GameData.PlayerInfo), nameof(GameData.PlayerInfo.IsDead), MethodType.Setter)]
+    class DeadPatch
+    {
+        public static void Postfix(GameData.PlayerInfo __instance)
+        {
+            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+            {
+                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
+            }
+        }
+    }
+    [HarmonyPatch(typeof(GameData.PlayerInfo), nameof(GameData.PlayerInfo.Disconnected), MethodType.Setter)]
+    class DisconnectPatch
+    {
+        public static void Postfix(GameData.PlayerInfo __instance)
+        {
+            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+            {
+                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
+            }
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
@@ -101,7 +127,7 @@ namespace SuperNewRoles
             {
                 List<PlayerControl> SelectPlayers = new List<PlayerControl>();
                 AllRoleSetClass.impostors = new List<PlayerControl>();
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (!player.Data.Disconnected && player.IsPlayer())
                     {
@@ -120,13 +146,13 @@ namespace SuperNewRoles
                 var crs = RoleSelectHandler.RoleSelect();
                 foreach (PlayerControl player in AllRoleSetClass.impostors)
                 {
-                    player.RpcSetRole(crs, RoleTypes.Impostor);
+                    player.RpcSetRole(RoleTypes.Impostor);
                 }
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (!player.Data.Disconnected && !AllRoleSetClass.impostors.IsCheckListPlayerControl(player))
                     {
-                        player.RpcSetRole(crs, RoleTypes.Crewmate);
+                        player.RpcSetRole(RoleTypes.Crewmate);
                     }
                 }
 
@@ -187,7 +213,7 @@ namespace SuperNewRoles
             }
             if (!ModeHandler.isMode(ModeId.NotImpostorCheck) && !ModeHandler.isMode(ModeId.BattleRoyal) && !ModeHandler.isMode(ModeId.Default) && !ModeHandler.isMode(ModeId.SuperHostRoles))
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     p.RpcSetRole(p.Data.Role.Role);
                 }
@@ -199,9 +225,9 @@ namespace SuperNewRoles
                 {
                     if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                     {
-                        foreach (var pc in PlayerControl.AllPlayerControls)
+                        foreach (var pc in CachedPlayer.AllPlayers)
                         {
-                            pc.RpcSetRole(RoleTypes.Shapeshifter);
+                            pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
                         }
                     }
                 }, 3f, "SetImpostor");
@@ -292,7 +318,7 @@ namespace SuperNewRoles
             List<PlayerControl> SelectPlayers = new List<PlayerControl>();
             if (CustomOption.CustomOptions.QuarreledOnlyCrewMate.getBool())
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Role.IsImpostor && !p.isNeutral() && p.IsPlayer())
                     {
@@ -302,7 +328,7 @@ namespace SuperNewRoles
             }
             else
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.IsPlayer())
                     {
@@ -352,7 +378,7 @@ namespace SuperNewRoles
             bool IsQuarreledDup = CustomOptions.LoversDuplicationQuarreled.getBool();
             if (CustomOptions.LoversOnlyCrewMate.getBool())
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.isImpostor() && !p.isNeutral() && !p.isRole(RoleId.truelover) && p.IsPlayer())
                     {
@@ -365,7 +391,7 @@ namespace SuperNewRoles
             }
             else
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!IsQuarreledDup || !p.IsQuarreled() && p.IsPlayer())
                     {
@@ -936,6 +962,8 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.GhostMechanicPlayerCount.getFloat();
                 case (RoleId.EvilHacker):
                     return CustomOption.CustomOptions.EvilHackerPlayerCount.getFloat();
+                case (RoleId.HauntedWolf):
+                    return CustomOption.CustomOptions.HauntedWolfPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -944,7 +972,7 @@ namespace SuperNewRoles
         {
             CrewMatePlayers = new List<PlayerControl>();
             ImpostorPlayers = new List<PlayerControl>();
-            foreach (PlayerControl Player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
                 if (Player.Data.Role.IsSimpleRole)
                 {

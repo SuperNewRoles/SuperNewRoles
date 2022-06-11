@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (PlayerControl.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DarkKiller))
+                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DarkKiller))
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.DarkKiller.KillCoolTime);
                 }
@@ -25,12 +25,12 @@ namespace SuperNewRoles.Roles
             {
                 if (!RoleClass.DarkKiller.KillButtonDisable)
                 {
-                    HudManager.Instance.KillButton.enabled = true;
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.enabled = true;
 
-                    var ma = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                     if (ma != null && !ma.IsActive)
                     {
-                        HudManager.Instance.KillButton.enabled = false;
+                        FastDestroyableSingleton<HudManager>.Instance.KillButton.enabled = false;
                     }
                 }
             }

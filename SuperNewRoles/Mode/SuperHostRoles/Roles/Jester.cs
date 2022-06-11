@@ -39,7 +39,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                     {
                         SuperNewRolesPlugin.Logger.LogInfo("[SHR]てるてるWrapUpエラー:"+e);
                     }
-                    EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByVote, false);
+                    EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByVote, false);
                 }
             } else if (exiled.Object.isRole(CustomRPC.RoleId.MadJester))
             {
@@ -67,7 +67,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                     {
                         SuperNewRolesPlugin.Logger.LogInfo("[SHR]マッドてるてるWrapUpエラー:" + e);
                     }
-                    EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.ImpostorByVote, false);
+                    EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.ImpostorByVote, false);
                 }
             }
         }

@@ -17,21 +17,21 @@ namespace SuperNewRoles.Roles
         }
         public static void BoostStart()
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, Hazel.SendOption.Reliable, -1);
             writer.Write(true);
-            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetSpeedBoost(true, PlayerControl.LocalPlayer.PlayerId);
+            CustomRPC.RPCProcedure.SetSpeedBoost(true, CachedPlayer.LocalPlayer.PlayerId);
             RoleClass.EvilSpeedBooster.IsSpeedBoost = true;
             EvilSpeedBooster.ResetCoolDown();
         }
         public static void ResetSpeed()
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, Hazel.SendOption.Reliable, -1);
             writer.Write(false);
-            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetSpeedBoost(false, PlayerControl.LocalPlayer.PlayerId);
+            CustomRPC.RPCProcedure.SetSpeedBoost(false, CachedPlayer.LocalPlayer.PlayerId);
             RoleClass.EvilSpeedBooster.IsSpeedBoost = false;
         }
 

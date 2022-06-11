@@ -70,7 +70,7 @@ namespace SuperNewRoles.Mode.Zombie
         public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
         {
             bool IsZombieWin = true;
-            foreach(PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach(PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (!ZombiePlayers.Contains(p.PlayerId) && p.isAlive())
                 {
@@ -93,13 +93,13 @@ namespace SuperNewRoles.Mode.Zombie
         }
         public static void ClearAndReload()
         {
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 p.SetHat("",0);
             }
             /*
             PlayerControl.GameOptions.ImpostorLightMod = ZombieOptions.ZombieLight.getFloat();
-            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
             */
             SyncSetting.OptionData = PlayerControl.GameOptions;
             ZombieOptions.ZombieLight = ZombieOptions.ZombieLightOption.getFloat();
@@ -110,7 +110,7 @@ namespace SuperNewRoles.Mode.Zombie
             ZombiePlayers = new List<int>();
             if (AmongUsClient.Instance.AmHost) { 
                 FixedUpdate.IsStart = false;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     p.getDefaultName();
                     /*
@@ -130,9 +130,9 @@ namespace SuperNewRoles.Mode.Zombie
         public static void SetTimer()
         {
             FixedUpdate.IsStart = true;
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                 {
                     if (p2.PlayerId != p.PlayerId)
                     {

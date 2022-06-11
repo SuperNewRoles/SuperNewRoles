@@ -18,9 +18,9 @@ namespace SuperNewRoles.Mode.Zombie
             else
             {
                 Teams.Add(PlayerControl.LocalPlayer);
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                    if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         Teams.Add(p);
                     }

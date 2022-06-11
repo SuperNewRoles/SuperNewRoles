@@ -89,7 +89,7 @@ namespace SuperNewRoles.Sabotage
         public static void CustomSabotageRPC(PlayerControl p,CustomSabotage type,bool Is)
         {
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetCustomSabotage);
-            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             writer.Write((byte)type);
             writer.Write(Is);
             writer.EndRPC();

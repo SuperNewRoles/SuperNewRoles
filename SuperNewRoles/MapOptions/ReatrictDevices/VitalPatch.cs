@@ -41,7 +41,7 @@ namespace SuperNewRoles.Patch
             // Don't waste network traffic if we're out of time.
             if (MapOptions.MapOption.RestrictVital.getBool() && RestrictVitalsTime > 0f && PlayerControl.LocalPlayer.isAlive())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseVitalsTime, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseVitalsTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(vitalsTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 CustomRPC.RPCProcedure.UseVitalTime(vitalsTimer);
@@ -71,7 +71,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (TimeRemaining == null)
                     {
-                        TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskText, __instance.transform);
+                        TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
                         TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
                         TimeRemaining.transform.position = Vector3.zero;
                         TimeRemaining.transform.localPosition = new Vector3(1.7f, 4.45f);
