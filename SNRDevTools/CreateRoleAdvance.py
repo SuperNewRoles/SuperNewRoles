@@ -17,7 +17,7 @@ class ReturnClass:
         with open(BasePath+Path, mode="r", encoding="utf-8") as r:
             Template = r.read()
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
-                Template = Template.replace(OldCode, NewCode)
+                #Template = Template.replace(OldCode, NewCode)
                 print("ファイルを書き込みました:"+Template)
                 print("パス:"+BasePath+Path)
                 w.write(Template)
@@ -80,7 +80,7 @@ class ReturnClass:
         Return = MainClass.GetInput("OptionNumber")
         Now = -2
         Now = Now+1
-        Return = MainClass.GetInput("OptionNumber")+str(Now)
+        Return = str(int(MainClass.GetInput("OptionNumber"))+Now)
         print("ID:",Return)
         return Return
     # チェックボックス、ラジオを更新
@@ -291,16 +291,16 @@ namespace SuperNewRoles.Roles
         if (MainClass.GetBool("AddSetting")):
             if (MainClass.GetBool("TeamImpo") or MainClass.GetBool("TeamGhost")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
-                """\nROLENAMEOption = new CustomRoleOption(IDNOM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
-            ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
+                """\nROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
+            ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
             elif (MainClass.GetBool("TeamCrew")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
                 """\nROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Crewmate, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
-            ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
+            ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
             elif (MainClass.GetBool("TeamNeut")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定", 
                 """\nROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Neutral, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
-            ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n        //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
+            ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
             elif (MainClass.GetBool("TeamOne")):
                 print("まだできてねぇ")
             elif (MainClass.GetBool("TeamTwo")):
