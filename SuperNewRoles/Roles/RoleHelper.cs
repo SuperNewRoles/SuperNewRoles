@@ -1820,9 +1820,9 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.EvilHacker;
                 }
                 else if (Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.HauntedWolf;
-            }
+                {
+                    return CustomRPC.RoleId.HauntedWolf;
+                }
             //ロールチェック
             }
             catch (Exception e)
