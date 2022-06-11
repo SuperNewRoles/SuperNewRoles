@@ -67,4 +67,3 @@ It is already on the Discord server.
 | |[MadHawk](#マッドホーク)
 | |[Bakery](#パン屋)
 | |[MadJester](#マッドてるてる)
-| |[HauntedWolf](#狐憑き)

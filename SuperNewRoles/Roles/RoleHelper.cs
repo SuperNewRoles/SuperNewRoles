@@ -32,11 +32,6 @@ namespace SuperNewRoles
             return player != null && player.Data.Role.IsImpostor;
         }
 
-        public static bool isHauntedWolf(this PlayerControl player)
-        {
-            if (player.isRole(RoleId.HauntedWolf)) return true;
-            return player != null && !player.isImpostor() && !player.isNeutral() && !player.isCrew();
-        }
 
         public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
         {
@@ -571,9 +566,6 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilHacker):
                     Roles.RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.HauntedWolf):
-                    Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
-                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -898,10 +890,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilHacker):
                     Roles.RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.HauntedWolf):
-                    Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
-                    break;
-                //ロールリモベ
+                    //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -1819,11 +1808,7 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.EvilHacker;
                 }
-                else if (Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.HauntedWolf;
-            }
-            //ロールチェック
+                //ロールチェック
             }
             catch (Exception e)
             {

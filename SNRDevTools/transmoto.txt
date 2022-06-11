@@ -687,9 +687,3 @@ RestrictVitalSetting
 DeviceTimeSetting
 IsYkundesuBeplnExSetting
 restrictOutOfTimeVerYkundesuBeplnEx
-HauntedWolfName
-HauntedWolfTitle1
-ReactorDurationSetting
-PolusReactorTime
-MiraReactorTime
-AirshipReactorTime

@@ -120,7 +120,6 @@ namespace SuperNewRoles.Roles
             if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (RoleClass.JackalFriends.JackalFriendsPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(Target)) return true;
             return false;
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)

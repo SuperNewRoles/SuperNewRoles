@@ -121,7 +121,6 @@ namespace SuperNewRoles.CustomRPC
         VentMaker,
         GhostMechanic,
         EvilHacker,
-        HauntedWolf,
         //RoleId
     }
 
