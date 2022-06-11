@@ -1823,7 +1823,7 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.HauntedWolf;
                 }
-            //ロールチェック
+                //ロールチェック
             }
             catch (Exception e)
             {
