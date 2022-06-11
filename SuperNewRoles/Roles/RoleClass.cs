@@ -143,6 +143,7 @@ namespace SuperNewRoles.Roles
             VentMaker.ClearAndReload();
             GhostMechanic.ClearAndReload();
             EvilHacker.ClearAndReload();
+            HauntedWolf.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2188,6 +2189,15 @@ namespace SuperNewRoles.Roles
             {
                 EvilHackerPlayer = new List<PlayerControl>();
                 IsCreateMadmate = CustomOptions.EvilHackerMadmateSetting.getBool();
+            }
+        }
+        public static class HauntedWolf
+        {
+            public static List<PlayerControl> HauntedWolfPlayer;
+            public static Color32 color = new Color32(50, 0, 25, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                HauntedWolfPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

@@ -156,7 +156,6 @@ namespace SuperNewRoles.Patch
                                 }
                             }
                             else {
-                                SuperNewRolesPlugin.Logger.LogInfo("名前:"+client.PlayerName+"、バージョン:"+VersionPlayers[client.Id].version.Major);
                                 PlayerVersion PV = VersionPlayers[client.Id];
                                 int diff = SuperNewRolesPlugin.Version.CompareTo(PV.version);
                                 if (diff > 0)

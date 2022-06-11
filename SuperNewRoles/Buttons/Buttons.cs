@@ -997,7 +997,7 @@ namespace SuperNewRoles.Buttons
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    
+
                     Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                     Writer.Write((byte)CustomGameOverReason.ArsonistWin);
                     Writer.EndRPC();
@@ -1075,7 +1075,7 @@ namespace SuperNewRoles.Buttons
                () =>
                {
                    var target = setTarget();
-                   if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Chief.IsCreateSheriff)
+                   if (!target.Data.Role.IsImpostor  && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Chief.IsCreateSheriff)
                    {
                        target.RpcSetRole(RoleTypes.Crewmate);
                        target.setRoleRPC(RoleId.Sheriff);
@@ -1359,7 +1359,7 @@ namespace SuperNewRoles.Buttons
                 },
 
                 () => { Samurai.EndMeeting(); },
-                
+
                 RoleClass.Samurai.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
@@ -1382,6 +1382,7 @@ namespace SuperNewRoles.Buttons
                     writer.EndRPC();
                     CustomRPC.RPCProcedure.MakeVent(CachedPlayer.LocalPlayer.transform.position.x,CachedPlayer.LocalPlayer.transform.position.y,CachedPlayer.LocalPlayer.transform.position.z);
                     GameObject Vent = GameObject.Find("VentMakerVent" + MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max().ToString());
+
                     RoleClass.VentMaker.Vent = Vent.GetComponent<Vent>();
                     if (RoleClass.VentMaker.VentCount == 2) RoleClass.VentMaker.IsMakeVent = false;
                 },
@@ -1465,7 +1466,7 @@ namespace SuperNewRoles.Buttons
                 KeyCode.F,
                 49
             );
-            
+
             GhostMechanicNumRepairText = GameObject.Instantiate(GhostMechanicRepairButton.actionButton.cooldownTimerText, GhostMechanicRepairButton.actionButton.cooldownTimerText.transform.parent);
             GhostMechanicNumRepairText.text = "";
             GhostMechanicNumRepairText.enableWordWrapping = false;
@@ -1473,7 +1474,7 @@ namespace SuperNewRoles.Buttons
             GhostMechanicNumRepairText.transform.localPosition += new Vector3(0f, 0.7f, 0);
 
             GhostMechanicRepairButton.buttonText = ModTranslation.getString("GhostMechanicButtonName");
-            GhostMechanicRepairButton .showButtonText = true;
+            GhostMechanicRepairButton.showButtonText = true;
 
             EvilHackerButton = new CustomButton(
                () =>
