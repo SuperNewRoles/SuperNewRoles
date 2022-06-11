@@ -35,7 +35,7 @@ namespace SuperNewRoles
         public static bool isHauntedWolf(this PlayerControl player)
         {
             if (player.isRole(RoleId.HauntedWolf)) return true;
-            return player != null && !player.isImpostor() && !player.isNeutral();
+            return player != null && !player.isImpostor() && !player.isNeutral()　&& player.isHauntedWolf() && !player.isCrew();
         }
 
         public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
