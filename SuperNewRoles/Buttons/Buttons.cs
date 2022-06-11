@@ -895,13 +895,13 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = setTarget();
-                    if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.MadMaker.IsCreateMadmate)
+                    if (!target.Data.Role.IsImpostor && !target.isHauntedWolf() && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.MadMaker.IsCreateMadmate)
                     {
                         target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                         target.setRoleRPC(RoleId.MadMate);
                         RoleClass.MadMaker.IsCreateMadmate = true;
                     }
-                    else if (target.Data.Role.IsImpostor)
+                    else if (target.Data.Role.IsImpostor || target.isHauntedWolf())
                     {
                         PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
                     }
@@ -1001,7 +1001,7 @@ namespace SuperNewRoles.Buttons
                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                     Writer.Write(PlayerControl.LocalPlayer.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    
+
                     Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                     Writer.Write((byte)CustomGameOverReason.ArsonistWin);
                     Writer.EndRPC();
@@ -1079,13 +1079,13 @@ namespace SuperNewRoles.Buttons
                () =>
                {
                    var target = setTarget();
-                   if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Chief.IsCreateSheriff)
+                   if (!target.Data.Role.IsImpostor && !target.isHauntedWolf() && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Chief.IsCreateSheriff)
                    {
                        target.RpcSetRole(RoleTypes.Crewmate);
                        target.setRoleRPC(RoleId.Sheriff);
                        RoleClass.Chief.IsCreateSheriff = true;
                    }
-                   else if (target.Data.Role.IsImpostor)
+                   else if (target.Data.Role.IsImpostor || target.isHauntedWolf())
                    {
                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
                    }
@@ -1363,7 +1363,7 @@ namespace SuperNewRoles.Buttons
                 },
 
                 () => { Samurai.EndMeeting(); },
-                
+
                 RoleClass.Samurai.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
@@ -1384,7 +1384,7 @@ namespace SuperNewRoles.Buttons
                     writer.Write(PlayerControl.LocalPlayer.transform.position.y);
                     writer.Write(PlayerControl.LocalPlayer.transform.position.z);
                     writer.EndRPC();
-                    CustomRPC.RPCProcedure.MakeVent(PlayerControl.LocalPlayer.transform.position.x,PlayerControl.LocalPlayer.transform.position.y,PlayerControl.LocalPlayer.transform.position.z);
+                    CustomRPC.RPCProcedure.MakeVent(PlayerControl.LocalPlayer.transform.position.x, PlayerControl.LocalPlayer.transform.position.y, PlayerControl.LocalPlayer.transform.position.z);
                     GameObject Vent = GameObject.Find("VentMakerVent" + ShipStatus.Instance.AllVents.Select(x => x.Id).Max().ToString());
                     RoleClass.VentMaker.Vent = Vent.GetComponent<Vent>();
                     if (RoleClass.VentMaker.VentCount == 2) RoleClass.VentMaker.IsMakeVent = false;
@@ -1469,7 +1469,7 @@ namespace SuperNewRoles.Buttons
                 KeyCode.F,
                 49
             );
-            
+
             GhostMechanicNumRepairText = GameObject.Instantiate(GhostMechanicRepairButton.actionButton.cooldownTimerText, GhostMechanicRepairButton.actionButton.cooldownTimerText.transform.parent);
             GhostMechanicNumRepairText.text = "";
             GhostMechanicNumRepairText.enableWordWrapping = false;
@@ -1477,7 +1477,7 @@ namespace SuperNewRoles.Buttons
             GhostMechanicNumRepairText.transform.localPosition += new Vector3(0f, 0.7f, 0);
 
             GhostMechanicRepairButton.buttonText = ModTranslation.getString("GhostMechanicButtonName");
-            GhostMechanicRepairButton .showButtonText = true;
+            GhostMechanicRepairButton.showButtonText = true;
 
             EvilHackerButton = new CustomButton(
                () =>
