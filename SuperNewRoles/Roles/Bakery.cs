@@ -77,13 +77,13 @@ namespace SuperNewRoles.Roles
         public static string GetExileText(){
             //翻訳
             var rand = new System.Random();
-            if (rand.Next(1, 1) == 1)
+            if (rand.Next(1, 10) == 1)
             {
-                return ModTranslation.getString("BakeryExileText");
+                return ModTranslation.getString("BakeryExileText2");
             }
             else
             {
-                return ModTranslation.getString("BakeryExileText2");
+                return ModTranslation.getString("BakeryExileText");
             }
         }
 
