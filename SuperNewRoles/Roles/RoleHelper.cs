@@ -1819,8 +1819,17 @@ namespace SuperNewRoles
             return RoleId.DefaultRole;
 
         }
-        public static bool isDead(this PlayerControl player)
+        public static Dictionary<byte, bool> DeadCaches;
+        public static bool isDead(this PlayerControl player, bool Cache = true)
         {
+            if (Cache)
+            {
+                try
+                {
+                    return DeadCaches[player.PlayerId];
+                }
+                catch { }
+            }
             return player == null || player.Data.Disconnected || player.Data.IsDead;
         }
 

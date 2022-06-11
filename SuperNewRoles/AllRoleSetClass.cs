@@ -69,6 +69,32 @@ namespace SuperNewRoles
             CustomRPC.RPCProcedure.StartGameRPC();
 
             RoleSelectHandler.SpawnBots();
+            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+            {
+                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
+            }
+        }
+    }
+    [HarmonyPatch(typeof(GameData.PlayerInfo), nameof(GameData.PlayerInfo.IsDead), MethodType.Setter)]
+    class DeadPatch
+    {
+        public static void Postfix(GameData.PlayerInfo __instance)
+        {
+            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+            {
+                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
+            }
+        }
+    }
+    [HarmonyPatch(typeof(GameData.PlayerInfo), nameof(GameData.PlayerInfo.Disconnected), MethodType.Setter)]
+    class DisconnectPatch
+    {
+        public static void Postfix(GameData.PlayerInfo __instance)
+        {
+            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+            {
+                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
+            }
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
