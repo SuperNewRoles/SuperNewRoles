@@ -7,7 +7,7 @@ namespace SuperNewRoles.Patch
 {
     class ResetDeviceCooldown
     {
-        [HarmonyPatch]
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
         public static void Postfix()
         {
             SuperNewRoles.Patch.AdminPatch.ClearAndReload();
