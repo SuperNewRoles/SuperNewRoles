@@ -17,8 +17,8 @@ class ReturnClass:
         with open(BasePath+Path, mode="r", encoding="utf-8") as r:
             Template = r.read()
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
-                Template = Template.replace(OldCode, NewCode)
-                print("ファイルを書き込みました:"+Template)
+                #Template = Template.replace(OldCode, NewCode)
+                #print("ファイルを書き込みました:"+Template)
                 print("パス:"+BasePath+Path)
                 w.write(Template)
     #入力をゲット+戻り値として返す
@@ -76,12 +76,16 @@ class ReturnClass:
         elif (MainClass.GetBool("Neut")):
             return "Neut"
     # CustomOption重複防止
+    Num = 0
+    Access = False
     def PlusIDNum(self):
-        Return = MainClass.GetInput("OptionNumber")
-        Now = -2
-        Now = Now+1
-        Return = str(int(MainClass.GetInput("OptionNumber"))+int(Now))
-        print("ID:",Return)
+        #if (MainClass.Access):
+            #MainClass.Access = True
+        PlusNum = MainClass.Num + 1
+        MainClass.Num = PlusNum
+        Return = str(int(MainClass.GetInput("OptionNumber"))+MainClass.Num)
+        print("PlusID:", PlusNum)
+        print("ID:", Return)
         return Return
     # チェックボックス、ラジオを更新
     def UpdateBool(self, key, bool):
@@ -126,7 +130,7 @@ class AllCheck:
         MainClass.GetTeam()
         if (MainClass.GetBool("AddSetting")):
             MainClass.GetInput("OptionNumber")
-            MainClass.PlusIDNum()
+            #MainClass.PlusIDNum()
 
         MainClass.GetBool("A_CreateFile")
         MainClass.GetBool("A_ClearTask")
@@ -424,7 +428,6 @@ Config_ini.read((ConfigPath+"Config.ini"),encoding="utf_8")
 
 
 
-
 ## レイアウト
 # メイン画面
 psg.theme(MainClass.GetConfig("Main", "Theme"))
@@ -462,7 +465,6 @@ CreateTab = psg.Tab("作成", [
 MainLayOut = [[psg.TabGroup ([[MainTab, AdvanceTab, CreateTab]])]]
 
 MainWindow = psg.Window(title=MainClass.GetConfig("Main", "WindowName"), layout=MainLayOut, size=(MainClass.GetConfig("Main", "SizeX"), MainClass.GetConfig("Main", "SizeY")), icon=MainClass.GetResource("pictures/icon.png"))
-
 
 ## イベントループ
 while True:
