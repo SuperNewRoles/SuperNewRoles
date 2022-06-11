@@ -18,13 +18,13 @@ namespace SuperNewRoles.Buttons
             static bool Prefix(MapBehaviour __instance)
             {
                 if (!MeetingHud.Instance) return true;  // Only run in meetings, and then set the Position of the HerePoint to the Position before the Meeting!
-                if (!ShipStatus.Instance)
+                if (!MapUtilities.CachedShipStatus)
                 {
                     return false;
                 }
                 Vector3 vector = PlayerControl.LocalPlayer.transform.position;
-                vector /= ShipStatus.Instance.MapScale;
-                vector.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
+                vector /= MapUtilities.CachedShipStatus.MapScale;
+                vector.x *= Mathf.Sign(MapUtilities.CachedShipStatus.transform.localScale.x);
                 vector.z = -1f;
                 __instance.HerePoint.transform.localPosition = vector;
                 PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);

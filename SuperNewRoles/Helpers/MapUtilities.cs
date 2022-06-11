@@ -6,11 +6,11 @@ namespace SuperNewRoles {
 
     public static class MapUtilities
     {
-        public static ShipStatus CachedShipStatus = MapUtilities.CachedShipStatus;
+        public static ShipStatus CachedShipStatus = ShipStatus.Instance;
 
         public static void MapDestroyed()
         {
-            CachedShipStatus = MapUtilities.CachedShipStatus;
+            CachedShipStatus = ShipStatus.Instance;
             _systems.Clear();
         }
 
@@ -46,7 +46,6 @@ namespace SuperNewRoles {
         public static void Postfix(ShipStatus __instance)
         {
             MapUtilities.CachedShipStatus = __instance;
-            SubmergedCompatibility.SetupMap(__instance);
         }
     }
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.OnDestroy))]
@@ -57,7 +56,6 @@ namespace SuperNewRoles {
         {
             MapUtilities.CachedShipStatus = null;
             MapUtilities.MapDestroyed();
-            SubmergedCompatibility.SetupMap(null);
         }
     }
 }

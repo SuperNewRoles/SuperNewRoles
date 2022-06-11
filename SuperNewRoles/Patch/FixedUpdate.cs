@@ -45,7 +45,7 @@ namespace SuperNewRoles.Patch
                 {
                     RPCHelper.StartRPC(CustomRPC.CustomRPC.SetHaison).EndRPC();
                     RPCProcedure.SetHaison();
-                    ShipStatus.Instance.enabled = false;
+                    MapUtilities.CachedShipStatus.enabled = false;
                     ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                 }
             }

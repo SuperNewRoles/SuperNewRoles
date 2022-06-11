@@ -192,7 +192,7 @@ namespace SuperNewRoles.CustomRPC
     {
         public static void FixLights()
         {
-            SwitchSystem switchSystem = ShipStatus.Instance.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
+            SwitchSystem switchSystem = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             switchSystem.ActualSwitches = switchSystem.ExpectedSwitches;
         }
         public static void ArsonistDouse(byte source, byte target)
@@ -860,10 +860,10 @@ namespace SuperNewRoles.CustomRPC
 
             VentMakerVent.transform.position = new Vector3(x, y, z);
             VentMakerVent.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-            VentMakerVent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1;
-            var allVentsList = ShipStatus.Instance.AllVents.ToList();
+            VentMakerVent.Id = MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max() + 1;
+            var allVentsList = MapUtilities.CachedShipStatus.AllVents.ToList();
             allVentsList.Add(VentMakerVent);
-            ShipStatus.Instance.AllVents = allVentsList.ToArray();
+            MapUtilities.CachedShipStatus.AllVents = allVentsList.ToArray();
             VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
             VentMakerVent.gameObject.SetActive(true);
         }
@@ -1054,7 +1054,7 @@ namespace SuperNewRoles.CustomRPC
                     case (byte)CustomRPC.CustomEndGame:
                         if (AmongUsClient.Instance.AmHost)
                         {
-                            ShipStatus.Instance.enabled = false;
+                            MapUtilities.CachedShipStatus.enabled = false;
                             CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
                         }
                         break;

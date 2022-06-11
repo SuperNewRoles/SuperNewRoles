@@ -55,7 +55,7 @@ namespace SuperNewRoles.Roles
         {
             Vector3 position = PlayerControl.LocalPlayer.transform.position;
             List<PlainDoor> selectdoors = new List<PlainDoor>();
-            foreach (PlainDoor door in ShipStatus.Instance.AllDoors)
+            foreach (PlainDoor door in MapUtilities.CachedShipStatus.AllDoors)
             {
                 var getispos = IsPos(position, door, 2);
                 if (getispos != 0)

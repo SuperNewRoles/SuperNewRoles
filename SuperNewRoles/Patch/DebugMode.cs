@@ -93,9 +93,9 @@ namespace SuperNewRoles.Patch
                     {
                         if (p == PlayerControl.LocalPlayer) continue;
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.MyPhysics.NetId, (byte)RpcCalls.EnterVent, SendOption.None, p.getClientId());
-                        writer.WritePacked(ShipStatus.Instance.AllVents[0].Id);
+                        writer.WritePacked(MapUtilities.CachedShipStatus.AllVents[0].Id);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        SuperNewRolesPlugin.Logger.LogInfo(ShipStatus.Instance.AllVents[0].transform);
+                        SuperNewRolesPlugin.Logger.LogInfo(MapUtilities.CachedShipStatus.AllVents[0].transform);
                     }
                 }
                     

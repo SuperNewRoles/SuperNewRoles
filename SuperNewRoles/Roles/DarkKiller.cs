@@ -27,7 +27,7 @@ namespace SuperNewRoles.Roles
                 {
                     FastDestroyableSingleton<HudManager>.Instance.KillButton.enabled = true;
 
-                    var ma = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                     if (ma != null && !ma.IsActive)
                     {
                         FastDestroyableSingleton<HudManager>.Instance.KillButton.enabled = false;

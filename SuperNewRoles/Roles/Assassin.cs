@@ -125,7 +125,7 @@ namespace SuperNewRoles.Roles
             }
             if (RoleClass.Assassin.IsImpostorWin)
             {
-                ShipStatus.Instance.enabled = false;
+                MapUtilities.CachedShipStatus.enabled = false;
                 ShipStatus.RpcEndGame(GameOverReason.ImpostorByVote, false);
             }
             var exile = Mode.SuperHostRoles.main.RealExiled;

@@ -48,7 +48,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             Chat.Winner = new List<PlayerControl>();
                             Chat.Winner.Add(target);
                             RoleClass.Quarreled.IsQuarreledWin = true;
-                            SuperHostRoles.EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByTask, false);
+                            SuperHostRoles.EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
                         }, 0.15f);
                     }
                 }

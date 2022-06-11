@@ -1385,7 +1385,7 @@ namespace SuperNewRoles.Buttons
                     writer.Write(PlayerControl.LocalPlayer.transform.position.z);
                     writer.EndRPC();
                     CustomRPC.RPCProcedure.MakeVent(PlayerControl.LocalPlayer.transform.position.x,PlayerControl.LocalPlayer.transform.position.y,PlayerControl.LocalPlayer.transform.position.z);
-                    GameObject Vent = GameObject.Find("VentMakerVent" + ShipStatus.Instance.AllVents.Select(x => x.Id).Max().ToString());
+                    GameObject Vent = GameObject.Find("VentMakerVent" + MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max().ToString());
                     RoleClass.VentMaker.Vent = Vent.GetComponent<Vent>();
                     if (RoleClass.VentMaker.VentCount == 2) RoleClass.VentMaker.IsMakeVent = false;
                 },
@@ -1420,26 +1420,26 @@ namespace SuperNewRoles.Buttons
                         }
                         else if (task.TaskType == TaskTypes.RestoreOxy)
                         {
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 0 | 64);
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 1 | 64);
+                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 0 | 64);
+                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 1 | 64);
                         }
                         else if (task.TaskType == TaskTypes.ResetReactor)
                         {
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 16);
+                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 16);
                         }
                         else if (task.TaskType == TaskTypes.ResetSeismic)
                         {
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Laboratory, 16);
+                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Laboratory, 16);
                         }
                         else if (task.TaskType == TaskTypes.FixComms)
                         {
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
+                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
+                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
                         }
                         else if (task.TaskType == TaskTypes.StopCharles)
                         {
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 0 | 16);
-                            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 1 | 16);
+                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 0 | 16);
+                            MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 1 | 16);
                         }
                     }
                     if (RoleClass.GhostMechanic.LimitCount <= 0)

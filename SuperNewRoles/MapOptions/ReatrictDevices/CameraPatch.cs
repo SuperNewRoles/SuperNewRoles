@@ -64,12 +64,12 @@ namespace SuperNewRoles.Patch
                     // Add securityGuard cameras
                     page = 0;
                     timer = 0;
-                    if (ShipStatus.Instance.AllCameras.Length > 4 && __instance.FilteredRooms.Length > 0)
+                    if (MapUtilities.CachedShipStatus.AllCameras.Length > 4 && __instance.FilteredRooms.Length > 0)
                     {
-                        __instance.textures = __instance.textures.ToList().Concat(new RenderTexture[ShipStatus.Instance.AllCameras.Length - 4]).ToArray();
-                        for (int i = 4; i < ShipStatus.Instance.AllCameras.Length; i++)
+                        __instance.textures = __instance.textures.ToList().Concat(new RenderTexture[MapUtilities.CachedShipStatus.AllCameras.Length - 4]).ToArray();
+                        for (int i = 4; i < MapUtilities.CachedShipStatus.AllCameras.Length; i++)
                         {
-                            SurvCamera surv = ShipStatus.Instance.AllCameras[i];
+                            SurvCamera surv = MapUtilities.CachedShipStatus.AllCameras[i];
                             Camera camera = UnityEngine.Object.Instantiate<Camera>(__instance.CameraPrefab);
                             camera.transform.SetParent(__instance.transform);
                             camera.transform.position = new Vector3(surv.transform.position.x, surv.transform.position.y, 8f);
@@ -117,7 +117,7 @@ namespace SuperNewRoles.Patch
 
                     // Update normal and securityGuard cameras
                     timer += Time.deltaTime;
-                    int numberOfPages = Mathf.CeilToInt(ShipStatus.Instance.AllCameras.Length / 4f);
+                    int numberOfPages = Mathf.CeilToInt(MapUtilities.CachedShipStatus.AllCameras.Length / 4f);
 
                     bool update = false;
 

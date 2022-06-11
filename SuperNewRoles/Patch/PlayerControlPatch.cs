@@ -855,7 +855,7 @@ namespace SuperNewRoles.Patches
         {
             PlayerControl result = null;
             float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
-            if (!ShipStatus.Instance) return result;
+            if (!MapUtilities.CachedShipStatus) return result;
             if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
             if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
 

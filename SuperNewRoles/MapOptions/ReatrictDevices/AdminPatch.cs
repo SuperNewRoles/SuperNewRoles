@@ -186,7 +186,7 @@ namespace SuperNewRoles.Patch
 
                     if (!commsActive)
                     {
-                        PlainShipRoom plainShipRoom = ShipStatus.Instance.FastRooms[counterArea.RoomType];
+                        PlainShipRoom plainShipRoom = MapUtilities.CachedShipStatus.FastRooms[counterArea.RoomType];
 
                         if (plainShipRoom != null && plainShipRoom.roomArea)
                         {

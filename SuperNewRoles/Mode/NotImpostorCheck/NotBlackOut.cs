@@ -52,7 +52,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
 			IEnumerator ReactorDesync()
 			{
 				yield return new WaitForSeconds(delay);
-				MessageWriter val4 = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, 28, (SendOption)1, clientId);
+				MessageWriter val4 = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, 28, (SendOption)1, clientId);
 				val4.Write(reactorId);
 				val4.WriteNetObject(pc);
 				val4.Write((byte)128);
@@ -68,7 +68,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
 			IEnumerator FixDesyncReactor()
 			{
 				yield return new WaitForSeconds(0.4f + delay);
-				MessageWriter val2 = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, 28, (SendOption)1, clientId);
+				MessageWriter val2 = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, 28, (SendOption)1, clientId);
 				val2.Write(reactorId);
 				val2.WriteNetObject(pc);
 				val2.Write((byte)16);
@@ -80,7 +80,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
 				IEnumerator FixDesyncReactor2()
 				{
 					yield return new WaitForSeconds(0.4f + delay);
-					MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, 28, (SendOption)1, clientId);
+					MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, 28, (SendOption)1, clientId);
 					val.Write(reactorId);
 					val.WriteNetObject(pc);
 					val.Write((byte)17);

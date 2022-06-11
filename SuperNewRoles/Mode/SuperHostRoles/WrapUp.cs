@@ -33,19 +33,19 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     MessageWriter MurderWriter = AmongUsClient.Instance.StartRpcImmediately(p.NetId, (byte)RpcCalls.MurderPlayer, SendOption.Reliable, p.getClientId());
                     MessageExtensions.WriteNetObject(MurderWriter, BotHandler.Bot);
                     AmongUsClient.Instance.FinishRpcImmediately(MurderWriter);
-                    MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, p.getClientId());
+                    MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, p.getClientId());
                     SabotageWriter.Write(reactorId);
                     MessageExtensions.WriteNetObject(SabotageWriter, p);
                     SabotageWriter.Write((byte)128);
                     AmongUsClient.Instance.FinishRpcImmediately(SabotageWriter);
-                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, p.getClientId());
+                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, p.getClientId());
                     SabotageFixWriter.Write(reactorId);
                     MessageExtensions.WriteNetObject(SabotageFixWriter, p);
                     SabotageFixWriter.Write((byte)16);
                     AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
                     if (PlayerControl.GameOptions.MapId == 4)
                     {
-                        MessageWriter SabotageFixWriter2 = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, p.getClientId());
+                        MessageWriter SabotageFixWriter2 = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, p.getClientId());
                         SabotageFixWriter2.Write(reactorId);
                         MessageExtensions.WriteNetObject(SabotageFixWriter2, p);
                         SabotageFixWriter2.Write((byte)17);
@@ -122,7 +122,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Chat.Winner = new List<PlayerControl>();
                         Chat.Winner.Add(exiled.Object);
                         RoleClass.Quarreled.IsQuarreledWin = true;
-                        EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByTask, false);
+                        EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
                     }
                 }
             }

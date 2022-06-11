@@ -81,7 +81,7 @@ namespace SuperNewRoles.Roles
                                 {
                                     SuperNewRolesPlugin.Logger.LogInfo("[SHR]冤罪師WrapUpエラー:" + e);
                                 }
-                                EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByVote, false);
+                                EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByVote, false);
                             }
                         }
                     }
