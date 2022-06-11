@@ -717,14 +717,10 @@ namespace SuperNewRoles.Buttons
                     ClergymanLightOutButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Clergyman.LightOutStart();
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && Clergyman.isClergyman(PlayerControl.LocalPlayer); },
+                () => { return PlayerControl.LocalPlayer.isAlive() && Clergyman.isClergyman(PlayerControl.LocalPlayer); },
                 () =>
                 {
-                    if (ClergymanLightOutButton.Timer <= 0)
-                    {
-                        return true;
-                    }
-                    return false;
+                    return ClergymanLightOutButton.Timer <= 0;
                 },
                 () => { Clergyman.EndMeeting(); },
                 RoleClass.Clergyman.getButtonSprite(),
