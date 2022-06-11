@@ -25,7 +25,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 float Time = 3;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Disconnected && p.PlayerId != 0)
                     {

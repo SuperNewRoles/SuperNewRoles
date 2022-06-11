@@ -161,7 +161,7 @@ namespace SuperNewRoles.MapOptions
             RestrictCamera = CustomOption.CustomOption.Create(517, false, CustomOptionType.Generic, "RestrictCameraSetting", true, RestrictDevicesOption);
             CanUseCameraTime = CustomOption.CustomOption.Create(518, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictCamera);
             RestrictVital = CustomOption.CustomOption.Create(519, false, CustomOptionType.Generic, "RestrictVitalSetting", true, RestrictDevicesOption);
-            CanUseVitalTime = CustomOption.CustomOption.Create(520, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictVital);
+            CanUseVitalTime = CustomOption.CustomOption.Create(526, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictVital);
         }
     }
 }

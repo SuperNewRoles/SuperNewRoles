@@ -26,7 +26,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             /*
             new LateTask(() =>
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     byte reactorId = 3;
                     if (PlayerControl.GameOptions.MapId == 2) reactorId = 21;
@@ -108,7 +108,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         RPCProcedure.ShareWinner(exiled.Object.PlayerId);
 
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                         Writer.Write(exiled.Object.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);

@@ -504,7 +504,7 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.ShielderCoolTime.getFloat();
                 DurationTime = CustomOptions.ShielderDurationTime.getFloat();
                 IsShield = new Dictionary<byte, bool>();
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls) RoleClass.Shielder.IsShield[p.PlayerId] = false;
+                foreach (PlayerControl p in CachedPlayer.AllPlayers) RoleClass.Shielder.IsShield[p.PlayerId] = false;
             }
         }
         public static class Freezer

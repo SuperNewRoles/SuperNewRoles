@@ -58,7 +58,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.isImpostor())
                         {

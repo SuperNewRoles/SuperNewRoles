@@ -45,7 +45,7 @@ namespace SuperNewRoles.Patch
             // Don't waste network traffic if we're out of time.
             if (MapOptions.MapOption.RestrictAdmin.getBool() && PlayerControl.LocalPlayer.isAlive())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseAdminTime, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseAdminTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(adminTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 CustomRPC.RPCProcedure.UseAdminTime(adminTimer);

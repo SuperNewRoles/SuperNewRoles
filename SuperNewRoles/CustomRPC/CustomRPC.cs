@@ -192,7 +192,7 @@ namespace SuperNewRoles.CustomRPC
     {
         public static void FixLights()
         {
-            SwitchSystem switchSystem = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
+            SwitchSystem switchSystem = MapUtilities.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             switchSystem.ActualSwitches = switchSystem.ExpectedSwitches;
         }
         public static void ArsonistDouse(byte source, byte target)
@@ -292,7 +292,7 @@ namespace SuperNewRoles.CustomRPC
         {
             /*
             SuperNewRolesPlugin.Logger.LogInfo("TORGMシェアあああ！");
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, Hazel.SendOption.Reliable, clientId);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, Hazel.SendOption.Reliable, clientId);
             writer.WritePacked(major);
             writer.WritePacked(minor);
             writer.WritePacked(build);
@@ -523,7 +523,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 if (sheriff.isRole(RoleId.RemoteSheriff) && !RoleClass.RemoteSheriff.IsKillTeleport)
                 {
-                    if (PlayerControl.LocalPlayer.PlayerId == SheriffId)
+                    if (CachedPlayer.LocalPlayer.PlayerId == SheriffId)
                     {
                         target.MurderPlayer(target);
                     }
@@ -807,7 +807,7 @@ namespace SuperNewRoles.CustomRPC
         public static void TeleporterTP(byte playerid)
         {
             var p = ModHelpers.playerById(playerid);
-            PlayerControl.LocalPlayer.transform.position = p.transform.position;
+            CachedPlayer.LocalPlayer.transform.position = p.transform.position;
             if (SubmergedCompatibility.isSubmerged())
             {
                 SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
@@ -834,7 +834,7 @@ namespace SuperNewRoles.CustomRPC
             source.ProtectPlayer(target, colorid);
             PlayerControl.LocalPlayer.MurderPlayer(target);
             source.ProtectPlayer(target, colorid);
-            if (targetId == PlayerControl.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
+            if (targetId == CachedPlayer.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
         }
         public static void SetShielder(byte PlayerId, bool Is)
         {

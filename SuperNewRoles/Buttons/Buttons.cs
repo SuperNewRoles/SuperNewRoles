@@ -256,7 +256,7 @@ namespace SuperNewRoles.Buttons
                            RoleClass.NiceHawk.ButtonTimer = DateTime.Now;
                            HawkHawkEyeButton.MaxTimer = RoleClass.NiceHawk.CoolTime;
                            HawkHawkEyeButton.Timer = RoleClass.NiceHawk.CoolTime;
-                           RoleClass.NiceHawk.Postion = PlayerControl.LocalPlayer.transform.localPosition;
+                           RoleClass.NiceHawk.Postion = CachedPlayer.LocalPlayer.transform.localPosition;
                            RoleClass.NiceHawk.timer1 = 10;
                            RoleClass.NiceHawk.Timer2 = DateTime.Now;
                        }
@@ -266,7 +266,7 @@ namespace SuperNewRoles.Buttons
                            RoleClass.MadHawk.ButtonTimer = DateTime.Now;
                            HawkHawkEyeButton.MaxTimer = RoleClass.MadHawk.CoolTime;
                            HawkHawkEyeButton.Timer = RoleClass.MadHawk.CoolTime;
-                           RoleClass.MadHawk.Postion = PlayerControl.LocalPlayer.transform.localPosition;
+                           RoleClass.MadHawk.Postion = CachedPlayer.LocalPlayer.transform.localPosition;
                            RoleClass.MadHawk.timer1 = 10;
                            RoleClass.MadHawk.Timer2 = DateTime.Now;
                        }
@@ -317,11 +317,11 @@ namespace SuperNewRoles.Buttons
                        RoleClass.CountChanger.Count--;
                        var Target = PlayerControlFixedUpdatePatch.setTarget(onlyCrewmates: true);
                        var TargetID = Target.PlayerId;
-                       var LocalID = PlayerControl.LocalPlayer.PlayerId;
+                       var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
                        CustomRPC.RPCProcedure.CountChangerSetRPC(LocalID, TargetID);
 
-                       MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CountChangerSetRPC, Hazel.SendOption.Reliable, -1);
+                       MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CountChangerSetRPC, Hazel.SendOption.Reliable, -1);
                        killWriter.Write(LocalID);
                        killWriter.Write(TargetID);
                        AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -389,7 +389,7 @@ namespace SuperNewRoles.Buttons
                     if (target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.Jackal.IsCreateSidekick)
                     {
                         bool IsFakeSidekick = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSidekick, target);
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CreateSidekick, Hazel.SendOption.Reliable, -1);
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CreateSidekick, Hazel.SendOption.Reliable, -1);
                         killWriter.Write(target.PlayerId);
                         killWriter.Write(IsFakeSidekick);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -425,7 +425,7 @@ namespace SuperNewRoles.Buttons
                     if (target_JS && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && RoleClass.JackalSeer.IsCreateSidekick)
                     {
                         bool IsFakeSidekickSeer = EvilEraser.IsBlockAndTryUse(EvilEraser.BlockTypes.JackalSeerSidekick, target_JS);
-                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CreateSidekickSeer, Hazel.SendOption.Reliable, -1);
+                        MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CreateSidekickSeer, Hazel.SendOption.Reliable, -1);
                         killWriter.Write(target_JS.PlayerId);
                         killWriter.Write(IsFakeSidekickSeer);
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -634,14 +634,14 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
                     {
                         DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.Shapeshifter);
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                         {
                             p.Data.Role.NameColor = Color.white;
                         }
-                        PlayerControl.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        CachedPlayer.LocalPlayer.Data.Role.TryCast<ShapeshifterRole>().UseAbility();
+                        foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                         {
-                            if (p.isImpostor())
+                            if (p.PlayerControl.isImpostor())
                             {
                                 p.Data.Role.NameColor = RoleClass.ImpostorRed;
                             }
@@ -656,11 +656,11 @@ namespace SuperNewRoles.Buttons
                             var Target = PlayerControlFixedUpdatePatch.setTarget();
                             var misfire = !Roles.Sheriff.IsSheriffKill(Target);
                             var TargetID = Target.PlayerId;
-                            var LocalID = PlayerControl.LocalPlayer.PlayerId;
+                            var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
                             CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
 
-                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
+                            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
                             killWriter.Write(LocalID);
                             killWriter.Write(TargetID);
                             killWriter.Write(misfire);
@@ -862,10 +862,10 @@ namespace SuperNewRoles.Buttons
                     if (target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.SideKiller.IsCreateMadKiller)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetMadKiller);
-                        writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                        writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         writer.Write(target.PlayerId);
                         writer.EndRPC();
-                        RPCProcedure.SetMadKiller(PlayerControl.LocalPlayer.PlayerId, target.PlayerId);
+                        RPCProcedure.SetMadKiller(CachedPlayer.LocalPlayer.PlayerId, target.PlayerId);
                         RoleClass.SideKiller.IsCreateMadKiller = true;
                         PlayerControl.LocalPlayer.killTimer = RoleClass.SideKiller.KillCoolTime;
                     }
@@ -996,10 +996,10 @@ namespace SuperNewRoles.Buttons
                     Arsonist.SetWinArsonist();
                     RoleClass.Arsonist.TriggerArsonistWin = true;
                     AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
-                    RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
+                    RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
 
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                    Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                    Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
                     
                     Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
@@ -1015,7 +1015,7 @@ namespace SuperNewRoles.Buttons
                     }
                     else
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                         writer.Write((byte)reason);
                         writer.Write(false);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -1123,7 +1123,7 @@ namespace SuperNewRoles.Buttons
                                 {
                                     GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
 
-                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CleanBody, Hazel.SendOption.Reliable, -1);
+                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CleanBody, Hazel.SendOption.Reliable, -1);
                                     writer.Write(playerInfo.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                                     RPCProcedure.CleanBody(playerInfo.PlayerId);
@@ -1139,10 +1139,10 @@ namespace SuperNewRoles.Buttons
                     }
                     if (RoleClass.Vulture.DeadBodyCount < 0)
                     {
-                        CustomRPC.RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
+                        CustomRPC.RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
 
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                        Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                        Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         if (AmongUsClient.Instance.AmHost)
                         {
@@ -1150,7 +1150,7 @@ namespace SuperNewRoles.Buttons
                         }
                         else
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                             writer.Write((byte)EndGame.CustomGameOverReason.VultureWin);
                             writer.Write(false);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -1181,11 +1181,11 @@ namespace SuperNewRoles.Buttons
             ShielderButton = new CustomButton(
                 () =>
                 {
-                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetShielder, SendOption.Reliable, -1);
-                    Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                    MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetShielder, SendOption.Reliable, -1);
+                    Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     Writer.Write(true);
                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                    RPCProcedure.SetShielder(PlayerControl.LocalPlayer.PlayerId, true);
+                    RPCProcedure.SetShielder(CachedPlayer.LocalPlayer.PlayerId, true);
                     ShielderButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     ShielderButton.MaxTimer = RoleClass.Shielder.DurationTime;
                     ShielderButton.Timer = ShielderButton.MaxTimer;
@@ -1227,7 +1227,7 @@ namespace SuperNewRoles.Buttons
                                 {
                                     GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
 
-                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CleanBody, Hazel.SendOption.Reliable, -1);
+                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CleanBody, Hazel.SendOption.Reliable, -1);
                                     writer.Write(playerInfo.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                                     RPCProcedure.CleanBody(playerInfo.PlayerId);
@@ -1287,7 +1287,7 @@ namespace SuperNewRoles.Buttons
                                 {
                                     GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
 
-                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CleanBody, Hazel.SendOption.Reliable, -1);
+                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CleanBody, Hazel.SendOption.Reliable, -1);
                                     writer.Write(playerInfo.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                                     RPCProcedure.CleanBody(playerInfo.PlayerId);
@@ -1380,11 +1380,11 @@ namespace SuperNewRoles.Buttons
                 {
                     RoleClass.VentMaker.VentCount++;
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.MakeVent);
-                    writer.Write(PlayerControl.LocalPlayer.transform.position.x);
-                    writer.Write(PlayerControl.LocalPlayer.transform.position.y);
-                    writer.Write(PlayerControl.LocalPlayer.transform.position.z);
+                    writer.Write(CachedPlayer.LocalPlayer.transform.position.x);
+                    writer.Write(CachedPlayer.LocalPlayer.transform.position.y);
+                    writer.Write(CachedPlayer.LocalPlayer.transform.position.z);
                     writer.EndRPC();
-                    CustomRPC.RPCProcedure.MakeVent(PlayerControl.LocalPlayer.transform.position.x,PlayerControl.LocalPlayer.transform.position.y,PlayerControl.LocalPlayer.transform.position.z);
+                    CustomRPC.RPCProcedure.MakeVent(CachedPlayer.LocalPlayer.transform.position.x,CachedPlayer.LocalPlayer.transform.position.y,CachedPlayer.LocalPlayer.transform.position.z);
                     GameObject Vent = GameObject.Find("VentMakerVent" + MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max().ToString());
                     RoleClass.VentMaker.Vent = Vent.GetComponent<Vent>();
                     if (RoleClass.VentMaker.VentCount == 2) RoleClass.VentMaker.IsMakeVent = false;
@@ -1482,7 +1482,7 @@ namespace SuperNewRoles.Buttons
             EvilHackerButton = new CustomButton(
                () =>
                {
-                   PlayerControl.LocalPlayer.NetTransform.Halt();
+                   CachedPlayer.LocalPlayer.NetTransform.Halt();
                    Action<MapBehaviour> tmpAction = (MapBehaviour m) => { m.ShowCountOverlay(); };
                    FastDestroyableSingleton<HudManager>.Instance.ShowMap(tmpAction);
 

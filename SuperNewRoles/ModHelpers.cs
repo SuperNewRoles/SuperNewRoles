@@ -100,9 +100,9 @@ namespace SuperNewRoles
             get
             {
                 List<PlayerControl> ps = new List<PlayerControl>();
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.Data.Disconnected) ps.Add(p);
+                    if (!p.Data.Disconnected) ps.Add(p.PlayerControl);
                 }
                 return ps;
             }
@@ -143,7 +143,7 @@ namespace SuperNewRoles
         public static Dictionary<byte, PlayerControl> allPlayersById()
         {
             Dictionary<byte, PlayerControl> res = new Dictionary<byte, PlayerControl>();
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (CachedPlayer player in CachedPlayer.AllPlayers)
                 res.Add(player.PlayerId, player);
             return res;
         }
@@ -300,7 +300,7 @@ namespace SuperNewRoles
 
             List<byte> taskTypeIds = generateTasks(numCommon, numShort, numLong);
 
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetTasks, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetTasks, Hazel.SendOption.Reliable, -1);
             writer.Write(player.PlayerId);
             writer.WriteBytesAndSize(taskTypeIds.ToArray());
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -349,7 +349,7 @@ namespace SuperNewRoles
             {
                 if (tien <= 0)
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
                     writer.Write(killer.PlayerId);
                     writer.Write(target.PlayerId);
                     writer.Write(showAnimation ? byte.MaxValue : 0);
@@ -359,7 +359,7 @@ namespace SuperNewRoles
                 {
                     new LateTask(() =>
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
                         writer.Write(killer.PlayerId);
                         writer.Write(target.PlayerId);
                         writer.Write(showAnimation ? byte.MaxValue : 0);
@@ -372,18 +372,18 @@ namespace SuperNewRoles
         }
         public static void UncheckedMurderPlayer(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
             writer.Write(killer.PlayerId);
             writer.Write(target.PlayerId);
             writer.Write(showAnimation ? byte.MaxValue : 0);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
         }
-        public static void SetPrivateRole(this PlayerControl player, RoleTypes role, PlayerControl seer = null)
+        public static void SetPrivateRole(this CachedPlayer player, RoleTypes role, CachedPlayer seer = null)
         {
             if (player == null) return;
             if (seer == null) seer = player;
-            var clientId = seer.getClientId();
+            var clientId = seer.clientId;
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, Hazel.SendOption.Reliable, clientId);
             writer.Write((ushort)role);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -408,12 +408,18 @@ namespace SuperNewRoles
             else if ((target.isRole(RoleId.NiceScientist) || target.isRole(RoleId.EvilScientist))  && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[target.PlayerId]) return true;
             return false;
         }
+
+        public static Dictionary<string, Sprite> CachedSprites = new Dictionary<string, Sprite>();
+
         public static Sprite loadSpriteFromResources(string path, float pixelsPerUnit)
         {
             try
             {
+                if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
                 Texture2D texture = loadTextureFromResources(path);
-                return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
+                sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
+                sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
+                return CachedSprites[path + pixelsPerUnit] = sprite;
             }
             catch
             {
@@ -505,7 +511,7 @@ namespace SuperNewRoles
 
         public static PlayerControl playerById(byte id)
         {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (CachedPlayer player in CachedPlayer.AllPlayers)
             {
                 if (player.PlayerId == id)
                 {
@@ -515,7 +521,7 @@ namespace SuperNewRoles
             return null;
         }
 
-        public static bool IsCheckListPlayerControl(this List<PlayerControl> ListDate,PlayerControl CheckPlayer)
+        public static bool IsCheckListPlayerControl(this List<PlayerControl> ListDate, PlayerControl CheckPlayer)
         {
             foreach(PlayerControl Player in ListDate)
             {

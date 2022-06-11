@@ -22,7 +22,7 @@ namespace SuperNewRoles.Buttons
                 {
                     return false;
                 }
-                Vector3 vector = PlayerControl.LocalPlayer.transform.position;
+                Vector3 vector = CachedPlayer.LocalPlayer.transform.position;
                 vector /= MapUtilities.CachedShipStatus.MapScale;
                 vector.x *= Mathf.Sign(MapUtilities.CachedShipStatus.transform.localScale.x);
                 vector.z = -1f;
@@ -116,8 +116,8 @@ namespace SuperNewRoles.Buttons
         {
             public static void Postfix(PlayerControl __instance)
             {
-                var ImpostorVentButton = FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton;
-                var ImpostorSabotageButton = FastDestroyableSingleton<HudManager>.Instance.SabotageButton;
+                var ImpostorVentButton = DestroyableSingleton<HudManager>.Instance.ImpostorVentButton;
+                var ImpostorSabotageButton = DestroyableSingleton<HudManager>.Instance.SabotageButton;
 
                 if (PlayerControl.LocalPlayer.IsUseVent())
                 {
@@ -161,7 +161,7 @@ namespace SuperNewRoles.Buttons
             {
                 bool canUse;
                 bool couldUse;
-                __instance.CanUse(PlayerControl.LocalPlayer.Data, out canUse, out couldUse);
+                __instance.CanUse(CachedPlayer.LocalPlayer.Data, out canUse, out couldUse);
                 bool canMoveInVents = !(RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer));
                 if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
@@ -185,7 +185,7 @@ namespace SuperNewRoles.Buttons
             public static bool Prefix(SabotageButton __instance)
             {
                 // The sabotage button behaves just fine if it's a regular impostor
-                if (PlayerControl.LocalPlayer.Data.Role.TeamType == RoleTeamTypes.Impostor) return true;
+                if (CachedPlayer.LocalPlayer.Data.Role.TeamType == RoleTeamTypes.Impostor) return true;
 
                 FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                 return false;

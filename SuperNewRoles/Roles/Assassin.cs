@@ -30,8 +30,8 @@ namespace SuperNewRoles.Roles
             if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
             if (RoleClass.Assassin.TriggerPlayer != null && sourcePlayer.PlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId)
             {
-                var player = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault((_) => chatText.Equals(_.name));
-                if (player == null || player.IsBot()) return;
+                var player = CachedPlayer.AllPlayers.ToArray().ToList().FirstOrDefault((_) => chatText.Equals(_.PlayerControl.name));
+                if (player == null || player.PlayerControl.IsBot()) return;
 
                 Il2CppStructArray<MeetingHud.VoterState> array =
                     new Il2CppStructArray<MeetingHud.VoterState>(

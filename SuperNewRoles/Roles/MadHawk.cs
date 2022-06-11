@@ -39,7 +39,7 @@ namespace SuperNewRoles.Roles
                 {
                     var TimeSpanDate = new TimeSpan(0, 0, 0, (int)10);
                     RoleClass.MadHawk.timer1 = (float)((Roles.RoleClass.MadHawk.Timer2 + TimeSpanDate) - DateTime.Now).TotalSeconds;
-                    PlayerControl.LocalPlayer.transform.localPosition = RoleClass.MadHawk.Postion;
+                    CachedPlayer.LocalPlayer.transform.localPosition = RoleClass.MadHawk.Postion;
                     SuperNewRolesPlugin.Logger.LogInfo(RoleClass.MadHawk.timer1);
                 }
             }

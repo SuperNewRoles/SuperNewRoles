@@ -60,7 +60,7 @@ namespace SuperNewRoles.Mode.Zombie
                         NameChangeTimer -= Time.deltaTime;
                     } else if(NameChangeTimer != -10)
                     {
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             p.RpcSetName("　");
                             if (p.isImpostor())
@@ -69,7 +69,7 @@ namespace SuperNewRoles.Mode.Zombie
                             }
                         }
                         byte BlueIndex = 1;
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             if (!p.IsZombie())
                             {
@@ -100,7 +100,7 @@ namespace SuperNewRoles.Mode.Zombie
                 FixedUpdateTimer = 15;
                 if (NameChangeTimer >= 0f)
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetNamePrivate(string.Format(ModTranslation.getString("ZombieTimerText"), (int)NameChangeTimer + 1));
                     }
@@ -110,7 +110,7 @@ namespace SuperNewRoles.Mode.Zombie
                     foreach (int pint in main.ZombiePlayers)
                     {
                         var p1 = ModHelpers.playerById((byte)pint);
-                        foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             if (!p.IsZombie())
                             {

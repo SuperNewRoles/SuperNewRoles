@@ -31,7 +31,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
         public static void EndMeetingPatch()
         {/*
             //霊界用暗転バグ対処
-            foreach (var pc in PlayerControl.AllPlayerControls)
+            foreach (var pc in CachedPlayer.AllPlayers)
                 if (main.Impostors.Contains(pc.PlayerId) && pc.Data.IsDead) pc.ResetPlayerCam(12.5f);
         }
 		public static void ResetPlayerCam(this PlayerControl pc, float delay = 0f)

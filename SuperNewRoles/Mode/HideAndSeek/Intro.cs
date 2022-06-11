@@ -10,7 +10,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
         public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance) {
             Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
             int ImpostorNum = 0;
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.Data.Role.IsImpostor)
                 {
@@ -23,7 +23,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
         public static void IntroHandler(IntroCutscene __instance) {
             Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
             int ImpostorNum = 0;
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.Data.Role.IsImpostor)
                 {

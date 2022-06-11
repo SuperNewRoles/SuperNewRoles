@@ -29,7 +29,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
         public static void EndMeetingPatch()
         {/*
             //霊界用暗転バグ対処
-            foreach (var pc in PlayerControl.AllPlayerControls)
+            foreach (var pc in CachedPlayer.AllPlayers)
                 if (IsAntiBlackOut(pc) && pc.isDead()) pc.ResetPlayerCam(19f);*/
         }
 		public static bool IsAntiBlackOut(PlayerControl player)

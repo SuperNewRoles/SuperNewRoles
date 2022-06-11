@@ -29,7 +29,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void WinNeutral(List<PlayerControl> players)
         {
             /**
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (players.IsCheckListPlayerControl(p))
                 {
@@ -89,7 +89,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             else if (OnGameEndPatch.EndData == CustomGameOverReason.JackalWin)
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.isRole(RoleId.Jackal)) {
                         p.RpcSetRole(RoleTypes.GuardianAngel);
@@ -207,7 +207,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     int impostorplayer = 0;
                     int egoistplayer = 0;
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.isAlive())
                         {
@@ -268,7 +268,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);

@@ -60,7 +60,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 !MapOption.UseCamera)
                 && !ModeHandler.isMode(ModeId.Default))
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     try
                     {

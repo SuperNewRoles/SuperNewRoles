@@ -27,7 +27,7 @@ namespace SuperNewRoles.Patch
     public class AbilityUpdate {
         public static void Postfix(AbilityButton __instance)
         {
-            if (PlayerControl.LocalPlayer.Data.Role.IsSimpleRole && __instance.commsDown.active)
+            if (CachedPlayer.LocalPlayer.Data.Role.IsSimpleRole && __instance.commsDown.active)
             {
                 __instance.commsDown.SetActive(false);
             }
@@ -56,7 +56,7 @@ namespace SuperNewRoles.Patch
     {
         static void setBasePlayerOutlines()
         {
-            foreach (PlayerControl target in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl target in CachedPlayer.AllPlayers)
             {
                 if (target == null || target.MyRend == null) continue;
                 target.MyRend.material.SetFloat("_Outline", 0f);

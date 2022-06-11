@@ -125,7 +125,7 @@ namespace SuperNewRoles.Buttons {
 
         private void Update()
         {
-            if (PlayerControl.LocalPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton()) {
+            if (CachedPlayer.LocalPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton()) {
                 setActive(false);
                 return;
             }
