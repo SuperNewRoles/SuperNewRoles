@@ -58,7 +58,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 8
             );
 
-            BattleRoyalKillButton.buttonText = HudManager.Instance.KillButton.buttonLabelText.text;
+            BattleRoyalKillButton.buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text;
             BattleRoyalKillButton.showButtonText = true;
         }
     }

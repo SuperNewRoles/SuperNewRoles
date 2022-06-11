@@ -33,9 +33,9 @@ namespace SuperNewRoles.Roles
 
         public static List<PlayerControl> GetUntarget()
         {
-            if (RoleClass.Demon.CurseDatas.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
+            if (RoleClass.Demon.CurseDatas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
             {
-                return RoleClass.Demon.CurseDatas[PlayerControl.LocalPlayer.PlayerId];
+                return RoleClass.Demon.CurseDatas[CachedPlayer.LocalPlayer.PlayerId];
             }
             return new List<PlayerControl>();
         }
@@ -84,7 +84,7 @@ namespace SuperNewRoles.Roles
 
         public static bool IsWin(PlayerControl Demon)
         {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.PlayerId != Demon.PlayerId && !IsCursed(Demon, player))
                 {

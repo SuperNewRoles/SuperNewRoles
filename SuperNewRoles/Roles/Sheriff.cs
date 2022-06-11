@@ -8,7 +8,7 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Roles
-{    
+{
     class Sheriff
     {
         public static void ResetKillCoolDown()

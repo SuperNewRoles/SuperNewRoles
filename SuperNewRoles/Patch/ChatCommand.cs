@@ -44,7 +44,7 @@ namespace SuperNewRoles.Patch
                                 {
                                     PlayerControl.GameOptions.MaxPlayers = LobbyLimit;
                                     DestroyableSingleton<GameStartManager>.Instance.LastPlayerCount = LobbyLimit;
-                                    PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+                                    CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
                                     __instance.AddChat(PlayerControl.LocalPlayer, $"ロビーの最大人数を{LobbyLimit}人に変更しました！");
                                 }
                                 else
@@ -70,7 +70,7 @@ namespace SuperNewRoles.Patch
                             }
 
                             PlayerControl.GameOptions.KillCooldown = settime;
-                            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+                            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
                             __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
                         }
                     }
@@ -85,7 +85,7 @@ namespace SuperNewRoles.Patch
                         if (text.ToLower().Equals("/murder"))
                         {
                             PlayerControl.LocalPlayer.Exiled();
-                            HudManager.Instance.KillOverlay.ShowKillAnimation(PlayerControl.LocalPlayer.Data, PlayerControl.LocalPlayer.Data);
+                            FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(CachedPlayer.LocalPlayer.Data, CachedPlayer.LocalPlayer.Data);
                             handled = true;
                         }
                         else if (text.ToLower().StartsWith("/color "))
@@ -111,7 +111,7 @@ namespace SuperNewRoles.Patch
                     if (handled)
                     {
                         __instance.TextArea.Clear();
-                        HudManager.Instance.Chat.TimeSinceLastMessage = 0f;
+                        FastDestroyableSingleton<HudManager>.Instance.Chat.TimeSinceLastMessage = 0f;
                         __instance.quickChatMenu.ResetGlyphs();
                     }
                 }

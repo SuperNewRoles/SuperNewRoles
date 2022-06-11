@@ -35,9 +35,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
                     PlayerControl.LocalPlayer.RpcSendChat("＊注意(自動送信)＊\nこのMODは、バグ等がたくさん発生します。\nいろいろな重大なバグがあるため、あくまで自己責任でお願いします。");
-                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    foreach (var pc in CachedPlayer.AllPlayers)
                     {
-                        pc.RpcSetRole(RoleTypes.Shapeshifter);
+                        pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
                         SuperNewRolesPlugin.Logger.LogInfo("シェイプシフターセット！");
                     }
                 }
@@ -132,57 +132,57 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (!Player.IsMod())
                 {
-                    Player.RpcSetRoleDesync(crs, RoleTypes.Impostor);
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    Player.RpcSetRoleDesync(RoleTypes.Impostor);
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.PlayerId != Player.PlayerId && p.IsPlayer())
                         {
-                            Player.RpcSetRoleDesync(crs, RoleTypes.Scientist, p);
-                            p.RpcSetRoleDesync(crs, RoleTypes.Scientist, Player);
+                            Player.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, Player);
                         }
                     }
                 }
                 else
                 {
-                    Player.RpcSetRole(crs, RoleTypes.Crewmate);
+                    Player.RpcSetRole(RoleTypes.Crewmate);
                 }
             }
             foreach (PlayerControl Player in DesyncShapeshifters)
             {
                 if (!Player.IsMod())
                 {
-                    Player.RpcSetRoleDesync(crs, RoleTypes.Shapeshifter);
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    Player.RpcSetRoleDesync(RoleTypes.Shapeshifter);
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.PlayerId != Player.PlayerId && p.IsPlayer())
                         {
-                            Player.RpcSetRoleDesync(crs, RoleTypes.Scientist, p);
-                            p.RpcSetRoleDesync(crs, RoleTypes.Scientist, Player);
+                            Player.RpcSetRoleDesync(RoleTypes.Scientist, p);
+                            p.RpcSetRoleDesync(RoleTypes.Scientist, Player);
                         }
                     }
                 }
                 else
                 {
-                    Player.RpcSetRole(crs, RoleTypes.Crewmate);
+                    Player.RpcSetRole(RoleTypes.Crewmate);
                 }
             }
             foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
             {
                 if (!p.IsMod())
                 {
-                    p.RpcSetRole(crs, RoleTypes.Impostor);
-                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                    p.RpcSetRole(RoleTypes.Impostor);
+                    foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                     {
                         if (p2.PlayerId != p.PlayerId && !p.isRole(RoleId.Sheriff) && !p.isRole(RoleId.truelover) && p.IsPlayer())
                         {
-                            p2.RpcSetRoleDesync(crs, RoleTypes.Scientist, p);
+                            p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
                         }
                     }
                 }
                 else
                 {
-                    p.RpcSetRoleDesync(crs, RoleTypes.Crewmate);
-                    p.RpcSetRole(crs, RoleTypes.Impostor);
+                    p.RpcSetRoleDesync(RoleTypes.Crewmate);
+                    p.RpcSetRole(RoleTypes.Impostor);
                 }
                 //p.Data.IsDead = true;
             }
@@ -190,16 +190,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             foreach (PlayerControl p in SetRoleEngineers)
             {
                 if (!p.IsMod()) {
-                    p.RpcSetRole(crs, RoleTypes.Engineer);
+                    p.RpcSetRole(RoleTypes.Engineer);
                 }
             }
             foreach (PlayerControl p in RoleClass.SelfBomber.SelfBomberPlayer)
             {
-                p.RpcSetRole(crs, RoleTypes.Shapeshifter);
+                p.RpcSetRole(RoleTypes.Shapeshifter);
             }
             foreach (PlayerControl p in RoleClass.Samurai.SamuraiPlayer)
             {
-                p.RpcSetRole(crs, RoleTypes.Shapeshifter);
+                p.RpcSetRole(RoleTypes.Shapeshifter);
             }
             return crs;
         }
@@ -207,7 +207,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             AllRoleSetClass.CrewMatePlayers = new List<PlayerControl>();
             AllRoleSetClass.ImpostorPlayers = new List<PlayerControl>();
-            foreach (PlayerControl Player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
                 if (Player.IsPlayer())
                 {

@@ -456,7 +456,7 @@ namespace SuperNewRoles.CustomCosmetics
             {
                 private static bool isTaken(PlayerControl player, uint color)
                 {
-                    foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers)
+                    foreach (GameData.PlayerInfo p in GameData.Instance.AllPlayers.GetFastEnumerator())
                         if (!p.Disconnected && p.PlayerId != player.PlayerId && p.DefaultOutfit.ColorId == color)
                             return true;
                     return false;
