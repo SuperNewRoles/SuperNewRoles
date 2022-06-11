@@ -11,10 +11,13 @@ namespace SuperNewRoles.Patch
     {
         public static float RestrictAdminTime;
         public static float RestrictAdminTimeMax;
-        public static void ClearAndReload()
+    public static void ClearAndReload()
         {
-             RestrictAdminTime = MapOptions.MapOption.CanUseAdminTime.getFloat();
-             RestrictAdminTimeMax = MapOptions.MapOption.CanUseAdminTime.getFloat();
+            ResetData();
+
+            RestrictAdminTime = MapOptions.MapOption.CanUseAdminTime.getFloat();
+            RestrictAdminTimeMax = MapOptions.MapOption.CanUseAdminTime.getFloat();
+            OutOfTime.gameObject.SetActive(false);
         }
 
         public static bool canUseAdmin
