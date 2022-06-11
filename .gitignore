@@ -1,8 +1,9 @@
 *.v2
-SuperNewRoles/obj/Debug/SuperNewRoles.GeneratedMSBuildEditorConfig.editorconfig
+SuperNewRoles/obj/
 SuperNewRoles/bin/
 *.dll
 SuperNewRoles/SuperNewRoles.csproj.user
 .vs/
 SuperNewRoles/obj/*
 .vs/SuperNewRoles/v17/.suo
+SuperNewRoles/obj/Debug/netstandard2.1/SuperNewRoles.GeneratedMSBuildEditorConfig.editorconfig
