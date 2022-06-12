@@ -556,9 +556,10 @@ Amount of tasks that will be able to be checked (of all tasks)
 NiceHawk
 See it all.
 Let's catch the crime.
-Bakery
+Baker
 Would you like some breads?
 Bakery baked some breads for crewmates.
+Bakery baked YOKINGDELICIOUSSSSSSSSS!!!!
 MadStuntman
 Prevent kills and connect with impostors.
 Can prevent himself from being killed
@@ -693,3 +694,4 @@ Reactor Duration Time
 Polus Reactor Duration Time
 Mira Reactor Duration Time
 Airship  Reactor Duration Time
+Adding vitals to Mira
