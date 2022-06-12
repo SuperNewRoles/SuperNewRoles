@@ -689,12 +689,4 @@ RestrictVitalSetting,Vital Restrictions,バイタルの制限
 DeviceTimeSetting,Can use time,使用可能時間
 IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx
 restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnExDelicious,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい
-HauntedWolfName,HauntedWolf,狼憑き
-HauntedWolfTitle1,Don't let the crew find out.,クルーにバレるな
-ReactorDurationSetting,Reactor Duration Time,リアクター継続時間の設定
-PolusReactorTime,Polus Reactor Duration Time,ポーラスでのリアクター時間
-MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間
-AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間
-AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する
-MapRemodelingOptionSetting,Map Remodeling,マップ改造
-AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する
+HauntedWolfName,Ha

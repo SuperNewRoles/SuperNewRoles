@@ -694,6 +694,7 @@ ReactorDurationSetting
 PolusReactorTime
 MiraReactorTime
 AirshipReactorTime
+VentMakerButtonName
 AddVitalsMiraSetting
 MapRemodelingOptionSetting
 AirShipAdditionalVents

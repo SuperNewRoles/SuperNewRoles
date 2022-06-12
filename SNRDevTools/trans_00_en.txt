@@ -694,6 +694,7 @@ Reactor Duration Time
 Polus Reactor Duration Time
 Mira Reactor Duration Time
 Airship  Reactor Duration Time
+Make Vent
 Adding vitals to Mira
 Map Remodeling
 AirShipAdditionalVents
