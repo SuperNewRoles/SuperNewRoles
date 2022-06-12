@@ -11,7 +11,7 @@ namespace SuperNewRoles.MapRemodeling
     public class AdditionalVents
     {
         public Vent vent;
-        public static System.Collections.Generic.List<AdditionalVents> AllVents = new List<AdditionalVents>();
+        public static System.Collections.Generic.List<AdditionalVents> AllVents = new();
         public static bool flag = false;
         public AdditionalVents(Vector3 p)
         {
@@ -59,9 +59,9 @@ namespace SuperNewRoles.MapRemodeling
             if (PlayerControl.GameOptions.MapId == 4 /*&& MapRemodelingOptions.MapRemodelingOption.AirShipAdditionalVents.getBool() && ModeHandler.isMode(ModeId.Default)*/)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("べんとおおおお");
-                AdditionalVents vents1 = new AdditionalVents(new Vector3(23.44f, -5.084f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 診察室
-                AdditionalVents vents2 = new AdditionalVents(new Vector3(24.70f, 4.98f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ラウンジ
-                AdditionalVents vents3 = new AdditionalVents(new Vector3(5.70f, 3.51f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // メイン
+                AdditionalVents vents1 = new (new Vector3(23.44f, -5.084f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 診察室
+                AdditionalVents vents2 = new (new Vector3(24.70f, 4.98f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ラウンジ
+                AdditionalVents vents3 = new (new Vector3(5.70f, 3.51f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // メイン
                 vents1.vent.Right = vents2.vent;
                 vents2.vent.Left = vents1.vent;
                 vents3.vent.Right = vents1.vent; // Vital - Specimen
