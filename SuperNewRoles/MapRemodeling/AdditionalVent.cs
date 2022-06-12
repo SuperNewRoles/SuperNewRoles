@@ -63,11 +63,19 @@ namespace SuperNewRoles.MapRemodeling
                 SuperNewRolesPlugin.Logger.LogInfo("べんとおおおお");
                 AdditionalVents vents1 = new(new Vector3(23.5483f, -5.589f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 診察室
                 AdditionalVents vents2 = new(new Vector3(24.8562f, 5.2692f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ラウンジ
-                AdditionalVents vents3 = new(new Vector3(5.9356f, 3.0133f , PlayerControl.LocalPlayer.transform.position.z + 1f)); // メイン
+                AdditionalVents vents3 = new(new Vector3(5.9356f, 3.0133f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // メイン
                 vents1.vent.Right = vents2.vent;//診察-ラウンジ
                 vents2.vent.Left = vents1.vent;//ラウンジ-診察
                 vents2.vent.Right = vents3.vent;//ラウンジ-メイン
                 vents3.vent.Right = vents2.vent; // メイン-ラウンジ
+
+                AdditionalVents vents4 = new(new Vector3(6.7651f, -10.1689f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // セキュ
+                AdditionalVents vents5 = new(new Vector3(18.1884f, -3.991f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // エレキ
+                AdditionalVents vents6 = new(new Vector3(21.1574f, -1.3543f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // シャワー
+                vents4.vent.Right = vents5.vent;//セキュ-エレキ
+                vents5.vent.Left = vents4.vent;//エレキ-セキュ
+                vents5.vent.Right = vents6.vent;//エレキ-シャワー
+                vents6.vent.Left = vents5.vent;//シャワー-エレキF
             }
         }
 
