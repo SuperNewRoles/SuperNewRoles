@@ -125,7 +125,11 @@ namespace SuperNewRoles.Buttons {
 
         private void Update()
         {
-            if (PlayerControl.LocalPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton()) {
+            var localPlayer = CachedPlayer.LocalPlayer;
+            var moveable = localPlayer.PlayerControl.moveable;
+
+            if (localPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton())
+            {
                 setActive(false);
                 return;
             }
@@ -141,22 +145,18 @@ namespace SuperNewRoles.Buttons {
                 Vector3 pos = hudManager.UseButton.transform.localPosition;
                 if (mirror) pos = new Vector3(-pos.x, pos.y, pos.z);
                 actionButton.transform.localPosition = pos + PositionOffset;
-                actionButton.transform.localScale = LocalScale;
             }
-            bool IsDisabled = false;
             if (CouldUse()) {
                 actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
                 actionButton.graphic.material.SetFloat("_Desat", 0f);
             } else {
                 actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.DisabledClear;
                 actionButton.graphic.material.SetFloat("_Desat", 1f);
-                IsDisabled = true;
             }
 
             if (Timer >= 0) {
-                if (HasEffect && isEffectActive)
-                    Timer -= Time.deltaTime;
-                else if (!PlayerControl.LocalPlayer.inVent && PlayerControl.LocalPlayer.moveable)
+                if ((HasEffect && isEffectActive) || 
+                    (!localPlayer.PlayerControl.inVent && moveable))
                     Timer -= Time.deltaTime;
             }
 
@@ -168,7 +168,7 @@ namespace SuperNewRoles.Buttons {
 
             actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
             // Trigger OnClickEvent if the hotkey is being pressed down
-            if (Input.GetButtonDown(hotkey.Value.ToString()) || ConsoleJoystick.player.GetButtonDown(joystickkey)) onClickEvent();
+            if (hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString()) || ConsoleJoystick.player.GetButtonDown(joystickkey)) onClickEvent();
         }
     }
 

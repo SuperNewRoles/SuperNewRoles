@@ -27,7 +27,7 @@ namespace SuperNewRoles.Patch
             // Don't waste network traffic if we're out of time.
             if (MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.RestrictCamera.getBool() && PlayerControl.LocalPlayer.isAlive())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseCameraTime, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseCameraTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(cameraTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 CustomRPC.RPCProcedure.UseCameraTime(cameraTimer);
@@ -64,12 +64,12 @@ namespace SuperNewRoles.Patch
                     // Add securityGuard cameras
                     page = 0;
                     timer = 0;
-                    if (ShipStatus.Instance.AllCameras.Length > 4 && __instance.FilteredRooms.Length > 0)
+                    if (MapUtilities.CachedShipStatus.AllCameras.Length > 4 && __instance.FilteredRooms.Length > 0)
                     {
-                        __instance.textures = __instance.textures.ToList().Concat(new RenderTexture[ShipStatus.Instance.AllCameras.Length - 4]).ToArray();
-                        for (int i = 4; i < ShipStatus.Instance.AllCameras.Length; i++)
+                        __instance.textures = __instance.textures.ToList().Concat(new RenderTexture[MapUtilities.CachedShipStatus.AllCameras.Length - 4]).ToArray();
+                        for (int i = 4; i < MapUtilities.CachedShipStatus.AllCameras.Length; i++)
                         {
-                            SurvCamera surv = ShipStatus.Instance.AllCameras[i];
+                            SurvCamera surv = MapUtilities.CachedShipStatus.AllCameras[i];
                             Camera camera = UnityEngine.Object.Instantiate<Camera>(__instance.CameraPrefab);
                             camera.transform.SetParent(__instance.transform);
                             camera.transform.position = new Vector3(surv.transform.position.x, surv.transform.position.y, 8f);
@@ -95,7 +95,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (TimeRemaining == null)
                         {
-                            TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskText, __instance.transform);
+                            TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
                             TimeRemaining.alignment = TMPro.TextAlignmentOptions.Center;
                             TimeRemaining.transform.position = Vector3.zero;
                             TimeRemaining.transform.localPosition = new Vector3(0.0f, -1.7f);
@@ -117,7 +117,7 @@ namespace SuperNewRoles.Patch
 
                     // Update normal and securityGuard cameras
                     timer += Time.deltaTime;
-                    int numberOfPages = Mathf.CeilToInt(ShipStatus.Instance.AllCameras.Length / 4f);
+                    int numberOfPages = Mathf.CeilToInt(MapUtilities.CachedShipStatus.AllCameras.Length / 4f);
 
                     bool update = false;
 
@@ -206,7 +206,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (TimeRemaining == null)
                         {
-                            TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskText, __instance.transform);
+                            TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
                             TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
                             TimeRemaining.transform.position = Vector3.zero;
                             TimeRemaining.transform.localPosition = new Vector3(0.95f, 4.45f);
@@ -277,7 +277,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (TimeRemaining == null)
                         {
-                            TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskText, __instance.transform);
+                            TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
                             TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
                             TimeRemaining.transform.position = Vector3.zero;
                             TimeRemaining.transform.localPosition = new Vector3(1.0f, 4.25f);

@@ -22,9 +22,9 @@ namespace SuperNewRoles.Buttons
             Roles.EvilSpeedBooster.ResetSpeed();
             Roles.Lighter.LightOutEnd();
             Camera.main.orthographicSize = RoleClass.Hawk.Default;
-            HudManager.Instance.UICamera.orthographicSize = RoleClass.Hawk.Default;
+            FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize = RoleClass.Hawk.Default;
             Camera.main.orthographicSize = RoleClass.NiceHawk.Default;
-            HudManager.Instance.UICamera.orthographicSize = RoleClass.NiceHawk.Default;
+            FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize = RoleClass.NiceHawk.Default;
         }
     }
 }

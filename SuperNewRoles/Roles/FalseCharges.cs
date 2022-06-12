@@ -22,17 +22,17 @@ namespace SuperNewRoles.Roles
                         if (RoleClass.FalseCharges.Turns <= 0) return;
                         if (exiled.PlayerId == RoleClass.FalseCharges.FalseChargePlayer)
                         {
-                            CustomRPC.RPCProcedure.ShareWinner(PlayerControl.LocalPlayer.PlayerId);
+                            CustomRPC.RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
 
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
-                            Writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             if (AmongUsClient.Instance.AmHost)
                             {
                                 CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.FalseChargesWin, false);
                             } else
                             {
-                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                                 writer.Write((byte)CustomGameOverReason.FalseChargesWin);
                                 writer.Write(false);
                                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -54,7 +54,7 @@ namespace SuperNewRoles.Roles
                             {
                                 try
                                 {
-                                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                                     {
                                         if (!p.Data.Disconnected && p.PlayerId != data.Key)
                                         {
@@ -81,7 +81,7 @@ namespace SuperNewRoles.Roles
                                 {
                                     SuperNewRolesPlugin.Logger.LogInfo("[SHR]冤罪師WrapUpエラー:" + e);
                                 }
-                                EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByVote, false);
+                                EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByVote, false);
                             }
                         }
                     }

@@ -104,7 +104,7 @@ namespace SuperNewRoles.EndGame
                 UnityEngine.Object.Destroy(pb.gameObject);
             }
             int num = Mathf.CeilToInt(7.5f);
-            List<WinningPlayerData> list = TempData.winners.ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
+            List<WinningPlayerData> list = TempData.winners.GetFastEnumerator().ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
             {
                 if (!b.IsYou)
                 {
@@ -311,7 +311,7 @@ namespace SuperNewRoles.EndGame
             }
             else if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.isAlive())
                     {
@@ -447,7 +447,7 @@ namespace SuperNewRoles.EndGame
         public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
             AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 try
                 {
@@ -463,12 +463,12 @@ namespace SuperNewRoles.EndGame
             if (AmongUsClient.Instance.AmHost && (ModeHandler.isMode(ModeId.SuperHostRoles) || ModeHandler.isMode(ModeId.Zombie)))
             {
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
-                PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
             }
             var gameOverReason = AdditionalTempData.gameOverReason;
             AdditionalTempData.clear();
 
-            foreach (var p in GameData.Instance.AllPlayers)
+            foreach (var p in GameData.Instance.AllPlayers.GetFastEnumerator())
             {
                 if (p.Object.IsPlayer())
                 {
@@ -708,7 +708,7 @@ namespace SuperNewRoles.EndGame
                 AdditionalTempData.winCondition = WinCondition.VultureWin;
             }
 
-            if (TempData.winners.ToArray().Any(x => x.IsImpostor))
+            if (TempData.winners.GetFastEnumerator().ToArray().Any(x => x.IsImpostor))
             {
                 foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
                 {
@@ -770,7 +770,7 @@ namespace SuperNewRoles.EndGame
                 }
                 else
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.isAlive())
                         {
@@ -851,7 +851,7 @@ namespace SuperNewRoles.EndGame
             else if (BUGEND)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.isImpostor() || p.isRole(CustomRPC.RoleId.Jackal) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(p) || p.isRole(CustomRPC.RoleId.JackalFriends) || p.isRole(CustomRPC.RoleId.SeerFriends) || p.isRole(CustomRPC.RoleId.MayorFriends))
                     {
@@ -906,7 +906,7 @@ namespace SuperNewRoles.EndGame
                 if (gameOverReason == GameOverReason.ImpostorByKill)
                 {
                     AdditionalTempData.winCondition = WinCondition.Default;
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.CurrentOutfit.ColorId == 2)
                         {
@@ -917,7 +917,7 @@ namespace SuperNewRoles.EndGame
                 }
                 else
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         AdditionalTempData.winCondition = WinCondition.WorkpersonWin;
                         if (p.CurrentOutfit.ColorId == 1)
@@ -931,7 +931,7 @@ namespace SuperNewRoles.EndGame
             if (HAISON)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.IsPlayer())
                     {
@@ -1159,7 +1159,7 @@ namespace SuperNewRoles.EndGame
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);

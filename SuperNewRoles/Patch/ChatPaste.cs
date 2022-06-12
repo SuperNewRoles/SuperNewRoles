@@ -8,23 +8,23 @@ namespace SuperNewRoles.Patch
         {
             static void Postfix()
             {
-                if (HudManager.Instance.Chat.IsOpen && SaveManager.chatModeType == 1)
+                if (FastDestroyableSingleton<HudManager>.Instance.Chat.IsOpen && SaveManager.chatModeType == 1)
                 {
                     if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.V))
                     {
-                        HudManager.Instance.Chat.TextArea.SetText(HudManager.Instance.Chat.TextArea.text + GUIUtility.systemCopyBuffer);
-                        HudManager.Instance.Chat.quickChatMenu.ResetGlyphs();
+                        FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.SetText(FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.text + GUIUtility.systemCopyBuffer);
+                        FastDestroyableSingleton<HudManager>.Instance.Chat.quickChatMenu.ResetGlyphs();
                     }
                     if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.X))
                     {
-                        GUIUtility.systemCopyBuffer = HudManager.Instance.Chat.TextArea.text;
-                        HudManager.Instance.Chat.TextArea.Clear();
-                        HudManager.Instance.Chat.quickChatMenu.ResetGlyphs();
+                        GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.text;
+                        FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.Clear();
+                        FastDestroyableSingleton<HudManager>.Instance.Chat.quickChatMenu.ResetGlyphs();
                     }
                     if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.C))
                     {
-                        GUIUtility.systemCopyBuffer = HudManager.Instance.Chat.TextArea.text;
-                        HudManager.Instance.Chat.quickChatMenu.ResetGlyphs();
+                        GUIUtility.systemCopyBuffer = FastDestroyableSingleton<HudManager>.Instance.Chat.TextArea.text;
+                        FastDestroyableSingleton<HudManager>.Instance.Chat.quickChatMenu.ResetGlyphs();
                     }
                 }
             }

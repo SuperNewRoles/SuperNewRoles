@@ -34,7 +34,7 @@ namespace SuperNewRoles
         public static PlayerControl Spawn(string name = "Bot", byte BotPlayerId = 1)
         {
             byte id = 0;
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.PlayerId > id)
                 {

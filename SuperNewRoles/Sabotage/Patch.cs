@@ -17,7 +17,7 @@ namespace SuperNewRoles.Sabotage
         {
             public static void Prefix(HudManager __instance)
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     p.resetChange();
                 }
@@ -29,7 +29,7 @@ namespace SuperNewRoles.Sabotage
             public static void Postfix(InfectedOverlay __instance)
             {
                 SabotageManager.InfectedOverlayInstance = __instance;
-                //SuperNewRolesPlugin.Logger.LogInfo("ローカルの座標:"+PlayerControl.LocalPlayer.transform.position);
+                //SuperNewRolesPlugin.Logger.LogInfo("ローカルの座標:"+CachedPlayer.LocalPlayer.transform.position);
             }
         }
         [HarmonyPatch(typeof(InfectedOverlay), nameof(InfectedOverlay.Start))]
@@ -52,7 +52,7 @@ namespace SuperNewRoles.Sabotage
                 {
                     __instance.state = 2;
                     __instance.ButtonActive = false;
-                    __instance.StatusText.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.EmergencyDuringCrisis);
+                    __instance.StatusText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.EmergencyDuringCrisis);
                     __instance.NumberText.text = string.Empty;
                     __instance.ClosedLid.gameObject.SetActive(true);
                     __instance.OpenLid.gameObject.SetActive(false);

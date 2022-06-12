@@ -34,7 +34,7 @@ namespace SuperNewRoles.Buttons
 
             float durationtime;
             float cooltime;
-            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
             {
                 durationtime = RoleClass.EvilScientist.DurationTime;
                 cooltime = RoleClass.EvilScientist.CoolTime;
@@ -106,7 +106,7 @@ namespace SuperNewRoles.Buttons
                 Roles.RoleClass.Doorr.ButtonTimer = DateTime.Now;
             }
             TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Doorr.CoolTime);
-            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
             {
                 TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.EvilDoorr.CoolTime);
             }

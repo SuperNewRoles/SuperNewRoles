@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetCoolDown()
         {
-            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
             {
                 HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.EvilDoorr.CoolTime;
             } else
@@ -53,9 +53,9 @@ namespace SuperNewRoles.Roles
         }
         private static PlainDoor GetDoor()
         {
-            Vector3 position = PlayerControl.LocalPlayer.transform.position;
+            Vector3 position = CachedPlayer.LocalPlayer.transform.position;
             List<PlainDoor> selectdoors = new List<PlainDoor>();
-            foreach (PlainDoor door in ShipStatus.Instance.AllDoors)
+            foreach (PlainDoor door in MapUtilities.CachedShipStatus.AllDoors)
             {
                 var getispos = IsPos(position, door, 2);
                 if (getispos != 0)
@@ -85,7 +85,7 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
             {
                 HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.EvilDoorr.CoolTime;
             } else

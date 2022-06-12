@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles
     {
         public static bool IsTarget(){
             /**
-            Vector3 position = PlayerControl.LocalPlayer.transform.position;
+            Vector3 position = CachedPlayer.LocalPlayer.transform.position;
             Vector3 SamplePos = RoleClass.Researcher.SamplePosition;
             int r = 1;
             if ((position.x + r >= SamplePos.x) && (SamplePos.x >= position.x - r))
@@ -34,7 +34,7 @@ namespace SuperNewRoles.Roles
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 if (!RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer)) return;
 
-                Vector3 position = PlayerControl.LocalPlayer.transform.position;
+                Vector3 position = CachedPlayer.LocalPlayer.transform.position;
                 Vector3 SamplePos = RoleClass.Researcher.SamplePosition;
                 SuperNewRolesPlugin.Logger.LogInfo("pos:"+position);
                 SuperNewRolesPlugin.Logger.LogInfo("Samplepos:"+SamplePos);
@@ -57,7 +57,7 @@ namespace SuperNewRoles.Roles
             {
                 if (IsTarget())
                 {
-                    HudManager.Instance.UseButton.SetEnabled();
+                    FastDestroyableSingleton<HudManager>.Instance.UseButton.SetEnabled();
                 }
             }
         }

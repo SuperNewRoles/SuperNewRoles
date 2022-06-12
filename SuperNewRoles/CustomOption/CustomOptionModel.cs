@@ -134,9 +134,9 @@ namespace SuperNewRoles.CustomOption
 
         public static void ShareOptionSelections()
         {
-            if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null) return;
+            if (CachedPlayer.AllPlayers.Count <= 1 || AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null) return;
 
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareOptions, Hazel.SendOption.Reliable);
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareOptions, Hazel.SendOption.Reliable);
             messageWriter.WritePacked((uint)CustomOption.options.Count);
             foreach (CustomOption option in CustomOption.options)
             {
@@ -768,7 +768,7 @@ namespace SuperNewRoles.CustomOption
             __instance.settings.Length = 0;
             try
             {
-                __instance.settings.AppendLine(DestroyableSingleton<TranslationController>.Instance.GetString(__instance.isDefaults ? StringNames.GameRecommendedSettings : StringNames.GameCustomSettings));
+                __instance.settings.AppendLine(FastDestroyableSingleton<TranslationController>.Instance.GetString(__instance.isDefaults ? StringNames.GameRecommendedSettings : StringNames.GameCustomSettings));
                 int num = 0;
                 try
                 {
@@ -781,10 +781,10 @@ namespace SuperNewRoles.CustomOption
                 int num2 = ((__instance.MapId == 0 && Constants.ShouldFlipSkeld()) ? 3 : __instance.MapId);
                 string value = Constants.MapNames[num2];
                 __instance.AppendItem(__instance.settings, StringNames.GameMapName, value);
-                __instance.settings.Append($"{DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameNumImpostors)}: {__instance.NumImpostors}");
+                __instance.settings.Append($"{FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameNumImpostors)}: {__instance.NumImpostors}");
                 if (__instance.NumImpostors > num)
                 {
-                    __instance.settings.Append($" ({DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Limit)}: {num})");
+                    __instance.settings.Append($" ({FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Limit)}: {num})");
                 }
                 __instance.settings.AppendLine();
                 if (__instance.gameType == GameType.Normal)
@@ -792,22 +792,22 @@ namespace SuperNewRoles.CustomOption
                     __instance.AppendItem(__instance.settings, StringNames.GameConfirmImpostor, __instance.ConfirmImpostor);
                     __instance.AppendItem(__instance.settings, StringNames.GameNumMeetings, __instance.NumEmergencyMeetings);
                     __instance.AppendItem(__instance.settings, StringNames.GameAnonymousVotes, __instance.AnonymousVotes);
-                    __instance.AppendItem(__instance.settings, StringNames.GameEmergencyCooldown, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.EmergencyCooldown));
-                    __instance.AppendItem(__instance.settings, StringNames.GameDiscussTime, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.DiscussionTime));
+                    __instance.AppendItem(__instance.settings, StringNames.GameEmergencyCooldown, string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.EmergencyCooldown));
+                    __instance.AppendItem(__instance.settings, StringNames.GameDiscussTime, string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.DiscussionTime));
                     if (__instance.VotingTime > 0)
                     {
-                        __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.VotingTime));
+                        __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.VotingTime));
                     }
                     else
                     {
-                        __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev, "∞"));
+                        __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev, "∞"));
                     }
                     __instance.AppendItem(__instance.settings, StringNames.GamePlayerSpeed, __instance.PlayerSpeedMod, "x");
                     __instance.AppendItem(__instance.settings, StringNames.GameCrewLight, __instance.CrewLightMod, "x");
                     __instance.AppendItem(__instance.settings, StringNames.GameImpostorLight, __instance.ImpostorLightMod, "x");
-                    __instance.AppendItem(__instance.settings, StringNames.GameKillCooldown, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.KillCooldown));
-                    __instance.AppendItem(__instance.settings, StringNames.GameKillDistance, DestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(204 + __instance.KillDistance)));
-                    __instance.AppendItem(__instance.settings, StringNames.GameTaskBarMode, DestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(277 + __instance.TaskBarMode)));
+                    __instance.AppendItem(__instance.settings, StringNames.GameKillCooldown, string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.KillCooldown));
+                    __instance.AppendItem(__instance.settings, StringNames.GameKillDistance, FastDestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(204 + __instance.KillDistance)));
+                    __instance.AppendItem(__instance.settings, StringNames.GameTaskBarMode, FastDestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(277 + __instance.TaskBarMode)));
                     __instance.AppendItem(__instance.settings, StringNames.GameVisualTasks, __instance.VisualTasks);
                     __instance.AppendItem(__instance.settings, StringNames.GameCommonTasks, __instance.NumCommonTasks);
                     __instance.AppendItem(__instance.settings, StringNames.GameLongTasks, __instance.NumLongTasks);
@@ -819,7 +819,7 @@ namespace SuperNewRoles.CustomOption
                         {
                             if (roleBehaviour.Role != 0 && roleBehaviour.Role != RoleTypes.Impostor)
                             {
-                                __instance.AppendItem(__instance.settings, DestroyableSingleton<TranslationController>.Instance.GetString(roleBehaviour.StringName) + ": " + string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.RoleChanceAndQuantity), __instance.RoleOptions.GetNumPerGame(roleBehaviour.Role), __instance.RoleOptions.GetChancePerGame(roleBehaviour.Role)));
+                                __instance.AppendItem(__instance.settings, FastDestroyableSingleton<TranslationController>.Instance.GetString(roleBehaviour.StringName) + ": " + string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.RoleChanceAndQuantity), __instance.RoleOptions.GetNumPerGame(roleBehaviour.Role), __instance.RoleOptions.GetChancePerGame(roleBehaviour.Role)));
                             }
                         }
                     }

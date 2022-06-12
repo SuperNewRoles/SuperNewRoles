@@ -26,8 +26,8 @@ namespace SuperNewRoles.Mode.Werewolf
         {
             PlayerControl.GameOptions.KillCooldown = -1;
             PlayerControl.GameOptions.DiscussionTime = 0;
-            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 p.getDefaultName();
             }
@@ -48,10 +48,10 @@ namespace SuperNewRoles.Mode.Werewolf
             new LateTask(() => {
                 IsDiscussion = true;
                 PlayerControl.GameOptions.VotingTime = DiscussionTime;
-                PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
-                MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.Data);
-                DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
-                PlayerControl.LocalPlayer.RpcStartMeeting(PlayerControl.LocalPlayer.Data);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
+                MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, CachedPlayer.LocalPlayer.Data);
+                FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
+                PlayerControl.LocalPlayer.RpcStartMeeting(CachedPlayer.LocalPlayer.Data);
             }, 20, "DiscussionStartMeeting");
         }
         public static void Wrapup(GameData.PlayerInfo exiled)
@@ -127,10 +127,10 @@ namespace SuperNewRoles.Mode.Werewolf
                     }
                     catch
                     {
-                        target = PlayerControl.LocalPlayer.Data;
+                        target = CachedPlayer.LocalPlayer.Data;
                     }
                     MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, target);
-                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
+                    FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcStartMeeting(target);
                     PlayerControl.LocalPlayer.RpcSetName("今回は会議タイムです。");
                     SetDefaultName();
@@ -148,7 +148,7 @@ namespace SuperNewRoles.Mode.Werewolf
             {
                 new LateTask(() => {
                     MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer,null);
-                    DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
+                    FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcStartMeeting(null);
                     PlayerControl.LocalPlayer.RpcSetName("今回は能力使用タイムです。");
                 }, 11, "AbilityStartMeeting");
@@ -157,7 +157,7 @@ namespace SuperNewRoles.Mode.Werewolf
                     PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
                 }, 5, "NameChangeMeeting");
             }
-            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
         }
     }
 }

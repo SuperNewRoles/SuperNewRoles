@@ -33,6 +33,7 @@ namespace SuperNewRoles.Roles
 
         public static void ClearAndReloadRoles()
         {
+            RoleHelpers.DeadCaches = new Dictionary<byte, bool>();
             LateTask.Tasks = new List<LateTask>();
             LateTask.AddTasks = new List<LateTask>();
             BotManager.AllBots = new List<PlayerControl>();
@@ -505,7 +506,7 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.ShielderCoolTime.getFloat();
                 DurationTime = CustomOptions.ShielderDurationTime.getFloat();
                 IsShield = new Dictionary<byte, bool>();
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls) RoleClass.Shielder.IsShield[p.PlayerId] = false;
+                foreach (PlayerControl p in CachedPlayer.AllPlayers) RoleClass.Shielder.IsShield[p.PlayerId] = false;
             }
         }
         public static class Freezer
@@ -653,7 +654,7 @@ namespace SuperNewRoles.Roles
                 DownImpoVision = CustomOptions.ClergymanDownVision.getFloat();
                 DefaultImpoVision = PlayerControl.GameOptions.ImpostorLightMod;
                 OldButtonTimer = DateTime.Now;
-                OldButtonTime = Clergyman.DurationTime;
+                OldButtonTime = 0;
             }
         }
         public static class MadMate
@@ -946,7 +947,7 @@ namespace SuperNewRoles.Roles
             public static Sprite getVitalsSprite()
             {
                 if (VitalSprite) return VitalSprite;
-                VitalSprite = HudManager.Instance.UseButton.fastUseSettings[ImageNames.VitalsButton].Image;
+                VitalSprite = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.VitalsButton].Image;
                 return VitalSprite;
             }
             public static void ClearAndReload()
@@ -1040,7 +1041,7 @@ namespace SuperNewRoles.Roles
                 Timer = 0;
                 ButtonTimer = DateTime.Now;
                 CameraDefault = Camera.main.orthographicSize;
-                Default = HudManager.Instance.UICamera.orthographicSize;
+                Default = FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize;
             }
         }
         public static class Egoist
@@ -1445,7 +1446,7 @@ namespace SuperNewRoles.Roles
                 Timer = 0;
                 ButtonTimer = DateTime.Now;
                 CameraDefault = Camera.main.orthographicSize;
-                Default = HudManager.Instance.UICamera.orthographicSize;
+                Default = FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize;
                 Postion = new Vector3(0, 0, 0);
                 timer1 = 0;
                 Timer2 = DateTime.Now;
@@ -1502,7 +1503,7 @@ namespace SuperNewRoles.Roles
                 Timer = 0;
                 ButtonTimer = DateTime.Now;
                 CameraDefault = Camera.main.orthographicSize;
-                Default = HudManager.Instance.UICamera.orthographicSize;
+                Default = FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize;
                 Postion = new Vector3(0, 0, 0);
                 timer1 = 0;
                 Timer2 = DateTime.Now;
@@ -2177,10 +2178,10 @@ namespace SuperNewRoles.Roles
             {
                 if (buttonSprite) return buttonSprite;
                 byte mapId = PlayerControl.GameOptions.MapId;
-                UseButtonSettings button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
-                if (mapId == 0 || mapId == 3) button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
-                else if (mapId == 1) button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
-                else if (mapId == 4) button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
+                UseButtonSettings button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
+                if (mapId == 0 || mapId == 3) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
+                else if (mapId == 1) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
+                else if (mapId == 4) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
                 buttonSprite = button.Image;
                 return buttonSprite; //GMHからの引用
             }
@@ -2225,5 +2226,4 @@ namespace SuperNewRoles.Roles
         }
     }
 }
-
 

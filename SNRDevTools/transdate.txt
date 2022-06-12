@@ -43,7 +43,7 @@ colorPitchgreen,Pitch green,真っ緑
 colorPitchyellow,Pitch yellow,真っ黄色
 colorBackblue,Back blue,影青
 colorMildpurple,Mild purple,穏やかな紫
-colorAshishreddishpurplecolor,Ashish reddish purple color,灰みの赤紫系の色 
+colorAshishreddishpurplecolor,Ashish reddish purple color,灰みの赤紫系の色
 colorMelon,Melon,メロン
 colorCrasyublue,Crasyu Blue,クラッシュブルー
 colorLightgreen,Light Green,ライトグリーン
@@ -482,7 +482,7 @@ EvilEraserTitle1,Let's wipe out their abilities.,能力を消し去ろう
 EvilEraserMaxCountSetting,Max Erase Count,最大削除回数
 WorkpersonName,Work person,仕事人
 WorkpersonTitle1,Let's do the work and win!,仕事をして勝利しよう
-WorkpersonDescription,Wins if you finish the task,タスクを終わらせることで勝利できます。 
+WorkpersonDescription,Wins if you finish the task,タスクを終わらせることで勝利できます。
 WorkpersonIsAliveWinSetting,You have to be alive to win,生存していないと勝利できない
 MagazinerName,Magaziner,マガジナー
 MagazinerTitle1,Save your kills!,キルを貯めよう
