@@ -132,12 +132,16 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption CanUseCameraTime;
         public static CustomOption.CustomOption RestrictVital;
         public static CustomOption.CustomOption CanUseVitalTime;
+
         public static CustomOption.CustomOption AddVitalsMira;
 
         public static CustomOption.CustomOption ReactorDurationOption;
         public static CustomOption.CustomOption PolusReactorTimeLimit;
         public static CustomOption.CustomOption MiraReactorTimeLimit;
         public static CustomOption.CustomOption AirshipReactorTimeLimit;
+
+        public static CustomOption.CustomOption MapRemodelingOption;
+        public static CustomOption.CustomOption AirShipAdditionalVents;
 
         public static void LoadOption()
         {
@@ -180,6 +184,9 @@ namespace SuperNewRoles.MapOptions
             AirshipReactorTimeLimit = CustomOption.CustomOption.Create(524, true, CustomOptionType.Generic, "AirshipReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
 
             AddVitalsMira = CustomOption.CustomOption.Create(520, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MapOptionSetting);
+
+            MapRemodelingOption = CustomOption.CustomOption.Create(521, false, CustomOptionType.Generic, "MapRemodelingOptionSetting", false, MapOptionSetting);
+            AirShipAdditionalVents = CustomOption.CustomOption.Create(522, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, MapRemodelingOption);
 
         }
     }
