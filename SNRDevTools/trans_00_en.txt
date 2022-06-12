@@ -685,3 +685,4 @@ Admin Restrictions
 Camera Restrictions
 Vital Restrictions
 Can use time
+Adding vitals to Mira

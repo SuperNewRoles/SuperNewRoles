@@ -130,6 +130,7 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption CanUseCameraTime;
         public static CustomOption.CustomOption RestrictVital;
         public static CustomOption.CustomOption CanUseVitalTime;
+        public static CustomOption.CustomOption AddVitalsMira;
 
         public static void LoadOption()
         {
@@ -159,6 +160,8 @@ namespace SuperNewRoles.MapOptions
             CanUseCameraTime = CustomOption.CustomOption.Create(517, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictCamera);
             RestrictVital = CustomOption.CustomOption.Create(518, false, CustomOptionType.Generic, "RestrictVitalSetting", true, RestrictDevicesOption);
             CanUseVitalTime = CustomOption.CustomOption.Create(519, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictVital);
+
+            AddVitalsMira = CustomOption.CustomOption.Create(520, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MapOptionSetting);
         }
     }
 }
