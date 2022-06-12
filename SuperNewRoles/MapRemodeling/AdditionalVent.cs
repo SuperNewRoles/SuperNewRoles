@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using SuperNewRoles.Mode;
-//using SuperNewRoles.MapRemodelingOptions;
+using SuperNewRoles.MapOptions;
 
 //参考=>https://github.com/haoming37/TheOtherRoles-GM-Haoming/blob/haoming-main/TheOtherRoles/Objects/AdditionalVents.cs
 
@@ -56,7 +56,7 @@ namespace SuperNewRoles.MapRemodeling
             }*/
 
             // AirShipにベントを追加する
-            if (PlayerControl.GameOptions.MapId == 4 /*&& MapRemodelingOptions.MapRemodelingOption.AirShipAdditionalVents.getBool() && ModeHandler.isMode(ModeId.Default)*/)
+            if (PlayerControl.GameOptions.MapId == 4 && MapOptions.MapOption.AirShipAdditionalVents.getBool())
             {
                 SuperNewRolesPlugin.Logger.LogInfo("べんとおおおお");
                 AdditionalVents vents1 = new (new Vector3(23.44f, -5.084f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 診察室
