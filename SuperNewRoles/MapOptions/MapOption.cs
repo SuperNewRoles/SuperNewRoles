@@ -62,6 +62,9 @@ namespace SuperNewRoles.MapOptions
                 }
                 UseDeadBodyReport = !NotUseReportDeadBody.getBool();
                 UseMeetingButton = !NotUseMeetingButton.getBool();
+                SuperNewRoles.Patch.AdminPatch.ClearAndReload();
+                SuperNewRoles.Patch.CameraPatch.ClearAndReload();
+                SuperNewRoles.Patch.VitalsPatch.ClearAndReload();
             }
             else
             {
@@ -165,18 +168,13 @@ namespace SuperNewRoles.MapOptions
             //RM??��?��??��?��RandomMap??��?��̗�??��?��ł�()
 
             RestrictDevicesOption = CustomOption.CustomOption.Create(513, false, CustomOptionType.Generic, "RestrictDevicesSetting", true, MapOptionSetting);
-            RestrictAdmin = CustomOption.CustomOption.Create(514, false, CustomOptionType.Generic, "RestrictAdminSetting", true, RestrictDevicesOption);
-            CanUseAdminTime = CustomOption.CustomOption.Create(515, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictAdmin);
-            RestrictCamera = CustomOption.CustomOption.Create(516, false, CustomOptionType.Generic, "RestrictCameraSetting", true, RestrictDevicesOption);
-            CanUseCameraTime = CustomOption.CustomOption.Create(517, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictCamera);
-            RestrictVital = CustomOption.CustomOption.Create(518, false, CustomOptionType.Generic, "RestrictVitalSetting", true, RestrictDevicesOption);
-            CanUseVitalTime = CustomOption.CustomOption.Create(519, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictVital);
+            RestrictAdmin = CustomOption.CustomOption.Create(514, false, CustomOptionType.Generic, "RestrictAdminSetting", false, RestrictDevicesOption);
             IsYkundesuBeplnEx = CustomOption.CustomOption.Create(515, false, CustomOptionType.Generic, "IsYkundesuBeplnExSetting", false, RestrictAdmin);
-            CanUseAdminTime = CustomOption.CustomOption.Create(516, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictAdmin);
-            RestrictCamera = CustomOption.CustomOption.Create(517, false, CustomOptionType.Generic, "RestrictCameraSetting", true, RestrictDevicesOption);
-            CanUseCameraTime = CustomOption.CustomOption.Create(518, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictCamera);
-            RestrictVital = CustomOption.CustomOption.Create(519, false, CustomOptionType.Generic, "RestrictVitalSetting", true, RestrictDevicesOption);
-            CanUseVitalTime = CustomOption.CustomOption.Create(526, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 60f, 1f, RestrictVital);
+            CanUseAdminTime = CustomOption.CustomOption.Create(516, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 300f, 2.5f, RestrictAdmin);
+            RestrictCamera = CustomOption.CustomOption.Create(517, false, CustomOptionType.Generic, "RestrictCameraSetting", false, RestrictDevicesOption);
+            CanUseCameraTime = CustomOption.CustomOption.Create(518, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 300f, 2.5f, RestrictCamera);
+            RestrictVital = CustomOption.CustomOption.Create(519, false, CustomOptionType.Generic, "RestrictVitalSetting", false, RestrictDevicesOption);
+            CanUseVitalTime = CustomOption.CustomOption.Create(526, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 300f, 2.5f, RestrictVital);
 
             ReactorDurationOption = CustomOption.CustomOption.Create(521, true, CustomOptionType.Generic, "ReactorDurationSetting", false, MapOptionSetting);
             PolusReactorTimeLimit = CustomOption.CustomOption.Create(522, true, CustomOptionType.Generic, "PolusReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
