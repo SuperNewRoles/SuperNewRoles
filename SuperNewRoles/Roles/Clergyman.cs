@@ -32,12 +32,12 @@ namespace SuperNewRoles.Roles
         }
         public static void LightOutStart()
         {
-            MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCClergymanLightOut, Hazel.SendOption.Reliable, -1);
+            MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCClergymanLightOut, Hazel.SendOption.Reliable, -1);
             RPCWriter.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
         }
         public static bool IsLightOutVision() {
-            if (!(RoleClass.Clergyman.OldButtonTime > 0)) return false;
+            if (RoleClass.Clergyman.OldButtonTime <= 0) return false;
             if (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor) return true;
             if (CountChanger.IsChangeMadmate(PlayerControl.LocalPlayer)) return true;
             if (CountChanger.IsChangeMadMayor(PlayerControl.LocalPlayer)) return true;

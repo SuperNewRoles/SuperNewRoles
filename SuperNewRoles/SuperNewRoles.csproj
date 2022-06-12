@@ -4,7 +4,7 @@
         <Version>1.2.3.0</Version>
         <Description>SuperNewRoles</Description>
         <Authors>ykundesu</Authors>
-     	<AmongUs Condition=" '$(AmongUs)' == '' ">C:/Program Files/Epic Games/AmongUs_mymod</AmongUs>
+        <AmongUs Condition=" '$(AmongUs)' == '' ">C:/Program Files/Epic Games/AmongUs_mymod</AmongUs>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -17,16 +17,16 @@
 
     <ItemGroup>
         <EmbeddedResource Include="Resources\CustomHats\*.png" />
-		<EmbeddedResource Include="Resources\*.png" />
-		<EmbeddedResource Include="Resources\Agartha\*.png" />
-		<EmbeddedResource Include="Resources\*.json" />
+        <EmbeddedResource Include="Resources\*.png" />
+        <EmbeddedResource Include="Resources\Agartha\*.png" />
+        <EmbeddedResource Include="Resources\*.json" />
         <EmbeddedResource Include="Resources\TricksterAnimation\*.png" />
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
-        <Reference Include="$(AmongUs)/BepInEx/unhollowed/*.dll" />
-    </ItemGroup>
+		<Reference Include="$(AmongUs)/BepInEx/core/*.dll" />
+		<Reference Include="$(AmongUs)/BepInEx/unhollowed/*.dll" />
+	</ItemGroup>
 
     <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
         <Message Text="Second occurrence" />

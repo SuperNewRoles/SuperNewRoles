@@ -18,8 +18,12 @@ namespace SuperNewRoles.Patch
                 return SubmergedCompatibility.GetSubmergedNeutralLightRadius(isImpostor);
             }
 
-            if (Clergyman.IsLightOutVision() && isImpostor) return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
-            if (isImpostor) return shipStatus.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
+            if (Clergyman.IsLightOutVision() && isImpostor) {
+                return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision; 
+            }
+            if (isImpostor) {
+                return shipStatus.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod; 
+            }
 
             SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             float lerpValue = switchSystem.Value / 255f;
@@ -39,7 +43,7 @@ namespace SuperNewRoles.Patch
         }
         public static bool Prefix(ref float __result, ShipStatus __instance, [HarmonyArgument(0)] GameData.PlayerInfo player)
         {
-            if (!__instance.Systems.ContainsKey(SystemTypes.Electrical)) return true;
+            //if (!__instance.Systems.ContainsKey(SystemTypes.Electrical)) return true;
 
             ISystemType systemType = __instance.Systems.ContainsKey(SystemTypes.Electrical) ? __instance.Systems[SystemTypes.Electrical] : null;
             if (systemType == null) return true;

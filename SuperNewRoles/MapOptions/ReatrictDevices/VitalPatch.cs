@@ -13,15 +13,22 @@ namespace SuperNewRoles.Patch
     [Harmony]
     public class VitalsPatch
     {
-        static float vitalsTimer = 0f;
+        static float vitalsTimer = MapOptions.MapOption.CanUseVitalTime.getFloat();
         public static float RestrictVitalsTime = MapOptions.MapOption.CanUseVitalTime.getFloat();
         public static float RestrictVitalsTimeMax = MapOptions.MapOption.CanUseVitalTime.getFloat();
         static TMPro.TextMeshPro TimeRemaining;
 
+        public static void ClearAndReload()
+        {
+            //vitalsTimer = 0f;
+            ResetData();
+            RestrictVitalsTime = MapOptions.MapOption.CanUseVitalTime.getFloat();
+            RestrictVitalsTimeMax = MapOptions.MapOption.CanUseVitalTime.getFloat();
+        }
 
         public static void ResetData()
         {
-            vitalsTimer = 0f;
+            vitalsTimer = MapOptions.MapOption.CanUseVitalTime.getFloat();
             if (TimeRemaining != null)
             {
                 UnityEngine.Object.Destroy(TimeRemaining);
@@ -34,7 +41,7 @@ namespace SuperNewRoles.Patch
             // Don't waste network traffic if we're out of time.
             if (MapOptions.MapOption.RestrictVital.getBool() && RestrictVitalsTime > 0f && PlayerControl.LocalPlayer.isAlive())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseVitalsTime, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseVitalsTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(vitalsTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 CustomRPC.RPCProcedure.UseVitalTime(vitalsTimer);
@@ -56,33 +63,37 @@ namespace SuperNewRoles.Patch
         {
             static bool Prefix(VitalsMinigame __instance)
             {
-                vitalsTimer += Time.deltaTime;
-                if (vitalsTimer > 0.1f)
-                    UseVitalsTime();
-
-                if (MapOptions.MapOption.RestrictVital.getBool())
+                if (!Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles) && MapOptions.MapOption.MapOptionSetting.getBool())
                 {
-                    if (TimeRemaining == null)
+                    vitalsTimer += Time.deltaTime;
+                    if (vitalsTimer > 0.1f)
+                        UseVitalsTime();
+
+                    if (MapOptions.MapOption.RestrictVital.getBool())
                     {
-                        TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskText, __instance.transform);
-                        TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
-                        TimeRemaining.transform.position = Vector3.zero;
-                        TimeRemaining.transform.localPosition = new Vector3(1.7f, 4.45f);
-                        TimeRemaining.transform.localScale *= 1.8f;
-                        TimeRemaining.color = Palette.White;
+                        if (TimeRemaining == null)
+                        {
+                            TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
+                            TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
+                            TimeRemaining.transform.position = Vector3.zero;
+                            TimeRemaining.transform.localPosition = new Vector3(1.7f, 4.45f);
+                            TimeRemaining.transform.localScale *= 1.8f;
+                            TimeRemaining.color = Palette.White;
+                        }
+
+                        if (RestrictVitalsTime <= 0f)
+                        {
+                            __instance.Close();
+                            return false;
+                        }
+
+                        string timeString = TimeSpan.FromSeconds(RestrictVitalsTime).ToString(@"mm\:ss\.ff");
+                        TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
+                        TimeRemaining.gameObject.SetActive(true);
                     }
 
-                    if (RestrictVitalsTime <= 0f)
-                    {
-                        __instance.Close();
-                        return false;
-                    }
-
-                    string timeString = TimeSpan.FromSeconds(RestrictVitalsTime).ToString(@"mm\:ss\.ff");
-                    TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
-                    TimeRemaining.gameObject.SetActive(true);
+                    return true;
                 }
-
                 return true;
             }
         }

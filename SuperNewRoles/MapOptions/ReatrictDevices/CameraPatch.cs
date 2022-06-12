@@ -11,13 +11,20 @@ namespace SuperNewRoles.Patch
     [Harmony]
     public class CameraPatch
     {
-        static float cameraTimer = 0f;
-        public static float RestrictCameraTime = MapOptions.MapOption.CanUseCameraTime.getFloat();
-        public static float RestrictCameraTimeMax = 600f;
+        static float cameraTimer;
+        public static float RestrictCameraTime;
+        public static float RestrictCameraTimeMax;
+        public static void ClearAndReload()
+        {
+            //cameraTimer = 0f;
+            ResetData();
+            RestrictCameraTime = MapOptions.MapOption.CanUseCameraTime.getFloat();
+            RestrictCameraTimeMax = MapOptions.MapOption.CanUseCameraTime.getFloat();
+        }
 
         public static void ResetData()
         {
-            cameraTimer = 0f;
+            cameraTimer = MapOptions.MapOption.CanUseCameraTime.getFloat();
             SurveillanceMinigamePatch.ResetData();
             PlanetSurveillanceMinigamePatch.ResetData();
         }
@@ -27,7 +34,7 @@ namespace SuperNewRoles.Patch
             // Don't waste network traffic if we're out of time.
             if (MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.RestrictCamera.getBool() && PlayerControl.LocalPlayer.isAlive())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseCameraTime, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseCameraTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(cameraTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 CustomRPC.RPCProcedure.UseCameraTime(cameraTimer);
@@ -64,12 +71,12 @@ namespace SuperNewRoles.Patch
                     // Add securityGuard cameras
                     page = 0;
                     timer = 0;
-                    if (ShipStatus.Instance.AllCameras.Length > 4 && __instance.FilteredRooms.Length > 0)
+                    if (MapUtilities.CachedShipStatus.AllCameras.Length > 4 && __instance.FilteredRooms.Length > 0)
                     {
-                        __instance.textures = __instance.textures.ToList().Concat(new RenderTexture[ShipStatus.Instance.AllCameras.Length - 4]).ToArray();
-                        for (int i = 4; i < ShipStatus.Instance.AllCameras.Length; i++)
+                        __instance.textures = __instance.textures.ToList().Concat(new RenderTexture[MapUtilities.CachedShipStatus.AllCameras.Length - 4]).ToArray();
+                        for (int i = 4; i < MapUtilities.CachedShipStatus.AllCameras.Length; i++)
                         {
-                            SurvCamera surv = ShipStatus.Instance.AllCameras[i];
+                            SurvCamera surv = MapUtilities.CachedShipStatus.AllCameras[i];
                             Camera camera = UnityEngine.Object.Instantiate<Camera>(__instance.CameraPrefab);
                             camera.transform.SetParent(__instance.transform);
                             camera.transform.position = new Vector3(surv.transform.position.x, surv.transform.position.y, 8f);
@@ -87,76 +94,80 @@ namespace SuperNewRoles.Patch
             {
                 public static bool Prefix(SurveillanceMinigame __instance)
                 {
-                    cameraTimer += Time.deltaTime;
-                    if (cameraTimer > 0.1f)
-                        UseCameraTime();
-
-                    if (MapOptions.MapOption.RestrictCamera.getBool())
+                    if (!Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles) && MapOptions.MapOption.MapOptionSetting.getBool())
                     {
-                        if (TimeRemaining == null)
+                        cameraTimer += Time.deltaTime;
+                        if (cameraTimer > 0.1f)
+                            UseCameraTime();
+
+                        if (MapOptions.MapOption.RestrictCamera.getBool())
                         {
-                            TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskText, __instance.transform);
-                            TimeRemaining.alignment = TMPro.TextAlignmentOptions.Center;
-                            TimeRemaining.transform.position = Vector3.zero;
-                            TimeRemaining.transform.localPosition = new Vector3(0.0f, -1.7f);
-                            TimeRemaining.transform.localScale *= 1.8f;
-                            TimeRemaining.color = Palette.White;
+                            if (TimeRemaining == null)
+                            {
+                                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
+                                TimeRemaining.alignment = TMPro.TextAlignmentOptions.Center;
+                                TimeRemaining.transform.position = Vector3.zero;
+                                TimeRemaining.transform.localPosition = new Vector3(0.0f, -1.7f);
+                                TimeRemaining.transform.localScale *= 1.8f;
+                                TimeRemaining.color = Palette.White;
+                            }
+
+                            if (RestrictCameraTime <= 0f)
+                            {
+                                __instance.Close();
+                                return false;
+                            }
+
+                            string timeString = TimeSpan.FromSeconds(RestrictCameraTime).ToString(@"mm\:ss\.ff");
+                            TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
+                            TimeRemaining.gameObject.SetActive(true);
+
                         }
 
-                        if (RestrictCameraTime <= 0f)
+                        // Update normal and securityGuard cameras
+                        timer += Time.deltaTime;
+                        int numberOfPages = Mathf.CeilToInt(MapUtilities.CachedShipStatus.AllCameras.Length / 4f);
+
+                        bool update = false;
+
+                        if (timer > 3f || Input.GetKeyDown(KeyCode.RightArrow))
                         {
-                            __instance.Close();
-                            return false;
+                            update = true;
+                            timer = 0f;
+                            page = (page + 1) % numberOfPages;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                        {
+                            page = (page + numberOfPages - 1) % numberOfPages;
+                            update = true;
+                            timer = 0f;
                         }
 
-                        string timeString = TimeSpan.FromSeconds(RestrictCameraTime).ToString(@"mm\:ss\.ff");
-                        TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
-                        TimeRemaining.gameObject.SetActive(true);
-
-                    }
-
-                    // Update normal and securityGuard cameras
-                    timer += Time.deltaTime;
-                    int numberOfPages = Mathf.CeilToInt(ShipStatus.Instance.AllCameras.Length / 4f);
-
-                    bool update = false;
-
-                    if (timer > 3f || Input.GetKeyDown(KeyCode.RightArrow))
-                    {
-                        update = true;
-                        timer = 0f;
-                        page = (page + 1) % numberOfPages;
-                    }
-                    else if (Input.GetKeyDown(KeyCode.LeftArrow))
-                    {
-                        page = (page + numberOfPages - 1) % numberOfPages;
-                        update = true;
-                        timer = 0f;
-                    }
-
-                    if ((__instance.isStatic || update) && !PlayerTask.PlayerHasTaskOfType<IHudOverrideTask>(PlayerControl.LocalPlayer))
-                    {
-                        __instance.isStatic = false;
-                        for (int i = 0; i < __instance.ViewPorts.Length; i++)
+                        if ((__instance.isStatic || update) && !PlayerTask.PlayerHasTaskOfType<IHudOverrideTask>(PlayerControl.LocalPlayer))
                         {
-                            __instance.ViewPorts[i].sharedMaterial = __instance.DefaultMaterial;
-                            __instance.SabText[i].gameObject.SetActive(false);
-                            if (page * 4 + i < __instance.textures.Length)
-                                __instance.ViewPorts[i].material.SetTexture("_MainTex", __instance.textures[page * 4 + i]);
-                            else
-                                __instance.ViewPorts[i].sharedMaterial = __instance.StaticMaterial;
+                            __instance.isStatic = false;
+                            for (int i = 0; i < __instance.ViewPorts.Length; i++)
+                            {
+                                __instance.ViewPorts[i].sharedMaterial = __instance.DefaultMaterial;
+                                __instance.SabText[i].gameObject.SetActive(false);
+                                if (page * 4 + i < __instance.textures.Length)
+                                    __instance.ViewPorts[i].material.SetTexture("_MainTex", __instance.textures[page * 4 + i]);
+                                else
+                                    __instance.ViewPorts[i].sharedMaterial = __instance.StaticMaterial;
+                            }
                         }
-                    }
-                    else if (!__instance.isStatic && PlayerTask.PlayerHasTaskOfType<HudOverrideTask>(PlayerControl.LocalPlayer))
-                    {
-                        __instance.isStatic = true;
-                        for (int j = 0; j < __instance.ViewPorts.Length; j++)
+                        else if (!__instance.isStatic && PlayerTask.PlayerHasTaskOfType<HudOverrideTask>(PlayerControl.LocalPlayer))
                         {
-                            __instance.ViewPorts[j].sharedMaterial = __instance.StaticMaterial;
-                            __instance.SabText[j].gameObject.SetActive(true);
+                            __instance.isStatic = true;
+                            for (int j = 0; j < __instance.ViewPorts.Length; j++)
+                            {
+                                __instance.ViewPorts[j].sharedMaterial = __instance.StaticMaterial;
+                                __instance.SabText[j].gameObject.SetActive(true);
+                            }
                         }
+                        return false;
                     }
-                    return false;
+                    return true;
                 }
             }
 
@@ -206,7 +217,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (TimeRemaining == null)
                         {
-                            TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskText, __instance.transform);
+                            TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
                             TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
                             TimeRemaining.transform.position = Vector3.zero;
                             TimeRemaining.transform.localPosition = new Vector3(0.95f, 4.45f);
@@ -277,7 +288,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (TimeRemaining == null)
                         {
-                            TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskText, __instance.transform);
+                            TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
                             TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
                             TimeRemaining.transform.position = Vector3.zero;
                             TimeRemaining.transform.localPosition = new Vector3(1.0f, 4.25f);

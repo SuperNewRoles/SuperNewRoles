@@ -34,7 +34,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         {
                             RPCProcedure.ShareWinner(target.PlayerId);
 
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                             Writer.Write(target.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
@@ -48,7 +48,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             Chat.Winner = new List<PlayerControl>();
                             Chat.Winner.Add(target);
                             RoleClass.Quarreled.IsQuarreledWin = true;
-                            SuperHostRoles.EndGameCheck.CustomEndGame(ShipStatus.Instance, GameOverReason.HumansByTask, false);
+                            SuperHostRoles.EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
                         }, 0.15f);
                     }
                 }
