@@ -695,3 +695,5 @@ PolusReactorTime
 MiraReactorTime
 AirshipReactorTime
 AddVitalsMiraSetting
+MapRemodelingOptionSetting
+AirShipAdditionalVents
