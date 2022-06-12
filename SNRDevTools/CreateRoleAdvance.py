@@ -267,7 +267,7 @@ namespace SuperNewRoles.Roles
                 //くりあぁあんどりろぉどぉ
             }
         }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))
-
+        
         # Intro/IntroDate.cs
         if (MainClass.GetBool("Impo")):
             MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Impostor);
@@ -293,7 +293,7 @@ namespace SuperNewRoles.Roles
 
         # CustomOption/CustomOptionDate.cs
         MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//CustomOption",
-        """\npublic static CustomRoleOption ROLENAMEOption;
+        """\n        public static CustomRoleOption ROLENAMEOption;
         public static CustomOption ROLENAMEPlayerCount;\n        //CustomOption""".replace("ROLENAME",MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("AddSetting")):
             if (MainClass.GetBool("TeamImpo") or MainClass.GetBool("TeamGhost")):
