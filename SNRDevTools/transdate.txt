@@ -97,7 +97,7 @@ CustomAutoUpdate,Auto Update,自動アップデート
 CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピーする
 CustomProcessDown,Update Process Down,処理回数を減らす
 CustomIsVersionErrorView,Show players that are not in or have different versions.,入っていない、バージョンが違うプレイヤーを表示する
-CustomHorseMode,Horse mode (can be changed only outside the game including the lobby),馬モード(ロビー含むゲーム外のみ変更可能)
+CustomHideTaskArrows,Hide Tasks Arrows,タスクの矢印を非表示にする
 SettingCrewmateRoles,CrewMate Setting,クルーメイトの人数設定
 SettingCrewmateGhostRoles,CrewMate GhostRole Setting,クルーメイトの幽霊役職の人数設定
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定
