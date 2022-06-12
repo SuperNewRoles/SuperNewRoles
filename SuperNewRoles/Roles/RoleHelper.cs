@@ -16,8 +16,6 @@ using SuperNewRoles.Intro;
 
 namespace SuperNewRoles
 {
-
-
     public static class RoleHelpers
     {
         public static bool isCrew(this PlayerControl player)
@@ -249,7 +247,7 @@ namespace SuperNewRoles
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
-                //ベント設定可視化
+                    //ベント設定可視化
             }
             return returntext;
         }
@@ -898,10 +896,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilHacker):
                     Roles.RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.HauntedWolf):
+                case (CustomRPC.RoleId.HauntedWolf):
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -1081,7 +1079,7 @@ namespace SuperNewRoles
                     return RoleClass.Vulture.IsUseVent;
                 case RoleId.MayorFriends:
                     return RoleClass.MayorFriends.IsUseVent;
-                //ベントが使える
+                    //ベントが使える
                     /*
                     case RoleId.Scavenger:
                         return RoleClass.Scavenger.IsUseVent;
@@ -1173,7 +1171,7 @@ namespace SuperNewRoles
                     return RoleClass.MadCleaner.IsImpostorLight;
                 case RoleId.MayorFriends:
                     return RoleClass.MayorFriends.IsImpostorLight;
-                //インポの視界
+                    //インポの視界
             }
             return false;
         }
@@ -1820,10 +1818,10 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.EvilHacker;
                 }
                 else if (Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.HauntedWolf;
-            }
-            //ロールチェック
+                {
+                    return CustomRPC.RoleId.HauntedWolf;
+                }
+                //ロールチェック
             }
             catch (Exception e)
             {

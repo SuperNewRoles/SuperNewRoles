@@ -27,6 +27,7 @@ namespace SuperNewRoles
         public static ConfigEntry<bool> IsShareCosmetics { get; set; }
         public static ConfigEntry<string> ShareCosmeticsNamePlatesURL { get; set; }
         public static ConfigEntry<bool> IsAutoRoomCreate { get; set; }
+        public static ConfigEntry<bool> HideTaskArrows { get; set; }
         public static ConfigEntry<bool> IsHorseMode { get; set; }
         public static void Load()
         {
@@ -36,6 +37,7 @@ namespace SuperNewRoles
             AutoCopyGameCode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Auto Copy Game Code", true);
             CustomProcessDown = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "CustomProcessDown", false);
             IsVersionErrorView = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsVersionErrorView", true);
+            HideTaskArrows = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "HideTaskArrows", false);
             ShareCosmeticsNamePlatesURL = SuperNewRolesPlugin.Instance.Config.Bind("ShareCosmetics", "NamePlateURL", "");
             IsAutoRoomCreate = SuperNewRolesPlugin.Instance.Config.Bind("Custom","AutoRoomCreate",true); ;
             IsHorseMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "HorseMode", false);

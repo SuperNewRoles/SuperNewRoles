@@ -43,8 +43,7 @@ namespace SuperNewRoles.Roles
             var exile = ModeHandler.isMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.main.RealExiled : exiled.Object;
             if (exile != null && exile.isRole(CustomRPC.RoleId.Marine))
             {
-                printStr = player.Data.PlayerName + ModTranslation.getString(
-                    "AssassinSucsess");
+                printStr = player.Data.PlayerName + ModTranslation.getString("AssassinSucsess");
                 RoleClass.Assassin.IsImpostorWin = true;
             }
             else
@@ -75,14 +74,25 @@ namespace SuperNewRoles.Roles
             SuperNewRolesPlugin.Logger.LogInfo("パン屋が生きていないと判定されました");
             return false;
         }
+        public static string GetExileText(){
+            //翻訳
+            var rand = new System.Random();
+            if (rand.Next(1, 10) == 1)
+            {
+                return ModTranslation.getString("BakeryExileText2");
+            }
+            else
+            {
+                return ModTranslation.getString("BakeryExileText");
+            }
+        }
 
         static void Postfix(ExileController __instance)
         {
             breadText = UnityEngine.Object.Instantiate(                                             //文字定義
                     __instance.ImpostorText,
                     __instance.Text.transform);
-            string ExileText = ModTranslation.getString("BakeryExileText");                         //翻訳
-            breadText.text = ExileText;                                                             //文字の内容を変える
+            breadText.text = GetExileText();                                                        //文字の内容を変える
             bool isBakeryAlive = BakeryAlive();                                                     //Boolの取得(生存判定)
             if (isBakeryAlive)                                                                      //if文(Bakeryが生きていたら実行)
             {
