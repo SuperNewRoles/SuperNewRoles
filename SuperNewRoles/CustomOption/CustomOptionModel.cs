@@ -134,9 +134,9 @@ namespace SuperNewRoles.CustomOption
 
         public static void ShareOptionSelections()
         {
-            if (PlayerControl.AllPlayerControls.Count <= 1 || AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null) return;
+            if (CachedPlayer.AllPlayers.Count <= 1 || AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null) return;
 
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareOptions, Hazel.SendOption.Reliable);
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareOptions, Hazel.SendOption.Reliable);
             messageWriter.WritePacked((uint)CustomOption.options.Count);
             foreach (CustomOption option in CustomOption.options)
             {
@@ -352,13 +352,11 @@ namespace SuperNewRoles.CustomOption
             var gameSettings = GameObject.Find("Game Settings");
             var gameSettingMenu = UnityEngine.Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
 
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             var snrSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
             var snrMenu = snrSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
             snrSettings.name = "SNRSettings";
             snrSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "GenericSetting";
 
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             var impostorSettings = UnityEngine.Object.Instantiate(gameSettings, gameSettings.transform.parent);
             var impostorMenu = impostorSettings.transform.FindChild("GameGroup").FindChild("SliderInner").GetComponent<GameOptionsMenu>();
             impostorSettings.name = "ImpostorSettings";
@@ -374,7 +372,6 @@ namespace SuperNewRoles.CustomOption
             crewmateSettings.name = "CrewmateSettings";
             crewmateSettings.transform.FindChild("GameGroup").FindChild("SliderInner").name = "CrewmateSetting";
 
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             var roleTab = GameObject.Find("RoleTab");
             var gameTab = GameObject.Find("GameTab");
 
@@ -397,7 +394,6 @@ namespace SuperNewRoles.CustomOption
             crewmateTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
             crewmateTab.name = "CrewmateTab";
 
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             // Position of Tab Icons
             gameTab.transform.position += Vector3.left * 3f;
             roleTab.transform.position += Vector3.left * 3f;
@@ -406,17 +402,12 @@ namespace SuperNewRoles.CustomOption
             neutralTab.transform.localPosition = Vector3.right * 1f;
             crewmateTab.transform.localPosition = Vector3.right * 0.95f;
 
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab};
             for (int i = 0; i < tabs.Length; i++)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("a");
                 var button = tabs[i].GetComponentInChildren<PassiveButton>();
-                SuperNewRolesPlugin.Logger.LogInfo("c");
                 int copiedIndex = i;
-                SuperNewRolesPlugin.Logger.LogInfo("d");
                 button.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
-                SuperNewRolesPlugin.Logger.LogInfo("e");
                 button.OnClick.AddListener((UnityAction)(() => {
                     gameSettingMenu.RegularGameSettings.SetActive(false);
                     gameSettingMenu.RolesSettings.gameObject.SetActive(false);
@@ -457,7 +448,6 @@ namespace SuperNewRoles.CustomOption
                     }
                     else if (copiedIndex == 5)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("a");
                         crewmateSettings.gameObject.SetActive(true);
                         crewmateTabHighlight.enabled = true;
                     }
@@ -470,7 +460,6 @@ namespace SuperNewRoles.CustomOption
                     */
                 }));
             }
-            SuperNewRolesPlugin.Logger.LogInfo("a");
 
 
             foreach (OptionBehaviour option in snrMenu.GetComponentsInChildren<OptionBehaviour>())
@@ -486,11 +475,9 @@ namespace SuperNewRoles.CustomOption
             List<OptionBehaviour> neutralOptions = new List<OptionBehaviour>();
             List<OptionBehaviour> crewmateOptions = new List<OptionBehaviour>();
 
-            SuperNewRolesPlugin.Logger.LogInfo("b");
             List<Transform> menus = new List<Transform>() { snrMenu.transform, impostorMenu.transform, neutralMenu.transform, crewmateMenu.transform };
             List<List<OptionBehaviour>> optionBehaviours = new List<List<OptionBehaviour>>() { snrOptions, impostorOptions, neutralOptions, crewmateOptions };
 
-            SuperNewRolesPlugin.Logger.LogInfo("a");
             for (int i = 0; i < CustomOption.options.Count; i++)
             {
                 CustomOption option = CustomOption.options[i];
@@ -781,7 +768,7 @@ namespace SuperNewRoles.CustomOption
             __instance.settings.Length = 0;
             try
             {
-                __instance.settings.AppendLine(DestroyableSingleton<TranslationController>.Instance.GetString(__instance.isDefaults ? StringNames.GameRecommendedSettings : StringNames.GameCustomSettings));
+                __instance.settings.AppendLine(FastDestroyableSingleton<TranslationController>.Instance.GetString(__instance.isDefaults ? StringNames.GameRecommendedSettings : StringNames.GameCustomSettings));
                 int num = 0;
                 try
                 {
@@ -794,10 +781,10 @@ namespace SuperNewRoles.CustomOption
                 int num2 = ((__instance.MapId == 0 && Constants.ShouldFlipSkeld()) ? 3 : __instance.MapId);
                 string value = Constants.MapNames[num2];
                 __instance.AppendItem(__instance.settings, StringNames.GameMapName, value);
-                __instance.settings.Append($"{DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameNumImpostors)}: {__instance.NumImpostors}");
+                __instance.settings.Append($"{FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameNumImpostors)}: {__instance.NumImpostors}");
                 if (__instance.NumImpostors > num)
                 {
-                    __instance.settings.Append($" ({DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Limit)}: {num})");
+                    __instance.settings.Append($" ({FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Limit)}: {num})");
                 }
                 __instance.settings.AppendLine();
                 if (__instance.gameType == GameType.Normal)
@@ -805,22 +792,22 @@ namespace SuperNewRoles.CustomOption
                     __instance.AppendItem(__instance.settings, StringNames.GameConfirmImpostor, __instance.ConfirmImpostor);
                     __instance.AppendItem(__instance.settings, StringNames.GameNumMeetings, __instance.NumEmergencyMeetings);
                     __instance.AppendItem(__instance.settings, StringNames.GameAnonymousVotes, __instance.AnonymousVotes);
-                    __instance.AppendItem(__instance.settings, StringNames.GameEmergencyCooldown, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.EmergencyCooldown));
-                    __instance.AppendItem(__instance.settings, StringNames.GameDiscussTime, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.DiscussionTime));
+                    __instance.AppendItem(__instance.settings, StringNames.GameEmergencyCooldown, string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.EmergencyCooldown));
+                    __instance.AppendItem(__instance.settings, StringNames.GameDiscussTime, string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.DiscussionTime));
                     if (__instance.VotingTime > 0)
                     {
-                        __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.VotingTime));
+                        __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.VotingTime));
                     }
                     else
                     {
-                        __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev, "∞"));
+                        __instance.AppendItem(__instance.settings, StringNames.GameVotingTime, FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev, "∞"));
                     }
                     __instance.AppendItem(__instance.settings, StringNames.GamePlayerSpeed, __instance.PlayerSpeedMod, "x");
                     __instance.AppendItem(__instance.settings, StringNames.GameCrewLight, __instance.CrewLightMod, "x");
                     __instance.AppendItem(__instance.settings, StringNames.GameImpostorLight, __instance.ImpostorLightMod, "x");
-                    __instance.AppendItem(__instance.settings, StringNames.GameKillCooldown, string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.KillCooldown));
-                    __instance.AppendItem(__instance.settings, StringNames.GameKillDistance, DestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(204 + __instance.KillDistance)));
-                    __instance.AppendItem(__instance.settings, StringNames.GameTaskBarMode, DestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(277 + __instance.TaskBarMode)));
+                    __instance.AppendItem(__instance.settings, StringNames.GameKillCooldown, string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.GameSecondsAbbrev), __instance.KillCooldown));
+                    __instance.AppendItem(__instance.settings, StringNames.GameKillDistance, FastDestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(204 + __instance.KillDistance)));
+                    __instance.AppendItem(__instance.settings, StringNames.GameTaskBarMode, FastDestroyableSingleton<TranslationController>.Instance.GetString((StringNames)(277 + __instance.TaskBarMode)));
                     __instance.AppendItem(__instance.settings, StringNames.GameVisualTasks, __instance.VisualTasks);
                     __instance.AppendItem(__instance.settings, StringNames.GameCommonTasks, __instance.NumCommonTasks);
                     __instance.AppendItem(__instance.settings, StringNames.GameLongTasks, __instance.NumLongTasks);
@@ -832,7 +819,7 @@ namespace SuperNewRoles.CustomOption
                         {
                             if (roleBehaviour.Role != 0 && roleBehaviour.Role != RoleTypes.Impostor)
                             {
-                                __instance.AppendItem(__instance.settings, DestroyableSingleton<TranslationController>.Instance.GetString(roleBehaviour.StringName) + ": " + string.Format(DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.RoleChanceAndQuantity), __instance.RoleOptions.GetNumPerGame(roleBehaviour.Role), __instance.RoleOptions.GetChancePerGame(roleBehaviour.Role)));
+                                __instance.AppendItem(__instance.settings, FastDestroyableSingleton<TranslationController>.Instance.GetString(roleBehaviour.StringName) + ": " + string.Format(FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.RoleChanceAndQuantity), __instance.RoleOptions.GetNumPerGame(roleBehaviour.Role), __instance.RoleOptions.GetChancePerGame(roleBehaviour.Role)));
                             }
                         }
                     }

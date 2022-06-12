@@ -45,7 +45,7 @@ namespace SuperNewRoles.Patch
             // Don't waste network traffic if we're out of time.
             if (MapOptions.MapOption.RestrictAdmin.getBool() && PlayerControl.LocalPlayer.isAlive())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseAdminTime, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseAdminTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(adminTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
                 CustomRPC.RPCProcedure.UseAdminTime(adminTimer);
@@ -116,12 +116,19 @@ namespace SuperNewRoles.Patch
                     if (OutOfTime == null)
                     {
                         OutOfTime = UnityEngine.Object.Instantiate(__instance.SabotageText, __instance.SabotageText.transform.parent);
-                        OutOfTime.text = ModTranslation.getString("restrictOutOfTime");
+                        if (MapOptions.MapOption.IsYkundesuBeplnEx.getBool())
+                        {
+                            OutOfTime.text = ModTranslation.getString("restrictOutOfTimeVerYkundesuBeplnEx");
+                        }
+                        else
+                        {
+                            OutOfTime.text = ModTranslation.getString("restrictOutOfTime");
+                        }
                     }
 
                     if (TimeRemaining == null)
                     {
-                        TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskText, __instance.transform);
+                        TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
                         TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
                         TimeRemaining.transform.position = Vector3.zero;
                         TimeRemaining.transform.localPosition = new Vector3(3.25f, 5.25f);
@@ -151,7 +158,7 @@ namespace SuperNewRoles.Patch
                 }
 
                 bool commsActive = false;
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
                     if (task.TaskType == TaskTypes.FixComms) commsActive = true;
 
                 if (!__instance.isSab && commsActive)
@@ -179,7 +186,7 @@ namespace SuperNewRoles.Patch
 
                     if (!commsActive)
                     {
-                        PlainShipRoom plainShipRoom = ShipStatus.Instance.FastRooms[counterArea.RoomType];
+                        PlainShipRoom plainShipRoom = MapUtilities.CachedShipStatus.FastRooms[counterArea.RoomType];
 
                         if (plainShipRoom != null && plainShipRoom.roomArea)
                         {
@@ -233,20 +240,20 @@ namespace SuperNewRoles.Patch
                 return false;
             }
         }
-      /*  public static bool IsBlocked(IUsable target, PlayerControl pc)
-        {
-            if (target == null) return false;
+        /*  public static bool IsBlocked(IUsable target, PlayerControl pc)
+          {
+              if (target == null) return false;
 
-            Console targetConsole = target.TryCast<Console>();
-            SystemConsole targetSysConsole = target.TryCast<SystemConsole>();
-            MapConsole targetMapConsole = target.TryCast<MapConsole>();
-            if ((targetConsole != null && IsBlocked(targetConsole, pc)) ||
-                (targetSysConsole != null && IsBlocked(targetSysConsole, pc)) ||
-                (targetMapConsole != null && !MapOptions.canUseAdmin))
-            {
-                return true;
-            }
-            return false;
-        }*/
+              Console targetConsole = target.TryCast<Console>();
+              SystemConsole targetSysConsole = target.TryCast<SystemConsole>();
+              MapConsole targetMapConsole = target.TryCast<MapConsole>();
+              if ((targetConsole != null && IsBlocked(targetConsole, pc)) ||
+                  (targetSysConsole != null && IsBlocked(targetSysConsole, pc)) ||
+                  (targetMapConsole != null && !MapOptions.canUseAdmin))
+              {
+                  return true;
+              }
+              return false;
+          }*/
     }
 }

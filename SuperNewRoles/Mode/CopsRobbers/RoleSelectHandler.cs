@@ -11,7 +11,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
         {
             List<PlayerControl> SelectPlayers = new List<PlayerControl>();
             List<PlayerControl> impostors = new List<PlayerControl>();
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (!player.Data.Disconnected && player.IsPlayer())
                 {
@@ -30,7 +30,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             foreach (PlayerControl player in impostors)
             {
                 player.RpcSetRole(RoleTypes.Impostor);
-                foreach (PlayerControl player2 in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player2 in CachedPlayer.AllPlayers)
                 {
                     if (!player2.Data.Disconnected)
                     {
@@ -41,7 +41,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     }
                 }
             }
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (!player.Data.Disconnected)
                 {

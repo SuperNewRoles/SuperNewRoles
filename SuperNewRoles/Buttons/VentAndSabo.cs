@@ -18,13 +18,13 @@ namespace SuperNewRoles.Buttons
             static bool Prefix(MapBehaviour __instance)
             {
                 if (!MeetingHud.Instance) return true;  // Only run in meetings, and then set the Position of the HerePoint to the Position before the Meeting!
-                if (!ShipStatus.Instance)
+                if (!MapUtilities.CachedShipStatus)
                 {
                     return false;
                 }
-                Vector3 vector = PlayerControl.LocalPlayer.transform.position;
-                vector /= ShipStatus.Instance.MapScale;
-                vector.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
+                Vector3 vector = CachedPlayer.LocalPlayer.transform.position;
+                vector /= MapUtilities.CachedShipStatus.MapScale;
+                vector.x *= Mathf.Sign(MapUtilities.CachedShipStatus.transform.localScale.x);
                 vector.z = -1f;
                 __instance.HerePoint.transform.localPosition = vector;
                 PlayerControl.LocalPlayer.SetPlayerMaterialColors(__instance.HerePoint);
@@ -39,7 +39,7 @@ namespace SuperNewRoles.Buttons
                     if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons && !__instance.IsOpen)
                     {
                         __instance.Close();
-                        DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                        FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                         return false;
                     }
                     return true;
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Buttons
                 __instance.GenericShow();
                 __instance.taskOverlay.Show();
                 __instance.ColorControl.SetColor(new Color(0.05f, 0.2f, 1f, 1f));
-                DestroyableSingleton<HudManager>.Instance.SetHudActive(false);
+                FastDestroyableSingleton<HudManager>.Instance.SetHudActive(false);
                 return false;
             }
         }
@@ -116,8 +116,8 @@ namespace SuperNewRoles.Buttons
         {
             public static void Postfix(PlayerControl __instance)
             {
-                var ImpostorVentButton = HudManager.Instance.ImpostorVentButton;
-                var ImpostorSabotageButton = HudManager.Instance.SabotageButton;
+                var ImpostorVentButton = DestroyableSingleton<HudManager>.Instance.ImpostorVentButton;
+                var ImpostorSabotageButton = DestroyableSingleton<HudManager>.Instance.SabotageButton;
 
                 if (PlayerControl.LocalPlayer.IsUseVent())
                 {
@@ -161,7 +161,7 @@ namespace SuperNewRoles.Buttons
             {
                 bool canUse;
                 bool couldUse;
-                __instance.CanUse(PlayerControl.LocalPlayer.Data, out canUse, out couldUse);
+                __instance.CanUse(CachedPlayer.LocalPlayer.Data, out canUse, out couldUse);
                 bool canMoveInVents = !(RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer));
                 if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
@@ -185,9 +185,9 @@ namespace SuperNewRoles.Buttons
             public static bool Prefix(SabotageButton __instance)
             {
                 // The sabotage button behaves just fine if it's a regular impostor
-                if (PlayerControl.LocalPlayer.Data.Role.TeamType == RoleTeamTypes.Impostor) return true;
+                if (CachedPlayer.LocalPlayer.Data.Role.TeamType == RoleTeamTypes.Impostor) return true;
 
-                DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                 return false;
             }
         }

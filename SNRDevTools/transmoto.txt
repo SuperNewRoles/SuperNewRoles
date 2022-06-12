@@ -559,6 +559,7 @@ NiceHawkTitle2
 BakeryName
 BakeryTitle1
 BakeryExileText
+BakeryExileText2
 MadStuntManName
 MadStuntManTitle1
 MadStuntManDescription
@@ -685,4 +686,12 @@ RestrictAdminSetting
 RestrictCameraSetting
 RestrictVitalSetting
 DeviceTimeSetting
+IsYkundesuBeplnExSetting
+restrictOutOfTimeVerYkundesuBeplnEx
+HauntedWolfName
+HauntedWolfTitle1
+ReactorDurationSetting
+PolusReactorTime
+MiraReactorTime
+AirshipReactorTime
 AddVitalsMiraSetting

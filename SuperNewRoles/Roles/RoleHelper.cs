@@ -16,8 +16,6 @@ using SuperNewRoles.Intro;
 
 namespace SuperNewRoles
 {
-
-
     public static class RoleHelpers
     {
         public static bool isCrew(this PlayerControl player)
@@ -32,6 +30,11 @@ namespace SuperNewRoles
             return player != null && player.Data.Role.IsImpostor;
         }
 
+        public static bool isHauntedWolf(this PlayerControl player)
+        {
+            if (player.isRole(RoleId.HauntedWolf)) return true;
+            return player != null && !player.isImpostor() && !player.isNeutral() && !player.isCrew();
+        }
 
         public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
         {
@@ -99,7 +102,7 @@ namespace SuperNewRoles
         }
         public static void SetQuarreledRPC(PlayerControl player1, PlayerControl player2)
         {
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetQuarreled, Hazel.SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetQuarreled, Hazel.SendOption.Reliable, -1);
             Writer.Write(player1.PlayerId);
             Writer.Write(player2.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -108,7 +111,7 @@ namespace SuperNewRoles
         {
             var sets = new List<PlayerControl>() { player1, player2 };
             RoleClass.Lovers.LoversPlayer.Add(sets);
-            if (player1.PlayerId == PlayerControl.LocalPlayer.PlayerId || player2.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
                 PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             }
@@ -116,7 +119,7 @@ namespace SuperNewRoles
         }
         public static void SetLoversRPC(PlayerControl player1, PlayerControl player2)
         {
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetLovers, Hazel.SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetLovers, Hazel.SendOption.Reliable, -1);
             Writer.Write(player1.PlayerId);
             Writer.Write(player2.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -244,7 +247,7 @@ namespace SuperNewRoles
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
-                //ベント設定可視化
+                    //ベント設定可視化
             }
             return returntext;
         }
@@ -252,12 +255,12 @@ namespace SuperNewRoles
         public static void ShowFlash(Color color, float duration = 1f)
         //Seerで使用している画面を光らせるコード
         {
-            if (HudManager.Instance == null || HudManager.Instance.FullScreen == null) return;
-            HudManager.Instance.FullScreen.gameObject.SetActive(true);
-            HudManager.Instance.FullScreen.enabled = true;
-            HudManager.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
+            if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
+            FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
+            FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
             {
-                var renderer = HudManager.Instance.FullScreen;
+                var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
 
                 if (p < 0.5)
                 {
@@ -566,12 +569,15 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilHacker):
                     Roles.RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.HauntedWolf):
+                    Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
                     return;
             }
-            bool flag = player.getRole() != role && player.PlayerId == PlayerControl.LocalPlayer.PlayerId;
+            bool flag = player.getRole() != role && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
             if (role.isGhostRole())
             {
                 ChacheManager.ResetMyGhostRoleChache();
@@ -890,6 +896,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.EvilHacker):
                     Roles.RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.HauntedWolf):
+                    Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
+                    break;
                     //ロールリモベ
 
             }
@@ -897,7 +906,7 @@ namespace SuperNewRoles
         }
         public static void setRoleRPC(this PlayerControl Player, RoleId SelectRoleDate)
         {
-            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetRole, Hazel.SendOption.Reliable, -1);
+            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetRole, Hazel.SendOption.Reliable, -1);
             killWriter.Write(Player.PlayerId);
             killWriter.Write((byte)SelectRoleDate);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -1027,7 +1036,7 @@ namespace SuperNewRoles
                 case RoleId.Jester:
                     return RoleClass.Jester.IsUseVent;
                 case RoleId.MadMate:
-                    if (PlayerControl.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return false;
+                    if (CachedPlayer.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return false;
                     return RoleClass.MadMate.IsUseVent;
                 case RoleId.TeleportingJackal:
                     return RoleClass.TeleportingJackal.IsUseVent;
@@ -1070,7 +1079,7 @@ namespace SuperNewRoles
                     return RoleClass.Vulture.IsUseVent;
                 case RoleId.MayorFriends:
                     return RoleClass.MayorFriends.IsUseVent;
-                //ベントが使える
+                    //ベントが使える
                     /*
                     case RoleId.Scavenger:
                         return RoleClass.Scavenger.IsUseVent;
@@ -1082,7 +1091,7 @@ namespace SuperNewRoles
         {
             try
             {
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
                     if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles)
                         return true;
             }
@@ -1093,7 +1102,7 @@ namespace SuperNewRoles
         {
             try
             {
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
                     if (task.TaskType == TaskTypes.FixComms)
                         return true;
             }
@@ -1162,7 +1171,7 @@ namespace SuperNewRoles
                     return RoleClass.MadCleaner.IsImpostorLight;
                 case RoleId.MayorFriends:
                     return RoleClass.MayorFriends.IsImpostorLight;
-                //インポの視界
+                    //インポの視界
             }
             return false;
         }
@@ -1808,6 +1817,10 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.EvilHacker;
                 }
+                else if (Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.HauntedWolf;
+                }
                 //ロールチェック
             }
             catch (Exception e)
@@ -1819,8 +1832,17 @@ namespace SuperNewRoles
             return RoleId.DefaultRole;
 
         }
-        public static bool isDead(this PlayerControl player)
+        public static Dictionary<byte, bool> DeadCaches;
+        public static bool isDead(this PlayerControl player, bool Cache = true)
         {
+            if (Cache)
+            {
+                try
+                {
+                    return DeadCaches[player.PlayerId];
+                }
+                catch { }
+            }
             return player == null || player.Data.Disconnected || player.Data.IsDead;
         }
 

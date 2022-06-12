@@ -121,6 +121,7 @@ namespace SuperNewRoles.CustomRPC
         VentMaker,
         GhostMechanic,
         EvilHacker,
+        HauntedWolf,
         //RoleId
     }
 
@@ -192,7 +193,7 @@ namespace SuperNewRoles.CustomRPC
     {
         public static void FixLights()
         {
-            SwitchSystem switchSystem = ShipStatus.Instance.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
+            SwitchSystem switchSystem = MapUtilities.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             switchSystem.ActualSwitches = switchSystem.ExpectedSwitches;
         }
         public static void ArsonistDouse(byte source, byte target)
@@ -292,7 +293,7 @@ namespace SuperNewRoles.CustomRPC
         {
             /*
             SuperNewRolesPlugin.Logger.LogInfo("TORGMシェアあああ！");
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, Hazel.SendOption.Reliable, clientId);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, Hazel.SendOption.Reliable, clientId);
             writer.WritePacked(major);
             writer.WritePacked(minor);
             writer.WritePacked(build);
@@ -421,7 +422,7 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void ShareCosmetics(byte id, string url)
         {/**
-            
+
             if (ModHelpers.playerById(id) == null) return;
             if (!SharePatch.PlayerUrl.ContainsKey(id))
             {
@@ -523,7 +524,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 if (sheriff.isRole(RoleId.RemoteSheriff) && !RoleClass.RemoteSheriff.IsKillTeleport)
                 {
-                    if (PlayerControl.LocalPlayer.PlayerId == SheriffId)
+                    if (CachedPlayer.LocalPlayer.PlayerId == SheriffId)
                     {
                         target.MurderPlayer(target);
                     }
@@ -548,14 +549,14 @@ namespace SuperNewRoles.CustomRPC
             if (sheriff == null || target == null) return;
             if (!PlayerControl.LocalPlayer.isAlive())
             {
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は" + target.name + "をシェリフキルした！");
+                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は" + target.name + "をシェリフキルした！");
                 if (MissFire)
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は誤爆した！");
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は誤爆した！");
                 }
                 else
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は成功した！");
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は成功した！");
                 }
             }
             if (MissFire)
@@ -564,7 +565,7 @@ namespace SuperNewRoles.CustomRPC
                 FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.MeetingSheriffMisFire;
                 if (PlayerControl.LocalPlayer == sheriff)
                 {
-                    HudManager.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
                 }
 
             }
@@ -574,7 +575,7 @@ namespace SuperNewRoles.CustomRPC
                 FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.MeetingSheriffKill;
                 if (PlayerControl.LocalPlayer == target)
                 {
-                    HudManager.Instance.KillOverlay.ShowKillAnimation(target.Data, sheriff.Data);
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, sheriff.Data);
                 }
             }
             if (MeetingHud.Instance)
@@ -807,7 +808,7 @@ namespace SuperNewRoles.CustomRPC
         public static void TeleporterTP(byte playerid)
         {
             var p = ModHelpers.playerById(playerid);
-            PlayerControl.LocalPlayer.transform.position = p.transform.position;
+            CachedPlayer.LocalPlayer.transform.position = p.transform.position;
             if (SubmergedCompatibility.isSubmerged())
             {
                 SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
@@ -834,7 +835,7 @@ namespace SuperNewRoles.CustomRPC
             source.ProtectPlayer(target, colorid);
             PlayerControl.LocalPlayer.MurderPlayer(target);
             source.ProtectPlayer(target, colorid);
-            if (targetId == PlayerControl.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
+            if (targetId == CachedPlayer.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
         }
         public static void SetShielder(byte PlayerId, bool Is)
         {
@@ -860,10 +861,10 @@ namespace SuperNewRoles.CustomRPC
 
             VentMakerVent.transform.position = new Vector3(x, y, z);
             VentMakerVent.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-            VentMakerVent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1;
-            var allVentsList = ShipStatus.Instance.AllVents.ToList();
+            VentMakerVent.Id = MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max() + 1;
+            var allVentsList = MapUtilities.CachedShipStatus.AllVents.ToList();
             allVentsList.Add(VentMakerVent);
-            ShipStatus.Instance.AllVents = allVentsList.ToArray();
+            MapUtilities.CachedShipStatus.AllVents = allVentsList.ToArray();
             VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
             VentMakerVent.gameObject.SetActive(true);
         }
@@ -1054,7 +1055,7 @@ namespace SuperNewRoles.CustomRPC
                     case (byte)CustomRPC.CustomEndGame:
                         if (AmongUsClient.Instance.AmHost)
                         {
-                            ShipStatus.Instance.enabled = false;
+                            MapUtilities.CachedShipStatus.enabled = false;
                             CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
                         }
                         break;

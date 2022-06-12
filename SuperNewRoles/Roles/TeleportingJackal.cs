@@ -37,7 +37,7 @@ namespace SuperNewRoles.Roles
             {
                 PlayerControl result = null;
                 float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
-                if (!ShipStatus.Instance) return result;
+                if (!MapUtilities.CachedShipStatus) return result;
                 if (targetingPlayer == null) targetingPlayer = PlayerControl.LocalPlayer;
                 if (targetingPlayer.Data.IsDead || targetingPlayer.inVent) return result;
 
@@ -100,7 +100,7 @@ namespace SuperNewRoles.Roles
         public static void TeleportStart()
         {
             List<PlayerControl> aliveplayers = new List<PlayerControl>();
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.isAlive() && p.CanMove)
                 {
@@ -110,7 +110,7 @@ namespace SuperNewRoles.Roles
             var player = ModHelpers.GetRandom<PlayerControl>(aliveplayers);
             CustomRPC.RPCProcedure.TeleporterTP(player.PlayerId);
 
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
             Writer.Write(player.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
         }

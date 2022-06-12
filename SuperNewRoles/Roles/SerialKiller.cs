@@ -23,12 +23,12 @@ namespace SuperNewRoles.Roles
                         RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
                         if (RoleClass.SerialKiller.SuicideTime <= 0)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-                            writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             writer.Write(byte.MaxValue);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            RPCProcedure.RPCMurderPlayer(PlayerControl.LocalPlayer.PlayerId, PlayerControl.LocalPlayer.PlayerId, byte.MaxValue);
+                            RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.PlayerId, byte.MaxValue);
                         }
                     }
                 }
@@ -78,7 +78,7 @@ namespace SuperNewRoles.Roles
         {
             if (__instance.isRole(RoleId.SerialKiller))
             {
-                if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
                     RoleClass.SerialKiller.SuicideTime = RoleClass.SerialKiller.SuicideDefaultTime;
                     RoleClass.SerialKiller.IsSuicideView = true;
@@ -90,7 +90,7 @@ namespace SuperNewRoles.Roles
                 }
                 else if (ModeHandler.isMode(ModeId.Default))
                 {
-                    if (__instance.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                    if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {
                         __instance.SetKillTimerUnchecked(RoleClass.SerialKiller.KillTime);
                         RoleClass.SerialKiller.SuicideTime = RoleClass.SerialKiller.SuicideDefaultTime;
