@@ -2783,6 +2783,14 @@
  "AirshipReactorTime" : {
         "0" : "Airship  Reactor Duration Time" ,
         "11" : "\u30a8\u30a2\u30fc\u30b7\u30c3\u30d7\u3067\u306e\u30ea\u30a2\u30af\u30bf\u30fc\u6642\u9593"
+        } ,
+ "AddVitalsMiraSetting" : {
+        "0" : "Adding vitals to Mira" ,
+        "11" : "Mira\u306b\u30d0\u30a4\u30bf\u30eb\u3092\u8ffd\u52a0\u3059\u308b"
+        } ,
+ "" : {
+        "0" : "" ,
+        "11" : ""
         } 
 
 }

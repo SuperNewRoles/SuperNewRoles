@@ -694,3 +694,4 @@ ReactorDurationSetting
 PolusReactorTime
 MiraReactorTime
 AirshipReactorTime
+AddVitalsMiraSetting
