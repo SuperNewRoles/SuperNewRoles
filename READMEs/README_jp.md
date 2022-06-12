@@ -39,7 +39,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [TheOtherRolesGM](https://github.com/yukinogatari/TheOtherRoles-GM) オプションやボタンなどのソースコードを参考にさせていただきました。**yukinogatari**さんありがとうございます！
 
 [Essentials](https://github.com/DorCoMaNdO/Reactor-Essentials) - カスタムゲームオプション
-**DorCoMaNdO**: 
+**DorCoMaNdO**:
 - v1.6より前：デフォルトのEssentialsリリースを使用しました
 - v1.6-v1.8：デフォルトのEssentialsを少し変更しました。 変更 この ブランチに は、フォークの あります。
 - v2.0.0以降：Reactorを使用しなくなったため、 実装に触発された独自の実装を使用しています。 **DorCoMaNdO**の
@@ -187,7 +187,7 @@ Discordサーバーには全てすでに乗っています。
 ### ゲーム設定
 | 名前 | 説明 |
 |----------|:-------------:|
-| 最大回数 | 能力を使用できる回数を設定できます。 
+| 最大回数 | 能力を使用できる回数を設定できます。
 | 次のターンに反映 |能力を使用した次のターンに判定が交換されるかを設定できます。
 -----------------------
 

@@ -2227,4 +2227,3 @@ namespace SuperNewRoles.Roles
     }
 }
 
-
