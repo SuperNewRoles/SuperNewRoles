@@ -114,7 +114,7 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
-                if ((PlayerControl.LocalPlayer.isRole(RoleId.JackalFriends) || 
+                if ((PlayerControl.LocalPlayer.isRole(RoleId.JackalFriends) ||
                     PlayerControl.LocalPlayer.isRole(RoleId.SeerFriends) || PlayerControl.LocalPlayer.isRole(RoleId.MayorFriends)) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
@@ -345,6 +345,22 @@ namespace SuperNewRoles.Patches
             public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
             {
                 setupIntroTeam(__instance, ref yourTeam);
+            }
+        }
+
+        [HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
+        public static class ShouldAlwaysHorseAround
+        {
+            public static bool isHorseMode;
+            public static bool Prefix(ref bool __result)
+            {
+                if (isHorseMode != HorseModeOption.enableHorseMode && LobbyBehaviour.Instance != null) __result = isHorseMode;
+                else
+                {
+                    __result = HorseModeOption.enableHorseMode;
+                    isHorseMode = HorseModeOption.enableHorseMode;
+                }
+                return false;
             }
         }
     }

@@ -392,9 +392,9 @@
         "0" : "Show players that are not in or have different versions." ,
         "11" : "\u5165\u3063\u3066\u3044\u306a\u3044\u3001\u30d0\u30fc\u30b8\u30e7\u30f3\u304c\u9055\u3046\u30d7\u30ec\u30a4\u30e4\u30fc\u3092\u8868\u793a\u3059\u308b"
         } ,
- "CustomHorseMode" : {
-        "0" : "Horse mode (can be changed only outside the game including the lobby)" ,
-        "11" : "\u99ac\u30e2\u30fc\u30c9(\u30ed\u30d3\u30fc\u542b\u3080\u30b2\u30fc\u30e0\u5916\u306e\u307f\u5909\u66f4\u53ef\u80fd)"
+ "CustomHideTaskArrows" : {
+        "0" : "Hide Tasks Arrows" ,
+        "11" : "\u30bf\u30b9\u30af\u306e\u77e2\u5370\u3092\u975e\u8868\u793a\u306b\u3059\u308b"
         } ,
  "SettingCrewmateRoles" : {
         "0" : "CrewMate Setting" ,
@@ -2791,6 +2791,6 @@
  "" : {
         "0" : "" ,
         "11" : ""
-        } 
+        }
 
 }
