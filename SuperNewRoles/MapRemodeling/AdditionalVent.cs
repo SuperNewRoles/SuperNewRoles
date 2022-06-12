@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using SuperNewRoles.Mode;
 using SuperNewRoles.MapOptions;
+using HarmonyLib;
 
 //参考=>https://github.com/haoming37/TheOtherRoles-GM-Haoming/blob/haoming-main/TheOtherRoles/Objects/AdditionalVents.cs
 
@@ -32,6 +33,7 @@ namespace SuperNewRoles.MapRemodeling
             ShipStatus.Instance.AllVents = allVentsList.ToArray();
             vent.gameObject.SetActive(true);
             vent.name = "AdditionalVent_" + vent.Id;
+            vent.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
             AllVents.Add(this);
         }
 
@@ -43,7 +45,7 @@ namespace SuperNewRoles.MapRemodeling
             System.Console.WriteLine("AddAdditionalVents");
 
             // Polusにベントを追加する
-            
+
             //if (PlayerControl.GameOptions.MapId == 2 /*&& CustomOptionHolder.additionalVents.getBool()*/)
             /*{
                 AdditionalVents vents1 = new AdditionalVents(new Vector3(36.54f, -21.77f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // Specimen
@@ -59,21 +61,30 @@ namespace SuperNewRoles.MapRemodeling
             if (PlayerControl.GameOptions.MapId == 4 && MapOptions.MapOption.AirShipAdditionalVents.getBool())
             {
                 SuperNewRolesPlugin.Logger.LogInfo("べんとおおおお");
-                AdditionalVents vents1 = new (new Vector3(23.44f, -5.084f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 診察室
-                AdditionalVents vents2 = new (new Vector3(24.70f, 4.98f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ラウンジ
-                AdditionalVents vents3 = new (new Vector3(5.70f, 3.51f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // メイン
-                vents1.vent.Right = vents2.vent;
-                vents2.vent.Left = vents1.vent;
-                vents3.vent.Right = vents1.vent; // Vital - Specimen
-                vents3.vent.Left = vents2.vent; // Vital - InitialSpawn
+                AdditionalVents vents1 = new(new Vector3(23.5483f, -5.589f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 診察室
+                AdditionalVents vents2 = new(new Vector3(24.8562f, 5.2692f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ラウンジ
+                AdditionalVents vents3 = new(new Vector3(5.8131f, 3.6036f , PlayerControl.LocalPlayer.transform.position.z + 1f)); // メイン
+                vents1.vent.Right = vents2.vent;//診察-ラウンジ
+                vents2.vent.Left = vents1.vent;//ラウンジ-診察
+                vents2.vent.Right = vents3.vent;//ラウンジ-メイン
+                vents3.vent.Right = vents2.vent; // メイン-ラウンジ
             }
         }
 
-        public static void clearAndReload()
+        public static void ClearAndReload()
         {
             System.Console.WriteLine("additionalVentsClearAndReload");
             flag = false;
             AllVents = new List<AdditionalVents>();
+        }
+    }
+    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
+    class IntroCutsceneOnDestroyPatch
+    {
+        public static void Prefix(IntroCutscene __instance)
+        {
+            // ベントを追加する
+            AdditionalVents.AddAdditionalVents();
         }
     }
 }
