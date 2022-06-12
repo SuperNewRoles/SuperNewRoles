@@ -94,76 +94,80 @@ namespace SuperNewRoles.Patch
             {
                 public static bool Prefix(SurveillanceMinigame __instance)
                 {
-                    cameraTimer += Time.deltaTime;
-                    if (cameraTimer > 0.1f)
-                        UseCameraTime();
-
-                    if (MapOptions.MapOption.RestrictCamera.getBool())
+                    if (!Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles) && MapOptions.MapOption.MapOptionSetting.getBool())
                     {
-                        if (TimeRemaining == null)
+                        cameraTimer += Time.deltaTime;
+                        if (cameraTimer > 0.1f)
+                            UseCameraTime();
+
+                        if (MapOptions.MapOption.RestrictCamera.getBool())
                         {
-                            TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
-                            TimeRemaining.alignment = TMPro.TextAlignmentOptions.Center;
-                            TimeRemaining.transform.position = Vector3.zero;
-                            TimeRemaining.transform.localPosition = new Vector3(0.0f, -1.7f);
-                            TimeRemaining.transform.localScale *= 1.8f;
-                            TimeRemaining.color = Palette.White;
+                            if (TimeRemaining == null)
+                            {
+                                TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
+                                TimeRemaining.alignment = TMPro.TextAlignmentOptions.Center;
+                                TimeRemaining.transform.position = Vector3.zero;
+                                TimeRemaining.transform.localPosition = new Vector3(0.0f, -1.7f);
+                                TimeRemaining.transform.localScale *= 1.8f;
+                                TimeRemaining.color = Palette.White;
+                            }
+
+                            if (RestrictCameraTime <= 0f)
+                            {
+                                __instance.Close();
+                                return false;
+                            }
+
+                            string timeString = TimeSpan.FromSeconds(RestrictCameraTime).ToString(@"mm\:ss\.ff");
+                            TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
+                            TimeRemaining.gameObject.SetActive(true);
+
                         }
 
-                        if (RestrictCameraTime <= 0f)
+                        // Update normal and securityGuard cameras
+                        timer += Time.deltaTime;
+                        int numberOfPages = Mathf.CeilToInt(MapUtilities.CachedShipStatus.AllCameras.Length / 4f);
+
+                        bool update = false;
+
+                        if (timer > 3f || Input.GetKeyDown(KeyCode.RightArrow))
                         {
-                            __instance.Close();
-                            return false;
+                            update = true;
+                            timer = 0f;
+                            page = (page + 1) % numberOfPages;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                        {
+                            page = (page + numberOfPages - 1) % numberOfPages;
+                            update = true;
+                            timer = 0f;
                         }
 
-                        string timeString = TimeSpan.FromSeconds(RestrictCameraTime).ToString(@"mm\:ss\.ff");
-                        TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
-                        TimeRemaining.gameObject.SetActive(true);
-
-                    }
-
-                    // Update normal and securityGuard cameras
-                    timer += Time.deltaTime;
-                    int numberOfPages = Mathf.CeilToInt(MapUtilities.CachedShipStatus.AllCameras.Length / 4f);
-
-                    bool update = false;
-
-                    if (timer > 3f || Input.GetKeyDown(KeyCode.RightArrow))
-                    {
-                        update = true;
-                        timer = 0f;
-                        page = (page + 1) % numberOfPages;
-                    }
-                    else if (Input.GetKeyDown(KeyCode.LeftArrow))
-                    {
-                        page = (page + numberOfPages - 1) % numberOfPages;
-                        update = true;
-                        timer = 0f;
-                    }
-
-                    if ((__instance.isStatic || update) && !PlayerTask.PlayerHasTaskOfType<IHudOverrideTask>(PlayerControl.LocalPlayer))
-                    {
-                        __instance.isStatic = false;
-                        for (int i = 0; i < __instance.ViewPorts.Length; i++)
+                        if ((__instance.isStatic || update) && !PlayerTask.PlayerHasTaskOfType<IHudOverrideTask>(PlayerControl.LocalPlayer))
                         {
-                            __instance.ViewPorts[i].sharedMaterial = __instance.DefaultMaterial;
-                            __instance.SabText[i].gameObject.SetActive(false);
-                            if (page * 4 + i < __instance.textures.Length)
-                                __instance.ViewPorts[i].material.SetTexture("_MainTex", __instance.textures[page * 4 + i]);
-                            else
-                                __instance.ViewPorts[i].sharedMaterial = __instance.StaticMaterial;
+                            __instance.isStatic = false;
+                            for (int i = 0; i < __instance.ViewPorts.Length; i++)
+                            {
+                                __instance.ViewPorts[i].sharedMaterial = __instance.DefaultMaterial;
+                                __instance.SabText[i].gameObject.SetActive(false);
+                                if (page * 4 + i < __instance.textures.Length)
+                                    __instance.ViewPorts[i].material.SetTexture("_MainTex", __instance.textures[page * 4 + i]);
+                                else
+                                    __instance.ViewPorts[i].sharedMaterial = __instance.StaticMaterial;
+                            }
                         }
-                    }
-                    else if (!__instance.isStatic && PlayerTask.PlayerHasTaskOfType<HudOverrideTask>(PlayerControl.LocalPlayer))
-                    {
-                        __instance.isStatic = true;
-                        for (int j = 0; j < __instance.ViewPorts.Length; j++)
+                        else if (!__instance.isStatic && PlayerTask.PlayerHasTaskOfType<HudOverrideTask>(PlayerControl.LocalPlayer))
                         {
-                            __instance.ViewPorts[j].sharedMaterial = __instance.StaticMaterial;
-                            __instance.SabText[j].gameObject.SetActive(true);
+                            __instance.isStatic = true;
+                            for (int j = 0; j < __instance.ViewPorts.Length; j++)
+                            {
+                                __instance.ViewPorts[j].sharedMaterial = __instance.StaticMaterial;
+                                __instance.SabText[j].gameObject.SetActive(true);
+                            }
                         }
+                        return false;
                     }
-                    return false;
+                    return true;
                 }
             }
 
