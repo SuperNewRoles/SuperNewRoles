@@ -698,3 +698,4 @@ VentMakerButtonName
 AddVitalsMiraSetting
 MapRemodelingOptionSetting
 AirShipAdditionalVents
+PolusAdditionalVents

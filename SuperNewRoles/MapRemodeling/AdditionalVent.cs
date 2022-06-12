@@ -45,17 +45,18 @@ namespace SuperNewRoles.MapRemodeling
             System.Console.WriteLine("AddAdditionalVents");
 
             // Polusにベントを追加する
-
-            //if (PlayerControl.GameOptions.MapId == 2 /*&& CustomOptionHolder.additionalVents.getBool()*/)
-            /*{
-                AdditionalVents vents1 = new AdditionalVents(new Vector3(36.54f, -21.77f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // Specimen
-                AdditionalVents vents2 = new AdditionalVents(new Vector3(16.64f, -2.46f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // InitialSpawn
-                AdditionalVents vents3 = new AdditionalVents(new Vector3(26.67f, -17.54f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // Vital
-                vents1.vent.Left = vents3.vent; // Specimen - Vital
-                vents2.vent.Center = vents3.vent; // InitialSpawn - Vital
-                vents3.vent.Right = vents1.vent; // Vital - Specimen
-                vents3.vent.Left = vents2.vent; // Vital - InitialSpawn
-            }*/
+            if (PlayerControl.GameOptions.MapId == 2 && MapOptions.MapOption.PolusAdditionalVents.getBool())
+            {
+                AdditionalVents vents1 = new AdditionalVents(new Vector3(36.54f, -21.77f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 標本室
+                AdditionalVents vents2 = new AdditionalVents(new Vector3(11.5522f, -21.1158f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ウェポン
+                AdditionalVents vents3 = new AdditionalVents(new Vector3(26.67f, -17.54f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // バイタル
+                vents1.vent.Left = vents3.vent; // 標本室 - バイタル
+                vents1.vent.Right = vents2.vent;// 標本室 - ウェポン
+                vents2.vent.Center = vents3.vent; // ウェポン- バイタル
+                vents2.vent.Left = vents1.vent; // ウェポン- 標本室
+                vents3.vent.Right = vents1.vent; // バイタル - 標本室
+                vents3.vent.Left = vents2.vent; // バイタル - ウェポン
+            }
 
             // AirShipにベントを追加する
             if (PlayerControl.GameOptions.MapId == 4 && MapOptions.MapOption.AirShipAdditionalVents.getBool())
