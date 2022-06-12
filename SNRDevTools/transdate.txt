@@ -557,9 +557,10 @@ MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked
 NiceHawkName,NiceHawk,ナイスホーク
 NiceHawkTitle1,See it all.,全てを見渡せ
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう
-BakeryName,Bakery,パン屋
+BakeryName,Baker,パン屋
 BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？
 BakeryExileText,Bakery baked some breads for crewmates.,パン屋によってパンが振舞われました。
+BakeryExileText2,Bakery baked YOKINGDELICIOUSSSSSSSSS!!!!,パン屋ｧｧﾉｫｫﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｰｴｯｸｽｵｲｼｲ
 MadStuntManName,MadStuntman,マッドスタントマン
 MadStuntManTitle1,Prevent kills and connect with impostors.,キルを防いでインポスターと繋がろう
 MadStuntManDescription,Can prevent himself from being killed,自分自身へのキルを防ぐことが出来ます
@@ -694,3 +695,5 @@ ReactorDurationSetting,Reactor Duration Time,リアクター継続時間の設�
 PolusReactorTime,Polus Reactor Duration Time,ポーラスでのリアクター時間
 MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間
 AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間
+AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する
+,,
