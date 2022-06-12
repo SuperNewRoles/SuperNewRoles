@@ -43,7 +43,7 @@ colorPitchgreen,Pitch green,真っ緑
 colorPitchyellow,Pitch yellow,真っ黄色
 colorBackblue,Back blue,影青
 colorMildpurple,Mild purple,穏やかな紫
-colorAshishreddishpurplecolor,Ashish reddish purple color,灰みの赤紫系の色 
+colorAshishreddishpurplecolor,Ashish reddish purple color,灰みの赤紫系の色
 colorMelon,Melon,メロン
 colorCrasyublue,Crasyu Blue,クラッシュブルー
 colorLightgreen,Light Green,ライトグリーン
@@ -97,7 +97,7 @@ CustomAutoUpdate,Auto Update,自動アップデート
 CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピーする
 CustomProcessDown,Update Process Down,処理回数を減らす
 CustomIsVersionErrorView,Show players that are not in or have different versions.,入っていない、バージョンが違うプレイヤーを表示する
-CustomHorseMode,Horse mode (can be changed only outside the game including the lobby),馬モード(ロビー含むゲーム外のみ変更可能)
+CustomHideTaskArrows,Hide Tasks Arrows,タスクの矢印を非表示にする
 SettingCrewmateRoles,CrewMate Setting,クルーメイトの人数設定
 SettingCrewmateGhostRoles,CrewMate GhostRole Setting,クルーメイトの幽霊役職の人数設定
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定
@@ -482,7 +482,7 @@ EvilEraserTitle1,Let's wipe out their abilities.,能力を消し去ろう
 EvilEraserMaxCountSetting,Max Erase Count,最大削除回数
 WorkpersonName,Work person,仕事人
 WorkpersonTitle1,Let's do the work and win!,仕事をして勝利しよう
-WorkpersonDescription,Wins if you finish the task,タスクを終わらせることで勝利できます。 
+WorkpersonDescription,Wins if you finish the task,タスクを終わらせることで勝利できます。
 WorkpersonIsAliveWinSetting,You have to be alive to win,生存していないと勝利できない
 MagazinerName,Magaziner,マガジナー
 MagazinerTitle1,Save your kills!,キルを貯めよう
@@ -557,9 +557,10 @@ MadMayorCheckImpostorTaskSetting,Amount of tasks that will be able to be checked
 NiceHawkName,NiceHawk,ナイスホーク
 NiceHawkTitle1,See it all.,全てを見渡せ
 NiceHawkTitle2,Let's catch the crime.,犯行を捉えよう
-BakeryName,Bakery,パン屋
+BakeryName,Baker,パン屋
 BakeryTitle1,Would you like some breads?,焼きたてのパンはいかが？
 BakeryExileText,Bakery baked some breads for crewmates.,パン屋によってパンが振舞われました。
+BakeryExileText2,Bakery baked YOKINGDELICIOUSSSSSSSSS!!!!,パン屋ｧｧﾉｫｫﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｰｴｯｸｽｵｲｼｲ
 MadStuntManName,MadStuntman,マッドスタントマン
 MadStuntManTitle1,Prevent kills and connect with impostors.,キルを防いでインポスターと繋がろう
 MadStuntManDescription,Can prevent himself from being killed,自分自身へのキルを防ぐことが出来ます
@@ -694,3 +695,7 @@ ReactorDurationSetting,Reactor Duration Time,リアクター継続時間の設�
 PolusReactorTime,Polus Reactor Duration Time,ポーラスでのリアクター時間
 MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間
 AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間
+VentMakerButtonName,Make Vent,設置
+AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する
+MapRemodelingOptionSetting,Map Remodeling,マップ改造
+AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する

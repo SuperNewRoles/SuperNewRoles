@@ -422,7 +422,7 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void ShareCosmetics(byte id, string url)
         {/**
-            
+
             if (ModHelpers.playerById(id) == null) return;
             if (!SharePatch.PlayerUrl.ContainsKey(id))
             {

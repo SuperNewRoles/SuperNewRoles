@@ -11,7 +11,7 @@ using System.IO;
 using System;
 using System.Reflection;
 using UnhollowerBaseLib;
-using UnityEngine; 
+using UnityEngine;
 
 namespace SuperNewRoles
 {
@@ -22,7 +22,7 @@ namespace SuperNewRoles
     {
         public const string Id = "jp.ykundesu.supernewroles";
 
-        public const string VersionString = "1.4.0.6";
+        public const string VersionString = "1.4.0.7";
 
         public static System.Version Version = System.Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
@@ -45,6 +45,7 @@ namespace SuperNewRoles
             CustomCosmetics.CustomColors.Load();
             ConfigRoles.Load();
             CustomOption.CustomOptions.Load();
+            Patches.FreeNamePatch.Initialize();
             // All Load() End
 
             // Old Delete Start
@@ -66,7 +67,7 @@ namespace SuperNewRoles
             Logger.LogInfo(ModTranslation.getString("StartLogText"));
 
             var assembly = Assembly.GetExecutingAssembly();
-        
+
             StringDATE = new Dictionary<string, Dictionary<int, string>>();
             Harmony.PatchAll();
             SubmergedCompatibility.Initialize();
@@ -105,14 +106,14 @@ namespace SuperNewRoles
                 {
                     if (!__instance.isActiveAndEnabled) return;
                     __instance.Toggle();
-                } else if (Input.GetKeyDown(KeyCode.F2)) { 
-                    
+                } else if (Input.GetKeyDown(KeyCode.F2)) {
+
                     __instance.SetVisible(false);
                     new LateTask(() =>
                     {
                         __instance.SetVisible(true);
                     }, 0f,"AntiChatBag");
-                    
+
                 }
                 if (__instance.IsOpen)
                 {

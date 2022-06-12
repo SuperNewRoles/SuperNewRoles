@@ -9,8 +9,17 @@ namespace SuperNewRoles.Patch
     [Harmony]
     public class AdminPatch
     {
-        public static float RestrictAdminTime = MapOptions.MapOption.CanUseAdminTime.getFloat();
-        public static float RestrictAdminTimeMax = MapOptions.MapOption.CanUseAdminTime.getFloat();
+        public static float RestrictAdminTime;
+        public static float RestrictAdminTimeMax;
+        public static void ClearAndReload()
+        {
+            ResetData();
+
+            RestrictAdminTime = MapOptions.MapOption.CanUseAdminTime.getFloat();
+            RestrictAdminTimeMax = MapOptions.MapOption.CanUseAdminTime.getFloat();
+            //OutOfTime.gameObject.SetActive(false);
+        }
+
         public static bool canUseAdmin
         {
             get
@@ -26,7 +35,7 @@ namespace SuperNewRoles.Patch
 
         public static void ResetData()
         {
-            adminTimer = 0f;
+            adminTimer = MapOptions.MapOption.CanUseCameraTime.getFloat();
             if (TimeRemaining != null)
             {
                 UnityEngine.Object.Destroy(TimeRemaining);
@@ -97,147 +106,151 @@ namespace SuperNewRoles.Patch
 
             static bool Prefix(MapCountOverlay __instance)
             {
-                adminTimer += Time.deltaTime;
-                if (adminTimer > 0.1f)
-                    UseAdminTime();
-
-                // Save colors for the Hacker
-                __instance.timer += Time.deltaTime;
-                if (__instance.timer < 0.1f)
+                if (!Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles) && MapOptions.MapOption.MapOptionSetting.getBool() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker))
                 {
-                    return false;
-                }
-                __instance.timer = 0f;
+                    adminTimer += Time.deltaTime;
+                    if (adminTimer > 0.1f)
+                        UseAdminTime();
 
-                playerColors = new Dictionary<SystemTypes, List<Color>>();
-
-                if (MapOptions.MapOption.RestrictAdmin.getBool())
-                {
-                    if (OutOfTime == null)
+                    // Save colors for the Hacker
+                    __instance.timer += Time.deltaTime;
+                    if (__instance.timer < 0.1f)
                     {
-                        OutOfTime = UnityEngine.Object.Instantiate(__instance.SabotageText, __instance.SabotageText.transform.parent);
-                        if (MapOptions.MapOption.IsYkundesuBeplnEx.getBool())
+                        return false;
+                    }
+                    __instance.timer = 0f;
+
+                    playerColors = new Dictionary<SystemTypes, List<Color>>();
+
+                    if (MapOptions.MapOption.RestrictAdmin.getBool())
+                    {
+                        if (OutOfTime == null)
                         {
-                            OutOfTime.text = ModTranslation.getString("restrictOutOfTimeVerYkundesuBeplnEx");
+                            OutOfTime = UnityEngine.Object.Instantiate(__instance.SabotageText, __instance.SabotageText.transform.parent);
+                            if (MapOptions.MapOption.IsYkundesuBeplnEx.getBool())
+                            {
+                                OutOfTime.text = ModTranslation.getString("restrictOutOfTimeVerYkundesuBeplnEx");
+                            }
+                            else
+                            {
+                                OutOfTime.text = ModTranslation.getString("restrictOutOfTime");
+                            }
                         }
-                        else
+
+                        if (TimeRemaining == null)
                         {
-                            OutOfTime.text = ModTranslation.getString("restrictOutOfTime");
+                            TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
+                            TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
+                            TimeRemaining.transform.position = Vector3.zero;
+                            TimeRemaining.transform.localPosition = new Vector3(3.25f, 5.25f);
+                            TimeRemaining.transform.localScale *= 2f;
+                            TimeRemaining.color = Palette.White;
                         }
+
+                        if (RestrictAdminTime <= 0f)
+                        {
+                            __instance.BackgroundColor.SetColor(Palette.DisabledGrey);
+                            OutOfTime.gameObject.SetActive(true);
+                            TimeRemaining.gameObject.SetActive(false);
+                            if (clearedIcons == false)
+                            {
+                                foreach (CounterArea ca in __instance.CountAreas) ca.UpdateCount(0);
+                                clearedIcons = true;
+                            }
+                            return false;
+                        }
+
+                        clearedIcons = false;
+                        OutOfTime.gameObject.SetActive(false);
+                        string timeString = TimeSpan.FromSeconds(RestrictAdminTime).ToString(@"mm\:ss\.ff");
+                        TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
+                        //TimeRemaining.color = MapOptions.restrictAdminTime > 10f ? Palette.AcceptedGreen : Palette.ImpostorRed;
+                        TimeRemaining.gameObject.SetActive(true);
                     }
 
-                    if (TimeRemaining == null)
-                    {
-                        TimeRemaining = UnityEngine.Object.Instantiate(FastDestroyableSingleton<HudManager>.Instance.TaskText, __instance.transform);
-                        TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
-                        TimeRemaining.transform.position = Vector3.zero;
-                        TimeRemaining.transform.localPosition = new Vector3(3.25f, 5.25f);
-                        TimeRemaining.transform.localScale *= 2f;
-                        TimeRemaining.color = Palette.White;
-                    }
+                    bool commsActive = false;
+                    foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
+                        if (task.TaskType == TaskTypes.FixComms) commsActive = true;
 
-                    if (RestrictAdminTime <= 0f)
+                    if (!__instance.isSab && commsActive)
                     {
+                        __instance.isSab = true;
                         __instance.BackgroundColor.SetColor(Palette.DisabledGrey);
-                        OutOfTime.gameObject.SetActive(true);
-                        TimeRemaining.gameObject.SetActive(false);
-                        if (clearedIcons == false)
-                        {
-                            foreach (CounterArea ca in __instance.CountAreas) ca.UpdateCount(0);
-                            clearedIcons = true;
-                        }
+                        __instance.SabotageText.gameObject.SetActive(true);
+                        OutOfTime.gameObject.SetActive(false);
                         return false;
                     }
 
-                    clearedIcons = false;
-                    OutOfTime.gameObject.SetActive(false);
-                    string timeString = TimeSpan.FromSeconds(RestrictAdminTime).ToString(@"mm\:ss\.ff");
-                    TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
-                    //TimeRemaining.color = MapOptions.restrictAdminTime > 10f ? Palette.AcceptedGreen : Palette.ImpostorRed;
-                    TimeRemaining.gameObject.SetActive(true);
-                }
-
-                bool commsActive = false;
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
-                    if (task.TaskType == TaskTypes.FixComms) commsActive = true;
-
-                if (!__instance.isSab && commsActive)
-                {
-                    __instance.isSab = true;
-                    __instance.BackgroundColor.SetColor(Palette.DisabledGrey);
-                    __instance.SabotageText.gameObject.SetActive(true);
-                    OutOfTime.gameObject.SetActive(false);
-                    return false;
-                }
-
-                if (__instance.isSab && !commsActive)
-                {
-                    __instance.isSab = false;
-                    __instance.BackgroundColor.SetColor(Color.green);
-                    __instance.SabotageText.gameObject.SetActive(false);
-                    OutOfTime.gameObject.SetActive(false);
-                }
-
-                for (int i = 0; i < __instance.CountAreas.Length; i++)
-                {
-                    CounterArea counterArea = __instance.CountAreas[i];
-                    List<Color> roomColors = new List<Color>();
-                    playerColors.Add(counterArea.RoomType, roomColors);
-
-                    if (!commsActive)
+                    if (__instance.isSab && !commsActive)
                     {
-                        PlainShipRoom plainShipRoom = MapUtilities.CachedShipStatus.FastRooms[counterArea.RoomType];
+                        __instance.isSab = false;
+                        __instance.BackgroundColor.SetColor(Color.green);
+                        __instance.SabotageText.gameObject.SetActive(false);
+                        OutOfTime.gameObject.SetActive(false);
+                    }
 
-                        if (plainShipRoom != null && plainShipRoom.roomArea)
+                    for (int i = 0; i < __instance.CountAreas.Length; i++)
+                    {
+                        CounterArea counterArea = __instance.CountAreas[i];
+                        List<Color> roomColors = new List<Color>();
+                        playerColors.Add(counterArea.RoomType, roomColors);
+
+                        if (!commsActive)
                         {
-                            int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
-                            int num2 = num;
-                            for (int j = 0; j < num; j++)
-                            {
-                                Collider2D collider2D = __instance.buffer[j];
-                                if (!(collider2D.tag == "DeadBody"))
-                                {
-                                    PlayerControl component = collider2D.GetComponent<PlayerControl>();
-                                    if (!component || component.Data == null || component.Data.Disconnected || component.Data.IsDead)
-                                    {
-                                        num2--;
-                                    }
-                                    else if (component?.MyRend?.material != null)
-                                    {
-                                        Color color = component.MyRend.material.GetColor("_BodyColor");
+                            PlainShipRoom plainShipRoom = MapUtilities.CachedShipStatus.FastRooms[counterArea.RoomType];
 
-                                        roomColors.Add(color);
-                                    }
-                                }
-                                else
+                            if (plainShipRoom != null && plainShipRoom.roomArea)
+                            {
+                                int num = plainShipRoom.roomArea.OverlapCollider(__instance.filter, __instance.buffer);
+                                int num2 = num;
+                                for (int j = 0; j < num; j++)
                                 {
-                                    DeadBody component = collider2D.GetComponent<DeadBody>();
-                                    if (component)
+                                    Collider2D collider2D = __instance.buffer[j];
+                                    if (!(collider2D.tag == "DeadBody"))
                                     {
-                                        GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
-                                        if (playerInfo != null)
+                                        PlayerControl component = collider2D.GetComponent<PlayerControl>();
+                                        if (!component || component.Data == null || component.Data.Disconnected || component.Data.IsDead)
                                         {
-                                            var color = Palette.PlayerColors[playerInfo.Object.CurrentOutfit.ColorId];
-                                            //  if (Hacker.onlyColorType)
-                                            //    color = Helpers.isLighterColor(playerInfo.Object.CurrentOutfit.ColorId) ? Palette.PlayerColors[7] : Palette.PlayerColors[6];
+                                            num2--;
+                                        }
+                                        else if (component?.MyRend?.material != null)
+                                        {
+                                            Color color = component.MyRend.material.GetColor("_BodyColor");
+
                                             roomColors.Add(color);
                                         }
                                     }
+                                    else
+                                    {
+                                        DeadBody component = collider2D.GetComponent<DeadBody>();
+                                        if (component)
+                                        {
+                                            GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
+                                            if (playerInfo != null)
+                                            {
+                                                var color = Palette.PlayerColors[playerInfo.Object.CurrentOutfit.ColorId];
+                                                //  if (Hacker.onlyColorType)
+                                                //    color = Helpers.isLighterColor(playerInfo.Object.CurrentOutfit.ColorId) ? Palette.PlayerColors[7] : Palette.PlayerColors[6];
+                                                roomColors.Add(color);
+                                            }
+                                        }
+                                    }
                                 }
+                                counterArea.UpdateCount(num2);
                             }
-                            counterArea.UpdateCount(num2);
+                            else
+                            {
+                                Debug.LogWarning("Couldn't find counter for:" + counterArea.RoomType);
+                            }
                         }
                         else
                         {
-                            Debug.LogWarning("Couldn't find counter for:" + counterArea.RoomType);
+                            counterArea.UpdateCount(0);
                         }
                     }
-                    else
-                    {
-                        counterArea.UpdateCount(0);
-                    }
+                    return false;
                 }
-                return false;
+                return true;
             }
         }
         /*  public static bool IsBlocked(IUsable target, PlayerControl pc)

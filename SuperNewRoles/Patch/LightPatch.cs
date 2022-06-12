@@ -13,24 +13,18 @@ namespace SuperNewRoles.Patch
     {
         public static float GetNeutralLightRadius(ShipStatus shipStatus, bool isImpostor)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("ーーーーーーーーー");
             if (SubmergedCompatibility.isSubmerged())
             {
-                SuperNewRolesPlugin.Logger.LogInfo("サブマ");
                 return SubmergedCompatibility.GetSubmergedNeutralLightRadius(isImpostor);
             }
 
             if (Clergyman.IsLightOutVision() && isImpostor) {
-                SuperNewRolesPlugin.Logger.LogInfo("聖職者");
                 return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision; 
             }
             if (isImpostor) {
-
-                SuperNewRolesPlugin.Logger.LogInfo("インポスター");
                 return shipStatus.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod; 
             }
 
-            SuperNewRolesPlugin.Logger.LogInfo("下");
             SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
             float lerpValue = switchSystem.Value / 255f;
 

@@ -1075,7 +1075,7 @@ namespace SuperNewRoles.Buttons
                () =>
                {
                    var target = setTarget();
-                   if (!target.Data.Role.IsImpostor  && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Chief.IsCreateSheriff)
+                   if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Chief.IsCreateSheriff)
                    {
                        target.RpcSetRole(RoleTypes.Crewmate);
                        target.setRoleRPC(RoleId.Sheriff);
@@ -1474,7 +1474,7 @@ namespace SuperNewRoles.Buttons
             GhostMechanicNumRepairText.transform.localPosition += new Vector3(0f, 0.7f, 0);
 
             GhostMechanicRepairButton.buttonText = ModTranslation.getString("GhostMechanicButtonName");
-            GhostMechanicRepairButton.showButtonText = true;
+            GhostMechanicRepairButton .showButtonText = true;
 
             EvilHackerButton = new CustomButton(
                () =>
