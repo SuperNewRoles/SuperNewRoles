@@ -62,6 +62,9 @@ namespace SuperNewRoles.MapOptions
                 }
                 UseDeadBodyReport = !NotUseReportDeadBody.getBool();
                 UseMeetingButton = !NotUseMeetingButton.getBool();
+                SuperNewRoles.Patch.AdminPatch.ClearAndReload();
+                SuperNewRoles.Patch.CameraPatch.ClearAndReload();
+                SuperNewRoles.Patch.VitalsPatch.ClearAndReload();
             }
             else
             {
