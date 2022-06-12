@@ -106,6 +106,9 @@ namespace SuperNewRoles.Patches
             private static PingTracker instance;
             static void Postfix(PingTracker __instance)
             {
+                DownLoadCustomhat.Load();
+                CustomCosmetics.DownLoadClass.Load();
+                CustomCosmetics.DownLoadClassVisor.Load();
                 DestroyableSingleton<ModManager>.Instance.ShowModStamp();
 
                 var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
