@@ -96,7 +96,7 @@ CustomAutoUpdate
 CustomAutoCopyGameCode
 CustomProcessDown
 CustomIsVersionErrorView
-CustomHorseMode
+CustomHideTaskArrows
 SettingCrewmateRoles
 SettingCrewmateGhostRoles
 SettingNeutralRoles
