@@ -44,12 +44,26 @@ namespace SuperNewRoles.MapRemodeling
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             System.Console.WriteLine("AddAdditionalVents");
 
+            //MiraHQにベントを追加する
+            if (PlayerControl.GameOptions.MapId == 1 && MapOptions.MapOption.MiraAdditionalVents.getBool())
+            {
+                AdditionalVents vents1 = new(new Vector3(11.3518f, 10.4786f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 研究室
+                AdditionalVents vents2 = new(new Vector3(12.1288f, 7.467f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // Y字下
+                AdditionalVents vents3 = new(new Vector3(19.574f, 17.3698f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // アドミン
+                vents1.vent.Left = vents3.vent; // 研究室 - アドミン
+                vents1.vent.Right = vents2.vent;// 研究室 - Y字下
+                vents2.vent.Center = vents3.vent; // Y字下- アドミン
+                vents2.vent.Left = vents1.vent; // Y字下- 研究室
+                vents3.vent.Right = vents1.vent; // アドミン - 研究室
+                vents3.vent.Left = vents2.vent; // アドミン - Y字下
+            }
+
             // Polusにベントを追加する
             if (PlayerControl.GameOptions.MapId == 2 && MapOptions.MapOption.PolusAdditionalVents.getBool())
             {
-                AdditionalVents vents1 = new AdditionalVents(new Vector3(36.54f, -21.77f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 標本室
-                AdditionalVents vents2 = new AdditionalVents(new Vector3(11.5522f, -21.1158f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ウェポン
-                AdditionalVents vents3 = new AdditionalVents(new Vector3(26.67f, -17.54f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // バイタル
+                AdditionalVents vents1 = new(new Vector3(36.54f, -21.77f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 標本室
+                AdditionalVents vents2 = new(new Vector3(11.5522f, -21.1158f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ウェポン
+                AdditionalVents vents3 = new(new Vector3(26.67f, -17.54f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // バイタル
                 vents1.vent.Left = vents3.vent; // 標本室 - バイタル
                 vents1.vent.Right = vents2.vent;// 標本室 - ウェポン
                 vents2.vent.Center = vents3.vent; // ウェポン- バイタル

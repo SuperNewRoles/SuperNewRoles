@@ -699,3 +699,4 @@ Adding vitals to Mira
 Map Remodeling
 AirShipAdditionalVents
 PolusAdditionalVents
+MiraAdditionalVents

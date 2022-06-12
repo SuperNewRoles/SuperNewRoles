@@ -699,3 +699,4 @@ AddVitalsMiraSetting
 MapRemodelingOptionSetting
 AirShipAdditionalVents
 PolusAdditionalVents
+MiraAdditionalVents

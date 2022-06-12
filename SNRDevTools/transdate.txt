@@ -700,3 +700,4 @@ AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する
 MapRemodelingOptionSetting,Map Remodeling,マップ改造
 AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する
 PolusAdditionalVents,PolusAdditionalVents,ポーラスにベントを追加する
+MiraAdditionalVents,MiraAdditionalVents,ミラにベントを追加する

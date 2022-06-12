@@ -2803,6 +2803,10 @@
  "PolusAdditionalVents" : {
         "0" : "PolusAdditionalVents" ,
         "11" : "\u30dd\u30fc\u30e9\u30b9\u306b\u30d9\u30f3\u30c8\u3092\u8ffd\u52a0\u3059\u308b"
+        } ,
+ "MiraAdditionalVents" : {
+        "0" : "MiraAdditionalVents" ,
+        "11" : "\u30df\u30e9\u306b\u30d9\u30f3\u30c8\u3092\u8ffd\u52a0\u3059\u308b"
         } 
 
 }

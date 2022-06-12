@@ -146,6 +146,7 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption MapRemodelingOption;
         public static CustomOption.CustomOption AirShipAdditionalVents;
         public static CustomOption.CustomOption PolusAdditionalVents;
+        public static CustomOption.CustomOption MiraAdditionalVents;
 
         public static void LoadOption()
         {
@@ -187,6 +188,7 @@ namespace SuperNewRoles.MapOptions
             MapRemodelingOption = CustomOption.CustomOption.Create(521, false, CustomOptionType.Generic, "MapRemodelingOptionSetting", false, MapOptionSetting);
             AirShipAdditionalVents = CustomOption.CustomOption.Create(522, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, MapRemodelingOption);
             PolusAdditionalVents = CustomOption.CustomOption.Create(523, false, CustomOptionType.Generic, "PolusAdditionalVents", false, MapRemodelingOption);
+            MiraAdditionalVents = CustomOption.CustomOption.Create(523, false, CustomOptionType.Generic, "MiraAdditionalVents", false, MapRemodelingOption);
         }
     }
 }
