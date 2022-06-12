@@ -20,16 +20,8 @@ namespace SuperNewRoles.Patch
             new SelectionBehaviour("CustomProcessDown", () => ConfigRoles.CustomProcessDown.Value = !ConfigRoles.CustomProcessDown.Value, ConfigRoles.CustomProcessDown.Value),
             new SelectionBehaviour("CustomIsVersionErrorView", () => ConfigRoles.IsVersionErrorView.Value = !ConfigRoles.IsVersionErrorView.Value, ConfigRoles.IsVersionErrorView.Value),
             new SelectionBehaviour("CustomHideTaskArrows", () => TasksArrowsOption.hideTaskArrows = ConfigRoles.HideTaskArrows.Value = !ConfigRoles.HideTaskArrows.Value, ConfigRoles.HideTaskArrows.Value),
-            new SelectionBehaviour("CustomHorseMode", () =>HorseChange(), ConfigRoles.IsHorseMode.Value),
         };
-        public static bool HorseChange()
-        {
-            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.NotJoined)
-            {
-                ConfigRoles.IsHorseMode.Value = !ConfigRoles.IsHorseMode.Value;
-            }
-            return ConfigRoles.IsHorseMode.Value;
-        }
+
         private static GameObject popUp;
         private static TextMeshPro titleText;
 
@@ -344,7 +336,7 @@ namespace SuperNewRoles.Patch
             }
         }
 
-        private class SelectionBehaviour
+        public class SelectionBehaviour
         {
             public string Title;
             public Func<bool> OnClick;

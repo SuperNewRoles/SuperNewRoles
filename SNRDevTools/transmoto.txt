@@ -96,7 +96,7 @@ CustomAutoUpdate
 CustomAutoCopyGameCode
 CustomProcessDown
 CustomIsVersionErrorView
-CustomHorseMode
+CustomHideTaskArrows
 SettingCrewmateRoles
 SettingCrewmateGhostRoles
 SettingNeutralRoles
@@ -694,4 +694,7 @@ ReactorDurationSetting
 PolusReactorTime
 MiraReactorTime
 AirshipReactorTime
+VentMakerButtonName
 AddVitalsMiraSetting
+MapRemodelingOptionSetting
+AirShipAdditionalVents
