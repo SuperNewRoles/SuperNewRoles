@@ -5,6 +5,7 @@ using HarmonyLib;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Patch
 {
@@ -30,6 +31,7 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
+                if (RoleClass.Assassin.TriggerPlayer != null) return false;
                 if (!MapOptions.MapOption.UseDeadBodyReport && target != null) return false;
                 if (!MapOptions.MapOption.UseMeetingButton && target == null) return false;
                 if (ModeHandler.isMode(ModeId.HideAndSeek)) return false;

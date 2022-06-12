@@ -29,7 +29,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
         public static void EndMeetingPatch()
         {/*
             //霊界用暗転バグ対処
-            foreach (var pc in PlayerControl.AllPlayerControls)
+            foreach (var pc in CachedPlayer.AllPlayers)
                 if (IsAntiBlackOut(pc) && pc.isDead()) pc.ResetPlayerCam(19f);*/
         }
 		public static bool IsAntiBlackOut(PlayerControl player)
@@ -61,14 +61,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
             
             new LateTask(() => {
                 SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
-                MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+                MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
                 SabotageWriter.Write(reactorId);
                 MessageExtensions.WriteNetObject(SabotageWriter, pc);
                 SabotageWriter.Write((byte)128);
                 AmongUsClient.Instance.FinishRpcImmediately(SabotageWriter);
             }, delay, "Reactor Desync");
             new LateTask(() => {
-                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+                MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
                 SabotageFixWriter.Write(reactorId);
                 MessageExtensions.WriteNetObject(SabotageFixWriter, pc);
                 SabotageFixWriter.Write((byte)16);
@@ -77,7 +77,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
 
             if (PlayerControl.GameOptions.MapId == 4) //Airship用
                 new LateTask(() => {
-                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
+                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
                     SabotageFixWriter.Write(reactorId);
                     MessageExtensions.WriteNetObject(SabotageFixWriter, pc);
                     SabotageFixWriter.Write((byte)17);

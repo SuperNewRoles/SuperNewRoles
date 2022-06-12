@@ -27,11 +27,11 @@ namespace SuperNewRoles.Roles
         }
         public static void TP()
         {
-            PlayerControl.LocalPlayer.transform.position = RoleClass.Moving.setpostion;
+            CachedPlayer.LocalPlayer.transform.position = RoleClass.Moving.setpostion;
         }
         public static void SetPostion()
         {
-            RoleClass.Moving.setpostion = PlayerControl.LocalPlayer.transform.position;
+            RoleClass.Moving.setpostion = CachedPlayer.LocalPlayer.transform.position;
         }
         public static bool IsMoving(PlayerControl Player)
         {

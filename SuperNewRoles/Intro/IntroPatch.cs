@@ -29,9 +29,9 @@ namespace SuperNewRoles.Patches
                 {
                     var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     newTeam.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                        if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                         {
                             newTeam.Add(p);
                         }
@@ -41,7 +41,7 @@ namespace SuperNewRoles.Patches
                 if (PlayerControl.LocalPlayer.isImpostor())
                 {
                     var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.isImpostor())
                         {
@@ -59,7 +59,7 @@ namespace SuperNewRoles.Patches
                     Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int ImpostorNum = 0;
                     ImpostorTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.Data.Role.IsImpostor)
                         {
@@ -74,7 +74,7 @@ namespace SuperNewRoles.Patches
                     Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int ImpostorNum = 0;
                     ImpostorTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.Data.Role.IsImpostor)
                         {
@@ -89,7 +89,7 @@ namespace SuperNewRoles.Patches
                     Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int ImpostorNum = 0;
                     ImpostorTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.Data.Role.IsImpostor)
                         {
@@ -104,7 +104,7 @@ namespace SuperNewRoles.Patches
                     Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int ImpostorNum = 0;
                     ImpostorTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.Data.Role.IsImpostor)
                         {
@@ -114,13 +114,13 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
-                if ((PlayerControl.LocalPlayer.isRole(RoleId.JackalFriends) || 
+                if ((PlayerControl.LocalPlayer.isRole(RoleId.JackalFriends) ||
                     PlayerControl.LocalPlayer.isRole(RoleId.SeerFriends) || PlayerControl.LocalPlayer.isRole(RoleId.MayorFriends)) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int JackalNum = 0;
                     JackalTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.isRole(CustomRPC.RoleId.JackalFriends) || player.isRole(CustomRPC.RoleId.MayorFriends))
                         {
@@ -134,7 +134,7 @@ namespace SuperNewRoles.Patches
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int JackalNum = 0;
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.isRole(CustomRPC.RoleId.Jackal))
                         {
@@ -148,7 +148,7 @@ namespace SuperNewRoles.Patches
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int JackalNum = 0;
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.isRole(CustomRPC.RoleId.JackalSeer))
                         {
@@ -162,7 +162,7 @@ namespace SuperNewRoles.Patches
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> FoxTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     int FoxNum = 0;
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.isRole(CustomRPC.RoleId.Fox))
                         {
@@ -345,6 +345,22 @@ namespace SuperNewRoles.Patches
             public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
             {
                 setupIntroTeam(__instance, ref yourTeam);
+            }
+        }
+
+        [HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
+        public static class ShouldAlwaysHorseAround
+        {
+            public static bool isHorseMode;
+            public static bool Prefix(ref bool __result)
+            {
+                if (isHorseMode != HorseModeOption.enableHorseMode && LobbyBehaviour.Instance != null) __result = isHorseMode;
+                else
+                {
+                    __result = HorseModeOption.enableHorseMode;
+                    isHorseMode = HorseModeOption.enableHorseMode;
+                }
+                return false;
             }
         }
     }

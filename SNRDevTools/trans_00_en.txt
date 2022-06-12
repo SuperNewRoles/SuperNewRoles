@@ -96,7 +96,7 @@ Auto Update
 Game Code Auto Copy
 Update Process Down
 Show players that are not in or have different versions.
-Horse mode (can be changed only outside the game including the lobby)
+Hide Tasks Arrows
 CrewMate Setting
 CrewMate GhostRole Setting
 Neutral Setting
@@ -556,9 +556,10 @@ Amount of tasks that will be able to be checked (of all tasks)
 NiceHawk
 See it all.
 Let's catch the crime.
-Bakery
+Baker
 Would you like some breads?
 Bakery baked some breads for crewmates.
+Bakery baked YOKINGDELICIOUSSSSSSSSS!!!!
 MadStuntman
 Prevent kills and connect with impostors.
 Can prevent himself from being killed
@@ -678,3 +679,22 @@ EvilHacker
 Hack to Win!
 Can an EvilHacker Make a Madmate
 ADMIN
+Remaining: {0}
+Time up
+Device Restrictions
+Admin Restrictions
+Camera Restrictions
+Vital Restrictions
+Can use time
+ykundesuBeplnEx
+ykundesuBeplnExDelicious
+HauntedWolf
+Don't let the crew find out.
+Reactor Duration Time
+Polus Reactor Duration Time
+Mira Reactor Duration Time
+Airship  Reactor Duration Time
+Make Vent
+Adding vitals to Mira
+Map Remodeling
+AirShipAdditionalVents

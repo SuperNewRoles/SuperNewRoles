@@ -27,7 +27,7 @@ namespace SuperNewRoles.Mode.Detective
         public static void RoleSelect() {
             DetectivePlayer = PlayerControl.LocalPlayer;
             List<PlayerControl> selectplayers = new List<PlayerControl>();
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.isCrew())
                 {
@@ -48,7 +48,7 @@ namespace SuperNewRoles.Mode.Detective
             /*
             if (target.PlayerId != 0)
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Disconnected && p.isImpostor())
                     {
@@ -57,7 +57,7 @@ namespace SuperNewRoles.Mode.Detective
                 }
             } else
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Disconnected && p.isImpostor())
                     {

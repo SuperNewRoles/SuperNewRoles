@@ -8,7 +8,7 @@ using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Roles
-{    
+{
     class Sheriff
     {
         public static void ResetKillCoolDown()
@@ -43,6 +43,8 @@ namespace SuperNewRoles.Roles
             if (Target.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.SeerFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.MayorFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.HauntedWolf)) return true;
+            //シェリフキルゥ
             return false;
         }
         public static bool IsRemoteSheriffKill(PlayerControl Target)
@@ -62,6 +64,8 @@ namespace SuperNewRoles.Roles
             if (Target.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.SeerFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.MayorFriends) && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.HauntedWolf)) return true;
+            //リモシェリフキルゥ
             return false;
         }
         public static bool IsSheriff(PlayerControl Player)

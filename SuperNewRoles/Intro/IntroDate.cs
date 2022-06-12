@@ -13,6 +13,7 @@ namespace SuperNewRoles.Intro
     public class IntroDate
     {
         public static List<IntroDate> IntroDatas = new List<IntroDate>();
+        public static Dictionary<RoleId, IntroDate> IntroDatasCache = new Dictionary<RoleId, IntroDate>();
         public static List<IntroDate> GhostRoleDatas = new List<IntroDate>();
         public string NameKey;
         public string Name;
@@ -30,7 +31,7 @@ namespace SuperNewRoles.Intro
             this.Name = ModTranslation.getString(NameKey + "Name");
             this.RoleId = RoleId;
             this.TitleNum = TitleNum;
-            this.TitleDesc = Intro.IntroDate.GetTitle(NameKey, TitleNum);
+            this.TitleDesc = GetTitle(NameKey, TitleNum);
             this.Description = ModTranslation.getString(NameKey + "Description");
             this.Team = team;
             this.IsGhostRole = IsGhostRole;
@@ -41,7 +42,7 @@ namespace SuperNewRoles.Intro
             }
             IntroDatas.Add(this);
         }
-        public static IntroDate GetIntroDate(CustomRPC.RoleId RoleId, PlayerControl p = null)
+        public static IntroDate GetIntroDate(RoleId RoleId, PlayerControl p = null)
         {
             if (RoleId == RoleId.DefaultRole)
             {
@@ -55,9 +56,17 @@ namespace SuperNewRoles.Intro
                 }
 
             }
-            var data = IntroDatas.FirstOrDefault((_) => _.RoleId == RoleId);
-            if (data == null) return CrewmateIntro;
-            return data;
+            try
+            {
+                return IntroDatasCache[RoleId];
+            }
+            catch
+            {
+                var data = IntroDatas.FirstOrDefault((_) => _.RoleId == RoleId);
+                if (data == null) data = CrewmateIntro;
+                IntroDatasCache[RoleId] = data;
+                return data;
+            }
         }
         public static CustomRoleOption GetOption(RoleId roleId)
         {
@@ -168,6 +177,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate VentMakerIntro = new IntroDate("VentMaker", RoleClass.VentMaker.color, 1, CustomRPC.RoleId.VentMaker, TeamRoleType.Impostor);
         public static IntroDate GhostMechanicIntro = new IntroDate("GhostMechanic", RoleClass.GhostMechanic.color, 1, CustomRPC.RoleId.GhostMechanic, TeamRoleType.Crewmate, true);
         public static IntroDate EvilHackerIntro = new IntroDate("EvilHacker", RoleClass.EvilHacker.color, 1, CustomRPC.RoleId.EvilHacker, TeamRoleType.Impostor);
+        public static IntroDate HauntedWolfIntro = new IntroDate("HauntedWolf", RoleClass.HauntedWolf.color, 1, CustomRPC.RoleId.HauntedWolf);
         //イントロオブジェ
     }
 }

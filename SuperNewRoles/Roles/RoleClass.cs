@@ -33,6 +33,7 @@ namespace SuperNewRoles.Roles
 
         public static void ClearAndReloadRoles()
         {
+            RoleHelpers.DeadCaches = new Dictionary<byte, bool>();
             LateTask.Tasks = new List<LateTask>();
             LateTask.AddTasks = new List<LateTask>();
             BotManager.AllBots = new List<PlayerControl>();
@@ -48,6 +49,7 @@ namespace SuperNewRoles.Roles
             Mode.BattleRoyal.main.VentData = new Dictionary<byte, int?>();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
+            MapRemodeling.AdditionalVents.ClearAndReload();
             SoothSayer.ClearAndReload();
             Jester.ClearAndReload();
             Lighter.ClearAndReload();
@@ -142,6 +144,7 @@ namespace SuperNewRoles.Roles
             VentMaker.ClearAndReload();
             GhostMechanic.ClearAndReload();
             EvilHacker.ClearAndReload();
+            HauntedWolf.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -504,7 +507,7 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.ShielderCoolTime.getFloat();
                 DurationTime = CustomOptions.ShielderDurationTime.getFloat();
                 IsShield = new Dictionary<byte, bool>();
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls) RoleClass.Shielder.IsShield[p.PlayerId] = false;
+                foreach (PlayerControl p in CachedPlayer.AllPlayers) RoleClass.Shielder.IsShield[p.PlayerId] = false;
             }
         }
         public static class Freezer
@@ -652,7 +655,7 @@ namespace SuperNewRoles.Roles
                 DownImpoVision = CustomOptions.ClergymanDownVision.getFloat();
                 DefaultImpoVision = PlayerControl.GameOptions.ImpostorLightMod;
                 OldButtonTimer = DateTime.Now;
-                OldButtonTime = Clergyman.DurationTime;
+                OldButtonTime = 0;
             }
         }
         public static class MadMate
@@ -945,7 +948,7 @@ namespace SuperNewRoles.Roles
             public static Sprite getVitalsSprite()
             {
                 if (VitalSprite) return VitalSprite;
-                VitalSprite = HudManager.Instance.UseButton.fastUseSettings[ImageNames.VitalsButton].Image;
+                VitalSprite = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.VitalsButton].Image;
                 return VitalSprite;
             }
             public static void ClearAndReload()
@@ -1039,7 +1042,7 @@ namespace SuperNewRoles.Roles
                 Timer = 0;
                 ButtonTimer = DateTime.Now;
                 CameraDefault = Camera.main.orthographicSize;
-                Default = HudManager.Instance.UICamera.orthographicSize;
+                Default = FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize;
             }
         }
         public static class Egoist
@@ -1227,24 +1230,15 @@ namespace SuperNewRoles.Roles
             {
                 try
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("a");
                     LevelingerPlayer = new List<PlayerControl>();
-                    SuperNewRolesPlugin.Logger.LogInfo("b");
                     ThisXP = 0;
-                    SuperNewRolesPlugin.Logger.LogInfo("c");
                     IsCreateMadmate = false;
-                    SuperNewRolesPlugin.Logger.LogInfo("d");
                     OneKillXP = (int)CustomOptions.LevelingerOneKillXP.getFloat();
-                    SuperNewRolesPlugin.Logger.LogInfo("ONEKILLXP:" + (int)CustomOptions.LevelingerOneKillXP.getFloat());
-                    SuperNewRolesPlugin.Logger.LogInfo("e");
                     UpLevelXp = (int)CustomOptions.LevelingerUpLevelXP.getFloat();
-                    SuperNewRolesPlugin.Logger.LogInfo("f");
                     GetPowerData = new List<LevelPowerTypes>();
                     for (int i = 0; i < 5; i++)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("g");
                         string getdata = "";
-                        SuperNewRolesPlugin.Logger.LogInfo("h");
                         if (i == 0)
                         {
                             getdata = CustomOptions.LevelingerLevelOneGetPower.getString();
@@ -1266,11 +1260,8 @@ namespace SuperNewRoles.Roles
                             getdata = CustomOptions.LevelingerLevelFiveGetPower.getString();
                         }
                         GetPowerData.Add(GetLevelPowerType(getdata));
-                        SuperNewRolesPlugin.Logger.LogInfo("data:" + GetLevelPowerType(getdata));
                     }
-                    SuperNewRolesPlugin.Logger.LogInfo("k");
                     IsUseOKRevive = CustomOptions.LevelingerReviveXP.getBool();
-                    SuperNewRolesPlugin.Logger.LogInfo("l");
                     ReviveUseXP = (int)CustomOptions.LevelingerUseXPRevive.getFloat();
                 }
                 catch (Exception e)
@@ -1456,7 +1447,7 @@ namespace SuperNewRoles.Roles
                 Timer = 0;
                 ButtonTimer = DateTime.Now;
                 CameraDefault = Camera.main.orthographicSize;
-                Default = HudManager.Instance.UICamera.orthographicSize;
+                Default = FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize;
                 Postion = new Vector3(0, 0, 0);
                 timer1 = 0;
                 Timer2 = DateTime.Now;
@@ -1513,7 +1504,7 @@ namespace SuperNewRoles.Roles
                 Timer = 0;
                 ButtonTimer = DateTime.Now;
                 CameraDefault = Camera.main.orthographicSize;
-                Default = HudManager.Instance.UICamera.orthographicSize;
+                Default = FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize;
                 Postion = new Vector3(0, 0, 0);
                 timer1 = 0;
                 Timer2 = DateTime.Now;
@@ -2090,6 +2081,7 @@ namespace SuperNewRoles.Roles
             public static bool UseVent;
             public static bool UseSabo;
             public static bool Sword;
+            public static List<byte> SwordedPlayer;
             private static Sprite ButtonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -2105,6 +2097,7 @@ namespace SuperNewRoles.Roles
                 UseVent = CustomOptions.SamuraiVent.getBool();
                 UseSabo = CustomOptions.SamuraiSabo.getBool();
                 Sword = false;
+                SwordedPlayer = new List<byte>();
             }
         }
         public static class MayorFriends
@@ -2186,10 +2179,10 @@ namespace SuperNewRoles.Roles
             {
                 if (buttonSprite) return buttonSprite;
                 byte mapId = PlayerControl.GameOptions.MapId;
-                UseButtonSettings button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
-                if (mapId == 0 || mapId == 3) button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
-                else if (mapId == 1) button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
-                else if (mapId == 4) button = HudManager.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
+                UseButtonSettings button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
+                if (mapId == 0 || mapId == 3) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
+                else if (mapId == 1) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
+                else if (mapId == 4) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AirshipAdminButton]; // Airship
                 buttonSprite = button.Image;
                 return buttonSprite; //GMHからの引用
             }
@@ -2197,6 +2190,15 @@ namespace SuperNewRoles.Roles
             {
                 EvilHackerPlayer = new List<PlayerControl>();
                 IsCreateMadmate = CustomOptions.EvilHackerMadmateSetting.getBool();
+            }
+        }
+        public static class HauntedWolf
+        {
+            public static List<PlayerControl> HauntedWolfPlayer;
+            public static Color32 color = new Color32(50, 0, 25, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                HauntedWolfPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス
@@ -2225,5 +2227,4 @@ namespace SuperNewRoles.Roles
         }
     }
 }
-
 

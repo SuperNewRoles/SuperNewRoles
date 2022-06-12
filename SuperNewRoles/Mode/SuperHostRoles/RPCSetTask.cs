@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (player == null) return false;
                 if (player.isClearTask() && !player.isRole(CustomRPC.RoleId.Workperson))
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (!p.Data.Disconnected)
                         {

@@ -29,7 +29,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void WinNeutral(List<PlayerControl> players)
         {
             /**
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (players.IsCheckListPlayerControl(p))
                 {
@@ -89,49 +89,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             else if (OnGameEndPatch.EndData == CustomGameOverReason.JackalWin)
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.isRole(RoleId.Jackal)) {
                         p.RpcSetRole(RoleTypes.GuardianAngel);
                     }
                 }
             }
-                /*
-                    foreach (PlayerControl p in RoleClass.Opportunist.OpportunistPlayer)
-                    {
-                        if (p.isAlive())
-                        {
-                            if (IsCrewmateWin)
-                            {
-                                p.RpcSetRoleDesync(RoleTypes.Crewmate);
-                            }
-                            else
-                            {
-                                p.RpcSetRoleDesync(RoleTypes.Impostor);
-                            }
-                        }
-                        else
-                        {
-                            if (IsCrewmateWin)
-                            {
-                                p.RpcSetRoleDesync(RoleTypes.Impostor);
-                            }
-                            else
-                            {
-                                p.RpcSetRoleDesync(RoleTypes.Crewmate);
-                            }
-                        }
-                    }
-                */
-                __instance.enabled = false;
+            FixedUpdate.SetRoleNames(true);
+            __instance.enabled = false;
             ShipStatus.RpcEndGame(reason, showAd);
-
-            //変更した設定を直す
-            /*
-            PlayerControl.GameOptions = ChangeGameOptions.DefaultGameOption;
-            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
-            */
-            //終わり
         }
         public static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
         {
@@ -184,7 +151,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 Writer.EndRPC();
                 CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JackalWin);
                 __instance.enabled = false;
-                SuperNewRolesPlugin.Logger.LogInfo("じゃっかるうぃん");
                 CustomEndGame(__instance,GameOverReason.ImpostorByKill, false);
                 return true;
             }
@@ -241,7 +207,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     int impostorplayer = 0;
                     int egoistplayer = 0;
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.isAlive())
                         {
@@ -302,7 +268,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);

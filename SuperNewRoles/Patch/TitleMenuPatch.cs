@@ -22,7 +22,7 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
     public class MainMenuPatch
     {
-        public const string snrdiscordserver = "https://discord.gg/supernewroles";
+        public const string snrdiscordserver = "https://discord.gg/6DjxfaDsAj";
         private static void Prefix(MainMenuManager __instance)
         {
             var template = GameObject.Find("ExitGameButton");
