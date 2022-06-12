@@ -78,7 +78,7 @@ namespace SuperNewRoles.Patches
                         }
                     }
                     catch { }
-                    if (PlayerControl.LocalPlayer.Data.IsDead)
+                    if (CachedPlayer.LocalPlayer.Data.IsDead)
                     {
                         __instance.transform.localPosition = new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
                     }

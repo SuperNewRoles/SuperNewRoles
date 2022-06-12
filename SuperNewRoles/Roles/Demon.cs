@@ -33,16 +33,16 @@ namespace SuperNewRoles.Roles
 
         public static List<PlayerControl> GetUntarget()
         {
-            if (RoleClass.Demon.CurseDatas.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
+            if (RoleClass.Demon.CurseDatas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
             {
-                return RoleClass.Demon.CurseDatas[PlayerControl.LocalPlayer.PlayerId];
+                return RoleClass.Demon.CurseDatas[CachedPlayer.LocalPlayer.PlayerId];
             }
             return new List<PlayerControl>();
         }
 
         public static bool IsCursed(this PlayerControl source, PlayerControl target)
         {
-            if (source == null || source.Data.Disconnected || target == null || target.Data.Disconnected || target.IsBot()) return true;
+            if (source == null || source.Data.Disconnected || target == null || target.isDead() || target.IsBot()) return true;
             if (source.PlayerId == target.PlayerId) return true;
             if (RoleClass.Demon.CurseDatas.ContainsKey(source.PlayerId))
             {
@@ -84,7 +84,7 @@ namespace SuperNewRoles.Roles
 
         public static bool IsWin(PlayerControl Demon)
         {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.PlayerId != Demon.PlayerId && !IsCursed(Demon, player))
                 {

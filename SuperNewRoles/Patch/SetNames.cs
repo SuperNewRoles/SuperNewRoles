@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using System;
@@ -60,9 +61,9 @@ namespace SuperNewRoles.Patch
                 pro.Value.text = "";
             }
 
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
-                player.nameText.text = player.CurrentOutfit.PlayerName;
+                player.nameText.text =  ModHelpers.hidePlayerName(PlayerControl.LocalPlayer, player) ? "" : player.CurrentOutfit.PlayerName;
                 if (PlayerControl.LocalPlayer.isImpostor() && (player.isImpostor() || player.isRole(RoleId.Egoist)))
                 {
                     SetPlayerNameColor(player, RoleClass.ImpostorRed);
@@ -76,7 +77,7 @@ namespace SuperNewRoles.Patch
         public static Dictionary<byte, TextMeshPro> PlayerInfos = new Dictionary<byte, TextMeshPro>();
         public static Dictionary<byte, TextMeshPro> MeetingPlayerInfos = new Dictionary<byte, TextMeshPro>();
 
-        public static void SetPlayerRoleInfoView(PlayerControl p, Color roleColors, string roleNames)
+        public static void SetPlayerRoleInfoView(PlayerControl p, Color roleColors, string roleNames, Color? GhostRoleColor = null, string GhostRoleNames = "")
         {
             if (p.IsBot()) return;
             bool commsActive = RoleHelpers.IsComms();
@@ -129,8 +130,13 @@ namespace SuperNewRoles.Patch
             catch { }
             string playerInfoText = "";
             string meetingInfoText = "";
-            playerInfoText = $"{CustomOptions.cs(roleColors, roleNames)}{TaskText}";
-            meetingInfoText = $"{CustomOptions.cs(roleColors, roleNames)}{TaskText}".Trim();
+            playerInfoText = $"{CustomOptions.cs(roleColors, roleNames)}";
+            if (GhostRoleNames != "")
+            {
+                playerInfoText = $"{CustomOptions.cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
+            }
+            playerInfoText += TaskText;
+            meetingInfoText = playerInfoText.Trim();
             playerInfo.text = playerInfoText;
             playerInfo.gameObject.SetActive(p.Visible);
             if (meetingInfo != null) meetingInfo.text = MeetingHud.Instance.state == MeetingHud.VoteStates.Results ? "" : meetingInfoText; p.nameText.color = roleColors;
@@ -140,6 +146,8 @@ namespace SuperNewRoles.Patch
             if (p.IsBot()) return;
             string roleNames;
             Color roleColors;
+            string GhostroleNames = "";
+            Color? GhostroleColors = null;
             var role = p.getRole();
             if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && p.isAlive())) {
                 if (p.isImpostor())
@@ -158,7 +166,13 @@ namespace SuperNewRoles.Patch
                 roleNames = introdate.Name;
                 roleColors = introdate.color;
             }
-            SetPlayerRoleInfoView(p, roleColors, roleNames);
+            var GhostRole = p.getGhostRole();
+            if (GhostRole != RoleId.DefaultRole) {
+                var GhostIntro = IntroDate.GetIntroDate(GhostRole);
+                GhostroleNames = GhostIntro.Name;
+                GhostroleColors = GhostIntro.color;
+            }
+            SetPlayerRoleInfoView(p, roleColors, roleNames, GhostroleColors, GhostroleNames);
         }
         public static void SetPlayerNameColors(PlayerControl player)
         {
@@ -225,7 +239,7 @@ namespace SuperNewRoles.Patch
         {
             if (PlayerControl.LocalPlayer.isRole(RoleId.Demon) || PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God))
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (Demon.IsViewIcon(player))
                     {
@@ -241,7 +255,7 @@ namespace SuperNewRoles.Patch
         {
             if (PlayerControl.LocalPlayer.isRole(RoleId.Arsonist) || PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God))
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (Arsonist.IsViewIcon(player))
                     {
@@ -278,7 +292,7 @@ namespace SuperNewRoles.Patch
             RoleId LocalRole = PlayerControl.LocalPlayer.getRole();
             if (PlayerControl.LocalPlayer.isDead() && LocalRole != RoleId.NiceRedRidingHood)
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     SetNamesClass.SetPlayerNameColors(player);
                     SetNamesClass.SetPlayerRoleNames(player);
@@ -286,7 +300,7 @@ namespace SuperNewRoles.Patch
             }
             else if (LocalRole == RoleId.God)
             {
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (RoleClass.IsMeeting || player.isAlive())
                     {
@@ -303,7 +317,7 @@ namespace SuperNewRoles.Patch
                     (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon)
                     )
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.isImpostor())
                         {
@@ -359,7 +373,7 @@ namespace SuperNewRoles.Patch
             {
                 if (Sabotage.SabotageManager.thisSabotage == Sabotage.SabotageManager.CustomSabotage.CognitiveDeficit)
                 {
-                    foreach (PlayerControl p3 in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p3 in CachedPlayer.AllPlayers)
                     {
                         if (p3.isAlive() && !Sabotage.CognitiveDeficit.main.OKPlayers.IsCheckListPlayerControl(p3))
                         {

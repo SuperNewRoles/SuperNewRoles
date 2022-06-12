@@ -69,6 +69,32 @@ namespace SuperNewRoles
             CustomRPC.RPCProcedure.StartGameRPC();
 
             RoleSelectHandler.SpawnBots();
+            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+            {
+                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
+            }
+        }
+    }
+    [HarmonyPatch(typeof(GameData.PlayerInfo), nameof(GameData.PlayerInfo.IsDead), MethodType.Setter)]
+    class DeadPatch
+    {
+        public static void Postfix(GameData.PlayerInfo __instance)
+        {
+            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+            {
+                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
+            }
+        }
+    }
+    [HarmonyPatch(typeof(GameData.PlayerInfo), nameof(GameData.PlayerInfo.Disconnected), MethodType.Setter)]
+    class DisconnectPatch
+    {
+        public static void Postfix(GameData.PlayerInfo __instance)
+        {
+            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
+            {
+                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
+            }
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
@@ -101,7 +127,7 @@ namespace SuperNewRoles
             {
                 List<PlayerControl> SelectPlayers = new List<PlayerControl>();
                 AllRoleSetClass.impostors = new List<PlayerControl>();
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (!player.Data.Disconnected && player.IsPlayer())
                     {
@@ -117,12 +143,12 @@ namespace SuperNewRoles
                         SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                     }
                 }
-                RoleSelectHandler.RoleSelect();
+                var crs = RoleSelectHandler.RoleSelect();
                 foreach (PlayerControl player in AllRoleSetClass.impostors)
                 {
                     player.RpcSetRole(RoleTypes.Impostor);
                 }
-                foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (!player.Data.Disconnected && !AllRoleSetClass.impostors.IsCheckListPlayerControl(player))
                     {
@@ -147,11 +173,19 @@ namespace SuperNewRoles
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
                 }
+                FixedUpdate.SetRoleNames();
+                crs.SendMessage();
+                SuperNewRolesPlugin.Logger.LogInfo(false);
                 return false;
             }
             else if (ModeHandler.isMode(ModeId.BattleRoyal))
             {
                 Mode.BattleRoyal.main.ChangeRole.Postfix();
+                return false;
+            }
+            else if (ModeHandler.isMode(ModeId.CopsRobbers))
+            {
+                Mode.CopsRobbers.RoleSelectHandler.Handler();
                 return false;
             }
             return true;
@@ -179,7 +213,7 @@ namespace SuperNewRoles
             }
             if (!ModeHandler.isMode(ModeId.NotImpostorCheck) && !ModeHandler.isMode(ModeId.BattleRoyal) && !ModeHandler.isMode(ModeId.Default) && !ModeHandler.isMode(ModeId.SuperHostRoles))
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     p.RpcSetRole(p.Data.Role.Role);
                 }
@@ -191,9 +225,9 @@ namespace SuperNewRoles
                 {
                     if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                     {
-                        foreach (var pc in PlayerControl.AllPlayerControls)
+                        foreach (var pc in CachedPlayer.AllPlayers)
                         {
-                            pc.RpcSetRole(RoleTypes.Shapeshifter);
+                            pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
                         }
                     }
                 }, 3f, "SetImpostor");
@@ -213,8 +247,11 @@ namespace SuperNewRoles
         public static List<PlayerControl> ImpostorPlayers;
 
         public static int ImpostorPlayerNum;
+        public static int ImpostorGhostRolePlayerNum;
         public static int NeutralPlayerNum;
+        public static int NeutralGhostRolePlayerNum;
         public static int CrewMatePlayerNum;
+        public static int CrewMateGhostRolePlayerNum;
 
         public static void AllRoleSet()
         {
@@ -281,7 +318,7 @@ namespace SuperNewRoles
             List<PlayerControl> SelectPlayers = new List<PlayerControl>();
             if (CustomOption.CustomOptions.QuarreledOnlyCrewMate.getBool())
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Role.IsImpostor && !p.isNeutral() && p.IsPlayer())
                     {
@@ -291,7 +328,7 @@ namespace SuperNewRoles
             }
             else
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.IsPlayer())
                     {
@@ -341,7 +378,7 @@ namespace SuperNewRoles
             bool IsQuarreledDup = CustomOptions.LoversDuplicationQuarreled.getBool();
             if (CustomOptions.LoversOnlyCrewMate.getBool())
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!p.isImpostor() && !p.isNeutral() && !p.isRole(RoleId.truelover) && p.IsPlayer())
                     {
@@ -354,7 +391,7 @@ namespace SuperNewRoles
             }
             else
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (!IsQuarreledDup || !p.IsQuarreled() && p.IsPlayer())
                     {
@@ -384,9 +421,12 @@ namespace SuperNewRoles
         }
         public static void SetPlayerNum()
         {
-            ImpostorPlayerNum = (int)CustomOption.CustomOptions.impostorRolesCountMax.getFloat();
-            NeutralPlayerNum = (int)CustomOption.CustomOptions.neutralRolesCountMax.getFloat();
-            CrewMatePlayerNum = (int)CustomOption.CustomOptions.crewmateRolesCountMax.getFloat();
+            ImpostorPlayerNum = (int)CustomOptions.impostorRolesCountMax.getFloat();
+            ImpostorGhostRolePlayerNum = (int)CustomOptions.impostorGhostRolesCountMax.getFloat();
+            NeutralPlayerNum = (int)CustomOptions.neutralRolesCountMax.getFloat();
+            NeutralGhostRolePlayerNum = (int)CustomOptions.neutralGhostRolesCountMax.getFloat();
+            CrewMatePlayerNum = (int)CustomOptions.crewmateRolesCountMax.getFloat();
+            CrewMateGhostRolePlayerNum = (int)CustomOptions.crewmateGhostRolesCountMax.getFloat();
         }
         public static void ImpostorRandomSelect()
         {
@@ -423,7 +463,8 @@ namespace SuperNewRoles
                         {
 
                         }
-                    } else if (SelectRoleDate == RoleId.Assassin)
+                    }
+                    else if (SelectRoleDate == RoleId.Assassin)
                     {
                         IsAssassinAssigned = true;
                     }
@@ -512,7 +553,7 @@ namespace SuperNewRoles
             if (IsAssassinAssigned)
             {
                 int PlayerCount = (int)GetPlayerCount(RoleId.Marine);
-                SuperNewRolesPlugin.Logger.LogInfo("DATA:\n"+PlayerCount+"\n"+CrewMatePlayerNum+"\n"+CrewMatePlayers.Count);
+                SuperNewRolesPlugin.Logger.LogInfo("DATA:\n" + PlayerCount + "\n" + CrewMatePlayerNum + "\n" + CrewMatePlayers.Count);
                 if (PlayerCount >= CrewMatePlayerNum)
                 {
                     for (int i = 1; i <= CrewMatePlayerNum; i++)
@@ -911,8 +952,18 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.CleanerPlayerCount.getFloat();
                 case (RoleId.MadCleaner):
                     return CustomOption.CustomOptions.MadCleanerPlayerCount.getFloat();
-                    case (RoleId.MayorFriends):
+                case (RoleId.Samurai):
+                    return CustomOption.CustomOptions.SamuraiPlayerCount.getFloat();
+                case (RoleId.MayorFriends):
                     return CustomOption.CustomOptions.MayorFriendsPlayerCount.getFloat();
+                case (RoleId.VentMaker):
+                    return CustomOption.CustomOptions.VentMakerPlayerCount.getFloat();
+                case (RoleId.GhostMechanic):
+                    return CustomOption.CustomOptions.GhostMechanicPlayerCount.getFloat();
+                case (RoleId.EvilHacker):
+                    return CustomOption.CustomOptions.EvilHackerPlayerCount.getFloat();
+                case (RoleId.HauntedWolf):
+                    return CustomOption.CustomOptions.HauntedWolfPlayerCount.getFloat();
                     //プレイヤーカウント
             }
             return 1;
@@ -921,7 +972,7 @@ namespace SuperNewRoles
         {
             CrewMatePlayers = new List<PlayerControl>();
             ImpostorPlayers = new List<PlayerControl>();
-            foreach (PlayerControl Player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
                 if (Player.Data.Role.IsSimpleRole)
                 {
@@ -946,7 +997,7 @@ namespace SuperNewRoles
             Crewnotonepar = new List<RoleId>();
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
-                if (intro.RoleId != RoleId.DefaultRole)
+                if (intro.RoleId != RoleId.DefaultRole && !intro.IsGhostRole)
                 {
                     var option = IntroDate.GetOption(intro.RoleId);
                     if (option == null) continue;
@@ -988,10 +1039,11 @@ namespace SuperNewRoles
                         }
                     }
                 }
+
             }
 
             var Assassinselection = CustomOptions.AssassinAndMarineOption.getSelection();
-            SuperNewRolesPlugin.Logger.LogInfo("アサイン情報:"+Assassinselection+"、"+CrewMatePlayerNum+"、"+CrewMatePlayers.Count);
+            SuperNewRolesPlugin.Logger.LogInfo("アサイン情報:" + Assassinselection + "、" + CrewMatePlayerNum + "、" + CrewMatePlayers.Count);
             if (Assassinselection != 0 && CrewMatePlayerNum > 0 && CrewMatePlayers.Count > 0)
             {
                 if (Assassinselection == 10)
@@ -1006,6 +1058,7 @@ namespace SuperNewRoles
                     }
                 }
             }
+        //セットクラス
         }
     }
 }

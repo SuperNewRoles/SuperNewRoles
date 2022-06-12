@@ -56,10 +56,16 @@ SettingNeutral,<color=#808080>Neutral</color> Settings,<color=#808080>第三陣�
 SettingCrewmate,<color=#a9ceec>Crewmate</color> Settings,<color=#00ffff>クルーメイト</color>の設定
 SettingMiniCrewRole,Minimum Crewmate Roles,最小クルーメイト役職数
 SettingMaxCrewRole,Maximum Crewmate Roles,クルーメイト役職人数
+SettingMiniCrewGhostRole,Minimum Crewmate Ghost Roles,最小クルーメイト幽霊役職数
+SettingMaxCrewGhostRole,Maximum Crewmate Ghost Roles,クルーメイト幽霊役職人数
 SettingMiniNeutralRole,Minimum Neutral Roles,最小第三陣営役職数
 SettingMaxNeutralRole,Maximum Neutral Roles,第三陣営役職人数
+SettingMiniNeutralGhostRole,Minimum Neutral Ghost Roles,最小第三陣営幽霊役職数
+SettingMaxNeutralGhostRole,Maximum Neutral Ghost Roles,第三陣営幽霊役職人数
 SettingMiniImpoRole,Minimum Impostor Roles,最小インポスター役職数
 SettingMaxImpoRole,Maximum Impostor Roles,インポスター役職人数
+SettingMiniImpoGhostRole,Minimum Impostor Ghost Roles,最小インポスター幽霊役職数
+SettingMaxImpoGhostRole,Maximum Impostor GhostRoles,インポスター幽霊役職人数
 SettingsHideSetting,Hide Setting,設定を隠す
 SettingCrewMateTeamRolesName,Position setting of crewmate camp,クルーメイト陣営の役職設定
 SettingImpostorTeamRolesName,Imposter camp position setting,インポスター陣営の役職設定
@@ -93,8 +99,11 @@ CustomProcessDown,Update Process Down,処理回数を減らす
 CustomIsVersionErrorView,Show players that are not in or have different versions.,入っていない、バージョンが違うプレイヤーを表示する
 CustomHorseMode,Horse mode (can be changed only outside the game including the lobby),馬モード(ロビー含むゲーム外のみ変更可能)
 SettingCrewmateRoles,CrewMate Setting,クルーメイトの人数設定
+SettingCrewmateGhostRoles,CrewMate GhostRole Setting,クルーメイトの幽霊役職の人数設定
 SettingNeutralRoles,Neutral Setting,第三陣営の人数設定
+SettingNeutralGhostRoles,Neutral GhostRole Setting,第三陣営の幽霊役職の人数設定
 SettingImpostorRoles,Impostor Setting,インポスターの人数設定
+SettingImpostorGhostRoles,Impostor GhostRole Setting,インポスターの幽霊役職の人数設定
 SettingOptionOn,On,オン
 SettingOptionOff,Off,オフ
 SettingPressTabForMore,Press Tab For More,Tabを押して詳細を表示
@@ -117,6 +126,11 @@ SuperHostRolesModeName,Super Host Roles,SuperHostRoles
 ZombieModeName,Zombie Mode,ゾンビモード
 RandomColorModeName,Random Color Mode,ランダムカラー
 NotImpostorCheckModeName,Not Impostor Check Mode,インポスター視認不能モード
+CopsRobbersModeName,CopsRobbers,ケイドロ
+CopsRobbersModeCrewName,Thief,泥棒
+CopsRobbersModeCrewTitle1,Finish the task and win without getting caught by the police!,警察に捕まらないようにタスクを終わらせて勝利しよう
+CopsRobbersModeImpostorName,Police,警察
+CopsRobbersModeImpostorTitle1,Catch all the thieves and win!,泥棒を全員捕まえて勝利しよう
 DetectiveModeName,Detective Mode,探偵モード
 DetectiveModeIsWinNotCheckSetting,Not include the detective in the win condition determination.,探偵を勝利条件判定に入れない
 DetectiveModeIsNotTaskSetting,No tasks for detective,探偵にタスクがない
@@ -645,6 +659,38 @@ CleanerCoolDownSetting,CoolDown,死体消しのクールダウン
 MadCleanerName,MadCleaner,マッドクリーナー
 MadCleanerTitle1,Destroy the evidence and help impostors to win!,証拠を隠滅してインポスターを勝利に導こう!
 CleanerKillCoolTimeSetting,Kill CoolDown,クリーナーのキルクールダウン
+SamuraiName,Samurai,侍
+SamuraiTitle1,Let's cut through the crew!,クルーを切り裂こう!
+SamuraiKillCoolSetting,KillCoolTime,侍のキルクールダウン
+SamuraiSwordCoolSetting,AttackCoolTime,必殺技のクールダウン
+SamuraiScopeSetting,SamuraiScope,必殺技が及ぶ範囲
+SamuraiButtonName,UseSword!,必殺技!
 MayorFriendsName,MayorFriends,メイヤーフレンズ
 MayorFriendsTitle1,Let's abuse our power at the meeting.,会議で権力を乱用しよう
 MayorFriendsDescription,It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!,クルーメイトと判定されますが、ジャッカル陣営です。\nジャッカルが勝利すると、勝利できます。メイヤーフレンズはジャッカルからは分かりません。\nジャッカル陣営が勝利するようにジャッカルを助けましょう！。
+VentMakerName,VentMaker,ベントメーカー
+VentMakerTitle1,Let's make a vent!,ベントを作ろう！
+GhostMechanicName,GhostMechanic,亡霊整備士
+GhostMechanicTitle1,Let's get rid of the loose ends that we couldn't fix the machine.,機械を治せなかった未練を解消しよう
+GhostMechanicRepairLimitSetting,Number of times sabotage can be repaired,サボタージュ修復可能回数
+GhostMechanicButtonName,Repair,修復
+GhostMechanicCountText,GhostMechanic,残り{0}回
+EvilHackerName,EvilHacker,イビルハッカー
+EvilHackerTitle1,Hack to Win!,ハッキングして勝利しよう
+EvilHackerMadmateSetting,Can an EvilHacker Make a Madmate,イビルハッカーがマッドメイトを作れるか
+ADMINButton,ADMIN,アドミン
+timeRemaining,Remaining: {0},残り{0}
+restrictOutOfTime,Time up,時間切れ
+RestrictDevicesSetting,Device Restrictions,機器の制限
+RestrictAdminSetting,Admin Restrictions,アドミンの制限
+RestrictCameraSetting,Camera Restrictions,カメラの制限
+RestrictVitalSetting,Vital Restrictions,バイタルの制限
+DeviceTimeSetting,Can use time,使用可能時間
+IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx
+restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnExDelicious,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい
+HauntedWolfName,HauntedWolf,狼憑き
+HauntedWolfTitle1,Don't let the crew find out.,クルーにバレるな
+ReactorDurationSetting,Reactor Duration Time,リアクター継続時間の設定
+PolusReactorTime,Polus Reactor Duration Time,ポーラスでのリアクター時間
+MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間
+AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間

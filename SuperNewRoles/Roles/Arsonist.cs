@@ -38,16 +38,16 @@ namespace SuperNewRoles.Roles
 
         public static List<PlayerControl> GetUntarget()
         {
-            if (RoleClass.Arsonist.DouseDatas.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
+            if (RoleClass.Arsonist.DouseDatas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
             {
-                return RoleClass.Arsonist.DouseDatas[PlayerControl.LocalPlayer.PlayerId];
+                return RoleClass.Arsonist.DouseDatas[CachedPlayer.LocalPlayer.PlayerId];
             }
             return new List<PlayerControl>();
         }
 
         public static bool IsDoused(this PlayerControl source, PlayerControl target)
         {
-            if (source == null || source.Data.Disconnected || target == null || target.Data.Disconnected || target.IsBot()) return true;
+            if (source == null || source.Data.Disconnected || target == null || target.isDead() || target.IsBot()) return true;
             if (source.PlayerId == target.PlayerId) return true;
             if (RoleClass.Arsonist.DouseDatas.ContainsKey(source.PlayerId))
             {
@@ -97,7 +97,7 @@ namespace SuperNewRoles.Roles
 
         public static bool IsWin(PlayerControl Arsonist)
         {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.PlayerId != Arsonist.PlayerId && !IsDoused(Arsonist, player))
                 {

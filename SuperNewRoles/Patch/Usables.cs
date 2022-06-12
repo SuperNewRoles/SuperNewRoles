@@ -16,7 +16,6 @@ namespace SuperNewRoles.Patch
             {
                 if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo($"{data.PlayerName}(ClientID:{data.Id})が切断(理由:{reason})");
                 }
             }
         }
@@ -28,7 +27,7 @@ namespace SuperNewRoles.Patch
             {
                 canUse = true;
                 couldUse = false;
-                __result = Vector3.Distance(PlayerControl.LocalPlayer.transform.position,__instance.transform.position);//float.MaxValue;
+                __result = Vector3.Distance(CachedPlayer.LocalPlayer.transform.position,__instance.transform.position);//float.MaxValue;
 
                 //if (IsBlocked(__instance, pc.Object)) return false;
                 if (__instance.AllowImpostor) return true;

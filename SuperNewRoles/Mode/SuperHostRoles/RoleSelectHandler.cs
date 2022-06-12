@@ -13,13 +13,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     public static class RoleSelectHandler
     {
-        public static void RoleSelect()
+        public static CustomRpcSender RoleSelect()
         {
-            if (!AmongUsClient.Instance.AmHost) return;
+            SuperNewRolesPlugin.Logger.LogInfo("ROLESELECT");
+            if (!AmongUsClient.Instance.AmHost) return null;
+            SuperNewRolesPlugin.Logger.LogInfo("つうか");
+            var crs = CustomRpcSender.Create();
             CrewOrImpostorSet();
             OneOrNotListSet();
             AllRoleSetClass.AllRoleSet();
-            SetCustomRoles();
+            crs = SetCustomRoles(crs);
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
             FixedUpdate.SetRoleNames();
@@ -32,13 +35,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
                     PlayerControl.LocalPlayer.RpcSendChat("＊注意(自動送信)＊\nこのMODは、バグ等がたくさん発生します。\nいろいろな重大なバグがあるため、あくまで自己責任でお願いします。");
-                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    foreach (var pc in CachedPlayer.AllPlayers)
                     {
-                        pc.RpcSetRole(RoleTypes.Shapeshifter);
+                        pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
                         SuperNewRolesPlugin.Logger.LogInfo("シェイプシフターセット！");
                     }
                 }
             }, 3f, "SetImpostor");
+            return crs;
         }
         public static void SpawnBots()
         {
@@ -70,6 +74,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                   CustomOptions.FalseChargesOption.getSelection() != 0 ||
                   CustomOptions.RemoteSheriffOption.getSelection() != 0 ||
                   CustomOptions.MadMakerOption.getSelection() != 0 ||
+                  CustomOptions.SamuraiOption.getSelection() != 0 ||
                   CustomOptions.DemonOption.getSelection() != 0)
                 {
                     PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
@@ -94,7 +99,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
         }
-        public static void SetCustomRoles()
+        public static CustomRpcSender SetCustomRoles(CustomRpcSender crs)
         {
             List<PlayerControl> DesyncImpostors = new List<PlayerControl>();
             DesyncImpostors.AddRange(RoleClass.Jackal.JackalPlayer);
@@ -123,13 +128,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
             //シェイプシフターにDesync
 
-
             foreach (PlayerControl Player in DesyncImpostors)
             {
                 if (!Player.IsMod())
                 {
                     Player.RpcSetRoleDesync(RoleTypes.Impostor);
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.PlayerId != Player.PlayerId && p.IsPlayer())
                         {
@@ -148,7 +152,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!Player.IsMod())
                 {
                     Player.RpcSetRoleDesync(RoleTypes.Shapeshifter);
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.PlayerId != Player.PlayerId && p.IsPlayer())
                         {
@@ -167,7 +171,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!p.IsMod())
                 {
                     p.RpcSetRole(RoleTypes.Impostor);
-                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                     {
                         if (p2.PlayerId != p.PlayerId && !p.isRole(RoleId.Sheriff) && !p.isRole(RoleId.truelover) && p.IsPlayer())
                         {
@@ -185,21 +189,25 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
             foreach (PlayerControl p in SetRoleEngineers)
             {
-                if (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(p.getClientId()))
-                {
-                    p.RpcSetRoleDesync(RoleTypes.Engineer);
+                if (!p.IsMod()) {
+                    p.RpcSetRole(RoleTypes.Engineer);
                 }
             }
             foreach (PlayerControl p in RoleClass.SelfBomber.SelfBomberPlayer)
             {
                 p.RpcSetRole(RoleTypes.Shapeshifter);
             }
+            foreach (PlayerControl p in RoleClass.Samurai.SamuraiPlayer)
+            {
+                p.RpcSetRole(RoleTypes.Shapeshifter);
+            }
+            return crs;
         }
         public static void CrewOrImpostorSet()
         {
             AllRoleSetClass.CrewMatePlayers = new List<PlayerControl>();
             AllRoleSetClass.ImpostorPlayers = new List<PlayerControl>();
-            foreach (PlayerControl Player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
                 if (Player.IsPlayer())
                 {

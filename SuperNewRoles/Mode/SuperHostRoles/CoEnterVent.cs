@@ -39,6 +39,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.Technician:
                     if (RoleHelpers.IsSabotage()) return true;
                     break;
+                case RoleId.Samurai:
+                    if (RoleClass.Samurai.UseVent) return true;
+                    break;
                 case RoleId.RemoteSheriff:
                 case RoleId.Sheriff:
                 case RoleId.truelover:

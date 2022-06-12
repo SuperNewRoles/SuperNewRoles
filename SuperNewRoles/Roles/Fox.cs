@@ -20,8 +20,8 @@ namespace SuperNewRoles.Roles
             {
                 if (!RoleClass.Fox.UseReport)
                 {
-                    if (HudManager.Instance.ReportButton.gameObject.active) {
-                        HudManager.Instance.ReportButton.SetActive(false);
+                    if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active) {
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
                     }
                 }
             }

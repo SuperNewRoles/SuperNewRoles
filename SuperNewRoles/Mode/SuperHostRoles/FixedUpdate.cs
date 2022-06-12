@@ -16,12 +16,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static Dictionary<int, string> DefaultName = new Dictionary<int, string>();
         private static int UpdateDate = 0;
 
-        [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
-        public class AmongUsClientOnPlayerJoinedPatch
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.CoShowIntro))]
+        class CoShowIntroPatch
         {
-            public static void Postfix()
+            public static void Prefix(HudManager __instance)
             {
                 DefaultName = new Dictionary<int, string>();
+                foreach (var pc in CachedPlayer.AllPlayers)
+                {
+                    //SuperNewRolesPlugin.Logger.LogInfo($"{pc.PlayerId}:{pc.name}:{pc.nameText.text}");
+                    DefaultName[pc.PlayerId] = pc.PlayerControl.name;
+                    pc.PlayerControl.nameText.text = pc.PlayerControl.name;
+                }
             }
         }
         public static string getDefaultName(this PlayerControl player)
@@ -71,6 +77,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false)
         {
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
             if (player.Data.Disconnected || player.IsBot() || !AmongUsClient.Instance.AmHost) return;
 
             var caller = new System.Diagnostics.StackFrame(1, false);
@@ -84,7 +91,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             //UpdateTime[player.PlayerId] = UpdateDefaultTime;
 
             List<PlayerControl> DiePlayers = new List<PlayerControl>();
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.PlayerId != 0 && p.PlayerId != player.PlayerId  && p.IsPlayer())
                 {
@@ -104,12 +111,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
             foreach (PlayerControl CelebrityPlayer in RoleClass.Celebrity.CelebrityPlayer)
             {
+                if (CelebrityPlayer == player) continue;
                 ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.cs(RoleClass.Celebrity.color, CelebrityPlayer.getDefaultName()));
             }
 
             if (Madmate.CheckImpostor(player))
             {
-                foreach (PlayerControl Impostor in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
                 {
                     if (Impostor.isImpostor() && Impostor.IsPlayer())
                     {
@@ -122,7 +130,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             else if (MadMayor.CheckImpostor(player) || player.isRole(RoleId.Marine))
             {
-                foreach (PlayerControl Impostor in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
                 {
                     if (Impostor.isImpostor() && Impostor.IsPlayer())
                     {
@@ -154,7 +162,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (RoleClass.Demon.IsCheckImpostor)
                 {
-                    foreach (PlayerControl Impostor in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
                     {
                         if (Impostor.isImpostor() && Impostor.IsPlayer())
                         {
@@ -306,13 +314,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!player.IsMod())
             {
                 player.RpcSetNamePrivate(NewName);
-                foreach (var ChangePlayerData in ChangePlayers)
+                if (player.isAlive())
                 {
-                    PlayerControl ChangePlayer = ModHelpers.playerById(ChangePlayerData.Key);
-                    if (ChangePlayer != null)
+                    foreach (var ChangePlayerData in ChangePlayers)
                     {
-                        ChangePlayer.RpcSetNamePrivate(ChangePlayerData.Value, player);
-                        SuperNewRolesPlugin.Logger.LogInfo(ChangePlayerData.Value);
+                        PlayerControl ChangePlayer = ModHelpers.playerById(ChangePlayerData.Key);
+                        if (ChangePlayer != null)
+                        {
+                            ChangePlayer.RpcSetNamePrivate(ChangePlayerData.Value, player);
+                            SuperNewRolesPlugin.Logger.LogInfo(ChangePlayerData.Value);
+                        }
                     }
                 }
             }
@@ -344,7 +355,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SuperNewRolesPlugin.Logger.LogInfo("SetRoleNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
 
             bool commsActive = RoleHelpers.IsComms();
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 SetRoleName(p, commsActive, IsUnchecked);
             }
@@ -355,19 +366,19 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (RoleClass.Sheriff.KillMaxCount >= 1)
                 {
-                    HudManager.Instance.KillButton.gameObject.SetActive(true);
-                    PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
-                    DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
+                    CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = true;
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
-                        DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                        FastDestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
                     }
                 }
                 else
                 {
-                    HudManager.Instance.KillButton.gameObject.SetActive(false);
-                    PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = false;
-                    DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                    CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = false;
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
             }
             else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal) ||
@@ -378,12 +389,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 PlayerControl.LocalPlayer.isRole(RoleId.Arsonist)
                 )
             {
-                HudManager.Instance.KillButton.gameObject.SetActive(true);
-                PlayerControl.LocalPlayer.Data.Role.CanUseKillButton = true;
-                DestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
+                CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = true;
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
                 if (Input.GetKeyDown(KeyCode.Q))
                 {
-                    DestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
                 }
             }
             SetNameUpdate.Postfix(PlayerControl.LocalPlayer);
@@ -429,7 +440,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             string callerMethodName = callerMethod.Name;
             string callerClassName = callerMethod.DeclaringType.FullName;
             SuperNewRolesPlugin.Logger.LogInfo("SetDefaultNamesが" + callerClassName + "." + callerMethodName + "から呼び出されました。");
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 p.RpcSetName(p.getDefaultName());
             }
