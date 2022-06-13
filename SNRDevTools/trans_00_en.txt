@@ -695,3 +695,4 @@ Polus Reactor Duration Time
 Mira Reactor Duration Time
 Airship  Reactor Duration Time
 Adding vitals to Mira
+No Vent Animation

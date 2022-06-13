@@ -696,4 +696,4 @@ PolusReactorTime,Polus Reactor Duration Time,ポーラスでのリアクター�
 MiraReactorTime,Mira Reactor Duration Time,ミラでのリアクター時間
 AirshipReactorTime,Airship  Reactor Duration Time,エアーシップでのリアクター時間
 AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する
-,,
+VentAnimation,No Vent Animation,ベントアニメーション無効化

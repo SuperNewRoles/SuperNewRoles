@@ -133,6 +133,7 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption RestrictVital;
         public static CustomOption.CustomOption CanUseVitalTime;
         public static CustomOption.CustomOption AddVitalsMira;
+        public static CustomOption.CustomOption VentAnimation;
 
         public static CustomOption.CustomOption ReactorDurationOption;
         public static CustomOption.CustomOption PolusReactorTimeLimit;
@@ -181,6 +182,7 @@ namespace SuperNewRoles.MapOptions
 
             AddVitalsMira = CustomOption.CustomOption.Create(520, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MapOptionSetting);
 
+            VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
         }
     }
 }
