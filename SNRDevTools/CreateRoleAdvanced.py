@@ -13,7 +13,7 @@ from importlib.resources import Resource
 # オブジェクト指向用
 class ReturnClass:
     def WriteCodes(self, Path, OldCode, NewCode):
-    # w→書く　r→読む　a→合成　r+既存を読む　w+→新規で書く　a+→追加読み書き　t→テキストモード　b→バイナリモード
+    # w→書く　r→読む　a→合成　r+既存を読む　w+→新規で書く　a+→追加読み書き　t→テキストモード　b→バイナリモード x→ファイル作成
         with open(BasePath+Path, mode="r", encoding="utf-8") as r:
             Template = r.read()
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
@@ -174,8 +174,9 @@ class AllCheck:
     def AllWrite(self):
         # Roles/ROLENAME.cs
         if (MainClass.GetBool("A_CreateFile")):
-            MainClass.WriteCodes("Roles/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), "",
-"""using System;
+            with open(BasePath+"Roles/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), mode="x") as x:
+                x.write(
+                    """using System;
 using System.Collections.Generic;
 using System.Text;
 
