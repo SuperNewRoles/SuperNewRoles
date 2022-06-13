@@ -62,6 +62,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton GhostMechanicRepairButton;
         public static CustomButton EvilHackerButton;
         public static CustomButton EvilHackerMadmateSetting;
+        public static CustomButton ConjurerAddButton;
+        public static CustomButton ConjurerStartButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
@@ -1380,7 +1382,7 @@ namespace SuperNewRoles.Buttons
                     writer.Write(CachedPlayer.LocalPlayer.transform.position.y);
                     writer.Write(CachedPlayer.LocalPlayer.transform.position.z);
                     writer.EndRPC();
-                    CustomRPC.RPCProcedure.MakeVent(CachedPlayer.LocalPlayer.transform.position.x,CachedPlayer.LocalPlayer.transform.position.y,CachedPlayer.LocalPlayer.transform.position.z);
+                    CustomRPC.RPCProcedure.MakeVent(CachedPlayer.LocalPlayer.transform.position.x, CachedPlayer.LocalPlayer.transform.position.y, CachedPlayer.LocalPlayer.transform.position.z);
                     GameObject Vent = GameObject.Find("VentMakerVent" + MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max().ToString());
 
                     RoleClass.VentMaker.Vent = Vent.GetComponent<Vent>();
@@ -1474,7 +1476,7 @@ namespace SuperNewRoles.Buttons
             GhostMechanicNumRepairText.transform.localPosition += new Vector3(0f, 0.7f, 0);
 
             GhostMechanicRepairButton.buttonText = ModTranslation.getString("GhostMechanicButtonName");
-            GhostMechanicRepairButton .showButtonText = true;
+            GhostMechanicRepairButton.showButtonText = true;
 
             EvilHackerButton = new CustomButton(
                () =>
@@ -1537,10 +1539,34 @@ namespace SuperNewRoles.Buttons
             EvilHackerMadmateSetting.buttonText = ModTranslation.getString("SidekickName");
             EvilHackerMadmateSetting.showButtonText = true;
 
+            ConjurerAddButton = new CustomButton(
+               () =>
+               {
+                   //マーカー設置
+
+               },
+               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && PlayerControl.LocalPlayer.CanMove; },
+               () =>
+               {
+                   return PlayerControl.LocalPlayer.CanMove;
+               },
+                () =>
+                {
+                    ConjurerAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
+                    ConjurerAddButton.Timer = RoleClass.Conjurer.CoolTime;
+                },
+               RoleClass.Conjurer.getAddButtonSprite(),
+               new Vector3(-1.8f, -0.06f, 0),
+               __instance,
+               __instance.AbilityButton,
+               KeyCode.F,
+               49
+            );
+
+            EvilHackerButton.buttonText = ModTranslation.getString("ADMINButton");
+            EvilHackerButton.showButtonText = true;
+
             setCustomButtonCooldowns();
-
-
         }
-
     }
 }

@@ -572,6 +572,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.HauntedWolf):
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Conjurer):
+                    Roles.RoleClass.Conjurer.ConjurerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
@@ -899,7 +902,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.HauntedWolf):
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (CustomRPC.RoleId.Conjurer):
+                    Roles.RoleClass.Conjurer.ConjurerPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
 
             }
             ChacheManager.ResetMyRoleChache();
@@ -1821,7 +1827,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.HauntedWolf;
                 }
-                //ロールチェック
+                else if (Roles.RoleClass.Conjurer.ConjurerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Conjurer;
+            }
+            //ロールチェック
             }
             catch (Exception e)
             {

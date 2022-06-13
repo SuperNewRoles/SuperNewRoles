@@ -586,6 +586,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption EvilHackerPlayerCount;
         public static CustomOption EvilHackerMadmateSetting;
 
+        public static CustomRoleOption ConjurerOption;
+        public static CustomOption ConjurerPlayerCount;
+        public static CustomOption ConjurerCoolTime;
+
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
         public static CustomOption QuarreledOnlyCrewMate;
@@ -1199,6 +1203,10 @@ namespace SuperNewRoles.CustomOption
 
             HauntedWolfOption = new CustomRoleOption(550, true, CustomOptionType.Crewmate, "HauntedWolfName", RoleClass.HauntedWolf.color, 1);
             HauntedWolfPlayerCount = CustomOption.Create(551, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HauntedWolfOption);
+
+            ConjurerOption = new CustomRoleOption(507, false, CustomOptionType.Impostor, "EvilHackerName", RoleClass.Conjurer.color, 1);
+            ConjurerPlayerCount = CustomOption.Create(508, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConjurerOption);
+             ConjurerCoolTime = CustomOption.Create(502, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 30f, 2.5f, 60f, 2.5f, ConjurerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

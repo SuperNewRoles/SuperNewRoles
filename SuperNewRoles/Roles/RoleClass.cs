@@ -145,6 +145,7 @@ namespace SuperNewRoles.Roles
             GhostMechanic.ClearAndReload();
             EvilHacker.ClearAndReload();
             HauntedWolf.ClearAndReload();
+            Conjurer.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2199,6 +2200,37 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 HauntedWolfPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class Conjurer
+        {
+            public static List<PlayerControl> ConjurerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool FirstAdd;
+            public static bool SecondAdd;
+            public static bool ThirdAdd;
+            public static float CoolTime;
+            private static Sprite AddbuttonSprite;
+            private static Sprite StartbuttonSprite;
+            public static Sprite getAddButtonSprite()
+            {
+                if (AddbuttonSprite) return AddbuttonSprite;
+                AddbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ConjurerAddButton.png", 115f);
+                return AddbuttonSprite;
+            }
+            public static Sprite getStartButtonSprite()
+            {
+                if (StartbuttonSprite) return StartbuttonSprite;
+                StartbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ConjurerStartButton.png", 115f);
+                return StartbuttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                ConjurerPlayer = new List<PlayerControl>();
+                FirstAdd = false;
+                SecondAdd = false;
+                ThirdAdd = false;
+                CoolTime = CustomOptions.ConjurerCoolTime.getFloat();
             }
         }
         //新ロールクラス
