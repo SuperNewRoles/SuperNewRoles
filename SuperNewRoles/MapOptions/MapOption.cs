@@ -109,6 +109,9 @@ namespace SuperNewRoles.MapOptions
             {
                 BlockTool.AdminTime = DeviceUseAdminTime.getFloat();
             }*/
+            PolusReactorTimeLimit.getFloat();
+            MiraReactorTimeLimit.getFloat();
+            AirshipReactorTimeLimit.getFloat();
         }
         public static CustomOption.CustomOption MapOptionSetting;
         public static CustomOption.CustomOption DeviceOptions;
