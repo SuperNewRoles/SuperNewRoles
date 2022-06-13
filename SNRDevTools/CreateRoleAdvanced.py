@@ -46,6 +46,7 @@ class ReturnClass:
         return ResourcePath + ResourceName
     #Config読み込み
     def GetConfig(self, MainPath, SubPath):
+        #print("Config:"+MainPath + SubPath)
         Modify = Config_ini[MainPath][SubPath]
         print("Configを読み込みました:" + Modify)
         return Modify
@@ -402,7 +403,7 @@ namespace SuperNewRoles.Roles
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//くりあぁあんどりろぉどぉ", "")
         #MainClass.WriteCodes("Roles/RoleHelper.cs", "", "")
         # 終了報告
-        MainClass.CreateNotify("CreateRoleAdvance.py", "役職の作成が終了しました")
+        MainClass.CreateNotify("CreateRoleAdvanced.py", "役職の作成が終了しました")
 
 ## 変数
 '''DevPath = Path(__file__).parent
@@ -423,7 +424,6 @@ AllActClass = AllCheck()
 # 宣言
 Config_ini = configparser.ConfigParser()
 Config_ini.read((ConfigPath+"Config.ini"),encoding="utf_8")
-
 
 
 
