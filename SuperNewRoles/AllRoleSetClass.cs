@@ -1060,22 +1060,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.ConjurerOption.getString().Replace("0%", "") == ""))
-            {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.ConjurerOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.Conjurer;
-                if (OptionDate == 10)
-                {
-                    Impoonepar.Add(ThisRoleId);
-                }
-                else
-                {
-                    for (int i = 1; i <= OptionDate; i++)
-                    {
-                        Imponotonepar.Add(ThisRoleId);
-                    }
-                }
-            }
         //セットクラス
         }
     }
