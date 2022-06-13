@@ -2792,6 +2792,10 @@
         "0" : "Adding vitals to Mira" ,
         "11" : "Mira\u306b\u30d0\u30a4\u30bf\u30eb\u3092\u8ffd\u52a0\u3059\u308b"
         } ,
+ "VentAnimation" : {
+        "0" : "No Vent Animation" ,
+        "11" : "\u30d9\u30f3\u30c8\u30a2\u30cb\u30e1\u30fc\u30b7\u30e7\u30f3\u7121\u52b9\u5316"
+        } ,
  "MapRemodelingOptionSetting" : {
         "0" : "Map Remodeling" ,
         "11" : "\u30de\u30c3\u30d7\u6539\u9020"
@@ -2807,6 +2811,10 @@
  "MiraAdditionalVents" : {
         "0" : "MiraAdditionalVents" ,
         "11" : "\u30df\u30e9\u306b\u30d9\u30f3\u30c8\u3092\u8ffd\u52a0\u3059\u308b"
+ },
+ "" : {
+        "0" : "" ,
+        "11" : ""
         } 
 
 }

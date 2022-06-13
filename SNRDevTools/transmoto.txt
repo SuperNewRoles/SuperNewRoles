@@ -696,6 +696,7 @@ MiraReactorTime
 AirshipReactorTime
 VentMakerButtonName
 AddVitalsMiraSetting
+VentAnimation
 MapRemodelingOptionSetting
 AirShipAdditionalVents
 PolusAdditionalVents
