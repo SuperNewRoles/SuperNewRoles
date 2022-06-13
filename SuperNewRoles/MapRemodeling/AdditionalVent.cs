@@ -48,7 +48,7 @@ namespace SuperNewRoles.MapRemodeling
             if (PlayerControl.GameOptions.MapId == 1 && MapOptions.MapOption.MiraAdditionalVents.getBool())
             {
                 AdditionalVents vents1 = new(new Vector3(11.3518f, 10.4786f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 研究室
-                AdditionalVents vents2 = new(new Vector3(12.1288f, 7.467f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // Y字下
+                AdditionalVents vents2 = new(new Vector3(12.1288f, 7.2f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // Y字下
                 AdditionalVents vents3 = new(new Vector3(19.574f, 17.3698f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // アドミン
                 vents1.vent.Left = vents3.vent; // 研究室 - アドミン
                 vents1.vent.Right = vents2.vent;// 研究室 - Y字下
@@ -84,7 +84,7 @@ namespace SuperNewRoles.MapRemodeling
                 vents2.vent.Right = vents3.vent;//ラウンジ-メイン
                 vents3.vent.Right = vents2.vent; // メイン-ラウンジ
 
-                AdditionalVents vents4 = new(new Vector3(6.7651f, -10.1689f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // セキュ
+                AdditionalVents vents4 = new(new Vector3(6.7651f, -10.2f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // セキュ
                 AdditionalVents vents5 = new(new Vector3(18.1884f, -3.991f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // エレキ
                 AdditionalVents vents6 = new(new Vector3(21.1574f, -1.3543f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // シャワー
                 vents4.vent.Right = vents5.vent;//セキュ-エレキ
