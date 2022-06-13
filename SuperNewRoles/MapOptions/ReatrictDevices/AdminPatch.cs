@@ -106,7 +106,7 @@ namespace SuperNewRoles.Patch
 
             static bool Prefix(MapCountOverlay __instance)
             {
-                if (!Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles) && MapOptions.MapOption.MapOptionSetting.getBool() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker))
+                if (MapOptions.MapOption.MapOptionSetting.getBool() && !Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles) || !PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker))
                 {
                     adminTimer += Time.deltaTime;
                     if (adminTimer > 0.1f)
