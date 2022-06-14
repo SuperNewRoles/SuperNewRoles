@@ -132,7 +132,7 @@ namespace SuperNewRoles.Patches
                 {
                     Downloaded = true;
                     HttpClient http = new HttpClient();
-                    http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
+                    http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, OnlyIfCached = false};
                     SuperNewRolesPlugin.Logger.LogInfo("ダウンロード開始ｨｨｨｨｨｨｨｨｨｨｨｨｨｨ!");
                     var response = await http.GetAsync(new System.Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/ViewBooster/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
                     try
@@ -195,12 +195,14 @@ namespace SuperNewRoles.Patches
                 }
                 return HttpStatusCode.OK;
             }
+            public static GameObject CreditsPopup;
             static void ViewBoosterPatch(MainMenuManager __instance)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("a");
                 var template = __instance.transform.FindChild("StatsPopup");
                 SuperNewRolesPlugin.Logger.LogInfo("b");
                 var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
+                CreditsPopup = obj;
                 SuperNewRolesPlugin.Logger.LogInfo("c");
                 GameObject.Destroy(obj.GetComponent<StatsPopup>());
                 SuperNewRolesPlugin.Logger.LogInfo("d");

@@ -54,6 +54,24 @@ namespace SuperNewRoles.Patches
                     particles.Start();
                 }
             });
+
+
+            var CreditsButton = Object.Instantiate(bottomTemplate, bottomTemplate.transform.parent);
+            var passiveCreditsButton = CreditsButton.GetComponent<PassiveButton>();
+            var spriteCreditsButton = CreditsButton.GetComponent<SpriteRenderer>();
+                        
+            spriteCreditsButton.sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CreditsButton.png", 75f);
+
+            passiveCreditsButton.OnClick = new ButtonClickedEvent();
+
+            passiveCreditsButton.OnClick.AddListener((UnityEngine.Events.UnityAction)delegate
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("ƒNƒŠƒbƒN");
+                if (CredentialsPatch.LogoPatch.CreditsPopup != null)
+                {
+                    CredentialsPatch.LogoPatch.CreditsPopup.SetActive(true);
+                }
+            });
         }
     }
 
