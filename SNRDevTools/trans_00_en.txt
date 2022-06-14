@@ -703,7 +703,7 @@ Welcome to SuperNewRoles!
 You can play a variety of modes and different hard on any model with SuperNewRoles!
 Please visit the official wiki for a detailed description of the roles and modes!
 SuperNewRoles Official Wiki
-https://wikiwiki.jp/amas-snr (Japanese)
+https://wikiwiki.jp/amas-snr(Japanese)
 You will get the information if you run the command.
 Send this command if you want to see a list of commands.
 [/commands] or [/cmd]
