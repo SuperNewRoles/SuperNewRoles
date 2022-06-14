@@ -17,8 +17,8 @@ class ReturnClass:
         with open(BasePath+Path, mode="r", encoding="utf-8") as r:
             Template = r.read()
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
-                #Template = Template.replace(OldCode, NewCode)
-                #print("ファイルを書き込みました:"+Template)
+                Template = Template.replace(OldCode, NewCode)
+                print("ファイルを書き込みました:"+Template)
                 print("パス:"+BasePath+Path)
                 w.write(Template)
     #入力をゲット+戻り値として返す
