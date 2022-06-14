@@ -114,50 +114,92 @@ namespace SuperNewRoles.Patches
             }
             public static string SponsersData = "";
             public static string DevsData = "";
-            static IEnumerator DownloadSponserDataCoro(MainMenuManager __instance)
-            {
-                DownloadSponserData(__instance);
-                yield return null;
-            }
-            public static async Task DownloadSponserData(MainMenuManager __instance)
-            {
 
-                if (SponsersData != "")
+            public static async Task<HttpStatusCode> FetchBoosters()
+            {
+                SuperNewRolesPlugin.Logger.LogInfo("開始:"+Downloaded);
+                if (!Downloaded)
                 {
-                    ViewBoosterPatch(__instance);
-                    return;
-                }
-                HttpClient http = new HttpClient();
-                http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
-                var response = await http.GetAsync(new System.Uri($"https://raw.githubusercontent.com/ykundesu/SuperNewRoles/ViewBooster/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
-                if (response.StatusCode != HttpStatusCode.OK) return;
-                string json = await response.Content.ReadAsStringAsync();
-                JToken jobj = JObject.Parse(json);
-                var devs = jobj["Devs"];
-                for (JToken current = devs.First; current != null; current = current.Next)
-                {
-                    if (current.HasValues)
+                    Downloaded = true;
+                    HttpClient http = new HttpClient();
+                    http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
+                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロード開始ｨｨｨｨｨｨｨｨｨｨｨｨｨｨ!");
+                    var response = await http.GetAsync(new System.Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/ViewBooster/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
+                    try
                     {
-                        DevsData += current + "\n";
+                        if (response.StatusCode != HttpStatusCode.OK) {
+                            SuperNewRolesPlugin.Logger.LogInfo("NOTOK!!!");
+                            return response.StatusCode;
+                                };
+                        if (response.Content == null)
+                        {
+                            System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
+                            return HttpStatusCode.ExpectationFailed;
+                        }
+                        string json = await response.Content.ReadAsStringAsync();
+                        SuperNewRolesPlugin.Logger.LogInfo("GET:"+json);
+                        JToken jobj = JObject.Parse(json);
+
+                        var devs = jobj["Devs"];
+                        SuperNewRolesPlugin.Logger.LogInfo("へへへへへへへへへへ:"+devs);
+                        for (JToken current = devs.First; current != null; current = current.Next)
+                        {
+                            if (current.HasValues)
+                            {
+                                SuperNewRolesPlugin.Logger.LogInfo("追加:"+current["name"]?.ToString());
+                                DevsData += current["name"]?.ToString() + "\n";
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        SuperNewRolesPlugin.Logger.LogError(e);
                     }
                 }
-                ViewBoosterPatch(__instance);
+                SuperNewRolesPlugin.Logger.LogInfo(DevsData);
+                ViewBoosterPatch(instance);
+                return HttpStatusCode.OK;
+            }
+            public static async Task<HttpStatusCode> DownloadSponserData(MainMenuManager __instance)
+            {
+                if (Downloaded)
+                {
+                    ViewBoosterPatch(__instance);
+                }
+                else
+                {
+                    HttpClient http = new HttpClient();
+                    http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
+                    var response = await http.GetAsync(new Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/ViewBooster/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
+                    if (response.StatusCode != HttpStatusCode.OK) return HttpStatusCode.NotFound;
+                    Downloaded = true;
+                    string json = await response.Content.ReadAsStringAsync();
+                    JToken jobj = JObject.Parse(json);
+                    ViewBoosterPatch(__instance);
+                }
+                return HttpStatusCode.OK;
             }
             static void ViewBoosterPatch(MainMenuManager __instance)
             {
+                return;
+                SuperNewRolesPlugin.Logger.LogInfo("a");
                 var template = __instance.transform.FindChild("StatsPopup");
-                //if (template == null) AmongUsClient.Instance.StartCoroutine(ViewBoosterCoro(__instance));
+                SuperNewRolesPlugin.Logger.LogInfo("b");
+                if (template == null) return;// AmongUsClient.Instance.StartCoroutine(ViewBoosterCoro(__instance));
                 var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
+                SuperNewRolesPlugin.Logger.LogInfo("c");
                 GameObject.Destroy(obj.GetComponent<StatsPopup>());
+                SuperNewRolesPlugin.Logger.LogInfo("d");
                 var devtitletext = obj.transform.FindChild("StatNumsText_TMP");
+                SuperNewRolesPlugin.Logger.LogInfo("e");
                 devtitletext.GetComponent<TextMeshPro>().text = "開発者";
+                SuperNewRolesPlugin.Logger.LogInfo("f");
                 devtitletext.localPosition = new Vector3(-3.25f, -1.65f, -2f);
                 devtitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
                 var devtext = obj.transform.FindChild("StatsText_TMP");
                 devtext.localPosition = new Vector3(-1f, -1.65f, -2f);
                 devtext.localScale = new Vector3(1.25f, 1.25f, 1f);
-                devtext.GetComponent<TextMeshPro>().text = "";
-                return;
+                devtext.GetComponent<TextMeshPro>().text = DevsData;
 
                 var boostertitletext = GameObject.Instantiate(devtitletext, obj.transform);
                 boostertitletext.GetComponent<TextMeshPro>().text = "スポンサー";
@@ -177,13 +219,17 @@ namespace SuperNewRoles.Patches
                 obj.transform.FindChild("Background").localScale = new Vector3(1.5f, 1f, 1f);
                 obj.transform.FindChild("CloseButton").localPosition = new Vector3(-3.75f, 2.65f, 0);
             }
-            static void Postfix(MainMenuManager __instance)
+            static bool Downloaded = false;
+            public static MainMenuManager instance;
+            public static void Postfix(MainMenuManager __instance)
             {
                 DownLoadCustomhat.Load();
                 DownLoadClass.Load();
                 DownLoadClassVisor.Load();
 
-                __instance.StartCoroutine(DownloadSponserDataCoro(__instance));
+                instance = __instance;
+
+                //ViewBoosterPatch(__instance);
 
                 DestroyableSingleton<ModManager>.Instance.ShowModStamp();
 
@@ -234,6 +280,11 @@ namespace SuperNewRoles.Patches
                     DownloadSubmarged();
                     button.SetActive(false);
                 }
+            }
+
+            private static IEnumerator Download()
+            {
+                throw new NotImplementedException();
             }
 
             public static void loadSprites()
