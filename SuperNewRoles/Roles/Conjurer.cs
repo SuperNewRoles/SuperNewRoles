@@ -74,6 +74,23 @@ namespace SuperNewRoles.Roles
         }
         //三回追加されたかを判定する
 
+        public static void SetConjurerButton()
+        {
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer))
+            {
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+            }
+        }
+        //キルボタンを消す
+
+        public class FixedUpdate
+        {
+            public static void Postfix()
+            {
+                SetConjurerButton();
+            }
+        }
+        //Fixedddddd
 
     }
     public class JackInTheBox

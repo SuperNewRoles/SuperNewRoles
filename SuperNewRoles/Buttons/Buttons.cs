@@ -1583,7 +1583,7 @@ namespace SuperNewRoles.Buttons
                     ConjurerAddButton.Timer = RoleClass.Conjurer.CoolTime;
                 },
                RoleClass.Conjurer.getAddButtonSprite(),
-               new Vector3(-1.8f, -0.06f, 0),
+               new Vector3(0f, 1f, 0f),
                __instance,
                __instance.AbilityButton,
                KeyCode.F,
@@ -1610,6 +1610,57 @@ namespace SuperNewRoles.Buttons
 
             ConjurerAddButton.showButtonText = true;
 
+
+            ConjurerStartButton = new CustomButton(
+                   () =>
+                   {
+                       var pos = PlayerControl.LocalPlayer.transform.position;
+                       byte[] buff = new byte[sizeof(float) * 2];
+                       Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                       Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+
+                       MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
+                       writer.WriteBytesAndSize(buff);
+                       writer.EndMessage();
+                       RPCProcedure.AddMarker(buff);
+                       //マーカー設置
+
+                       if (!Conjurer.IsFirstAdded())
+                       {
+                           Conjurer.FirstAddAdd();
+                       }
+                       //一回目を追加がfalseなら1回目カウントをtrueにする
+
+                       if (Conjurer.IsFirstAdded() && !Conjurer.IsSecondAdded())
+                       {
+                           Conjurer.SecondAddAdd();
+                       }
+                       //一回目を追加がtrueかつ、2回目を追加がfalseなら2回目カウントをtrueにする
+
+                       if (Conjurer.IsFirstAdded() && Conjurer.IsSecondAdded() && !Conjurer.IsThirdAdded())
+                       {
+                           Conjurer.ThirdAddAdd();
+                       }
+                       //一回目、2回目を追加がtrueかつ、3回目を追加がfalseなら3回目カウントをtrueにする
+
+                   },
+                   () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) /*&& !Conjurer.IsThirdAdded()*/; },
+                   () =>
+                   {
+                       return PlayerControl.LocalPlayer.CanMove;
+                   },
+                    () =>
+                    {
+                        ConjurerAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
+                        ConjurerAddButton.Timer = RoleClass.Conjurer.CoolTime;
+                    },
+                   RoleClass.Conjurer.getStartButtonSprite(),
+                   new Vector3(-1.8f, -0.06f, 0),
+                   __instance,
+                   __instance.AbilityButton,
+                   KeyCode.F,
+                   49
+                );
             setCustomButtonCooldowns();
         }
     }

@@ -149,6 +149,7 @@ namespace SuperNewRoles.Patch
                             }
                             Fox.FixedUpdate.Postfix();
                             Minimalist.FixedUpdate.Postfix();
+                            Conjurer.FixedUpdate.Postfix();
                         }
                         else
                         {
