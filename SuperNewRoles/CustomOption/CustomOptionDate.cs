@@ -589,6 +589,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption ConjurerOption;
         public static CustomOption ConjurerPlayerCount;
         public static CustomOption ConjurerCoolTime;
+        public static CustomOption ConjurerScreenFrash;
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -1207,6 +1208,7 @@ namespace SuperNewRoles.CustomOption
             ConjurerOption = new CustomRoleOption(507, false, CustomOptionType.Impostor, "ConjurerName", RoleClass.Conjurer.color, 1);
             ConjurerPlayerCount = CustomOption.Create(508, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConjurerOption);
             ConjurerCoolTime = CustomOption.Create(502, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 30f, 2.5f, 60f, 2.5f, ConjurerOption);
+            ConjurerScreenFrash = CustomOption.Create(509, false, CustomOptionType.Impostor, "ConjurerFrashSetting", false, ConjurerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(122, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

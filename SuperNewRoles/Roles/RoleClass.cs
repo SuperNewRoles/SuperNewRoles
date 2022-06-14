@@ -2210,6 +2210,7 @@ namespace SuperNewRoles.Roles
             public static bool SecondAdd;
             public static bool ThirdAdd;
             public static float CoolTime;
+            public static bool ScreenFrash;
             private static Sprite AddbuttonSprite;
             private static Sprite StartbuttonSprite;
             public static Sprite getAddButtonSprite()
@@ -2231,6 +2232,7 @@ namespace SuperNewRoles.Roles
                 SecondAdd = false;
                 ThirdAdd = false;
                 CoolTime = CustomOptions.ConjurerCoolTime.getFloat();
+                ScreenFrash = CustomOptions.ConjurerScreenFrash.getBool();
             }
         }
         //新ロールクラス

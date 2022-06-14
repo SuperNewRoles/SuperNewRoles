@@ -45,6 +45,7 @@ namespace SuperNewRoles.Roles
         {
             if (RoleClass.Conjurer.FirstAdd)
             {
+                SuperNewRolesPlugin.Logger.LogInfo("IsFirstAddedがtrueeee");
                 return true;
             }
             return false;
@@ -55,6 +56,7 @@ namespace SuperNewRoles.Roles
         {
             if (RoleClass.Conjurer.SecondAdd)
             {
+                SuperNewRolesPlugin.Logger.LogInfo("IsSecondAddedがtrueeee");
                 return true;
             }
             return false;
@@ -65,6 +67,7 @@ namespace SuperNewRoles.Roles
         {
             if (RoleClass.Conjurer.ThirdAdd)
             {
+                SuperNewRolesPlugin.Logger.LogInfo("IsThirdAddedがtrueeee");
                 return true;
             }
             return false;
@@ -118,29 +121,29 @@ namespace SuperNewRoles.Roles
             gameObject.transform.position = position;
             boxRenderer = gameObject.AddComponent<SpriteRenderer>();
             boxRenderer.sprite = getBoxAnimationSprite(0);
-
-            // Create the vent
-            var referenceVent = UnityEngine.Object.FindObjectOfType<Vent>();
-            vent = UnityEngine.Object.Instantiate<Vent>(referenceVent);
-            vent.gameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
-            vent.transform.position = gameObject.transform.position;
-            vent.Left = null;
-            vent.Right = null;
-            vent.Center = null;
-            vent.EnterVentAnim = null;
-            vent.ExitVentAnim = null;
-            vent.Offset = new Vector3(0f, 0.25f, 0f);
-            vent.GetComponent<PowerTools.SpriteAnim>()?.Stop();
-            vent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1; // Make sure we have a unique id
-            var ventRenderer = vent.GetComponent<SpriteRenderer>();
-            ventRenderer.sprite = null;
-            vent.myRend = ventRenderer;
-            var allVentsList = ShipStatus.Instance.AllVents.ToList();
-            allVentsList.Add(vent);
-            ShipStatus.Instance.AllVents = allVentsList.ToArray();
-            vent.gameObject.SetActive(false);
-            vent.name = "JackInTheBoxVent_" + vent.Id;
-
+            /*
+                        // Create the vent
+                        var referenceVent = UnityEngine.Object.FindObjectOfType<Vent>();
+                        vent = UnityEngine.Object.Instantiate<Vent>(referenceVent);
+                        vent.gameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
+                        vent.transform.position = gameObject.transform.position;
+                        vent.Left = null;
+                        vent.Right = null;
+                        vent.Center = null;
+                        vent.EnterVentAnim = null;
+                        vent.ExitVentAnim = null;
+                        vent.Offset = new Vector3(0f, 0.25f, 0f);
+                        vent.GetComponent<PowerTools.SpriteAnim>()?.Stop();
+                        vent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1; // Make sure we have a unique id
+                        var ventRenderer = vent.GetComponent<SpriteRenderer>();
+                        ventRenderer.sprite = null;
+                        vent.myRend = ventRenderer;
+                        var allVentsList = ShipStatus.Instance.AllVents.ToList();
+                        allVentsList.Add(vent);
+                        ShipStatus.Instance.AllVents = allVentsList.ToArray();
+                        vent.gameObject.SetActive(false);
+                        vent.name = "JackInTheBoxVent_" + vent.Id;
+            */
             // Only render the box for the Trickster
             var playerIsTrickster = PlayerControl.LocalPlayer;
             gameObject.SetActive(playerIsTrickster);
@@ -201,5 +204,33 @@ namespace SuperNewRoles.Roles
             AllJackInTheBoxes = new List<JackInTheBox>();
         }
 
+
+
+        public static void ShowFlash(Color color, float duration = 1f)
+        //Seerで使用している画面を光らせるコードにIsThirdAddedを追加したもの
+        {
+            if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
+            FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
+            FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
+            {
+                if (Conjurer.IsThirdAdded() && RoleClass.Conjurer.ScreenFrash)
+                {
+                    var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
+
+                    if (p < 0.5)
+                    {
+                        if (renderer != null)
+                            renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
+                    }
+                    else
+                    {
+                        if (renderer != null)
+                            renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
+                    }
+                    if (p == 1f && renderer != null) renderer.enabled = false;
+                }
+            })));
+        }
     }
 }

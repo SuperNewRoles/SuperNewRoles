@@ -1572,7 +1572,7 @@ namespace SuperNewRoles.Buttons
                    //一回目、2回目を追加がtrueかつ、3回目を追加がfalseなら3回目カウントをtrueにする
 
                },
-               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && !Conjurer.IsThirdAdded(); },
+               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) /*&& !Conjurer.IsThirdAdded()*/; },
                () =>
                {
                    return PlayerControl.LocalPlayer.CanMove;
