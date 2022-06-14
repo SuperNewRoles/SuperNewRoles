@@ -109,8 +109,18 @@ namespace SuperNewRoles.Patches
             public static Sprite horseBannerSprite;
             static IEnumerator ViewBoosterCoro(MainMenuManager __instance)
             {
-                yield return new WaitForSeconds(1f);
-                ViewBoosterPatch(__instance);
+                while (true)
+                {
+                    yield return new WaitForSeconds(1f);
+                    if (Downloaded)
+                    {
+                        if (__instance != null)
+                        {
+                            ViewBoosterPatch(__instance);
+                        }
+                        break;
+                    }
+                }
             }
             public static string SponsersData = "";
             public static string DevsData = "";
@@ -150,14 +160,21 @@ namespace SuperNewRoles.Patches
                                 DevsData += current["name"]?.ToString() + "\n";
                             }
                         }
+
+                        var Sponsers = jobj["Sponsers"];
+                        for (JToken current = Sponsers.First; current != null; current = current.Next)
+                        {
+                            if (current.HasValues)
+                            {
+                                SponsersData += current["name"]?.ToString() + "\n";
+                            }
+                        }
                     }
                     catch (Exception e)
                     {
                         SuperNewRolesPlugin.Logger.LogError(e);
                     }
                 }
-                SuperNewRolesPlugin.Logger.LogInfo(DevsData);
-                ViewBoosterPatch(instance);
                 return HttpStatusCode.OK;
             }
             public static async Task<HttpStatusCode> DownloadSponserData(MainMenuManager __instance)
@@ -175,17 +192,14 @@ namespace SuperNewRoles.Patches
                     Downloaded = true;
                     string json = await response.Content.ReadAsStringAsync();
                     JToken jobj = JObject.Parse(json);
-                    ViewBoosterPatch(__instance);
                 }
                 return HttpStatusCode.OK;
             }
             static void ViewBoosterPatch(MainMenuManager __instance)
             {
-                return;
                 SuperNewRolesPlugin.Logger.LogInfo("a");
                 var template = __instance.transform.FindChild("StatsPopup");
                 SuperNewRolesPlugin.Logger.LogInfo("b");
-                if (template == null) return;// AmongUsClient.Instance.StartCoroutine(ViewBoosterCoro(__instance));
                 var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
                 SuperNewRolesPlugin.Logger.LogInfo("c");
                 GameObject.Destroy(obj.GetComponent<StatsPopup>());
@@ -209,7 +223,7 @@ namespace SuperNewRoles.Patches
                 var boostertext = GameObject.Instantiate(devtext, obj.transform);
                 boostertext.localPosition = new Vector3(3f, -1.65f, -2f);
                 boostertext.localScale = new Vector3(1.25f, 1.25f, 1f);
-                boostertext.GetComponent<TextMeshPro>().text = "スポンサー名";
+                boostertext.GetComponent<TextMeshPro>().text = SponsersData;
 
 
                 var textobj = obj.transform.FindChild("Title_TMP");
@@ -228,6 +242,8 @@ namespace SuperNewRoles.Patches
                 DownLoadClassVisor.Load();
 
                 instance = __instance;
+
+                AmongUsClient.Instance.StartCoroutine(ViewBoosterCoro(__instance));
 
                 //ViewBoosterPatch(__instance);
 
