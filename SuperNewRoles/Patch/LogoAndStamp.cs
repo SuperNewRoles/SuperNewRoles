@@ -114,8 +114,14 @@ namespace SuperNewRoles.Patches
             }
             public static string SponsersData = "";
             public static string DevsData = "";
+            static IEnumerator DownloadSponserDataCoro(MainMenuManager __instance)
+            {
+                DownloadSponserData(__instance);
+                yield return null;
+            }
             public static async Task DownloadSponserData(MainMenuManager __instance)
             {
+
                 if (SponsersData != "")
                 {
                     ViewBoosterPatch(__instance);
@@ -140,18 +146,18 @@ namespace SuperNewRoles.Patches
             static void ViewBoosterPatch(MainMenuManager __instance)
             {
                 var template = __instance.transform.FindChild("StatsPopup");
-                if (template == null) { AmongUsClient.Instance.StartCoroutine(ViewBoosterCoro(__instance)); return; }
+                //if (template == null) AmongUsClient.Instance.StartCoroutine(ViewBoosterCoro(__instance));
                 var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
                 GameObject.Destroy(obj.GetComponent<StatsPopup>());
                 var devtitletext = obj.transform.FindChild("StatNumsText_TMP");
                 devtitletext.GetComponent<TextMeshPro>().text = "開発者";
                 devtitletext.localPosition = new Vector3(-3.25f, -1.65f, -2f);
                 devtitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
-
                 var devtext = obj.transform.FindChild("StatsText_TMP");
                 devtext.localPosition = new Vector3(-1f, -1.65f, -2f);
                 devtext.localScale = new Vector3(1.25f, 1.25f, 1f);
-                devtext.GetComponent<TextMeshPro>().text = DevsData;
+                devtext.GetComponent<TextMeshPro>().text = "";
+                return;
 
                 var boostertitletext = GameObject.Instantiate(devtitletext, obj.transform);
                 boostertitletext.GetComponent<TextMeshPro>().text = "スポンサー";
@@ -177,7 +183,7 @@ namespace SuperNewRoles.Patches
                 DownLoadClass.Load();
                 DownLoadClassVisor.Load();
 
-                DownloadSponserData(__instance);
+                __instance.StartCoroutine(DownloadSponserDataCoro(__instance));
 
                 DestroyableSingleton<ModManager>.Instance.ShowModStamp();
 
