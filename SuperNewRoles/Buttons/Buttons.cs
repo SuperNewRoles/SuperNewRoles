@@ -1555,24 +1555,24 @@ namespace SuperNewRoles.Buttons
 
                    if (!Conjurer.IsFirstAdded())
                    {
-                       Conjurer.FirstAddAdd();
+                       RoleClass.Conjurer.FirstAdd = true;
                    }
                    //一回目を追加がfalseなら1回目カウントをtrueにする
 
                    if (Conjurer.IsFirstAdded() && !Conjurer.IsSecondAdded())
                    {
-                       Conjurer.SecondAddAdd();
+                       RoleClass.Conjurer.SecondAdd = true;
                    }
                    //一回目を追加がtrueかつ、2回目を追加がfalseなら2回目カウントをtrueにする
 
                    if (Conjurer.IsFirstAdded() && Conjurer.IsSecondAdded() && !Conjurer.IsThirdAdded())
                    {
-                       Conjurer.ThirdAddAdd();
+                       RoleClass.Conjurer.ThirdAdd = true;
                    }
                    //一回目、2回目を追加がtrueかつ、3回目を追加がfalseなら3回目カウントをtrueにする
 
                },
-               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) /*&& !Conjurer.IsThirdAdded()*/; },
+               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && !Conjurer.IsThirdAdded(); },
                () =>
                {
                    return PlayerControl.LocalPlayer.CanMove;
@@ -1626,7 +1626,7 @@ namespace SuperNewRoles.Buttons
                    {
                        return PlayerControl.LocalPlayer.CanMove;
                    },
-                    () =>{},
+                    () => { },
                    RoleClass.Conjurer.getStartButtonSprite(),
                    new Vector3(-1.8f, -0.06f, 0),
                    __instance,
