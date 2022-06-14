@@ -1542,10 +1542,37 @@ namespace SuperNewRoles.Buttons
             ConjurerAddButton = new CustomButton(
                () =>
                {
+                   var pos = PlayerControl.LocalPlayer.transform.position;
+                   byte[] buff = new byte[sizeof(float) * 2];
+                   Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                   Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+
+                   MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
+                   writer.WriteBytesAndSize(buff);
+                   writer.EndMessage();
+                   RPCProcedure.AddMarker(buff);
                    //マーカー設置
 
+                   if (!Conjurer.IsFirstAdded())
+                   {
+                       Conjurer.FirstAddAdd();
+                   }
+                   //一回目を追加がfalseなら1回目カウントをtrueにする
+
+                   if (Conjurer.IsFirstAdded() && !Conjurer.IsSecondAdded())
+                   {
+                       Conjurer.SecondAddAdd();
+                   }
+                   //一回目を追加がtrueかつ、2回目を追加がfalseなら2回目カウントをtrueにする
+
+                   if (Conjurer.IsFirstAdded() && Conjurer.IsSecondAdded() && !Conjurer.IsThirdAdded())
+                   {
+                       Conjurer.ThirdAddAdd();
+                   }
+                   //一回目、2回目を追加がtrueかつ、3回目を追加がfalseなら3回目カウントをtrueにする
+
                },
-               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && PlayerControl.LocalPlayer.CanMove; },
+               () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && !Conjurer.IsThirdAdded(); },
                () =>
                {
                    return PlayerControl.LocalPlayer.CanMove;
@@ -1563,8 +1590,25 @@ namespace SuperNewRoles.Buttons
                49
             );
 
-            EvilHackerButton.buttonText = ModTranslation.getString("ADMINButton");
-            EvilHackerButton.showButtonText = true;
+            if (!Conjurer.IsFirstAdded())
+            {
+                ConjurerAddButton.buttonText = ModTranslation.getString("1stAdd");
+            }
+            //一回も設置してない時ボタン名を1stAddにする
+
+            if (Conjurer.IsFirstAdded() && !Conjurer.IsSecondAdded())
+            {
+                ConjurerAddButton.buttonText = ModTranslation.getString("2ndAdd");
+            }
+            //1回設置済みの時ボタン名を2ndAddにする
+
+            if (Conjurer.IsFirstAdded() && Conjurer.IsSecondAdded() && !Conjurer.IsThirdAdded())
+            {
+                ConjurerAddButton.buttonText = ModTranslation.getString("3stAdd");
+            }
+            //2回設置済みの時ボタン名を3rdAddにする
+
+            ConjurerAddButton.showButtonText = true;
 
             setCustomButtonCooldowns();
         }

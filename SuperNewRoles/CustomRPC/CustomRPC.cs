@@ -189,6 +189,7 @@ namespace SuperNewRoles.CustomRPC
         UseCameraTime,
         UseVitalsTime,
         FixLights,
+        AddMarker,
     }
     public static class RPCProcedure
     {
@@ -881,6 +882,13 @@ namespace SuperNewRoles.CustomRPC
         {
             Patch.VitalsPatch.RestrictVitalsTime -= time;
         }
+        public static void AddMarker(byte[] buff)
+        {
+            Vector3 position = Vector3.zero;
+            position.x = BitConverter.ToSingle(buff, 0 * sizeof(float));
+            position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
+            new JackInTheBox(position);
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -1104,6 +1112,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.FixLights:
                         FixLights();
+                        break;
+                    case (byte)CustomRPC.AddMarker:
+                        RPCProcedure.AddMarker(reader.ReadBytesAndSize());
                         break;
                 }
             }
