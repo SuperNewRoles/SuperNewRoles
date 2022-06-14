@@ -1,19 +1,7 @@
-using System.Net;
-using System.Linq;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
 using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.IO;
 using UnityEngine;
-using SuperNewRoles.Patches;
-using System.Reflection;
-using SuperNewRoles.Roles;
-using System.Text;
 using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
@@ -21,8 +9,6 @@ namespace SuperNewRoles.Roles
     class Seer
     //&MadSeer & EvilSeer & SeerFriends & JackalSeer & Sidekick(Seer)
     {
-
-
         private static Sprite SoulSprite;
         public static Sprite getSoulSprite()
         {
@@ -33,7 +19,6 @@ namespace SuperNewRoles.Roles
 
         public static class ExileControllerWrapUpPatch
         {
-
             public static void WrapUpPostfix(GameData.PlayerInfo exiled)
             {
                 var role = PlayerControl.LocalPlayer.getRole();
@@ -145,12 +130,6 @@ namespace SuperNewRoles.Roles
                     }
                 }
             }
-
         }
-
     }
-
-
 }
-
-

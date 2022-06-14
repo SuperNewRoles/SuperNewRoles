@@ -23,15 +23,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         }
         public static void NekomataEnd(GameData.PlayerInfo exiled)
         {
-                List<PlayerControl> p = new List<PlayerControl>();
-                foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
+            List<PlayerControl> p = new List<PlayerControl>();
+            foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
+            {
+                if (p1.Data.PlayerId != exiled.PlayerId && p1.isAlive() && p1.IsPlayer())
                 {
-                    if (p1.Data.PlayerId != exiled.PlayerId && p1.isAlive() && p1.IsPlayer())
-                    {
-                        p.Add(p1);
-                    }
+                    p.Add(p1);
                 }
-                NekomataProc(p);
+            }
+            NekomataProc(p);
         }
         public static void NekomataProc(List<PlayerControl> p)
         {

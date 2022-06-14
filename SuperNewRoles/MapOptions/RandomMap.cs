@@ -17,8 +17,8 @@ namespace SuperNewRoles.MapOptions
                 var rand = new System.Random();
                 List<byte> RandomMaps = new System.Collections.Generic.List<byte>();
                 if (MapOption.ValidationSkeld) RandomMaps.Add(0);
-                if (MapOption.ValidationMira) RandomMaps.Add(1);   
-                if (MapOption.ValidationPolus) RandomMaps.Add(2);                 
+                if (MapOption.ValidationMira) RandomMaps.Add(1);
+                if (MapOption.ValidationPolus) RandomMaps.Add(2);
                 if (MapOption.ValidationAirship) RandomMaps.Add(4);
                 if (MapOption.ValidationSubmerged && SubmergedCompatibility.Loaded) RandomMaps.Add(5);
                 if (RandomMaps.Count <= 0)

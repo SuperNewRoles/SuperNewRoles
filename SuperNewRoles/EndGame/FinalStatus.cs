@@ -10,7 +10,6 @@ namespace SuperNewRoles.EndGame
     {
         public static class FinalStatusData
         {
-            
             public static List<Tuple<Vector3, bool>> localPlayerPositions = new List<Tuple<Vector3, bool>>();
             public static List<DeadPlayer> deadPlayers = new List<DeadPlayer>();
             public static Dictionary<int, FinalStatus> FinalStatuses = new Dictionary<int, FinalStatus>();
@@ -21,7 +20,6 @@ namespace SuperNewRoles.EndGame
                 deadPlayers = new List<DeadPlayer>();
                 FinalStatuses = new Dictionary<int, FinalStatus>();
             }
-
         }
     }
     enum FinalStatus

@@ -10,11 +10,9 @@ namespace SuperNewRoles.Buttons
 {
     public static class VentAndSabo
     {
-
         [HarmonyPatch(typeof(MapBehaviour))]
         class MapBehaviourPatch
         {
-
             [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.FixedUpdate))]
             static bool Prefix(MapBehaviour __instance)
             {
@@ -91,7 +89,6 @@ namespace SuperNewRoles.Buttons
                 bool roleCouldUse = @object.IsUseVent();
 
                 var usableDistance = __instance.UsableDistance;
-
 
                 if (SubmergedCompatibility.isSubmerged())
                 {

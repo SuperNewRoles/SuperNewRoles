@@ -1,11 +1,5 @@
 using Hazel;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using SuperNewRoles.EndGame;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using UnityEngine;

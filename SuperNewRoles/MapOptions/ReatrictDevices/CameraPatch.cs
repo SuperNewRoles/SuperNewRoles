@@ -121,7 +121,6 @@ namespace SuperNewRoles.Patch
                             string timeString = TimeSpan.FromSeconds(RestrictCameraTime).ToString(@"mm\:ss\.ff");
                             TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
                             TimeRemaining.gameObject.SetActive(true);
-
                         }
 
                         // Update normal and securityGuard cameras
@@ -235,11 +234,9 @@ namespace SuperNewRoles.Patch
                         TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
                         TimeRemaining.gameObject.SetActive(true);
                     }
-
                     return true;
                 }
             }
-
 
             [HarmonyPatch(typeof(PlanetSurveillanceMinigame), nameof(PlanetSurveillanceMinigame.Close))]
             class PlanetSurveillanceMinigameClosePatch
@@ -306,11 +303,9 @@ namespace SuperNewRoles.Patch
                         TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
                         TimeRemaining.gameObject.SetActive(true);
                     }
-
                     return true;
                 }
             }
-
 
             [HarmonyPatch]
             class SecurityLogGameClosePatch

@@ -8,7 +8,6 @@ namespace SuperNewRoles.Patch
 {
     class WallHack
     {
-        
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
         class HudManagerPatch
         {

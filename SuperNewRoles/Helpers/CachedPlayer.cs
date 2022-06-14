@@ -7,8 +7,8 @@ using HarmonyLib;
 using InnerNet;
 using UnityEngine;
 
-namespace SuperNewRoles {
-
+namespace SuperNewRoles
+{
     public class CachedPlayer
     {
         public static readonly Dictionary<IntPtr, CachedPlayer> PlayerPtrs = new Dictionary<IntPtr, CachedPlayer>();
@@ -31,7 +31,6 @@ namespace SuperNewRoles {
 
         public static implicit operator PlayerControl(CachedPlayer player) => player.PlayerControl;
         public static implicit operator PlayerPhysics(CachedPlayer player) => player.PlayerPhysics;
-
     }
 
     [HarmonyPatch]

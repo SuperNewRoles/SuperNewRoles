@@ -1,13 +1,6 @@
-﻿using HarmonyLib;
-using SuperNewRoles.Mode;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SuperNewRoles.Roles
+﻿namespace SuperNewRoles.Roles
 {
     public class Minimalist
-    
     {
         public class MurderPatch
         {

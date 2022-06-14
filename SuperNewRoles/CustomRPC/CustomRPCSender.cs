@@ -34,18 +34,18 @@ namespace SuperNewRoles
         }
 
         public CustomRpcSender StartRpc(
-          uint targetNetId,
-          RpcCalls rpcCall,
-          int targetClientId = -1)
-         => StartRpc(targetNetId, (byte)rpcCall, targetClientId);
+            uint targetNetId,
+            RpcCalls rpcCall,
+            int targetClientId = -1)
+            => StartRpc(targetNetId, (byte)rpcCall, targetClientId);
         public CustomRpcSender StartRpc(
-          uint targetNetId,
-          byte callId,
-          int targetClientId = -1)
+            uint targetNetId,
+            byte callId,
+            int targetClientId = -1)
         {
             if (currentState != State.Ready && !isUnsafe)
             {
-                SuperNewRolesPlugin.Logger.LogError("RPCを開始しようとしましたが、StateがReady(準備完了)ではありません");
+                SuperNewRolesPlugin.Logger.LogError("[RPC:Error] RPCを開始しようとしましたが、StateがReady(準備完了)ではありません");
                 return this;
             }
 
@@ -73,7 +73,7 @@ namespace SuperNewRoles
         {
             if (currentState != State.Writing && !isUnsafe)
             {
-                SuperNewRolesPlugin.Logger.LogError("RPCを終了しようとしましたが、StateがWriting(書き込み中)ではありません");
+                SuperNewRolesPlugin.Logger.LogError("[RPC:Error] RPCを終了しようとしましたが、StateがWriting(書き込み中)ではありません");
                 return;
             }
 
@@ -85,7 +85,7 @@ namespace SuperNewRoles
         {
             if (currentState != State.Ready && !isUnsafe)
             {
-                SuperNewRolesPlugin.Logger.LogError("RPCを終了しようとしましたが、StateがReady(準備完了)ではありません");
+                SuperNewRolesPlugin.Logger.LogError("[RPC:Error] RPCを終了しようとしましたが、StateがReady(準備完了)ではありません");
                 return;
             }
 
@@ -115,10 +115,9 @@ namespace SuperNewRoles
         private CustomRpcSender Write(Action<MessageWriter> action)
         {
             if (currentState != State.Writing && !isUnsafe)
-                SuperNewRolesPlugin.Logger.LogError("RPCを書き込もうとしましたが、StateがWrite(書き込み中)ではありません");
+                SuperNewRolesPlugin.Logger.LogError("[RPC:Error] RPCを書き込もうとしましたが、StateがWrite(書き込み中)ではありません");
             else
                 action(stream);
-
             return this;
         }
 

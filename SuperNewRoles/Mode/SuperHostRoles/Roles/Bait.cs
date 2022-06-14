@@ -14,7 +14,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
 {
     class Bait
     {
-        public static void MurderPostfix(PlayerControl __instance,PlayerControl target)
+        public static void MurderPostfix(PlayerControl __instance, PlayerControl target)
         {
             if (target.isRole(CustomRPC.RoleId.Bait) && (!__instance.isRole(CustomRPC.RoleId.Minimalist) || RoleClass.Minimalist.UseReport))
             {
@@ -25,7 +25,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
                         __instance.CmdReportDeadBody(target.Data);
                     }
-                },  RoleClass.Bait.ReportTime, "ReportBaitBody");
+                }, RoleClass.Bait.ReportTime, "ReportBaitBody");
             }
         }
     }

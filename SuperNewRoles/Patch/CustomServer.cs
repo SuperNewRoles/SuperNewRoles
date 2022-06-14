@@ -82,7 +82,6 @@ namespace SuperNewRoles.Patch
                     portField.SetText(ConfigRoles.Port.Value.ToString());
                 })));
 
-
                 portField.ClearOnFocus = false;
                 portField.OnEnter = portField.OnChange = new Button.ButtonClickedEvent();
                 portField.OnFocusLost = new Button.ButtonClickedEvent();

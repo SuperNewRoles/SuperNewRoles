@@ -46,7 +46,8 @@ namespace SuperNewRoles
                 if (p.IsLovers(false))
                 {
                     LoversChache[p.PlayerId] = p.GetOneSideLovers(false);
-                } else
+                }
+                else
                 {
                     LoversChache[p.PlayerId] = null;
                 }

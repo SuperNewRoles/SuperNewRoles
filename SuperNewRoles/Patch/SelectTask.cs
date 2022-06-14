@@ -11,7 +11,6 @@ namespace SuperNewRoles.Patch
 {
     public static class SelectTask
     {
-
         [HarmonyPatch(typeof(GameData), nameof(GameData.RpcSetTasks))]
         class RpcSetTasksPatch
         {
@@ -21,7 +20,7 @@ namespace SuperNewRoles.Patch
             {
                 if (GameData.Instance.GetPlayerById(playerId).Object.IsBot() || taskTypeIds.Length == 0) {
                     taskTypeIds = new byte[0];
-                    return; 
+                    return;
                 }
                 if (ModeHandler.isMode(ModeId.SuperHostRoles) || ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 {
@@ -159,7 +158,6 @@ namespace SuperNewRoles.Patch
                     return (commont, shortt, longt);
                 }
             }
-
             else if (p.IsLovers() && !p.isImpostor())
             {
                 int commont = (int)CustomOptions.LoversCommonTask.getFloat();

@@ -1,11 +1,5 @@
-﻿using HarmonyLib;
-using Hazel;
-using System;
-using System.Collections.Generic;
-using SuperNewRoles.Patches;
-using UnityEngine;
+﻿using System;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Roles
 {
