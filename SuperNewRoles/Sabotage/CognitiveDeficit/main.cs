@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
-using Hazel;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
 using System;
 using System.Collections.Generic;

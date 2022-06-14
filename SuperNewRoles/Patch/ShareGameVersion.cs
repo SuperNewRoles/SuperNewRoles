@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using System.Collections;
-
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Helpers;
@@ -37,7 +36,7 @@ namespace SuperNewRoles.Patch
             {
                 if (PlayerControl.LocalPlayer != null)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("バージョンシェア！");
+                    SuperNewRolesPlugin.Logger.LogInfo("[VersionShare]Version Shared!");
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareSNRVersion, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)SuperNewRolesPlugin.Version.Major);
                     writer.Write((byte)SuperNewRolesPlugin.Version.Minor);
@@ -47,7 +46,6 @@ namespace SuperNewRoles.Patch
                     writer.Write(Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.ToByteArray());
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     CustomRPC.RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.Version.Major, SuperNewRolesPlugin.Version.Minor, SuperNewRolesPlugin.Version.Build, SuperNewRolesPlugin.Version.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
-                    
                 }
             }
         }
@@ -62,7 +60,6 @@ namespace SuperNewRoles.Patch
                 GameStartManagerUpdatePatch.Proce = 0;
                 GameStartManagerUpdatePatch.LastBlockStart = false;
                 GameStartManagerUpdatePatch.VersionPlayers = new Dictionary<int, PlayerVersion>();
-                
             }
         }
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
@@ -94,8 +91,7 @@ namespace SuperNewRoles.Patch
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     CustomRPC.RPCProcedure.ShareSNRversion(SuperNewRolesPlugin.Version.Major, SuperNewRolesPlugin.Version.Minor, SuperNewRolesPlugin.Version.Build, SuperNewRolesPlugin.Version.Revision, Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId, AmongUsClient.Instance.ClientId);
                     Proce = 0;
-                } 
-                
+                }
                 string message = "";
                 bool blockStart = false;
                 if (AmongUsClient.Instance.AmHost)
@@ -115,7 +111,6 @@ namespace SuperNewRoles.Patch
                 {
                     if (!AmongUsClient.Instance.AmHost)
                     {
-                        
                         if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
                         {
                             message += "\n" + ModTranslation.getString("ErrorHostNoVersion")+"\n";
@@ -142,7 +137,6 @@ namespace SuperNewRoles.Patch
                                 blockStart = true;
                             }
                         }
-
                     }
                     foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.GetFastEnumerator().ToArray())
                     {
@@ -209,7 +203,6 @@ namespace SuperNewRoles.Patch
                 }
                 else
                 {
-
                     timer = Mathf.Max(0f, timer);
                 }
                     int minutes = (int)timer / 60;
@@ -219,13 +212,11 @@ namespace SuperNewRoles.Patch
                     __instance.PlayerCounter.text = currentText.Replace("\n", "") + suffix.Replace("\n", "")
                     ;
                     __instance.PlayerCounter.autoSizeTextContainer = true;
-                    
                     if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value) {
                         //MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AutoCreateRoom, Hazel.SendOption.Reliable, -1);
                         //AmongUsClient.Instance.FinishRpcImmediately(writer);
                         //var roomid = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId);
                         //AmongUsClient.Instance.StartCoroutine(CREATEROOMANDJOIN(roomid, AmongUsClient.Instance.GameId));
-                        
                         notcreateroom = true;
                     }
             }
@@ -240,7 +231,6 @@ namespace SuperNewRoles.Patch
                     else
                     {
                         __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
-
                     }
                 }**/
             }

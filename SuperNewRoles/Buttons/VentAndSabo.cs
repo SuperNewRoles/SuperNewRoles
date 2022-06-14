@@ -4,16 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using SuperNewRoles.MapOptions;
 
 namespace SuperNewRoles.Buttons
 {
     public static class VentAndSabo
     {
-
         [HarmonyPatch(typeof(MapBehaviour))]
         class MapBehaviourPatch
         {
-
             [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.FixedUpdate))]
             static bool Prefix(MapBehaviour __instance)
             {
@@ -57,7 +56,31 @@ namespace SuperNewRoles.Buttons
         [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
         public static class VentCanUsePatch
         {
-            
+            [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]
+            class EnterVentAnimPatch
+            {
+                public static bool Prefix(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
+                {
+                    if (MapOption.VentAnimation.getBool())
+                    {
+                        return pc.AmOwner;
+                    }
+                    return true;
+                }
+            }
+
+            [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))]
+            class ExitVentAnimPatch
+            {
+                public static bool Prefix(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
+                {
+                    if (MapOption.VentAnimation.getBool())
+                    {
+                        return pc.AmOwner;
+                    }
+                    return true;
+                }
+            }
             public static bool Prefix(Vent __instance, ref float __result, [HarmonyArgument(0)] GameData.PlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
             {
                 float num = float.MaxValue;
@@ -66,7 +89,6 @@ namespace SuperNewRoles.Buttons
                 bool roleCouldUse = @object.IsUseVent();
 
                 var usableDistance = __instance.UsableDistance;
-
 
                 if (SubmergedCompatibility.isSubmerged())
                 {

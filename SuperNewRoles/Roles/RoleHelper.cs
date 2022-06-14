@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Collections;
-using UnhollowerBaseLib;
 using UnityEngine;
-using System.Linq;
-using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
@@ -574,7 +568,7 @@ namespace SuperNewRoles
                     break;
                 //ロールアド
                 default:
-                    SuperNewRolesPlugin.Logger.LogError("setRole: no method found for role type {role}");
+                    SuperNewRolesPlugin.Logger.LogError("[SetRole]:No Method Found for Role Type {role}");
                     return;
             }
             bool flag = player.getRole() != role && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
@@ -586,10 +580,9 @@ namespace SuperNewRoles
             {
                 ChacheManager.ResetMyRoleChache();
             }
-
             if (flag)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("リフレッシュ");
+                SuperNewRolesPlugin.Logger.LogInfo("[SetRole]Refresh(^u^)v");
                 PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
@@ -900,7 +893,6 @@ namespace SuperNewRoles
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
                     break;
                     //ロールリモベ
-
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1345,10 +1337,7 @@ namespace SuperNewRoles
                 }
                 //ここが幽霊役職
             }
-            catch
-            {
-
-            }
+            catch { }
             return RoleId.DefaultRole;
         }
         public static bool isGhostRole(this RoleId role)
@@ -1825,12 +1814,10 @@ namespace SuperNewRoles
             }
             catch (Exception e)
             {
-
-                SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
+                SuperNewRolesPlugin.Logger.LogInfo("[RoleHelper]Error:" + e);
                 return RoleId.DefaultRole;
             }
             return RoleId.DefaultRole;
-
         }
         public static Dictionary<byte, bool> DeadCaches;
         public static bool isDead(this PlayerControl player, bool Cache = true)
@@ -1845,7 +1832,6 @@ namespace SuperNewRoles
             }
             return player == null || player.Data.Disconnected || player.Data.IsDead;
         }
-
         public static bool isAlive(this PlayerControl player)
         {
             return !isDead(player);

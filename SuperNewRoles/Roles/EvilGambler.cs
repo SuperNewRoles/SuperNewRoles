@@ -1,10 +1,6 @@
 ﻿using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
@@ -22,11 +18,15 @@ namespace SuperNewRoles.Roles
                     }
                     return;
                 }
-                else if (__instance == PlayerControl.LocalPlayer && __instance.isRole(CustomRPC.RoleId.EvilGambler)) {
-                    if (RoleClass.EvilGambler.GetSuc()) {
+                else if (__instance == PlayerControl.LocalPlayer && __instance.isRole(CustomRPC.RoleId.EvilGambler))
+                {
+                    if (RoleClass.EvilGambler.GetSuc())
+                    {
                         //成功
                         PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.SucCool);
-                    } else {
+                    }
+                    else
+                    {
                         //失敗
                         PlayerControl.LocalPlayer.SetKillTimer(RoleClass.EvilGambler.NotSucCool);
                     };

@@ -14,14 +14,15 @@ using SuperNewRoles.Intro;
 
 namespace SuperNewRoles.CustomOption
 {
-    public enum CustomOptionType { 
+    public enum CustomOptionType
+    {
         Generic,
         Impostor,
         Neutral,
         Crewmate
 
     }
-    
+
     public class CustomOption
     {
         public static List<CustomOption> options = new List<CustomOption>();
@@ -57,7 +58,7 @@ namespace SuperNewRoles.CustomOption
 
         }
 
-        public CustomOption(int id, bool IsSHROn,CustomOptionType type,string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
+        public CustomOption(int id, bool IsSHROn, CustomOptionType type, string name, System.Object[] selections, System.Object defaultValue, CustomOption parent, bool isHeader, bool isHidden, string format)
         {
             this.id = id;
             this.isSHROn = IsSHROn;
@@ -84,7 +85,7 @@ namespace SuperNewRoles.CustomOption
                 selection = Mathf.Clamp(entry.Value, 0, selections.Length - 1);
                 if (options.Any(x => x.id == id))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("CustomOptionのId("+id+")が重複しています。");
+                    SuperNewRolesPlugin.Logger.LogInfo("CustomOptionのId(" + id + ")が重複しています。");
                 }
                 if (Max < id)
                 {
@@ -254,7 +255,8 @@ namespace SuperNewRoles.CustomOption
         {
             try
             {
-                this.RoleId = IntroDate.IntroDatas.FirstOrDefault((_) => {
+                this.RoleId = IntroDate.IntroDatas.FirstOrDefault((_) =>
+                {
                     return _.NameKey + "Name" == name;
                 }).RoleId;
             }
@@ -311,7 +313,7 @@ namespace SuperNewRoles.CustomOption
         public static void Postfix(ref int __result, ref RoleTypes role)
         {
             if (role == RoleTypes.Crewmate || role == RoleTypes.Impostor) return;
-            
+
             if (Mode.ModeHandler.IsBlockVanilaRole()) __result = 0;
 
             if (role != RoleTypes.GuardianAngel) return;
@@ -402,13 +404,14 @@ namespace SuperNewRoles.CustomOption
             neutralTab.transform.localPosition = Vector3.right * 1f;
             crewmateTab.transform.localPosition = Vector3.right * 0.95f;
 
-            var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab};
+            var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab };
             for (int i = 0; i < tabs.Length; i++)
             {
                 var button = tabs[i].GetComponentInChildren<PassiveButton>();
                 int copiedIndex = i;
                 button.OnClick = new UnityEngine.UI.Button.ButtonClickedEvent();
-                button.OnClick.AddListener((UnityAction)(() => {
+                button.OnClick.AddListener((UnityAction)(() =>
+                {
                     gameSettingMenu.RegularGameSettings.SetActive(false);
                     gameSettingMenu.RolesSettings.gameObject.SetActive(false);
                     snrSettings.gameObject.SetActive(false);
@@ -460,7 +463,6 @@ namespace SuperNewRoles.CustomOption
                     */
                 }));
             }
-
 
             foreach (OptionBehaviour option in snrMenu.GetComponentsInChildren<OptionBehaviour>())
                 UnityEngine.Object.Destroy(option.gameObject);
@@ -589,7 +591,7 @@ namespace SuperNewRoles.CustomOption
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSyncSettings))]
     public class RpcSyncSettingsPatch
     {
-        public static bool Prefix(PlayerControl __instance,[HarmonyArgument(0)] GameOptionsData gameOptions)
+        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameOptionsData gameOptions)
         {
             if (AmongUsClient.Instance.AmHost && !DestroyableSingleton<TutorialManager>.InstanceExists)
             {
@@ -607,9 +609,8 @@ namespace SuperNewRoles.CustomOption
         }
     }
 
-
     [HarmonyPatch(typeof(GameOptionsMenu), nameof(GameOptionsMenu.Update))]
-   static class GameOptionsMenuUpdatePatch
+    static class GameOptionsMenuUpdatePatch
     {
         private static float timer = 1f;
         public static CustomOptionType getCustomOptionType(string name)
@@ -760,10 +761,10 @@ namespace SuperNewRoles.CustomOption
         }
     }
 
-    [HarmonyPatch(typeof(GameOptionsData),nameof(GameOptionsData.ToHudString))]
+    [HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.ToHudString))]
     class tohudstring
     {
-        public static bool Prefix(ref string __result,GameOptionsData __instance, [HarmonyArgument(0)] int numPlayers)
+        public static bool Prefix(ref string __result, GameOptionsData __instance, [HarmonyArgument(0)] int numPlayers)
         {
             __instance.settings.Length = 0;
             try

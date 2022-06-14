@@ -71,7 +71,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     p.RpcProtectPlayer(p, 0);
                     new LateTask(() =>
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("マーダー");
+                        SuperNewRolesPlugin.Logger.LogInfo("[SHR] Murder");
                         p.RpcMurderPlayer(p);
                     }, 0.5f);
                 }
@@ -107,7 +107,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (Side.isDead())
                     {
                         RPCProcedure.ShareWinner(exiled.Object.PlayerId);
-
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                         Writer.Write(exiled.Object.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);

@@ -1,9 +1,6 @@
-using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Roles
 {
@@ -16,15 +13,15 @@ namespace SuperNewRoles.Roles
             if (!p.isRole(RoleId.MadJester)) return false;
             if (CheckedImpostor.Contains(p.PlayerId)) return true;
             /*
-            SuperNewRolesPlugin.Logger.LogInfo("ÉCÉìÉ|ÉXÉ^Å[É`ÉFÉbÉNÉ^ÉXÉNó :"+RoleClass.MadJester.ImpostorCheckTask);
-            SuperNewRolesPlugin.Logger.LogInfo("èIóπÉ^ÉXÉNó :"+TaskCount.TaskDate(p.Data).Item1);*/
-            SuperNewRolesPlugin.Logger.LogInfo("óLå¯Ç©:" + (RoleClass.MadJester.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1));
+            SuperNewRolesPlugin.Logger.LogInfo("ÔøΩCÔøΩÔøΩÔøΩ|ÔøΩXÔøΩ^ÔøΩ[ÔøΩ`ÔøΩFÔøΩbÔøΩNÔøΩ^ÔøΩXÔøΩNÔøΩÔøΩ:"+RoleClass.MadJester.ImpostorCheckTask);
+            SuperNewRolesPlugin.Logger.LogInfo("ÔøΩIÔøΩÔøΩÔøΩ^ÔøΩXÔøΩNÔøΩÔøΩ:"+TaskCount.TaskDate(p.Data).Item1);*/
+            SuperNewRolesPlugin.Logger.LogInfo("ÔøΩLÔøΩÔøΩÔøΩÔøΩ:" + (RoleClass.MadJester.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1));
             if (RoleClass.MadJester.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("óLå¯Çï‘ÇµÇ‹ÇµÇΩ");
+                SuperNewRolesPlugin.Logger.LogInfo("ÔøΩLÔøΩÔøΩÔøΩÔøΩ‘ÇÔøΩÔøΩ‹ÇÔøΩÔøΩÔøΩ");
                 return true;
             }
-            // SuperNewRolesPlugin.Logger.LogInfo("àÍî‘â∫Ç‹Ç≈í âﬂ");
+            // SuperNewRolesPlugin.Logger.LogInfo("ÔøΩÔøΩ‘âÔøΩÔøΩ‹Ç≈í âÔøΩ");
             return false;
         }
     }

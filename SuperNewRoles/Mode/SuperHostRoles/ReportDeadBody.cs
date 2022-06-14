@@ -10,13 +10,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     class ReportDeadBody
     {
-        public static bool ReportDeadBodyPatch(PlayerControl __instance,GameData.PlayerInfo target)
+        public static bool ReportDeadBodyPatch(PlayerControl __instance, GameData.PlayerInfo target)
         {
             if (!AmongUsClient.Instance.AmHost) return true;
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             //会議ボタンでもレポートでも起こる処理
 
-            if (target == null) {
+            if (target == null)
+            {
                 //会議ボタンのみで起こる処理
                 return true;
             };

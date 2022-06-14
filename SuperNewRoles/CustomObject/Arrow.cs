@@ -17,11 +17,9 @@ namespace SuperNewRoles.CustomObject
         public static Sprite getSprite()
         {
             if (sprite) return sprite;
-            
             sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Arrow.png", 200f);
             return sprite;
         }
-
 
         public Arrow(Color color)
         {

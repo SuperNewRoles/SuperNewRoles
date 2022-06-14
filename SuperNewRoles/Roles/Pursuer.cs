@@ -1,14 +1,11 @@
-﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
     public class Pursuer
     {
-       public class PursureUpdate
+        public class PursureUpdate
         {
             public static void Postfix()
             {
@@ -28,16 +25,16 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("ターゲット:"+target?.nameText.text);
+                SuperNewRolesPlugin.Logger.LogInfo("[Pursuer]Target:" + target?.nameText.text);
                 if (target != null)
                 {
                     try
                     {
                         RoleClass.Pursuer.arrow.Update(target.transform.position, color: RoleClass.Pursuer.color);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("error:"+e);
+                        SuperNewRolesPlugin.Logger.LogInfo("[Pursuer]Error:" + e);
                     }
                 }
             }

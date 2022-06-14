@@ -19,11 +19,9 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch]
     public static class CredentialsPatch
     {
-
         public static string baseCredentials = $@"<size=130%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color></size> v{SuperNewRolesPlugin.Version.ToString()}";
 
         private static Task<bool> kari;
-        public static string contributorsCredentials = "<size=80%>GitHub Contributors: Alex2911, amsyarasyiq, gendelo3</size>";
 
         [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
         private static class VersionShowerPatch
@@ -50,9 +48,6 @@ namespace SuperNewRoles.Patches
 
                 credentials.transform.SetParent(amongUsLogo.transform);
                 version.transform.SetParent(amongUsLogo.transform);
-
-
-
             }
         }
 
@@ -64,13 +59,12 @@ namespace SuperNewRoles.Patches
                 __instance.text.alignment = TMPro.TextAlignmentOptions.TopRight;
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
-
                     __instance.text.text = $"{baseCredentials}\n{__instance.text.text}";
                     try
                     {
                         if (DebugMode.IsDebugMode())
                         {
-                            __instance.text.text += "\nデバッグモードが有効です";
+                            __instance.text.text += "\n"+ ModTranslation.getString("DebugModeOn");
                         }
                         if (!Mode.ModeHandler.isMode(Mode.ModeId.Default))
                         {
@@ -91,7 +85,6 @@ namespace SuperNewRoles.Patches
                 {
                     __instance.text.text = $"{baseCredentials}\n{ModTranslation.getString("creditsFull")}\n{__instance.text.text}";
                     __instance.transform.localPosition = new Vector3(3.5f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
-
                 }
             }
         }
@@ -129,7 +122,7 @@ namespace SuperNewRoles.Patches
                 renderer.sprite = HorseModeOption.enableHorseMode ? horseBannerSprite : bannerSprite;
 
                 if (File.Exists(Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"))) return;
-                SuperNewRolesPlugin.Logger.LogInfo("通過ぁぁぁ！:"+ Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"));
+                SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Passage ahhhhhh!:" + Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"));
                 //サブマージド追加ボタン
 
                 var template = GameObject.Find("ExitGameButton");
@@ -143,7 +136,8 @@ namespace SuperNewRoles.Patches
                 passiveButton.OnClick.AddListener((UnityEngine.Events.UnityAction)onClick);
 
                 var text = button.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
-                __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) => {
+                __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
+                {
                     text.SetText(ModTranslation.getString("サブマージドを適用する"));
                 })));
 
@@ -154,7 +148,7 @@ namespace SuperNewRoles.Patches
 
                 void onClick()
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロード！");
+                    SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Downloading Submerged!");
                     showPopup(ModTranslation.getString("ダウンロード中です。\nサブマージドのファイルは大きいため、時間がかかります。"));
                     DownloadSubmarged();
                     button.SetActive(false);

@@ -2792,6 +2792,10 @@
         "0" : "Adding vitals to Mira" ,
         "11" : "Mira\u306b\u30d0\u30a4\u30bf\u30eb\u3092\u8ffd\u52a0\u3059\u308b"
         } ,
+ "VentAnimation" : {
+        "0" : "No Vent Animation" ,
+        "11" : "\u30d9\u30f3\u30c8\u30a2\u30cb\u30e1\u30fc\u30b7\u30e7\u30f3\u7121\u52b9\u5316"
+        } ,
  "MapRemodelingOptionSetting" : {
         "0" : "Map Remodeling" ,
         "11" : "\u30de\u30c3\u30d7\u6539\u9020"
@@ -2799,6 +2803,186 @@
  "AirShipAdditionalVents" : {
         "0" : "AirShipAdditionalVents" ,
         "11" : "\u30a8\u30a2\u30fc\u30b7\u30c3\u30d7\u306b\u30d9\u30f3\u30c8\u3092\u8ffd\u52a0\u3059\u308b"
+        } ,
+ "WelcomeMessage1" : {
+        "0" : "Welcome to SuperNewRoles!" ,
+        "11" : "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01"
+        } ,
+ "WelcomeMessage2" : {
+        "0" : "You can play a variety of modes and different hard on any model with SuperNewRoles!" ,
+        "11" : "SuperNewRoles\u3092\u4f7f\u7528\u3059\u308b\u3053\u3068\u3067\u3001\u69d8\u3005\u306a\u30e2\u30fc\u30c9\u3084\u69d8\u3005\u306a\u5f79\u8077\u3092\u3069\u306e\u6a5f\u7a2e\u3067\u3082\u904a\u3079\u307e\u3059\uff01"
+        } ,
+ "WelcomeMessage3" : {
+        "0" : "Please visit the official wiki for a detailed description of the roles and modes!" ,
+        "11" : "\u5f79\u8077\u3084\u30e2\u30fc\u30c9\u306e\u8a73\u3057\u3044\u8aac\u660e\u306b\u3064\u3044\u3066\u306f\u516c\u5f0fwiki\u3092\u5fa1\u89a7\u304f\u3060\u3055\u3044\uff01"
+        } ,
+ "WelcomeMessage4" : {
+        "0" : "SuperNewRoles Official Wiki" ,
+        "11" : "SuperNewRoles\u516c\u5f0fWiki:"
+        } ,
+ "WelcomeMessage5" : {
+        "0" : "https://wikiwiki.jp/amas-snr (Japanese)" ,
+        "11" : "https://wikiwiki.jp/amas-snr"
+        } ,
+ "WelcomeMessage6" : {
+        "0" : "You will get the information if you run the command." ,
+        "11" : "\u30b3\u30de\u30f3\u30c9\u3092\u5b9f\u884c\u3057\u3066\u3001\u60c5\u5831\u3092\u53d6\u5f97\u3067\u304d\u307e\u3059\u3002"
+        } ,
+ "WelcomeMessage7" : {
+        "0" : "Send this command if you want to see a list of commands." ,
+        "11" : "\u30b3\u30de\u30f3\u30c9\u4e00\u89a7\u3092\u8868\u793a\u3059\u308b\u306b\u306f\u3053\u306e\u30b3\u30de\u30f3\u30c9\u3092\u9001\u4fe1\u3057\u3066\u304f\u3060\u3055\u3044\u3002"
+        } ,
+ "WelcomeMessage8" : {
+        "0" : "[/commands] or [/cmd]" ,
+        "11" : "/commands \u53c8\u306f /cmd"
+        } ,
+ "CommnadsMessage0" : {
+        "0" : "Commands in the command list:\\n() are also possible.\\nIt is not case sensitive." ,
+        "11" : "\u30b3\u30de\u30f3\u30c9\u4e00\u89a7:\\n()\u306e\u4e2d\u306b\u3042\u308b\u30b3\u30de\u30f3\u30c9\u3067\u3082\u53ef\u80fd\u3067\u3059\u3002\\n\u5927\u6587\u5b57\u3068\u5c0f\u6587\u5b57\u306f\u533a\u5225\u3055\u308c\u307e\u305b\u3093\u3002"
+        } ,
+ "CommnadsMessage1" : {
+        "0" : "/commands (/cmd) : \\nDisplays a list of commands. (This command.)" ,
+        "11" : "/commands (/cmd) : \\n\u30b3\u30de\u30f3\u30c9\u4e00\u89a7\u3092\u8868\u793a\u3057\u307e\u3059\u3002(\u3053\u306e\u30b3\u30de\u30f3\u30c9\u3067\u3059)"
+        } ,
+ "CommnadsMessage2" : {
+        "0" : "/version (/v) : \\nShow SuperNewRoles Version." ,
+        "11" : "/version (/v) \uff1a \\n\u30d0\u30fc\u30b8\u30e7\u30f3\u3092\u8868\u793a\u3057\u307e\u3059\u3002"
+        } ,
+ "CommnadsMessage3" : {
+        "0" : "/discord (/dc) : \\nShow the link to the Official Discord." ,
+        "11" : "/discord (/dc) \uff1a \\n\u516c\u5f0fDiscord\u3078\u306e\u30ea\u30f3\u30af\u3092\u8868\u793a\u3057\u307e\u3059\u3002"
+        } ,
+ "CommnadsMessage4" : {
+        "0" : "/twitter (/tw) : \\nShow the link to the Official Twitter." ,
+        "11" : "/twitter (/tw) \uff1a \\n\u516c\u5f0fTwitter\u3068\u958b\u767a\u72b6\u6cc1Twitter\u3078\u306e\u30ea\u30f3\u30af\u3092\u8868\u793a\u3057\u307e\u3059\u3002"
+        } ,
+ "CommnadsMessage5" : {
+        "0" : "/GetInRoles (/gr) \uff1a Displays all activate roles.(Send to all player when you're hosts.)" ,
+        "11" : "/GetInRoles (/gr) \uff1a \\n\u5165\u3063\u3066\u3044\u308b\u3059\u3079\u3066\u306e\u5f79\u8077\u3092\u8868\u793a\u3057\u307e\u3059\u3002(\u30db\u30b9\u30c8\u306e\u5834\u5408\u306f\u5168\u54e1\u306b\u9001\u4fe1\u3057\u307e\u3059)"
+        } ,
+ "CommnadsMessage6" : {
+        "0" : "/GetInRoles myplayer ([/gr mp] or [/gr myp]) : \\nDisplays all activate roles only you.(Send only to yourself even if you are the host.)" ,
+        "11" : "/GetInRoles myplayer (/gr mp \u3082\u3057\u304f\u306f /gr myp) \uff1a \\n\u5165\u3063\u3066\u3044\u308b\u3059\u3079\u3066\u306e\u5f79\u8077\u3092\u8868\u793a\u3057\u307e\u3059\u3002(\u30db\u30b9\u30c8\u3067\u3082\u81ea\u5206\u306e\u307f\u306b\u9001\u4fe1\u3057\u307e\u3059)"
+        } ,
+ "CommnadsMessage7" : {
+        "0" : "/AllRoles (/ar) : \\nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\\nTransmitted at 1.5 second intervals." ,
+        "11" : "/AllRoles (/ar) \uff1a \\n\u5165\u3063\u3066\u3044\u308b\u5168\u5f79\u8077\u306e\u8aac\u660e\u3068\u8a2d\u5b9a\u304c\u78ba\u8a8d\u3067\u304d\u307e\u3059\u3002\\n(\u30db\u30b9\u30c8\u304c\u5b9f\u884c\u3059\u308b\u3068\u5168\u54e1\u306b\u9001\u4fe1\u3057\u307e\u3059)\\n1.5\u79d2\u9593\u9694\u3067\u9001\u4fe1\u3055\u308c\u307e\u3059\u3002"
+        } ,
+ "CommnadsMessage8" : {
+        "0" : "/AllRoles [transmission interval] (/ar [transmission interval]): \\nAdditional transmission intervals can be specified for /AllRoles." ,
+        "11" : "/AllRoles [\u9001\u4fe1\u9593\u9694] (/ar [\u9001\u4fe1\u9593\u9694]) \uff1a \\n/AllRoles\u306b+\u3067\u9001\u4fe1\u9593\u9694\u3092\u6307\u5b9a\u3067\u304d\u307e\u3059\u3002"
+        } ,
+ "CommnadsMessage9" : {
+        "0" : "/AllRoles [send interval] myplayer (/ar [send interval] (mp or myp)): \\nAdd to /AllRoles [send interval] and send only to yourself even if you are the host." ,
+        "11" : "/AllRoles [\u9001\u4fe1\u9593\u9694] myplayer (/ar [\u9001\u4fe1\u9593\u9694] (mp \u3082\u3057\u304f\u306f myp)) \uff1a \\n/AllRoles [\u9001\u4fe1\u9593\u9694]\u306b+\u3067\u3001\u30db\u30b9\u30c8\u3067\u3082\u81ea\u5206\u306e\u307f\u306b\u9001\u4fe1\u3055\u308c\u307e\u3059\u3002"
+        } ,
+ "SNROfficialDiscordMessage" : {
+        "0" : "Come here to visit the official SuperNewRoles Discord server." ,
+        "11" : "SuperNewRoles\u516c\u5f0fDiscord\u30b5\u30fc\u30d0\u30fc\u306f\u3053\u3061\u3089\u304b\u3089:"
+        } ,
+ "SNROfficialTwitterMessage" : {
+        "0" : "Come here to visit the official SuperNewRoles Twitter Accounts." ,
+        "11" : "SuperNewRoles\u516c\u5f0fTwitter\u306f\u3053\u3061\u3089\u304b\u3089"
+        } ,
+ "TwitterOfficialLink" : {
+        "0" : "Official Account : https://twitter.com/SuperNewRoles" ,
+        "11" : "\u516c\u5f0f\u30a2\u30ab\u30a6\u30f3\u30c8\uff1ahttps://twitter.com/SuperNewRoles"
+        } ,
+ "TwitterDevLink" : {
+        "0" : "Development Information Account : https://twitter.com/SNRDevs" ,
+        "11" : "\u958b\u767a\u60c5\u5831\u30a2\u30ab\u30a6\u30f3\u30c8\uff1ahttps://twitter.com/SNRDevs"
+        } ,
+ "Team" : {
+        "0" : "Team" ,
+        "11" : "\u9663\u55b6"
+        } ,
+ "MessageSettings" : {
+        "0" : "Settings" ,
+        "11" : "\u8a2d\u5b9a"
+        } ,
+ "NowRolesMessage" : {
+        "0" : "Activate Roles" ,
+        "11" : "\u73fe\u5728\u5165\u3063\u3066\u3044\u308b\u5f79\u8077"
+        } ,
+ "PlayerCountMessage" : {
+        "0" : "\u3010Team: + GetTeamText(type)\u3011" ,
+        "11" : "\u3010 + GetTeamText(type) + \u9663\u55b6\u3011"
+        } ,
+ "DebugModeOnText" : {
+        "0" : "Players" ,
+        "11" : "\u4eba"
+        } ,
+ "BattleRoyalRemaining" : {
+        "0" : "DebugMode:ON" ,
+        "11" : "\u30c7\u30d0\u30c3\u30b0\u30e2\u30fc\u30c9\u304c\u6709\u52b9\u3067\u3059"
+        } ,
+ "Player" : {
+        "0" : "Remaining until kills can be made" ,
+        "11" : "\u30ad\u30eb\u304c\u3067\u304d\u308b\u3088\u3046\u306b\u306a\u308b\u307e\u3067\u6b8b\u308a"
+        } ,
+ "CopsImpostorCome" : {
+        "0" : "Player" ,
+        "11" : "\u30d7\u30ec\u30a4\u30e4\u30fc"
+        } ,
+ "WareWolfHunter" : {
+        "0" : "Remaining until the Imposter arrives" ,
+        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304c\u6765\u308b\u307e\u3067\u6b8b\u308a"
+        } ,
+ "WereWolfHunterText" : {
+        "0" : "Level Up Mode: Kills Per Second" ,
+        "11" : "\u30ec\u30d9\u30eb\u30a2\u30c3\u30d7\u30e2\u30fc\u30c9:1\u79d2\u3042\u305f\u308a\u306e\u30ad\u30eb\u56de\u6570"
+        } ,
+ "WareWolfImpostor" : {
+        "0" : "Hunter" ,
+        "11" : "\u30cf\u30f3\u30bf\u30fc"
+        } ,
+ "WereWolfImpostorText" : {
+        "0" : "Let's die with someone else." ,
+        "11" : "\u8ab0\u304b\u3092\u9053\u9023\u308c\u306b\u3057\u3088\u3046"
+        } ,
+ "WareWolfMadmate" : {
+        "0" : "Werewolf" ,
+        "11" : "\u4eba\u72fc"
+        } ,
+ "WereWolfMadmateText" : {
+        "0" : "Let's Eat Citizens and Win!" ,
+        "11" : "\u5e02\u6c11\u3092\u98df\u3079\u3066\u52dd\u5229\u3057\u3088\u3046"
+        } ,
+ "WareWolfCrewmate" : {
+        "0" : "Madmate" ,
+        "11" : "\u72c2\u4eba"
+        } ,
+ "WereWolfCrewmateText" : {
+        "0" : "Help the werewolves and win!" ,
+        "11" : "\u4eba\u72fc\u3092\u52a9\u3051\u3066\u52dd\u5229\u3057\u3088\u3046"
+        } ,
+ "WareWolfFortuneTeller" : {
+        "0" : "Citizens" ,
+        "11" : "\u5e02\u6c11"
+        } ,
+ "WereWolfFortuneTellerText" : {
+        "0" : "Expel the werewolves in the debate and win!" ,
+        "11" : "\u8b70\u8ad6\u3067\u4eba\u72fc\u3092\u8ffd\u653e\u3057\u3066\u52dd\u5229\u3057\u3088\u3046"
+        } ,
+ "WareWolfMedium" : {
+        "0" : "FortuneTeller" ,
+        "11" : "\u5360\u3044\u5e2b"
+        } ,
+ "WereWolfMediumText" : {
+        "0" : "Divination to discover the werewolf and win!" ,
+        "11" : "\u5360\u3063\u3066\u4eba\u72fc\u3092\u767a\u898b\u3057\u3066\u52dd\u5229\u3057\u3088\u3046"
+        } ,
+ "WereWolfMeetingNormal" : {
+        "0" : "Medium" ,
+        "11" : "\u970a\u5a92\u5e2b"
+        } ,
+ "WereWolfMeetingAbility" : {
+        "0" : "Search out the role of the dead and win!" ,
+        "11" : "\u6b7b\u3093\u3060\u4eba\u306e\u5f79\u8077\u3092\u8abf\u3079\u3066\u52dd\u5229\u3057\u3088\u3046"
+        } ,
+ "WereWolfMediumAbilityText" : {
+        "0" : "This is Meeting Time." ,
+        "11" : "\u4eca\u56de\u306f\u4f1a\u8b70\u30bf\u30a4\u30e0\u3067\u3059\u3002"
         } 
 
 }

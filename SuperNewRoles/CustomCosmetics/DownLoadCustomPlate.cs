@@ -37,9 +37,9 @@ namespace SuperNewRoles.CustomCosmetics
             if (running)
                 return;
             IsEndDownload = false;
-            Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath)+@"\SuperNewRoles\");
+            Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\");
-            SuperNewRolesPlugin.Logger.LogInfo("ダウンロード開始");
+            SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード開始");
             FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
             running = true;
         }
@@ -49,9 +49,9 @@ namespace SuperNewRoles.CustomCosmetics
                 return null;
 
             res = res.Replace("\\", "")
-                     .Replace("/", "")
-                     .Replace("*", "")
-                     .Replace("..", "");
+                    .Replace("/", "")
+                    .Replace("*", "")
+                    .Replace("..", "");
             return res;
         }
         private static bool doesResourceRequireDownload(string respath, string reshash, MD5 md5)
@@ -68,7 +68,7 @@ namespace SuperNewRoles.CustomCosmetics
         public static async Task<HttpStatusCode> FetchHats(string repo)
         {
             fetchs.Add(repo);
-            SuperNewRolesPlugin.Logger.LogInfo("ダウンロード開始:"+repo);
+            SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード開始:" + repo);
             HttpClient http = new HttpClient();
             http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
             var response = await http.GetAsync(new System.Uri($"{repo}/CustomNamePlates.json"), HttpCompletionOption.ResponseContentRead);
@@ -133,7 +133,7 @@ namespace SuperNewRoles.CustomCosmetics
                 SuperNewRolesPlugin.Instance.Log.LogError(ex.ToString());
                 System.Console.WriteLine(ex);
             }
-            SuperNewRolesPlugin.Logger.LogInfo("ダウンロード終了:"+repo);
+            SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード終了:" + repo);
             fetchs.Remove(repo);
             if (fetchs.Count <= 0)
             {

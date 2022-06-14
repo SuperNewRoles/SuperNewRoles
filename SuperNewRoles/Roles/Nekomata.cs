@@ -1,10 +1,7 @@
-﻿using HarmonyLib;
-using Hazel;
+﻿using Hazel;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Roles
 {
@@ -12,7 +9,7 @@ namespace SuperNewRoles.Roles
     {
         public static void NekomataEnd(GameData.PlayerInfo __instance) {
             if (!ModeHandler.isMode(ModeId.Default)) return;
-            if (__instance == null) return; 
+            if (__instance == null) return;
             if (AmongUsClient.Instance.AmHost) {
                 if (__instance != null && RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(__instance.Object) || RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object))
                 {
@@ -22,7 +19,6 @@ namespace SuperNewRoles.Roles
                             p.Add(p1);
                         }
                     }
-
                     MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ExiledRPC, Hazel.SendOption.Reliable, -1);
                     RPCWriter.Write(__instance.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);

@@ -8,7 +8,7 @@ namespace SuperNewRoles.Helpers
 {
     public static class DesyncHelpers
     {
-        public static void RPCMurderPlayerPrivate(this PlayerControl source,PlayerControl target,PlayerControl see = null)
+        public static void RPCMurderPlayerPrivate(this PlayerControl source, PlayerControl target, PlayerControl see = null)
         {
             PlayerControl SeePlayer = see;
             if (see == null) SeePlayer = source;

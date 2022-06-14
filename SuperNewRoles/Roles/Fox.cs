@@ -1,14 +1,6 @@
 using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patches;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
-using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Roles
 {
@@ -20,7 +12,8 @@ namespace SuperNewRoles.Roles
             {
                 if (!RoleClass.Fox.UseReport)
                 {
-                    if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active) {
+                    if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
+                    {
                         FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
                     }
                 }
@@ -62,6 +55,5 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
-
     }
 }

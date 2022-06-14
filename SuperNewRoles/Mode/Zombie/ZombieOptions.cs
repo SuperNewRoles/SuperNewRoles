@@ -20,7 +20,7 @@ namespace SuperNewRoles.Mode.Zombie
         public static CustomOption.CustomOption ZombieCommingSpeedOption;
         public static void Load()
         {
-            ZombieMode = CustomOption.CustomOption.Create(195, true, CustomOptionType.Generic,"SettingZombieMode", false, ModeHandler.ModeSetting);
+            ZombieMode = CustomOption.CustomOption.Create(195, true, CustomOptionType.Generic, "SettingZombieMode", false, ModeHandler.ModeSetting);
             StartSecondOption = CustomOption.CustomOption.Create(332, true, CustomOptionType.Generic, "ZombieStartSecondSetting", 5f, 2.5f, 30f, 2.5f, ZombieMode);
             ZombieLightOption = CustomOption.CustomOption.Create(196, true, CustomOptionType.Generic, "ZombieZombieLightSetting", 0.5f, 0f, 5f, 0.25f, ZombieMode);
             ZombieSpeedOption = CustomOption.CustomOption.Create(333, true, CustomOptionType.Generic, "ZombieZombieSpeedSetting", 0.75f, 0f, 5f, 0.25f, ZombieMode);
@@ -29,7 +29,8 @@ namespace SuperNewRoles.Mode.Zombie
             ZombieCommingLightOption = CustomOption.CustomOption.Create(336, true, CustomOptionType.Generic, "ZombieCommingLightSetting", 1.5f, 0f, 5f, 0.25f, ZombieMode);
             ZombieCommingSpeedOption = CustomOption.CustomOption.Create(337, true, CustomOptionType.Generic, "ZombieCommingSpeedSetting", 1.5f, 0f, 5f, 0.25f, ZombieMode);
         }
-        static float GetSpeed(float speed) { 
+        static float GetSpeed(float speed)
+        {
             if (speed <= 0)
             {
                 return 0.001f;
@@ -41,7 +42,8 @@ namespace SuperNewRoles.Mode.Zombie
             var optdata = SyncSetting.OptionData.DeepCopy();
             optdata.CrewLightMod = GetSpeed(ZombieCommingLightOption.getFloat());
             optdata.ImpostorLightMod = GetSpeed(ZombieCommingSpeedOption.getFloat());
-            foreach (PlayerControl player in CachedPlayer.AllPlayers) {
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            {
                 if (player.AmOwner) PlayerControl.GameOptions = optdata;
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.getClientId());
                 writer.WriteBytesAndSize(optdata.ToBytes(5));

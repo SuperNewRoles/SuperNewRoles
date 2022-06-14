@@ -1,5 +1,4 @@
-﻿
-using HarmonyLib;
+﻿using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomRPC;
@@ -17,7 +16,6 @@ using static MeetingHud;
 
 namespace SuperNewRoles.Patch
 {
-
     /*
     [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.SetCosmetics))]
     class PlayerVoteAreaCosmetics
@@ -89,7 +87,6 @@ namespace SuperNewRoles.Patch
                             }
                             else
                             {
-
                                 statesListdetective.Add(new MeetingHud.VoterState()
                                 {
                                     VoterId = ps.TargetPlayerId,
@@ -157,10 +154,7 @@ namespace SuperNewRoles.Patch
                             PlayerVoteArea ps = __instance.playerStates[i];
                             if (ModeHandler.isMode(ModeId.BattleRoyal))
                             {
-                                if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(CustomRPC.RoleId.Sheriff))
-                                {
-
-                                }
+                                if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(CustomRPC.RoleId.Sheriff)) { }
                             }
                             else
                             {
@@ -206,10 +200,10 @@ namespace SuperNewRoles.Patch
                     }
                 }
                 else if (RoleClass.Assassin.TriggerPlayer != null)
-                {                    
+                {
                     var (isVoteEnd, voteFor, voteArea) = assassinVoteState(__instance);
 
-                    SuperNewRolesPlugin.Logger.LogInfo(isVoteEnd+"、"+voteFor);
+                    SuperNewRolesPlugin.Logger.LogInfo(isVoteEnd + "、" + voteFor);
                     if (isVoteEnd)
                     {
                         //GameData.PlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
@@ -235,7 +229,6 @@ namespace SuperNewRoles.Patch
                                 VoterId = playerVoteArea.TargetPlayerId,
                                 VotedForId = playerVoteArea.VotedFor
                             };
-
                         }
                         GameData.PlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
                         GameData.PlayerInfo exileplayer = null;
@@ -254,9 +247,9 @@ namespace SuperNewRoles.Patch
                                         exileplayer = p.Data;
                                         exile = p;
                                         p.RpcSetColor((byte)outfit.ColorId);
-                                        p.RpcSetName(target.Object.getDefaultName() + 
-                                            ModTranslation.getString(target.Object.isRole(RoleId.Marine) ? 
-                                            "AssassinSucsess" : 
+                                        p.RpcSetName(target.Object.getDefaultName() +
+                                            ModTranslation.getString(target.Object.isRole(RoleId.Marine) ?
+                                            "AssassinSucsess" :
                                             "AssassinFail")
                                             + "<size=0%>");
                                         p.RpcSetHat(outfit.HatId);
@@ -313,10 +306,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (ModeHandler.isMode(ModeId.BattleRoyal))
                         {
-                            if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(CustomRPC.RoleId.Sheriff))
-                            {
-
-                            }
+                            if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(CustomRPC.RoleId.Sheriff)) { }
                         }
                         else
                         {
@@ -413,7 +403,8 @@ namespace SuperNewRoles.Patch
                                 break;
                             }
                         }
-                        new LateTask(() => {
+                        new LateTask(() =>
+                        {
                             if (exile != null)
                             {
                                 exile.RpcSetName(exile.getDefaultName());
@@ -443,7 +434,7 @@ namespace SuperNewRoles.Patch
                                             p.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
                                         }
                                     }
-                                    new LateTask(() => p.RpcSetName(p.getDefaultName()),5f);
+                                    new LateTask(() => p.RpcSetName(p.getDefaultName()), 5f);
                                     break;
                                 }
                             }
@@ -511,7 +502,6 @@ namespace SuperNewRoles.Patch
                     break;
                 }
             }
-
             return Tuple.Create(isVoteEnd, voteFor, area);
         }
     }
@@ -546,7 +536,6 @@ namespace SuperNewRoles.Patch
         public static bool Prefix(
             MeetingHud __instance)
         {
-
             if (RoleClass.Assassin.TriggerPlayer == null) { return true; }
 
             if (!RoleClass.Assassin.TriggerPlayer.AmOwner)
@@ -579,10 +568,8 @@ namespace SuperNewRoles.Patch
                     }
                 }
             }
-
             return false;
         }
-
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
     class MeetingHudStartPatch

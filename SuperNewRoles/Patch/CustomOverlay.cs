@@ -12,7 +12,6 @@ namespace SuperNewRoles.Patch
     [Harmony]
     public class CustomOverlays
     {
-
         public static Sprite helpButton;
         private static Sprite colorBG;
         private static SpriteRenderer meetingUnderlay;
@@ -94,7 +93,6 @@ namespace SuperNewRoles.Patch
                 infoOverlayRoles.color = Palette.White;
                 infoOverlayRoles.enabled = false;
             }
-
             return true;
         }
 
