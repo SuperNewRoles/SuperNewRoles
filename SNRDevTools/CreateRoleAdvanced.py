@@ -25,7 +25,7 @@ class ReturnClass:
     def GetInput(self, key):
         if values[key] == "":
             MainClass.CreateErrorWindow("エラーが発生しました。\n値が空白です\n" + "Key:" + key)
-            return
+            #return
         else:
             print("入力した値を読み込みました:" + values[key])
             return values[key]
@@ -499,5 +499,4 @@ while True:
         MainClass.UpdateGUI("IsSHRON", False)
         MainClass.UpdateGUI("OptionNumberIDText", False)
         MainClass.UpdateGUI("OptionNumber", False)'''
-
 MainWindow.close()
