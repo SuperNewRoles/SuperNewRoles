@@ -172,11 +172,11 @@ class AllCheck:
     def AllWrite(self):
         # Roles/ROLENAME.cs
         if (MainClass.GetBool("A_CreateFile")):
-            MainClass.WriteCodes("Roles/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), "",
-"""using System;
+            with open(BasePath+"Roles/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), mode="x") as x:
+                x.write(
+                    """using System;
 using System.Collections.Generic;
 using System.Text;
-
 namespace SuperNewRoles.Roles
 {
     internal class ROLENAME
