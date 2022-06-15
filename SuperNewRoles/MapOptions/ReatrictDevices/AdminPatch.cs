@@ -104,7 +104,7 @@ namespace SuperNewRoles.Patch
         {
             static bool Prefix(MapCountOverlay __instance)
             {
-                if (MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictAdmin.getBool() && !Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles) && !PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker))
+                if (MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictAdmin.getBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && !PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker))
                 {
                     adminTimer += Time.deltaTime;
                     if (adminTimer > 0.1f)
@@ -120,7 +120,7 @@ namespace SuperNewRoles.Patch
 
                     playerColors = new Dictionary<SystemTypes, List<Color>>();
 
-                    if (MapOptions.MapOption.RestrictAdmin.getBool())
+                    if (MapOptions.MapOption.RestrictAdmin.getBool() && MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictAdmin.getBool())
                     {
                         if (OutOfTime == null)
                         {
