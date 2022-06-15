@@ -9,27 +9,30 @@ namespace SuperNewRoles
     {
         public static void Prefix(ReactorSystemType __instance, float deltaTime)
         {
-            if (!__instance.IsActive)
+            if (MapOptions.MapOption.ReactorDurationOption.getBool())
             {
-                return;
-            }
-            if (ShipStatus.Instance.Type == ShipStatus.MapType.Pb)
-            {
-                if (__instance.Countdown >= MapOptions.MapOption.PolusReactorTimeLimit.getFloat())
+                if (!__instance.IsActive)
                 {
-                    __instance.Countdown = MapOptions.MapOption.PolusReactorTimeLimit.getFloat();
+                    return;
+                }
+                if (ShipStatus.Instance.Type == ShipStatus.MapType.Pb)
+                {
+                    if (__instance.Countdown >= MapOptions.MapOption.PolusReactorTimeLimit.getFloat())
+                    {
+                        __instance.Countdown = MapOptions.MapOption.PolusReactorTimeLimit.getFloat();
+                    }
+                    return;
+                }
+                if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq)
+                {
+                    if (__instance.Countdown >= MapOptions.MapOption.MiraReactorTimeLimit.getFloat())
+                    {
+                        __instance.Countdown = MapOptions.MapOption.MiraReactorTimeLimit.getFloat();
+                    }
+                    return;
                 }
                 return;
             }
-            if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq)
-            {
-                if (__instance.Countdown >= MapOptions.MapOption.MiraReactorTimeLimit.getFloat())
-                {
-                    __instance.Countdown = MapOptions.MapOption.MiraReactorTimeLimit.getFloat();
-                }
-                return;
-            }
-            return;
         }
     }
 
@@ -38,16 +41,19 @@ namespace SuperNewRoles
     {
         public static void Prefix(HeliSabotageSystem __instance, float deltaTime)
         {
-            if (!__instance.IsActive)
+            if (MapOptions.MapOption.ReactorDurationOption.getBool())
             {
-                return;
-            }
-
-            if (AirshipStatus.Instance != null)
-            {
-                if (__instance.Countdown >= MapOptions.MapOption.AirshipReactorTimeLimit.getFloat())
+                if (!__instance.IsActive)
                 {
-                    __instance.Countdown = MapOptions.MapOption.AirshipReactorTimeLimit.getFloat();
+                    return;
+                }
+
+                if (AirshipStatus.Instance != null)
+                {
+                    if (__instance.Countdown >= MapOptions.MapOption.AirshipReactorTimeLimit.getFloat())
+                    {
+                        __instance.Countdown = MapOptions.MapOption.AirshipReactorTimeLimit.getFloat();
+                    }
                 }
             }
         }

@@ -90,11 +90,11 @@ namespace SuperNewRoles.Mode
                 thisMode = ModeId.CopsRobbers;
                 CopsRobbers.main.ClearAndReloads();
             }
-            else if (isMode(ModeId.LevelUp, false))
+/*            else if (isMode(ModeId.LevelUp, false))
             {
                 thisMode = ModeId.LevelUp;
                 LevelUp.main.ClearAndReloads();
-            }
+            }*/
             else {
                 thisMode = ModeId.Default;
             }
@@ -191,15 +191,15 @@ namespace SuperNewRoles.Mode
         }
         public static void OptionLoad() {
             Mode = new CustomOptionBlank(null);
-            ModeSetting = CustomOption.CustomOption.Create(132, true, CustomOptionType.Generic, "ModeSetting", false, Mode, isHeader: true);
-            ThisModeSetting = CustomOption.CustomOption.Create(133, true, CustomOptionType.Generic, "SettingMode", modes , ModeSetting);
+            ModeSetting = CustomOption.CustomOption.Create(484, true, CustomOptionType.Generic, "ModeSetting", false, Mode, isHeader: true);
+            ThisModeSetting = CustomOption.CustomOption.Create(485, true, CustomOptionType.Generic, "SettingMode", modes , ModeSetting);
             HideAndSeek.ZombieOptions.Load();
             BattleRoyal.BROption.Load();
             Zombie.ZombieOptions.Load();
             RandomColor.RandomColorOptions.Load();
             Detective.DetectiveOptions.Load();
             Werewolf.WerewolfOptions.Load();
-            LevelUp.main.Load();
+            //LevelUp.main.Load();
 
             PlusMode.Options.Load();
         }
@@ -236,10 +236,10 @@ namespace SuperNewRoles.Mode
             else if (isMode(ModeId.CopsRobbers))
             {
             }
-            else if (isMode(ModeId.LevelUp))
+            /*else if (isMode(ModeId.LevelUp))
             {
                 LevelUp.main.FixedUpdate();
-            }
+            }*/
         }
         public static void Wrapup(GameData.PlayerInfo exiled)
         {
