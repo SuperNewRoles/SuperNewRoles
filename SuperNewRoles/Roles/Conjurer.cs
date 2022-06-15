@@ -138,12 +138,12 @@ namespace SuperNewRoles.Roles
         public static System.Collections.Generic.List<JackInTheBox> AllJackInTheBoxes = new();
         public static int JackInTheBoxLimit = 3;
         public static bool boxesConvertedToVents = false;
-        public static Sprite[] boxAnimationSprites = new Sprite[18];
+        public static Sprite[] boxAnimationSprites = new Sprite[3];
         public static Sprite getBoxAnimationSprite(int index)
         {
             if (boxAnimationSprites == null || boxAnimationSprites.Length == 0) return null;
             index = Mathf.Clamp(index, 0, boxAnimationSprites.Length - 1);
-             if (boxAnimationSprites[index] == null)
+            if (boxAnimationSprites[index] == null)
                 boxAnimationSprites[index] = (ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Marker_00{(index + 1):00}.png", 175f));
             return boxAnimationSprites[index];
         }
@@ -156,10 +156,11 @@ namespace SuperNewRoles.Roles
 
             HudManager.Instance.StartCoroutine(Effects.Lerp(0.6f, new Action<float>((p) =>
             {
-
+                if (box.boxRenderer != null)
+                {
                     box.boxRenderer.sprite = getBoxAnimationSprite((int)(p * boxAnimationSprites.Length));
                     if (p == 1f) box.boxRenderer.sprite = getBoxAnimationSprite(0);
-                
+                }
             })));
         }
 
