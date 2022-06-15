@@ -9,7 +9,7 @@ namespace SuperNewRoles
     {
         public static void Prefix(ReactorSystemType __instance, float deltaTime)
         {
-            if (MapOptions.MapOption.ReactorDurationOption.getBool())
+            if (MapOptions.MapOption.ReactorDurationOption.getBool() && MapOptions.MapOption.MapRemodelingOption.getBool())
             {
                 if (!__instance.IsActive)
                 {
@@ -41,7 +41,7 @@ namespace SuperNewRoles
     {
         public static void Prefix(HeliSabotageSystem __instance, float deltaTime)
         {
-            if (MapOptions.MapOption.ReactorDurationOption.getBool())
+            if (MapOptions.MapOption.ReactorDurationOption.getBool() && MapOptions.MapOption.MapRemodelingOption.getBool())
             {
                 if (!__instance.IsActive)
                 {
