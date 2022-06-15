@@ -14,5 +14,8 @@ namespace SuperNewRoles.Roles
         public static void EndMeeting(){
             //
         }
+        public static void StartSwap(){
+            //
+        }
     }
 }
