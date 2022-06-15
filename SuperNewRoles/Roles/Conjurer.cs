@@ -139,27 +139,31 @@ namespace SuperNewRoles.Roles
         public static int JackInTheBoxLimit = 3;
         public static bool boxesConvertedToVents = false;
         public static Sprite[] boxAnimationSprites = new Sprite[18];
-
         public static Sprite getBoxAnimationSprite(int index)
         {
             if (boxAnimationSprites == null || boxAnimationSprites.Length == 0) return null;
             index = Mathf.Clamp(index, 0, boxAnimationSprites.Length - 1);
-            if (boxAnimationSprites[index] == null)
+            void Animation(Transform MiraShip)
             {
-                Transform ConjurerMarker = GameObject.Instantiate(Template, MiraShip);
-                //ConjurerMarker.position = new Vector3(21.35f, 15.47f, 0.1f);
-                GameObject.Destroy(ConjurerMarker.GetComponent<PolygonCollider2D>());
-                ConjurerMarker.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Animation.Conjurer_Marker_0001");
-                ConjurerMarker.gameObject.AddComponent<PolygonCollider2D>();
-                ConjurerMarker.name = "ConjurerMarker";
-                CustomAnimation.Animation ConjurerMarker_Animation = new CustomAnimation.Animation();
-                ConjurerMarker_Animation.Start(8, ConjurerMarker);
-                ConjurerMarker_Animation.Start(10, ConjurerMarker);
-                ConjurerMarker_Animation.Sprites = CustomAnimation.LoadSprites.GetSpritesAgartha("SuperNewRoles.Resources.Animation.Conjurer_Marker", 8);
-                ConjurerMarker.localScale = new Vector3(1.75f, 1.75f, 1.75f);
+                if (boxAnimationSprites[index] == null)
+                {
+                    Transform Template = GameObject.Instantiate(MiraShip.FindChild("Office").FindChild("computerTableB"));
+                    Transform ConjurerMarker = GameObject.Instantiate(Template, MiraShip);
+                    //ConjurerMarker.position = new Vector3(21.35f, 15.47f, 0.1f);
+                    GameObject.Destroy(ConjurerMarker.GetComponent<PolygonCollider2D>());
+                    ConjurerMarker.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Animation.Conjurer_Marker_0001");
+                    ConjurerMarker.gameObject.AddComponent<PolygonCollider2D>();
+                    ConjurerMarker.name = "ConjurerMarker";
+                    CustomAnimation.Animation ConjurerMarker_Animation = new CustomAnimation.Animation();
+                    ConjurerMarker_Animation.Start(8, ConjurerMarker);
+                    ConjurerMarker_Animation.Start(10, ConjurerMarker);
+                    ConjurerMarker_Animation.Sprites = CustomAnimation.LoadSprites.GetSpritesAgartha("SuperNewRoles.Resources.Animation.Conjurer_Marker", 8);
+                    ConjurerMarker.localScale = new Vector3(1.75f, 1.75f, 1.75f);
+                }
             }
             return boxAnimationSprites[index];
         }
+
 
         public static void startAnimation(int ventId)
         {
@@ -186,7 +190,7 @@ namespace SuperNewRoles.Roles
             gameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
             Vector3 position = new(p.x, p.y, p.y / 1000f + 0.01f);
             position += (Vector3)PlayerControl.LocalPlayer.Collider.offset; // Add collider offset that DoMove moves the player up at a valid position
-            // Create the marker
+                                                                            // Create the marker
             gameObject.transform.position = position;
             boxRenderer = gameObject.AddComponent<SpriteRenderer>();
             boxRenderer.sprite = getBoxAnimationSprite(0);
