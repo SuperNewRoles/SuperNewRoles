@@ -704,7 +704,7 @@ WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！
 WelcomeMessage2,You can play a variety of modes and different hard on any model with SuperNewRoles!,SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！
 WelcomeMessage3,Please visit the official wiki for a detailed description of the roles and modes!,役職やモードの詳しい説明については公式wikiを御覧ください！
 WelcomeMessage4,SuperNewRoles Official Wiki,SuperNewRoles公式Wiki:
-WelcomeMessage5,https://wikiwiki.jp/amas-snr (Japanese),https://wikiwiki.jp/amas-snr
+WelcomeMessage5,https://wikiwiki.jp/amas-snr(Japanese),https://wikiwiki.jp/amas-snr
 WelcomeMessage6,You will get the information if you run the command.,コマンドを実行して、情報を取得できます。
 WelcomeMessage7,Send this command if you want to see a list of commands.,コマンド一覧を表示するにはこのコマンドを送信してください。
 WelcomeMessage8,[/commands] or [/cmd],/commands 又は /cmd
@@ -732,16 +732,17 @@ Player,Remaining until kills can be made,キルができるようになるまで
 CopsImpostorCome,Player,プレイヤー
 WareWolfHunter,Remaining until the Imposter arrives,インポスターが来るまで残り
 WereWolfHunterText,Level Up Mode: Kills Per Second,レベルアップモード:1秒あたりのキル回数
-WareWolfImpostor,Hunter,ハンター
-WereWolfImpostorText,Let's die with someone else.,誰かを道連れにしよう
-WareWolfMadmate,Werewolf,人狼
-WereWolfMadmateText,Let's Eat Citizens and Win!,市民を食べて勝利しよう
-WareWolfCrewmate,Madmate,狂人
-WereWolfCrewmateText,Help the werewolves and win!,人狼を助けて勝利しよう
-WareWolfFortuneTeller,Citizens,市民
+WereWolf.WereWolf,Hunter,ハンター
+WereWolf.WereWolfText,Let's die with someone else.,誰かを道連れにしよう
+WareWolfMadman,Werewolf,人狼
+WereWolfMadmanText,Let's Eat Villager and Win!,市民を食べて勝利しよう
+WareWolfVillager,Madmate,狂人
+WereWolfVillagerText,Help the werewolves and win!,人狼を助けて勝利しよう
+WareWolfFortuneTeller,Villager,市民
 WereWolfFortuneTellerText,Expel the werewolves in the debate and win!,議論で人狼を追放して勝利しよう
 WareWolfMedium,FortuneTeller,占い師
 WereWolfMediumText,Divination to discover the werewolf and win!,占って人狼を発見して勝利しよう
 WereWolfMeetingNormal,Medium,霊媒師
 WereWolfMeetingAbility,Search out the role of the dead and win!,死んだ人の役職を調べて勝利しよう
 WereWolfMediumAbilityText,This is Meeting Time.,今回は会議タイムです。
+,This is Use to Ability Time.,今回は能力使用タイムです。

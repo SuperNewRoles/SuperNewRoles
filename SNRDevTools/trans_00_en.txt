@@ -734,10 +734,10 @@ Level Up Mode: Kills Per Second
 Hunter
 Let's die with someone else.
 Werewolf
-Let's Eat Citizens and Win!
+Let's Eat Villager and Win!
 Madmate
 Help the werewolves and win!
-Citizens
+Villager
 Expel the werewolves in the debate and win!
 FortuneTeller
 Divination to discover the werewolf and win!
