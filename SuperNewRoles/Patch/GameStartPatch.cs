@@ -28,11 +28,11 @@ namespace SuperNewRoles.Patch
         {
             public static void Postfix(GameStartManager __instance)
             {
-                if (Input.GetKeyDown(KeyCode.i) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
+                if (Input.GetKeyDown(KeyCode.I) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
                 {
                     GameStartManager.Instance.countDownTimer = 0;
                 }
-                if (Input.GetKeyDown(KeyCode.o) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
+                if (Input.GetKeyDown(KeyCode.O) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
                 {
                     GameStartManager.Instance.ResetStartState();
                 }
