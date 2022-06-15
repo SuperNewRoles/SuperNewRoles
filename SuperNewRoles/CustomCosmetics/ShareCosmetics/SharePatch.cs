@@ -10,7 +10,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
 {
     class SharePatch
     {
-        public static Dictionary<int,string> PlayerUrl;
+        public static Dictionary<int, string> PlayerUrl;
         public static Dictionary<int, string> PlayerDatas;
         public static Dictionary<int, CosmeticsObject> PlayerObjects;
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
@@ -78,6 +78,5 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
                 PlayerObjects = new Dictionary<int, CosmeticsObject>();
             }
         }
-        
     }
 }

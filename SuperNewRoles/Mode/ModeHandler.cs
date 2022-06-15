@@ -15,7 +15,7 @@ namespace SuperNewRoles.Mode
     {
         public static bool Prefix(ShipStatus __instance)
         {
-            if (ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.Werewolf) || 
+            if (ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.Werewolf) ||
                 ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.HideAndSeek) ||
                 ModeHandler.isMode(ModeId.CopsRobbers)) return false;
             return true;
@@ -338,7 +338,7 @@ namespace SuperNewRoles.Mode
             {
                 return Detective.WinCheckPatch.CheckEndGame(__instance);
             }
-            else if (isMode(ModeId.Werewolf)) 
+            else if (isMode(ModeId.Werewolf))
             {
                 return SuperHostRoles.EndGameCheck.CheckEndGame(__instance,statistics);
             }

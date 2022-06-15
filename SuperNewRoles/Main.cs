@@ -1,16 +1,11 @@
 ﻿using BepInEx;
-using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using HarmonyLib;
-using Hazel;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Linq;
-using System.Net;
 using System.IO;
 using System;
 using System.Reflection;
-using UnhollowerBaseLib;
 using UnityEngine;
 
 namespace SuperNewRoles
@@ -32,7 +27,7 @@ namespace SuperNewRoles
         public static SuperNewRolesPlugin Instance;
         public static Dictionary<string, Dictionary<int, string>> StringDATE;
         public static bool IsUpdate = false;
-        public static string NewVersion = "" ;
+        public static string NewVersion = "";
         public static string thisname;
 
         public override void Load()
@@ -106,14 +101,14 @@ namespace SuperNewRoles
                 {
                     if (!__instance.isActiveAndEnabled) return;
                     __instance.Toggle();
-                } else if (Input.GetKeyDown(KeyCode.F2)) {
-
+                }
+                else if (Input.GetKeyDown(KeyCode.F2))
+                {
                     __instance.SetVisible(false);
                     new LateTask(() =>
                     {
                         __instance.SetVisible(true);
-                    }, 0f,"AntiChatBag");
-
+                    }, 0f, "AntiChatBag");
                 }
                 if (__instance.IsOpen)
                 {

@@ -1,19 +1,11 @@
-﻿using HarmonyLib;
-using Hazel;
+﻿using Hazel;
 using System;
-using SuperNewRoles.Patches;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles
 {
     class Clergyman
     {
-
         public static void ResetCoolDown()
         {
             HudManagerStartPatch.ClergymanLightOutButton.MaxTimer = RoleClass.Clergyman.CoolTime;

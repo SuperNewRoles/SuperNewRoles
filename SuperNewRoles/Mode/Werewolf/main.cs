@@ -15,13 +15,13 @@ namespace SuperNewRoles.Mode.Werewolf
         public static bool IsFirst;
         public static int AbilityTime;
         public static int DiscussionTime;
-        public static Dictionary<int,int> SoothRoles;
+        public static Dictionary<int, int> SoothRoles;
         public static List<int> HunterKillPlayers;
         public static List<int> WolfKillPlayers;
         public static List<PlayerControl> HunterPlayers = new List<PlayerControl>();
         public static PlayerControl HunterExilePlayer;
         public static int Time;
-        public static bool IsAbility {get{return!IsDiscussion;}set{IsDiscussion=!value;}}
+        public static bool IsAbility { get { return !IsDiscussion; } set { IsDiscussion = !value; } }
         public static void ClearAndReload()
         {
             PlayerControl.GameOptions.KillCooldown = -1;
@@ -44,8 +44,9 @@ namespace SuperNewRoles.Mode.Werewolf
         public static void IntroHandler()
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            PlayerControl.LocalPlayer.RpcSendChat("今回は会議タイムです。");
-            new LateTask(() => {
+            PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.getString("WereWolfMeetingNormal"));
+            new LateTask(() =>
+            {
                 IsDiscussion = true;
                 PlayerControl.GameOptions.VotingTime = DiscussionTime;
                 CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
@@ -61,7 +62,7 @@ namespace SuperNewRoles.Mode.Werewolf
             if (IsAbility)
             {
                 PlayerControl.GameOptions.VotingTime = AbilityTime;
-                PlayerControl.LocalPlayer.RpcSendChat("今回は能力使用タイムです。");
+                PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.getString("WereWolfMeetingAbility"));
                 HunterExilePlayer = null;
                 SoothRoles = new Dictionary<int, int>();
                 HunterKillPlayers = new List<int>();
@@ -70,17 +71,19 @@ namespace SuperNewRoles.Mode.Werewolf
             else
             {
                 PlayerControl.GameOptions.VotingTime = DiscussionTime;
-                PlayerControl.LocalPlayer.RpcSendChat("今回は会議タイムです。");
+                PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.getString("WereWolfMeetingNormal"));
                 if (HunterExilePlayer != null)
                 {
                     HunterExilePlayer.RpcMurderPlayer(HunterExilePlayer);
                 }
-                foreach (int playerid in WolfKillPlayers) {
+                foreach (int playerid in WolfKillPlayers)
+                {
                     PlayerControl player = ModHelpers.playerById((byte)playerid);
                     if (player != null) player.RpcMurderPlayer(player);
                 }
             }
-            if (IsDiscussion) {
+            if (IsDiscussion)
+            {
                 Time = 3;
                 foreach (var players in SoothRoles)
                 {
@@ -89,22 +92,25 @@ namespace SuperNewRoles.Mode.Werewolf
                     if (source == null || target == null || source.Data.Disconnected) break;
                     string Chat = "";
                     var RoleDate = IntroDate.GetIntroDate(target.getRole(), target);
-                    var RoleName = ModTranslation.getString("Werewolf"+RoleDate.NameKey+"Name");
-                    Chat += string.Format("{0}の役職は{1}です！",target.getDefaultName(),RoleName);
-                    new LateTask(() => {
+                    var RoleName = ModTranslation.getString("Werewolf" + RoleDate.NameKey + "Name");
+                    Chat += string.Format(ModTranslation.getString("WereWolfMediumAbilityText"), target.getDefaultName(), RoleName);
+                    new LateTask(() =>
+                    {
                         source.RPCSendChatPrivate(Chat);
                     }, Time, "AbilityChatSend");
                     Time += 3;
                 }
                 if (exiled != null)
                 {
-                    foreach (PlayerControl player in RoleClass.SpiritMedium.SpiritMediumPlayer) {
+                    foreach (PlayerControl player in RoleClass.SpiritMedium.SpiritMediumPlayer)
+                    {
                         string Chat = "";
                         PlayerControl target = exiled.Object;
                         var RoleDate = IntroDate.GetIntroDate(target.getRole(), target);
                         var RoleName = ModTranslation.getString("Werewolf" + RoleDate.NameKey + "Name");
-                        Chat += string.Format("{0}の役職は{1}です！", target.getDefaultName(), RoleName);
-                        new LateTask(() => {
+                        Chat += string.Format(ModTranslation.getString("WereWolfMediumAbilityText"), target.getDefaultName(), RoleName);
+                        new LateTask(() =>
+                        {
                             player.RPCSendChatPrivate(Chat);
                         }, Time, "AbilityChatSend");
                         Time += 3;
@@ -119,7 +125,8 @@ namespace SuperNewRoles.Mode.Werewolf
                 {
                     Time += 7;
                 }
-                new LateTask(() => {
+                new LateTask(() =>
+                {
                     GameData.PlayerInfo target;
                     try
                     {
@@ -132,7 +139,7 @@ namespace SuperNewRoles.Mode.Werewolf
                     MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, target);
                     FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcStartMeeting(target);
-                    PlayerControl.LocalPlayer.RpcSetName("今回は会議タイムです。");
+                    PlayerControl.LocalPlayer.RpcSetName(ModTranslation.getString("WereWolfMeetingNormal"));
                     SetDefaultName();
                 }, Time, "KillStartMeeting");
                 void SetDefaultName()
@@ -144,13 +151,15 @@ namespace SuperNewRoles.Mode.Werewolf
                 }
                 SoothRoles = new Dictionary<int, int>();
                 HunterKillPlayers = new List<int>();
-            } else if (IsAbility)
+            }
+            else if (IsAbility)
             {
-                new LateTask(() => {
-                    MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer,null);
+                new LateTask(() =>
+                {
+                    MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
                     FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcStartMeeting(null);
-                    PlayerControl.LocalPlayer.RpcSetName("今回は能力使用タイムです。");
+                    PlayerControl.LocalPlayer.RpcSetName(ModTranslation.getString("WereWolfMeetingAbility"));
                 }, 11, "AbilityStartMeeting");
                 new LateTask(() =>
                 {

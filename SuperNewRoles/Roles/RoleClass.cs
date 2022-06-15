@@ -1,28 +1,17 @@
-﻿using System.Net;
-using System.Linq;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
-using HarmonyLib;
-using Hazel;
+﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
-using System.Collections;
-using System.IO;
 using UnityEngine;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomObject;
 using TMPro;
-using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Sabotage;
-using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
 {
     [HarmonyPatch]
     public static class RoleClass
     {
-
         public static bool IsMeeting;
         public static bool IsCoolTimeSetted;
         public static System.Random rnd = new System.Random((int)DateTime.Now.Ticks);
@@ -153,10 +142,7 @@ namespace SuperNewRoles.Roles
             MapOptions.MapOption.ClearAndReload();
             ChacheManager.Load();
         }
-        public static void NotRole()
-        {
-
-        }
+        public static void NotRole() { }
         public static class SoothSayer
         {
             public static List<PlayerControl> SoothSayerPlayer;
@@ -176,7 +162,6 @@ namespace SuperNewRoles.Roles
                 DisplayMode = CustomOptions.SoothSayerDisplayMode.getBool();
                 Count = (int)CustomOptions.SoothSayerMaxCount.getFloat();
             }
-
         }
         public static class Jester
         {
@@ -194,7 +179,6 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.JesterIsVent.getBool();
                 IsJesterTaskClearWin = CustomOptions.JesterIsWinCleartask.getBool();
             }
-
         }
         public static class Lighter
         {
@@ -222,7 +206,6 @@ namespace SuperNewRoles.Roles
                 UpVision = CustomOptions.LighterUpVision.getFloat();
                 DefaultCrewVision = PlayerControl.GameOptions.CrewLightMod;
             }
-
         }
         public static class EvilLighter
         {
@@ -237,7 +220,6 @@ namespace SuperNewRoles.Roles
                 //CoolTime = CustomOptions.EvilLighterCoolTime.getFloat();
                 //DurationTime = CustomOptions.EvilLighterDurationTime.getFloat();
             }
-
         }
         public static class EvilScientist
         {
@@ -258,7 +240,6 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.EvilScientistCoolTime.getFloat();
                 DurationTime = CustomOptions.EvilScientistDurationTime.getFloat();
             }
-
         }
         public static class Sheriff
         {
@@ -294,7 +275,6 @@ namespace SuperNewRoles.Roles
                 KillMaxCount = CustomOptions.SheriffKillMaxCount.getFloat();
                 KillCount = new Dictionary<int, int>();
             }
-
         }
         public static class MeetingSheriff
         {
@@ -322,7 +302,6 @@ namespace SuperNewRoles.Roles
                 KillMaxCount = CustomOptions.MeetingSheriffKillMaxCount.getFloat();
                 OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.getBool();
             }
-
         }
         public static class Jackal
         {
@@ -357,7 +336,6 @@ namespace SuperNewRoles.Roles
                 IsCreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
             }
-
         }
         public static class Teleporter
         {
@@ -379,7 +357,6 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.TeleporterCoolTime.getFloat();
                 DurationTime = CustomOptions.TeleporterDurationTime.getFloat();
             }
-
         }
         public static class SpiritMedium
         {
@@ -394,7 +371,6 @@ namespace SuperNewRoles.Roles
                 DisplayMode = CustomOptions.SpiritMediumDisplayMode.getBool();
                 MaxCount = CustomOptions.SpiritMediumMaxCount.getFloat();
             }
-
         }
         public static class SpeedBooster
         {
@@ -1266,9 +1242,7 @@ namespace SuperNewRoles.Roles
                     IsUseOKRevive = CustomOptions.LevelingerReviveXP.getBool();
                     ReviveUseXP = (int)CustomOptions.LevelingerUseXPRevive.getFloat();
                 }
-                catch (Exception e)
-                {
-                }
+                catch { }
             }
             public static bool IsPower(LevelPowerTypes power)
             {
@@ -1478,8 +1452,6 @@ namespace SuperNewRoles.Roles
                 IsImpostorLight = CustomOptions.MadStuntManIsImpostorLight.getBool();
             }
         }
-
-
         public static class MadHawk
         {
             public static List<PlayerControl> MadHawkPlayer;
@@ -1550,7 +1522,6 @@ namespace SuperNewRoles.Roles
                 Turns = 255;
                 DefaultTurn = (int)CustomOptions.FalseChargesExileTurn.getFloat();
                 CoolTime = CustomOptions.FalseChargesCoolTime.getFloat();
-
             }
         }
         public static class NiceTeleporter
@@ -1673,7 +1644,6 @@ namespace SuperNewRoles.Roles
                 soulDuration = CustomOptions.SeerSoulDuration.getFloat();
                 mode = CustomOptions.SeerMode.getSelection();
             }
-
         }
         public static class MadSeer
         {
@@ -1689,7 +1659,6 @@ namespace SuperNewRoles.Roles
             public static bool IsImpostorLight;
             public static bool IsImpostorCheck;
             public static int ImpostorCheckTask;
-
 
             public static void ClearAndReload()
             {
@@ -1716,7 +1685,6 @@ namespace SuperNewRoles.Roles
                 Roles.MadSeer.CheckedImpostor = new List<byte>();
             }
         }
-
         public static class EvilSeer
         {
             public static List<PlayerControl> EvilSeerPlayer;
@@ -1808,7 +1776,6 @@ namespace SuperNewRoles.Roles
                 CreatePlayers = new List<int>();
             }
         }
-
         public static class Demon
         {
             public static List<PlayerControl> DemonPlayer;
@@ -1836,7 +1803,6 @@ namespace SuperNewRoles.Roles
                 IsAliveWin = CustomOptions.DemonIsAliveWin.getBool();
             }
         }
-
         public static class TaskManager
         {
             public static List<PlayerControl> TaskManagerPlayer;
@@ -1896,7 +1862,6 @@ namespace SuperNewRoles.Roles
                 JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.SeerFriendsCheckJackalTask.getString().Replace("%", "")) / 100f));
             }
         }
-
         public static class JackalSeer
         {
             public static List<PlayerControl> JackalSeerPlayer;
@@ -1942,9 +1907,7 @@ namespace SuperNewRoles.Roles
                 IsCreateSidekick = CustomOptions.JackalSeerCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.getBool();
             }
-
         }
-
         public static class Assassin
         {
             public static List<PlayerControl> AssassinPlayer;
@@ -1971,7 +1934,6 @@ namespace SuperNewRoles.Roles
                 MarinePlayer = new List<PlayerControl>();
             }
         }
-
         public static class Arsonist
         {
             public static List<PlayerControl> ArsonistPlayer;
@@ -2010,7 +1972,6 @@ namespace SuperNewRoles.Roles
                 DouseTarget = null;
             }
         }
-
         public static class Chief
         {
             public static List<PlayerControl> ChiefPlayer;
@@ -2048,7 +2009,6 @@ namespace SuperNewRoles.Roles
                 CleanerPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.CleanerCoolDown.getFloat();
                 KillCoolTime = CustomOptions.CleanerKillCoolTime.getFloat();
-
             }
         }
         public static class MadCleaner
@@ -2262,4 +2222,3 @@ namespace SuperNewRoles.Roles
         }
     }
 }
-

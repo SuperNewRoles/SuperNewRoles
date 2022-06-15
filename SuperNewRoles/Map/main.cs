@@ -23,10 +23,7 @@ namespace SuperNewRoles.Map
             ,{ MapStringNames[2],CustomMapNames.Polus },{ MapStringNames[3],CustomMapNames.Dleks }
             ,{ MapStringNames[4],CustomMapNames.Agartha },{ MapStringNames[5],CustomMapNames.Agartha }
         };
-        public static void MainMenu()
-        {
-            
-        }
+        public static void MainMenu() { }
         public static void ClearAndReloads()
         {
             //ThisMap = CustomMapNames.Skeld;

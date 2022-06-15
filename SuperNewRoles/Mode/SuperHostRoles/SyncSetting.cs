@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
     public static class SyncSetting
@@ -276,7 +275,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                         }
                     }
-                        optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCoolDown);
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCoolDown);
                     break;
                 case RoleId.Demon:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime);
@@ -310,7 +309,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (cool <= 0)
             {
                 return 0.001f;
-            } else
+            }
+            else
             {
                 return cool;
             }
@@ -355,7 +355,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.EvilGambler.GetSuc())
             {
                 optdata.KillCooldown = KillCoolSet(RoleClass.EvilGambler.SucCool);
-            } else
+            }
+            else
             {
                 optdata.KillCooldown = KillCoolSet(RoleClass.EvilGambler.NotSucCool);
             }
@@ -384,7 +385,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             public static void Prefix()
             {
-             //   BotHandler.CreateBot();
+                //   BotHandler.CreateBot();
             }
             public static void Postfix()
             {

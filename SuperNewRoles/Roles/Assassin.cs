@@ -5,11 +5,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patches;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnhollowerBaseLib;
 
 namespace SuperNewRoles.Roles

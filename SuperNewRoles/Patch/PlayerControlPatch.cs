@@ -132,7 +132,6 @@ namespace SuperNewRoles.Patches
                                 if (Arsonist.IsWin(p))
                                 {
                                     RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-
                                     MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                                     Writer.Write(p.PlayerId);
                                     AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -209,7 +208,6 @@ namespace SuperNewRoles.Patches
                             }, 1.1f);
 
                             CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
-
                             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
                             killWriter.Write(LocalID);
                             killWriter.Write(TargetID);
@@ -226,7 +224,6 @@ namespace SuperNewRoles.Patches
             PlayerControl.LocalPlayer.RpcShapeshift(player, true);
             __instance.Close();
             return false;
-
         }
     }
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
@@ -337,7 +334,7 @@ namespace SuperNewRoles.Patches
                     }
                     else
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("レートタスク:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                        SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
                         isKill = true;
 
                         if (__instance.PlayerId != 0)
@@ -504,7 +501,6 @@ namespace SuperNewRoles.Patches
                 case ModeId.Detective:
                     if (target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
                     break;
-
             }
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
@@ -645,11 +641,8 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
     public static class DiePatch
     {
-        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
-        {
-        }
+        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target) { }
     }
-
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
     static class PlayerControlSetCoolDownPatch
     {
@@ -783,7 +776,6 @@ namespace SuperNewRoles.Patches
                         if (Side.isDead())
                         {
                             RPCProcedure.ShareWinner(target.PlayerId);
-
                             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                             Writer.Write(target.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);

@@ -52,7 +52,6 @@ namespace SuperNewRoles.Patch
                 playerInfo.Role && playerInfo.Role.TasksCountTowardProgress
                 )
             {
-
                 for (int j = 0; j < playerInfo.Tasks.Count; j++)
                 {
                     TotalTasks++;

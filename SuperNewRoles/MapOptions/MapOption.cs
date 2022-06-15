@@ -140,7 +140,6 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption CanUseVitalTime;
 
         public static CustomOption.CustomOption AddVitalsMira;
-        public static CustomOption.CustomOption VentAnimation;
 
         public static CustomOption.CustomOption ReactorDurationOption;
         public static CustomOption.CustomOption PolusReactorTimeLimit;
@@ -149,6 +148,10 @@ namespace SuperNewRoles.MapOptions
 
         public static CustomOption.CustomOption MapRemodelingOption;
         public static CustomOption.CustomOption AirShipAdditionalVents;
+        public static CustomOption.CustomOption PolusAdditionalVents;
+        public static CustomOption.CustomOption MiraAdditionalVents;
+
+        public static CustomOption.CustomOption VentAnimation;
 
         public static void LoadOption()
         {
@@ -187,10 +190,13 @@ namespace SuperNewRoles.MapOptions
 
             AddVitalsMira = CustomOption.CustomOption.Create(472, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MapOptionSetting);
 
-            VentAnimation = CustomOption.CustomOption.Create(529, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
-            MapRemodelingOption = CustomOption.CustomOption.Create(473, false, CustomOptionType.Generic, "MapRemodelingOptionSetting", false, MapOptionSetting);
-            AirShipAdditionalVents = CustomOption.CustomOption.Create(474, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, MapRemodelingOption);
 
+            MapRemodelingOption = CustomOption.CustomOption.Create(556, false, CustomOptionType.Generic, "MapRemodelingOptionSetting", false, MapOptionSetting);
+            AirShipAdditionalVents = CustomOption.CustomOption.Create(557, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, MapRemodelingOption);
+            PolusAdditionalVents = CustomOption.CustomOption.Create(558, false, CustomOptionType.Generic, "PolusAdditionalVents", false, MapRemodelingOption);
+            MiraAdditionalVents = CustomOption.CustomOption.Create(559, false, CustomOptionType.Generic, "MiraAdditionalVents", false, MapRemodelingOption);
+
+            VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
         }
     }
 }

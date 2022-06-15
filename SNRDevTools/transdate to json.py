@@ -8,7 +8,7 @@ with open("transdate.txt",mode="r",encoding="utf-8") as f:
 for date in readdate[1:]:
     writedate=writedate+'\n "'+date.split(",")[0]+'" : {\n'
     for date2 in range(len(date.split(",")[1:])):
-       writedate=writedate+"        \""+readdate[0].split(",")[(date2+1)]+'" : "'+date.split(",")[(date2+1)].encode('unicode-escape').decode('utf-8')+'" ,\n'
+        writedate=writedate+"        \""+readdate[0].split(",")[(date2+1)]+'" : "'+date.split(",")[(date2+1)].encode('unicode-escape').decode('utf-8')+'" ,\n'
     writedate=writedate[:-3]+"\n        } ,"
 writedate=writedate[:-1]+"\n\n}"
 with open("translatedate.json",mode="w",encoding="utf-8") as f:

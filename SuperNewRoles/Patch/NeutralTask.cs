@@ -7,4 +7,3 @@ using UnityEngine;
 namespace SuperNewRoles.Patch
 {
 }
-

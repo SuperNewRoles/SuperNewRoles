@@ -19,10 +19,10 @@ namespace SuperNewRoles.Patch
             }
 
             if (Clergyman.IsLightOutVision() && isImpostor) {
-                return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision; 
+                return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
             }
             if (isImpostor) {
-                return shipStatus.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod; 
+                return shipStatus.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
             }
 
             SwitchSystem switchSystem = shipStatus.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
@@ -38,7 +38,6 @@ namespace SuperNewRoles.Patch
                     lerpValue = 1f + (1f - lerpValue);
                 }
             }
-
             return Mathf.Lerp(shipStatus.MinLightRadius, shipStatus.MaxLightRadius, lerpValue) * PlayerControl.GameOptions.CrewLightMod;
         }
         public static bool Prefix(ref float __result, ShipStatus __instance, [HarmonyArgument(0)] GameData.PlayerInfo player)
