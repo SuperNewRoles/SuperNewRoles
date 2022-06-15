@@ -2166,10 +2166,17 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> PositionSwapperPlayer;
             public static Color32 color = ImpostorRed;
+            public static int SwapCount;
+            public static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CountChangeButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 PositionSwapperPlayer = new List<PlayerControl>();
-                //くりあぁあんどりろぉどぉ
             }
         }
         //新ロールクラス
