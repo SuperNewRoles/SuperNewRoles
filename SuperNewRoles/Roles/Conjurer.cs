@@ -139,12 +139,6 @@ namespace SuperNewRoles.Roles
         public static int JackInTheBoxLimit = 3;
         public static bool boxesConvertedToVents = false;
         public static Sprite[] boxAnimationSprites = new Sprite[18];
-                public static Sprite AnimationgetSprite(string id)
-        {
-            //if (Datas.ContainsKey(id)) return Datas[id];
-            Datas[id] = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha." + id + ".png", 115f);
-            return Datas[id];
-        }
         public static Sprite getBoxAnimationSprite(int index)
         {
             if (boxAnimationSprites == null || boxAnimationSprites.Length == 0) return null;
