@@ -17,8 +17,8 @@ class ReturnClass:
         with open(BasePath+Path, mode="r", encoding="utf-8") as r:
             Template = r.read()
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
-                Template = Template.replace(OldCode, NewCode)
-                print("ファイルを書き込みました:"+Template)
+                #Template = Template.replace(OldCode, NewCode)
+                #print("ファイルを書き込みました:"+Template)
                 print("パス:"+BasePath+Path)
                 w.write(Template)
     #入力をゲット+戻り値として返す
@@ -64,9 +64,9 @@ class ReturnClass:
     #ハッシュをRGBに変換
     def HashToRGB(self):
         Hash = MainClass.GetInput("ColorHash")
-        RGB = int(Hash[1:3],16), int(Hash[3:5],16), int(Hash[5:7],16)
-        print(RGB)
-        return RGB
+        RGB = str(int(Hash[1:3],16))+", "+ str(int(Hash[3:5],16))+", "+ str(int(Hash[5:7],16))
+        print(RGB.strip())
+        return RGB.strip()
     #チーム取得
     def GetTeam(self):
         if (MainClass.GetBool("Impo")):
