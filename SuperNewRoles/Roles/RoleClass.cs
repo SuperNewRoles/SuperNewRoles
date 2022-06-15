@@ -40,6 +40,10 @@ namespace SuperNewRoles.Roles
             Mode.ModeHandler.ClearAndReload();
             MapRemodeling.AdditionalVents.ClearAndReload();
             JackInTheBox.clearJackInTheBoxes();
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
+            {
+                CustomAnimation.Animation.Animations = new List<CustomAnimation.Animation>();
+            };
             SoothSayer.ClearAndReload();
             Jester.ClearAndReload();
             Lighter.ClearAndReload();

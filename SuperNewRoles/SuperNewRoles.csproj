@@ -20,7 +20,7 @@
         <EmbeddedResource Include="Resources\*.png" />
         <EmbeddedResource Include="Resources\Agartha\*.png" />
         <EmbeddedResource Include="Resources\*.json" />
-        <EmbeddedResource Include="Resources\ConjurerAnimation\*.png" />
+        <EmbeddedResource Include="Resources\Animation\*.png" />
     </ItemGroup>
 
     <ItemGroup>

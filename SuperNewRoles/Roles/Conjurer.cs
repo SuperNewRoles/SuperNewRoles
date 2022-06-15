@@ -145,7 +145,19 @@ namespace SuperNewRoles.Roles
             if (boxAnimationSprites == null || boxAnimationSprites.Length == 0) return null;
             index = Mathf.Clamp(index, 0, boxAnimationSprites.Length - 1);
             if (boxAnimationSprites[index] == null)
-                boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.TricksterAnimation.Conjurer_Marker_00{(index + 1):00}.png", 175f);
+            {
+                Transform ConjurerMarker = GameObject.Instantiate(Template, MiraShip);
+                //ConjurerMarker.position = new Vector3(21.35f, 15.47f, 0.1f);
+                GameObject.Destroy(ConjurerMarker.GetComponent<PolygonCollider2D>());
+                ConjurerMarker.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Animation.Conjurer_Marker_0001");
+                ConjurerMarker.gameObject.AddComponent<PolygonCollider2D>();
+                ConjurerMarker.name = "ConjurerMarker";
+                CustomAnimation.Animation ConjurerMarker_Animation = new CustomAnimation.Animation();
+                ConjurerMarker_Animation.Start(8, ConjurerMarker);
+                ConjurerMarker_Animation.Start(10, ConjurerMarker);
+                ConjurerMarker_Animation.Sprites = CustomAnimation.LoadSprites.GetSpritesAgartha("SuperNewRoles.Resources.Animation.Conjurer_Marker", 8);
+                ConjurerMarker.localScale = new Vector3(1.75f, 1.75f, 1.75f);
+            }
             return boxAnimationSprites[index];
         }
 
