@@ -1473,12 +1473,12 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     RoleClass.PositionSwapper.SwapCount++;
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.MakeVent);
+                    //MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.MakeVent);
                     if (!PlayerControl.LocalPlayer.CanMove) return;
-                    RoleClass.Clergyman.ButtonTimer = DateTime.Now;
+                    RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
                     PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
-                    Teleporter.TeleportStart();
-                    Teleporter.ResetCoolDown();
+                    PositionSwapper.SwapStart();
+                    PositionSwapper.ResetCoolDown();
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper); },
                 () =>
@@ -1493,8 +1493,8 @@ namespace SuperNewRoles.Buttons
                 KeyCode.F,
                 49
             );
-            VentMakerButton.buttonText = ModTranslation.getString("VentMakerButtonName");
-            VentMakerButton.showButtonText = true;
+            PositionSwapperButton.buttonText = ModTranslation.getString("PositionSwapperButtonName");
+            PositionSwapperButton.showButtonText = true;
 
             setCustomButtonCooldowns();
         }
