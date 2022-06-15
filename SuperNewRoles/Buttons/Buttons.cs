@@ -1557,6 +1557,9 @@ namespace SuperNewRoles.Buttons
 
                    RoleClass.Conjurer.FirstAdd = true;
                    //1回目カウントをtrueにする
+
+                   Conjurer.AllCoolReset();
+                   //全ボタンのクールリセット
                },
                () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && !Conjurer.IsFirstAdded(); },
                () =>
@@ -1600,6 +1603,9 @@ namespace SuperNewRoles.Buttons
 
                    RoleClass.Conjurer.SecondAdd = true;
                    //2回目カウントをtrueにする
+
+                   Conjurer.AllCoolReset();
+                   //全ボタンのクールリセット
                },
                () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && Conjurer.IsFirstAdded() && !Conjurer.IsSecondAdded(); },
                () =>
@@ -1643,6 +1649,9 @@ namespace SuperNewRoles.Buttons
                    RoleClass.Conjurer.ThirdAdd = true;
                    //3回目カウントをtrueにする
 
+                   Conjurer.AllCoolReset();
+                   //全ボタンのクールリセット
+
                },
                () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && Conjurer.IsFirstAdded() && Conjurer.IsSecondAdded() && !Conjurer.IsThirdAdded(); },
                () =>
@@ -1671,7 +1680,11 @@ namespace SuperNewRoles.Buttons
                    {
                        //ニセレに任せた
 
-                       Conjurer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+                       Conjurer.ShowFlash(new Color(139f / 139f, 187f / 187f, 255f / 255f));
+                       //発光(色)
+
+                       Conjurer.AllCoolReset();
+                       //全ボタンのクールリセット
 
                        Conjurer.AllClear();
                        //全部falseに
