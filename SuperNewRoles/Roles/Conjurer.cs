@@ -139,6 +139,12 @@ namespace SuperNewRoles.Roles
         public static int JackInTheBoxLimit = 3;
         public static bool boxesConvertedToVents = false;
         public static Sprite[] boxAnimationSprites = new Sprite[18];
+                public static Sprite AnimationgetSprite(string id)
+        {
+            //if (Datas.ContainsKey(id)) return Datas[id];
+            Datas[id] = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha." + id + ".png", 115f);
+            return Datas[id];
+        }
         public static Sprite getBoxAnimationSprite(int index)
         {
             if (boxAnimationSprites == null || boxAnimationSprites.Length == 0) return null;
@@ -151,7 +157,7 @@ namespace SuperNewRoles.Roles
                     Transform ConjurerMarker = GameObject.Instantiate(Template, MiraShip);
                     //ConjurerMarker.position = new Vector3(21.35f, 15.47f, 0.1f);
                     GameObject.Destroy(ConjurerMarker.GetComponent<PolygonCollider2D>());
-                    ConjurerMarker.GetComponent<SpriteRenderer>().sprite = ImageManager.AgarthagetSprite("Animation.Conjurer_Marker_0001");
+                    ConjurerMarker.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Animation.Conjurer_Marker",115f);
                     ConjurerMarker.gameObject.AddComponent<PolygonCollider2D>();
                     ConjurerMarker.name = "ConjurerMarker";
                     CustomAnimation.Animation ConjurerMarker_Animation = new CustomAnimation.Animation();
