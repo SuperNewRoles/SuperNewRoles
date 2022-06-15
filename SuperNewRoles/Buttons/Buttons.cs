@@ -1680,14 +1680,17 @@ namespace SuperNewRoles.Buttons
                    {
                        //ニセレに任せた
 
-                       Conjurer.ShowFlash(new Color(139f / 139f, 187f / 187f, 255f / 255f));
+                       Conjurer.ShowFlash(new Color(139f / 139f, 187f / 187f, 205f / 205f));
                        //発光(色)
 
                        Conjurer.AllCoolReset();
                        //全ボタンのクールリセット
 
                        Conjurer.AllClear();
-                       //全部falseに
+                       //カウントを全部falseに
+
+                       JackInTheBox.clearJackInTheBoxes();
+                       //全部Marker消す
 
                    },
                    () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && Conjurer.IsThirdAdded(); },

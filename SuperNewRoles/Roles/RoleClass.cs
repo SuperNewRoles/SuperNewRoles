@@ -50,6 +50,7 @@ namespace SuperNewRoles.Roles
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
             MapRemodeling.AdditionalVents.ClearAndReload();
+            JackInTheBox.clearJackInTheBoxes();
             SoothSayer.ClearAndReload();
             Jester.ClearAndReload();
             Lighter.ClearAndReload();
