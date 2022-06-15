@@ -1671,6 +1671,7 @@ namespace SuperNewRoles.Buttons
                    {
                        //ニセレに任せた
 
+                       Conjurer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
 
                        Conjurer.AllClear();
                        //全部falseに
@@ -1683,9 +1684,9 @@ namespace SuperNewRoles.Buttons
                    },
                     () =>
                      {
-                        ConjurerStartButton.MaxTimer = 0f;
-                        ConjurerStartButton.Timer = 0f;
-                        Conjurer.AllCoolReset();
+                         ConjurerStartButton.MaxTimer = 0f;
+                         ConjurerStartButton.Timer = 0f;
+                         Conjurer.AllCoolReset();
                      },
                    RoleClass.Conjurer.getStartButtonSprite(),
                    new Vector3(0f, 1f, 0f),
