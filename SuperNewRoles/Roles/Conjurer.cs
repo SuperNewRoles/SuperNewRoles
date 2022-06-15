@@ -15,6 +15,19 @@ namespace SuperNewRoles.Roles
 {
     public static class Conjurer
     {
+        public static void AllCoolReset()
+        {
+            HudManagerStartPatch.ConjurerFirstAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
+            HudManagerStartPatch.ConjurerFirstAddButton.Timer = RoleClass.Conjurer.CoolTime;
+
+            HudManagerStartPatch.ConjurerSecondAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
+            HudManagerStartPatch.ConjurerSecondAddButton.Timer = RoleClass.Conjurer.CoolTime;
+
+            HudManagerStartPatch.ConjurerThirdAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
+            HudManagerStartPatch.ConjurerThirdAddButton.Timer = RoleClass.Conjurer.CoolTime;
+        }
+        //Buttonのクールリセット
+
         public static void FirstAddAdd()
         {
             RoleClass.Conjurer.FirstAdd = true;
