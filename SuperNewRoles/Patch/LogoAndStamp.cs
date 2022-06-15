@@ -187,7 +187,7 @@ namespace SuperNewRoles.Patches
                 {
                     HttpClient http = new HttpClient();
                     http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
-                    var response = await http.GetAsync(new Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/ViewBooster/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
+                    var response = await http.GetAsync(new Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
                     if (response.StatusCode != HttpStatusCode.OK) return HttpStatusCode.NotFound;
                     Downloaded = true;
                     string json = await response.Content.ReadAsStringAsync();
