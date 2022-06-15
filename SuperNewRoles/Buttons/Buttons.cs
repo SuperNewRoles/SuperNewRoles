@@ -1473,26 +1473,21 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     RoleClass.PositionSwapper.SwapCount++;
-                    RoleClass.VentMaker.VentCount++;
                     MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.MakeVent);
-                    writer.Write(CachedPlayer.LocalPlayer.transform.position.x);
-                    writer.Write(CachedPlayer.LocalPlayer.transform.position.y);
-                    writer.Write(CachedPlayer.LocalPlayer.transform.position.z);
-                    writer.EndRPC();
-                    CustomRPC.RPCProcedure.MakeVent(CachedPlayer.LocalPlayer.transform.position.x, CachedPlayer.LocalPlayer.transform.position.y, CachedPlayer.LocalPlayer.transform.position.z);
-                    GameObject Vent = GameObject.Find("VentMakerVent" + MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max().ToString());
-
-                    RoleClass.VentMaker.Vent = Vent.GetComponent<Vent>();
-                    if (RoleClass.VentMaker.VentCount == 2) RoleClass.VentMaker.IsMakeVent = false;
+                    if (!PlayerControl.LocalPlayer.CanMove) return;
+                    RoleClass.Clergyman.ButtonTimer = DateTime.Now;
+                    PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    Teleporter.TeleportStart();
+                    Teleporter.ResetCoolDown();
                 },
                 () => { return RoleClass.VentMaker.IsMakeVent && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.VentMaker); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
                 },
-                () => { },
-                RoleClass.VentMaker.getButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                () => { PositionSwapper.EndMeeting(); },
+                RoleClass.PositionSwapper.getButtonSprite(),
+                new Vector3(-1.8f-0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,

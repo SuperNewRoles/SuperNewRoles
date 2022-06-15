@@ -2167,6 +2167,9 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> PositionSwapperPlayer;
             public static Color32 color = ImpostorRed;
             public static int SwapCount;
+            public static float CoolTime;
+            public static float DurationTime;
+            public static DateTime ButtonTimer;
             public static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
@@ -2177,6 +2180,8 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 PositionSwapperPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.PositionSwapperCoolTime.getFloat();
+                DurationTime = CustomOptions.PositionSwapperDurationTime.getFloat();
             }
         }
         //新ロールクラス

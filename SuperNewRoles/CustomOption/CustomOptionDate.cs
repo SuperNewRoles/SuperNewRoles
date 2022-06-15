@@ -521,6 +521,9 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption PositionSwapperOption;
         public static CustomOption PositionSwapperPlayerCount;
+        public static CustomOption PositionSwapperSwapCount;
+        public static CustomOption PositionSwapperCoolTime;
+        public static CustomOption PositionSwapperDurationTime;
         //CustomOption
 
         public static CustomRoleOption JackalSeerOption;
@@ -1202,7 +1205,9 @@ namespace SuperNewRoles.CustomOption
 
             PositionSwapperOption = new CustomRoleOption(563, false, CustomOptionType.Impostor, "PositionSwapperName", RoleClass.PositionSwapper.color, 1);
             PositionSwapperPlayerCount = CustomOption.Create(564, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PositionSwapperOption);
-            //表示設定
+            PositionSwapperSwapCount = CustomOption.Create(419, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCountName", 1f, 0f, 99f, 1f, PositionSwapperOption);
+            PositionSwapperCoolTime = CustomOption.Create(419, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCountName", 2.5f, 2.5f, 90f, 2.5f, PositionSwapperOption);
+            PositionSwapperDurationTime = CustomOption.Create(419, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCountName", 2.5f, 2.5f, 90f, 2.5f, PositionSwapperOption);
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
             QuarreledTeamCount = CustomOption.Create(433, true, CustomOptionType.Neutral, "QuarreledTeamCountSetting", QuarreledPlayers[0], QuarreledPlayers[1], QuarreledPlayers[2], QuarreledPlayers[3], QuarreledOption);
