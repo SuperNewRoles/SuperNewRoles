@@ -21,7 +21,7 @@ namespace SuperNewRoles.Mode.LevelUp
         public static CustomOption.CustomOption LevelUpMurder;
         public static void Load()
         {
-            LevelUpMurder = CustomOption.CustomOption.Create(426, false, CustomOptionType.Generic, ModTranslation.getString("LvUpModeOption"), 25, 5, 100, 5, ModeHandler.ModeSetting);
+            LevelUpMurder = CustomOption.CustomOption.Create(426, false, CustomOptionType.Generic, "レベルアップモード:1秒あたりのキル回数", 25, 5,100,5, ModeHandler.ModeSetting);
         }
         public static void FixedUpdate()
         {
@@ -31,7 +31,7 @@ namespace SuperNewRoles.Mode.LevelUp
             {
                 Count++;
                 UpdateTime = 1f;
-                foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                foreach(PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (!player.Data.Disconnected && player.IsPlayer())
                     {

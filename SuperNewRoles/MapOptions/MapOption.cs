@@ -137,7 +137,6 @@ namespace SuperNewRoles.MapOptions
         public static CustomOption.CustomOption CanUseVitalTime;
 
         public static CustomOption.CustomOption AddVitalsMira;
-        public static CustomOption.CustomOption VentAnimation;
 
         public static CustomOption.CustomOption ReactorDurationOption;
         public static CustomOption.CustomOption PolusReactorTimeLimit;
@@ -166,8 +165,7 @@ namespace SuperNewRoles.MapOptions
             RandomMapPolus = CustomOption.CustomOption.Create(436, true, CustomOptionType.Generic, "RMPolusSetting", true, RandomMapOption);
             RandomMapAirship = CustomOption.CustomOption.Create(437, true, CustomOptionType.Generic, "RMAirshipSetting", true, RandomMapOption);
             RandomMapSubmerged = CustomOption.CustomOption.Create(438, true, CustomOptionType.Generic, "RMSubmergedSetting", true, RandomMapOption);
-            // RM??��?��??��?��RandomMap??��?��̗�??��?��ł�()
-            // 
+            //RM??��?��??��?��RandomMap??��?��̗�??��?��ł�()
 
             RestrictDevicesOption = CustomOption.CustomOption.Create(513, false, CustomOptionType.Generic, "RestrictDevicesSetting", true, MapOptionSetting);
             RestrictAdmin = CustomOption.CustomOption.Create(514, false, CustomOptionType.Generic, "RestrictAdminSetting", false, RestrictDevicesOption);
@@ -185,9 +183,9 @@ namespace SuperNewRoles.MapOptions
 
             AddVitalsMira = CustomOption.CustomOption.Create(520, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MapOptionSetting);
 
-            VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
             MapRemodelingOption = CustomOption.CustomOption.Create(521, false, CustomOptionType.Generic, "MapRemodelingOptionSetting", false, MapOptionSetting);
             AirShipAdditionalVents = CustomOption.CustomOption.Create(522, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, MapRemodelingOption);
+
         }
     }
 }
