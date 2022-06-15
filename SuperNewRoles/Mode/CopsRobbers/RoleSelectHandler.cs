@@ -49,7 +49,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     {
                         player.RpcSetRole(RoleTypes.Crewmate);
                     }
-                   // player.RpcSetName("");
+                    // player.RpcSetName("");
                 }
             }
             main.ChangeCosmetics();

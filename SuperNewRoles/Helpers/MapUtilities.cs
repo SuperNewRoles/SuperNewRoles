@@ -2,8 +2,8 @@
 using HarmonyLib;
 using Il2CppSystem;
 
-namespace SuperNewRoles {
-
+namespace SuperNewRoles
+{
     public static class MapUtilities
     {
         public static ShipStatus CachedShipStatus = ShipStatus.Instance;

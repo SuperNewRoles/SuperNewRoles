@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Collections;
 using UnhollowerBaseLib;
 using UnityEngine;
-using UnityEngine.Events;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
@@ -30,8 +28,8 @@ namespace SuperNewRoles
             get
             {
                 return !(MapBehaviour.Instance && MapBehaviour.Instance.IsOpen) &&
-                      !MeetingHud.Instance &&
-                      !ExileController.Instance;
+                        !MeetingHud.Instance &&
+                        !ExileController.Instance;
             }
         }
         public static void SetKillTimerUnchecked(this PlayerControl player, float time, float max = float.NegativeInfinity)
@@ -58,13 +56,13 @@ namespace SuperNewRoles
         {
             foreach (var data in dec)
             {
-                if(data.Value == Value)
+                if (data.Value == Value)
                 {
                     return data.Key;
                 }
             }
             return null;
-        }// parent’¼‰º‚ÌŽqƒIƒuƒWƒFƒNƒg‚ðforeachƒ‹[ƒv‚ÅŽæ“¾‚·‚é
+        }// parentï¿½ï¿½ï¿½ï¿½ï¿½ÌŽqï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½foreachï¿½ï¿½ï¿½[ï¿½vï¿½ÅŽæ“¾ï¿½ï¿½ï¿½ï¿½
         public static GameObject[] GetChildren(this GameObject ParentObject)
         {
             GameObject[] ChildObject = new GameObject[ParentObject.transform.childCount];
@@ -75,9 +73,9 @@ namespace SuperNewRoles
             }
             return ChildObject;
         }
-        public static void DeleteObject(this Transform[] trans,string notdelete)
+        public static void DeleteObject(this Transform[] trans, string notdelete)
         {
-            foreach(Transform tran in trans)
+            foreach (Transform tran in trans)
             {
                 if (tran.name != notdelete)
                 {
@@ -107,7 +105,7 @@ namespace SuperNewRoles
                 return ps;
             }
         }
-        public static void SetActiveAllObject(this GameObject[] trans, string notdelete,bool IsActive)
+        public static void SetActiveAllObject(this GameObject[] trans, string notdelete, bool IsActive)
         {
             foreach (GameObject tran in trans)
             {
@@ -236,7 +234,6 @@ namespace SuperNewRoles
                         }
                     }
 
-
                     if (IsSend)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
@@ -355,7 +352,8 @@ namespace SuperNewRoles
                     writer.Write(showAnimation ? byte.MaxValue : 0);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
-                } else
+                }
+                else
                 {
                     new LateTask(() =>
                     {
@@ -365,7 +363,7 @@ namespace SuperNewRoles
                         writer.Write(showAnimation ? byte.MaxValue : 0);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
-                    },tien);
+                    }, tien);
                 }
             }
             return murder;
@@ -405,7 +403,7 @@ namespace SuperNewRoles
             else if (source.isDead() || source.isRole(RoleId.God)) return false;
             else if (source.PlayerId == target.PlayerId) return false; // Player sees his own name
             else if (source.isImpostor() && target.isImpostor()) return false;
-            else if ((target.isRole(RoleId.NiceScientist) || target.isRole(RoleId.EvilScientist))  && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[target.PlayerId]) return true;
+            else if ((target.isRole(RoleId.NiceScientist) || target.isRole(RoleId.EvilScientist)) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[target.PlayerId]) return true;
             return false;
         }
 
@@ -523,7 +521,7 @@ namespace SuperNewRoles
 
         public static bool IsCheckListPlayerControl(this List<PlayerControl> ListDate, PlayerControl CheckPlayer)
         {
-            foreach(PlayerControl Player in ListDate)
+            foreach (PlayerControl Player in ListDate)
             {
                 if (Player.PlayerId == CheckPlayer.PlayerId)
                 {
@@ -532,14 +530,14 @@ namespace SuperNewRoles
             }
             return false;
         }
-        public static bool IsPosition(Vector3 pos,Vector2 pos2)
+        public static bool IsPosition(Vector3 pos, Vector2 pos2)
         {
             if (pos.x == pos2.x && pos.y == pos2.y) return true;
             return false;
         }
-        public static bool IsPositionDistance(Vector2 pos, Vector2 pos2,float distance)
+        public static bool IsPositionDistance(Vector2 pos, Vector2 pos2, float distance)
         {
-            float dis = Vector2.Distance(pos,pos2);
+            float dis = Vector2.Distance(pos, pos2);
             if (dis <= distance) return true;
             return false;
         }

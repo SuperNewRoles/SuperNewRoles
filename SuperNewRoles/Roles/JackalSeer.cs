@@ -1,12 +1,8 @@
-using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patches;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -20,7 +16,7 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.JackalSeerSidekickButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
             HudManagerStartPatch.JackalSeerSidekickButton.Timer = RoleClass.JackalSeer.KillCoolDown;
         }
-       public static void EndMeeting()
+        public static void EndMeeting()
         {
             resetCoolDown();
         }

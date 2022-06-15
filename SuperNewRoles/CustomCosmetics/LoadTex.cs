@@ -9,7 +9,6 @@ namespace SuperNewRoles.CustomCosmetics
 {
     class LoadTex
     {
-
         internal delegate bool LoadImageDelegate(IntPtr tex, IntPtr data, bool markNonReadable);
         internal delegate Il2CppStructArray<byte> EncodeImageDelegate(IntPtr tex);
         internal static LoadImageDelegate LoadImage;
@@ -30,9 +29,7 @@ namespace SuperNewRoles.CustomCosmetics
                 Rect rect = new Rect(0f, 0f, texture.width, texture.height);
                 return Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 115f);
             }
-            catch { 
-
-            }
+            catch { }
             return null;
         }
     }

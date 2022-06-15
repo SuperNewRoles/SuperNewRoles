@@ -62,7 +62,6 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("ペット読み込み処理終了");
-
             }
         }*/
     }

@@ -97,7 +97,7 @@ namespace SuperNewRoles.Mode.RandomColor
         public static void EndGameForSabotage(ShipStatus __instance)
         {
             CustomEndGame(__instance, GameOverReason.ImpostorBySabotage, false);
-            return;  
+            return;
         }
     }
 }

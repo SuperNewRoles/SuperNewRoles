@@ -58,4 +58,6 @@ namespace SuperNewRoles.Mode.LevelUp
         }
     }
 }
+
+}
 */

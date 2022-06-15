@@ -29,7 +29,7 @@ namespace SuperNewRoles.Mode.Zombie
             ZombieCommingLightOption = CustomOption.CustomOption.Create(495, true, CustomOptionType.Generic, "ZombieCommingLightSetting", 1.5f, 0f, 5f, 0.25f, ZombieMode);
             ZombieCommingSpeedOption = CustomOption.CustomOption.Create(496, true, CustomOptionType.Generic, "ZombieCommingSpeedSetting", 1.5f, 0f, 5f, 0.25f, ZombieMode);
         }
-        static float GetSpeed(float speed) { 
+        static float GetSpeed(float speed) {
             if (speed <= 0)
             {
                 return 0.001f;
