@@ -701,3 +701,50 @@ Map Remodeling
 AirShipAdditionalVents
 PolusAdditionalVents
 MiraAdditionalVents
+Welcome to SuperNewRoles!
+You can play a variety of modes and different hard on any model with SuperNewRoles!
+Please visit the official wiki for a detailed description of the roles and modes!
+SuperNewRoles Official Wiki
+https://wikiwiki.jp/amas-snr(Japanese)
+You will get the information if you run the command.
+Send this command if you want to see a list of commands.
+[/commands] or [/cmd]
+Commands in the command list:\n() are also possible.\nIt is not case sensitive.
+/commands (/cmd) : \nDisplays a list of commands. (This command.)
+/version (/v) : \nShow SuperNewRoles Version.
+/discord (/dc) : \nShow the link to the Official Discord.
+/twitter (/tw) : \nShow the link to the Official Twitter.
+/GetInRoles (/gr) ： Displays all activate roles.(Send to all player when you're hosts.)
+/GetInRoles myplayer ([/gr mp] or [/gr myp]) : \nDisplays all activate roles only you.(Send only to yourself even if you are the host.)
+/AllRoles (/ar) : \nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\nTransmitted at 1.5 second intervals.
+/AllRoles [transmission interval] (/ar [transmission interval]): \nAdditional transmission intervals can be specified for /AllRoles.
+/AllRoles [send interval] myplayer (/ar [send interval] (mp or myp)): \nAdd to /AllRoles [send interval] and send only to yourself even if you are the host.
+Come here to visit the official SuperNewRoles Discord server.
+Come here to visit the official SuperNewRoles Twitter Accounts.
+Official Account : https://twitter.com/SuperNewRoles
+Development Information Account : https://twitter.com/SNRDevs
+Team
+Settings
+Activate Roles
+【Team: + GetTeamText(type)】
+Players
+DebugMode:ON
+Remaining until kills can be made
+Player
+Remaining until the Imposter arrives
+Level Up Mode: Kills Per Second
+Hunter
+Let's die with someone else.
+Werewolf
+Let's Eat Villager and Win!
+Madmate
+Help the werewolves and win!
+Villager
+Expel the werewolves in the debate and win!
+FortuneTeller
+Divination to discover the werewolf and win!
+Medium
+Search out the role of the dead and win!
+This is Meeting Time.
+This is Use to Ability Time.
+{0}'s Role is {1}!

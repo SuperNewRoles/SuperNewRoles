@@ -4,7 +4,6 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Roles
 {
@@ -20,7 +19,8 @@ namespace SuperNewRoles.Roles
                 Writer.Write(target.PlayerId);
                 Writer.EndRPC();
                 RPCProcedure.DemonCurse(source.PlayerId, target.PlayerId);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 SuperNewRolesPlugin.Logger.LogError(e);
             }
@@ -63,7 +63,8 @@ namespace SuperNewRoles.Roles
             }
             return new List<PlayerControl>();
         }
-        public static bool IsViewIcon(PlayerControl player) {
+        public static bool IsViewIcon(PlayerControl player)
+        {
             if (player == null) return false;
             foreach (var data in RoleClass.Demon.CurseDatas)
             {
@@ -78,7 +79,8 @@ namespace SuperNewRoles.Roles
             return false;
         }
 
-        public static bool IsButton() {
+        public static bool IsButton()
+        {
             return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Demon) && ModeHandler.isMode(ModeId.Default);
         }
 

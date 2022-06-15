@@ -30,7 +30,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
             BattleRoyalKillButton.Timer = PlayerControl.GameOptions.KillCooldown;
         }
 
-
         private static PlayerControl SheriffKillTarget;
 
         public static void Postfix(HudManager __instance)

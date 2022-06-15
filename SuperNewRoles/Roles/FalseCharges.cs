@@ -5,7 +5,6 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Roles
 {
@@ -30,7 +29,8 @@ namespace SuperNewRoles.Roles
                             if (AmongUsClient.Instance.AmHost)
                             {
                                 CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.FalseChargesWin, false);
-                            } else
+                            }
+                            else
                             {
                                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                                 writer.Write((byte)CustomGameOverReason.FalseChargesWin);

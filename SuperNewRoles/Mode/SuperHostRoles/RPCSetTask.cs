@@ -41,6 +41,5 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     messageWriter.EndMessage();
                     return false;
                 }*/
-
     }
 }

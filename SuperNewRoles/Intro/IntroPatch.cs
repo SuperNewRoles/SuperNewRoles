@@ -172,13 +172,15 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = FoxTeams;
                 }
-            } else
+            }
+            else
             {
                 var a = ModeHandler.TeamHandler(__instance);
                 if (a != new Il2CppSystem.Collections.Generic.List<PlayerControl>())
                 {
                     yourTeam = a;
-                } else
+                }
+                else
                 {
                     var temp = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     temp.Add(PlayerControl.LocalPlayer);
@@ -240,8 +242,6 @@ namespace SuperNewRoles.Patches
             //SetUpRoleTextPatch.Postfix(__instance);
         }
 
-
-
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
         class IntroCutsceneDestroyPatch
         {
@@ -279,7 +279,7 @@ namespace SuperNewRoles.Patches
             }
         }
 
-        [HarmonyPatch(typeof(IntroCutscene),nameof(IntroCutscene.ShowRole))]
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
         class SetUpRoleTextPatch
         {
             private static byte ToByteIntro(float f)

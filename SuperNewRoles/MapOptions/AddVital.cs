@@ -18,7 +18,7 @@ namespace SuperNewRoles.MapOptions
     {
         public static void Postfix()
         {
-            if (PlayerControl.GameOptions.MapId == 1 && MapOption.AddVitalsMira.getBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && MapOption.MapOptionSetting.getBool() )
+            if (PlayerControl.GameOptions.MapId == 1 && MapOption.AddVitalsMira.getBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && MapOption.MapOptionSetting.getBool())
             {
                 Transform Vital = GameObject.Instantiate(PolusObject.transform.FindChild("Office").FindChild("panel_vitals"), GameObject.Find("MiraShip(Clone)").transform);
                 Vital.transform.position = new Vector3(8.5969f, 14.6337f, 0.0142f);

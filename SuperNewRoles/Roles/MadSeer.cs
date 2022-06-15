@@ -1,9 +1,6 @@
-using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Roles
 {
@@ -16,15 +13,15 @@ namespace SuperNewRoles.Roles
             if (!p.isRole(RoleId.MadSeer)) return false;
             if (CheckedImpostor.Contains(p.PlayerId)) return true;
             /*
-            SuperNewRolesPlugin.Logger.LogInfo("インポスターチェックタスク量:"+RoleClass.MadSeer.ImpostorCheckTask);
-            SuperNewRolesPlugin.Logger.LogInfo("終了タスク量:"+TaskCount.TaskDate(p.Data).Item1);*/
-            SuperNewRolesPlugin.Logger.LogInfo("有効か:" + (RoleClass.MadSeer.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1));
+            SuperNewRolesPlugin.Logger.LogInfo("[MadSeer]Impostor Check Task Count:"+RoleClass.MadSeer.ImpostorCheckTask);
+            SuperNewRolesPlugin.Logger.LogInfo("[MadSeer]Finish Task Count:"+TaskCount.TaskDate(p.Data).Item1);*/
+            SuperNewRolesPlugin.Logger.LogInfo("[MadSeer]Is Validity?:" + (RoleClass.MadSeer.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1));
             if (RoleClass.MadSeer.ImpostorCheckTask <= TaskCount.TaskDate(p.Data).Item1)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("有効を返しました");
+                SuperNewRolesPlugin.Logger.LogInfo("[MadSeer]Returned valid.");
                 return true;
             }
-            // SuperNewRolesPlugin.Logger.LogInfo("一番下まで通過");
+            // SuperNewRolesPlugin.Logger.LogInfo("[MadSeer]Passed to the Bottom.");
             return false;
         }
     }
