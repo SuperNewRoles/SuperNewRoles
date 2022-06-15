@@ -700,6 +700,8 @@ AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する
 VentAnimation,No Vent Animation,ベントアニメーション無効化
 MapRemodelingOptionSetting,Map Remodeling,マップ改造
 AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する
+PolusAdditionalVents,PolusAdditionalVents,ポーラスにベントを追加する
+MiraAdditionalVents,MiraAdditionalVents,ミラにベントを追加する
 WelcomeMessage1,Welcome to SuperNewRoles!,SuperNewRolesへようこそ！
 WelcomeMessage2,You can play a variety of modes and different hard on any model with SuperNewRoles!,SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！
 WelcomeMessage3,Please visit the official wiki for a detailed description of the roles and modes!,役職やモードの詳しい説明については公式wikiを御覧ください！

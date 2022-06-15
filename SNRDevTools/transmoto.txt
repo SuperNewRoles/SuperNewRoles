@@ -699,6 +699,8 @@ AddVitalsMiraSetting
 VentAnimation
 MapRemodelingOptionSetting
 AirShipAdditionalVents
+PolusAdditionalVents
+MiraAdditionalVents
 WelcomeMessage1
 WelcomeMessage2
 WelcomeMessage3
