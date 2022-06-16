@@ -13,33 +13,36 @@ namespace SuperNewRoles.Roles
             RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
         }
         public static void EndMeeting(){
-            HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Teleporter.CoolTime;
-            RoleClass.Teleporter.ButtonTimer = DateTime.Now;
+            ResetCoolDown();
         }
         public static void SwapStart(){
             List<PlayerControl> AlivePlayer = new List<PlayerControl>();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive() && p.CanMove)
+                if (p.isAlive() && p.CanMove && !p.isRole(CustomRPC.RoleId.PositionSwapper))
                 {
                     AlivePlayer.Add(p);
                 }
             }
             var RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
             var Player = ModHelpers.playerById(RandomPlayer.PlayerId);
-            Vector3 PlayerPosition = Player.transform.position;
+            var PlayerPosition = Player.transform.position;
             var RandomPlayer2 = CachedPlayer.LocalPlayer;
             var Player2 = ModHelpers.playerById(RandomPlayer2.PlayerId);
-            Vector3 PlayerPosition2 = Player2.transform.position;
+            var PlayerPosition2 = Player2.transform.position;
 
-            Player.transform.position = PlayerPosition2;
-            CachedPlayer.LocalPlayer.transform.position = PlayerPosition;
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.PositionSwapper)) {
+                CachedPlayer.LocalPlayer.transform.position = PlayerPosition;
+            }
+            else {
+                CachedPlayer.LocalPlayer.transform.position = PlayerPosition2;
+            }
             /*if (SubmergedCompatibility.isSubmerged())
             {
                 SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(Player));
             }*/
-            CustomRPC.RPCProcedure.PositionSwapperTP(Player.PlayerId);
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.PositionSwap, Hazel.SendOption.Reliable, -1);
+            CustomRPC.RPCProcedure.PositionSwapperTP();
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
         }
     }
 }

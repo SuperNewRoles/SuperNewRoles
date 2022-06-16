@@ -13,6 +13,7 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
+using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Buttons
 {
@@ -1472,9 +1473,9 @@ namespace SuperNewRoles.Buttons
             PositionSwapperButton = new CustomButton(
                 () =>
                 {
-                    RoleClass.PositionSwapper.SwapCount++;
-                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.MakeVent);
                     if (!PlayerControl.LocalPlayer.CanMove) return;
+                    if (RoleClass.PositionSwapper.SwapCount <= CustomOptions.PositionSwapperSwapCount.getFloat())
+                    RoleClass.PositionSwapper.SwapCount++;
                     RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
                     PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     PositionSwapper.SwapStart();

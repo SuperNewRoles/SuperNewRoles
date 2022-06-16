@@ -2178,6 +2178,7 @@ namespace SuperNewRoles.Roles
             }
             public static void ClearAndReload()
             {
+                SwapCount = 0;
                 PositionSwapperPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.PositionSwapperCoolTime.getFloat();
             }

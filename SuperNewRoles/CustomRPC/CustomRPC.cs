@@ -870,7 +870,7 @@ namespace SuperNewRoles.CustomRPC
             VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
             VentMakerVent.gameObject.SetActive(true);
         }
-        public static void PositionSwapperTP(byte playerid)
+        public static void PositionSwapperTP()
         {
             var rand = new System.Random();
             if (rand.Next(1, 20) == 1){
