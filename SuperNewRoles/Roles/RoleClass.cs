@@ -145,6 +145,7 @@ namespace SuperNewRoles.Roles
             GhostMechanic.ClearAndReload();
             EvilHacker.ClearAndReload();
             HauntedWolf.ClearAndReload();
+            Tuna.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2199,6 +2200,23 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 HauntedWolfPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class Tuna
+        {
+            public static List<PlayerControl> TunaPlayer;
+            public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
+            public static Vector3 Position;
+            public static float Timer;
+            public static float StoppingTime;
+            public static bool IsUseVent;
+            public static void ClearAndReload()
+            {
+                TunaPlayer = new List<PlayerControl>();
+                Position = new Vector3(9999f, 9999f, 9999f);
+                StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.getFloat();
+                Timer = StoppingTime;
+                IsUseVent = CustomOptions.TunaIsUseVent.getBool();
             }
         }
         //新ロールクラス

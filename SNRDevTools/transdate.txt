@@ -699,3 +699,6 @@ VentMakerButtonName,Make Vent,設置
 AddVitalsMiraSetting,Adding vitals to Mira,Miraにバイタルを追加する
 MapRemodelingOptionSetting,Map Remodeling,マップ改造
 AirShipAdditionalVents,AirShipAdditionalVents,エアーシップにベントを追加する
+TunaName,Tuna,マグロ
+TunaTitle1,Always move!,常に動け！
+TunaStoppingTimeSetting,Stopping Time,止まれる時間

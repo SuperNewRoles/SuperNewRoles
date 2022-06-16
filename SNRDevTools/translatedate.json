@@ -2799,6 +2799,18 @@
  "AirShipAdditionalVents" : {
         "0" : "AirShipAdditionalVents" ,
         "11" : "\u30a8\u30a2\u30fc\u30b7\u30c3\u30d7\u306b\u30d9\u30f3\u30c8\u3092\u8ffd\u52a0\u3059\u308b"
+        } ,
+ "TunaName" : {
+        "0" : "Tuna" ,
+        "11" : "\u30de\u30b0\u30ed"
+        } ,
+ "TunaTitle1" : {
+        "0" : "Always move!" ,
+        "11" : "\u5e38\u306b\u52d5\u3051\uff01"
+        } ,
+ "TunaStoppingTimeSetting" : {
+        "0" : "Stopping Time" ,
+        "11" : "\u6b62\u307e\u308c\u308b\u6642\u9593"
         } 
 
 }

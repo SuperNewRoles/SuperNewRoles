@@ -698,3 +698,6 @@ VentMakerButtonName
 AddVitalsMiraSetting
 MapRemodelingOptionSetting
 AirShipAdditionalVents
+TunaName
+TunaTitle1
+TunaStoppingTimeSetting
