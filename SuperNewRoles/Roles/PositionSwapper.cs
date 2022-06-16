@@ -16,7 +16,17 @@ namespace SuperNewRoles.Roles
             RoleClass.Teleporter.ButtonTimer = DateTime.Now;
         }
         public static void SwapStart(){
-            //
+            List<PlayerControl> SwapPlayer = new List<PlayerControl>();
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            {
+                if (p.isAlive() && p.CanMove)
+                {
+                    SwapPlayer.Add(p);
+                }
+            }
+            var Player = ModHelpers.GetRandom<PlayerControl>(SwapPlayer);
+            CustomRPC.RPCProcedure.PositionSwapperTP(Player.PlayerId);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
         }
     }
 }

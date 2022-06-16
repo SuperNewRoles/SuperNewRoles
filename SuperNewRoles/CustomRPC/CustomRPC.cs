@@ -185,6 +185,7 @@ namespace SuperNewRoles.CustomRPC
         SetSpeedFreeze,
         BySamuraiKillRPC,
         MakeVent,
+        PositionSwap,
         UseAdminTime,
         UseCameraTime,
         UseVitalsTime,
@@ -868,6 +869,22 @@ namespace SuperNewRoles.CustomRPC
             MapUtilities.CachedShipStatus.AllVents = allVentsList.ToArray();
             VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
             VentMakerVent.gameObject.SetActive(true);
+        }
+        public static void PositionSwapperTP(byte playerid)
+        {
+            var p = ModHelpers.playerById(playerid);
+            CachedPlayer.LocalPlayer.transform.position = p.transform.position;
+            if (SubmergedCompatibility.isSubmerged())
+            {
+                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
+            }
+            var rand = new System.Random();
+            if (rand.Next(1, 20) == 1){
+                new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
+            }
+            else{
+                new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
+            }
         }
         public static void UseAdminTime(float time)
         {

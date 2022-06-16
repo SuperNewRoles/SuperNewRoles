@@ -1473,7 +1473,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     RoleClass.PositionSwapper.SwapCount++;
-                    //MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.MakeVent);
+                    MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.MakeVent);
                     if (!PlayerControl.LocalPlayer.CanMove) return;
                     RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
                     PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
