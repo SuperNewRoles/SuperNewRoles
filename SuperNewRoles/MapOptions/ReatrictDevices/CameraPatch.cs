@@ -100,7 +100,7 @@ namespace SuperNewRoles.Patch
                         if (cameraTimer > 0.1f)
                             UseCameraTime();
 
-                        if (MapOptions.MapOption.RestrictCamera.getBool())
+                        if (MapOptions.MapOption.RestrictCamera.getBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.RestrictCamera.getBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.MapOptionSetting.getBool())
                         {
                             if (TimeRemaining == null)
                             {
@@ -212,7 +212,7 @@ namespace SuperNewRoles.Patch
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.MapOption.RestrictCamera.getBool())
+                    if (MapOptions.MapOption.RestrictCamera.getBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.RestrictCamera.getBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.MapOptionSetting.getBool())
                     {
                         if (TimeRemaining == null)
                         {
