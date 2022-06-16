@@ -951,7 +951,9 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.EvilHackerPlayerCount.getFloat();
                 case (RoleId.HauntedWolf):
                     return CustomOption.CustomOptions.HauntedWolfPlayerCount.getFloat();
-                    //プレイヤーカウント
+                case (RoleId.Tuna):
+                    return CustomOption.CustomOptions.TunaPlayerCount.getFloat();
+                //プレイヤーカウント
             }
             return 1;
         }
@@ -1043,7 +1045,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-        //セットクラス
         }
     }
 }

@@ -518,6 +518,11 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SeerFriendsCheckJackalTask;
         public static CustomOption SeerFriendsIsUseVent;
         public static CustomOption SeerFriendsIsImpostorLight;
+
+        public static CustomRoleOption TunaOption;
+        public static CustomOption TunaPlayerCount;
+        public static CustomOption TunaStoppingTime;
+        public static CustomOption TunaIsUseVent;
         //CustomOption
 
         public static CustomRoleOption JackalSeerOption;
@@ -1196,6 +1201,11 @@ namespace SuperNewRoles.CustomOption
 
             HauntedWolfOption = new CustomRoleOption(530, true, CustomOptionType.Crewmate, "HauntedWolfName", RoleClass.HauntedWolf.color, 1);
             HauntedWolfPlayerCount = CustomOption.Create(531, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HauntedWolfOption);
+
+            TunaOption = new CustomRoleOption(552, false, CustomOptionType.Neutral, "TunaName",RoleClass.Tuna.color, 1);
+            TunaPlayerCount = CustomOption.Create(553, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TunaOption);
+            TunaStoppingTime = CustomOption.Create(554, false, CustomOptionType.Neutral, "TunaStoppingTimeSetting", 1f,1f,3f,1f, TunaOption);
+            TunaIsUseVent = CustomOption.Create(554, false, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TunaOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

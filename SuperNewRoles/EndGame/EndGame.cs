@@ -37,6 +37,7 @@ namespace SuperNewRoles.EndGame
         DemonWin,
         ArsonistWin,
         VultureWin,
+        TunaWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -230,6 +231,11 @@ namespace SuperNewRoles.EndGame
                     text = "VultureName";
                     textRenderer.color = RoleClass.Vulture.color;
                     __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Vulture.color);
+                    break;
+                case WinCondition.TunaWin:
+                    text = "TunaName";
+                    textRenderer.color = RoleClass.Tuna.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Tuna.color);
                     break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
@@ -538,6 +544,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Vulture.VulturePlayer);
             notWinners.AddRange(RoleClass.MadCleaner.MadCleanerPlayer);
             notWinners.AddRange(RoleClass.MayorFriends.MayorFriendsPlayer);
+            notWinners.AddRange(RoleClass.Tuna.TunaPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -805,6 +812,19 @@ namespace SuperNewRoles.EndGame
                     WinningPlayerData wpd = new WinningPlayerData(p.Data);
                     TempData.winners.Add(wpd);
                     AdditionalTempData.winCondition = WinCondition.FoxWin;
+                }
+            }
+            var Tunaalive = false;
+            foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
+            {
+                if (p.isAlive())
+                {
+                    Tunaalive = true;
+                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                    WinningPlayerData wpd = new WinningPlayerData(p.Data);
+                    TempData.winners.Add(wpd);
+                    AdditionalTempData.winCondition = WinCondition.TunaWin;
+
                 }
             }
 
