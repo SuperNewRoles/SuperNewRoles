@@ -590,7 +590,6 @@ namespace SuperNewRoles.EndGame
                 VultureWin = EndData == CustomGameOverReason.VultureWin;
             }
 
-
             if (JesterWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
@@ -650,7 +649,6 @@ namespace SuperNewRoles.EndGame
                     WinningPlayerData wpd = new WinningPlayerData(p.Data);
                     TempData.winners.Add(wpd);
                 }
-
                 AdditionalTempData.winCondition = WinCondition.JackalWin;
             }
             else if (EgoistWin)
@@ -814,7 +812,6 @@ namespace SuperNewRoles.EndGame
                     WinningPlayerData wpd = new WinningPlayerData(p.Data);
                     TempData.winners.Add(wpd);
                     AdditionalTempData.winCondition = WinCondition.FoxWin;
-
                 }
             }
             var Tunaalive = false;
@@ -1150,7 +1147,6 @@ namespace SuperNewRoles.EndGame
             return false;
         }
 
-
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
             if (statistics.TeamImpostorsAlive == 0 && statistics.TeamJackalAlive == 0)
@@ -1186,7 +1182,6 @@ namespace SuperNewRoles.EndGame
                             __instance.enabled = false;
                             CustomEndGame((GameOverReason)CustomGameOverReason.WorkpersonWin, false);
                             return true;
-
                         }
                     }
                 }
@@ -1249,7 +1244,6 @@ namespace SuperNewRoles.EndGame
                         }
                     }
                 }
-
                 TeamImpostorsAlive = numImpostorsAlive;
                 TotalAlive = numTotalAlive;
                 CrewAlive = numCrewAlive;

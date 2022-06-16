@@ -186,7 +186,6 @@ namespace SuperNewRoles
             {
                 SuperNewRolesPlugin.Logger.LogMessage("null reference in engineer oxygen fix");
             }
-
         }
 
         public static bool isSubmerged()

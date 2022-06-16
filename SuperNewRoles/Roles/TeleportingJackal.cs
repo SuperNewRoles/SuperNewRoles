@@ -1,12 +1,9 @@
-﻿using HarmonyLib;
-using Hazel;
+﻿using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patches;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -80,18 +77,12 @@ namespace SuperNewRoles.Roles
             }
             public static void Postfix(PlayerControl __instance)
             {
-                if (AmongUsClient.Instance.AmHost)
-                {
-
-                }
                 if (PlayerControl.LocalPlayer.isRole(RoleId.TeleportingJackal))
                 {
                     TeleportingJackalPlayerOutLineTarget();
                 }
             }
         }
-    
-       
         public static void ResetCoolDown()
         {
             HudManagerStartPatch.TeleporterButton.MaxTimer = RoleClass.TeleportingJackal.CoolTime;
@@ -109,7 +100,6 @@ namespace SuperNewRoles.Roles
             }
             var player = ModHelpers.GetRandom<PlayerControl>(aliveplayers);
             CustomRPC.RPCProcedure.TeleporterTP(player.PlayerId);
-
             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
             Writer.Write(player.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);

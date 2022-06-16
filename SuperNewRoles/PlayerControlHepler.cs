@@ -1,12 +1,9 @@
 ﻿using InnerNet;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
-using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using static SuperNewRoles.Patch.ShareGameVersion;
 
@@ -80,7 +77,7 @@ namespace SuperNewRoles
             {
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
-                
+
                 task.Text = CustomOption.CustomOptions.cs(roleInfo.color, $"{ModTranslation.getString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
                 if (player.IsLovers())
                 {

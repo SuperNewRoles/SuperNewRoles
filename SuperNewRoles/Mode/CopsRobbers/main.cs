@@ -183,7 +183,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
         static int LastCount;
         static float LastUpdate;
         public static List<byte> TeleportIDs = new List<byte>();
-        public static void Teleport(PlayerControl player,Vector2 position)
+        public static void Teleport(PlayerControl player, Vector2 position)
         {
             player.NetTransform.RpcSnapTo(position);
             return;
@@ -228,11 +228,10 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     {
                         PlayerControl.LocalPlayer.RpcSetName("<color=black><size=7500%>■</size></color>");
                     }*/
-
                     foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                     {
-                        if (ModHelpers.IsPositionDistance(p.transform.position, new Vector2(3, 6),0.5f) || 
-                            ModHelpers.IsPositionDistance(p.transform.position, new Vector2(-25, 40), 0.5f) || 
+                        if (ModHelpers.IsPositionDistance(p.transform.position, new Vector2(3, 6), 0.5f) ||
+                            ModHelpers.IsPositionDistance(p.transform.position, new Vector2(-25, 40), 0.5f) ||
                             ModHelpers.IsPositionDistance(p.transform.position, new Vector2(-1.4f, 2.3f), 0.5f)
                             )
                         {
@@ -248,7 +247,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 if (LastCount != players.Count)
                 {
                     LastCount = players.Count;
-                    string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>全プレイヤーのスポーンを待っています...\nロドー中:残り"+NotLoadedCount+"人</color></size>";
+                    string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>全プレイヤーのスポーンを待っています...\nロドー中:残り" + NotLoadedCount + "人</color></size>";
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetNamePrivate(name);
@@ -301,7 +300,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     //string name = "\n\n\n\n\n<size=300%><color=white>" + SuperNewRoles.Mode.ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>インポスターが来るまで残り5秒</size>";
                     //PlayerControl.LocalPlayer.RpcSetName(name);
                     LastUpdate = ImpostorMoveTime;
-                    string name = "\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>インポスターが来るまで残り" + ((int)(LastUpdate + 1)).ToString() + "秒</size>";
+                    string name = "\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>" + ModTranslation.getString("CopsImpostorCome") + ((int)(LastUpdate + 1)).ToString() + ModTranslation.getString("second") + "</size>";
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (!p.AmOwner)

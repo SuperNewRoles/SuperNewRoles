@@ -60,7 +60,6 @@ namespace SuperNewRoles.Patch
             {
                 pro.Value.text = "";
             }
-
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 player.nameText.text =  ModHelpers.hidePlayerName(PlayerControl.LocalPlayer, player) ? "" : player.CurrentOutfit.PlayerName;

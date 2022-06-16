@@ -90,7 +90,6 @@ namespace SuperNewRoles.Patch
             }
         }
 
-
         [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.OnDisable))]
         class MapCountOverlayOnDisablePatch
         {
@@ -103,10 +102,9 @@ namespace SuperNewRoles.Patch
         [HarmonyPatch(typeof(MapCountOverlay), nameof(MapCountOverlay.Update))]
         class MapCountOverlayUpdatePatch
         {
-
             static bool Prefix(MapCountOverlay __instance)
             {
-                if (!Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles) && MapOptions.MapOption.MapOptionSetting.getBool() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker))
+                if (MapOptions.MapOption.MapOptionSetting.getBool() && !Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles) || !PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker))
                 {
                     adminTimer += Time.deltaTime;
                     if (adminTimer > 0.1f)
@@ -216,7 +214,6 @@ namespace SuperNewRoles.Patch
                                         else if (component?.MyRend?.material != null)
                                         {
                                             Color color = component.MyRend.material.GetColor("_BodyColor");
-
                                             roomColors.Add(color);
                                         }
                                     }
@@ -254,19 +251,19 @@ namespace SuperNewRoles.Patch
             }
         }
         /*  public static bool IsBlocked(IUsable target, PlayerControl pc)
-          {
-              if (target == null) return false;
+            {
+                if (target == null) return false;
 
-              Console targetConsole = target.TryCast<Console>();
-              SystemConsole targetSysConsole = target.TryCast<SystemConsole>();
-              MapConsole targetMapConsole = target.TryCast<MapConsole>();
-              if ((targetConsole != null && IsBlocked(targetConsole, pc)) ||
-                  (targetSysConsole != null && IsBlocked(targetSysConsole, pc)) ||
-                  (targetMapConsole != null && !MapOptions.canUseAdmin))
-              {
-                  return true;
-              }
-              return false;
-          }*/
+                Console targetConsole = target.TryCast<Console>();
+                SystemConsole targetSysConsole = target.TryCast<SystemConsole>();
+                MapConsole targetMapConsole = target.TryCast<MapConsole>();
+                if ((targetConsole != null && IsBlocked(targetConsole, pc)) ||
+                    (targetSysConsole != null && IsBlocked(targetSysConsole, pc)) ||
+                    (targetMapConsole != null && !MapOptions.canUseAdmin))
+                {
+                    return true;
+                }
+                return false;
+            }*/
     }
 }

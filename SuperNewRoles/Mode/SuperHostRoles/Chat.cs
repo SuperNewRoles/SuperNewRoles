@@ -22,7 +22,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!AmongUsClient.Instance.AmHost) return;
                 if (IsOldSHR && WinCond != null && AmongUsClient.Instance.AmHost)
                 {
-                    var Template = "最終結果\n勝利陣営:{0}"; 
+                    var Template = "最終結果\n勝利陣営:{0}";
                     if (WinCond == CustomGameOverReason.GodWin)
                     {
                         var players = "";
@@ -50,17 +50,20 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         //new LateTask(() => {
                         PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template, "クルーメイト(Crewmate)"));
                         //}, 3f, "SendResult");
-                    } else if(WinCond == CustomGameOverReason.ImpostorWin)
+                    }
+                    else if (WinCond == CustomGameOverReason.ImpostorWin)
                     {
                         //new LateTask(() => {
                         PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template, "インポスター(Impostor)"));
                         //}, 3f, "SendResult");
-                    } else if(WinCond == CustomGameOverReason.JesterWin && Winner != null)
+                    }
+                    else if (WinCond == CustomGameOverReason.JesterWin && Winner != null)
                     {
                         //new LateTask(() => {
                         PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template + "\n勝者:{1}", "てるてる(Jester)", Winner[0].nameText.text));
-                       // }, 3f, "SendResult");
-                    } else if (WinCond == CustomGameOverReason.WorkpersonWin && Winner != null)
+                        // }, 3f, "SendResult");
+                    }
+                    else if (WinCond == CustomGameOverReason.WorkpersonWin && Winner != null)
                     {
                         // new LateTask(() => {
                         PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template + "\n勝者:{1}", "仕事人(Workperson)", Winner[0].nameText.text));

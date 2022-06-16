@@ -7,7 +7,6 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(ShipStatus), nameof(GameStartManager.Start))]
     public class inversion
     {
-
         public static GameObject skeld;
         public static GameObject mira;
         public static GameObject polus;
@@ -45,7 +44,6 @@ namespace SuperNewRoles.Patch
                     ShipStatus.Instance.MeetingSpawnCenter = new Vector2(-3.4f, -28.35f);
                     ShipStatus.Instance.MeetingSpawnCenter2 = new Vector2(-3.4f, -28.35f);
                     ShipStatus.Instance.transform.localScale = new Vector3(-0.8f, 0.8f, 0.9412f);
-                     
                 }
                 /*else if(PlayerControl.GameOptions.MapId == 4 && CustomOptionHolder.InversionAShip.getBool())
                 {
@@ -54,9 +52,6 @@ namespace SuperNewRoles.Patch
                     airshipの選択スポーンシステムの対応ができてないため非表示
                 }*/
             }
-
         }
-
     }
-
 }

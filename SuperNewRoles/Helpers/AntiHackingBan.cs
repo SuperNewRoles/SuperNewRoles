@@ -108,7 +108,7 @@ namespace SuperNewRoles.Helpers
                     DestroyableSingleton<Telemetry>.Instance.SendWho();
                 }
                 MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 13, SendOption.None);
-                obj.Write(chatText); 
+                obj.Write(chatText);
                 obj.EndMessage();
                 __result = true;
                 return false;

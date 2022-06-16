@@ -11,7 +11,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                player.RpcSetRoleDesync(role,p);
+                player.RpcSetRoleDesync(role, p);
             }
         }
         //TownOfHostより！！
@@ -35,14 +35,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (player == null) return;
             if (seer == null) seer = player;
             var clientId = seer.getClientId();
-            SuperNewRolesPlugin.Logger.LogInfo("(Desync => "+ seer.Data.PlayerName+" ) "+ player.Data.PlayerName + " => " + role);
-            sender.StartRpc(player.NetId, RpcCalls.SetRole, targetClientId : clientId);
+            SuperNewRolesPlugin.Logger.LogInfo("(Desync => " + seer.Data.PlayerName + " ) " + player.Data.PlayerName + " => " + role);
+            sender.StartRpc(player.NetId, RpcCalls.SetRole, targetClientId: clientId);
             sender.Write((ushort)role);
             sender.EndRpc();
         }
         public static void RpcSetRole(this PlayerControl player, CustomRpcSender sender, RoleTypes role)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => "+role);
+            SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => " + role);
             if (player == null) return;
             sender.StartRpc(player.NetId, RpcCalls.SetRole);
             sender.Write((ushort)role);

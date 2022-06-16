@@ -11,7 +11,8 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
         public static void Postfix()
         {
             int LocalId = CachedPlayer.LocalPlayer.PlayerId;
-            if (main.Impostors.Contains(LocalId)) {
+            if (main.Impostors.Contains(LocalId))
+            {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.isAlive() && p.PlayerId != LocalId)
