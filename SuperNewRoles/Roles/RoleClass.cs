@@ -2174,7 +2174,7 @@ namespace SuperNewRoles.Roles
             public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CountChangeButton.png", 115f);
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CountChangerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
