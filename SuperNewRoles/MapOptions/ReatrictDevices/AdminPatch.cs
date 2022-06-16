@@ -129,7 +129,7 @@ namespace SuperNewRoles.Patch
                             {
                                 OutOfTime.text = ModTranslation.getString("restrictOutOfTimeVerYkundesuBeplnEx");
                             }
-                            else
+                            else if (!MapOptions.MapOption.IsYkundesuBeplnEx.getBool())
                             {
                                 OutOfTime.text = ModTranslation.getString("restrictOutOfTime");
                             }
