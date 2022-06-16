@@ -12,7 +12,8 @@ namespace SuperNewRoles.Roles
             RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
         }
         public static void EndMeeting(){
-            //
+            HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Teleporter.CoolTime;
+            RoleClass.Teleporter.ButtonTimer = DateTime.Now;
         }
         public static void SwapStart(){
             //
