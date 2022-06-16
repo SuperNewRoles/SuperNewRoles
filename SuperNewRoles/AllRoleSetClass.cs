@@ -1045,23 +1045,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-        if (!(CustomOption.CustomOptions.TunaOption.getString().Replace("0%", "") == ""))
-            {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.TunaOption.getString().Replace("0%", ""));
-                RoleId ThisRoleId = RoleId.Tuna;
-                if (OptionDate == 10)
-                {
-                    Neutonepar.Add(ThisRoleId);
-                }
-                else
-                {
-                    for (int i = 1; i <= OptionDate; i++)
-                    {
-                        Neutnotonepar.Add(ThisRoleId);
-                    }
-                }
-            }
-        //セットクラス
         }
     }
 }
