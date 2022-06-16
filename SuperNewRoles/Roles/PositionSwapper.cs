@@ -32,14 +32,14 @@ namespace SuperNewRoles.Roles
             var Player2 = ModHelpers.playerById(RandomPlayer2.PlayerId);
             Vector3 PlayerPosition2 = Player2.transform.position;
 
-
-            CachedPlayer.LocalPlayer.transform.position = PlayerPosition2;
-            if (SubmergedCompatibility.isSubmerged())
+            Player.transform.position = PlayerPosition2;
+            CachedPlayer.LocalPlayer.transform.position = PlayerPosition;
+            /*if (SubmergedCompatibility.isSubmerged())
             {
-                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
-            }
+                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(Player));
+            }*/
             CustomRPC.RPCProcedure.PositionSwapperTP(Player.PlayerId);
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.PositionSwap, Hazel.SendOption.Reliable, -1);
         }
     }
 }
