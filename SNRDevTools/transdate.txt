@@ -727,6 +727,7 @@ TwitterDevLink,Development Information Account : https://twitter.com/SNRDevs,開
 Team,Team,陣営
 MessageSettings,Settings,設定
 NowRolesMessage,Activate Roles,現在入っている役職
+TeamMessage,【Team:{0}】,【{0}陣営】
 PlayerCountMessage,Players,人
 DebugModeOnText,DebugMode:ON,デバッグモードが有効です
 BattleRoyalRemaining,Remaining until kills can be made,キルができるようになるまで残り

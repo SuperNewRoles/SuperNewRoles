@@ -726,6 +726,7 @@ TwitterDevLink
 Team
 MessageSettings
 NowRolesMessage
+TeamMessage
 PlayerCountMessage
 DebugModeOnText
 BattleRoyalRemaining

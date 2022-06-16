@@ -220,7 +220,7 @@ namespace SuperNewRoles.Patch
                 if (type != option.Intro.Team)
                 {
                     type = option.Intro.Team;
-                    text += "\n" + ModTranslation.getString("TeamMessage") + "\n\n";
+                    text += "\n" + String.Format(ModTranslation.getString("TeamMessage"), GetTeamText(type)) + "\n\n";
                 }
                 int PlayerCount = 0;
                 foreach (CustomOption.CustomOption opt in option.children)

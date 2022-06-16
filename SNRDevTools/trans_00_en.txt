@@ -726,6 +726,7 @@ Development Information Account : https://twitter.com/SNRDevs
 Team
 Settings
 Activate Roles
+【Team:{0}】
 Players
 DebugMode:ON
 Remaining until kills can be made

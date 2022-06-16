@@ -2912,6 +2912,10 @@
         "0" : "Activate Roles" ,
         "11" : "\u73fe\u5728\u5165\u3063\u3066\u3044\u308b\u5f79\u8077"
         } ,
+ "TeamMessage" : {
+        "0" : "\u3010Team:{0}\u3011" ,
+        "11" : "\u3010{0}\u9663\u55b6\u3011"
+        } ,
  "PlayerCountMessage" : {
         "0" : "Players" ,
         "11" : "\u4eba"
