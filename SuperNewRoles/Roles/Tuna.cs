@@ -11,21 +11,19 @@ namespace SuperNewRoles.Roles
         {
             if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead && CachedPlayer.LocalPlayer.PlayerControl.isRole(CustomRPC.RoleId.Tuna) && PlayerControl.LocalPlayer.CanMove && !RoleClass.IsMeeting)
             {
-                if (RoleClass.Tuna.Timer <= 0.1f)
+                if (RoleClass.Tuna.Position == CachedPlayer.LocalPlayer.PlayerControl.transform.position)
                 {
-                    if (RoleClass.Tuna.Position == CachedPlayer.LocalPlayer.PlayerControl.transform.position)
+                    if (RoleClass.Tuna.Timer <= 0.1f)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("[Tuna]Murder");
                         CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
-                        return;
                     }
-                    else
-                    {
-                        RoleClass.Tuna.Position = CachedPlayer.LocalPlayer.PlayerControl.transform.position;
-                        RoleClass.Tuna.Timer = RoleClass.Tuna.StoppingTime;
-                    }
+                    RoleClass.Tuna.Timer -= Time.deltaTime;
                 }
-                RoleClass.Tuna.Timer -= Time.deltaTime;
+                else
+                {
+                    RoleClass.Tuna.Timer = RoleClass.Tuna.StoppingTime;
+                    RoleClass.Tuna.Position = CachedPlayer.LocalPlayer.PlayerControl.transform.position;
+                }
             }
         }
     }
