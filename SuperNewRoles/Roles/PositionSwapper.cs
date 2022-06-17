@@ -31,12 +31,16 @@ namespace SuperNewRoles.Roles
             var Player2 = ModHelpers.playerById(RandomPlayer2.PlayerId);
             var PlayerPosition2 = Player2.transform.position;
 
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.PositionSwapper)) {
+            RandomPlayer2.transform.position = PlayerPosition;
+            RandomPlayer.transform.position = PlayerPosition2;
+
+            /*if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.PositionSwapper)) {
                 CachedPlayer.LocalPlayer.transform.position = PlayerPosition;
             }
             else {
                 CachedPlayer.LocalPlayer.transform.position = PlayerPosition2;
-            }
+            }*/
+
             /*if (SubmergedCompatibility.isSubmerged())
             {
                 SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(Player));
