@@ -530,6 +530,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.JackalSeer):
                     Roles.RoleClass.JackalSeer.JackalSeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.SidekickSeer):
+                    Roles.RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
+                    break;                    
                 case (CustomRPC.RoleId.Assassin):
                     Roles.RoleClass.Assassin.AssassinPlayer.Add(player);
                     break;
