@@ -1069,7 +1069,7 @@ namespace SuperNewRoles
                     return RoleClass.SeerFriends.IsUseVent;
                 case RoleId.SidekickSeer:
                 case RoleId.JackalSeer:
-                    return RoleClass.Jackal.IsUseVent;
+                    return RoleClass.JackalSeer.IsUseVent;
                 case RoleId.MadCleaner:
                     return RoleClass.MadCleaner.IsUseVent;
                 /*
@@ -1131,7 +1131,7 @@ namespace SuperNewRoles
                     return RoleClass.TeleportingJackal.IsUseSabo;
                 case RoleId.SidekickSeer:
                 case RoleId.JackalSeer:
-                    return RoleClass.Jackal.IsUseSabo;
+                    return RoleClass.JackalSeer.IsUseSabo;
                 case RoleId.Egoist:
                     return RoleClass.Egoist.UseSabo;
             }
@@ -1171,7 +1171,7 @@ namespace SuperNewRoles
                     return RoleClass.SeerFriends.IsImpostorLight;
                 case RoleId.JackalSeer:
                 case RoleId.SidekickSeer:
-                    return RoleClass.Jackal.IsImpostorLight;
+                    return RoleClass.JackalSeer.IsImpostorLight;
                 case RoleId.MadCleaner:
                     return RoleClass.MadCleaner.IsImpostorLight;
                 case RoleId.MayorFriends:
