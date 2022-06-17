@@ -1242,7 +1242,7 @@ namespace SuperNewRoles
                 case (RoleId.MayorFriends):
                     IsNeutral = true;
                     break;
-                    case (RoleId.Tuna):
+                case (RoleId.Tuna):
                     IsNeutral = true;
                     break;
                 //第三か
