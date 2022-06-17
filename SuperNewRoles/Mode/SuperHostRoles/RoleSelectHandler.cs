@@ -118,6 +118,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.MadJester.IsUseVent) SetRoleEngineers.AddRange(RoleClass.MadJester.MadJesterPlayer);
             if (RoleClass.Fox.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Fox.FoxPlayer);
             if (RoleClass.MayorFriends.IsUseVent) SetRoleEngineers.AddRange(RoleClass.MayorFriends.MayorFriendsPlayer);
+            if (RoleClass.Tuna.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Tuna.TunaPlayer);
             SetRoleEngineers.AddRange(RoleClass.Technician.TechnicianPlayer);
             //エンジニアに役職設定
             List<PlayerControl> DesyncShapeshifters = new List<PlayerControl>();

@@ -296,6 +296,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                     break;
+                case RoleId.Tuna:
+                    if (RoleClass.Tuna.IsUseVent)
+                    {
+                        optdata.RoleOptions.EngineerCooldown = 0f;
+                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+                    }
+                    break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;

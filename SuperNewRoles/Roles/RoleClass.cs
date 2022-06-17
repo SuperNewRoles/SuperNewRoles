@@ -2166,17 +2166,23 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> TunaPlayer;
             public static Color32 color = new Color32(0, 255, 255, byte.MaxValue);
-            public static Vector3 Position;
+            public static Dictionary<byte, Vector3> Position;
             public static float Timer;
             public static float StoppingTime;
             public static bool IsUseVent;
             public static void ClearAndReload()
             {
                 TunaPlayer = new List<PlayerControl>();
-                Position = new Vector3(9999f, 9999f, 9999f);
+                Position = new Dictionary<byte, Vector3>();
+                foreach (PlayerControl p in CachedPlayer.AllPlayers) Position[p.PlayerId] = new Vector3(9999f, 9999f, 9999f);
                 StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.getFloat();
-                Timer = StoppingTime;
+                if (Mode.ModeHandler.isMode(Mode.ModeId.Default))  Timer = StoppingTime;
                 IsUseVent = CustomOptions.TunaIsUseVent.getBool();
+                if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
+                {
+                    Mode.SuperHostRoles.Roles.Tuna.Timer = new Dictionary<byte, float>();
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers) Mode.SuperHostRoles.Roles.Tuna.Timer[p.PlayerId] = StoppingTime;
+                }
             }
         }
         //新ロールクラス
