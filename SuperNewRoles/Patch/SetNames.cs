@@ -351,14 +351,6 @@ namespace SuperNewRoles.Patch
                             SetNamesClass.SetPlayerNameColors(p);
                         }
                     }
-                    foreach (PlayerControl p in RoleClass.JackalSeer.FakeSidekickSeerPlayer)
-                    {
-                        if (p != PlayerControl.LocalPlayer)
-                        {
-                            SetNamesClass.SetPlayerNameColor(p, RoleClass.Jackal.color);
-                            SetNamesClass.SetPlayerRoleInfoView(p, RoleClass.Jackal.color, Intro.IntroDate.SidekickIntro.NameKey + "Name");
-                        }
-                    }
                 }
                 SetNamesClass.SetPlayerRoleNames(PlayerControl.LocalPlayer);
                 SetNamesClass.SetPlayerNameColors(PlayerControl.LocalPlayer);
