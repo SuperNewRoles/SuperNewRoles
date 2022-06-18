@@ -1,16 +1,16 @@
-﻿using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode;
-using SuperNewRoles.Roles;
-using SuperNewRoles.Sabotage;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using Hazel;
+using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Sabotage;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch

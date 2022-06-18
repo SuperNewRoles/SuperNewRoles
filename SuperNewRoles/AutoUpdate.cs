@@ -1,9 +1,9 @@
-﻿using HarmonyLib;
 using System.IO;
-using System.Reflection;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
+using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using Twitch;
 
@@ -36,7 +36,7 @@ namespace SuperNewRoles
         {
             try
             {
-                HttpClient http = new HttpClient();
+                HttpClient http = new();
                 http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Updater");
                 var response = await http.GetAsync(new System.Uri(updateURL), HttpCompletionOption.ResponseContentRead);
                 if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
@@ -45,7 +45,7 @@ namespace SuperNewRoles
                     return false;
                 }
                 string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                System.UriBuilder uri = new System.UriBuilder(codeBase);
+                System.UriBuilder uri = new(codeBase);
                 string fullname = System.Uri.UnescapeDataString(uri.Path);
                 if (File.Exists(fullname + ".old")) // Clear old file in case it wasnt;
                     File.Delete(fullname + ".old");
@@ -54,10 +54,9 @@ namespace SuperNewRoles
 
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
-                    using (var fileStream = File.Create(fullname))
-                    { // probably want to have proper name here
-                        responseStream.CopyTo(fileStream);
-                    }
+                    using var fileStream = File.Create(fullname);
+                    // probably want to have proper name here
+                    responseStream.CopyTo(fileStream);
                 }
                 SuperNewRolesPlugin.IsUpdate = true;
                 return true;
@@ -71,7 +70,8 @@ namespace SuperNewRoles
         }
         public static async Task<bool> checkForUpdate(TMPro.TextMeshPro setdate)
         {
-            if (!ConfigRoles.AutoUpdate.Value) {
+            if (!ConfigRoles.AutoUpdate.Value)
+            {
                 return false;
             }
             if (!IsLoad)
@@ -81,7 +81,7 @@ namespace SuperNewRoles
             }
             try
             {
-                HttpClient http = new HttpClient();
+                HttpClient http = new();
                 http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Updater");
                 var response = await http.GetAsync(new System.Uri("https://api.github.com/repos/ykundesu/SuperNewRoles/releases/latest"), HttpCompletionOption.ResponseContentRead);
                 if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
@@ -117,7 +117,7 @@ namespace SuperNewRoles
                     {
                         SuperNewRolesPlugin.Logger.LogInfo("古いバージョンです");
                     }
-                        JToken assets = data["assets"];
+                    JToken assets = data["assets"];
                     if (!assets.HasValues)
                         return false;
                     for (JToken current = assets.First; current != null; current = current.Next)

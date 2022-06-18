@@ -1,8 +1,3 @@
-using BepInEx.IL2CPP.Utils;
-using HarmonyLib;
-using Newtonsoft.Json.Linq;
-using SuperNewRoles.CustomCosmetics;
-using SuperNewRoles.Patch;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +9,11 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using BepInEx.IL2CPP.Utils;
+using HarmonyLib;
+using Newtonsoft.Json.Linq;
+using SuperNewRoles.CustomCosmetics;
+using SuperNewRoles.Patch;
 using TMPro;
 using Twitch;
 using UnityEngine;
@@ -23,7 +23,7 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch]
     public static class CredentialsPatch
     {
-        public static string baseCredentials = $@"<size=130%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color></size> v{SuperNewRolesPlugin.Version.ToString()}";
+        public static string baseCredentials = $@"<size=130%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color></size> v{SuperNewRolesPlugin.Version}";
 
         private static Task<bool> kari;
 
@@ -68,7 +68,7 @@ namespace SuperNewRoles.Patches
                     {
                         if (DebugMode.IsDebugMode())
                         {
-                            __instance.text.text += "\n"+ ModTranslation.getString("DebugModeOn");
+                            __instance.text.text += "\n" + ModTranslation.getString("DebugModeOn");
                         }
                         if (!Mode.ModeHandler.isMode(Mode.ModeId.Default))
                         {
@@ -123,15 +123,16 @@ namespace SuperNewRoles.Patches
                 if (!Downloaded)
                 {
                     Downloaded = true;
-                    HttpClient http = new HttpClient();
-                    http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, OnlyIfCached = false};
+                    HttpClient http = new();
+                    http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, OnlyIfCached = false };
                     var response = await http.GetAsync(new System.Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
                     try
                     {
-                        if (response.StatusCode != HttpStatusCode.OK) {
+                        if (response.StatusCode != HttpStatusCode.OK)
+                        {
                             SuperNewRolesPlugin.Logger.LogInfo("NOTOK!!!");
                             return response.StatusCode;
-                                };
+                        };
                         if (response.Content == null)
                         {
                             System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
@@ -302,7 +303,7 @@ namespace SuperNewRoles.Patches
             {
                 try
                 {
-                    HttpClient httpa = new HttpClient();
+                    HttpClient httpa = new();
                     httpa.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Downloader");
                     var responsea = await httpa.GetAsync(new System.Uri("https://api.github.com/repos/submergedAmongUs/submerged/releases/latest"), HttpCompletionOption.ResponseContentRead);
                     if (responsea.StatusCode != HttpStatusCode.OK || responsea.Content == null)
@@ -328,7 +329,7 @@ namespace SuperNewRoles.Patches
                             }
                         }
                     }
-                    HttpClient http = new HttpClient();
+                    HttpClient http = new();
                     http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Downloader");
                     var response = await http.GetAsync(new System.Uri(url), HttpCompletionOption.ResponseContentRead);
                     if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
@@ -340,10 +341,9 @@ namespace SuperNewRoles.Patches
 
                     using (var responseStream = await response.Content.ReadAsStreamAsync())
                     {
-                        using (var fileStream = File.Create(code))
-                        { // probably want to have proper name here
-                            responseStream.CopyTo(fileStream);
-                        }
+                        using var fileStream = File.Create(code);
+                        // probably want to have proper name here
+                        responseStream.CopyTo(fileStream);
                     }
                     showPopup(ModTranslation.getString("ダウンロード完了！\n再起動してください！"));
                     return true;

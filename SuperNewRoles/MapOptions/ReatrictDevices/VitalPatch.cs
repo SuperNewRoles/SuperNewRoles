@@ -1,12 +1,12 @@
-using HarmonyLib;
-using Hazel;
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 //using static TheOtherRoles.TheOtherRoles;
 //using static SuperNewRoles.GameHistory;
 using System.Reflection;
+using HarmonyLib;
+using Hazel;
+using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {

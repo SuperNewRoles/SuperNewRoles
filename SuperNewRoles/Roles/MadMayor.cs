@@ -1,6 +1,6 @@
-﻿using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patch;
 using System.Collections.Generic;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
 {

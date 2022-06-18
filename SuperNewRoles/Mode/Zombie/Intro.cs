@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -9,7 +9,7 @@ namespace SuperNewRoles.Mode.Zombie
     {
         public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance)
         {
-            Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+            Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
 
             if (PlayerControl.LocalPlayer.IsZombie())
             {

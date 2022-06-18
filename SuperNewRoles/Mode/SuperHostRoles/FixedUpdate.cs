@@ -1,19 +1,19 @@
-﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using HarmonyLib;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles.Roles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
     public static class FixedUpdate
     {
-        public static Dictionary<int, string> DefaultName = new Dictionary<int, string>();
+        public static Dictionary<int, string> DefaultName = new();
         private static int UpdateDate = 0;
 
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.CoShowIntro))]
@@ -83,7 +83,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
             //UpdateTime[player.PlayerId] = UpdateDefaultTime;
 
-            List<PlayerControl> DiePlayers = new List<PlayerControl>();
+            List<PlayerControl> DiePlayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.PlayerId != 0 && p.PlayerId != player.PlayerId && p.IsPlayer())
@@ -100,7 +100,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             string Name = player.getDefaultName();
             string NewName = "";
             string MySuffix = "";
-            Dictionary<byte, string> ChangePlayers = new Dictionary<byte, string>();
+            Dictionary<byte, string> ChangePlayers = new();
 
             foreach (PlayerControl CelebrityPlayer in RoleClass.Celebrity.CelebrityPlayer)
             {
@@ -288,7 +288,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             else if (player.isAlive() || IsUnchecked)
             {
-                if ((player.isDead() || player.isRole(RoleId.God)))
+                if (player.isDead() || player.isRole(RoleId.God))
                 {
                     if (Demon.IsViewIcon(player))
                     {

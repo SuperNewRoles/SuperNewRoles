@@ -1,4 +1,4 @@
-﻿/*
+/*
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Patches;

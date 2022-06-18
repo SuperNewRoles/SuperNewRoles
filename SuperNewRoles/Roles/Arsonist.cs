@@ -1,12 +1,12 @@
-﻿using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
-using SuperNewRoles.EndGame;
 using HarmonyLib;
+using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.EndGame;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -90,7 +90,7 @@ namespace SuperNewRoles.Roles
 
         public static bool IseveryButton()
         {
-            return ModeHandler.isMode(ModeId.SuperHostRoles) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist) || ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist);
+            return (ModeHandler.isMode(ModeId.SuperHostRoles) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist)) || (ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist));
 
         }
 
@@ -163,7 +163,7 @@ namespace SuperNewRoles.Roles
         {
             RoleClass.Arsonist.TriggerArsonistWin = true;
         }
-        public static Dictionary<byte, float> ArsonistTimer = new Dictionary<byte, float>();
+        public static Dictionary<byte, float> ArsonistTimer = new();
 
         public static void ArsonistFinalStatus(PlayerControl __instance)
         {

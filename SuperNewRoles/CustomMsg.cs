@@ -1,13 +1,13 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace SuperNewRoles
 {
     public class CustomMessage
     {
         private TMPro.TMP_Text text;
-        private static List<CustomMessage> customMessages = new List<CustomMessage>();
+        private static List<CustomMessage> customMessages = new();
 
         public CustomMessage(string message, float duration)
         {
@@ -25,9 +25,10 @@ namespace SuperNewRoles
                 gameObject.transform.localPosition = new Vector3(0, -1.8f, gameObject.transform.localPosition.z);
                 customMessages.Add(this);
 
-                FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) => {
+                FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
+                {
                     bool even = ((int)(p * duration / 0.25f)) % 2 == 0; // Bool flips every 0.25 seconds
-                    string prefix = (even ? "<color=#FCBA03FF>" : "<color=#FF0000FF>");
+                    string prefix = even ? "<color=#FCBA03FF>" : "<color=#FF0000FF>";
                     text.text = prefix + message + "</color>";
                     if (text != null) text.color = even ? Color.yellow : Color.red;
                     if (p == 1f && text != null && text.gameObject != null)

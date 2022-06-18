@@ -1,7 +1,7 @@
-﻿using HarmonyLib;
+using System;
+using HarmonyLib;
 using Hazel;
 using InnerNet;
-using System;
 
 namespace SuperNewRoles.Patch
 {
@@ -24,7 +24,7 @@ namespace SuperNewRoles.Patch
                         if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.CanBan())
                         {
                             handled = true;
-                            if (!Int32.TryParse(text.Substring(4), out LobbyLimit))
+                            if (!Int32.TryParse(text[4..], out LobbyLimit))
                             {
                                 __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/mp {最大人数}");
                             }
@@ -53,7 +53,7 @@ namespace SuperNewRoles.Patch
                         if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.CanBan())
                         {
                             handled = true;
-                            if (!float.TryParse(text.Substring(4), out var cooltime))
+                            if (!float.TryParse(text[4..], out var cooltime))
                             {
                                 __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/kc {キルクールタイム}");
                             }
@@ -84,8 +84,7 @@ namespace SuperNewRoles.Patch
                         else if (text.ToLower().StartsWith("/color "))
                         {
                             handled = true;
-                            int col;
-                            if (!Int32.TryParse(text.Substring(7), out col))
+                            if (!Int32.TryParse(text[7..], out int col))
                             {
                                 __instance.AddChat(PlayerControl.LocalPlayer, "Unable to parse color id\nUsage: /color {id}");
                             }
@@ -96,7 +95,7 @@ namespace SuperNewRoles.Patch
                         else if (text.ToLower().StartsWith("/name "))
                         {
                             handled = true;
-                            string col = text.Substring(6);
+                            string col = text[6..];
                             PlayerControl.LocalPlayer.SetName(col);
                             __instance.AddChat(PlayerControl.LocalPlayer, "Changed name succesfully"); ;
                         }

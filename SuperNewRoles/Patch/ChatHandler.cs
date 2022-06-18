@@ -1,13 +1,13 @@
-﻿using BepInEx.IL2CPP.Utils;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -175,16 +175,13 @@ namespace SuperNewRoles.Patch
         }
         static string GetTeamText(TeamRoleType type)
         {
-            switch (type)
+            return type switch
             {
-                case TeamRoleType.Crewmate:
-                    return ModTranslation.getString("CrewMateName");
-                case TeamRoleType.Impostor:
-                    return ModTranslation.getString("ImpostorName");
-                case TeamRoleType.Neutral:
-                    return ModTranslation.getString("NeutralName").Replace("陣営", "");
-            }
-            return "";
+                TeamRoleType.Crewmate => ModTranslation.getString("CrewMateName"),
+                TeamRoleType.Impostor => ModTranslation.getString("ImpostorName"),
+                TeamRoleType.Neutral => ModTranslation.getString("NeutralName").Replace("陣営", ""),
+                _ => "",
+            };
         }
         static string GetText(CustomRoleOption option)
         {
@@ -203,16 +200,13 @@ namespace SuperNewRoles.Patch
             string text = ModTranslation.getString("NowRolesMessage") + "\n";
             var options = optionsnotorder.OrderBy((CustomRoleOption x) =>
             {
-                switch (x.Intro.Team)
+                return x.Intro.Team switch
                 {
-                    case TeamRoleType.Impostor:
-                        return 0;
-                    case TeamRoleType.Neutral:
-                        return 1000;
-                    case TeamRoleType.Crewmate:
-                        return 2000;
-                }
-                return 500;
+                    TeamRoleType.Impostor => 0,
+                    TeamRoleType.Neutral => 1000,
+                    TeamRoleType.Crewmate => 2000,
+                    _ => 500,
+                };
             });
             TeamRoleType type = TeamRoleType.Error;
             foreach (CustomRoleOption option in options)
@@ -237,7 +231,7 @@ namespace SuperNewRoles.Patch
         }
         static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)
         {
-            List<CustomRoleOption> EnableOptions = new List<CustomRoleOption>();
+            List<CustomRoleOption> EnableOptions = new();
             foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
             {
                 if (option.isRoleEnable && option.isSHROn)
@@ -256,7 +250,7 @@ namespace SuperNewRoles.Patch
         }
         static void GetInRoleCommand(PlayerControl target = null)
         {
-            List<CustomRoleOption> EnableOptions = new List<CustomRoleOption>();
+            List<CustomRoleOption> EnableOptions = new();
             foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
             {
                 if (option.isRoleEnable && option.isSHROn)

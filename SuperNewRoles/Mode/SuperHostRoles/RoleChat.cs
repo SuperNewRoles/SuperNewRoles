@@ -1,9 +1,9 @@
-﻿using InnerNet;
-using SuperNewRoles.Intro;
-using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using InnerNet;
+using SuperNewRoles.Intro;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -42,7 +42,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static string GetRoleDes(string rolename)
         {
-            string Team;
             string IntroDesc;
             string Desc;
             IntroDate data = IntroDate.CrewmateIntro;
@@ -76,7 +75,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static IntroDate GetNameIntroDate(string role)
         {
-            Dictionary<string, IntroDate> NameData = new Dictionary<string, IntroDate>()
+            Dictionary<string, IntroDate> NameData = new()
             {
                 {ModTranslation.getString("JesterName"),IntroDate.JesterIntro },
                 {ModTranslation.getString("SheriffName"),IntroDate.SheriffIntro },

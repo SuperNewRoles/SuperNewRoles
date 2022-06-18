@@ -1,6 +1,6 @@
-﻿using SuperNewRoles.Helpers;
-using SuperNewRoles.Patch;
 using System.Linq;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
 {

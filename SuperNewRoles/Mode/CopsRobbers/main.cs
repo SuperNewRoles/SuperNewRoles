@@ -1,7 +1,7 @@
-﻿using SuperNewRoles.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.Helpers;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.CopsRobbers
@@ -38,7 +38,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             if (Arrest.Contains(player.PlayerId)) return true;
             return false;
         }
-        public static Dictionary<MapNames, List<SystemTypes>> Rooms = new Dictionary<MapNames, List<SystemTypes>>()
+        public static Dictionary<MapNames, List<SystemTypes>> Rooms = new()
         {
             { MapNames.Skeld, new List<SystemTypes>(){ SystemTypes.Comms, SystemTypes.Nav, SystemTypes.Security } },
             { MapNames.Mira, new List<SystemTypes>(){ SystemTypes.Comms, SystemTypes.Greenhouse, SystemTypes.Launchpad, SystemTypes.Storage} },
@@ -182,7 +182,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
         static float ImpostorMoveTime;
         static int LastCount;
         static float LastUpdate;
-        public static List<byte> TeleportIDs = new List<byte>();
+        public static List<byte> TeleportIDs = new();
         public static void Teleport(PlayerControl player, Vector2 position)
         {
             player.NetTransform.RpcSnapTo(position);
@@ -219,7 +219,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             if (!IsMove)
             {
                 bool IsMoveOK = true;
-                List<PlayerControl> players = new List<PlayerControl>();
+                List<PlayerControl> players = new();
                 int NotLoadedCount = 0;
                 if (PlayerControl.GameOptions.MapId == 4)
                 {

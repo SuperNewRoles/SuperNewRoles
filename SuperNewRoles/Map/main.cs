@@ -1,7 +1,7 @@
-﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
 
 namespace SuperNewRoles.Map
 {
@@ -18,7 +18,7 @@ namespace SuperNewRoles.Map
     {
         public static CustomMapNames ThisMap = CustomMapNames.Skeld;//CustomMapNames.Agartha;
         public static string[] MapStringNames = new string[6] { "The Skeld", "MIRA HQ", "Polus", "dlekS ehT", "Airship", "Agartha" };
-        public static Dictionary<string, CustomMapNames> CustomMapNameData = new Dictionary<string, CustomMapNames>() {
+        public static Dictionary<string, CustomMapNames> CustomMapNameData = new() {
             { MapStringNames[0],CustomMapNames.Skeld },{ MapStringNames[1],CustomMapNames.Mira }
             ,{ MapStringNames[2],CustomMapNames.Polus },{ MapStringNames[3],CustomMapNames.Dleks }
             ,{ MapStringNames[4],CustomMapNames.Agartha },{ MapStringNames[5],CustomMapNames.Agartha }

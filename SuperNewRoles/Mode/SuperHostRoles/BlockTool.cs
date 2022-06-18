@@ -1,10 +1,10 @@
-﻿using HarmonyLib;
-using Hazel;
-using InnerNet;
-using SuperNewRoles.MapOptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using Hazel;
+using InnerNet;
+using SuperNewRoles.MapOptions;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles

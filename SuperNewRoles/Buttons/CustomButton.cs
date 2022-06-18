@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
-using HarmonyLib;
 
 namespace SuperNewRoles.Buttons
 {
     public class CustomButton
     {
-        public static List<CustomButton> buttons = new List<CustomButton>();
+        public static List<CustomButton> buttons = new();
         public ActionButton actionButton;
         public Vector3 PositionOffset;
         public Vector3 LocalScale = Vector3.one;
@@ -178,7 +178,7 @@ namespace SuperNewRoles.Buttons
 
             actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
             // Trigger OnClickEvent if the hotkey is being pressed down
-            if (hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString()) || ConsoleJoystick.player.GetButtonDown(joystickkey)) onClickEvent();
+            if ((hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(joystickkey)) onClickEvent();
         }
     }
 

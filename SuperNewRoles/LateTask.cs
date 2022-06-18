@@ -1,6 +1,6 @@
-﻿using System;
-using HarmonyLib;
+using System;
 using System.Collections.Generic;
+using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles
@@ -11,8 +11,8 @@ namespace SuperNewRoles
         public string name;
         public float timer;
         public Action action;
-        public static List<LateTask> Tasks = new List<LateTask>();
-        public static List<LateTask> AddTasks = new List<LateTask>();
+        public static List<LateTask> Tasks = new();
+        public static List<LateTask> AddTasks = new();
         public bool run(float deltaTime)
         {
             timer -= deltaTime;
@@ -34,7 +34,8 @@ namespace SuperNewRoles
         public static void Update(float deltaTime)
         {
             var TasksToRemove = new List<LateTask>();
-            Tasks.ForEach((task) => {
+            Tasks.ForEach((task) =>
+            {
                 //SuperNewRolesPlugin.Logger.LogInfo("LateTask \"" + task.name + "\" Start");
                 if (task.run(deltaTime))
                 {
@@ -50,7 +51,7 @@ namespace SuperNewRoles
             AddTasks = new List<LateTask>();
         }
     }
-    [HarmonyPatch(typeof(HudManager),nameof(HudManager.Update))]
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     class LateUpdate
     {
         public static void Postfix(HudManager __instance)

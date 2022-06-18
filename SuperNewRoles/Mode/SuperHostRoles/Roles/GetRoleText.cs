@@ -1,8 +1,8 @@
-﻿using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles
 {
