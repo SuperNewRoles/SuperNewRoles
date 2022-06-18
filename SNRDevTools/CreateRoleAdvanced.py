@@ -400,9 +400,9 @@ namespace SuperNewRoles.Roles
                     return RoleClass.ROLENAME.IsImpostorLight;\n                //インポの視界""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # いらないやつ(次実行するときに複数書いてしまうため)の削除　(例:Jackal→//その他Option, NewRole→//その他Optionの場合、二つに書かれてしまうため重複する)
-        MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベント設定可視化", "")
+        #MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベント設定可視化", "")
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//その他Option", "")
-        MainClass.WriteCodes("Roles/RoleHelper.cs", "//くりあぁあんどりろぉどぉ", "")
+        MainClass.WriteCodes("Roles/RoleClass.cs", "//くりあぁあんどりろぉどぉ", "")
         #MainClass.WriteCodes("Roles/RoleHelper.cs", "", "")
         # 終了報告
         MainClass.CreateNotify("CreateRoleAdvanced.py", "役職の作成が終了しました")
