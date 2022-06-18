@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
             ResetCoolDown();
         }
         public static void SwapStart(){
-            List<PlayerControl> AlivePlayer = new List<PlayerControl>();
+            List<PlayerControl> AlivePlayer = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.isAlive() && p.CanMove && !p.isRole(CustomRPC.RoleId.PositionSwapper))

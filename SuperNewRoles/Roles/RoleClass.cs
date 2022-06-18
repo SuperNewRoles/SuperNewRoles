@@ -2184,6 +2184,7 @@ namespace SuperNewRoles.Roles
                 PositionSwapperPlayer = new List<PlayerControl>();
                 CoolTime = CustomOptions.PositionSwapperCoolTime.getFloat();
             }
+        }
 
         public static class Tuna
         {
