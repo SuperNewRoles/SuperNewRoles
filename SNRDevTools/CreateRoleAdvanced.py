@@ -13,7 +13,7 @@ from importlib.resources import Resource
 # オブジェクト指向用
 class ReturnClass:
     def WriteCodes(self, Path, OldCode, NewCode):
-    # w→書く　r→読む　a→合成　r+既存を読む　w+→新規で書く　a+→追加読み書き　t→テキストモード　b→バイナリモード
+    # w→書く　r→読む　a→合成　r+既存を読む　w+→新規で書く　a+→追加読み書き　t→テキストモード　b→バイナリモード x→ファイル作成
         with open(BasePath+Path, mode="r", encoding="utf-8") as r:
             Template = r.read()
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
@@ -46,6 +46,7 @@ class ReturnClass:
         return ResourcePath + ResourceName
     #Config読み込み
     def GetConfig(self, MainPath, SubPath):
+        #print("Config:"+MainPath + SubPath)
         Modify = Config_ini[MainPath][SubPath]
         print("Configを読み込みました:" + Modify)
         return Modify
@@ -65,6 +66,9 @@ class ReturnClass:
     def HashToRGB(self):
         Hash = MainClass.GetInput("ColorHash")
         RGB = str(int(Hash[1:3],16))+", "+ str(int(Hash[3:5],16))+", "+ str(int(Hash[5:7],16))
+        #RGB = str(RGB).strip()
+        print(RGB)
+        return RGB
         print(RGB.strip())
         return RGB.strip()
     #チーム取得
@@ -200,7 +204,7 @@ namespace SuperNewRoles.Roles
         }\n        //新ロールクラス""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("COLORS",MainClass.GetRoleColor()))
 
         # AllRoleSetClass.cs
-        MainClass.WriteCodes("AllRoleSetClass.cs", "//セットクラス",
+        '''MainClass.WriteCodes("AllRoleSetClass.cs", "//セットクラス",
                                 """if (!(CustomOption.CustomOptions.ROLEID!!Option.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.ROLEID!!Option.getString().Replace("0%", ""));
@@ -216,11 +220,10 @@ namespace SuperNewRoles.Roles
                         TEAMnotonepar.Add(ThisRoleId);
                     }
                 }
-            }\n        //セットクラス""".replace("ROLEID!!",MainClass.GetInput("RoleName")).replace("TEAM",MainClass.GetTeam()))
+            }\n        //セットクラス""".replace("ROLEID!!",MainClass.GetInput("RoleName")).replace("TEAM",MainClass.GetTeam()))'''
 
 
-        MainClass.WriteCodes("AllRoleSetClass.cs", "//プレイヤーカウント","""case (RoleId.ROLENAME):
-                return CustomOption.CustomOptions.ROLENAMEPlayerCount.getFloat();\n                    //プレイヤーカウント""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+        MainClass.WriteCodes("AllRoleSetClass.cs", "//プレイヤーカウント","""RoleId.ROLENAME => CustomOption.CustomOptions.ROLENAMEPlayerCount.getFloat(),\n                    //プレイヤーカウント""".replace("ROLENAME",MainClass.GetInput("RoleName")))
 
         # Roles/RoleHelper.cs
         if (not MainClass.GetBool("TeamGhost")):
@@ -270,15 +273,15 @@ namespace SuperNewRoles.Roles
 
         # Intro/IntroDate.cs
         if (MainClass.GetBool("Impo")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Impostor);
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate LighterIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Impostor);
             //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
         elif (MainClass.GetBool("Crew")):
-             MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Crewmate);
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Crewmate);
             //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
         elif (MainClass.GetBool("Neut")):
-             MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Neutral);
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Neutral);
             //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
-             '''MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロ検知","""case (CustomRPC.RoleId.ROLENAME):
+            '''MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロ検知","""case (CustomRPC.RoleId.ROLENAME):
                     return ROLENAMEIntro;
                 //イントロ検知""".replace("ROLENAME",MainClass.GetInput("RoleName")))'''#⇐なにこれ？
         elif (MainClass.GetBool("TeamOne")):
@@ -358,12 +361,12 @@ namespace SuperNewRoles.Roles
                 # Roles/RoleHelper.cs
                 if (MainClass.GetBool("TeamGhost")):
                     MainClass.WriteCodes("Roles/RoleHelper.cs", "//ここが幽霊役職",
-                 """if (SuperNewRoles.Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
+                """if (SuperNewRoles.Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
                     {
                         return SuperNewRoles.CustomRPC.RoleId.ROLENAME;
                     }\n                //ここが幽霊役職""".replace("ROLENAME", MainClass.GetInput("RoleName")))
                 MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベントが使える",
-                 """case RoleId.ROLENAME:
+                """case RoleId.ROLENAME:
                     return RoleClass.ROLENAME.IsUseVent;\n                //ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
                 # Roles/RoleClass.cs
@@ -399,10 +402,10 @@ namespace SuperNewRoles.Roles
         # いらないやつ(次実行するときに複数書いてしまうため)の削除　(例:Jackal→//その他Option, NewRole→//その他Optionの場合、二つに書かれてしまうため重複する)
         #MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベント設定可視化", "")
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//その他Option", "")
-        MainClass.WriteCodes("Roles/RoleHelper.cs", "//くりあぁあんどりろぉどぉ", "")
+        MainClass.WriteCodes("Roles/RoleClass.cs", "//くりあぁあんどりろぉどぉ", "")
         #MainClass.WriteCodes("Roles/RoleHelper.cs", "", "")
         # 終了報告
-        MainClass.CreateNotify("CreateRoleAdvance.py", "役職の作成が終了しました")
+        MainClass.CreateNotify("CreateRoleAdvanced.py", "役職の作成が終了しました")
 
 ## 変数
 '''DevPath = Path(__file__).parent
@@ -423,7 +426,6 @@ AllActClass = AllCheck()
 # 宣言
 Config_ini = configparser.ConfigParser()
 Config_ini.read((ConfigPath+"Config.ini"),encoding="utf_8")
-
 
 
 
@@ -497,5 +499,4 @@ while True:
         MainClass.UpdateGUI("IsSHRON", False)
         MainClass.UpdateGUI("OptionNumberIDText", False)
         MainClass.UpdateGUI("OptionNumber", False)'''
-
 MainWindow.close()
