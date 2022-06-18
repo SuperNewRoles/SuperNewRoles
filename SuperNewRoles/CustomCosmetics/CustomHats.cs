@@ -463,9 +463,9 @@ namespace SuperNewRoles.CustomCosmetics
             "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master",
             "https://raw.githubusercontent.com/Ujet222/TOPHats/main"
             /*
-            "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master",
+            "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master"*/,
             "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master",
-            "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"*/
+            "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"
         };
 
         public static List<CustomHatOnline> hatDetails = new List<CustomHatOnline>();
