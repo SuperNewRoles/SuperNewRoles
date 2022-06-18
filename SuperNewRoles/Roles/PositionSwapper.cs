@@ -25,27 +25,11 @@ namespace SuperNewRoles.Roles
                 }
             }
             var RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
-            var Player = ModHelpers.playerById(RandomPlayer.PlayerId);
-            var PlayerPosition = Player.transform.position;
-            var RandomPlayer2 = CachedPlayer.LocalPlayer;
-            var Player2 = ModHelpers.playerById(RandomPlayer2.PlayerId);
-            var PlayerPosition2 = Player2.transform.position;
-
-            RandomPlayer2.transform.position = PlayerPosition;
-            RandomPlayer.transform.position = PlayerPosition2;
-
-            /*if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.PositionSwapper)) {
-                CachedPlayer.LocalPlayer.transform.position = PlayerPosition;
-            }
-            else {
-                CachedPlayer.LocalPlayer.transform.position = PlayerPosition2;
-            }*/
-
             /*if (SubmergedCompatibility.isSubmerged())
             {
                 SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(Player));
             }*/
-            CustomRPC.RPCProcedure.PositionSwapperTP();
+            CustomRPC.RPCProcedure.PositionSwapperTP(RandomPlayer.PlayerId);
             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
         }
     }

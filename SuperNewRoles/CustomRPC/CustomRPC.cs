@@ -185,7 +185,7 @@ namespace SuperNewRoles.CustomRPC
         SetSpeedFreeze,
         BySamuraiKillRPC,
         MakeVent,
-        PositionSwap,
+        PositionSwapperTP,
         UseAdminTime,
         UseCameraTime,
         UseVitalsTime,
@@ -870,8 +870,19 @@ namespace SuperNewRoles.CustomRPC
             VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
             VentMakerVent.gameObject.SetActive(true);
         }
-        public static void PositionSwapperTP()
+        public static void PositionSwapperTP(byte SwapPlayerID)
         {
+            var SwapperPlayer = CachedPlayer.LocalPlayer;
+            var SwapperPlayerPosition = SwapPlayerID.transform.position;
+
+            var RandomPlayer = SwapPlayerID;
+            var RandomPlayerPosition = SwapPlayerID.transform.position;
+            SwapperPlayer.transform.position = PlayerPosition;
+            RandomPlayer.transform.position = PlayerPosition2;
+
+            var p = ModHelpers.playerById(playerid);
+            CachedPlayer.LocalPlayer.transform.position = p.transform.position;
+
             var rand = new System.Random();
             if (rand.Next(1, 20) == 1){
                 new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
@@ -1103,6 +1114,9 @@ namespace SuperNewRoles.CustomRPC
                         break;
                     case (byte)CustomRPC.MakeVent:
                         MakeVent(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                        break;
+                    case (byte)CustomRPC.PositionSwapperTP:
+                        RPCProcedure.PositionSwapperTP(reader.ReadByte());
                         break;
                     case (byte)CustomRPC.UseAdminTime:
                         RPCProcedure.UseAdminTime(reader.ReadSingle());
