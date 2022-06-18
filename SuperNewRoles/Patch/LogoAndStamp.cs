@@ -1,16 +1,20 @@
+using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.CustomCosmetics;
 using SuperNewRoles.Patch;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using TMPro;
 using Twitch;
 using UnityEngine;
 using UnityEngine.UI;
@@ -96,12 +100,119 @@ namespace SuperNewRoles.Patches
             public static SpriteRenderer renderer;
             public static Sprite bannerSprite;
             public static Sprite horseBannerSprite;
-            private static PingTracker instance;
-            static void Postfix(PingTracker __instance)
+            static IEnumerator ViewBoosterCoro(MainMenuManager __instance)
+            {
+                while (true)
+                {
+                    yield return new WaitForSeconds(1f);
+                    if (Downloaded)
+                    {
+                        if (__instance != null)
+                        {
+                            ViewBoosterPatch(__instance);
+                        }
+                        break;
+                    }
+                }
+            }
+            public static string SponsersData = "";
+            public static string DevsData = "";
+
+            public static async Task<HttpStatusCode> FetchBoosters()
+            {
+                if (!Downloaded)
+                {
+                    Downloaded = true;
+                    HttpClient http = new HttpClient();
+                    http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, OnlyIfCached = false};
+                    var response = await http.GetAsync(new System.Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
+                    try
+                    {
+                        if (response.StatusCode != HttpStatusCode.OK) {
+                            SuperNewRolesPlugin.Logger.LogInfo("NOTOK!!!");
+                            return response.StatusCode;
+                                };
+                        if (response.Content == null)
+                        {
+                            System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
+                            return HttpStatusCode.ExpectationFailed;
+                        }
+                        string json = await response.Content.ReadAsStringAsync();
+                        JToken jobj = JObject.Parse(json);
+
+                        var devs = jobj["Devs"];
+                        for (JToken current = devs.First; current != null; current = current.Next)
+                        {
+                            if (current.HasValues)
+                            {
+                                DevsData += current["name"]?.ToString() + "\n";
+                            }
+                        }
+
+                        var Sponsers = jobj["Sponsers"];
+                        for (JToken current = Sponsers.First; current != null; current = current.Next)
+                        {
+                            if (current.HasValues)
+                            {
+                                SponsersData += current["name"]?.ToString() + "\n";
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        SuperNewRolesPlugin.Logger.LogError(e);
+                    }
+                }
+                return HttpStatusCode.OK;
+            }
+            public static GameObject CreditsPopup;
+            static void ViewBoosterPatch(MainMenuManager __instance)
+            {
+                var template = __instance.transform.FindChild("StatsPopup");
+                var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
+                CreditsPopup = obj;
+                GameObject.Destroy(obj.GetComponent<StatsPopup>());
+                var devtitletext = obj.transform.FindChild("StatNumsText_TMP");
+                devtitletext.GetComponent<TextMeshPro>().text = "開発者";
+                devtitletext.localPosition = new Vector3(-3.25f, -1.65f, -2f);
+                devtitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
+                var devtext = obj.transform.FindChild("StatsText_TMP");
+                devtext.localPosition = new Vector3(-1f, -1.65f, -2f);
+                devtext.localScale = new Vector3(1.25f, 1.25f, 1f);
+                devtext.GetComponent<TextMeshPro>().text = DevsData;
+
+                var boostertitletext = GameObject.Instantiate(devtitletext, obj.transform);
+                boostertitletext.GetComponent<TextMeshPro>().text = "スポンサー";
+                boostertitletext.localPosition = new Vector3(1.45f, -1.65f, -2f);
+                boostertitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
+
+                var boostertext = GameObject.Instantiate(devtext, obj.transform);
+                boostertext.localPosition = new Vector3(3f, -1.65f, -2f);
+                boostertext.localScale = new Vector3(1.25f, 1.25f, 1f);
+                boostertext.GetComponent<TextMeshPro>().text = SponsersData;
+
+
+                var textobj = obj.transform.FindChild("Title_TMP");
+                GameObject.Destroy(textobj.GetComponent<TextTranslatorTMP>());
+                textobj.GetComponent<TextMeshPro>().text = "開発者&支援者";
+                textobj.localScale = new Vector3(1.5f, 1.5f, 1f);
+                obj.transform.FindChild("Background").localScale = new Vector3(1.5f, 1f, 1f);
+                obj.transform.FindChild("CloseButton").localPosition = new Vector3(-3.75f, 2.65f, 0);
+            }
+            static bool Downloaded = false;
+            public static MainMenuManager instance;
+            public static void Postfix(MainMenuManager __instance)
             {
                 DownLoadCustomhat.Load();
-                CustomCosmetics.DownLoadClass.Load();
-                CustomCosmetics.DownLoadClassVisor.Load();
+                DownLoadClass.Load();
+                DownLoadClassVisor.Load();
+
+                instance = __instance;
+
+                AmongUsClient.Instance.StartCoroutine(ViewBoosterCoro(__instance));
+
+                //ViewBoosterPatch(__instance);
+
                 DestroyableSingleton<ModManager>.Instance.ShowModStamp();
 
                 var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
@@ -117,7 +228,6 @@ namespace SuperNewRoles.Patches
                 loadSprites();
                 renderer.sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
 
-                instance = __instance;
                 loadSprites();
                 renderer.sprite = HorseModeOption.enableHorseMode ? horseBannerSprite : bannerSprite;
 
@@ -155,6 +265,11 @@ namespace SuperNewRoles.Patches
                 }
             }
 
+            private static IEnumerator Download()
+            {
+                throw new NotImplementedException();
+            }
+
             public static void loadSprites()
             {
                 if (bannerSprite == null) bannerSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
@@ -167,13 +282,13 @@ namespace SuperNewRoles.Patches
                 if (renderer != null)
                 {
                     float fadeDuration = 1f;
-                    instance.StartCoroutine(Effects.Lerp(fadeDuration, new Action<float>((p) =>
+                    AmongUsClient.Instance.StartCoroutine(Effects.Lerp(fadeDuration, new Action<float>((p) =>
                     {
                         renderer.color = new Color(1, 1, 1, 1 - p);
                         if (p == 1)
                         {
                             renderer.sprite = HorseModeOption.enableHorseMode ? horseBannerSprite : bannerSprite;
-                            instance.StartCoroutine(Effects.Lerp(fadeDuration, new Action<float>((p) =>
+                            AmongUsClient.Instance.StartCoroutine(Effects.Lerp(fadeDuration, new Action<float>((p) =>
                             {
                                 renderer.color = new Color(1, 1, 1, p);
                             })));

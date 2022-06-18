@@ -34,6 +34,7 @@ namespace SuperNewRoles.CustomCosmetics
         public static List<CustomPlates.CustomPlate> platedetails = new List<CustomPlates.CustomPlate>();
         public static void Load()
         {
+            Patches.CredentialsPatch.LogoPatch.FetchBoosters();
             if (running)
                 return;
             IsEndDownload = false;
