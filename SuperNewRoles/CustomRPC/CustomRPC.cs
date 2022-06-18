@@ -871,30 +871,20 @@ namespace SuperNewRoles.CustomRPC
             VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
             VentMakerVent.gameObject.SetActive(true);
         }
-        public static void PositionSwapperTP(byte SwapPlayerID)
+        public static void PositionSwapperTP(byte SwapPlayerID, byte SwapperID)
         {
-            var p = ModHelpers.playerById(SwapPlayerID);
+            var SwapPlayer = ModHelpers.playerById(SwapPlayerID);
+            var SwapperPlayer = ModHelpers.playerById(SwapperID);
             if (SubmergedCompatibility.isSubmerged())
             {
-                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
+                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(SwapPlayer));
             }
+            var SwapperPlayerPosition = SwapPlayer.transform.position;
+            var SwapPlayerPosition = SwapperPlayer.transform.position;
+            SwapPlayer.transform.position = SwapperPlayerPosition;
+            SwapperPlayer.transform.position = SwapPlayerPosition;
 
-            var SwapperPlayerPosition = p.transform.position;
-            var RandomPlayerPosition = CachedPlayer.LocalPlayer.transform.position;
-            List<PlayerControl> AlivePlayer = new();
-            foreach (PlayerControl Player in CachedPlayer.AllPlayers)
-            {
-                if (p.isAlive() && p.CanMove && !p.isRole(RoleId.PositionSwapper))
-                {
-                    AlivePlayer.Add(Player);
-                    CachedPlayer.LocalPlayer.transform.position = SwapperPlayerPosition;
-                }
-                else if (p.isAlive() && p.CanMove && p.isRole(RoleId.PositionSwapper))
-                {
-                    CachedPlayer.LocalPlayer.transform.position = RandomPlayerPosition;
-                }
-            }
-
+            //Text
             var rand = new System.Random();
             if (rand.Next(1, 20) == 1){
                 new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
@@ -902,6 +892,19 @@ namespace SuperNewRoles.CustomRPC
             else{
                 new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
             }
+            /*List<PlayerControl> SwappingPlayer = new();
+            foreach (PlayerControl Player in CachedPlayer.AllPlayers)
+            {
+                if (SwapPlayer.isAlive() && SwapPlayer.CanMove && !SwapPlayer.isRole(RoleId.PositionSwapper))
+                {
+                    SwappingPlayer.Add(Player);
+                    CachedPlayer.LocalPlayer.transform.position = SwapperPlayerPosition;
+                }
+                else if (SwapPlayer.isAlive() && SwapPlayer.CanMove && SwapPlayer.isRole(RoleId.PositionSwapper))
+                {
+                    CachedPlayer.LocalPlayer.transform.position = RandomPlayerPosition;
+                }
+            }*/
         }
         public static void UseAdminTime(float time)
         {
@@ -1128,7 +1131,7 @@ namespace SuperNewRoles.CustomRPC
                         MakeVent(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
                         break;
                     case (byte)CustomRPC.PositionSwapperTP:
-                        RPCProcedure.PositionSwapperTP(reader.ReadByte());
+                        RPCProcedure.PositionSwapperTP(reader.ReadByte(), reader.ReadByte());
                         break;
                     case (byte)CustomRPC.UseAdminTime:
                         RPCProcedure.UseAdminTime(reader.ReadSingle());
