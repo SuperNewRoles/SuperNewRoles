@@ -874,17 +874,26 @@ namespace SuperNewRoles.CustomRPC
         public static void PositionSwapperTP(byte SwapPlayerID)
         {
             var p = ModHelpers.playerById(SwapPlayerID);
+            if (SubmergedCompatibility.isSubmerged())
+            {
+                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
+            }
+
             var SwapperPlayerPosition = p.transform.position;
-            var RandomPlayerPosition = PlayerPosition2;
+            var RandomPlayerPosition = CachedPlayer.LocalPlayer.transform.position;
             List<PlayerControl> AlivePlayer = new();
             foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
                 if (p.isAlive() && p.CanMove && !p.isRole(RoleId.PositionSwapper))
                 {
                     AlivePlayer.Add(Player);
+                    CachedPlayer.LocalPlayer.transform.position = SwapperPlayerPosition;
+                }
+                else if (p.isAlive() && p.CanMove && p.isRole(RoleId.PositionSwapper))
+                {
+                    CachedPlayer.LocalPlayer.transform.position = RandomPlayerPosition;
                 }
             }
-            CachedPlayer.LocalPlayer.transform.position = p.transform.position;
 
             var rand = new System.Random();
             if (rand.Next(1, 20) == 1){

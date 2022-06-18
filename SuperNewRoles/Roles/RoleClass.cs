@@ -2235,4 +2235,3 @@ namespace SuperNewRoles.Roles
         }
     }
 }
-}
