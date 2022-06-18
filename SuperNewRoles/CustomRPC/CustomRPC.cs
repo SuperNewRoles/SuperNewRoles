@@ -879,8 +879,8 @@ namespace SuperNewRoles.CustomRPC
             {
                 SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(SwapPlayer));
             }
-            var SwapperPlayerPosition = SwapPlayer.transform.position;
-            var SwapPlayerPosition = SwapperPlayer.transform.position;
+            var SwapperPlayerPosition = SwapperPlayer.transform.position;
+            var SwapPlayerPosition = SwapPlayer.transform.position;
             SwapPlayer.transform.position = SwapperPlayerPosition;
             SwapperPlayer.transform.position = SwapPlayerPosition;
 
