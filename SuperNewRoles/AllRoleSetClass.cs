@@ -856,6 +856,7 @@ namespace SuperNewRoles
                 RoleId.GhostMechanic => CustomOption.CustomOptions.GhostMechanicPlayerCount.getFloat(),
                 RoleId.EvilHacker => CustomOption.CustomOptions.EvilHackerPlayerCount.getFloat(),
                 RoleId.HauntedWolf => CustomOption.CustomOptions.HauntedWolfPlayerCount.getFloat(),
+                RoleId.PositionSwapper => CustomOption.CustomOptions.PositionSwapperPlayerCount.getFloat(),
                 RoleId.Tuna => CustomOption.CustomOptions.TunaPlayerCount.getFloat(),
                 _ => 1,
             };
