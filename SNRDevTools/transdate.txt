@@ -727,24 +727,27 @@ TwitterDevLink,Development Information Account : https://twitter.com/SNRDevs,開
 Team,Team,陣営
 MessageSettings,Settings,設定
 NowRolesMessage,Activate Roles,現在入っている役職
-PlayerCountMessage,【Team: + GetTeamText(type)】,【 + GetTeamText(type) + 陣営】
-DebugModeOnText,Players,人
-BattleRoyalRemaining,DebugMode:ON,デバッグモードが有効です
-Player,Remaining until kills can be made,キルができるようになるまで残り
-CopsImpostorCome,Player,プレイヤー
-WareWolfHunter,Remaining until the Imposter arrives,インポスターが来るまで残り
-WereWolfHunterText,Level Up Mode: Kills Per Second,レベルアップモード:1秒あたりのキル回数
-WereWolf.WereWolf,Hunter,ハンター
-WereWolf.WereWolfText,Let's die with someone else.,誰かを道連れにしよう
-WareWolfMadman,Werewolf,人狼
-WereWolfMadmanText,Let's Eat Villager and Win!,市民を食べて勝利しよう
-WareWolfVillager,Madmate,狂人
-WereWolfVillagerText,Help the werewolves and win!,人狼を助けて勝利しよう
-WareWolfFortuneTeller,Villager,市民
-WereWolfFortuneTellerText,Expel the werewolves in the debate and win!,議論で人狼を追放して勝利しよう
-WareWolfMedium,FortuneTeller,占い師
-WereWolfMediumText,Divination to discover the werewolf and win!,占って人狼を発見して勝利しよう
-WereWolfMeetingNormal,Medium,霊媒師
-WereWolfMeetingAbility,Search out the role of the dead and win!,死んだ人の役職を調べて勝利しよう
-WereWolfMediumAbilityText,This is Meeting Time.,今回は会議タイムです。
-,This is Use to Ability Time.,今回は能力使用タイムです。
+TeamMessage,【Team:{0}】,【{0}陣営】
+PlayerCountMessage,Players,人
+DebugModeOnText,DebugMode:ON,デバッグモードが有効です
+BattleRoyalRemaining,Remaining until kills can be made,キルができるようになるまで残り
+Player,Player,プレイヤー
+CopsImpostorCome,Remaining until the Imposter arrives,インポスターが来るまで残り
+WareWolfHunter,Hunter,ハンター
+WereWolfHunterText,Let's die with someone else.,誰かを道連れにしよう
+WereWolf.WereWolf,Werewolf,人狼
+WereWolf.WereWolfText,Let's Eat Villager and Win!,市民を食べて勝利しよう
+WareWolfMadman,Madmate,狂人
+WereWolfMadmanText,Help the werewolves and win!,人狼を助けて勝利しよう
+WareWolfVillager,Villager,市民
+WereWolfVillagerText,Expel the werewolves in the debate and win!,議論で人狼を追放して勝利しよう
+WareWolfFortuneTeller,FortuneTeller,占い師
+WereWolfFortuneTellerText,Divination to discover the werewolf and win!,占って人狼を発見して勝利しよう
+WareWolfMedium,Medium,霊媒師
+WereWolfMediumText,Search out the role of the dead and win!,死んだ人の役職を調べて勝利しよう
+WereWolfMeetingNormal,This is Meeting Time.,今回は会議タイムです。
+WereWolfMeetingAbility,This is Use to Ability Time.,今回は能力使用タイムです。
+WereWolfMediumAbilityText,{0}'s Role is {1}!,{0}の役職は{1}です!
+TunaName,Tuna,マグロ
+TunaTitle1,Always move!,常に動け！
+TunaStoppingTimeSetting,Stopping Time,止まれる時間

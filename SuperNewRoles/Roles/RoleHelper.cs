@@ -530,6 +530,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.JackalSeer):
                     Roles.RoleClass.JackalSeer.JackalSeerPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.SidekickSeer):
+                    Roles.RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
+                    break;                    
                 case (CustomRPC.RoleId.Assassin):
                     Roles.RoleClass.Assassin.AssassinPlayer.Add(player);
                     break;
@@ -565,6 +568,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.HauntedWolf):
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Tuna):
+                    Roles.RoleClass.Tuna.TunaPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -892,6 +898,11 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.HauntedWolf):
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Tuna):
+                    Roles.RoleClass.Tuna.TunaPlayer.RemoveAll(ClearRemove);
+                    break;
+                    //ロールリモベ
+
                     //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -999,7 +1010,10 @@ namespace SuperNewRoles
                 case (RoleId.MayorFriends):
                     IsTaskClear = true;
                     break;
-                    //タスククリアか
+                case (RoleId.Tuna):
+                    IsTaskClear = true;
+                    break;
+                //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
@@ -1058,7 +1072,7 @@ namespace SuperNewRoles
                     return RoleClass.SeerFriends.IsUseVent;
                 case RoleId.SidekickSeer:
                 case RoleId.JackalSeer:
-                    return RoleClass.Jackal.IsUseVent;
+                    return RoleClass.JackalSeer.IsUseVent;
                 case RoleId.MadCleaner:
                     return RoleClass.MadCleaner.IsUseVent;
                 /*
@@ -1071,6 +1085,8 @@ namespace SuperNewRoles
                     return RoleClass.Vulture.IsUseVent;
                 case RoleId.MayorFriends:
                     return RoleClass.MayorFriends.IsUseVent;
+                case RoleId.Tuna:
+                    return RoleClass.Tuna.IsUseVent;
                     //ベントが使える
                     /*
                     case RoleId.Scavenger:
@@ -1118,7 +1134,7 @@ namespace SuperNewRoles
                     return RoleClass.TeleportingJackal.IsUseSabo;
                 case RoleId.SidekickSeer:
                 case RoleId.JackalSeer:
-                    return RoleClass.Jackal.IsUseSabo;
+                    return RoleClass.JackalSeer.IsUseSabo;
                 case RoleId.Egoist:
                     return RoleClass.Egoist.UseSabo;
             }
@@ -1158,7 +1174,7 @@ namespace SuperNewRoles
                     return RoleClass.SeerFriends.IsImpostorLight;
                 case RoleId.JackalSeer:
                 case RoleId.SidekickSeer:
-                    return RoleClass.Jackal.IsImpostorLight;
+                    return RoleClass.JackalSeer.IsImpostorLight;
                 case RoleId.MadCleaner:
                     return RoleClass.MadCleaner.IsImpostorLight;
                 case RoleId.MayorFriends:
@@ -1229,7 +1245,10 @@ namespace SuperNewRoles
                 case (RoleId.MayorFriends):
                     IsNeutral = true;
                     break;
-                    //第三か
+                case (RoleId.Tuna):
+                    IsNeutral = true;
+                    break;
+                //第三か
             }
             return IsNeutral;
         }
@@ -1809,6 +1828,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.HauntedWolf;
+                }
+                else if (Roles.RoleClass.Tuna.TunaPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Tuna;
                 }
                 //ロールチェック
             }

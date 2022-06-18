@@ -64,9 +64,9 @@ class ReturnClass:
     #ハッシュをRGBに変換
     def HashToRGB(self):
         Hash = MainClass.GetInput("ColorHash")
-        RGB = int(Hash[1:3],16), int(Hash[3:5],16), int(Hash[5:7],16)
-        print(RGB)
-        return RGB
+        RGB = str(int(Hash[1:3],16))+", "+ str(int(Hash[3:5],16))+", "+ str(int(Hash[5:7],16))
+        print(RGB.strip())
+        return RGB.strip()
     #チーム取得
     def GetTeam(self):
         if (MainClass.GetBool("Impo")):
@@ -172,11 +172,11 @@ class AllCheck:
     def AllWrite(self):
         # Roles/ROLENAME.cs
         if (MainClass.GetBool("A_CreateFile")):
-            MainClass.WriteCodes("Roles/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), "",
-"""using System;
+            with open(BasePath+"Roles/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), mode="x") as x:
+                x.write(
+                    """using System;
 using System.Collections.Generic;
 using System.Text;
-
 namespace SuperNewRoles.Roles
 {
     internal class ROLENAME
