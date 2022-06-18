@@ -42,28 +42,7 @@ class ReturnClass:
             return "true"
         else:
             return "false"
-    #選択から色を返す
 
-    def GetRoleColor(self):
-        if (MainClass.GetInput("ColorHash") != "ImposterRed"):
-            Template = "new Color32(RGBCOLOR, byte.MaxValue)".replace(
-                "RGBCOLOR", str(MainClass.HashToRGB()))
-            print("ハッシュを取得しました:", Template)
-            return Template
-        elif (MainClass.GetBool("ImpoColor")):
-            print("インポ色を取得しました")
-            return "ImpostorRed"
-        elif (MainClass.GetBool("CrewColor")):
-            print("クルー色を取得しました")
-            return "new Color32(0, 255, 0, byte.MaxValue)"
-    #ハッシュをRGBに変換
-
-    def HashToRGB(self):
-        Hash = MainClass.GetInput("ColorHash")
-        RGB = str(int(Hash[1:3], 16))+", " + \
-            str(int(Hash[3:5], 16))+", " + str(int(Hash[5:7], 16))
-        print(RGB.strip())
-        return RGB.strip()
     #MapId取得
 
     def GetMapId(self):
