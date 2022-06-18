@@ -229,7 +229,7 @@ namespace SuperNewRoles.Roles
                 {
                     return CustomRPC.RoleId.ROLENAME;
                 }\n                //ロールチェック""".replace("ROLENAME",MainClass.GetInput("RoleName")))
-                            
+
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールアド",
                                 """case (CustomRPC.RoleId.ROLENAME):
                     Roles.RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
@@ -267,7 +267,7 @@ namespace SuperNewRoles.Roles
                 //くりあぁあんどりろぉどぉ
             }
         }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))
-        
+
         # Intro/IntroDate.cs
         if (MainClass.GetBool("Impo")):
             MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Impostor);
@@ -316,12 +316,12 @@ namespace SuperNewRoles.Roles
             #else:
                 #MainClass.CreateErrorWindow("設定タブの値が空白です")
         ## シェリフキル
-        if (MainClass.GetBool("A_CanSheriffKill") or MainClass.GetBool("Neut")):
+        if (MainClass.GetBool("A_CanSheriffKill")):
             # Roles/Sheriff.cs
             MainClass.WriteCodes("Roles/Sheriff.cs", "//シェリフキルゥ",
-            """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;\n            //シェリフキルぅ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             MainClass.WriteCodes("Roles/Sheriff.cs", "//リモシェリフキルゥ",
-            """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;\n            //リモシェリフキルゥ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         ## キルボタン
         if (MainClass.GetBool("A_CanKill")):
@@ -397,7 +397,7 @@ namespace SuperNewRoles.Roles
                     return RoleClass.ROLENAME.IsImpostorLight;\n                //インポの視界""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # いらないやつ(次実行するときに複数書いてしまうため)の削除　(例:Jackal→//その他Option, NewRole→//その他Optionの場合、二つに書かれてしまうため重複する)
-        MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベント設定可視化", "")
+        #MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベント設定可視化", "")
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//その他Option", "")
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//くりあぁあんどりろぉどぉ", "")
         #MainClass.WriteCodes("Roles/RoleHelper.cs", "", "")
