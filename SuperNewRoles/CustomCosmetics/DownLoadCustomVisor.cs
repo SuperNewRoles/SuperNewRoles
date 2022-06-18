@@ -1,5 +1,3 @@
-﻿using HarmonyLib;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +8,8 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using HarmonyLib;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics
@@ -30,8 +30,8 @@ namespace SuperNewRoles.CustomCosmetics
     {
         public static bool IsEndDownload = false;
         public static bool running = false;
-        public static List<string> fetchs = new List<string>();
-        public static List<CustomVisors.CustomVisor> Visordetails = new List<CustomVisors.CustomVisor>();
+        public static List<string> fetchs = new();
+        public static List<CustomVisors.CustomVisor> Visordetails = new();
         public static void Load()
         {
             if (running)
@@ -61,17 +61,15 @@ namespace SuperNewRoles.CustomCosmetics
             if (reshash == null || !File.Exists(respath))
                 return true;
 
-            using (var stream = File.OpenRead(respath))
-            {
-                var hash = System.BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
-                return !reshash.Equals(hash);
-            }
+            using var stream = File.OpenRead(respath);
+            var hash = System.BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+            return !reshash.Equals(hash);
         }
         public static async Task<HttpStatusCode> FetchHats(string repo, bool IsTOP = false)
         {
             fetchs.Add(repo);
             SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor:Download] バイザーダウンロード開始:" + repo);
-            HttpClient http = new HttpClient();
+            HttpClient http = new();
             http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
             var response = await http.GetAsync(new System.Uri($"{repo}/CustomVisors.json"), HttpCompletionOption.ResponseContentRead);
             try
@@ -102,16 +100,17 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                 };
 
-                List<CustomVisors.CustomVisor> Visordatas = new List<CustomVisors.CustomVisor>();
+                List<CustomVisors.CustomVisor> Visordatas = new();
 
                 for (JToken current = jobj.First; current != null; current = current.Next)
                 {
                     if (current != null && current.HasValues)
                     {
-                        CustomVisors.CustomVisor info = new CustomVisors.CustomVisor();
-
-                        info.name = current["name"]?.ToString();
-                        info.resource = sanitizeResourcePath(current["resource"]?.ToString());
+                        CustomVisors.CustomVisor info = new()
+                        {
+                            name = current["name"]?.ToString(),
+                            resource = sanitizeResourcePath(current["resource"]?.ToString())
+                        };
                         if (info.resource == null || info.name == null) // required
                             continue;
                         info.IsTOP = IsTOP;
@@ -121,7 +120,7 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                 }
 
-                List<string> markedfordownload = new List<string>();
+                List<string> markedfordownload = new();
 
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\";
                 MD5 md5 = MD5.Create();
@@ -136,13 +135,9 @@ namespace SuperNewRoles.CustomCosmetics
                     var hatFileResponse = await http.GetAsync($"{repo}/{visortext}/{file}", HttpCompletionOption.ResponseContentRead);
                     if (hatFileResponse.StatusCode != HttpStatusCode.OK) continue;
 
-                    using (var responseStream = await hatFileResponse.Content.ReadAsStreamAsync())
-                    {
-                        using (var fileStream = File.Create($"{filePath}\\{file}"))
-                        {
-                            responseStream.CopyTo(fileStream);
-                        }
-                    }
+                    using var responseStream = await hatFileResponse.Content.ReadAsStreamAsync();
+                    using var fileStream = File.Create($"{filePath}\\{file}");
+                    responseStream.CopyTo(fileStream);
                 }
 
                 Visordetails.AddRange(Visordatas);

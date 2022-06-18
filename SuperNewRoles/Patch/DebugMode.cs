@@ -1,20 +1,20 @@
-﻿using BepInEx;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Security.Cryptography;
+using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using HarmonyLib;
 using Hazel;
-using System.Security.Cryptography;
-using System.Linq;
-using System.Net;
-using System.IO;
-using System;
-using System.Reflection;
+using InnerNet;
+using SuperNewRoles.CustomOption;
 using UnhollowerBaseLib;
 using UnityEngine;
-using SuperNewRoles.CustomOption;
-using InnerNet;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace SuperNewRoles.Patch
 {
@@ -36,14 +36,14 @@ namespace SuperNewRoles.Patch
         [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
         public static class DebugManager
         {
-            private static readonly System.Random random = new System.Random((int)DateTime.Now.Ticks);
-            private static List<PlayerControl> bots = new List<PlayerControl>();
+            private static readonly System.Random random = new((int)DateTime.Now.Ticks);
+            private static List<PlayerControl> bots = new();
             public class LateTask
             {
                 public string name;
                 public float timer;
                 public Action action;
-                public static List<LateTask> Tasks = new List<LateTask>();
+                public static List<LateTask> Tasks = new();
                 public bool run(float deltaTime)
                 {
                     timer -= deltaTime;

@@ -1,11 +1,3 @@
-﻿using HarmonyLib;
-using UnityEngine;
-using UnityEngine.UI;
-using static UnityEngine.UI.Button;
-using Object = UnityEngine.Object;
-using SuperNewRoles.Patch;
-using Newtonsoft.Json.Linq;
-using SuperNewRoles.CustomCosmetics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +7,15 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using HarmonyLib;
+using Newtonsoft.Json.Linq;
+using SuperNewRoles.CustomCosmetics;
+using SuperNewRoles.Patch;
 using Twitch;
+using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.UI.Button;
+using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Patch
 {
@@ -33,7 +33,8 @@ namespace SuperNewRoles.Patch
             else buttonDiscord.transform.localPosition = new Vector3(buttonDiscord.transform.localPosition.x, buttonDiscord.transform.localPosition.y + 1.2f, buttonDiscord.transform.localPosition.z);
 
             var textDiscord = buttonDiscord.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
-            __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) => {
+            __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
+            {
                 textDiscord.SetText("Discord");
             })));
 

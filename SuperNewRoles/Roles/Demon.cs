@@ -1,9 +1,9 @@
-﻿using Hazel;
+using System;
+using System.Collections.Generic;
+using Hazel;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
-using System;
-using System.Collections.Generic;
 
 namespace SuperNewRoles.Roles
 {

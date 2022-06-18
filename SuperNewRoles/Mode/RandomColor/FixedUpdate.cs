@@ -1,11 +1,11 @@
-﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.RandomColor

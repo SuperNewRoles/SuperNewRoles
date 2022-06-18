@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Helpers;

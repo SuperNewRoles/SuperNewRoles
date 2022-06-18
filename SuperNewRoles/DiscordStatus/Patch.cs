@@ -1,4 +1,4 @@
-﻿/*using DiscordRPC;
+/*using DiscordRPC;
 using DiscordRPC.Logging;
 using HarmonyLib;
 using System;

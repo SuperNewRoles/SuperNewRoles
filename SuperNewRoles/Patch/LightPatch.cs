@@ -1,10 +1,10 @@
-﻿using HarmonyLib;
-using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
+using HarmonyLib;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
@@ -18,10 +18,12 @@ namespace SuperNewRoles.Patch
                 return SubmergedCompatibility.GetSubmergedNeutralLightRadius(isImpostor);
             }
 
-            if (Clergyman.IsLightOutVision() && isImpostor) {
+            if (Clergyman.IsLightOutVision() && isImpostor)
+            {
                 return shipStatus.MaxLightRadius * RoleClass.Clergyman.DownImpoVision;
             }
-            if (isImpostor) {
+            if (isImpostor)
+            {
                 return shipStatus.MaxLightRadius * PlayerControl.GameOptions.ImpostorLightMod;
             }
 
@@ -29,11 +31,13 @@ namespace SuperNewRoles.Patch
             float lerpValue = switchSystem.Value / 255f;
 
             var LocalPlayer = PlayerControl.LocalPlayer;
-            if (LocalPlayer.isRole(RoleId.Nocturnality)) {
+            if (LocalPlayer.isRole(RoleId.Nocturnality))
+            {
                 if (1 - lerpValue >= 0)
                 {
                     lerpValue = 1f - lerpValue;
-                } else
+                }
+                else
                 {
                     lerpValue = 1f + (1f - lerpValue);
                 }
@@ -56,7 +60,7 @@ namespace SuperNewRoles.Patch
             else if (player.Object.isRole(CustomRPC.RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate)
                 __result = GetNeutralLightRadius(__instance, false);
             else if (player.Object.isImpostor() || RoleHelpers.IsImpostorLight(player.Object))
-                __result = GetNeutralLightRadius(__instance,true);
+                __result = GetNeutralLightRadius(__instance, true);
             else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player.Object) && RoleClass.Lighter.IsLightOn)
                 __result = Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num);
             else

@@ -1,8 +1,8 @@
-﻿using HarmonyLib;
-using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using InnerNet;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch

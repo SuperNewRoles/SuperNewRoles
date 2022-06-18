@@ -1,7 +1,7 @@
-﻿using HarmonyLib;
+using System;
+using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
-using System;
 
 namespace SuperNewRoles.Roles
 {
