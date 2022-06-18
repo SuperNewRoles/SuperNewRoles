@@ -229,6 +229,7 @@ namespace SuperNewRoles.Roles
                 {
                     return CustomRPC.RoleId.ROLENAME;
                 }\n                //ロールチェック""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールアド",
                                 """case (CustomRPC.RoleId.ROLENAME):
                     Roles.RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
@@ -266,6 +267,7 @@ namespace SuperNewRoles.Roles
                 //くりあぁあんどりろぉどぉ
             }
         }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))
+
         # Intro/IntroDate.cs
         if (MainClass.GetBool("Impo")):
             MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Impostor);
