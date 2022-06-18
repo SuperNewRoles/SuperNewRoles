@@ -319,9 +319,9 @@ namespace SuperNewRoles.Roles
         if (MainClass.GetBool("A_CanSheriffKill")):
             # Roles/Sheriff.cs
             MainClass.WriteCodes("Roles/Sheriff.cs", "//シェリフキルゥ",
-            """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;\n            //シェリフキルぅ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             MainClass.WriteCodes("Roles/Sheriff.cs", "//リモシェリフキルゥ",
-            """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """if (Target.isRole(CustomRPC.RoleId.ROLENAME) && RoleClass.Sheriff.IsMadRoleKill) return true;\n            //リモシェリフキルゥ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         ## キルボタン
         if (MainClass.GetBool("A_CanKill")):
