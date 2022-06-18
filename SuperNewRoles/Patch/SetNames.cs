@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -316,6 +316,20 @@ namespace SuperNewRoles.Patch
             else
             {
                 if (Madmate.CheckImpostor(PlayerControl.LocalPlayer) ||
+                    LocalRole == RoleId.MadKiller ||
+                    LocalRole == RoleId.Marine ||
+                    (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon)
+                    )
+                {
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    {
+                        if (p.isImpostor())
+                        {
+                            SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
+                        }
+                    }
+                }
+                                if (BlackCat.CheckImpostor(PlayerControl.LocalPlayer) ||
                     LocalRole == RoleId.MadKiller ||
                     LocalRole == RoleId.Marine ||
                     (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon)

@@ -751,3 +751,5 @@ WereWolfMediumAbilityText,{0}'s Role is {1}!,{0}の役職は{1}です!
 TunaName,Tuna,マグロ
 TunaTitle1,Always move!,常に動け！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間
+BlackCatName,Black Cat,黒猫
+BlackCatTitle1,Give your life for your master.,主人のために命を捧げよ

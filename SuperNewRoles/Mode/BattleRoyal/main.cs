@@ -148,6 +148,10 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 {
                     return false;
                 }
+                                if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.isRole(CustomRPC.RoleId.BlackCat))
+                {
+                    return false;
+                }
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
                     bool returndata = MorePatch.RepairSystem(__instance, systemType, player, amount);
