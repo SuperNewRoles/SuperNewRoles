@@ -1548,7 +1548,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     if (!PlayerControl.LocalPlayer.CanMove) return;
-                    if (RoleClass.PositionSwapper.SwapCount <= CustomOptions.PositionSwapperSwapCount.getFloat())
+                    if (RoleClass.PositionSwapper.SwapCount >= CustomOptions.PositionSwapperSwapCount.getFloat()) return;
                     RoleClass.PositionSwapper.SwapCount++;
                     RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
                     PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
