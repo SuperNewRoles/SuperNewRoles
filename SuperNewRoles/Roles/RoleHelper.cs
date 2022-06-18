@@ -241,7 +241,7 @@ namespace SuperNewRoles
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
-
+                //ベント設定可視化
             }
             return returntext;
         }
@@ -569,8 +569,9 @@ namespace SuperNewRoles
                 case CustomRPC.RoleId.HauntedWolf:
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.PositionSwapper):
+                case CustomRPC.RoleId.PositionSwapper:
                     Roles.RoleClass.PositionSwapper.PositionSwapperPlayer.Add(player);
+                    break;
                 case CustomRPC.RoleId.Tuna:
                     Roles.RoleClass.Tuna.TunaPlayer.Add(player);
                     break;
