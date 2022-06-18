@@ -122,20 +122,19 @@ class AllCheck:
         #Sabotage/SabotageManager
         MainClass.WriteCodes("Sabotage/SabotageManager.cs",
                              "//CustomSabotageId", MainClass.GetInput("SabotageName") + ",\n            //CustomSabotageId")
-        MapId = MainClass.GetMapId()
-        conditions = ""
-        for item in MapId:
-            if (item == MapId[0]): conditions + "PlayerControl.GameOptions.MapId is not " + item
-            else: conditions + "and " + item
+        for item in MainClass.GetMapId():
+            if (item == MainClass.GetMapId()[0]):
+                conditions = "PlayerControl.GameOptions.MapId is not " + item
+            else:
+                conditions = conditions + " and " + item
         MainClass.WriteCodes("Sabotage/SabotageManager.cs", "//カスタムサボタージュが使えるか",
                              "case CustomSabotage." + MainClass.GetInput("SabotageName") + ":\n                    if (" + conditions + ") return false;\n                    else return Options." + MainClass.GetInput("SabotageName") + "Setting.getBool();\n                //カスタムサボタージュが使えるか")
         # Sabotage/Options.cs.cs
         MainClass.WriteCodes("Sabotage/Options.cs", "//CustomOption(Sabotage)",
-                            """\n        public static CustomOption.CustomOption SabotageNAMESetting;
-                            \n        //CustomOption""".replace("SabotageNAME", MainClass.GetInput("SabotageName")))
+                            """public static CustomOption.CustomOption SabotageNAMESetting;\n        //CustomOption(Sabotage)""".replace("SabotageNAME", MainClass.GetInput("SabotageName")))
         if (MainClass.GetBool("AddSetting")):
             MainClass.WriteCodes("Sabotage/Options.cs", "//表示設定(Sabotage)",
-                                """\n            SabotageNAMESetting = new CustomOption.CustomOption.Create(IDNUM, false, CustomOptionType.Generic, "SabotageNAMESetting",false, SabotageSetting);
+                                """SabotageNAMESetting = new CustomOption.CustomOption.Create(IDNUM, false, CustomOptionType.Generic, "SabotageNAMESetting",false, SabotageSetting);
                                 \n            //表示設定""".replace("SabotageNAME", MainClass.GetInput("SabotageName")).replace("IDNUM", MainClass.PlusIDNum()))
 
 ## 変数
