@@ -229,7 +229,7 @@ namespace SuperNewRoles.Roles
                 {
                     return CustomRPC.RoleId.ROLENAME;
                 }\n                //ロールチェック""".replace("ROLENAME",MainClass.GetInput("RoleName")))
-                            
+
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールアド",
                                 """case (CustomRPC.RoleId.ROLENAME):
                     Roles.RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
@@ -267,7 +267,7 @@ namespace SuperNewRoles.Roles
                 //くりあぁあんどりろぉどぉ
             }
         }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))
-        
+
         # Intro/IntroDate.cs
         if (MainClass.GetBool("Impo")):
             MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Impostor);
@@ -467,7 +467,7 @@ CreateTab = psg.Tab("作成", [
                 [psg.Button("作成",key="Main_CreateButton", pad=((10,10),(10,10)), size=(15,2))] ])
 MainLayOut = [[psg.TabGroup ([[MainTab, AdvanceTab, CreateTab]])]]
 
-MainWindow = psg.Window(title=MainClass.GetConfig("Main", "WindowName"), layout=MainLayOut, size=(MainClass.GetConfig("Main", "SizeX"), MainClass.GetConfig("Main", "SizeY")), icon=MainClass.GetResource("pictures/icon.png"))
+MainWindow = psg.Window(title=MainClass.GetConfig("Main", "WindowName"), layout=MainLayOut, size=(MainClass.GetConfig("Main", "SizeX"), MainClass.GetConfig("Main", "SizeY")), icon=MainClass.GetResource("pictures/icon.ico"))
 
 ## イベントループ
 while True:

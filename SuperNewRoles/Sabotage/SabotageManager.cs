@@ -11,7 +11,8 @@ namespace SuperNewRoles.Sabotage
         public enum CustomSabotage
         {
             None,
-            CognitiveDeficit
+            CognitiveDeficit,
+            //CustomSabotageId
         }
         public static bool IsOK(CustomSabotage sabotage)
         {
@@ -21,6 +22,7 @@ namespace SuperNewRoles.Sabotage
                 case CustomSabotage.CognitiveDeficit:
                     if (PlayerControl.GameOptions.MapId != 4) return false;
                     else return Options.CognitiveDeficitSetting.getBool();
+                //カスタムサボタージュが使えるか
             }
             return false;
         }
