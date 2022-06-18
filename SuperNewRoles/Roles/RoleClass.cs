@@ -809,7 +809,8 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> ResearcherPlayer;
             public static Color32 color = new(0, 255, 0, byte.MaxValue);
             //public static Vector3 SamplePosition;
-            private static List<Vector3> SamplePoss = new() {
+            private static List<Vector3> SamplePoss = new()
+            {
                 new Vector3(-11, -2.1f, 0),
                 new Vector3(16.9f, 0.4f, 0),
                 new Vector3(35.2f, -6.8f, 0),

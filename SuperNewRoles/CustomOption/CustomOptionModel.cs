@@ -970,7 +970,7 @@ namespace SuperNewRoles.CustomOption
                         entry.AppendLine(optionToString(option));
                     }
                     addChildren(option, ref entry, !GameOptionsMenuUpdatePatch.isHidden(option));
-                    if (entry.ToString().Trim('\n', '\r') != "\r" && entry.ToString().Trim('\n', '\r') != "")
+                    if (entry.ToString().Trim('\n', '\r') is not "\r" and not "")
                     {
                         entries.Add(entry.ToString().Trim('\n', '\r'));
                     }

@@ -40,10 +40,10 @@ namespace SuperNewRoles.Mode.CopsRobbers
         }
         public static Dictionary<MapNames, List<SystemTypes>> Rooms = new()
         {
-            { MapNames.Skeld, new List<SystemTypes>(){ SystemTypes.Comms, SystemTypes.Nav, SystemTypes.Security } },
-            { MapNames.Mira, new List<SystemTypes>(){ SystemTypes.Comms, SystemTypes.Greenhouse, SystemTypes.Launchpad, SystemTypes.Storage} },
-            { MapNames.Polus, new List<SystemTypes>(){ SystemTypes.Electrical, SystemTypes.Specimens, SystemTypes.Weapons} },
-            { MapNames.Airship, new List<SystemTypes>(){ SystemTypes.Records, SystemTypes.Security, SystemTypes.VaultRoom} }
+            { MapNames.Skeld, new List<SystemTypes>() { SystemTypes.Comms, SystemTypes.Nav, SystemTypes.Security } },
+            { MapNames.Mira, new List<SystemTypes>() { SystemTypes.Comms, SystemTypes.Greenhouse, SystemTypes.Launchpad, SystemTypes.Storage } },
+            { MapNames.Polus, new List<SystemTypes>() { SystemTypes.Electrical, SystemTypes.Specimens, SystemTypes.Weapons } },
+            { MapNames.Airship, new List<SystemTypes>() { SystemTypes.Records, SystemTypes.Security, SystemTypes.VaultRoom } }
         };
         public static MapNames GetMap()
         {
