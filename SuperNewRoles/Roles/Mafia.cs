@@ -12,20 +12,13 @@ namespace SuperNewRoles.Roles
         public static bool IsKillFlag()
         {
             if (RoleClass.Mafia.CachedIs) return true;
-            SuperNewRolesPlugin.Logger.LogInfo("IsKillMafia!!!");
             foreach (CachedPlayer player in CachedPlayer.AllPlayers)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => " + player.PlayerControl.isAlive());
-                SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName+" => "+player.PlayerControl.IsPlayer());
-                SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => " + player.PlayerControl.isImpostor());
-                SuperNewRolesPlugin.Logger.LogInfo(!player.PlayerControl.isRole(RoleId.Mafia) && !player.PlayerControl.isRole(RoleId.Egoist));
                 if (player.PlayerControl.IsPlayer() && player.PlayerControl.isAlive() && player.PlayerControl.isImpostor() && !player.PlayerControl.isRole(RoleId.Mafia) && !player.PlayerControl.isRole(RoleId.Egoist))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("ƒAƒEƒg:"+player.Data.PlayerName);
                     return false;
                 }
             }
-            SuperNewRolesPlugin.Logger.LogInfo("‚Â‚¤‚©");
             RoleClass.Mafia.CachedIs = true;
             return true;
         }
@@ -52,7 +45,6 @@ namespace SuperNewRoles.Roles
                 {
                     PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.killTimer - Time.fixedDeltaTime);
                 }
-                SuperNewRolesPlugin.Logger.LogInfo(PlayerControl.LocalPlayer.killTimer);
             }
         }
     }
