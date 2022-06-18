@@ -1,4 +1,4 @@
-﻿using Hazel;
+using Hazel;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using UnityEngine;

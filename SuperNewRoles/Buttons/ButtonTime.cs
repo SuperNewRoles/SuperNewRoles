@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using UnityEngine;
-using UnityEngine.UI;
 using HarmonyLib;
 using SuperNewRoles.Roles;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace SuperNewRoles.Buttons
 {
@@ -104,7 +104,7 @@ namespace SuperNewRoles.Buttons
             {
                 Roles.RoleClass.Doorr.ButtonTimer = DateTime.Now;
             }
-            TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Doorr.CoolTime);
+            TimeSpan TimeSpanDate = new(0, 0, 0, (int)Roles.RoleClass.Doorr.CoolTime);
             if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
             {
                 TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.EvilDoorr.CoolTime);

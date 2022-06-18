@@ -1,15 +1,15 @@
-﻿using HarmonyLib;
-using Hazel;
 using System;
-using System.Reflection;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
 using System.Collections;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.Roles;
-using SuperNewRoles.Helpers;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using HarmonyLib;
+using Hazel;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
@@ -52,7 +52,8 @@ namespace SuperNewRoles.Patch
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Start))]
         public class GameStartManagerStartPatch
         {
-            public static void Postfix() {
+            public static void Postfix()
+            {
                 timer = 600f;
                 RPCTimer = 1f;
                 notcreateroom = false;
@@ -66,7 +67,7 @@ namespace SuperNewRoles.Patch
         public class GameStartManagerUpdatePatch
         {
             private static bool update = false;
-            public static Dictionary<int, PlayerVersion> VersionPlayers = new Dictionary<int, PlayerVersion>();
+            public static Dictionary<int, PlayerVersion> VersionPlayers = new();
             public static int Proce;
             private static string currentText = "";
             public static bool LastBlockStart;
@@ -79,7 +80,8 @@ namespace SuperNewRoles.Patch
             public static void Postfix(GameStartManager __instance)
             {
                 Proce++;
-                if (Proce >= 10) {
+                if (Proce >= 10)
+                {
 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareSNRVersion, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)SuperNewRolesPlugin.Version.Major);
@@ -100,7 +102,7 @@ namespace SuperNewRoles.Patch
                     {
                         foreach (InnerNet.ClientData p in AmongUsClient.Instance.allClients.GetFastEnumerator())
                         {
-                            if (p.PlatformData.Platform != Platforms.StandaloneEpicPC && p.PlatformData.Platform != Platforms.StandaloneSteamPC)
+                            if (p.PlatformData.Platform is not Platforms.StandaloneEpicPC and not Platforms.StandaloneSteamPC)
                             {
                                 AmongUsClient.Instance.KickPlayer(p.Id, false);
                             }
@@ -113,7 +115,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
                         {
-                            message += "\n" + ModTranslation.getString("ErrorHostNoVersion")+"\n";
+                            message += "\n" + ModTranslation.getString("ErrorHostNoVersion") + "\n";
                             blockStart = true;
                         }
                         else
@@ -123,24 +125,25 @@ namespace SuperNewRoles.Patch
                             int diff = SuperNewRolesPlugin.Version.CompareTo(PV.version);
                             if (diff > 0)
                             {
-                                message += $"{ModTranslation.getString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version.ToString()})\n";
+                                message += $"{ModTranslation.getString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
                                 blockStart = true;
                             }
                             else if (diff < 0)
                             {
-                                message += $"{ModTranslation.getString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version.ToString()})\n";
+                                message += $"{ModTranslation.getString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
                                 blockStart = true;
                             }
                             else if (!PV.GuidMatches())
                             { // version presumably matches, check if Guid matches
-                                message += $"{ModTranslation.getString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version.ToString()})\n";
+                                message += $"{ModTranslation.getString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
                                 blockStart = true;
                             }
                         }
                     }
                     foreach (InnerNet.ClientData client in AmongUsClient.Instance.allClients.GetFastEnumerator().ToArray())
                     {
-                        if (client.Id != AmongUsClient.Instance.HostId) {
+                        if (client.Id != AmongUsClient.Instance.HostId)
+                        {
                             if (!VersionPlayers.ContainsKey(client.Id))
                             {
                                 if (!(client.PlatformData.Platform != Platforms.StandaloneEpicPC && client.PlatformData.Platform != Platforms.StandaloneSteamPC && CustomOptions.DisconnectNotPCOption.getBool()))
@@ -149,22 +152,23 @@ namespace SuperNewRoles.Patch
                                     blockStart = true;
                                 }
                             }
-                            else {
+                            else
+                            {
                                 PlayerVersion PV = VersionPlayers[client.Id];
                                 int diff = SuperNewRolesPlugin.Version.CompareTo(PV.version);
                                 if (diff > 0)
                                 {
-                                    message += $"{string.Format(ModTranslation.getString("ErrorClientChangeVersion"),client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version.ToString()})\n";
+                                    message += $"{string.Format(ModTranslation.getString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
                                     blockStart = true;
                                 }
                                 else if (diff < 0)
                                 {
-                                    message += $"{string.Format(ModTranslation.getString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version.ToString()})\n";
+                                    message += $"{string.Format(ModTranslation.getString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
                                     blockStart = true;
                                 }
                                 else if (!PV.GuidMatches())
                                 { // version presumably matches, check if Guid matches
-                                    message += $"{string.Format(ModTranslation.getString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version.ToString()})\n";
+                                    message += $"{string.Format(ModTranslation.getString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
                                     blockStart = true;
                                 }
                             }
@@ -185,7 +189,7 @@ namespace SuperNewRoles.Patch
                     __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
                 }
                 LastBlockStart = blockStart;
-                    if (update) currentText = __instance.PlayerCounter.text;
+                if (update) currentText = __instance.PlayerCounter.text;
                 if (AmongUsClient.Instance.AmHost)
                 {
                     timer = Mathf.Max(0f, timer -= Time.deltaTime);
@@ -205,20 +209,21 @@ namespace SuperNewRoles.Patch
                 {
                     timer = Mathf.Max(0f, timer);
                 }
-                    int minutes = (int)timer / 60;
-                    int seconds = (int)timer % 60;
-                    string suffix = $" ({minutes:00}:{seconds:00})";
+                int minutes = (int)timer / 60;
+                int seconds = (int)timer % 60;
+                string suffix = $" ({minutes:00}:{seconds:00})";
 
-                    __instance.PlayerCounter.text = currentText.Replace("\n", "") + suffix.Replace("\n", "")
-                    ;
-                    __instance.PlayerCounter.autoSizeTextContainer = true;
-                    if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value) {
-                        //MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AutoCreateRoom, Hazel.SendOption.Reliable, -1);
-                        //AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        //var roomid = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId);
-                        //AmongUsClient.Instance.StartCoroutine(CREATEROOMANDJOIN(roomid, AmongUsClient.Instance.GameId));
-                        notcreateroom = true;
-                    }
+                __instance.PlayerCounter.text = currentText.Replace("\n", "") + suffix.Replace("\n", "")
+                ;
+                __instance.PlayerCounter.autoSizeTextContainer = true;
+                if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value)
+                {
+                    //MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AutoCreateRoom, Hazel.SendOption.Reliable, -1);
+                    //AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    //var roomid = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId);
+                    //AmongUsClient.Instance.StartCoroutine(CREATEROOMANDJOIN(roomid, AmongUsClient.Instance.GameId));
+                    notcreateroom = true;
+                }
             }
             /**
                 if (!AmongUsClient.Instance.AmHost)
@@ -233,8 +238,8 @@ namespace SuperNewRoles.Patch
                         __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
                     }
                 }**/
-            }
         }
+    }
     public class PlayerVersion
     {
         public readonly Version version;

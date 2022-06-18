@@ -1,14 +1,14 @@
-﻿using Hazel;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -77,7 +77,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
             AmongUsClient.Instance.StartCoroutine(nameof(ResetName));
-            IEnumerator ResetName()
+
+            static IEnumerator ResetName()
             {
                 yield return new WaitForSeconds(1);
                 FixedUpdate.SetRoleNames();
@@ -114,12 +115,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Writer.Write((byte)CustomGameOverReason.QuarreledWin);
                         Writer.EndRPC();
                         CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
-                        var winplayers = new List<PlayerControl>();
-                        winplayers.Add(exiled.Object);
+                        var winplayers = new List<PlayerControl>
+                        {
+                            exiled.Object
+                        };
                         //EndGameCheck.WinNeutral(winplayers);
                         Chat.WinCond = CustomGameOverReason.QuarreledWin;
-                        Chat.Winner = new List<PlayerControl>();
-                        Chat.Winner.Add(exiled.Object);
+                        Chat.Winner = new List<PlayerControl>
+                        {
+                            exiled.Object
+                        };
                         RoleClass.Quarreled.IsQuarreledWin = true;
                         EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
                     }

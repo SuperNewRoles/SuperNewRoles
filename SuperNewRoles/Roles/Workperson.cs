@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Roles

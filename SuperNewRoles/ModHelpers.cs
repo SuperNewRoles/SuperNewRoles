@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using UnhollowerBaseLib;
-using UnityEngine;
 using System.Linq;
+using System.Reflection;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Roles;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Roles;
+using UnhollowerBaseLib;
+using UnityEngine;
 
 namespace SuperNewRoles
 {
@@ -97,7 +97,7 @@ namespace SuperNewRoles
         {
             get
             {
-                List<PlayerControl> ps = new List<PlayerControl>();
+                List<PlayerControl> ps = new();
                 foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Disconnected) ps.Add(p.PlayerControl);
@@ -140,7 +140,7 @@ namespace SuperNewRoles
         }
         public static Dictionary<byte, PlayerControl> allPlayersById()
         {
-            Dictionary<byte, PlayerControl> res = new Dictionary<byte, PlayerControl>();
+            Dictionary<byte, PlayerControl> res = new();
             foreach (CachedPlayer player in CachedPlayer.AllPlayers)
                 res.Add(player.PlayerId, player);
             return res;
@@ -407,7 +407,7 @@ namespace SuperNewRoles
             return false;
         }
 
-        public static Dictionary<string, Sprite> CachedSprites = new Dictionary<string, Sprite>();
+        public static Dictionary<string, Sprite> CachedSprites = new();
 
         public static Sprite loadSpriteFromResources(string path, float pixelsPerUnit)
         {
@@ -430,7 +430,7 @@ namespace SuperNewRoles
         {
             if (FastDestroyableSingleton<ServerManager>.Instance == null) return false;
             StringNames n = FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
-            return n != StringNames.ServerNA && n != StringNames.ServerEU && n != StringNames.ServerAS;
+            return n is not StringNames.ServerNA and not StringNames.ServerEU and not StringNames.ServerAS;
         }
         public static object TryCast(this Il2CppObjectBase self, Type type)
         {
@@ -445,7 +445,7 @@ namespace SuperNewRoles
         {
             try
             {
-                Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+                Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 Stream stream = assembly.GetManifestResourceStream(path);
                 var byteTexture = new byte[stream.Length];
@@ -485,7 +485,7 @@ namespace SuperNewRoles
             {
                 if (File.Exists(path))
                 {
-                    Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+                    Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
                     byte[] byteTexture = File.ReadAllBytes(path);
                     LoadImage(texture, byteTexture, false);
                     return texture;

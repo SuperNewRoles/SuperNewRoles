@@ -1,21 +1,21 @@
-using HarmonyLib;
-using Hazel;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using System;
-using SuperNewRoles.Patches;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.Roles;
-using SuperNewRoles.CustomCosmetics.ShareCosmetics;
-using System.Collections;
-using SuperNewRoles.EndGame;
+using HarmonyLib;
+using Hazel;
 using InnerNet;
-using static SuperNewRoles.EndGame.FinalStatusPatch;
+using SuperNewRoles.CustomCosmetics.ShareCosmetics;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Sabotage;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patches;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Sabotage;
+using UnityEngine;
+using static SuperNewRoles.EndGame.FinalStatusPatch;
 
 namespace SuperNewRoles.CustomRPC
 {
@@ -123,6 +123,7 @@ namespace SuperNewRoles.CustomRPC
         EvilHacker,
         HauntedWolf,
         PositionSwapper,
+        Tuna,
         //RoleId
     }
 
@@ -841,7 +842,7 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SetShielder(byte PlayerId, bool Is)
         {
-            RoleClass.Shielder.IsShield[PlayerId] = (RoleClass.Shielder.IsShield[PlayerId] = Is);
+            RoleClass.Shielder.IsShield[PlayerId] = RoleClass.Shielder.IsShield[PlayerId] = Is;
         }
         public static void MakeVent(float x, float y, float z)
         {

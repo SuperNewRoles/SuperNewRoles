@@ -1,8 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -47,7 +47,7 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < allPlayers.Count; i++)
                 {
                     GameData.PlayerInfo playerInfo = allPlayers[i];
-                    if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && playerInfo.Object.isAlive() && (!RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(playerInfo.Object)) && !RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(playerInfo.Object) && (!RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.JackalSeer.SidekickSeerPlayer.IsCheckListPlayerControl(playerInfo.Object)))
+                    if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && playerInfo.Object.isAlive() && !playerInfo.Object.isDead() && !RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.JackalSeer.SidekickSeerPlayer.IsCheckListPlayerControl(playerInfo.Object))
                     {
                         PlayerControl @object = playerInfo.Object;
                         if (untargetablePlayers.Any(x => x == @object))

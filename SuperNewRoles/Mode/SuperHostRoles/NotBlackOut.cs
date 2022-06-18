@@ -1,12 +1,12 @@
-﻿
-using HarmonyLib;
-using Hazel;
-using InnerNet;
-using SuperNewRoles.CustomRPC;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using Hazel;
+using InnerNet;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles

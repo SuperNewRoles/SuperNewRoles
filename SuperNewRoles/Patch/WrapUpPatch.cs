@@ -1,4 +1,7 @@
-﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
@@ -7,9 +10,6 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Patch
 {

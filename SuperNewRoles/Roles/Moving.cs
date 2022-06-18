@@ -1,5 +1,5 @@
-﻿using SuperNewRoles.Buttons;
 using System;
+using SuperNewRoles.Buttons;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles

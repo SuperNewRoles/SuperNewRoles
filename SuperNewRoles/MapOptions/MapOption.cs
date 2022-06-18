@@ -1,13 +1,13 @@
-using HarmonyLib;
-using System.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using SuperNewRoles.Roles;
+using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.CustomOption;
-using static SuperNewRoles.CustomOption.CustomOptions;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
+using UnityEngine;
+using static SuperNewRoles.CustomOption.CustomOptions;
 
 namespace SuperNewRoles.MapOptions
 {
