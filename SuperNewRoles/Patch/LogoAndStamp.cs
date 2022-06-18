@@ -127,13 +127,11 @@ namespace SuperNewRoles.Patches
 
             public static async Task<HttpStatusCode> FetchBoosters()
             {
-                SuperNewRolesPlugin.Logger.LogInfo("開始:"+Downloaded);
                 if (!Downloaded)
                 {
                     Downloaded = true;
                     HttpClient http = new HttpClient();
                     http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, OnlyIfCached = false};
-                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロード開始ｨｨｨｨｨｨｨｨｨｨｨｨｨｨ!");
                     var response = await http.GetAsync(new System.Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/ViewBooster/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
                     try
                     {
@@ -147,16 +145,13 @@ namespace SuperNewRoles.Patches
                             return HttpStatusCode.ExpectationFailed;
                         }
                         string json = await response.Content.ReadAsStringAsync();
-                        SuperNewRolesPlugin.Logger.LogInfo("GET:"+json);
                         JToken jobj = JObject.Parse(json);
 
                         var devs = jobj["Devs"];
-                        SuperNewRolesPlugin.Logger.LogInfo("へへへへへへへへへへ:"+devs);
                         for (JToken current = devs.First; current != null; current = current.Next)
                         {
                             if (current.HasValues)
                             {
-                                SuperNewRolesPlugin.Logger.LogInfo("追加:"+current["name"]?.ToString());
                                 DevsData += current["name"]?.ToString() + "\n";
                             }
                         }
@@ -177,39 +172,15 @@ namespace SuperNewRoles.Patches
                 }
                 return HttpStatusCode.OK;
             }
-            public static async Task<HttpStatusCode> DownloadSponserData(MainMenuManager __instance)
-            {
-                if (Downloaded)
-                {
-                    ViewBoosterPatch(__instance);
-                }
-                else
-                {
-                    HttpClient http = new HttpClient();
-                    http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
-                    var response = await http.GetAsync(new Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
-                    if (response.StatusCode != HttpStatusCode.OK) return HttpStatusCode.NotFound;
-                    Downloaded = true;
-                    string json = await response.Content.ReadAsStringAsync();
-                    JToken jobj = JObject.Parse(json);
-                }
-                return HttpStatusCode.OK;
-            }
             public static GameObject CreditsPopup;
             static void ViewBoosterPatch(MainMenuManager __instance)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("a");
                 var template = __instance.transform.FindChild("StatsPopup");
-                SuperNewRolesPlugin.Logger.LogInfo("b");
                 var obj = GameObject.Instantiate(template, template.transform.parent).gameObject;
                 CreditsPopup = obj;
-                SuperNewRolesPlugin.Logger.LogInfo("c");
                 GameObject.Destroy(obj.GetComponent<StatsPopup>());
-                SuperNewRolesPlugin.Logger.LogInfo("d");
                 var devtitletext = obj.transform.FindChild("StatNumsText_TMP");
-                SuperNewRolesPlugin.Logger.LogInfo("e");
                 devtitletext.GetComponent<TextMeshPro>().text = "開発者";
-                SuperNewRolesPlugin.Logger.LogInfo("f");
                 devtitletext.localPosition = new Vector3(-3.25f, -1.65f, -2f);
                 devtitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
                 var devtext = obj.transform.FindChild("StatsText_TMP");
