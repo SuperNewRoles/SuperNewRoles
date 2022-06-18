@@ -203,7 +203,7 @@ namespace SuperNewRoles.Roles
         }\n        //新ロールクラス""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("COLORS",MainClass.GetRoleColor()))
 
         # AllRoleSetClass.cs
-        MainClass.WriteCodes("AllRoleSetClass.cs", "//セットクラス",
+        '''MainClass.WriteCodes("AllRoleSetClass.cs", "//セットクラス",
                                 """if (!(CustomOption.CustomOptions.ROLEID!!Option.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.ROLEID!!Option.getString().Replace("0%", ""));
@@ -219,7 +219,7 @@ namespace SuperNewRoles.Roles
                         TEAMnotonepar.Add(ThisRoleId);
                     }
                 }
-            }\n        //セットクラス""".replace("ROLEID!!",MainClass.GetInput("RoleName")).replace("TEAM",MainClass.GetTeam()))
+            }\n        //セットクラス""".replace("ROLEID!!",MainClass.GetInput("RoleName")).replace("TEAM",MainClass.GetTeam()))'''
 
 
         MainClass.WriteCodes("AllRoleSetClass.cs", "//プレイヤーカウント","""case (RoleId.ROLENAME):
