@@ -247,7 +247,7 @@ namespace SuperNewRoles
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
-                    //ベント設定可視化
+                //ベント設定可視化
             }
             return returntext;
         }
