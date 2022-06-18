@@ -161,7 +161,7 @@ namespace SuperNewRoles.CustomCosmetics
 
             HatExtension extend = new HatExtension();
             extend.author = ch.author != null ? ch.author : "Unknown";
-            extend.package = ch.package != null ? ch.package : "Misc.";
+            extend.package = ch.package != null ? ch.package : "YJ*白桜コレクション";
             extend.condition = ch.condition != null ? ch.condition : "none";
 
             if (ch.flipresource != null)
@@ -591,7 +591,7 @@ namespace SuperNewRoles.CustomCosmetics
                         hatdatas.Add(info);
                     }
                 }
-
+                
                 List<string> markedfordownload = new List<string>();
 
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
@@ -613,6 +613,7 @@ namespace SuperNewRoles.CustomCosmetics
                 foreach (var file in markedfordownload)
                 {
                     var hatFileResponse = await http.GetAsync($"{repo}/hats/{file}", HttpCompletionOption.ResponseContentRead);
+                    //SuperNewRolesPlugin.Logger.LogInfo(file);
                     if (hatFileResponse.StatusCode != HttpStatusCode.OK) continue;
                     using (var responseStream = await hatFileResponse.Content.ReadAsStreamAsync())
                     {
