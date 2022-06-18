@@ -52,7 +52,7 @@ namespace SuperNewRoles.Patch
         static void UseAdminTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.MapOption.RestrictAdmin.getBool() && PlayerControl.LocalPlayer.isAlive())
+            if (MapOptions.MapOption.RestrictAdmin.getBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.RestrictDevicesOption.getBool())
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseAdminTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(adminTimer);
@@ -104,7 +104,7 @@ namespace SuperNewRoles.Patch
         {
             static bool Prefix(MapCountOverlay __instance)
             {
-                if (MapOptions.MapOption.MapOptionSetting.getBool() && !Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles) || !PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker))
+                if (MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictAdmin.getBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && !PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker))
                 {
                     adminTimer += Time.deltaTime;
                     if (adminTimer > 0.1f)
@@ -120,7 +120,7 @@ namespace SuperNewRoles.Patch
 
                     playerColors = new Dictionary<SystemTypes, List<Color>>();
 
-                    if (MapOptions.MapOption.RestrictAdmin.getBool())
+                    if (MapOptions.MapOption.RestrictAdmin.getBool() && MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictAdmin.getBool())
                     {
                         if (OutOfTime == null)
                         {
@@ -129,7 +129,7 @@ namespace SuperNewRoles.Patch
                             {
                                 OutOfTime.text = ModTranslation.getString("restrictOutOfTimeVerYkundesuBeplnEx");
                             }
-                            else
+                            else if (!MapOptions.MapOption.IsYkundesuBeplnEx.getBool())
                             {
                                 OutOfTime.text = ModTranslation.getString("restrictOutOfTime");
                             }
