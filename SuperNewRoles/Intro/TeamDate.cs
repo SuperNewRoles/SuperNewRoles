@@ -7,12 +7,12 @@ using UnityEngine;
 using SuperNewRoles.Roles;
 namespace SuperNewRoles.Intro
 {
-        public class TeamDate
-        {
-            public string NameKey;
-            public Color color;
-            public Color BackGround;
-            public List<CustomRPC.RoleId> RoleIds;
+    public class TeamDate
+    {
+        public string NameKey;
+        public Color color;
+        public Color BackGround;
+        public List<CustomRPC.RoleId> RoleIds;
 
         TeamDate(string NameKey, Color color, Color BackGround, List<CustomRPC.RoleId> RoleId)
         {
@@ -21,6 +21,6 @@ namespace SuperNewRoles.Intro
             this.NameKey = NameKey;
             this.RoleIds = RoleId;
         }
-        public static TeamDate VultureTeam = new TeamDate("Test",Color.black,Color.yellow,new List<CustomRPC.RoleId> { CustomRPC.RoleId.Sheriff});
+        public static TeamDate VultureTeam = new TeamDate("Test", Color.black, Color.yellow, new List<CustomRPC.RoleId> { CustomRPC.RoleId.Sheriff });
     }
 }

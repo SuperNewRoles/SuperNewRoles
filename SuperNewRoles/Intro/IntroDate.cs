@@ -54,7 +54,6 @@ namespace SuperNewRoles.Intro
                 {
                     return CrewmateIntro;
                 }
-
             }
             try
             {
@@ -119,7 +118,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate AllCleanerIntro = new IntroDate("AllCleaner", RoleClass.AllCleaner.color, 1, CustomRPC.RoleId.AllCleaner, TeamRoleType.Impostor);
         public static IntroDate NiceNekomataIntro = new IntroDate("NiceNekomata", RoleClass.NiceNekomata.color, 3, CustomRPC.RoleId.NiceNekomata);
         public static IntroDate EvilNekomataIntro = new IntroDate("EvilNekomata", RoleClass.EvilNekomata.color, 1, CustomRPC.RoleId.EvilNekomata, TeamRoleType.Impostor);
-        public static IntroDate JackalFriendsIntro = new IntroDate("JackalFriends", RoleClass.JackalFriends.color, 2, CustomRPC.RoleId.JackalFriends, TeamRoleType.Neutral);
+        public static IntroDate JackalFriendsIntro = new IntroDate("JackalFriends", RoleClass.JackalFriends.color, 2, CustomRPC.RoleId.JackalFriends);
         public static IntroDate DoctorIntro = new IntroDate("Doctor", RoleClass.Doctor.color, 1, CustomRPC.RoleId.Doctor);
         public static IntroDate CountChangerIntro = new IntroDate("CountChanger", RoleClass.CountChanger.color, 2, CustomRPC.RoleId.CountChanger, TeamRoleType.Impostor);
         public static IntroDate PursuerIntro = new IntroDate("Pursuer", RoleClass.Pursuer.color, 3, CustomRPC.RoleId.Pursuer, TeamRoleType.Impostor);
@@ -163,7 +162,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate MadMakerIntro = new IntroDate("MadMaker", RoleClass.MadMaker.color, 1, CustomRPC.RoleId.MadMaker);
         public static IntroDate DemonIntro = new IntroDate("Demon", RoleClass.Demon.color, 1, CustomRPC.RoleId.Demon, TeamRoleType.Neutral);
         public static IntroDate TaskManagerIntro = new IntroDate("TaskManager", RoleClass.TaskManager.color, 1, CustomRPC.RoleId.TaskManager);
-        public static IntroDate SeerFriendsIntro = new IntroDate("SeerFriends", RoleClass.SeerFriends.color, 1, CustomRPC.RoleId.SeerFriends, TeamRoleType.Neutral);
+        public static IntroDate SeerFriendsIntro = new IntroDate("SeerFriends", RoleClass.SeerFriends.color, 1, CustomRPC.RoleId.SeerFriends);
         public static IntroDate JackalSeerIntro = new IntroDate("JackalSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.JackalSeer, TeamRoleType.Neutral);
         public static IntroDate SidekickSeerIntro = new IntroDate("SidekickSeer", RoleClass.JackalSeer.color, 1, CustomRPC.RoleId.SidekickSeer, TeamRoleType.Neutral);
         public static IntroDate AssassinIntro = new IntroDate("Assassin", RoleClass.Assassin.color, 1, CustomRPC.RoleId.Assassin);
@@ -173,11 +172,12 @@ namespace SuperNewRoles.Intro
         public static IntroDate CleanerIntro = new IntroDate("Cleaner", RoleClass.Cleaner.color, 1, CustomRPC.RoleId.Cleaner, TeamRoleType.Impostor);
         public static IntroDate MadCleanerIntro = new IntroDate("MadCleaner", RoleClass.MadCleaner.color, 1, CustomRPC.RoleId.MadCleaner);
         public static IntroDate SamuraiIntro = new IntroDate("Samurai", RoleClass.Samurai.color, 1, CustomRPC.RoleId.Samurai, TeamRoleType.Impostor);
-        public static IntroDate MayorFriendsIntro = new IntroDate("MayorFriends", RoleClass.MayorFriends.color, 1, CustomRPC.RoleId.MayorFriends, TeamRoleType.Neutral);
+        public static IntroDate MayorFriendsIntro = new IntroDate("MayorFriends", RoleClass.MayorFriends.color, 1, CustomRPC.RoleId.MayorFriends);
         public static IntroDate VentMakerIntro = new IntroDate("VentMaker", RoleClass.VentMaker.color, 1, CustomRPC.RoleId.VentMaker, TeamRoleType.Impostor);
         public static IntroDate GhostMechanicIntro = new IntroDate("GhostMechanic", RoleClass.GhostMechanic.color, 1, CustomRPC.RoleId.GhostMechanic, TeamRoleType.Crewmate, true);
         public static IntroDate EvilHackerIntro = new IntroDate("EvilHacker", RoleClass.EvilHacker.color, 1, CustomRPC.RoleId.EvilHacker, TeamRoleType.Impostor);
         public static IntroDate HauntedWolfIntro = new IntroDate("HauntedWolf", RoleClass.HauntedWolf.color, 1, CustomRPC.RoleId.HauntedWolf);
-        //イントロオブジェ
+        public static IntroDate TunaIntro = new IntroDate("Tuna", RoleClass.Tuna.color, 1, CustomRPC.RoleId.Tuna, TeamRoleType.Neutral);
+            //イントロオブジェ
     }
 }

@@ -1,14 +1,11 @@
 ﻿using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
     class Researcher
     {
-        public static bool IsTarget(){
+        public static bool IsTarget()
+        {
             /**
             Vector3 position = CachedPlayer.LocalPlayer.transform.position;
             Vector3 SamplePos = RoleClass.Researcher.SamplePosition;
@@ -21,13 +18,14 @@ namespace SuperNewRoles.Roles
                     {
                         return true ;
                     }
-                }                    
+                }
             }
             **/
             return false;
         }
         [HarmonyPatch(typeof(UseButton), nameof(UseButton.DoClick))]
-        class UseButtonUsePatch {
+        class UseButtonUsePatch
+        {
             static void Postfix(UseButton __instance)
             {
                 /**

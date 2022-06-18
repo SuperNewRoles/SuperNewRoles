@@ -1,7 +1,6 @@
 ﻿using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
@@ -9,7 +8,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -21,16 +19,18 @@ namespace SuperNewRoles.Patch
         {
             if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {
-                string text = "SuperNewRolesへようこそ！" + "\n" +
-                    "SuperNewRolesを使用することで、様々なモードや様々な役職をどの機種でも遊べます！" + "\n" +
-                    "役職やモードの詳しい説明については公式wikiを御覧ください！" + "\n" +
-                    "SuperNewRoles公式wiki:" + "\n" +
-                    "　https://wikiwiki.jp/amas-snr" + "\n" +
-                    "コマンドを実行して、情報を取得できます。" + "\n" +
-                    "コマンド一覧を表示するにはこのコマンドを送信してください。" + "\n" +
-                    "/commands" +
+                string text =
+                    ModTranslation.getString("WelcomeMessage1") + "\n" +
+                    ModTranslation.getString("WelcomeMessage2") + "\n" +
+                    ModTranslation.getString("WelcomeMessage3") + "\n" +
+                    ModTranslation.getString("WelcomeMessage4") + "\n" +
+                    ModTranslation.getString("WelcomeMessage5") + "\n" +
+                    ModTranslation.getString("WelcomeMessage6") + "\n" +
+                    ModTranslation.getString("WelcomeMessage7") + "\n" +
+                    ModTranslation.getString("WelcomeMessage8") +
                     " " + "\n.";
-                new LateTask(() => {
+                new LateTask(() =>
+                {
                     if (__instance.myPlayer.IsPlayer())
                     {
                         AddChatPatch.SendCommand(__instance.myPlayer, text, AddChatPatch.WelcomeToSuperNewRoles);
@@ -45,7 +45,7 @@ namespace SuperNewRoles.Patch
     class AddChatPatch
     {
         static string SNR = "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>";
-        static string SNRCommander = "<size=200%>"+SNR+"</size>";
+        static string SNRCommander = "<size=200%>" + SNR + "</size>";
         public static string WelcomeToSuperNewRoles = "<size=150%>Welcome To " + SNR + "</size>";
 
         public static void Postfix(PlayerControl sourcePlayer, string chatText)
@@ -64,40 +64,41 @@ namespace SuperNewRoles.Patch
                 SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu");
             }
             else if (
-              Commands[0].Equals("/Commands", StringComparison.OrdinalIgnoreCase) ||
-              Commands[0].Equals("/Cmd", StringComparison.OrdinalIgnoreCase)
-              )
+                Commands[0].Equals("/Commands", StringComparison.OrdinalIgnoreCase) ||
+                Commands[0].Equals("/Cmd", StringComparison.OrdinalIgnoreCase)
+                )
             {
-                string text = "コマンド一覧:\n()の中にあるコマンドでも可能です。\n大文字と小文字は区別されません。\n\n";
-                text += "/Commands (/cmd) : \nコマンド一覧を表示します。(このコマンドです)\n";
-                text += "/version (/v) ： \nバージョンを表示します。\n";
-                text += "/Discord (/dc) ： \n公式Discordへのリンクを表示します。\n";
-                text += "/Twitter (/tw) ： \n公式Twitterと開発状況Twitterへのリンクを表示します。\n";
-                text += "/GetInRoles (/gr) ： \n入っているすべての役職を表示します。(ホストの場合は全員に送信します)\n";
-                text += "/GetInRoles myplayer (/gr mp もしくは /gr myp) ： \n入っているすべての役職を表示します。(ホストでも自分のみに送信します)\n";
-                text += "/AllRoles (/ar) ： \n入っている全役職の説明と設定が確認できます。\n(ホストが実行すると全員に送信します)\n1.5秒間隔で送信されます。\n";
-                text += "/AllRoles [送信間隔] (/ar [送信間隔]) ： \n/AllRolesに+で送信間隔を指定できます。";
-                text += "/AllRoles [送信間隔] myplayer (/ar [送信間隔] (mp もしくは myp)) ： \n/AllRoles [送信間隔]に+で、ホストでも自分のみに送信されます。";
+                string text =
+                    ModTranslation.getString("CommandsMessage0") + "\n\n" +
+                    ModTranslation.getString("CommandsMessage1") + "\n" +
+                    ModTranslation.getString("CommandsMessage2") + "\n" +
+                    ModTranslation.getString("CommandsMessage3") + "\n" +
+                    ModTranslation.getString("CommandsMessage4") + "\n" +
+                    ModTranslation.getString("CommandsMessage5") + "\n" +
+                    ModTranslation.getString("CommandsMessage6") + "\n" +
+                    ModTranslation.getString("CommandsMessage7") + "\n" +
+                    ModTranslation.getString("CommandsMessage8") + "\n" +
+                    ModTranslation.getString("CommandsMessage9");
                 SendCommand(sourcePlayer, text);
             }
             else if (
-              Commands[0].Equals("/Discord", StringComparison.OrdinalIgnoreCase) || 
-              Commands[0].Equals("/dc", StringComparison.OrdinalIgnoreCase)
-              )
+                Commands[0].Equals("/Discord", StringComparison.OrdinalIgnoreCase) ||
+                Commands[0].Equals("/dc", StringComparison.OrdinalIgnoreCase)
+                )
             {
-                SendCommand(sourcePlayer, "SuperNewRoles公式Discordサーバーはこちらから:\n"+ MainMenuPatch.snrdiscordserver);
+                SendCommand(sourcePlayer, ModTranslation.getString("SNROfficialDiscordMessage") + "\n" + MainMenuPatch.snrdiscordserver);
             }
             else if (
-              Commands[0].Equals("/Twitter", StringComparison.OrdinalIgnoreCase) ||
-              Commands[0].Equals("/tw", StringComparison.OrdinalIgnoreCase)
-              )
+                Commands[0].Equals("/Twitter", StringComparison.OrdinalIgnoreCase) ||
+                Commands[0].Equals("/tw", StringComparison.OrdinalIgnoreCase)
+                )
             {
-                SendCommand(sourcePlayer, "SuperNewRoles公式Twitterはこちらから\n\n公式アカウント:　https://twitter.com/SuperNewRoles \n開発情報アカウント:　https://twitter.com/SNRDevs");
+                SendCommand(sourcePlayer, ModTranslation.getString("SNROfficialTwitterMessage") + "\n\n" + ModTranslation.getString("TwitterOfficialLink") + "\n" + ModTranslation.getString("TwitterDevLink"));
             }
             else if (
-              Commands[0].Equals("/GetInRoles", StringComparison.OrdinalIgnoreCase) ||
-              Commands[0].Equals("/gr", StringComparison.OrdinalIgnoreCase)
-              )
+                Commands[0].Equals("/GetInRoles", StringComparison.OrdinalIgnoreCase) ||
+                Commands[0].Equals("/gr", StringComparison.OrdinalIgnoreCase)
+                )
             {
                 if (Commands.Length == 1)
                 {
@@ -122,9 +123,9 @@ namespace SuperNewRoles.Patch
                 }
             }
             else if (
-              Commands[0].Equals("/AllRoles", StringComparison.OrdinalIgnoreCase) ||
-              Commands[0].Equals("/ar", StringComparison.OrdinalIgnoreCase)
-              )
+                Commands[0].Equals("/AllRoles", StringComparison.OrdinalIgnoreCase) ||
+                Commands[0].Equals("/ar", StringComparison.OrdinalIgnoreCase)
+                )
             {
                 if (Commands.Length == 1)
                 {
@@ -153,7 +154,7 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
-        static string GetChildText(List<CustomOption.CustomOption> options,string indent)
+        static string GetChildText(List<CustomOption.CustomOption> options, string indent)
         {
             string text = "";
             foreach (CustomOption.CustomOption option in options)
@@ -161,7 +162,7 @@ namespace SuperNewRoles.Patch
                 text += indent + option.getName() + ":" + option.getString() + "\n";
                 if (option.children.Count > 0)
                 {
-                    text += GetChildText(option.children, indent + "　");
+                    text += GetChildText(option.children, indent + "  ");
                 }
             }
             return text;
@@ -169,7 +170,7 @@ namespace SuperNewRoles.Patch
         static string GetOptionText(CustomRoleOption RoleOption, IntroDate intro)
         {
             string text = "";
-            text += GetChildText(RoleOption.children, "　");
+            text += GetChildText(RoleOption.children, "  ");
             return text;
         }
         static string GetTeamText(TeamRoleType type)
@@ -190,17 +191,18 @@ namespace SuperNewRoles.Patch
             string text = "";
             IntroDate intro = option.Intro;
             text += "【" + intro.Name + "】\n";
-            text += GetTeamText(intro.Team) + "陣営\n";
+            text += GetTeamText(intro.Team) + ModTranslation.getString("Team") + "\n";
             text += "「" + IntroDate.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
             text += intro.Description + "\n";
-            text += "設定:\n";
+            text += ModTranslation.getString("MessageSettings") + ":\n";
             text += GetOptionText(option, intro);
             return text;
         }
         static string GetInRole(List<CustomRoleOption> optionsnotorder)
         {
-            string text = "現在入っている役職\n";
-            var options = optionsnotorder.OrderBy((CustomRoleOption x) => {
+            string text = ModTranslation.getString("NowRolesMessage") + "\n";
+            var options = optionsnotorder.OrderBy((CustomRoleOption x) =>
+            {
                 switch (x.Intro.Team)
                 {
                     case TeamRoleType.Impostor:
@@ -218,7 +220,7 @@ namespace SuperNewRoles.Patch
                 if (type != option.Intro.Team)
                 {
                     type = option.Intro.Team;
-                    text += "\n【" + GetTeamText(type) + "陣営】\n\n";
+                    text += "\n" + String.Format(ModTranslation.getString("TeamMessage"), GetTeamText(type)) + "\n\n";
                 }
                 int PlayerCount = 0;
                 foreach (CustomOption.CustomOption opt in option.children)
@@ -229,11 +231,11 @@ namespace SuperNewRoles.Patch
                         break;
                     }
                 }
-                text += option.Intro.Name + " : " + PlayerCount + "人\n";
+                text += option.Intro.Name + " : " + PlayerCount + ModTranslation.getString("PlayerCountMessage") + "\n";
             }
             return text;
         }
-        static void RoleCommand(PlayerControl target = null,float SendTime = 1.5f)
+        static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)
         {
             List<CustomRoleOption> EnableOptions = new List<CustomRoleOption>();
             foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
@@ -266,7 +268,7 @@ namespace SuperNewRoles.Patch
         }
         static void Send(PlayerControl target, string text, float time = 0)
         {
-            text = "\n" + text + "\n　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　";
+            text = "\n" + text + "\n                                                                                                                                                                                                                                              ";
             if (time <= 0)
             {
                 if (target == null)
@@ -278,7 +280,8 @@ namespace SuperNewRoles.Patch
                 if (target.PlayerId != 0)
                 {
                     AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander, text, time));
-                } else
+                }
+                else
                 {
                     string name = PlayerControl.LocalPlayer.getDefaultName();
                     PlayerControl.LocalPlayer.SetName(SNRCommander);
@@ -297,11 +300,12 @@ namespace SuperNewRoles.Patch
                 }
                 if (target.PlayerId != 0)
                 {
-                AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander, text, time));
+                    AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander, text, time));
                 }
                 else
                 {
-                    new LateTask(() => {
+                    new LateTask(() =>
+                    {
                         PlayerControl.LocalPlayer.SetName(SNRCommander);
                         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
                         PlayerControl.LocalPlayer.SetName(name);
@@ -328,12 +332,13 @@ namespace SuperNewRoles.Patch
                 target.SetName(SendName);
                 FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(target, command);
                 target.SetName(name);
-            } else
+            }
+            else
             {
                 AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SendName, command));
             }
         }
-        static IEnumerator AllSend(string SendName, string command,string name, float time = 0)
+        static IEnumerator AllSend(string SendName, string command, string name, float time = 0)
         {
             if (time > 0)
             {
@@ -372,7 +377,7 @@ namespace SuperNewRoles.Patch
                 .EndRpc();
             crs.SendMessage();
         }
-    }/**
+    }/*
     [HarmonyPatch(typeof(ChatController),nameof(ChatController.AddChat))]
     class ChatHandler
     {
@@ -399,7 +404,7 @@ namespace SuperNewRoles.Patch
                     bubble.SetLeft();
                 bool flag = (bool)(UnityEngine.Object)data1.Role && (bool)(UnityEngine.Object)data2.Role && data1.Role.NameColor == data2.Role.NameColor;
                 bool didVote = (bool)(UnityEngine.Object)MeetingHud.Instance && MeetingHud.Instance.DidVote(sourcePlayer.PlayerId);
-     https://media.discordapp.net/attachments/965644999578513450/967642315541856286/2022-04-24_3.png?width=875&height=492           bubble.SetCosmetics(data2);
+                https://media.discordapp.net/attachments/965644999578513450/967642315541856286/2022-04-24_3.png?width=875&height=492           bubble.SetCosmetics(data2);
                 __instance.SetChatBubbleName(bubble, data2, data2.IsDead, didVote, flag ? data2.Role.NameColor : Color.white);
                 if (SaveManager.CensorChat)
                     chatText = BlockedWords.CensorWords(chatText);

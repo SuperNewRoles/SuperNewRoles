@@ -53,7 +53,6 @@ namespace SuperNewRoles.Mode.Zombie
             __instance.RoleBlurbText.text = desc;
             __instance.RoleBlurbText.color = backcolor;
             /**
-
             if (PlayerControl.LocalPlayer.IsQuarreled())
             {
                 __instance.RoleBlurbText.text = __instance.RoleBlurbText.text + "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));

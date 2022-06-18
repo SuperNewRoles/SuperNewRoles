@@ -1,11 +1,6 @@
-﻿using HarmonyLib;
-using SuperNewRoles.Helpers;
+﻿using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
@@ -20,7 +15,8 @@ namespace SuperNewRoles.Roles
                     DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == CachedPlayer.LocalPlayer.PlayerId)?.FirstOrDefault();
                     if (deadPlayer.killerIfExisting != null && deadPlayer.killerIfExisting.isDead())
                     {
-                        if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.RedRidingHoodRevive,deadPlayer.killerIfExisting)) {
+                        if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.RedRidingHoodRevive, deadPlayer.killerIfExisting))
+                        {
                             var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ReviveRPC);
                             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             Writer.EndRPC();

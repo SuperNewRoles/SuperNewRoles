@@ -1,9 +1,6 @@
-using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Roles
 
@@ -16,7 +13,8 @@ namespace SuperNewRoles.Roles
             if (CheckedJackal.Contains(p.PlayerId)) return true;
             RoleId role = p.getRole();
             int CheckTask = 0;
-            switch(role){
+            switch (role)
+            {
                 case RoleId.JackalFriends:
                     if (!RoleClass.JackalFriends.IsJackalCheck) return false;
                     CheckTask = RoleClass.JackalFriends.JackalCheckTask;

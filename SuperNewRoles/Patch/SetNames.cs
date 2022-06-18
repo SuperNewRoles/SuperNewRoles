@@ -60,7 +60,6 @@ namespace SuperNewRoles.Patch
             {
                 pro.Value.text = "";
             }
-
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 player.nameText.text =  ModHelpers.hidePlayerName(PlayerControl.LocalPlayer, player) ? "" : player.CurrentOutfit.PlayerName;
@@ -350,14 +349,6 @@ namespace SuperNewRoles.Patch
                         {
                             SetNamesClass.SetPlayerRoleNames(p);
                             SetNamesClass.SetPlayerNameColors(p);
-                        }
-                    }
-                    foreach (PlayerControl p in RoleClass.JackalSeer.FakeSidekickSeerPlayer)
-                    {
-                        if (p != PlayerControl.LocalPlayer)
-                        {
-                            SetNamesClass.SetPlayerNameColor(p, RoleClass.Jackal.color);
-                            SetNamesClass.SetPlayerRoleInfoView(p, RoleClass.Jackal.color, Intro.IntroDate.SidekickIntro.NameKey + "Name");
                         }
                     }
                 }

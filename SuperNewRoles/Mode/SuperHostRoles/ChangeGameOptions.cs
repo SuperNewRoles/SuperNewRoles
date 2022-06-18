@@ -8,12 +8,11 @@ using System.Text;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
-    
     class ChangeGameOptions
     {
         public static GameOptionsData DefaultGameOption;
-        
-        public static class SelectRoleOptionChange {
+        public static class SelectRoleOptionChange
+        {
         }
     }
 }

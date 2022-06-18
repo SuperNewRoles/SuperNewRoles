@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SuperNewRoles
+﻿namespace SuperNewRoles
 {
     public static class OutfitManager
     {

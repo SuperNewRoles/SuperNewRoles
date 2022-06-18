@@ -33,7 +33,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         new LateTask(() =>
                         {
                             RPCProcedure.ShareWinner(target.PlayerId);
-
                             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                             Writer.Write(target.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -61,7 +60,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     Side.RpcMurderPlayer(Side);
                 }
             }
-            Roles.Bait.MurderPostfix(__instance,target);
+            Roles.Bait.MurderPostfix(__instance, target);
             FixedUpdate.SetRoleName(target);
         }
     }

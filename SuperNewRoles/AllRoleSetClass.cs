@@ -1,14 +1,11 @@
 ﻿using SuperNewRoles.CustomRPC;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Mode;
-using System.Collections;
-using UnityEngine;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Intro;
@@ -20,8 +17,6 @@ namespace SuperNewRoles
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
-            return true;
-
             if (RoleManagerSelectRolesPatch.IsShapeSet)
             {
                 MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
@@ -56,7 +51,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-
             return false;
         }
     }
@@ -270,7 +264,6 @@ namespace SuperNewRoles
                 SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
             }
 
-
             try
             {
                 NeutralRandomSelect();
@@ -279,7 +272,6 @@ namespace SuperNewRoles
             {
                 SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
             }
-
 
             try
             {
@@ -309,7 +301,6 @@ namespace SuperNewRoles
                     SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
                 }
             }
-
         }
         public static void QuarreledRandomSelect()
         {
@@ -607,7 +598,6 @@ namespace SuperNewRoles
                             CrewMatePlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
-
                     }
                     else if (PlayerCount >= CrewMatePlayers.Count)
                     {
@@ -644,7 +634,6 @@ namespace SuperNewRoles
                             CrewMatePlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
-
                     }
                     else if (PlayerCount >= CrewMatePlayers.Count)
                     {
@@ -700,7 +689,6 @@ namespace SuperNewRoles
                             CrewMatePlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
-
                     }
                     else if (PlayerCount >= CrewMatePlayers.Count)
                     {
@@ -737,7 +725,6 @@ namespace SuperNewRoles
                             CrewMatePlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
-
                     }
                     else if (PlayerCount >= CrewMatePlayers.Count)
                     {
@@ -964,7 +951,9 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.EvilHackerPlayerCount.getFloat();
                 case (RoleId.HauntedWolf):
                     return CustomOption.CustomOptions.HauntedWolfPlayerCount.getFloat();
-                    //プレイヤーカウント
+                case (RoleId.Tuna):
+                    return CustomOption.CustomOptions.TunaPlayerCount.getFloat();
+                //プレイヤーカウント
             }
             return 1;
         }
@@ -1039,9 +1028,7 @@ namespace SuperNewRoles
                         }
                     }
                 }
-
             }
-
             var Assassinselection = CustomOptions.AssassinAndMarineOption.getSelection();
             SuperNewRolesPlugin.Logger.LogInfo("アサイン情報:" + Assassinselection + "、" + CrewMatePlayerNum + "、" + CrewMatePlayers.Count);
             if (Assassinselection != 0 && CrewMatePlayerNum > 0 && CrewMatePlayers.Count > 0)
@@ -1058,7 +1045,6 @@ namespace SuperNewRoles
                     }
                 }
             }
-        //セットクラス
         }
     }
 }

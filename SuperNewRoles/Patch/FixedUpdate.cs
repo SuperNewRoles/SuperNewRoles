@@ -24,7 +24,8 @@ namespace SuperNewRoles.Patch
         }
     }
     [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]
-    public class AbilityUpdate {
+    public class AbilityUpdate
+    {
         public static void Postfix(AbilityButton __instance)
         {
             if (CachedPlayer.LocalPlayer.Data.Role.IsSimpleRole && __instance.commsDown.active)
@@ -118,7 +119,6 @@ namespace SuperNewRoles.Patch
                                             RoleClass.Pursuer.arrow.arrow.SetActive(true);
                                         }
                                         Pursuer.PursureUpdate.Postfix();
-
                                     }
                                     else
                                     {
@@ -157,7 +157,6 @@ namespace SuperNewRoles.Patch
                                 if (!RoleClass.Bait.Reported)
                                 {
                                     Bait.BaitUpdate.Postfix(__instance);
-
                                 }
                             }
                             else if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
@@ -179,10 +178,7 @@ namespace SuperNewRoles.Patch
                         ModeHandler.FixedUpdate(__instance);
                     }
                 }
-                else if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
-                {
-
-                }
+                else if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined) { }
             }
         }
     }

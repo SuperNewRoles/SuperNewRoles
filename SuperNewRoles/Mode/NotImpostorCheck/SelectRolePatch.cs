@@ -13,7 +13,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
             {
                 if (p.isImpostor())
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("ImpostorName:"+p.nameText.text);
+                    SuperNewRolesPlugin.Logger.LogInfo("[NotImpostorCheck] ImpostorName:" + p.nameText.text);
                     main.Impostors.Add(p.PlayerId);
                 }
             }
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                                 p.RpcSetRoleDesync(RoleTypes.Impostor, pc);
                             }
                             pc.PlayerControl.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                            DestroyableSingleton<RoleManager>.Instance.SetRole(pc,RoleTypes.Crewmate);
+                            DestroyableSingleton<RoleManager>.Instance.SetRole(pc, RoleTypes.Crewmate);
                         }
                     }
                     else
@@ -57,7 +57,8 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                             }
                         }
                     }
-                } else
+                }
+                else
                 {
                     p.RpcSetRole(p.Data.Role.Role);
                 }

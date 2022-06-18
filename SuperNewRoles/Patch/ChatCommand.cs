@@ -1,17 +1,11 @@
 ﻿using HarmonyLib;
 using Hazel;
 using InnerNet;
-using SuperNewRoles.Mode;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Patch
 {
-    class ChatCommand
-    {
-
-    }
+    class ChatCommand { }
     [HarmonyPatch]
     public static class DynamicLobbies
     {
@@ -68,7 +62,6 @@ namespace SuperNewRoles.Patch
                             {
                                 settime = 0.00001f;
                             }
-
                             PlayerControl.GameOptions.KillCooldown = settime;
                             CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
                             __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
