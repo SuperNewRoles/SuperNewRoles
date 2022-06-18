@@ -332,6 +332,21 @@ namespace SuperNewRoles.CustomCosmetics
                     title.enableAutoSizing = false;
                     title.autoSizeTextContainer = true;
                     title.text = ModTranslation.getString(packageName);
+                    switch (packageName)
+                    {
+                        case "shiuneCollection":
+                            title.text = "しうねコレクション";
+                            break;
+                        case "gmEditionGeneral":
+                            title.text = "TheOtherRoles-GMハット";
+                            break;
+                        case "communityHats":
+                            title.text = "TheOtherRolesコミュニティーハット";
+                            break;
+                        case "developerHats":
+                            title.text = "TheOtherRoles開発者ハット";
+                            break;
+                    }
                     offset -= headerSize * __instance.YOffset;
                     hatsTabCustomTexts.Add(title);
                 }
