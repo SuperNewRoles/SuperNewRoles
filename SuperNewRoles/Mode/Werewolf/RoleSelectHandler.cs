@@ -1,11 +1,11 @@
-﻿
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patch;
-using SuperNewRoles.Roles;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Patch;
+using SuperNewRoles.Roles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.Werewolf
@@ -77,7 +77,7 @@ namespace SuperNewRoles.Mode.Werewolf
             }
             if (!(Mode.Werewolf.WerewolfOptions.WerewolfHunterOption.getString().Replace("0%", "") == ""))
             {
-                SuperNewRolesPlugin.Logger.LogInfo("ADDWOLF@ame");
+                SuperNewRolesPlugin.Logger.LogInfo("[WereWolf] ADDWOLF@ame");
                 int OptionDate = int.Parse(Mode.Werewolf.WerewolfOptions.WerewolfHunterOption.getString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Hunter;
                 if (OptionDate == 10)
@@ -91,7 +91,6 @@ namespace SuperNewRoles.Mode.Werewolf
                         Crewnotonepar.Add(ThisRoleId);
                     }
                 }
-
             }
             AllRoleSetClass.Impoonepar = Impoonepar;
             AllRoleSetClass.Imponotonepar = Imponotonepar;

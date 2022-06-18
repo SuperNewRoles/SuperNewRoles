@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +7,12 @@ using HarmonyLib;
 using InnerNet;
 using UnityEngine;
 
-namespace SuperNewRoles {
-
+namespace SuperNewRoles
+{
     public class CachedPlayer
     {
-        public static readonly Dictionary<IntPtr, CachedPlayer> PlayerPtrs = new Dictionary<IntPtr, CachedPlayer>();
-        public static readonly List<CachedPlayer> AllPlayers = new List<CachedPlayer>();
+        public static readonly Dictionary<IntPtr, CachedPlayer> PlayerPtrs = new();
+        public static readonly List<CachedPlayer> AllPlayers = new();
         public static CachedPlayer LocalPlayer;
 
         public Transform transform;
@@ -31,7 +31,6 @@ namespace SuperNewRoles {
 
         public static implicit operator PlayerControl(CachedPlayer player) => player.PlayerControl;
         public static implicit operator PlayerPhysics(CachedPlayer player) => player.PlayerPhysics;
-
     }
 
     [HarmonyPatch]
@@ -86,7 +85,7 @@ namespace SuperNewRoles {
             {
                 if (!cachedPlayer.PlayerControl || !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform || !cachedPlayer.transform)
                 {
-                    SuperNewRolesPlugin.Logger.LogError($"CachedPlayer {cachedPlayer.PlayerControl.name} has null fields");
+                    SuperNewRolesPlugin.Logger.LogError("CachedPlayer {cachedPlayer.PlayerControl.name} has null fields");
                 }
             }
 #endif

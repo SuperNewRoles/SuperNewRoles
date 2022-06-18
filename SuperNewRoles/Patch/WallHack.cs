@@ -1,14 +1,13 @@
-﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
     class WallHack
     {
-        
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
         class HudManagerPatch
         {

@@ -1,9 +1,9 @@
-﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics
@@ -62,7 +62,6 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("ペット読み込み処理終了");
-
             }
         }*/
     }

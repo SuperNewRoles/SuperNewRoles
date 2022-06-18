@@ -1,19 +1,18 @@
-﻿using HarmonyLib;
-using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using SuperNewRoles.MapOptions;
+using SuperNewRoles.Roles;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons
 {
     public static class VentAndSabo
     {
-
         [HarmonyPatch(typeof(MapBehaviour))]
         class MapBehaviourPatch
         {
-
             [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.FixedUpdate))]
             static bool Prefix(MapBehaviour __instance)
             {
@@ -57,7 +56,31 @@ namespace SuperNewRoles.Buttons
         [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
         public static class VentCanUsePatch
         {
-            
+            [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]
+            class EnterVentAnimPatch
+            {
+                public static bool Prefix(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
+                {
+                    if (MapOption.VentAnimation.getBool())
+                    {
+                        return pc.AmOwner;
+                    }
+                    return true;
+                }
+            }
+
+            [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))]
+            class ExitVentAnimPatch
+            {
+                public static bool Prefix(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
+                {
+                    if (MapOption.VentAnimation.getBool())
+                    {
+                        return pc.AmOwner;
+                    }
+                    return true;
+                }
+            }
             public static bool Prefix(Vent __instance, ref float __result, [HarmonyArgument(0)] GameData.PlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse)
             {
                 float num = float.MaxValue;
@@ -66,7 +89,6 @@ namespace SuperNewRoles.Buttons
                 bool roleCouldUse = @object.IsUseVent();
 
                 var usableDistance = __instance.UsableDistance;
-
 
                 if (SubmergedCompatibility.isSubmerged())
                 {
@@ -106,7 +128,7 @@ namespace SuperNewRoles.Buttons
                     Vector3 position = __instance.transform.position;
                     num = Vector2.Distance(truePosition, position);
 
-                    canUse &= (num <= usableDistance && !PhysicsHelpers.AnythingBetween(truePosition, position, Constants.ShipOnlyMask, false));
+                    canUse &= num <= usableDistance && !PhysicsHelpers.AnythingBetween(truePosition, position, Constants.ShipOnlyMask, false);
                 }
                 __result = num;
                 return false;
@@ -159,10 +181,8 @@ namespace SuperNewRoles.Buttons
         {
             public static bool Prefix(Vent __instance)
             {
-                bool canUse;
-                bool couldUse;
-                __instance.CanUse(CachedPlayer.LocalPlayer.Data, out canUse, out couldUse);
-                bool canMoveInVents = !(RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer));
+                __instance.CanUse(CachedPlayer.LocalPlayer.Data, out bool canUse, out bool couldUse);
+                bool canMoveInVents = !RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer);
                 if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
                 bool isEnter = !PlayerControl.LocalPlayer.inVent;

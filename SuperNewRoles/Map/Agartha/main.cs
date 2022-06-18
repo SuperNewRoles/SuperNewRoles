@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,20 +11,22 @@ namespace SuperNewRoles.Map.Agartha
         {
             get
             {
-                if(thisfloor == null)
+                if (thisfloor == null)
                 {
                     return 1;
-                } else
+                }
+                else
                 {
                     return thisfloor;
                 }
             }
             set
             {
-                if (value == 1 || value == 2)
+                if (value is 1 or 2)
                 {
                     thisfloor = value;
-                } else
+                }
+                else
                 {
                     thisfloor = 1;
                 }

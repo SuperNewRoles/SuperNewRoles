@@ -1,16 +1,11 @@
-﻿using BepInEx;
-using BepInEx.Configuration;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using BepInEx;
 using BepInEx.IL2CPP;
 using HarmonyLib;
-using Hazel;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Linq;
-using System.Net;
-using System.IO;
-using System;
-using System.Reflection;
-using UnhollowerBaseLib;
 using UnityEngine;
 
 namespace SuperNewRoles
@@ -22,7 +17,7 @@ namespace SuperNewRoles
     {
         public const string Id = "jp.ykundesu.supernewroles";
 
-        public const string VersionString = "1.4.0.6";
+        public const string VersionString = "1.4.0.7";
 
         public static System.Version Version = System.Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
@@ -32,7 +27,7 @@ namespace SuperNewRoles
         public static SuperNewRolesPlugin Instance;
         public static Dictionary<string, Dictionary<int, string>> StringDATE;
         public static bool IsUpdate = false;
-        public static string NewVersion = "" ;
+        public static string NewVersion = "";
         public static string thisname;
 
         public override void Load()
@@ -52,7 +47,7 @@ namespace SuperNewRoles
 
             try
             {
-                DirectoryInfo d = new DirectoryInfo(Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins");
+                DirectoryInfo d = new(Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins");
                 string[] files = d.GetFiles("*.dll.old").Select(x => x.FullName).ToArray(); // Getting old versions
                 foreach (string f in files)
                     File.Delete(f);
@@ -106,14 +101,14 @@ namespace SuperNewRoles
                 {
                     if (!__instance.isActiveAndEnabled) return;
                     __instance.Toggle();
-                } else if (Input.GetKeyDown(KeyCode.F2)) {
-
+                }
+                else if (Input.GetKeyDown(KeyCode.F2))
+                {
                     __instance.SetVisible(false);
                     new LateTask(() =>
                     {
                         __instance.SetVisible(true);
-                    }, 0f,"AntiChatBag");
-
+                    }, 0f, "AntiChatBag");
                 }
                 if (__instance.IsOpen)
                 {

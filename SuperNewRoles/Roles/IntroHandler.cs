@@ -1,11 +1,3 @@
-﻿using SuperNewRoles.Mode.SuperHostRoles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
-using static SuperNewRoles.Roles.EvilGambler;
-
 namespace SuperNewRoles.Roles
 {
     class IntroHandler
@@ -17,7 +9,8 @@ namespace SuperNewRoles.Roles
             {
                 time = 7f;
             }
-            new LateTask(() => {
+            new LateTask(() =>
+            {
                 RoleClass.IsStart = true;
             }, time, "IsStartOn");
             if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Pursuer))

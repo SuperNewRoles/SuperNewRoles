@@ -1,8 +1,8 @@
-using HarmonyLib;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using HarmonyLib;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using static UnityEngine.UI.Button;
@@ -20,16 +20,8 @@ namespace SuperNewRoles.Patch
             new SelectionBehaviour("CustomProcessDown", () => ConfigRoles.CustomProcessDown.Value = !ConfigRoles.CustomProcessDown.Value, ConfigRoles.CustomProcessDown.Value),
             new SelectionBehaviour("CustomIsVersionErrorView", () => ConfigRoles.IsVersionErrorView.Value = !ConfigRoles.IsVersionErrorView.Value, ConfigRoles.IsVersionErrorView.Value),
             new SelectionBehaviour("CustomHideTaskArrows", () => TasksArrowsOption.hideTaskArrows = ConfigRoles.HideTaskArrows.Value = !ConfigRoles.HideTaskArrows.Value, ConfigRoles.HideTaskArrows.Value),
-            new SelectionBehaviour("CustomHorseMode", () =>HorseChange(), ConfigRoles.IsHorseMode.Value),
         };
-        public static bool HorseChange()
-        {
-            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.NotJoined)
-            {
-                ConfigRoles.IsHorseMode.Value = !ConfigRoles.IsHorseMode.Value;
-            }
-            return ConfigRoles.IsHorseMode.Value;
-        }
+
         private static GameObject popUp;
         private static TextMeshPro titleText;
 
@@ -55,8 +47,9 @@ namespace SuperNewRoles.Patch
         }
         private static Vector3? origin;
         public static float xOffset = 1.75f;
-        [HarmonyPatch(typeof(OptionsMenuBehaviour),nameof(OptionsMenuBehaviour.Update))]
-        class OptionsUpdate {
+        [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Update))]
+        class OptionsUpdate
+        {
             public static void Postfix(OptionsMenuBehaviour __instance)
             {
                 if (__instance.CensorChatButton?.gameObject != null) __instance.CensorChatButton.gameObject.SetActive(false);
@@ -80,8 +73,6 @@ namespace SuperNewRoles.Patch
                 buttonPrefab.name = "CensorChatPrefab";
                 buttonPrefab.gameObject.SetActive(false);
             }
-
-
             SetUpOptions(__instance);
             InitializeMoreButton(__instance);
         }
@@ -98,10 +89,9 @@ namespace SuperNewRoles.Patch
             Object.Destroy(popUp.GetComponent<OptionsMenuBehaviour>());
             foreach (var gObj in popUp.gameObject.GetAllChilds())
             {
-                if (gObj.name != "Background" && gObj.name != "CloseButton")
+                if (gObj.name is not "Background" and not "CloseButton")
                     Object.Destroy(gObj);
             }
-
             popUp.SetActive(false);
         }
 
@@ -119,7 +109,7 @@ namespace SuperNewRoles.Patch
             moreOptions.Text.text = ModTranslation.getString("modOptionsText");
             var moreOptionsButton = moreOptions.GetComponent<PassiveButton>();
             moreOptionsButton.OnClick = new ButtonClickedEvent();
-            moreOptionsButton.OnClick.AddListener((Action) (() =>
+            moreOptionsButton.OnClick.AddListener((Action)(() =>
             {
                 if (!popUp) return;
 
@@ -133,7 +123,6 @@ namespace SuperNewRoles.Patch
                     popUp.transform.SetParent(null);
                     Object.DontDestroyOnLoad(popUp);
                 }
-
                 CheckSetTitle();
                 RefreshOpen(__instance);
             }));
@@ -208,7 +197,8 @@ namespace SuperNewRoles.Patch
                 if (i == 0)
                 {
                     mainbutton = __instance.CensorChatButton;
-                } else
+                }
+                else
                 {
                     mainbutton = __instance.EnableFriendInvitesButton;
                 }
@@ -270,9 +260,9 @@ namespace SuperNewRoles.Patch
                     spr.size = new Vector2(2.2f, .7f);
                 modButtons.Add(button);
             }
-            for (var i = 2; i < AllOptions.Length+2; i++)
+            for (var i = 2; i < AllOptions.Length + 2; i++)
             {
-                var info = AllOptions[i-2];
+                var info = AllOptions[i - 2];
 
                 var button = Object.Instantiate(buttonPrefab, popUp.transform);
                 var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
@@ -300,14 +290,14 @@ namespace SuperNewRoles.Patch
                 passiveButton.OnMouseOut = new UnityEvent();
                 passiveButton.OnMouseOver = new UnityEvent();
 
-                passiveButton.OnClick.AddListener((Action) (() =>
+                passiveButton.OnClick.AddListener((Action)(() =>
                 {
                     button.onState = info.OnClick();
                     button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
                 }));
 
-                passiveButton.OnMouseOver.AddListener((Action) (() => button.Background.color = new Color32(34 ,139, 34, byte.MaxValue)));
-                passiveButton.OnMouseOut.AddListener((Action) (() => button.Background.color = button.onState ? Color.green : Palette.ImpostorRed));
+                passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, byte.MaxValue)));
+                passiveButton.OnMouseOut.AddListener((Action)(() => button.Background.color = button.onState ? Color.green : Palette.ImpostorRed));
 
                 foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
                     spr.size = new Vector2(2.2f, .7f);
@@ -318,7 +308,7 @@ namespace SuperNewRoles.Patch
 
         private static IEnumerable<GameObject> GetAllChilds(this GameObject Go)
         {
-            for (var i = 0; i< Go.transform.childCount; i++)
+            for (var i = 0; i < Go.transform.childCount; i++)
             {
                 yield return Go.transform.GetChild(i).gameObject;
             }
@@ -340,11 +330,11 @@ namespace SuperNewRoles.Patch
             for (int i = 0; i < AllOptions.Length; i++)
             {
                 if (i >= modButtons.Count) break;
-                modButtons[i+2].Text.text = ModTranslation.getString(AllOptions[i].Title);
+                modButtons[i + 2].Text.text = ModTranslation.getString(AllOptions[i].Title);
             }
         }
 
-        private class SelectionBehaviour
+        public class SelectionBehaviour
         {
             public string Title;
             public Func<bool> OnClick;
@@ -360,12 +350,12 @@ namespace SuperNewRoles.Patch
     }
 
     [HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.SetText))]
-	public static class HiddenTextPatch
-	{
-		private static void Postfix(TextBoxTMP __instance)
-		{
-			bool flag = ConfigRoles.StreamerMode.Value && (__instance.name == "GameIdText" || __instance.name == "IpTextBox" || __instance.name == "PortTextBox");
-			if (flag) __instance.outputText.text = new string('*', __instance.text.Length);
-		}
-	}
+    public static class HiddenTextPatch
+    {
+        private static void Postfix(TextBoxTMP __instance)
+        {
+            bool flag = ConfigRoles.StreamerMode.Value && (__instance.name == "GameIdText" || __instance.name == "IpTextBox" || __instance.name == "PortTextBox");
+            if (flag) __instance.outputText.text = new string('*', __instance.text.Length);
+        }
+    }
 }

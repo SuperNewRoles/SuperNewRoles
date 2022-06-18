@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
@@ -14,7 +14,8 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
         public NamePlatesObject[] AllNamePlates { get; set; }
     }
     [DataContract]
-   public partial class NamePlatesObject {
+    public partial class NamePlatesObject
+    {
         [DataMember(Name = "name")]
         public string Name { get; set; }
         [DataMember(Name = "author")]

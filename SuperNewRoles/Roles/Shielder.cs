@@ -1,20 +1,14 @@
-using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using SuperNewRoles.EndGame;
 using HarmonyLib;
+using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
     public class Shielder
     {
-        [HarmonyPatch(typeof(HudManager),nameof(HudManager.Update))]
+        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
         public class HudManagerUpdatePatch
         {
             public static void Postfix()

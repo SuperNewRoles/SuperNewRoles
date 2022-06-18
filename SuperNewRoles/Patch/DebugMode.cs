@@ -1,20 +1,20 @@
-﻿using BepInEx;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Security.Cryptography;
+using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using HarmonyLib;
 using Hazel;
-using System.Security.Cryptography;
-using System.Linq;
-using System.Net;
-using System.IO;
-using System;
-using System.Reflection;
+using InnerNet;
+using SuperNewRoles.CustomOption;
 using UnhollowerBaseLib;
 using UnityEngine;
-using SuperNewRoles.CustomOption;
-using InnerNet;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace SuperNewRoles.Patch
 {
@@ -27,23 +27,23 @@ namespace SuperNewRoles.Patch
             {
                 if (ConfigRoles.DebugMode.Value)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("アドミンの場所(x):" + __instance.transform.position.x);
-                    SuperNewRolesPlugin.Logger.LogInfo("アドミンの場所(y):" + __instance.transform.position.y);
-                    SuperNewRolesPlugin.Logger.LogInfo("アドミンの場所(Z):" + __instance.transform.position.z);
+                    SuperNewRolesPlugin.Logger.LogInfo("[DebugMode]Admin Coordinate(x):" + __instance.transform.position.x);
+                    SuperNewRolesPlugin.Logger.LogInfo("[DebugMode]Admin Coordinate(y):" + __instance.transform.position.y);
+                    SuperNewRolesPlugin.Logger.LogInfo("[DebugMode]Admin Coordinate(Z):" + __instance.transform.position.z);
                 }
             }
         }
         [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
         public static class DebugManager
         {
-            private static readonly System.Random random = new System.Random((int)DateTime.Now.Ticks);
-            private static List<PlayerControl> bots = new List<PlayerControl>();
+            private static readonly System.Random random = new((int)DateTime.Now.Ticks);
+            private static List<PlayerControl> bots = new();
             public class LateTask
             {
                 public string name;
                 public float timer;
                 public Action action;
-                public static List<LateTask> Tasks = new List<LateTask>();
+                public static List<LateTask> Tasks = new();
                 public bool run(float deltaTime)
                 {
                     timer -= deltaTime;
@@ -64,7 +64,8 @@ namespace SuperNewRoles.Patch
                 public static void Update(float deltaTime)
                 {
                     var TasksToRemove = new List<LateTask>();
-                    Tasks.ForEach((task) => {
+                    Tasks.ForEach((task) =>
+                    {
                         if (task.run(deltaTime))
                         {
                             TasksToRemove.Add(task);
@@ -98,7 +99,7 @@ namespace SuperNewRoles.Patch
                         SuperNewRolesPlugin.Logger.LogInfo(MapUtilities.CachedShipStatus.AllVents[0].transform);
                     }
                 }
-                    
+
                     if (Input.GetKeyDown(KeyCode.C))
                     {
                         SuperNewRolesPlugin.Logger.LogInfo("CHANGE!!!");
@@ -111,9 +112,9 @@ namespace SuperNewRoles.Patch
                     }
                     */
 
-                    if (Input.GetKeyDown(KeyCode.F10))
+                if (Input.GetKeyDown(KeyCode.F10))
                 {
-                    BotManager.Spawn($"bot{(byte)GameData.Instance.GetAvailableId()}");                
+                    BotManager.Spawn($"bot{(byte)GameData.Instance.GetAvailableId()}");
                 }
                 if (Input.GetKeyDown(KeyCode.F11))
                 {
@@ -128,10 +129,13 @@ namespace SuperNewRoles.Patch
                     .Select(s => s[random.Next(s.Length)]).ToArray());
             }
         }
-        public static bool IsDebugMode() {
+        public static bool IsDebugMode()
+        {
             var IsDebugModeBool = false;
-            if (ConfigRoles.DebugMode.Value) {
-                if (CustomOptions.IsDebugMode.getBool()) {
+            if (ConfigRoles.DebugMode.Value)
+            {
+                if (CustomOptions.IsDebugMode.getBool())
+                {
                     IsDebugModeBool = true;
                 }
             }

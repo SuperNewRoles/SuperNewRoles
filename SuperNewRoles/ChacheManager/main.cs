@@ -1,7 +1,7 @@
-﻿using SuperNewRoles.CustomRPC;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles
 {
@@ -46,7 +46,8 @@ namespace SuperNewRoles
                 if (p.IsLovers(false))
                 {
                     LoversChache[p.PlayerId] = p.GetOneSideLovers(false);
-                } else
+                }
+                else
                 {
                     LoversChache[p.PlayerId] = null;
                 }

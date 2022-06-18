@@ -1,17 +1,15 @@
-﻿using HarmonyLib;
+using System.Collections.Generic;
+using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SuperNewRoles.Roles
 {
     class HandleGhostRole
     {
-        [HarmonyPatch(typeof(RoleManager),nameof(RoleManager.TryAssignRoleOnDeath))]
+        [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.TryAssignRoleOnDeath))]
         class AssignRole
         {
             public static bool Prefix(RoleManager __instance, [HarmonyArgument(0)] PlayerControl player)
@@ -30,14 +28,16 @@ namespace SuperNewRoles.Roles
             if (player.isCrew())
             {
                 Team = TeamRoleType.Crewmate;
-            } else if (player.isNeutral())
+            }
+            else if (player.isNeutral())
             {
                 Team = TeamRoleType.Neutral;
-            } else
+            }
+            else
             {
                 Team = TeamRoleType.Impostor;
             }
-            List<IntroDate> GhostRoles = new List<IntroDate>();
+            List<IntroDate> GhostRoles = new();
             foreach (IntroDate intro in IntroDate.GhostRoleDatas)
             {
                 if (intro.Team != Team) continue;
@@ -77,8 +77,8 @@ namespace SuperNewRoles.Roles
         //アサインする役職を決める
         public static RoleId Assing(List<IntroDate> datas)
         {
-            List<RoleId> Assigns = new List<RoleId>();
-            List<RoleId> Assignnos = new List<RoleId>();
+            List<RoleId> Assigns = new();
+            List<RoleId> Assignnos = new();
             ModeId mode = ModeHandler.GetMode();
             foreach (IntroDate data in datas)
             {
@@ -91,16 +91,19 @@ namespace SuperNewRoles.Roles
 
                 //確率が0%ではないかつ、
                 //もう割り当てきられてないか(最大人数まで割り当てられていないか)
-                if ((option.isSHROn || mode != ModeId.SuperHostRoles) && selection != 0 && count > CachedPlayer.AllPlayers.ToArray().ToList().Count((CachedPlayer pc)=> pc.PlayerControl.isGhostRole(data.RoleId)))
+                if ((option.isSHROn || mode != ModeId.SuperHostRoles) && selection != 0 && count > CachedPlayer.AllPlayers.ToArray().ToList().Count((CachedPlayer pc) => pc.PlayerControl.isGhostRole(data.RoleId)))
                 {
                     //100%なら100%アサインListに入れる
                     if (selection == 10)
                     {
                         Assigns.Add(data.RoleId);
-                    //100%アサインリストの中身が0だったら処理しない(100%アサインリストのほうがアサインされるため)
-                    } else if (Assigns.Count <= 0){
+                        //100%アサインリストの中身が0だったら処理しない(100%アサインリストのほうがアサインされるため)
+                    }
+                    else if (Assigns.Count <= 0)
+                    {
                         //確率分だけRoleIdを入れる
-                        for (int i = 0; i < selection;i++) {
+                        for (int i = 0; i < selection; i++)
+                        {
                             Assignnos.Add(data.RoleId);
                         }
                     }
@@ -110,8 +113,9 @@ namespace SuperNewRoles.Roles
             if (Assigns.Count > 0)
             {
                 return ModHelpers.GetRandom(Assigns);
-            //100%ではない、アサインリストの中身が0ではなかったらランダムに選んでアサイン
-            } else if (Assignnos.Count > 0)
+                //100%ではない、アサインリストの中身が0ではなかったらランダムに選んでアサイン
+            }
+            else if (Assignnos.Count > 0)
             {
                 return ModHelpers.GetRandom(Assignnos);
             }

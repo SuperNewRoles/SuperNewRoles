@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 using UnhollowerBaseLib;
 using UnityEngine;
 
 namespace SuperNewRoles
 {
-
     public static unsafe class FastDestroyableSingleton<T> where T : MonoBehaviour
     {
         private static readonly IntPtr _fieldPtr;

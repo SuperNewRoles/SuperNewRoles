@@ -1,11 +1,11 @@
-﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.RandomColor
@@ -30,7 +30,7 @@ namespace SuperNewRoles.Mode.RandomColor
                     {
                         if (!p.Data.Disconnected)
                         {
-                            p.RpcSetName("　");
+                            p.RpcSetName("  ");
                         }
                     }
                 }
@@ -48,7 +48,7 @@ namespace SuperNewRoles.Mode.RandomColor
                         {
                             SetColor = 0;
                         }
-                        SuperNewRolesPlugin.Logger.LogInfo("UPDATED!");
+                        SuperNewRolesPlugin.Logger.LogInfo("[RandomColor] UPDATED!");
                         if (!RoleClass.IsMeeting || (RoleClass.IsMeeting && IsRandomColorMeeting))
                         {
                             p.RpcSetColor(SetColor);
@@ -59,7 +59,7 @@ namespace SuperNewRoles.Mode.RandomColor
                         }
                         if (RoleClass.IsMeeting && IsHideName)
                         {
-                            p.RpcSetName(ModHelpers.cs(Color.yellow, "RandomColorMode!"));
+                            p.RpcSetName(ModHelpers.cs(Color.yellow, "[RandomColor] RandomColorMode!"));
                             IsMeetingIn = true;
                         }
                         if (IsMeetingIn && !RoleClass.IsMeeting && IsHideName)

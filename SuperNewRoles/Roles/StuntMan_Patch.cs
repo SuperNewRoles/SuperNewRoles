@@ -1,12 +1,3 @@
-﻿using HarmonyLib;
-using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace SuperNewRoles.Roles
 {
     class StuntMan_Patch
@@ -42,7 +33,6 @@ namespace SuperNewRoles.Roles
             {
             }
         }
-        
-    */}
-
+    */
+    }
 }

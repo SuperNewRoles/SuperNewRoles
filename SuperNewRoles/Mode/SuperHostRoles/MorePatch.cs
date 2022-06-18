@@ -1,11 +1,11 @@
-﻿
-using HarmonyLib;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Roles;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Roles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -56,7 +56,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!AmongUsClient.Instance.AmHost) return;
             FixedUpdate.SetRoleNames(true);
             RoleClass.IsMeeting = true;
-            new LateTask(() => {
+            new LateTask(() =>
+            {
                 FixedUpdate.SetDefaultNames();
             }, 5f, "SetMeetingName");
         }

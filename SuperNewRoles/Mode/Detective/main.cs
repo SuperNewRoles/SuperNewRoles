@@ -1,10 +1,10 @@
-﻿using Hazel;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Hazel;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.Detective
@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.Detective
         public static bool IsDetectiveNotTask;
         public static bool IsNotDetectiveMeetingButton;
         public static PlayerControl DetectivePlayer;
-        public static Color32 DetectiveColor = new Color32(255, 0, 255, byte.MaxValue);
+        public static Color32 DetectiveColor = new(255, 0, 255, byte.MaxValue);
         public static void ClearAndReload()
         {
             IsNotDetectiveWin = DetectiveOptions.IsWinNotCheckDetective.getBool();
@@ -24,9 +24,10 @@ namespace SuperNewRoles.Mode.Detective
             IsDetectiveNotTask = DetectiveOptions.DetectiveIsNotTask.getBool();
             IsNotDetectiveMeetingButton = DetectiveOptions.IsNotDetectiveMeetingButton.getBool();
         }
-        public static void RoleSelect() {
+        public static void RoleSelect()
+        {
             DetectivePlayer = PlayerControl.LocalPlayer;
-            List<PlayerControl> selectplayers = new List<PlayerControl>();
+            List<PlayerControl> selectplayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.isCrew())
@@ -39,7 +40,7 @@ namespace SuperNewRoles.Mode.Detective
             writer.Write(random.PlayerId);
             writer.EndRPC();
             CustomRPC.RPCProcedure.SetDetective(random.PlayerId);
-            DetectivePlayer.RpcSetName(ModHelpers.cs(DetectiveColor,DetectivePlayer.getDefaultName()));
+            DetectivePlayer.RpcSetName(ModHelpers.cs(DetectiveColor, DetectivePlayer.getDefaultName()));
             DetectivePlayer.SetName(ModHelpers.cs(DetectiveColor, DetectivePlayer.getDefaultName()));
         }
         public static void MurderPatch(PlayerControl target)

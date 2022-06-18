@@ -1,21 +1,19 @@
-﻿using SuperNewRoles.CustomRPC;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Roles
 {
     public static class Levelinger
     {
-        public static void MurderPlayer(PlayerControl __instance,PlayerControl target)
+        public static void MurderPlayer(PlayerControl __instance, PlayerControl target)
         {
             if (__instance.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
             if (__instance.isRole(RoleId.Levelinger))
             {
-                RoleClass.Levelinger.ThisXP = RoleClass.Levelinger.ThisXP + RoleClass.Levelinger.OneKillXP;
-            } else if (target.isRole(RoleId.Levelinger))
+                RoleClass.Levelinger.ThisXP += RoleClass.Levelinger.OneKillXP;
+            }
+            else if (target.isRole(RoleId.Levelinger))
             {
                 LevelingerRevive();
             }
