@@ -128,7 +128,7 @@ class AllCheck:
             if (item == MapId[0]): conditions + "PlayerControl.GameOptions.MapId is not " + item
             else: conditions + "and " + item
         MainClass.WriteCodes("Sabotage/SabotageManager.cs", "//カスタムサボタージュが使えるか",
-                             "case CustomSabotage." + MainClass.GetInput("SabotageName") + ":\n                    if (" + conditions + ")\n                    else return Options." + MainClass.GetInput("SabotageName") + "Setting.getBool();\n                //カスタムサボタージュが使えるか")
+                             "case CustomSabotage." + MainClass.GetInput("SabotageName") + ":\n                    if (" + conditions + ") return false;\n                    else return Options." + MainClass.GetInput("SabotageName") + "Setting.getBool();\n                //カスタムサボタージュが使えるか")
         # Sabotage/Options.cs.cs
         MainClass.WriteCodes("Sabotage/Options.cs", "//CustomOption(Sabotage)",
                             """\n        public static CustomOption.CustomOption SabotageNAMESetting;
