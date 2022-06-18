@@ -26,11 +26,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 PlayerControl player,
                 byte amount)
         {
-            if (systemType == SystemTypes.Comms)
-            {
-                FixedUpdate.SetRoleNames();
-            }
-            SyncSetting.CustomSyncSettings();
             if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {
                 if ((player.isRole(RoleId.Jackal) && !RoleClass.Jackal.IsUseSabo) || player.isRole(RoleId.Demon) || player.isRole(RoleId.Arsonist) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.Sheriff) || player.isRole(RoleId.truelover) || player.isRole(RoleId.FalseCharges) || player.isRole(RoleId.MadMaker)) return false;

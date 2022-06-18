@@ -92,6 +92,13 @@ namespace SuperNewRoles.Patch
                     {
                         Mode.SuperHostRoles.FixedUpdate.Update();
                         Fox.FixedUpdate.Postfix();
+                        RoleId MyRole = CachedPlayer.LocalPlayer.PlayerControl.getRole();
+                        switch (MyRole)
+                        {
+                            case RoleId.Mafia:
+                                Mafia.FixedUpdate();
+                                break;
+                        }
                     }
                     else if (ModeHandler.isMode(ModeId.Default))
                     {
@@ -145,6 +152,9 @@ namespace SuperNewRoles.Patch
                                     break;
                                 case RoleId.Vulture:
                                     Vulture.FixedUpdate.Postfix();
+                                    break;
+                                case RoleId.Mafia:
+                                    Mafia.FixedUpdate();
                                     break;
                             }
                             Fox.FixedUpdate.Postfix();

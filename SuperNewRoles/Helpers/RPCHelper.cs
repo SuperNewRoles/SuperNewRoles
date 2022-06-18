@@ -66,6 +66,17 @@ namespace SuperNewRoles.Helpers
             AmongUsClient.Instance.FinishRpcImmediately(val);
         }
 
+        public static void RpcProtectPlayerPrivate(this PlayerControl SourcePlayer, CustomRpcSender sender, PlayerControl target, int colorId, PlayerControl SeePlayer = null)
+        {
+            if (SourcePlayer == null || target == null || !AmongUsClient.Instance.AmHost) return;
+            if (SeePlayer == null) SeePlayer = SourcePlayer;
+            var clientId = SeePlayer.getClientId();
+            sender.StartRpc(SourcePlayer.NetId, RpcCalls.ProtectPlayer, clientId)
+                .WriteNetObject(target)
+                .Write(colorId)
+                .EndRpc();
+        }
+
         public static void RPCSendChatPrivate(this PlayerControl TargetPlayer, string Chat, PlayerControl SeePlayer = null)
         {
             if (TargetPlayer == null || Chat == null) return;

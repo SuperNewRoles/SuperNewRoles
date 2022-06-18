@@ -248,6 +248,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     MySuffix += "(残り" + RoleClass.RemoteSheriff.KillCount[player.PlayerId] + "発)";
                 }
             }
+            else if (player.isRole(RoleId.Mafia))
+            {
+                if (Mafia.IsKillFlag())
+                {
+                    MySuffix += " (キル可能)";
+                }
+            }
 
             var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(player.getRole(), player);
             string TaskText = "";

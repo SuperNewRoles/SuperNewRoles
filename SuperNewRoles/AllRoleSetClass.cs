@@ -17,6 +17,8 @@ namespace SuperNewRoles
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
+            SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName+" => "+roleType);
+            return true;
             if (RoleManagerSelectRolesPatch.IsShapeSet)
             {
                 MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
@@ -63,32 +65,6 @@ namespace SuperNewRoles
             CustomRPC.RPCProcedure.StartGameRPC();
 
             RoleSelectHandler.SpawnBots();
-            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
-            {
-                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
-            }
-        }
-    }
-    [HarmonyPatch(typeof(GameData.PlayerInfo), nameof(GameData.PlayerInfo.IsDead), MethodType.Setter)]
-    class DeadPatch
-    {
-        public static void Postfix(GameData.PlayerInfo __instance)
-        {
-            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
-            {
-                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
-            }
-        }
-    }
-    [HarmonyPatch(typeof(GameData.PlayerInfo), nameof(GameData.PlayerInfo.Disconnected), MethodType.Setter)]
-    class DisconnectPatch
-    {
-        public static void Postfix(GameData.PlayerInfo __instance)
-        {
-            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
-            {
-                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
-            }
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
@@ -953,7 +929,9 @@ namespace SuperNewRoles
                     return CustomOption.CustomOptions.HauntedWolfPlayerCount.getFloat();
                 case (RoleId.Tuna):
                     return CustomOption.CustomOptions.TunaPlayerCount.getFloat();
-                //プレイヤーカウント
+                case (RoleId.Mafia):
+                return CustomOption.CustomOptions.MafiaPlayerCount.getFloat();
+                    //プレイヤーカウント
             }
             return 1;
         }
