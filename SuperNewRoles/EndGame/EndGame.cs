@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -543,6 +543,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.MadCleaner.MadCleanerPlayer);
             notWinners.AddRange(RoleClass.MayorFriends.MayorFriendsPlayer);
             notWinners.AddRange(RoleClass.Tuna.TunaPlayer);
+            notWinners.AddRange(RoleClass.BlackCat.BlackCatPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -754,6 +755,11 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(wpd);
                 }
                 foreach (PlayerControl p in RoleClass.MadCleaner.MadCleanerPlayer)
+                {
+                    WinningPlayerData wpd = new(p.Data);
+                    TempData.winners.Add(wpd);
+                }
+                foreach (PlayerControl p in RoleClass.BlackCat.BlackCatPlayer)
                 {
                     WinningPlayerData wpd = new(p.Data);
                     TempData.winners.Add(wpd);

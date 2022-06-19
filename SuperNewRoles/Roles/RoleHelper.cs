@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.CustomOption;
@@ -241,7 +241,11 @@ namespace SuperNewRoles
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
-                //ベント設定可視化
+                case RoleId.BlackCat:
+                    returntext = CustomOptions.BlackCatIsUseVent.name + ":" + CustomOptions.BlackCatIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.BlackCatIsCheckImpostor.name + ":" + CustomOptions.BlackCatIsCheckImpostor.getString() + "\n";
+                    break;
+                    //ベント設定可視化
             }
             return returntext;
         }
@@ -572,6 +576,9 @@ namespace SuperNewRoles
                 case CustomRPC.RoleId.Tuna:
                     Roles.RoleClass.Tuna.TunaPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.BlackCat):
+                    Roles.RoleClass.BlackCat.BlackCatPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("[SetRole]:No Method Found for Role Type {role}");
@@ -901,8 +908,9 @@ namespace SuperNewRoles
                 case CustomRPC.RoleId.Tuna:
                     Roles.RoleClass.Tuna.TunaPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
-
+                case (CustomRPC.RoleId.BlackCat):
+                    Roles.RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
+                    break;
                     //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1013,6 +1021,9 @@ namespace SuperNewRoles
                 case RoleId.Tuna:
                     IsTaskClear = true;
                     break;
+                case RoleId.BlackCat:
+                    IsTaskClear = true;
+                    break;
                     //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
@@ -1075,10 +1086,6 @@ namespace SuperNewRoles
                     return RoleClass.JackalSeer.IsUseVent;
                 case RoleId.MadCleaner:
                     return RoleClass.MadCleaner.IsUseVent;
-                /*
-                case RoleId.Scavenger:
-                    return RoleClass.Scavenger.IsUseVent;
-                */
                 case RoleId.Arsonist:
                     return RoleClass.Arsonist.IsUseVent;
                 case RoleId.Vulture:
@@ -1087,11 +1094,10 @@ namespace SuperNewRoles
                     return RoleClass.MayorFriends.IsUseVent;
                 case RoleId.Tuna:
                     return RoleClass.Tuna.IsUseVent;
+                                case RoleId.BlackCat:
+                    if (CachedPlayer.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return false;
+                    return RoleClass.BlackCat.IsUseVent;
                     //ベントが使える
-                    /*
-                    case RoleId.Scavenger:
-                        return RoleClass.Scavenger.IsUseVent;
-                    */
             }
             return false;
         }
@@ -1155,6 +1161,7 @@ namespace SuperNewRoles
                 RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsImpostorLight,
                 RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                 RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
+                RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
                 _ => false,
             };
         }
@@ -1799,6 +1806,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.Tuna.TunaPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.Tuna;
+                }
+                else if (Roles.RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.BlackCat;
                 }
                 //ロールチェック
             }

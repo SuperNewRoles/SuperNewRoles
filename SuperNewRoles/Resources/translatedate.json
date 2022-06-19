@@ -3007,6 +3007,14 @@
  "TunaStoppingTimeSetting" : {
         "0" : "Stopping Time" ,
         "11" : "\u6b62\u307e\u308c\u308b\u6642\u9593"
+        } ,
+ "BlackCatName" : {
+        "0" : "Black Cat" ,
+        "11" : "\u9ed2\u732b"
+        } ,
+ "BlackCatTitle1" : {
+        "0" : "Give your life for your master." ,
+        "11" : "\u4e3b\u4eba\u306e\u305f\u3081\u306b\u547d\u3092\u6367\u3052\u3088"
         } 
 
 }

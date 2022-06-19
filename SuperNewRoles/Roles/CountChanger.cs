@@ -182,6 +182,26 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
+                public static bool IsChangeBlackCat(this PlayerControl p)
+        {
+            var getroledata = GetRoleType(p);
+            if (getroledata == TeamRoleType.Crewmate)
+            {
+                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(CustomRPC.RoleId.BlackCat)) return true;
+                }
+                else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(CustomRPC.RoleId.BlackCat)) return true;
+                }
+                else
+                {
+                    return p.isRole(CustomRPC.RoleId.BlackCat);
+                }
+            }
+            return false;
+        }
         public static bool IsChangeJackal(this PlayerControl p)
         {
             var getroledata = GetRoleType(p);
