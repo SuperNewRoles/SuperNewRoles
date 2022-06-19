@@ -90,7 +90,7 @@ namespace SuperNewRoles
         }
         public static void SetQuarreled(PlayerControl player1, PlayerControl player2)
         {
-            var sets = new List<PlayerControl>() { player1, player2 };
+            List<PlayerControl> sets = new () { player1, player2 };
             RoleClass.Quarreled.QuarreledPlayer.Add(sets);
             ChacheManager.ResetQuarreledChache();
         }
@@ -103,7 +103,7 @@ namespace SuperNewRoles
         }
         public static void SetLovers(PlayerControl player1, PlayerControl player2)
         {
-            var sets = new List<PlayerControl>() { player1, player2 };
+            List<PlayerControl> sets = new() { player1, player2 };
             RoleClass.Lovers.LoversPlayer.Add(sets);
             if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
@@ -1843,17 +1843,8 @@ namespace SuperNewRoles
             }
             return RoleId.DefaultRole;
         }
-        public static Dictionary<byte, bool> DeadCaches;
         public static bool isDead(this PlayerControl player, bool Cache = true)
         {
-            if (Cache)
-            {
-                try
-                {
-                    return DeadCaches[player.PlayerId];
-                }
-                catch { }
-            }
             return player == null || player.Data.Disconnected || player.Data.IsDead;
         }
         public static bool isAlive(this PlayerControl player)

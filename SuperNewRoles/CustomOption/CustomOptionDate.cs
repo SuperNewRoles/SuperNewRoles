@@ -632,8 +632,8 @@ namespace SuperNewRoles.CustomOption
 
         public static void Load()
         {
-            var Levedatas = new List<string>() { "optionOff", "LevelingerSettingKeep", "PursuerName", "TeleporterName", "SidekickName", "SpeedBoosterName", "MovingName" };
-            var LeveTransed = new List<string>();
+            List<string> Levedatas = new() { "optionOff", "LevelingerSettingKeep", "PursuerName", "TeleporterName", "SidekickName", "SpeedBoosterName", "MovingName" };
+            List<string> LeveTransed = new();
             foreach (string data in Levedatas)
             {
                 LeveTransed.Add(ModTranslation.getString(data));

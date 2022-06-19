@@ -28,7 +28,7 @@ namespace SuperNewRoles.Roles
 
         public static List<PlayerControl> GetCurseData(this PlayerControl player)
         {
-            return RoleClass.Demon.CurseDatas.ContainsKey(player.PlayerId) ? RoleClass.Demon.CurseDatas[player.PlayerId] : new List<PlayerControl>();
+            return RoleClass.Demon.CurseDatas.ContainsKey(player.PlayerId) ? RoleClass.Demon.CurseDatas[player.PlayerId] : new();
         }
 
         public static List<PlayerControl> GetUntarget()
@@ -37,7 +37,7 @@ namespace SuperNewRoles.Roles
             {
                 return RoleClass.Demon.CurseDatas[CachedPlayer.LocalPlayer.PlayerId];
             }
-            return new List<PlayerControl>();
+            return new();
         }
 
         public static bool IsCursed(this PlayerControl source, PlayerControl target)
@@ -61,7 +61,7 @@ namespace SuperNewRoles.Roles
             {
                 return RoleClass.Demon.CurseDatas[player.PlayerId];
             }
-            return new List<PlayerControl>();
+            return new();
         }
         public static bool IsViewIcon(PlayerControl player)
         {

@@ -201,8 +201,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void CrewOrImpostorSet()
         {
-            AllRoleSetClass.CrewMatePlayers = new List<PlayerControl>();
-            AllRoleSetClass.ImpostorPlayers = new List<PlayerControl>();
+            AllRoleSetClass.CrewMatePlayers = new();
+            AllRoleSetClass.ImpostorPlayers = new();
             foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
                 if (Player.IsPlayer())
@@ -220,12 +220,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void OneOrNotListSet()
         {
-            var Impoonepar = new List<RoleId>();
-            var Imponotonepar = new List<RoleId>();
-            var Neutonepar = new List<RoleId>();
-            var Neutnotonepar = new List<RoleId>();
-            var Crewonepar = new List<RoleId>();
-            var Crewnotonepar = new List<RoleId>();
+            List<RoleId> Impoonepar = new();
+            List<RoleId> Imponotonepar = new();
+            List<RoleId> Neutonepar = new();
+            List<RoleId> Neutnotonepar = new();
+            List<RoleId> Crewonepar = new();
+            List<RoleId> Crewnotonepar = new();
 
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
