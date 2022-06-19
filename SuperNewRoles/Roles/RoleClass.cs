@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -2172,6 +2172,7 @@ namespace SuperNewRoles.Roles
             public static float Timer;
             public static float StoppingTime;
             public static bool IsUseVent;
+            public static Dictionary<byte, float> Timers;
             public static void ClearAndReload()
             {
                 TunaPlayer = new();
@@ -2182,8 +2183,8 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.TunaIsUseVent.getBool();
                 if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
                 {
-                    Mode.SuperHostRoles.Roles.Tuna.Timer = new Dictionary<byte, float>();
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers) Mode.SuperHostRoles.Roles.Tuna.Timer[p.PlayerId] = StoppingTime;
+                    Timers = new();
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers) Timers[p.PlayerId] = StoppingTime;
                 }
             }
         }
