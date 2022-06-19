@@ -884,26 +884,13 @@ namespace SuperNewRoles.CustomRPC
             SwapPlayer.transform.position = SwapperPlayerPosition;
             SwapperPlayer.transform.position = SwapPlayerPosition;
 
-            //Text
+            /*//Text
             var rand = new System.Random();
             if (rand.Next(1, 20) == 1){
                 new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
             }
             else{
                 new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
-            }
-            /*List<PlayerControl> SwappingPlayer = new();
-            foreach (PlayerControl Player in CachedPlayer.AllPlayers)
-            {
-                if (SwapPlayer.isAlive() && SwapPlayer.CanMove && !SwapPlayer.isRole(RoleId.PositionSwapper))
-                {
-                    SwappingPlayer.Add(Player);
-                    CachedPlayer.LocalPlayer.transform.position = SwapperPlayerPosition;
-                }
-                else if (SwapPlayer.isAlive() && SwapPlayer.CanMove && SwapPlayer.isRole(RoleId.PositionSwapper))
-                {
-                    CachedPlayer.LocalPlayer.transform.position = RandomPlayerPosition;
-                }
             }*/
         }
         public static void UseAdminTime(float time)

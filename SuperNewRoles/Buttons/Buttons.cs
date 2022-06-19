@@ -1555,7 +1555,7 @@ namespace SuperNewRoles.Buttons
                     else{
                         PositionSwapperNumText.text = "";
                     }*/
-                    RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
+                    //RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
                     PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(255F, 255F, 255F);
                     PositionSwapper.SwapStart();
                     PositionSwapper.ResetCoolDown();
@@ -1568,9 +1568,9 @@ namespace SuperNewRoles.Buttons
 
                     float swapcount = RoleClass.PositionSwapper.SwapCount;
                     if (swapcount >= 0)
-                        sheriffNumShotsText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), swapcount);
+                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), swapcount);
                     else
-                        sheriffNumShotsText.text = "";
+                        PositionSwapperNumText.text = "";
                     return true && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { PositionSwapper.EndMeeting(); },
