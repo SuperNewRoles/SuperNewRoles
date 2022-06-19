@@ -21,12 +21,12 @@ namespace SuperNewRoles.Mode.Werewolf
         }
         public static void OneOrNotListSet()
         {
-            var Impoonepar = new List<RoleId>();
-            var Imponotonepar = new List<RoleId>();
-            var Neutonepar = new List<RoleId>();
-            var Neutnotonepar = new List<RoleId>();
-            var Crewonepar = new List<RoleId>();
-            var Crewnotonepar = new List<RoleId>();
+            List<RoleId> Impoonepar = new();
+            List<RoleId> Imponotonepar = new();
+            List<RoleId> Neutonepar = new();
+            List<RoleId> Neutnotonepar = new();
+            List<RoleId> Crewonepar = new();
+            List<RoleId> Crewnotonepar = new();
             if (!(CustomOption.CustomOptions.MadMateOption.getString().Replace("0%", "") == ""))
             {
                 int OptionDate = int.Parse(CustomOption.CustomOptions.MadMateOption.getString().Replace("0%", ""));

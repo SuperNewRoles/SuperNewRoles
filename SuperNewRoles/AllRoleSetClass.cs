@@ -96,7 +96,7 @@ namespace SuperNewRoles
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 List<PlayerControl> SelectPlayers = new();
-                AllRoleSetClass.impostors = new List<PlayerControl>();
+                AllRoleSetClass.impostors = new();
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (!player.Data.Disconnected && player.IsPlayer())
@@ -307,7 +307,7 @@ namespace SuperNewRoles
             {
                 if (SelectPlayers.Count is not (1 or 0))
                 {
-                    var Listdate = new List<PlayerControl>();
+                    List<PlayerControl> Listdate = new();
                     for (int i2 = 0; i2 < 2; i2++)
                     {
                         var player = ModHelpers.GetRandomIndex<PlayerControl>(SelectPlayers);
@@ -326,7 +326,7 @@ namespace SuperNewRoles
             if (!CustomOptions.LoversOption.getBool() || (CustomOptions.LoversPar.getString() == "0%")) return;
             if (!(CustomOptions.LoversPar.getString() == "100%"))
             {
-                var a = new List<string>();
+                List<string> a = new();
                 var SucPar = int.Parse(CustomOptions.LoversPar.getString().Replace("0%", ""));
                 for (int i = 0; i < SucPar; i++)
                 {
@@ -373,7 +373,7 @@ namespace SuperNewRoles
             {
                 if (SelectPlayers.Count is not (1 or 0))
                 {
-                    var Listdate = new List<PlayerControl>();
+                    List<PlayerControl> Listdate = new();
                     for (int i2 = 0; i2 < 2; i2++)
                     {
                         var player = ModHelpers.GetRandomIndex(SelectPlayers);
@@ -840,8 +840,8 @@ namespace SuperNewRoles
         }
         public static void CrewOrImpostorSet()
         {
-            CrewMatePlayers = new List<PlayerControl>();
-            ImpostorPlayers = new List<PlayerControl>();
+            CrewMatePlayers = new();
+            ImpostorPlayers = new();
             foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
                 if (Player.Data.Role.IsSimpleRole)
@@ -859,12 +859,12 @@ namespace SuperNewRoles
         }
         public static void OneOrNotListSet()
         {
-            Impoonepar = new List<RoleId>();
-            Imponotonepar = new List<RoleId>();
-            Neutonepar = new List<RoleId>();
-            Neutnotonepar = new List<RoleId>();
-            Crewonepar = new List<RoleId>();
-            Crewnotonepar = new List<RoleId>();
+            Impoonepar = new();
+            Imponotonepar = new();
+            Neutonepar = new();
+            Neutnotonepar = new();
+            Crewonepar = new();
+            Crewnotonepar = new();
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
                 if (intro.RoleId != RoleId.DefaultRole && !intro.IsGhostRole)

@@ -40,7 +40,7 @@ namespace SuperNewRoles.Roles
 
                 if (untargetablePlayers == null)
                 {
-                    untargetablePlayers = new List<PlayerControl>();
+                    untargetablePlayers = new();
                 }
 
                 Vector2 truePosition = targetingPlayer.GetTruePosition();

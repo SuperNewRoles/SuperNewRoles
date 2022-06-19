@@ -218,7 +218,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         }
                     }
                 }
-                Winners = new List<PlayerControl>();
+                Winners = new();
                 try
                 {
                     foreach (List<PlayerControl> teams in Teams)
@@ -300,7 +300,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             IsTeamBattle = BROption.IsTeamBattle.getBool();
             Teams = new List<List<PlayerControl>>();
             IsSeted = false;
-            Winners = new List<PlayerControl>();
+            Winners = new();
         }
         public static class ChangeRole
         {
@@ -333,7 +333,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                 if (TempTeam.Count >= oneteamcount)
                                 {
                                     Teams.Add(TempTeam);
-                                    TempTeam = new List<PlayerControl>();
+                                    TempTeam = new();
                                     SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Reset");
                                 }
                             }
@@ -341,7 +341,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         if (TempTeam.Count > 0)
                         {
                             Teams.Add(TempTeam);
-                            TempTeam = new List<PlayerControl>();
+                            TempTeam = new();
                             SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Reset");
                         }
                         SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Team Count:" + Teams.Count);

@@ -11,14 +11,30 @@ namespace SuperNewRoles.Helpers
 {
     public static class RPCHelper
     {
+        public static MessageWriter StartRPC(RpcCalls RPCId, PlayerControl SendTarget = null)
+        {
+            return StartRPC(CachedPlayer.LocalPlayer.NetId, (byte)RPCId, SendTarget);
+        }
+        public static MessageWriter StartRPC(uint NetId, RpcCalls RPCId, PlayerControl SendTarget = null)
+        {
+            return StartRPC(NetId, (byte)RPCId, SendTarget);
+        }
         public static MessageWriter StartRPC(CustomRPC.CustomRPC RPCId, PlayerControl SendTarget = null)
         {
-            return StartRPC((byte)RPCId, SendTarget);
+            return StartRPC(CachedPlayer.LocalPlayer.NetId, (byte)RPCId, SendTarget);
+        }
+        public static MessageWriter StartRPC(uint NetId, CustomRPC.CustomRPC RPCId, PlayerControl SendTarget = null)
+        {
+            return StartRPC(NetId, (byte)RPCId, SendTarget);
         }
         public static MessageWriter StartRPC(byte RPCId, PlayerControl SendTarget = null)
         {
+            return StartRPC(CachedPlayer.LocalPlayer.NetId, (byte)RPCId, SendTarget);
+        }
+        public static MessageWriter StartRPC(uint NetId, byte RPCId, PlayerControl SendTarget = null)
+        {
             var target = SendTarget != null ? SendTarget.getClientId() : -1;
-            return AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, RPCId, Hazel.SendOption.Reliable, target);
+            return AmongUsClient.Instance.StartRpcImmediately(NetId, RPCId, Hazel.SendOption.Reliable, target);
         }
         public static void EndRPC(this MessageWriter Writer)
         {
@@ -134,6 +150,21 @@ namespace SuperNewRoles.Helpers
             CustomRPC.RPCProcedure.UncheckedSetVanilaRole(player.PlayerId, (byte)roletype);
         }
 
+        public static void RpcResetAbilityCooldown(this PlayerControl target)
+        {
+            if (!AmongUsClient.Instance.AmHost) return;
+            if (PlayerControl.LocalPlayer.PlayerId == target.PlayerId)
+            {
+                PlayerControl.LocalPlayer.Data.Role.SetCooldown();
+            }
+            else
+            {
+                MessageWriter writer = StartRPC(target.NetId, RpcCalls.ProtectPlayer, target);
+                writer.Write(0);
+                writer.Write(0);
+                writer.EndRPC();
+            }
+        }
         [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.RpcSnapTo))]
         class RpcSnapToPatch
         {

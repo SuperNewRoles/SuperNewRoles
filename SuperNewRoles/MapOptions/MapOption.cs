@@ -81,10 +81,10 @@ namespace SuperNewRoles.MapOptions
                 ValidationSubmerged = false;
             }
             RandomMap.Prefix();
-            BlockTool.OldDesyncCommsPlayers = new List<byte>();
-            BlockTool.CameraPlayers = new List<byte>();
-            //BlockTool.VitalPlayers = new List<byte>();
-            //BlockTool.AdminPlayers = new List<byte>();
+            BlockTool.OldDesyncCommsPlayers = new();
+            BlockTool.CameraPlayers = new();
+            //BlockTool.VitalPlayers = new();
+            //BlockTool.AdminPlayers = new();
             /*
             if (DeviceUseCameraTime.getFloat() == 0 || !UseCamera)
             {

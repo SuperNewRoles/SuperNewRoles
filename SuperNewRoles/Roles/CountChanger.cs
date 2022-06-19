@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles
             {
                 RoleClass.CountChanger.IsSet = false;
                 RoleClass.CountChanger.ChangeData = RoleClass.CountChanger.Setdata;
-                RoleClass.CountChanger.Setdata = new Dictionary<int, int>();
+                RoleClass.CountChanger.Setdata = new();
             }
         }
         public static bool isChange(this PlayerControl p)

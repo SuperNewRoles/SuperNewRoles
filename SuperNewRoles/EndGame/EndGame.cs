@@ -842,8 +842,8 @@ namespace SuperNewRoles.EndGame
                 notWinners.AddRange(players);
             }
 
-            notWinners = new List<PlayerControl>();
-            winnersToRemove = new List<WinningPlayerData>();
+            notWinners = new();
+            winnersToRemove = new();
             foreach (WinningPlayerData winner in TempData.winners)
             {
                 if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
@@ -853,7 +853,7 @@ namespace SuperNewRoles.EndGame
             if (QuarreledWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                var winplays = new List<PlayerControl>() { WinnerPlayer };
+                List<PlayerControl> winplays = new(){ WinnerPlayer };
                 winplays.Add(WinnerPlayer.GetOneSideQuarreled());
                 foreach (PlayerControl p in winplays)
                 {

@@ -90,7 +90,7 @@ namespace SuperNewRoles
         }
         public static void SetQuarreled(PlayerControl player1, PlayerControl player2)
         {
-            var sets = new List<PlayerControl>() { player1, player2 };
+            List<PlayerControl> sets = new () { player1, player2 };
             RoleClass.Quarreled.QuarreledPlayer.Add(sets);
             ChacheManager.ResetQuarreledChache();
         }
@@ -103,7 +103,7 @@ namespace SuperNewRoles
         }
         public static void SetLovers(PlayerControl player1, PlayerControl player2)
         {
-            var sets = new List<PlayerControl>() { player1, player2 };
+            List<PlayerControl> sets = new() { player1, player2 };
             RoleClass.Lovers.LoversPlayer.Add(sets);
             if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
@@ -248,6 +248,20 @@ namespace SuperNewRoles
                     //ベント設定可視化
             }
             return returntext;
+        }
+        public static bool IsJackalTeam(this PlayerControl player)
+        {
+            return player.IsJackalTeamJackal() || player.IsJackalTeamSidekick();
+        }
+        public static bool IsJackalTeamJackal(this PlayerControl player)
+        {
+            RoleId role = player.getRole();
+            return role == RoleId.Jackal || role == RoleId.JackalSeer || role == RoleId.TeleportingJackal;
+        }
+        public static bool IsJackalTeamSidekick(this PlayerControl player)
+        {
+            RoleId role = player.getRole();
+            return role == RoleId.Sidekick || role == RoleId.SidekickSeer;
         }
 
         public static void ShowFlash(Color color, float duration = 1f)
@@ -1266,6 +1280,14 @@ namespace SuperNewRoles
                 return false;
             }
         }
+        public static bool isRole(this PlayerControl p, params RoleId[] roles)
+        {
+            foreach (RoleId role in roles)
+            {
+                if (p.isRole(role)) return true;
+            }
+            return false;
+        }
         public static float getCoolTime(PlayerControl __instance)
         {
             float addition = PlayerControl.GameOptions.killCooldown;
@@ -1829,7 +1851,6 @@ namespace SuperNewRoles
             }
             return RoleId.DefaultRole;
         }
-        public static Dictionary<byte, bool> DeadCaches;
         public static bool isDead(this PlayerControl player)
         {
             return player == null || player.Data.Disconnected || player.Data.IsDead;

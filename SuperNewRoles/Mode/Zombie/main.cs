@@ -107,7 +107,7 @@ namespace SuperNewRoles.Mode.Zombie
             ZombieOptions.PoliceLight = ZombieOptions.PoliceLightOption.getFloat();
             ZombieOptions.PoliceSpeed = ZombieOptions.PoliceSpeedOption.getFloat();
             if (!AmongUsClient.Instance.AmHost) return;
-            ZombiePlayers = new List<int>();
+            ZombiePlayers = new();
             if (AmongUsClient.Instance.AmHost)
             {
                 FixedUpdate.IsStart = false;
