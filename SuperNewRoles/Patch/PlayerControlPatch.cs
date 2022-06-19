@@ -497,6 +497,9 @@ namespace SuperNewRoles.Patches
                                 SuperNewRolesPlugin.Logger.LogError(e);
                             }
                             return false;
+                        case RoleId.Mafia:
+                            if (!Mafia.IsKillFlag()) return false;
+                            break;
                     }
                     break;
                 case ModeId.Detective:

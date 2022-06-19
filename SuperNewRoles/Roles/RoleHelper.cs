@@ -590,6 +590,9 @@ namespace SuperNewRoles
                 case CustomRPC.RoleId.Tuna:
                     Roles.RoleClass.Tuna.TunaPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Mafia):
+                    Roles.RoleClass.Mafia.MafiaPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.Add(player);
                     break;
@@ -609,7 +612,6 @@ namespace SuperNewRoles
             }
             if (flag)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[SetRole]Refresh(^u^)v");
                 PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
@@ -922,10 +924,13 @@ namespace SuperNewRoles
                 case CustomRPC.RoleId.Tuna:
                     Roles.RoleClass.Tuna.TunaPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.Mafia):
+                    Roles.RoleClass.Mafia.MafiaPlayer.RemoveAll(ClearRemove);
+                    break;
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1829,6 +1834,10 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Tuna;
                 }
+                else if (Roles.RoleClass.Mafia.MafiaPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Mafia;
+                }
                 else if (Roles.RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.BlackCat;
@@ -1842,7 +1851,7 @@ namespace SuperNewRoles
             }
             return RoleId.DefaultRole;
         }
-        public static bool isDead(this PlayerControl player, bool Cache = true)
+        public static bool isDead(this PlayerControl player)
         {
             return player == null || player.Data.Disconnected || player.Data.IsDead;
         }

@@ -16,5 +16,13 @@ namespace SuperNewRoles.Helpers
             MessageExtensions.WriteNetObject(MurderWriter, target);
             AmongUsClient.Instance.FinishRpcImmediately(MurderWriter);
         }
+        public static void RPCMurderPlayerPrivate(this PlayerControl source, CustomRpcSender sender, PlayerControl target, PlayerControl see = null)
+        {
+            PlayerControl SeePlayer = see;
+            if (see == null) SeePlayer = source;
+            sender.StartRpc(source.NetId, RpcCalls.MurderPlayer, SeePlayer.getClientId())
+                .WriteNetObject(target)
+                .EndRpc();
+        }
     }
 }

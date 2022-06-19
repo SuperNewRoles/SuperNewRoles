@@ -77,6 +77,7 @@ namespace SuperNewRoles.Intro
             System.Random r1 = new();
             return ModTranslation.getString(name + "Title" + r1.Next(1, num + 1).ToString());
         }
+
         public static IntroDate CrewmateIntro = new("CrewMate", Color.white, 1, CustomRPC.RoleId.DefaultRole);
         public static IntroDate ImpostorIntro = new("Impostor", RoleClass.ImpostorRed, 1, CustomRPC.RoleId.DefaultRole, TeamRoleType.Impostor);
         public static IntroDate SoothSayerIntro = new("SoothSayer", RoleClass.SoothSayer.color, 1, CustomRPC.RoleId.SoothSayer);
@@ -178,7 +179,8 @@ namespace SuperNewRoles.Intro
         public static IntroDate EvilHackerIntro = new("EvilHacker", RoleClass.EvilHacker.color, 1, CustomRPC.RoleId.EvilHacker, TeamRoleType.Impostor);
         public static IntroDate HauntedWolfIntro = new("HauntedWolf", RoleClass.HauntedWolf.color, 1, CustomRPC.RoleId.HauntedWolf);
         public static IntroDate TunaIntro = new("Tuna", RoleClass.Tuna.color, 1, CustomRPC.RoleId.Tuna, TeamRoleType.Neutral);
-        public static IntroDate BlackCatIntro = new IntroDate("BlackCat", RoleClass.BlackCat.color, 1, CustomRPC.RoleId.BlackCat);
+        public static IntroDate MafiaIntro = new("Mafia", RoleClass.Mafia.color, 1, CustomRPC.RoleId.Mafia, TeamRoleType.Impostor);
+        public static IntroDate BlackCatIntro = new("BlackCat", RoleClass.BlackCat.color, 1, CustomRPC.RoleId.BlackCat);
         //イントロオブジェ
     }
 }

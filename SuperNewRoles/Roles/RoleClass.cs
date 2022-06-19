@@ -134,6 +134,7 @@ namespace SuperNewRoles.Roles
             EvilHacker.ClearAndReload();
             HauntedWolf.ClearAndReload();
             Tuna.ClearAndReload();
+            Mafia.ClearAndReload();
             BlackCat.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -2184,6 +2185,17 @@ namespace SuperNewRoles.Roles
                     Mode.SuperHostRoles.Roles.Tuna.Timer = new Dictionary<byte, float>();
                     foreach (PlayerControl p in CachedPlayer.AllPlayers) Mode.SuperHostRoles.Roles.Tuna.Timer[p.PlayerId] = StoppingTime;
                 }
+            }
+        }
+        public static class Mafia
+        {
+            public static List<PlayerControl> MafiaPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool CachedIs;
+            public static void ClearAndReload()
+            {
+                MafiaPlayer = new List<PlayerControl>();
+                CachedIs = false;
             }
         }
         public static class BlackCat
