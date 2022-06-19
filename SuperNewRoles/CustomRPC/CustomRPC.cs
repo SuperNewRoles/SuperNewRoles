@@ -875,10 +875,17 @@ namespace SuperNewRoles.CustomRPC
         {
             var SwapPlayer = ModHelpers.playerById(SwapPlayerID);
             var SwapperPlayer = ModHelpers.playerById(SwapperID);
-            if (SubmergedCompatibility.isSubmerged())
+            /*if (SubmergedCompatibility.isSubmerged())
             {
-                SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(SwapPlayer));
-            }
+                var SwapPlayerFloor = SubmergedCompatibility.GetFloor(SwapPlayer);
+                var SwapperPlayerFloor = SubmergedCompatibility.GetFloor(SwapperPlayer);
+                if (PlayerControl.LocalPlayer.PlayerId == SwapPlayerID){
+                    SubmergedCompatibility.ChangeFloor(SwapperPlayerFloor);
+                }
+                else{
+                    SubmergedCompatibility.ChangeFloor(SwapPlayerFloor);
+                }
+            }*/
             var SwapperPlayerPosition = SwapperPlayer.transform.position;
             var SwapPlayerPosition = SwapPlayer.transform.position;
             SwapPlayer.transform.position = SwapperPlayerPosition;
