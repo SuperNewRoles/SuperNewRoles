@@ -23,15 +23,17 @@ namespace SuperNewRoles.Roles
             //SwapperPlayer.Clear();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive() && p.CanMove && !p.isImpostor())
+                if (!p.isDead() && p.CanMove && !p.isImpostor())
                 {
                     AlivePlayer.Add(p);
                 }
+                SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:"+p.PlayerId+"\n生存:"+!p.isDead());
             }
             //SwapperPlayer.Add(PlayerControl.LocalPlayer);
             var RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
             var PushSwapper = PlayerControl.LocalPlayer;
 
+            //SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:"+RandomPlayer.PlayerId+"\n生存:"+!RandomPlayer.isDead());
             CustomRPC.RPCProcedure.PositionSwapperTP(RandomPlayer.PlayerId, PushSwapper.PlayerId);
             //MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
         }
