@@ -1575,6 +1575,11 @@ namespace SuperNewRoles.Buttons
                 49
             );
             {
+                PositionSwapperNumText = GameObject.Instantiate(PositionSwapperButton.actionButton.cooldownTimerText, PositionSwapperButton.actionButton.cooldownTimerText.transform.parent);
+                PositionSwapperNumText.text = "";
+                PositionSwapperNumText.enableWordWrapping = false;
+                PositionSwapperNumText.transform.localScale = Vector3.one * 0.5f;
+                PositionSwapperNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
                 PositionSwapperButton.buttonText = ModTranslation.getString("PositionSwapperButtonName");
                 PositionSwapperButton.showButtonText = true;
             };
