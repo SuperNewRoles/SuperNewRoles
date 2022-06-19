@@ -873,12 +873,9 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void PositionSwapperTP(byte SwapPlayerID, byte SwapperID)
         {
-            var SwapPlayer = ModHelpers.playerById(SwapPlayerID);
-            var SwapperPlayer = ModHelpers.playerById(SwapperID);
+            SuperNewRolesPlugin.Logger.LogInfo("スワップ開始！");
             /*if (SubmergedCompatibility.isSubmerged())
             {
-                var SwapPlayerFloor = SubmergedCompatibility.GetFloor(SwapPlayer);
-                var SwapperPlayerFloor = SubmergedCompatibility.GetFloor(SwapperPlayer);
                 if (PlayerControl.LocalPlayer.PlayerId == SwapPlayerID){
                     SubmergedCompatibility.ChangeFloor(SwapperPlayerFloor);
                 }
@@ -886,10 +883,22 @@ namespace SuperNewRoles.CustomRPC
                     SubmergedCompatibility.ChangeFloor(SwapPlayerFloor);
                 }
             }*/
-            var SwapperPlayerPosition = SwapperPlayer.transform.position;
-            var SwapPlayerPosition = SwapPlayer.transform.position;
-            SwapPlayer.transform.position = SwapperPlayerPosition;
-            SwapperPlayer.transform.position = SwapPlayerPosition;
+
+            var SwapPlayer = ModHelpers.playerById(SwapPlayerID);
+            var SwapperPlayer = ModHelpers.playerById(SwapperID);
+            var SwapPosition = SwapPlayer.transform.position;
+            var SwapperPosition = SwapperPlayer.transform.position;
+            if (PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)){
+                CachedPlayer.LocalPlayer.transform.position = SwapPosition;
+                //SwapPlayer.transform.position = SwapperPosition;
+                SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
+                return;
+            }
+            CachedPlayer.LocalPlayer.transform.position = SwapperPosition;
+            SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");
+
+            //SwapperPlayer.transform.position = SwapperPosition;
+            //CachedPlayer.LocalPlayer.transform.position = SuperNewRoles.Roles.PositionSwapper.GetSwapPosition(SwapPlayerID, SwapperID);
 
             /*//Text
             var rand = new System.Random();
