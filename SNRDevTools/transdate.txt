@@ -754,6 +754,8 @@ SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数
 SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクールタイム
 PositionSwapperNumTextName,Limits:{0},残り{0}回
 PositionSwapperButtonName,PositionSwap,スワップ
+PositionSwapperSwapText,Position swapper swapped you!,スワッパーによってスワップされました!
+PositionSwapperSwapText2,Position swapper swapped you!\n ....and, YKundesu isn't delicious?,スワッパーによってスワップされました!\nところでﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽｵｲｼｲﾃﾞｽﾖﾈ
 TunaName,Tuna,マグロ
 TunaTitle1,Always move!,常に動け！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間

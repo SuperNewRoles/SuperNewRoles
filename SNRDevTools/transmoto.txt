@@ -753,6 +753,8 @@ SettingPositionSwapperSwapCountName
 SettingPositionSwapperSwapCoolTimeName
 PositionSwapperNumTextName
 PositionSwapperButtonName
+PositionSwapperSwapText
+PositionSwapperSwapText2
 TunaName
 TunaTitle1
 TunaStoppingTimeSetting
