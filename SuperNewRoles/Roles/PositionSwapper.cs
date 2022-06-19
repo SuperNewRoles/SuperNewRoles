@@ -28,7 +28,7 @@ namespace SuperNewRoles.Roles
                     AlivePlayer.Add(p);
                 }
             }
-            SwapperPlayer.Add(CachedPlayer.LocalPlayer);
+            SwapperPlayer.Add(PlayerControl.LocalPlayer);
             var RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
             var PushSwapper = ModHelpers.GetRandom<PlayerControl>(SwapperPlayer);
 

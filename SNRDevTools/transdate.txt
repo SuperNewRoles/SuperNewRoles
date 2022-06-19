@@ -753,7 +753,7 @@ PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ
 SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数
 SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクールタイム
 PositionSwapperNumTextName,Limits:{0},残り{0}回
-PositionSwapperButtonName,PositionSwap,ポジションスワップ
+PositionSwapperButtonName,PositionSwap,スワップ
 TunaName,Tuna,マグロ
 TunaTitle1,Always move!,常に動け！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間
