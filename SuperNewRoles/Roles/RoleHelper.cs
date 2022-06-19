@@ -245,6 +245,20 @@ namespace SuperNewRoles
             }
             return returntext;
         }
+        public static bool IsJackalTeam(this PlayerControl player)
+        {
+            return player.IsJackalTeamJackal() || player.IsJackalTeamSidekick();
+        }
+        public static bool IsJackalTeamJackal(this PlayerControl player)
+        {
+            RoleId role = player.getRole();
+            return role == RoleId.Jackal || role == RoleId.JackalSeer || role == RoleId.TeleportingJackal;
+        }
+        public static bool IsJackalTeamSidekick(this PlayerControl player)
+        {
+            RoleId role = player.getRole();
+            return role == RoleId.Sidekick || role == RoleId.SidekickSeer;
+        }
 
         public static void ShowFlash(Color color, float duration = 1f)
         //Seerで使用している画面を光らせるコード
@@ -1253,6 +1267,14 @@ namespace SuperNewRoles
             {
                 return false;
             }
+        }
+        public static bool isRole(this PlayerControl p, params RoleId[] roles)
+        {
+            foreach (RoleId role in roles)
+            {
+                if (p.isRole(role)) return true;
+            }
+            return false;
         }
         public static float getCoolTime(PlayerControl __instance)
         {
