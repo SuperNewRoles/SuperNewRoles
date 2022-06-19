@@ -25,7 +25,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             crs = SetCustomRoles(crs);
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
-            FixedUpdate.SetRoleNames();
             main.SendAllRoleChat();
 
             //BotHandler.AddBot(3, "キルされるBot");

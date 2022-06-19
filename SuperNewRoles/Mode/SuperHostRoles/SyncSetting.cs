@@ -338,6 +338,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     break;
             }
+            SuperNewRolesPlugin.Logger.LogInfo("キルク:"+optdata.killCooldown);
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;
             if (player.AmOwner) PlayerControl.GameOptions = optdata;
@@ -362,6 +363,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
             var role = player.getRole();
             var optdata = OptionData.DeepCopy();
+
             switch (role)
             {
                 case RoleId.Demon:

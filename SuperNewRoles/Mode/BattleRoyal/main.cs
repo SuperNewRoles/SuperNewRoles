@@ -160,22 +160,27 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 [HarmonyArgument(1)] PlayerControl player,
                 [HarmonyArgument(2)] byte amount)
             {
-                new LateTask(() =>
+                if (!RoleHelpers.IsSabotage())
                 {
-                    if (!RoleHelpers.IsSabotage())
+                    new LateTask(() =>
+                    { 
+                    foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
                     {
-                        foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
-                        {
                             if (p.inVent && p.isAlive() && VentData.ContainsKey(p.PlayerId) && VentData[p.PlayerId] != null)
                             {
                                 p.MyPhysics.RpcBootFromVent((int)VentData[p.PlayerId]);
                             }
                         }
-                    }
-                }, 0.1f, "TecExitVent");
+                    }, 0.1f, "TecExitVent");
+                }
+                SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName+" => "+systemType+" : "+amount);
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
                     SyncSetting.CustomSyncSettings();
+                    if (systemType == SystemTypes.Comms)
+                    {
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                    }
                 }
             }
         }
