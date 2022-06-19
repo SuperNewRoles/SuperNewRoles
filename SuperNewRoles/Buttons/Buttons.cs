@@ -1567,10 +1567,9 @@ namespace SuperNewRoles.Buttons
                     if (swapcount > 0)
                         PositionSwapperNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), swapcount);
                     else
-                        PositionSwapperNumText.text = "";
+                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
                     if (!PlayerControl.LocalPlayer.CanMove) return false;
                     if (RoleClass.PositionSwapper.SwapCount <= 0) return false;
-
                     return true && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { PositionSwapper.EndMeeting(); },
