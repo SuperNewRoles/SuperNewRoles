@@ -123,6 +123,7 @@ namespace SuperNewRoles.CustomRPC
         EvilHacker,
         HauntedWolf,
         Tuna,
+        BlackCat,
         //RoleId
     }
 

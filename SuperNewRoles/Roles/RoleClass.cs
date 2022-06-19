@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -134,6 +134,7 @@ namespace SuperNewRoles.Roles
             EvilHacker.ClearAndReload();
             HauntedWolf.ClearAndReload();
             Tuna.ClearAndReload();
+            BlackCat.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2183,6 +2184,33 @@ namespace SuperNewRoles.Roles
                     Mode.SuperHostRoles.Roles.Tuna.Timer = new Dictionary<byte, float>();
                     foreach (PlayerControl p in CachedPlayer.AllPlayers) Mode.SuperHostRoles.Roles.Tuna.Timer[p.PlayerId] = StoppingTime;
                 }
+            }
+        }
+        public static class BlackCat
+        {
+            public static List<PlayerControl> BlackCatPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsImpostorCheck;
+            public static int ImpostorCheckTask;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static void ClearAndReload()
+            {
+                BlackCatPlayer = new List<PlayerControl>();
+                IsImpostorCheck = CustomOptions.BlackCatIsCheckImpostor.getBool();
+                IsUseVent = CustomOptions.BlackCatIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.BlackCatIsImpostorLight.getBool();
+                int Common = (int)CustomOptions.BlackCatCommonTask.getFloat();
+                int Long = (int)CustomOptions.BlackCatLongTask.getFloat();
+                int Short = (int)CustomOptions.BlackCatShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
+                ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.BlackCatCheckImpostorTask.getString().Replace("%", "")) / 100f));
             }
         }
         //新ロールクラス

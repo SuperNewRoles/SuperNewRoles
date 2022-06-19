@@ -45,6 +45,7 @@ namespace SuperNewRoles.Roles
             if (CountChanger.IsChangeSeerFriends(PlayerControl.LocalPlayer)) return true;
             if (CountChanger.IsChangeJackalSeer(PlayerControl.LocalPlayer)) return true;
             if (CountChanger.IsChangeSidekickSeer(PlayerControl.LocalPlayer)) return true;
+            if (CountChanger.IsChangeBlackCat(PlayerControl.LocalPlayer)) return true;
             return false;
         }
         public static bool IsLightOutVisionNoTime()

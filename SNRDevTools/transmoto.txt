@@ -750,3 +750,5 @@ WereWolfMediumAbilityText
 TunaName
 TunaTitle1
 TunaStoppingTimeSetting
+BlackCatName
+BlackCatTitle1

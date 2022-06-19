@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -118,6 +118,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.MayorFriends.IsUseVent) SetRoleEngineers.AddRange(RoleClass.MayorFriends.MayorFriendsPlayer);
             if (RoleClass.Tuna.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Tuna.TunaPlayer);
             SetRoleEngineers.AddRange(RoleClass.Technician.TechnicianPlayer);
+            if (RoleClass.BlackCat.IsUseVent) SetRoleEngineers.AddRange(RoleClass.BlackCat.BlackCatPlayer);
             //エンジニアに役職設定
             List<PlayerControl> DesyncShapeshifters = new();
             DesyncShapeshifters.AddRange(RoleClass.Arsonist.ArsonistPlayer);
