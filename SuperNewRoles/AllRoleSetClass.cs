@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -834,6 +834,7 @@ namespace SuperNewRoles
                 RoleId.HauntedWolf => CustomOptions.HauntedWolfPlayerCount.getFloat(),
                 RoleId.Tuna => CustomOptions.TunaPlayerCount.getFloat(),
                 RoleId.Mafia => CustomOptions.MafiaPlayerCount.getFloat(),
+                RoleId.BlackCat => CustomOption.CustomOptions.BlackCatPlayerCount.getFloat(),
                 _ => 1,
             };
         }

@@ -114,6 +114,21 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
+                                if (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && BlackCat.CheckImpostor(PlayerControl.LocalPlayer))
+                {
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
+                    int ImpostorNum = 0;
+                    ImpostorTeams.Add(PlayerControl.LocalPlayer);
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                    {
+                        if (player.Data.Role.IsImpostor)
+                        {
+                            ImpostorNum++;
+                            ImpostorTeams.Add(player);
+                        }
+                    }
+                    yourTeam = ImpostorTeams;
+                }
                 if ((PlayerControl.LocalPlayer.isRole(RoleId.JackalFriends) ||
                     PlayerControl.LocalPlayer.isRole(RoleId.SeerFriends) || PlayerControl.LocalPlayer.isRole(RoleId.MayorFriends)) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {

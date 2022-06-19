@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomRPC;
@@ -108,20 +108,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.cs(RoleClass.Celebrity.color, CelebrityPlayer.getDefaultName()));
             }
 
-            if (Madmate.CheckImpostor(player))
-            {
-                foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
-                {
-                    if (Impostor.isImpostor() && Impostor.IsPlayer())
-                    {
-                        if (!ChangePlayers.ContainsKey(Impostor.PlayerId))
-                        {
-                            ChangePlayers.Add(Impostor.PlayerId, ModHelpers.cs(RoleClass.ImpostorRed, Impostor.getDefaultName()));
-                        }
-                    }
-                }
-            }
-            else if (MadMayor.CheckImpostor(player) || player.isRole(RoleId.Marine))
+            if (Madmate.CheckImpostor(player) || MadMayor.CheckImpostor(player) || player.isRole(RoleId.Marine) || BlackCat.CheckImpostor(player))
             {
                 foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
                 {

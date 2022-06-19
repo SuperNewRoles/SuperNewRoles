@@ -124,6 +124,7 @@ namespace SuperNewRoles.CustomRPC
         HauntedWolf,
         Tuna,
         Mafia,
+        BlackCat,
         //RoleId
     }
 

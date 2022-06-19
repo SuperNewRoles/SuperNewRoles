@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -328,7 +328,7 @@ namespace SuperNewRoles.Patch
                             SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                         }
                     }
-                }
+                }                
                 if (PlayerControl.LocalPlayer.isImpostor())
                 {
                     foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)

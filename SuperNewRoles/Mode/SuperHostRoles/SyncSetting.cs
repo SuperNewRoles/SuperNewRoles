@@ -321,6 +321,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.RoleOptions.EngineerInVentMaxTime = 0f;
                     }
                     break;
+                case RoleId.BlackCat:
+                    if (RoleClass.BlackCat.IsUseVent)
+                    {
+                        optdata.RoleOptions.EngineerCooldown = 0f;
+                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+                    }
+                    if (RoleClass.BlackCat.IsImpostorLight)
+                    {
+                        optdata.CrewLightMod = optdata.ImpostorLightMod;
+                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystem2 != null && switchSystem2.IsActive)
+                        {
+                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
+                        }
+                    }
+                    break;
             }
             SuperNewRolesPlugin.Logger.LogInfo("キルク:"+optdata.killCooldown);
             if (player.isDead()) optdata.AnonymousVotes = false;

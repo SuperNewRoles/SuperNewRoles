@@ -179,7 +179,8 @@ namespace SuperNewRoles.Intro
         public static IntroDate EvilHackerIntro = new("EvilHacker", RoleClass.EvilHacker.color, 1, CustomRPC.RoleId.EvilHacker, TeamRoleType.Impostor);
         public static IntroDate HauntedWolfIntro = new("HauntedWolf", RoleClass.HauntedWolf.color, 1, CustomRPC.RoleId.HauntedWolf);
         public static IntroDate TunaIntro = new("Tuna", RoleClass.Tuna.color, 1, CustomRPC.RoleId.Tuna, TeamRoleType.Neutral);
-        public static IntroDate MafiaIntro = new IntroDate("Mafia", RoleClass.Mafia.color, 1, CustomRPC.RoleId.Mafia, TeamRoleType.Impostor);
+        public static IntroDate MafiaIntro = new("Mafia", RoleClass.Mafia.color, 1, CustomRPC.RoleId.Mafia, TeamRoleType.Impostor);
+        public static IntroDate BlackCatIntro = new("BlackCat", RoleClass.BlackCat.color, 1, CustomRPC.RoleId.BlackCat);
         //イントロオブジェ
     }
 }
