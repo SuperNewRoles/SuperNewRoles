@@ -1,10 +1,10 @@
 using System;
-using UnityEngine;
 using HarmonyLib;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
-    [HarmonyPatch(typeof(HudManager),nameof(HudManager.Update))]
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public class Tuna
     {
         public static void Postfix()

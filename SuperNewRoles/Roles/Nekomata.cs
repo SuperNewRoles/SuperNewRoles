@@ -1,21 +1,25 @@
-﻿using Hazel;
+using System.Collections.Generic;
+using Hazel;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode;
-using System.Collections.Generic;
 
 namespace SuperNewRoles.Roles
 {
     class Nekomata
     {
-        public static void NekomataEnd(GameData.PlayerInfo __instance) {
+        public static void NekomataEnd(GameData.PlayerInfo __instance)
+        {
             if (!ModeHandler.isMode(ModeId.Default)) return;
             if (__instance == null) return;
-            if (AmongUsClient.Instance.AmHost) {
-                if (__instance != null && RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(__instance.Object) || RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object))
+            if (AmongUsClient.Instance.AmHost)
+            {
+                if ((__instance != null && RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(__instance.Object)) || RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object))
                 {
-                    List<PlayerControl> p = new List<PlayerControl>();
-                    foreach (PlayerControl p1 in CachedPlayer.AllPlayers) {
-                        if (p1.Data != __instance && p1.isAlive()) {
+                    List<PlayerControl> p = new();
+                    foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
+                    {
+                        if (p1.Data != __instance && p1.isAlive())
+                        {
                             p.Add(p1);
                         }
                     }
@@ -27,7 +31,8 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
-        public static void NekomataProc(List<PlayerControl> p){
+        public static void NekomataProc(List<PlayerControl> p)
+        {
             var rdm = ModHelpers.GetRandomIndex(p);
             var random = p[rdm];
             SuperNewRolesPlugin.Logger.LogInfo(random.nameText.text);

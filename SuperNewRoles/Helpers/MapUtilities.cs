@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using HarmonyLib;
 using Il2CppSystem;
 
@@ -14,7 +14,7 @@ namespace SuperNewRoles
             _systems.Clear();
         }
 
-        private static readonly Dictionary<SystemTypes, Object> _systems = new Dictionary<SystemTypes, Object>();
+        private static readonly Dictionary<SystemTypes, Object> _systems = new();
         public static Dictionary<SystemTypes, Object> Systems
         {
             get

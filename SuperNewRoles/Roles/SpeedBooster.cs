@@ -1,12 +1,13 @@
-﻿using HarmonyLib;
-using Hazel;
 using System;
+using HarmonyLib;
+using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
 {
-    class SpeedBooster {
+    class SpeedBooster
+    {
         public static void ResetCoolDown()
         {
             HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = RoleClass.SpeedBooster.CoolTime;
@@ -19,7 +20,7 @@ namespace SuperNewRoles.Roles
             writer.Write(true);
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetSpeedBoost(true,CachedPlayer.LocalPlayer.PlayerId);
+            CustomRPC.RPCProcedure.SetSpeedBoost(true, CachedPlayer.LocalPlayer.PlayerId);
             SpeedBooster.ResetCoolDown();
         }
         public static void ResetSpeed()

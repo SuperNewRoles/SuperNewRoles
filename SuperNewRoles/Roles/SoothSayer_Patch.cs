@@ -1,5 +1,5 @@
-﻿using HarmonyLib;
 using System.Linq;
+using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles

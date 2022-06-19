@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Roles;
-using SuperNewRoles.Mode;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles
 {
@@ -241,7 +241,7 @@ namespace SuperNewRoles
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
-                    //ベント設定可視化
+                //ベント設定可視化
             }
             return returntext;
         }
@@ -274,302 +274,302 @@ namespace SuperNewRoles
         {
             switch (role)
             {
-                case (CustomRPC.RoleId.SoothSayer):
+                case CustomRPC.RoleId.SoothSayer:
                     Roles.RoleClass.SoothSayer.SoothSayerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Jester):
+                case CustomRPC.RoleId.Jester:
                     Roles.RoleClass.Jester.JesterPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Lighter):
+                case CustomRPC.RoleId.Lighter:
                     Roles.RoleClass.Lighter.LighterPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.EvilLighter):
+                case CustomRPC.RoleId.EvilLighter:
                     Roles.RoleClass.EvilLighter.EvilLighterPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.EvilScientist):
+                case CustomRPC.RoleId.EvilScientist:
                     Roles.RoleClass.EvilScientist.EvilScientistPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Sheriff):
+                case CustomRPC.RoleId.Sheriff:
                     Roles.RoleClass.Sheriff.SheriffPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.MeetingSheriff):
+                case CustomRPC.RoleId.MeetingSheriff:
                     Roles.RoleClass.MeetingSheriff.MeetingSheriffPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Jackal):
+                case CustomRPC.RoleId.Jackal:
                     Roles.RoleClass.Jackal.JackalPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Sidekick):
+                case CustomRPC.RoleId.Sidekick:
                     Roles.RoleClass.Jackal.SidekickPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Teleporter):
+                case CustomRPC.RoleId.Teleporter:
                     Roles.RoleClass.Teleporter.TeleporterPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.SpiritMedium):
+                case CustomRPC.RoleId.SpiritMedium:
                     Roles.RoleClass.SpiritMedium.SpiritMediumPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.SpeedBooster):
+                case CustomRPC.RoleId.SpeedBooster:
                     Roles.RoleClass.SpeedBooster.SpeedBoosterPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.EvilSpeedBooster):
+                case CustomRPC.RoleId.EvilSpeedBooster:
                     Roles.RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Tasker):
+                case CustomRPC.RoleId.Tasker:
                     Roles.RoleClass.Tasker.TaskerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Doorr):
+                case CustomRPC.RoleId.Doorr:
                     Roles.RoleClass.Doorr.DoorrPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.EvilDoorr):
+                case CustomRPC.RoleId.EvilDoorr:
                     Roles.RoleClass.EvilDoorr.EvilDoorrPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Shielder):
+                case CustomRPC.RoleId.Shielder:
                     Roles.RoleClass.Shielder.ShielderPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Speeder):
+                case CustomRPC.RoleId.Speeder:
                     Roles.RoleClass.Speeder.SpeederPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Freezer):
+                case CustomRPC.RoleId.Freezer:
                     Roles.RoleClass.Freezer.FreezerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Guesser):
+                case CustomRPC.RoleId.Guesser:
                     Roles.RoleClass.Guesser.GuesserPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.EvilGuesser):
+                case CustomRPC.RoleId.EvilGuesser:
                     Roles.RoleClass.EvilGuesser.EvilGuesserPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Vulture):
+                case CustomRPC.RoleId.Vulture:
                     Roles.RoleClass.Vulture.VulturePlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.NiceScientist):
+                case CustomRPC.RoleId.NiceScientist:
                     Roles.RoleClass.NiceScientist.NiceScientistPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Clergyman):
+                case CustomRPC.RoleId.Clergyman:
                     Roles.RoleClass.Clergyman.ClergymanPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.MadMate):
+                case CustomRPC.RoleId.MadMate:
                     Roles.RoleClass.MadMate.MadMatePlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Bait):
+                case CustomRPC.RoleId.Bait:
                     Roles.RoleClass.Bait.BaitPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.HomeSecurityGuard):
+                case CustomRPC.RoleId.HomeSecurityGuard:
                     Roles.RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.StuntMan):
+                case CustomRPC.RoleId.StuntMan:
                     Roles.RoleClass.StuntMan.StuntManPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Moving):
+                case CustomRPC.RoleId.Moving:
                     Roles.RoleClass.Moving.MovingPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Opportunist):
+                case CustomRPC.RoleId.Opportunist:
                     Roles.RoleClass.Opportunist.OpportunistPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.NiceGambler):
+                case CustomRPC.RoleId.NiceGambler:
                     Roles.RoleClass.NiceGambler.NiceGamblerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.EvilGambler):
+                case CustomRPC.RoleId.EvilGambler:
                     Roles.RoleClass.EvilGambler.EvilGamblerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Bestfalsecharge):
+                case CustomRPC.RoleId.Bestfalsecharge:
                     Roles.RoleClass.Bestfalsecharge.BestfalsechargePlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Researcher):
+                case CustomRPC.RoleId.Researcher:
                     Roles.RoleClass.Researcher.ResearcherPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.SelfBomber):
+                case CustomRPC.RoleId.SelfBomber:
                     Roles.RoleClass.SelfBomber.SelfBomberPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.God):
+                case CustomRPC.RoleId.God:
                     Roles.RoleClass.God.GodPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.AllCleaner):
+                case CustomRPC.RoleId.AllCleaner:
                     Roles.RoleClass.AllCleaner.AllCleanerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.NiceNekomata):
+                case CustomRPC.RoleId.NiceNekomata:
                     Roles.RoleClass.NiceNekomata.NiceNekomataPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.EvilNekomata):
+                case CustomRPC.RoleId.EvilNekomata:
                     Roles.RoleClass.EvilNekomata.EvilNekomataPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.JackalFriends):
+                case CustomRPC.RoleId.JackalFriends:
                     Roles.RoleClass.JackalFriends.JackalFriendsPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Doctor):
+                case CustomRPC.RoleId.Doctor:
                     Roles.RoleClass.Doctor.DoctorPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.CountChanger):
+                case CustomRPC.RoleId.CountChanger:
                     Roles.RoleClass.CountChanger.CountChangerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Pursuer):
+                case CustomRPC.RoleId.Pursuer:
                     Roles.RoleClass.Pursuer.PursuerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Minimalist):
+                case CustomRPC.RoleId.Minimalist:
                     Roles.RoleClass.Minimalist.MinimalistPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Hawk):
+                case CustomRPC.RoleId.Hawk:
                     Roles.RoleClass.Hawk.HawkPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Egoist):
+                case CustomRPC.RoleId.Egoist:
                     Roles.RoleClass.Egoist.EgoistPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.NiceRedRidingHood):
+                case CustomRPC.RoleId.NiceRedRidingHood:
                     Roles.RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.EvilEraser):
+                case CustomRPC.RoleId.EvilEraser:
                     Roles.RoleClass.EvilEraser.EvilEraserPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Workperson):
+                case CustomRPC.RoleId.Workperson:
                     Roles.RoleClass.Workperson.WorkpersonPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Magaziner):
+                case CustomRPC.RoleId.Magaziner:
                     Roles.RoleClass.Magaziner.MagazinerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Hunter):
+                case CustomRPC.RoleId.Hunter:
                     Mode.Werewolf.main.HunterPlayers.Add(player);
                     break;
-                case (CustomRPC.RoleId.Mayor):
+                case CustomRPC.RoleId.Mayor:
                     Roles.RoleClass.Mayor.MayorPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.truelover):
+                case CustomRPC.RoleId.truelover:
                     Roles.RoleClass.truelover.trueloverPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Technician):
+                case CustomRPC.RoleId.Technician:
                     Roles.RoleClass.Technician.TechnicianPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.SerialKiller):
+                case CustomRPC.RoleId.SerialKiller:
                     Roles.RoleClass.SerialKiller.SerialKillerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.OverKiller):
+                case CustomRPC.RoleId.OverKiller:
                     Roles.RoleClass.OverKiller.OverKillerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Levelinger):
+                case CustomRPC.RoleId.Levelinger:
                     Roles.RoleClass.Levelinger.LevelingerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.EvilMoving):
+                case CustomRPC.RoleId.EvilMoving:
                     Roles.RoleClass.EvilMoving.EvilMovingPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Amnesiac):
+                case CustomRPC.RoleId.Amnesiac:
                     Roles.RoleClass.Amnesiac.AmnesiacPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.SideKiller):
+                case CustomRPC.RoleId.SideKiller:
                     Roles.RoleClass.SideKiller.SideKillerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Survivor):
+                case CustomRPC.RoleId.Survivor:
                     Roles.RoleClass.Survivor.SurvivorPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.MadMayor):
+                case CustomRPC.RoleId.MadMayor:
                     Roles.RoleClass.MadMayor.MadMayorPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.MadStuntMan):
+                case CustomRPC.RoleId.MadStuntMan:
                     Roles.RoleClass.MadStuntMan.MadStuntManPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.NiceHawk):
+                case CustomRPC.RoleId.NiceHawk:
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Bakery):
+                case CustomRPC.RoleId.Bakery:
                     Roles.RoleClass.Bakery.BakeryPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.MadJester):
+                case CustomRPC.RoleId.MadJester:
                     Roles.RoleClass.MadJester.MadJesterPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.MadHawk):
+                case CustomRPC.RoleId.MadHawk:
                     Roles.RoleClass.MadHawk.MadHawkPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.FalseCharges):
+                case CustomRPC.RoleId.FalseCharges:
                     Roles.RoleClass.FalseCharges.FalseChargesPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.NiceTeleporter):
+                case CustomRPC.RoleId.NiceTeleporter:
                     Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Celebrity):
+                case CustomRPC.RoleId.Celebrity:
                     Roles.RoleClass.Celebrity.CelebrityPlayer.Add(player);
                     Roles.RoleClass.Celebrity.ViewPlayers.Add(player);
                     break;
-                case (CustomRPC.RoleId.Nocturnality):
+                case CustomRPC.RoleId.Nocturnality:
                     Roles.RoleClass.Nocturnality.NocturnalityPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Observer):
+                case CustomRPC.RoleId.Observer:
                     Roles.RoleClass.Observer.ObserverPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Vampire):
+                case CustomRPC.RoleId.Vampire:
                     Roles.RoleClass.Vampire.VampirePlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Fox):
+                case CustomRPC.RoleId.Fox:
                     Roles.RoleClass.Fox.FoxPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.DarkKiller):
+                case CustomRPC.RoleId.DarkKiller:
                     Roles.RoleClass.DarkKiller.DarkKillerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Seer):
+                case CustomRPC.RoleId.Seer:
                     Roles.RoleClass.Seer.SeerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.MadSeer):
+                case CustomRPC.RoleId.MadSeer:
                     Roles.RoleClass.MadSeer.MadSeerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.EvilSeer):
+                case CustomRPC.RoleId.EvilSeer:
                     Roles.RoleClass.EvilSeer.EvilSeerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.RemoteSheriff):
+                case CustomRPC.RoleId.RemoteSheriff:
                     Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.TeleportingJackal):
+                case CustomRPC.RoleId.TeleportingJackal:
                     Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.MadMaker):
+                case CustomRPC.RoleId.MadMaker:
                     Roles.RoleClass.MadMaker.MadMakerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Demon):
+                case CustomRPC.RoleId.Demon:
                     Roles.RoleClass.Demon.DemonPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.TaskManager):
+                case CustomRPC.RoleId.TaskManager:
                     Roles.RoleClass.TaskManager.TaskManagerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.SeerFriends):
+                case CustomRPC.RoleId.SeerFriends:
                     Roles.RoleClass.SeerFriends.SeerFriendsPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.JackalSeer):
+                case CustomRPC.RoleId.JackalSeer:
                     Roles.RoleClass.JackalSeer.JackalSeerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.SidekickSeer):
+                case CustomRPC.RoleId.SidekickSeer:
                     Roles.RoleClass.JackalSeer.SidekickSeerPlayer.Add(player);
-                    break;                    
-                case (CustomRPC.RoleId.Assassin):
+                    break;
+                case CustomRPC.RoleId.Assassin:
                     Roles.RoleClass.Assassin.AssassinPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Marine):
+                case CustomRPC.RoleId.Marine:
                     Roles.RoleClass.Marine.MarinePlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Arsonist):
+                case CustomRPC.RoleId.Arsonist:
                     Roles.RoleClass.Arsonist.ArsonistPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Chief):
+                case CustomRPC.RoleId.Chief:
                     Roles.RoleClass.Chief.ChiefPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Cleaner):
+                case CustomRPC.RoleId.Cleaner:
                     Roles.RoleClass.Cleaner.CleanerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.MadCleaner):
+                case CustomRPC.RoleId.MadCleaner:
                     Roles.RoleClass.MadCleaner.MadCleanerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Samurai):
+                case CustomRPC.RoleId.Samurai:
                     Roles.RoleClass.Samurai.SamuraiPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.MayorFriends):
+                case CustomRPC.RoleId.MayorFriends:
                     Roles.RoleClass.MayorFriends.MayorFriendsPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.VentMaker):
+                case CustomRPC.RoleId.VentMaker:
                     Roles.RoleClass.VentMaker.VentMakerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.GhostMechanic):
+                case CustomRPC.RoleId.GhostMechanic:
                     Roles.RoleClass.GhostMechanic.GhostMechanicPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.EvilHacker):
+                case CustomRPC.RoleId.EvilHacker:
                     Roles.RoleClass.EvilHacker.EvilHackerPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.HauntedWolf):
+                case CustomRPC.RoleId.HauntedWolf:
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.Tuna):
+                case CustomRPC.RoleId.Tuna:
                     Roles.RoleClass.Tuna.TunaPlayer.Add(player);
                     break;
                 //ロールアド
@@ -604,301 +604,301 @@ namespace SuperNewRoles
             ClearTarget = player;
             switch (player.getRole())
             {
-                case (CustomRPC.RoleId.SoothSayer):
+                case CustomRPC.RoleId.SoothSayer:
                     Roles.RoleClass.SoothSayer.SoothSayerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Jester):
+                case CustomRPC.RoleId.Jester:
                     Roles.RoleClass.Jester.JesterPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Lighter):
+                case CustomRPC.RoleId.Lighter:
                     Roles.RoleClass.Lighter.LighterPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.EvilLighter):
+                case CustomRPC.RoleId.EvilLighter:
                     Roles.RoleClass.EvilLighter.EvilLighterPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.EvilScientist):
+                case CustomRPC.RoleId.EvilScientist:
                     Roles.RoleClass.EvilScientist.EvilScientistPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Sheriff):
+                case CustomRPC.RoleId.Sheriff:
                     Roles.RoleClass.Sheriff.SheriffPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.MeetingSheriff):
+                case CustomRPC.RoleId.MeetingSheriff:
                     Roles.RoleClass.MeetingSheriff.MeetingSheriffPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Jackal):
+                case CustomRPC.RoleId.Jackal:
                     Roles.RoleClass.Jackal.JackalPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Sidekick):
+                case CustomRPC.RoleId.Sidekick:
                     Roles.RoleClass.Jackal.SidekickPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Teleporter):
+                case CustomRPC.RoleId.Teleporter:
                     Roles.RoleClass.Teleporter.TeleporterPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.SpiritMedium):
+                case CustomRPC.RoleId.SpiritMedium:
                     Roles.RoleClass.SpiritMedium.SpiritMediumPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.SpeedBooster):
+                case CustomRPC.RoleId.SpeedBooster:
                     Roles.RoleClass.SpeedBooster.SpeedBoosterPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.EvilSpeedBooster):
+                case CustomRPC.RoleId.EvilSpeedBooster:
                     Roles.RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Tasker):
+                case CustomRPC.RoleId.Tasker:
                     Roles.RoleClass.Tasker.TaskerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Doorr):
+                case CustomRPC.RoleId.Doorr:
                     Roles.RoleClass.Doorr.DoorrPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.EvilDoorr):
+                case CustomRPC.RoleId.EvilDoorr:
                     Roles.RoleClass.EvilDoorr.EvilDoorrPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Shielder):
+                case CustomRPC.RoleId.Shielder:
                     Roles.RoleClass.Shielder.ShielderPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Speeder):
+                case CustomRPC.RoleId.Speeder:
                     Roles.RoleClass.Speeder.SpeederPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Freezer):
+                case CustomRPC.RoleId.Freezer:
                     Roles.RoleClass.Freezer.FreezerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Guesser):
+                case CustomRPC.RoleId.Guesser:
                     Roles.RoleClass.Guesser.GuesserPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.EvilGuesser):
+                case CustomRPC.RoleId.EvilGuesser:
                     Roles.RoleClass.EvilGuesser.EvilGuesserPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Vulture):
+                case CustomRPC.RoleId.Vulture:
                     Roles.RoleClass.Vulture.VulturePlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.NiceScientist):
+                case CustomRPC.RoleId.NiceScientist:
                     Roles.RoleClass.NiceScientist.NiceScientistPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Clergyman):
+                case CustomRPC.RoleId.Clergyman:
                     Roles.RoleClass.Clergyman.ClergymanPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.MadMate):
+                case CustomRPC.RoleId.MadMate:
                     Roles.RoleClass.MadMate.MadMatePlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Bait):
+                case CustomRPC.RoleId.Bait:
                     Roles.RoleClass.Bait.BaitPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.HomeSecurityGuard):
+                case CustomRPC.RoleId.HomeSecurityGuard:
                     Roles.RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.StuntMan):
+                case CustomRPC.RoleId.StuntMan:
                     Roles.RoleClass.StuntMan.StuntManPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Moving):
+                case CustomRPC.RoleId.Moving:
                     Roles.RoleClass.Moving.MovingPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Opportunist):
+                case CustomRPC.RoleId.Opportunist:
                     Roles.RoleClass.Opportunist.OpportunistPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.NiceGambler):
+                case CustomRPC.RoleId.NiceGambler:
                     Roles.RoleClass.NiceGambler.NiceGamblerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.EvilGambler):
+                case CustomRPC.RoleId.EvilGambler:
                     Roles.RoleClass.EvilGambler.EvilGamblerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Bestfalsecharge):
+                case CustomRPC.RoleId.Bestfalsecharge:
                     Roles.RoleClass.Bestfalsecharge.BestfalsechargePlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Researcher):
+                case CustomRPC.RoleId.Researcher:
                     Roles.RoleClass.Researcher.ResearcherPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.SelfBomber):
+                case CustomRPC.RoleId.SelfBomber:
                     Roles.RoleClass.SelfBomber.SelfBomberPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.God):
+                case CustomRPC.RoleId.God:
                     Roles.RoleClass.God.GodPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.AllCleaner):
+                case CustomRPC.RoleId.AllCleaner:
                     Roles.RoleClass.AllCleaner.AllCleanerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.NiceNekomata):
+                case CustomRPC.RoleId.NiceNekomata:
                     Roles.RoleClass.NiceNekomata.NiceNekomataPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.EvilNekomata):
+                case CustomRPC.RoleId.EvilNekomata:
                     Roles.RoleClass.EvilNekomata.EvilNekomataPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.JackalFriends):
+                case CustomRPC.RoleId.JackalFriends:
                     Roles.RoleClass.JackalFriends.JackalFriendsPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Doctor):
+                case CustomRPC.RoleId.Doctor:
                     Roles.RoleClass.Doctor.DoctorPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.CountChanger):
+                case CustomRPC.RoleId.CountChanger:
                     Roles.RoleClass.CountChanger.CountChangerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Pursuer):
+                case CustomRPC.RoleId.Pursuer:
                     Roles.RoleClass.Pursuer.PursuerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Minimalist):
+                case CustomRPC.RoleId.Minimalist:
                     Roles.RoleClass.Minimalist.MinimalistPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Hawk):
+                case CustomRPC.RoleId.Hawk:
                     Roles.RoleClass.Hawk.HawkPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Egoist):
+                case CustomRPC.RoleId.Egoist:
                     Roles.RoleClass.Egoist.EgoistPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.NiceRedRidingHood):
+                case CustomRPC.RoleId.NiceRedRidingHood:
                     Roles.RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.EvilEraser):
+                case CustomRPC.RoleId.EvilEraser:
                     Roles.RoleClass.EvilEraser.EvilEraserPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Workperson):
+                case CustomRPC.RoleId.Workperson:
                     Roles.RoleClass.Workperson.WorkpersonPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Magaziner):
+                case CustomRPC.RoleId.Magaziner:
                     Roles.RoleClass.Magaziner.MagazinerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Mayor):
+                case CustomRPC.RoleId.Mayor:
                     Roles.RoleClass.Mayor.MayorPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.truelover):
+                case CustomRPC.RoleId.truelover:
                     Roles.RoleClass.truelover.trueloverPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Technician):
+                case CustomRPC.RoleId.Technician:
                     Roles.RoleClass.Technician.TechnicianPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.SerialKiller):
+                case CustomRPC.RoleId.SerialKiller:
                     Roles.RoleClass.SerialKiller.SerialKillerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.OverKiller):
+                case CustomRPC.RoleId.OverKiller:
                     Roles.RoleClass.OverKiller.OverKillerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Levelinger):
+                case CustomRPC.RoleId.Levelinger:
                     Roles.RoleClass.Levelinger.LevelingerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.EvilMoving):
+                case CustomRPC.RoleId.EvilMoving:
                     Roles.RoleClass.EvilMoving.EvilMovingPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Amnesiac):
+                case CustomRPC.RoleId.Amnesiac:
                     Roles.RoleClass.Amnesiac.AmnesiacPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.SideKiller):
+                case CustomRPC.RoleId.SideKiller:
                     Roles.RoleClass.SideKiller.SideKillerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.MadKiller):
+                case CustomRPC.RoleId.MadKiller:
                     Roles.RoleClass.SideKiller.MadKillerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Survivor):
+                case CustomRPC.RoleId.Survivor:
                     Roles.RoleClass.Survivor.SurvivorPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.MadMayor):
+                case CustomRPC.RoleId.MadMayor:
                     Roles.RoleClass.MadMayor.MadMayorPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.MadStuntMan):
+                case CustomRPC.RoleId.MadStuntMan:
                     Roles.RoleClass.MadStuntMan.MadStuntManPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.MadHawk):
+                case CustomRPC.RoleId.MadHawk:
                     Roles.RoleClass.MadHawk.MadHawkPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.NiceHawk):
+                case CustomRPC.RoleId.NiceHawk:
                     Roles.RoleClass.NiceHawk.NiceHawkPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Bakery):
+                case CustomRPC.RoleId.Bakery:
                     Roles.RoleClass.Bakery.BakeryPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.MadJester):
+                case CustomRPC.RoleId.MadJester:
                     Roles.RoleClass.MadJester.MadJesterPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.FalseCharges):
+                case CustomRPC.RoleId.FalseCharges:
                     Roles.RoleClass.FalseCharges.FalseChargesPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.NiceTeleporter):
+                case CustomRPC.RoleId.NiceTeleporter:
                     Roles.RoleClass.NiceTeleporter.NiceTeleporterPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Celebrity):
+                case CustomRPC.RoleId.Celebrity:
                     Roles.RoleClass.Celebrity.CelebrityPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Nocturnality):
+                case CustomRPC.RoleId.Nocturnality:
                     Roles.RoleClass.Nocturnality.NocturnalityPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Observer):
+                case CustomRPC.RoleId.Observer:
                     Roles.RoleClass.Observer.ObserverPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Vampire):
+                case CustomRPC.RoleId.Vampire:
                     Roles.RoleClass.Vampire.VampirePlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Fox):
+                case CustomRPC.RoleId.Fox:
                     Roles.RoleClass.Fox.FoxPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.DarkKiller):
+                case CustomRPC.RoleId.DarkKiller:
                     Roles.RoleClass.DarkKiller.DarkKillerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Seer):
+                case CustomRPC.RoleId.Seer:
                     Roles.RoleClass.Seer.SeerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.MadSeer):
+                case CustomRPC.RoleId.MadSeer:
                     Roles.RoleClass.MadSeer.MadSeerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.EvilSeer):
+                case CustomRPC.RoleId.EvilSeer:
                     Roles.RoleClass.EvilSeer.EvilSeerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.TeleportingJackal):
+                case CustomRPC.RoleId.TeleportingJackal:
                     Roles.RoleClass.TeleportingJackal.TeleportingJackalPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.RemoteSheriff):
+                case CustomRPC.RoleId.RemoteSheriff:
                     Roles.RoleClass.RemoteSheriff.RemoteSheriffPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.MadMaker):
+                case CustomRPC.RoleId.MadMaker:
                     Roles.RoleClass.MadMaker.MadMakerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Demon):
+                case CustomRPC.RoleId.Demon:
                     Roles.RoleClass.Demon.DemonPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.TaskManager):
+                case CustomRPC.RoleId.TaskManager:
                     Roles.RoleClass.TaskManager.TaskManagerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.SeerFriends):
+                case CustomRPC.RoleId.SeerFriends:
                     Roles.RoleClass.SeerFriends.SeerFriendsPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.JackalSeer):
+                case CustomRPC.RoleId.JackalSeer:
                     Roles.RoleClass.JackalSeer.JackalSeerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.SidekickSeer):
+                case CustomRPC.RoleId.SidekickSeer:
                     Roles.RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Assassin):
+                case CustomRPC.RoleId.Assassin:
                     Roles.RoleClass.Assassin.AssassinPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Marine):
+                case CustomRPC.RoleId.Marine:
                     Roles.RoleClass.Marine.MarinePlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Arsonist):
+                case CustomRPC.RoleId.Arsonist:
                     Roles.RoleClass.Arsonist.ArsonistPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Chief):
+                case CustomRPC.RoleId.Chief:
                     Roles.RoleClass.Chief.ChiefPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Cleaner):
+                case CustomRPC.RoleId.Cleaner:
                     Roles.RoleClass.Cleaner.CleanerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.MadCleaner):
+                case CustomRPC.RoleId.MadCleaner:
                     Roles.RoleClass.MadCleaner.MadCleanerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Samurai):
+                case CustomRPC.RoleId.Samurai:
                     Roles.RoleClass.Samurai.SamuraiPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.MayorFriends):
+                case CustomRPC.RoleId.MayorFriends:
                     Roles.RoleClass.MayorFriends.MayorFriendsPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.VentMaker):
+                case CustomRPC.RoleId.VentMaker:
                     Roles.RoleClass.VentMaker.VentMakerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.GhostMechanic):
+                case CustomRPC.RoleId.GhostMechanic:
                     Roles.RoleClass.GhostMechanic.GhostMechanicPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.EvilHacker):
+                case CustomRPC.RoleId.EvilHacker:
                     Roles.RoleClass.EvilHacker.EvilHackerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.HauntedWolf):
+                case CustomRPC.RoleId.HauntedWolf:
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.Tuna):
+                case CustomRPC.RoleId.Tuna:
                     Roles.RoleClass.Tuna.TunaPlayer.RemoveAll(ClearRemove);
                     break;
                     //ロールリモベ
@@ -920,100 +920,100 @@ namespace SuperNewRoles
             var IsTaskClear = false;
             switch (player.getRole())
             {
-                case (RoleId.Jester):
+                case RoleId.Jester:
                     IsTaskClear = true;
                     break;
-                case (RoleId.Jackal):
+                case RoleId.Jackal:
                     IsTaskClear = true;
                     break;
-                case (RoleId.Sidekick):
+                case RoleId.Sidekick:
                     IsTaskClear = true;
                     break;
-                case (RoleId.Vulture):
+                case RoleId.Vulture:
                     IsTaskClear = true;
                     break;
-                case (RoleId.HomeSecurityGuard):
+                case RoleId.HomeSecurityGuard:
                     IsTaskClear = true;
                     break;
-                case (RoleId.MadMate):
+                case RoleId.MadMate:
                     IsTaskClear = true;
                     break;
-                case (RoleId.JackalFriends):
+                case RoleId.JackalFriends:
                     IsTaskClear = true;
                     break;
-                case (RoleId.Opportunist):
+                case RoleId.Opportunist:
                     IsTaskClear = true;
                     break;
-                case (RoleId.Researcher):
+                case RoleId.Researcher:
                     IsTaskClear = true;
                     break;
-                case (RoleId.God):
+                case RoleId.God:
                     IsTaskClear = true;
                     break;
-                case (RoleId.Egoist):
+                case RoleId.Egoist:
                     IsTaskClear = true;
                     break;
-                case (RoleId.Workperson):
+                case RoleId.Workperson:
                     IsTaskClear = true;
                     break;
-                case (RoleId.truelover):
+                case RoleId.truelover:
                     IsTaskClear = true;
                     break;
-                case (RoleId.Amnesiac):
+                case RoleId.Amnesiac:
                     IsTaskClear = true;
                     break;
-                case (RoleId.MadMayor):
+                case RoleId.MadMayor:
                     IsTaskClear = true;
                     break;
-                case (RoleId.MadStuntMan):
+                case RoleId.MadStuntMan:
                     IsTaskClear = true;
                     break;
-                case (RoleId.MadKiller):
+                case RoleId.MadKiller:
                     IsTaskClear = true;
                     break;
-                case (RoleId.MadHawk):
+                case RoleId.MadHawk:
                     IsTaskClear = true;
                     break;
-                case (RoleId.MadJester):
+                case RoleId.MadJester:
                     IsTaskClear = true;
                     break;
-                case (RoleId.FalseCharges):
+                case RoleId.FalseCharges:
                     IsTaskClear = true;
                     break;
-                case (RoleId.Fox):
+                case RoleId.Fox:
                     IsTaskClear = true;
                     break;
-                case (RoleId.TeleportingJackal):
+                case RoleId.TeleportingJackal:
                     IsTaskClear = true;
                     break;
-                case (RoleId.Demon):
+                case RoleId.Demon:
                     IsTaskClear = true;
                     break;
-                case (RoleId.SeerFriends):
+                case RoleId.SeerFriends:
                     IsTaskClear = true;
                     break;
-                case (RoleId.Arsonist):
+                case RoleId.Arsonist:
                     IsTaskClear = true;
                     break;
-                case (RoleId.JackalSeer):
+                case RoleId.JackalSeer:
                     IsTaskClear = true;
                     break;
-                case (RoleId.SidekickSeer):
+                case RoleId.SidekickSeer:
                     IsTaskClear = true;
                     break;
-                case (RoleId.MadMaker):
+                case RoleId.MadMaker:
                     IsTaskClear = true;
                     break;
-                case (RoleId.MadCleaner):
+                case RoleId.MadCleaner:
                     IsTaskClear = true;
                     break;
-                case (RoleId.MayorFriends):
+                case RoleId.MayorFriends:
                     IsTaskClear = true;
                     break;
-                case (RoleId.Tuna):
+                case RoleId.Tuna:
                     IsTaskClear = true;
                     break;
-                //タスククリアか
+                    //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
@@ -1100,7 +1100,7 @@ namespace SuperNewRoles
             try
             {
                 foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
-                    if (task.TaskType == TaskTypes.FixLights || task.TaskType == TaskTypes.RestoreOxy || task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic || task.TaskType == TaskTypes.FixComms || task.TaskType == TaskTypes.StopCharles)
+                    if (task.TaskType is TaskTypes.FixLights or TaskTypes.RestoreOxy or TaskTypes.ResetReactor or TaskTypes.ResetSeismic or TaskTypes.FixComms or TaskTypes.StopCharles)
                         return true;
             }
             catch { }
@@ -1123,132 +1123,107 @@ namespace SuperNewRoles
             if (role == RoleId.Minimalist) return RoleClass.Minimalist.UseSabo;
             if (role == RoleId.Samurai) return RoleClass.Samurai.UseSabo;
             else if (player.isImpostor()) return true;
-            switch (role)
+            return role switch
             {
-                case RoleId.Jester:
-                    return RoleClass.Jester.IsUseSabo;
-                case RoleId.Sidekick:
-                case RoleId.Jackal:
-                    return RoleClass.Jackal.IsUseSabo;
-                case RoleId.TeleportingJackal:
-                    return RoleClass.TeleportingJackal.IsUseSabo;
-                case RoleId.SidekickSeer:
-                case RoleId.JackalSeer:
-                    return RoleClass.JackalSeer.IsUseSabo;
-                case RoleId.Egoist:
-                    return RoleClass.Egoist.UseSabo;
-            }
-            return false;
+                RoleId.Jester => RoleClass.Jester.IsUseSabo,
+                RoleId.Sidekick or RoleId.Jackal => RoleClass.Jackal.IsUseSabo,
+                RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
+                RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
+                RoleId.Egoist => RoleClass.Egoist.UseSabo,
+                _ => false,
+            };
         }
         public static bool IsImpostorLight(this PlayerControl player)
         {
             RoleId role = player.getRole();
             if (role == RoleId.Egoist) return RoleClass.Egoist.ImpostorLight;
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) return false;
-            switch (role)
+            return role switch
             {
-                case RoleId.MadMate:
-                    return RoleClass.MadMate.IsImpostorLight;
-                case RoleId.MadMayor:
-                    return RoleClass.MadMayor.IsImpostorLight;
-                case RoleId.MadStuntMan:
-                    return RoleClass.MadStuntMan.IsImpostorLight;
-                case RoleId.MadHawk:
-                    return RoleClass.MadHawk.IsImpostorLight;
-                case RoleId.MadJester:
-                    return RoleClass.MadJester.IsImpostorLight;
-                case RoleId.MadSeer:
-                    return RoleClass.MadSeer.IsImpostorLight;
-                case RoleId.Fox:
-                    return RoleClass.Fox.IsImpostorLight;
-                case RoleId.TeleportingJackal:
-                    return RoleClass.TeleportingJackal.IsImpostorLight;
-                case RoleId.MadMaker:
-                    return RoleClass.MadMaker.IsImpostorLight;
-                case RoleId.Jackal:
-                case RoleId.Sidekick:
-                    return RoleClass.Jackal.IsImpostorLight;
-                case RoleId.JackalFriends:
-                    return RoleClass.JackalFriends.IsImpostorLight;
-                case RoleId.SeerFriends:
-                    return RoleClass.SeerFriends.IsImpostorLight;
-                case RoleId.JackalSeer:
-                case RoleId.SidekickSeer:
-                    return RoleClass.JackalSeer.IsImpostorLight;
-                case RoleId.MadCleaner:
-                    return RoleClass.MadCleaner.IsImpostorLight;
-                case RoleId.MayorFriends:
-                    return RoleClass.MayorFriends.IsImpostorLight;
-                    //インポの視界
-            }
-            return false;
+                RoleId.MadMate => RoleClass.MadMate.IsImpostorLight,
+                RoleId.MadMayor => RoleClass.MadMayor.IsImpostorLight,
+                RoleId.MadStuntMan => RoleClass.MadStuntMan.IsImpostorLight,
+                RoleId.MadHawk => RoleClass.MadHawk.IsImpostorLight,
+                RoleId.MadJester => RoleClass.MadJester.IsImpostorLight,
+                RoleId.MadSeer => RoleClass.MadSeer.IsImpostorLight,
+                RoleId.Fox => RoleClass.Fox.IsImpostorLight,
+                RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsImpostorLight,
+                RoleId.MadMaker => RoleClass.MadMaker.IsImpostorLight,
+                RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsImpostorLight,
+                RoleId.JackalFriends => RoleClass.JackalFriends.IsImpostorLight,
+                RoleId.SeerFriends => RoleClass.SeerFriends.IsImpostorLight,
+                RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsImpostorLight,
+                RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
+                RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
+                _ => false,
+            };
         }
         public static bool isNeutral(this PlayerControl player)
         {
             var IsNeutral = false;
             switch (player.getRole())
             {
-                case (RoleId.Jester):
+                case RoleId.Jester:
                     IsNeutral = true;
                     break;
-                case (RoleId.Jackal):
+                case RoleId.Jackal:
                     IsNeutral = true;
                     break;
-                case (RoleId.Sidekick):
+                case RoleId.Sidekick:
                     IsNeutral = true;
                     break;
-                case (RoleId.Vulture):
+                case RoleId.Vulture:
                     IsNeutral = true;
                     break;
-                case (RoleId.Opportunist):
+                case RoleId.Opportunist:
                     IsNeutral = true;
                     break;
-                case (RoleId.Researcher):
+                case RoleId.Researcher:
                     IsNeutral = true;
                     break;
-                case (RoleId.God):
+                case RoleId.God:
                     IsNeutral = true;
                     break;
-                case (RoleId.Egoist):
+                case RoleId.Egoist:
                     IsNeutral = true;
                     break;
-                case (RoleId.Workperson):
+                case RoleId.Workperson:
                     IsNeutral = true;
                     break;
-                case (RoleId.truelover):
+                case RoleId.truelover:
                     IsNeutral = true;
                     break;
-                case (RoleId.Amnesiac):
+                case RoleId.Amnesiac:
                     IsNeutral = true;
                     break;
-                case (RoleId.FalseCharges):
+                case RoleId.FalseCharges:
                     IsNeutral = true;
                     break;
-                case (RoleId.Fox):
+                case RoleId.Fox:
                     IsNeutral = true;
                     break;
-                case (RoleId.TeleportingJackal):
+                case RoleId.TeleportingJackal:
                     IsNeutral = true;
                     break;
-                case (RoleId.Demon):
+                case RoleId.Demon:
                     IsNeutral = true;
                     break;
-                case (RoleId.JackalSeer):
+                case RoleId.JackalSeer:
                     IsNeutral = true;
                     break;
-                case (RoleId.SidekickSeer):
+                case RoleId.SidekickSeer:
                     IsNeutral = true;
                     break;
-                case (RoleId.Arsonist):
+                case RoleId.Arsonist:
                     IsNeutral = true;
                     break;
-                case (RoleId.MayorFriends):
+                case RoleId.MayorFriends:
                     IsNeutral = true;
                     break;
-                case (RoleId.Tuna):
+                case RoleId.Tuna:
                     IsNeutral = true;
                     break;
-                //第三か
+                    //第三か
             }
             return IsNeutral;
         }
@@ -1321,19 +1296,11 @@ namespace SuperNewRoles
         public static float GetEndMeetingKillCoolTime(PlayerControl p)
         {
             var role = p.getRole();
-            switch (role)
+            return role switch
             {
-                case RoleId.Minimalist:
-                case RoleId.Survivor:
-                case RoleId.SideKiller:
-                case RoleId.MadKiller:
-                case RoleId.OverKiller:
-                case RoleId.SerialKiller:
-                case RoleId.Cleaner:
-                case RoleId.Samurai:
-                    return getCoolTime(p);
-            }
-            return PlayerControl.GameOptions.killCooldown;
+                RoleId.Minimalist or RoleId.Survivor or RoleId.SideKiller or RoleId.MadKiller or RoleId.OverKiller or RoleId.SerialKiller or RoleId.Cleaner or RoleId.Samurai => getCoolTime(p),
+                _ => PlayerControl.GameOptions.killCooldown,
+            };
         }
         public static RoleId getGhostRole(this PlayerControl player, bool IsChache = true)
         {

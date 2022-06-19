@@ -1,8 +1,8 @@
-﻿using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Mode;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
+using Hazel;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -181,7 +181,7 @@ namespace SuperNewRoles.Roles
             {
                 MeetingUpdatePatch.IsFlag = true;
                 meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();
-                List<PlayerVoteArea> deadareas = new List<PlayerVoteArea>();
+                List<PlayerVoteArea> deadareas = new();
                 foreach (PlayerVoteArea area in __instance.playerStates)
                 {
                     if (ModHelpers.playerById(area.TargetPlayerId).isAlive())
@@ -202,8 +202,8 @@ namespace SuperNewRoles.Roles
             }
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count != 0)
             {
-                List<PlayerVoteArea> newareas = new List<PlayerVoteArea>();
-                List<PlayerVoteArea> deadareas = new List<PlayerVoteArea>();
+                List<PlayerVoteArea> newareas = new();
+                List<PlayerVoteArea> deadareas = new();
                 foreach (PlayerVoteArea area in __instance.playerStates)
                 {
                     if (ModHelpers.playerById(area.TargetPlayerId).IsPlayer())

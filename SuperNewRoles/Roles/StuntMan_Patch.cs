@@ -1,4 +1,4 @@
-﻿namespace SuperNewRoles.Roles
+namespace SuperNewRoles.Roles
 {
     class StuntMan_Patch
     {/*
@@ -33,5 +33,6 @@
             {
             }
         }
-    */}
+    */
+    }
 }

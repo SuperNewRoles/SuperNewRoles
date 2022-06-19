@@ -1,5 +1,5 @@
-﻿using HarmonyLib;
 using System.Linq;
+using HarmonyLib;
 
 namespace SuperNewRoles.Patch
 {

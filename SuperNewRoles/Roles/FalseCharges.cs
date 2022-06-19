@@ -1,10 +1,10 @@
-﻿using Hazel;
+using System;
+using System.Collections.Generic;
+using Hazel;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using System;
-using System.Collections.Generic;
 
 namespace SuperNewRoles.Roles
 {
@@ -70,12 +70,16 @@ namespace SuperNewRoles.Roles
                                     Writer.Write((byte)CustomGameOverReason.FalseChargesWin);
                                     Writer.EndRPC();
                                     CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.FalseChargesWin);
-                                    var winplayers = new List<PlayerControl>();
-                                    winplayers.Add(player);
+                                    var winplayers = new List<PlayerControl>
+                                    {
+                                        player
+                                    };
                                     //EndGameCheck.WinNeutral(winplayers);
                                     Chat.WinCond = CustomGameOverReason.FalseChargesWin;
-                                    Chat.Winner = new List<PlayerControl>();
-                                    Chat.Winner.Add(player);
+                                    Chat.Winner = new List<PlayerControl>
+                                    {
+                                        player
+                                    };
                                 }
                                 catch (Exception e)
                                 {

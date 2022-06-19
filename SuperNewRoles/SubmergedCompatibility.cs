@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -147,7 +147,7 @@ namespace SuperNewRoles
             RpcRequestChangeFloorMethod.Invoke(_floorHandler, new object[] { toUpper });
         }
 
-        public static void ChangeFloor(bool toUpper,PlayerControl player)
+        public static void ChangeFloor(bool toUpper, PlayerControl player)
         {
             if (!Loaded) return;
             MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { player })) as MonoBehaviour;

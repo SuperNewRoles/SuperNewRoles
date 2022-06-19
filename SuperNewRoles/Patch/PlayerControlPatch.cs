@@ -1,4 +1,7 @@
-﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomOption;
@@ -10,9 +13,6 @@ using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using static SuperNewRoles.Helpers.DesyncHelpers;
 using static SuperNewRoles.ModHelpers;
@@ -461,7 +461,7 @@ namespace SuperNewRoles.Patches
                             try
                             {
                                 Arsonist.ArsonistTimer[__instance.PlayerId] =
-                                        (Arsonist.ArsonistTimer[__instance.PlayerId] = RoleClass.Arsonist.DurationTime);
+                                        Arsonist.ArsonistTimer[__instance.PlayerId] = RoleClass.Arsonist.DurationTime;
                                 if (Arsonist.ArsonistTimer[__instance.PlayerId] <= RoleClass.Arsonist.DurationTime)//時間以上一緒にいて塗れた時
                                 {
                                     if (!__instance.IsDoused(target))
@@ -483,7 +483,7 @@ namespace SuperNewRoles.Patches
                                     if (dis <= 1.75f)//一定の距離にターゲットがいるならば時間をカウント
                                     {
                                         Arsonist.ArsonistTimer[__instance.PlayerId] =
-                                        (Arsonist.ArsonistTimer[__instance.PlayerId] - Time.fixedDeltaTime);
+                                        Arsonist.ArsonistTimer[__instance.PlayerId] - Time.fixedDeltaTime;
                                     }
                                     else//それ以外は削除
                                     {
@@ -714,7 +714,7 @@ namespace SuperNewRoles.Patches
         {
             // SuperNewRolesPlugin.Logger.LogInfo("MurderPlayer発生！元:" + __instance.getDefaultName() + "、ターゲット:" + target.getDefaultName());
             // Collect dead player info
-            DeadPlayer deadPlayer = new DeadPlayer(target, DateTime.UtcNow, DeathReason.Kill, __instance);
+            DeadPlayer deadPlayer = new(target, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
@@ -801,7 +801,7 @@ namespace SuperNewRoles.Patches
         public static void Postfix(PlayerControl __instance)
         {
             // Collect dead player info
-            DeadPlayer deadPlayer = new DeadPlayer(__instance, DateTime.UtcNow, DeathReason.Exile, null);
+            DeadPlayer deadPlayer = new(__instance, DateTime.UtcNow, DeathReason.Exile, null);
             DeadPlayer.deadPlayers.Add(deadPlayer);
             FinalStatusPatch.FinalStatusData.FinalStatuses[__instance.PlayerId] = FinalStatus.Exiled;
             if (ModeHandler.isMode(ModeId.Default))

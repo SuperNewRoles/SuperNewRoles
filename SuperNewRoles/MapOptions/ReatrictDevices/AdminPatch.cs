@@ -1,7 +1,7 @@
-using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
+using HarmonyLib;
+using Hazel;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -27,7 +27,7 @@ namespace SuperNewRoles.Patch
                 return MapOptions.MapOption.RestrictAdmin.getBool() || RestrictAdminTime > 0f;
             }
         }
-        static Dictionary<SystemTypes, List<Color>> playerColors = new Dictionary<SystemTypes, List<Color>>();
+        static Dictionary<SystemTypes, List<Color>> playerColors = new();
         static float adminTimer = 0f;
         static TMPro.TextMeshPro OutOfTime;
         static TMPro.TextMeshPro TimeRemaining;
@@ -190,7 +190,7 @@ namespace SuperNewRoles.Patch
                     for (int i = 0; i < __instance.CountAreas.Length; i++)
                     {
                         CounterArea counterArea = __instance.CountAreas[i];
-                        List<Color> roomColors = new List<Color>();
+                        List<Color> roomColors = new();
                         playerColors.Add(counterArea.RoomType, roomColors);
 
                         if (!commsActive)
