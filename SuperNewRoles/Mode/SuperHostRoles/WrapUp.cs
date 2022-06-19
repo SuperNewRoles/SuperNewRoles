@@ -57,23 +57,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (p.isAlive() && !p.IsMod())
                 {
-                    p.RpcProtectPlayer(p, 0);
-                    new LateTask(() =>
-                    {
-                        p.RpcMurderPlayer(p);
-                    }, 0.5f);
+                    p.RpcResetAbilityCooldown();
                 }
             }
             foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
             {
                 if (p.isAlive() && !p.IsMod())
                 {
-                    p.RpcProtectPlayer(p, 0);
-                    new LateTask(() =>
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("[SHR] Murder");
-                        p.RpcMurderPlayer(p);
-                    }, 0.5f);
+                    p.RpcResetAbilityCooldown();
                 }
             }
             AmongUsClient.Instance.StartCoroutine(nameof(ResetName));
@@ -114,7 +105,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                         Writer.Write((byte)CustomGameOverReason.QuarreledWin);
                         Writer.EndRPC();
-                        CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
+                        RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
                         var winplayers = new List<PlayerControl>
                         {
                             exiled.Object

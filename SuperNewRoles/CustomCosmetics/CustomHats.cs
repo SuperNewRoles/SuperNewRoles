@@ -162,9 +162,9 @@ namespace SuperNewRoles.CustomCosmetics
 
             HatExtension extend = new()
             {
-                author = ch.author ?? "Unknown",
-                package = ch.package ?? "Misc.",
-                condition = ch.condition ?? "none"
+               author = ch.author ?? "Unknown",
+               package = ch.package ?? "YJ*白桜コレクション",
+               condition = ch.condition ?? "none",
             };
 
             if (ch.flipresource != null)
@@ -335,6 +335,21 @@ namespace SuperNewRoles.CustomCosmetics
                     title.enableAutoSizing = false;
                     title.autoSizeTextContainer = true;
                     title.text = ModTranslation.getString(packageName);
+                    switch (packageName)
+                    {
+                        case "shiuneCollection":
+                            title.text = "しうねコレクション";
+                            break;
+                        case "gmEditionGeneral":
+                            title.text = "TheOtherRoles-GMハット";
+                            break;
+                        case "communityHats":
+                            title.text = "TheOtherRolesコミュニティーハット";
+                            break;
+                        case "developerHats":
+                            title.text = "TheOtherRoles開発者ハット";
+                            break;
+                    }
                     offset -= headerSize * __instance.YOffset;
                     hatsTabCustomTexts.Add(title);
                 }
@@ -466,9 +481,9 @@ namespace SuperNewRoles.CustomCosmetics
             "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master",
             "https://raw.githubusercontent.com/Ujet222/TOPHats/main"
             /*
-            "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master",
+            "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master"*/,
             "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master",
-            "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"*/
+            "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"
         };
 
         public static List<CustomHatOnline> hatDetails = new();
@@ -580,7 +595,7 @@ namespace SuperNewRoles.CustomCosmetics
                         hatdatas.Add(info);
                     }
                 }
-
+              
                 List<string> markedfordownload = new();
 
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
@@ -602,6 +617,7 @@ namespace SuperNewRoles.CustomCosmetics
                 foreach (var file in markedfordownload)
                 {
                     var hatFileResponse = await http.GetAsync($"{repo}/hats/{file}", HttpCompletionOption.ResponseContentRead);
+                    //SuperNewRolesPlugin.Logger.LogInfo(file);
                     if (hatFileResponse.StatusCode != HttpStatusCode.OK) continue;
                     using var responseStream = await hatFileResponse.Content.ReadAsStreamAsync();
                     using var fileStream = File.Create($"{filePath}\\{file}");

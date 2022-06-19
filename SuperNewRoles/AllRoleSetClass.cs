@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -17,6 +17,8 @@ namespace SuperNewRoles
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
+            SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName+" => "+roleType);
+            return true;
             if (RoleManagerSelectRolesPatch.IsShapeSet)
             {
                 MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
@@ -63,32 +65,6 @@ namespace SuperNewRoles
             CustomRPC.RPCProcedure.StartGameRPC();
 
             RoleSelectHandler.SpawnBots();
-            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
-            {
-                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
-            }
-        }
-    }
-    [HarmonyPatch(typeof(GameData.PlayerInfo), nameof(GameData.PlayerInfo.IsDead), MethodType.Setter)]
-    class DeadPatch
-    {
-        public static void Postfix(GameData.PlayerInfo __instance)
-        {
-            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
-            {
-                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
-            }
-        }
-    }
-    [HarmonyPatch(typeof(GameData.PlayerInfo), nameof(GameData.PlayerInfo.Disconnected), MethodType.Setter)]
-    class DisconnectPatch
-    {
-        public static void Postfix(GameData.PlayerInfo __instance)
-        {
-            foreach (CachedPlayer p in CachedPlayer.AllPlayers)
-            {
-                RoleHelpers.DeadCaches[p.PlayerId] = p.PlayerControl.isDead(false);
-            }
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
@@ -120,7 +96,7 @@ namespace SuperNewRoles
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 List<PlayerControl> SelectPlayers = new();
-                AllRoleSetClass.impostors = new List<PlayerControl>();
+                AllRoleSetClass.impostors = new();
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (!player.Data.Disconnected && player.IsPlayer())
@@ -331,7 +307,7 @@ namespace SuperNewRoles
             {
                 if (SelectPlayers.Count is not (1 or 0))
                 {
-                    var Listdate = new List<PlayerControl>();
+                    List<PlayerControl> Listdate = new();
                     for (int i2 = 0; i2 < 2; i2++)
                     {
                         var player = ModHelpers.GetRandomIndex<PlayerControl>(SelectPlayers);
@@ -350,7 +326,7 @@ namespace SuperNewRoles
             if (!CustomOptions.LoversOption.getBool() || (CustomOptions.LoversPar.getString() == "0%")) return;
             if (!(CustomOptions.LoversPar.getString() == "100%"))
             {
-                var a = new List<string>();
+                List<string> a = new();
                 var SucPar = int.Parse(CustomOptions.LoversPar.getString().Replace("0%", ""));
                 for (int i = 0; i < SucPar; i++)
                 {
@@ -397,7 +373,7 @@ namespace SuperNewRoles
             {
                 if (SelectPlayers.Count is not (1 or 0))
                 {
-                    var Listdate = new List<PlayerControl>();
+                    List<PlayerControl> Listdate = new();
                     for (int i2 = 0; i2 < 2; i2++)
                     {
                         var player = ModHelpers.GetRandomIndex(SelectPlayers);
@@ -761,110 +737,112 @@ namespace SuperNewRoles
         {
             return RoleDate switch
             {
-                RoleId.SoothSayer => CustomOption.CustomOptions.SoothSayerPlayerCount.getFloat(),
-                RoleId.Jester => CustomOption.CustomOptions.JesterPlayerCount.getFloat(),
-                RoleId.Lighter => CustomOption.CustomOptions.LighterPlayerCount.getFloat(),
-                RoleId.EvilLighter => CustomOption.CustomOptions.EvilLighterPlayerCount.getFloat(),
-                RoleId.EvilScientist => CustomOption.CustomOptions.EvilScientistPlayerCount.getFloat(),
-                RoleId.Sheriff => CustomOption.CustomOptions.SheriffPlayerCount.getFloat(),
-                RoleId.MeetingSheriff => CustomOption.CustomOptions.MeetingSheriffPlayerCount.getFloat(),
-                RoleId.Jackal => CustomOption.CustomOptions.JackalPlayerCount.getFloat(),
-                RoleId.Teleporter => CustomOption.CustomOptions.TeleporterPlayerCount.getFloat(),
-                RoleId.SpiritMedium => CustomOption.CustomOptions.SpiritMediumPlayerCount.getFloat(),
-                RoleId.SpeedBooster => CustomOption.CustomOptions.SpeedBoosterPlayerCount.getFloat(),
-                RoleId.EvilSpeedBooster => CustomOption.CustomOptions.EvilSpeedBoosterPlayerCount.getFloat(),
-                RoleId.Tasker => CustomOption.CustomOptions.TaskerPlayerCount.getFloat(),
-                RoleId.Doorr => CustomOption.CustomOptions.DoorrPlayerCount.getFloat(),
-                RoleId.EvilDoorr => CustomOption.CustomOptions.EvilDoorrPlayerCount.getFloat(),
-                RoleId.Shielder => CustomOption.CustomOptions.ShielderPlayerCount.getFloat(),
-                RoleId.Speeder => CustomOption.CustomOptions.SpeederPlayerCount.getFloat(),
-                RoleId.Freezer => CustomOption.CustomOptions.FreezerPlayerCount.getFloat(),
-                RoleId.Guesser => CustomOption.CustomOptions.GuesserPlayerCount.getFloat(),
-                RoleId.EvilGuesser => CustomOption.CustomOptions.EvilGuesserPlayerCount.getFloat(),
-                RoleId.Vulture => CustomOption.CustomOptions.VulturePlayerCount.getFloat(),
-                RoleId.NiceScientist => CustomOption.CustomOptions.NiceScientistPlayerCount.getFloat(),
-                RoleId.Clergyman => CustomOption.CustomOptions.ClergymanPlayerCount.getFloat(),
-                RoleId.MadMate => CustomOption.CustomOptions.MadMatePlayerCount.getFloat(),
-                RoleId.Bait => CustomOption.CustomOptions.BaitPlayerCount.getFloat(),
-                RoleId.HomeSecurityGuard => CustomOption.CustomOptions.HomeSecurityGuardPlayerCount.getFloat(),
-                RoleId.StuntMan => CustomOption.CustomOptions.StuntManPlayerCount.getFloat(),
-                RoleId.Moving => CustomOption.CustomOptions.MovingPlayerCount.getFloat(),
-                RoleId.Opportunist => CustomOption.CustomOptions.OpportunistPlayerCount.getFloat(),
-                RoleId.NiceGambler => CustomOption.CustomOptions.NiceGamblerPlayerCount.getFloat(),
-                RoleId.EvilGambler => CustomOption.CustomOptions.EvilGamblerPlayerCount.getFloat(),
-                RoleId.Bestfalsecharge => CustomOption.CustomOptions.BestfalsechargePlayerCount.getFloat(),
-                RoleId.Researcher => CustomOption.CustomOptions.ResearcherPlayerCount.getFloat(),
-                RoleId.SelfBomber => CustomOption.CustomOptions.SelfBomberPlayerCount.getFloat(),
-                RoleId.God => CustomOption.CustomOptions.GodPlayerCount.getFloat(),
-                RoleId.AllCleaner => CustomOption.CustomOptions.AllCleanerPlayerCount.getFloat(),
-                RoleId.NiceNekomata => CustomOption.CustomOptions.NiceNekomataPlayerCount.getFloat(),
-                RoleId.EvilNekomata => CustomOption.CustomOptions.EvilNekomataPlayerCount.getFloat(),
-                RoleId.JackalFriends => CustomOption.CustomOptions.JackalFriendsPlayerCount.getFloat(),
-                RoleId.Doctor => CustomOption.CustomOptions.DoctorPlayerCount.getFloat(),
-                RoleId.CountChanger => CustomOption.CustomOptions.CountChangerPlayerCount.getFloat(),
-                RoleId.Pursuer => CustomOption.CustomOptions.PursuerPlayerCount.getFloat(),
-                RoleId.Minimalist => CustomOption.CustomOptions.MinimalistPlayerCount.getFloat(),
-                RoleId.Hawk => CustomOption.CustomOptions.HawkPlayerCount.getFloat(),
-                RoleId.Egoist => CustomOption.CustomOptions.EgoistPlayerCount.getFloat(),
-                RoleId.NiceRedRidingHood => CustomOption.CustomOptions.NiceRedRidingHoodPlayerCount.getFloat(),
-                RoleId.EvilEraser => CustomOption.CustomOptions.EvilEraserPlayerCount.getFloat(),
-                RoleId.Workperson => CustomOption.CustomOptions.WorkpersonPlayerCount.getFloat(),
-                RoleId.Magaziner => CustomOption.CustomOptions.MagazinerPlayerCount.getFloat(),
-                RoleId.Mayor => CustomOption.CustomOptions.MayorPlayerCount.getFloat(),
-                RoleId.truelover => CustomOption.CustomOptions.trueloverPlayerCount.getFloat(),
-                RoleId.Technician => CustomOption.CustomOptions.TechnicianPlayerCount.getFloat(),
-                RoleId.SerialKiller => CustomOption.CustomOptions.SerialKillerPlayerCount.getFloat(),
-                RoleId.OverKiller => CustomOption.CustomOptions.OverKillerPlayerCount.getFloat(),
-                RoleId.Levelinger => CustomOption.CustomOptions.LevelingerPlayerCount.getFloat(),
-                RoleId.EvilMoving => CustomOption.CustomOptions.EvilMovingPlayerCount.getFloat(),
-                RoleId.Amnesiac => CustomOption.CustomOptions.AmnesiacPlayerCount.getFloat(),
-                RoleId.SideKiller => CustomOption.CustomOptions.SideKillerPlayerCount.getFloat(),
-                RoleId.Survivor => CustomOption.CustomOptions.SurvivorPlayerCount.getFloat(),
-                RoleId.MadMayor => CustomOption.CustomOptions.MadMayorPlayerCount.getFloat(),
-                RoleId.NiceHawk => CustomOption.CustomOptions.NiceHawkPlayerCount.getFloat(),
-                RoleId.Bakery => CustomOption.CustomOptions.BakeryPlayerCount.getFloat(),
-                RoleId.MadJester => CustomOption.CustomOptions.MadJesterPlayerCount.getFloat(),
-                RoleId.MadStuntMan => CustomOption.CustomOptions.MadStuntManPlayerCount.getFloat(),
-                RoleId.MadHawk => CustomOption.CustomOptions.MadHawkPlayerCount.getFloat(),
-                RoleId.FalseCharges => CustomOption.CustomOptions.FalseChargesPlayerCount.getFloat(),
-                RoleId.NiceTeleporter => CustomOption.CustomOptions.NiceTeleporterPlayerCount.getFloat(),
-                RoleId.Celebrity => CustomOption.CustomOptions.CelebrityPlayerCount.getFloat(),
-                RoleId.Nocturnality => CustomOption.CustomOptions.NocturnalityPlayerCount.getFloat(),
-                RoleId.Observer => CustomOption.CustomOptions.ObserverPlayerCount.getFloat(),
-                RoleId.Vampire => CustomOption.CustomOptions.VampirePlayerCount.getFloat(),
-                RoleId.DarkKiller => CustomOption.CustomOptions.DarkKillerPlayerCount.getFloat(),
-                RoleId.Seer => CustomOption.CustomOptions.SeerPlayerCount.getFloat(),
-                RoleId.MadSeer => CustomOption.CustomOptions.MadSeerPlayerCount.getFloat(),
-                RoleId.EvilSeer => CustomOption.CustomOptions.EvilSeerPlayerCount.getFloat(),
-                RoleId.RemoteSheriff => CustomOption.CustomOptions.RemoteSheriffPlayerCount.getFloat(),
-                RoleId.Fox => CustomOption.CustomOptions.FoxPlayerCount.getFloat(),
-                RoleId.TeleportingJackal => CustomOption.CustomOptions.TeleportingJackalPlayerCount.getFloat(),
-                RoleId.MadMaker => CustomOption.CustomOptions.MadMakerPlayerCount.getFloat(),
-                RoleId.Demon => CustomOption.CustomOptions.DemonPlayerCount.getFloat(),
-                RoleId.TaskManager => CustomOption.CustomOptions.TaskManagerPlayerCount.getFloat(),
-                RoleId.SeerFriends => CustomOption.CustomOptions.SeerFriendsPlayerCount.getFloat(),
-                RoleId.JackalSeer => CustomOption.CustomOptions.JackalSeerPlayerCount.getFloat(),
-                RoleId.Assassin => CustomOption.CustomOptions.AssassinPlayerCount.getFloat(),
-                RoleId.Marine => CustomOption.CustomOptions.MarinePlayerCount.getFloat(),
-                RoleId.Arsonist => CustomOption.CustomOptions.ArsonistPlayerCount.getFloat(),
-                RoleId.Chief => CustomOption.CustomOptions.ChiefPlayerCount.getFloat(),
-                RoleId.Cleaner => CustomOption.CustomOptions.CleanerPlayerCount.getFloat(),
-                RoleId.MadCleaner => CustomOption.CustomOptions.MadCleanerPlayerCount.getFloat(),
-                RoleId.Samurai => CustomOption.CustomOptions.SamuraiPlayerCount.getFloat(),
-                RoleId.MayorFriends => CustomOption.CustomOptions.MayorFriendsPlayerCount.getFloat(),
-                RoleId.VentMaker => CustomOption.CustomOptions.VentMakerPlayerCount.getFloat(),
-                RoleId.GhostMechanic => CustomOption.CustomOptions.GhostMechanicPlayerCount.getFloat(),
-                RoleId.EvilHacker => CustomOption.CustomOptions.EvilHackerPlayerCount.getFloat(),
-                RoleId.HauntedWolf => CustomOption.CustomOptions.HauntedWolfPlayerCount.getFloat(),
-                RoleId.PositionSwapper => CustomOption.CustomOptions.PositionSwapperPlayerCount.getFloat(),
-                RoleId.Tuna => CustomOption.CustomOptions.TunaPlayerCount.getFloat(),
+                RoleId.SoothSayer => CustomOptions.SoothSayerPlayerCount.getFloat(),
+                RoleId.Jester => CustomOptions.JesterPlayerCount.getFloat(),
+                RoleId.Lighter => CustomOptions.LighterPlayerCount.getFloat(),
+                RoleId.EvilLighter => CustomOptions.EvilLighterPlayerCount.getFloat(),
+                RoleId.EvilScientist => CustomOptions.EvilScientistPlayerCount.getFloat(),
+                RoleId.Sheriff => CustomOptions.SheriffPlayerCount.getFloat(),
+                RoleId.MeetingSheriff => CustomOptions.MeetingSheriffPlayerCount.getFloat(),
+                RoleId.Jackal => CustomOptions.JackalPlayerCount.getFloat(),
+                RoleId.Teleporter => CustomOptions.TeleporterPlayerCount.getFloat(),
+                RoleId.SpiritMedium => CustomOptions.SpiritMediumPlayerCount.getFloat(),
+                RoleId.SpeedBooster => CustomOptions.SpeedBoosterPlayerCount.getFloat(),
+                RoleId.EvilSpeedBooster => CustomOptions.EvilSpeedBoosterPlayerCount.getFloat(),
+                RoleId.Tasker => CustomOptions.TaskerPlayerCount.getFloat(),
+                RoleId.Doorr => CustomOptions.DoorrPlayerCount.getFloat(),
+                RoleId.EvilDoorr => CustomOptions.EvilDoorrPlayerCount.getFloat(),
+                RoleId.Shielder => CustomOptions.ShielderPlayerCount.getFloat(),
+                RoleId.Speeder => CustomOptions.SpeederPlayerCount.getFloat(),
+                RoleId.Freezer => CustomOptions.FreezerPlayerCount.getFloat(),
+                RoleId.Guesser => CustomOptions.GuesserPlayerCount.getFloat(),
+                RoleId.EvilGuesser => CustomOptions.EvilGuesserPlayerCount.getFloat(),
+                RoleId.Vulture => CustomOptions.VulturePlayerCount.getFloat(),
+                RoleId.NiceScientist => CustomOptions.NiceScientistPlayerCount.getFloat(),
+                RoleId.Clergyman => CustomOptions.ClergymanPlayerCount.getFloat(),
+                RoleId.MadMate => CustomOptions.MadMatePlayerCount.getFloat(),
+                RoleId.Bait => CustomOptions.BaitPlayerCount.getFloat(),
+                RoleId.HomeSecurityGuard => CustomOptions.HomeSecurityGuardPlayerCount.getFloat(),
+                RoleId.StuntMan => CustomOptions.StuntManPlayerCount.getFloat(),
+                RoleId.Moving => CustomOptions.MovingPlayerCount.getFloat(),
+                RoleId.Opportunist => CustomOptions.OpportunistPlayerCount.getFloat(),
+                RoleId.NiceGambler => CustomOptions.NiceGamblerPlayerCount.getFloat(),
+                RoleId.EvilGambler => CustomOptions.EvilGamblerPlayerCount.getFloat(),
+                RoleId.Bestfalsecharge => CustomOptions.BestfalsechargePlayerCount.getFloat(),
+                RoleId.Researcher => CustomOptions.ResearcherPlayerCount.getFloat(),
+                RoleId.SelfBomber => CustomOptions.SelfBomberPlayerCount.getFloat(),
+                RoleId.God => CustomOptions.GodPlayerCount.getFloat(),
+                RoleId.AllCleaner => CustomOptions.AllCleanerPlayerCount.getFloat(),
+                RoleId.NiceNekomata => CustomOptions.NiceNekomataPlayerCount.getFloat(),
+                RoleId.EvilNekomata => CustomOptions.EvilNekomataPlayerCount.getFloat(),
+                RoleId.JackalFriends => CustomOptions.JackalFriendsPlayerCount.getFloat(),
+                RoleId.Doctor => CustomOptions.DoctorPlayerCount.getFloat(),
+                RoleId.CountChanger => CustomOptions.CountChangerPlayerCount.getFloat(),
+                RoleId.Pursuer => CustomOptions.PursuerPlayerCount.getFloat(),
+                RoleId.Minimalist => CustomOptions.MinimalistPlayerCount.getFloat(),
+                RoleId.Hawk => CustomOptions.HawkPlayerCount.getFloat(),
+                RoleId.Egoist => CustomOptions.EgoistPlayerCount.getFloat(),
+                RoleId.NiceRedRidingHood => CustomOptions.NiceRedRidingHoodPlayerCount.getFloat(),
+                RoleId.EvilEraser => CustomOptions.EvilEraserPlayerCount.getFloat(),
+                RoleId.Workperson => CustomOptions.WorkpersonPlayerCount.getFloat(),
+                RoleId.Magaziner => CustomOptions.MagazinerPlayerCount.getFloat(),
+                RoleId.Mayor => CustomOptions.MayorPlayerCount.getFloat(),
+                RoleId.truelover => CustomOptions.trueloverPlayerCount.getFloat(),
+                RoleId.Technician => CustomOptions.TechnicianPlayerCount.getFloat(),
+                RoleId.SerialKiller => CustomOptions.SerialKillerPlayerCount.getFloat(),
+                RoleId.OverKiller => CustomOptions.OverKillerPlayerCount.getFloat(),
+                RoleId.Levelinger => CustomOptions.LevelingerPlayerCount.getFloat(),
+                RoleId.EvilMoving => CustomOptions.EvilMovingPlayerCount.getFloat(),
+                RoleId.Amnesiac => CustomOptions.AmnesiacPlayerCount.getFloat(),
+                RoleId.SideKiller => CustomOptions.SideKillerPlayerCount.getFloat(),
+                RoleId.Survivor => CustomOptions.SurvivorPlayerCount.getFloat(),
+                RoleId.MadMayor => CustomOptions.MadMayorPlayerCount.getFloat(),
+                RoleId.NiceHawk => CustomOptions.NiceHawkPlayerCount.getFloat(),
+                RoleId.Bakery => CustomOptions.BakeryPlayerCount.getFloat(),
+                RoleId.MadJester => CustomOptions.MadJesterPlayerCount.getFloat(),
+                RoleId.MadStuntMan => CustomOptions.MadStuntManPlayerCount.getFloat(),
+                RoleId.MadHawk => CustomOptions.MadHawkPlayerCount.getFloat(),
+                RoleId.FalseCharges => CustomOptions.FalseChargesPlayerCount.getFloat(),
+                RoleId.NiceTeleporter => CustomOptions.NiceTeleporterPlayerCount.getFloat(),
+                RoleId.Celebrity => CustomOptions.CelebrityPlayerCount.getFloat(),
+                RoleId.Nocturnality => CustomOptions.NocturnalityPlayerCount.getFloat(),
+                RoleId.Observer => CustomOptions.ObserverPlayerCount.getFloat(),
+                RoleId.Vampire => CustomOptions.VampirePlayerCount.getFloat(),
+                RoleId.DarkKiller => CustomOptions.DarkKillerPlayerCount.getFloat(),
+                RoleId.Seer => CustomOptions.SeerPlayerCount.getFloat(),
+                RoleId.MadSeer => CustomOptions.MadSeerPlayerCount.getFloat(),
+                RoleId.EvilSeer => CustomOptions.EvilSeerPlayerCount.getFloat(),
+                RoleId.RemoteSheriff => CustomOptions.RemoteSheriffPlayerCount.getFloat(),
+                RoleId.Fox => CustomOptions.FoxPlayerCount.getFloat(),
+                RoleId.TeleportingJackal => CustomOptions.TeleportingJackalPlayerCount.getFloat(),
+                RoleId.MadMaker => CustomOptions.MadMakerPlayerCount.getFloat(),
+                RoleId.Demon => CustomOptions.DemonPlayerCount.getFloat(),
+                RoleId.TaskManager => CustomOptions.TaskManagerPlayerCount.getFloat(),
+                RoleId.SeerFriends => CustomOptions.SeerFriendsPlayerCount.getFloat(),
+                RoleId.JackalSeer => CustomOptions.JackalSeerPlayerCount.getFloat(),
+                RoleId.Assassin => CustomOptions.AssassinPlayerCount.getFloat(),
+                RoleId.Marine => CustomOptions.MarinePlayerCount.getFloat(),
+                RoleId.Arsonist => CustomOptions.ArsonistPlayerCount.getFloat(),
+                RoleId.Chief => CustomOptions.ChiefPlayerCount.getFloat(),
+                RoleId.Cleaner => CustomOptions.CleanerPlayerCount.getFloat(),
+                RoleId.MadCleaner => CustomOptions.MadCleanerPlayerCount.getFloat(),
+                RoleId.Samurai => CustomOptions.SamuraiPlayerCount.getFloat(),
+                RoleId.MayorFriends => CustomOptions.MayorFriendsPlayerCount.getFloat(),
+                RoleId.VentMaker => CustomOptions.VentMakerPlayerCount.getFloat(),
+                RoleId.GhostMechanic => CustomOptions.GhostMechanicPlayerCount.getFloat(),
+                RoleId.EvilHacker => CustomOptions.EvilHackerPlayerCount.getFloat(),
+                RoleId.HauntedWolf => CustomOptions.HauntedWolfPlayerCount.getFloat(),
+                RoleId.PositionSwapper => CustomOptions.PositionSwapperPlayerCount.getFloat(),
+                RoleId.Tuna => CustomOptions.TunaPlayerCount.getFloat(),
+                RoleId.Mafia => CustomOptions.MafiaPlayerCount.getFloat(),
+                RoleId.BlackCat => CustomOption.CustomOptions.BlackCatPlayerCount.getFloat(),
                 _ => 1,
             };
         }
         public static void CrewOrImpostorSet()
         {
-            CrewMatePlayers = new List<PlayerControl>();
-            ImpostorPlayers = new List<PlayerControl>();
+            CrewMatePlayers = new();
+            ImpostorPlayers = new();
             foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
                 if (Player.Data.Role.IsSimpleRole)
@@ -882,12 +860,12 @@ namespace SuperNewRoles
         }
         public static void OneOrNotListSet()
         {
-            Impoonepar = new List<RoleId>();
-            Imponotonepar = new List<RoleId>();
-            Neutonepar = new List<RoleId>();
-            Neutnotonepar = new List<RoleId>();
-            Crewonepar = new List<RoleId>();
-            Crewnotonepar = new List<RoleId>();
+            Impoonepar = new();
+            Imponotonepar = new();
+            Neutonepar = new();
+            Neutnotonepar = new();
+            Crewonepar = new();
+            Crewnotonepar = new();
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {
                 if (intro.RoleId != RoleId.DefaultRole && !intro.IsGhostRole)

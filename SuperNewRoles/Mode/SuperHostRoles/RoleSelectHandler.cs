@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -25,7 +25,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             crs = SetCustomRoles(crs);
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
-            FixedUpdate.SetRoleNames();
             main.SendAllRoleChat();
 
             //BotHandler.AddBot(3, "キルされるBot");
@@ -118,6 +117,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.MayorFriends.IsUseVent) SetRoleEngineers.AddRange(RoleClass.MayorFriends.MayorFriendsPlayer);
             if (RoleClass.Tuna.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Tuna.TunaPlayer);
             SetRoleEngineers.AddRange(RoleClass.Technician.TechnicianPlayer);
+            if (RoleClass.BlackCat.IsUseVent) SetRoleEngineers.AddRange(RoleClass.BlackCat.BlackCatPlayer);
             //エンジニアに役職設定
             List<PlayerControl> DesyncShapeshifters = new();
             DesyncShapeshifters.AddRange(RoleClass.Arsonist.ArsonistPlayer);
@@ -201,8 +201,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void CrewOrImpostorSet()
         {
-            AllRoleSetClass.CrewMatePlayers = new List<PlayerControl>();
-            AllRoleSetClass.ImpostorPlayers = new List<PlayerControl>();
+            AllRoleSetClass.CrewMatePlayers = new();
+            AllRoleSetClass.ImpostorPlayers = new();
             foreach (PlayerControl Player in CachedPlayer.AllPlayers)
             {
                 if (Player.IsPlayer())
@@ -220,12 +220,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void OneOrNotListSet()
         {
-            var Impoonepar = new List<RoleId>();
-            var Imponotonepar = new List<RoleId>();
-            var Neutonepar = new List<RoleId>();
-            var Neutnotonepar = new List<RoleId>();
-            var Crewonepar = new List<RoleId>();
-            var Crewnotonepar = new List<RoleId>();
+            List<RoleId> Impoonepar = new();
+            List<RoleId> Imponotonepar = new();
+            List<RoleId> Neutonepar = new();
+            List<RoleId> Neutnotonepar = new();
+            List<RoleId> Crewonepar = new();
+            List<RoleId> Crewnotonepar = new();
 
             foreach (IntroDate intro in IntroDate.IntroDatas)
             {

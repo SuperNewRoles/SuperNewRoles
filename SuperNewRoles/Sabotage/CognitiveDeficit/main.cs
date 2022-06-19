@@ -30,7 +30,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
             UpdateTime = 0;// DefaultUpdateTime;
             DistanceTime = DefaultDistanceTime;
             ArrowUpdateColor = 0.25f;
-            OKPlayers = new List<PlayerControl>();
+            OKPlayers = new();
         }
         public static float DefaultUpdateTime = 2;
         private static float ArrowUpdateColor = 1;

@@ -87,7 +87,7 @@ namespace SuperNewRoles
                 Bots.Despawn();
                 SuperNewRolesPlugin.Logger.LogInfo("完了！");
             }
-            AllBots = new List<PlayerControl>();
+            AllBots = new();
         }
     }
 }

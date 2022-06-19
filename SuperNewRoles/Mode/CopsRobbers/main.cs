@@ -11,10 +11,10 @@ namespace SuperNewRoles.Mode.CopsRobbers
         public static void ClearAndReloads()
         {
             IsStart = false;
-            ArrestPositions = new Dictionary<int, SystemTypes?>();
-            Arrest = new List<int>();
+            ArrestPositions = new();
+            Arrest = new();
             IsMove = false;
-            SpawnPosition = new Dictionary<int, SystemTypes?>();
+            SpawnPosition = new();
             LastCount = 0;
         }
         public static bool IsStart;

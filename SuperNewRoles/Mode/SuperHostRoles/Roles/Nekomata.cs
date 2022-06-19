@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         public static void WrapUp(GameData.PlayerInfo exiled)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (exiled.Object.isRole(CustomRPC.RoleId.NiceNekomata) || exiled.Object.isRole(CustomRPC.RoleId.EvilNekomata))
+            if (exiled.Object.isRole(CustomRPC.RoleId.NiceNekomata) || exiled.Object.isRole(CustomRPC.RoleId.EvilNekomata) || exiled.Object.isRole(CustomRPC.RoleId.BlackCat))
             {
                 NekomataEnd(exiled);
             }
@@ -38,7 +38,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             var rdm = ModHelpers.GetRandomIndex(p);
             var random = p[rdm];
             random.RpcCheckExile();
-            if ((random.isRole(CustomRPC.RoleId.NiceNekomata) || random.isRole(CustomRPC.RoleId.EvilNekomata)) && RoleClass.NiceNekomata.IsChain)
+            if ((random.isRole(CustomRPC.RoleId.NiceNekomata) || random.isRole(CustomRPC.RoleId.EvilNekomata) || random.isRole(CustomRPC.RoleId.BlackCat)) && RoleClass.NiceNekomata.IsChain)
             {
                 p.RemoveAt(rdm);
                 NekomataProc(p);

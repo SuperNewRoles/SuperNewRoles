@@ -1093,7 +1093,7 @@ namespace SuperNewRoles.Buttons
                     var target = setTarget();
                     if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Chief.IsCreateSheriff)
                     {
-                        target.RpcSetRole(RoleTypes.Crewmate);
+                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                         target.setRoleRPC(RoleId.Sheriff);
                         RoleClass.Chief.IsCreateSheriff = true;
                     }

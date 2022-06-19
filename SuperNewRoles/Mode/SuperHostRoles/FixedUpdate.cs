@@ -71,7 +71,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false)
         {
             if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
-            if (player.Data.Disconnected || player.IsBot() || !AmongUsClient.Instance.AmHost) return;
+            if (player.IsBot() || !AmongUsClient.Instance.AmHost) return;
 
             var caller = new System.Diagnostics.StackFrame(1, false);
             var callerMethod = caller.GetMethod();
@@ -108,20 +108,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.cs(RoleClass.Celebrity.color, CelebrityPlayer.getDefaultName()));
             }
 
-            if (Madmate.CheckImpostor(player))
-            {
-                foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
-                {
-                    if (Impostor.isImpostor() && Impostor.IsPlayer())
-                    {
-                        if (!ChangePlayers.ContainsKey(Impostor.PlayerId))
-                        {
-                            ChangePlayers.Add(Impostor.PlayerId, ModHelpers.cs(RoleClass.ImpostorRed, Impostor.getDefaultName()));
-                        }
-                    }
-                }
-            }
-            else if (MadMayor.CheckImpostor(player) || player.isRole(RoleId.Marine))
+            if (Madmate.CheckImpostor(player) ||
+                MadMayor.CheckImpostor(player) ||
+                player.isRole(RoleId.Marine) ||
+                BlackCat.CheckImpostor(player))
             {
                 foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
                 {
@@ -248,10 +238,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     MySuffix += "(残り" + RoleClass.RemoteSheriff.KillCount[player.PlayerId] + "発)";
                 }
             }
+            else if (player.isRole(RoleId.Mafia))
+            {
+                if (Mafia.IsKillFlag())
+                {
+                    MySuffix += " (キル可能)";
+                }
+            }
 
             var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(player.getRole(), player);
             string TaskText = "";
-            if (!player.isImpostor())
+            if (!player.isClearTask())
             {
                 try
                 {
@@ -315,7 +312,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         if (ChangePlayer != null)
                         {
                             ChangePlayer.RpcSetNamePrivate(ChangePlayerData.Value, player);
-                            SuperNewRolesPlugin.Logger.LogInfo(ChangePlayerData.Value);
                         }
                     }
                 }
