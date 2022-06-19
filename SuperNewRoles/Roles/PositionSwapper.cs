@@ -10,6 +10,7 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetCoolDown(){
             HudManagerStartPatch.PositionSwapperButton.MaxTimer = RoleClass.PositionSwapper.CoolTime;
+            HudManagerStartPatch.PositionSwapperButton.Timer = RoleClass.PositionSwapper.CoolTime;
             RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
         }
         public static void EndMeeting(){
@@ -20,7 +21,7 @@ namespace SuperNewRoles.Roles
             List<PlayerControl> SwapperPlayer = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive() && p.CanMove && !p.isImpostor()/* && !p.isRole(CustomRPC.RoleId.PositionSwapper)*/)
+                if (p.isAlive() && p.CanMove && !p.isImpostor())
                 {
                     AlivePlayer.Add(p);
                 }

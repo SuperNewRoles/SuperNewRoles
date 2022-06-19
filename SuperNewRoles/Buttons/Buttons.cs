@@ -1556,7 +1556,7 @@ namespace SuperNewRoles.Buttons
                         PositionSwapperNumText.text = "";
                     }*/
                     RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
-                    PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
+                    PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(255F, 255F, 255F);
                     PositionSwapper.SwapStart();
                     PositionSwapper.ResetCoolDown();
                 },
@@ -1567,7 +1567,7 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.PositionSwapper.SwapCount <= 0) return false;
 
                     float swapcount = RoleClass.PositionSwapper.SwapCount;
-                    if (swapcount <= 0)
+                    if (swapcount >= 0)
                         sheriffNumShotsText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), swapcount);
                     else
                         sheriffNumShotsText.text = "";
@@ -1590,6 +1590,7 @@ namespace SuperNewRoles.Buttons
                 PositionSwapperButton.buttonText = ModTranslation.getString("PositionSwapperButtonName");
                 PositionSwapperButton.showButtonText = true;
             };
+
             setCustomButtonCooldowns();
         }
     }
