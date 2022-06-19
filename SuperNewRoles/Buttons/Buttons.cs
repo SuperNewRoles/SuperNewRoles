@@ -1548,22 +1548,29 @@ namespace SuperNewRoles.Buttons
             PositionSwapperButton = new CustomButton(
                 () =>
                 {
-                    if (!PlayerControl.LocalPlayer.CanMove) return;
-                    if (RoleClass.PositionSwapper.SwapCount <= 1) return;
-
                     RoleClass.PositionSwapper.SwapCount--;
-                    if (RoleClass.PositionSwapper.SwapCount > 0)
+                    /*if (RoleClass.PositionSwapper.SwapCount >= 1){
                         PositionSwapperNumText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), RoleClass.PositionSwapper.SwapCount);
-                    else
+                    }
+                    else{
                         PositionSwapperNumText.text = "";
+                    }*/
                     RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
                     PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     PositionSwapper.SwapStart();
-                    //PositionSwapper.ResetCoolDown();
+                    PositionSwapper.ResetCoolDown();
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper); },
                 () =>
                 {
+                    if (!PlayerControl.LocalPlayer.CanMove) return false;
+                    if (RoleClass.PositionSwapper.SwapCount <= 0) return false;
+
+                    float swapcount = RoleClass.PositionSwapper.SwapCount;
+                    if (swapcount <= 0)
+                        sheriffNumShotsText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), swapcount);
+                    else
+                        sheriffNumShotsText.text = "";
                     return true && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { PositionSwapper.EndMeeting(); },
