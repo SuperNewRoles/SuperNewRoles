@@ -1215,19 +1215,19 @@ namespace SuperNewRoles.CustomOption
             TunaOption = new CustomRoleOption(552, true, CustomOptionType.Neutral, "TunaName", RoleClass.Tuna.color, 1);
             TunaPlayerCount = CustomOption.Create(553, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TunaOption);
             TunaStoppingTime = CustomOption.Create(554, true, CustomOptionType.Neutral, "TunaStoppingTimeSetting", 1f, 1f, 3f, 1f, TunaOption);
-            TunaIsUseVent = CustomOption.Create(554, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TunaOption);
+            TunaIsUseVent = CustomOption.Create(555, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TunaOption);
 
-            BlackCatOption = new CustomRoleOption(555, true, CustomOptionType.Crewmate, "BlackCatName", RoleClass.ImpostorRed, 1);
-            BlackCatPlayerCount = CustomOption.Create(556, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BlackCatOption);
-            BlackCatIsCheckImpostor = CustomOption.Create(557, true, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, BlackCatOption);
-            var blackcatoption = SelectTask.TaskSetting(558, 559, 560, BlackCatIsCheckImpostor, CustomOptionType.Crewmate, true);
+            BlackCatOption = new CustomRoleOption(556, true, CustomOptionType.Crewmate, "BlackCatName", RoleClass.ImpostorRed, 1);
+            BlackCatPlayerCount = CustomOption.Create(557, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BlackCatOption);
+            BlackCatIsCheckImpostor = CustomOption.Create(558, true, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, BlackCatOption);
+            var blackcatoption = SelectTask.TaskSetting(559, 560, 561, BlackCatIsCheckImpostor, CustomOptionType.Crewmate, true);
             BlackCatCommonTask = blackcatoption.Item1;
             BlackCatShortTask = blackcatoption.Item2;
             BlackCatLongTask = blackcatoption.Item3;
             //MadMateIsNotTask = madmateoption.Item4;
-            BlackCatCheckImpostorTask = CustomOption.Create(561, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, BlackCatIsCheckImpostor);
-            BlackCatIsUseVent = CustomOption.Create(562, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, BlackCatOption);
-            BlackCatIsImpostorLight = CustomOption.Create(563, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, BlackCatOption);
+            BlackCatCheckImpostorTask = CustomOption.Create(562, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, BlackCatIsCheckImpostor);
+            BlackCatIsUseVent = CustomOption.Create(563, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, BlackCatOption);
+            BlackCatIsImpostorLight = CustomOption.Create(564, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, BlackCatOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
