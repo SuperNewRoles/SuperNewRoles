@@ -580,7 +580,7 @@ namespace SuperNewRoles.Patches
         }
         public static void RpcCheckExile(this PlayerControl __instance)
         {
-            if (__instance.isRole(RoleId.Assassin))
+            if (__instance.isRole(RoleId.Assassin) && __instance.isAlive())
             {
                 new LateTask(() =>
                 {
@@ -610,7 +610,7 @@ namespace SuperNewRoles.Patches
         }
         public static void RpcMurderPlayerCheck(this PlayerControl __instance, PlayerControl target)
         {
-            if (target.isRole(RoleId.Assassin))
+            if (target.isRole(RoleId.Assassin) && target.isAlive())
             {
                 new LateTask(() =>
                 {
@@ -638,11 +638,6 @@ namespace SuperNewRoles.Patches
             }
             __instance.RpcMurderPlayer(target);
         }
-    }
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
-    public static class DiePatch
-    {
-        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target) { }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
     static class PlayerControlSetCoolDownPatch
