@@ -330,29 +330,30 @@ namespace SuperNewRoles.Patches
                                     }
                                 }
                             }
-                        }
-                    }
-                    else
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
-                        isKill = true;
 
-                        if (__instance.PlayerId != 0)
-                        {
-                            __instance.RpcMurderPlayer(target);
-                            target.Data.IsDead = true;
-                            isKill = false;
                         }
                         else
                         {
-                            new LateTask(() =>
+                            SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                            isKill = true;
+
+                            if (__instance.PlayerId != 0)
                             {
-                                if (__instance.isAlive() && target.isAlive())
-                                {
-                                    __instance.RpcMurderPlayer(target);
-                                }
+                                target.Data.IsDead = true;
+                                __instance.RpcMurderPlayer(target);
                                 isKill = false;
-                            }, (AmongUsClient.Instance.Ping / 1000f) * 1.1f);
+                            }
+                            else
+                            {
+                                new LateTask(() =>
+                                {
+                                    if (__instance.isAlive() && target.isAlive())
+                                    {
+                                        __instance.RpcMurderPlayer(target);
+                                    }
+                                    isKill = false;
+                                }, (AmongUsClient.Instance.Ping / 1000f) * 1.1f);
+                            }
                         }
                     }
                     return false;
