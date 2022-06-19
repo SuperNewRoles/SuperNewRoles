@@ -338,7 +338,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     break;
             }
-            SuperNewRolesPlugin.Logger.LogInfo("キルク:"+optdata.killCooldown);
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;
             if (player.AmOwner) PlayerControl.GameOptions = optdata;
