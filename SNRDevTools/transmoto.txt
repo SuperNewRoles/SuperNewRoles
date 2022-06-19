@@ -752,3 +752,6 @@ TunaTitle1
 TunaStoppingTimeSetting
 BlackCatName
 BlackCatTitle1
+MafiaName
+MafiaTitle1
+MafiaDescription
