@@ -1,13 +1,13 @@
-﻿using System.Linq;
-using HarmonyLib;
 using System.Collections.Generic;
+using System.Linq;
+using HarmonyLib;
 namespace SuperNewRoles.Roles
 {
     class RoleTemplate
     {
         public abstract class Role
         {
-            public static List<Role> allRoles = new List<Role>();
+            public static List<Role> allRoles = new();
             public PlayerControl player;
             public CustomRPC.RoleId roleId;
 
@@ -27,7 +27,7 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch]
         public abstract class RoleBase<T> : Role where T : RoleBase<T>, new()
         {
-            public static List<T> players = new List<T>();
+            public static List<T> players = new();
             public static CustomRPC.RoleId RoleType;
 
             public void Init(PlayerControl player)
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Roles
 
             public static T getRole(PlayerControl player = null)
             {
-                player = player ?? PlayerControl.LocalPlayer;
+                player ??= PlayerControl.LocalPlayer;
                 return players.FirstOrDefault(x => x.player == player);
             }
 
@@ -89,7 +89,7 @@ namespace SuperNewRoles.Roles
             {
                 if (!isRole(player))
                 {
-                    T role = new T();
+                    T role = new();
                     role.Init(player);
                 }
             }

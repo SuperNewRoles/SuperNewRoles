@@ -1,4 +1,4 @@
-﻿using Hazel;
+using Hazel;
 using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles
@@ -25,24 +25,17 @@ namespace SuperNewRoles.Roles
             {
                 return false;
             }
-            switch (blocktype)
+            return blocktype switch
             {
-                case (BlockTypes.StuntmanGuard):
-                    return true;
-                case (BlockTypes.ClergymanLightOut):
-                    return true;
-                case (BlockTypes.BaitReport):
-                    return true;
-                case (BlockTypes.RedRidingHoodRevive):
-                    return true;
-                case (BlockTypes.JackalSidekick):
-                    return true;
-                case (BlockTypes.NekomataExiled):
-                    return true;
-                case (BlockTypes.FoxGuard):
-                    return true;
-            }
-            return false;
+                BlockTypes.StuntmanGuard => true,
+                BlockTypes.ClergymanLightOut => true,
+                BlockTypes.BaitReport => true,
+                BlockTypes.RedRidingHoodRevive => true,
+                BlockTypes.JackalSidekick => true,
+                BlockTypes.NekomataExiled => true,
+                BlockTypes.FoxGuard => true,
+                _ => false,
+            };
         }
         public static bool IsBlockAndTryUse(BlockTypes blocktype, PlayerControl player = null)
         {

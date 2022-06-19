@@ -1,4 +1,4 @@
-﻿namespace SuperNewRoles
+namespace SuperNewRoles
 {
     public static class OutfitManager
     {

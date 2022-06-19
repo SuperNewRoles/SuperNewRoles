@@ -1,7 +1,7 @@
-﻿using SuperNewRoles.CustomOption;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.CustomOption;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.BattleRoyal
@@ -19,7 +19,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             IsViewAlivePlayer = CustomOption.CustomOption.Create(480, true, CustomOptionType.Generic, "BattleRoyalIsViewAlivePlayer", false, BattleRoyalMode);
             StartSeconds = CustomOption.CustomOption.Create(481, true, CustomOptionType.Generic, "BattleRoyalStartSeconds", 0f, 0f, 45f, 2.5f, BattleRoyalMode);
             IsTeamBattle = CustomOption.CustomOption.Create(482, true, CustomOptionType.Generic, "BattleRoyalIsTeamBattle", false, BattleRoyalMode);
-            TeamAmount = CustomOption.CustomOption.Create(483, true, CustomOptionType.Generic, "BattleRoyalTeamAmount", 2f,2f,8f,1f, IsTeamBattle);
+            TeamAmount = CustomOption.CustomOption.Create(483, true, CustomOptionType.Generic, "BattleRoyalTeamAmount", 2f, 2f, 8f, 1f, IsTeamBattle);
         }
     }
 }

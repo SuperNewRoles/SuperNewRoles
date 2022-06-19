@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +6,7 @@ namespace SuperNewRoles.Patch
 {
     public class DeadPlayer
     {
-        public static List<DeadPlayer> deadPlayers = new List<DeadPlayer>();
+        public static List<DeadPlayer> deadPlayers = new();
         public PlayerControl player;
         public DateTime timeOfDeath;
         public DeathReason deathReason;

@@ -1,9 +1,9 @@
-using HarmonyLib;
-using Newtonsoft.Json.Linq;
-using SuperNewRoles.Patch;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using HarmonyLib;
+using Newtonsoft.Json.Linq;
+using SuperNewRoles.Patch;
 using UnityEngine;
 
 namespace SuperNewRoles
@@ -11,7 +11,7 @@ namespace SuperNewRoles
     public class ModTranslation
     {
         public static int defaultLanguage = (int)SupportedLangs.English;
-        public static Dictionary<string, Dictionary<int, string>> stringData = new Dictionary<string, Dictionary<int, string>>();
+        public static Dictionary<string, Dictionary<int, string>> stringData = new();
 
         public ModTranslation()
         {

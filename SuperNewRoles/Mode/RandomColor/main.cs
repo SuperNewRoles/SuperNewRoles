@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
@@ -66,19 +66,12 @@ namespace SuperNewRoles.Mode.RandomColor
         {
             if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0)
             {
-                GameOverReason endReason;
-                switch (TempData.LastDeathReason)
+                var endReason = TempData.LastDeathReason switch
                 {
-                    case DeathReason.Exile:
-                        endReason = GameOverReason.ImpostorByVote;
-                        break;
-                    case DeathReason.Kill:
-                        endReason = GameOverReason.ImpostorByKill;
-                        break;
-                    default:
-                        endReason = GameOverReason.ImpostorByVote;
-                        break;
-                }
+                    DeathReason.Exile => GameOverReason.ImpostorByVote,
+                    DeathReason.Kill => GameOverReason.ImpostorByKill,
+                    _ => GameOverReason.ImpostorByVote,
+                };
                 CustomEndGame(__instance, endReason, false);
                 return true;
             }

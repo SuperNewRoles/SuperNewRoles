@@ -1,11 +1,11 @@
-﻿using BepInEx;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using BepInEx;
 using BepInEx.IL2CPP;
 using HarmonyLib;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System;
-using System.Reflection;
 using UnityEngine;
 
 namespace SuperNewRoles
@@ -47,7 +47,7 @@ namespace SuperNewRoles
 
             try
             {
-                DirectoryInfo d = new DirectoryInfo(Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins");
+                DirectoryInfo d = new(Path.GetDirectoryName(Application.dataPath) + @"\BepInEx\plugins");
                 string[] files = d.GetFiles("*.dll.old").Select(x => x.FullName).ToArray(); // Getting old versions
                 foreach (string f in files)
                     File.Delete(f);

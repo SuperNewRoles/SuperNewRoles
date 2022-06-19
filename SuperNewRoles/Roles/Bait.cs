@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Hazel;
 using SuperNewRoles.Patch;
 using UnityEngine;
@@ -17,7 +17,8 @@ namespace SuperNewRoles.Roles
 
                 if (deadPlayer.killerIfExisting != null && RoleClass.Bait.ReportTime <= 0f)
                 {
-                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.BaitReport)) {
+                    if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.BaitReport))
+                    {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ReportDeadBody, Hazel.SendOption.Reliable, -1);
                         writer.Write(deadPlayer.killerIfExisting.PlayerId);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);

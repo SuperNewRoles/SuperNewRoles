@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +11,8 @@ namespace SuperNewRoles
 {
     public class CachedPlayer
     {
-        public static readonly Dictionary<IntPtr, CachedPlayer> PlayerPtrs = new Dictionary<IntPtr, CachedPlayer>();
-        public static readonly List<CachedPlayer> AllPlayers = new List<CachedPlayer>();
+        public static readonly Dictionary<IntPtr, CachedPlayer> PlayerPtrs = new();
+        public static readonly List<CachedPlayer> AllPlayers = new();
         public static CachedPlayer LocalPlayer;
 
         public Transform transform;

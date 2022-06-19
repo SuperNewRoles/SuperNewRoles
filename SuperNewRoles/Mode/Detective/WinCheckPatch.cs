@@ -1,7 +1,7 @@
-﻿using SuperNewRoles.EndGame;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.EndGame;
 
 namespace SuperNewRoles.Mode.Detective
 {
@@ -9,7 +9,7 @@ namespace SuperNewRoles.Mode.Detective
     {
         public static bool CheckEndGame(ShipStatus __instance)
         {
-            PlayerStatistics statistics = new PlayerStatistics(__instance);
+            PlayerStatistics statistics = new(__instance);
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
@@ -76,19 +76,12 @@ namespace SuperNewRoles.Mode.Detective
         {
             if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamImpostorsAlive != 0)
             {
-                GameOverReason endReason;
-                switch (TempData.LastDeathReason)
+                var endReason = TempData.LastDeathReason switch
                 {
-                    case DeathReason.Exile:
-                        endReason = GameOverReason.ImpostorByVote;
-                        break;
-                    case DeathReason.Kill:
-                        endReason = GameOverReason.ImpostorByKill;
-                        break;
-                    default:
-                        endReason = GameOverReason.ImpostorByVote;
-                        break;
-                }
+                    DeathReason.Exile => GameOverReason.ImpostorByVote,
+                    DeathReason.Kill => GameOverReason.ImpostorByKill,
+                    _ => GameOverReason.ImpostorByVote,
+                };
                 CustomEndGame(__instance, endReason, false);
                 return true;
             }

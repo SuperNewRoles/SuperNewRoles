@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Sabotage
@@ -36,7 +36,7 @@ namespace SuperNewRoles.Sabotage
                 }
             }
         }
-        [HarmonyPatch(typeof(EmergencyMinigame),nameof(EmergencyMinigame.Update))]
+        [HarmonyPatch(typeof(EmergencyMinigame), nameof(EmergencyMinigame.Update))]
         class EmergencyUpdatePatch
         {
             public static void Postfix(EmergencyMinigame __instance)

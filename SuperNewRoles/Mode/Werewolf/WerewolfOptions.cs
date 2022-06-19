@@ -1,7 +1,7 @@
-﻿using SuperNewRoles.CustomOption;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.CustomOption;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.Werewolf

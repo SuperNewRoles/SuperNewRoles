@@ -1,10 +1,10 @@
-﻿
+
+using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
-using System.Collections.Generic;
 using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
@@ -191,7 +191,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             if (IsTeamBattle)
             {
                 if (!IsSeted) return false;
-                List<PlayerControl> players = new List<PlayerControl>();
+                List<PlayerControl> players = new();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.isAlive())
@@ -312,12 +312,12 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         float count = BROption.TeamAmount.getFloat();
                         var oneteamcount = Mathf.CeilToInt(CachedPlayer.AllPlayers.Count / count);
-                        List<PlayerControl> target = new List<PlayerControl>();
+                        List<PlayerControl> target = new();
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             target.Add(p);
                         }
-                        List<PlayerControl> TempTeam = new List<PlayerControl>();
+                        List<PlayerControl> TempTeam = new();
                         var counttemp = target.Count;
                         for (int i = 0; i < counttemp; i++)
                         {

@@ -1,4 +1,8 @@
-﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomRPC;
@@ -6,10 +10,6 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnhollowerBaseLib;
 using UnityEngine;
 using static MeetingHud;
@@ -69,7 +69,7 @@ namespace SuperNewRoles.Patch
                             GameData.PlayerInfo exiledPlayerdetective = CachedPlayer.LocalPlayer.Data;
                             bool tiedetective = false;
 
-                            List<MeetingHud.VoterState> statesListdetective = new List<MeetingHud.VoterState>();
+                            List<MeetingHud.VoterState> statesListdetective = new();
                             if (ps.VotedFor != ps.TargetPlayerId)
                             {
                                 statesListdetective.Add(new MeetingHud.VoterState()
@@ -148,7 +148,7 @@ namespace SuperNewRoles.Patch
                         GameData.PlayerInfo exiledPlayer1 = CachedPlayer.LocalPlayer.Data;
                         bool tie1 = false;
 
-                        List<MeetingHud.VoterState> statesList1 = new List<MeetingHud.VoterState>();
+                        List<MeetingHud.VoterState> statesList1 = new();
                         for (var i = 0; i < __instance.playerStates.Length; i++)
                         {
                             PlayerVoteArea ps = __instance.playerStates[i];
@@ -208,7 +208,7 @@ namespace SuperNewRoles.Patch
                     {
                         //GameData.PlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
                         Il2CppStructArray<MeetingHud.VoterState> array =
-                            new Il2CppStructArray<MeetingHud.VoterState>(
+                            new(
                                 __instance.playerStates.Length);
 
                         for (int i = 0; i < __instance.playerStates.Length; i++)
@@ -298,7 +298,7 @@ namespace SuperNewRoles.Patch
                 GameData.PlayerInfo exiledPlayer = CachedPlayer.LocalPlayer.Data;
                 bool tie = false;
 
-                List<MeetingHud.VoterState> statesList = new List<MeetingHud.VoterState>();
+                List<MeetingHud.VoterState> statesList = new();
                 for (var i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea ps = __instance.playerStates[i];
@@ -510,7 +510,7 @@ namespace SuperNewRoles.Patch
     {
         public static Dictionary<byte, int> CustomCalculateVotes(this MeetingHud __instance)
         {
-            Dictionary<byte, int> dic = new Dictionary<byte, int>();
+            Dictionary<byte, int> dic = new();
             //| 投票された人 | 投票された回数 |
             for (int i = 0; i < __instance.playerStates.Length; i++)
             {
@@ -519,12 +519,11 @@ namespace SuperNewRoles.Patch
                 if (AmongUsClient.Instance.GameMode == GameModes.FreePlay && ps.TargetPlayerId != CachedPlayer.LocalPlayer.PlayerId) continue;
                 if (ps != null && ModHelpers.playerById(ps.TargetPlayerId) != null && ps.VotedFor != 252 && ps.VotedFor != byte.MaxValue && ps.VotedFor != (byte)254 && ModHelpers.playerById(ps.TargetPlayerId).isAlive() && ModHelpers.playerById(ps.TargetPlayerId).IsPlayer())
                 {
-                    int num;
                     int VoteNum = 1;
                     if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Mayor)) VoteNum = RoleClass.Mayor.AddVote;
                     else if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MadMayor)) VoteNum = RoleClass.MadMayor.AddVote;
                     else if (ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.MayorFriends)) VoteNum = RoleClass.MayorFriends.AddVote;
-                    dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out num) ? VoteNum : num + VoteNum;
+                    dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out int num) ? VoteNum : num + VoteNum;
                 }
             }
             return dic;

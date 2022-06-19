@@ -1,4 +1,4 @@
-﻿using Hazel;
+using Hazel;
 using SuperNewRoles.Buttons;
 using UnityEngine;
 
@@ -27,10 +27,14 @@ namespace SuperNewRoles.Roles
                 return false;
             }
         }
-        public static void SelfBomb() {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers) {
-                if (p.isAlive() && p.PlayerId!= CachedPlayer.LocalPlayer.PlayerId) {
-                    if (GetIsBomb(PlayerControl.LocalPlayer, p)) {
+        public static void SelfBomb()
+        {
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            {
+                if (p.isAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                {
+                    if (GetIsBomb(PlayerControl.LocalPlayer, p))
+                    {
 
                         CustomRPC.RPCProcedure.ByBomKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
 
@@ -46,21 +50,21 @@ namespace SuperNewRoles.Roles
             Writer2.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer2);
         }
-        public static bool GetIsBomb(PlayerControl source,PlayerControl player)
+        public static bool GetIsBomb(PlayerControl source, PlayerControl player)
         {
             Vector3 position = source.transform.position;
-                Vector3 playerposition = player.transform.position;
+            Vector3 playerposition = player.transform.position;
             var r = CustomOption.CustomOptions.SelfBomberScope.getFloat();
-                if ((position.x + r >= playerposition.x) && (playerposition.x >= position.x - r))
+            if ((position.x + r >= playerposition.x) && (playerposition.x >= position.x - r))
+            {
+                if ((position.y + r >= playerposition.y) && (playerposition.y >= position.y - r))
                 {
-                    if ((position.y + r >= playerposition.y) && (playerposition.y >= position.y - r))
+                    if ((position.z + r >= playerposition.z) && (playerposition.z >= position.z - r))
                     {
-                        if ((position.z + r >= playerposition.z) && (playerposition.z >= position.z - r))
-                        {
                         return true;
-                        }
                     }
                 }
+            }
             return false;
         }
     }

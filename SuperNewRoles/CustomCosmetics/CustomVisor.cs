@@ -1,16 +1,16 @@
-﻿using System.Text.RegularExpressions;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
-using System;
 using HarmonyLib;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
-using UnhollowerBaseLib;
 using Hazel;
-using System.Linq;
-using System.Threading.Tasks;
+using UnhollowerBaseLib;
+using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics
 {
@@ -37,7 +37,7 @@ namespace SuperNewRoles.CustomCosmetics
                     try
                     {
                         var plate = ScriptableObject.CreateInstance<VisorData>();
-                        var FileName = file.Name.Substring(0, file.Name.Length - 4);
+                        var FileName = file.Name[0..^4];
                         var Data = DownLoadClassVisor.Visordetails.FirstOrDefault(data => data.resource.Replace(".png", "") == FileName);
                         plate.name = Data.name + "\nby " + Data.author;
                         plate.ProductId = "CustomVisors_" + Data.resource.Replace(".png", "").Replace(".jpg", "");

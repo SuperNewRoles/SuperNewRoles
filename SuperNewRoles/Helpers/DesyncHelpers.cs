@@ -1,8 +1,8 @@
-﻿using Hazel;
-using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Hazel;
+using InnerNet;
 
 namespace SuperNewRoles.Helpers
 {

@@ -1,10 +1,10 @@
-﻿using HarmonyLib;
-using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
+using HarmonyLib;
 using SuperNewRoles.MapOptions;
+using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles.Buttons
 {
@@ -128,7 +128,7 @@ namespace SuperNewRoles.Buttons
                     Vector3 position = __instance.transform.position;
                     num = Vector2.Distance(truePosition, position);
 
-                    canUse &= (num <= usableDistance && !PhysicsHelpers.AnythingBetween(truePosition, position, Constants.ShipOnlyMask, false));
+                    canUse &= num <= usableDistance && !PhysicsHelpers.AnythingBetween(truePosition, position, Constants.ShipOnlyMask, false);
                 }
                 __result = num;
                 return false;
@@ -181,10 +181,8 @@ namespace SuperNewRoles.Buttons
         {
             public static bool Prefix(Vent __instance)
             {
-                bool canUse;
-                bool couldUse;
-                __instance.CanUse(CachedPlayer.LocalPlayer.Data, out canUse, out couldUse);
-                bool canMoveInVents = !(RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer));
+                __instance.CanUse(CachedPlayer.LocalPlayer.Data, out bool canUse, out bool couldUse);
+                bool canMoveInVents = !RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer);
                 if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
                 bool isEnter = !PlayerControl.LocalPlayer.inVent;

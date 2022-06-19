@@ -1,5 +1,3 @@
-﻿using HarmonyLib;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +8,8 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using HarmonyLib;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics
@@ -30,10 +30,11 @@ namespace SuperNewRoles.CustomCosmetics
     {
         public static bool IsEndDownload = false;
         public static bool running = false;
-        public static List<string> fetchs = new List<string>();
-        public static List<CustomPlates.CustomPlate> platedetails = new List<CustomPlates.CustomPlate>();
+        public static List<string> fetchs = new();
+        public static List<CustomPlates.CustomPlate> platedetails = new();
         public static void Load()
         {
+            Patches.CredentialsPatch.LogoPatch.FetchBoosters();
             if (running)
                 return;
             IsEndDownload = false;
@@ -59,17 +60,15 @@ namespace SuperNewRoles.CustomCosmetics
             if (reshash == null || !File.Exists(respath))
                 return true;
 
-            using (var stream = File.OpenRead(respath))
-            {
-                var hash = System.BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
-                return !reshash.Equals(hash);
-            }
+            using var stream = File.OpenRead(respath);
+            var hash = System.BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+            return !reshash.Equals(hash);
         }
         public static async Task<HttpStatusCode> FetchHats(string repo)
         {
             fetchs.Add(repo);
             SuperNewRolesPlugin.Logger.LogInfo("[CustomPlate:Download] ダウンロード開始:" + repo);
-            HttpClient http = new HttpClient();
+            HttpClient http = new();
             http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true };
             var response = await http.GetAsync(new System.Uri($"{repo}/CustomNamePlates.json"), HttpCompletionOption.ResponseContentRead);
             try
@@ -84,16 +83,17 @@ namespace SuperNewRoles.CustomCosmetics
                 JToken jobj = JObject.Parse(json)["nameplates"];
                 if (!jobj.HasValues) return HttpStatusCode.ExpectationFailed;
 
-                List<CustomPlates.CustomPlate> platedatas = new List<CustomPlates.CustomPlate>();
+                List<CustomPlates.CustomPlate> platedatas = new();
 
                 for (JToken current = jobj.First; current != null; current = current.Next)
                 {
                     if (current.HasValues)
                     {
-                        CustomPlates.CustomPlate info = new CustomPlates.CustomPlate();
-
-                        info.name = current["name"]?.ToString();
-                        info.resource = sanitizeResourcePath(current["resource"]?.ToString());
+                        CustomPlates.CustomPlate info = new()
+                        {
+                            name = current["name"]?.ToString(),
+                            resource = sanitizeResourcePath(current["resource"]?.ToString())
+                        };
                         if (info.resource == null || info.name == null) // required
                             continue;
                         info.author = current["author"]?.ToString();
@@ -102,7 +102,7 @@ namespace SuperNewRoles.CustomCosmetics
                     }
                 }
 
-                List<string> markedfordownload = new List<string>();
+                List<string> markedfordownload = new();
 
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomPlatesChache\";
                 MD5 md5 = MD5.Create();
@@ -117,13 +117,9 @@ namespace SuperNewRoles.CustomCosmetics
 
                     var hatFileResponse = await http.GetAsync($"{repo}/NamePlates/{file}", HttpCompletionOption.ResponseContentRead);
                     if (hatFileResponse.StatusCode != HttpStatusCode.OK) continue;
-                    using (var responseStream = await hatFileResponse.Content.ReadAsStreamAsync())
-                    {
-                        using (var fileStream = File.Create($"{filePath}\\{file}"))
-                        {
-                            responseStream.CopyTo(fileStream);
-                        }
-                    }
+                    using var responseStream = await hatFileResponse.Content.ReadAsStreamAsync();
+                    using var fileStream = File.Create($"{filePath}\\{file}");
+                    responseStream.CopyTo(fileStream);
                 }
 
                 platedetails.AddRange(platedatas);

@@ -1,10 +1,10 @@
-﻿using SuperNewRoles.EndGame;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Patch;
-using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.EndGame;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Patch;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles
 {
@@ -28,12 +28,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         Writer.Write((byte)CustomGameOverReason.JesterWin);
                         Writer.EndRPC();
                         CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JesterWin);
-                        var winplayers = new List<PlayerControl>();
-                        winplayers.Add(exiled.Object);
+                        var winplayers = new List<PlayerControl>
+                        {
+                            exiled.Object
+                        };
                         //EndGameCheck.WinNeutral(winplayers);
                         Chat.WinCond = CustomGameOverReason.JesterWin;
-                        Chat.Winner = new List<PlayerControl>();
-                        Chat.Winner.Add(exiled.Object);
+                        Chat.Winner = new List<PlayerControl>
+                        {
+                            exiled.Object
+                        };
                     }
                     catch (Exception e)
                     {
@@ -57,12 +61,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         Writer.Write((byte)CustomGameOverReason.JesterWin);
                         Writer.EndRPC();
                         CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.ImpostorWin);
-                        var winplayers = new List<PlayerControl>();
-                        winplayers.Add(exiled.Object);
+                        var winplayers = new List<PlayerControl>
+                        {
+                            exiled.Object
+                        };
                         //EndGameCheck.WinNeutral(winplayers);
                         Chat.WinCond = CustomGameOverReason.ImpostorWin;
-                        Chat.Winner = new List<PlayerControl>();
-                        Chat.Winner.Add(exiled.Object);
+                        Chat.Winner = new List<PlayerControl>
+                        {
+                            exiled.Object
+                        };
                     }
                     catch (Exception e)
                     {

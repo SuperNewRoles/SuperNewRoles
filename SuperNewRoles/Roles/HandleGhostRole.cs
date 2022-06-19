@@ -1,9 +1,9 @@
-﻿using HarmonyLib;
+using System.Collections.Generic;
+using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SuperNewRoles.Roles
 {
@@ -37,7 +37,7 @@ namespace SuperNewRoles.Roles
             {
                 Team = TeamRoleType.Impostor;
             }
-            List<IntroDate> GhostRoles = new List<IntroDate>();
+            List<IntroDate> GhostRoles = new();
             foreach (IntroDate intro in IntroDate.GhostRoleDatas)
             {
                 if (intro.Team != Team) continue;
@@ -77,8 +77,8 @@ namespace SuperNewRoles.Roles
         //アサインする役職を決める
         public static RoleId Assing(List<IntroDate> datas)
         {
-            List<RoleId> Assigns = new List<RoleId>();
-            List<RoleId> Assignnos = new List<RoleId>();
+            List<RoleId> Assigns = new();
+            List<RoleId> Assignnos = new();
             ModeId mode = ModeHandler.GetMode();
             foreach (IntroDate data in datas)
             {
