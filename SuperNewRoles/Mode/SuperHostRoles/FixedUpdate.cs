@@ -71,7 +71,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void SetRoleName(PlayerControl player, bool commsActive, bool IsUnchecked = false)
         {
             if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
-            if (player.Data.Disconnected || player.IsBot() || !AmongUsClient.Instance.AmHost) return;
+            if (player.IsBot() || !AmongUsClient.Instance.AmHost) return;
 
             var caller = new System.Diagnostics.StackFrame(1, false);
             var callerMethod = caller.GetMethod();
@@ -108,7 +108,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.cs(RoleClass.Celebrity.color, CelebrityPlayer.getDefaultName()));
             }
 
-            if (Madmate.CheckImpostor(player) || MadMayor.CheckImpostor(player) || player.isRole(RoleId.Marine) || BlackCat.CheckImpostor(player))
+            if (Madmate.CheckImpostor(player) ||
+                MadMayor.CheckImpostor(player) ||
+                player.isRole(RoleId.Marine) ||
+                BlackCat.CheckImpostor(player))
             {
                 foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
                 {
