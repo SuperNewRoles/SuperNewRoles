@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -133,6 +133,7 @@ namespace SuperNewRoles.Roles
             GhostMechanic.ClearAndReload();
             EvilHacker.ClearAndReload();
             HauntedWolf.ClearAndReload();
+            PositionSwapper.ClearAndReload();
             Tuna.ClearAndReload();
             Mafia.ClearAndReload();
             BlackCat.ClearAndReload();
@@ -2164,6 +2165,28 @@ namespace SuperNewRoles.Roles
                 HauntedWolfPlayer = new();
             }
         }
+        public static class PositionSwapper
+        {
+            public static List<PlayerControl> PositionSwapperPlayer;
+            public static Color32 color = ImpostorRed;
+            public static int SwapCount;
+            public static float CoolTime;
+            public static DateTime ButtonTimer;
+            public static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.PositionSwapperButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                PositionSwapperPlayer = new List<PlayerControl>();
+                CoolTime = CustomOptions.PositionSwapperCoolTime.getFloat();
+                SwapCount = (int)CustomOptions.PositionSwapperSwapCount.getFloat();
+            }
+        }
+
         public static class Tuna
         {
             public static List<PlayerControl> TunaPlayer;
@@ -2172,6 +2195,7 @@ namespace SuperNewRoles.Roles
             public static float Timer;
             public static float StoppingTime;
             public static bool IsUseVent;
+            public static Dictionary<byte, float> Timers;
             public static void ClearAndReload()
             {
                 TunaPlayer = new();
@@ -2182,8 +2206,8 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.TunaIsUseVent.getBool();
                 if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
                 {
-                    Mode.SuperHostRoles.Roles.Tuna.Timer = new Dictionary<byte, float>();
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers) Mode.SuperHostRoles.Roles.Tuna.Timer[p.PlayerId] = StoppingTime;
+                    Timers = new();
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers) Timers[p.PlayerId] = StoppingTime;
                 }
             }
         }
