@@ -1568,7 +1568,7 @@ namespace SuperNewRoles.Buttons
 
                     float swapcount = RoleClass.PositionSwapper.SwapCount;
                     if (swapcount >= 0)
-                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), swapcount);
+                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), swapcount);
                     else
                         PositionSwapperNumText.text = "";
                     return true && PlayerControl.LocalPlayer.CanMove;

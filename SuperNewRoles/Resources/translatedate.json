@@ -3008,15 +3008,15 @@
         "0" : "Swapping limits" ,
         "11" : "\u30b9\u30ef\u30c3\u30d7\u5236\u9650\u56de\u6570"
         } ,
- "SettingPositionSwapperCoolTimeName" : {
+ "SettingPositionSwapperSwapCoolTimeName" : {
         "0" : "Swapping cooltime" ,
         "11" : "\u30b9\u30ef\u30c3\u30d7\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
- "PositionSwapperNumTextname" : {
+ "PositionSwapperNumTextName" : {
         "0" : "Limits:{0}" ,
         "11" : "\u6b8b\u308a{0}\u56de"
         } ,
- "PositionSwapperbuttonName" : {
+ "PositionSwapperButtonName" : {
         "0" : "PositionSwap" ,
         "11" : "\u30dd\u30b8\u30b7\u30e7\u30f3\u30b9\u30ef\u30c3\u30d7"
         } ,

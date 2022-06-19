@@ -751,9 +751,9 @@ WereWolfMediumAbilityText,{0}'s Role is {1}!,{0}の役職は{1}です!
 PositionSwapperName,Position Swapper,ポジションスワッパー
 PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ
 SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数
-SettingPositionSwapperCoolTimeName,Swapping cooltime,スワップクールタイム
-PositionSwapperNumTextname,Limits:{0},残り{0}回
-PositionSwapperbuttonName,PositionSwap,ポジションスワップ
+SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクールタイム
+PositionSwapperNumTextName,Limits:{0},残り{0}回
+PositionSwapperButtonName,PositionSwap,ポジションスワップ
 TunaName,Tuna,マグロ
 TunaTitle1,Always move!,常に動け！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間

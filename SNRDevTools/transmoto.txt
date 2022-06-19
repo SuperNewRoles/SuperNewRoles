@@ -750,9 +750,9 @@ WereWolfMediumAbilityText
 PositionSwapperName
 PositionSwapperTitle1
 SettingPositionSwapperSwapCountName
-SettingPositionSwapperCoolTimeName
-PositionSwapperNumTextname
-PositionSwapperbuttonName
+SettingPositionSwapperSwapCoolTimeName
+PositionSwapperNumTextName
+PositionSwapperButtonName
 TunaName
 TunaTitle1
 TunaStoppingTimeSetting
