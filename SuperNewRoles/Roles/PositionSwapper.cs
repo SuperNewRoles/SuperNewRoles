@@ -31,9 +31,13 @@ namespace SuperNewRoles.Roles
             var PushSwapper = PlayerControl.LocalPlayer;
             CustomRPC.RPCProcedure.PositionSwapperTP(RandomPlayer.PlayerId, PushSwapper.PlayerId);
 
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.PositionSwapperTP, Hazel.SendOption.Reliable, -1);
+            Writer.Write(RandomPlayer.PlayerId);
+            Writer.Write(PushSwapper.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(Writer);
             //SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:"+RandomPlayer.PlayerId+"\n生存:"+!RandomPlayer.isDead());
         }
-        public static Vector3 GetSwapPosition(byte SwapPlayerID, byte SwapperID){
+        /*public static Vector3 GetSwapPosition(byte SwapPlayerID, byte SwapperID){
             var SwapPlayer = ModHelpers.playerById(SwapPlayerID);
             var SwapperPlayer = ModHelpers.playerById(SwapperID);
             if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.PositionSwapper)){
@@ -42,6 +46,6 @@ namespace SuperNewRoles.Roles
             else{
                 return SwapperPlayer.transform.position;
             }
-        }
+        }*/
     }
 }

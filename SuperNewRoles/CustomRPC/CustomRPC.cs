@@ -890,18 +890,16 @@ namespace SuperNewRoles.CustomRPC
             var SwapperPlayer = ModHelpers.playerById(SwapperID);
             var SwapPosition = SwapPlayer.transform.position;
             var SwapperPosition = SwapperPlayer.transform.position;
-            if (PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)){
+            if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)*/){
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
                 //SwapPlayer.transform.position = SwapperPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
                 return;
             }
-            CachedPlayer.LocalPlayer.transform.position = SwapperPosition;
+            else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId){
+                CachedPlayer.LocalPlayer.transform.position = SwapperPosition;
             SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");
-
-            //SwapperPlayer.transform.position = SwapperPosition;
-            //CachedPlayer.LocalPlayer.transform.position = SuperNewRoles.Roles.PositionSwapper.GetSwapPosition(SwapPlayerID, SwapperID);
-
+            }
             /*//Text
             var rand = new System.Random();
             if (rand.Next(1, 20) == 1){
