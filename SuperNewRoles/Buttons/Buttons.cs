@@ -67,6 +67,7 @@ namespace SuperNewRoles.Buttons
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
+        public static TMPro.TMP_Text PositionSwapperNumText;
 
         public static void setCustomButtonCooldowns()
         {
@@ -1548,29 +1549,35 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     if (!PlayerControl.LocalPlayer.CanMove) return;
-                    if (RoleClass.PositionSwapper.SwapCount >= CustomOptions.PositionSwapperSwapCount.getFloat()) return;
-                    RoleClass.PositionSwapper.SwapCount++;
+                    if (RoleClass.PositionSwapper.SwapCount <= 1) return;
+
+                    RoleClass.PositionSwapper.SwapCount--;
+                    if (RoleClass.PositionSwapper.SwapCount > 0)
+                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), RoleClass.PositionSwapper.SwapCount);
+                    else
+                        PositionSwapperNumText.text = "";
                     RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
                     PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     PositionSwapper.SwapStart();
-                    PositionSwapper.ResetCoolDown();
+                    //PositionSwapper.ResetCoolDown();
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper); },
                 () =>
                 {
-                    return PlayerControl.LocalPlayer.CanMove;
+                    return true && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { PositionSwapper.EndMeeting(); },
                 RoleClass.PositionSwapper.getButtonSprite(),
-                new Vector3(-1.8f-0.06f, 0),
+                new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
             );
-            PositionSwapperButton.buttonText = ModTranslation.getString("PositionSwapperButtonName");
-            PositionSwapperButton.showButtonText = true;
-
+            {
+                PositionSwapperButton.buttonText = ModTranslation.getString("PositionSwapperButtonName");
+                PositionSwapperButton.showButtonText = true;
+            };
             setCustomButtonCooldowns();
         }
     }
