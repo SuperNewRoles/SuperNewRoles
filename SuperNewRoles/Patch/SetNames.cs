@@ -328,21 +328,7 @@ namespace SuperNewRoles.Patch
                             SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                         }
                     }
-                }
-                                if (BlackCat.CheckImpostor(PlayerControl.LocalPlayer) ||
-                    LocalRole == RoleId.MadKiller ||
-                    LocalRole == RoleId.Marine ||
-                    (RoleClass.Demon.IsCheckImpostor && LocalRole == RoleId.Demon)
-                    )
-                {
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                    {
-                        if (p.isImpostor())
-                        {
-                            SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
-                        }
-                    }
-                }
+                }                
                 if (PlayerControl.LocalPlayer.isImpostor())
                 {
                     foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
