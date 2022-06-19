@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomRPC;
@@ -245,7 +245,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
             var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(player.getRole(), player);
             string TaskText = "";
-            if (!player.isImpostor())
+            if (!player.isClearTask())
             {
                 try
                 {
@@ -309,7 +309,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         if (ChangePlayer != null)
                         {
                             ChangePlayer.RpcSetNamePrivate(ChangePlayerData.Value, player);
-                            SuperNewRolesPlugin.Logger.LogInfo(ChangePlayerData.Value);
                         }
                     }
                 }
