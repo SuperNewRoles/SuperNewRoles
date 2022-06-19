@@ -425,7 +425,6 @@ namespace SuperNewRoles.Patch
                             {
                                 if (p.isDead())
                                 {
-                                    p.getDefaultName();
                                     exiledPlayer = p.Data;
                                     foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                                     {
