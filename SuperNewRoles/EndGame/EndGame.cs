@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -543,6 +543,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.MadCleaner.MadCleanerPlayer);
             notWinners.AddRange(RoleClass.MayorFriends.MayorFriendsPlayer);
             notWinners.AddRange(RoleClass.Tuna.TunaPlayer);
+            notWinners.AddRange(RoleClass.BlackCat.BlackCatPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -758,6 +759,11 @@ namespace SuperNewRoles.EndGame
                     WinningPlayerData wpd = new(p.Data);
                     TempData.winners.Add(wpd);
                 }
+                foreach (PlayerControl p in RoleClass.BlackCat.BlackCatPlayer)
+                {
+                    WinningPlayerData wpd = new(p.Data);
+                    TempData.winners.Add(wpd);
+                }
             }
 
             if (ModeHandler.isMode(ModeId.BattleRoyal))
@@ -836,8 +842,8 @@ namespace SuperNewRoles.EndGame
                 notWinners.AddRange(players);
             }
 
-            notWinners = new List<PlayerControl>();
-            winnersToRemove = new List<WinningPlayerData>();
+            notWinners = new();
+            winnersToRemove = new();
             foreach (WinningPlayerData winner in TempData.winners)
             {
                 if (notWinners.Any(x => x.Data.PlayerName == winner.PlayerName)) winnersToRemove.Add(winner);
@@ -847,7 +853,7 @@ namespace SuperNewRoles.EndGame
             if (QuarreledWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                var winplays = new List<PlayerControl>() { WinnerPlayer };
+                List<PlayerControl> winplays = new(){ WinnerPlayer };
                 winplays.Add(WinnerPlayer.GetOneSideQuarreled());
                 foreach (PlayerControl p in winplays)
                 {

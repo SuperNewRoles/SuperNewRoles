@@ -32,7 +32,7 @@ namespace SuperNewRoles.Roles
 
         public static List<PlayerControl> GetDouseData(this PlayerControl player)
         {
-            return RoleClass.Arsonist.DouseDatas.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseDatas[player.PlayerId] : new List<PlayerControl>();
+            return RoleClass.Arsonist.DouseDatas.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseDatas[player.PlayerId] : new();
         }
 
         public static List<PlayerControl> GetUntarget()
@@ -41,7 +41,7 @@ namespace SuperNewRoles.Roles
             {
                 return RoleClass.Arsonist.DouseDatas[CachedPlayer.LocalPlayer.PlayerId];
             }
-            return new List<PlayerControl>();
+            return new();
         }
 
         public static bool IsDoused(this PlayerControl source, PlayerControl target)
@@ -65,7 +65,7 @@ namespace SuperNewRoles.Roles
             {
                 return RoleClass.Arsonist.DouseDatas[player.PlayerId];
             }
-            return new List<PlayerControl>();
+            return new();
         }
         public static bool IsViewIcon(PlayerControl player)
         {

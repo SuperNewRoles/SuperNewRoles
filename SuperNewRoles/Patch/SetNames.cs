@@ -112,7 +112,7 @@ namespace SuperNewRoles.Patch
             string TaskText = "";
             try
             {
-                if (!p.isImpostor())
+                if (!p.isClearTask())
                 {
                     if (commsActive)
                     {
@@ -328,7 +328,7 @@ namespace SuperNewRoles.Patch
                             SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                         }
                     }
-                }
+                }                
                 if (PlayerControl.LocalPlayer.isImpostor())
                 {
                     foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)

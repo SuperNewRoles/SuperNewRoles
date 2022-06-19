@@ -12,7 +12,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
         {
             if (AmongUsClient.Instance.AmHost)
             {
-                Impostors = new List<int>();
+                Impostors = new();
             }
         }
     }

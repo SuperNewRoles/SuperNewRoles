@@ -77,6 +77,7 @@ namespace SuperNewRoles.Intro
             System.Random r1 = new();
             return ModTranslation.getString(name + "Title" + r1.Next(1, num + 1).ToString());
         }
+
         public static IntroDate CrewmateIntro = new("CrewMate", Color.white, 1, CustomRPC.RoleId.DefaultRole);
         public static IntroDate ImpostorIntro = new("Impostor", RoleClass.ImpostorRed, 1, CustomRPC.RoleId.DefaultRole, TeamRoleType.Impostor);
         public static IntroDate SoothSayerIntro = new("SoothSayer", RoleClass.SoothSayer.color, 1, CustomRPC.RoleId.SoothSayer);
@@ -176,8 +177,11 @@ namespace SuperNewRoles.Intro
         public static IntroDate VentMakerIntro = new("VentMaker", RoleClass.VentMaker.color, 1, CustomRPC.RoleId.VentMaker, TeamRoleType.Impostor);
         public static IntroDate GhostMechanicIntro = new("GhostMechanic", RoleClass.GhostMechanic.color, 1, CustomRPC.RoleId.GhostMechanic, TeamRoleType.Crewmate, true);
         public static IntroDate EvilHackerIntro = new("EvilHacker", RoleClass.EvilHacker.color, 1, CustomRPC.RoleId.EvilHacker, TeamRoleType.Impostor);
-        public static IntroDate HauntedWolfIntro = new("HauntedWolf", RoleClass.HauntedWolf.color, 1, CustomRPC.RoleId.HauntedWolf);
+        public static IntroDate HauntedWolfIntro = new("HauntedWolf", RoleClass.HauntedWolf.color, 1, CustomRPC.RoleId.HauntedWolf, TeamRoleType.Crewmate);
+        public static IntroDate PositionSwapperIntro = new("PositionSwapper", RoleClass.PositionSwapper.color, 1, CustomRPC.RoleId.PositionSwapper, TeamRoleType.Impostor);
         public static IntroDate TunaIntro = new("Tuna", RoleClass.Tuna.color, 1, CustomRPC.RoleId.Tuna, TeamRoleType.Neutral);
+        public static IntroDate MafiaIntro = new("Mafia", RoleClass.Mafia.color, 1, CustomRPC.RoleId.Mafia, TeamRoleType.Impostor);
+        public static IntroDate BlackCatIntro = new("BlackCat", RoleClass.BlackCat.color, 1, CustomRPC.RoleId.BlackCat);
         //イントロオブジェ
     }
 }

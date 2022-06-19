@@ -330,29 +330,30 @@ namespace SuperNewRoles.Patches
                                     }
                                 }
                             }
-                        }
-                    }
-                    else
-                    {
-                        SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
-                        isKill = true;
 
-                        if (__instance.PlayerId != 0)
-                        {
-                            __instance.RpcMurderPlayer(target);
-                            target.Data.IsDead = true;
-                            isKill = false;
                         }
                         else
                         {
-                            new LateTask(() =>
+                            SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                            isKill = true;
+
+                            if (__instance.PlayerId != 0)
                             {
-                                if (__instance.isAlive() && target.isAlive())
-                                {
-                                    __instance.RpcMurderPlayer(target);
-                                }
+                                target.Data.IsDead = true;
+                                __instance.RpcMurderPlayer(target);
                                 isKill = false;
-                            }, (AmongUsClient.Instance.Ping / 1000f) * 1.1f);
+                            }
+                            else
+                            {
+                                new LateTask(() =>
+                                {
+                                    if (__instance.isAlive() && target.isAlive())
+                                    {
+                                        __instance.RpcMurderPlayer(target);
+                                    }
+                                    isKill = false;
+                                }, (AmongUsClient.Instance.Ping / 1000f) * 1.1f);
+                            }
                         }
                     }
                     return false;
@@ -496,6 +497,9 @@ namespace SuperNewRoles.Patches
                                 SuperNewRolesPlugin.Logger.LogError(e);
                             }
                             return false;
+                        case RoleId.Mafia:
+                            if (!Mafia.IsKillFlag()) return false;
+                            break;
                     }
                     break;
                 case ModeId.Detective:
@@ -579,7 +583,7 @@ namespace SuperNewRoles.Patches
         }
         public static void RpcCheckExile(this PlayerControl __instance)
         {
-            if (__instance.isRole(RoleId.Assassin))
+            if (__instance.isRole(RoleId.Assassin) && __instance.isAlive())
             {
                 new LateTask(() =>
                 {
@@ -609,7 +613,7 @@ namespace SuperNewRoles.Patches
         }
         public static void RpcMurderPlayerCheck(this PlayerControl __instance, PlayerControl target)
         {
-            if (target.isRole(RoleId.Assassin))
+            if (target.isRole(RoleId.Assassin) && target.isAlive())
             {
                 new LateTask(() =>
                 {
@@ -637,11 +641,6 @@ namespace SuperNewRoles.Patches
             }
             __instance.RpcMurderPlayer(target);
         }
-    }
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
-    public static class DiePatch
-    {
-        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target) { }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
     static class PlayerControlSetCoolDownPatch
@@ -852,7 +851,7 @@ namespace SuperNewRoles.Patches
 
             if (untargetablePlayers == null)
             {
-                untargetablePlayers = new List<PlayerControl>();
+                untargetablePlayers = new();
             }
 
             Vector2 truePosition = targetingPlayer.GetTruePosition();

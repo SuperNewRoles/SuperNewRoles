@@ -747,6 +747,17 @@ Search out the role of the dead and win!
 This is Meeting Time.
 This is Use to Ability Time.
 {0}'s Role is {1}!
+Position Swapper
+Let's Swap crewmates.
+Swapping limits
+Swapping cooltime
+Limits:{0}
+PositionSwap
 Tuna
 Always move!
 Stopping Time
+Black Cat
+Give your life for your master.
+Mafia
+Let's avenge our fellow impostor
+When all the imposters except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.

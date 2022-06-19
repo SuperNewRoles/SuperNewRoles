@@ -710,16 +710,16 @@ WelcomeMessage5,https://wikiwiki.jp/amas-snr(Japanese),https://wikiwiki.jp/amas-
 WelcomeMessage6,You will get the information if you run the command.,コマンドを実行して、情報を取得できます。
 WelcomeMessage7,Send this command if you want to see a list of commands.,コマンド一覧を表示するにはこのコマンドを送信してください。
 WelcomeMessage8,[/commands] or [/cmd],/commands 又は /cmd
-CommnadsMessage0,Commands in the command list:\n() are also possible.\nIt is not case sensitive.,コマンド一覧:\n()の中にあるコマンドでも可能です。\n大文字と小文字は区別されません。
-CommnadsMessage1,/commands (/cmd) : \nDisplays a list of commands. (This command.),/commands (/cmd) : \nコマンド一覧を表示します。(このコマンドです)
-CommnadsMessage2,/version (/v) : \nShow SuperNewRoles Version.,/version (/v) ： \nバージョンを表示します。
-CommnadsMessage3,/discord (/dc) : \nShow the link to the Official Discord.,/discord (/dc) ： \n公式Discordへのリンクを表示します。
-CommnadsMessage4,/twitter (/tw) : \nShow the link to the Official Twitter.,/twitter (/tw) ： \n公式Twitterと開発状況Twitterへのリンクを表示します。
-CommnadsMessage5,/GetInRoles (/gr) ： Displays all activate roles.(Send to all player when you're hosts.),/GetInRoles (/gr) ： \n入っているすべての役職を表示します。(ホストの場合は全員に送信します)
-CommnadsMessage6,/GetInRoles myplayer ([/gr mp] or [/gr myp]) : \nDisplays all activate roles only you.(Send only to yourself even if you are the host.),/GetInRoles myplayer (/gr mp もしくは /gr myp) ： \n入っているすべての役職を表示します。(ホストでも自分のみに送信します)
-CommnadsMessage7,/AllRoles (/ar) : \nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\nTransmitted at 1.5 second intervals.,/AllRoles (/ar) ： \n入っている全役職の説明と設定が確認できます。\n(ホストが実行すると全員に送信します)\n1.5秒間隔で送信されます。
-CommnadsMessage8,/AllRoles [transmission interval] (/ar [transmission interval]): \nAdditional transmission intervals can be specified for /AllRoles.,/AllRoles [送信間隔] (/ar [送信間隔]) ： \n/AllRolesに+で送信間隔を指定できます。
-CommnadsMessage9,/AllRoles [send interval] myplayer (/ar [send interval] (mp or myp)): \nAdd to /AllRoles [send interval] and send only to yourself even if you are the host.,/AllRoles [送信間隔] myplayer (/ar [送信間隔] (mp もしくは myp)) ： \n/AllRoles [送信間隔]に+で、ホストでも自分のみに送信されます。
+CommandsMessage0,Commands in the command list:\n() are also possible.\nIt is not case sensitive.,コマンド一覧:\n()の中にあるコマンドでも可能です。\n大文字と小文字は区別されません。
+CommandsMessage1,/commands (/cmd) : \nDisplays a list of commands. (This command.),/commands (/cmd) : \nコマンド一覧を表示します。(このコマンドです)
+CommandsMessage2,/version (/v) : \nShow SuperNewRoles Version.,/version (/v) ： \nバージョンを表示します。
+CommandsMessage3,/discord (/dc) : \nShow the link to the Official Discord.,/discord (/dc) ： \n公式Discordへのリンクを表示します。
+CommandsMessage4,/twitter (/tw) : \nShow the link to the Official Twitter.,/twitter (/tw) ： \n公式Twitterと開発状況Twitterへのリンクを表示します。
+CommandsMessage5,/GetInRoles (/gr) ： Displays all activate roles.(Send to all player when you're hosts.),/GetInRoles (/gr) ： \n入っているすべての役職を表示します。(ホストの場合は全員に送信します)
+CommandsMessage6,/GetInRoles myplayer ([/gr mp] or [/gr myp]) : \nDisplays all activate roles only you.(Send only to yourself even if you are the host.),/GetInRoles myplayer (/gr mp もしくは /gr myp) ： \n入っているすべての役職を表示します。(ホストでも自分のみに送信します)
+CommandsMessage7,/AllRoles (/ar) : \nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\nTransmitted at 1.5 second intervals.,/AllRoles (/ar) ： \n入っている全役職の説明と設定が確認できます。\n(ホストが実行すると全員に送信します)\n1.5秒間隔で送信されます。
+CommandsMessage8,/AllRoles [transmission interval] (/ar [transmission interval]): \nAdditional transmission intervals can be specified for /AllRoles.,/AllRoles [送信間隔] (/ar [送信間隔]) ： \n/AllRolesに+で送信間隔を指定できます。
+CommandsMessage9,/AllRoles [send interval] myplayer (/ar [send interval] (mp or myp)): \nAdd to /AllRoles [send interval] and send only to yourself even if you are the host.,/AllRoles [送信間隔] myplayer (/ar [送信間隔] (mp もしくは myp)) ： \n/AllRoles [送信間隔]に+で、ホストでも自分のみに送信されます。
 SNROfficialDiscordMessage,Come here to visit the official SuperNewRoles Discord server.,SuperNewRoles公式Discordサーバーはこちらから:
 SNROfficialTwitterMessage,Come here to visit the official SuperNewRoles Twitter Accounts.,SuperNewRoles公式Twitterはこちらから
 TwitterOfficialLink,Official Account : https://twitter.com/SuperNewRoles,公式アカウント：https://twitter.com/SuperNewRoles
@@ -748,6 +748,17 @@ WereWolfMediumText,Search out the role of the dead and win!,死んだ人の役�
 WereWolfMeetingNormal,This is Meeting Time.,今回は会議タイムです。
 WereWolfMeetingAbility,This is Use to Ability Time.,今回は能力使用タイムです。
 WereWolfMediumAbilityText,{0}'s Role is {1}!,{0}の役職は{1}です!
+PositionSwapperName,Position Swapper,ポジションスワッパー
+PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ
+SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数
+SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクールタイム
+PositionSwapperNumTextName,Limits:{0},残り{0}回
+PositionSwapperButtonName,PositionSwap,スワップ
 TunaName,Tuna,マグロ
 TunaTitle1,Always move!,常に動け！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間
+BlackCatName,Black Cat,黒猫
+BlackCatTitle1,Give your life for your master.,主人のために命を捧げよ
+MafiaName,Mafia,マフィア
+MafiaTitle1,Let's avenge our fellow impostor,仲間の敵討ちをしよう
+MafiaDescription,When all the imposters except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.,マフィア以外のインポスターが全員死亡するとキルできるようになります。\nキルが出来ない間もキルクールタイムは進みます。

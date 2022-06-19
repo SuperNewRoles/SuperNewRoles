@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.CustomOption;
@@ -90,7 +90,7 @@ namespace SuperNewRoles
         }
         public static void SetQuarreled(PlayerControl player1, PlayerControl player2)
         {
-            var sets = new List<PlayerControl>() { player1, player2 };
+            List<PlayerControl> sets = new () { player1, player2 };
             RoleClass.Quarreled.QuarreledPlayer.Add(sets);
             ChacheManager.ResetQuarreledChache();
         }
@@ -103,7 +103,7 @@ namespace SuperNewRoles
         }
         public static void SetLovers(PlayerControl player1, PlayerControl player2)
         {
-            var sets = new List<PlayerControl>() { player1, player2 };
+            List<PlayerControl> sets = new() { player1, player2 };
             RoleClass.Lovers.LoversPlayer.Add(sets);
             if (player1.PlayerId == CachedPlayer.LocalPlayer.PlayerId || player2.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
@@ -241,9 +241,27 @@ namespace SuperNewRoles
                 case RoleId.Fox:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
                     break;
-                //ベント設定可視化
+                case RoleId.BlackCat:
+                    returntext = CustomOptions.BlackCatIsUseVent.name + ":" + CustomOptions.BlackCatIsUseVent.getString() + "\n";
+                    returntext += CustomOptions.BlackCatIsCheckImpostor.name + ":" + CustomOptions.BlackCatIsCheckImpostor.getString() + "\n";
+                    break;
+                    //ベント設定可視化
             }
             return returntext;
+        }
+        public static bool IsJackalTeam(this PlayerControl player)
+        {
+            return player.IsJackalTeamJackal() || player.IsJackalTeamSidekick();
+        }
+        public static bool IsJackalTeamJackal(this PlayerControl player)
+        {
+            RoleId role = player.getRole();
+            return role == RoleId.Jackal || role == RoleId.JackalSeer || role == RoleId.TeleportingJackal;
+        }
+        public static bool IsJackalTeamSidekick(this PlayerControl player)
+        {
+            RoleId role = player.getRole();
+            return role == RoleId.Sidekick || role == RoleId.SidekickSeer;
         }
 
         public static void ShowFlash(Color color, float duration = 1f)
@@ -569,8 +587,17 @@ namespace SuperNewRoles
                 case CustomRPC.RoleId.HauntedWolf:
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
                     break;
+                case CustomRPC.RoleId.PositionSwapper:
+                    Roles.RoleClass.PositionSwapper.PositionSwapperPlayer.Add(player);
+                    break;
                 case CustomRPC.RoleId.Tuna:
                     Roles.RoleClass.Tuna.TunaPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Mafia):
+                    Roles.RoleClass.Mafia.MafiaPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.BlackCat):
+                    Roles.RoleClass.BlackCat.BlackCatPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -588,7 +615,6 @@ namespace SuperNewRoles
             }
             if (flag)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[SetRole]Refresh(^u^)v");
                 PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
@@ -898,12 +924,19 @@ namespace SuperNewRoles
                 case CustomRPC.RoleId.HauntedWolf:
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
                     break;
+                case (CustomRPC.RoleId.PositionSwapper):
+                    Roles.RoleClass.PositionSwapper.PositionSwapperPlayer.RemoveAll(ClearRemove);
+                    break;
                 case CustomRPC.RoleId.Tuna:
                     Roles.RoleClass.Tuna.TunaPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
-
-                    //ロールリモベ
+                case (CustomRPC.RoleId.Mafia):
+                    Roles.RoleClass.Mafia.MafiaPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.BlackCat):
+                    Roles.RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1013,6 +1046,9 @@ namespace SuperNewRoles
                 case RoleId.Tuna:
                     IsTaskClear = true;
                     break;
+                case RoleId.BlackCat:
+                    IsTaskClear = true;
+                    break;
                     //タスククリアか
             }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
@@ -1075,10 +1111,6 @@ namespace SuperNewRoles
                     return RoleClass.JackalSeer.IsUseVent;
                 case RoleId.MadCleaner:
                     return RoleClass.MadCleaner.IsUseVent;
-                /*
-                case RoleId.Scavenger:
-                    return RoleClass.Scavenger.IsUseVent;
-                */
                 case RoleId.Arsonist:
                     return RoleClass.Arsonist.IsUseVent;
                 case RoleId.Vulture:
@@ -1087,11 +1119,10 @@ namespace SuperNewRoles
                     return RoleClass.MayorFriends.IsUseVent;
                 case RoleId.Tuna:
                     return RoleClass.Tuna.IsUseVent;
+                                case RoleId.BlackCat:
+                    if (CachedPlayer.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return false;
+                    return RoleClass.BlackCat.IsUseVent;
                     //ベントが使える
-                    /*
-                    case RoleId.Scavenger:
-                        return RoleClass.Scavenger.IsUseVent;
-                    */
             }
             return false;
         }
@@ -1155,6 +1186,7 @@ namespace SuperNewRoles
                 RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsImpostorLight,
                 RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                 RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
+                RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
                 _ => false,
             };
         }
@@ -1253,6 +1285,14 @@ namespace SuperNewRoles
             {
                 return false;
             }
+        }
+        public static bool isRole(this PlayerControl p, params RoleId[] roles)
+        {
+            foreach (RoleId role in roles)
+            {
+                if (p.isRole(role)) return true;
+            }
+            return false;
         }
         public static float getCoolTime(PlayerControl __instance)
         {
@@ -1796,9 +1836,21 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.HauntedWolf;
                 }
+                else if (Roles.RoleClass.PositionSwapper.PositionSwapperPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.PositionSwapper;
+                }
                 else if (Roles.RoleClass.Tuna.TunaPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.Tuna;
+                }
+                else if (Roles.RoleClass.Mafia.MafiaPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Mafia;
+                }
+                else if (Roles.RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.BlackCat;
                 }
                 //ロールチェック
             }
@@ -1809,17 +1861,8 @@ namespace SuperNewRoles
             }
             return RoleId.DefaultRole;
         }
-        public static Dictionary<byte, bool> DeadCaches;
-        public static bool isDead(this PlayerControl player, bool Cache = true)
+        public static bool isDead(this PlayerControl player)
         {
-            if (Cache)
-            {
-                try
-                {
-                    return DeadCaches[player.PlayerId];
-                }
-                catch { }
-            }
             return player == null || player.Data.Disconnected || player.Data.IsDead;
         }
         public static bool isAlive(this PlayerControl player)

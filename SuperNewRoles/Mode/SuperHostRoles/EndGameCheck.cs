@@ -54,7 +54,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         if (WinGods == null)
                         {
-                            WinGods = new List<PlayerControl>();
+                            WinGods = new();
                         }
                         WinGods.Add(p);
                         Chat.WinCond = CustomGameOverReason.GodWin;
