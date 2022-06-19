@@ -1563,14 +1563,14 @@ namespace SuperNewRoles.Buttons
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper); },
                 () =>
                 {
-                    if (!PlayerControl.LocalPlayer.CanMove) return false;
-                    if (RoleClass.PositionSwapper.SwapCount <= 0) return false;
-
                     float swapcount = RoleClass.PositionSwapper.SwapCount;
-                    if (swapcount >= 0)
+                    if (swapcount > 0)
                         PositionSwapperNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), swapcount);
                     else
                         PositionSwapperNumText.text = "";
+                    if (!PlayerControl.LocalPlayer.CanMove) return false;
+                    if (RoleClass.PositionSwapper.SwapCount <= 0) return false;
+
                     return true && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { PositionSwapper.EndMeeting(); },
