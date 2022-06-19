@@ -19,6 +19,8 @@ namespace SuperNewRoles.Roles
         public static void SwapStart(){
             List<PlayerControl> AlivePlayer = new();
             List<PlayerControl> SwapperPlayer = new();
+            AlivePlayer.Clear();
+            SwapperPlayer.Clear();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.isAlive() && p.CanMove && !p.isImpostor())
