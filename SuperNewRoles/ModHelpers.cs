@@ -1,18 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Collections;
-using UnhollowerBaseLib;
-using UnityEngine;
-using UnityEngine.Events;
 using System.Linq;
+using System.Reflection;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Roles;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Roles;
+using UnhollowerBaseLib;
+using UnityEngine;
 
 namespace SuperNewRoles
 {
@@ -30,8 +28,8 @@ namespace SuperNewRoles
             get
             {
                 return !(MapBehaviour.Instance && MapBehaviour.Instance.IsOpen) &&
-                      !MeetingHud.Instance &&
-                      !ExileController.Instance;
+                        !MeetingHud.Instance &&
+                        !ExileController.Instance;
             }
         }
         public static void SetKillTimerUnchecked(this PlayerControl player, float time, float max = float.NegativeInfinity)
@@ -58,13 +56,13 @@ namespace SuperNewRoles
         {
             foreach (var data in dec)
             {
-                if(data.Value == Value)
+                if (data.Value == Value)
                 {
                     return data.Key;
                 }
             }
             return null;
-        }// parentíºâ∫ÇÃéqÉIÉuÉWÉFÉNÉgÇforeachÉãÅ[ÉvÇ≈éÊìæÇ∑ÇÈ
+        }// parentÔøΩÔøΩÔøΩÔøΩÔøΩÃéqÔøΩIÔøΩuÔøΩWÔøΩFÔøΩNÔøΩgÔøΩÔøΩforeachÔøΩÔøΩÔøΩ[ÔøΩvÔøΩ≈éÊìæÔøΩÔøΩÔøΩÔøΩ
         public static GameObject[] GetChildren(this GameObject ParentObject)
         {
             GameObject[] ChildObject = new GameObject[ParentObject.transform.childCount];
@@ -75,9 +73,9 @@ namespace SuperNewRoles
             }
             return ChildObject;
         }
-        public static void DeleteObject(this Transform[] trans,string notdelete)
+        public static void DeleteObject(this Transform[] trans, string notdelete)
         {
-            foreach(Transform tran in trans)
+            foreach (Transform tran in trans)
             {
                 if (tran.name != notdelete)
                 {
@@ -99,7 +97,7 @@ namespace SuperNewRoles
         {
             get
             {
-                List<PlayerControl> ps = new List<PlayerControl>();
+                List<PlayerControl> ps = new();
                 foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Disconnected) ps.Add(p.PlayerControl);
@@ -107,7 +105,7 @@ namespace SuperNewRoles
                 return ps;
             }
         }
-        public static void SetActiveAllObject(this GameObject[] trans, string notdelete,bool IsActive)
+        public static void SetActiveAllObject(this GameObject[] trans, string notdelete, bool IsActive)
         {
             foreach (GameObject tran in trans)
             {
@@ -142,7 +140,7 @@ namespace SuperNewRoles
         }
         public static Dictionary<byte, PlayerControl> allPlayersById()
         {
-            Dictionary<byte, PlayerControl> res = new Dictionary<byte, PlayerControl>();
+            Dictionary<byte, PlayerControl> res = new();
             foreach (CachedPlayer player in CachedPlayer.AllPlayers)
                 res.Add(player.PlayerId, player);
             return res;
@@ -235,7 +233,6 @@ namespace SuperNewRoles
                             IsSend = true;
                         }
                     }
-
 
                     if (IsSend)
                     {
@@ -355,7 +352,8 @@ namespace SuperNewRoles
                     writer.Write(showAnimation ? byte.MaxValue : 0);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
-                } else
+                }
+                else
                 {
                     new LateTask(() =>
                     {
@@ -365,7 +363,7 @@ namespace SuperNewRoles
                         writer.Write(showAnimation ? byte.MaxValue : 0);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
-                    },tien);
+                    }, tien);
                 }
             }
             return murder;
@@ -405,11 +403,11 @@ namespace SuperNewRoles
             else if (source.isDead() || source.isRole(RoleId.God)) return false;
             else if (source.PlayerId == target.PlayerId) return false; // Player sees his own name
             else if (source.isImpostor() && target.isImpostor()) return false;
-            else if ((target.isRole(RoleId.NiceScientist) || target.isRole(RoleId.EvilScientist))  && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[target.PlayerId]) return true;
+            else if ((target.isRole(RoleId.NiceScientist) || target.isRole(RoleId.EvilScientist)) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[target.PlayerId]) return true;
             return false;
         }
 
-        public static Dictionary<string, Sprite> CachedSprites = new Dictionary<string, Sprite>();
+        public static Dictionary<string, Sprite> CachedSprites = new();
 
         public static Sprite loadSpriteFromResources(string path, float pixelsPerUnit)
         {
@@ -432,7 +430,7 @@ namespace SuperNewRoles
         {
             if (FastDestroyableSingleton<ServerManager>.Instance == null) return false;
             StringNames n = FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
-            return n != StringNames.ServerNA && n != StringNames.ServerEU && n != StringNames.ServerAS;
+            return n is not StringNames.ServerNA and not StringNames.ServerEU and not StringNames.ServerAS;
         }
         public static object TryCast(this Il2CppObjectBase self, Type type)
         {
@@ -447,7 +445,7 @@ namespace SuperNewRoles
         {
             try
             {
-                Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+                Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 Stream stream = assembly.GetManifestResourceStream(path);
                 var byteTexture = new byte[stream.Length];
@@ -487,7 +485,7 @@ namespace SuperNewRoles
             {
                 if (File.Exists(path))
                 {
-                    Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+                    Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
                     byte[] byteTexture = File.ReadAllBytes(path);
                     LoadImage(texture, byteTexture, false);
                     return texture;
@@ -523,7 +521,7 @@ namespace SuperNewRoles
 
         public static bool IsCheckListPlayerControl(this List<PlayerControl> ListDate, PlayerControl CheckPlayer)
         {
-            foreach(PlayerControl Player in ListDate)
+            foreach (PlayerControl Player in ListDate)
             {
                 if (Player.PlayerId == CheckPlayer.PlayerId)
                 {
@@ -532,14 +530,14 @@ namespace SuperNewRoles
             }
             return false;
         }
-        public static bool IsPosition(Vector3 pos,Vector2 pos2)
+        public static bool IsPosition(Vector3 pos, Vector2 pos2)
         {
             if (pos.x == pos2.x && pos.y == pos2.y) return true;
             return false;
         }
-        public static bool IsPositionDistance(Vector2 pos, Vector2 pos2,float distance)
+        public static bool IsPositionDistance(Vector2 pos, Vector2 pos2, float distance)
         {
-            float dis = Vector2.Distance(pos,pos2);
+            float dis = Vector2.Distance(pos, pos2);
             if (dis <= distance) return true;
             return false;
         }

@@ -1,10 +1,10 @@
-﻿using SuperNewRoles.EndGame;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Patch;
-using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.EndGame;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Patch;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles
 {
@@ -12,7 +12,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
     {
         public static void WrapUp(GameData.PlayerInfo exiled)
         {
-            if (!AmongUsClient.Instance.AmHost) return ;
+            if (!AmongUsClient.Instance.AmHost) return;
             if (exiled.Object.isRole(CustomRPC.RoleId.Jester))
             {
                 var (complate, all) = TaskCount.TaskDateNoClearCheck(exiled);
@@ -28,20 +28,25 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         Writer.Write((byte)CustomGameOverReason.JesterWin);
                         Writer.EndRPC();
                         CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JesterWin);
-                        var winplayers = new List<PlayerControl>();
-                        winplayers.Add(exiled.Object);
+                        var winplayers = new List<PlayerControl>
+                        {
+                            exiled.Object
+                        };
                         //EndGameCheck.WinNeutral(winplayers);
                         Chat.WinCond = CustomGameOverReason.JesterWin;
-                        Chat.Winner = new List<PlayerControl>();
-                        Chat.Winner.Add(exiled.Object);
+                        Chat.Winner = new List<PlayerControl>
+                        {
+                            exiled.Object
+                        };
                     }
                     catch (Exception e)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("[SHR]てるてるWrapUpエラー:"+e);
+                        SuperNewRolesPlugin.Logger.LogInfo("[SHR:Error] Jester WrapUp Error:" + e);
                     }
                     EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByVote, false);
                 }
-            } else if (exiled.Object.isRole(CustomRPC.RoleId.MadJester))
+            }
+            else if (exiled.Object.isRole(CustomRPC.RoleId.MadJester))
             {
                 var (complate, all) = TaskCount.TaskDateNoClearCheck(exiled);
                 if (!RoleClass.MadJester.IsMadJesterTaskClearWin || complate >= all)
@@ -56,16 +61,20 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         Writer.Write((byte)CustomGameOverReason.JesterWin);
                         Writer.EndRPC();
                         CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.ImpostorWin);
-                        var winplayers = new List<PlayerControl>();
-                        winplayers.Add(exiled.Object);
+                        var winplayers = new List<PlayerControl>
+                        {
+                            exiled.Object
+                        };
                         //EndGameCheck.WinNeutral(winplayers);
                         Chat.WinCond = CustomGameOverReason.ImpostorWin;
-                        Chat.Winner = new List<PlayerControl>();
-                        Chat.Winner.Add(exiled.Object);
+                        Chat.Winner = new List<PlayerControl>
+                        {
+                            exiled.Object
+                        };
                     }
                     catch (Exception e)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("[SHR]マッドてるてるWrapUpエラー:" + e);
+                        SuperNewRolesPlugin.Logger.LogInfo("[SHR:Error] Mad Jester WrapUp Error:" + e);
                     }
                     EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.ImpostorByVote, false);
                 }

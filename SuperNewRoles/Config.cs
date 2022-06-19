@@ -1,17 +1,4 @@
-using BepInEx;
 using BepInEx.Configuration;
-using BepInEx.IL2CPP;
-using HarmonyLib;
-using Hazel;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Linq;
-using System.Net;
-using System.IO;
-using System;
-using System.Reflection;
-using UnhollowerBaseLib;
-using UnityEngine;
 using SuperNewRoles.Patches;
 namespace SuperNewRoles
 {
@@ -40,7 +27,7 @@ namespace SuperNewRoles
             IsVersionErrorView = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "IsVersionErrorView", true);
             HideTaskArrows = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "HideTaskArrows", false);
             ShareCosmeticsNamePlatesURL = SuperNewRolesPlugin.Instance.Config.Bind("ShareCosmetics", "NamePlateURL", "");
-            IsAutoRoomCreate = SuperNewRolesPlugin.Instance.Config.Bind("Custom","AutoRoomCreate",true); ;
+            IsAutoRoomCreate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "AutoRoomCreate", true); ;
             EnableHorseMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "EnableHorseMode", false);
             Ip = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server IP", "127.0.0.1");
             Port = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server Port", (ushort)22023);

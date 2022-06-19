@@ -1,12 +1,11 @@
-﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -116,13 +115,28 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     break;
                 case RoleId.MadMaker:
-                    if (!RoleClass.MadMaker.IsImpostorLight)
+                    if (!player.IsMod())
                     {
-                        optdata.ImpostorLightMod = optdata.CrewLightMod;
-                        var switchSystemMadMaker = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                        if (switchSystemMadMaker != null && switchSystemMadMaker.IsActive)
+                        if (!RoleClass.MadMaker.IsImpostorLight)
                         {
-                            optdata.ImpostorLightMod /= 5;
+                            optdata.ImpostorLightMod = optdata.CrewLightMod;
+                            var switchSystemMadMaker = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            if (switchSystemMadMaker != null && switchSystemMadMaker.IsActive)
+                            {
+                                optdata.ImpostorLightMod /= 5;
+                            }
+                        }
+                    }
+                    if (player.IsMod())
+                    {
+                        if (RoleClass.MadMaker.IsImpostorLight)
+                        {
+                            optdata.CrewLightMod = optdata.ImpostorLightMod;
+                            var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            if (switchSystem2 != null && switchSystem2.IsActive)
+                            {
+                                optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
+                            }
                         }
                     }
                     if (RoleClass.MadMaker.CreatePlayers.Contains(player.PlayerId))
@@ -254,14 +268,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.killCooldown = KillCoolSet(RoleClass.Survivor.KillCoolTime);
                     break;
                 case RoleId.Jackal:
-                    if (!RoleClass.Jackal.IsImpostorLight)
+                    if (!player.IsMod())
                     {
-                        optdata.ImpostorLightMod = optdata.CrewLightMod;
-                        var switchSystemJackal = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-
-                        if (switchSystemJackal != null && switchSystemJackal.IsActive)
+                        if (!RoleClass.Jackal.IsImpostorLight)
                         {
-                            optdata.ImpostorLightMod /= 5;
+                            optdata.ImpostorLightMod = optdata.CrewLightMod;
+                            var switchSystemJackal = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+
+                            if (switchSystemJackal != null && switchSystemJackal.IsActive)
+                            {
+                                optdata.ImpostorLightMod /= 5;
+                            }
                         }
                     }
                     if (player.IsMod())
@@ -276,7 +293,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                         }
                     }
-                        optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCoolDown);
+                    optdata.KillCooldown = KillCoolSet(RoleClass.Jackal.KillCoolDown);
                     break;
                 case RoleId.Demon:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime);
@@ -297,6 +314,29 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                     break;
+                case RoleId.Tuna:
+                    if (RoleClass.Tuna.IsUseVent)
+                    {
+                        optdata.RoleOptions.EngineerCooldown = 0f;
+                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+                    }
+                    break;
+                case RoleId.BlackCat:
+                    if (RoleClass.BlackCat.IsUseVent)
+                    {
+                        optdata.RoleOptions.EngineerCooldown = 0f;
+                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+                    }
+                    if (RoleClass.BlackCat.IsImpostorLight)
+                    {
+                        optdata.CrewLightMod = optdata.ImpostorLightMod;
+                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                        if (switchSystem2 != null && switchSystem2.IsActive)
+                        {
+                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
+                        }
+                    }
+                    break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;
@@ -310,7 +350,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (cool <= 0)
             {
                 return 0.001f;
-            } else
+            }
+            else
             {
                 return cool;
             }
@@ -321,6 +362,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
             var role = player.getRole();
             var optdata = OptionData.DeepCopy();
+
             switch (role)
             {
                 case RoleId.Demon:
@@ -355,7 +397,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.EvilGambler.GetSuc())
             {
                 optdata.KillCooldown = KillCoolSet(RoleClass.EvilGambler.SucCool);
-            } else
+            }
+            else
             {
                 optdata.KillCooldown = KillCoolSet(RoleClass.EvilGambler.NotSucCool);
             }
@@ -384,7 +427,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             public static void Prefix()
             {
-             //   BotHandler.CreateBot();
+                //   BotHandler.CreateBot();
             }
             public static void Postfix()
             {

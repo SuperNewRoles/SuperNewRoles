@@ -1,4 +1,4 @@
-﻿
+
 
 using HarmonyLib;
 using TMPro;
@@ -40,7 +40,7 @@ namespace SuperNewRoles.Map.Agartha.Patch
             SecurityRoom.GetComponent<TextMeshPro>().text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Security)
             , 0f, "SetMapText");
             SecurityRoom.localPosition = new Vector3(1.38f, -0.95f, 0f);
-            
+
             //LifeSuppRoomName
             Transform LifeSuppRoom = RoomNames.FindChild("Lockers");
             LifeSuppRoom.name = "LifeSupp";

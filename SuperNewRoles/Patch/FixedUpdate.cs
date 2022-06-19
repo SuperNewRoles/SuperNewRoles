@@ -1,16 +1,16 @@
-﻿using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode;
-using SuperNewRoles.Roles;
-using SuperNewRoles.Sabotage;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using Hazel;
+using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Sabotage;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -24,7 +24,8 @@ namespace SuperNewRoles.Patch
         }
     }
     [HarmonyPatch(typeof(AbilityButton), nameof(AbilityButton.Update))]
-    public class AbilityUpdate {
+    public class AbilityUpdate
+    {
         public static void Postfix(AbilityButton __instance)
         {
             if (CachedPlayer.LocalPlayer.Data.Role.IsSimpleRole && __instance.commsDown.active)
@@ -91,6 +92,13 @@ namespace SuperNewRoles.Patch
                     {
                         Mode.SuperHostRoles.FixedUpdate.Update();
                         Fox.FixedUpdate.Postfix();
+                        RoleId MyRole = CachedPlayer.LocalPlayer.PlayerControl.getRole();
+                        switch (MyRole)
+                        {
+                            case RoleId.Mafia:
+                                Mafia.FixedUpdate();
+                                break;
+                        }
                     }
                     else if (ModeHandler.isMode(ModeId.Default))
                     {
@@ -118,7 +126,6 @@ namespace SuperNewRoles.Patch
                                             RoleClass.Pursuer.arrow.arrow.SetActive(true);
                                         }
                                         Pursuer.PursureUpdate.Postfix();
-
                                     }
                                     else
                                     {
@@ -146,6 +153,9 @@ namespace SuperNewRoles.Patch
                                 case RoleId.Vulture:
                                     Vulture.FixedUpdate.Postfix();
                                     break;
+                                case RoleId.Mafia:
+                                    Mafia.FixedUpdate();
+                                    break;
                             }
                             Fox.FixedUpdate.Postfix();
                             Minimalist.FixedUpdate.Postfix();
@@ -157,7 +167,6 @@ namespace SuperNewRoles.Patch
                                 if (!RoleClass.Bait.Reported)
                                 {
                                     Bait.BaitUpdate.Postfix(__instance);
-
                                 }
                             }
                             else if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
@@ -179,10 +188,7 @@ namespace SuperNewRoles.Patch
                         ModeHandler.FixedUpdate(__instance);
                     }
                 }
-                else if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
-                {
-
-                }
+                else if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined) { }
             }
         }
     }

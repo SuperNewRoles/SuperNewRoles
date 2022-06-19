@@ -1,10 +1,10 @@
-﻿using HarmonyLib;
-using SuperNewRoles.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using SuperNewRoles.CustomRPC;
+using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
@@ -62,7 +62,8 @@ namespace SuperNewRoles.MapOptions
                 if (!MapOption.UseVitalOrDoorLog)
                 {
                     __instance.Close();
-                } else
+                }
+                else
                 {
                     /*
                     if (BlockTool.VitalTime > 0)
@@ -89,7 +90,8 @@ namespace SuperNewRoles.MapOptions
                 if (MapOption.UseCamera == false)
                 {
                     __instance.Close();
-                } else
+                }
+                else
                 {
                     /*
                     if (BlockTool.CameraTime > 0)
@@ -116,7 +118,8 @@ namespace SuperNewRoles.MapOptions
                 if (MapOption.UseCamera == false)
                 {
                     __instance.Close();
-                } else
+                }
+                else
                 {/*
                     if (BlockTool.CameraTime > 0)
                     {
@@ -142,7 +145,8 @@ namespace SuperNewRoles.MapOptions
                 if (MapOption.UseVitalOrDoorLog == false)
                 {
                     __instance.Close();
-                } else
+                }
+                else
                 {/*
                     if (BlockTool.VitalTime > 0)
                     {

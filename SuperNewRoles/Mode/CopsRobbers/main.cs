@@ -1,7 +1,7 @@
-﻿using SuperNewRoles.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.Helpers;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.CopsRobbers
@@ -11,10 +11,10 @@ namespace SuperNewRoles.Mode.CopsRobbers
         public static void ClearAndReloads()
         {
             IsStart = false;
-            ArrestPositions = new Dictionary<int, SystemTypes?>();
-            Arrest = new List<int>();
+            ArrestPositions = new();
+            Arrest = new();
             IsMove = false;
-            SpawnPosition = new Dictionary<int, SystemTypes?>();
+            SpawnPosition = new();
             LastCount = 0;
         }
         public static bool IsStart;
@@ -38,12 +38,12 @@ namespace SuperNewRoles.Mode.CopsRobbers
             if (Arrest.Contains(player.PlayerId)) return true;
             return false;
         }
-        public static Dictionary<MapNames, List<SystemTypes>> Rooms = new Dictionary<MapNames, List<SystemTypes>>()
+        public static Dictionary<MapNames, List<SystemTypes>> Rooms = new()
         {
-            { MapNames.Skeld, new List<SystemTypes>(){ SystemTypes.Comms, SystemTypes.Nav, SystemTypes.Security } },
-            { MapNames.Mira, new List<SystemTypes>(){ SystemTypes.Comms, SystemTypes.Greenhouse, SystemTypes.Launchpad, SystemTypes.Storage} },
-            { MapNames.Polus, new List<SystemTypes>(){ SystemTypes.Electrical, SystemTypes.Specimens, SystemTypes.Weapons} },
-            { MapNames.Airship, new List<SystemTypes>(){ SystemTypes.Records, SystemTypes.Security, SystemTypes.VaultRoom} }
+            { MapNames.Skeld, new List<SystemTypes>() { SystemTypes.Comms, SystemTypes.Nav, SystemTypes.Security } },
+            { MapNames.Mira, new List<SystemTypes>() { SystemTypes.Comms, SystemTypes.Greenhouse, SystemTypes.Launchpad, SystemTypes.Storage } },
+            { MapNames.Polus, new List<SystemTypes>() { SystemTypes.Electrical, SystemTypes.Specimens, SystemTypes.Weapons } },
+            { MapNames.Airship, new List<SystemTypes>() { SystemTypes.Records, SystemTypes.Security, SystemTypes.VaultRoom } }
         };
         public static MapNames GetMap()
         {
@@ -182,8 +182,8 @@ namespace SuperNewRoles.Mode.CopsRobbers
         static float ImpostorMoveTime;
         static int LastCount;
         static float LastUpdate;
-        public static List<byte> TeleportIDs = new List<byte>();
-        public static void Teleport(PlayerControl player,Vector2 position)
+        public static List<byte> TeleportIDs = new();
+        public static void Teleport(PlayerControl player, Vector2 position)
         {
             player.NetTransform.RpcSnapTo(position);
             return;
@@ -219,7 +219,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             if (!IsMove)
             {
                 bool IsMoveOK = true;
-                List<PlayerControl> players = new List<PlayerControl>();
+                List<PlayerControl> players = new();
                 int NotLoadedCount = 0;
                 if (PlayerControl.GameOptions.MapId == 4)
                 {
@@ -228,11 +228,10 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     {
                         PlayerControl.LocalPlayer.RpcSetName("<color=black><size=7500%>■</size></color>");
                     }*/
-
                     foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                     {
-                        if (ModHelpers.IsPositionDistance(p.transform.position, new Vector2(3, 6),0.5f) || 
-                            ModHelpers.IsPositionDistance(p.transform.position, new Vector2(-25, 40), 0.5f) || 
+                        if (ModHelpers.IsPositionDistance(p.transform.position, new Vector2(3, 6), 0.5f) ||
+                            ModHelpers.IsPositionDistance(p.transform.position, new Vector2(-25, 40), 0.5f) ||
                             ModHelpers.IsPositionDistance(p.transform.position, new Vector2(-1.4f, 2.3f), 0.5f)
                             )
                         {
@@ -248,7 +247,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 if (LastCount != players.Count)
                 {
                     LastCount = players.Count;
-                    string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>全プレイヤーのスポーンを待っています...\nロドー中:残り"+NotLoadedCount+"人</color></size>";
+                    string name = "\n\n\n\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%><color=white>全プレイヤーのスポーンを待っています...\nロドー中:残り" + NotLoadedCount + "人</color></size>";
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetNamePrivate(name);
@@ -301,7 +300,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     //string name = "\n\n\n\n\n<size=300%><color=white>" + SuperNewRoles.Mode.ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>インポスターが来るまで残り5秒</size>";
                     //PlayerControl.LocalPlayer.RpcSetName(name);
                     LastUpdate = ImpostorMoveTime;
-                    string name = "\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>インポスターが来るまで残り" + ((int)(LastUpdate + 1)).ToString() + "秒</size>";
+                    string name = "\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>" + ModTranslation.getString("CopsImpostorCome") + ((int)(LastUpdate + 1)).ToString() + ModTranslation.getString("second") + "</size>";
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (!p.AmOwner)

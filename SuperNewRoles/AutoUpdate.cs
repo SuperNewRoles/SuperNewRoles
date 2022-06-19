@@ -1,28 +1,10 @@
-﻿using System;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
-using Il2CppSystem;
-using Hazel;
-using HarmonyLib;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Events;
-using UnhollowerBaseLib;
 using System.IO;
-using System.Reflection;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System.Reflection;
 using System.Threading.Tasks;
-using System.Security.Cryptography;
+using HarmonyLib;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using Twitch;
 
 namespace SuperNewRoles
@@ -54,7 +36,7 @@ namespace SuperNewRoles
         {
             try
             {
-                HttpClient http = new HttpClient();
+                HttpClient http = new();
                 http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Updater");
                 var response = await http.GetAsync(new System.Uri(updateURL), HttpCompletionOption.ResponseContentRead);
                 if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
@@ -63,7 +45,7 @@ namespace SuperNewRoles
                     return false;
                 }
                 string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                System.UriBuilder uri = new System.UriBuilder(codeBase);
+                System.UriBuilder uri = new(codeBase);
                 string fullname = System.Uri.UnescapeDataString(uri.Path);
                 if (File.Exists(fullname + ".old")) // Clear old file in case it wasnt;
                     File.Delete(fullname + ".old");
@@ -72,16 +54,11 @@ namespace SuperNewRoles
 
                 using (var responseStream = await response.Content.ReadAsStreamAsync())
                 {
-                    using (var fileStream = File.Create(fullname))
-                    { // probably want to have proper name here
-                        responseStream.CopyTo(fileStream);
-                    }
+                    using var fileStream = File.Create(fullname);
+                    // probably want to have proper name here
+                    responseStream.CopyTo(fileStream);
                 }
-
-                
-
                 SuperNewRolesPlugin.IsUpdate = true;
-
                 return true;
             }
             catch (System.Exception ex)
@@ -93,7 +70,8 @@ namespace SuperNewRoles
         }
         public static async Task<bool> checkForUpdate(TMPro.TextMeshPro setdate)
         {
-            if (!ConfigRoles.AutoUpdate.Value) {
+            if (!ConfigRoles.AutoUpdate.Value)
+            {
                 return false;
             }
             if (!IsLoad)
@@ -103,7 +81,7 @@ namespace SuperNewRoles
             }
             try
             {
-                HttpClient http = new HttpClient();
+                HttpClient http = new();
                 http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Updater");
                 var response = await http.GetAsync(new System.Uri("https://api.github.com/repos/ykundesu/SuperNewRoles/releases/latest"), HttpCompletionOption.ResponseContentRead);
                 if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
@@ -139,7 +117,7 @@ namespace SuperNewRoles
                     {
                         SuperNewRolesPlugin.Logger.LogInfo("古いバージョンです");
                     }
-                        JToken assets = data["assets"];
+                    JToken assets = data["assets"];
                     if (!assets.HasValues)
                         return false;
                     for (JToken current = assets.First; current != null; current = current.Next)
@@ -151,15 +129,13 @@ namespace SuperNewRoles
                                 browser_download_url.EndsWith(".dll"))
                             {
                                 updateURL = browser_download_url;
-                                AutoUpdate.Update();
+                                await Update();
                                 setdate.SetText(ModTranslation.getString("creditsMain") + "\n" + string.Format(ModTranslation.getString("creditsUpdateOk"), SuperNewRolesPlugin.NewVersion));
                             }
                         }
                     }
-                    
                 }
                 return false;
-
             }
             catch (System.Exception e)
             {

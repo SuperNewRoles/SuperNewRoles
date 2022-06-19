@@ -1,10 +1,10 @@
-﻿using HarmonyLib;
-using Hazel;
-using InnerNet;
-using SuperNewRoles.MapOptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using Hazel;
+using InnerNet;
+using SuperNewRoles.MapOptions;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -19,7 +19,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 [HarmonyArgument(1)] PlayerControl player,
                 [HarmonyArgument(2)] byte amount)
             {
-                if(systemType == SystemTypes.Security)
+                if (systemType == SystemTypes.Security)
                 {
                     if (amount == 1)
                     {
@@ -144,7 +144,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                         }
                     }
-                    catch (Exception e){
+                    catch (Exception e)
+                    {
                         SuperNewRolesPlugin.Logger.LogError(e);
                     }
                 }
@@ -199,15 +200,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (PlayerControl.GameOptions.MapId == 1)
             {
-                return new Vector2(15.51107f,-2.897387f);
+                return new Vector2(15.51107f, -2.897387f);
             }
             else if (PlayerControl.GameOptions.MapId == 2)
             {
-                return new Vector2(26.20935f,-16.04406f);
+                return new Vector2(26.20935f, -16.04406f);
             }
             else if (PlayerControl.GameOptions.MapId == 4)
             {
-                return new Vector2(25.28237f,-8.145635f);
+                return new Vector2(25.28237f, -8.145635f);
             }
             return new Vector2(1000, 1000);
         }

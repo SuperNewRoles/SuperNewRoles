@@ -1,10 +1,8 @@
-﻿using HarmonyLib;
+using System;
+using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -23,7 +21,8 @@ namespace SuperNewRoles.Roles
             if (PlayerControl.LocalPlayer.isImpostor())
             {
                 CoolTime = RoleClass.EvilScientist.CoolTime;
-            } else
+            }
+            else
             {
                 CoolTime = RoleClass.NiceScientist.CoolTime;
             }
@@ -40,9 +39,7 @@ namespace SuperNewRoles.Roles
             CustomRPC.RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
             SpeedBooster.ResetCoolDown();
         }
-        public static void ResetScientist()
-        {
-        }
+        public static void ResetScientist() { }
         public static void ScientistEnd()
         {
             RoleClass.NiceScientist.IsScientist = false;
@@ -53,7 +50,7 @@ namespace SuperNewRoles.Roles
             CustomRPC.RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
             ResetScientist();
         }
-        public static void setOpacity(PlayerControl player, float opacity,bool cansee)
+        public static void setOpacity(PlayerControl player, float opacity, bool cansee)
         {
             // Sometimes it just doesn't work?
             var color = Color.Lerp(Palette.ClearWhite, Palette.White, opacity);
@@ -111,7 +108,7 @@ namespace SuperNewRoles.Roles
                     {
                         opacity = Math.Max(opacity, 1.5f);
                     }
-                    setOpacity(Scientist, opacity,canSee);
+                    setOpacity(Scientist, opacity, canSee);
                 }
             }
         }

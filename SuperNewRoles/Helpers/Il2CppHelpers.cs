@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 using UnhollowerBaseLib;
 using UnityEngine;
 
 namespace SuperNewRoles
 {
-
     public static class Il2CppHelpers
     {
         private static class CastHelper<T> where T : Il2CppObjectBase

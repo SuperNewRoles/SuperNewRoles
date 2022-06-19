@@ -1,17 +1,17 @@
-﻿using HarmonyLib;
 using System;
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using SuperNewRoles.Intro;
-using SuperNewRoles.Roles;
+using HarmonyLib;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.Patch;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.HideAndSeek;
-using System.Collections;
+using SuperNewRoles.Patch;
+using SuperNewRoles.Roles;
 using TMPro;
-using SuperNewRoles.CustomRPC;
+using UnityEngine;
 
 namespace SuperNewRoles.Patches
 {
@@ -56,7 +56,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && Madmate.CheckImpostor(PlayerControl.LocalPlayer))
                 {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
                     int ImpostorNum = 0;
                     ImpostorTeams.Add(PlayerControl.LocalPlayer);
                     foreach (PlayerControl player in CachedPlayer.AllPlayers)
@@ -71,7 +71,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
                 {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
                     int ImpostorNum = 0;
                     ImpostorTeams.Add(PlayerControl.LocalPlayer);
                     foreach (PlayerControl player in CachedPlayer.AllPlayers)
@@ -86,7 +86,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && MadJester.CheckImpostor(PlayerControl.LocalPlayer))
                 {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
                     int ImpostorNum = 0;
                     ImpostorTeams.Add(PlayerControl.LocalPlayer);
                     foreach (PlayerControl player in CachedPlayer.AllPlayers)
@@ -101,7 +101,22 @@ namespace SuperNewRoles.Patches
                 }
                 if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && MadSeer.CheckImpostor(PlayerControl.LocalPlayer))
                 {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
+                    int ImpostorNum = 0;
+                    ImpostorTeams.Add(PlayerControl.LocalPlayer);
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                    {
+                        if (player.Data.Role.IsImpostor)
+                        {
+                            ImpostorNum++;
+                            ImpostorTeams.Add(player);
+                        }
+                    }
+                    yourTeam = ImpostorTeams;
+                }
+                                if (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && BlackCat.CheckImpostor(PlayerControl.LocalPlayer))
+                {
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
                     int ImpostorNum = 0;
                     ImpostorTeams.Add(PlayerControl.LocalPlayer);
                     foreach (PlayerControl player in CachedPlayer.AllPlayers)
@@ -117,7 +132,7 @@ namespace SuperNewRoles.Patches
                 if ((PlayerControl.LocalPlayer.isRole(RoleId.JackalFriends) ||
                     PlayerControl.LocalPlayer.isRole(RoleId.SeerFriends) || PlayerControl.LocalPlayer.isRole(RoleId.MayorFriends)) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
                     int JackalNum = 0;
                     JackalTeams.Add(PlayerControl.LocalPlayer);
                     foreach (PlayerControl player in CachedPlayer.AllPlayers)
@@ -132,7 +147,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal))
                 {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
                     int JackalNum = 0;
                     foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
@@ -146,7 +161,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalSeer))
                 {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
                     int JackalNum = 0;
                     foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
@@ -160,7 +175,7 @@ namespace SuperNewRoles.Patches
                 }
                 if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
                 {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> FoxTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    Il2CppSystem.Collections.Generic.List<PlayerControl> FoxTeams = new();
                     int FoxNum = 0;
                     foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
@@ -172,13 +187,15 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = FoxTeams;
                 }
-            } else
+            }
+            else
             {
                 var a = ModeHandler.TeamHandler(__instance);
                 if (a != new Il2CppSystem.Collections.Generic.List<PlayerControl>())
                 {
                     yourTeam = a;
-                } else
+                }
+                else
                 {
                     var temp = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     temp.Add(PlayerControl.LocalPlayer);
@@ -240,8 +257,6 @@ namespace SuperNewRoles.Patches
             //SetUpRoleTextPatch.Postfix(__instance);
         }
 
-
-
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
         class IntroCutsceneDestroyPatch
         {
@@ -279,7 +294,7 @@ namespace SuperNewRoles.Patches
             }
         }
 
-        [HarmonyPatch(typeof(IntroCutscene),nameof(IntroCutscene.ShowRole))]
+        [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
         class SetUpRoleTextPatch
         {
             private static byte ToByteIntro(float f)
@@ -295,7 +310,7 @@ namespace SuperNewRoles.Patches
                     if (ModeHandler.isMode(ModeId.Default))
                     {
                         var myrole = PlayerControl.LocalPlayer.getRole();
-                        if (!(myrole == CustomRPC.RoleId.DefaultRole || myrole == CustomRPC.RoleId.Bestfalsecharge))
+                        if (myrole is not (CustomRPC.RoleId.DefaultRole or CustomRPC.RoleId.Bestfalsecharge))
                         {
                             var date = Intro.IntroDate.GetIntroDate(myrole);
                             __instance.YouAreText.color = date.color;

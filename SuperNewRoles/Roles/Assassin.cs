@@ -1,15 +1,11 @@
-﻿using HarmonyLib;
+using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patches;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnhollowerBaseLib;
 
 namespace SuperNewRoles.Roles
@@ -34,7 +30,7 @@ namespace SuperNewRoles.Roles
                 if (player == null || player.PlayerControl.IsBot()) return;
 
                 Il2CppStructArray<MeetingHud.VoterState> array =
-                    new Il2CppStructArray<MeetingHud.VoterState>(
+                    new(
                         MeetingHud.Instance.playerStates.Length);
 
                 for (int i = 0; i < MeetingHud.Instance.playerStates.Length; i++)
@@ -114,10 +110,12 @@ namespace SuperNewRoles.Roles
             {
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
-                    if (AmongUsClient.Instance.AmHost) {
+                    if (AmongUsClient.Instance.AmHost)
+                    {
                         RoleClass.Assassin.DeadPlayer.RpcInnerExiled();
                     }
-                } else
+                }
+                else
                 {
                     RoleClass.Assassin.DeadPlayer.Exiled();
                 }

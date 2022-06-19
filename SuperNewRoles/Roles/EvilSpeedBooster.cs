@@ -1,15 +1,11 @@
-﻿using HarmonyLib;
-using Hazel;
 using System;
-using System.Collections.Generic;
-using SuperNewRoles.Patches;
-using UnityEngine;
+using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Roles
 {
-    class EvilSpeedBooster { 
+    class EvilSpeedBooster
+    {
         public static void ResetCoolDown()
         {
             HudManagerStartPatch.EvilSpeedBoosterBoostButton.MaxTimer = RoleClass.EvilSpeedBooster.CoolTime;

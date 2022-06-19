@@ -1,8 +1,7 @@
-﻿using Hazel;
-using SuperNewRoles.Buttons;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using Hazel;
+using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles
 {
@@ -15,7 +14,7 @@ namespace SuperNewRoles.Roles
         }
         public static void TeleportStart()
         {
-            List<PlayerControl> aliveplayers = new List<PlayerControl>();
+            List<PlayerControl> aliveplayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.isAlive() && p.CanMove)

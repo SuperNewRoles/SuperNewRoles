@@ -1,17 +1,16 @@
-﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Patch
 {
     public static class SelectTask
     {
-
         [HarmonyPatch(typeof(GameData), nameof(GameData.RpcSetTasks))]
         class RpcSetTasksPatch
         {
@@ -19,11 +18,12 @@ namespace SuperNewRoles.Patch
             [HarmonyArgument(0)] byte playerId,
             [HarmonyArgument(1)] ref UnhollowerBaseLib.Il2CppStructArray<byte> taskTypeIds)
             {
-                if (GameData.Instance.GetPlayerById(playerId).Object.IsBot() || taskTypeIds.Length == 0) {
+                if (GameData.Instance.GetPlayerById(playerId).Object.IsBot() || taskTypeIds.Length == 0)
+                {
                     taskTypeIds = new byte[0];
-                    return; 
+                    return;
                 }
-                if (ModeHandler.isMode(ModeId.SuperHostRoles) || ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
+                if (ModeHandler.isMode(ModeId.SuperHostRoles) || (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.GameMode != GameModes.FreePlay))
                 {
                     var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
                     var TasksList = ModHelpers.generateTasks(commont, shortt, longt);
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
-        public static (int,int,int) GetTaskCount(this PlayerControl p)
+        public static (int, int, int) GetTaskCount(this PlayerControl p)
         {
             if (p.isRole(RoleId.MadMate))
             {
@@ -70,6 +70,19 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.MadSeerCommonTask.getFloat();
                     int shortt = (int)CustomOptions.MadSeerShortTask.getFloat();
                     int longt = (int)CustomOptions.MadSeerLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }
+                        else if (p.isRole(RoleId.BlackCat))
+            {
+                if (CustomOptions.BlackCatIsCheckImpostor.getBool())
+                {
+                    int commont = (int)CustomOptions.BlackCatCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.BlackCatShortTask.getFloat();
+                    int longt = (int)CustomOptions.BlackCatLongTask.getFloat();
                     if (!(commont == 0 && shortt == 0 && longt == 0))
                     {
                         return (commont, shortt, longt);
@@ -127,7 +140,8 @@ namespace SuperNewRoles.Patch
                         return (commont, shortt, longt);
                     }
                 }
-            } else if (p.isRole(RoleId.God))
+            }
+            else if (p.isRole(RoleId.God))
             {
                 if (CustomOptions.GodIsEndTaskWin.getBool())
                 {
@@ -139,7 +153,8 @@ namespace SuperNewRoles.Patch
                         return (commont, shortt, longt);
                     }
                 }
-            } else if (p.isRole(RoleId.Workperson))
+            }
+            else if (p.isRole(RoleId.Workperson))
             {
                 int commont = (int)CustomOptions.WorkpersonCommonTask.getFloat();
                 int shortt = (int)CustomOptions.WorkpersonShortTask.getFloat();
@@ -159,7 +174,6 @@ namespace SuperNewRoles.Patch
                     return (commont, shortt, longt);
                 }
             }
-
             else if (p.IsLovers() && !p.isImpostor())
             {
                 int commont = (int)CustomOptions.LoversCommonTask.getFloat();
@@ -172,10 +186,10 @@ namespace SuperNewRoles.Patch
             }
             return (SyncSetting.OptionData.NumCommonTasks, SyncSetting.OptionData.NumShortTasks, SyncSetting.OptionData.NumLongTasks);
         }
-        public static (CustomOption.CustomOption, CustomOption.CustomOption, CustomOption.CustomOption) TaskSetting(int commonid,int shortid,int longid,CustomOption.CustomOption Child = null, CustomOptionType type = CustomOptionType.Generic,bool IsSHROn = false)
+        public static (CustomOption.CustomOption, CustomOption.CustomOption, CustomOption.CustomOption) TaskSetting(int commonid, int shortid, int longid, CustomOption.CustomOption Child = null, CustomOptionType type = CustomOptionType.Generic, bool IsSHROn = false)
         {
             CustomOption.CustomOption CommonOption = CustomOption.CustomOption.Create(commonid, IsSHROn, type, "GameCommonTasks", 1, 0, 12, 1, Child);
-            CustomOption.CustomOption ShortOption = CustomOption.CustomOption.Create(shortid, IsSHROn, type,"GameShortTasks", 1, 0, 69, 1, Child);
+            CustomOption.CustomOption ShortOption = CustomOption.CustomOption.Create(shortid, IsSHROn, type, "GameShortTasks", 1, 0, 69, 1, Child);
             CustomOption.CustomOption LongOption = CustomOption.CustomOption.Create(longid, IsSHROn, type, "GameLongTasks", 1, 0, 45, 1, Child);
             return (CommonOption, ShortOption, LongOption);
         }

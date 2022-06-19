@@ -1,17 +1,9 @@
-﻿using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Patches;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using HarmonyLib;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace SuperNewRoles.Roles
 {
-
-
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
     class SoothSayer_updatepatch
     {
@@ -157,6 +149,5 @@ namespace SuperNewRoles.Roles
             Event(__instance);
             spiritEvent(__instance);
         }
-
     }
 }

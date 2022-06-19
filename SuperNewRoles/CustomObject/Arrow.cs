@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Collections;
-using UnityEngine;
+using System.Collections.Generic;
 using SuperNewRoles;
+using UnityEngine;
 
 namespace SuperNewRoles.CustomObject
 {
@@ -17,16 +17,16 @@ namespace SuperNewRoles.CustomObject
         public static Sprite getSprite()
         {
             if (sprite) return sprite;
-            
             sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Arrow.png", 200f);
             return sprite;
         }
 
-
         public Arrow(Color color)
         {
-            arrow = new GameObject("Arrow");
-            arrow.layer = 5;
+            arrow = new GameObject("Arrow")
+            {
+                layer = 5
+            };
             image = arrow.AddComponent<SpriteRenderer>();
             image.sprite = getSprite();
             image.color = color;
@@ -49,7 +49,7 @@ namespace SuperNewRoles.CustomObject
             Camera main = Camera.main;
             Vector2 vector = target - main.transform.position;
             float num = vector.magnitude / (main.orthographicSize * perc);
-            image.enabled = ((double)num > 0.3);
+            image.enabled = (double)num > 0.3;
             Vector2 vector2 = main.WorldToViewportPoint(target);
             if (Between(vector2.x, 0f, 1f) && Between(vector2.y, 0f, 1f))
             {
@@ -59,10 +59,10 @@ namespace SuperNewRoles.CustomObject
             }
             else
             {
-                Vector2 vector3 = new Vector2(Mathf.Clamp(vector2.x * 2f - 1f, -1f, 1f), Mathf.Clamp(vector2.y * 2f - 1f, -1f, 1f));
+                Vector2 vector3 = new(Mathf.Clamp(vector2.x * 2f - 1f, -1f, 1f), Mathf.Clamp(vector2.y * 2f - 1f, -1f, 1f));
                 float orthographicSize = main.orthographicSize;
                 float num3 = main.orthographicSize * main.aspect;
-                Vector3 vector4 = new Vector3(Mathf.LerpUnclamped(0f, num3 * 0.88f, vector3.x), Mathf.LerpUnclamped(0f, orthographicSize * 0.79f, vector3.y), 0f);
+                Vector3 vector4 = new(Mathf.LerpUnclamped(0f, num3 * 0.88f, vector3.x), Mathf.LerpUnclamped(0f, orthographicSize * 0.79f, vector3.y), 0f);
                 arrow.transform.position = main.transform.position + vector4;
                 arrow.transform.localScale = Vector3.one;
             }
