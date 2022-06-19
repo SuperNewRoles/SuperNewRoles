@@ -1607,40 +1607,40 @@ namespace SuperNewRoles.Buttons
 
 
             ConjurerStartButton = new CustomButton(
-                   () =>
-                   {
-                       //ニセレに任せた
+                    () =>
+                    {
+                        //ニセレに任せた
 
-                       Conjurer.ShowFlash(new Color(139f / 139f, 0f / 0f, 205f / 205f));
+                        Conjurer.ShowFlash(new Color(139f / 139f, 0f / 0f, 205f / 205f));
                        //発光(色)
 
-                       Conjurer.AllCoolReset();
+                        Conjurer.AllCoolReset();
                        //全ボタンのクールリセット
 
-                       Conjurer.AllClear();
+                        Conjurer.AllClear();
                        //カウントを全部falseに
 
-                       JackInTheBox.clearJackInTheBoxes();
+                        JackInTheBox.clearJackInTheBoxes();
                        //全部Marker消す
 
-                   },
-                   () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && Conjurer.IsThirdAdded(); },
-                   () =>
-                   {
-                       return PlayerControl.LocalPlayer.CanMove;
-                   },
+                    },
+                    () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && Conjurer.IsThirdAdded(); },
                     () =>
-                     {
-                         ConjurerStartButton.MaxTimer = 0f;
-                         ConjurerStartButton.Timer = 0f;
-                         Conjurer.AllCoolReset();
-                     },
-                   RoleClass.Conjurer.getStartButtonSprite(),
-                   new Vector3(0f, 1f, 0f),
-                   __instance,
-                   __instance.AbilityButton,
-                   KeyCode.F,
-                   49
+                    {
+                        return PlayerControl.LocalPlayer.CanMove;
+                    },
+                    () =>
+                        {
+                            ConjurerStartButton.MaxTimer = 0f;
+                            ConjurerStartButton.Timer = 0f;
+                            Conjurer.AllCoolReset();
+                        },
+                    RoleClass.Conjurer.getStartButtonSprite(),
+                    new Vector3(0f, 1f, 0f),
+                    __instance,
+                    __instance.AbilityButton,
+                    KeyCode.F,
+                    49
                 );
 
             ConjurerStartButton.buttonText = ModTranslation.getString("Kill");

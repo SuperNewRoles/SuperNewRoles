@@ -257,6 +257,10 @@ namespace SuperNewRoles.Roles
 
         public static void clearJackInTheBoxes()
         {
+            foreach (var box in AllJackInTheBoxes)
+            {
+                GameObject.Destroy(box.gameObject);
+            }
             boxesConvertedToVents = false;
             AllJackInTheBoxes = new List<JackInTheBox>();
         }
