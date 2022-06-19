@@ -96,7 +96,7 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
-                if (RoleHelpers.isRole(RoleId.JackalSeer))
+                if (PlayerControl.LocalPlayer.isRole(RoleId.JackalSeer))
                 {
                     JackalSeerPlayerOutLineTarget();
                 }

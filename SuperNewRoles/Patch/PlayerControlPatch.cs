@@ -177,7 +177,7 @@ namespace SuperNewRoles.Patches
                 __instance.Close();
                 return false;
             }
-            if (RoleHelpers.isRole(RoleId.RemoteSheriff))
+            if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
             {
                 if (RoleClass.RemoteSheriff.KillMaxCount > 0)
                 {
@@ -235,7 +235,7 @@ namespace SuperNewRoles.Patches
             {
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
-                    if (RoleHelpers.isRole(RoleId.RemoteSheriff))
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
                     {
                         if (__instance.isActiveAndEnabled && PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.CanMove && !__instance.isCoolingDown && RoleClass.RemoteSheriff.KillMaxCount > 0)
                         {
@@ -262,7 +262,7 @@ namespace SuperNewRoles.Patches
             }
             if (__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.CanMove)
             {
-                if (!(__instance.currentTarget.isRole(CustomRPC.RoleId.Bait) || __instance.currentTarget.isRole(CustomRPC.RoleId.NiceRedRidingHood)) && RoleHelpers.isRole(CustomRPC.RoleId.Vampire))
+                if (!(__instance.currentTarget.isRole(CustomRPC.RoleId.Bait) || __instance.currentTarget.isRole(CustomRPC.RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
                 {
                     PlayerControl.LocalPlayer.killTimer = RoleHelpers.getCoolTime(PlayerControl.LocalPlayer);
                     RoleClass.Vampire.target = __instance.currentTarget;
@@ -272,7 +272,7 @@ namespace SuperNewRoles.Patches
                 }
                 bool showAnimation = true;
                 /*
-                if (RoleHelpers.isRole(RoleType.Ninja) && Ninja.isStealthed(PlayerControl.LocalPlayer))
+                if (PlayerControl.LocalPlayer.isRole(RoleType.Ninja) && Ninja.isStealthed(PlayerControl.LocalPlayer))
                 {
                     showAnimation = false;
                 }
@@ -666,7 +666,7 @@ namespace SuperNewRoles.Patches
                 target.resetChange();
                 if (target.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
-                    if (RoleHelpers.isRole(RoleId.SideKiller))
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
                     {
                         var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
                         if (sideplayer != null)

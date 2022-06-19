@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
             {
                 if (ModeHandler.isMode(ModeId.Default))
                 {
-                    if (RoleHelpers.isRole(RoleId.SerialKiller) && RoleClass.SerialKiller.IsSuicideView)
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.SerialKiller) && RoleClass.SerialKiller.IsSuicideView)
                     {
                         IsViewButtonText = true;
                         RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
@@ -31,7 +31,7 @@ namespace SuperNewRoles.Roles
                 }
                 else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
-                    if (RoleHelpers.isRole(RoleId.SerialKiller))
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.SerialKiller))
                     {
                         IsViewButtonText = true;
                     }
@@ -53,7 +53,7 @@ namespace SuperNewRoles.Roles
                             }
                         }
                     }
-                    if (RoleHelpers.isRole(RoleId.SerialKiller) && RoleClass.SerialKiller.IsSuicideView)
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.SerialKiller) && RoleClass.SerialKiller.IsSuicideView)
                     {
                         RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
                     }

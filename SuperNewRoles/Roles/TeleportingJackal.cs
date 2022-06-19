@@ -77,7 +77,7 @@ namespace SuperNewRoles.Roles
             }
             public static void Postfix(PlayerControl __instance)
             {
-                if (RoleHelpers.isRole(RoleId.TeleportingJackal))
+                if (PlayerControl.LocalPlayer.isRole(RoleId.TeleportingJackal))
                 {
                     TeleportingJackalPlayerOutLineTarget();
                 }

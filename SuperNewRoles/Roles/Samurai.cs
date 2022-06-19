@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && RoleHelpers.isRole(CustomRPC.RoleId.Samurai))
+                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Samurai))
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Samurai.KillCoolTime);
                 }
@@ -18,7 +18,7 @@ namespace SuperNewRoles.Roles
         }
         public static void SetSamuraiButton()
         {
-            if (RoleHelpers.isRole(CustomRPC.RoleId.Samurai))
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Samurai))
             {
                 if (!RoleClass.Samurai.UseVent)
                 {

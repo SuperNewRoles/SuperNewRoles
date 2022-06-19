@@ -6,7 +6,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && RoleHelpers.isRole(CustomRPC.RoleId.Minimalist))
+                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Minimalist))
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Minimalist.KillCoolTime);
                 }
@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
         }
         public static void SetMinimalistButton()
         {
-            if (RoleHelpers.isRole(CustomRPC.RoleId.Minimalist))
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Minimalist))
             {
                 if (!RoleClass.Minimalist.UseVent)
                 {

@@ -75,7 +75,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Time += 3;
                     }
                 }
-                IntroDate RoleIntroDate2 = IntroDate.GetIntroDate(RoleHelpers.getRole(), PlayerControl.LocalPlayer);
+                IntroDate RoleIntroDate2 = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole(), PlayerControl.LocalPlayer);
                 string Chat2 = "";
                 string RoleName2 = ModTranslation.getString(RoleIntroDate2.NameKey + "Name");
                 Chat2 = Chat2 + "あなたの役職は「" + RoleName2 + "」です！\n";
