@@ -8,6 +8,7 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
+using SuperNewRoles.CustomOption;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
@@ -61,10 +62,12 @@ namespace SuperNewRoles.Buttons
         public static CustomButton GhostMechanicRepairButton;
         public static CustomButton EvilHackerButton;
         public static CustomButton EvilHackerMadmateSetting;
+        public static CustomButton PositionSwapperButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
+        public static TMPro.TMP_Text PositionSwapperNumText;
 
         public static void setCustomButtonCooldowns()
         {
@@ -1540,6 +1543,51 @@ namespace SuperNewRoles.Buttons
             {
                 buttonText = ModTranslation.getString("SidekickName"),
                 showButtonText = true
+            };
+
+            PositionSwapperButton = new CustomButton(
+                () =>
+                {
+                    RoleClass.PositionSwapper.SwapCount--;
+                    /*if (RoleClass.PositionSwapper.SwapCount >= 1){
+                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), RoleClass.PositionSwapper.SwapCount);
+                    }
+                    else{
+                        PositionSwapperNumText.text = "";
+                    }*/
+                    //RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
+                    PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(255F, 255F, 255F);
+                    PositionSwapper.SwapStart();
+                    PositionSwapper.ResetCoolDown();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper); },
+                () =>
+                {
+                    float swapcount = RoleClass.PositionSwapper.SwapCount;
+                    if (swapcount > 0)
+                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), swapcount);
+                    else
+                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
+                    if (!PlayerControl.LocalPlayer.CanMove) return false;
+                    if (RoleClass.PositionSwapper.SwapCount <= 0) return false;
+                    return true && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { PositionSwapper.EndMeeting(); },
+                RoleClass.PositionSwapper.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            );
+            {
+                PositionSwapperNumText = GameObject.Instantiate(PositionSwapperButton.actionButton.cooldownTimerText, PositionSwapperButton.actionButton.cooldownTimerText.transform.parent);
+                PositionSwapperNumText.text = "";
+                PositionSwapperNumText.enableWordWrapping = false;
+                PositionSwapperNumText.transform.localScale = Vector3.one * 0.5f;
+                PositionSwapperNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+                PositionSwapperButton.buttonText = ModTranslation.getString("PositionSwapperButtonName");
+                PositionSwapperButton.showButtonText = true;
             };
 
             setCustomButtonCooldowns();

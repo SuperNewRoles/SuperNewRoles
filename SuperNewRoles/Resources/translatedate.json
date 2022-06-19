@@ -2996,6 +2996,30 @@
         "0" : "{0}'s Role is {1}!" ,
         "11" : "{0}\u306e\u5f79\u8077\u306f{1}\u3067\u3059!"
         } ,
+ "PositionSwapperName" : {
+        "0" : "Position Swapper" ,
+        "11" : "\u30dd\u30b8\u30b7\u30e7\u30f3\u30b9\u30ef\u30c3\u30d1\u30fc"
+        } ,
+ "PositionSwapperTitle1" : {
+        "0" : "Let's Swap crewmates." ,
+        "11" : "\u4f4d\u7f6e\u4ea4\u63db\u3067\u56f0\u60d1\u3055\u305b\u308d"
+        } ,
+ "SettingPositionSwapperSwapCountName" : {
+        "0" : "Swapping limits" ,
+        "11" : "\u30b9\u30ef\u30c3\u30d7\u5236\u9650\u56de\u6570"
+        } ,
+ "SettingPositionSwapperSwapCoolTimeName" : {
+        "0" : "Swapping cooltime" ,
+        "11" : "\u30b9\u30ef\u30c3\u30d7\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+        } ,
+ "PositionSwapperNumTextName" : {
+        "0" : "Limits:{0}" ,
+        "11" : "\u6b8b\u308a{0}\u56de"
+        } ,
+ "PositionSwapperButtonName" : {
+        "0" : "PositionSwap" ,
+        "11" : "\u30b9\u30ef\u30c3\u30d7"
+        } ,
  "TunaName" : {
         "0" : "Tuna" ,
         "11" : "\u30de\u30b0\u30ed"

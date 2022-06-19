@@ -747,6 +747,12 @@ WereWolfMediumText
 WereWolfMeetingNormal
 WereWolfMeetingAbility
 WereWolfMediumAbilityText
+PositionSwapperName
+PositionSwapperTitle1
+SettingPositionSwapperSwapCountName
+SettingPositionSwapperSwapCoolTimeName
+PositionSwapperNumTextName
+PositionSwapperButtonName
 TunaName
 TunaTitle1
 TunaStoppingTimeSetting

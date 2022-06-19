@@ -587,6 +587,9 @@ namespace SuperNewRoles
                 case CustomRPC.RoleId.HauntedWolf:
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.Add(player);
                     break;
+                case CustomRPC.RoleId.PositionSwapper:
+                    Roles.RoleClass.PositionSwapper.PositionSwapperPlayer.Add(player);
+                    break;
                 case CustomRPC.RoleId.Tuna:
                     Roles.RoleClass.Tuna.TunaPlayer.Add(player);
                     break;
@@ -920,6 +923,9 @@ namespace SuperNewRoles
                     break;
                 case CustomRPC.RoleId.HauntedWolf:
                     Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.PositionSwapper):
+                    Roles.RoleClass.PositionSwapper.PositionSwapperPlayer.RemoveAll(ClearRemove);
                     break;
                 case CustomRPC.RoleId.Tuna:
                     Roles.RoleClass.Tuna.TunaPlayer.RemoveAll(ClearRemove);
@@ -1829,6 +1835,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.HauntedWolf;
+                }
+                else if (Roles.RoleClass.PositionSwapper.PositionSwapperPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.PositionSwapper;
                 }
                 else if (Roles.RoleClass.Tuna.TunaPlayer.IsCheckListPlayerControl(player))
                 {

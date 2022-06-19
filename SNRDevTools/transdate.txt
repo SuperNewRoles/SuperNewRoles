@@ -748,6 +748,12 @@ WereWolfMediumText,Search out the role of the dead and win!,死んだ人の役�
 WereWolfMeetingNormal,This is Meeting Time.,今回は会議タイムです。
 WereWolfMeetingAbility,This is Use to Ability Time.,今回は能力使用タイムです。
 WereWolfMediumAbilityText,{0}'s Role is {1}!,{0}の役職は{1}です!
+PositionSwapperName,Position Swapper,ポジションスワッパー
+PositionSwapperTitle1,Let's Swap crewmates.,位置交換で困惑させろ
+SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数
+SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクールタイム
+PositionSwapperNumTextName,Limits:{0},残り{0}回
+PositionSwapperButtonName,PositionSwap,スワップ
 TunaName,Tuna,マグロ
 TunaTitle1,Always move!,常に動け！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間

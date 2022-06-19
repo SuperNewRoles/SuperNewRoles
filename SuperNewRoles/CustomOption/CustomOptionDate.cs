@@ -519,6 +519,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SeerFriendsIsUseVent;
         public static CustomOption SeerFriendsIsImpostorLight;
 
+        public static CustomRoleOption PositionSwapperOption;
+        public static CustomOption PositionSwapperPlayerCount;
+        public static CustomOption PositionSwapperSwapCount;
+        public static CustomOption PositionSwapperCoolTime;
+        public static CustomOption PositionSwapperDurationTime;
+
         public static CustomRoleOption TunaOption;
         public static CustomOption TunaPlayerCount;
         public static CustomOption TunaStoppingTime;
@@ -1214,6 +1220,11 @@ namespace SuperNewRoles.CustomOption
 
             HauntedWolfOption = new CustomRoleOption(530, true, CustomOptionType.Crewmate, "HauntedWolfName", RoleClass.HauntedWolf.color, 1);
             HauntedWolfPlayerCount = CustomOption.Create(531, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HauntedWolfOption);
+
+            PositionSwapperOption = new CustomRoleOption(563, false, CustomOptionType.Impostor, "PositionSwapperName", RoleClass.PositionSwapper.color, 1);
+            PositionSwapperPlayerCount = CustomOption.Create(564, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PositionSwapperOption);
+            PositionSwapperSwapCount = CustomOption.Create(419, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCountName", 1f, 0f, 99f, 1f, PositionSwapperOption);
+            PositionSwapperCoolTime = CustomOption.Create(419, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCoolTimeName", 2.5f, 2.5f, 90f, 2.5f, PositionSwapperOption);
 
             TunaOption = new CustomRoleOption(552, true, CustomOptionType.Neutral, "TunaName", RoleClass.Tuna.color, 1);
             TunaPlayerCount = CustomOption.Create(553, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TunaOption);
