@@ -890,24 +890,30 @@ namespace SuperNewRoles.CustomRPC
             var SwapperPlayer = ModHelpers.playerById(SwapperID);
             var SwapPosition = SwapPlayer.transform.position;
             var SwapperPosition = SwapperPlayer.transform.position;
+            //Text
+            var rand = new System.Random();
             if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)*/){
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
                 //SwapPlayer.transform.position = SwapperPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
+                if (rand.Next(1, 20) == 1){
+                new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
+                }
+                else{
+                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
+                }
                 return;
             }
             else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId){
                 CachedPlayer.LocalPlayer.transform.position = SwapperPosition;
-            SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");
-            }
-            /*//Text
-            var rand = new System.Random();
-            if (rand.Next(1, 20) == 1){
+                SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");
+                if (rand.Next(1, 20) == 1){
                 new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
+                }
+                else{
+                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
+                }
             }
-            else{
-                new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
-            }*/
         }
         public static void UseAdminTime(float time)
         {
