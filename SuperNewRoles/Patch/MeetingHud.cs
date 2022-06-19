@@ -439,6 +439,10 @@ namespace SuperNewRoles.Patch
                                 }
                             }
                         }
+                        else if (exiledPlayer.Object.IsBot())
+                        {
+
+                        }
                         else
                         {
                             foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
@@ -447,8 +451,8 @@ namespace SuperNewRoles.Patch
                                 {
                                     exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + exiledPlayer.Object.getDefaultName(), p2);
                                 }
-                                new LateTask(() => exiledPlayer.Object.RpcSetName(p2.getDefaultName()), 5f);
                             }
+                            new LateTask(() => exiledPlayer.Object.RpcSetName(exiledPlayer.Object.getDefaultName()), 5f);
                         }
                     }
                 }
