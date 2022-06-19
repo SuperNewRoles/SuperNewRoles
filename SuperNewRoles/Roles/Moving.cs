@@ -8,7 +8,7 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetCoolDown()
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilMoving))
+            if (RoleHelpers.isRole(CustomRPC.RoleId.EvilMoving))
             {
                 HudManagerStartPatch.MovingTpButton.MaxTimer = RoleClass.EvilMoving.CoolTime;
             }
@@ -45,7 +45,7 @@ namespace SuperNewRoles.Roles
         public static void EndMeeting()
         {
             HudManagerStartPatch.MovingSetButton.Timer = 0f;
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilMoving))
+            if (RoleHelpers.isRole(CustomRPC.RoleId.EvilMoving))
             {
                 HudManagerStartPatch.MovingTpButton.MaxTimer = RoleClass.EvilMoving.CoolTime;
             }

@@ -7,7 +7,7 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetKillCoolDown()
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.RemoteSheriff))
+            if (RoleHelpers.isRole(CustomRPC.RoleId.RemoteSheriff))
             {
                 HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
                 HudManagerStartPatch.SheriffKillButton.Timer = RoleClass.RemoteSheriff.CoolTime;
@@ -93,7 +93,7 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.RemoteSheriff))
+            if (RoleHelpers.isRole(CustomRPC.RoleId.RemoteSheriff))
             {
                 HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
                 RoleClass.Sheriff.ButtonTimer = DateTime.Now;

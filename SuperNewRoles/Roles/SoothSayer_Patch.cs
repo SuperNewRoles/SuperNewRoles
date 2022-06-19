@@ -57,7 +57,7 @@ namespace SuperNewRoles.Roles
         }
         static void Event(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.SoothSayer) && PlayerControl.LocalPlayer.isAlive() && RoleClass.SoothSayer.Count >= 1)
+            if (RoleHelpers.isRole(CustomRPC.RoleId.SoothSayer) && PlayerControl.LocalPlayer.isAlive() && RoleClass.SoothSayer.Count >= 1)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -119,7 +119,7 @@ namespace SuperNewRoles.Roles
         }
         static void spiritEvent(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.SpiritMedium) && PlayerControl.LocalPlayer.isAlive() && RoleClass.SpiritMedium.MaxCount >= 1)
+            if (RoleHelpers.isRole(CustomRPC.RoleId.SpiritMedium) && PlayerControl.LocalPlayer.isAlive() && RoleClass.SpiritMedium.MaxCount >= 1)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {

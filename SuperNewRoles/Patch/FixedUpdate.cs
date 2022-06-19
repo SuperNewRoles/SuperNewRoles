@@ -102,7 +102,7 @@ namespace SuperNewRoles.Patch
                         if (PlayerControl.LocalPlayer.isAlive())
                         {
                             if (PlayerControl.LocalPlayer.isImpostor()) { SetTarget.ImpostorSetTarget(); }
-                            var MyRole = PlayerControl.LocalPlayer.getRole();
+                            var MyRole = RoleHelpers.getRole();
                             switch (MyRole)
                             {
                                 case RoleId.Researcher:
@@ -152,14 +152,14 @@ namespace SuperNewRoles.Patch
                         }
                         else
                         {
-                            if (PlayerControl.LocalPlayer.isRole(RoleId.Bait))
+                            if (RoleHelpers.isRole(RoleId.Bait))
                             {
                                 if (!RoleClass.Bait.Reported)
                                 {
                                     Bait.BaitUpdate.Postfix(__instance);
                                 }
                             }
-                            else if (PlayerControl.LocalPlayer.isRole(RoleId.SideKiller))
+                            else if (RoleHelpers.isRole(RoleId.SideKiller))
                             {
                                 var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
                                 if (sideplayer != null)

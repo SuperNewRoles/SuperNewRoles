@@ -114,8 +114,8 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = ImpostorTeams;
                 }
-                if ((PlayerControl.LocalPlayer.isRole(RoleId.JackalFriends) ||
-                    PlayerControl.LocalPlayer.isRole(RoleId.SeerFriends) || PlayerControl.LocalPlayer.isRole(RoleId.MayorFriends)) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
+                if ((RoleHelpers.isRole(RoleId.JackalFriends) ||
+                    RoleHelpers.isRole(RoleId.SeerFriends) || RoleHelpers.isRole(RoleId.MayorFriends)) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
                     int JackalNum = 0;
@@ -130,7 +130,7 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = JackalTeams;
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal))
+                if (RoleHelpers.isRole(CustomRPC.RoleId.Jackal))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
                     int JackalNum = 0;
@@ -144,7 +144,7 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = JackalTeams;
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalSeer))
+                if (RoleHelpers.isRole(CustomRPC.RoleId.JackalSeer))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
                     int JackalNum = 0;
@@ -158,7 +158,7 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = JackalTeams;
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
+                if (RoleHelpers.isRole(CustomRPC.RoleId.Fox))
                 {
                     Il2CppSystem.Collections.Generic.List<PlayerControl> FoxTeams = new();
                     int FoxNum = 0;
@@ -196,13 +196,13 @@ namespace SuperNewRoles.Patches
             {
                 if (PlayerControl.LocalPlayer.isNeutral())
                 {
-                    IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
+                    IntroDate Intro = IntroDate.GetIntroDate(RoleHelpers.getRole());
                     __instance.BackgroundBar.material.color = Intro.color;
                     __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
                     __instance.TeamTitle.color = Intro.color;
                     __instance.ImpostorText.text = "";
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadMate) && CustomOption.CustomOptions.MadMateIsCheckImpostor.getBool())
+                if (RoleHelpers.isRole(CustomRPC.RoleId.MadMate) && CustomOption.CustomOptions.MadMateIsCheckImpostor.getBool())
                 {
                     IntroDate Intro = IntroDate.MadMateIntro;
                     __instance.BackgroundBar.material.color = Intro.color;
@@ -210,7 +210,7 @@ namespace SuperNewRoles.Patches
                     __instance.TeamTitle.color = Intro.color;
                     __instance.ImpostorText.text = "";
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && CustomOption.CustomOptions.JackalFriendsIsCheckJackal.getBool())
+                if (RoleHelpers.isRole(CustomRPC.RoleId.JackalFriends) && CustomOption.CustomOptions.JackalFriendsIsCheckJackal.getBool())
                 {
                     IntroDate Intro = IntroDate.JackalFriendsIntro;
                     __instance.BackgroundBar.material.color = Intro.color;
@@ -218,7 +218,7 @@ namespace SuperNewRoles.Patches
                     __instance.TeamTitle.color = Intro.color;
                     __instance.ImpostorText.text = "";
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.SeerFriends) && CustomOption.CustomOptions.SeerFriendsIsCheckJackal.getBool())
+                if (RoleHelpers.isRole(CustomRPC.RoleId.SeerFriends) && CustomOption.CustomOptions.SeerFriendsIsCheckJackal.getBool())
                 {
                     IntroDate Intro = IntroDate.SeerFriendsIntro;
                     __instance.BackgroundBar.material.color = Intro.color;
@@ -226,7 +226,7 @@ namespace SuperNewRoles.Patches
                     __instance.TeamTitle.color = Intro.color;
                     __instance.ImpostorText.text = "";
                 }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MayorFriends) && CustomOption.CustomOptions.MayorFriendsIsCheckJackal.getBool())
+                if (RoleHelpers.isRole(CustomRPC.RoleId.MayorFriends) && CustomOption.CustomOptions.MayorFriendsIsCheckJackal.getBool())
                 {
                     IntroDate Intro = IntroDate.MayorFriendsIntro;
                     __instance.BackgroundBar.material.color = Intro.color;
@@ -249,7 +249,7 @@ namespace SuperNewRoles.Patches
             {
                 float SetTime = 0;
                 bool Flag = true;
-                switch (PlayerControl.LocalPlayer.getRole())
+                switch (RoleHelpers.getRole())
                 {
                     case RoleId.DarkKiller:
                         SetTime = RoleClass.DarkKiller.KillCoolTime;
@@ -294,7 +294,7 @@ namespace SuperNewRoles.Patches
                     CustomButton.MeetingEndedUpdate();
                     if (ModeHandler.isMode(ModeId.Default))
                     {
-                        var myrole = PlayerControl.LocalPlayer.getRole();
+                        var myrole = RoleHelpers.getRole();
                         if (myrole is not (CustomRPC.RoleId.DefaultRole or CustomRPC.RoleId.Bestfalsecharge))
                         {
                             var date = Intro.IntroDate.GetIntroDate(myrole);

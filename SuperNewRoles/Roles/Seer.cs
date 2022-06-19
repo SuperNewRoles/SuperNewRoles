@@ -21,7 +21,7 @@ namespace SuperNewRoles.Roles
         {
             public static void WrapUpPostfix(GameData.PlayerInfo exiled)
             {
-                var role = PlayerControl.LocalPlayer.getRole();
+                var role = RoleHelpers.getRole();
                 if (role is RoleId.Seer or RoleId.MadSeer or RoleId.EvilSeer or RoleId.SeerFriends or RoleId.JackalSeer or RoleId.SidekickSeer)
                 {
                     List<Vector3> DeadBodyPositions = new();
@@ -95,7 +95,7 @@ namespace SuperNewRoles.Roles
             {
                 public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
                 {
-                    var role = PlayerControl.LocalPlayer.getRole();
+                    var role = RoleHelpers.getRole();
                     if (role is RoleId.Seer or RoleId.MadSeer or RoleId.EvilSeer or RoleId.SeerFriends or RoleId.JackalSeer or RoleId.SidekickSeer)
                     {
                         bool ModeFlag = false;

@@ -8,7 +8,7 @@ namespace SuperNewRoles.Roles
     {
         public static void WrapUp(GameData.PlayerInfo player)
         {
-            if (PlayerControl.LocalPlayer.isDead() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceRedRidingHood))
+            if (PlayerControl.LocalPlayer.isDead() && RoleHelpers.isRole(CustomRPC.RoleId.NiceRedRidingHood))
             {
                 if (RoleClass.NiceRedRidingHood.Count >= 1)
                 {

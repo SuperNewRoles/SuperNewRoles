@@ -52,7 +52,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void RoleTextHandler(IntroCutscene __instance)
         {
-            var myrole = PlayerControl.LocalPlayer.getRole();
+            var myrole = RoleHelpers.getRole();
             if (myrole is not (CustomRPC.RoleId.DefaultRole or CustomRPC.RoleId.Bestfalsecharge))
             {
                 var date = SuperNewRoles.Intro.IntroDate.GetIntroDate(myrole);

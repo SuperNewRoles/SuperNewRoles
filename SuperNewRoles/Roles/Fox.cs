@@ -8,7 +8,7 @@ namespace SuperNewRoles.Roles
     {
         public static void SetFoxButton()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Fox))
+            if (RoleHelpers.isRole(RoleId.Fox))
             {
                 if (!RoleClass.Fox.UseReport)
                 {

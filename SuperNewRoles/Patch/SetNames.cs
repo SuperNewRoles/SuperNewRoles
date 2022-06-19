@@ -224,7 +224,7 @@ namespace SuperNewRoles.Patch
                     SetPlayerNameText(side, side.nameText.text + suffix);
                 }
             }
-            if ((PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
+            if ((PlayerControl.LocalPlayer.isDead() || RoleHelpers.isRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
             {
                 foreach (List<PlayerControl> ps in RoleClass.Lovers.LoversPlayer)
                 {
@@ -240,7 +240,7 @@ namespace SuperNewRoles.Patch
         }
         public static void DemonSet()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Demon) || PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God))
+            if (RoleHelpers.isRole(RoleId.Demon) || PlayerControl.LocalPlayer.isDead() || RoleHelpers.isRole(RoleId.God))
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
@@ -256,7 +256,7 @@ namespace SuperNewRoles.Patch
         }
         public static void ArsonistSet()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Arsonist) || PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God))
+            if (RoleHelpers.isRole(RoleId.Arsonist) || PlayerControl.LocalPlayer.isDead() || RoleHelpers.isRole(RoleId.God))
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
@@ -293,7 +293,7 @@ namespace SuperNewRoles.Patch
         public static void Postfix(PlayerControl __instance)
         {
             SetNamesClass.resetNameTagsAndColors();
-            RoleId LocalRole = PlayerControl.LocalPlayer.getRole();
+            RoleId LocalRole = RoleHelpers.getRole();
             if (PlayerControl.LocalPlayer.isDead() && LocalRole != RoleId.NiceRedRidingHood)
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)

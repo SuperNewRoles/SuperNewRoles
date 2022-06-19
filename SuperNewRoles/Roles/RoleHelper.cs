@@ -1276,6 +1276,14 @@ namespace SuperNewRoles
             }
             return false;
         }
+        public static bool isRole(RoleId role, bool IsCache = true)
+        {
+            return RoleHelpers.isRole(role, IsCache);
+        }
+        public static bool isRole(params RoleId[] roles)
+        {
+            return RoleHelpers.isRole(roles);
+        }
         public static float getCoolTime(PlayerControl __instance)
         {
             float addition = PlayerControl.GameOptions.killCooldown;
@@ -1378,6 +1386,10 @@ namespace SuperNewRoles
             {
                 return false;
             }
+        }
+        public static RoleId getRole(bool IsCache = true)
+        {
+            return getRole(PlayerControl.LocalPlayer, IsCache);
         }
         public static RoleId getRole(this PlayerControl player, bool IsChache = true)
         {

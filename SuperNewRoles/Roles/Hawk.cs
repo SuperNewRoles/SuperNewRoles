@@ -7,7 +7,7 @@ namespace SuperNewRoles.Roles
         public static void TimerEnd()
         {
             /**
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
+            if (RoleHelpers.isRole(CustomRPC.RoleId.Hawk))
             {
                 MapBehaviour.Instance.Close();
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);

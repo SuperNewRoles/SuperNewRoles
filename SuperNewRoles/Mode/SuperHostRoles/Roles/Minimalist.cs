@@ -14,7 +14,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             public static void Postfix(HudManager __instance, [HarmonyArgument(0)] bool isActive)
             {
                 if (!AmongUsClient.Instance.AmHost) return;
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Minimalist))
+                if (RoleHelpers.isRole(CustomRPC.RoleId.Minimalist))
                 {
                     __instance.ReportButton.ToggleVisible(visible: RoleClass.Minimalist.UseReport);
                     __instance.SabotageButton.ToggleVisible(visible: RoleClass.Minimalist.UseSabo);

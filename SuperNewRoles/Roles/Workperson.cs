@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(ShipStatus __instance)
             {
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Workperson))
+                if (RoleHelpers.isRole(CustomRPC.RoleId.Workperson))
                 {
                     PlayerControl.LocalPlayer.generateAndAssignTasks((int)CustomOptions.WorkpersonCommonTask.getFloat(), (int)CustomOptions.WorkpersonShortTask.getFloat(), (int)CustomOptions.WorkpersonLongTask.getFloat());
                 }

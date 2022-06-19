@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
             {
                 RoleClass.IsStart = true;
             }, time, "IsStartOn");
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Pursuer))
+            if (RoleHelpers.isRole(CustomRPC.RoleId.Pursuer))
             {
                 RoleClass.Pursuer.arrow.arrow.SetActive(false);
                 RoleClass.Pursuer.arrow.arrow.SetActive(true);
