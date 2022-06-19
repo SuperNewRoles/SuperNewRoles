@@ -18,22 +18,19 @@ namespace SuperNewRoles.Roles
         }
         public static void SwapStart(){
             List<PlayerControl> AlivePlayer = new();
-            List<PlayerControl> SwapperPlayer = new();
+            //List<PlayerControl> SwapperPlayer = new();
             AlivePlayer.Clear();
-            SwapperPlayer.Clear();
+            //SwapperPlayer.Clear();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.isAlive() && p.CanMove && !p.isImpostor())
                 {
                     AlivePlayer.Add(p);
                 }
-                /*else{
-                    AlivePlayer.Remove(p);
-                }*/
             }
-            SwapperPlayer.Add(PlayerControl.LocalPlayer);
+            //SwapperPlayer.Add(PlayerControl.LocalPlayer);
             var RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
-            var PushSwapper = ModHelpers.GetRandom<PlayerControl>(SwapperPlayer);
+            var PushSwapper = PlayerControl.LocalPlayer;
 
             CustomRPC.RPCProcedure.PositionSwapperTP(RandomPlayer.PlayerId, PushSwapper.PlayerId);
             //MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
