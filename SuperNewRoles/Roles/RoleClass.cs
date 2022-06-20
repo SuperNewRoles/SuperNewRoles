@@ -137,6 +137,7 @@ namespace SuperNewRoles.Roles
             Tuna.ClearAndReload();
             Mafia.ClearAndReload();
             BlackCat.ClearAndReload();
+            SecretlyKiller.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2247,6 +2248,16 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.BlackCatCheckImpostorTask.getString().Replace("%", "")) / 100f));
+            }
+        }
+        public static class SecretlyKiller
+        {
+            public static List<PlayerControl> SecretlyKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                SecretlyKillerPlayer = new List<PlayerControl>();
+                
             }
         }
         //新ロールクラス

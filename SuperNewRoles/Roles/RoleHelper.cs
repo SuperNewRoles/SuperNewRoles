@@ -599,6 +599,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.SecretlyKiller):
+                    Roles.RoleClass.SecretlyKiller.SecretlyKillerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("[SetRole]:No Method Found for Role Type {role}");
@@ -935,6 +938,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.SecretlyKiller):
+                    Roles.RoleClass.SecretlyKiller.SecretlyKillerPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1851,6 +1857,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.BlackCat;
+                }
+                else if (Roles.RoleClass.SecretlyKiller.SecretlyKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SecretlyKiller;
                 }
                 //ロールチェック
             }

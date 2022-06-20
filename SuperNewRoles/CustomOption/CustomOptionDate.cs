@@ -608,6 +608,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption EvilHackerOption;
         public static CustomOption EvilHackerPlayerCount;
         public static CustomOption EvilHackerMadmateSetting;
+
+        public static CustomRoleOption SecretlyKillerOption;
+        public static CustomOption SecretlyKillerPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1245,6 +1248,9 @@ namespace SuperNewRoles.CustomOption
             BlackCatCheckImpostorTask = CustomOption.Create(562, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, BlackCatIsCheckImpostor);
             BlackCatIsUseVent = CustomOption.Create(563, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, BlackCatOption);
             BlackCatIsImpostorLight = CustomOption.Create(564, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, BlackCatOption);
+
+            SecretlyKillerOption = new CustomRoleOption(566, true, CustomOptionType.Impostor, "SecretlyKillerName",RoleClass.SecretlyKiller.color, 1);
+            SecretlyKillerPlayerCount = CustomOption.Create(567, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SecretlyKillerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

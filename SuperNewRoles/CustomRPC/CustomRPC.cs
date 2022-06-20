@@ -126,6 +126,7 @@ namespace SuperNewRoles.CustomRPC
         Tuna,
         Mafia,
         BlackCat,
+        SecretlyKiller,
         //RoleId
     }
 
