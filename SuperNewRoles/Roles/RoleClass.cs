@@ -2254,10 +2254,25 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SecretlyKillerPlayer;
             public static Color32 color = ImpostorRed;
+            public static float SecretlyKillerKillCoolTime;
+            public static bool SecretlyKillerIsBlackOutKillCharge;
+            public static int SecretlyKillLimit;
+            public static float SecretlyKillCoolTime;
+            public static DateTime ButtonTimer;
+            public static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.KillButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 SecretlyKillerPlayer = new List<PlayerControl>();
-                
+                SecretlyKillCoolTime = CustomOptions.SecretlyKillerKillCoolTime.getFloat();
+                SecretlyKillerIsBlackOutKillCharge = CustomOptions.SecretlyKillerIsBlackOutKillCharge.getBool();
+                SecretlyKillLimit = (int)CustomOptions.SecretlyKillerSecretKillLimit.getFloat();
+                SecretlyKillCoolTime = CustomOptions.SecretlyKillerSecretKillCoolTime.getFloat();
             }
         }
         //新ロールクラス

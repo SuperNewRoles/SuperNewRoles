@@ -611,7 +611,10 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption SecretlyKillerOption;
         public static CustomOption SecretlyKillerPlayerCount;
+        public static CustomOption SecretlyKillerKillCoolTime;
         public static CustomOption SecretlyKillerIsBlackOutKillCharge;
+        public static CustomOption SecretlyKillerSecretKillLimit;
+        public static CustomOption SecretlyKillerSecretKillCoolTime;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1252,7 +1255,10 @@ namespace SuperNewRoles.CustomOption
 
             SecretlyKillerOption = new CustomRoleOption(566, true, CustomOptionType.Impostor, "SecretlyKillerName",RoleClass.SecretlyKiller.color, 1);
             SecretlyKillerPlayerCount = CustomOption.Create(567, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SecretlyKillerOption);
-            SecretlyKillerIsBlackOutKillCharge = CustomOption.Create(563, true, CustomOptionType.Crewmate, "SettingBlackoutCharge", false, SecretlyKillerOption);
+            SecretlyKillerKillCoolTime = CustomOption.Create(568, true, CustomOptionType.Impostor, "SheriffCoolDownSetting", 2.5f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
+            SecretlyKillerIsBlackOutKillCharge = CustomOption.Create(569, true, CustomOptionType.Impostor, "SettingBlackoutCharge", false, SecretlyKillerOption);
+            SecretlyKillerSecretKillLimit = CustomOption.Create(570, true, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 99f, 1f, SecretlyKillerOption);
+            SecretlyKillerSecretKillCoolTime = CustomOption.Create(571, true, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 45f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
