@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
+using System.Text;
 using UnhollowerBaseLib;
 using UnityEngine;
 
@@ -22,11 +22,11 @@ namespace SuperNewRoles.CustomCosmetics
             try
             {
                 byte[] bytes = File.ReadAllBytes(path);
-                Texture2D texture = new Texture2D(2, 2);
+                Texture2D texture = new(2, 2);
                 var Array = (Il2CppStructArray<byte>)bytes;
                 LoadImage.Invoke(texture.Pointer, Array.Pointer, false);
 
-                Rect rect = new Rect(0f, 0f, texture.width, texture.height);
+                Rect rect = new(0f, 0f, texture.width, texture.height);
                 return Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 115f);
             }
             catch { }

@@ -1,9 +1,9 @@
-﻿using InnerNet;
+using System.Collections.Generic;
+using System.Linq;
+using InnerNet;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Roles;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using static SuperNewRoles.Patch.ShareGameVersion;
 
@@ -44,7 +44,7 @@ namespace SuperNewRoles
         {
             if (player == null) return;
 
-            List<Intro.IntroDate> infos = new List<Intro.IntroDate>() { Intro.IntroDate.GetIntroDate(player.getRole(),player) };
+            List<Intro.IntroDate> infos = new() { Intro.IntroDate.GetIntroDate(player.getRole(), player) };
 
             var toRemove = new List<PlayerTask>();
             var aaa = false;
@@ -54,10 +54,11 @@ namespace SuperNewRoles
                 var textTask = t.gameObject.GetComponent<ImportantTextTask>();
                 if (textTask != null)
                 {
-                    if (aaa == false) {
+                    if (aaa == false)
+                    {
                         mytxt = textTask.Text;
                     }
-                    var info = infos.FirstOrDefault(x => textTask.Text.StartsWith(ModTranslation.getString(x.NameKey+"Name")));
+                    var info = infos.FirstOrDefault(x => textTask.Text.StartsWith(ModTranslation.getString(x.NameKey + "Name")));
                     if (info != null)
                         infos.Remove(info); // TextTask for this RoleInfo does not have to be added, as it already exists
                     else
@@ -81,7 +82,7 @@ namespace SuperNewRoles
                 task.Text = CustomOption.CustomOptions.cs(roleInfo.color, $"{ModTranslation.getString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
                 if (player.IsLovers())
                 {
-                    task.Text += "\n" + ModHelpers.cs(RoleClass.Lovers.color,ModTranslation.getString("LoversName")+": "+ string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                    task.Text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, ModTranslation.getString("LoversName") + ": " + string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
                 }
                 if (!player.isGhostRole(RoleId.DefaultRole))
                 {

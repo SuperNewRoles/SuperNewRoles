@@ -1,13 +1,13 @@
-﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TMPro;
 using UnityEngine;
 
@@ -15,7 +15,7 @@ namespace SuperNewRoles.Patch
 {
     public class SetNamesClass
     {
-        public static Dictionary<int, string> AllNames = new Dictionary<int, string>();
+        public static Dictionary<int, string> AllNames = new();
 
         public static void SetPlayerNameColor(PlayerControl p, Color color)
         {
@@ -62,7 +62,7 @@ namespace SuperNewRoles.Patch
             }
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
-                player.nameText.text =  ModHelpers.hidePlayerName(PlayerControl.LocalPlayer, player) ? "" : player.CurrentOutfit.PlayerName;
+                player.nameText.text = ModHelpers.hidePlayerName(PlayerControl.LocalPlayer, player) ? "" : player.CurrentOutfit.PlayerName;
                 if (PlayerControl.LocalPlayer.isImpostor() && (player.isImpostor() || player.isRole(RoleId.Egoist)))
                 {
                     SetPlayerNameColor(player, RoleClass.ImpostorRed);
@@ -73,8 +73,8 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
-        public static Dictionary<byte, TextMeshPro> PlayerInfos = new Dictionary<byte, TextMeshPro>();
-        public static Dictionary<byte, TextMeshPro> MeetingPlayerInfos = new Dictionary<byte, TextMeshPro>();
+        public static Dictionary<byte, TextMeshPro> PlayerInfos = new();
+        public static Dictionary<byte, TextMeshPro> MeetingPlayerInfos = new();
 
         public static void SetPlayerRoleInfoView(PlayerControl p, Color roleColors, string roleNames, Color? GhostRoleColor = null, string GhostRoleNames = "")
         {
@@ -107,12 +107,12 @@ namespace SuperNewRoles.Patch
             if (meetingInfo != null && playerVoteArea != null)
             {
                 var playerName = playerVoteArea.NameText;
-                playerName.transform.localPosition = new Vector3(0.3384f, (0.0311f + 0.0683f), -0.1f);
+                playerName.transform.localPosition = new Vector3(0.3384f, 0.0311f + 0.0683f, -0.1f);
             }
             string TaskText = "";
             try
             {
-                if (!p.isImpostor())
+                if (!p.isClearTask())
                 {
                     if (commsActive)
                     {
@@ -148,7 +148,8 @@ namespace SuperNewRoles.Patch
             string GhostroleNames = "";
             Color? GhostroleColors = null;
             var role = p.getRole();
-            if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && p.isAlive())) {
+            if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && p.isAlive()))
+            {
                 if (p.isImpostor())
                 {
                     roleNames = "ImpostorName";
@@ -159,14 +160,16 @@ namespace SuperNewRoles.Patch
                     roleNames = "CrewMateName";
                     roleColors = RoleClass.CrewmateWhite;
                 }
-            } else
+            }
+            else
             {
                 var introdate = Intro.IntroDate.GetIntroDate(role);
                 roleNames = introdate.Name;
                 roleColors = introdate.color;
             }
             var GhostRole = p.getGhostRole();
-            if (GhostRole != RoleId.DefaultRole) {
+            if (GhostRole != RoleId.DefaultRole)
+            {
                 var GhostIntro = IntroDate.GetIntroDate(GhostRole);
                 GhostroleNames = GhostIntro.Name;
                 GhostroleColors = GhostIntro.color;
@@ -197,7 +200,8 @@ namespace SuperNewRoles.Patch
             }
             if (!PlayerControl.LocalPlayer.isAlive() && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
             {
-                foreach (List<PlayerControl> ps in RoleClass.Quarreled.QuarreledPlayer) {
+                foreach (List<PlayerControl> ps in RoleClass.Quarreled.QuarreledPlayer)
+                {
                     foreach (PlayerControl p in ps)
                     {
                         if (!p.Data.Disconnected)
@@ -220,7 +224,7 @@ namespace SuperNewRoles.Patch
                     SetPlayerNameText(side, side.nameText.text + suffix);
                 }
             }
-            if ((PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God))&& RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
+            if ((PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
             {
                 foreach (List<PlayerControl> ps in RoleClass.Lovers.LoversPlayer)
                 {
@@ -274,7 +278,8 @@ namespace SuperNewRoles.Patch
                 {
                     SetPlayerNameColor(p, RoleClass.Celebrity.color);
                 }
-            } else
+            }
+            else
             {
                 foreach (PlayerControl p in RoleClass.Celebrity.CelebrityPlayer)
                 {
@@ -323,7 +328,7 @@ namespace SuperNewRoles.Patch
                             SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                         }
                     }
-                }
+                }                
                 if (PlayerControl.LocalPlayer.isImpostor())
                 {
                     foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
@@ -349,14 +354,6 @@ namespace SuperNewRoles.Patch
                         {
                             SetNamesClass.SetPlayerRoleNames(p);
                             SetNamesClass.SetPlayerNameColors(p);
-                        }
-                    }
-                    foreach (PlayerControl p in RoleClass.JackalSeer.FakeSidekickSeerPlayer)
-                    {
-                        if (p != PlayerControl.LocalPlayer)
-                        {
-                            SetNamesClass.SetPlayerNameColor(p, RoleClass.Jackal.color);
-                            SetNamesClass.SetPlayerRoleInfoView(p, RoleClass.Jackal.color, Intro.IntroDate.SidekickIntro.NameKey + "Name");
                         }
                     }
                 }

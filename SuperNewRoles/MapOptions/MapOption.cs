@@ -1,13 +1,13 @@
-using HarmonyLib;
-using System.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using SuperNewRoles.Roles;
+using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.CustomOption;
-using static SuperNewRoles.CustomOption.CustomOptions;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
+using UnityEngine;
+using static SuperNewRoles.CustomOption.CustomOptions;
 
 namespace SuperNewRoles.MapOptions
 {
@@ -81,10 +81,10 @@ namespace SuperNewRoles.MapOptions
                 ValidationSubmerged = false;
             }
             RandomMap.Prefix();
-            BlockTool.OldDesyncCommsPlayers = new List<byte>();
-            BlockTool.CameraPlayers = new List<byte>();
-            //BlockTool.VitalPlayers = new List<byte>();
-            //BlockTool.AdminPlayers = new List<byte>();
+            BlockTool.OldDesyncCommsPlayers = new();
+            BlockTool.CameraPlayers = new();
+            //BlockTool.VitalPlayers = new();
+            //BlockTool.AdminPlayers = new();
             /*
             if (DeviceUseCameraTime.getFloat() == 0 || !UseCamera)
             {
@@ -148,6 +148,10 @@ namespace SuperNewRoles.MapOptions
 
         public static CustomOption.CustomOption MapRemodelingOption;
         public static CustomOption.CustomOption AirShipAdditionalVents;
+        public static CustomOption.CustomOption PolusAdditionalVents;
+        public static CustomOption.CustomOption MiraAdditionalVents;
+
+        public static CustomOption.CustomOption VentAnimation;
 
         public static void LoadOption()
         {
@@ -186,13 +190,12 @@ namespace SuperNewRoles.MapOptions
 
             AddVitalsMira = CustomOption.CustomOption.Create(472, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MapOptionSetting);
 
-            MapRemodelingOption = CustomOption.CustomOption.Create(521, false, CustomOptionType.Generic, "MapRemodelingOptionSetting", false, MapOptionSetting);
-            AirShipAdditionalVents = CustomOption.CustomOption.Create(522, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, MapRemodelingOption);
+            MapRemodelingOption = CustomOption.CustomOption.Create(604, false, CustomOptionType.Generic, "MapRemodelingOptionSetting", false, MapOptionSetting);
+            AirShipAdditionalVents = CustomOption.CustomOption.Create(605, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, MapRemodelingOption);
+            PolusAdditionalVents = CustomOption.CustomOption.Create(606, false, CustomOptionType.Generic, "PolusAdditionalVents", false, MapRemodelingOption);
+            MiraAdditionalVents = CustomOption.CustomOption.Create(607, false, CustomOptionType.Generic, "MiraAdditionalVents", false, MapRemodelingOption);
 
-            VentAnimation = CustomOption.CustomOption.Create(529, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
-            MapRemodelingOption = CustomOption.CustomOption.Create(473, false, CustomOptionType.Generic, "MapRemodelingOptionSetting", false, MapOptionSetting);
-            AirShipAdditionalVents = CustomOption.CustomOption.Create(474, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, MapRemodelingOption);
-
+            VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomRPC;
@@ -6,10 +10,6 @@ using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
@@ -54,7 +54,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         if (WinGods == null)
                         {
-                            WinGods = new List<PlayerControl>();
+                            WinGods = new();
                         }
                         WinGods.Add(p);
                         Chat.WinCond = CustomGameOverReason.GodWin;
@@ -194,19 +194,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!DestroyableSingleton<TutorialManager>.InstanceExists)
                 {
                     __instance.BeginCalled = false;
-                    GameOverReason endReason;
-                    switch (TempData.LastDeathReason)
+                    var endReason = TempData.LastDeathReason switch
                     {
-                        case DeathReason.Exile:
-                            endReason = GameOverReason.ImpostorByVote;
-                            break;
-                        case DeathReason.Kill:
-                            endReason = GameOverReason.ImpostorByKill;
-                            break;
-                        default:
-                            endReason = GameOverReason.ImpostorByVote;
-                            break;
-                    }
+                        DeathReason.Exile => GameOverReason.ImpostorByVote,
+                        DeathReason.Kill => GameOverReason.ImpostorByKill,
+                        _ => GameOverReason.ImpostorByVote,
+                    };
                     int impostorplayer = 0;
                     int egoistplayer = 0;
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)

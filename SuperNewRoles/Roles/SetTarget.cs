@@ -1,5 +1,5 @@
-﻿using SuperNewRoles.Patches;
 using System.Collections.Generic;
+using SuperNewRoles.Patches;
 
 namespace SuperNewRoles.Roles
 {
@@ -7,9 +7,9 @@ namespace SuperNewRoles.Roles
     {
         public static void ImpostorSetTarget()
         {
-            List<PlayerControl> untarget = new List<PlayerControl>();
+            List<PlayerControl> untarget = new();
             untarget.AddRange(RoleClass.SideKiller.MadKillerPlayer);
-            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget(untargetablePlayers: untarget, onlyCrewmates:true));
+            FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget(untargetablePlayers: untarget, onlyCrewmates: true));
         }
     }
 }

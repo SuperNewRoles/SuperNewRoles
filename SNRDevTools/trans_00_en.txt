@@ -699,6 +699,8 @@ Adding vitals to Mira
 No Vent Animation
 Map Remodeling
 AirShipAdditionalVents
+PolusAdditionalVents
+MiraAdditionalVents
 Welcome to SuperNewRoles!
 You can play a variety of modes and different hard on any model with SuperNewRoles!
 Please visit the official wiki for a detailed description of the roles and modes!
@@ -724,13 +726,12 @@ Development Information Account : https://twitter.com/SNRDevs
 Team
 Settings
 Activate Roles
-【Team: + GetTeamText(type)】
+【Team:{0}】
 Players
 DebugMode:ON
 Remaining until kills can be made
 Player
 Remaining until the Imposter arrives
-Level Up Mode: Kills Per Second
 Hunter
 Let's die with someone else.
 Werewolf
@@ -746,3 +747,19 @@ Search out the role of the dead and win!
 This is Meeting Time.
 This is Use to Ability Time.
 {0}'s Role is {1}!
+Position Swapper
+Let's Swap crewmates.
+Swapping limits
+Swapping cooltime
+Limits:{0}
+PositionSwap
+Position swapper swapped you!
+Position swapper swapped you!\n by the way，ykundesu isn't delicious?
+Tuna
+Always move!
+Stopping Time
+Black Cat
+Give your life for your master.
+Mafia
+Let's avenge our fellow impostor
+When all the imposters except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.

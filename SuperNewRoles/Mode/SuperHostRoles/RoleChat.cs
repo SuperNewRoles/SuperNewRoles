@@ -1,9 +1,9 @@
-﻿using InnerNet;
-using SuperNewRoles.Intro;
-using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using InnerNet;
+using SuperNewRoles.Intro;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -42,7 +42,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static string GetRoleDes(string rolename)
         {
-            string Team;
             string IntroDesc;
             string Desc;
             IntroDate data = IntroDate.CrewmateIntro;
@@ -76,25 +75,26 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static IntroDate GetNameIntroDate(string role)
         {
-            Dictionary<string, IntroDate> NameData = new Dictionary<string, IntroDate>()
+            Dictionary<string, IntroDate> NameData = new()
             {
-                {ModTranslation.getString("JesterName"),IntroDate.JesterIntro },
-                {ModTranslation.getString("SheriffName"),IntroDate.SheriffIntro },
-                {ModTranslation.getString("MadMateName"),IntroDate.MadMateIntro },
-                {ModTranslation.getString("BaitName"),IntroDate.BaitIntro },
-                {ModTranslation.getString("HomeSecurityGuardName"),IntroDate.HomeSecurityGuardIntro },
-                {ModTranslation.getString("StuntmanName"),IntroDate.StuntManIntro },
-                {ModTranslation.getString("HomeSecurityGuardName"),IntroDate.HomeSecurityGuardIntro },
-                {ModTranslation.getString("StuntmanName"),IntroDate.StuntManIntro },
-                {ModTranslation.getString("EvilGamblerdName"),IntroDate.EvilGamblerIntro },
-                {ModTranslation.getString("GodName"),IntroDate.GodIntro },
-                {ModTranslation.getString("MinimalistName"),IntroDate.MinimalistIntro },
-                {ModTranslation.getString("EgoistName"),IntroDate.EgoistIntro },
-                {ModTranslation.getString("MayorName"),IntroDate.MayorIntro },
-                {ModTranslation.getString("trueloverName"),IntroDate.trueloverIntro },
-                {ModTranslation.getString("TechnicianName"),IntroDate.TechnicianIntro },
-                {ModTranslation.getString("MadStuntmanName"),IntroDate.MadStuntManIntro },
-                {ModTranslation.getString("SamuraiName"),IntroDate.SamuraiIntro },
+                { ModTranslation.getString("JesterName"), IntroDate.JesterIntro },
+                { ModTranslation.getString("SheriffName"), IntroDate.SheriffIntro },
+                { ModTranslation.getString("MadMateName"), IntroDate.MadMateIntro },
+                { ModTranslation.getString("BaitName"), IntroDate.BaitIntro },
+                { ModTranslation.getString("HomeSecurityGuardName"), IntroDate.HomeSecurityGuardIntro },
+                { ModTranslation.getString("StuntmanName"), IntroDate.StuntManIntro },
+                { ModTranslation.getString("HomeSecurityGuardName"), IntroDate.HomeSecurityGuardIntro },
+                { ModTranslation.getString("StuntmanName"), IntroDate.StuntManIntro },
+                { ModTranslation.getString("EvilGamblerdName"), IntroDate.EvilGamblerIntro },
+                { ModTranslation.getString("GodName"), IntroDate.GodIntro },
+                { ModTranslation.getString("MinimalistName"), IntroDate.MinimalistIntro },
+                { ModTranslation.getString("EgoistName"), IntroDate.EgoistIntro },
+                { ModTranslation.getString("MayorName"), IntroDate.MayorIntro },
+                { ModTranslation.getString("trueloverName"), IntroDate.trueloverIntro },
+                { ModTranslation.getString("TechnicianName"), IntroDate.TechnicianIntro },
+                { ModTranslation.getString("MadStuntmanName"), IntroDate.MadStuntManIntro },
+                { ModTranslation.getString("SamuraiName"), IntroDate.SamuraiIntro },
+                { ModTranslation.getString("BlackCatName"), IntroDate.BlackCatIntro },
             };
             foreach (var data in NameData)
             {

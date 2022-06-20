@@ -1,10 +1,10 @@
-﻿using HarmonyLib;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patch;
 using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
@@ -107,7 +107,7 @@ namespace SuperNewRoles.Mode.Zombie
             ZombieOptions.PoliceLight = ZombieOptions.PoliceLightOption.getFloat();
             ZombieOptions.PoliceSpeed = ZombieOptions.PoliceSpeedOption.getFloat();
             if (!AmongUsClient.Instance.AmHost) return;
-            ZombiePlayers = new List<int>();
+            ZombiePlayers = new();
             if (AmongUsClient.Instance.AmHost)
             {
                 FixedUpdate.IsStart = false;

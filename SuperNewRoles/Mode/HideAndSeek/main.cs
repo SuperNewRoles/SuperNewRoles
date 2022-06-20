@@ -1,7 +1,7 @@
-﻿using SuperNewRoles.EndGame;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.EndGame;
 using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 

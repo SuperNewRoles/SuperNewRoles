@@ -1,10 +1,10 @@
-﻿
+
+using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
-using System.Collections.Generic;
 using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
@@ -160,22 +160,27 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 [HarmonyArgument(1)] PlayerControl player,
                 [HarmonyArgument(2)] byte amount)
             {
-                new LateTask(() =>
+                if (!RoleHelpers.IsSabotage())
                 {
-                    if (!RoleHelpers.IsSabotage())
+                    new LateTask(() =>
+                    { 
+                    foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
                     {
-                        foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
-                        {
                             if (p.inVent && p.isAlive() && VentData.ContainsKey(p.PlayerId) && VentData[p.PlayerId] != null)
                             {
                                 p.MyPhysics.RpcBootFromVent((int)VentData[p.PlayerId]);
                             }
                         }
-                    }
-                }, 0.1f, "TecExitVent");
+                    }, 0.1f, "TecExitVent");
+                }
+                SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName+" => "+systemType+" : "+amount);
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
                     SyncSetting.CustomSyncSettings();
+                    if (systemType == SystemTypes.Comms)
+                    {
+                        Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                    }
                 }
             }
         }
@@ -186,7 +191,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             if (IsTeamBattle)
             {
                 if (!IsSeted) return false;
-                List<PlayerControl> players = new List<PlayerControl>();
+                List<PlayerControl> players = new();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     if (p.isAlive())
@@ -213,7 +218,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         }
                     }
                 }
-                Winners = new List<PlayerControl>();
+                Winners = new();
                 try
                 {
                     foreach (List<PlayerControl> teams in Teams)
@@ -295,7 +300,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             IsTeamBattle = BROption.IsTeamBattle.getBool();
             Teams = new List<List<PlayerControl>>();
             IsSeted = false;
-            Winners = new List<PlayerControl>();
+            Winners = new();
         }
         public static class ChangeRole
         {
@@ -307,12 +312,12 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         float count = BROption.TeamAmount.getFloat();
                         var oneteamcount = Mathf.CeilToInt(CachedPlayer.AllPlayers.Count / count);
-                        List<PlayerControl> target = new List<PlayerControl>();
+                        List<PlayerControl> target = new();
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
                             target.Add(p);
                         }
-                        List<PlayerControl> TempTeam = new List<PlayerControl>();
+                        List<PlayerControl> TempTeam = new();
                         var counttemp = target.Count;
                         for (int i = 0; i < counttemp; i++)
                         {
@@ -328,7 +333,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                                 if (TempTeam.Count >= oneteamcount)
                                 {
                                     Teams.Add(TempTeam);
-                                    TempTeam = new List<PlayerControl>();
+                                    TempTeam = new();
                                     SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Reset");
                                 }
                             }
@@ -336,7 +341,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         if (TempTeam.Count > 0)
                         {
                             Teams.Add(TempTeam);
-                            TempTeam = new List<PlayerControl>();
+                            TempTeam = new();
                             SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Reset");
                         }
                         SuperNewRolesPlugin.Logger.LogInfo("[BattleRoyal] Team Count:" + Teams.Count);

@@ -1,13 +1,13 @@
-﻿
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 using Hazel;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -40,12 +40,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             Writer.Write((byte)CustomGameOverReason.QuarreledWin);
                             Writer.EndRPC();
                             CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
-                            var winplayers = new List<PlayerControl>();
-                            winplayers.Add(target);
+                            var winplayers = new List<PlayerControl>
+                            {
+                                target
+                            };
                             //EndGameCheck.WinNeutral(winplayers);
                             Chat.WinCond = CustomGameOverReason.QuarreledWin;
-                            Chat.Winner = new List<PlayerControl>();
-                            Chat.Winner.Add(target);
+                            Chat.Winner = new List<PlayerControl>
+                            {
+                                target
+                            };
                             RoleClass.Quarreled.IsQuarreledWin = true;
                             SuperHostRoles.EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
                         }, 0.15f);

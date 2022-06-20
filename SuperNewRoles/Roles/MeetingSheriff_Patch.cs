@@ -1,8 +1,8 @@
-﻿using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Mode;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
+using Hazel;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -119,6 +119,7 @@ namespace SuperNewRoles.Roles
             if (RoleClass.JackalFriends.JackalFriendsPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(Target)) return true;
+            if (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
             return false;
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
@@ -181,7 +182,7 @@ namespace SuperNewRoles.Roles
             {
                 MeetingUpdatePatch.IsFlag = true;
                 meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();
-                List<PlayerVoteArea> deadareas = new List<PlayerVoteArea>();
+                List<PlayerVoteArea> deadareas = new();
                 foreach (PlayerVoteArea area in __instance.playerStates)
                 {
                     if (ModHelpers.playerById(area.TargetPlayerId).isAlive())
@@ -202,8 +203,8 @@ namespace SuperNewRoles.Roles
             }
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count != 0)
             {
-                List<PlayerVoteArea> newareas = new List<PlayerVoteArea>();
-                List<PlayerVoteArea> deadareas = new List<PlayerVoteArea>();
+                List<PlayerVoteArea> newareas = new();
+                List<PlayerVoteArea> deadareas = new();
                 foreach (PlayerVoteArea area in __instance.playerStates)
                 {
                     if (ModHelpers.playerById(area.TargetPlayerId).IsPlayer())

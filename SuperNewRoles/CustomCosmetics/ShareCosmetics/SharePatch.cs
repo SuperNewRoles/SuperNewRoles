@@ -1,9 +1,9 @@
-﻿using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using HarmonyLib;
+using Hazel;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.ShareCosmetics

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles
@@ -37,6 +37,7 @@ namespace SuperNewRoles.Roles
             if (Target.isRole(CustomRPC.RoleId.JackalFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.SeerFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.MayorFriends) && RoleClass.Sheriff.IsMadRoleKill) return true;
+            if (Target.isRole(CustomRPC.RoleId.BlackCat) && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isRole(CustomRPC.RoleId.HauntedWolf)) return true;
             //シェリフキルゥ
             return false;

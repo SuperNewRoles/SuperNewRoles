@@ -1,10 +1,10 @@
-﻿using HarmonyLib;
-using System.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.Roles;
+using UnityEngine;
 namespace SuperNewRoles.Intro
 {
     public class TeamDate
@@ -21,6 +21,6 @@ namespace SuperNewRoles.Intro
             this.NameKey = NameKey;
             this.RoleIds = RoleId;
         }
-        public static TeamDate VultureTeam = new TeamDate("Test", Color.black, Color.yellow, new List<CustomRPC.RoleId> { CustomRPC.RoleId.Sheriff });
+        public static TeamDate VultureTeam = new("Test", Color.black, Color.yellow, new List<CustomRPC.RoleId> { CustomRPC.RoleId.Sheriff });
     }
 }

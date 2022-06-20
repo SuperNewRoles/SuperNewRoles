@@ -1,7 +1,7 @@
-﻿using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Hazel;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {

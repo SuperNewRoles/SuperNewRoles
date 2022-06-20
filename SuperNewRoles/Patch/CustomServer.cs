@@ -1,12 +1,12 @@
-﻿using HarmonyLib;
-using UnityEngine;
-using UnityEngine.UI;
 using System;
-using UnityEngine.Events;
 using System.Linq;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
+using HarmonyLib;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace SuperNewRoles.Patch
 {
@@ -43,7 +43,8 @@ namespace SuperNewRoles.Patch
                 ipField.AllowSymbols = true;
                 ipField.ForceUppercase = false;
                 ipField.SetText(ConfigRoles.Ip.Value);
-                __instance.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) => {
+                __instance.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) =>
+                {
                     ipField.outputText.SetText(ConfigRoles.Ip.Value);
                     ipField.SetText(ConfigRoles.Ip.Value);
                 })));
@@ -77,7 +78,8 @@ namespace SuperNewRoles.Patch
                 portField.transform.localPosition = new Vector3(0.225f, -1.75f, -100f);
                 portField.characterLimit = 5;
                 portField.SetText(ConfigRoles.Port.Value.ToString());
-                __instance.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) => {
+                __instance.StartCoroutine(Effects.Lerp(0.1f, new Action<float>((p) =>
+                {
                     portField.outputText.SetText(ConfigRoles.Port.Value.ToString());
                     portField.SetText(ConfigRoles.Port.Value.ToString());
                 })));
@@ -90,8 +92,7 @@ namespace SuperNewRoles.Patch
 
                 void onEnterOrPortFieldChange()
                 {
-                    ushort port = 0;
-                    if (ushort.TryParse(portField.text, out port))
+                    if (ushort.TryParse(portField.text, out ushort port))
                     {
                         ConfigRoles.Port.Value = port;
                         portField.outputText.color = Color.white;

@@ -1,7 +1,7 @@
-using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
+using HarmonyLib;
+using Hazel;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -27,7 +27,7 @@ namespace SuperNewRoles.Patch
                 return MapOptions.MapOption.RestrictAdmin.getBool() || RestrictAdminTime > 0f;
             }
         }
-        static Dictionary<SystemTypes, List<Color>> playerColors = new Dictionary<SystemTypes, List<Color>>();
+        static Dictionary<SystemTypes, List<Color>> playerColors = new();
         static float adminTimer = 0f;
         static TMPro.TextMeshPro OutOfTime;
         static TMPro.TextMeshPro TimeRemaining;
@@ -52,7 +52,7 @@ namespace SuperNewRoles.Patch
         static void UseAdminTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.MapOption.RestrictAdmin.getBool() && PlayerControl.LocalPlayer.isAlive())
+            if (MapOptions.MapOption.RestrictAdmin.getBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.RestrictDevicesOption.getBool())
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseAdminTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(adminTimer);
@@ -104,7 +104,7 @@ namespace SuperNewRoles.Patch
         {
             static bool Prefix(MapCountOverlay __instance)
             {
-                if (MapOptions.MapOption.MapOptionSetting.getBool() && !Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles) || !PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker))
+                if (MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictAdmin.getBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && !PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilHacker))
                 {
                     adminTimer += Time.deltaTime;
                     if (adminTimer > 0.1f)
@@ -120,7 +120,7 @@ namespace SuperNewRoles.Patch
 
                     playerColors = new Dictionary<SystemTypes, List<Color>>();
 
-                    if (MapOptions.MapOption.RestrictAdmin.getBool())
+                    if (MapOptions.MapOption.RestrictAdmin.getBool() && MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictAdmin.getBool())
                     {
                         if (OutOfTime == null)
                         {
@@ -129,7 +129,7 @@ namespace SuperNewRoles.Patch
                             {
                                 OutOfTime.text = ModTranslation.getString("restrictOutOfTimeVerYkundesuBeplnEx");
                             }
-                            else
+                            else if (!MapOptions.MapOption.IsYkundesuBeplnEx.getBool())
                             {
                                 OutOfTime.text = ModTranslation.getString("restrictOutOfTime");
                             }
@@ -190,7 +190,7 @@ namespace SuperNewRoles.Patch
                     for (int i = 0; i < __instance.CountAreas.Length; i++)
                     {
                         CounterArea counterArea = __instance.CountAreas[i];
-                        List<Color> roomColors = new List<Color>();
+                        List<Color> roomColors = new();
                         playerColors.Add(counterArea.RoomType, roomColors);
 
                         if (!commsActive)

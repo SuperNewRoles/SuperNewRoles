@@ -1,18 +1,19 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using HarmonyLib;
 using Hazel;
-using System;
-using UnityEngine;
 using SuperNewRoles.Buttons;
-using System.Collections.Generic;
-using System.Linq;
-using SuperNewRoles.Roles;
-using SuperNewRoles.Patches;
-using System.Collections;
-using SuperNewRoles.Mode;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
+using SuperNewRoles.Patches;
+using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles.Buttons
 {
@@ -61,10 +62,12 @@ namespace SuperNewRoles.Buttons
         public static CustomButton GhostMechanicRepairButton;
         public static CustomButton EvilHackerButton;
         public static CustomButton EvilHackerMadmateSetting;
+        public static CustomButton PositionSwapperButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
+        public static TMPro.TMP_Text PositionSwapperNumText;
 
         public static void setCustomButtonCooldowns()
         {
@@ -117,9 +120,11 @@ namespace SuperNewRoles.Buttons
                 __instance.KillButton,
                 KeyCode.Q,
                 8
-            );
-            FalseChargesFalseChargeButton.buttonText = ModTranslation.getString("FalseChargesButtonTitle");
-            FalseChargesFalseChargeButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("FalseChargesButtonTitle"),
+                showButtonText = true
+            };
 
             trueloverLoveButton = new CustomButton(
                 () =>
@@ -145,9 +150,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            trueloverLoveButton.buttonText = ModTranslation.getString("trueloverloveButtonName");
-            trueloverLoveButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("trueloverloveButtonName"),
+                showButtonText = true
+            };
 
             MagazinerGetButton = new CustomButton(
                 () =>
@@ -178,9 +185,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            MagazinerGetButton.buttonText = ModTranslation.getString("MagazinerGetButtonName");
-            MagazinerGetButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("MagazinerGetButtonName"),
+                showButtonText = true
+            };
 
             MagazinerAddButton = new CustomButton(
                 () =>
@@ -203,9 +212,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            MagazinerAddButton.buttonText = ModTranslation.getString("MagazinerAddButtonName");
-            MagazinerAddButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("MagazinerAddButtonName"),
+                showButtonText = true
+            };
 
             ScientistButton = new Buttons.CustomButton(
                 () =>
@@ -227,9 +238,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            ScientistButton.buttonText = ModTranslation.getString("ScientistButtonName");
-            ScientistButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("ScientistButtonName"),
+                showButtonText = true
+            };
 
             HawkHawkEyeButton = new CustomButton(
                 () =>
@@ -266,7 +279,7 @@ namespace SuperNewRoles.Buttons
                         RoleClass.Hawk.IsHawkOn = true;
                     }
                 },
-                () => { return PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk); },
+                () => { return (PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk)) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
@@ -296,9 +309,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            HawkHawkEyeButton.buttonText = ModTranslation.getString("HawkButtonName");
-            HawkHawkEyeButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("HawkButtonName"),
+                showButtonText = true
+            };
 
             CountChangerButton = new CustomButton(
                 () =>
@@ -334,9 +349,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            CountChangerButton.buttonText = ModTranslation.getString("CountChangerButtonName");
-            CountChangerButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("CountChangerButtonName"),
+                showButtonText = true
+            };
 
             DoctorVitalsButton = new CustomButton(
                 () =>
@@ -365,9 +382,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            DoctorVitalsButton.buttonText = ModTranslation.getString("DoctorVitalName");
-            DoctorVitalsButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("DoctorVitalName"),
+                showButtonText = true
+            };
 
             JackalSidekickButton = new CustomButton(
                 () =>
@@ -400,9 +419,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            JackalSidekickButton.buttonText = ModTranslation.getString("JackalCreateSidekickButtonName");
-            JackalSidekickButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("JackalCreateSidekickButtonName"),
+                showButtonText = true
+            };
 
             JackalSeerSidekickButton = new CustomButton(
                 () =>
@@ -435,9 +456,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            JackalSeerSidekickButton.buttonText = ModTranslation.getString("JackalCreateSidekickButtonName");
-            JackalSeerSidekickButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("JackalCreateSidekickButtonName"),
+                showButtonText = true
+            };
 
             JackalKillButton = new CustomButton(
                 () =>
@@ -458,7 +481,7 @@ namespace SuperNewRoles.Buttons
                         JackalSeer.resetCoolDown();
                     }
                 },
-                () => { return ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) || RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) || RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer); },
+                () => { return (ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer)) || (RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && RoleHelpers.isAlive(PlayerControl.LocalPlayer)) || RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer); },
                 () =>
                 {
                     return Jackal.JackalFixedPatch.JackalsetTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -476,9 +499,11 @@ namespace SuperNewRoles.Buttons
                 __instance.KillButton,
                 KeyCode.Q,
                 8
-            );
-            JackalKillButton.buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text;
-            JackalKillButton.showButtonText = true;
+            )
+            {
+                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+                showButtonText = true
+            };
 
             SelfBomberButton = new Buttons.CustomButton(
                 () =>
@@ -500,9 +525,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            SelfBomberButton.buttonText = ModTranslation.getString("SelfBomberButtonName");
-            SelfBomberButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("SelfBomberButtonName"),
+                showButtonText = true
+            };
 
             DoorrDoorButton = new Buttons.CustomButton(
                 () =>
@@ -526,9 +553,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            DoorrDoorButton.buttonText = ModTranslation.getString("DoorrButtonText");
-            DoorrDoorButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("DoorrButtonText"),
+                showButtonText = true
+            };
 
             TeleporterButton = new Buttons.CustomButton(
                 () =>
@@ -539,7 +568,7 @@ namespace SuperNewRoles.Buttons
                     Teleporter.TeleportStart();
                     Teleporter.ResetCoolDown();
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (Teleporter.IsTeleporter(PlayerControl.LocalPlayer) || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Teleporter)) || RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (NiceTeleporter.IsNiceTeleporter(PlayerControl.LocalPlayer)) || RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (TeleportingJackal.IsTeleportingJackal(PlayerControl.LocalPlayer)); },
+                () => { return (RoleHelpers.isAlive(PlayerControl.LocalPlayer) && (Teleporter.IsTeleporter(PlayerControl.LocalPlayer) || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.Teleporter))) || (RoleHelpers.isAlive(PlayerControl.LocalPlayer) && NiceTeleporter.IsNiceTeleporter(PlayerControl.LocalPlayer)) || (RoleHelpers.isAlive(PlayerControl.LocalPlayer) && TeleportingJackal.IsTeleportingJackal(PlayerControl.LocalPlayer)); },
                 () =>
                 {
                     return true && PlayerControl.LocalPlayer.CanMove;
@@ -551,9 +580,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            TeleporterButton.buttonText = ModTranslation.getString("TeleporterTeleportButton");
-            TeleporterButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("TeleporterTeleportButton"),
+                showButtonText = true
+            };
 
             MovingSetButton = new Buttons.CustomButton(
                 () =>
@@ -577,9 +608,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            MovingSetButton.buttonText = ModTranslation.getString("MovingButtonSetName");
-            MovingSetButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("MovingButtonSetName"),
+                showButtonText = true
+            };
 
             MovingTpButton = new Buttons.CustomButton(
                 () =>
@@ -603,9 +636,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            MovingTpButton.buttonText = ModTranslation.getString("MovingButtonTpName");
-            MovingTpButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("MovingButtonTpName"),
+                showButtonText = true
+            };
 
             SheriffKillButton = new Buttons.CustomButton(
                 () =>
@@ -704,9 +739,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            ClergymanLightOutButton.buttonText = ModTranslation.getString("ClergymanLightOutButtonName");
-            ClergymanLightOutButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("ClergymanLightOutButtonName"),
+                showButtonText = true
+            };
 
             SpeedBoosterBoostButton = new Buttons.CustomButton(
                 () =>
@@ -731,10 +768,12 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            SpeedBoosterBoostButton.buttonText = ModTranslation.getString("SpeedBoosterBoostButtonName");
-            SpeedBoosterBoostButton.showButtonText = true;
-            SpeedBoosterBoostButton.HasEffect = true;
+            )
+            {
+                buttonText = ModTranslation.getString("SpeedBoosterBoostButtonName"),
+                showButtonText = true,
+                HasEffect = true
+            };
 
             EvilSpeedBoosterBoostButton = new Buttons.CustomButton(
                 () =>
@@ -759,9 +798,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            EvilSpeedBoosterBoostButton.buttonText = ModTranslation.getString("EvilSpeedBoosterBoostButtonName");
-            EvilSpeedBoosterBoostButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("EvilSpeedBoosterBoostButtonName"),
+                showButtonText = true
+            };
 
             LighterLightOnButton = new Buttons.CustomButton(
                 () =>
@@ -787,9 +828,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            LighterLightOnButton.buttonText = ModTranslation.getString("LighterButtonName");
-            LighterLightOnButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("LighterButtonName"),
+                showButtonText = true
+            };
 
             ImpostorSidekickButton = new CustomButton(
                 () =>
@@ -817,9 +860,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            ImpostorSidekickButton.buttonText = ModTranslation.getString("SidekickName");
-            ImpostorSidekickButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("SidekickName"),
+                showButtonText = true
+            };
 
             SideKillerSidekickButton = new CustomButton(
                 () =>
@@ -852,9 +897,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            SideKillerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
-            SideKillerSidekickButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("SidekickName"),
+                showButtonText = true
+            };
 
             MadMakerSidekickButton = new CustomButton(
                 () =>
@@ -883,9 +930,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            MadMakerSidekickButton.buttonText = ModTranslation.getString("SidekickName");
-            MadMakerSidekickButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("SidekickName"),
+                showButtonText = true
+            };
 
             RoleClass.SerialKiller.SuicideKillText = GameObject.Instantiate(FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText, FastDestroyableSingleton<HudManager>.Instance.KillButton.cooldownTimerText.transform.parent);
             RoleClass.SerialKiller.SuicideKillText.text = "";
@@ -915,9 +964,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            DemonButton.buttonText = ModTranslation.getString("DemonButtonName");
-            DemonButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("DemonButtonName"),
+                showButtonText = true
+            };
 
             ArsonistDouseButton = new CustomButton(
                 () =>
@@ -946,9 +997,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.Q,
                 49
-            );
-            ArsonistDouseButton.buttonText = ModTranslation.getString("ArsonistDouseButtonName");
-            ArsonistDouseButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("ArsonistDouseButtonName"),
+                showButtonText = true
+            };
 
             ArsonistIgniteButton = new CustomButton(
                 () =>
@@ -1000,9 +1053,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            ArsonistIgniteButton.buttonText = ModTranslation.getString("ArsonistIgniteButtonName");
-            ArsonistIgniteButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("ArsonistIgniteButtonName"),
+                showButtonText = true
+            };
 
             SpeederButton = new CustomButton(
                 () =>
@@ -1025,10 +1080,12 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            SpeederButton.buttonText = ModTranslation.getString("SpeederButtonName");
-            SpeederButton.showButtonText = true;
-            SpeederButton.HasEffect = true;
+            )
+            {
+                buttonText = ModTranslation.getString("SpeederButtonName"),
+                showButtonText = true,
+                HasEffect = true
+            };
 
             ChiefSidekickButton = new CustomButton(
                 () =>
@@ -1036,7 +1093,7 @@ namespace SuperNewRoles.Buttons
                     var target = setTarget();
                     if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Chief.IsCreateSheriff)
                     {
-                        target.RpcSetRole(RoleTypes.Crewmate);
+                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                         target.setRoleRPC(RoleId.Sheriff);
                         RoleClass.Chief.IsCreateSheriff = true;
                     }
@@ -1057,9 +1114,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            ChiefSidekickButton.buttonText = ModTranslation.getString("SidekickName");
-            ChiefSidekickButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("SidekickName"),
+                showButtonText = true
+            };
 
             VultureButton = new CustomButton(
                 () =>
@@ -1124,9 +1183,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            VultureButton.buttonText = ModTranslation.getString("VultureButtonName");
-            VultureButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("VultureButtonName"),
+                showButtonText = true
+            };
 
             ShielderButton = new CustomButton(
                 () =>
@@ -1156,9 +1217,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            ShielderButton.buttonText = ModTranslation.getString("ShielderButtonName");
-            ShielderButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("ShielderButtonName"),
+                showButtonText = true
+            };
 
             CleanerButton = new CustomButton(
                 () =>
@@ -1209,9 +1272,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            CleanerButton.buttonText = ModTranslation.getString("CleanerButtonName");
-            CleanerButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("CleanerButtonName"),
+                showButtonText = true
+            };
 
             MadCleanerButton = new CustomButton(
                 () =>
@@ -1255,9 +1320,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            MadCleanerButton.buttonText = ModTranslation.getString("CleanerButtonName");
-            MadCleanerButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("CleanerButtonName"),
+                showButtonText = true
+            };
 
             FreezerButton = new Buttons.CustomButton(
                 () =>
@@ -1279,10 +1346,12 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            FreezerButton.buttonText = ModTranslation.getString("FreezerButtonName");
-            FreezerButton.showButtonText = true;
-            FreezerButton.HasEffect = true;
+            )
+            {
+                buttonText = ModTranslation.getString("FreezerButtonName"),
+                showButtonText = true,
+                HasEffect = true
+            };
 
             SamuraiButton = new Buttons.CustomButton(
                 () =>
@@ -1304,9 +1373,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            SamuraiButton.buttonText = ModTranslation.getString("SamuraiButtonName");
-            SamuraiButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("SamuraiButtonName"),
+                showButtonText = true
+            };
 
             VentMakerButton = new CustomButton(
                 () =>
@@ -1335,9 +1406,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            VentMakerButton.buttonText = ModTranslation.getString("VentMakerButtonName");
-            VentMakerButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("VentMakerButtonName"),
+                showButtonText = true
+            };
 
             GhostMechanicRepairButton = new CustomButton(
                 () =>
@@ -1433,9 +1506,11 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
-            );
-            EvilHackerButton.buttonText = ModTranslation.getString("ADMINButton");
-            EvilHackerButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("ADMINButton"),
+                showButtonText = true
+            };
 
             EvilHackerMadmateSetting = new CustomButton(
                 () =>
@@ -1464,9 +1539,56 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.Q,
                 8
+            )
+            {
+                buttonText = ModTranslation.getString("SidekickName"),
+                showButtonText = true
+            };
+
+            PositionSwapperButton = new CustomButton(
+                () =>
+                {
+                    RoleClass.PositionSwapper.SwapCount--;
+                    /*if (RoleClass.PositionSwapper.SwapCount >= 1){
+                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), RoleClass.PositionSwapper.SwapCount);
+                    }
+                    else{
+                        PositionSwapperNumText.text = "";
+                    }*/
+                    //RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
+                    PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(255F, 255F, 255F);
+                    PositionSwapper.SwapStart();
+                    PositionSwapper.ResetCoolDown();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper); },
+                () =>
+                {
+                    float swapcount = RoleClass.PositionSwapper.SwapCount;
+                    if (swapcount > 0)
+                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), swapcount);
+                    else
+                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
+                    if (!PlayerControl.LocalPlayer.CanMove) return false;
+                    if (RoleClass.PositionSwapper.SwapCount <= 0) return false;
+                    return true && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { PositionSwapper.EndMeeting(); },
+                RoleClass.PositionSwapper.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
             );
-            EvilHackerMadmateSetting.buttonText = ModTranslation.getString("SidekickName");
-            EvilHackerMadmateSetting.showButtonText = true;
+            {
+                PositionSwapperNumText = GameObject.Instantiate(PositionSwapperButton.actionButton.cooldownTimerText, PositionSwapperButton.actionButton.cooldownTimerText.transform.parent);
+                PositionSwapperNumText.text = "";
+                PositionSwapperNumText.enableWordWrapping = false;
+                PositionSwapperNumText.transform.localScale = Vector3.one * 0.5f;
+                PositionSwapperNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+                PositionSwapperButton.buttonText = ModTranslation.getString("PositionSwapperButtonName");
+                PositionSwapperButton.showButtonText = true;
+            };
 
             setCustomButtonCooldowns();
         }

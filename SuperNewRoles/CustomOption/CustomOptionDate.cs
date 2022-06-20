@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using BepInEx.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
-using System.Reflection;
-using static System.Drawing.Color;
-using System.Text;
 using SuperNewRoles.CustomOption;
-using SuperNewRoles.Roles;
 using SuperNewRoles.Patch;
+using SuperNewRoles.Roles;
+using UnityEngine;
+using static System.Drawing.Color;
 
 namespace SuperNewRoles.CustomOption
 {
@@ -518,7 +518,30 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SeerFriendsCheckJackalTask;
         public static CustomOption SeerFriendsIsUseVent;
         public static CustomOption SeerFriendsIsImpostorLight;
-        //CustomOption
+
+        public static CustomRoleOption PositionSwapperOption;
+        public static CustomOption PositionSwapperPlayerCount;
+        public static CustomOption PositionSwapperSwapCount;
+        public static CustomOption PositionSwapperCoolTime;
+        public static CustomOption PositionSwapperDurationTime;
+
+        public static CustomRoleOption TunaOption;
+        public static CustomOption TunaPlayerCount;
+        public static CustomOption TunaStoppingTime;
+        public static CustomOption TunaIsUseVent;
+
+        public static CustomRoleOption MafiaOption;
+        public static CustomOption MafiaPlayerCount;
+
+        public static CustomRoleOption BlackCatOption;
+        public static CustomOption BlackCatPlayerCount;
+        public static CustomOption BlackCatIsCheckImpostor;
+        public static CustomOption BlackCatCommonTask;
+        public static CustomOption BlackCatShortTask;
+        public static CustomOption BlackCatLongTask;
+        public static CustomOption BlackCatCheckImpostorTask;
+        public static CustomOption BlackCatIsUseVent;
+        public static CustomOption BlackCatIsImpostorLight;
 
         public static CustomRoleOption JackalSeerOption;
         public static CustomOption JackalSeerPlayerCount;
@@ -585,6 +608,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption EvilHackerOption;
         public static CustomOption EvilHackerPlayerCount;
         public static CustomOption EvilHackerMadmateSetting;
+        //CustomOption
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -605,13 +629,13 @@ namespace SuperNewRoles.CustomOption
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
         private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
-        public static List<float> CrewPlayers = new List<float> { 1f, 1f, 15f, 1f };
-        public static List<float> AlonePlayers = new List<float> { 1f, 1f, 1f, 1f };
-        public static List<float> ImpostorPlayers = new List<float> { 1f, 1f, 5f, 1f };
-        public static List<float> QuarreledPlayers = new List<float> { 1f, 1f, 7f, 1f };
+        public static List<float> CrewPlayers = new() { 1f, 1f, 15f, 1f };
+        public static List<float> AlonePlayers = new() { 1f, 1f, 1f, 1f };
+        public static List<float> ImpostorPlayers = new() { 1f, 1f, 5f, 1f };
+        public static List<float> QuarreledPlayers = new() { 1f, 1f, 7f, 1f };
         // public static CustomOption ;
 
-        internal static Dictionary<byte, byte[]> blockedRolePairings = new Dictionary<byte, byte[]>();
+        internal static Dictionary<byte, byte[]> blockedRolePairings = new();
 
         public static string cs(Color c, string s)
         {
@@ -627,8 +651,8 @@ namespace SuperNewRoles.CustomOption
 
         public static void Load()
         {
-            var Levedatas = new List<string>() { "optionOff", "LevelingerSettingKeep", "PursuerName", "TeleporterName", "SidekickName", "SpeedBoosterName", "MovingName" };
-            var LeveTransed = new List<string>();
+            List<string> Levedatas = new() { "optionOff", "LevelingerSettingKeep", "PursuerName", "TeleporterName", "SidekickName", "SpeedBoosterName", "MovingName" };
+            List<string> LeveTransed = new();
             foreach (string data in Levedatas)
             {
                 LeveTransed.Add(ModTranslation.getString(data));
@@ -1196,6 +1220,31 @@ namespace SuperNewRoles.CustomOption
 
             HauntedWolfOption = new CustomRoleOption(530, true, CustomOptionType.Crewmate, "HauntedWolfName", RoleClass.HauntedWolf.color, 1);
             HauntedWolfPlayerCount = CustomOption.Create(531, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HauntedWolfOption);
+
+            PositionSwapperOption = new CustomRoleOption(608, false, CustomOptionType.Impostor, "PositionSwapperName", RoleClass.PositionSwapper.color, 1);
+            PositionSwapperPlayerCount = CustomOption.Create(609, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PositionSwapperOption);
+            PositionSwapperSwapCount = CustomOption.Create(610, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCountName", 1f, 0f, 99f, 1f, PositionSwapperOption);
+            PositionSwapperCoolTime = CustomOption.Create(611, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCoolTimeName", 2.5f, 2.5f, 90f, 2.5f, PositionSwapperOption);
+
+            TunaOption = new CustomRoleOption(552, true, CustomOptionType.Neutral, "TunaName", RoleClass.Tuna.color, 1);
+            TunaPlayerCount = CustomOption.Create(553, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TunaOption);
+            TunaStoppingTime = CustomOption.Create(554, true, CustomOptionType.Neutral, "TunaStoppingTimeSetting", 1f, 1f, 3f, 1f, TunaOption);
+            TunaIsUseVent = CustomOption.Create(555, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TunaOption);
+
+            MafiaOption = new CustomRoleOption(602, true, CustomOptionType.Impostor, "MafiaName",RoleClass.Mafia.color, 1);
+            MafiaPlayerCount = CustomOption.Create(603, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MafiaOption);
+
+            BlackCatOption = new CustomRoleOption(556, true, CustomOptionType.Crewmate, "BlackCatName", RoleClass.ImpostorRed, 1);
+            BlackCatPlayerCount = CustomOption.Create(557, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BlackCatOption);
+            BlackCatIsCheckImpostor = CustomOption.Create(558, true, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, BlackCatOption);
+            var blackcatoption = SelectTask.TaskSetting(559, 560, 561, BlackCatIsCheckImpostor, CustomOptionType.Crewmate, true);
+            BlackCatCommonTask = blackcatoption.Item1;
+            BlackCatShortTask = blackcatoption.Item2;
+            BlackCatLongTask = blackcatoption.Item3;
+            //MadMateIsNotTask = madmateoption.Item4;
+            BlackCatCheckImpostorTask = CustomOption.Create(562, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, BlackCatIsCheckImpostor);
+            BlackCatIsUseVent = CustomOption.Create(563, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, BlackCatOption);
+            BlackCatIsImpostorLight = CustomOption.Create(564, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, BlackCatOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
