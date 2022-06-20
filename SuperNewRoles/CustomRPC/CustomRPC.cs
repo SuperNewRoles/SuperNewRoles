@@ -896,12 +896,12 @@ namespace SuperNewRoles.CustomRPC
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
                 //SwapPlayer.transform.position = SwapperPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
-                if (rand.Next(1, 20) == 1){
+                /*if (rand.Next(1, 20) == 1){
                 new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
                 }
                 else{
                     new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
-                }
+                }*/
                 return;
             }
             else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId){
