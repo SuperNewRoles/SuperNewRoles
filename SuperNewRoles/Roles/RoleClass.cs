@@ -2255,6 +2255,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> SecretlyKillerPlayer;
             public static Color32 color = ImpostorRed;
             public static float SecretlyKillerKillCoolTime;
+            public static bool SecretlyKillerKillCoolChange;
             public static bool SecretlyKillerIsBlackOutKillCharge;
             public static int SecretlyKillLimit;
             public static float SecretlyKillCoolTime;
@@ -2270,6 +2271,7 @@ namespace SuperNewRoles.Roles
             {
                 SecretlyKillerPlayer = new List<PlayerControl>();
                 SecretlyKillCoolTime = CustomOptions.SecretlyKillerKillCoolTime.getFloat();
+                SecretlyKillerKillCoolChange = CustomOptions.SecretlyKillerKillCoolTimeChange.getBool();
                 SecretlyKillerIsBlackOutKillCharge = CustomOptions.SecretlyKillerIsBlackOutKillCharge.getBool();
                 SecretlyKillLimit = (int)CustomOptions.SecretlyKillerSecretKillLimit.getFloat();
                 SecretlyKillCoolTime = CustomOptions.SecretlyKillerSecretKillCoolTime.getFloat();

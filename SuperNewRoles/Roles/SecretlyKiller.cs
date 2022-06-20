@@ -16,8 +16,8 @@ namespace SuperNewRoles.Roles
         }
         public static void ResetCoolDown()
         {
-            HudManagerStartPatch.SecretlyKillerButton.MaxTimer = RoleClass.SecretlyKiller.CoolTime;
-            HudManagerStartPatch.SecretlyKillerButton.Timer = RoleClass.SecretlyKiller.CoolTime;
+            HudManagerStartPatch.SecretlyKillerButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
+            HudManagerStartPatch.SecretlyKillerButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
             RoleClass.SecretlyKiller.ButtonTimer = DateTime.Now;
         }
     }
