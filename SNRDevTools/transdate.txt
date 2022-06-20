@@ -688,7 +688,7 @@ RestrictCameraSetting,Camera Restrictions,カメラの制限
 RestrictVitalSetting,Vital Restrictions,バイタルの制限
 DeviceTimeSetting,Can use time,使用可能時間
 IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx
-restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnExDelicious,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい
+restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい
 HauntedWolfName,HauntedWolf,狼憑き
 HauntedWolfTitle1,Don't let the crew find out.,クルーにバレるな
 ReactorDurationSetting,Reactor Duration Time,リアクター継続時間の設定
