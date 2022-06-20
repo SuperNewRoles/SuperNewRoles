@@ -611,6 +611,7 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption SecretlyKillerOption;
         public static CustomOption SecretlyKillerPlayerCount;
+        public static CustomOption SecretlyKillerIsBlackOutKillCharge;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1251,6 +1252,7 @@ namespace SuperNewRoles.CustomOption
 
             SecretlyKillerOption = new CustomRoleOption(566, true, CustomOptionType.Impostor, "SecretlyKillerName",RoleClass.SecretlyKiller.color, 1);
             SecretlyKillerPlayerCount = CustomOption.Create(567, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SecretlyKillerOption);
+            SecretlyKillerIsBlackOutKillCharge = CustomOption.Create(563, true, CustomOptionType.Crewmate, "SettingBlackoutCharge", false, SecretlyKillerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
