@@ -754,7 +754,7 @@ Swapping cooltime
 Limits:{0}
 PositionSwap
 Position swapper swapped you!
-Position swapper swapped you!\n by the way，ykundesu isn delicious，isn't it?
+Position swapper swapped you!\n by the way，ykundesu is delicious，isn't it?
 Tuna
 Always move!
 Stopping Time
