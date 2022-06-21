@@ -69,6 +69,7 @@ namespace SuperNewRoles.Buttons
         public static TMPro.TMP_Text CleanerNumCleanText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
         public static TMPro.TMP_Text PositionSwapperNumText;
+        public static TMPro.TMP_Text SecretlyKillNumText;
 
         public static void setCustomButtonCooldowns()
         {
@@ -1594,24 +1595,33 @@ namespace SuperNewRoles.Buttons
             SecretlyKillerButton = new CustomButton(
                 () =>
                 {
-                    PositionSwapperButton.actionButton.cooldownTimerText.color = new Color(255F, 255F, 255F);
-                    PositionSwapper.SwapStart();
-                    PositionSwapper.ResetCoolDown();
+                    SecretlyKillerButton.actionButton.cooldownTimerText.color = new Color(255F, 255F, 255F);
+                    //SecretlyKiller.SecretlyKill();
+                    SecretlyKiller.ResetCoolDown();
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper); },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller); },
                 () =>
-                {
-                    float swapcount = RoleClass.PositionSwapper.SwapCount;
-                    if (swapcount > 0)
-                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), swapcount);
+                {   //テキストぉ
+                    float SecretKillLimit = RoleClass.SecretlyKiller.SecretlyKillLimit;
+                    if (SecretKillLimit > 0)
+                        SecretlyKillNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), SecretKillLimit);
                     else
-                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
-                    if (!PlayerControl.LocalPlayer.CanMove) return false;
-                    if (RoleClass.PositionSwapper.SwapCount <= 0) return false;
-                    return true && PlayerControl.LocalPlayer.CanMove;
+                        SecretlyKillNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
+
+                    if (RoleClass.SecretlyKiller.SecretlyKillLimit <= 0 && setTarget())
+                    {
+                        RoleClass.SecretlyKiller.SecretlyKillLimit--;
+                        RoleClass.SecretlyKiller.target = PlayerControlFixedUpdatePatch.setTarget();
+                        SecretlyKiller.SecretlyKill();
+                        //MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
+                        //killWriter.Write();
+                        //AmongUsClient.Instance.FinishRpcImmediately(killWriter);
+                        return true;
+                    }
+                    return false;
                 },
-                () => { PositionSwapper.EndMeeting(); },
-                RoleClass.PositionSwapper.getButtonSprite(),
+                () => { SecretlyKiller.EndMeeting(); },
+                RoleClass.SecretlyKiller.getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1619,8 +1629,13 @@ namespace SuperNewRoles.Buttons
                 49
             );
             {
-                PositionSwapperButton.buttonText = ModTranslation.getString("PositionSwapperButtonName");
-                PositionSwapperButton.showButtonText = true;
+                SecretlyKillNumText = GameObject.Instantiate(PositionSwapperButton.actionButton.cooldownTimerText, PositionSwapperButton.actionButton.cooldownTimerText.transform.parent);
+                SecretlyKillNumText.text = "";
+                SecretlyKillNumText.enableWordWrapping = false;
+                SecretlyKillNumText.transform.localScale = Vector3.one * 0.5f;
+                SecretlyKillNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
+                SecretlyKillerButton.buttonText = ModTranslation.getString("SecretlyKillButtonName");
+                SecretlyKillerButton.showButtonText = true;
             };
 
             setCustomButtonCooldowns();
