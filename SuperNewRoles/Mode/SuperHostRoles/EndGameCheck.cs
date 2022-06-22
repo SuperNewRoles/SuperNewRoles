@@ -44,7 +44,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void CustomEndGame(ShipStatus __instance, GameOverReason reason, bool showAd)
         {
             Chat.IsOldSHR = true;
-            List<PlayerControl>? WinGods = null;
+            List<PlayerControl> WinGods = null;
             foreach (PlayerControl p in RoleClass.God.GodPlayer)
             {
                 if (p.isAlive())

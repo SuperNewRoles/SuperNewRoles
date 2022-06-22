@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -15,6 +15,11 @@ namespace SuperNewRoles
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
     class RpcSetRolePatch
     {
+        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName + " => " + roleType);
+        }
+        /*
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
             SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName+" => "+roleType);
@@ -54,7 +59,7 @@ namespace SuperNewRoles
                 }
             }
             return false;
-        }
+        }*/
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
     class startgamepatch
