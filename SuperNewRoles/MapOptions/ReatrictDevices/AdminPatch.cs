@@ -211,9 +211,9 @@ namespace SuperNewRoles.Patch
                                         {
                                             num2--;
                                         }
-                                        else if (component?.MyRend?.material != null)
+                                        else if (component?.MyRend()?.material != null)
                                         {
-                                            Color color = component.MyRend.material.GetColor("_BodyColor");
+                                            Color color = component.MyRend().material.GetColor("_BodyColor");
                                             roomColors.Add(color);
                                         }
                                     }

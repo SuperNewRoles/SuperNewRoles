@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,6 +100,7 @@ namespace SuperNewRoles.EndGame
         }
         public static void Postfix(EndGameManager __instance)
         {
+
             foreach (PoolablePlayer pb in __instance.transform.GetComponentsInChildren<PoolablePlayer>())
             {
                 UnityEngine.Object.Destroy(pb.gameObject);
@@ -129,11 +130,10 @@ namespace SuperNewRoles.EndGame
                 float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
                 Vector3 vector = new(num7, num7, 1f);
                 poolablePlayer.transform.localScale = vector;
-                poolablePlayer.UpdateFromPlayerOutfit(winningPlayerData2, winningPlayerData2.IsDead);
-
+                poolablePlayer.UpdateFromPlayerOutfit(winningPlayerData2, PlayerMaterial.MaskType.ComplexUI, winningPlayerData2.IsDead, true);
                 if (winningPlayerData2.IsDead)
                 {
-                    poolablePlayer.BodySprites[0].BodySprite.sprite = __instance.GhostSprite;
+                    poolablePlayer.FixSkinSprite(__instance.GhostSprite);
                     poolablePlayer.SetDeadFlipX(i % 2 == 0);
                 }
                 else
@@ -141,17 +141,17 @@ namespace SuperNewRoles.EndGame
                     poolablePlayer.SetFlipX(i % 2 == 0);
                 }
 
-                poolablePlayer.NameText.color = Color.white;
-                poolablePlayer.NameText.lineSpacing *= 0.7f;
-                poolablePlayer.NameText.transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
-                poolablePlayer.NameText.transform.localPosition = new Vector3(poolablePlayer.NameText.transform.localPosition.x, poolablePlayer.NameText.transform.localPosition.y, -15f);
+                poolablePlayer.nameText().color = Color.white;
+                poolablePlayer.nameText().lineSpacing *= 0.7f;
+                poolablePlayer.nameText().transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
+                poolablePlayer.nameText().transform.localPosition = new Vector3(poolablePlayer.nameText().transform.localPosition.x, poolablePlayer.nameText().transform.localPosition.y, -15f);
 
-                poolablePlayer.NameText.text = winningPlayerData2.PlayerName;
+                poolablePlayer.nameText().text = winningPlayerData2.PlayerName;
 
                 foreach (var data in AdditionalTempData.playerRoles)
                 {
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                    poolablePlayer.NameText.text = data.PlayerName + data.NameSuffix + $"\n<size=80%>{string.Join("\n", CustomOptions.cs(data.IntroDate.color, data.IntroDate.NameKey + "Name"))}</size>";
+                    poolablePlayer.nameText().text = data.PlayerName + data.NameSuffix + $"\n<size=80%>{string.Join("\n", CustomOptions.cs(data.IntroDate.color, data.IntroDate.NameKey + "Name"))}</size>";
                 }
             }
             GameObject bonusTextObject = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
@@ -321,7 +321,7 @@ namespace SuperNewRoles.EndGame
                 {
                     if (p.isAlive())
                     {
-                        text = p.nameText.text;
+                        text = p.nameText().text;
                         textRenderer.color = new Color32(116, 80, 48, byte.MaxValue);
                     }
                 }
