@@ -491,7 +491,11 @@ namespace SuperNewRoles
         }
         public static SkinLayer GetSkin(this PlayerControl player)
         {
-            return 
+            return
+        }
+        public static SpriteRenderer GetPet(this PlayerControl player)
+        {
+            return
         }
 
         public static Texture2D loadTextureFromDisk(string path)
