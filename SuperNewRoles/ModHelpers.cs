@@ -9,6 +9,7 @@ using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
+using TMPro;
 using UnhollowerBaseLib;
 using UnityEngine;
 
@@ -479,6 +480,20 @@ namespace SuperNewRoles
             var indexdate = UnityEngine.Random.Range(0, list.Count);
             return indexdate;
         }
+
+        public static TextMeshPro nameText(this PlayerControl player)
+        {
+            return player.transform.FindChild("Sprite/NameText_TMP").GetComponent<TextMeshPro>();
+        }
+        public static SpriteRenderer MyRend(this PlayerControl player)
+        {
+            return player.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+        }
+        public static SkinLayer GetSkin(this PlayerControl player)
+        {
+            return 
+        }
+
         public static Texture2D loadTextureFromDisk(string path)
         {
             try

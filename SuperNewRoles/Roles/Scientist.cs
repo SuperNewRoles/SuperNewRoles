@@ -56,20 +56,20 @@ namespace SuperNewRoles.Roles
             var color = Color.Lerp(Palette.ClearWhite, Palette.White, opacity);
             try
             {
-                if (player.MyPhysics?.rend != null)
-                    player.MyPhysics.rend.color = color;
+                if (player.MyRend(). != null)
+                    player.MyRend().color = color;
 
-                if (player.MyPhysics?.Skin?.layer != null)
-                    player.MyPhysics.Skin.layer.color = color;
+                if (player.MyPhysics?.?.layer != null)
+                    player.MyPhysics.skin.layer.color = color;
 
                 if (player.HatRenderer != null)
-                    player.HatRenderer.color = color;
+                    player.g.color = color;
 
-                if (player.CurrentPet?.rend != null)
-                    player.CurrentPet.rend.color = color;
+                if (player.getPet?.rend != null)
+                    player.getPet().rend.color = color;
 
-                if (player.CurrentPet?.shadowRend != null)
-                    player.CurrentPet.shadowRend.color = color;
+                if (player.GetPet()?.shadowRend != null)
+                    player.GetPet().shadowRend.color = color;
 
                 if (player.VisorSlot != null)
                     player.VisorSlot.color = color;
