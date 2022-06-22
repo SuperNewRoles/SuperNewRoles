@@ -482,7 +482,6 @@ namespace SuperNewRoles
             return indexdate;
         }
 
-        public static Dictionary<byte, TextMeshPro> PlayerControlnameText = new();
         public static Dictionary<byte, SpriteRenderer> MyRendCache = new();
         public static Dictionary<byte, SkinLayer> SkinLayerCache = new();
         public static Dictionary<byte, HatParent> HatRendererCache = new();
@@ -490,17 +489,7 @@ namespace SuperNewRoles
         public static Dictionary<byte, VisorLayer> VisorSlotCache = new();
         public static TextMeshPro nameText(this PlayerControl player)
         {
-            bool Isnull = true;
-            if (PlayerControlnameText.ContainsKey(player.PlayerId))
-            {
-                if (PlayerControlnameText[player.PlayerId] == null) Isnull = true;
-                else Isnull = false;
-            }
-            if (Isnull)
-            {
-                PlayerControlnameText[player.PlayerId] = player.transform.FindChild("Sprite/NameText_TMP").GetComponent<TextMeshPro>();
-            }
-            return PlayerControlnameText[player.PlayerId];
+            return player.cosmetics.nameText;
         }
         public static TextMeshPro nameText(this PoolablePlayer player)
         {
