@@ -283,9 +283,9 @@ namespace SuperNewRoles.Patch
                     spr.size = new Vector2(2.2f, .7f);
                 modButtons.Add(button);
             }
-            for (var i = 2; i < AllOptions.Length + 2; i++)
+            for (var i = 4; i < AllOptions.Length + 4; i++)
             {
-                var info = AllOptions[i - 2];
+                var info = AllOptions[i - 4];
 
                 var button = Object.Instantiate(buttonPrefab, popUp.transform);
                 var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
