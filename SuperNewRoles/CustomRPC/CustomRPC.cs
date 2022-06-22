@@ -818,7 +818,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
             }
-            new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"), p.nameText.text), 3);
+            new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"), p.nameText().text), 3);
         }
         public static void SetWinCond(byte Cond)
         {
