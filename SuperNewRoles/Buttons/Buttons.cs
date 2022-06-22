@@ -1608,10 +1608,10 @@ namespace SuperNewRoles.Buttons
                     else
                         SecretlyKillNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
 
+                    RoleClass.SecretlyKiller.target = PlayerControlFixedUpdatePatch.setTarget();
                     if (RoleClass.SecretlyKiller.SecretlyKillLimit <= 0 && setTarget())
                     {
                         RoleClass.SecretlyKiller.SecretlyKillLimit--;
-                        RoleClass.SecretlyKiller.target = PlayerControlFixedUpdatePatch.setTarget();
                         SecretlyKiller.SecretlyKill();
                         //MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
                         //killWriter.Write();
@@ -1629,7 +1629,7 @@ namespace SuperNewRoles.Buttons
                 49
             );
             {
-                SecretlyKillNumText = GameObject.Instantiate(PositionSwapperButton.actionButton.cooldownTimerText, PositionSwapperButton.actionButton.cooldownTimerText.transform.parent);
+                SecretlyKillNumText = GameObject.Instantiate(SecretlyKillerButton.actionButton.cooldownTimerText, SecretlyKillerButton.actionButton.cooldownTimerText.transform.parent);
                 SecretlyKillNumText.text = "";
                 SecretlyKillNumText.enableWordWrapping = false;
                 SecretlyKillNumText.transform.localScale = Vector3.one * 0.5f;
