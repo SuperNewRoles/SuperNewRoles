@@ -485,6 +485,9 @@ namespace SuperNewRoles
         public static Dictionary<byte, TextMeshPro> PlayerControlnameText = new();
         public static Dictionary<byte, SpriteRenderer> MyRendCache = new();
         public static Dictionary<byte, SkinLayer> SkinLayerCache = new();
+        public static Dictionary<byte, HatParent> HatRendererCache = new();
+        public static Dictionary<byte, SpriteRenderer> HatRendCache = new();
+        public static Dictionary<byte, VisorLayer> VisorSlotCache = new();
         public static TextMeshPro nameText(this PlayerControl player)
         {
             bool Isnull = true;
@@ -562,18 +565,52 @@ namespace SuperNewRoles
             }
             return SkinLayerCache[PlayerId];
         }
-        public static VisorLayer VisorSlot(this PlayerControl player)
-        {
-            return player.transform.FindChild("Sprite/Visor").GetComponent<VisorLayer>();
-        }
         public static HatParent HatRenderer(this PlayerControl player)
         {
-            return player.transform.FindChild("Sprite/Hat").GetComponent<HatParent>();
+            byte PlayerId = player.PlayerId;
+            bool Isnull = true;
+            if (HatRendererCache.ContainsKey(PlayerId))
+            {
+                if (HatRendererCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                HatRendererCache[PlayerId] = player.transform.FindChild("Sprite/Hat").GetComponent<HatParent>();
+            }
+            return HatRendererCache[PlayerId];
         }
         public static SpriteRenderer HatRend(this PlayerControl player)
         {
-            return player.transform.FindChild("Sprite/Hat").GetComponent<SpriteRenderer>();
+            byte PlayerId = player.PlayerId;
+            bool Isnull = true;
+            if (HatRendCache.ContainsKey(PlayerId))
+            {
+                if (HatRendCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                HatRendCache[PlayerId] = player.transform.FindChild("Sprite/Hat").GetComponent<SpriteRenderer>();
+            }
+            return HatRendCache[PlayerId];
         }
+        public static VisorLayer VisorSlot(this PlayerControl player)
+        {
+            byte PlayerId = player.PlayerId;
+            bool Isnull = true;
+            if (VisorSlotCache.ContainsKey(PlayerId))
+            {
+                if (VisorSlotCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                VisorSlotCache[PlayerId] = player.transform.FindChild("Sprite/Visor").GetComponent<VisorLayer>();
+            }
+            return VisorSlotCache[PlayerId];
+        }
+
         public static HatParent HatSlot(this PoolablePlayer player)
         {
             return player.transform.FindChild("HatSlot").GetComponent<HatParent>();
