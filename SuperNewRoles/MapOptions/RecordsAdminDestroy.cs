@@ -1,5 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.MapOptions
 {
@@ -8,7 +9,7 @@ namespace SuperNewRoles.MapOptions
     {
         public static void Postfix()
         {
-            if (MapOption.RecordsAdminDestroy.getBool() && MapOption.MapOptionSetting.getBool())
+            if (MapOption.RecordsAdminDestroy.getBool() && MapOption.MapOptionSetting.getBool() && ModeHandler.isMode(ModeId.Default))
             {
                 Transform Admin = GameObject.Find("Airship(Clone)").transform.FindChild("Records").FindChild("records_admin_map");
                 GameObject.Destroy(Admin.gameObject);
