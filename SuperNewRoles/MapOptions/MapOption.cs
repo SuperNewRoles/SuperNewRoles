@@ -62,9 +62,9 @@ namespace SuperNewRoles.MapOptions
                 }
                 UseDeadBodyReport = !NotUseReportDeadBody.getBool();
                 UseMeetingButton = !NotUseMeetingButton.getBool();
-                SuperNewRoles.Patch.AdminPatch.ClearAndReload();
-                SuperNewRoles.Patch.CameraPatch.ClearAndReload();
-                SuperNewRoles.Patch.VitalsPatch.ClearAndReload();
+                //SuperNewRoles.Patch.AdminPatch.ClearAndReload();
+                //SuperNewRoles.Patch.CameraPatch.ClearAndReload();
+                //SuperNewRoles.Patch.VitalsPatch.ClearAndReload();
             }
             else
             {
@@ -175,7 +175,7 @@ namespace SuperNewRoles.MapOptions
             RandomMapAirship = CustomOption.CustomOption.Create(458, true, CustomOptionType.Generic, "RMAirshipSetting", true, RandomMapOption);
             RandomMapSubmerged = CustomOption.CustomOption.Create(459, true, CustomOptionType.Generic, "RMSubmergedSetting", true, RandomMapOption);
             //RM??��?��??��?��RandomMap??��?��̗�??��?��ł�()
-
+/*
             RestrictDevicesOption = CustomOption.CustomOption.Create(460, false, CustomOptionType.Generic, "RestrictDevicesSetting", true, MapOptionSetting);
             RestrictAdmin = CustomOption.CustomOption.Create(461, false, CustomOptionType.Generic, "RestrictAdminSetting", false, RestrictDevicesOption);
             IsYkundesuBeplnEx = CustomOption.CustomOption.Create(462, false, CustomOptionType.Generic, "IsYkundesuBeplnExSetting", false, RestrictAdmin);
@@ -184,7 +184,7 @@ namespace SuperNewRoles.MapOptions
             CanUseCameraTime = CustomOption.CustomOption.Create(465, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 300f, 2.5f, RestrictCamera);
             RestrictVital = CustomOption.CustomOption.Create(466, false, CustomOptionType.Generic, "RestrictVitalSetting", false, RestrictDevicesOption);
             CanUseVitalTime = CustomOption.CustomOption.Create(467, false, CustomOptionType.Generic, "DeviceTimeSetting", 10f, 0f, 300f, 2.5f, RestrictVital);
-
+*/
             ReactorDurationOption = CustomOption.CustomOption.Create(468, true, CustomOptionType.Generic, "ReactorDurationSetting", false, MapOptionSetting);
             PolusReactorTimeLimit = CustomOption.CustomOption.Create(469, true, CustomOptionType.Generic, "PolusReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);
             MiraReactorTimeLimit = CustomOption.CustomOption.Create(470, true, CustomOptionType.Generic, "MiraReactorTime", 30f, 0f, 100f, 1f, ReactorDurationOption);

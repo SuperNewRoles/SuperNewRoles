@@ -892,29 +892,36 @@ namespace SuperNewRoles.CustomRPC
             var SwapperPosition = SwapperPlayer.transform.position;
             //Text
             var rand = new System.Random();
-            if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)*/){
+            if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)*/)
+            {
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
                 //SwapPlayer.transform.position = SwapperPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
-                if (rand.Next(1, 20) == 1){
-                new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
+                if (rand.Next(1, 20) == 1)
+                {
+                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
                 }
-                else{
+                else
+                {
                     new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
                 }
                 return;
             }
-            else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId){
+            else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId)
+            {
                 CachedPlayer.LocalPlayer.transform.position = SwapperPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");
-                if (rand.Next(1, 20) == 1){
-                new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
+                if (rand.Next(1, 20) == 1)
+                {
+                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
                 }
-                else{
+                else
+                {
                     new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
                 }
             }
         }
+        /*
         public static void UseAdminTime(float time)
         {
             Patch.AdminPatch.RestrictAdminTime -= time;
@@ -926,7 +933,7 @@ namespace SuperNewRoles.CustomRPC
         public static void UseVitalTime(float time)
         {
             Patch.VitalsPatch.RestrictVitalsTime -= time;
-        }
+        }*/
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -1142,6 +1149,7 @@ namespace SuperNewRoles.CustomRPC
                     case CustomRPC.PositionSwapperTP:
                         RPCProcedure.PositionSwapperTP(reader.ReadByte(), reader.ReadByte());
                         break;
+                        /*
                     case CustomRPC.UseAdminTime:
                         UseAdminTime(reader.ReadSingle());
                         break;
@@ -1151,6 +1159,7 @@ namespace SuperNewRoles.CustomRPC
                     case CustomRPC.UseVitalsTime:
                         UseVitalTime(reader.ReadSingle());
                         break;
+                        */
                     case CustomRPC.FixLights:
                         FixLights();
                         break;
