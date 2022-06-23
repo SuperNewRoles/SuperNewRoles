@@ -29,7 +29,6 @@ namespace SuperNewRoles.Roles
             if (Target.isNeutral() && RoleClass.Sheriff.IsNeutralKill) return true;
             if (RoleClass.Sheriff.IsLoversKill && Target.IsLovers()) return true;
             if (Target.isRole(CustomRPC.RoleId.HauntedWolf)) return true;
-            //シェリフキルゥ
             return false;
         }
         public static bool IsRemoteSheriffKill(PlayerControl Target)
@@ -41,7 +40,6 @@ namespace SuperNewRoles.Roles
             if (Target.isNeutral() && RoleClass.RemoteSheriff.IsNeutralKill) return true;
             if (RoleClass.RemoteSheriff.IsLoversKill && Target.IsLovers()) return true;
             if (Target.isRole(CustomRPC.RoleId.HauntedWolf)) return true;
-            //リモシェリフキルゥ
             return false;
         }
         public static bool IsSheriff(PlayerControl Player)
