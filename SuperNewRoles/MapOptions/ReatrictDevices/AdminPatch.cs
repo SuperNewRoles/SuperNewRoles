@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -211,9 +211,9 @@ namespace SuperNewRoles.Patch
                                         {
                                             num2--;
                                         }
-                                        else if (component?.MyRend?.material != null)
+                                        else if (component?.MyRend()?.material != null)
                                         {
-                                            Color color = component.MyRend.material.GetColor("_BodyColor");
+                                            Color color = component.MyRend().material.GetColor("_BodyColor");
                                             roomColors.Add(color);
                                         }
                                     }
@@ -250,7 +250,7 @@ namespace SuperNewRoles.Patch
                 return true;
             }
         }
-        /*  public static bool IsBlocked(IUsable target, PlayerControl pc)
+          public static bool IsBlocked(IUsable target, PlayerControl pc)
             {
                 if (target == null) return false;
 
@@ -264,6 +264,6 @@ namespace SuperNewRoles.Patch
                     return true;
                 }
                 return false;
-            }*/
+            }
     }
-}
+}*/

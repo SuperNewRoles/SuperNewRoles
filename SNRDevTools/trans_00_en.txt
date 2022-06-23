@@ -91,7 +91,7 @@ It has been updated. It will be applied when you reboot. Latest Version:v{0}
 Options
 Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings
 Role Player
-StremerMode
+Hide Server Url
 Auto Update
 Game Code Auto Copy
 Update Process Down
@@ -753,6 +753,8 @@ Swapping limits
 Swapping cooltime
 Limits:{0}
 PositionSwap
+Position swapper swapped you!
+Position swapper swapped you!\n by the way，ykundesu isn't delicious?
 Tuna
 Always move!
 Stopping Time

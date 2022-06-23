@@ -35,7 +35,7 @@ namespace SuperNewRoles.Roles
         {
             var rdm = ModHelpers.GetRandomIndex(p);
             var random = p[rdm];
-            SuperNewRolesPlugin.Logger.LogInfo(random.nameText.text);
+            SuperNewRolesPlugin.Logger.LogInfo(random.nameText().text);
             if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.NekomataExiled, random))
             {
                 MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.NekomataExiledRPC, Hazel.SendOption.Reliable, -1);

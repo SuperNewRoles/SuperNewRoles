@@ -60,7 +60,7 @@ namespace SuperNewRoles.Patch
             foreach (PlayerControl target in CachedPlayer.AllPlayers)
             {
                 if (target == null || target.MyRend == null) continue;
-                target.MyRend.material.SetFloat("_Outline", 0f);
+                target.MyRend().material.SetFloat("_Outline", 0f);
             }
         }
 

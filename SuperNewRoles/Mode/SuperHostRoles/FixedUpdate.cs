@@ -24,9 +24,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 DefaultName = new Dictionary<int, string>();
                 foreach (var pc in CachedPlayer.AllPlayers)
                 {
-                    //SuperNewRolesPlugin.Logger.LogInfo($"{pc.PlayerId}:{pc.name}:{pc.nameText.text}");
+                    //SuperNewRolesPlugin.Logger.LogInfo($"{pc.PlayerId}:{pc.name}:{pc.nameText().text}");
                     DefaultName[pc.PlayerId] = pc.PlayerControl.name;
-                    pc.PlayerControl.nameText.text = pc.PlayerControl.name;
+                    pc.PlayerControl.nameText().text = pc.PlayerControl.name;
                 }
             }
         }
