@@ -41,7 +41,7 @@ namespace SuperNewRoles
             if (player.isRole(CustomRPC.RoleId.MadSeer)) return true;
             if (player.isRole(CustomRPC.RoleId.MadMaker)) return true;
             if (player.isRole(CustomRPC.RoleId.BlackCat)) return true;
-            return player != null && !player.isImpostor() && !player.isNeutral() && !player.isCrew();
+            return false;
         }
 
         //We are JackalFriends!
@@ -50,7 +50,7 @@ namespace SuperNewRoles
             if (player.isRole(CustomRPC.RoleId.JackalFriends)) return true;
             if (player.isRole(CustomRPC.RoleId.SeerFriends)) return true;
             if (player.isRole(CustomRPC.RoleId.MayorFriends)) return true;
-            return player != null && !player.isImpostor() && !player.isNeutral() && !player.isCrew() && !player.isMadRole();
+            return false;
         }
 
         public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
