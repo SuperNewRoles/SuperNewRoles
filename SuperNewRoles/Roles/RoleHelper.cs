@@ -33,24 +33,32 @@ namespace SuperNewRoles
         //We are Mad!
         public static bool isMadRole(this PlayerControl player)
         {
-            if (player.isRole(CustomRPC.RoleId.MadMate)) return true;
-            if (player.isRole(CustomRPC.RoleId.MadJester)) return true;
-            if (player.isRole(CustomRPC.RoleId.MadStuntMan)) return true;
-            if (player.isRole(CustomRPC.RoleId.MadMayor)) return true;
-            if (player.isRole(CustomRPC.RoleId.MadHawk)) return true;
-            if (player.isRole(CustomRPC.RoleId.MadSeer)) return true;
-            if (player.isRole(CustomRPC.RoleId.MadMaker)) return true;
-            if (player.isRole(CustomRPC.RoleId.BlackCat)) return true;
-            return false;
+            RoleId role = player.getRole();
+            return role switch
+            {
+                RoleId.MadMate => true,
+                RoleId.MadMayor => true,
+                RoleId.MadStuntMan => true,
+                RoleId.MadHawk => true,
+                RoleId.MadJester => true,
+                RoleId.MadSeer => true,
+                RoleId.BlackCat => true,
+                RoleId.MadMaker => true,
+                _ => false,
+            };
         }
 
         //We are JackalFriends!
         public static bool isFriendRole(this PlayerControl player)
         {
-            if (player.isRole(CustomRPC.RoleId.JackalFriends)) return true;
-            if (player.isRole(CustomRPC.RoleId.SeerFriends)) return true;
-            if (player.isRole(CustomRPC.RoleId.MayorFriends)) return true;
-            return false;
+            RoleId role = player.getRole();
+            return role switch
+            {
+                RoleId.JackalFriends => true,
+                RoleId.SeerFriends => true,
+                RoleId.MayorFriends => true,
+                _ => false,
+            };
         }
 
         public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
