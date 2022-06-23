@@ -30,6 +30,29 @@ namespace SuperNewRoles
             return player != null && !player.isImpostor() && !player.isNeutral() && !player.isCrew();
         }
 
+        //We are Mad!
+        public static bool isMadRole(this PlayerControl player)
+        {
+            if (player.isRole(CustomRPC.RoleId.MadMate)) return true;
+            if (player.isRole(CustomRPC.RoleId.MadJester)) return true;
+            if (player.isRole(CustomRPC.RoleId.MadStuntMan)) return true;
+            if (player.isRole(CustomRPC.RoleId.MadMayor)) return true;
+            if (player.isRole(CustomRPC.RoleId.MadHawk)) return true;
+            if (player.isRole(CustomRPC.RoleId.MadSeer)) return true;
+            if (player.isRole(CustomRPC.RoleId.MadMaker)) return true;
+            if (player.isRole(CustomRPC.RoleId.BlackCat)) return true;
+            return player != null && !player.isImpostor() && !player.isNeutral() && !player.isCrew();
+        }
+
+        //We are JackalFriends!
+        public static bool isFriendRole(this PlayerControl player)
+        {
+            if (player.isRole(CustomRPC.RoleId.JackalFriends)) return true;
+            if (player.isRole(CustomRPC.RoleId.SeerFriends)) return true;
+            if (player.isRole(CustomRPC.RoleId.MayorFriends)) return true;
+            return player != null && !player.isImpostor() && !player.isNeutral() && !player.isCrew() && !player.isMadRole();
+        }
+
         public static bool IsQuarreled(this PlayerControl player, bool IsChache = true)
         {
             if (player.IsBot()) return false;
@@ -90,7 +113,7 @@ namespace SuperNewRoles
         }
         public static void SetQuarreled(PlayerControl player1, PlayerControl player2)
         {
-            List<PlayerControl> sets = new () { player1, player2 };
+            List<PlayerControl> sets = new() { player1, player2 };
             RoleClass.Quarreled.QuarreledPlayer.Add(sets);
             ChacheManager.ResetQuarreledChache();
         }
@@ -936,7 +959,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1119,7 +1142,7 @@ namespace SuperNewRoles
                     return RoleClass.MayorFriends.IsUseVent;
                 case RoleId.Tuna:
                     return RoleClass.Tuna.IsUseVent;
-                                case RoleId.BlackCat:
+                case RoleId.BlackCat:
                     if (CachedPlayer.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return false;
                     return RoleClass.BlackCat.IsUseVent;
                     //ベントが使える
