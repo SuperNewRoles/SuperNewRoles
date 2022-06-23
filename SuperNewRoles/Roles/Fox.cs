@@ -23,8 +23,8 @@ namespace SuperNewRoles.Roles
         {
             if (target == null || target.MyRend == null) return;
 
-            target.MyRend.material.SetFloat("_Outline", 1f);
-            target.MyRend.material.SetColor("_OutlineColor", color);
+            target.MyRend().material.SetFloat("_Outline", 1f);
+            target.MyRend().material.SetColor("_OutlineColor", color);
         }
         public class FixedUpdate
         {

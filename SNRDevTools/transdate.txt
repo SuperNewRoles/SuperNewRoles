@@ -92,7 +92,7 @@ creditsUpdateOk,It has been updated. It will be applied when you reboot. Latest 
 modOptionsText,Options,設定
 moreOptionsText,Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings,通常設定&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の設定
 SettingPlayerCountName,Role Player,人数
-CustomStremerMode,StremerMode,ストリーマーモード
+CustomStremerMode,Hide Server Url,サーバーURLを非表示にする
 CustomAutoUpdate,Auto Update,自動アップデート
 CustomAutoCopyGameCode,Game Code Auto Copy,ゲームコードを自動でコピーする
 CustomProcessDown,Update Process Down,処理回数を減らす
@@ -754,6 +754,8 @@ SettingPositionSwapperSwapCountName,Swapping limits,スワップ制限回数
 SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクールタイム
 PositionSwapperNumTextName,Limits:{0},残り{0}回
 PositionSwapperButtonName,PositionSwap,スワップ
+PositionSwapperSwapText,Position swapper swapped you!,スワッパーによってスワップされました!
+PositionSwapperSwapText2,Position swapper swapped you!\n by the way，ykundesu isn't delicious?,スワッパーによってスワップされました!\nところでﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽｵｲｼｲﾃﾞｽﾖﾈ
 TunaName,Tuna,マグロ
 TunaTitle1,Always move!,常に動け！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間
