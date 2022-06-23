@@ -8,8 +8,11 @@ namespace SuperNewRoles.MapOptions
     {
         public static void Postfix()
         {
-            Transform Airship = GameObject.Find("Airship(Clone)").transform;
-            GameObject.Destroy(Airship.FindChild("Records").FindChild("records_admin_map"));
+            if (MapOption.RecordsAdminDestroy.getBool() && MapOption.MapOptionSetting.getBool())
+            {
+                Transform Admin = GameObject.Find("Airship(Clone)").transform.FindChild("Records").FindChild("records_admin_map");
+                GameObject.Destroy(Admin.gameObject);
+            }
         }
     }
 }
