@@ -153,8 +153,6 @@ namespace SuperNewRoles.MapOptions
 
         public static CustomOption.CustomOption VentAnimation;
 
-        public static CustomOption.CustomOption RecordsAdminDestroy;
-
         public static void LoadOption()
         {
             MapOptionSetting = CustomOption.CustomOption.Create(527, true, CustomOptionType.Generic, "MapOptionSetting", false, null, isHeader: true);
@@ -198,8 +196,6 @@ namespace SuperNewRoles.MapOptions
             MiraAdditionalVents = CustomOption.CustomOption.Create(607, false, CustomOptionType.Generic, "MiraAdditionalVents", false, MapRemodelingOption);
 
             VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
-
-            RecordsAdminDestroy = CustomOption.CustomOption.Create(608, false, CustomOptionType.Generic, "RecordsAdminDestroy", false, MapOptionSetting);
         }
     }
 }
