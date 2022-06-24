@@ -137,6 +137,7 @@ namespace SuperNewRoles.Roles
             Tuna.ClearAndReload();
             Mafia.ClearAndReload();
             BlackCat.ClearAndReload();
+            DoubleKiller.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2247,6 +2248,15 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.BlackCatCheckImpostorTask.getString().Replace("%", "")) / 100f));
+            }
+        }
+        public static class DoubleKiller
+        {
+            public static List<PlayerControl> DoubleKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                DoubleKillerPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

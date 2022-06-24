@@ -630,6 +630,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.DoubleKiller):
+                    Roles.RoleClass.DoubleKiller.DoubleKillerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("[SetRole]:No Method Found for Role Type {role}");
@@ -967,7 +970,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (CustomRPC.RoleId.DoubleKiller):
+                    Roles.RoleClass.DoubleKiller.DoubleKillerPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1883,7 +1889,11 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.BlackCat;
                 }
-                //ロールチェック
+                else if (Roles.RoleClass.DoubleKiller.DoubleKillerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.DoubleKiller;
+            }
+            //ロールチェック
             }
             catch (Exception e)
             {
