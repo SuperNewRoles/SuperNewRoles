@@ -63,7 +63,7 @@ Discordサーバーからお願いします:[Discordサーバー](https://discor
 [さつまいも](https://github.com/satsumaimoamo) ([Twitter](https://twitter.com/satsumaimo_SNR))<br>
 [VSCode大好き](https://github.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa9841)<br>
 [漢方薬の人](https://github.com/UKON256)<br>
-[じゅきまぐろ](https://github.com/jukimaguro1) ([Twitter](https://twitter.com/jukimaguro_new))<br>
+[じゅきまぐろ](https://github.com/jukimaguro1) ([Twitter](https://twitter.com/jukimaguro))<br>
 [くらと](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
 [DekoKiyo](https://github.com/Dekokiyo) ([Twitter](https://twitter.com/kiyo_deko))<br>
 

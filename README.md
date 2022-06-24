@@ -44,7 +44,7 @@ It is already on the Discord server.
 [satsumaimo](https://github.com/satsumaimoamo) ([Twitter](https://twitter.com/satsumaimo_SNR))<br>
 [VSCode Lover](https://github.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa9841)<br>
 [UKON people](https://github.com/UKON256)<br>
-[juki maguro](https://github.com/jukimaguro1) ([Twitter](https://twitter.com/jukimaguro_new))<br>
+[juki maguro](https://github.com/jukimaguro1) ([Twitter](https://twitter.com/jukimaguro))<br>
 [Kurato](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
 [DekoKiyo](https://github.com/Dekokiyo) ([Twitter](https://twitter.com/kiyo_deko))<br>
 
