@@ -47,7 +47,10 @@ namespace SuperNewRoles.MapOptions
         [HarmonyPriority(900)]
         public static void Prefix(AmongUsClient __instance)
         {
-            ((MonoBehaviour)(object)__instance).StartCoroutine(AddVitals.LoadPolus());
+            if (SubmergedCompatibility.Loaded)
+            {
+                ((MonoBehaviour)(object)__instance).StartCoroutine(AddVitals.LoadPolus());
+            }
         }
     }
 }

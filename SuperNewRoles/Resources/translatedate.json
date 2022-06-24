@@ -373,8 +373,8 @@
         "11" : "\u4eba\u6570"
         } ,
  "CustomStremerMode" : {
-        "0" : "StremerMode" ,
-        "11" : "\u30b9\u30c8\u30ea\u30fc\u30de\u30fc\u30e2\u30fc\u30c9"
+        "0" : "Hide Server Url" ,
+        "11" : "\u30b5\u30fc\u30d0\u30fcURL\u3092\u975e\u8868\u793a\u306b\u3059\u308b"
         } ,
  "CustomAutoUpdate" : {
         "0" : "Auto Update" ,
