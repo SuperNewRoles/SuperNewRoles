@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
@@ -91,7 +91,6 @@ namespace SuperNewRoles.Patch
                     else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
                         Mode.SuperHostRoles.FixedUpdate.Update();
-                        Fox.FixedUpdate.Postfix();
                         RoleId MyRole = CachedPlayer.LocalPlayer.PlayerControl.getRole();
                         switch (MyRole)
                         {
@@ -157,7 +156,6 @@ namespace SuperNewRoles.Patch
                                     Mafia.FixedUpdate();
                                     break;
                             }
-                            Fox.FixedUpdate.Postfix();
                             Minimalist.FixedUpdate.Postfix();
                         }
                         else
