@@ -925,7 +925,7 @@ namespace SuperNewRoles.CustomRPC
         public static void UseAdminTime(float time)
         {
             Patch.AdminPatch.RestrictAdminTime -= time;
-        }*/
+        }
         public static void UseCameraTime(float time)
         {
             Patch.CameraPatch.RestrictCameraTime -= time;
@@ -933,7 +933,7 @@ namespace SuperNewRoles.CustomRPC
         public static void UseVitalTime(float time)
         {
             Patch.VitalsPatch.RestrictVitalsTime -= time;
-        }
+        }*/
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
