@@ -42,7 +42,7 @@ It is already on the Discord server.
 ## Developers
 [Yking](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
 [satsumaimo](https://github.com/satsumaimoamo) ([Twitter](https://twitter.com/satsumaimo_SNR))<br>
-[VSCode Lover](https://github.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa9841)<br>
+[VSCode Daisuki](https://github.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa9841)<br>
 [UKON people](https://github.com/UKON256)<br>
 [juki maguro](https://github.com/jukimaguro1) ([Twitter](https://twitter.com/jukimaguro))<br>
 [Kurato](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
