@@ -1254,8 +1254,8 @@ namespace SuperNewRoles.CustomOption
 
             DoubleKillerOption = new CustomRoleOption(565, false, CustomOptionType.Impostor, "DoubleKillerName", RoleClass.DoubleKiller.color, 1);
             DoubleKillerPlayerCount = CustomOption.Create(566, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoubleKillerOption);
-            DoubleKillerMainCoolTime = CustomOption.Create(567, false, CustomOptionType.Impostor, "DoubleKillerMainCoolSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption);
-            DoubleKillerSubCoolTime = CustomOption.Create(568, false, CustomOptionType.Impostor, "DoubleKillerSubCoolSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption, format: "unitSeconds");
+            DoubleKillerMainCoolTime = CustomOption.Create(567, false, CustomOptionType.Impostor, "MainCoolSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption);
+            DoubleKillerSubCoolTime = CustomOption.Create(568, false, CustomOptionType.Impostor, "SubCoolSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption, format: "unitSeconds");
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

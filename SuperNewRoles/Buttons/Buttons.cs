@@ -1646,7 +1646,6 @@ namespace SuperNewRoles.Buttons
                 49
             );
             {
-                DoubleKillerMainKillButton.buttonText = ModTranslation.getString("DoubralKillerSuicideRText");
                 DoubleKillerMainKillButton.buttonText = HudManager.Instance.KillButton.buttonLabelText.text;
                 DoubleKillerMainKillButton.showButtonText = true;
             };

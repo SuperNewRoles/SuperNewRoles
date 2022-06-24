@@ -763,3 +763,8 @@ BlackCatTitle1
 MafiaName
 MafiaTitle1
 MafiaDescription
+DoubleKillerName
+DoubleKillerTitle1
+SubKillButtonName
+MainCoolSetting
+SubCoolSetting
