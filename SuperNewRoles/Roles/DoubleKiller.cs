@@ -10,14 +10,6 @@ namespace SuperNewRoles.Roles
 {
     public static class DoubleKiller
     {
-        public static void SetDoubleKillerButton()
-        {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DoubleKiller))
-            {
-                HudManager.Instance.KillButton.gameObject.SetActive(false);
-                //純正キルボタン消去
-            }
-        }
         public static void resetMainCoolDown()
         {
             HudManagerStartPatch.DoubleKillerMainKillButton.MaxTimer = RoleClass.DoubleKiller.MainKillCoolTime;

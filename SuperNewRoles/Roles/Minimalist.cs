@@ -39,19 +39,19 @@
                     }
                 }
             }
+
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DoubleKiller))
+            {
+                HudManager.Instance.KillButton.gameObject.SetActive(false);
+                //ダブルキラーの純正キルボタン消去
+            }
         }
+
         public class FixedUpdate
         {
             public static void Postfix()
             {
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Minimalist))
-                {
-                    SetMinimalistButton();
-                }
-                else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DoubleKiller))
-                {
-                    DoubleKiller.SetDoubleKillerButton();
-                }
+                SetMinimalistButton();
             }
         }
     }
