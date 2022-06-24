@@ -1,4 +1,4 @@
-namespace SuperNewRoles.Roles
+﻿namespace SuperNewRoles.Roles
 {
     public class Minimalist
     {
@@ -27,6 +27,16 @@ namespace SuperNewRoles.Roles
                 if (!RoleClass.Minimalist.UseReport)
                 {
                     FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
+                }
+            }
+                        if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
+            {
+                if (!RoleClass.Fox.UseReport)
+                {
+                    if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
+                    {
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
+                    }
                 }
             }
         }

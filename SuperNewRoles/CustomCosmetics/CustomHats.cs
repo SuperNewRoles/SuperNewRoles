@@ -247,13 +247,13 @@ namespace SuperNewRoles.CustomCosmetics
             {
                 AnimationClip currentAnimation = __instance.Animator.GetCurrentAnimation();
                 if (currentAnimation == __instance.CurrentAnimationGroup.ClimbAnim || currentAnimation == __instance.CurrentAnimationGroup.ClimbDownAnim) return;
-                HatParent hp = __instance.myPlayer.HatRenderer;
+                HatParent hp = __instance.myPlayer.HatRenderer();
                 if (hp.Hat == null) return;
                 HatExtension extend = hp.Hat.getHatExtension();
                 if (extend == null) return;
                 if (extend.FlipImage != null)
                 {
-                    if (__instance.rend.flipX)
+                    if (__instance.rend().flipX)
                     {
                         hp.FrontLayer.sprite = extend.FlipImage;
                     }
@@ -264,7 +264,7 @@ namespace SuperNewRoles.CustomCosmetics
                 }
                 if (extend.BackFlipImage != null)
                 {
-                    if (__instance.rend.flipX)
+                    if (__instance.rend().flipX)
                     {
                         hp.BackLayer.sprite = extend.BackFlipImage;
                     }
@@ -293,8 +293,8 @@ namespace SuperNewRoles.CustomCosmetics
                         {
                             var color = pc.CurrentOutfit.ColorId;
                             pc.SetHat("hat_dusk", color);
-                            pc.HatRenderer.Hat = CreateHatData(hats[0], true, true);
-                            pc.HatRenderer.SetHat(color);
+                            pc.HatRenderer().Hat = CreateHatData(hats[0], true, true);
+                            pc.HatRenderer().SetHat(color);
                         }
                     }
                 }
@@ -676,14 +676,14 @@ namespace SuperNewRoles.CustomCosmetics
     {
         public static void Postfix(PoolablePlayer __instance)
         {
-            if (__instance.VisorSlot?.transform == null || __instance.HatSlot?.transform == null) return;
+            if (__instance.VisorSlot()?.transform == null || __instance.HatSlot()?.transform == null) return;
 
             // fixes a bug in the original where the visor will show up beneath the hat,
             // instead of on top where it's supposed to be
-            __instance.VisorSlot.transform.localPosition = new Vector3(
-                __instance.VisorSlot.transform.localPosition.x,
-                __instance.VisorSlot.transform.localPosition.y,
-                __instance.HatSlot.transform.localPosition.z - 1
+            __instance.VisorSlot().transform.localPosition = new Vector3(
+                __instance.VisorSlot().transform.localPosition.x,
+                __instance.VisorSlot().transform.localPosition.y,
+                __instance.HatSlot().transform.localPosition.z - 1
                 );
         }
     }
