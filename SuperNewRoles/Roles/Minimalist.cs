@@ -29,7 +29,7 @@
                     FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
                 }
             }
-                        if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
             {
                 if (!RoleClass.Fox.UseReport)
                 {
@@ -44,7 +44,14 @@
         {
             public static void Postfix()
             {
-                SetMinimalistButton();
+                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Minimalist))
+                {
+                    SetMinimalistButton();
+                }
+                else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DoubleKiller))
+                {
+                    DoubleKiller.SetDoubleKillerButton();
+                }
             }
         }
     }

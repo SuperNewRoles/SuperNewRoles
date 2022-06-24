@@ -157,7 +157,6 @@ namespace SuperNewRoles.Patch
                                     break;
                             }
                             Minimalist.FixedUpdate.Postfix();
-                            DoubleKiller.FixedUpdate2nd.Postfix();
                         }
                         else
                         {

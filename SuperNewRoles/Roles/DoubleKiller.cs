@@ -14,24 +14,8 @@ namespace SuperNewRoles.Roles
         {
             if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DoubleKiller))
             {
-                if (RoleClass.DoubleKiller.NoKill == true)
-                {
-                    HudManager.Instance.KillButton.gameObject.SetActiveRecursively(false);
-                    HudManager.Instance.KillButton.gameObject.SetActive(false);
-                    HudManager.Instance.KillButton.graphic.enabled = false;
-                    HudManager.Instance.KillButton.enabled = false;
-                    HudManager.Instance.KillButton.graphic.sprite = null;
-                    HudManager.Instance.KillButton.buttonLabelText.enabled = false;
-                    HudManager.Instance.KillButton.buttonLabelText.SetText("");
-                    //純正キルボタン消去
-                }
-            }
-        }
-        public class FixedUpdate2nd
-        {
-            public static void Postfix()
-            {
-                SetDoubleKillerButton();
+                HudManager.Instance.KillButton.gameObject.SetActive(false);
+                //純正キルボタン消去
             }
         }
         public static void resetMainCoolDown()
@@ -110,13 +94,6 @@ namespace SuperNewRoles.Roles
                 {
                     DoubleKillerPlayerOutLineTarget();
                 }
-            }
-        }
-        public class Nokill
-        {
-            public static void Postfix()
-            {
-                SetDoubleKillerButton();
             }
         }
     }

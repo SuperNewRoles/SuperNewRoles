@@ -63,8 +63,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton EvilHackerButton;
         public static CustomButton EvilHackerMadmateSetting;
         public static CustomButton PositionSwapperButton;
-        public static CustomButton DoubleKillerSubKillButton;
         public static CustomButton DoubleKillerMainKillButton;
+        public static CustomButton DoubleKillerSubKillButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
@@ -1615,7 +1615,7 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.KillButton,
                 KeyCode.F,
-                8
+                49
             )
             {
                 buttonText = ModTranslation.getString("SubKillButtonName"),
@@ -1643,7 +1643,7 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
-                49
+                8
             );
             {
                 DoubleKillerMainKillButton.buttonText = HudManager.Instance.KillButton.buttonLabelText.text;
