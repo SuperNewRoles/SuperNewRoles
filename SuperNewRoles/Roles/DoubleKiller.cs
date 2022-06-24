@@ -10,14 +10,44 @@ namespace SuperNewRoles.Roles
 {
     public static class DoubleKiller
     {
-        public static void resetCoolDown()
+        public static void SetDoubleKillerButton()
+        {
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DoubleKiller))
+            {
+                if (RoleClass.DoubleKiller.NoKill == true)
+                {
+                    HudManager.Instance.KillButton.gameObject.SetActiveRecursively(false);
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                    HudManager.Instance.KillButton.graphic.enabled = false;
+                    HudManager.Instance.KillButton.enabled = false;
+                    HudManager.Instance.KillButton.graphic.sprite = null;
+                    HudManager.Instance.KillButton.buttonLabelText.enabled = false;
+                    HudManager.Instance.KillButton.buttonLabelText.SetText("");
+                    //純正キルボタン消去
+                }
+            }
+        }
+        public class FixedUpdate2nd
+        {
+            public static void Postfix()
+            {
+                SetDoubleKillerButton();
+            }
+        }
+        public static void resetMainCoolDown()
+        {
+            HudManagerStartPatch.DoubleKillerMainKillButton.MaxTimer = RoleClass.DoubleKiller.MainKillCoolTime;
+            HudManagerStartPatch.DoubleKillerMainKillButton.Timer = RoleClass.DoubleKiller.MainKillCoolTime;
+        }
+        public static void resetSubCoolDown()
         {
             HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer = RoleClass.DoubleKiller.SubKillCoolTime;
             HudManagerStartPatch.DoubleKillerSubKillButton.Timer = RoleClass.DoubleKiller.SubKillCoolTime;
         }
         public static void EndMeeting()
         {
-            resetCoolDown();
+            resetSubCoolDown();
+            resetMainCoolDown();
             HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer = RoleClass.DoubleKiller.SubKillCoolTime;
         }
         public static void setPlayerOutline(PlayerControl target, Color color)
@@ -80,6 +110,13 @@ namespace SuperNewRoles.Roles
                 {
                     DoubleKillerPlayerOutLineTarget();
                 }
+            }
+        }
+        public class Nokill
+        {
+            public static void Postfix()
+            {
+                SetDoubleKillerButton();
             }
         }
     }

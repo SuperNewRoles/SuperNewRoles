@@ -1366,9 +1366,9 @@ namespace SuperNewRoles
                     case RoleId.Samurai:
                         addition = RoleClass.Samurai.KillCoolTime;
                         break;
-                    case RoleId.DoubleKiller:
-                        addition = RoleClass.DoubleKiller.MainKillCoolTime;
-                        break;
+                        //case RoleId.DoubleKiller:
+                        //addition = RoleClass.DoubleKiller.MainKillCoolTime;
+                        //break;
                 }
             }
             return addition;

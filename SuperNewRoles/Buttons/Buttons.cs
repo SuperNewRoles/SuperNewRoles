@@ -64,6 +64,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton EvilHackerMadmateSetting;
         public static CustomButton PositionSwapperButton;
         public static CustomButton DoubleKillerSubKillButton;
+        public static CustomButton DoubleKillerMainKillButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
@@ -1597,7 +1598,7 @@ namespace SuperNewRoles.Buttons
                     if (DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
                         ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget());
-                        DoubleKiller.resetCoolDown();
+                        DoubleKiller.resetSubCoolDown();
                     }
                 },
                 () => { return (ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.DoubleKiller.DoubleKillerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer)); },
@@ -1619,6 +1620,35 @@ namespace SuperNewRoles.Buttons
             {
                 buttonText = ModTranslation.getString("SubKillButtonName"),
                 showButtonText = true
+            };
+
+
+            DoubleKillerMainKillButton = new CustomButton(
+                () =>
+                {
+                    if (DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget());
+                        DoubleKiller.resetMainCoolDown();
+                    }
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.DoubleKiller.DoubleKillerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer); },
+                () =>
+                {
+                    return DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { DoubleKiller.EndMeeting(); },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                49
+            );
+            {
+                DoubleKillerMainKillButton.buttonText = ModTranslation.getString("DoubralKillerSuicideRText");
+                DoubleKillerMainKillButton.buttonText = HudManager.Instance.KillButton.buttonLabelText.text;
+                DoubleKillerMainKillButton.showButtonText = true;
             };
 
             setCustomButtonCooldowns();
