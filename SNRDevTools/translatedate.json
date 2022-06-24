@@ -3063,6 +3063,10 @@
  "RecordsAdminDestroySetting" : {
         "0" : "Cannot Use Archive Admin" ,
         "11" : "\u30a2\u30fc\u30ab\u30a4\u30d6\u306e\u30a2\u30c9\u30df\u30f3\u3092\u4f7f\u7528\u4e0d\u53ef\u306b\u3059\u308b"
+        } ,
+ "SpecimenVitalSetting" : {
+        "0" : "Move Vital to specimen (polus)" ,
+        "11" : "\u6a19\u672c\u5ba4\u306b\u30d0\u30a4\u30bf\u30eb\u3092\u79fb\u52d5\u3059\u308b(\u30dd\u30fc\u30e9\u30b9)"
         } 
 
 }

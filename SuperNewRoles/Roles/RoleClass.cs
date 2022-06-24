@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -37,7 +37,8 @@ namespace SuperNewRoles.Roles
             Mode.BattleRoyal.main.VentData = new();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
-            MapRemodeling.AdditionalVents.ClearAndReload();
+            MapOptions.AdditionalVents.ClearAndReload();
+            MapOptions.SpecimenVital.ClearAndReload();
             SoothSayer.ClearAndReload();
             Jester.ClearAndReload();
             Lighter.ClearAndReload();
