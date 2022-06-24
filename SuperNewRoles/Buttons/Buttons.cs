@@ -63,6 +63,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton EvilHackerButton;
         public static CustomButton EvilHackerMadmateSetting;
         public static CustomButton PositionSwapperButton;
+        public static CustomButton DoubleKillerSubKillButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
@@ -1588,6 +1589,36 @@ namespace SuperNewRoles.Buttons
                 PositionSwapperNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
                 PositionSwapperButton.buttonText = ModTranslation.getString("PositionSwapperButtonName");
                 PositionSwapperButton.showButtonText = true;
+            };
+
+            DoubleKillerSubKillButton = new CustomButton(
+                () =>
+                {
+                    if (DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget());
+                        DoubleKiller.resetCoolDown();
+                    }
+                },
+                () => { return (ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && RoleClass.DoubleKiller.DoubleKillerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer)); },
+                () =>
+                {
+                    return DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.DoubleKiller)) { DoubleKiller.EndMeeting(); }
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.F,
+                8
+            )
+            {
+                buttonText = ModTranslation.getString("SubKillButtonName"),
+                showButtonText = true
             };
 
             setCustomButtonCooldowns();

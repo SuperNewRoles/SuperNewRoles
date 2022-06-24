@@ -970,10 +970,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.DoubleKiller):
+                case (CustomRPC.RoleId.DoubleKiller):
                     Roles.RoleClass.DoubleKiller.DoubleKillerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1365,6 +1365,9 @@ namespace SuperNewRoles
                         break;
                     case RoleId.Samurai:
                         addition = RoleClass.Samurai.KillCoolTime;
+                        break;
+                    case RoleId.DoubleKiller:
+                        addition = RoleClass.DoubleKiller.MainKillCoolTime;
                         break;
                 }
             }
@@ -1890,10 +1893,10 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.BlackCat;
                 }
                 else if (Roles.RoleClass.DoubleKiller.DoubleKillerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.DoubleKiller;
-            }
-            //ロールチェック
+                {
+                    return CustomRPC.RoleId.DoubleKiller;
+                }
+                //ロールチェック
             }
             catch (Exception e)
             {

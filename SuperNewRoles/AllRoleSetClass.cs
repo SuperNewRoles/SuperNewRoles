@@ -17,7 +17,7 @@ namespace SuperNewRoles
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName+" => "+roleType);
+            SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName + " => " + roleType);
             return true;
             if (RoleManagerSelectRolesPatch.IsShapeSet)
             {
@@ -836,6 +836,7 @@ namespace SuperNewRoles
                 RoleId.Tuna => CustomOptions.TunaPlayerCount.getFloat(),
                 RoleId.Mafia => CustomOptions.MafiaPlayerCount.getFloat(),
                 RoleId.BlackCat => CustomOption.CustomOptions.BlackCatPlayerCount.getFloat(),
+                RoleId.DoubleKiller => CustomOption.CustomOptions.DoubleKillerPlayerCount.getFloat(),
                 _ => 1,
             };
         }

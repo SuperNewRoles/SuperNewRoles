@@ -2254,9 +2254,13 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> DoubleKillerPlayer;
             public static Color32 color = ImpostorRed;
+            public static float MainKillCoolTime;
+            public static float SubKillCoolTime;
             public static void ClearAndReload()
             {
                 DoubleKillerPlayer = new List<PlayerControl>();
+                MainKillCoolTime = CustomOptions.DoubleKillerMainCoolTime.getFloat();
+                SubKillCoolTime = CustomOptions.DoubleKillerSubCoolTime.getFloat();
             }
         }
         //新ロールクラス
