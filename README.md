@@ -7,6 +7,6 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 ## README
 
-[English](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_en.md)
-
 [日本語](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_jp.md)
+
+[English](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_en.md)
