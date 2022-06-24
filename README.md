@@ -32,7 +32,8 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [Jester](https://github.com/Maartii/Jester) - The idea for Jester (Teruteru) came from **Maartii**. (Taken from TheOtherRoles)<br>
 [Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Idea for the Lovers role comes from **Woodi-dev**<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - The idea for Sheriff comes from **Woodi-dev**. (Taken from TheOtherRoles)<br>
-[au.libhalt.net](https://au.libhalt.net) - Nice Nekomata/Ivil Nekomata idea came from **au.libhalt.net**.
+[au.libhalt.net](https://au.libhalt.net) - Nice Nekomata/Ivil Nekomata idea came from **au.libhalt.net**.<br>
+[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - Used for additional vents and move vital Thanks to **Haoming37**!<br>
 ## About Contact
 Please use the Discord server:[Discord server](https://discord.gg/95YuUZp4kM)
 
