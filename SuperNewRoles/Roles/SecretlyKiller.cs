@@ -22,8 +22,8 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
             //ノーマルリセット
             if (SuperNewRoles.CustomOption.CustomOptions.SecretlyKillerKillCoolTimeChange.getBool()){
-                HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
-                HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
+                HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
+                HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
             }
             RoleClass.SecretlyKiller.ButtonTimer = DateTime.Now;
         }

@@ -2259,6 +2259,10 @@ namespace SuperNewRoles.Roles
             public static bool SecretlyKillerIsBlackOutKillCharge;
             public static int SecretlyKillLimit;
             public static float SecretlyKillCoolTime;
+
+            public static float MainCool;
+            public static float SecretlyCool;
+
             public static PlayerControl target;
             public static DateTime ButtonTimer;
             public static Sprite buttonSprite;
