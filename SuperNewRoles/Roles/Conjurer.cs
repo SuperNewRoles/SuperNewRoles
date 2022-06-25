@@ -152,7 +152,7 @@ namespace SuperNewRoles.Roles
         public static Transform miraship;
         public static Sprite SetObject(int index)
         {
-            Transform Object_Projecter = GameObject.Instantiate(Template, MiraShip);
+            Transform Object_Projecter = GameObject.Instantiate(GameObject.Find("MiraShip(Clone)").transform);
             //Object_Projecter.position = new Vector3(10.6f, 18.1f, 0.1f);
             GameObject.Destroy(Object_Projecter.GetComponent<PolygonCollider2D>());
             Object_Projecter.GetComponent<SpriteRenderer>().sprite = AgarthagetSprite("Animation.pro_polygon");
