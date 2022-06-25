@@ -58,6 +58,22 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/95YuUZp4kM)
 
+## 開発者
+[よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
+[さつまいも](https://github.com/satsumaimoamo) ([Twitter](https://twitter.com/satsumaimo_SNR))<br>
+[VSCode大好き](https://github.com/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa9841)<br>
+[漢方薬の人](https://github.com/UKON256)<br>
+[じゅきまぐろ](https://github.com/jukimaguro1) ([Twitter](https://twitter.com/jukimaguro))<br>
+[くらと](https://github.com/Kurato-Tsukishiro) ([Twitter](https://twitter.com/Kurato_SNR7))<br>
+[DekoKiyo](https://github.com/Dekokiyo) ([Twitter](https://twitter.com/kiyo_deko))<br>
+
+## スポンサー
+こんこるど様<br>
+kibou102様<br>
+つちな様<br>
+windows7様<br>
+渋谷先生様<br>
+
 ## 役職一覧
 Discordサーバーには全てすでに乗っています。
 | インポスター | クルーメイト | 第三陣営 | 重複陣営 |

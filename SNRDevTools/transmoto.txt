@@ -763,3 +763,4 @@ BlackCatTitle1
 MafiaName
 MafiaTitle1
 MafiaDescription
+RecordsAdminDestroySetting
