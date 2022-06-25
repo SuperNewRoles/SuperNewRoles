@@ -1,13 +1,13 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
 using UnityEngine;
-using BepInEx.IL2CPP.Utils;
-using System.Collections;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -43,9 +43,7 @@ namespace SuperNewRoles.MapOptions
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
     public static class AmongUsClient_Awake_Patch
     {
-        [HarmonyPrefix]
-        [HarmonyPriority(900)]
-        public static void Prefix(AmongUsClient __instance)
+        public static void Postfix(AmongUsClient __instance)
         {
             ((MonoBehaviour)(object)__instance).StartCoroutine(AddVitals.LoadPolus());
         }

@@ -1,9 +1,9 @@
-﻿using Hazel;
-using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomRPC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hazel;
+using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -25,8 +25,8 @@ namespace SuperNewRoles.Roles
         {
             if (target == null || target.MyRend == null) return;
 
-            target.MyRend.material.SetFloat("_Outline", 1f);
-            target.MyRend.material.SetColor("_OutlineColor", color);
+            target.MyRend().material.SetFloat("_Outline", 1f);
+            target.MyRend().material.SetColor("_OutlineColor", color);
         }
         public class JackalFixedPatch
         {
@@ -40,7 +40,7 @@ namespace SuperNewRoles.Roles
 
                 if (untargetablePlayers == null)
                 {
-                    untargetablePlayers = new List<PlayerControl>();
+                    untargetablePlayers = new();
                 }
 
                 Vector2 truePosition = targetingPlayer.GetTruePosition();
@@ -48,7 +48,7 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < allPlayers.Count; i++)
                 {
                     GameData.PlayerInfo playerInfo = allPlayers[i];
-                    if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && playerInfo.Object.isAlive() && (!RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(playerInfo.Object)) && !RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(playerInfo.Object) && (!RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.JackalSeer.SidekickSeerPlayer.IsCheckListPlayerControl(playerInfo.Object)))
+                    if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && playerInfo.Object.isAlive() && !playerInfo.Object.isDead() && !RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.JackalSeer.SidekickSeerPlayer.IsCheckListPlayerControl(playerInfo.Object))
                     {
                         PlayerControl @object = playerInfo.Object;
                         if (untargetablePlayers.Any(x => x == @object))
@@ -90,7 +90,7 @@ namespace SuperNewRoles.Roles
         }
         public static void TeleportStart()
         {
-            List<PlayerControl> aliveplayers = new List<PlayerControl>();
+            List<PlayerControl> aliveplayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.isAlive() && p.CanMove)

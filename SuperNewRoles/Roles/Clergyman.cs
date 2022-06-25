@@ -1,5 +1,5 @@
-﻿using Hazel;
 using System;
+using Hazel;
 using SuperNewRoles.Buttons;
 
 namespace SuperNewRoles.Roles
@@ -28,7 +28,8 @@ namespace SuperNewRoles.Roles
             RPCWriter.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
         }
-        public static bool IsLightOutVision() {
+        public static bool IsLightOutVision()
+        {
             if (RoleClass.Clergyman.OldButtonTime <= 0) return false;
             if (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor) return true;
             if (CountChanger.IsChangeMadmate(PlayerControl.LocalPlayer)) return true;
@@ -44,6 +45,7 @@ namespace SuperNewRoles.Roles
             if (CountChanger.IsChangeSeerFriends(PlayerControl.LocalPlayer)) return true;
             if (CountChanger.IsChangeJackalSeer(PlayerControl.LocalPlayer)) return true;
             if (CountChanger.IsChangeSidekickSeer(PlayerControl.LocalPlayer)) return true;
+            if (CountChanger.IsChangeBlackCat(PlayerControl.LocalPlayer)) return true;
             return false;
         }
         public static bool IsLightOutVisionNoTime()

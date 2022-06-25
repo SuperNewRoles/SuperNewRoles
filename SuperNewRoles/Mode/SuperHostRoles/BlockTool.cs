@@ -1,10 +1,10 @@
-﻿using HarmonyLib;
-using Hazel;
-using InnerNet;
-using SuperNewRoles.MapOptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using Hazel;
+using InnerNet;
+using SuperNewRoles.MapOptions;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -90,6 +90,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             if (!IsGuard && PlayerControl.GameOptions.MapId == 2 && !MapOption.UseAdmin)
                             {
                                 var AdminDistance = Vector2.Distance(playerposition, new Vector2(24.66107f, -21.523f));
+                                if (AdminDistance <= UsableDistance)
+                                {
+                                    IsGuard = true;
+                                }
+                            }
+                            //AirShip(アーカイブ)用のアドミンチェック。AirShipはアドミンが2つあるから
+                            if (!IsGuard && PlayerControl.GameOptions.MapId == 4 && !MapOption.UseAdmin || !IsGuard && PlayerControl.GameOptions.MapId == 4 && MapOption.RecordsAdminDestroy.getBool() && MapOption.MapOptionSetting.getBool())
+                            {
+                                var AdminDistance = Vector2.Distance(playerposition, new Vector2(19.9f, 12.9f));
                                 if (AdminDistance <= UsableDistance)
                                 {
                                     IsGuard = true;

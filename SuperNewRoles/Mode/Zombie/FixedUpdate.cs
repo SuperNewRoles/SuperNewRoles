@@ -1,9 +1,9 @@
-﻿using HarmonyLib;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.Zombie
@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string skinid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(__instance.nameText.text + ":" + skinid);
+                SuperNewRolesPlugin.Logger.LogInfo(__instance.nameText().text + ":" + skinid);
             }
         }
         [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.SetColor))]
@@ -24,7 +24,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref int colorid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(__instance.nameText.text+":"+colorid);
+                SuperNewRolesPlugin.Logger.LogInfo(__instance.nameText().text+":"+colorid);
             }
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetHat))]
@@ -32,7 +32,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string colorid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[SetHat]"+__instance.nameText.text + ":" + colorid);
+                SuperNewRolesPlugin.Logger.LogInfo("[SetHat]"+__instance.nameText().text + ":" + colorid);
             }
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetVisor))]
@@ -40,7 +40,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string colorid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[SetVisor]" + __instance.nameText.text + ":" + colorid);
+                SuperNewRolesPlugin.Logger.LogInfo("[SetVisor]" + __instance.nameText().text + ":" + colorid);
             }
         }
         */

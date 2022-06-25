@@ -1,14 +1,14 @@
-﻿using Hazel;
-using SuperNewRoles.Helpers;
 using System;
 using System.Collections.Generic;
+using Hazel;
+using SuperNewRoles.Helpers;
 using UnityEngine;
 
 namespace SuperNewRoles
 {
     public static class BotManager
     {
-        public static List<PlayerControl> AllBots = new List<PlayerControl>();
+        public static List<PlayerControl> AllBots = new();
         public static bool IsBot(this PlayerControl player)
         {
             try
@@ -49,7 +49,7 @@ namespace SuperNewRoles
             }
             */
             Bot.PlayerId = id;
-           // Bot.PlayerId = BotPlayerId;
+            // Bot.PlayerId = BotPlayerId;
             GameData.Instance.AddPlayer(Bot);
             AmongUsClient.Instance.Spawn(Bot, -2, InnerNet.SpawnFlags.IsClientCharacter);
             Bot.transform.position = new Vector3(9999f, 9999f, 0);
@@ -67,7 +67,7 @@ namespace SuperNewRoles
             AllBots.Add(Bot);
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetBot);
             writer.Write(Bot.PlayerId);
-            new LateTask(()=>writer.EndRPC(),0.5f);
+            new LateTask(() => writer.EndRPC(), 0.5f);
             return Bot;
         }
         public static void Despawn(PlayerControl Bot)
@@ -87,7 +87,7 @@ namespace SuperNewRoles
                 Bots.Despawn();
                 SuperNewRolesPlugin.Logger.LogInfo("完了！");
             }
-            AllBots = new List<PlayerControl>();
+            AllBots = new();
         }
     }
 }

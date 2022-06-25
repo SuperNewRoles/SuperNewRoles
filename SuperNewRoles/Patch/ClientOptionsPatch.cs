@@ -1,8 +1,8 @@
-using HarmonyLib;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using HarmonyLib;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using static UnityEngine.UI.Button;
@@ -52,8 +52,10 @@ namespace SuperNewRoles.Patch
         {
             public static void Postfix(OptionsMenuBehaviour __instance)
             {
-                if (__instance.CensorChatButton?.gameObject != null) __instance.CensorChatButton.gameObject.SetActive(false);
-                if (__instance.EnableFriendInvitesButton?.gameObject != null) __instance.EnableFriendInvitesButton.gameObject.SetActive(false);
+                if (__instance.CensorChatButton != null) __instance.CensorChatButton.gameObject.SetActive(false);
+                if (__instance.EnableFriendInvitesButton != null) __instance.EnableFriendInvitesButton.gameObject.SetActive(false);
+                if (__instance.StreamerModeButton != null) __instance.StreamerModeButton.gameObject.SetActive(false);
+                if (__instance.ColorBlindButton != null) __instance.ColorBlindButton.gameObject.SetActive(false);
             }
         }
         [HarmonyPostfix]
@@ -89,7 +91,7 @@ namespace SuperNewRoles.Patch
             Object.Destroy(popUp.GetComponent<OptionsMenuBehaviour>());
             foreach (var gObj in popUp.gameObject.GetAllChilds())
             {
-                if (gObj.name != "Background" && gObj.name != "CloseButton")
+                if (gObj.name is not "Background" and not "CloseButton")
                     Object.Destroy(gObj);
             }
             popUp.SetActive(false);
@@ -191,16 +193,23 @@ namespace SuperNewRoles.Patch
                     spr.size = new Vector2(2.2f, .7f);
                 modButtons.Add(button);
             }*/
-            for (var i = 0; i < 2; i++)
+            for (var i = 0; i < 4; i++)
             {
                 ToggleButtonBehaviour mainbutton = null;
-                if (i == 0)
+                switch (i)
                 {
-                    mainbutton = __instance.CensorChatButton;
-                }
-                else
-                {
-                    mainbutton = __instance.EnableFriendInvitesButton;
+                    case 0:
+                        mainbutton = __instance.CensorChatButton;
+                        break;
+                    case 1:
+                        mainbutton = __instance.EnableFriendInvitesButton;
+                        break;
+                    case 2:
+                        mainbutton = __instance.StreamerModeButton;
+                        break;
+                    case 3:
+                        mainbutton = __instance.ColorBlindButton;
+                        break;
                 }
                 var button = Object.Instantiate(buttonPrefab, popUp.transform);
                 var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
@@ -212,24 +221,38 @@ namespace SuperNewRoles.Patch
                 button.Background.color = mainbutton.onState ? Color.green : Palette.ImpostorRed;
                 try
                 {
-                    if (i == 0)
+                    switch (i)
                     {
-                        button.Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsCensorChat);
-                    }
-                    else
-                    {
-                        button.Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsEnableFriendInvites);
+                        case 0:
+                            button.Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsCensorChat);
+                            break;
+                        case 1:
+                            button.Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsEnableFriendInvites);
+                            break;
+                        case 2:
+                            button.Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsStreamerMode);
+                            break;
+                        case 3:
+                            button.Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsColorblind);
+                            break;
                     }
                 }
                 catch
                 {
-                    if (i == 0)
+                    switch (i)
                     {
-                        button.Text.text = __instance.CensorChatButton.Text.text;
-                    }
-                    else
-                    {
-                        button.Text.text = __instance.EnableFriendInvitesButton.Text.text;
+                        case 0:
+                            button.Text.text = __instance.CensorChatButton.Text.text;
+                            break;
+                        case 1:
+                            button.Text.text = __instance.EnableFriendInvitesButton.Text.text;
+                            break;
+                        case 2:
+                            button.Text.text = __instance.StreamerModeButton.Text.text;
+                            break;
+                        case 3:
+                            button.Text.text = __instance.ColorBlindButton.Text.text;
+                            break;
                     }
                 }
                 button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
@@ -260,9 +283,9 @@ namespace SuperNewRoles.Patch
                     spr.size = new Vector2(2.2f, .7f);
                 modButtons.Add(button);
             }
-            for (var i = 2; i < AllOptions.Length + 2; i++)
+            for (var i = 4; i < AllOptions.Length + 4; i++)
             {
-                var info = AllOptions[i - 2];
+                var info = AllOptions[i - 4];
 
                 var button = Object.Instantiate(buttonPrefab, popUp.transform);
                 var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);

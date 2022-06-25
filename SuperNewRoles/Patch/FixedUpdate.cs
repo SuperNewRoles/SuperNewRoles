@@ -1,16 +1,16 @@
-﻿using HarmonyLib;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.Mode.SuperHostRoles;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -60,7 +60,7 @@ namespace SuperNewRoles.Patch
             foreach (PlayerControl target in CachedPlayer.AllPlayers)
             {
                 if (target == null || target.MyRend == null) continue;
-                target.MyRend.material.SetFloat("_Outline", 0f);
+                target.MyRend().material.SetFloat("_Outline", 0f);
             }
         }
 
@@ -91,7 +91,13 @@ namespace SuperNewRoles.Patch
                     else if (ModeHandler.isMode(ModeId.SuperHostRoles))
                     {
                         Mode.SuperHostRoles.FixedUpdate.Update();
-                        Fox.FixedUpdate.Postfix();
+                        RoleId MyRole = CachedPlayer.LocalPlayer.PlayerControl.getRole();
+                        switch (MyRole)
+                        {
+                            case RoleId.Mafia:
+                                Mafia.FixedUpdate();
+                                break;
+                        }
                     }
                     else if (ModeHandler.isMode(ModeId.Default))
                     {
@@ -146,8 +152,10 @@ namespace SuperNewRoles.Patch
                                 case RoleId.Vulture:
                                     Vulture.FixedUpdate.Postfix();
                                     break;
+                                case RoleId.Mafia:
+                                    Mafia.FixedUpdate();
+                                    break;
                             }
-                            Fox.FixedUpdate.Postfix();
                             Minimalist.FixedUpdate.Postfix();
                             Conjurer.FixedUpdate.Postfix();
                         }

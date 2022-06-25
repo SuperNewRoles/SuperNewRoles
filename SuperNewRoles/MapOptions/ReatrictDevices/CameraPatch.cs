@@ -1,10 +1,10 @@
+/*using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using HarmonyLib;
 using Hazel;
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Reflection;
 
 namespace SuperNewRoles.Patch
 {
@@ -32,7 +32,7 @@ namespace SuperNewRoles.Patch
         static void UseCameraTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.RestrictCamera.getBool() && PlayerControl.LocalPlayer.isAlive())
+            if (MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.RestrictCamera.getBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.MapOptionSetting.getBool())
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseCameraTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(cameraTimer);
@@ -94,13 +94,13 @@ namespace SuperNewRoles.Patch
             {
                 public static bool Prefix(SurveillanceMinigame __instance)
                 {
-                    if (!Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles) && MapOptions.MapOption.MapOptionSetting.getBool())
+                    if (Mode.ModeHandler.isMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.RestrictCamera.getBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.MapOptionSetting.getBool())
                     {
                         cameraTimer += Time.deltaTime;
                         if (cameraTimer > 0.1f)
                             UseCameraTime();
 
-                        if (MapOptions.MapOption.RestrictCamera.getBool())
+                        if (MapOptions.MapOption.RestrictCamera.getBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.RestrictCamera.getBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.MapOptionSetting.getBool())
                         {
                             if (TimeRemaining == null)
                             {
@@ -212,7 +212,7 @@ namespace SuperNewRoles.Patch
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.MapOption.RestrictCamera.getBool())
+                    if (MapOptions.MapOption.RestrictCamera.getBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.RestrictCamera.getBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.MapOptionSetting.getBool())
                     {
                         if (TimeRemaining == null)
                         {
@@ -281,7 +281,7 @@ namespace SuperNewRoles.Patch
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.MapOption.RestrictCamera.getBool())
+                    if (MapOptions.MapOption.RestrictCamera.getBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.RestrictCamera.getBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.MapOptionSetting.getBool())
                     {
                         if (TimeRemaining == null)
                         {
@@ -323,4 +323,4 @@ namespace SuperNewRoles.Patch
             }
         }
     }
-}
+}*/

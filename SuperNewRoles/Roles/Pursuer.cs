@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("[Pursuer]Target:" + target?.nameText.text);
+                SuperNewRolesPlugin.Logger.LogInfo("[Pursuer]Target:" + target?.nameText().text);
                 if (target != null)
                 {
                     try

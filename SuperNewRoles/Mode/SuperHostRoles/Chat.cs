@@ -1,10 +1,10 @@
-﻿
-using HarmonyLib;
-using SuperNewRoles.EndGame;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using SuperNewRoles.EndGame;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -32,11 +32,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             {
                                 if (players == "")
                                 {
-                                    players += p.nameText.text;
+                                    players += p.nameText().text;
                                 }
                                 else
                                 {
-                                    players += "," + p.nameText.text;
+                                    players += "," + p.nameText().text;
                                 }
                             }
                         }
@@ -60,13 +60,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     else if (WinCond == CustomGameOverReason.JesterWin && Winner != null)
                     {
                         //new LateTask(() => {
-                        PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template + "\n勝者:{1}", "てるてる(Jester)", Winner[0].nameText.text));
+                        PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template + "\n勝者:{1}", "てるてる(Jester)", Winner[0].nameText().text));
                         // }, 3f, "SendResult");
                     }
                     else if (WinCond == CustomGameOverReason.WorkpersonWin && Winner != null)
                     {
                         // new LateTask(() => {
-                        PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template + "\n勝者:{1}", "仕事人(Workperson)", Winner[0].nameText.text));
+                        PlayerControl.LocalPlayer.RpcSendChat(string.Format(Template + "\n勝者:{1}", "仕事人(Workperson)", Winner[0].nameText().text));
                         //}, 3f, "SendResult");
                     }
                 }

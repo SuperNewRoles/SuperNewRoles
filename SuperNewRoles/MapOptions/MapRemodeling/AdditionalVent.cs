@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using SuperNewRoles.Mode;
-using SuperNewRoles.MapOptions;
 using HarmonyLib;
+using SuperNewRoles.MapOptions;
+using SuperNewRoles.Mode;
+using UnityEngine;
 
 //参考=>https://github.com/haoming37/TheOtherRoles-GM-Haoming/blob/haoming-main/TheOtherRoles/Objects/AdditionalVents.cs
 
-namespace SuperNewRoles.MapRemodeling
+namespace SuperNewRoles.MapOptions
 {
     public class AdditionalVents
     {
@@ -99,15 +99,6 @@ namespace SuperNewRoles.MapRemodeling
             System.Console.WriteLine("additionalVentsClearAndReload");
             flag = false;
             AllVents = new List<AdditionalVents>();
-        }
-    }
-    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-    class IntroCutsceneOnDestroyPatch
-    {
-        public static void Prefix(IntroCutscene __instance)
-        {
-            // ベントを追加する
-            AdditionalVents.AddAdditionalVents();
         }
     }
 }

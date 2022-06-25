@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace SuperNewRoles.Roles
 {
@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles
             {
                 RoleClass.CountChanger.IsSet = false;
                 RoleClass.CountChanger.ChangeData = RoleClass.CountChanger.Setdata;
-                RoleClass.CountChanger.Setdata = new Dictionary<int, int>();
+                RoleClass.CountChanger.Setdata = new();
             }
         }
         public static bool isChange(this PlayerControl p)
@@ -178,6 +178,26 @@ namespace SuperNewRoles.Roles
                 else
                 {
                     return p.isRole(CustomRPC.RoleId.MadMaker);
+                }
+            }
+            return false;
+        }
+                public static bool IsChangeBlackCat(this PlayerControl p)
+        {
+            var getroledata = GetRoleType(p);
+            if (getroledata == TeamRoleType.Crewmate)
+            {
+                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(CustomRPC.RoleId.BlackCat)) return true;
+                }
+                else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(CustomRPC.RoleId.BlackCat)) return true;
+                }
+                else
+                {
+                    return p.isRole(CustomRPC.RoleId.BlackCat);
                 }
             }
             return false;

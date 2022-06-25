@@ -1,6 +1,6 @@
-﻿using SuperNewRoles.Buttons;
 using System;
 using System.Collections.Generic;
+using SuperNewRoles.Buttons;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -55,7 +55,7 @@ namespace SuperNewRoles.Roles
         private static PlainDoor GetDoor()
         {
             Vector3 position = CachedPlayer.LocalPlayer.transform.position;
-            List<PlainDoor> selectdoors = new List<PlainDoor>();
+            List<PlainDoor> selectdoors = new();
             foreach (PlainDoor door in MapUtilities.CachedShipStatus.AllDoors)
             {
                 var getispos = IsPos(position, door, 2);

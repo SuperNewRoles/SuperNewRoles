@@ -1,10 +1,10 @@
-﻿using Hazel;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Hazel;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Roles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.Detective
@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.Detective
         public static bool IsDetectiveNotTask;
         public static bool IsNotDetectiveMeetingButton;
         public static PlayerControl DetectivePlayer;
-        public static Color32 DetectiveColor = new Color32(255, 0, 255, byte.MaxValue);
+        public static Color32 DetectiveColor = new(255, 0, 255, byte.MaxValue);
         public static void ClearAndReload()
         {
             IsNotDetectiveWin = DetectiveOptions.IsWinNotCheckDetective.getBool();
@@ -27,7 +27,7 @@ namespace SuperNewRoles.Mode.Detective
         public static void RoleSelect()
         {
             DetectivePlayer = PlayerControl.LocalPlayer;
-            List<PlayerControl> selectplayers = new List<PlayerControl>();
+            List<PlayerControl> selectplayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (p.isCrew())

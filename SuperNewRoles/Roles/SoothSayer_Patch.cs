@@ -1,5 +1,5 @@
-﻿using HarmonyLib;
 using System.Linq;
+using HarmonyLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -47,7 +47,7 @@ namespace SuperNewRoles.Roles
                 namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
             var name = ModTranslation.getString(namedate + "Name");
-            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText.text, name));
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText().text, name));
 
             RoleClass.SoothSayer.Count--;
             if (RoleClass.SoothSayer.Count <= 0)
@@ -110,7 +110,7 @@ namespace SuperNewRoles.Roles
                 namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
             var name = ModTranslation.getString(namedate + "Name");
-            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText.text, name));
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText().text, name));
             RoleClass.SpiritMedium.MaxCount--;
             if (RoleClass.SpiritMedium.MaxCount <= 0)
             {

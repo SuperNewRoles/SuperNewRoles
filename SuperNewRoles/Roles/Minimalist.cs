@@ -29,6 +29,16 @@
                     FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
                 }
             }
+                        if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
+            {
+                if (!RoleClass.Fox.UseReport)
+                {
+                    if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
+                    {
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
+                    }
+                }
+            }
         }
         public class FixedUpdate
         {

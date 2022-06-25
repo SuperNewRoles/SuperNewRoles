@@ -1,11 +1,11 @@
-﻿using Hazel;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Mode.Werewolf
 {
@@ -18,7 +18,7 @@ namespace SuperNewRoles.Mode.Werewolf
         public static Dictionary<int, int> SoothRoles;
         public static List<int> HunterKillPlayers;
         public static List<int> WolfKillPlayers;
-        public static List<PlayerControl> HunterPlayers = new List<PlayerControl>();
+        public static List<PlayerControl> HunterPlayers = new();
         public static PlayerControl HunterExilePlayer;
         public static int Time;
         public static bool IsAbility { get { return !IsDiscussion; } set { IsDiscussion = !value; } }
@@ -35,10 +35,10 @@ namespace SuperNewRoles.Mode.Werewolf
             IsFirst = true;
             DiscussionTime = 30;
             AbilityTime = 10;
-            SoothRoles = new Dictionary<int, int>();
-            HunterKillPlayers = new List<int>();
-            WolfKillPlayers = new List<int>();
-            HunterPlayers = new List<PlayerControl>();
+            SoothRoles = new();
+            HunterKillPlayers = new();
+            WolfKillPlayers = new();
+            HunterPlayers = new();
             HunterExilePlayer = null;
         }
         public static void IntroHandler()
@@ -64,9 +64,9 @@ namespace SuperNewRoles.Mode.Werewolf
                 PlayerControl.GameOptions.VotingTime = AbilityTime;
                 PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.getString("WereWolfMeetingAbility"));
                 HunterExilePlayer = null;
-                SoothRoles = new Dictionary<int, int>();
-                HunterKillPlayers = new List<int>();
-                WolfKillPlayers = new List<int>();
+                SoothRoles = new();
+                HunterKillPlayers = new();
+                WolfKillPlayers = new();
             }
             else
             {
@@ -142,15 +142,16 @@ namespace SuperNewRoles.Mode.Werewolf
                     PlayerControl.LocalPlayer.RpcSetName(ModTranslation.getString("WereWolfMeetingNormal"));
                     SetDefaultName();
                 }, Time, "KillStartMeeting");
-                void SetDefaultName()
+
+                static void SetDefaultName()
                 {
                     new LateTask(() =>
                     {
                         PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
                     }, 5, "NameChangeMeeting");
                 }
-                SoothRoles = new Dictionary<int, int>();
-                HunterKillPlayers = new List<int>();
+                SoothRoles = new();
+                HunterKillPlayers = new();
             }
             else if (IsAbility)
             {

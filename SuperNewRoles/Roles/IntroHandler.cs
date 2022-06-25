@@ -1,4 +1,4 @@
-﻿namespace SuperNewRoles.Roles
+namespace SuperNewRoles.Roles
 {
     class IntroHandler
     {

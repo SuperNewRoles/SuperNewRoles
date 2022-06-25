@@ -1,7 +1,7 @@
-﻿using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.NotImpostorCheck
@@ -17,7 +17,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                 {
                     if (p.isAlive() && p.PlayerId != LocalId)
                     {
-                        p.nameText.color = Color.white;
+                        p.nameText().color = Color.white;
                     }
                 }
             }

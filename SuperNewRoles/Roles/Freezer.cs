@@ -1,8 +1,8 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using Hazel;
-using UnityEngine;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {

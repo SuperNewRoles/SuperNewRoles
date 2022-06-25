@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Linq.Expressions;
 using Il2CppSystem.Collections.Generic;

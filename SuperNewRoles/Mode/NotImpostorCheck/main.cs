@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
@@ -12,7 +12,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
         {
             if (AmongUsClient.Instance.AmHost)
             {
-                Impostors = new List<int>();
+                Impostors = new();
             }
         }
     }

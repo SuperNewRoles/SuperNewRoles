@@ -1,10 +1,10 @@
-﻿using Hazel;
+using System;
+using System.Collections.Generic;
+using Hazel;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using System;
-using System.Collections.Generic;
 
 namespace SuperNewRoles.Roles
 {
@@ -16,16 +16,16 @@ namespace SuperNewRoles.Roles
             {
                 if (exiled != null)
                 {
-                    if (PlayerControl.LocalPlayer.isDead() && RoleClass.FalseCharges.Turns != 255)
+                    if (PlayerControl.LocalPlayer.isDead() && !CachedPlayer.LocalPlayer.Data.Disconnected && RoleClass.FalseCharges.Turns != 255)
                     {
                         if (RoleClass.FalseCharges.Turns <= 0) return;
                         if (exiled.PlayerId == RoleClass.FalseCharges.FalseChargePlayer)
                         {
                             CustomRPC.RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
 
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
+                            MessageWriter Writer = RPCHelper.StartRPC((byte)CustomRPC.CustomRPC.ShareWinner);
                             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                            AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                            Writer.EndRPC();
                             if (AmongUsClient.Instance.AmHost)
                             {
                                 CheckGameEndPatch.CustomEndGame((GameOverReason)CustomGameOverReason.FalseChargesWin, false);
@@ -48,7 +48,7 @@ namespace SuperNewRoles.Roles
                 {
                     foreach (var data in RoleClass.FalseCharges.FalseChargePlayers)
                     {
-                        if (exiled.PlayerId == data.Value)
+                        if (exiled.PlayerId == data.Value && !exiled.Data.Disconnected)
                         {
                             if (RoleClass.FalseCharges.AllTurns.ContainsKey(data.Key) && RoleClass.FalseCharges.AllTurns[data.Key] > 0)
                             {
@@ -70,12 +70,16 @@ namespace SuperNewRoles.Roles
                                     Writer.Write((byte)CustomGameOverReason.FalseChargesWin);
                                     Writer.EndRPC();
                                     CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.FalseChargesWin);
-                                    var winplayers = new List<PlayerControl>();
-                                    winplayers.Add(player);
+                                    var winplayers = new List<PlayerControl>
+                                    {
+                                        player
+                                    };
                                     //EndGameCheck.WinNeutral(winplayers);
                                     Chat.WinCond = CustomGameOverReason.FalseChargesWin;
-                                    Chat.Winner = new List<PlayerControl>();
-                                    Chat.Winner.Add(player);
+                                    Chat.Winner = new List<PlayerControl>
+                                    {
+                                        player
+                                    };
                                 }
                                 catch (Exception e)
                                 {

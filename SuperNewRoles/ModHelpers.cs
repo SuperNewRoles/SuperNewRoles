@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using UnhollowerBaseLib;
-using UnityEngine;
 using System.Linq;
+using System.Reflection;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Roles;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Roles;
+using TMPro;
+using UnhollowerBaseLib;
+using UnityEngine;
 
 namespace SuperNewRoles
 {
@@ -62,7 +63,8 @@ namespace SuperNewRoles
                 }
             }
             return null;
-        }// parent�����̎q�I�u�W�F�N�g��foreach���[�v�Ŏ擾����
+        }
+
         public static GameObject[] GetChildren(this GameObject ParentObject)
         {
             GameObject[] ChildObject = new GameObject[ParentObject.transform.childCount];
@@ -97,7 +99,7 @@ namespace SuperNewRoles
         {
             get
             {
-                List<PlayerControl> ps = new List<PlayerControl>();
+                List<PlayerControl> ps = new();
                 foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Disconnected) ps.Add(p.PlayerControl);
@@ -119,9 +121,9 @@ namespace SuperNewRoles
         {
             SkinViewData nextSkin = DestroyableSingleton<HatManager>.Instance.GetSkinById(SkinId).viewData.viewData;
             AnimationClip clip = null;
-            var spriteAnim = playerPhysics.Skin.animator;
+            var spriteAnim = playerPhysics.GetSkin().animator;
             var anim = spriteAnim.m_animator;
-            var skinLayer = playerPhysics.Skin;
+            var skinLayer = playerPhysics.GetSkin();
 
             var currentPhysicsAnim = playerPhysics.Animator.GetCurrentAnimation();
             if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.RunAnim) clip = nextSkin.RunAnim;
@@ -140,7 +142,7 @@ namespace SuperNewRoles
         }
         public static Dictionary<byte, PlayerControl> allPlayersById()
         {
-            Dictionary<byte, PlayerControl> res = new Dictionary<byte, PlayerControl>();
+            Dictionary<byte, PlayerControl> res = new();
             foreach (CachedPlayer player in CachedPlayer.AllPlayers)
                 res.Add(player.PlayerId, player);
             return res;
@@ -407,7 +409,7 @@ namespace SuperNewRoles
             return false;
         }
 
-        public static Dictionary<string, Sprite> CachedSprites = new Dictionary<string, Sprite>();
+        public static Dictionary<string, Sprite> CachedSprites = new();
 
         public static Sprite loadSpriteFromResources(string path, float pixelsPerUnit)
         {
@@ -430,7 +432,7 @@ namespace SuperNewRoles
         {
             if (FastDestroyableSingleton<ServerManager>.Instance == null) return false;
             StringNames n = FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
-            return n != StringNames.ServerNA && n != StringNames.ServerEU && n != StringNames.ServerAS;
+            return n is not StringNames.ServerNA and not StringNames.ServerEU and not StringNames.ServerAS;
         }
         public static object TryCast(this Il2CppObjectBase self, Type type)
         {
@@ -445,7 +447,7 @@ namespace SuperNewRoles
         {
             try
             {
-                Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+                Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 Stream stream = assembly.GetManifestResourceStream(path);
                 var byteTexture = new byte[stream.Length];
@@ -479,13 +481,141 @@ namespace SuperNewRoles
             var indexdate = UnityEngine.Random.Range(0, list.Count);
             return indexdate;
         }
+
+        public static Dictionary<byte, SpriteRenderer> MyRendCache = new();
+        public static Dictionary<byte, SkinLayer> SkinLayerCache = new();
+        public static Dictionary<byte, HatParent> HatRendererCache = new();
+        public static Dictionary<byte, SpriteRenderer> HatRendCache = new();
+        public static Dictionary<byte, VisorLayer> VisorSlotCache = new();
+        public static TextMeshPro nameText(this PlayerControl player)
+        {
+            return player.cosmetics.nameText;
+        }
+        public static TextMeshPro nameText(this PoolablePlayer player)
+        {
+            return player.transform.FindChild("NameText_TMP").GetComponent<TextMeshPro>();
+        }
+        public static SpriteRenderer MyRend(this PlayerControl player)
+        {
+            bool Isnull = true;
+            if (MyRendCache.ContainsKey(player.PlayerId))
+            {
+                if (MyRendCache[player.PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                MyRendCache[player.PlayerId] = player.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+            }
+            return MyRendCache[player.PlayerId];
+        }
+        public static SpriteRenderer rend(this PlayerPhysics player)
+        {
+            byte PlayerId = player.myPlayer.PlayerId;
+            bool Isnull = true;
+            if (MyRendCache.ContainsKey(PlayerId))
+            {
+                if (MyRendCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                MyRendCache[PlayerId] = player.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+            }
+            return MyRendCache[PlayerId];
+        }
+        public static SkinLayer GetSkin(this PlayerControl player)
+        {
+            byte PlayerId = player.PlayerId;
+            bool Isnull = true;
+            if (SkinLayerCache.ContainsKey(PlayerId))
+            {
+                if (SkinLayerCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                SkinLayerCache[PlayerId] = player.transform.FindChild("Skin").GetComponent<SkinLayer>();
+            }
+            return SkinLayerCache[PlayerId];
+        }
+        public static SkinLayer GetSkin(this PlayerPhysics player)
+        {
+            byte PlayerId = player.myPlayer.PlayerId;
+            bool Isnull = true;
+            if (SkinLayerCache.ContainsKey(PlayerId))
+            {
+                if (SkinLayerCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                SkinLayerCache[PlayerId] = player.transform.FindChild("Skin").GetComponent<SkinLayer>();
+            }
+            return SkinLayerCache[PlayerId];
+        }
+        public static HatParent HatRenderer(this PlayerControl player)
+        {
+            byte PlayerId = player.PlayerId;
+            bool Isnull = true;
+            if (HatRendererCache.ContainsKey(PlayerId))
+            {
+                if (HatRendererCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                HatRendererCache[PlayerId] = player.transform.FindChild("Sprite/Hat").GetComponent<HatParent>();
+            }
+            return HatRendererCache[PlayerId];
+        }
+        public static SpriteRenderer HatRend(this PlayerControl player)
+        {
+            byte PlayerId = player.PlayerId;
+            bool Isnull = true;
+            if (HatRendCache.ContainsKey(PlayerId))
+            {
+                if (HatRendCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                HatRendCache[PlayerId] = player.transform.FindChild("Sprite/Hat").GetComponent<SpriteRenderer>();
+            }
+            return HatRendCache[PlayerId];
+        }
+        public static VisorLayer VisorSlot(this PlayerControl player)
+        {
+            byte PlayerId = player.PlayerId;
+            bool Isnull = true;
+            if (VisorSlotCache.ContainsKey(PlayerId))
+            {
+                if (VisorSlotCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                VisorSlotCache[PlayerId] = player.transform.FindChild("Sprite/Visor").GetComponent<VisorLayer>();
+            }
+            return VisorSlotCache[PlayerId];
+        }
+
+        public static HatParent HatSlot(this PoolablePlayer player)
+        {
+            return player.transform.FindChild("HatSlot").GetComponent<HatParent>();
+        }
+        public static VisorLayer VisorSlot(this PoolablePlayer player)
+        {
+            return player.transform.FindChild("Visor").GetComponent<VisorLayer>();
+        }
+
         public static Texture2D loadTextureFromDisk(string path)
         {
             try
             {
                 if (File.Exists(path))
                 {
-                    Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+                    Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
                     byte[] byteTexture = File.ReadAllBytes(path);
                     LoadImage(texture, byteTexture, false);
                     return texture;

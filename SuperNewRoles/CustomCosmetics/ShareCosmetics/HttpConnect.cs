@@ -1,4 +1,3 @@
-﻿using SuperNewRoles.CustomCosmetics.ShareCosmetics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +6,7 @@ using System.Net.Http;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using SuperNewRoles.CustomCosmetics.ShareCosmetics;
 
 namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
 {
@@ -14,7 +14,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
     {
         public static async Task<string> Download(string url)
         {
-            HttpClient http = new HttpClient();
+            HttpClient http = new();
             http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles CustomCosmetics");
             var response = await http.GetAsync(new System.Uri(url), HttpCompletionOption.ResponseContentRead);
             if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
