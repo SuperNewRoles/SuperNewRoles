@@ -29,7 +29,7 @@
                     FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
                 }
             }
-                        if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
             {
                 if (!RoleClass.Fox.UseReport)
                 {
@@ -38,6 +38,10 @@
                         FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
                     }
                 }
+            }
+            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.SecretlyKiller))
+            {
+                HudManager.Instance.KillButton.gameObject.SetActive(false);
             }
         }
         public class FixedUpdate

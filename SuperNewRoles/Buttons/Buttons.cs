@@ -63,7 +63,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton EvilHackerButton;
         public static CustomButton EvilHackerMadmateSetting;
         public static CustomButton PositionSwapperButton;
-        public static CustomButton SecretlyKillerButton;
+        public static CustomButton SecretlyKillerMainButton;
+        public static CustomButton SecretlyKillerSecretlyKillButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text CleanerNumCleanText;
@@ -1592,15 +1593,40 @@ namespace SuperNewRoles.Buttons
                 PositionSwapperButton.showButtonText = true;
             };
 
-            SecretlyKillerButton = new CustomButton(
+            SecretlyKillerMainButton = new CustomButton(
                 () =>
                 {
-                    if (RoleClass.SecretlyKiller.target.isImpostor()) return;
-                    RoleClass.SecretlyKiller.SecretlyKillLimit--;
-                    SecretlyKiller.SecretlyKill();
-                    SecretlyKiller.ResetCoolDown();
+                    var Target = setTarget();
+                    if (!Target.isImpostor() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, Target);
+                        SecretlyKiller.ResetCoolDown();
+                    }
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller); },
+                () => { return (ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller) ); },
+                () =>
+                {
+                    RoleClass.SecretlyKiller.target = HudManagerStartPatch.setTarget();
+                    if (!RoleClass.SecretlyKiller.target.isImpostor()) return RoleClass.SecretlyKiller.target && PlayerControl.LocalPlayer.CanMove;
+                    return false;
+                },
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller)) { SecretlyKiller.EndMeeting(); }
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.F,
+                49
+            )
+            {
+                buttonText = ModTranslation.getString("FinalStatusKill"),
+                showButtonText = true
+            };
+
+            SecretlyKillerSecretlyKillButton = new CustomButton(
                 () =>
                 {
                     //テキストぉ
@@ -1610,7 +1636,19 @@ namespace SuperNewRoles.Buttons
                     else
                         SecretlyKillNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
 
-                    return RoleClass.SecretlyKiller.target && PlayerControl.LocalPlayer.CanMove;
+                    if (RoleClass.SecretlyKiller.target.isImpostor()) return;
+                    //if (CustomOptions.SecretlyKillerKillCoolTimeChange.getBool()) return;
+                    RoleClass.SecretlyKiller.SecretlyKillLimit--;
+                    SecretlyKiller.SecretlyKill();
+                    SecretlyKiller.ResetCoolDown();
+                },
+                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller); },
+                () =>
+                {
+
+                    RoleClass.SecretlyKiller.target = HudManagerStartPatch.setTarget();
+                    if (!RoleClass.SecretlyKiller.target.isImpostor()) return RoleClass.SecretlyKiller.target && PlayerControl.LocalPlayer.CanMove;
+                    return false;
                 },
                 () =>
                 {
@@ -1624,13 +1662,13 @@ namespace SuperNewRoles.Buttons
                 49
             );
             {
-                SecretlyKillNumText = GameObject.Instantiate(SecretlyKillerButton.actionButton.cooldownTimerText, SecretlyKillerButton.actionButton.cooldownTimerText.transform.parent);
+                SecretlyKillNumText = GameObject.Instantiate(SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText, SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText.transform.parent);
                 SecretlyKillNumText.text = "";
                 SecretlyKillNumText.enableWordWrapping = false;
                 SecretlyKillNumText.transform.localScale = Vector3.one * 0.5f;
                 SecretlyKillNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
-                SecretlyKillerButton.buttonText = ModTranslation.getString("SecretlyKillButtonName");
-                SecretlyKillerButton.showButtonText = true;
+                SecretlyKillerSecretlyKillButton.buttonText = ModTranslation.getString("SecretlyKillButtonName");
+                SecretlyKillerSecretlyKillButton.showButtonText = true;
             };
 
             setCustomButtonCooldowns();
