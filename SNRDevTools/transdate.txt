@@ -764,12 +764,9 @@ BlackCatTitle1,Give your life for your master.,主人のために命を捧げよ
 MafiaName,Mafia,マフィア
 MafiaTitle1,Let's avenge our fellow impostor,仲間の敵討ちをしよう
 MafiaDescription,When all the imposters except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.,マフィア以外のインポスターが全員死亡するとキルできるようになります。\nキルが出来ない間もキルクールタイムは進みます。
-<<<<<<< HEAD
 DoubleKillerName,DoubleKiller,ダブルキラー
 DoubleKillerTitle1,Let's do serial murder!,連続殺人を起こそう!
 SubKillButtonName,SubKill,サブキルボタン
 MainCoolSetting,MainKillCool,メインボタンのキルクールダウン
 SubCoolSetting,SubKillCool,サブボタンのキルクールダウン
-=======
 RecordsAdminDestroySetting,Cannot Use Archive Admin,アーカイブのアドミンを使用不可にする
->>>>>>> origin/develop

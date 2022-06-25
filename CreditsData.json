@@ -1,24 +1,54 @@
 ﻿{
-"Devs":[
-{"name":"よっキング","id":100},
-{"name":"さつまいも","id":100},
-{"name":"じゅきまぐろ","id":100},
-{"name":"くらと","id":100},
-{"name":"漢方薬の人","id":100},
-{"name":"VSCode大好き","id":100},
-{"name":"Dekokiyo","id":100}
-],
-
-"Sponsers":[
-{"name":"Concorde","id":100},
-{"name":"つちな","id":100},
-{"name":"kibou102","id":100},
-<<<<<<< HEAD
-{"name":"windows7","id":100}
-=======
-{"name":"windows7","id":100},
-{"name":"渋谷先生","id":100}
->>>>>>> origin/develop
-]
-
+    "Devs": [
+        {
+            "name": "よっキング",
+            "id": 100
+        },
+        {
+            "name": "さつまいも",
+            "id": 100
+        },
+        {
+            "name": "じゅきまぐろ",
+            "id": 100
+        },
+        {
+            "name": "くらと",
+            "id": 100
+        },
+        {
+            "name": "漢方薬の人",
+            "id": 100
+        },
+        {
+            "name": "VSCode大好き",
+            "id": 100
+        },
+        {
+            "name": "Dekokiyo",
+            "id": 100
+        }
+    ],
+    "Sponsers": [
+        {
+            "name": "Concorde",
+            "id": 100
+        },
+        {
+            "name": "つちな",
+            "id": 100
+        },
+        {
+            "name": "kibou102",
+            "id": 100
+        },
+        {
+            "name": "windows7",
+            "id": 100
+        },
+        {
+            "name": "渋谷先生",
+            "id": 100
+        }
+    ]
 }

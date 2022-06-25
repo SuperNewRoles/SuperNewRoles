@@ -763,12 +763,9 @@ BlackCatTitle1
 MafiaName
 MafiaTitle1
 MafiaDescription
-<<<<<<< HEAD
 DoubleKillerName
 DoubleKillerTitle1
 SubKillButtonName
 MainCoolSetting
 SubCoolSetting
-=======
 RecordsAdminDestroySetting
->>>>>>> origin/develop

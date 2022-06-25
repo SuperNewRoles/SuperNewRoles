@@ -42,8 +42,8 @@
 
             if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.DoubleKiller))
             {
-                HudManager.Instance.KillButton.gameObject.SetActive(false);
                 //ダブルキラーの純正キルボタン消去
+                HudManager.Instance.KillButton.gameObject.SetActive(false);
             }
         }
 
