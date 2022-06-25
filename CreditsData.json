@@ -10,10 +10,15 @@
 ],
 
 "Sponsers":[
-{"name":"こんこるど","id":100},
+{"name":"Concorde","id":100},
 {"name":"つちな","id":100},
 {"name":"kibou102","id":100},
+<<<<<<< HEAD
 {"name":"windows7","id":100}
+=======
+{"name":"windows7","id":100},
+{"name":"渋谷先生","id":100}
+>>>>>>> origin/develop
 ]
 
 }
