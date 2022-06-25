@@ -12,10 +12,22 @@ namespace SuperNewRoles.Roles
     {
         public static void EndMeeting()
         {
-            ResetCoolDown();
+            AllResetCoolDown();
         }
         //リセクール (by:Buttons.cs)
-        public static void ResetCoolDown()
+        public static void MainResetCoolDown()
+        {
+            //ノーマルリセット
+            HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
+            HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
+            //シークレットリーリセット
+            if (SuperNewRoles.CustomOption.CustomOptions.SecretlyKillerKillCoolTimeChange.getBool()){
+                HudManagerStartPatch.SecretlyKillerSecretlyKillButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
+                HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
+            }
+            //RoleClass.SecretlyKiller.ButtonTimer = DateTime.Now;
+        }
+        public static void SecretlyResetCoolDown()
         {
             //シークレットリーリセット
             HudManagerStartPatch.SecretlyKillerSecretlyKillButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
@@ -25,7 +37,17 @@ namespace SuperNewRoles.Roles
                 HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
                 HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
             }
-            RoleClass.SecretlyKiller.ButtonTimer = DateTime.Now;
+            //RoleClass.SecretlyKiller.ButtonTimer = DateTime.Now;
+        }
+        public static void AllResetCoolDown()
+        {
+            //シークレットリーリセット
+            HudManagerStartPatch.SecretlyKillerSecretlyKillButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
+            HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
+            //ノーマルリセット
+            HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
+            HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
+            //RoleClass.SecretlyKiller.ButtonTimer = DateTime.Now;
         }
 
         //シークレットキル (by:Buttons.cs)

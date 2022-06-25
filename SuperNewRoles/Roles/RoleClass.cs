@@ -2275,7 +2275,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 SecretlyKillerPlayer = new List<PlayerControl>();
-                SecretlyKillCoolTime = CustomOptions.SecretlyKillerKillCoolTime.getFloat();
+                SecretlyKillerKillCoolTime = CustomOptions.SecretlyKillerKillCoolTime.getFloat();
                 SecretlyKillerKillCoolChange = CustomOptions.SecretlyKillerKillCoolTimeChange.getBool();
                 SecretlyKillerIsBlackOutKillCharge = CustomOptions.SecretlyKillerIsBlackOutKillCharge.getBool();
                 SecretlyKillLimit = (int)CustomOptions.SecretlyKillerSecretKillLimit.getFloat();

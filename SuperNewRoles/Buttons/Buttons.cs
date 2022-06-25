@@ -1597,14 +1597,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.SecretlyKiller.target);
-                    SecretlyKiller.ResetCoolDown();
-                    /*if (RoleClass.SecretlyKiller.MainCool>-0.01135568f || RoleClass.SecretlyKiller.SecretlyCool>-0.004480978f) return;
-                    var Target = setTarget();
-                    if (!Target.isImpostor() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
-                    {
-                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, Target);
-                        SecretlyKiller.ResetCoolDown();
-                    }*/
+                    SecretlyKiller.MainResetCoolDown();
                 },
                 () => { return (ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller) ); },
                 () =>
@@ -1639,12 +1632,9 @@ namespace SuperNewRoles.Buttons
             SecretlyKillerSecretlyKillButton = new CustomButton(
                 () =>
                 {
-                    /*if (RoleClass.SecretlyKiller.MainCool>-0.01135568f || RoleClass.SecretlyKiller.SecretlyCool>-0.004480978f) return;
-                    if (RoleClass.SecretlyKiller.target.isImpostor()) return;
-                    if (CustomOptions.SecretlyKillerKillCoolTimeChange.getBool()) return;*/
                     RoleClass.SecretlyKiller.SecretlyKillLimit--;
                     SecretlyKiller.SecretlyKill();
-                    SecretlyKiller.ResetCoolDown();
+                    SecretlyKiller.SecretlyResetCoolDown();
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller); },
                 () =>
@@ -1656,7 +1646,7 @@ namespace SuperNewRoles.Buttons
                     else
                         SecretlyKillNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
 
-                    if (RoleClass.SecretlyKiller.MainCool>0f || RoleClass.SecretlyKiller.SecretlyCool>0f) return false;
+                    if (RoleClass.SecretlyKiller.MainCool>0f || RoleClass.SecretlyKiller.SecretlyCool>0f || RoleClass.SecretlyKiller.SecretlyKillLimit < 1) return false;
                     //メイン
                     //RoleClass.SecretlyKiller.target = setTarget();
                     if (!RoleClass.SecretlyKiller.target.isImpostor()) return RoleClass.SecretlyKiller.target && PlayerControl.LocalPlayer.CanMove;
