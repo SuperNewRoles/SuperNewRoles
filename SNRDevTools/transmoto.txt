@@ -764,3 +764,5 @@ MafiaName
 MafiaTitle1
 MafiaDescription
 RecordsAdminDestroySetting
+SpyName
+SpyTitle1

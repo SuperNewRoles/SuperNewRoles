@@ -764,3 +764,5 @@ Mafia
 Let's avenge our fellow impostor
 When all the imposters except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.
 Cannot Use Archive Admin
+Spy.
+Deceive the Imposter and lead the Cluemate camp to victory!

@@ -608,6 +608,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption EvilHackerOption;
         public static CustomOption EvilHackerPlayerCount;
         public static CustomOption EvilHackerMadmateSetting;
+        
+        public static CustomRoleOption SpyOption;
+        public static CustomOption SpyPlayerCount;
+        public static CustomOption SpyCanUseVent;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1245,6 +1249,10 @@ namespace SuperNewRoles.CustomOption
             BlackCatCheckImpostorTask = CustomOption.Create(562, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, BlackCatIsCheckImpostor);
             BlackCatIsUseVent = CustomOption.Create(563, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, BlackCatOption);
             BlackCatIsImpostorLight = CustomOption.Create(564, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, BlackCatOption);
+            
+            SpyOption = new CustomRoleOption(10001, true, CustomOptionType.Crewmate, "SpyName",RoleClass.Spy.color, 1);
+            SpyPlayerCount = CustomOption.Create(100012, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
+            SpyCanUseVent = CustomOption.Create(100013, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
