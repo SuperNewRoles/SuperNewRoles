@@ -1173,7 +1173,7 @@ namespace SuperNewRoles.CustomRPC
                     case CustomRPC.FixLights:
                         FixLights();
                         break;
-                    case (byte)CustomRPC.AddMarker:
+                    case CustomRPC.AddMarker:
                         RPCProcedure.AddMarker(reader.ReadBytesAndSize());
                         break;
                 }
