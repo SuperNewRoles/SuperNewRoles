@@ -1,15 +1,15 @@
-using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using SuperNewRoles.EndGame;
-using HarmonyLib;
-using SuperNewRoles.Buttons;
-using UnityEngine;
 using System.Linq;
+using System.Text;
+using HarmonyLib;
+using Hazel;
+using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.EndGame;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
@@ -28,25 +28,25 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.ConjurerThirdAddButton.Timer = RoleClass.Conjurer.CoolTime;
         }
 
-//FirstAddをtrueに
+        //FirstAddをtrueに
         public static void FirstAddAdd()
         {
             RoleClass.Conjurer.FirstAdd = true;
         }
 
-//SecondAddをtrueに
+        //SecondAddをtrueに
         public static void SecondAddAdd()
         {
             RoleClass.Conjurer.SecondAdd = true;
         }
 
-//ThirdAddをtrueに
+        //ThirdAddをtrueに
         public static void ThirdAddAdd()
         {
             RoleClass.Conjurer.ThirdAdd = true;
         }
 
-//全部falseに
+        //全部falseに
         public static void AllClear()
         {
             RoleClass.Conjurer.FirstAdd = false;
@@ -54,7 +54,7 @@ namespace SuperNewRoles.Roles
             RoleClass.Conjurer.ThirdAdd = false;
         }
 
-//一回追加されたかを判定する
+        //一回追加されたかを判定する
         public static bool IsFirstAdded()
         {
             if (RoleClass.Conjurer.FirstAdd)
@@ -65,7 +65,7 @@ namespace SuperNewRoles.Roles
             return false;
         }
 
-//二回追加されたかを判定する
+        //二回追加されたかを判定する
         public static bool IsSecondAdded()
         {
             if (RoleClass.Conjurer.SecondAdd)
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Roles
             return false;
         }
 
- //三回追加されたかを判定する
+        //三回追加されたかを判定する
         public static bool IsThirdAdded()
         {
             if (RoleClass.Conjurer.ThirdAdd)
@@ -145,7 +145,7 @@ namespace SuperNewRoles.Roles
             if (boxAnimationSprites == null || boxAnimationSprites.Length == 0) return null;
             index = Mathf.Clamp(index, 0, boxAnimationSprites.Length - 1);
             if (boxAnimationSprites[index] == null)
-                boxAnimationSprites[index] = (ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Marker_00{(index + 1):00}.png", 175f));
+                boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Marker_00{index + 1:00}.png", 175f);
             return boxAnimationSprites[index];
         }
 

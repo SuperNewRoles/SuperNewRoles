@@ -6,9 +6,9 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
-using SuperNewRoles.CustomOption;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
@@ -1632,11 +1632,11 @@ namespace SuperNewRoles.Buttons
                __instance.AbilityButton,
                KeyCode.F,
                49
-            );
-
-
-            ConjurerFirstAddButton.buttonText = ModTranslation.getString("1stAdd");
-            ConjurerFirstAddButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("1stAdd"),
+                showButtonText = true
+            };
 
 
 
@@ -1677,11 +1677,11 @@ namespace SuperNewRoles.Buttons
                __instance.AbilityButton,
                KeyCode.F,
                49
-            );
-
-
-            ConjurerSecondAddButton.buttonText = ModTranslation.getString("2ndAdd");
-            ConjurerSecondAddButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("2ndAdd"),
+                showButtonText = true
+            };
 
 
 
@@ -1723,9 +1723,11 @@ namespace SuperNewRoles.Buttons
                __instance.AbilityButton,
                KeyCode.F,
                49
-            );
-            ConjurerThirdAddButton.buttonText = ModTranslation.getString("3rdAdd");
-            ConjurerThirdAddButton.showButtonText = true;
+            )
+            {
+                buttonText = ModTranslation.getString("3rdAdd"),
+                showButtonText = true
+            };
 
 
             ConjurerStartButton = new CustomButton(
@@ -1761,10 +1763,11 @@ namespace SuperNewRoles.Buttons
                     __instance.AbilityButton,
                     KeyCode.F,
                     49
-                );
-
-            ConjurerStartButton.buttonText = ModTranslation.getString("Kill");
-            ConjurerStartButton.showButtonText = true;
+                )
+            {
+                buttonText = ModTranslation.getString("Kill"),
+                showButtonText = true
+            };
 
             setCustomButtonCooldowns();
         }
