@@ -140,6 +140,7 @@ namespace SuperNewRoles.Roles
         public static int JackInTheBoxLimit = 3;
         public static bool boxesConvertedToVents = false;
         public static Sprite[] boxAnimationSprites = new Sprite[3];
+        /*
         public static Sprite getBoxAnimationSprite(int index)
         {
             if (boxAnimationSprites == null || boxAnimationSprites.Length == 0) return null;
@@ -147,8 +148,35 @@ namespace SuperNewRoles.Roles
             if (boxAnimationSprites[index] == null)
                 boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Maker__{index + 1:00}.png", 175f);
             return boxAnimationSprites[index];
+        }*/
+        public static Transform miraship;
+        public static Sprite SetObject(int index)
+        {
+            Transform Object_Projecter = GameObject.Instantiate(Template, MiraShip);
+            //Object_Projecter.position = new Vector3(10.6f, 18.1f, 0.1f);
+            GameObject.Destroy(Object_Projecter.GetComponent<PolygonCollider2D>());
+            Object_Projecter.GetComponent<SpriteRenderer>().sprite = AgarthagetSprite("Animation.pro_polygon");
+            Object_Projecter.gameObject.AddComponent<PolygonCollider2D>();
+            Object_Projecter.name = "Object_Projecter";
+            CustomAnimation.Animation Object_Projecter_Animation = new CustomAnimation.Animation();
+            Object_Projecter_Animation.Start(8, Object_Projecter);
+            Object_Projecter_Animation.Sprites = CustomAnimation.LoadSprites.GetSpritesAgartha("SuperNewRoles.Resources.Animation.Conjurer_Marker", 32);
+            Object_Projecter.localScale *= 2.5f;
+
+            if (boxAnimationSprites == null || boxAnimationSprites.Length == 0) return null;
+            index = Mathf.Clamp(index, 0, boxAnimationSprites.Length - 1);
+            if (boxAnimationSprites[index] == null)
+                boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Maker_{index + 1:00}.png", 175f);
+            return boxAnimationSprites[index];
         }
 
+        private static Dictionary<string, Sprite> Datas = new Dictionary<string, Sprite>();
+        public static Sprite AgarthagetSprite(string id)
+        {
+            //if (Datas.ContainsKey(id)) return Datas[id];
+            Datas[id] = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Animation." + id + ".png", 115f);
+            return Datas[id];
+        }
 
         public static void startAnimation(int ventId)
         {
@@ -157,10 +185,10 @@ namespace SuperNewRoles.Roles
 
             HudManager.Instance.StartCoroutine(Effects.Lerp(0.6f, new Action<float>((p) =>
             {
-               // if (box.boxRenderer != null)
+                // if (box.boxRenderer != null)
                 //{
-                    box.boxRenderer.sprite = getBoxAnimationSprite((int)(p * boxAnimationSprites.Length));
-                    if (p == 1f) box.boxRenderer.sprite = getBoxAnimationSprite(0);
+                box.boxRenderer.sprite = SetObject((int)(p * boxAnimationSprites.Length));
+                if (p == 1f) box.boxRenderer.sprite = SetObject(0);
                 //}
             })));
         }
@@ -178,7 +206,7 @@ namespace SuperNewRoles.Roles
                                                                             // Create the marker
             gameObject.transform.position = position;
             boxRenderer = gameObject.AddComponent<SpriteRenderer>();
-            boxRenderer.sprite = getBoxAnimationSprite(0);
+            boxRenderer.sprite = SetObject(0);
             /*
                         // Create the vent
                         var referenceVent = UnityEngine.Object.FindObjectOfType<Vent>();
