@@ -1597,6 +1597,7 @@ namespace SuperNewRoles.Buttons
             ConjurerFirstAddButton = new CustomButton(
                () =>
                {
+                   //マーカー設置
                    var pos = PlayerControl.LocalPlayer.transform.position;
                    byte[] buff = new byte[sizeof(float) * 2];
                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
@@ -1606,13 +1607,14 @@ namespace SuperNewRoles.Buttons
                    writer.WriteBytesAndSize(buff);
                    writer.EndMessage();
                    RPCProcedure.AddMarker(buff);
-                   //マーカー設置
 
-                   RoleClass.Conjurer.FirstAdd = true;
+
                    //1回目カウントをtrueにする
+                   RoleClass.Conjurer.FirstAdd = true;
 
-                   Conjurer.AllCoolReset();
                    //全ボタンのクールリセット
+                   Conjurer.AllCoolReset();
+
                },
                () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && !Conjurer.IsFirstAdded(); },
                () =>
@@ -1634,7 +1636,6 @@ namespace SuperNewRoles.Buttons
 
 
             ConjurerFirstAddButton.buttonText = ModTranslation.getString("1stAdd");
-            //ボタン名を1stAddにする
             ConjurerFirstAddButton.showButtonText = true;
 
 
@@ -1642,6 +1643,7 @@ namespace SuperNewRoles.Buttons
             ConjurerSecondAddButton = new CustomButton(
                () =>
                {
+                   //マーカー設置
                    var pos = PlayerControl.LocalPlayer.transform.position;
                    byte[] buff = new byte[sizeof(float) * 2];
                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
@@ -1651,14 +1653,13 @@ namespace SuperNewRoles.Buttons
                    writer.WriteBytesAndSize(buff);
                    writer.EndMessage();
                    RPCProcedure.AddMarker(buff);
-                   //マーカー設置
 
-
-                   RoleClass.Conjurer.SecondAdd = true;
                    //2回目カウントをtrueにする
+                   RoleClass.Conjurer.SecondAdd = true;
 
-                   Conjurer.AllCoolReset();
                    //全ボタンのクールリセット
+                   Conjurer.AllCoolReset();
+
                },
                () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && Conjurer.IsFirstAdded() && !Conjurer.IsSecondAdded(); },
                () =>
@@ -1680,7 +1681,6 @@ namespace SuperNewRoles.Buttons
 
 
             ConjurerSecondAddButton.buttonText = ModTranslation.getString("2ndAdd");
-            //ボタン名を2ndAddにする
             ConjurerSecondAddButton.showButtonText = true;
 
 
@@ -1688,6 +1688,7 @@ namespace SuperNewRoles.Buttons
             ConjurerThirdAddButton = new CustomButton(
                () =>
                {
+                   //マーカー設置
                    var pos = PlayerControl.LocalPlayer.transform.position;
                    byte[] buff = new byte[sizeof(float) * 2];
                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
@@ -1697,13 +1698,13 @@ namespace SuperNewRoles.Buttons
                    writer.WriteBytesAndSize(buff);
                    writer.EndMessage();
                    RPCProcedure.AddMarker(buff);
-                   //マーカー設置
 
-                   RoleClass.Conjurer.ThirdAdd = true;
                    //3回目カウントをtrueにする
+                   RoleClass.Conjurer.ThirdAdd = true;
 
-                   Conjurer.AllCoolReset();
                    //全ボタンのクールリセット
+                   Conjurer.AllCoolReset();
+
 
                },
                () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && Conjurer.IsFirstAdded() && Conjurer.IsSecondAdded() && !Conjurer.IsThirdAdded(); },
@@ -1724,7 +1725,6 @@ namespace SuperNewRoles.Buttons
                49
             );
             ConjurerThirdAddButton.buttonText = ModTranslation.getString("3rdAdd");
-            //ボタン名を3rdAddにする
             ConjurerThirdAddButton.showButtonText = true;
 
 
@@ -1732,19 +1732,17 @@ namespace SuperNewRoles.Buttons
                     () =>
                     {
                         //ニセレに任せた
-
+                        //発光(色)
                         Conjurer.ShowFlash(new Color(139f / 139f, 0f / 0f, 205f / 205f));
-                       //発光(色)
 
+                        //全ボタンのクールリセット
                         Conjurer.AllCoolReset();
-                       //全ボタンのクールリセット
 
+                        //カウントを全部falseに
                         Conjurer.AllClear();
-                       //カウントを全部falseに
 
+                        //全部Marker消す
                         JackInTheBox.clearJackInTheBoxes();
-                       //全部Marker消す
-
                     },
                     () => { return PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer) && Conjurer.IsThirdAdded(); },
                     () =>

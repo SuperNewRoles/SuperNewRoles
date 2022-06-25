@@ -15,6 +15,7 @@ namespace SuperNewRoles.Roles
 {
     public static class Conjurer
     {
+        //Buttonのクールリセット
         public static void AllCoolReset()
         {
             HudManagerStartPatch.ConjurerFirstAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
@@ -26,34 +27,34 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.ConjurerThirdAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
             HudManagerStartPatch.ConjurerThirdAddButton.Timer = RoleClass.Conjurer.CoolTime;
         }
-        //Buttonのクールリセット
 
+//FirstAddをtrueに
         public static void FirstAddAdd()
         {
             RoleClass.Conjurer.FirstAdd = true;
         }
-        //FirstAddをtrueに
 
+//SecondAddをtrueに
         public static void SecondAddAdd()
         {
             RoleClass.Conjurer.SecondAdd = true;
         }
-        //SecondAddをtrueに
 
+//ThirdAddをtrueに
         public static void ThirdAddAdd()
         {
             RoleClass.Conjurer.ThirdAdd = true;
         }
-        //ThirdAddをtrueに
 
+//全部falseに
         public static void AllClear()
         {
             RoleClass.Conjurer.FirstAdd = false;
             RoleClass.Conjurer.SecondAdd = false;
             RoleClass.Conjurer.ThirdAdd = false;
         }
-        //全部falseに
 
+//一回追加されたかを判定する
         public static bool IsFirstAdded()
         {
             if (RoleClass.Conjurer.FirstAdd)
@@ -63,8 +64,8 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
-        //一回追加されたかを判定する
 
+//二回追加されたかを判定する
         public static bool IsSecondAdded()
         {
             if (RoleClass.Conjurer.SecondAdd)
@@ -74,8 +75,8 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
-        //二回追加されたかを判定する
 
+ //三回追加されたかを判定する
         public static bool IsThirdAdded()
         {
             if (RoleClass.Conjurer.ThirdAdd)
@@ -85,7 +86,7 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
-        //三回追加されたかを判定する
+
 
         public static void SetConjurerButton()
         {
