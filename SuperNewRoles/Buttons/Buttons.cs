@@ -1595,36 +1595,31 @@ namespace SuperNewRoles.Buttons
             SecretlyKillerButton = new CustomButton(
                 () =>
                 {
-                    SecretlyKillerButton.actionButton.cooldownTimerText.color = new Color(255F, 255F, 255F);
-                    //SecretlyKiller.SecretlyKill();
+                    if (RoleClass.SecretlyKiller.target.isImpostor()) return;
+                    RoleClass.SecretlyKiller.SecretlyKillLimit--;
+                    SecretlyKiller.SecretlyKill();
                     SecretlyKiller.ResetCoolDown();
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller); },
                 () =>
-                {   //テキストぉ
+                {
+                    //テキストぉ
                     float SecretKillLimit = RoleClass.SecretlyKiller.SecretlyKillLimit;
                     if (SecretKillLimit > 0)
                         SecretlyKillNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), SecretKillLimit);
                     else
                         SecretlyKillNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
 
-                    RoleClass.SecretlyKiller.target = PlayerControlFixedUpdatePatch.setTarget();
-                    if (RoleClass.SecretlyKiller.SecretlyKillLimit <= 0 && setTarget())
-                    {
-                        RoleClass.SecretlyKiller.SecretlyKillLimit--;
-                        SecretlyKiller.SecretlyKill();
-                        //MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
-                        //killWriter.Write();
-                        //AmongUsClient.Instance.FinishRpcImmediately(killWriter);
-                        return true;
-                    }
-                    return false;
+                    return RoleClass.SecretlyKiller.target && PlayerControl.LocalPlayer.CanMove;
                 },
-                () => { SecretlyKiller.EndMeeting(); },
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller)) { SecretlyKiller.EndMeeting(); }
+                },
                 __instance.KillButton.graphic.sprite,
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
-                __instance.AbilityButton,
+                __instance.KillButton,
                 KeyCode.F,
                 49
             );
