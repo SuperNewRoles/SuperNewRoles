@@ -145,7 +145,7 @@ namespace SuperNewRoles.Roles
             if (boxAnimationSprites == null || boxAnimationSprites.Length == 0) return null;
             index = Mathf.Clamp(index, 0, boxAnimationSprites.Length - 1);
             if (boxAnimationSprites[index] == null)
-                boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Marker_00{index + 1:00}.png", 175f);
+                boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Maker__{index + 1:00}.png", 175f);
             return boxAnimationSprites[index];
         }
 
@@ -157,11 +157,11 @@ namespace SuperNewRoles.Roles
 
             HudManager.Instance.StartCoroutine(Effects.Lerp(0.6f, new Action<float>((p) =>
             {
-                if (box.boxRenderer != null)
-                {
+               // if (box.boxRenderer != null)
+                //{
                     box.boxRenderer.sprite = getBoxAnimationSprite((int)(p * boxAnimationSprites.Length));
                     if (p == 1f) box.boxRenderer.sprite = getBoxAnimationSprite(0);
-                }
+                //}
             })));
         }
 
