@@ -9,6 +9,7 @@ namespace SuperNewRoles.Roles
         {
             List<PlayerControl> untarget = new();
             untarget.AddRange(RoleClass.SideKiller.MadKillerPlayer);
+            untarget.AddRange(RoleClass.Spy.SpyPlayer);
             FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget(untargetablePlayers: untarget, onlyCrewmates: true));
         }
     }
