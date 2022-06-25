@@ -2262,12 +2262,12 @@ namespace SuperNewRoles.Roles
             public static PlayerControl target;
             public static DateTime ButtonTimer;
             public static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
+            /*public static Sprite getButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
                 buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.KillButton.png", 115f);
                 return buttonSprite;
-            }
+            }*/
             public static void ClearAndReload()
             {
                 SecretlyKillerPlayer = new List<PlayerControl>();

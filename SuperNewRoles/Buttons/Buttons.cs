@@ -1621,7 +1621,7 @@ namespace SuperNewRoles.Buttons
                     return false;
                 },
                 () => { SecretlyKiller.EndMeeting(); },
-                RoleClass.SecretlyKiller.getButtonSprite(),
+                __instance.KillButton.graphic.sprite,
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,

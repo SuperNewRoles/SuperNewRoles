@@ -28,5 +28,10 @@ namespace SuperNewRoles.Roles
             RoleClass.SecretlyKiller.target.RpcMurderPlayer(RoleClass.SecretlyKiller.target);
             RoleClass.SecretlyKiller.target = null;
         }
+        //ボタンセット (by:.cs)
+        public static void SecretlyKillButtonSet()
+        {
+
+        }
     }
 }
