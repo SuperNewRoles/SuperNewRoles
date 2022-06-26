@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles
     {
         static void Postfix(MeetingHud __instance)
         {
-            if (!PlayerControl.LocalPlayer.isDead() && PlayerControl.LocalPlayer.isRole(RoleId.SoothSayer))
+            if (PlayerControl.LocalPlayer.isDead() && PlayerControl.LocalPlayer.isRole(RoleId.SoothSayer))
             {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
             }

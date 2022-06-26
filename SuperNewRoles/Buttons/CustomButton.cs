@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using HarmonyLib;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +20,7 @@ namespace SuperNewRoles.Buttons
         public bool effectCancellable = false;
         private Action OnClick;
         private Action OnMeetingEnds;
-        private Func<bool> HasButton;
+        private Func<bool, RoleId, bool> HasButton;
         private Func<bool> CouldUse;
         private Action OnEffectEnds;
         public bool HasEffect;
@@ -33,7 +34,7 @@ namespace SuperNewRoles.Buttons
         private KeyCode? hotkey;
         private int joystickkey;
 
-        public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = "")
+        public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = "")
         {
             this.hudManager = hudManager;
             this.OnClick = OnClick;
@@ -66,12 +67,12 @@ namespace SuperNewRoles.Buttons
             setActive(false);
         }
 
-        public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton? textTemplate, KeyCode? hotkey, int joystickkey, bool mirror = false, string buttonText = "")
+        public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton? textTemplate, KeyCode? hotkey, int joystickkey, bool mirror = false, string buttonText = "")
         : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, false, 0f, () => { }, mirror, buttonText) { }
 
         void onClickEvent()
         {
-            if ((Timer <= 0f || (HasEffect && isEffectActive && effectCancellable)) && HasButton() && CouldUse())
+            if ((Timer <= 0f || (HasEffect && isEffectActive && effectCancellable)) && CouldUse())
             {
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 OnClick();
@@ -86,11 +87,11 @@ namespace SuperNewRoles.Buttons
             {
                 try
                 {
-                    btn.Update();
+                    btn.Update(PlayerControl.LocalPlayer.isAlive(), PlayerControl.LocalPlayer.getRole());
                 }
                 catch (Exception e)
                 {
-                    if (ConfigRoles.DebugMode.Value) System.Console.WriteLine("ButtonError:" + e);
+                    System.Console.WriteLine("ButtonError:" + e);
                 }
             }
         }
@@ -103,7 +104,6 @@ namespace SuperNewRoles.Buttons
                 try
                 {
                     btn.OnMeetingEnds();
-                    btn.Update();
                 }
                 catch (Exception e)
                 {
@@ -126,12 +126,12 @@ namespace SuperNewRoles.Buttons
             }
         }
 
-        private void Update()
+        private void Update(bool isAlive, RoleId role)
         {
             var localPlayer = CachedPlayer.LocalPlayer;
             var moveable = localPlayer.PlayerControl.moveable;
 
-            if (localPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton())
+            if (localPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton(isAlive, RoleId.DefaultRole))
             {
                 setActive(false);
                 return;
@@ -188,7 +188,6 @@ namespace SuperNewRoles.Buttons
         static void Postfix(HudManager __instance)
         {
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-
             CustomButton.HudUpdate();
             ButtonTime.Update();
         }

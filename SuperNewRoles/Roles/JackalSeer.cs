@@ -74,11 +74,11 @@ namespace SuperNewRoles.Roles
             {
                 setPlayerOutline(JackalSeersetTarget(), RoleClass.JackalSeer.color);
             }
-            public static void Postfix(PlayerControl __instance)
+            public static void Postfix(PlayerControl __instance, RoleId role)
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    if (RoleClass.JackalSeer.SidekickSeerPlayer.Count != 0)
+                    if (RoleClass.JackalSeer.SidekickSeerPlayer.Count > 0)
                     {
                         var upflag = true;
                         foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer)
@@ -96,7 +96,7 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
-                if (PlayerControl.LocalPlayer.isRole(RoleId.JackalSeer))
+                if (role == RoleId.JackalSeer)
                 {
                     JackalSeerPlayerOutLineTarget();
                 }
