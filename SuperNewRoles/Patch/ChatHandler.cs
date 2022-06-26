@@ -185,9 +185,8 @@ namespace SuperNewRoles.Patch
         }
         static string GetText(CustomRoleOption option)
         {
-            string text = "";
+            string text = "\n";
             IntroDate intro = option.Intro;
-            text += "【" + intro.Name + "】\n";
             text += GetTeamText(intro.Team) + ModTranslation.getString("Team") + "\n";
             text += "「" + IntroDate.GetTitle(intro.NameKey, intro.TitleNum) + "」\n";
             text += intro.Description + "\n";
@@ -243,8 +242,9 @@ namespace SuperNewRoles.Patch
             foreach (CustomRoleOption option in EnableOptions)
             {
                 string text = GetText(option);
+                string rolename = "<size=115%>\n" + CustomOptions.cs(option.Intro.color, option.Intro.NameKey + "Name") + "</size>";
                 SuperNewRolesPlugin.Logger.LogInfo(text);
-                Send(target, text, time);
+                Send(target, rolename, text, time);
                 time += SendTime;
             }
         }
@@ -260,7 +260,7 @@ namespace SuperNewRoles.Patch
             }
             SendCommand(target, GetInRole(EnableOptions));
         }
-        static void Send(PlayerControl target, string text, float time = 0)
+        static void Send(PlayerControl target, string rolename, string text, float time = 0)
         {
             text = "\n" + text + "\n                                                                                                                                                                                                                                              ";
             if (time <= 0)
@@ -268,17 +268,17 @@ namespace SuperNewRoles.Patch
                 if (target == null)
                 {
                     string name = PlayerControl.LocalPlayer.getDefaultName();
-                    AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander, text, name));
+                    AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander+rolename, text, name));
                     return;
                 }
                 if (target.PlayerId != 0)
                 {
-                    AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander, text, time));
+                    AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander + rolename, text, time));
                 }
                 else
                 {
                     string name = PlayerControl.LocalPlayer.getDefaultName();
-                    PlayerControl.LocalPlayer.SetName(SNRCommander);
+                    PlayerControl.LocalPlayer.SetName(SNRCommander+"\n"+rolename);
                     FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
                     PlayerControl.LocalPlayer.SetName(name);
                 }
@@ -289,18 +289,18 @@ namespace SuperNewRoles.Patch
                 string name = PlayerControl.LocalPlayer.getDefaultName();
                 if (target == null)
                 {
-                    AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander, text, name, time));
+                    AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name, time));
                     return;
                 }
                 if (target.PlayerId != 0)
                 {
-                    AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander, text, time));
+                    AmongUsClient.Instance.StartCoroutine(PrivateSend(target, SNRCommander + rolename, text, time));
                 }
                 else
                 {
                     new LateTask(() =>
                     {
-                        PlayerControl.LocalPlayer.SetName(SNRCommander);
+                        PlayerControl.LocalPlayer.SetName(SNRCommander + rolename);
                         FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
                         PlayerControl.LocalPlayer.SetName(name);
                     }, time);

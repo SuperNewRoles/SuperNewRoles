@@ -765,5 +765,6 @@ MafiaName,Mafia,マフィア
 MafiaTitle1,Let's avenge our fellow impostor,仲間の敵討ちをしよう
 MafiaDescription,When all the imposters except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.,マフィア以外のインポスターが全員死亡するとキルできるようになります。\nキルが出来ない間もキルクールタイムは進みます。
 RecordsAdminDestroySetting,Cannot Use Archive Admin,アーカイブのアドミンを使用不可にする
-SpyName,Spy.,スパイ
+SpyName,Spy,スパイ
 SpyTitle1,Deceive the Imposter and lead the Cluemate camp to victory!,インポスターを欺き、クルーメイト陣営を勝利に導こう
+SpyDescription,Spies are crewmates but they look like friends to the Imposter.\n Spies are crewmates and have no special abilities.,スパイはクルーメイトですが、インポスターからは仲間に見えます。\nスパイはクルーメイトであり、特別な能力はありません。
