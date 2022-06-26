@@ -52,11 +52,7 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
         static void Prefix(MeetingHud __instance)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("----会議終了----");
-            if (AmongUsClient.Instance.AmHost && !RoleClass.Tuna.IsMeetingEnd)
-            {
-                RoleClass.Tuna.IsMeetingEnd = true;
-            }
+            RoleClass.Tuna.IsMeetingEnd = true;
         }
     }
 }
