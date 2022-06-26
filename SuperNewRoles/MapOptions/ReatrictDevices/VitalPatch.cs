@@ -1,4 +1,4 @@
-/*using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 //using static TheOtherRoles.TheOtherRoles;
@@ -66,7 +66,7 @@ namespace SuperNewRoles.Patch
                 if (Mode.ModeHandler.isMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.RestrictVital.getBool())
                 {
                     vitalsTimer += Time.deltaTime;
-                    if (vitalsTimer > 0.1f)
+                    if (vitalsTimer > 0.05f)
                         UseVitalsTime();
 
                     if (MapOptions.MapOption.RestrictVital.getBool())
@@ -98,7 +98,7 @@ namespace SuperNewRoles.Patch
             }
         }
 
-        [HarmonyPatch]
+        /*[HarmonyPatch]
         class VitalsMinigameClosePatch
         {
             private static IEnumerable<MethodBase> TargetMethods()
@@ -111,6 +111,6 @@ namespace SuperNewRoles.Patch
                 if (__instance is VitalsMinigame)
                     UseVitalsTime();
             }
-        }
+        }*/
     }
-}*/
+}
