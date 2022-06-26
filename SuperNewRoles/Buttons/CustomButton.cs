@@ -99,11 +99,17 @@ namespace SuperNewRoles.Buttons
         public static void MeetingEndedUpdate()
         {
             buttons.RemoveAll(item => item.actionButton == null);
+            bool isAlive = PlayerControl.LocalPlayer.isAlive();
+            RoleId role = PlayerControl.LocalPlayer.getRole();
             foreach (CustomButton btn in buttons)
             {
                 try
                 {
-                    btn.OnMeetingEnds();
+                    if (btn.HasButton(isAlive, role))
+                    {
+                        btn.OnMeetingEnds();
+                        btn.Update(isAlive, role);
+                    }
                 }
                 catch (Exception e)
                 {
