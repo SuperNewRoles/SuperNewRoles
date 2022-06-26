@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -148,6 +148,7 @@ namespace SuperNewRoles.Roles
         public static class SoothSayer
         {
             public static List<PlayerControl> SoothSayerPlayer;
+            public static List<byte> DisplayedPlayer;
             public static bool DisplayMode;
             public static int Count;
             public static Color32 color = new(190, 86, 235, byte.MaxValue);
@@ -161,6 +162,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 SoothSayerPlayer = new();
+                DisplayedPlayer = new();
                 DisplayMode = CustomOptions.SoothSayerDisplayMode.getBool();
                 Count = (int)CustomOptions.SoothSayerMaxCount.getFloat();
             }
