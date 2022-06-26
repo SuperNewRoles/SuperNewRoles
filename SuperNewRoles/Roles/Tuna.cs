@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
             if (RoleClass.IsMeeting) return;
             if (ModeHandler.isMode(ModeId.Default))
             {
-                if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead && CachedPlayer.LocalPlayer.PlayerControl.isRole(CustomRPC.RoleId.Tuna) && PlayerControl.LocalPlayer.CanMove && Mode.ModeHandler.isMode(Mode.ModeId.Default))
+                if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead && CachedPlayer.LocalPlayer.PlayerControl.isRole(CustomRPC.RoleId.Tuna) && PlayerControl.LocalPlayer.CanMove && Mode.ModeHandler.isMode(Mode.ModeId.Default)&& RoleClass.Tuna.IsMeetingEnd)
                 {
                     if (RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerControl.PlayerId] == CachedPlayer.LocalPlayer.PlayerControl.transform.position)
                     {
@@ -29,10 +29,12 @@ namespace SuperNewRoles.Roles
                         RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerControl.PlayerId] = CachedPlayer.LocalPlayer.PlayerControl.transform.position;
                     }
                 }
-            } else
+            }
+            else
             {
-                foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer) {
-                    if (p.isAlive())
+                foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
+                {
+                    if (p.isAlive() && RoleClass.Tuna.IsMeetingEnd)
                     {
                         if (RoleClass.Tuna.Position[p.PlayerId] == p.transform.position)
                         {
@@ -45,6 +47,18 @@ namespace SuperNewRoles.Roles
                         RoleClass.Tuna.Position[p.PlayerId] = p.transform.position;
                     }
                 }
+            }
+        }
+    }
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
+    public class MeetingEnd
+    {
+        static void Prefix(MeetingHud __instance)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo("----会議終了----");
+            if (AmongUsClient.Instance.AmHost && !RoleClass.Tuna.IsMeetingEnd)
+            {
+                RoleClass.Tuna.IsMeetingEnd = true;
             }
         }
     }
