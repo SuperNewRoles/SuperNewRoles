@@ -45,7 +45,6 @@ namespace SuperNewRoles.Patch
             titleText.gameObject.SetActive(false);
             Object.DontDestroyOnLoad(titleText);
         }
-        private static Vector3? origin;
         public static float xOffset = 1.75f;
         [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Update))]
         class OptionsUpdate

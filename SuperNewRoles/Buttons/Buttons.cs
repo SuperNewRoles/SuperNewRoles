@@ -25,7 +25,6 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SpeedBoosterBoostButton;
         public static CustomButton EvilSpeedBoosterBoostButton;
         public static CustomButton LighterLightOnButton;
-        public static CustomButton CustomSabotageButton;
         public static CustomButton MovingSetButton;
         public static CustomButton MovingTpButton;
         public static CustomButton TeleporterButton;
@@ -35,10 +34,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton CountChangerButton;
         public static CustomButton ScientistButton;
         public static CustomButton HawkHawkEyeButton;
-        public static CustomButton FreezerFreezeButton;
         public static CustomButton JackalKillButton;
         public static CustomButton JackalSidekickButton;
-        public static CustomButton JackalSeerKillButton;
         public static CustomButton JackalSeerSidekickButton;
         public static CustomButton MagazinerAddButton;
         public static CustomButton MagazinerGetButton;
@@ -65,7 +62,6 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PositionSwapperButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
-        public static TMPro.TMP_Text CleanerNumCleanText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
         public static TMPro.TMP_Text PositionSwapperNumText;
 
@@ -82,8 +78,6 @@ namespace SuperNewRoles.Buttons
         {
             return PlayerControlFixedUpdatePatch.setTarget(untargetablePlayers: untarget, onlyCrewmates: Crewmateonly);
         }
-
-        private static PlayerControl SheriffKillTarget;
 
         public static void Postfix(HudManager __instance)
         {
