@@ -5,6 +5,8 @@ using Assets.CoreScripts;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Helpers
 {
@@ -86,6 +88,24 @@ namespace SuperNewRoles.Helpers
                 val.Write(shouldAnimate);
                 AmongUsClient.Instance.FinishRpcImmediately(val);
                 return false;
+            }
+        }
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcMurderPlayer))]
+        class RpcMurderPlayer
+        {
+            public static bool Prefix(PlayerControl __instance, PlayerControl target)
+            {
+                if (ModeHandler.isMode(ModeId.Default))
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                    writer.Write(__instance.PlayerId);
+                    writer.Write(target.PlayerId);
+                    writer.Write(byte.MaxValue);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.RPCMurderPlayer(__instance.PlayerId, target.PlayerId, byte.MaxValue);
+                    return false;
+                }
+                return true;
             }
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
