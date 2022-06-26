@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
             if (RoleClass.IsMeeting) return;
             if (ModeHandler.isMode(ModeId.Default))
             {
-                if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead && CachedPlayer.LocalPlayer.PlayerControl.isRole(CustomRPC.RoleId.Tuna) 　 && Mode.ModeHandler.isMode(Mode.ModeId.Default)&& RoleClass.Tuna.IsMeetingEnd)
+                if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead && CachedPlayer.LocalPlayer.PlayerControl.isRole(CustomRPC.RoleId.Tuna) && Mode.ModeHandler.isMode(Mode.ModeId.Default) && RoleClass.Tuna.IsMeetingEnd)
                 {
                     if (RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerControl.PlayerId] == CachedPlayer.LocalPlayer.PlayerControl.transform.position)
                     {
@@ -49,10 +49,7 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
-    }
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
-    public class MeetingEnd
-    {
+        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
         static void Prefix(MeetingHud __instance)
         {
             SuperNewRolesPlugin.Logger.LogInfo("----会議終了----");
