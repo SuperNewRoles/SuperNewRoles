@@ -2,6 +2,8 @@ using System;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
+using Hazel;
 
 namespace SuperNewRoles.Roles
 {
@@ -13,13 +15,18 @@ namespace SuperNewRoles.Roles
             if (RoleClass.IsMeeting) return;
             if (ModeHandler.isMode(ModeId.Default))
             {
-                if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead && CachedPlayer.LocalPlayer.PlayerControl.isRole(CustomRPC.RoleId.Tuna) 　 && Mode.ModeHandler.isMode(Mode.ModeId.Default)&& RoleClass.Tuna.IsMeetingEnd)
+                if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead && CachedPlayer.LocalPlayer.PlayerControl.isRole(RoleId.Tuna) && Mode.ModeHandler.isMode(Mode.ModeId.Default) && RoleClass.Tuna.IsMeetingEnd)
                 {
                     if (RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerControl.PlayerId] == CachedPlayer.LocalPlayer.PlayerControl.transform.position)
                     {
                         if (RoleClass.Tuna.Timer <= 0.1f)
                         {
-                            CachedPlayer.LocalPlayer.PlayerControl.RpcMurderPlayer(CachedPlayer.LocalPlayer.PlayerControl);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                            writer.Write(byte.MaxValue);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.PlayerId, byte.MaxValue);
                         }
                         RoleClass.Tuna.Timer -= Time.deltaTime;
                     }
