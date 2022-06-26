@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
             if (RoleClass.IsMeeting) return;
             if (ModeHandler.isMode(ModeId.Default))
             {
-                if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead && CachedPlayer.LocalPlayer.PlayerControl.isRole(CustomRPC.RoleId.Tuna) && PlayerControl.LocalPlayer.CanMove && Mode.ModeHandler.isMode(Mode.ModeId.Default)&& RoleClass.Tuna.IsMeetingEnd)
+                if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead && CachedPlayer.LocalPlayer.PlayerControl.isRole(CustomRPC.RoleId.Tuna) 　 && Mode.ModeHandler.isMode(Mode.ModeId.Default)&& RoleClass.Tuna.IsMeetingEnd)
                 {
                     if (RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerControl.PlayerId] == CachedPlayer.LocalPlayer.PlayerControl.transform.position)
                     {
