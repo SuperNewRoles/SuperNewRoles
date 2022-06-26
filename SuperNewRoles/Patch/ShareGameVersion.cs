@@ -37,7 +37,7 @@ namespace SuperNewRoles.Patch
                 if (PlayerControl.LocalPlayer != null)
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[VersionShare]Version Shared!");
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareSNRVersion, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareSNRVersion, Hazel.SendOption.None, -1);
                     writer.Write((byte)SuperNewRolesPlugin.Version.Major);
                     writer.Write((byte)SuperNewRolesPlugin.Version.Minor);
                     writer.Write((byte)SuperNewRolesPlugin.Version.Build);
@@ -83,7 +83,7 @@ namespace SuperNewRoles.Patch
                 if (Proce >= 10)
                 {
 
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareSNRVersion, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareSNRVersion, Hazel.SendOption.None, -1);
                     writer.Write((byte)SuperNewRolesPlugin.Version.Major);
                     writer.Write((byte)SuperNewRolesPlugin.Version.Minor);
                     writer.Write((byte)SuperNewRolesPlugin.Version.Build);
@@ -196,7 +196,7 @@ namespace SuperNewRoles.Patch
                     RPCTimer -= Time.deltaTime;
                     if (RPCTimer <= 0)
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetRoomTimerRPC, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetRoomTimerRPC, Hazel.SendOption.None, -1);
                         int minutes2 = (int)timer / 60;
                         int seconds2 = (int)timer % 60;
                         writer.Write((byte)minutes2);
@@ -218,7 +218,7 @@ namespace SuperNewRoles.Patch
                 __instance.PlayerCounter.autoSizeTextContainer = true;
                 if (minutes == 0 && seconds < 5 && !notcreateroom && ConfigRoles.IsAutoRoomCreate.Value)
                 {
-                    //MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AutoCreateRoom, Hazel.SendOption.Reliable, -1);
+                    //MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AutoCreateRoom, Hazel.SendOption.None, -1);
                     //AmongUsClient.Instance.FinishRpcImmediately(writer);
                     //var roomid = InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId);
                     //AmongUsClient.Instance.StartCoroutine(CREATEROOMANDJOIN(roomid, AmongUsClient.Instance.GameId));

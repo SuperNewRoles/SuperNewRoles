@@ -24,7 +24,7 @@ namespace SuperNewRoles.Roles
         }
         public static void LightOutStart()
         {
-            MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCClergymanLightOut, Hazel.SendOption.Reliable, -1);
+            MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCClergymanLightOut, Hazel.SendOption.None, -1);
             RPCWriter.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
         }

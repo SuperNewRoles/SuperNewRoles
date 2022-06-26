@@ -25,7 +25,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             {
                                 tasks = (new() { }).ToArray();
                             }
-                            MessageWriter messageWriter2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SetTasks, SendOption.Reliable,p.getClientId());
+                            MessageWriter messageWriter2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SetTasks, SendOption.None,p.getClientId());
                             messageWriter2.Write(playerId);
                             messageWriter2.WriteBytesAndSize(tasks);
                             messageWriter2.EndRPC();
