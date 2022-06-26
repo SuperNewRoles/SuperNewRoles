@@ -1,4 +1,4 @@
-/*using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -250,20 +250,21 @@ namespace SuperNewRoles.Patch
                 return true;
             }
         }
-          public static bool IsBlocked(IUsable target, PlayerControl pc)
-            {
-                if (target == null) return false;
+        /*
+        public static bool IsBlocked(IUsable target, PlayerControl pc)
+        {
+            if (target == null) return false;
 
-                Console targetConsole = target.TryCast<Console>();
-                SystemConsole targetSysConsole = target.TryCast<SystemConsole>();
-                MapConsole targetMapConsole = target.TryCast<MapConsole>();
-                if ((targetConsole != null && IsBlocked(targetConsole, pc)) ||
-                    (targetSysConsole != null && IsBlocked(targetSysConsole, pc)) ||
-                    (targetMapConsole != null && !MapOptions.canUseAdmin))
-                {
-                    return true;
-                }
-                return false;
+            Console targetConsole = target.TryCast<Console>();
+            SystemConsole targetSysConsole = target.TryCast<SystemConsole>();
+            MapConsole targetMapConsole = target.TryCast<MapConsole>();
+            if ((targetConsole != null && IsBlocked(targetConsole, pc)) ||
+                (targetSysConsole != null && IsBlocked(targetSysConsole, pc)) ||
+                (targetMapConsole != null && !MapOptions.canUseAdmin))
+            {
+                return true;
             }
+            return false;
+        }*/
     }
-}*/
+}

@@ -921,11 +921,11 @@ namespace SuperNewRoles.CustomRPC
                 }
             }
         }
-        /*
+        
         public static void UseAdminTime(float time)
         {
             Patch.AdminPatch.RestrictAdminTime -= time;
-        }*/
+        }
         public static void UseCameraTime(float time)
         {
             Patch.CameraPatch.RestrictCameraTime -= time;
@@ -1149,7 +1149,7 @@ namespace SuperNewRoles.CustomRPC
                     case CustomRPC.PositionSwapperTP:
                         RPCProcedure.PositionSwapperTP(reader.ReadByte(), reader.ReadByte());
                         break;
-                        /*
+
                     case CustomRPC.UseAdminTime:
                         UseAdminTime(reader.ReadSingle());
                         break;
@@ -1159,7 +1159,7 @@ namespace SuperNewRoles.CustomRPC
                     case CustomRPC.UseVitalsTime:
                         UseVitalTime(reader.ReadSingle());
                         break;
-                        */
+
                     case CustomRPC.FixLights:
                         FixLights();
                         break;
