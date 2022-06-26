@@ -104,6 +104,10 @@ namespace SuperNewRoles.Patch
 
             transform.localPosition = _origin.Value + Vector3.left * 1.3f;
             moreOptions.transform.localPosition = _origin.Value + Vector3.right * 1.3f;
+            var pos = moreOptions.transform.localPosition;
+            moreOptions.transform.localScale *= 1.1f;
+            float count = 1.55f;
+            moreOptions.transform.localPosition = new Vector3(pos.x*1.5f, pos.y * count, pos.z);
             var trans = moreOptions.transform.localPosition;
             moreOptions.gameObject.SetActive(true);
             trans = moreOptions.transform.position;
