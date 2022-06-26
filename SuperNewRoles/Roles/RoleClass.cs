@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -37,7 +37,8 @@ namespace SuperNewRoles.Roles
             Mode.BattleRoyal.main.VentData = new();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
-            MapRemodeling.AdditionalVents.ClearAndReload();
+            MapOptions.AdditionalVents.ClearAndReload();
+            MapOptions.SpecimenVital.ClearAndReload();
             SoothSayer.ClearAndReload();
             Jester.ClearAndReload();
             Lighter.ClearAndReload();
@@ -2197,6 +2198,7 @@ namespace SuperNewRoles.Roles
             public static float StoppingTime;
             public static bool IsUseVent;
             public static Dictionary<byte, float> Timers;
+            public static bool IsMeetingEnd;
             public static void ClearAndReload()
             {
                 TunaPlayer = new();
@@ -2205,6 +2207,7 @@ namespace SuperNewRoles.Roles
                 StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.getFloat();
                 if (Mode.ModeHandler.isMode(Mode.ModeId.Default)) Timer = StoppingTime;
                 IsUseVent = CustomOptions.TunaIsUseVent.getBool();
+                IsMeetingEnd = false;
                 if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
                 {
                     Timers = new();

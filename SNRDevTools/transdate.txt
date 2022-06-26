@@ -768,3 +768,4 @@ RecordsAdminDestroySetting,Cannot Use Archive Admin,アーカイブのアドミ�
 SpyName,Spy,スパイ
 SpyTitle1,Deceive the Imposter and lead the Cluemate camp to victory!,インポスターを欺き、クルーメイト陣営を勝利に導こう
 SpyDescription,Spies are crewmates but they look like friends to the Imposter.\n Spies are crewmates and have no special abilities.,スパイはクルーメイトですが、インポスターからは仲間に見えます。\nスパイはクルーメイトであり、特別な能力はありません。
+SpecimenVitalSetting,Move Vital to specimen (polus),標本室にバイタルを移動する(ポーラス)

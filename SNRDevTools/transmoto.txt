@@ -767,3 +767,4 @@ RecordsAdminDestroySetting
 SpyName
 SpyTitle1
 SpyDescription
+SpecimenVitalSetting

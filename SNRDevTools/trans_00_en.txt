@@ -767,3 +767,4 @@ Cannot Use Archive Admin
 Spy
 Deceive the Imposter and lead the Cluemate camp to victory!
 Spies are crewmates but they look like friends to the Imposter.\n Spies are crewmates and have no special abilities.
+Move Vital to specimen (polus)

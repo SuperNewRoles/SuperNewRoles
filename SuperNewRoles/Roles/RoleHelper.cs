@@ -44,6 +44,7 @@ namespace SuperNewRoles
                 RoleId.MadSeer => true,
                 RoleId.BlackCat => true,
                 RoleId.MadMaker => true,
+                //isMad
                 _ => false,
             };
         }
@@ -57,6 +58,7 @@ namespace SuperNewRoles
                 RoleId.JackalFriends => true,
                 RoleId.SeerFriends => true,
                 RoleId.MayorFriends => true,
+                //isFriends
                 _ => false,
             };
         }
