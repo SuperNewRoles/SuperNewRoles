@@ -915,7 +915,28 @@ namespace SuperNewRoles.Buttons
                     }
                     else if (target.Data.Role.IsImpostor)
                     {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        if (ModeHandler.isMode(ModeId.Default))
+                        {
+                            if (PlayerControl.LocalPlayer.isRole(RoleId.MadMaker))
+                            {
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                                writer.Write(byte.MaxValue);
+                                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                                RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.PlayerId, byte.MaxValue);
+                            }
+                        }
+                        else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                        {
+                            if (AmongUsClient.Instance.AmHost)
+                            {
+                                foreach (PlayerControl p in RoleClass.MadMaker.MadMakerPlayer)
+                                {
+                                    p.RpcMurderPlayer(p);
+                                }
+                            }
+                        }
                     }
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.MadMaker) && ModeHandler.isMode(ModeId.Default) && !RoleClass.MadMaker.IsCreateMadmate; },
@@ -1099,7 +1120,28 @@ namespace SuperNewRoles.Buttons
                     }
                     else if (target.Data.Role.IsImpostor)
                     {
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        if (ModeHandler.isMode(ModeId.Default))
+                        {
+                            if (PlayerControl.LocalPlayer.isRole(RoleId.Chief))
+                            {
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                                writer.Write(byte.MaxValue);
+                                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                                RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.PlayerId, byte.MaxValue);
+                            }
+                        }
+                        else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                        {
+                            if (AmongUsClient.Instance.AmHost)
+                            {
+                                foreach (PlayerControl p in RoleClass.Chief.ChiefPlayer)
+                                {
+                                    p.RpcMurderPlayer(p);
+                                }
+                            }
+                        }
                     }
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Chief) && ModeHandler.isMode(ModeId.Default) && !RoleClass.Chief.IsCreateSheriff; },
