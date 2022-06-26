@@ -56,10 +56,7 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
-    }
-    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
-    public class MeetingEnd
-    {
+        [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
         static void Prefix(MeetingHud __instance)
         {
             SuperNewRolesPlugin.Logger.LogInfo("----会議終了----");
