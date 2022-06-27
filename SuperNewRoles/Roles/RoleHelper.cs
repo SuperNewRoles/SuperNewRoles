@@ -1084,6 +1084,10 @@ namespace SuperNewRoles
                     break;
                     //タスククリアか
             }
+            if (player.isImpostor())
+            {
+                IsTaskClear = true;
+            }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
                 IsTaskClear = true;
