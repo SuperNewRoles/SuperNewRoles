@@ -511,18 +511,9 @@ namespace SuperNewRoles.CustomCosmetics
             foreach (string repo in repos)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] ハットスタート:" + repo);
-                //if (!ConfigRoles.DownloadSuperNewNamePlates.Value)
-                if (!ConfigRoles.DownloadSuperNewNamePlates.Value && repo == "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master")
+                if (!ConfigRoles.DownloadSuperNewNamePlates.Value)
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:"/*"Skipped download.:"*/ + repo);
-                }
-                if (!ConfigRoles.DownloadOtherSkins.Value &&
-                    (repo == "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master" ||
-                    repo == "https://raw.githubusercontent.com/Ujet222/TOPHats/main" ||
-                    repo == "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master" ||
-                    repo == "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"))
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:" + repo);
                 }
                 else
                 {
@@ -539,11 +530,6 @@ namespace SuperNewRoles.CustomCosmetics
                         System.Console.WriteLine($"Unable to fetch hats from repo: {repo}\n" + e.Message);
                     }
                 }
-                //}
-                //else
-                //{
-                //    SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:" + repo);
-                //}
             }
             running = false;
         }

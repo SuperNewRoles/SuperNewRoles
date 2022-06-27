@@ -32,7 +32,6 @@ namespace SuperNewRoles
             IsAutoRoomCreate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "AutoRoomCreate", true);
             EnableHorseMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "EnableHorseMode", false);
             DownloadSuperNewNamePlates = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "DownloadSuperNewNamePlates", true);
-            DownloadOtherSkins = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "DownloadOtherSkins", true);
             Ip = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server IP", "127.0.0.1");
             Port = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Custom Server Port", (ushort)22023);
             IntroPatch.ShouldAlwaysHorseAround.isHorseMode = ConfigRoles.EnableHorseMode.Value;

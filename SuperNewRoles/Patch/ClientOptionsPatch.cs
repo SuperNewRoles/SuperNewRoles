@@ -21,7 +21,6 @@ namespace SuperNewRoles.Patch
             new SelectionBehaviour("CustomIsVersionErrorView", () => ConfigRoles.IsVersionErrorView.Value = !ConfigRoles.IsVersionErrorView.Value, ConfigRoles.IsVersionErrorView.Value),
             new SelectionBehaviour("CustomHideTaskArrows", () => TasksArrowsOption.hideTaskArrows = ConfigRoles.HideTaskArrows.Value = !ConfigRoles.HideTaskArrows.Value, ConfigRoles.HideTaskArrows.Value),
             new SelectionBehaviour("CustomDownloadSuperNewNamePlates", () => ConfigRoles.DownloadSuperNewNamePlates.Value = !ConfigRoles.DownloadSuperNewNamePlates.Value, ConfigRoles.DownloadSuperNewNamePlates.Value),
-            new SelectionBehaviour("CustomDownloadOtherSkins", () => ConfigRoles.DownloadOtherSkins.Value = !ConfigRoles.DownloadOtherSkins.Value, ConfigRoles.DownloadOtherSkins.Value),
         };
 
         private static GameObject popUp;
