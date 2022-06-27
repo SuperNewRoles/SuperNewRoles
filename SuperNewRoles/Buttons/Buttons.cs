@@ -1693,6 +1693,7 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.SecretlyKiller.MainCool>0f) return false;
 
                     RoleClass.SecretlyKiller.target = setTarget();
+                    if (RoleClass.SecretlyKiller.target == null) return false;
                     return !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
@@ -1705,7 +1706,10 @@ namespace SuperNewRoles.Buttons
                 __instance.KillButton,
                 KeyCode.F,
                 49,
-                ()=> {return false;}
+                ()=>
+                {
+                    return !PlayerControl.LocalPlayer.CanMove;
+                }
             )
             {
                 buttonText = ModTranslation.getString("FinalStatusKill"),
@@ -1729,10 +1733,11 @@ namespace SuperNewRoles.Buttons
                     else
                         SecretlyKillNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
 
-                    if (RoleClass.SecretlyKiller.MainCool>0f || RoleClass.SecretlyKiller.SecretlyCool>0f && RoleClass.SecretlyKiller.SecretlyKillerKillCoolChange) return false;
+                    if (RoleClass.SecretlyKiller.MainCool>0f/* || RoleClass.SecretlyKiller.SecretlyCool>0f */&& RoleClass.SecretlyKiller.SecretlyKillerKillCoolChange) return false;
                     if (RoleClass.SecretlyKiller.SecretlyKillLimit < 1 || RoleClass.SecretlyKiller.SecretlyCool>0f) return false;
                     //メイン
                     RoleClass.SecretlyKiller.target = setTarget();
+                    if (RoleClass.SecretlyKiller.target == null) return false;
                     return !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
@@ -1748,7 +1753,7 @@ namespace SuperNewRoles.Buttons
                 ()=>
                 {
                     var ma = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                    if (ma != null && !ma.IsActive) return false;
+                    if (ma != null && !ma.IsActive) return !PlayerControl.LocalPlayer.CanMove;
                     return true;
                 }
             );
