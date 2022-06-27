@@ -3067,6 +3067,10 @@
  "SpecimenVitalSetting" : {
         "0" : "Move Vital to specimen (polus)" ,
         "11" : "\u6a19\u672c\u5ba4\u306b\u30d0\u30a4\u30bf\u30eb\u3092\u79fb\u52d5\u3059\u308b(\u30dd\u30fc\u30e9\u30b9)"
+        } ,
+ "CustomDownloadSuperNewNamePlates" : {
+        "0" : "Download custom hat" ,
+        "11" : "\u30ab\u30b9\u30bf\u30e0\u30cf\u30c3\u30c8\u3092\u30c0\u30a6\u30f3\u30ed\u30fc\u30c9\u3059\u308b"
         } 
 
 }

@@ -20,6 +20,7 @@ namespace SuperNewRoles.Patch
             new SelectionBehaviour("CustomProcessDown", () => ConfigRoles.CustomProcessDown.Value = !ConfigRoles.CustomProcessDown.Value, ConfigRoles.CustomProcessDown.Value),
             new SelectionBehaviour("CustomIsVersionErrorView", () => ConfigRoles.IsVersionErrorView.Value = !ConfigRoles.IsVersionErrorView.Value, ConfigRoles.IsVersionErrorView.Value),
             new SelectionBehaviour("CustomHideTaskArrows", () => TasksArrowsOption.hideTaskArrows = ConfigRoles.HideTaskArrows.Value = !ConfigRoles.HideTaskArrows.Value, ConfigRoles.HideTaskArrows.Value),
+            new SelectionBehaviour("CustomDownloadSuperNewNamePlates", () => ConfigRoles.DownloadSuperNewNamePlates.Value = !ConfigRoles.DownloadSuperNewNamePlates.Value, ConfigRoles.DownloadSuperNewNamePlates.Value),
         };
 
         private static GameObject popUp;
