@@ -1,4 +1,6 @@
-﻿namespace SuperNewRoles.Roles
+using SuperNewRoles.CustomRPC;
+
+namespace SuperNewRoles.Roles
 {
     public class Minimalist
     {
@@ -12,39 +14,44 @@
                 }
             }
         }
-        public static void SetMinimalistButton()
-        {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Minimalist))
-            {
-                if (!RoleClass.Minimalist.UseVent)
-                {
-                    FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
-                }
-                if (!RoleClass.Minimalist.UseSabo)
-                {
-                    FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(false);
-                }
-                if (!RoleClass.Minimalist.UseReport)
-                {
-                    FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
-                }
-            }
-                        if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
-            {
-                if (!RoleClass.Fox.UseReport)
-                {
-                    if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
-                    {
-                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
-                    }
-                }
-            }
-        }
         public class FixedUpdate
         {
-            public static void Postfix()
+            public static void Postfix(RoleId role)
             {
-                SetMinimalistButton();
+                if (role == RoleId.Minimalist)
+                {
+                    if (!RoleClass.Minimalist.UseVent)
+                    {
+                        if (FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.active)
+                        {
+                            FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
+                        }
+                    }
+                    if (!RoleClass.Minimalist.UseSabo)
+                    {
+                        if (FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.active)
+                        {
+                            FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(false);
+                        }
+                    }
+                    if (!RoleClass.Minimalist.UseReport)
+                    {
+                        if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
+                        {
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
+                        }
+                    }
+                }
+                else if (role == RoleId.Fox)
+                {
+                    if (!RoleClass.Fox.UseReport)
+                    {
+                        if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
+                        {
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
+                        }
+                    }
+                }
             }
         }
     }

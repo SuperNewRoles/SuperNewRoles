@@ -629,7 +629,6 @@ namespace SuperNewRoles.CustomOption
             if (option.isHidden) return true;
             if (option.isSHROn) { return false; }
             else { return ModeHandler.isMode(ModeId.SuperHostRoles, false); }
-            return false;
         }
         public static void Postfix(GameOptionsMenu __instance)
         {
