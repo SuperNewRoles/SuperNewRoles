@@ -296,10 +296,12 @@ namespace SuperNewRoles.Patches
         public static bool isKill = false;
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
+            SuperNewRolesPlugin.Logger.LogInfo("a(Murder)"+__instance.Data.PlayerName+" => "+target.Data.PlayerName);
             if (__instance.IsBot() || target.IsBot()) return false;
 
             if (__instance.isDead()) return false;
             if (target.isDead()) return false;
+            SuperNewRolesPlugin.Logger.LogInfo("b(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
             if (__instance.PlayerId == target.PlayerId) { __instance.RpcMurderPlayer(target); return false; }
             if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 return false;
@@ -307,6 +309,7 @@ namespace SuperNewRoles.Patches
             {
                 return true;
             }
+            SuperNewRolesPlugin.Logger.LogInfo("c(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
             switch (ModeHandler.GetMode())
             {
                 case ModeId.Zombie:
@@ -358,7 +361,9 @@ namespace SuperNewRoles.Patches
                     }
                     return false;
                 case ModeId.SuperHostRoles:
+                    SuperNewRolesPlugin.Logger.LogInfo("d(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
                     if (RoleClass.Assassin.TriggerPlayer != null) return false;
+                    SuperNewRolesPlugin.Logger.LogInfo("e(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
                     switch (__instance.getRole())
                     {
                         case RoleId.RemoteSheriff:
@@ -506,6 +511,7 @@ namespace SuperNewRoles.Patches
                     if (target.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId) return false;
                     break;
             }
+            SuperNewRolesPlugin.Logger.LogInfo("f(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
                 SyncSetting.CustomSyncSettings(__instance);
@@ -578,7 +584,9 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
+            SuperNewRolesPlugin.Logger.LogInfo("g(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
             __instance.RpcMurderPlayerCheck(target);
+            SuperNewRolesPlugin.Logger.LogInfo("h(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
             return false;
         }
         public static void RpcCheckExile(this PlayerControl __instance)
@@ -639,7 +647,9 @@ namespace SuperNewRoles.Patches
                 }, 2f);
                 return;
             }
+            SuperNewRolesPlugin.Logger.LogInfo("i(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
             __instance.RpcMurderPlayer(target);
+            SuperNewRolesPlugin.Logger.LogInfo("j(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
@@ -878,6 +888,10 @@ namespace SuperNewRoles.Patches
                         }
                     }
                 }
+            }
+            if (result.isDead())
+            {
+                return null;
             }
             return result;
         }

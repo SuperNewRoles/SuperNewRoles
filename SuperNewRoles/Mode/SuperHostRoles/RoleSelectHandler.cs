@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -13,16 +13,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     public static class RoleSelectHandler
     {
-        public static CustomRpcSender RoleSelect()
+        public static void RoleSelect()
         {
             SuperNewRolesPlugin.Logger.LogInfo("[SHR] ROLESELECT");
-            if (!AmongUsClient.Instance.AmHost) return null;
+            if (!AmongUsClient.Instance.AmHost) return;
             SuperNewRolesPlugin.Logger.LogInfo("[SHR] つうか");
-            var crs = CustomRpcSender.Create();
             CrewOrImpostorSet();
             OneOrNotListSet();
             AllRoleSetClass.AllRoleSet();
-            crs = SetCustomRoles(crs);
+            SetCustomRoles();
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
             main.SendAllRoleChat();
@@ -33,7 +32,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                 {
                     PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
-                    PlayerControl.LocalPlayer.RpcSendChat("[SHR] ＊注意(自動送信)＊\nこのMODは、バグ等がたくさん発生します。\nいろいろな重大なバグがあるため、あくまで自己責任でお願いします。");
+                    PlayerControl.LocalPlayer.RpcSendChat("＊注意(自動送信)＊\nこのMODは、バグ等がたくさん発生します。\nいろいろな重大なバグがあるため、あくまで自己責任でお願いします。");
                     foreach (var pc in CachedPlayer.AllPlayers)
                     {
                         pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
@@ -41,7 +40,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }, 3f, "SetImpostor");
-            return crs;
         }
         public static void SpawnBots()
         {
@@ -97,7 +95,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
         }
-        public static CustomRpcSender SetCustomRoles(CustomRpcSender crs)
+        public static void SetCustomRoles()
         {
             List<PlayerControl> DesyncImpostors = new();
             DesyncImpostors.AddRange(RoleClass.Jackal.JackalPlayer);
@@ -197,7 +195,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 p.RpcSetRole(RoleTypes.Shapeshifter);
             }
-            return crs;
+            return;
         }
         public static void CrewOrImpostorSet()
         {
