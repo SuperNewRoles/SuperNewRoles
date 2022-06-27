@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -419,7 +419,13 @@ namespace SuperNewRoles.Patches
                             }
                             else
                             {
-                                __instance.RpcMurderPlayer(__instance);
+                                if (AmongUsClient.Instance.AmHost)
+                                {
+                                    foreach (PlayerControl p in RoleClass.MadMaker.MadMakerPlayer)
+                                    {
+                                        p.RpcMurderPlayer(p);
+                                    }
+                                }
                             }
                             return false;
                         case RoleId.Demon:

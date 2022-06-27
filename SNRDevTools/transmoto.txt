@@ -765,3 +765,4 @@ MafiaTitle1
 MafiaDescription
 RecordsAdminDestroySetting
 SpecimenVitalSetting
+CustomDownloadSuperNewNamePlates
