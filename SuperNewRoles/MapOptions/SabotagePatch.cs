@@ -15,7 +15,7 @@ namespace SuperNewRoles
                 {
                     return;
                 }
-                if (ShipStatus.Instance.Type == ShipStatus.MapType.Pb)
+                if (MapUtilities.CachedShipStatus.Type == ShipStatus.MapType.Pb)
                 {
                     if (__instance.Countdown >= MapOptions.MapOption.PolusReactorTimeLimit.getFloat())
                     {
@@ -23,7 +23,7 @@ namespace SuperNewRoles
                     }
                     return;
                 }
-                if (ShipStatus.Instance.Type == ShipStatus.MapType.Hq)
+                if (MapUtilities.CachedShipStatus.Type == ShipStatus.MapType.Hq)
                 {
                     if (__instance.Countdown >= MapOptions.MapOption.MiraReactorTimeLimit.getFloat())
                     {
@@ -48,7 +48,7 @@ namespace SuperNewRoles
                     return;
                 }
 
-                if (AirshipStatus.Instance != null)
+                if (MapUtilities.CachedShipStatus != null)
                 {
                     if (__instance.Countdown >= MapOptions.MapOption.AirshipReactorTimeLimit.getFloat())
                     {

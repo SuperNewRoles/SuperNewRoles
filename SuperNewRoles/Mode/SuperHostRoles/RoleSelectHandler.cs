@@ -13,16 +13,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     public static class RoleSelectHandler
     {
-        public static CustomRpcSender RoleSelect()
+        public static void RoleSelect()
         {
             SuperNewRolesPlugin.Logger.LogInfo("[SHR] ROLESELECT");
-            if (!AmongUsClient.Instance.AmHost) return null;
+            if (!AmongUsClient.Instance.AmHost) return;
             SuperNewRolesPlugin.Logger.LogInfo("[SHR] つうか");
-            var crs = CustomRpcSender.Create();
             CrewOrImpostorSet();
             OneOrNotListSet();
             AllRoleSetClass.AllRoleSet();
-            crs = SetCustomRoles(crs);
+            SetCustomRoles();
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
             main.SendAllRoleChat();
@@ -41,7 +40,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }, 3f, "SetImpostor");
-            return crs;
         }
         public static void SpawnBots()
         {
@@ -114,7 +112,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
         }
-        public static CustomRpcSender SetCustomRoles(CustomRpcSender crs)
+        public static void SetCustomRoles()
         {
             List<PlayerControl> DesyncImpostors = new();
             DesyncImpostors.AddRange(RoleClass.Jackal.JackalPlayer);
@@ -276,7 +274,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 p.RpcSetRole(RoleTypes.Shapeshifter);
             }
-            return crs;
+            return;
         }
         public static void CrewOrImpostorSet()
         {

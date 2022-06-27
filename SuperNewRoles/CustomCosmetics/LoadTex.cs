@@ -12,7 +12,6 @@ namespace SuperNewRoles.CustomCosmetics
         internal delegate bool LoadImageDelegate(IntPtr tex, IntPtr data, bool markNonReadable);
         internal delegate Il2CppStructArray<byte> EncodeImageDelegate(IntPtr tex);
         internal static LoadImageDelegate LoadImage;
-        internal static EncodeImageDelegate EncodeImage;
         public static Sprite loadSprite(string path)
         {
             //画像サイズは150*150

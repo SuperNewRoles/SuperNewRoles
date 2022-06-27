@@ -23,7 +23,7 @@ namespace SuperNewRoles.MapOptions
             vent.Left = null;
             vent.Right = null;
             vent.Center = null;
-            Vent tmp = ShipStatus.Instance.AllVents[0];
+            Vent tmp = MapUtilities.CachedShipStatus.AllVents[0];
             vent.EnterVentAnim = tmp.EnterVentAnim;
             vent.ExitVentAnim = tmp.ExitVentAnim;
             vent.Offset = new Vector3(0f, 0.25f, 0f);
