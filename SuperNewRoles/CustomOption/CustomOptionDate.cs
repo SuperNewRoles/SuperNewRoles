@@ -1228,7 +1228,7 @@ namespace SuperNewRoles.CustomOption
             PositionSwapperOption = new CustomRoleOption(609, false, CustomOptionType.Impostor, "PositionSwapperName", RoleClass.PositionSwapper.color, 1);
             PositionSwapperPlayerCount = CustomOption.Create(610, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PositionSwapperOption);
             PositionSwapperSwapCount = CustomOption.Create(611, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCountName", 1f, 0f, 99f, 1f, PositionSwapperOption);
-            PositionSwapperCoolTime = CustomOption.Create(613, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCoolTimeName", 2.5f, 2.5f, 90f, 2.5f, PositionSwapperOption);
+            PositionSwapperCoolTime = CustomOption.Create(616, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCoolTimeName", 2.5f, 2.5f, 90f, 2.5f, PositionSwapperOption);
 
             TunaOption = new CustomRoleOption(552, true, CustomOptionType.Neutral, "TunaName", RoleClass.Tuna.color, 1);
             TunaPlayerCount = CustomOption.Create(553, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TunaOption);
@@ -1252,7 +1252,7 @@ namespace SuperNewRoles.CustomOption
 
             SpyOption = new CustomRoleOption(614, true, CustomOptionType.Crewmate, "SpyName",RoleClass.Spy.color, 1);
             SpyPlayerCount = CustomOption.Create(615, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
-            SpyCanUseVent = CustomOption.Create(616, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
+            SpyCanUseVent = CustomOption.Create(617, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

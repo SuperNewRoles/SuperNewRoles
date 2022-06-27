@@ -197,7 +197,6 @@ namespace SuperNewRoles.MapOptions
             AirShipAdditionalVents = CustomOption.CustomOption.Create(605, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, MapRemodelingOption);
             PolusAdditionalVents = CustomOption.CustomOption.Create(606, false, CustomOptionType.Generic, "PolusAdditionalVents", false, MapRemodelingOption);
             MiraAdditionalVents = CustomOption.CustomOption.Create(607, false, CustomOptionType.Generic, "MiraAdditionalVents", false, MapRemodelingOption);
-
             SpecimenVital = CustomOption.CustomOption.Create(613, false, CustomOptionType.Generic, "SpecimenVitalSetting", false, MapRemodelingOption);
 
 
