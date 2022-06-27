@@ -383,8 +383,8 @@ namespace SuperNewRoles
         {
             if (player == null) return;
             if (seer == null) seer = player;
-            var clientId = seer.clientId;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, Hazel.SendOption.None, clientId);
+            var clientId = seer.PlayerControl.getClientId();
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.None, clientId);
             writer.Write((ushort)role);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
