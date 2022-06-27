@@ -95,8 +95,7 @@ namespace SuperNewRoles.Helpers
         {
             public static bool Prefix(PlayerControl __instance, PlayerControl target)
             {
-                if (ModeHandler.isMode(ModeId.Default))
-                {
+                if (!AmongUsClient.Instance.AmHost) { 
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.None, -1);
                     writer.Write(__instance.PlayerId);
                     writer.Write(target.PlayerId);
