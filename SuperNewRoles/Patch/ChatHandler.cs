@@ -48,13 +48,14 @@ namespace SuperNewRoles.Patch
         static string SNRCommander = "<size=200%>" + SNR + "</size>";
         public static string WelcomeToSuperNewRoles = "<size=150%>Welcome To " + SNR + "</size>";
 
-        public static void Postfix(PlayerControl sourcePlayer, string chatText)
+        public static bool Prefix(PlayerControl sourcePlayer, string chatText)
         {
-            if (!AmongUsClient.Instance.AmHost) return;
-
             if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
             {
-                Assassin.AddChat(sourcePlayer, chatText);
+                if (AmongUsClient.Instance.AmHost)
+                {
+                    Assassin.AddChat(sourcePlayer, chatText);
+                }
             }
 
             var Commands = chatText.Split(" ");
@@ -62,6 +63,7 @@ namespace SuperNewRoles.Patch
                 Commands[0].Equals("/v", StringComparison.OrdinalIgnoreCase))
             {
                 SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu");
+                return false;
             }
             else if (
                 Commands[0].Equals("/Commands", StringComparison.OrdinalIgnoreCase) ||
@@ -80,6 +82,7 @@ namespace SuperNewRoles.Patch
                     ModTranslation.getString("CommandsMessage8") + "\n" +
                     ModTranslation.getString("CommandsMessage9");
                 SendCommand(sourcePlayer, text);
+                return false;
             }
             else if (
                 Commands[0].Equals("/Discord", StringComparison.OrdinalIgnoreCase) ||
@@ -87,6 +90,7 @@ namespace SuperNewRoles.Patch
                 )
             {
                 SendCommand(sourcePlayer, ModTranslation.getString("SNROfficialDiscordMessage") + "\n" + MainMenuPatch.snrdiscordserver);
+                return false;
             }
             else if (
                 Commands[0].Equals("/Twitter", StringComparison.OrdinalIgnoreCase) ||
@@ -94,6 +98,7 @@ namespace SuperNewRoles.Patch
                 )
             {
                 SendCommand(sourcePlayer, ModTranslation.getString("SNROfficialTwitterMessage") + "\n\n" + ModTranslation.getString("TwitterOfficialLink") + "\n" + ModTranslation.getString("TwitterDevLink"));
+                return false;
             }
             else if (
                 Commands[0].Equals("/GetInRoles", StringComparison.OrdinalIgnoreCase) ||
@@ -110,7 +115,6 @@ namespace SuperNewRoles.Patch
                     {
                         GetInRoleCommand(sourcePlayer);
                     }
-                    return;
                 }
                 else
                 {
@@ -121,6 +125,7 @@ namespace SuperNewRoles.Patch
                     }
                     GetInRoleCommand(target);
                 }
+                return false;
             }
             else if (
                 Commands[0].Equals("/AllRoles", StringComparison.OrdinalIgnoreCase) ||
@@ -137,7 +142,6 @@ namespace SuperNewRoles.Patch
                     {
                         RoleCommand(sourcePlayer);
                     }
-                    return;
                 }
                 else
                 {
@@ -148,10 +152,14 @@ namespace SuperNewRoles.Patch
                     }
                     if (!float.TryParse(Commands[1], out float sendtime))
                     {
-                        return;
+                        return false;
                     }
                     RoleCommand(SendTime: sendtime, target: target);
                 }
+                return false;
+            } else
+            {
+                return true;
             }
         }
         static string GetChildText(List<CustomOption.CustomOption> options, string indent)
@@ -231,6 +239,7 @@ namespace SuperNewRoles.Patch
         }
         static void RoleCommand(PlayerControl target = null, float SendTime = 1.5f)
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             List<CustomRoleOption> EnableOptions = new();
             foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
             {
@@ -250,6 +259,7 @@ namespace SuperNewRoles.Patch
         }
         static void GetInRoleCommand(PlayerControl target = null)
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             List<CustomRoleOption> EnableOptions = new();
             foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
             {
@@ -310,6 +320,7 @@ namespace SuperNewRoles.Patch
         }
         public static void SendCommand(PlayerControl target, string command, string SendName = "NONE")
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             if (SendName == "NONE") SendName = SNRCommander;
             command = $"\n{command}\n";
             if (target != null && target.Data.Disconnected) return;
