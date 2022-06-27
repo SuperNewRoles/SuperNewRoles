@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -608,7 +608,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption EvilHackerOption;
         public static CustomOption EvilHackerPlayerCount;
         public static CustomOption EvilHackerMadmateSetting;
-        
+
         public static CustomRoleOption SpyOption;
         public static CustomOption SpyPlayerCount;
         public static CustomOption SpyCanUseVent;
@@ -1225,10 +1225,10 @@ namespace SuperNewRoles.CustomOption
             HauntedWolfOption = new CustomRoleOption(530, true, CustomOptionType.Crewmate, "HauntedWolfName", RoleClass.HauntedWolf.color, 1);
             HauntedWolfPlayerCount = CustomOption.Create(531, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HauntedWolfOption);
 
-            PositionSwapperOption = new CustomRoleOption(608, false, CustomOptionType.Impostor, "PositionSwapperName", RoleClass.PositionSwapper.color, 1);
-            PositionSwapperPlayerCount = CustomOption.Create(609, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PositionSwapperOption);
-            PositionSwapperSwapCount = CustomOption.Create(610, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCountName", 1f, 0f, 99f, 1f, PositionSwapperOption);
-            PositionSwapperCoolTime = CustomOption.Create(611, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCoolTimeName", 2.5f, 2.5f, 90f, 2.5f, PositionSwapperOption);
+            PositionSwapperOption = new CustomRoleOption(609, false, CustomOptionType.Impostor, "PositionSwapperName", RoleClass.PositionSwapper.color, 1);
+            PositionSwapperPlayerCount = CustomOption.Create(610, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], PositionSwapperOption);
+            PositionSwapperSwapCount = CustomOption.Create(611, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCountName", 1f, 0f, 99f, 1f, PositionSwapperOption);
+            PositionSwapperCoolTime = CustomOption.Create(613, true, CustomOptionType.Impostor, "SettingPositionSwapperSwapCoolTimeName", 2.5f, 2.5f, 90f, 2.5f, PositionSwapperOption);
 
             TunaOption = new CustomRoleOption(552, true, CustomOptionType.Neutral, "TunaName", RoleClass.Tuna.color, 1);
             TunaPlayerCount = CustomOption.Create(553, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TunaOption);
@@ -1249,10 +1249,10 @@ namespace SuperNewRoles.CustomOption
             BlackCatCheckImpostorTask = CustomOption.Create(562, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, BlackCatIsCheckImpostor);
             BlackCatIsUseVent = CustomOption.Create(563, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, BlackCatOption);
             BlackCatIsImpostorLight = CustomOption.Create(564, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, BlackCatOption);
-            
-            SpyOption = new CustomRoleOption(10001, true, CustomOptionType.Crewmate, "SpyName",RoleClass.Spy.color, 1);
-            SpyPlayerCount = CustomOption.Create(100012, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
-            SpyCanUseVent = CustomOption.Create(100013, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
+
+            SpyOption = new CustomRoleOption(565, true, CustomOptionType.Crewmate, "SpyName",RoleClass.Spy.color, 1);
+            SpyPlayerCount = CustomOption.Create(566, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
+            SpyCanUseVent = CustomOption.Create(567, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
