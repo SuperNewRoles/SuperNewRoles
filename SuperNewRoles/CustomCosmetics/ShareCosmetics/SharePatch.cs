@@ -21,7 +21,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
                 return;
                 if (PlayerControl.LocalPlayer != null && ConfigRoles.IsShareCosmetics.Value && ConfigRoles.ShareCosmeticsNamePlatesURL.Value != "")
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, Hazel.SendOption.None, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(ConfigRoles.ShareCosmeticsNamePlatesURL.Value);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -41,7 +41,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
                 Proce++;
                 if (Proce >= 10)
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, Hazel.SendOption.None, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(ConfigRoles.ShareCosmeticsNamePlatesURL.Value);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);

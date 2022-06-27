@@ -150,7 +150,7 @@ namespace SuperNewRoles.Patch
                     {
                         return;
                     }
-                    MessageWriter messageWriter = MessageWriter.Get(SendOption.None);
+                    MessageWriter messageWriter = MessageWriter.Get(SendOption.Reliable);
                     messageWriter.StartMessage(4);
                     messageWriter.Write(_this.GameId);
                     messageWriter.WritePacked(clientId);

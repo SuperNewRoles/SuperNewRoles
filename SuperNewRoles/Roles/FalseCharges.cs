@@ -32,7 +32,7 @@ namespace SuperNewRoles.Roles
                             }
                             else
                             {
-                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.None, -1);
+                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.CustomEndGame, SendOption.Reliable, -1);
                                 writer.Write((byte)CustomGameOverReason.FalseChargesWin);
                                 writer.Write(false);
                                 AmongUsClient.Instance.FinishRpcImmediately(writer);

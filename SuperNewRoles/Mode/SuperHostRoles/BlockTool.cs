@@ -124,7 +124,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 {
                                     OldDesyncCommsPlayers.Add(p.PlayerId);
                                 }
-                                MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.None, cid);
+                                MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cid);
                                 SabotageWriter.Write((byte)SystemTypes.Comms);
                                 MessageExtensions.WriteNetObject(SabotageWriter, p);
                                 SabotageWriter.Write((byte)128);
@@ -135,7 +135,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 if (!IsCom && OldDesyncCommsPlayers.Contains(p.PlayerId))
                                 {
                                     OldDesyncCommsPlayers.Remove(p.PlayerId);
-                                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.None, cid);
+                                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cid);
                                     SabotageFixWriter.Write((byte)SystemTypes.Comms);
                                     MessageExtensions.WriteNetObject(SabotageFixWriter, p);
                                     SabotageFixWriter.Write((byte)16);
@@ -143,7 +143,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
                                     if (PlayerControl.GameOptions.MapId == 4)
                                     {
-                                        SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.None, cid);
+                                        SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cid);
                                         SabotageFixWriter.Write((byte)SystemTypes.Comms);
                                         MessageExtensions.WriteNetObject(SabotageFixWriter, p);
                                         SabotageFixWriter.Write((byte)17);
