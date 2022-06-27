@@ -1250,9 +1250,9 @@ namespace SuperNewRoles.CustomOption
             BlackCatIsUseVent = CustomOption.Create(563, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, BlackCatOption);
             BlackCatIsImpostorLight = CustomOption.Create(564, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, BlackCatOption);
             
-            SpyOption = new CustomRoleOption(10001, true, CustomOptionType.Crewmate, "SpyName",RoleClass.Spy.color, 1);
-            SpyPlayerCount = CustomOption.Create(100012, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
-            SpyCanUseVent = CustomOption.Create(100013, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
+            SpyOption = new CustomRoleOption(612, true, CustomOptionType.Crewmate, "SpyName",RoleClass.Spy.color, 1);
+            SpyPlayerCount = CustomOption.Create(613, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
+            SpyCanUseVent = CustomOption.Create(614, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
