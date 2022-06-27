@@ -162,9 +162,9 @@ namespace SuperNewRoles.CustomCosmetics
 
             HatExtension extend = new()
             {
-               author = ch.author ?? "Unknown",
-               package = ch.package ?? "YJ*白桜コレクション",
-               condition = ch.condition ?? "none",
+                author = ch.author ?? "Unknown",
+                package = ch.package ?? "YJ*白桜コレクション",
+                condition = ch.condition ?? "none",
             };
 
             if (ch.flipresource != null)
@@ -335,6 +335,7 @@ namespace SuperNewRoles.CustomCosmetics
                     title.enableAutoSizing = false;
                     title.autoSizeTextContainer = true;
                     title.text = ModTranslation.getString(packageName);
+
                     switch (packageName)
                     {
                         case "shiuneCollection":
@@ -510,18 +511,39 @@ namespace SuperNewRoles.CustomCosmetics
             foreach (string repo in repos)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("[CustomHats] ハットスタート:" + repo);
-                try
+                //if (!ConfigRoles.DownloadSuperNewNamePlates.Value)
+                if (!ConfigRoles.DownloadSuperNewNamePlates.Value && repo == "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master")
                 {
-                    HttpStatusCode status = await FetchHats(repo);
-                    if (status != HttpStatusCode.OK)
-                        System.Console.WriteLine($"Custom hats could not be loaded from repo: {repo}\n");
-                    else
-                        SuperNewRolesPlugin.Logger.LogInfo("ハット終了:" + repo);
+                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:"/*"Skipped download.:"*/ + repo);
                 }
-                catch (System.Exception e)
+                if (!ConfigRoles.DownloadOtherSkins.Value &&
+                    (repo == "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master" ||
+                    repo == "https://raw.githubusercontent.com/Ujet222/TOPHats/main" ||
+                    repo == "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master" ||
+                    repo == "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"))
                 {
-                    System.Console.WriteLine($"Unable to fetch hats from repo: {repo}\n" + e.Message);
+                    SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:" + repo);
                 }
+                else
+                {
+                    try
+                    {
+                        HttpStatusCode status = await FetchHats(repo);
+                        if (status != HttpStatusCode.OK)
+                            System.Console.WriteLine($"Custom hats could not be loaded from repo: {repo}\n");
+                        else
+                            SuperNewRolesPlugin.Logger.LogInfo("ハット終了:" + repo);
+                    }
+                    catch (System.Exception e)
+                    {
+                        System.Console.WriteLine($"Unable to fetch hats from repo: {repo}\n" + e.Message);
+                    }
+                }
+                //}
+                //else
+                //{
+                //    SuperNewRolesPlugin.Logger.LogInfo("ダウンロードをスキップしました:" + repo);
+                //}
             }
             running = false;
         }
@@ -595,7 +617,7 @@ namespace SuperNewRoles.CustomCosmetics
                         hatdatas.Add(info);
                     }
                 }
-              
+
                 List<string> markedfordownload = new();
 
                 string filePath = Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomHatsChache\";
