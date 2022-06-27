@@ -21,10 +21,10 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
             HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
             //シークレットリーリセット
-            if (SuperNewRoles.CustomOption.CustomOptions.SecretlyKillerKillCoolTimeChange.getBool()){
+            /*if (SuperNewRoles.CustomOption.CustomOptions.SecretlyKillerKillCoolTimeChange.getBool()){
                 HudManagerStartPatch.SecretlyKillerSecretlyKillButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
                 HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
-            }
+            }*/
             //RoleClass.SecretlyKiller.ButtonTimer = DateTime.Now;
         }
         public static void SecretlyResetCoolDown()
@@ -32,11 +32,11 @@ namespace SuperNewRoles.Roles
             //シークレットリーリセット
             HudManagerStartPatch.SecretlyKillerSecretlyKillButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
             HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
-            //ノーマルリセット
+            /*//ノーマルリセット
             if (SuperNewRoles.CustomOption.CustomOptions.SecretlyKillerKillCoolTimeChange.getBool()){
                 HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
                 HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
-            }
+            }*/
             //RoleClass.SecretlyKiller.ButtonTimer = DateTime.Now;
         }
         public static void AllResetCoolDown()

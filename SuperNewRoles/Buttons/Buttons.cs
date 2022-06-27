@@ -122,7 +122,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
-                8
+                8,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("FalseChargesButtonTitle"),
@@ -152,7 +153,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("trueloverloveButtonName"),
@@ -187,7 +189,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("MagazinerGetButtonName"),
@@ -214,7 +217,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("MagazinerAddButtonName"),
@@ -240,7 +244,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("ScientistButtonName"),
@@ -311,7 +316,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("HawkButtonName"),
@@ -351,7 +357,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("CountChangerButtonName"),
@@ -384,7 +391,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("DoctorVitalName"),
@@ -421,7 +429,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("JackalCreateSidekickButtonName"),
@@ -458,7 +467,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("JackalCreateSidekickButtonName"),
@@ -501,7 +511,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
-                8
+                8,
+                ()=> {return false;}
             )
             {
                 buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
@@ -527,7 +538,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("SelfBomberButtonName"),
@@ -555,7 +567,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("DoorrButtonText"),
@@ -582,7 +595,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("TeleporterTeleportButton"),
@@ -610,7 +624,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("MovingButtonSetName"),
@@ -638,7 +653,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("MovingButtonTpName"),
@@ -712,7 +728,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.KillButton,
                 KeyCode.Q,
-                8
+                8,
+                ()=> {return false;}
             );
             sheriffNumShotsText = GameObject.Instantiate(SheriffKillButton.actionButton.cooldownTimerText, SheriffKillButton.actionButton.cooldownTimerText.transform.parent);
             sheriffNumShotsText.text = "";
@@ -741,7 +758,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("ClergymanLightOutButtonName"),
@@ -770,7 +788,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("SpeedBoosterBoostButtonName"),
@@ -800,7 +819,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("EvilSpeedBoosterBoostButtonName"),
@@ -830,7 +850,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("LighterButtonName"),
@@ -862,7 +883,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("SidekickName"),
@@ -899,7 +921,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("SidekickName"),
@@ -932,7 +955,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("SidekickName"),
@@ -966,7 +990,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("DemonButtonName"),
@@ -999,7 +1024,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.Q,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("ArsonistDouseButtonName"),
@@ -1055,7 +1081,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("ArsonistIgniteButtonName"),
@@ -1082,7 +1109,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("SpeederButtonName"),
@@ -1116,7 +1144,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("SidekickName"),
@@ -1185,7 +1214,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("VultureButtonName"),
@@ -1219,7 +1249,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("ShielderButtonName"),
@@ -1274,7 +1305,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("CleanerButtonName"),
@@ -1322,7 +1354,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("CleanerButtonName"),
@@ -1348,7 +1381,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("FreezerButtonName"),
@@ -1375,7 +1409,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("SamuraiButtonName"),
@@ -1408,7 +1443,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("VentMakerButtonName"),
@@ -1476,7 +1512,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             );
             GhostMechanicNumRepairText = GameObject.Instantiate(GhostMechanicRepairButton.actionButton.cooldownTimerText, GhostMechanicRepairButton.actionButton.cooldownTimerText.transform.parent);
             GhostMechanicNumRepairText.text = "";
@@ -1508,7 +1545,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("ADMINButton"),
@@ -1541,7 +1579,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.Q,
-                8
+                8,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("SidekickName"),
@@ -1581,7 +1620,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             );
             {
                 PositionSwapperNumText = GameObject.Instantiate(PositionSwapperButton.actionButton.cooldownTimerText, PositionSwapperButton.actionButton.cooldownTimerText.transform.parent);
@@ -1607,11 +1647,11 @@ namespace SuperNewRoles.Buttons
                     RoleClass.SecretlyKiller.SecretlyCool = HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer;
                     /*SuperNewRolesPlugin.Logger.LogInfo("メイン:"+RoleClass.SecretlyKiller.MainCool);
                     SuperNewRolesPlugin.Logger.LogInfo("サブ  :"+RoleClass.SecretlyKiller.SecretlyCool);*/
-                    if (RoleClass.SecretlyKiller.MainCool>0f || RoleClass.SecretlyKiller.SecretlyCool>0f) return false;
+                    if (RoleClass.SecretlyKiller.MainCool>0f || RoleClass.SecretlyKiller.SecretlyCool>0f && RoleClass.SecretlyKiller.SecretlyKillerKillCoolChange) return false;
+                    if (RoleClass.SecretlyKiller.MainCool>0f) return false;
 
                     RoleClass.SecretlyKiller.target = setTarget();
-                    if (!RoleClass.SecretlyKiller.target.isImpostor()) return RoleClass.SecretlyKiller.target && PlayerControl.LocalPlayer.CanMove;
-                    return false;
+                    return !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -1622,7 +1662,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.KillButton,
                 KeyCode.F,
-                49
+                49,
+                ()=> {return false;}
             )
             {
                 buttonText = ModTranslation.getString("FinalStatusKill"),
@@ -1646,11 +1687,11 @@ namespace SuperNewRoles.Buttons
                     else
                         SecretlyKillNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
 
-                    if (RoleClass.SecretlyKiller.MainCool>0f || RoleClass.SecretlyKiller.SecretlyCool>0f || RoleClass.SecretlyKiller.SecretlyKillLimit < 1) return false;
+                    if (RoleClass.SecretlyKiller.MainCool>0f || RoleClass.SecretlyKiller.SecretlyCool>0f && RoleClass.SecretlyKiller.SecretlyKillerKillCoolChange) return false;
+                    if (RoleClass.SecretlyKiller.SecretlyKillLimit < 1 || RoleClass.SecretlyKiller.SecretlyCool>0f) return false;
                     //メイン
-                    //RoleClass.SecretlyKiller.target = setTarget();
-                    if (!RoleClass.SecretlyKiller.target.isImpostor()) return RoleClass.SecretlyKiller.target && PlayerControl.LocalPlayer.CanMove;
-                    return false;
+                    RoleClass.SecretlyKiller.target = setTarget();
+                    return !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
@@ -1661,7 +1702,13 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.KillButton,
                 KeyCode.F,
-                49
+                49,
+                ()=>
+                {
+                    var ma = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                    if (ma != null && !ma.IsActive) return false;
+                    return true;
+                }
             );
             {
                 SecretlyKillNumText = GameObject.Instantiate(SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText, SecretlyKillerSecretlyKillButton.actionButton.cooldownTimerText.transform.parent);
