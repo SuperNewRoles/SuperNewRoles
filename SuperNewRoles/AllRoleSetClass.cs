@@ -110,6 +110,8 @@ namespace SuperNewRoles
                     {
                         var newimpostor = ModHelpers.GetRandom(SelectPlayers);
                         AllRoleSetClass.impostors.Add(newimpostor);
+                        newimpostor.Data.Role.Role = RoleTypes.Impostor;
+                        newimpostor.Data.Role.TeamType = RoleTeamTypes.Impostor;
                         SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                     }
                 }

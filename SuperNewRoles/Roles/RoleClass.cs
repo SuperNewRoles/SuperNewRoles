@@ -138,6 +138,7 @@ namespace SuperNewRoles.Roles
             Tuna.ClearAndReload();
             Mafia.ClearAndReload();
             BlackCat.ClearAndReload();
+            Spy.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2252,6 +2253,17 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.BlackCatCheckImpostorTask.getString().Replace("%", "")) / 100f));
+            }
+        }
+        public static class Spy
+        {
+            public static List<PlayerControl> SpyPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool CanUseVent;
+            public static void ClearAndReload()
+            {
+                SpyPlayer = new List<PlayerControl>();
+                CanUseVent = CustomOptions.SpyCanUseVent.getBool();
             }
         }
         //新ロールクラス
