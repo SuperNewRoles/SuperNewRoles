@@ -644,14 +644,14 @@ namespace SuperNewRoles
         }
         public static void CrewMateRandomSelect()
         {
-            if (CrewMatePlayerNum == 0 || (Crewonepar.Count == 0 && Crewnotonepar.Count == 0))
+            if (CrewMatePlayerNum <= 0 || (Crewonepar.Count <= 0 && Crewnotonepar.Count <= 0))
             {
                 return;
             }
             bool IsNotEndRandomSelect = true;
             while (IsNotEndRandomSelect)
             {
-                if (Crewonepar.Count != 0)
+                if (Crewonepar.Count > 0)
                 {
                     int SelectRoleDateIndex = ModHelpers.GetRandomIndex(Crewonepar);
                     RoleId SelectRoleDate = Crewonepar[SelectRoleDateIndex];
@@ -835,7 +835,8 @@ namespace SuperNewRoles
                 RoleId.PositionSwapper => CustomOptions.PositionSwapperPlayerCount.getFloat(),
                 RoleId.Tuna => CustomOptions.TunaPlayerCount.getFloat(),
                 RoleId.Mafia => CustomOptions.MafiaPlayerCount.getFloat(),
-                RoleId.BlackCat => CustomOption.CustomOptions.BlackCatPlayerCount.getFloat(),
+                RoleId.BlackCat => CustomOptions.BlackCatPlayerCount.getFloat(),
+                RoleId.Spy => CustomOptions.SpyPlayerCount.getFloat(),
                 _ => 1,
             };
         }

@@ -98,7 +98,10 @@ namespace SuperNewRoles.Buttons
                         }
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FalseCharges; },
+                (bool isAlive, RoleId role) => {
+                    SuperNewRolesPlugin.Logger.LogInfo("ISALIVE:" + isAlive);
+                    SuperNewRolesPlugin.Logger.LogInfo("ROLEID:"+role);
+                    return isAlive && role == RoleId.FalseCharges; },
                 () =>
                 {
                     return setTarget() && PlayerControl.LocalPlayer.CanMove;
