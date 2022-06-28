@@ -34,7 +34,7 @@ namespace SuperNewRoles.Helpers
         public static MessageWriter StartRPC(uint NetId, byte RPCId, PlayerControl SendTarget = null)
         {
             var target = SendTarget != null ? SendTarget.getClientId() : -1;
-            return AmongUsClient.Instance.StartRpcImmediately(NetId, RPCId, Hazel.SendOption.None, target);
+            return AmongUsClient.Instance.StartRpcImmediately(NetId, RPCId, Hazel.SendOption.Reliable, target);
         }
         public static void EndRPC(this MessageWriter Writer)
         {
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Helpers
             if (SourcePlayer == null || target == null || !AmongUsClient.Instance.AmHost) return;
             if (SeePlayer == null) SeePlayer = SourcePlayer;
             var clientId = SeePlayer.getClientId();
-            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(SourcePlayer.NetId, (byte)RpcCalls.ProtectPlayer, SendOption.None, clientId);
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(SourcePlayer.NetId, (byte)RpcCalls.ProtectPlayer, SendOption.Reliable, clientId);
             val.WriteNetObject(target);
             val.Write(colorId);
             AmongUsClient.Instance.FinishRpcImmediately(val);
@@ -161,6 +161,7 @@ namespace SuperNewRoles.Helpers
         {
             public static bool Prefix(CustomNetworkTransform __instance, [HarmonyArgument(0)] Vector2 position)
             {
+                if (__instance.NetId == CachedPlayer.LocalPlayer.NetId) return true;
                 ushort minSid = (ushort)(__instance.lastSequenceId + 5);
                 if (AmongUsClient.Instance.AmClient)
                 {
