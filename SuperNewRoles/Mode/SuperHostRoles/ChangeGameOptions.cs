@@ -10,9 +10,5 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     class ChangeGameOptions
     {
-        public static GameOptionsData DefaultGameOption;
-        public static class SelectRoleOptionChange
-        {
-        }
     }
 }

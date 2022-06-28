@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -139,6 +139,7 @@ namespace SuperNewRoles.Roles
             Mafia.ClearAndReload();
             BlackCat.ClearAndReload();
             SecretlyKiller.ClearAndReload();
+            Spy.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -149,6 +150,7 @@ namespace SuperNewRoles.Roles
         public static class SoothSayer
         {
             public static List<PlayerControl> SoothSayerPlayer;
+            public static List<byte> DisplayedPlayer;
             public static bool DisplayMode;
             public static int Count;
             public static Color32 color = new(190, 86, 235, byte.MaxValue);
@@ -162,6 +164,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 SoothSayerPlayer = new();
+                DisplayedPlayer = new();
                 DisplayMode = CustomOptions.SoothSayerDisplayMode.getBool();
                 Count = (int)CustomOptions.SoothSayerMaxCount.getFloat();
             }
@@ -2253,6 +2256,7 @@ namespace SuperNewRoles.Roles
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.BlackCatCheckImpostorTask.getString().Replace("%", "")) / 100f));
             }
         }
+
         public static class SecretlyKiller
         {
             public static List<PlayerControl> SecretlyKillerPlayer;
@@ -2283,6 +2287,18 @@ namespace SuperNewRoles.Roles
                 SecretlyKillerIsBlackOutKillCharge = CustomOptions.SecretlyKillerIsBlackOutKillCharge.getBool();
                 SecretlyKillLimit = (int)CustomOptions.SecretlyKillerSecretKillLimit.getFloat();
                 SecretlyKillCoolTime = CustomOptions.SecretlyKillerSecretKillCoolTime.getFloat();
+            }
+        }
+
+        public static class Spy
+        {
+            public static List<PlayerControl> SpyPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool CanUseVent;
+            public static void ClearAndReload()
+            {
+                SpyPlayer = new List<PlayerControl>();
+                CanUseVent = CustomOptions.SpyCanUseVent.getBool();
             }
         }
         //新ロールクラス
