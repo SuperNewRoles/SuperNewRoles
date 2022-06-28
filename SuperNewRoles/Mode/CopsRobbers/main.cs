@@ -178,7 +178,6 @@ namespace SuperNewRoles.Mode.CopsRobbers
             }
             return new Vector2(0, 0);
         }
-        static bool IsTeleport = false;
         static float ImpostorMoveTime;
         static int LastCount;
         static float LastUpdate;

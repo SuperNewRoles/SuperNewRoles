@@ -53,10 +53,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
         }*/
         //public static Dictionary<byte, float> UpdateTime;
-        private static int a = 0;
         public static void SetRoleName(PlayerControl player, bool IsUnchecked = false)
         {
-
             var caller = new System.Diagnostics.StackFrame(1, false);
             var callerMethod = caller.GetMethod();
             string callerMethodName = callerMethod.Name;

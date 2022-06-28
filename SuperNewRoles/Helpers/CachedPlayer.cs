@@ -22,7 +22,6 @@ namespace SuperNewRoles
         public GameData.PlayerInfo Data;
         public byte PlayerId;
         public uint NetId;
-        public int clientId;
 
         public static implicit operator bool(CachedPlayer player)
         {
@@ -109,7 +108,6 @@ namespace SuperNewRoles
                 cachedPlayer.Data = cachedPlayer.PlayerControl.Data;
                 cachedPlayer.PlayerId = cachedPlayer.PlayerControl.PlayerId;
                 cachedPlayer.NetId = cachedPlayer.PlayerControl.NetId;
-                new LateTask(() => cachedPlayer.clientId = cachedPlayer.PlayerControl.getClientId(), 0.1f);
             }
         }
 
@@ -122,7 +120,6 @@ namespace SuperNewRoles
                 cachedPlayer.Data = cachedPlayer.PlayerControl.Data;
                 cachedPlayer.PlayerId = cachedPlayer.PlayerControl.PlayerId;
                 cachedPlayer.NetId = cachedPlayer.PlayerControl.NetId;
-                new LateTask(()=>cachedPlayer.clientId = cachedPlayer.PlayerControl.getClientId(),0.1f);
             }
         }
 
@@ -132,7 +129,6 @@ namespace SuperNewRoles
         {
             CachedPlayer.PlayerPtrs[__instance.Pointer].PlayerId = __instance.PlayerId;
             CachedPlayer.PlayerPtrs[__instance.Pointer].NetId = __instance.NetId;
-            new LateTask(() => CachedPlayer.PlayerPtrs[__instance.Pointer].clientId = __instance.getClientId(),0.1f);
         }
     }
 }

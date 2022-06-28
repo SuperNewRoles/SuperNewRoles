@@ -1,5 +1,6 @@
 using System.Linq;
 using HarmonyLib;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Patch
 {
@@ -12,7 +13,7 @@ namespace SuperNewRoles.Patch
             {
                 //チャット欄でImpostor陣営から見たSpyがばれないように
                 PlayerControl sourcePlayer = CachedPlayer.AllPlayers.ToArray().ToList().FirstOrDefault(x => x.Data.PlayerName.Equals(playerName));
-                if (sourcePlayer != null && CachedPlayer.LocalPlayer.PlayerControl.isImpostor() && sourcePlayer.isRole(CustomRPC.RoleId.Egoist))
+                if (sourcePlayer != null && CachedPlayer.LocalPlayer.PlayerControl.isImpostor() && sourcePlayer.isRole(RoleId.Egoist, RoleId.Spy))
                 {
                     __instance.NameText.color = Palette.ImpostorRed;
                 }
