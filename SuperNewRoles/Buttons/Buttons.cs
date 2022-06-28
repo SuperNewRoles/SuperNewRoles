@@ -1679,9 +1679,7 @@ namespace SuperNewRoles.Buttons
                     //クールでブロック
                     RoleClass.SecretlyKiller.MainCool = HudManagerStartPatch.SecretlyKillerMainButton.Timer;
                     RoleClass.SecretlyKiller.SecretlyCool = HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer;
-                    /*SuperNewRolesPlugin.Logger.LogInfo("メイン:"+RoleClass.SecretlyKiller.MainCool);
-                    SuperNewRolesPlugin.Logger.LogInfo("サブ  :"+RoleClass.SecretlyKiller.SecretlyCool);*/
-                    if (RoleClass.SecretlyKiller.MainCool>0f || RoleClass.SecretlyKiller.SecretlyCool>0f && RoleClass.SecretlyKiller.SecretlyKillerKillCoolChange) return false;
+                    if (RoleClass.SecretlyKiller.SecretlyCool>0f && RoleClass.SecretlyKiller.SecretlyKillerKillCoolChange) return false;
                     if (RoleClass.SecretlyKiller.MainCool>0f) return false;
 
                     RoleClass.SecretlyKiller.target = setTarget();
