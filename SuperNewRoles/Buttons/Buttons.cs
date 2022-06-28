@@ -1686,10 +1686,7 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.SecretlyKiller.target == null) return false;
                     return !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
                 },
-                () =>
-                {
-                    if (PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller)) { SecretlyKiller.EndMeeting(); }
-                },
+                () => {SecretlyKiller.EndMeeting();},
                 __instance.KillButton.graphic.sprite,
                 new Vector3(0, 1, 0),
                 __instance,
@@ -1730,10 +1727,7 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.SecretlyKiller.target == null) return false;
                     return !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
                 },
-                () =>
-                {
-                    if (PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller)) { SecretlyKiller.EndMeeting(); }
-                },
+                () => { SecretlyKiller.EndMeeting(); },
                 __instance.KillButton.graphic.sprite,
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,

@@ -2757,7 +2757,7 @@
         "11" : "ykundesuBeplnEx"
         } ,
  "restrictOutOfTimeVerYkundesuBeplnEx" : {
-        "0" : "ykundesuBeplnExDelicious" ,
+        "0" : "YKUNDESUBEPINEXX! IS! VERY! VERY DELICIOUSSSSS!!!!!\uff0cISN'T IT?" ,
         "11" : "\uff96\uff6f\uff77\uff9d\uff78\uff9e\uff8d\uff9e\uff6f\uff8b\uff9f\uff9d\uff72\uff70\uff74\uff6f\uff78\uff7d\u304a\u3044\u3057\u3044"
         } ,
  "HauntedWolfName" : {
@@ -3025,7 +3025,7 @@
         "11" : "\u30b9\u30ef\u30c3\u30d1\u30fc\u306b\u3088\u3063\u3066\u30b9\u30ef\u30c3\u30d7\u3055\u308c\u307e\u3057\u305f!"
         } ,
  "PositionSwapperSwapText2" : {
-        "0" : "Position swapper swapped you!\\n by the way\uff0cykundesu isn't delicious?" ,
+        "0" : "Position swapper swapped you!\\n by the way\uff0cykundesu isn delicious\uff0cisn't it?" ,
         "11" : "\u30b9\u30ef\u30c3\u30d1\u30fc\u306b\u3088\u3063\u3066\u30b9\u30ef\u30c3\u30d7\u3055\u308c\u307e\u3057\u305f!\\n\u3068\u3053\u308d\u3067\uff96\uff6f\uff77\uff9d\uff78\uff9e\uff8d\uff9e\uff6f\uff8b\uff9f\uff9d\uff72\uff70\uff74\uff6f\uff78\uff7d\uff75\uff72\uff7c\uff72\uff83\uff9e\uff7d\uff96\uff88"
         } ,
  "TunaName" : {
@@ -3064,18 +3064,6 @@
         "0" : "Cannot Use Archive Admin" ,
         "11" : "\u30a2\u30fc\u30ab\u30a4\u30d6\u306e\u30a2\u30c9\u30df\u30f3\u3092\u4f7f\u7528\u4e0d\u53ef\u306b\u3059\u308b"
         } ,
- "SpyName" : {
-        "0" : "Spy" ,
-        "11" : "\u30b9\u30d1\u30a4"
-        } ,
- "SpyTitle1" : {
-        "0" : "Deceive the Imposter and lead the Cluemate camp to victory!" ,
-        "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u6b3a\u304d\u3001\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u9663\u55b6\u3092\u52dd\u5229\u306b\u5c0e\u3053\u3046"
-        } ,
- "SpyDescription" : {
-        "0" : "Spies are crewmates but they look like friends to the Imposter.\\n Spies are crewmates and have no special abilities." ,
-        "11" : "\u30b9\u30d1\u30a4\u306f\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3067\u3059\u304c\u3001\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u304b\u3089\u306f\u4ef2\u9593\u306b\u898b\u3048\u307e\u3059\u3002\\n\u30b9\u30d1\u30a4\u306f\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u3067\u3042\u308a\u3001\u7279\u5225\u306a\u80fd\u529b\u306f\u3042\u308a\u307e\u305b\u3093\u3002"
-        } ,
  "SpecimenVitalSetting" : {
         "0" : "Move Vital to specimen (polus)" ,
         "11" : "\u6a19\u672c\u5ba4\u306b\u30d0\u30a4\u30bf\u30eb\u3092\u79fb\u52d5\u3059\u308b(\u30dd\u30fc\u30e9\u30b9)"
@@ -3083,6 +3071,30 @@
  "CustomDownloadSuperNewNamePlates" : {
         "0" : "Download custom hat" ,
         "11" : "\u30ab\u30b9\u30bf\u30e0\u30cf\u30c3\u30c8\u3092\u30c0\u30a6\u30f3\u30ed\u30fc\u30c9\u3059\u308b"
+        } ,
+ "SecretlyKillerName" : {
+        "0" : "Secretly Killer" ,
+        "11" : "\u30b7\u30fc\u30af\u30ec\u30c3\u30c8\u30ea\u30fc\u30ad\u30e9\u30fc"
+        } ,
+ "SecretlyKillerTitle1" : {
+        "0" : "Please be quiet during the power outage." ,
+        "11" : "\u505c\u96fb\u4e2d\u306f\u304a\u9759\u304b\u306b"
+        } ,
+ "SettingCoolCharge" : {
+        "0" : "Same in kill buttons" ,
+        "11" : "\u30ad\u30eb\u6642\u306e\u30af\u30fc\u30eb\u540c\u671f"
+        } ,
+ "SettingBlackoutCharge" : {
+        "0" : "Kill cool charge during power outage" ,
+        "11" : "\u505c\u96fb\u4e2d\u306b\u30af\u30fc\u30eb\u3092\u305f\u3081\u308b"
+        } ,
+ "SettingLimitName" : {
+        "0" : "Ability limit" ,
+        "11" : "\u5236\u9650\u56de\u6570"
+        } ,
+ "SecretlyKillButtonName" : {
+        "0" : "Secretly\\nKill" ,
+        "11" : "\u30b7\u30fc\u30af\u30ec\u30c3\u30c8\u30ea\u30fc\\n\u30ad\u30eb"
         } 
 
 }

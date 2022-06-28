@@ -54,7 +54,8 @@ namespace SuperNewRoles.Roles
                 }
                 else if (role == RoleId.SecretlyKiller)
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                    //FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
                 }
             }
         }
