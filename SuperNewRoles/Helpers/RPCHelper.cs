@@ -34,7 +34,7 @@ namespace SuperNewRoles.Helpers
         public static MessageWriter StartRPC(uint NetId, byte RPCId, PlayerControl SendTarget = null)
         {
             var target = SendTarget != null ? SendTarget.getClientId() : -1;
-            return AmongUsClient.Instance.StartRpcImmediately(NetId, RPCId, Hazel.SendOption.Reliable, target);
+            return AmongUsClient.Instance.StartRpcImmediately(NetId, RPCId, Hazel.SendOption.None, target);
         }
         public static void EndRPC(this MessageWriter Writer)
         {
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Helpers
             if (SourcePlayer == null || target == null || !AmongUsClient.Instance.AmHost) return;
             if (SeePlayer == null) SeePlayer = SourcePlayer;
             var clientId = SeePlayer.getClientId();
-            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(SourcePlayer.NetId, (byte)RpcCalls.ProtectPlayer, SendOption.Reliable, clientId);
+            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(SourcePlayer.NetId, (byte)RpcCalls.ProtectPlayer, SendOption.None, clientId);
             val.WriteNetObject(target);
             val.Write(colorId);
             AmongUsClient.Instance.FinishRpcImmediately(val);
@@ -101,15 +101,6 @@ namespace SuperNewRoles.Helpers
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.SendChat, SendOption.None, clientId);
             writer.Write(Chat);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-        }
-        public static void UncheckSetVisor(this PlayerControl p, string id)
-        {
-            foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
-            {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(p.NetId, (byte)RpcCalls.SetVisor, Hazel.SendOption.Reliable, p2.getClientId());
-                writer.Write(id);
-                writer.EndRPC();
-            }
         }
 
         public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, GameData.PlayerInfo exiled, bool tie, PlayerControl SeePlayer)

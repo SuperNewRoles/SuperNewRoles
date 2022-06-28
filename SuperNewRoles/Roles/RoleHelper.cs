@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.CustomOption;
@@ -216,71 +216,6 @@ namespace SuperNewRoles
                 }
             }
             return null;
-        }
-        public static string GetOptionsText(RoleId role, bool IsSHR = true)
-        {
-            string returntext = "なし";
-            switch (role)
-            {
-                case RoleId.Jester:
-                    returntext = CustomOptions.JesterIsVent.name + ":" + CustomOptions.JesterIsVent.getString() + "\n";
-                    if (!IsSHR)
-                    {
-                        returntext += CustomOptions.JesterIsSabotage.name + ":" + CustomOptions.JesterIsSabotage.getString() + "\n";
-                    }
-                    returntext += CustomOptions.JesterIsWinCleartask.name + ":" + CustomOptions.JesterIsWinCleartask.getString() + "\n";
-                    break;
-                case RoleId.NiceNekomata:
-                    returntext = CustomOptions.NiceNekomataIsChain.name + ":" + CustomOptions.NiceNekomataIsChain.getString() + "\n";
-                    break;
-                case RoleId.Bait:
-                    returntext = CustomOptions.BaitReportTime.name + ":" + CustomOptions.BaitReportTime.getString() + "\n";
-                    break;
-                case RoleId.MadMate:
-                    returntext = CustomOptions.MadMateIsUseVent.name + ":" + CustomOptions.MadMateIsUseVent.getString() + "\n";
-                    returntext += CustomOptions.MadMateIsCheckImpostor.name + ":" + CustomOptions.MadMateIsCheckImpostor.getString() + "\n";
-                    break;
-                case RoleId.Egoist:
-                    returntext = CustomOptions.EgoistUseVent.name + ":" + CustomOptions.EgoistUseVent.getString() + "\n";
-                    returntext += CustomOptions.EgoistUseSabo.name + ":" + CustomOptions.EgoistUseSabo.getString() + "\n";
-                    break;
-                case RoleId.MadMayor:
-                    returntext = CustomOptions.MadMayorIsUseVent.name + ":" + CustomOptions.MadMayorIsUseVent.getString() + "\n";
-                    returntext += CustomOptions.MadMayorIsCheckImpostor.name + ":" + CustomOptions.MadMayorIsCheckImpostor.getString() + "\n";
-                    break;
-                case RoleId.MadStuntMan:
-                    returntext = CustomOptions.MadStuntManIsUseVent.name + ":" + CustomOptions.MadStuntManIsUseVent.getString() + "\n";
-                    returntext += CustomOptions.MadStuntManIsCheckImpostor.name + ":" + CustomOptions.MadStuntManIsCheckImpostor.getString() + "\n";
-                    break;
-                case RoleId.MadJester:
-                    returntext = CustomOptions.MadJesterIsUseVent.name + ":" + CustomOptions.MadJesterIsUseVent.getString() + "\n";
-                    break;
-                case RoleId.MadSeer:
-                    returntext = CustomOptions.MadSeerIsUseVent.name + ":" + CustomOptions.MadSeerIsUseVent.getString() + "\n";
-                    returntext += CustomOptions.MadSeerIsCheckImpostor.name + ":" + CustomOptions.MadSeerIsCheckImpostor.getString() + "\n";
-                    break;
-                case RoleId.JackalFriends:
-                    returntext = CustomOptions.JackalFriendsIsUseVent.name + ":" + CustomOptions.JackalFriendsIsUseVent.getString() + "\n";
-                    returntext += CustomOptions.JackalFriendsIsCheckJackal.name + ":" + CustomOptions.JackalFriendsIsCheckJackal.getString() + "\n";
-                    break;
-                case RoleId.SeerFriends:
-                    returntext = CustomOptions.SeerFriendsIsUseVent.name + ":" + CustomOptions.SeerFriendsIsUseVent.getString() + "\n";
-                    returntext += CustomOptions.SeerFriendsIsCheckJackal.name + ":" + CustomOptions.SeerFriendsIsCheckJackal.getString() + "\n";
-                    break;
-                case RoleId.MayorFriends:
-                    returntext = CustomOptions.MayorFriendsIsUseVent.name + ":" + CustomOptions.MayorFriendsIsUseVent.getString() + "\n";
-                    returntext += CustomOptions.MayorFriendsIsCheckJackal.name + ":" + CustomOptions.MayorFriendsIsCheckJackal.getString() + "\n";
-                    break;
-                case RoleId.Fox:
-                    returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.FoxIsUseVent.getString() + "\n";
-                    break;
-                case RoleId.BlackCat:
-                    returntext = CustomOptions.BlackCatIsUseVent.name + ":" + CustomOptions.BlackCatIsUseVent.getString() + "\n";
-                    returntext += CustomOptions.BlackCatIsCheckImpostor.name + ":" + CustomOptions.BlackCatIsCheckImpostor.getString() + "\n";
-                    break;
-                    //ベント設定可視化
-            }
-            return returntext;
         }
         public static bool IsJackalTeam(this PlayerControl player)
         {
@@ -632,6 +567,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Spy):
+                    Roles.RoleClass.Spy.SpyPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("[SetRole]:No Method Found for Role Type {role}");
@@ -969,7 +907,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (CustomRPC.RoleId.Spy):
+                    Roles.RoleClass.Spy.SpyPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1084,6 +1025,10 @@ namespace SuperNewRoles
                     break;
                     //タスククリアか
             }
+            if (player.isImpostor())
+            {
+                IsTaskClear = true;
+            }
             if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
             {
                 IsTaskClear = true;
@@ -1155,6 +1100,8 @@ namespace SuperNewRoles
                 case RoleId.BlackCat:
                     if (CachedPlayer.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return false;
                     return RoleClass.BlackCat.IsUseVent;
+                case RoleId.Spy:
+                    return RoleClass.Spy.CanUseVent;
                     //ベントが使える
             }
             return false;
@@ -1884,6 +1831,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.BlackCat;
+                }
+                else if (Roles.RoleClass.Spy.SpyPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Spy;
                 }
                 //ロールチェック
             }

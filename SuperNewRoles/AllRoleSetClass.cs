@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -110,10 +110,11 @@ namespace SuperNewRoles
                     {
                         var newimpostor = ModHelpers.GetRandom(SelectPlayers);
                         AllRoleSetClass.impostors.Add(newimpostor);
+                        newimpostor.Data.Role.Role = RoleTypes.Impostor;
+                        newimpostor.Data.Role.TeamType = RoleTeamTypes.Impostor;
                         SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                     }
                 }
-                var crs = RoleSelectHandler.RoleSelect();
                 foreach (PlayerControl player in AllRoleSetClass.impostors)
                 {
                     player.RpcSetRole(RoleTypes.Impostor);
@@ -125,6 +126,7 @@ namespace SuperNewRoles
                         player.RpcSetRole(RoleTypes.Crewmate);
                     }
                 }
+                RoleSelectHandler.RoleSelect();
 
                 try
                 {
@@ -144,8 +146,6 @@ namespace SuperNewRoles
                     SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
                 }
                 FixedUpdate.SetRoleNames();
-                crs.SendMessage();
-                SuperNewRolesPlugin.Logger.LogInfo(false);
                 return false;
             }
             else if (ModeHandler.isMode(ModeId.BattleRoyal))
@@ -287,7 +287,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.Data.Role.IsImpostor && !p.isNeutral() && p.IsPlayer())
+                    if (!p.isImpostor() && !p.isNeutral() && p.IsPlayer())
                     {
                         SelectPlayers.Add(p);
                     }
