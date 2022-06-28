@@ -2288,6 +2288,7 @@ namespace SuperNewRoles.Roles
                 SecretlyKillLimit = (int)CustomOptions.SecretlyKillerSecretKillLimit.getFloat();
                 SecretlyKillCoolTime = CustomOptions.SecretlyKillerSecretKillCoolTime.getFloat();
             }
+        }
 
         public static class Spy
         {
@@ -2325,5 +2326,4 @@ namespace SuperNewRoles.Roles
             }
         }
     }
-}
 }

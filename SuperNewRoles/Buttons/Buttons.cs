@@ -1372,7 +1372,7 @@ namespace SuperNewRoles.Buttons
                             }
                         }
                     }
-                },                
+                },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.MadCleaner; },
                 () =>
                 {
@@ -1673,7 +1673,7 @@ namespace SuperNewRoles.Buttons
                     ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.SecretlyKiller.target);
                     SecretlyKiller.MainResetCoolDown();
                 },
-                () => { return (ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller) ); },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SecretlyKiller; },
                 () =>
                 {
                     //クールでブロック
@@ -1715,7 +1715,7 @@ namespace SuperNewRoles.Buttons
                     SecretlyKiller.SecretlyKill();
                     SecretlyKiller.SecretlyResetCoolDown();
                 },
-                () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.SecretlyKiller); },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SecretlyKiller; },
                 () =>
                 {
                     //テキストぉ
