@@ -836,6 +836,7 @@ namespace SuperNewRoles
                 RoleId.Tuna => CustomOptions.TunaPlayerCount.getFloat(),
                 RoleId.Mafia => CustomOptions.MafiaPlayerCount.getFloat(),
                 RoleId.BlackCat => CustomOption.CustomOptions.BlackCatPlayerCount.getFloat(),
+                //プレイヤーカウント
                 _ => 1,
             };
         }
