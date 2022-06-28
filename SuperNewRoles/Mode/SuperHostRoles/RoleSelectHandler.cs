@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -13,16 +13,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     public static class RoleSelectHandler
     {
-        public static CustomRpcSender RoleSelect()
+        public static void RoleSelect()
         {
             SuperNewRolesPlugin.Logger.LogInfo("[SHR] ROLESELECT");
-            if (!AmongUsClient.Instance.AmHost) return null;
+            if (!AmongUsClient.Instance.AmHost) return;
             SuperNewRolesPlugin.Logger.LogInfo("[SHR] つうか");
-            var crs = CustomRpcSender.Create();
             CrewOrImpostorSet();
             OneOrNotListSet();
             AllRoleSetClass.AllRoleSet();
-            crs = SetCustomRoles(crs);
+            SetCustomRoles();
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
             main.SendAllRoleChat();
@@ -33,7 +32,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
                 {
                     PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
-                    PlayerControl.LocalPlayer.RpcSendChat("[SHR] ＊注意(自動送信)＊\nこのMODは、バグ等がたくさん発生します。\nいろいろな重大なバグがあるため、あくまで自己責任でお願いします。");
+                    PlayerControl.LocalPlayer.RpcSendChat("＊注意(自動送信)＊\nこのMODは、バグ等がたくさん発生します。\nいろいろな重大なバグがあるため、あくまで自己責任でお願いします。");
                     foreach (var pc in CachedPlayer.AllPlayers)
                     {
                         pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
@@ -41,24 +40,27 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }, 3f, "SetImpostor");
-            return crs;
         }
         public static void SpawnBots()
         {
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
+                int impostor = PlayerControl.GameOptions.NumImpostors;
+                int crewmate = 0;
                 //ジャッカルがいるなら
                 if (CustomOptions.JackalOption.getSelection() != 0)
                 {
-                    for (int i = 0; i < (1 * PlayerControl.GameOptions.NumImpostors + 2); i++)
+                    for (int i = 0; i < (PlayerControl.GameOptions.NumImpostors + 2); i++)
                     {
                         PlayerControl bot = BotManager.Spawn("[SHR] 暗転対策BOT" + (i + 1));
                         if (i == 0)
                         {
+                            impostor++;
                             bot.RpcSetRole(RoleTypes.Impostor);
                         }
                         if (i > 0)
                         {
+                            crewmate++;
                             bot.RpcSetRole(RoleTypes.Crewmate);
                         }
                     }
@@ -81,11 +83,24 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
                     PlayerControl bot3 = BotManager.Spawn("暗転対策BOT3");
                     bot3.RpcSetRole(RoleTypes.Crewmate);
+                    impostor++;
+                    crewmate++;
+                    crewmate++;
                 }
                 else if (CustomOptions.AssassinAndMarineOption.getSelection() != 0)
                 {
                     PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                     bot1.RpcSetRole(RoleTypes.Crewmate);
+                    crewmate++;
+                }
+                if (CustomOptions.SpyOption.getSelection() != 0)
+                {
+                    for (int i = 0; i < CustomOptions.SpyPlayerCount.getFloat() - (crewmate-(impostor - PlayerControl.GameOptions.NumImpostors)) + 1; i++)
+                    {
+                        PlayerControl bot1 = BotManager.Spawn("暗転対策BOT");
+                        bot1.RpcSetRole(RoleTypes.Crewmate);
+                        crewmate++;
+                    }
                 }
                 if (CustomOptions.BakeryOption.getSelection() != 0)
                 {
@@ -97,7 +112,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
         }
-        public static CustomRpcSender SetCustomRoles(CustomRpcSender crs)
+        public static void SetCustomRoles()
         {
             List<PlayerControl> DesyncImpostors = new();
             DesyncImpostors.AddRange(RoleClass.Jackal.JackalPlayer);
@@ -176,9 +191,71 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 else
                 {
-                    p.RpcSetRoleDesync(RoleTypes.Crewmate);
+                    if (p.PlayerId != 0)
+                    {
+                        p.RpcSetRoleDesync(RoleTypes.Crewmate);
+                    }
+                    else
+                    {
+                        p.SetRole(RoleTypes.Crewmate);
+                    }
                     p.RpcSetRole(RoleTypes.Impostor);
                 }
+                //p.Data.IsDead = true;
+            }
+            foreach (PlayerControl p in RoleClass.Spy.SpyPlayer)
+            {
+                var crsSpy = CustomRpcSender.Create(Hazel.SendOption.Reliable);
+                if (!p.IsMod())
+                {
+                    if (RoleClass.Spy.CanUseVent)
+                    {
+                        p.RpcSetRoleDesync(crsSpy, RoleTypes.Engineer);
+                    } else
+                    {
+                        p.RpcSetRoleDesync(crsSpy, RoleTypes.Crewmate);
+                    }
+                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                    {
+                        if (p.PlayerId == p2.PlayerId) continue;
+                        if (p2.IsPlayer())
+                        {
+                            if (p2.IsMod())
+                            {
+                                if (p2.PlayerId != 0)
+                                {
+                                    p.RpcSetRoleDesync(crsSpy, RoleTypes.Crewmate, p2);
+                                } else
+                                {
+                                    p.SetRole(RoleTypes.Crewmate);
+                                }
+                            } else
+                            {
+                                if (p2.isImpostor() || p2.isRole(RoleId.Spy))
+                                {
+                                    p.RpcSetRoleDesync(crsSpy, RoleTypes.Impostor, p2);
+                                } else
+                                {
+                                    p.RpcSetRoleDesync(crsSpy, RoleTypes.Crewmate, p2);
+                                }
+                            }
+                        }
+                    }
+                    p.RpcSetRole(crsSpy, RoleTypes.Impostor);
+                }
+                else
+                {
+                    if (p.PlayerId != 0)
+                    {
+                        p.RpcSetRoleDesync(crsSpy, RoleTypes.Crewmate);
+                    }
+                    else
+                    {
+                        p.SetRole(RoleTypes.Crewmate);
+                    }
+                    p.RpcSetRole(crsSpy, RoleTypes.Impostor);
+                }
+                crsSpy.SendMessage();
                 //p.Data.IsDead = true;
             }
 
@@ -197,7 +274,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 p.RpcSetRole(RoleTypes.Shapeshifter);
             }
-            return crs;
+            return;
         }
         public static void CrewOrImpostorSet()
         {

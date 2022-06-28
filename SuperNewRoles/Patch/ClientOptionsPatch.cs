@@ -20,6 +20,7 @@ namespace SuperNewRoles.Patch
             new SelectionBehaviour("CustomProcessDown", () => ConfigRoles.CustomProcessDown.Value = !ConfigRoles.CustomProcessDown.Value, ConfigRoles.CustomProcessDown.Value),
             new SelectionBehaviour("CustomIsVersionErrorView", () => ConfigRoles.IsVersionErrorView.Value = !ConfigRoles.IsVersionErrorView.Value, ConfigRoles.IsVersionErrorView.Value),
             new SelectionBehaviour("CustomHideTaskArrows", () => TasksArrowsOption.hideTaskArrows = ConfigRoles.HideTaskArrows.Value = !ConfigRoles.HideTaskArrows.Value, ConfigRoles.HideTaskArrows.Value),
+            new SelectionBehaviour("CustomDownloadSuperNewNamePlates", () => ConfigRoles.DownloadSuperNewNamePlates.Value = !ConfigRoles.DownloadSuperNewNamePlates.Value, ConfigRoles.DownloadSuperNewNamePlates.Value),
         };
 
         private static GameObject popUp;
@@ -45,7 +46,6 @@ namespace SuperNewRoles.Patch
             titleText.gameObject.SetActive(false);
             Object.DontDestroyOnLoad(titleText);
         }
-        private static Vector3? origin;
         public static float xOffset = 1.75f;
         [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Update))]
         class OptionsUpdate
@@ -105,6 +105,10 @@ namespace SuperNewRoles.Patch
 
             transform.localPosition = _origin.Value + Vector3.left * 1.3f;
             moreOptions.transform.localPosition = _origin.Value + Vector3.right * 1.3f;
+            var pos = moreOptions.transform.localPosition;
+            moreOptions.transform.localScale *= 1.1f;
+            float count = 1.55f;
+            moreOptions.transform.localPosition = new Vector3(pos.x*1.5f, pos.y * count, pos.z);
             var trans = moreOptions.transform.localPosition;
             moreOptions.gameObject.SetActive(true);
             trans = moreOptions.transform.position;

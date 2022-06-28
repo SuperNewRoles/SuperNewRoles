@@ -102,15 +102,6 @@ namespace SuperNewRoles.Helpers
             writer.Write(Chat);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
-        public static void UncheckSetVisor(this PlayerControl p, string id)
-        {
-            foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
-            {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(p.NetId, (byte)RpcCalls.SetVisor, Hazel.SendOption.Reliable, p2.getClientId());
-                writer.Write(id);
-                writer.EndRPC();
-            }
-        }
 
         public static void RpcVotingCompletePrivate(MeetingHud __instance, VoterState[] states, GameData.PlayerInfo exiled, bool tie, PlayerControl SeePlayer)
         {
@@ -170,6 +161,7 @@ namespace SuperNewRoles.Helpers
         {
             public static bool Prefix(CustomNetworkTransform __instance, [HarmonyArgument(0)] Vector2 position)
             {
+                if (__instance.NetId == CachedPlayer.LocalPlayer.NetId) return true;
                 ushort minSid = (ushort)(__instance.lastSequenceId + 5);
                 if (AmongUsClient.Instance.AmClient)
                 {

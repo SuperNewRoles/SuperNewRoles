@@ -38,166 +38,79 @@ namespace SuperNewRoles.Patches
                     }
                     yourTeam = newTeam;
                 }
-                if (PlayerControl.LocalPlayer.isImpostor())
+                else
                 {
-                    var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    switch (PlayerControl.LocalPlayer.getRole())
                     {
-                        if (p.isImpostor())
-                        {
-                            newTeam.Add(p);
-                        }
-                        else if (p.isRole(CustomRPC.RoleId.Egoist))
-                        {
-                            newTeam.Add(p);
-                        }
+                        case RoleId.MadMate:
+                        case RoleId.MadMayor:
+                        case RoleId.MadJester:
+                        case RoleId.MadSeer:
+                        case RoleId.BlackCat:
+                            if (Madmate.CheckImpostor(PlayerControl.LocalPlayer)) break;
+                            ImpostorIntroTeam:
+                            Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
+                            ImpostorTeams.Add(PlayerControl.LocalPlayer);
+                            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                            {
+                                if ((player.isImpostor() || player.isRole(RoleId.Spy)) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                                {
+                                    ImpostorTeams.Add(player);
+                                }
+                            }
+                            yourTeam = ImpostorTeams;
+                            break;
+                        case RoleId.SeerFriends:
+                        case RoleId.MayorFriends:
+                        case RoleId.JackalFriends:
+                            if (JackalFriends.CheckJackal(PlayerControl.LocalPlayer)) break;
+                            JackalIntroTeam:
+                            Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
+                            JackalTeams.Add(PlayerControl.LocalPlayer);
+                            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                            {
+                                if (player.IsJackalTeamJackal() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                                {
+                                    JackalTeams.Add(player);
+                                }
+                            }
+                            yourTeam = JackalTeams;
+                            break;
+                        case RoleId.Fox:
+                            Il2CppSystem.Collections.Generic.List<PlayerControl> FoxTeams = new();
+                            int FoxNum = 0;
+                            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                            {
+                                if (player.isRole(CustomRPC.RoleId.Fox))
+                                {
+                                    FoxNum++;
+                                    FoxTeams.Add(player);
+                                }
+                            }
+                            yourTeam = FoxTeams;
+                            break;
+                        default:
+                            if (PlayerControl.LocalPlayer.isImpostor())
+                            {
+                                goto ImpostorIntroTeam;
+                            } else if (PlayerControl.LocalPlayer.IsJackalTeamJackal())
+                            {
+                                goto JackalIntroTeam;
+                            }
+                            break;
                     }
-                    yourTeam = newTeam;
-                }
-                if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && Madmate.CheckImpostor(PlayerControl.LocalPlayer))
-                {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
-                    int ImpostorNum = 0;
-                    ImpostorTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                    {
-                        if (player.Data.Role.IsImpostor)
-                        {
-                            ImpostorNum++;
-                            ImpostorTeams.Add(player);
-                        }
-                    }
-                    yourTeam = ImpostorTeams;
-                }
-                if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
-                {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
-                    int ImpostorNum = 0;
-                    ImpostorTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                    {
-                        if (player.Data.Role.IsImpostor)
-                        {
-                            ImpostorNum++;
-                            ImpostorTeams.Add(player);
-                        }
-                    }
-                    yourTeam = ImpostorTeams;
-                }
-                if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && MadJester.CheckImpostor(PlayerControl.LocalPlayer))
-                {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
-                    int ImpostorNum = 0;
-                    ImpostorTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                    {
-                        if (player.Data.Role.IsImpostor)
-                        {
-                            ImpostorNum++;
-                            ImpostorTeams.Add(player);
-                        }
-                    }
-                    yourTeam = ImpostorTeams;
-                }
-                if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && MadSeer.CheckImpostor(PlayerControl.LocalPlayer))
-                {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
-                    int ImpostorNum = 0;
-                    ImpostorTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                    {
-                        if (player.Data.Role.IsImpostor)
-                        {
-                            ImpostorNum++;
-                            ImpostorTeams.Add(player);
-                        }
-                    }
-                    yourTeam = ImpostorTeams;
-                }
-                                if (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer) && BlackCat.CheckImpostor(PlayerControl.LocalPlayer))
-                {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
-                    int ImpostorNum = 0;
-                    ImpostorTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                    {
-                        if (player.Data.Role.IsImpostor)
-                        {
-                            ImpostorNum++;
-                            ImpostorTeams.Add(player);
-                        }
-                    }
-                    yourTeam = ImpostorTeams;
-                }
-                if ((PlayerControl.LocalPlayer.isRole(RoleId.JackalFriends) ||
-                    PlayerControl.LocalPlayer.isRole(RoleId.SeerFriends) || PlayerControl.LocalPlayer.isRole(RoleId.MayorFriends)) && JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
-                {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
-                    int JackalNum = 0;
-                    JackalTeams.Add(PlayerControl.LocalPlayer);
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                    {
-                        if (player.isRole(CustomRPC.RoleId.JackalFriends) || player.isRole(CustomRPC.RoleId.MayorFriends))
-                        {
-                            JackalNum++;
-                            JackalTeams.Add(player);
-                        }
-                    }
-                    yourTeam = JackalTeams;
-                }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Jackal))
-                {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
-                    int JackalNum = 0;
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                    {
-                        if (player.isRole(CustomRPC.RoleId.Jackal))
-                        {
-                            JackalNum++;
-                            JackalTeams.Add(player);
-                        }
-                    }
-                    yourTeam = JackalTeams;
-                }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalSeer))
-                {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> JackalTeams = new();
-                    int JackalNum = 0;
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                    {
-                        if (player.isRole(CustomRPC.RoleId.JackalSeer))
-                        {
-                            JackalNum++;
-                            JackalTeams.Add(player);
-                        }
-                    }
-                    yourTeam = JackalTeams;
-                }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Fox))
-                {
-                    Il2CppSystem.Collections.Generic.List<PlayerControl> FoxTeams = new();
-                    int FoxNum = 0;
-                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                    {
-                        if (player.isRole(CustomRPC.RoleId.Fox))
-                        {
-                            FoxNum++;
-                            FoxTeams.Add(player);
-                        }
-                    }
-                    yourTeam = FoxTeams;
                 }
             }
             else
             {
-                var a = ModeHandler.TeamHandler(__instance);
-                if (a != new Il2CppSystem.Collections.Generic.List<PlayerControl>())
+                var temp = ModeHandler.TeamHandler(__instance);
+                if (temp != new Il2CppSystem.Collections.Generic.List<PlayerControl>())
                 {
-                    yourTeam = a;
+                    yourTeam = temp;
                 }
                 else
                 {
-                    var temp = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+                    temp = new();
                     temp.Add(PlayerControl.LocalPlayer);
                     yourTeam = temp;
                 }
@@ -206,48 +119,34 @@ namespace SuperNewRoles.Patches
 
         public static void setupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
-            Roles.IntroHandler.Handler();
-            if (ModeHandler.isMode(ModeId.Default) || ModeHandler.isMode(ModeId.SuperHostRoles))
+            IntroHandler.Handler();
+            if (ModeHandler.isMode(ModeId.Default, ModeId.SuperHostRoles))
             {
                 if (PlayerControl.LocalPlayer.isNeutral())
                 {
+                    ChangeIntroName:
                     IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
                     __instance.BackgroundBar.material.color = Intro.color;
                     __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
                     __instance.TeamTitle.color = Intro.color;
                     __instance.ImpostorText.text = "";
-                }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadMate) && CustomOption.CustomOptions.MadMateIsCheckImpostor.getBool())
+                } else
                 {
-                    IntroDate Intro = IntroDate.MadMateIntro;
-                    __instance.BackgroundBar.material.color = Intro.color;
-                    __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
-                    __instance.TeamTitle.color = Intro.color;
-                    __instance.ImpostorText.text = "";
-                }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.JackalFriends) && CustomOption.CustomOptions.JackalFriendsIsCheckJackal.getBool())
-                {
-                    IntroDate Intro = IntroDate.JackalFriendsIntro;
-                    __instance.BackgroundBar.material.color = Intro.color;
-                    __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
-                    __instance.TeamTitle.color = Intro.color;
-                    __instance.ImpostorText.text = "";
-                }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.SeerFriends) && CustomOption.CustomOptions.SeerFriendsIsCheckJackal.getBool())
-                {
-                    IntroDate Intro = IntroDate.SeerFriendsIntro;
-                    __instance.BackgroundBar.material.color = Intro.color;
-                    __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
-                    __instance.TeamTitle.color = Intro.color;
-                    __instance.ImpostorText.text = "";
-                }
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MayorFriends) && CustomOption.CustomOptions.MayorFriendsIsCheckJackal.getBool())
-                {
-                    IntroDate Intro = IntroDate.MayorFriendsIntro;
-                    __instance.BackgroundBar.material.color = Intro.color;
-                    __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
-                    __instance.TeamTitle.color = Intro.color;
-                    __instance.ImpostorText.text = "";
+                    switch (PlayerControl.LocalPlayer.getRole())
+                    {
+                        case RoleId.MadMate:
+                        case RoleId.MadJester:
+                        case RoleId.MadStuntMan:
+                        case RoleId.MadMayor:
+                        case RoleId.SeerFriends:
+                        case RoleId.MayorFriends:
+                            IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
+                            __instance.BackgroundBar.material.color = Intro.color;
+                            __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
+                            __instance.TeamTitle.color = Intro.color;
+                            __instance.ImpostorText.text = "";
+                            break;
+                    }
                 }
             }
             else

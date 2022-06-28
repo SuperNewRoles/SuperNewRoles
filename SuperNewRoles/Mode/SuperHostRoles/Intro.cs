@@ -28,7 +28,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.isImpostor() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && p.IsPlayer())
+                        if ((p.isImpostor() || p.isRole(CustomRPC.RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && p.IsPlayer())
                         {
                             Teams.Add(p);
                         }
