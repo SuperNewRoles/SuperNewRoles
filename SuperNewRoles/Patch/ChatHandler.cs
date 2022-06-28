@@ -370,7 +370,7 @@ namespace SuperNewRoles.Patch
             {
                 yield return new WaitForSeconds(time);
             }
-            var crs = CustomRpcSender.Create(Hazel.SendOption.None);
+            var crs = CustomRpcSender.Create();
             crs.StartRpc(target.NetId, RpcCalls.SetName, target.getClientId())
                 .Write(SendName)
                 .EndRpc();

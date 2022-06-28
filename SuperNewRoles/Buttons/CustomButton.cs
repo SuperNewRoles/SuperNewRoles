@@ -83,11 +83,13 @@ namespace SuperNewRoles.Buttons
         {
             buttons.RemoveAll(item => item.actionButton == null);
 
+            bool isAlive = PlayerControl.LocalPlayer.isAlive();
+            RoleId role = PlayerControl.LocalPlayer.getRole();
             foreach (CustomButton btn in buttons)
             {
                 try
                 {
-                    btn.Update(PlayerControl.LocalPlayer.isAlive(), PlayerControl.LocalPlayer.getRole());
+                    btn.Update(isAlive, role);
                 }
                 catch (Exception e)
                 {
@@ -137,7 +139,7 @@ namespace SuperNewRoles.Buttons
             var localPlayer = CachedPlayer.LocalPlayer;
             var moveable = localPlayer.PlayerControl.moveable;
 
-            if (localPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton(isAlive, RoleId.DefaultRole))
+            if (localPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton(isAlive, role))
             {
                 setActive(false);
                 return;
