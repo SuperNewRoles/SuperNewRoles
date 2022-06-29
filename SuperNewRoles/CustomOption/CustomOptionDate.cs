@@ -39,6 +39,9 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomOption DisconnectNotPCOption;
 
+        public static CustomOption ZoomOption;
+        public static CustomOption ZoomMode;
+
         public static CustomOption DetectiveRate;
         public static CustomOption DetectivePlayerCount;
 
@@ -683,6 +686,9 @@ namespace SuperNewRoles.CustomOption
 
             DisconnectNotPCOption = CustomOption.Create(11, true, CustomOptionType.Generic, cs(Color.white, "PC以外はキックする"), true, null, isHeader: true);
 
+            ZoomOption = CustomOption.Create(618, true, CustomOptionType.Generic, cs(Color.white, "死後のズーム"), true, null, isHeader: true);
+            ZoomMode = CustomOption.Create(619, false, CustomOptionType.Generic, "ズームモード", new string[] { "千里眼ボタン", "マウスホイール" }, ZoomOption);
+
             MapOptions.MapOption.LoadOption();
 
             //SoothSayerRate = CustomOption.Create(2, cs(SoothSayer.color,"soothName"),rates, null, true);
@@ -1235,7 +1241,7 @@ namespace SuperNewRoles.CustomOption
             TunaStoppingTime = CustomOption.Create(554, true, CustomOptionType.Neutral, "TunaStoppingTimeSetting", 1f, 1f, 3f, 1f, TunaOption);
             TunaIsUseVent = CustomOption.Create(555, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TunaOption);
 
-            MafiaOption = new CustomRoleOption(602, true, CustomOptionType.Impostor, "MafiaName",RoleClass.Mafia.color, 1);
+            MafiaOption = new CustomRoleOption(602, true, CustomOptionType.Impostor, "MafiaName", RoleClass.Mafia.color, 1);
             MafiaPlayerCount = CustomOption.Create(603, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MafiaOption);
 
             BlackCatOption = new CustomRoleOption(556, true, CustomOptionType.Crewmate, "BlackCatName", RoleClass.ImpostorRed, 1);
@@ -1250,7 +1256,7 @@ namespace SuperNewRoles.CustomOption
             BlackCatIsUseVent = CustomOption.Create(563, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, BlackCatOption);
             BlackCatIsImpostorLight = CustomOption.Create(564, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, BlackCatOption);
 
-            SpyOption = new CustomRoleOption(614, true, CustomOptionType.Crewmate, "SpyName",RoleClass.Spy.color, 1);
+            SpyOption = new CustomRoleOption(614, true, CustomOptionType.Crewmate, "SpyName", RoleClass.Spy.color, 1);
             SpyPlayerCount = CustomOption.Create(615, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
             SpyCanUseVent = CustomOption.Create(617, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
             //表示設定
