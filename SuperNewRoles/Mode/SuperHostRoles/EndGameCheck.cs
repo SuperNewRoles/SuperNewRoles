@@ -186,14 +186,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             if (num2 <= 0 && statistics.TeamJackalAlive <= 0 && (!DestroyableSingleton<TutorialManager>.InstanceExists || num3 > 0))
             {
-                __instance.BeginCalled = false;
                 CustomEndGame(__instance, GameOverReason.HumansByVote, !SaveManager.BoughtNoAds);
             }
             else if (num1 <= num2 && statistics.TeamJackalAlive < 1)
             {
                 if (!DestroyableSingleton<TutorialManager>.InstanceExists)
                 {
-                    __instance.BeginCalled = false;
                     var endReason = TempData.LastDeathReason switch
                     {
                         DeathReason.Exile => GameOverReason.ImpostorByVote,
@@ -261,7 +259,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);

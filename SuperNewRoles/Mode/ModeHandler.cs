@@ -282,6 +282,17 @@ namespace SuperNewRoles.Mode
         {
             return ThisModeSetting.getString();
         }
+        public static bool isMode(params ModeId[] modes)
+        {
+            foreach (ModeId mode in modes)
+            {
+                if (isMode(mode))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public static bool isMode(ModeId mode, bool IsChache = true)
         {
             if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)))

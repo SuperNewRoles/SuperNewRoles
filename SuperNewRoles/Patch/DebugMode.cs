@@ -81,7 +81,7 @@ namespace SuperNewRoles.Patch
                 // Spawn dummys
                 if (Input.GetKeyDown(KeyCode.G))
                 {
-                    PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.nameText.text);
+                    PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.nameText().text);
 
                     new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
                     new LateTask(() => { foreach (var pc in CachedPlayer.AllPlayers) pc.PlayerControl.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");

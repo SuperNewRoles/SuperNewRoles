@@ -25,8 +25,8 @@ namespace SuperNewRoles.Roles
         {
             if (target == null || target.MyRend == null) return;
 
-            target.MyRend.material.SetFloat("_Outline", 1f);
-            target.MyRend.material.SetColor("_OutlineColor", color);
+            target.MyRend().material.SetFloat("_Outline", 1f);
+            target.MyRend().material.SetColor("_OutlineColor", color);
         }
         public class JackalFixedPatch
         {
@@ -100,7 +100,7 @@ namespace SuperNewRoles.Roles
             }
             var player = ModHelpers.GetRandom<PlayerControl>(aliveplayers);
             CustomRPC.RPCProcedure.TeleporterTP(player.PlayerId);
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
             Writer.Write(player.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
         }

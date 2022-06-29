@@ -7,7 +7,7 @@ using UnityEngine;
 
 //参考=>https://github.com/haoming37/TheOtherRoles-GM-Haoming/blob/haoming-main/TheOtherRoles/Objects/AdditionalVents.cs
 
-namespace SuperNewRoles.MapRemodeling
+namespace SuperNewRoles.MapOptions
 {
     public class AdditionalVents
     {
@@ -23,7 +23,7 @@ namespace SuperNewRoles.MapRemodeling
             vent.Left = null;
             vent.Right = null;
             vent.Center = null;
-            Vent tmp = ShipStatus.Instance.AllVents[0];
+            Vent tmp = MapUtilities.CachedShipStatus.AllVents[0];
             vent.EnterVentAnim = tmp.EnterVentAnim;
             vent.ExitVentAnim = tmp.ExitVentAnim;
             vent.Offset = new Vector3(0f, 0.25f, 0f);
@@ -99,15 +99,6 @@ namespace SuperNewRoles.MapRemodeling
             System.Console.WriteLine("additionalVentsClearAndReload");
             flag = false;
             AllVents = new List<AdditionalVents>();
-        }
-    }
-    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-    class IntroCutsceneOnDestroyPatch
-    {
-        public static void Prefix(IntroCutscene __instance)
-        {
-            // ベントを追加する
-            AdditionalVents.AddAdditionalVents();
         }
     }
 }

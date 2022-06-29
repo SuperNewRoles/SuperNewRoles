@@ -126,6 +126,7 @@ namespace SuperNewRoles.CustomRPC
         Tuna,
         Mafia,
         BlackCat,
+        Spy,
         //RoleId
     }
 
@@ -298,7 +299,7 @@ namespace SuperNewRoles.CustomRPC
         {
             /*
             SuperNewRolesPlugin.Logger.LogInfo("TORGMシェアあああ！");
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, Hazel.SendOption.Reliable, clientId);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, Hazel.SendOption.Reliable, clientId);
             writer.WritePacked(major);
             writer.WritePacked(minor);
             writer.WritePacked(build);
@@ -818,7 +819,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
             }
-            new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"), p.nameText.text), 3);
+            new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"), p.nameText().text), 3);
         }
         public static void SetWinCond(byte Cond)
         {
@@ -892,29 +893,25 @@ namespace SuperNewRoles.CustomRPC
             var SwapperPosition = SwapperPlayer.transform.position;
             //Text
             var rand = new System.Random();
-            if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)*/){
+            if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)*/)
+            {
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
-                //SwapPlayer.transform.position = SwapperPosition;
-                SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
-                /*if (rand.Next(1, 20) == 1){
-                new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
-                }
-                else{
-                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
-                }*/
-                return;
             }
-            else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId){
+            else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId)
+            {
                 CachedPlayer.LocalPlayer.transform.position = SwapperPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");
-                if (rand.Next(1, 20) == 1){
-                new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
+                if (rand.Next(1, 20) == 1)
+                {
+                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
                 }
-                else{
+                else
+                {
                     new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
                 }
             }
         }
+        /*
         public static void UseAdminTime(float time)
         {
             Patch.AdminPatch.RestrictAdminTime -= time;
@@ -926,7 +923,7 @@ namespace SuperNewRoles.CustomRPC
         public static void UseVitalTime(float time)
         {
             Patch.VitalsPatch.RestrictVitalsTime -= time;
-        }
+        }*/
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -939,209 +936,212 @@ namespace SuperNewRoles.CustomRPC
         {
             static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
             {
-                byte packetId = callId;
-                switch ((CustomRPC)packetId)
+                try
                 {
+                    byte packetId = callId;
+                    switch ((CustomRPC)packetId)
+                    {
 
-                    // Main Controls
-                    /*
-                        case CustomRPC.TORVersionShare:
-                         int majorTOR = reader.ReadPackedInt32();
-                         int minorTOR = reader.ReadPackedInt32();
-                         int patchTOR = reader.ReadPackedInt32();
-                         int versionOwnerIdTOR = reader.ReadPackedInt32();
-                         byte revisionTOR = 0xFF;
-                         byte[] guidTOR;
-                         revisionTOR = reader.ReadByte();
-                         guidTOR = reader.ReadBytes(16);
-                         CustomRPC.TORVersionShare(majorTOR, minorTOR, patchTOR, revisionTOR == 0xFF ? -1 : revisionTOR, guidTOR, versionOwnerIdTOR);
-                        break;*/
-                    case CustomRPC.ShareOptions:
-                        ShareOptions((int)reader.ReadPackedUInt32(), reader);
-                        break;
-                    case CustomRPC.ShareSNRVersion:
-                        byte major = reader.ReadByte();
-                        byte minor = reader.ReadByte();
-                        byte patch = reader.ReadByte();
-                        int versionOwnerId = reader.ReadPackedInt32();
-                        byte revision = 0xFF;
-                        Guid guid;
-                        if (reader.Length - reader.Position >= 17)
-                        { // enough bytes left to read
-                            revision = reader.ReadByte();
-                            // GUID
-                            byte[] gbytes = reader.ReadBytes(16);
-                            guid = new Guid(gbytes);
-                        }
-                        else
-                        {
-                            guid = new Guid(new byte[16]);
-                        }
-                        ShareSNRversion(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
-                        break;
-                    case CustomRPC.SetRole:
-                        SetRole(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SheriffKill:
-                        SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case CustomRPC.MeetingSheriffKill:
-                        MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case CustomRPC.CustomRPCKill:
-                        CustomRPCKill(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.RPCClergymanLightOut:
-                        RPCClergymanLightOut(reader.ReadBoolean());
-                        break;
-                    case CustomRPC.ReportDeadBody:
-                        ReportDeadBody(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.UncheckedMeeting:
-                        UncheckedMeeting(reader.ReadByte());
-                        break;
-                    case CustomRPC.CleanBody:
-                        CleanBody(reader.ReadByte());
-                        break;
-                    case CustomRPC.RPCMurderPlayer:
-                        byte source = reader.ReadByte();
-                        byte target = reader.ReadByte();
-                        byte showAnimation = reader.ReadByte();
-                        RPCMurderPlayer(source, target, showAnimation);
-                        break;
-                    case CustomRPC.ExiledRPC:
-                        ExiledRPC(reader.ReadByte());
-                        break;
-                    case CustomRPC.ShareWinner:
-                        ShareWinner(reader.ReadByte());
-                        break;
-                    case CustomRPC.TeleporterTP:
-                        TeleporterTP(reader.ReadByte());
-                        break;
-                    case CustomRPC.SetQuarreled:
-                        SetQuarreled(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SidekickPromotes:
-                        SidekickPromotes();
-                        break;
-                    case CustomRPC.CreateSidekick:
-                        CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case CustomRPC.SetSpeedBoost:
-                        SetSpeedBoost(reader.ReadBoolean(), reader.ReadByte());
-                        break;
-                    case CustomRPC.ShareCosmetics:
-                        ShareCosmetics(reader.ReadByte(), reader.ReadString());
-                        break;
-                    case CustomRPC.SetShareNamePlate:
-                        SetShareNamePlate(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.AutoCreateRoom:
-                        AutoCreateRoom();
-                        break;
-                    case CustomRPC.BomKillRPC:
-                        BomKillRPC(reader.ReadByte());
-                        break;
-                    case CustomRPC.ByBomKillRPC:
-                        ByBomKillRPC(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.NekomataExiledRPC:
-                        NekomataExiledRPC(reader.ReadByte());
-                        break;
-                    case CustomRPC.CountChangerSetRPC:
-                        CountChangerSetRPC(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SetRoomTimerRPC:
-                        SetRoomTimerRPC(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SetScientistRPC:
-                        SetScientistRPC(reader.ReadBoolean(), reader.ReadByte());
-                        break;
-                    case CustomRPC.ReviveRPC:
-                        ReviveRPC(reader.ReadByte());
-                        break;
-                    case CustomRPC.SetHaison:
-                        SetHaison();
-                        break;
-                    case CustomRPC.SetWinCond:
-                        SetWinCond(reader.ReadByte());
-                        break;
-                    case CustomRPC.SetDetective:
-                        SetDetective(reader.ReadByte());
-                        break;
-                    case CustomRPC.UseEraserCount:
-                        UseEraserCount(reader.ReadByte());
-                        break;
-                    case CustomRPC.StartGameRPC:
-                        StartGameRPC();
-                        break;
-                    case CustomRPC.UncheckedSetTasks:
-                        uncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
-                        break;
-                    case CustomRPC.SetLovers:
-                        SetLovers(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SetUseDevice:
-                        SetUseDevice(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case CustomRPC.SetDeviceTime:
-                        SetDeviceTime(reader.ReadSingle(), reader.ReadByte());
-                        break;
-                    case CustomRPC.UncheckedSetColor:
-                        __instance.SetColor(reader.ReadByte());
-                        break;
-                    case CustomRPC.UncheckedSetVanilaRole:
-                        UncheckedSetVanilaRole(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SetMadKiller:
-                        SetMadKiller(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SetCustomSabotage:
-                        SabotageManager.SetSabotage(ModHelpers.playerById(reader.ReadByte()), (SabotageManager.CustomSabotage)reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case CustomRPC.CustomEndGame:
-                        if (AmongUsClient.Instance.AmHost)
-                        {
-                            MapUtilities.CachedShipStatus.enabled = false;
-                            CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
-                        }
-                        break;
-                    case CustomRPC.UncheckedProtect:
-                        UncheckedProtect(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SetBot:
-                        SetBot(reader.ReadByte());
-                        break;
-                    case CustomRPC.DemonCurse:
-                        DemonCurse(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SidekickSeerPromotes:
-                        SidekickSeerPromotes();
-                        break;
-                    case CustomRPC.CreateSidekickSeer:
-                        CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case CustomRPC.ArsonistDouse:
-                        ArsonistDouse(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SetSpeedDown:
-                        SetSpeedDown(reader.ReadBoolean());
-                        break;
-                    case CustomRPC.ShielderProtect:
-                        ShielderProtect(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case CustomRPC.SetShielder:
-                        SetShielder(reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case CustomRPC.SetSpeedFreeze:
-                        SetSpeedFreeze(reader.ReadBoolean());
-                        break;
-                    case CustomRPC.MakeVent:
-                        MakeVent(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-                        break;
-                    case CustomRPC.PositionSwapperTP:
-                        RPCProcedure.PositionSwapperTP(reader.ReadByte(), reader.ReadByte());
-                        break;
+                        // Main Controls
+                        /*
+                            case CustomRPC.TORVersionShare:
+                             int majorTOR = reader.ReadPackedInt32();
+                             int minorTOR = reader.ReadPackedInt32();
+                             int patchTOR = reader.ReadPackedInt32();
+                             int versionOwnerIdTOR = reader.ReadPackedInt32();
+                             byte revisionTOR = 0xFF;
+                             byte[] guidTOR;
+                             revisionTOR = reader.ReadByte();
+                             guidTOR = reader.ReadBytes(16);
+                             CustomRPC.TORVersionShare(majorTOR, minorTOR, patchTOR, revisionTOR == 0xFF ? -1 : revisionTOR, guidTOR, versionOwnerIdTOR);
+                            break;*/
+                        case CustomRPC.ShareOptions:
+                            ShareOptions((int)reader.ReadPackedUInt32(), reader);
+                            break;
+                        case CustomRPC.ShareSNRVersion:
+                            byte major = reader.ReadByte();
+                            byte minor = reader.ReadByte();
+                            byte patch = reader.ReadByte();
+                            int versionOwnerId = reader.ReadPackedInt32();
+                            byte revision = 0xFF;
+                            Guid guid;
+                            if (reader.Length - reader.Position >= 17)
+                            { // enough bytes left to read
+                                revision = reader.ReadByte();
+                                // GUID
+                                byte[] gbytes = reader.ReadBytes(16);
+                                guid = new Guid(gbytes);
+                            }
+                            else
+                            {
+                                guid = new Guid(new byte[16]);
+                            }
+                            ShareSNRversion(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
+                            break;
+                        case CustomRPC.SetRole:
+                            SetRole(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SheriffKill:
+                            SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.MeetingSheriffKill:
+                            MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.CustomRPCKill:
+                            CustomRPCKill(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.RPCClergymanLightOut:
+                            RPCClergymanLightOut(reader.ReadBoolean());
+                            break;
+                        case CustomRPC.ReportDeadBody:
+                            ReportDeadBody(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.UncheckedMeeting:
+                            UncheckedMeeting(reader.ReadByte());
+                            break;
+                        case CustomRPC.CleanBody:
+                            CleanBody(reader.ReadByte());
+                            break;
+                        case CustomRPC.RPCMurderPlayer:
+                            byte source = reader.ReadByte();
+                            byte target = reader.ReadByte();
+                            byte showAnimation = reader.ReadByte();
+                            RPCMurderPlayer(source, target, showAnimation);
+                            break;
+                        case CustomRPC.ExiledRPC:
+                            ExiledRPC(reader.ReadByte());
+                            break;
+                        case CustomRPC.ShareWinner:
+                            ShareWinner(reader.ReadByte());
+                            break;
+                        case CustomRPC.TeleporterTP:
+                            TeleporterTP(reader.ReadByte());
+                            break;
+                        case CustomRPC.SetQuarreled:
+                            SetQuarreled(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SidekickPromotes:
+                            SidekickPromotes();
+                            break;
+                        case CustomRPC.CreateSidekick:
+                            CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SetSpeedBoost:
+                            SetSpeedBoost(reader.ReadBoolean(), reader.ReadByte());
+                            break;
+                        case CustomRPC.ShareCosmetics:
+                            ShareCosmetics(reader.ReadByte(), reader.ReadString());
+                            break;
+                        case CustomRPC.SetShareNamePlate:
+                            SetShareNamePlate(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.AutoCreateRoom:
+                            AutoCreateRoom();
+                            break;
+                        case CustomRPC.BomKillRPC:
+                            BomKillRPC(reader.ReadByte());
+                            break;
+                        case CustomRPC.ByBomKillRPC:
+                            ByBomKillRPC(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.NekomataExiledRPC:
+                            NekomataExiledRPC(reader.ReadByte());
+                            break;
+                        case CustomRPC.CountChangerSetRPC:
+                            CountChangerSetRPC(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetRoomTimerRPC:
+                            SetRoomTimerRPC(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetScientistRPC:
+                            SetScientistRPC(reader.ReadBoolean(), reader.ReadByte());
+                            break;
+                        case CustomRPC.ReviveRPC:
+                            ReviveRPC(reader.ReadByte());
+                            break;
+                        case CustomRPC.SetHaison:
+                            SetHaison();
+                            break;
+                        case CustomRPC.SetWinCond:
+                            SetWinCond(reader.ReadByte());
+                            break;
+                        case CustomRPC.SetDetective:
+                            SetDetective(reader.ReadByte());
+                            break;
+                        case CustomRPC.UseEraserCount:
+                            UseEraserCount(reader.ReadByte());
+                            break;
+                        case CustomRPC.StartGameRPC:
+                            StartGameRPC();
+                            break;
+                        case CustomRPC.UncheckedSetTasks:
+                            uncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
+                            break;
+                        case CustomRPC.SetLovers:
+                            SetLovers(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetUseDevice:
+                            SetUseDevice(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SetDeviceTime:
+                            SetDeviceTime(reader.ReadSingle(), reader.ReadByte());
+                            break;
+                        case CustomRPC.UncheckedSetColor:
+                            __instance.SetColor(reader.ReadByte());
+                            break;
+                        case CustomRPC.UncheckedSetVanilaRole:
+                            UncheckedSetVanilaRole(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetMadKiller:
+                            SetMadKiller(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetCustomSabotage:
+                            SabotageManager.SetSabotage(ModHelpers.playerById(reader.ReadByte()), (SabotageManager.CustomSabotage)reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.CustomEndGame:
+                            if (AmongUsClient.Instance.AmHost)
+                            {
+                                MapUtilities.CachedShipStatus.enabled = false;
+                                CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
+                            }
+                            break;
+                        case CustomRPC.UncheckedProtect:
+                            UncheckedProtect(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetBot:
+                            SetBot(reader.ReadByte());
+                            break;
+                        case CustomRPC.DemonCurse:
+                            DemonCurse(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SidekickSeerPromotes:
+                            SidekickSeerPromotes();
+                            break;
+                        case CustomRPC.CreateSidekickSeer:
+                            CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.ArsonistDouse:
+                            ArsonistDouse(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetSpeedDown:
+                            SetSpeedDown(reader.ReadBoolean());
+                            break;
+                        case CustomRPC.ShielderProtect:
+                            ShielderProtect(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetShielder:
+                            SetShielder(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SetSpeedFreeze:
+                            SetSpeedFreeze(reader.ReadBoolean());
+                            break;
+                        case CustomRPC.MakeVent:
+                            MakeVent(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                            break;
+                        case CustomRPC.PositionSwapperTP:
+                            RPCProcedure.PositionSwapperTP(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        /*
                     case CustomRPC.UseAdminTime:
                         UseAdminTime(reader.ReadSingle());
                         break;
@@ -1151,9 +1151,15 @@ namespace SuperNewRoles.CustomRPC
                     case CustomRPC.UseVitalsTime:
                         UseVitalTime(reader.ReadSingle());
                         break;
-                    case CustomRPC.FixLights:
-                        FixLights();
-                        break;
+                        */
+                        case CustomRPC.FixLights:
+                            FixLights();
+                            break;
+                    }
+                }
+                catch(Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo((CustomRPC)callId+"でエラー:"+e);
                 }
             }
         }

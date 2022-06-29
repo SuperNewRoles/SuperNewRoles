@@ -25,8 +25,6 @@ namespace SuperNewRoles.Patches
     {
         public static string baseCredentials = $@"<size=130%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color></size> v{SuperNewRolesPlugin.Version}";
 
-        private static Task<bool> kari;
-
         [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
         private static class VersionShowerPatch
         {
@@ -34,6 +32,7 @@ namespace SuperNewRoles.Patches
             {
                 //CustomPlate.UnlockedNamePlatesPatch.Postfix(HatManager.Instance);
             }
+            public static string modColor = "#a6d289";
             static void Postfix(VersionShower __instance)
             {
 
@@ -41,7 +40,17 @@ namespace SuperNewRoles.Patches
                 if (amongUsLogo == null) return;
                 var credentials = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(__instance.text);
                 credentials.transform.position = new Vector3(0, 0f, 0);
-                credentials.SetText(ModTranslation.getString("creditsMain"));
+                //ブランチ名表示
+                if (ThisAssembly.Git.Branch != "master")//masterビルド以外の時
+                {
+                    //色+ブランチ名+コミット番号
+                    credentials.SetText($"\r\n<color={modColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>");
+                }
+                else
+                {
+                    credentials.SetText(ModTranslation.getString("creditsMain"));
+                }
+
                 credentials.alignment = TMPro.TextAlignmentOptions.Center;
                 credentials.fontSize *= 0.9f;
                 AutoUpdate.checkForUpdate(credentials);
@@ -76,6 +85,12 @@ namespace SuperNewRoles.Patches
                         }
                     }
                     catch { }
+                    //ブランチ名表示
+                    if (ThisAssembly.Git.Branch != "master")//masterビルド以外の時
+                    {
+                        //改行+Branch名+コミット番号
+                        __instance.text.text += "\n" + ($"{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})");
+                    }
                     if (CachedPlayer.LocalPlayer.Data.IsDead)
                     {
                         __instance.transform.localPosition = new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);

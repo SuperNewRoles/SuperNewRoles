@@ -7,7 +7,6 @@ namespace SuperNewRoles.Roles
     public class Bakery
     {
         private static TMPro.TextMeshPro breadText;
-        private static TMPro.TextMeshPro text;
         public static bool Prefix(
             ExileController __instance,
             [HarmonyArgument(0)] GameData.PlayerInfo exiled,

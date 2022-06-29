@@ -23,7 +23,7 @@ namespace SuperNewRoles.Roles
                             p.Add(p1);
                         }
                     }
-                    MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ExiledRPC, Hazel.SendOption.Reliable, -1);
+                    MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ExiledRPC, Hazel.SendOption.Reliable, -1);
                     RPCWriter.Write(__instance.PlayerId);
                     AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                     CustomRPC.RPCProcedure.ExiledRPC(__instance.PlayerId);
@@ -35,10 +35,10 @@ namespace SuperNewRoles.Roles
         {
             var rdm = ModHelpers.GetRandomIndex(p);
             var random = p[rdm];
-            SuperNewRolesPlugin.Logger.LogInfo(random.nameText.text);
+            SuperNewRolesPlugin.Logger.LogInfo(random.nameText().text);
             if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.NekomataExiled, random))
             {
-                MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.NekomataExiledRPC, Hazel.SendOption.Reliable, -1);
+                MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.NekomataExiledRPC, Hazel.SendOption.Reliable, -1);
                 RPCWriter.Write(random.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                 CustomRPC.RPCProcedure.ExiledRPC(random.PlayerId);
@@ -52,7 +52,7 @@ namespace SuperNewRoles.Roles
                     if (!Roles.RoleClass.Jester.IsJesterTaskClearWin || (Roles.RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                     {
                         CustomRPC.RPCProcedure.ShareWinner(random.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                         Writer.Write(random.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         Roles.RoleClass.Jester.IsJesterWin = true;

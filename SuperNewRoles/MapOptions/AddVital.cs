@@ -43,11 +43,16 @@ namespace SuperNewRoles.MapOptions
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Awake))]
     public static class AmongUsClient_Awake_Patch
     {
+        private static bool Loaded;
         [HarmonyPrefix]
         [HarmonyPriority(900)]
         public static void Prefix(AmongUsClient __instance)
         {
-            ((MonoBehaviour)(object)__instance).StartCoroutine(AddVitals.LoadPolus());
+            if (!Loaded)
+            {
+                ((MonoBehaviour)(object)__instance).StartCoroutine(AddVitals.LoadPolus());
+            }
+            Loaded = true;
         }
     }
 }
