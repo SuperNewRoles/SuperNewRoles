@@ -205,7 +205,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             foreach (PlayerControl p in RoleClass.Spy.SpyPlayer)
             {
-                var crsSpy = CustomRpcSender.Create();
+                var crsSpy = CustomRpcSender.Create(Hazel.SendOption.Reliable);
                 if (!p.IsMod())
                 {
                     if (RoleClass.Spy.CanUseVent)

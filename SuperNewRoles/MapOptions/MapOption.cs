@@ -80,7 +80,6 @@ namespace SuperNewRoles.MapOptions
                 ValidationAirship = false;
                 ValidationSubmerged = false;
             }
-            RandomMap.Prefix();
             BlockTool.OldDesyncCommsPlayers = new();
             BlockTool.CameraPlayers = new();
             //BlockTool.VitalPlayers = new();
@@ -160,7 +159,7 @@ namespace SuperNewRoles.MapOptions
             MapOptionSetting = CustomOption.CustomOption.Create(527, true, CustomOptionType.Generic, "MapOptionSetting", false, null, isHeader: true);
             DeviceOptions = CustomOption.CustomOption.Create(528, true, CustomOptionType.Generic, "DeviceOptionsSetting", false, MapOptionSetting);
             DeviceUseAdmin = CustomOption.CustomOption.Create(446, true, CustomOptionType.Generic, "DeviceUseAdminSetting", true, DeviceOptions);
-            RecordsAdminDestroy = CustomOption.CustomOption.Create(612, true, CustomOptionType.Generic, "RecordsAdminDestroySetting", false, MapOptionSetting);
+            RecordsAdminDestroy = CustomOption.CustomOption.Create(612, false, CustomOptionType.Generic, "RecordsAdminDestroySetting", false, MapOptionSetting);
             //DeviceUseAdminTime = CustomOption.CustomOption.Create(447, cs(Color.white, "DeviceTimeSetting"), 10f, 0f, 60f, 1f, DeviceUseAdmin);
             DeviceUseVitalOrDoorLog = CustomOption.CustomOption.Create(448, true, CustomOptionType.Generic, "DeviceUseVitalOrDoorLogSetting", true, DeviceOptions);
             //DeviceUseVitalOrDoorLogTime = CustomOption.CustomOption.Create(449, cs(Color.white, "DeviceTimeSetting"), 10f, 0f, 60f, 1f, DeviceUseVitalOrDoorLog);

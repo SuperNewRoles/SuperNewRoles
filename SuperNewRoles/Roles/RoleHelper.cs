@@ -129,7 +129,7 @@ namespace SuperNewRoles
         }
         public static void SetQuarreledRPC(PlayerControl player1, PlayerControl player2)
         {
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetQuarreled, Hazel.SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetQuarreled, Hazel.SendOption.Reliable, -1);
             Writer.Write(player1.PlayerId);
             Writer.Write(player2.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -146,7 +146,7 @@ namespace SuperNewRoles
         }
         public static void SetLoversRPC(PlayerControl player1, PlayerControl player2)
         {
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetLovers, Hazel.SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetLovers, Hazel.SendOption.Reliable, -1);
             Writer.Write(player1.PlayerId);
             Writer.Write(player2.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -916,7 +916,7 @@ namespace SuperNewRoles
         }
         public static void setRoleRPC(this PlayerControl Player, RoleId SelectRoleDate)
         {
-            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetRole, Hazel.SendOption.Reliable, -1);
+            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetRole, Hazel.SendOption.Reliable, -1);
             killWriter.Write(Player.PlayerId);
             killWriter.Write((byte)SelectRoleDate);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
