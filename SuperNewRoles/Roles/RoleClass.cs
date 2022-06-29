@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -2261,9 +2261,9 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SecretlyKillerPlayer;
             public static Color32 color = ImpostorRed;
-            public static float SecretlyKillerKillCoolTime;
-            public static bool SecretlyKillerKillCoolChange;
-            public static bool SecretlyKillerIsBlackOutKillCharge;
+            public static float KillCoolTime;
+            public static bool IsKillCoolChange;
+            public static bool IsBlackOutKillCharge;
             public static int SecretlyKillLimit;
             public static float SecretlyKillCoolTime;
 
@@ -2282,9 +2282,9 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 SecretlyKillerPlayer = new List<PlayerControl>();
-                SecretlyKillerKillCoolTime = CustomOptions.SecretlyKillerKillCoolTime.getFloat();
-                SecretlyKillerKillCoolChange = CustomOptions.SecretlyKillerKillCoolTimeChange.getBool();
-                SecretlyKillerIsBlackOutKillCharge = CustomOptions.SecretlyKillerIsBlackOutKillCharge.getBool();
+                KillCoolTime = CustomOptions.SecretlyKillerKillCoolTime.getFloat();
+                IsKillCoolChange = CustomOptions.SecretlyKillerIsKillCoolTimeChange.getBool();
+                IsBlackOutKillCharge = CustomOptions.SecretlyKillerIsBlackOutKillCharge.getBool();
                 SecretlyKillLimit = (int)CustomOptions.SecretlyKillerSecretKillLimit.getFloat();
                 SecretlyKillCoolTime = CustomOptions.SecretlyKillerSecretKillCoolTime.getFloat();
             }

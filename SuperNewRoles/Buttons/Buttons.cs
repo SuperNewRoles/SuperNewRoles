@@ -1679,7 +1679,7 @@ namespace SuperNewRoles.Buttons
                     //クールでブロック
                     RoleClass.SecretlyKiller.MainCool = HudManagerStartPatch.SecretlyKillerMainButton.Timer;
                     RoleClass.SecretlyKiller.SecretlyCool = HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer;
-                    if (RoleClass.SecretlyKiller.SecretlyCool>0f && RoleClass.SecretlyKiller.SecretlyKillerKillCoolChange) return false;
+                    if (RoleClass.SecretlyKiller.SecretlyCool>0f && RoleClass.SecretlyKiller.IsKillCoolChange) return false;
                     if (RoleClass.SecretlyKiller.MainCool>0f) return false;
 
                     RoleClass.SecretlyKiller.target = setTarget();
@@ -1720,7 +1720,7 @@ namespace SuperNewRoles.Buttons
                     else
                         SecretlyKillNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
 
-                    if (RoleClass.SecretlyKiller.MainCool>0f/* || RoleClass.SecretlyKiller.SecretlyCool>0f */&& RoleClass.SecretlyKiller.SecretlyKillerKillCoolChange) return false;
+                    if (RoleClass.SecretlyKiller.MainCool>0f/* || RoleClass.SecretlyKiller.SecretlyCool>0f */&& RoleClass.SecretlyKiller.IsKillCoolChange) return false;
                     if (RoleClass.SecretlyKiller.SecretlyKillLimit < 1 || RoleClass.SecretlyKiller.SecretlyCool>0f) return false;
                     //メイン
                     RoleClass.SecretlyKiller.target = setTarget();
@@ -1737,7 +1737,7 @@ namespace SuperNewRoles.Buttons
                 ()=>
                 {
                     var ma = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                    if (ma != null && !ma.IsActive && RoleClass.SecretlyKiller.SecretlyKillerIsBlackOutKillCharge) return !PlayerControl.LocalPlayer.CanMove;
+                    if (ma != null && !ma.IsActive && RoleClass.SecretlyKiller.IsBlackOutKillCharge) return !PlayerControl.LocalPlayer.CanMove;
                     return true;
                 }
             );

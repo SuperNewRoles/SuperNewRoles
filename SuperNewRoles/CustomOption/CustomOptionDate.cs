@@ -612,7 +612,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption SecretlyKillerOption;
         public static CustomOption SecretlyKillerPlayerCount;
         public static CustomOption SecretlyKillerKillCoolTime;
-        public static CustomOption SecretlyKillerKillCoolTimeChange;
+        public static CustomOption SecretlyKillerIsKillCoolTimeChange;
         public static CustomOption SecretlyKillerIsBlackOutKillCharge;
         public static CustomOption SecretlyKillerSecretKillLimit;
         public static CustomOption SecretlyKillerSecretKillCoolTime;
@@ -1258,13 +1258,13 @@ namespace SuperNewRoles.CustomOption
             BlackCatIsUseVent = CustomOption.Create(563, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, BlackCatOption);
             BlackCatIsImpostorLight = CustomOption.Create(564, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, BlackCatOption);
 
-            SecretlyKillerOption = new CustomRoleOption(566, true, CustomOptionType.Impostor, "SecretlyKillerName",RoleClass.SecretlyKiller.color, 1);
-            SecretlyKillerPlayerCount = CustomOption.Create(567, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SecretlyKillerOption);
-            SecretlyKillerKillCoolTime = CustomOption.Create(568, true, CustomOptionType.Impostor, "SheriffCoolDownSetting", 2.5f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
-            SecretlyKillerKillCoolTimeChange = CustomOption.Create(569, true, CustomOptionType.Impostor, "SettingCoolCharge", true, SecretlyKillerOption);
-            SecretlyKillerIsBlackOutKillCharge = CustomOption.Create(569, true, CustomOptionType.Impostor, "SettingBlackoutCharge", false, SecretlyKillerOption);
-            SecretlyKillerSecretKillLimit = CustomOption.Create(570, true, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 99f, 1f, SecretlyKillerOption);
-            SecretlyKillerSecretKillCoolTime = CustomOption.Create(571, true, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 45f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
+            SecretlyKillerOption = new CustomRoleOption(607, true, CustomOptionType.Impostor, "SecretlyKillerName",RoleClass.SecretlyKiller.color, 1);
+            SecretlyKillerPlayerCount = CustomOption.Create(608, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SecretlyKillerOption);
+            SecretlyKillerKillCoolTime = CustomOption.Create(609, true, CustomOptionType.Impostor, "SheriffCoolDownSetting", 2.5f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
+            SecretlyKillerIsKillCoolTimeChange = CustomOption.Create(610, true, CustomOptionType.Impostor, "SettingCoolCharge", true, SecretlyKillerOption);
+            SecretlyKillerIsBlackOutKillCharge = CustomOption.Create(611, true, CustomOptionType.Impostor, "SettingBlackoutCharge", false, SecretlyKillerOption);
+            SecretlyKillerSecretKillLimit = CustomOption.Create(612, true, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 99f, 1f, SecretlyKillerOption);
+            SecretlyKillerSecretKillCoolTime = CustomOption.Create(613, true, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 45f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
 
             SpyOption = new CustomRoleOption(614, true, CustomOptionType.Crewmate, "SpyName",RoleClass.Spy.color, 1);
             SpyPlayerCount = CustomOption.Create(615, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
