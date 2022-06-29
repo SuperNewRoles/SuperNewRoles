@@ -194,6 +194,7 @@ namespace SuperNewRoles.CustomRPC
         UseCameraTime,
         UseVitalsTime,
         FixLights,
+        RandomSpawn,
     }
     public static class RPCProcedure
     {
@@ -935,6 +936,39 @@ namespace SuperNewRoles.CustomRPC
         {
             Patch.VitalsPatch.RestrictVitalsTime -= time;
         }*/
+        public static void randomSpawn(byte playerId, byte locId)
+        {
+            HudManager.Instance.StartCoroutine(Effects.Lerp(3f, new Action<float>((p) =>
+            { // Delayed action
+                if (p == 1f)
+                {
+                    Vector2 InitialSpawnCenter = new(16.64f, -2.46f);
+                    Vector2 MeetingSpawnCenter = new(17.4f, -16.286f);
+                    Vector2 ElectricalSpawn = new(5.53f, -9.84f);
+                    Vector2 O2Spawn = new(3.28f, -21.67f);
+                    Vector2 SpecimenSpawn = new(36.54f, -20.84f);
+                    Vector2 LaboSpawn = new(34.91f, -6.50f);
+                    var loc = locId switch
+                    {
+                        0 => InitialSpawnCenter,
+                        1 => MeetingSpawnCenter,
+                        2 => ElectricalSpawn,
+                        3 => O2Spawn,
+                        4 => SpecimenSpawn,
+                        5 => LaboSpawn,
+                        _ => InitialSpawnCenter,
+                    };
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.Data.PlayerId == playerId)
+                        {
+                            player.transform.position = loc;
+                            break;
+                        }
+                    }
+                }
+            })));
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -1166,11 +1200,16 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.FixLights:
                             FixLights();
                             break;
+                        case CustomRPC.RandomSpawn:
+                            byte pId = reader.ReadByte();
+                            byte locId = reader.ReadByte();
+                            RPCProcedure.randomSpawn(pId, locId);
+                            break;
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo((CustomRPC)callId+"でエラー:"+e);
+                    SuperNewRolesPlugin.Logger.LogInfo((CustomRPC)callId + "でエラー:" + e);
                 }
             }
         }

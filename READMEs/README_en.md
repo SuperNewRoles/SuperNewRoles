@@ -36,8 +36,6 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 ## About Contact
 Please use the Discord server:[Discord server](https://discord.gg/95YuUZp4kM)
 
-## List of Positions
-It is already on the Discord server.
 
 ## Developers
 [Yking](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
@@ -54,6 +52,10 @@ Mr. kibou102<br>
 Mr. tsuchina<br>
 Mr. windows7<br>
 Mr. TeacherShibuya<br>
+Mr. cRox<br>
+
+## List of Positions
+It is already on the Discord server.
 
 | Impostor | Crewmate | Neutral | Redundant Camps |
 |----------|-------------|-----------------|----------------|

@@ -154,6 +154,9 @@ namespace SuperNewRoles.MapOptions
 
         public static CustomOption.CustomOption VentAnimation;
 
+        public static CustomOption.CustomOption PolusRandomSpawn;
+
+
         public static void LoadOption()
         {
             MapOptionSetting = CustomOption.CustomOption.Create(527, true, CustomOptionType.Generic, "MapOptionSetting", false, null, isHeader: true);
@@ -200,6 +203,9 @@ namespace SuperNewRoles.MapOptions
 
 
             VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
+
+            //AirshipRandomSpawn = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "AirshipRandomSpawn", false, MapOptionSetting);
+            PolusRandomSpawn = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "PolusrandomSpawn", false, MapOptionSetting);
         }
     }
 }

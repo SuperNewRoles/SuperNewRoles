@@ -53,7 +53,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Lovers(ラバーズ)のアイデアは、**Woodi-dev**から来ています。(TheOtherRolesから引用)<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)<br>
 [au.libhalt.net](https://au.libhalt.net) - ナイス猫又/イビル猫又のアイデアは **au.libhalt.net** から来ています。<br>
-[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - ベント追加、バイタル移動のコードを参考にさせていただきました！**Haoming37**さんありがとうございます！<br>
+[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - ベント追加、バイタル移動、ランダムスポーンを参考にさせていただきました！**Haoming37**さんありがとうございます！<br>
 
 ## 連絡について
 
@@ -74,6 +74,7 @@ kibou102様<br>
 つちな様<br>
 windows7様<br>
 渋谷先生様<br>
+cRox様<br>
 
 ## 役職一覧
 Discordサーバーには全てすでに乗っています。
