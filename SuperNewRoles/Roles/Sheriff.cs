@@ -18,7 +18,6 @@ namespace SuperNewRoles.Roles
                 HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
                 RoleClass.Sheriff.ButtonTimer = DateTime.Now;
             }
-            SuperNewRolesPlugin.Logger.LogInfo("リセット！！！");
         }
         public static bool IsSheriffKill(PlayerControl Target)
         {

@@ -20,6 +20,7 @@ namespace SuperNewRoles.Patch
     {
         public static void Postfix(PlayerControl __instance)
         {
+            MapOptions.RandomMap.Prefix();
             FixedUpdate.IsProDown = ConfigRoles.CustomProcessDown.Value;
         }
     }

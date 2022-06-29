@@ -10,6 +10,7 @@ namespace SuperNewRoles.Roles
     {
         public static void Postfix()
         {
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (RoleClass.IsMeeting) return;
             if (ModeHandler.isMode(ModeId.Default))
             {
