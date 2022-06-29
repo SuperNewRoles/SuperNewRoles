@@ -31,7 +31,7 @@ namespace SuperNewRoles.Roles
             var PushSwapper = PlayerControl.LocalPlayer;
             CustomRPC.RPCProcedure.PositionSwapperTP(RandomPlayer.PlayerId, PushSwapper.PlayerId);
 
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.PositionSwapperTP, Hazel.SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.PositionSwapperTP, Hazel.SendOption.Reliable, -1);
             Writer.Write(RandomPlayer.PlayerId);
             Writer.Write(PushSwapper.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);

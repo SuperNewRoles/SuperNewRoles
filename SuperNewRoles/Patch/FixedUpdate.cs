@@ -20,6 +20,7 @@ namespace SuperNewRoles.Patch
     {
         public static void Postfix(PlayerControl __instance)
         {
+            MapOptions.RandomMap.Prefix();
             FixedUpdate.IsProDown = ConfigRoles.CustomProcessDown.Value;
         }
     }
@@ -187,10 +188,18 @@ namespace SuperNewRoles.Patch
                 }
                 else if (ThisMode == ModeId.NotImpostorCheck)
                 {
+                    if (AmongUsClient.Instance.AmHost)
+                    {
+                        BlockTool.FixedUpdate();
+                    }
                     Mode.NotImpostorCheck.NameSet.Postfix();
                 }
                 else
                 {
+                    if (AmongUsClient.Instance.AmHost)
+                    {
+                        BlockTool.FixedUpdate();
+                    }
                     ModeHandler.FixedUpdate(__instance);
                 }
             }
