@@ -44,6 +44,9 @@ namespace SuperNewRoles.Roles
                             {
                                 p.RpcMurderPlayer(p);
                             }
+                        } else
+                        {
+                            RoleClass.Tuna.Timers[p.PlayerId] = RoleClass.Tuna.StoppingTime;
                         }
                         RoleClass.Tuna.Position[p.PlayerId] = p.transform.position;
                     }
