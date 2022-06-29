@@ -26,6 +26,8 @@ namespace SuperNewRoles.MapOptions
         public static bool ValidationAirship;
         public static bool ValidationSubmerged;
         public static bool IsRestrict;
+        public static bool ClairvoyantZoom;
+        public static bool MouseZoom;
         public static void ClearAndReload()
         {
             if (MapOptionSetting.getBool())
@@ -111,6 +113,8 @@ namespace SuperNewRoles.MapOptions
             PolusReactorTimeLimit.getFloat();
             MiraReactorTimeLimit.getFloat();
             AirshipReactorTimeLimit.getFloat();
+            ClairvoyantZoom = CustomOptions.ClairvoyantZoom.getBool();
+            MouseZoom = CustomOptions.MouseZoom.getBool();
         }
         public static CustomOption.CustomOption MapOptionSetting;
         public static CustomOption.CustomOption DeviceOptions;

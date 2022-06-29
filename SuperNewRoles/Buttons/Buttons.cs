@@ -1638,7 +1638,7 @@ namespace SuperNewRoles.Buttons
                     }
                     RoleClass.Hawk.IsHawkOn = true;
                 },
-                (bool isAlive, RoleId role) => { return !isAlive && ModeHandler.isMode(ModeId.Default); },
+                (bool isAlive, RoleId role) => { return !isAlive && ModeHandler.isMode(ModeId.Default) && MapOptions.MapOption.ClairvoyantZoom; },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
