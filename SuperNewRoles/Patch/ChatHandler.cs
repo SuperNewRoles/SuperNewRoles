@@ -350,13 +350,13 @@ namespace SuperNewRoles.Patch
                 yield return new WaitForSeconds(time);
             }
             var crs = CustomRpcSender.Create();
-            crs.StartRpc(CachedPlayer.LocalPlayer.NetId, RpcCalls.SetName)
+            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
                 .Write(SendName)
                 .EndRpc();
-            crs.StartRpc(CachedPlayer.LocalPlayer.NetId, RpcCalls.SendChat)
+            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SendChat)
                 .Write(command)
                 .EndRpc(); ;
-            crs.StartRpc(CachedPlayer.LocalPlayer.NetId, RpcCalls.SetName)
+            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
                 .Write(name)
                 .EndRpc();
             crs.SendMessage();

@@ -80,7 +80,6 @@ namespace SuperNewRoles.MapOptions
                 ValidationAirship = false;
                 ValidationSubmerged = false;
             }
-            RandomMap.Prefix();
             BlockTool.OldDesyncCommsPlayers = new();
             BlockTool.CameraPlayers = new();
             //BlockTool.VitalPlayers = new();

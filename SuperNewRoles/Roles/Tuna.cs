@@ -10,6 +10,7 @@ namespace SuperNewRoles.Roles
     {
         public static void Postfix()
         {
+            if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (RoleClass.IsMeeting) return;
             if (ModeHandler.isMode(ModeId.Default))
             {
@@ -43,6 +44,9 @@ namespace SuperNewRoles.Roles
                             {
                                 p.RpcMurderPlayer(p);
                             }
+                        } else
+                        {
+                            RoleClass.Tuna.Timers[p.PlayerId] = RoleClass.Tuna.StoppingTime;
                         }
                         RoleClass.Tuna.Position[p.PlayerId] = p.transform.position;
                     }

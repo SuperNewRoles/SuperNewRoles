@@ -1274,12 +1274,10 @@ namespace SuperNewRoles.Roles
                 {
                     if (name == CustomOptions.LevelingerTexts[0])
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("ab");
                         return LevelPowerTypes.None;
                     }
                     else if (name == CustomOptions.LevelingerTexts[1])
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("ac");
                         return LevelPowerTypes.Keep;
                     }
                     else if (name == CustomOptions.LevelingerTexts[2])
