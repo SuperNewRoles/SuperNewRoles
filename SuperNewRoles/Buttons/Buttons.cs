@@ -60,6 +60,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton EvilHackerButton;
         public static CustomButton EvilHackerMadmateSetting;
         public static CustomButton PositionSwapperButton;
+        public static CustomButton ClairvoyantButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -462,7 +463,8 @@ namespace SuperNewRoles.Buttons
                     if (Jackal.JackalFixedPatch.JackalsetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
                         ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, Jackal.JackalFixedPatch.JackalsetTarget());
-                        switch (PlayerControl.LocalPlayer.getRole()) {
+                        switch (PlayerControl.LocalPlayer.getRole())
+                        {
                             case RoleId.Jackal:
                                 Jackal.resetCoolDown();
                                 break;
@@ -1337,7 +1339,7 @@ namespace SuperNewRoles.Buttons
                             }
                         }
                     }
-                },                
+                },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.MadCleaner; },
                 () =>
                 {
@@ -1428,7 +1430,7 @@ namespace SuperNewRoles.Buttons
                     RoleClass.VentMaker.Vent = Vent.GetComponent<Vent>();
                     if (RoleClass.VentMaker.VentCount == 2) RoleClass.VentMaker.IsMakeVent = false;
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.VentMaker&& RoleClass.VentMaker.IsMakeVent; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.VentMaker && RoleClass.VentMaker.IsMakeVent; },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
@@ -1622,6 +1624,47 @@ namespace SuperNewRoles.Buttons
                 PositionSwapperNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
                 PositionSwapperButton.buttonText = ModTranslation.getString("PositionSwapperButtonName");
                 PositionSwapperButton.showButtonText = true;
+            };
+
+            ClairvoyantButton = new CustomButton(
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.CanMove)
+                    {
+                        if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
+                        {
+                            RoleClass.Hawk.Timer = 10f;
+                            RoleClass.Hawk.ButtonTimer = DateTime.Now;
+                            HawkHawkEyeButton.MaxTimer = 10f;
+                            HawkHawkEyeButton.Timer = 10f;
+                        }
+                        RoleClass.Hawk.IsHawkOn = true;
+                    }
+                },
+                (bool isAlive, RoleId role) => { return !isAlive && ModeHandler.isMode(ModeId.Default); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
+                    {
+                        HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
+                        HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
+                    }
+                    RoleClass.Hawk.IsHawkOn = false;
+                },
+                RoleClass.Hawk.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
+            )
+            {
+                buttonText = ModTranslation.getString("HawkButtonName"),
+                showButtonText = true
             };
 
             setCustomButtonCooldowns();
