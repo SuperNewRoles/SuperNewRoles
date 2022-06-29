@@ -687,7 +687,7 @@ Camera Restrictions
 Vital Restrictions
 Can use time
 ykundesuBeplnEx
-YKUNDESUBEPINEXX! IS! VERY! VERY DELICIOUSSSSS!!!!!，ISN'T IT?
+ykundesuBeplnExDelicious
 HauntedWolf
 Don't let the crew find out.
 Reactor Duration Time
@@ -754,7 +754,7 @@ Swapping cooltime
 Limits:{0}
 PositionSwap
 Position swapper swapped you!
-Position swapper swapped you!\n by the way，ykundesu isn delicious，isn't it?
+Position swapper swapped you!\n by the way，ykundesu isn't delicious?
 Tuna
 Always move!
 Stopping Time
@@ -764,6 +764,9 @@ Mafia
 Let's avenge our fellow impostor
 When all the imposters except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.
 Cannot Use Archive Admin
+Spy
+Deceive the Imposter and lead the Cluemate camp to victory!
+Spies are crewmates but they look like friends to the Imposter.\n Spies are crewmates and have no special abilities.
 Move Vital to specimen (polus)
 Download custom hat
 Secretly Killer

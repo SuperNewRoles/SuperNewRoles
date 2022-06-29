@@ -1737,7 +1737,7 @@ namespace SuperNewRoles.Buttons
                 ()=>
                 {
                     var ma = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                    if (ma != null && !ma.IsActive && RoleClass.SecretlyKiller.IsBlackOutKillCharge) return !PlayerControl.LocalPlayer.CanMove;
+                    if (ma != null && !ma.IsActive || RoleClass.SecretlyKiller.IsBlackOutKillCharge) return !PlayerControl.LocalPlayer.CanMove;
                     return true;
                 }
             );
