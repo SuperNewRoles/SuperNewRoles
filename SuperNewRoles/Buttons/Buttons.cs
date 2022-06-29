@@ -1631,15 +1631,12 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControl.LocalPlayer.CanMove)
                     {
-                        if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
-                        {
-                            RoleClass.Hawk.Timer = 10f;
-                            RoleClass.Hawk.ButtonTimer = DateTime.Now;
-                            HawkHawkEyeButton.MaxTimer = 10f;
-                            HawkHawkEyeButton.Timer = 10f;
-                        }
-                        RoleClass.Hawk.IsHawkOn = true;
+                        RoleClass.Hawk.Timer = 10f;
+                        RoleClass.Hawk.ButtonTimer = DateTime.Now;
+                        HawkHawkEyeButton.MaxTimer = 10f;
+                        HawkHawkEyeButton.Timer = 10f;
                     }
+                    RoleClass.Hawk.IsHawkOn = true;
                 },
                 (bool isAlive, RoleId role) => { return !isAlive && ModeHandler.isMode(ModeId.Default); },
                 () =>
@@ -1648,11 +1645,9 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
-                    {
-                        HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
-                        HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
-                    }
+
+                    HawkHawkEyeButton.MaxTimer = 10f;
+                    HawkHawkEyeButton.Timer = 10f;
                     RoleClass.Hawk.IsHawkOn = false;
                 },
                 RoleClass.Hawk.getButtonSprite(),
