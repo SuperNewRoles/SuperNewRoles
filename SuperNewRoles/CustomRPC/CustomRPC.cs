@@ -896,6 +896,8 @@ namespace SuperNewRoles.CustomRPC
             if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)*/)
             {
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
+                SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
+                return;
             }
             else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId)
             {
