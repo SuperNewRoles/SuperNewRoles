@@ -17,28 +17,23 @@ namespace SuperNewRoles.Roles
 {
     public static class Vecs
     {
-        public static Vector3D pos1;
-        public static Vector3D pos2;
-        public static Vector3D pos3;
+        public static Vector3 pos1;
+        public static Vector3 pos2;
+        public static Vector3 pos3;
     }
-    public struct Vector3D
-    {
-        public double x;
-        public double y;
-        public double z;
-    }
+
     public class Conjurer
     {
         //ベクトル内積
-        public double dot_product(Vector3D vl, Vector3D vr)
+        public double dot_product(Vector3 vl, Vector3 vr)
         {
             return vl.x * vr.x + vl.y * vr.y + vl.z * vr.z;
         }
-        public bool TriangleArea(Vector3D A, Vector3D B, Vector3D C, Vector3D P)
+        public bool TriangleArea(Vector3 A, Vector3 B, Vector3 C, Vector3 P)
         {
-            Vector3D sub_vector(Vector3D a, Vector3D b)
+            Vector3 sub_vector(Vector3 a, Vector3 b)
             {
-                Vector3D ret;
+                Vector3 ret;
                 ret.x = a.x - b.x;
                 ret.y = a.y - b.y;
                 ret.z = a.z - b.z;
@@ -46,9 +41,9 @@ namespace SuperNewRoles.Roles
             }
 
             //ベクトル外積( vl × vr )
-            Vector3D cross_product(Vector3D vl, Vector3D vr)
+            Vector3 cross_product(Vector3 vl, Vector3 vr)
             {
-                Vector3D ret;
+                Vector3 ret;
                 ret.x = vl.y * vr.z - vl.z * vr.y;
                 ret.y = vl.z * vr.x - vl.x * vr.z;
                 ret.z = vl.x * vr.y - vl.y * vr.x;
@@ -56,22 +51,22 @@ namespace SuperNewRoles.Roles
                 return ret;
             }
 
-            Vector3D A2 = Vecs.pos1;
-            Vector3D B2 = Vecs.pos2;
-            Vector3D C2 = Vecs.pos3;
+            Vector3 A2 = Vecs.pos1;
+            Vector3 B2 = Vecs.pos2;
+            Vector3 C2 = Vecs.pos3;
 
-            Vector3D AB = sub_vector(B2, A2);
-            Vector3D BP = sub_vector(C2, B2);
+            Vector3 AB = sub_vector(B2, A2);
+            Vector3 BP = sub_vector(C2, B2);
 
-            Vector3D BC = sub_vector(C2, B2);
-            Vector3D CP = sub_vector(P, C);
+            Vector3 BC = sub_vector(C2, B2);
+            Vector3 CP = sub_vector(P, C);
 
-            Vector3D CA = sub_vector(A2, C);
-            Vector3D AP = sub_vector(P, A2);
+            Vector3 CA = sub_vector(A2, C);
+            Vector3 AP = sub_vector(P, A2);
 
-            Vector3D c1 = cross_product(AB, BP);
-            Vector3D c2 = cross_product(BC, CP);
-            Vector3D c3 = cross_product(CA, AP);
+            Vector3 c1 = cross_product(AB, BP);
+            Vector3 c2 = cross_product(BC, CP);
+            Vector3 c3 = cross_product(CA, AP);
 
             //内積で順方向か逆方向か調べる
             double dot_12 = dot_product(c1, c2);
@@ -80,10 +75,12 @@ namespace SuperNewRoles.Roles
             if (dot_12 > 0 && dot_13 > 0)
             {
                 //三角形の内側に点がある
+                SuperNewRolesPlugin.Logger.LogInfo("TriangleAreaがtrue");
                 return true;
             }
             else
             {
+                SuperNewRolesPlugin.Logger.LogInfo("TriangleAreaがfalse");
                 return false;
             }
         }
