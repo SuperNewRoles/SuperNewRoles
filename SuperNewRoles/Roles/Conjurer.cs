@@ -176,7 +176,11 @@ namespace SuperNewRoles.Roles
             {
                 if (PlayerControl.LocalPlayer.isRole(RoleId.Conjurer) || p.isDead())//魔術師と死人のとき
                 {
-                    boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Maker_00{index + 1:00}.png", 175f);
+                    //boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Maker_00{index + 1:00}.png", 175f);
+                    Transform Conjurer_Marker = GameObject.Instantiate(GameObject.Find("JackInTheBox").transform);
+                    CustomAnimation.Animation Conjurer_Marker_Animation = new CustomAnimation.Animation();
+                    Conjurer_Marker_Animation.Start(8, Conjurer_Marker);
+                    Conjurer_Marker_Animation.Sprites = CustomAnimation.LoadSprites.GetSpritesAgartha("SuperNewRoles.Resources.Animation.Conjurer_Maker", 20);
                 }
                 else//それ以外の時
                 {
