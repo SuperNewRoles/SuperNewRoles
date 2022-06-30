@@ -28,7 +28,7 @@ namespace SuperNewRoles.Roles
             IsMeeting = false;
             IsCoolTimeSetted = false;
             IsStart = false;
-            Map.Data.ClearAndReloads();
+            Agartha.MapData.ClearAndReloads();
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new();
             Roles.MadMayor.CheckedImpostor = new();
