@@ -194,9 +194,21 @@ namespace SuperNewRoles.CustomRPC
         UseCameraTime,
         UseVitalsTime,
         FixLights,
+        ChiefSidekick
     }
     public static class RPCProcedure
     {
+        public static void ChiefSidekick(byte targetid)
+        {
+            RoleClass.Chief.SheriffPlayer.Add(targetid);
+            SetRole(targetid, (byte)RoleId.Sheriff);
+            if (targetid == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                Sheriff.ResetKillCoolDown();
+                RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
+            }
+            UncheckedSetVanilaRole(targetid, 0);
+        }
         public static void FixLights()
         {
             SwitchSystem switchSystem = MapUtilities.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
@@ -1165,6 +1177,9 @@ namespace SuperNewRoles.CustomRPC
                         */
                         case CustomRPC.FixLights:
                             FixLights();
+                            break;
+                        case CustomRPC.ChiefSidekick:
+                            ChiefSidekick(reader.ReadByte());
                             break;
                     }
                 }

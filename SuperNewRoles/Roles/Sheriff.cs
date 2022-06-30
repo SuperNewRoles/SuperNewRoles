@@ -15,8 +15,14 @@ namespace SuperNewRoles.Roles
             }
             else
             {
-                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
-                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
+                if (RoleClass.Chief.SheriffPlayer.Contains(CachedPlayer.LocalPlayer.PlayerId))
+                {
+                    HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Chief.CoolTime;
+                } else
+                {
+                    HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
+                }
+                HudManagerStartPatch.SheriffKillButton.Timer = HudManagerStartPatch.SheriffKillButton.MaxTimer;
             }
         }
         public static bool IsSheriffKill(PlayerControl Target)
@@ -27,6 +33,17 @@ namespace SuperNewRoles.Roles
             if (Target.isFriendRole() && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isNeutral() && RoleClass.Sheriff.IsNeutralKill) return true;
             if (RoleClass.Sheriff.IsLoversKill && Target.IsLovers()) return true;
+            if (Target.isRole(CustomRPC.RoleId.HauntedWolf)) return true;
+            return false;
+        }
+        public static bool IsChiefSheriffKill(PlayerControl Target)
+        {
+            var roledata = CountChanger.GetRoleType(Target);
+            if (roledata == TeamRoleType.Impostor) return true;
+            if (Target.isMadRole() && RoleClass.Chief.IsMadRoleKill) return true;
+            if (Target.isFriendRole() && RoleClass.Chief.IsMadRoleKill) return true;
+            if (Target.isNeutral() && RoleClass.Chief.IsNeutralKill) return true;
+            if (RoleClass.Chief.IsLoversKill && Target.IsLovers()) return true;
             if (Target.isRole(CustomRPC.RoleId.HauntedWolf)) return true;
             return false;
         }
@@ -72,16 +89,7 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.RemoteSheriff))
-            {
-                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
-                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
-            }
-            else
-            {
-                HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
-                RoleClass.Sheriff.ButtonTimer = DateTime.Now;
-            }
+            ResetKillCoolDown();
         }
     }
 }
