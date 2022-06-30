@@ -1631,36 +1631,36 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControl.LocalPlayer.CanMove)
                     {
-                        RoleClass.Hawk.Timer = 10f;
-                        RoleClass.Hawk.ButtonTimer = DateTime.Now;
-                        HawkHawkEyeButton.MaxTimer = 10f;
-                        HawkHawkEyeButton.Timer = 10f;
+                        MapOptions.MapOption.Timer = MapOptions.MapOption.DurationTime;
+                        MapOptions.MapOption.ButtonTimer = DateTime.Now;
+                        ClairvoyantButton.MaxTimer = MapOptions.MapOption.CoolTime;
+                        ClairvoyantButton.Timer = MapOptions.MapOption.CoolTime;
+                        MapOptions.MapOption.IsZoomOn = true;
                     }
-                    RoleClass.Hawk.IsHawkOn = true;
                 },
-                (bool isAlive, RoleId role) => { return !isAlive && ModeHandler.isMode(ModeId.Default) && MapOptions.MapOption.ClairvoyantZoom; },
+                (bool isAlive, RoleId role) => { return (!PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.ClairvoyantZoom); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
-
-                    HawkHawkEyeButton.MaxTimer = 10f;
-                    HawkHawkEyeButton.Timer = 10f;
-                    RoleClass.Hawk.IsHawkOn = false;
+                    ClairvoyantButton.MaxTimer = MapOptions.MapOption.CoolTime;
+                    ClairvoyantButton.Timer = MapOptions.MapOption.CoolTime;
+                    MapOptions.MapOption.IsZoomOn = false;
                 },
                 RoleClass.Hawk.getButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                new Vector3(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
                 49
             )
             {
-                buttonText = ModTranslation.getString("HawkButtonName"),
+                buttonText = ModTranslation.getString("千里眼"),
                 showButtonText = true
             };
+
 
             setCustomButtonCooldowns();
         }

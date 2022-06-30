@@ -45,7 +45,6 @@ namespace SuperNewRoles
                     if (Camera.main.orthographicSize != 3.0f)
                     {
                         HudManager.Instance.TaskStuff.SetActive(false);
-                        ModManager.Instance.ModStamp.gameObject.SetActive(false);
                         if (!PlayerControl.LocalPlayer.Data.IsDead) __instance.ShadowQuad.gameObject.SetActive(false);
                     }
                     else

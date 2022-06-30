@@ -42,6 +42,8 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption ZoomOption;
         public static CustomOption ClairvoyantZoom;
         public static CustomOption MouseZoom;
+        public static CustomOption ZoomCoolTime;
+        public static CustomOption ZoomDurationTime;
 
         public static CustomOption DetectiveRate;
         public static CustomOption DetectivePlayerCount;
@@ -687,9 +689,11 @@ namespace SuperNewRoles.CustomOption
 
             DisconnectNotPCOption = CustomOption.Create(11, true, CustomOptionType.Generic, cs(Color.white, "PC以外はキックする"), true, null, isHeader: true);
 
-            ZoomOption = CustomOption.Create(618, true, CustomOptionType.Generic, cs(Color.white, "死後のズーム"), true, null, isHeader: true);
+            ZoomOption = CustomOption.Create(618, false, CustomOptionType.Generic, cs(Color.white, "死後のズーム"), true, null, isHeader: true);
             ClairvoyantZoom = CustomOption.Create(619, false, CustomOptionType.Generic, "千里眼モード", false, ZoomOption);
             MouseZoom = CustomOption.Create(620, false, CustomOptionType.Generic, "マウスホイールモード", false, ZoomOption);
+            ZoomCoolTime = CustomOption.Create(621, false, CustomOptionType.Generic, "千里眼のクールタイム", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
+            ZoomDurationTime = CustomOption.Create(622, false, CustomOptionType.Generic, "千里眼の継続時間", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
 
 
             MapOptions.MapOption.LoadOption();
