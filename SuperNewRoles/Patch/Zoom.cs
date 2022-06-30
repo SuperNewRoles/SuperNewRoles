@@ -50,7 +50,6 @@ namespace SuperNewRoles
                     else
                     {
                         HudManager.Instance.TaskStuff.SetActive(true);
-                        ModManager.Instance.ModStamp.gameObject.SetActive(true);
                         if (!PlayerControl.LocalPlayer.Data.IsDead) __instance.ShadowQuad.gameObject.SetActive(true);
                     }
                 }
