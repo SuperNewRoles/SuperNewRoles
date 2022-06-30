@@ -145,6 +145,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.SerialKiller:
                                 SerialKiller.FixedUpdate();
                                 break;
+                            default:
+                                Minimalist.FixedUpdate.Postfix(MyRole);
+                                break;
                         }
                     }
                     else

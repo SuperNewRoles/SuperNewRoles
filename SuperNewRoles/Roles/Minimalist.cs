@@ -42,7 +42,7 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
-                else if (role == RoleId.Fox)
+                if (role == RoleId.Fox)
                 {
                     if (!RoleClass.Fox.UseReport)
                     {
@@ -52,9 +52,12 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
-                else if (role == RoleId.Conjurer)
+                if (role == RoleId.Conjurer)
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                    if (FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.active)
+                    {
+                        FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                    }
                 }
             }
         }
