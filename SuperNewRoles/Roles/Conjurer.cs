@@ -172,7 +172,17 @@ namespace SuperNewRoles.Roles
             index = Mathf.Clamp(index, 0, boxAnimationSprites.Length - 1);
             //if (boxAnimationSprites[index] == null)
             //SuperNewRolesPlugin.Logger.LogInfo("nullnull");
-            boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Maker_00{index + 1:00}.png", 175f);
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            {
+                if (PlayerControl.LocalPlayer.isRole(RoleId.Conjurer) || p.isDead())//魔術師と死人のとき
+                {
+                    boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Maker_00{index + 1:00}.png", 175f);
+                }
+                else//それ以外の時
+                {
+                    boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources("", 175f);
+                }
+            }
             return boxAnimationSprites[index];
         }
 
