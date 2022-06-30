@@ -1768,7 +1768,7 @@ namespace SuperNewRoles.Buttons
                     {
                         //ニセレに任せた
                         //発光(色)
-                        Conjurer.ShowFlash(new Color(139f / 139f, 0f / 0f, 205f / 205f));
+                        RoleHelpers.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
 
                         //全ボタンのクールリセット
                         Conjurer.AllCoolReset();

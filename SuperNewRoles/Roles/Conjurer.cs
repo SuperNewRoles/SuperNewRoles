@@ -176,35 +176,8 @@ namespace SuperNewRoles.Roles
             }
         }
         //Fixedddddd
-
-        public static void ShowFlash(Color color, float duration = 2f)
-        //Seerで使用している画面を光らせるコード
-        {
-            if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
-            FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
-            FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
-            {
-                if (RoleClass.Conjurer.ScreenFrash)//ScreenFrashが有効なら
-                {
-                    var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
-
-                    if (p < 0.5)
-                    {
-                        if (renderer != null)
-                            renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
-                    }
-                    else
-                    {
-                        if (renderer != null)
-                            renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
-                    }
-                    if (p == 1f && renderer != null) renderer.enabled = false;
-                }
-            })));
-        }
-
     }
+    
     public class JackInTheBox
     {
         public static System.Collections.Generic.List<JackInTheBox> AllJackInTheBoxes = new();
