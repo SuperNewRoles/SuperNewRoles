@@ -1,7 +1,9 @@
+using System.Text.RegularExpressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static System.Math;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
@@ -13,8 +15,80 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
-    public static class Conjurer
+    public static class Vecs
     {
+        public static Vector3D pos1;
+        public static Vector3D pos2;
+        public static Vector3D pos3;
+    }
+    public struct Vector3D
+    {
+        public double x;
+        public double y;
+        public double z;
+    }
+    public class Conjurer
+    {
+        //ベクトル内積
+        public double dot_product(Vector3D vl, Vector3D vr)
+        {
+            return vl.x * vr.x + vl.y * vr.y + vl.z * vr.z;
+        }
+        public bool TriangleArea(Vector3D A, Vector3D B, Vector3D C, Vector3D P)
+        {
+            Vector3D sub_vector(Vector3D a, Vector3D b)
+            {
+                Vector3D ret;
+                ret.x = a.x - b.x;
+                ret.y = a.y - b.y;
+                ret.z = a.z - b.z;
+                return ret;
+            }
+
+            //ベクトル外積( vl × vr )
+            Vector3D cross_product(Vector3D vl, Vector3D vr)
+            {
+                Vector3D ret;
+                ret.x = vl.y * vr.z - vl.z * vr.y;
+                ret.y = vl.z * vr.x - vl.x * vr.z;
+                ret.z = vl.x * vr.y - vl.y * vr.x;
+
+                return ret;
+            }
+
+            Vector3D A2 = Vecs.pos1;
+            Vector3D B2 = Vecs.pos2;
+            Vector3D C2 = Vecs.pos3;
+
+            Vector3D AB = sub_vector(B2, A2);
+            Vector3D BP = sub_vector(C2, B2);
+
+            Vector3D BC = sub_vector(C2, B2);
+            Vector3D CP = sub_vector(P, C);
+
+            Vector3D CA = sub_vector(A2, C);
+            Vector3D AP = sub_vector(P, A2);
+
+            Vector3D c1 = cross_product(AB, BP);
+            Vector3D c2 = cross_product(BC, CP);
+            Vector3D c3 = cross_product(CA, AP);
+
+            //内積で順方向か逆方向か調べる
+            double dot_12 = dot_product(c1, c2);
+            double dot_13 = dot_product(c1, c3);
+
+            if (dot_12 > 0 && dot_13 > 0)
+            {
+                //三角形の内側に点がある
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
         //Buttonのクールリセット
         public static void AllCoolReset()
         {
@@ -146,8 +220,8 @@ namespace SuperNewRoles.Roles
             if (boxAnimationSprites == null || boxAnimationSprites.Length == 0) return null;
             index = Mathf.Clamp(index, 0, boxAnimationSprites.Length - 1);
             //if (boxAnimationSprites[index] == null)
-//SuperNewRolesPlugin.Logger.LogInfo("nullnull");
-                boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Maker_00{index + 1:00}.png", 175f);
+            //SuperNewRolesPlugin.Logger.LogInfo("nullnull");
+            boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Maker_00{index + 1:00}.png", 175f);
             return boxAnimationSprites[index];
         }
 
@@ -162,7 +236,8 @@ namespace SuperNewRoles.Roles
                 // if (box.boxRenderer != null)
                 //{
                 box.boxRenderer.sprite = getBoxAnimationSprite((int)(p * boxAnimationSprites.Length));
-                /*if (p == 1f)*/ box.boxRenderer.sprite = getBoxAnimationSprite(0);
+                /*if (p == 1f)*/
+                box.boxRenderer.sprite = getBoxAnimationSprite(0);
                 //}
             })));
         }

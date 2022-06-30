@@ -1631,65 +1631,63 @@ namespace SuperNewRoles.Buttons
 
             ConjurerFirstAddButton = new CustomButton(
                 () =>
-                {
-                    //マーカー設置
-                    var pos = PlayerControl.LocalPlayer.transform.position;
-                   byte[] buff = new byte[sizeof(float) * 2];
-                   Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                   Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                    {
+                        //マーカー設置
+                        Vecs.pos1 = PlayerControl.LocalPlayer.transform.position;
+                        byte[] buff = new byte[sizeof(float) * 2];
+                        Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos1.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                        Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos1.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
-                    MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
-                    writer.WriteBytesAndSize(buff);
-                    writer.EndMessage();
-                    RPCProcedure.AddMarker(buff);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
+                        writer.WriteBytesAndSize(buff);
+                        writer.EndMessage();
+                        RPCProcedure.AddMarker(buff);
 
 
-                    //1回目カウントをtrueにする
-                    RoleClass.Conjurer.FirstAdd = true;
+                        //1回目カウントをtrueにする
+                        RoleClass.Conjurer.FirstAdd = true;
 
-                    //全ボタンのクールリセット
-                    Conjurer.AllCoolReset();
+                        //全ボタンのクールリセット
+                        Conjurer.AllCoolReset();
 
-                },
-                (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && !Conjurer.IsFirstAdded(); },
-                () =>
-                {
-                    return PlayerControl.LocalPlayer.CanMove;
-                },
-                () =>
-                {
-                    ConjurerFirstAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
-                    ConjurerFirstAddButton.Timer = RoleClass.Conjurer.CoolTime;
-                },
-                RoleClass.Conjurer.getAddButtonSprite(),
-                new Vector3(0f, 1f, 0f),
-                __instance,
-                __instance.AbilityButton,
-                KeyCode.F,
-                49
-            )
+                    },
+                    (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && !Conjurer.IsFirstAdded(); },
+                    () =>
+                    {
+                        return PlayerControl.LocalPlayer.CanMove;
+                    },
+                    () =>
+                    {
+                        ConjurerFirstAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
+                        ConjurerFirstAddButton.Timer = RoleClass.Conjurer.CoolTime;
+                    },
+                    RoleClass.Conjurer.getAddButtonSprite(),
+                    new Vector3(0f, 1f, 0f),
+                    __instance,
+                    __instance.AbilityButton,
+                    KeyCode.F,
+                    49
+                )
             {
                 buttonText = ModTranslation.getString("1stAdd"),
                 showButtonText = true
             };
 
-
-
             ConjurerSecondAddButton = new CustomButton(
                 () =>
                 {
                     //マーカー設置
-                    var pos = PlayerControl.LocalPlayer.transform.position;
-                   byte[] buff = new byte[sizeof(float) * 2];
-                   Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                   Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                    Vecs.pos2 = PlayerControl.LocalPlayer.transform.position;
+                    byte[] buff = new byte[sizeof(float) * 2];
+                    Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos2.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos2.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
                     MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
                     writer.WriteBytesAndSize(buff);
                     writer.EndMessage();
                     RPCProcedure.AddMarker(buff);
 
-                   //2回目カウントをtrueにする
+                    //2回目カウントをtrueにする
                     RoleClass.Conjurer.SecondAdd = true;
 
                     //全ボタンのクールリセット
@@ -1723,11 +1721,11 @@ namespace SuperNewRoles.Buttons
             ConjurerThirdAddButton = new CustomButton(
                 () =>
                 {
-                   //マーカー設置
-                    var pos = PlayerControl.LocalPlayer.transform.position;
+                    //マーカー設置
+                    Vecs.pos3 = PlayerControl.LocalPlayer.transform.position;
                     byte[] buff = new byte[sizeof(float) * 2];
-                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                    Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos3.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos3.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
                     MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
                     writer.WriteBytesAndSize(buff);
