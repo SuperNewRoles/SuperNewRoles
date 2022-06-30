@@ -1630,43 +1630,43 @@ namespace SuperNewRoles.Buttons
             };
 
             ConjurerFirstAddButton = new CustomButton(
-               () =>
-               {
-                   //マーカー設置
-                   var pos = PlayerControl.LocalPlayer.transform.position;
+                () =>
+                {
+                    //マーカー設置
+                    var pos = PlayerControl.LocalPlayer.transform.position;
                    byte[] buff = new byte[sizeof(float) * 2];
                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
                    Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
-                   MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
-                   writer.WriteBytesAndSize(buff);
-                   writer.EndMessage();
-                   RPCProcedure.AddMarker(buff);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
+                    writer.WriteBytesAndSize(buff);
+                    writer.EndMessage();
+                    RPCProcedure.AddMarker(buff);
 
 
-                   //1回目カウントをtrueにする
-                   RoleClass.Conjurer.FirstAdd = true;
+                    //1回目カウントをtrueにする
+                    RoleClass.Conjurer.FirstAdd = true;
 
-                   //全ボタンのクールリセット
-                   Conjurer.AllCoolReset();
+                    //全ボタンのクールリセット
+                    Conjurer.AllCoolReset();
 
-               },
-               (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && !Conjurer.IsFirstAdded(); },
-               () =>
-               {
-                   return PlayerControl.LocalPlayer.CanMove;
-               },
+                },
+                (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && !Conjurer.IsFirstAdded(); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
                 () =>
                 {
                     ConjurerFirstAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
                     ConjurerFirstAddButton.Timer = RoleClass.Conjurer.CoolTime;
                 },
-               RoleClass.Conjurer.getAddButtonSprite(),
-               new Vector3(0f, 1f, 0f),
-               __instance,
-               __instance.AbilityButton,
-               KeyCode.F,
-               49
+                RoleClass.Conjurer.getAddButtonSprite(),
+                new Vector3(0f, 1f, 0f),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
             )
             {
                 buttonText = ModTranslation.getString("1stAdd"),
@@ -1676,42 +1676,42 @@ namespace SuperNewRoles.Buttons
 
 
             ConjurerSecondAddButton = new CustomButton(
-               () =>
-               {
-                   //マーカー設置
-                   var pos = PlayerControl.LocalPlayer.transform.position;
+                () =>
+                {
+                    //マーカー設置
+                    var pos = PlayerControl.LocalPlayer.transform.position;
                    byte[] buff = new byte[sizeof(float) * 2];
                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
                    Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
-                   MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
-                   writer.WriteBytesAndSize(buff);
-                   writer.EndMessage();
-                   RPCProcedure.AddMarker(buff);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
+                    writer.WriteBytesAndSize(buff);
+                    writer.EndMessage();
+                    RPCProcedure.AddMarker(buff);
 
                    //2回目カウントをtrueにする
-                   RoleClass.Conjurer.SecondAdd = true;
+                    RoleClass.Conjurer.SecondAdd = true;
 
-                   //全ボタンのクールリセット
-                   Conjurer.AllCoolReset();
+                    //全ボタンのクールリセット
+                    Conjurer.AllCoolReset();
 
-               },
-               (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && Conjurer.IsFirstAdded() && !Conjurer.IsSecondAdded(); },
-               () =>
-               {
-                   return PlayerControl.LocalPlayer.CanMove;
-               },
+                },
+                (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && Conjurer.IsFirstAdded() && !Conjurer.IsSecondAdded(); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
                 () =>
                 {
                     ConjurerSecondAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
                     ConjurerSecondAddButton.Timer = RoleClass.Conjurer.CoolTime;
                 },
-               RoleClass.Conjurer.getAddButtonSprite(),
-               new Vector3(0f, 1f, 0f),
-               __instance,
-               __instance.AbilityButton,
-               KeyCode.F,
-               49
+                RoleClass.Conjurer.getAddButtonSprite(),
+                new Vector3(0f, 1f, 0f),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
             )
             {
                 buttonText = ModTranslation.getString("2ndAdd"),
@@ -1721,43 +1721,43 @@ namespace SuperNewRoles.Buttons
 
 
             ConjurerThirdAddButton = new CustomButton(
-               () =>
-               {
+                () =>
+                {
                    //マーカー設置
-                   var pos = PlayerControl.LocalPlayer.transform.position;
-                   byte[] buff = new byte[sizeof(float) * 2];
-                   Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                   Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                    var pos = PlayerControl.LocalPlayer.transform.position;
+                    byte[] buff = new byte[sizeof(float) * 2];
+                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
-                   MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
-                   writer.WriteBytesAndSize(buff);
-                   writer.EndMessage();
-                   RPCProcedure.AddMarker(buff);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
+                    writer.WriteBytesAndSize(buff);
+                    writer.EndMessage();
+                    RPCProcedure.AddMarker(buff);
 
-                   //3回目カウントをtrueにする
-                   RoleClass.Conjurer.ThirdAdd = true;
+                    //3回目カウントをtrueにする
+                    RoleClass.Conjurer.ThirdAdd = true;
 
-                   //全ボタンのクールリセット
-                   Conjurer.AllCoolReset();
+                    //全ボタンのクールリセット
+                    Conjurer.AllCoolReset();
 
 
-               },
-               (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && Conjurer.IsFirstAdded() && Conjurer.IsSecondAdded() && !Conjurer.IsThirdAdded(); },
-               () =>
-               {
-                   return PlayerControl.LocalPlayer.CanMove;
-               },
+                },
+                (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && Conjurer.IsFirstAdded() && Conjurer.IsSecondAdded() && !Conjurer.IsThirdAdded(); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
                 () =>
                 {
                     ConjurerThirdAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
                     ConjurerThirdAddButton.Timer = RoleClass.Conjurer.CoolTime;
                 },
-               RoleClass.Conjurer.getAddButtonSprite(),
-               new Vector3(0f, 1f, 0f),
-               __instance,
-               __instance.AbilityButton,
-               KeyCode.F,
-               49
+                RoleClass.Conjurer.getAddButtonSprite(),
+                new Vector3(0f, 1f, 0f),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49
             )
             {
                 buttonText = ModTranslation.getString("3rdAdd"),
