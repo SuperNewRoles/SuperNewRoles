@@ -20,6 +20,10 @@ namespace SuperNewRoles.Roles
         public static Vector3 pos1;
         public static Vector3 pos2;
         public static Vector3 pos3;
+        static void log()
+        {
+            SuperNewRolesPlugin.Logger.LogInfo($"{pos1}{pos2}{pos3}");
+        }
     }
 
     public class Conjurer
