@@ -76,7 +76,7 @@ Mr. TeacherShibuya<br>
 | [Levelinger](#レベリンガー) | [Mayor](#メイヤー)
 | [SideKiller](#サイドキラー) | [Technician](#技術者)
 | [Survivor](#サバイバー) | [SoothSayer](#占い師)
-| |[Spirit Medium](#霊媒師)
+| [Conjurer](#魔術師)|[Spirit Medium](#霊媒師)
 | |[MadMayor](#マッドメイヤー)
 | |[NiceHawk](#ナイスホーク)
 | |[MadStuntman](#マッドスタントマン)
