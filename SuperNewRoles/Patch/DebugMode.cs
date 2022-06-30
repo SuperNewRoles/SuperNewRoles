@@ -120,6 +120,10 @@ namespace SuperNewRoles.Patch
                 {
                     BotManager.AllBotDespawn();
                 }
+                if (Input.GetKeyDown(KeyCode.F1))
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2("+(PlayerControl.LocalPlayer.transform.position.x - 12.559f) +"f, "+ (PlayerControl.LocalPlayer.transform.position.y + 3.37f) + "f), ");
+                }
             }
 
             public static string RandomString(int length)

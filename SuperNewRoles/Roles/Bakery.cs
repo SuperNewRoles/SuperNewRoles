@@ -12,7 +12,14 @@ namespace SuperNewRoles.Roles
             [HarmonyArgument(0)] GameData.PlayerInfo exiled,
             [HarmonyArgument(1)] bool tie)
         {
-            if (RoleClass.Assassin.TriggerPlayer == null) { return true; }
+            if (RoleClass.Assassin.TriggerPlayer == null) { if (!Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) return true; }
+            if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha)) {
+                Agartha.ExileCutscenePatch.ExileControllerBeginePatch.Prefix(__instance, exiled, tie);
+                if (RoleClass.Assassin.TriggerPlayer == null)
+                {
+                    return false;
+                }
+            };
 
             if (__instance.specialInputHandler != null)
             {
@@ -45,6 +52,10 @@ namespace SuperNewRoles.Roles
             __instance.Player.gameObject.SetActive(false);
             __instance.completeString = printStr;
             __instance.ImpostorText.text = string.Empty;
+            if (Agartha.MapData.IsMap(Agartha.CustomMapNames.Agartha))
+            {
+                return false;
+            }
             __instance.StartCoroutine(__instance.Animate());
             return false;
         }
