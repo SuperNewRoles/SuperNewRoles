@@ -1,4 +1,4 @@
-using SuperNewRoles.CustomRPC;
+﻿using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -51,6 +51,10 @@ namespace SuperNewRoles.Roles
                             FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
                         }
                     }
+                }
+                else if (role == RoleId.Conjurer)
+                {
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
                 }
             }
         }

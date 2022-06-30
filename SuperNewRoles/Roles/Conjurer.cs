@@ -157,27 +157,8 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
-
-
-        public static void SetConjurerButton()
-        {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Conjurer))
-            {
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
-            }
-        }
-        //キルボタンを消す
-
-        public class FixedUpdate
-        {
-            public static void Postfix()
-            {
-                SetConjurerButton();
-            }
-        }
-        //Fixedddddd
     }
-    
+
     public class JackInTheBox
     {
         public static System.Collections.Generic.List<JackInTheBox> AllJackInTheBoxes = new();
