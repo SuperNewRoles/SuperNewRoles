@@ -141,6 +141,7 @@ namespace SuperNewRoles.Roles
             Tuna.ClearAndReload();
             Mafia.ClearAndReload();
             BlackCat.ClearAndReload();
+            Spy.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -151,6 +152,7 @@ namespace SuperNewRoles.Roles
         public static class SoothSayer
         {
             public static List<PlayerControl> SoothSayerPlayer;
+            public static List<byte> DisplayedPlayer;
             public static bool DisplayMode;
             public static int Count;
             public static Color32 color = new(190, 86, 235, byte.MaxValue);
@@ -164,6 +166,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 SoothSayerPlayer = new();
+                DisplayedPlayer = new();
                 DisplayMode = CustomOptions.SoothSayerDisplayMode.getBool();
                 Count = (int)CustomOptions.SoothSayerMaxCount.getFloat();
             }
@@ -1273,12 +1276,10 @@ namespace SuperNewRoles.Roles
                 {
                     if (name == CustomOptions.LevelingerTexts[0])
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("ab");
                         return LevelPowerTypes.None;
                     }
                     else if (name == CustomOptions.LevelingerTexts[1])
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("ac");
                         return LevelPowerTypes.Keep;
                     }
                     else if (name == CustomOptions.LevelingerTexts[2])
@@ -2200,6 +2201,7 @@ namespace SuperNewRoles.Roles
             public static float StoppingTime;
             public static bool IsUseVent;
             public static Dictionary<byte, float> Timers;
+            public static bool IsMeetingEnd;
             public static void ClearAndReload()
             {
                 TunaPlayer = new();
@@ -2208,6 +2210,7 @@ namespace SuperNewRoles.Roles
                 StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.getFloat();
                 if (Mode.ModeHandler.isMode(Mode.ModeId.Default)) Timer = StoppingTime;
                 IsUseVent = CustomOptions.TunaIsUseVent.getBool();
+                IsMeetingEnd = false;
                 if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
                 {
                     Timers = new();
@@ -2284,6 +2287,17 @@ namespace SuperNewRoles.Roles
                 ThirdAdd = false;
                 CoolTime = CustomOptions.ConjurerCoolTime.getFloat();
                 ScreenFrash = CustomOptions.ConjurerScreenFrash.getBool();
+            }
+        }
+        public static class Spy
+        {
+            public static List<PlayerControl> SpyPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool CanUseVent;
+            public static void ClearAndReload()
+            {
+                SpyPlayer = new List<PlayerControl>();
+                CanUseVent = CustomOptions.SpyCanUseVent.getBool();
             }
         }
         //新ロールクラス

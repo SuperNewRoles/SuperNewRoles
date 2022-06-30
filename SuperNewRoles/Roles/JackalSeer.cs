@@ -11,8 +11,8 @@ namespace SuperNewRoles.Roles
     {
         public static void resetCoolDown()
         {
-            HudManagerStartPatch.JackalSeerKillButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
-            HudManagerStartPatch.JackalSeerKillButton.Timer = RoleClass.JackalSeer.KillCoolDown;
+            HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
+            HudManagerStartPatch.JackalKillButton.Timer = RoleClass.JackalSeer.KillCoolDown;
             HudManagerStartPatch.JackalSeerSidekickButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
             HudManagerStartPatch.JackalSeerSidekickButton.Timer = RoleClass.JackalSeer.KillCoolDown;
         }
@@ -74,11 +74,11 @@ namespace SuperNewRoles.Roles
             {
                 setPlayerOutline(JackalSeersetTarget(), RoleClass.JackalSeer.color);
             }
-            public static void Postfix(PlayerControl __instance)
+            public static void Postfix(PlayerControl __instance, RoleId role)
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    if (RoleClass.JackalSeer.SidekickSeerPlayer.Count != 0)
+                    if (RoleClass.JackalSeer.SidekickSeerPlayer.Count > 0)
                     {
                         var upflag = true;
                         foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer)
@@ -90,13 +90,13 @@ namespace SuperNewRoles.Roles
                         }
                         if (upflag)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SidekickSeerPromotes, Hazel.SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SidekickSeerPromotes, Hazel.SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             RPCProcedure.SidekickSeerPromotes();
                         }
                     }
                 }
-                if (PlayerControl.LocalPlayer.isRole(RoleId.JackalSeer))
+                if (role == RoleId.JackalSeer)
                 {
                     JackalSeerPlayerOutLineTarget();
                 }

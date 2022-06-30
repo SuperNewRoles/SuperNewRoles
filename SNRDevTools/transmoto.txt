@@ -764,4 +764,8 @@ MafiaName
 MafiaTitle1
 MafiaDescription
 RecordsAdminDestroySetting
+SpyName
+SpyTitle1
+SpyDescription
 SpecimenVitalSetting
+CustomDownloadSuperNewNamePlates

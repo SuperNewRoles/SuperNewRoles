@@ -75,11 +75,11 @@ namespace SuperNewRoles.Roles
             {
                 setPlayerOutline(JackalsetTarget(), RoleClass.Jackal.color);
             }
-            public static void Postfix(PlayerControl __instance)
+            public static void Postfix(PlayerControl __instance, RoleId role)
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    if (RoleClass.Jackal.SidekickPlayer.Count != 0)
+                    if (RoleClass.Jackal.SidekickPlayer.Count > 0)
                     {
                         var upflag = true;
                         foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
@@ -91,13 +91,13 @@ namespace SuperNewRoles.Roles
                         }
                         if (upflag)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SidekickPromotes, Hazel.SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SidekickPromotes, Hazel.SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             RPCProcedure.SidekickPromotes();
                         }
                     }
                 }
-                if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal))
+                if (role == RoleId.Jackal)
                 {
                     JackalPlayerOutLineTarget();
                 }
