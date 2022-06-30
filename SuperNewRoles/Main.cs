@@ -19,8 +19,8 @@ namespace SuperNewRoles
 
         public const string VersionString = "1.4.1.1";
 
-        public static System.Version Version = System.Version.Parse(VersionString);
-        internal static BepInEx.Logging.ManualLogSource Logger;
+        public static Version Version = Version.Parse(VersionString);
+        public static BepInEx.Logging.ManualLogSource Logger;
         public static Sprite ModStamp;
         public static int optionsPage = 1;
         public Harmony Harmony { get; } = new Harmony(Id);
