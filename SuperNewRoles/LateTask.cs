@@ -6,7 +6,7 @@ using UnityEngine;
 namespace SuperNewRoles
 {
     //TownOfHostより！！
-    class LateTask
+    public class LateTask
     {
         public string name;
         public float timer;
