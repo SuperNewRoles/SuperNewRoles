@@ -689,11 +689,11 @@ namespace SuperNewRoles.CustomOption
 
             DisconnectNotPCOption = CustomOption.Create(11, true, CustomOptionType.Generic, cs(Color.white, "PC以外はキックする"), true, null, isHeader: true);
 
-            ZoomOption = CustomOption.Create(618, false, CustomOptionType.Generic, cs(Color.white, "死後のズーム"), true, null, isHeader: true);
-            MouseZoom = CustomOption.Create(620, false, CustomOptionType.Generic, "マウスホイールモード", false, ZoomOption);
-            ClairvoyantZoom = CustomOption.Create(619, false, CustomOptionType.Generic, "千里眼モード", false, ZoomOption);
-            ZoomCoolTime = CustomOption.Create(621, false, CustomOptionType.Generic, "千里眼のクールタイム", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
-            ZoomDurationTime = CustomOption.Create(622, false, CustomOptionType.Generic, "千里眼の継続時間", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
+            ZoomOption = CustomOption.Create(618, false, CustomOptionType.Generic, cs(Color.white, "Zoomafterdeath"), true, null, isHeader: true);
+            MouseZoom = CustomOption.Create(620, false, CustomOptionType.Generic, "mousemode", false, ZoomOption);
+            ClairvoyantZoom = CustomOption.Create(619, false, CustomOptionType.Generic, "clairvoyantmode", false, ZoomOption);
+            ZoomCoolTime = CustomOption.Create(621, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
+            ZoomDurationTime = CustomOption.Create(622, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
 
 
             MapOptions.MapOption.LoadOption();

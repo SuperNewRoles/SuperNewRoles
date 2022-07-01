@@ -1657,7 +1657,7 @@ namespace SuperNewRoles.Buttons
                 49
             )
             {
-                buttonText = ModTranslation.getString("千里眼"),
+                buttonText = ModTranslation.getString("ClairvoyantButtonName"),
                 showButtonText = true
             };
 
