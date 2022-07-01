@@ -3,6 +3,7 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patch;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -170,6 +171,7 @@ namespace SuperNewRoles.Roles
 
         static void Postfix(MeetingHud __instance)
         {
+            LadderDead.Reset();
             RoleClass.IsMeeting = true;
             if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
             {
