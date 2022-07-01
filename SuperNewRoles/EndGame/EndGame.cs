@@ -174,8 +174,11 @@ namespace SuperNewRoles.EndGame
                     break;
                 case WinCondition.HAISON:
                     text = "HAISON";
-                    textRenderer.color = Color.white;
-                    __instance.BackgroundBar.material.SetColor("_Color", Color.white);
+                    textRenderer.color = Color.clear;
+                    __instance.WinText.text = ModTranslation.getString("HaisonName");
+                    Color32 HaisonColor = new(163, 163, 162, byte.MaxValue);
+                    __instance.WinText.color = HaisonColor;
+                    __instance.BackgroundBar.material.SetColor("_Color", HaisonColor);
                     break;
                 case WinCondition.JesterWin:
                     text = "JesterName";
