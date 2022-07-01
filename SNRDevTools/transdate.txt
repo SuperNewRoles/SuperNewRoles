@@ -776,3 +776,5 @@ clairvoyantmode,ClairvoyantMode,千里眼モード
 clairvoyantCoolTime,ClairvoyantCoolTime,千里眼のクールダウン
 clairvoyantDurationTime,ClairvoyantDurationTime,千里眼の継続時間
 ClairvoyantButtonName,Clairvoyant!,千里眼
+LadderDead,Ladder Dead,転落死
+LadderDeadChance,Ladder Dead Chance,転落死する確率

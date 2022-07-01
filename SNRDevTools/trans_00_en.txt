@@ -776,3 +776,4 @@ ClairvoyantCoolTime
 ClairvoyantDurationTime
 Clairvoyant!
 Ladder Death
+Ladder Death Chance
