@@ -3083,6 +3083,30 @@
  "CustomDownloadSuperNewNamePlates" : {
         "0" : "Download custom hat" ,
         "11" : "\u30ab\u30b9\u30bf\u30e0\u30cf\u30c3\u30c8\u3092\u30c0\u30a6\u30f3\u30ed\u30fc\u30c9\u3059\u308b"
+        } ,
+ "Zoomafterdeath" : {
+        "0" : "Zoom function after death" ,
+        "11" : "\u6b7b\u5f8c\u306e\u30ba\u30fc\u30e0\u6a5f\u80fd"
+        } ,
+ "mousemode" : {
+        "0" : "Mouse wheel Mode" ,
+        "11" : "\u30de\u30a6\u30b9\u30db\u30a4\u30fc\u30eb\u30e2\u30fc\u30c9"
+        } ,
+ "clairvoyantmode" : {
+        "0" : "ClairvoyantMode" ,
+        "11" : "\u5343\u91cc\u773c\u30e2\u30fc\u30c9"
+        } ,
+ "clairvoyantCoolTime" : {
+        "0" : "ClairvoyantCoolTime" ,
+        "11" : "\u5343\u91cc\u773c\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "clairvoyantDurationTime" : {
+        "0" : "ClairvoyantDurationTime" ,
+        "11" : "\u5343\u91cc\u773c\u306e\u7d99\u7d9a\u6642\u9593"
+        } ,
+ "ClairvoyantButtonName" : {
+        "0" : "Clairvoyant!" ,
+        "11" : "\u5343\u91cc\u773c"
         } 
 
 }

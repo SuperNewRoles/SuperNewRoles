@@ -152,6 +152,10 @@ namespace SuperNewRoles.Patch
                                 break;
                         }
                     }
+                    else if (PlayerControl.LocalPlayer.Data.IsDead && MapOptions.MapOption.ClairvoyantZoom)
+                    {
+                        Clairvoyant.FixedUpdate.Postfix();
+                    }
                     else
                     {
                         switch (MyRole)
