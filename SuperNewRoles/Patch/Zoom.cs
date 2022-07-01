@@ -5,6 +5,8 @@ using SuperNewRoles.Mode;
 namespace SuperNewRoles.Patch
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+
+    //Town Of Plusより!
     public static class Zoom
     {
         public static void Postfix(HudManager __instance)
