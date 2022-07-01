@@ -139,6 +139,7 @@ namespace SuperNewRoles.Roles
             Mafia.ClearAndReload();
             BlackCat.ClearAndReload();
             Spy.ClearAndReload();
+            Kunoichi.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2262,6 +2263,35 @@ namespace SuperNewRoles.Roles
             {
                 SpyPlayer = new List<PlayerControl>();
                 CanUseVent = CustomOptions.SpyCanUseVent.getBool();
+            }
+        }
+        public static class Kunoichi
+        {
+            public static List<PlayerControl> KunoichiPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static int KillKunai;
+            public static Kunai Kunai;
+            public static Dictionary<byte, Dictionary<byte, int>> HitCount;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                KunoichiPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.KunoichiCoolTime.getFloat();
+                KillKunai = (int)CustomOptions.KunoichiKillKunai.getFloat();
+                HitCount = new();
+                if (Kunai != null)
+                {
+                    GameObject.Destroy(Kunai.kunai);
+                }
+                Kunai = new Kunai();
+                Kunai.kunai.SetActive(false);
             }
         }
         //新ロールクラス

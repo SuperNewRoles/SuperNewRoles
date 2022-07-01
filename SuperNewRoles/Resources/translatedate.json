@@ -3083,6 +3083,26 @@
  "CustomDownloadSuperNewNamePlates" : {
         "0" : "Download custom hat" ,
         "11" : "\u30ab\u30b9\u30bf\u30e0\u30cf\u30c3\u30c8\u3092\u30c0\u30a6\u30f3\u30ed\u30fc\u30c9\u3059\u308b"
+        } ,
+ "KunoichiName" : {
+        "0" : "Kunoichi" ,
+        "11" : "\u30af\u30ce\u30a4\u30c1"
+        } ,
+ "KunoichiTitle1" : {
+        "0" : "Use your ninjutsu to deceive the village." ,
+        "11" : "\u5fcd\u8853\u3092\u99c6\u4f7f\u3057\u3066\u6751\u3092\u6b3a\u3051"
+        } ,
+ "KunoichiCoolTime" : {
+        "0" : "Kunai Cool Time" ,
+        "11" : "\u30af\u30ca\u30a4\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+        } ,
+ "KunoichiKillKunai" : {
+        "0" : "Number of kunai required for a kill" ,
+        "11" : "\u30ad\u30eb\u306b\u5fc5\u8981\u306a\u30af\u30ca\u30a4\u6570"
+        } ,
+ "KunoichiKunai" : {
+        "0" : "Kunai" ,
+        "11" : "\u30af\u30ca\u30a4"
         } 
 
 }

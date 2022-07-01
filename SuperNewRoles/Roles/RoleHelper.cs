@@ -570,6 +570,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Spy):
                     Roles.RoleClass.Spy.SpyPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Kunoichi):
+                    Roles.RoleClass.Kunoichi.KunoichiPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError("[SetRole]:No Method Found for Role Type {role}");
@@ -909,6 +912,9 @@ namespace SuperNewRoles
                     break;
                     case (CustomRPC.RoleId.Spy):
                     Roles.RoleClass.Spy.SpyPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Kunoichi):
+                    Roles.RoleClass.Kunoichi.KunoichiPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1308,6 +1314,9 @@ namespace SuperNewRoles
                         break;
                     case RoleId.Samurai:
                         addition = RoleClass.Samurai.KillCoolTime;
+                        break;
+                    case RoleId.Kunoichi:
+                        addition = RoleClass.Kunoichi.KillCoolTime;
                         break;
                 }
             }
@@ -1835,6 +1844,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.Spy.SpyPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.Spy;
+                }
+                else if (Roles.RoleClass.Kunoichi.KunoichiPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Kunoichi;
                 }
                 //ロールチェック
             }

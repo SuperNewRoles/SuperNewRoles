@@ -769,3 +769,8 @@ SpyTitle1
 SpyDescription
 SpecimenVitalSetting
 CustomDownloadSuperNewNamePlates
+KunoichiName
+KunoichiTitle1
+KunoichiCoolTime
+KunoichiKillKunai
+KunoichiKunai

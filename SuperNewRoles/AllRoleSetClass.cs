@@ -837,6 +837,7 @@ namespace SuperNewRoles
                 RoleId.Mafia => CustomOptions.MafiaPlayerCount.getFloat(),
                 RoleId.BlackCat => CustomOptions.BlackCatPlayerCount.getFloat(),
                 RoleId.Spy => CustomOptions.SpyPlayerCount.getFloat(),
+                RoleId.Kunoichi => CustomOptions.KunoichiPlayerCount.getFloat(),
                 _ => 1,
             };
         }

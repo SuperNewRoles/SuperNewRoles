@@ -127,6 +127,7 @@ namespace SuperNewRoles.CustomRPC
         Mafia,
         BlackCat,
         Spy,
+        Kunoichi,
         //RoleId
     }
 
@@ -194,9 +195,23 @@ namespace SuperNewRoles.CustomRPC
         UseCameraTime,
         UseVitalsTime,
         FixLights,
+        KunaiKill
     }
     public static class RPCProcedure
     {
+        public static void KunaiKill(byte sourceid, byte targetid)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceid);
+            PlayerControl target = ModHelpers.playerById(targetid);
+            if (source == null || target == null) return;
+            RPCMurderPlayer(sourceid, targetid, 0);
+            FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+
+            if (targetid == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, source.Data);
+            }
+        }
         public static void FixLights()
         {
             SwitchSystem switchSystem = MapUtilities.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
@@ -1165,6 +1180,9 @@ namespace SuperNewRoles.CustomRPC
                         */
                         case CustomRPC.FixLights:
                             FixLights();
+                            break;
+                        case CustomRPC.KunaiKill:
+                            KunaiKill(reader.ReadByte(), reader.ReadByte());
                             break;
                     }
                 }
