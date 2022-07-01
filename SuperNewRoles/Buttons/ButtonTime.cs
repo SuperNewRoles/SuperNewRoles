@@ -19,6 +19,7 @@ namespace SuperNewRoles.Buttons
             }
             catch { }
             HawkDuration();
+            ClairvoyantDuration();
         }
         public static void ScientistButton()
         {
@@ -75,14 +76,17 @@ namespace SuperNewRoles.Buttons
                 RoleClass.MadHawk.Timer = (float)((Roles.RoleClass.MadHawk.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
                 if (RoleClass.MadHawk.Timer <= 0f) RoleClass.MadHawk.Timer = 0f; MadHawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
             }
-            if (PlayerControl.LocalPlayer.Data.IsDead && MapOptions.MapOption.ClairvoyantZoom)
-            {
-                TimeSpanDate = new TimeSpan(0, 0, 0, (int)MapOptions.MapOption.DurationTime);
-                MapOptions.MapOption.Timer = (float)((MapOptions.MapOption.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
-                if (MapOptions.MapOption.Timer <= 0f) MapOptions.MapOption.Timer = 0f; Patch.Clairvoyant.TimerEnd(); MapOptions.MapOption.IsZoomOn = false; return;
-            }
             RoleClass.Hawk.Timer = (float)((Roles.RoleClass.Hawk.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
             if (RoleClass.Hawk.Timer <= 0f && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk)) RoleClass.Hawk.Timer = 0f; Hawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
+        }
+        public static void ClairvoyantDuration()
+        {
+            if (MapOptions.MapOption.Timer == 0 && PlayerControl.LocalPlayer.Data.IsDead && MapOptions.MapOption.ClairvoyantZoom) return;
+            MapOptions.MapOption.IsZoomOn = true;
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)MapOptions.MapOption.DurationTime);
+            TimeSpanDate = new TimeSpan(0, 0, 0, (int)MapOptions.MapOption.DurationTime);
+            MapOptions.MapOption.Timer = (float)((MapOptions.MapOption.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            if (MapOptions.MapOption.Timer <= 0f) MapOptions.MapOption.Timer = 0f; Patch.Clairvoyant.TimerEnd(); MapOptions.MapOption.IsZoomOn = false; return;
         }
         public static void TeleporterButton()
         {
