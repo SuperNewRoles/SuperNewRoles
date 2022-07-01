@@ -769,3 +769,5 @@ SpyTitle1
 SpyDescription
 SpecimenVitalSetting
 CustomDownloadSuperNewNamePlates
+LadderDead
+LadderDeadChance
