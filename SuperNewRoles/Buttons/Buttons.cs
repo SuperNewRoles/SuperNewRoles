@@ -1633,17 +1633,15 @@ namespace SuperNewRoles.Buttons
                 () =>
                     {
                         //マーカー設置
-                        var pos = PlayerControl.LocalPlayer.transform.position;
+                        Vecs.pos1 = PlayerControl.LocalPlayer.transform.position;
                         byte[] buff = new byte[sizeof(float) * 2];
-                        Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                        Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                        Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos1.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                        Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos1.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
                         MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
                         writer.WriteBytesAndSize(buff);
                         writer.EndMessage();
                         RPCProcedure.AddMarker(buff);
-
-                        pos = Vecs.pos1;
 
                         //1回目カウントをtrueにする
                         RoleClass.Conjurer.FirstAdd = true;
@@ -1678,17 +1676,15 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     //マーカー設置
-                    var pos = PlayerControl.LocalPlayer.transform.position;
+                    Vecs.pos2 = PlayerControl.LocalPlayer.transform.position;
                     byte[] buff = new byte[sizeof(float) * 2];
-                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                    Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos2.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos2.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
                     MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
                     writer.WriteBytesAndSize(buff);
                     writer.EndMessage();
                     RPCProcedure.AddMarker(buff);
-
-                    pos = Vecs.pos2;
 
                     //2回目カウントをtrueにする
                     RoleClass.Conjurer.SecondAdd = true;
@@ -1725,17 +1721,15 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     //マーカー設置
-                    var pos = PlayerControl.LocalPlayer.transform.position;
+                    Vecs.pos3 = PlayerControl.LocalPlayer.transform.position;
                     byte[] buff = new byte[sizeof(float) * 2];
-                    Buffer.BlockCopy(BitConverter.GetBytes(pos.x), 0, buff, 0 * sizeof(float), sizeof(float));
-                    Buffer.BlockCopy(BitConverter.GetBytes(pos.y), 0, buff, 1 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos3.x), 0, buff, 0 * sizeof(float), sizeof(float));
+                    Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos3.y), 0, buff, 1 * sizeof(float), sizeof(float));
 
                     MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.AddMarker, Hazel.SendOption.Reliable);
                     writer.WriteBytesAndSize(buff);
                     writer.EndMessage();
                     RPCProcedure.AddMarker(buff);
-
-                    pos = Vecs.pos3;
 
                     //3回目カウントをtrueにする
                     RoleClass.Conjurer.ThirdAdd = true;

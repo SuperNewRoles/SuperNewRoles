@@ -15,15 +15,11 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
-    public static class Vecs
+    public class Vecs
     {
         public static Vector3 pos1;
         public static Vector3 pos2;
         public static Vector3 pos3;
-        static void log()
-        {
-            SuperNewRolesPlugin.Logger.LogInfo($"{pos1}{pos2}{pos3}");
-        }
     }
 
     public class Conjurer
@@ -183,7 +179,7 @@ namespace SuperNewRoles.Roles
                     //boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Maker_00{index + 1:00}.png", 175f);
                     Transform Conjurer_Marker = GameObject.Instantiate(GameObject.Find("JackInTheBox").transform);
                     CustomAnimation.Animation Conjurer_Marker_Animation = new CustomAnimation.Animation();
-                    Conjurer_Marker_Animation.Start(8, Conjurer_Marker);
+                    Conjurer_Marker_Animation.Start(10, Conjurer_Marker);
                     Conjurer_Marker_Animation.Sprites = CustomAnimation.LoadSprites.GetSpritesAgartha("SuperNewRoles.Resources.Animation.Conjurer_Maker", 20);
                 }
                 else//それ以外の時
@@ -225,29 +221,6 @@ namespace SuperNewRoles.Roles
             gameObject.transform.position = position;
             boxRenderer = gameObject.AddComponent<SpriteRenderer>();
             boxRenderer.sprite = getBoxAnimationSprite(0);
-            /*
-                        // Create the vent
-                        var referenceVent = UnityEngine.Object.FindObjectOfType<Vent>();
-                        vent = UnityEngine.Object.Instantiate<Vent>(referenceVent);
-                        vent.gameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
-                        vent.transform.position = gameObject.transform.position;
-                        vent.Left = null;
-                        vent.Right = null;
-                        vent.Center = null;
-                        vent.EnterVentAnim = null;
-                        vent.ExitVentAnim = null;
-                        vent.Offset = new Vector3(0f, 0.25f, 0f);
-                        vent.GetComponent<PowerTools.SpriteAnim>()?.Stop();
-                        vent.Id = ShipStatus.Instance.AllVents.Select(x => x.Id).Max() + 1; // Make sure we have a unique id
-                        var ventRenderer = vent.GetComponent<SpriteRenderer>();
-                        ventRenderer.sprite = null;
-                        vent.myRend = ventRenderer;
-                        var allVentsList = ShipStatus.Instance.AllVents.ToList();
-                        allVentsList.Add(vent);
-                        ShipStatus.Instance.AllVents = allVentsList.ToArray();
-                        vent.gameObject.SetActive(false);
-                        vent.name = "JackInTheBoxVent_" + vent.Id;
-            */
             // Only render the box for the Trickster
             var playerIsTrickster = PlayerControl.LocalPlayer;
             gameObject.SetActive(playerIsTrickster);
@@ -272,35 +245,8 @@ namespace SuperNewRoles.Roles
             return;
         }
 
-        public static void convertToVents()
-        {
-            foreach (var box in AllJackInTheBoxes)
-            {
-                box.convertToVent();
-            }
-            connectVents();
-            boxesConvertedToVents = true;
-            return;
-        }
 
-        public static bool hasJackInTheBoxLimitReached()
-        {
-            return AllJackInTheBoxes.Count >= JackInTheBoxLimit;
-        }
 
-        private static void connectVents()
-        {
-            for (var i = 0; i < AllJackInTheBoxes.Count - 1; i++)
-            {
-                var a = AllJackInTheBoxes[i];
-                var b = AllJackInTheBoxes[i + 1];
-                a.vent.Right = b.vent;
-                b.vent.Left = a.vent;
-            }
-            // Connect first with last
-            AllJackInTheBoxes.First().vent.Left = AllJackInTheBoxes.Last().vent;
-            AllJackInTheBoxes.Last().vent.Right = AllJackInTheBoxes.First().vent;
-        }
 
         public static void clearJackInTheBoxes()
         {
