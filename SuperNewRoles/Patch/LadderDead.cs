@@ -4,6 +4,7 @@ using System.Text;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
+using SuperNewRoles.CustomOption;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -29,7 +30,8 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
-            } else
+            }
+            else
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
@@ -40,7 +42,7 @@ namespace SuperNewRoles.Patch
                         if (Vector2.Distance(data.Value, player.transform.position) < 0.5f)
                         {
                             player.Data.IsDead = true;
-                            new LateTask(()=> player.RpcMurderPlayer(player) ,0.05f);
+                            new LateTask(() => player.RpcMurderPlayer(player), 0.05f);
                         }
                     }
                 }
@@ -50,7 +52,6 @@ namespace SuperNewRoles.Patch
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.ClimbLadder))]
         class ladder
         {
-            static int kakuritu = 25;
             public static void Postfix(PlayerPhysics __instance, Ladder source, byte climbLadderSid)
             {
                 var sourcepos = source.transform.position;
@@ -59,10 +60,11 @@ namespace SuperNewRoles.Patch
                 if (sourcepos.y > targetpos.y)
                 {
                     //SuperNewRolesPlugin.Logger.LogInfo("降りています");
-                    int aaa = UnityEngine.Random.Range(1, 100);
+                    int Chance = UnityEngine.Random.Range(1, 100);
                     //SuperNewRolesPlugin.Logger.LogInfo(aaa);
                     //SuperNewRolesPlugin.Logger.LogInfo(100 - kakuritu);
-                    if (aaa > (100 - kakuritu)) {
+                    if (Chance > (100 - CustomOptions.LadderDead.getFloat()))
+                    {
                         TargetLadderData[__instance.myPlayer.PlayerId] = targetpos;
                     }
                 }
