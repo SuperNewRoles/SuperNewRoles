@@ -635,6 +635,8 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption LoversCommonTask;
         public static CustomOption LoversLongTask;
         public static CustomOption LoversShortTask;
+        public static CustomOption LadderDead;
+        public static CustomOption LadderDeadChance;
 
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };

@@ -775,3 +775,4 @@ ClairvoyantMode
 ClairvoyantCoolTime
 ClairvoyantDurationTime
 Clairvoyant!
+Ladder Death

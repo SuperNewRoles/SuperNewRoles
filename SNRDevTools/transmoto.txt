@@ -775,3 +775,5 @@ clairvoyantmode
 clairvoyantCoolTime
 clairvoyantDurationTime
 ClairvoyantButtonName
+LadderDead
+LadderDeadChance
