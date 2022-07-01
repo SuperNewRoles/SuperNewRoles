@@ -39,10 +39,8 @@ namespace SuperNewRoles.Patch
                         if (player.isDead()) continue;
                         if (Vector2.Distance(data.Value, player.transform.position) < 0.5f)
                         {
-                            if (player.moveable)
-                            {
-                                player.RpcMurderPlayer(player);
-                            }
+                            player.Data.IsDead = true;
+                            new LateTask(()=> player.RpcMurderPlayer(player) ,0.05f);
                         }
                     }
                 }
