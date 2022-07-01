@@ -26,10 +26,10 @@ namespace SuperNewRoles.MapOptions
         public static bool ValidationAirship;
         public static bool ValidationSubmerged;
         public static bool IsRestrict;
-        public static bool ClairvoyantZoom;
 
         //千里眼・ズーム関連
         public static bool MouseZoom;
+        public static bool ClairvoyantZoom;
         public static float CoolTime;
         public static float DurationTime;
         public static bool IsZoomOn;
