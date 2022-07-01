@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SuperNewRoles.Roles
+namespace SuperNewRoles.Patch
 {
     public class Clairvoyant
     {
@@ -26,7 +26,7 @@ namespace SuperNewRoles.Roles
             {
                 SuperNewRolesPlugin.Logger.LogInfo(count);
                 SuperNewRolesPlugin.Logger.LogInfo(MapOptions.MapOption.Timer);
-                if (MapOptions.MapOption.Timer >= 0.1 && !RoleClass.IsMeeting)
+                if (MapOptions.MapOption.Timer >= 0.1 && !Roles.RoleClass.IsMeeting)
                 {
                     Camera.main.orthographicSize = MapOptions.MapOption.CameraDefault * 3f;
                     FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize = MapOptions.MapOption.Default * 3f;

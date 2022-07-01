@@ -2,7 +2,7 @@ using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.Mode;
 
-namespace SuperNewRoles
+namespace SuperNewRoles.Patch
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public static class Zoom
