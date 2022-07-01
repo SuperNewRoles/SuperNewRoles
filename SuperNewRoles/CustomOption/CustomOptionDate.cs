@@ -1274,9 +1274,6 @@ namespace SuperNewRoles.CustomOption
             LoversShortTask = loversoption.Item2;
             LoversLongTask = loversoption.Item3;
 
-            LadderDead = CustomOption.Create(617, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
-            LadderDeadChance = CustomOption.Create(618, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);
-
             SuperNewRolesPlugin.Logger.LogInfo("設定のidのMax:" + CustomOption.Max);
         }
     }

@@ -200,6 +200,8 @@ namespace SuperNewRoles.MapOptions
 
 
             VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
+            LadderDead = CustomOption.CustomOption.Create(617, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
+            LadderDeadChance = CustomOption.CustomOption.Create(618, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);
         }
     }
 }
