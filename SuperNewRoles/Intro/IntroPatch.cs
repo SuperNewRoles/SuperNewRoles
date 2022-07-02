@@ -93,7 +93,8 @@ namespace SuperNewRoles.Patches
                             if (PlayerControl.LocalPlayer.isImpostor())
                             {
                                 goto ImpostorIntroTeam;
-                            } else if (PlayerControl.LocalPlayer.IsJackalTeamJackal())
+                            }
+                            else if (PlayerControl.LocalPlayer.IsJackalTeamJackal())
                             {
                                 goto JackalIntroTeam;
                             }
@@ -124,13 +125,13 @@ namespace SuperNewRoles.Patches
             {
                 if (PlayerControl.LocalPlayer.isNeutral())
                 {
-                    ChangeIntroName:
                     IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
                     __instance.BackgroundBar.material.color = Intro.color;
                     __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
                     __instance.TeamTitle.color = Intro.color;
                     __instance.ImpostorText.text = "";
-                } else
+                }
+                else
                 {
                     switch (PlayerControl.LocalPlayer.getRole())
                     {
