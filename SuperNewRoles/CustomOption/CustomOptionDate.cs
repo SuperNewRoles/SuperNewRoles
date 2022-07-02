@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +7,7 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -705,11 +706,12 @@ namespace SuperNewRoles.CustomOption
             ZoomCoolTime = CustomOption.Create(621, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
             ZoomDurationTime = CustomOption.Create(622, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
 
-
             MapOptions.MapOption.LoadOption();
 
             //SoothSayerRate = CustomOption.Create(2, cs(SoothSayer.color,"soothName"),rates, null, true);
             Mode.ModeHandler.OptionLoad();
+
+            MapCustom.CreateOption();
 
             Sabotage.Options.Load();
 

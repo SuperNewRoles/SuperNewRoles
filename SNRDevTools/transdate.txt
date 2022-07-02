@@ -48,6 +48,8 @@ colorMelon,Melon,メロン
 colorCrasyublue,Crasyu Blue,クラッシュブルー
 colorLightgreen,Light Green,ライトグリーン
 Hat_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats
+MapCustom,Map Custom,マップ改造
+SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム
 enableMirroMap,enable MirroMap,反転マップを有効にする
 SettingpresetSelection,Preset,プリセット
 SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定
@@ -782,5 +784,5 @@ clairvoyantmode,ClairvoyantMode,千里眼モード
 clairvoyantCoolTime,ClairvoyantCoolTime,千里眼のクールダウン
 clairvoyantDurationTime,ClairvoyantDurationTime,千里眼の継続時間
 ClairvoyantButtonName,Clairvoyant!,千里眼
-LadderDead,Ladder Dead,転落死
-LadderDeadChance,Ladder Dead Chance,転落死する確率
+LadderDead,Ladder Death,転落死
+LadderDeadChance,Ladder Death Chance,転落死する確率
