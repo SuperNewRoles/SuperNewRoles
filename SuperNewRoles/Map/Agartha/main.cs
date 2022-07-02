@@ -6,12 +6,12 @@ namespace SuperNewRoles.Map.Agartha
 {
     public static class main
     {
-        private static int thisfloor = -1;
+        private static int thisfloor = 0x73;
         public static int floor
         {
             get
             {
-                if (thisfloor == -1)
+                if (thisfloor == 0x73)
                 {
                     return 1;
                 }
