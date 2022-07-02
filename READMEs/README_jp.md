@@ -60,7 +60,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [TheOtherHats](https://github.com/Eisbison/TheOtherHats)(TOR)**Eisbison**さんありがとうございます！<br>
 [TheOtherHats-GM](https://github.com/yukinogatari/TheOtherHats-GM)(TORGM)**yukinogatari**さんありがとうございます！<br>
 [TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(めめ村スキン)**hinakkyu**さんありがとうございます！<br>
-[TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)**tugaru1975**さん、**Ujet222(Sakura_White)**さんありがとうございます！<br>
+[TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)**tugaru1975さん、Ujet222(Sakura_White)**さんありがとうございます！<br>
 
 ## 連絡について
 
