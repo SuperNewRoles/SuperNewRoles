@@ -74,6 +74,7 @@ kibou102様<br>
 つちな様<br>
 windows7様<br>
 渋谷先生様<br>
+cRox様<br>
 
 ## 役職一覧
 Discordサーバーには全てすでに乗っています。
