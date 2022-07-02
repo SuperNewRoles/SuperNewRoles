@@ -62,6 +62,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton PositionSwapperButton;
         public static CustomButton SecretlyKillerMainButton;
         public static CustomButton SecretlyKillerSecretlyKillButton;
+        public static CustomButton ClairvoyantButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -475,7 +476,8 @@ namespace SuperNewRoles.Buttons
                     if (Jackal.JackalFixedPatch.JackalsetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
                         ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, Jackal.JackalFixedPatch.JackalsetTarget());
-                        switch (PlayerControl.LocalPlayer.getRole()) {
+                        switch (PlayerControl.LocalPlayer.getRole())
+                        {
                             case RoleId.Jackal:
                                 Jackal.resetCoolDown();
                                 break;
@@ -1466,7 +1468,7 @@ namespace SuperNewRoles.Buttons
                     RoleClass.VentMaker.Vent = Vent.GetComponent<Vent>();
                     if (RoleClass.VentMaker.VentCount == 2) RoleClass.VentMaker.IsMakeVent = false;
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.VentMaker&& RoleClass.VentMaker.IsMakeVent; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.VentMaker && RoleClass.VentMaker.IsMakeVent; },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
@@ -1749,6 +1751,42 @@ namespace SuperNewRoles.Buttons
                 SecretlyKillNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
                 SecretlyKillerSecretlyKillButton.buttonText = ModTranslation.getString("SecretlyKillButtonName");
                 SecretlyKillerSecretlyKillButton.showButtonText = true;
+            };
+
+            ClairvoyantButton = new CustomButton(
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.CanMove)
+                    {
+                        MapOptions.MapOption.Timer = MapOptions.MapOption.DurationTime;
+                        MapOptions.MapOption.ButtonTimer = DateTime.Now;
+                        ClairvoyantButton.MaxTimer = MapOptions.MapOption.CoolTime;
+                        ClairvoyantButton.Timer = MapOptions.MapOption.CoolTime;
+                        MapOptions.MapOption.IsZoomOn = true;
+                    }
+                },
+                (bool isAlive, RoleId role) => { return (!PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.ClairvoyantZoom); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    ClairvoyantButton.MaxTimer = MapOptions.MapOption.CoolTime;
+                    ClairvoyantButton.Timer = MapOptions.MapOption.CoolTime;
+                    MapOptions.MapOption.IsZoomOn = false;
+                },
+                RoleClass.Hawk.getButtonSprite(),
+                new Vector3(-2.7f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8,
+                ()=> {return false;}
+            )
+            {
+                buttonText = ModTranslation.getString("ClairvoyantButtonName"),
+                showButtonText = true
             };
 
             setCustomButtonCooldowns();

@@ -32,7 +32,7 @@ namespace SuperNewRoles.CustomCosmetics
         public static bool running = false;
         public static List<string> fetchs = new();
         public static List<CustomVisors.CustomVisor> Visordetails = new();
-        public static void Load()
+        public static async void Load()
         {
             if (running)
                 return;
@@ -40,9 +40,9 @@ namespace SuperNewRoles.CustomCosmetics
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\");
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + @"\SuperNewRoles\CustomVisorsChache\");
             SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor:Download] バイザーダウンロード開始");
-            FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
-            FetchHats("https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master");
-            FetchHats("https://raw.githubusercontent.com/Ujet222/TOPVisors/main", true);
+            await FetchHats("https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/main");
+            await FetchHats("https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master");
+            await FetchHats("https://raw.githubusercontent.com/Ujet222/TOPVisors/main", true);
             running = true;
         }
         private static string sanitizeResourcePath(string res)

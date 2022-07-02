@@ -86,6 +86,8 @@ namespace SuperNewRoles.Patch
                 var MyRole = PlayerControl.LocalPlayer.getRole();
                 setBasePlayerOutlines();
                 VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
+                if (CustomOptions.LadderDead.getBool())
+                    LadderDead.FixedUpdate();
                 var ThisMode = ModeHandler.GetMode();
                 if (ThisMode == ModeId.Default)
                 {
@@ -149,6 +151,10 @@ namespace SuperNewRoles.Patch
                                 Minimalist.FixedUpdate.Postfix(MyRole);
                                 break;
                         }
+                    }
+                    else if (PlayerControl.LocalPlayer.Data.IsDead && MapOptions.MapOption.ClairvoyantZoom)
+                    {
+                        Clairvoyant.FixedUpdate.Postfix();
                     }
                     else
                     {

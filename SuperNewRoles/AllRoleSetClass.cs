@@ -15,6 +15,11 @@ namespace SuperNewRoles
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
     class RpcSetRolePatch
     {
+        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName + " => " + roleType);
+        }
+        /*
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
             SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName + " => " + roleType);
@@ -54,7 +59,7 @@ namespace SuperNewRoles
                 }
             }
             return false;
-        }
+        }*/
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
     class startgamepatch
@@ -838,6 +843,7 @@ namespace SuperNewRoles
                 RoleId.BlackCat => CustomOption.CustomOptions.BlackCatPlayerCount.getFloat(),
                 RoleId.SecretlyKiller => CustomOption.CustomOptions.SecretlyKillerPlayerCount.getFloat(),
                 RoleId.Spy => CustomOptions.SpyPlayerCount.getFloat(),
+                //プレイヤーカウント
                 _ => 1,
             };
         }

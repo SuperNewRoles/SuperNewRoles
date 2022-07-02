@@ -687,7 +687,7 @@ Camera Restrictions
 Vital Restrictions
 Can use time
 ykundesuBeplnEx
-ykundesuBeplnExDelicious
+ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?
 HauntedWolf
 Don't let the crew find out.
 Reactor Duration Time
@@ -754,7 +754,7 @@ Swapping cooltime
 Limits:{0}
 PositionSwap
 Position swapper swapped you!
-Position swapper swapped you!\n by the way，ykundesu isn't delicious?
+Position swapper swapped you!\n by the way，ykundesu is delicious，isn't it?
 Tuna
 Always move!
 Stopping Time
@@ -775,3 +775,11 @@ Same in kill buttons
 Kill cool charge during power outage
 Ability limit
 Secretly\nKill
+Zoom function after death
+Mouse wheel Mode
+ClairvoyantMode
+ClairvoyantCoolTime
+ClairvoyantDurationTime
+Clairvoyant!
+Ladder Death
+Ladder Death Chance

@@ -775,3 +775,11 @@ SettingCoolCharge
 SettingBlackoutCharge
 SettingLimitName
 SecretlyKillButtonName
+Zoomafterdeath
+mousemode
+clairvoyantmode
+clairvoyantCoolTime
+clairvoyantDurationTime
+ClairvoyantButtonName
+LadderDead
+LadderDeadChance
