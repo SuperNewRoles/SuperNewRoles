@@ -770,6 +770,12 @@ SpyTitle1,Deceive the Imposter and lead the Cluemate camp to victory!,インポ�
 SpyDescription,Spies are crewmates but they look like friends to the Imposter.\n Spies are crewmates and have no special abilities.,スパイはクルーメイトですが、インポスターからは仲間に見えます。\nスパイはクルーメイトであり、特別な能力はありません。
 SpecimenVitalSetting,Move Vital to specimen (polus),標本室にバイタルを移動する(ポーラス)
 CustomDownloadSuperNewNamePlates,Download custom hat,カスタムハットをダウンロードする
+SecretlyKillerName,Secretly Killer,シークレットリーキラー
+SecretlyKillerTitle1,Please be quiet during the power outage.,停電中はお静かに
+SettingCoolCharge,Same in kill buttons,キル時のクール同期
+SettingBlackoutCharge,Kill cool charge during power outage,停電中にクールをためる
+SettingLimitName,Ability limit,制限回数
+SecretlyKillButtonName,Secretly\nKill,シークレットリー\nキル
 Zoomafterdeath,Zoom function after death,死後のズーム機能
 mousemode,Mouse wheel Mode,マウスホイールモード
 clairvoyantmode,ClairvoyantMode,千里眼モード

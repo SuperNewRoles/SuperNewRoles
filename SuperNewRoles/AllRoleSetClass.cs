@@ -840,7 +840,8 @@ namespace SuperNewRoles
                 RoleId.PositionSwapper => CustomOptions.PositionSwapperPlayerCount.getFloat(),
                 RoleId.Tuna => CustomOptions.TunaPlayerCount.getFloat(),
                 RoleId.Mafia => CustomOptions.MafiaPlayerCount.getFloat(),
-                RoleId.BlackCat => CustomOptions.BlackCatPlayerCount.getFloat(),
+                RoleId.BlackCat => CustomOption.CustomOptions.BlackCatPlayerCount.getFloat(),
+                RoleId.SecretlyKiller => CustomOption.CustomOptions.SecretlyKillerPlayerCount.getFloat(),
                 RoleId.Spy => CustomOptions.SpyPlayerCount.getFloat(),
                 //プレイヤーカウント
                 _ => 1,

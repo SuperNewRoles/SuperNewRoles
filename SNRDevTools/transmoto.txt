@@ -769,6 +769,12 @@ SpyTitle1
 SpyDescription
 SpecimenVitalSetting
 CustomDownloadSuperNewNamePlates
+SecretlyKillerName
+SecretlyKillerTitle1
+SettingCoolCharge
+SettingBlackoutCharge
+SettingLimitName
+SecretlyKillButtonName
 Zoomafterdeath
 mousemode
 clairvoyantmode
