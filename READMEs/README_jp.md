@@ -62,10 +62,6 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(めめ村スキン)**hinakkyu**さんありがとうございます！<br>
 [TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)**tugaru1975**さん、**Ujet222(Sakura_White)**さんありがとうございます！<br>
 
-## 連絡について
-
-Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/95YuUZp4kM)
-
 ## 開発者
 [よっキング](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
 [さつまいも](https://github.com/satsumaimoamo) ([Twitter](https://twitter.com/satsumaimo_SNR))<br>
@@ -82,6 +78,10 @@ kibou102様<br>
 windows7様<br>
 渋谷先生様<br>
 cRox様<br>
+
+
+## 連絡について
+Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/95YuUZp4kM)
 
 ## 役職一覧
 Discordサーバーには全てすでに乗っています。
