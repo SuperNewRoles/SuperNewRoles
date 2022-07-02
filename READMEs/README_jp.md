@@ -55,6 +55,13 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [au.libhalt.net](https://au.libhalt.net) - ナイス猫又/イビル猫又のアイデアは **au.libhalt.net** から来ています。<br>
 [TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - ベント追加、バイタル移動のコードを参考にさせていただきました！**Haoming37**さんありがとうございます！<br>
 
+## 使用させて頂いているカスタムコスメティック
+[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)<br>
+[TheOtherHats](https://github.com/Eisbison/TheOtherHats)(TOR)**Eisbison**さんありがとうございます！<br>
+[TheOtherHats-GM](https://github.com/yukinogatari/TheOtherHats-GM)(TORGM)**yukinogatari**さんありがとうございます！<br>
+[TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(めめ村スキン)**hinakkyu**さんありがとうございます！<br>
+[TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)**tugaru1975**さん、**Ujet222(Sakura_White)**さんありがとうございます！<br>
+
 ## 連絡について
 
 Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/95YuUZp4kM)
