@@ -33,7 +33,7 @@ namespace SuperNewRoles.Patches
                 //CustomPlate.UnlockedNamePlatesPatch.Postfix(HatManager.Instance);
             }
             public static string modColor = "#a6d289";
-            static async void Postfix(VersionShower __instance)
+            static void Postfix(VersionShower __instance)
             {
 
                 var amongUsLogo = GameObject.Find("bannerLogo_AmongUs");
@@ -52,7 +52,7 @@ namespace SuperNewRoles.Patches
 
                 credentials.alignment = TMPro.TextAlignmentOptions.Center;
                 credentials.fontSize *= 0.9f;
-                await AutoUpdate.checkForUpdate(credentials);
+                AutoUpdate.checkForUpdate(credentials);
 
                 var version = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(credentials);
                 version.transform.position = new Vector3(0, -0.35f, 0);
