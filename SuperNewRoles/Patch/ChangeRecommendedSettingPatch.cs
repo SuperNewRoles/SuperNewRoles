@@ -1,9 +1,5 @@
-using System;
-using System.Linq;
 using HarmonyLib;
-using UnhollowerBaseLib;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles
