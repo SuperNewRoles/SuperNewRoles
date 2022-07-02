@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Patch;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
@@ -28,6 +29,7 @@ namespace SuperNewRoles.Roles
             IsMeeting = false;
             IsCoolTimeSetted = false;
             IsStart = false;
+            LadderDead.Reset();
             Map.Data.ClearAndReloads();
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new();
@@ -138,6 +140,7 @@ namespace SuperNewRoles.Roles
             Tuna.ClearAndReload();
             Mafia.ClearAndReload();
             BlackCat.ClearAndReload();
+            SecretlyKiller.ClearAndReload();
             Spy.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
@@ -2253,6 +2256,40 @@ namespace SuperNewRoles.Roles
                 ImpostorCheckTask = (int)(AllTask * (int.Parse(CustomOptions.BlackCatCheckImpostorTask.getString().Replace("%", "")) / 100f));
             }
         }
+
+        public static class SecretlyKiller
+        {
+            public static List<PlayerControl> SecretlyKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static bool IsKillCoolChange;
+            public static bool IsBlackOutKillCharge;
+            public static int SecretlyKillLimit;
+            public static float SecretlyKillCoolTime;
+
+            public static float MainCool;
+            public static float SecretlyCool;
+
+            public static PlayerControl target;
+            public static DateTime ButtonTimer;
+            public static Sprite buttonSprite;
+            /*public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.KillButton.png", 115f);
+                return buttonSprite;
+            }*/
+            public static void ClearAndReload()
+            {
+                SecretlyKillerPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.SecretlyKillerKillCoolTime.getFloat();
+                IsKillCoolChange = CustomOptions.SecretlyKillerIsKillCoolTimeChange.getBool();
+                IsBlackOutKillCharge = CustomOptions.SecretlyKillerIsBlackOutKillCharge.getBool();
+                SecretlyKillLimit = (int)CustomOptions.SecretlyKillerSecretKillLimit.getFloat();
+                SecretlyKillCoolTime = CustomOptions.SecretlyKillerSecretKillCoolTime.getFloat();
+            }
+        }
+
         public static class Spy
         {
             public static List<PlayerControl> SpyPlayer;

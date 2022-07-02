@@ -223,7 +223,7 @@ namespace SuperNewRoles.Roles
             }\n        //セットクラス""".replace("ROLEID!!",MainClass.GetInput("RoleName")).replace("TEAM",MainClass.GetTeam()))'''
 
 
-        MainClass.WriteCodes("AllRoleSetClass.cs", "//プレイヤーカウント","""RoleId.ROLENAME => CustomOption.CustomOptions.ROLENAMEPlayerCount.getFloat(),\n                    //プレイヤーカウント""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+        MainClass.WriteCodes("AllRoleSetClass.cs", "//プレイヤーカウント","""RoleId.ROLENAME => CustomOption.CustomOptions.ROLENAMEPlayerCount.getFloat(),\n                //プレイヤーカウント""".replace("ROLENAME",MainClass.GetInput("RoleName")))
 
         # Roles/RoleHelper.cs
         if (not MainClass.GetBool("TeamGhost")):

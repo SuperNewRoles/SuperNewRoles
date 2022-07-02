@@ -688,7 +688,7 @@ RestrictCameraSetting,Camera Restrictions,カメラの制限
 RestrictVitalSetting,Vital Restrictions,バイタルの制限
 DeviceTimeSetting,Can use time,使用可能時間
 IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx
-restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnExDelicious,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい
+restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい
 HauntedWolfName,HauntedWolf,狼憑き
 HauntedWolfTitle1,Don't let the crew find out.,クルーにバレるな
 ReactorDurationSetting,Reactor Duration Time,リアクター継続時間の設定
@@ -755,7 +755,7 @@ SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクール�
 PositionSwapperNumTextName,Limits:{0},残り{0}回
 PositionSwapperButtonName,PositionSwap,スワップ
 PositionSwapperSwapText,Position swapper swapped you!,スワッパーによってスワップされました!
-PositionSwapperSwapText2,Position swapper swapped you!\n by the way，ykundesu isn't delicious?,スワッパーによってスワップされました!\nところでﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽｵｲｼｲﾃﾞｽﾖﾈ
+PositionSwapperSwapText2,Position swapper swapped you!\n by the way，ykundesu is delicious，isn't it?,スワッパーによってスワップされました!\nところでﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽｵｲｼｲﾃﾞｽﾖﾈ
 TunaName,Tuna,マグロ
 TunaTitle1,Always move!,常に動け！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間
@@ -770,3 +770,17 @@ SpyTitle1,Deceive the Imposter and lead the Cluemate camp to victory!,インポ�
 SpyDescription,Spies are crewmates but they look like friends to the Imposter.\n Spies are crewmates and have no special abilities.,スパイはクルーメイトですが、インポスターからは仲間に見えます。\nスパイはクルーメイトであり、特別な能力はありません。
 SpecimenVitalSetting,Move Vital to specimen (polus),標本室にバイタルを移動する(ポーラス)
 CustomDownloadSuperNewNamePlates,Download custom hat,カスタムハットをダウンロードする
+SecretlyKillerName,Secretly Killer,シークレットリーキラー
+SecretlyKillerTitle1,Please be quiet during the power outage.,停電中はお静かに
+SettingCoolCharge,Same in kill buttons,キル時のクール同期
+SettingBlackoutCharge,Kill cool charge during power outage,停電中にクールをためる
+SettingLimitName,Ability limit,制限回数
+SecretlyKillButtonName,Secretly\nKill,シークレットリー\nキル
+Zoomafterdeath,Zoom function after death,死後のズーム機能
+mousemode,Mouse wheel Mode,マウスホイールモード
+clairvoyantmode,ClairvoyantMode,千里眼モード
+clairvoyantCoolTime,ClairvoyantCoolTime,千里眼のクールダウン
+clairvoyantDurationTime,ClairvoyantDurationTime,千里眼の継続時間
+ClairvoyantButtonName,Clairvoyant!,千里眼
+LadderDead,Ladder Dead,転落死
+LadderDeadChance,Ladder Dead Chance,転落死する確率
