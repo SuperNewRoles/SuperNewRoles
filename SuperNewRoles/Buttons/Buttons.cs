@@ -677,13 +677,16 @@ namespace SuperNewRoles.Buttons
                     }
                     else if (PlayerControl.LocalPlayer.isRole(RoleId.Sheriff))
                     {
-                        if (RoleClass.Sheriff.KillMaxCount >= 1 && setTarget())
+                        if (RoleClass.Sheriff.KillMaxCount > 0 && setTarget())
                         {
-                            RoleClass.Sheriff.KillMaxCount--;
                             var Target = PlayerControlFixedUpdatePatch.setTarget();
-                            var misfire = !Roles.Sheriff.IsSheriffKill(Target);
-                            var TargetID = Target.PlayerId;
                             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
+                            var misfire = !Sheriff.IsSheriffKill(Target);
+                            if (RoleClass.Chief.SheriffPlayer.Contains(LocalID))
+                            {
+                                misfire = Sheriff.IsChiefSheriffKill(Target);
+                            }
+                            var TargetID = Target.PlayerId;
 
                             CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
                             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
@@ -1137,33 +1140,36 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = setTarget();
-                    if (!target.Data.Role.IsImpostor && target && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove && !RoleClass.Chief.IsCreateSheriff)
-                    {
-                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
-                        target.setRoleRPC(RoleId.Sheriff);
-                        RoleClass.Chief.IsCreateSheriff = true;
-                    }
-                    else if (target.Data.Role.IsImpostor)
-                    {
-                        if (ModeHandler.isMode(ModeId.Default))
+                    if (target && !RoleClass.Chief.IsCreateSheriff) {
+                        if (!target.isImpostor())
                         {
-                            if (PlayerControl.LocalPlayer.isRole(RoleId.Chief))
-                            {
-                                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-                                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                                writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                                writer.Write(byte.MaxValue);
-                                AmongUsClient.Instance.FinishRpcImmediately(writer);
-                                RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.PlayerId, byte.MaxValue);
-                            }
+                            MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ChiefSidekick);
+                            writer.Write(target);
+                            RPCHelper.EndRPC(writer);
+                            RoleClass.Chief.IsCreateSheriff = true;
                         }
-                        else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                        else
                         {
-                            if (AmongUsClient.Instance.AmHost)
+                            if (ModeHandler.isMode(ModeId.Default))
                             {
-                                foreach (PlayerControl p in RoleClass.Chief.ChiefPlayer)
+                                if (PlayerControl.LocalPlayer.isRole(RoleId.Chief))
                                 {
-                                    p.RpcMurderPlayer(p);
+                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
+                                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                                    writer.Write(byte.MaxValue);
+                                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                                    RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.PlayerId, byte.MaxValue);
+                                }
+                            }
+                            else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                            {
+                                if (AmongUsClient.Instance.AmHost)
+                                {
+                                    foreach (PlayerControl p in RoleClass.Chief.ChiefPlayer)
+                                    {
+                                        p.RpcMurderPlayer(p);
+                                    }
                                 }
                             }
                         }

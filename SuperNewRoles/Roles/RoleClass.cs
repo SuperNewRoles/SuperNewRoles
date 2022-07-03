@@ -1982,8 +1982,15 @@ namespace SuperNewRoles.Roles
         public static class Chief
         {
             public static List<PlayerControl> ChiefPlayer;
+            public static List<byte> SheriffPlayer;
             public static Color32 color = new(255, 255, 0, byte.MaxValue);
             public static bool IsCreateSheriff;
+            public static float CoolTime;
+            public static bool IsNeutralKill;
+            public static bool IsLoversKill;
+            public static bool IsMadRoleKill;
+            public static bool MadRoleKill;
+            public static int KillLimit;
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
@@ -1994,7 +2001,13 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 ChiefPlayer = new();
+                SheriffPlayer = new();
                 IsCreateSheriff = false;
+                CoolTime = CustomOptions.ChiefSheriffCoolTime.getFloat();
+                IsNeutralKill = CustomOptions.ChiefIsNeutralKill.getBool();
+                IsLoversKill = CustomOptions.ChiefIsLoversKill.getBool();
+                IsMadRoleKill = CustomOptions.ChiefIsMadRoleKill.getBool();
+                KillLimit = (int)CustomOptions.ChiefKillLimit.getFloat();
             }
         }
         public static class Cleaner

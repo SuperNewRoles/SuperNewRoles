@@ -239,7 +239,7 @@ SheriffName,Sheriff,シェリフ
 SheriffTitle1,Kill the outsider!,人外をキルしよう
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう
 SheriffDescription,Can shoot and kill an imposter if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します
-SheriffCoolDownSetting,Kill Cooldown,キルクールダウン
+SheriffCoolDownSetting,Kill Cooldown,キルクールタイム
 SheriffIsKillNewtralSetting,Can Kill a Neutral,第三陣営をキルできる
 SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる
 SheriffIsKillMadRoleSetting,Can Kill a MadRole,マッド系役職をキルできる

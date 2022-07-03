@@ -196,9 +196,21 @@ namespace SuperNewRoles.CustomRPC
         UseVitalsTime,
         FixLights,
         SetSecretRoomTeleportStatus
+        ChiefSidekick
     }
     public static class RPCProcedure
     {
+        public static void ChiefSidekick(byte targetid)
+        {
+            RoleClass.Chief.SheriffPlayer.Add(targetid);
+            SetRole(targetid, (byte)RoleId.Sheriff);
+            if (targetid == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                Sheriff.ResetKillCoolDown();
+                RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
+            }
+            UncheckedSetVanilaRole(targetid, 0);
+        }
         public static void FixLights()
         {
             SwitchSystem switchSystem = MapUtilities.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
@@ -1161,6 +1173,8 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.SetSecretRoomTeleportStatus:
                             MapCustoms.Airship.SecretRoom.SetSecretRoomTeleportStatus((MapCustoms.Airship.SecretRoom.Status)reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                        case CustomRPC.ChiefSidekick:
+                            ChiefSidekick(reader.ReadByte());
                             break;
                     }
                 }
