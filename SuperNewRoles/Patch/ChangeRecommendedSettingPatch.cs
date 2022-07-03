@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles
 
@@ -41,45 +42,49 @@ namespace SuperNewRoles
             __instance.RoleOptions.ProtectionDurationSeconds = 10f;
             __instance.RoleOptions.EngineerCooldown = 30f;
             __instance.RoleOptions.EngineerInVentMaxTime = 15f;
-            if (ModeHandler.isMode(ModeId.HideAndSeek, false)) //ハイドアンドシーク
+            switch (ModeHandler.GetMode(false))
             {
-                __instance.PlayerSpeedMod = 1.75f;
-                __instance.CrewLightMod = 5f;
-                __instance.ImpostorLightMod = 0.25f;
-                __instance.NumImpostors = 1;
-                __instance.NumCommonTasks = 0;
-                __instance.NumLongTasks = 0;
-                __instance.NumShortTasks = 6;
-                __instance.KillCooldown = 10f;
-                __instance.TaskBarMode = 0;
-            }
-            if (ModeHandler.isMode(ModeId.BattleRoyal, false)) //バトルロイヤルモード
-            {
-                __instance.PlayerSpeedMod = 1.75f;
-                __instance.ImpostorLightMod = 2f;
-                __instance.KillCooldown = 1f;
-                __instance.TaskBarMode = TaskBarMode.Invisible;
-            }
-            if (ModeHandler.isMode(ModeId.Zombie, false)) //ゾンビモード
-            {
-                __instance.PlayerSpeedMod = 1.5f;
-                __instance.CrewLightMod = 1.5f;
-                __instance.ImpostorLightMod = 0.25f;
-                __instance.NumImpostors = 1;
-                __instance.NumCommonTasks = 0;
-                __instance.NumLongTasks = 0;
-                __instance.NumShortTasks = 6;
-                __instance.TaskBarMode = 0;
-            }
-            if (ModeHandler.isMode(ModeId.CopsRobbers, false)) //ケイドロモード
-            {
-                __instance.PlayerSpeedMod = 1.5f;
-                __instance.CrewLightMod = 2.0f;
-                __instance.ImpostorLightMod = 1.5f;
-                __instance.NumCommonTasks = 0;
-                __instance.NumLongTasks = 0;
-                __instance.NumShortTasks = 6;
-                __instance.TaskBarMode = 0;
+                //ハイドアンドシーク
+                case ModeId.HideAndSeek:
+                    __instance.PlayerSpeedMod = 1.75f;
+                    __instance.CrewLightMod = 5f;
+                    __instance.ImpostorLightMod = 0.25f;
+                    __instance.NumImpostors = 1;
+                    __instance.NumCommonTasks = 0;
+                    __instance.NumLongTasks = 0;
+                    __instance.NumShortTasks = 6;
+                    __instance.KillCooldown = 10f;
+                    __instance.TaskBarMode = 0;
+                    break;
+                //バトルロイヤル
+                case ModeId.BattleRoyal:
+                    __instance.PlayerSpeedMod = 1.75f;
+                    __instance.ImpostorLightMod = 2f;
+                    __instance.KillCooldown = 1f;
+                    __instance.TaskBarMode = TaskBarMode.Invisible;
+                    break;
+                //ゾンビモード
+                case ModeId.Zombie:
+
+                    __instance.PlayerSpeedMod = 1.5f;
+                    __instance.CrewLightMod = 1.5f;
+                    __instance.ImpostorLightMod = 0.25f;
+                    __instance.NumImpostors = 1;
+                    __instance.NumCommonTasks = 0;
+                    __instance.NumLongTasks = 0;
+                    __instance.NumShortTasks = 6;
+                    __instance.TaskBarMode = 0;
+                    break;
+                //ケイドロモード
+                case ModeId.CopsRobbers:
+                    __instance.PlayerSpeedMod = 1.5f;
+                    __instance.CrewLightMod = 2.0f;
+                    __instance.ImpostorLightMod = 1.5f;
+                    __instance.NumCommonTasks = 0;
+                    __instance.NumLongTasks = 0;
+                    __instance.NumShortTasks = 6;
+                    __instance.TaskBarMode = 0;
+                    break;
             }
             return false;
         }
