@@ -1,11 +1,11 @@
-﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -16,14 +16,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (player == null) return false;
                 if (player.isClearTask() && !player.isRole(CustomRPC.RoleId.Workperson))
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (!p.Data.Disconnected)
                         {
                             var tasks = taskTypeIds;
                             if (p.PlayerId != player.PlayerId)
                             {
-                                tasks = (new List<byte>() { }).ToArray();
+                                tasks = (new() { }).ToArray();
                             }
                             MessageWriter messageWriter2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SetTasks, SendOption.Reliable,p.getClientId());
                             messageWriter2.Write(playerId);
@@ -41,6 +41,5 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     messageWriter.EndMessage();
                     return false;
                 }*/
-
     }
 }

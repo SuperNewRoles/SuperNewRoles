@@ -1,10 +1,8 @@
-﻿using HarmonyLib;
+using System;
+using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -23,7 +21,8 @@ namespace SuperNewRoles.Roles
             if (PlayerControl.LocalPlayer.isImpostor())
             {
                 CoolTime = RoleClass.EvilScientist.CoolTime;
-            } else
+            }
+            else
             {
                 CoolTime = RoleClass.NiceScientist.CoolTime;
             }
@@ -35,52 +34,50 @@ namespace SuperNewRoles.Roles
             RoleClass.NiceScientist.IsScientist = true;
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, Hazel.SendOption.Reliable, -1);
             writer.Write(true);
-            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetScientistRPC(true, PlayerControl.LocalPlayer.PlayerId);
+            CustomRPC.RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
             SpeedBooster.ResetCoolDown();
         }
-        public static void ResetScientist()
-        {
-        }
+        public static void ResetScientist() { }
         public static void ScientistEnd()
         {
             RoleClass.NiceScientist.IsScientist = false;
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, Hazel.SendOption.Reliable, -1);
             writer.Write(false);
-            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetScientistRPC(false, PlayerControl.LocalPlayer.PlayerId);
+            CustomRPC.RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
             ResetScientist();
         }
-        public static void setOpacity(PlayerControl player, float opacity,bool cansee)
+        public static void setOpacity(PlayerControl player, float opacity, bool cansee)
         {
             // Sometimes it just doesn't work?
             var color = Color.Lerp(Palette.ClearWhite, Palette.White, opacity);
             try
             {
-                if (player.MyPhysics?.rend != null)
-                    player.MyPhysics.rend.color = color;
+                if (player.MyRend() != null)
+                    player.MyRend().color = color;
 
-                if (player.MyPhysics?.Skin?.layer != null)
-                    player.MyPhysics.Skin.layer.color = color;
+                if (player.GetSkin().layer != null)
+                    player.GetSkin().layer.color = color;
 
-                if (player.HatRenderer != null)
-                    player.HatRenderer.color = color;
+                if (player.HatRend() != null)
+                    player.HatRend().color = color;
 
-                if (player.CurrentPet?.rend != null)
-                    player.CurrentPet.rend.color = color;
+                if (player.GetPet()?.rend != null)
+                    player.GetPet().rend.color = color;
 
-                if (player.CurrentPet?.shadowRend != null)
-                    player.CurrentPet.shadowRend.color = color;
+                if (player.GetPet()?.shadowRend != null)
+                    player.GetPet().shadowRend.color = color;
 
-                if (player.VisorSlot != null)
-                    player.VisorSlot.color = color;
+                if (player.VisorSlot() != null)
+                    player.VisorSlot().Image.color = color;
 
                 if (player.nameText != null)
                     if (opacity == 0.1f)
                     {
-                        player.nameText.text = "";
+                        player.nameText().text = "";
                     }
             }
             catch { }
@@ -105,13 +102,13 @@ namespace SuperNewRoles.Roles
                     if (ison)
                     {
                         opacity = Math.Max(opacity, 0);
-                        Scientist.MyRend.material.SetFloat("_Outline", 0f);
+                        Scientist.MyRend().material.SetFloat("_Outline", 0f);
                     }
                     else
                     {
                         opacity = Math.Max(opacity, 1.5f);
                     }
-                    setOpacity(Scientist, opacity,canSee);
+                    setOpacity(Scientist, opacity, canSee);
                 }
             }
         }

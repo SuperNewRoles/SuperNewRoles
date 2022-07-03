@@ -1,9 +1,9 @@
-﻿using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HarmonyLib;
+using Hazel;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.HideAndSeek
@@ -12,44 +12,45 @@ namespace SuperNewRoles.Mode.HideAndSeek
     {
         public class RepairSystemPatch
         {
-            public static void Postfix(PlayerControl __instance) {
-                        foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                        {
-                        if (task.TaskType == TaskTypes.FixLights)
-                        {
-                            ShipStatus.Instance.RepairSystem(SystemTypes.Electrical, PlayerControl.LocalPlayer, (byte)16);
-                            ShipStatus.Instance.RepairSystem(SystemTypes.Laboratory, PlayerControl.LocalPlayer, (byte)16);
-                            ShipStatus.Instance.RepairSystem(SystemTypes.Reactor, PlayerControl.LocalPlayer, (byte)16);
-                            ShipStatus.Instance.RepairSystem(SystemTypes.LifeSupp, PlayerControl.LocalPlayer, (byte)16);
-                        }
-                            else if (task.TaskType == TaskTypes.RestoreOxy)
-                            {
-                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 0 | 64);
-                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.LifeSupp, 1 | 64);
-                            }
-                            else if (task.TaskType == TaskTypes.ResetReactor)
-                            {
-                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 16);
-                            }
-                            else if (task.TaskType == TaskTypes.ResetSeismic)
-                            {
-                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Laboratory, 16);
-                            }
-                            else if (task.TaskType == TaskTypes.FixComms)
-                            {
-                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
-                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
-                            }
-                            else if (task.TaskType == TaskTypes.StopCharles)
-                            {
-                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 0 | 16);
-                                ShipStatus.Instance.RpcRepairSystem(SystemTypes.Reactor, 1 | 16);
-                            }
-                        }
-                        foreach (PlainDoor door in ShipStatus.Instance.AllDoors)
-                        {
-                            door.SetDoorway(true);
-                        }
+            public static void Postfix(PlayerControl __instance)
+            {
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                {
+                    if (task.TaskType == TaskTypes.FixLights)
+                    {
+                        MapUtilities.CachedShipStatus.RepairSystem(SystemTypes.Electrical, PlayerControl.LocalPlayer, (byte)16);
+                        MapUtilities.CachedShipStatus.RepairSystem(SystemTypes.Laboratory, PlayerControl.LocalPlayer, (byte)16);
+                        MapUtilities.CachedShipStatus.RepairSystem(SystemTypes.Reactor, PlayerControl.LocalPlayer, (byte)16);
+                        MapUtilities.CachedShipStatus.RepairSystem(SystemTypes.LifeSupp, PlayerControl.LocalPlayer, (byte)16);
+                    }
+                    else if (task.TaskType == TaskTypes.RestoreOxy)
+                    {
+                        MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 0 | 64);
+                        MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.LifeSupp, 1 | 64);
+                    }
+                    else if (task.TaskType == TaskTypes.ResetReactor)
+                    {
+                        MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 16);
+                    }
+                    else if (task.TaskType == TaskTypes.ResetSeismic)
+                    {
+                        MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Laboratory, 16);
+                    }
+                    else if (task.TaskType == TaskTypes.FixComms)
+                    {
+                        MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 0);
+                        MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Comms, 16 | 1);
+                    }
+                    else if (task.TaskType == TaskTypes.StopCharles)
+                    {
+                        MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 0 | 16);
+                        MapUtilities.CachedShipStatus.RpcRepairSystem(SystemTypes.Reactor, 1 | 16);
+                    }
+                }
+                foreach (PlainDoor door in MapUtilities.CachedShipStatus.AllDoors)
+                {
+                    door.SetDoorway(true);
+                }
             }
         }
         public class HASFixed
@@ -58,7 +59,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl player in CachedPlayer.AllPlayers)
                     {
                         if (player.isImpostor())
                         {
@@ -67,14 +68,12 @@ namespace SuperNewRoles.Mode.HideAndSeek
                         else
                         {
                             player.RpcSetName(ModHelpers.cs(new Color32(0, 255, 0, byte.MaxValue), player.Data.GetPlayerName(PlayerOutfitType.Default)));
-
                         }
                     }
                     RepairSystemPatch.Postfix(__instance);
                 }
-                HudManager.Instance.ReportButton.Hide();
-                HudManager.Instance.AbilityButton.Hide();
-                
+                FastDestroyableSingleton<HudManager>.Instance.ReportButton.Hide();
+                FastDestroyableSingleton<HudManager>.Instance.AbilityButton.Hide();
             }
         }
     }

@@ -1,4 +1,8 @@
-﻿
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomRPC;
@@ -6,10 +10,6 @@ using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
@@ -19,7 +19,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (CheckAndEndGameForDefaultWin(__instance,statistics)) return false;
+            if (CheckAndEndGameForDefaultWin(__instance, statistics)) return false;
             if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
@@ -29,7 +29,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void WinNeutral(List<PlayerControl> players)
         {
             /**
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (players.IsCheckListPlayerControl(p))
                 {
@@ -41,32 +41,33 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             **/
         }
-        public static void CustomEndGame(ShipStatus __instance,GameOverReason reason, bool showAd)
+        public static void CustomEndGame(ShipStatus __instance, GameOverReason reason, bool showAd)
         {
-                Chat.IsOldSHR = true;
-                List<PlayerControl>? WinGods = null;
-                foreach (PlayerControl p in RoleClass.God.GodPlayer)
-                {
-                    if (p.isAlive())
+            Chat.IsOldSHR = true;
+            List<PlayerControl> WinGods = null;
+            foreach (PlayerControl p in RoleClass.God.GodPlayer)
+            {
+                if (p.isAlive())
                 {
                     var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
                     if (!RoleClass.God.IsTaskEndWin || complate >= all)
                     {
                         if (WinGods == null)
                         {
-                            WinGods = new List<PlayerControl>();
+                            WinGods = new();
                         }
                         WinGods.Add(p);
                         Chat.WinCond = CustomGameOverReason.GodWin;
                     }
-                    }
                 }
+            }
             if (Chat.WinCond == CustomGameOverReason.GodWin)
             {
                 WinNeutral(WinGods);
                 Chat.Winner = WinGods;
             }
-            foreach (PlayerControl p in RoleClass.Sheriff.SheriffPlayer) {
+            foreach (PlayerControl p in RoleClass.Sheriff.SheriffPlayer)
+            {
                 p.RpcSetRole(RoleTypes.GuardianAngel);
             }
             foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
@@ -89,49 +90,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             else if (OnGameEndPatch.EndData == CustomGameOverReason.JackalWin)
             {
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.isRole(RoleId.Jackal)) {
+                    if (!p.isRole(RoleId.Jackal))
+                    {
                         p.RpcSetRole(RoleTypes.GuardianAngel);
                     }
                 }
             }
-                /*
-                    foreach (PlayerControl p in RoleClass.Opportunist.OpportunistPlayer)
-                    {
-                        if (p.isAlive())
-                        {
-                            if (IsCrewmateWin)
-                            {
-                                p.RpcSetRoleDesync(RoleTypes.Crewmate);
-                            }
-                            else
-                            {
-                                p.RpcSetRoleDesync(RoleTypes.Impostor);
-                            }
-                        }
-                        else
-                        {
-                            if (IsCrewmateWin)
-                            {
-                                p.RpcSetRoleDesync(RoleTypes.Impostor);
-                            }
-                            else
-                            {
-                                p.RpcSetRoleDesync(RoleTypes.Crewmate);
-                            }
-                        }
-                    }
-                */
-                __instance.enabled = false;
+            FixedUpdate.SetRoleNames(true);
+            __instance.enabled = false;
             ShipStatus.RpcEndGame(reason, showAd);
-
-            //変更した設定を直す
-            /*
-            PlayerControl.GameOptions = ChangeGameOptions.DefaultGameOption;
-            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
-            */
-            //終わり
         }
         public static bool CheckAndEndGameForSabotageWin(ShipStatus __instance)
         {
@@ -167,10 +136,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
         public static bool CheckAndEndGameForTaskWin(ShipStatus __instance)
         {
-            if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks )//&& Chat.WinCond == null)
+            if (GameData.Instance.TotalTasks <= GameData.Instance.CompletedTasks)//&& Chat.WinCond == null)
             {
                 Chat.WinCond = CustomGameOverReason.CrewmateWin;
-                CustomEndGame(__instance,GameOverReason.HumansByTask, false);
+                CustomEndGame(__instance, GameOverReason.HumansByTask, false);
                 return true;
             }
             return false;
@@ -184,8 +153,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 Writer.EndRPC();
                 CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JackalWin);
                 __instance.enabled = false;
-                SuperNewRolesPlugin.Logger.LogInfo("じゃっかるうぃん");
-                CustomEndGame(__instance,GameOverReason.ImpostorByKill, false);
+                CustomEndGame(__instance, GameOverReason.ImpostorByKill, false);
                 return true;
             }
             return false;
@@ -218,30 +186,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             if (num2 <= 0 && statistics.TeamJackalAlive <= 0 && (!DestroyableSingleton<TutorialManager>.InstanceExists || num3 > 0))
             {
-                __instance.BeginCalled = false;
-                CustomEndGame(__instance,GameOverReason.HumansByVote, !SaveManager.BoughtNoAds);
+                CustomEndGame(__instance, GameOverReason.HumansByVote, !SaveManager.BoughtNoAds);
             }
             else if (num1 <= num2 && statistics.TeamJackalAlive < 1)
             {
                 if (!DestroyableSingleton<TutorialManager>.InstanceExists)
                 {
-                    __instance.BeginCalled = false;
-                    GameOverReason endReason;
-                    switch (TempData.LastDeathReason)
+                    var endReason = TempData.LastDeathReason switch
                     {
-                        case DeathReason.Exile:
-                            endReason = GameOverReason.ImpostorByVote;
-                            break;
-                        case DeathReason.Kill:
-                            endReason = GameOverReason.ImpostorByKill;
-                            break;
-                        default:
-                            endReason = GameOverReason.ImpostorByVote;
-                            break;
-                    }
+                        DeathReason.Exile => GameOverReason.ImpostorByVote,
+                        DeathReason.Kill => GameOverReason.ImpostorByKill,
+                        _ => GameOverReason.ImpostorByVote,
+                    };
                     int impostorplayer = 0;
                     int egoistplayer = 0;
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.isAlive())
                         {
@@ -263,7 +222,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Writer.EndRPC();
                         RPCProcedure.SetWinCond((byte)CustomGameOverReason.DemonWin);
                     }
-                    CustomEndGame(__instance,endReason, !SaveManager.BoughtNoAds);
+                    CustomEndGame(__instance, endReason, !SaveManager.BoughtNoAds);
                     return true;
                 }
             }
@@ -279,8 +238,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             return false;
         }
-
-
         public static bool CheckAndEndGameForCrewmateWin(ShipStatus __instance, PlayerStatistics statistics)
         {
             if (statistics.CrewAlive > 0 && statistics.TeamImpostorsAlive < 1 && statistics.TeamJackalAlive < 1)// && Chat.WinCond == null)

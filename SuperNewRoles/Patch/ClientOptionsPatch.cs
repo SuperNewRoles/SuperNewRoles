@@ -1,8 +1,8 @@
-using HarmonyLib;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using HarmonyLib;
 using TMPro;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using static UnityEngine.UI.Button;
@@ -19,16 +19,10 @@ namespace SuperNewRoles.Patch
             new SelectionBehaviour("CustomAutoCopyGameCode", () => ConfigRoles.AutoCopyGameCode.Value = !ConfigRoles.AutoCopyGameCode.Value, ConfigRoles.AutoCopyGameCode.Value),
             new SelectionBehaviour("CustomProcessDown", () => ConfigRoles.CustomProcessDown.Value = !ConfigRoles.CustomProcessDown.Value, ConfigRoles.CustomProcessDown.Value),
             new SelectionBehaviour("CustomIsVersionErrorView", () => ConfigRoles.IsVersionErrorView.Value = !ConfigRoles.IsVersionErrorView.Value, ConfigRoles.IsVersionErrorView.Value),
-            new SelectionBehaviour("CustomHorseMode", () =>HorseChange(), ConfigRoles.IsHorseMode.Value),
+            new SelectionBehaviour("CustomHideTaskArrows", () => TasksArrowsOption.hideTaskArrows = ConfigRoles.HideTaskArrows.Value = !ConfigRoles.HideTaskArrows.Value, ConfigRoles.HideTaskArrows.Value),
+            new SelectionBehaviour("CustomDownloadSuperNewNamePlates", () => ConfigRoles.DownloadSuperNewNamePlates.Value = !ConfigRoles.DownloadSuperNewNamePlates.Value, ConfigRoles.DownloadSuperNewNamePlates.Value),
         };
-        public static bool HorseChange()
-        {
-            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.NotJoined)
-            {
-                ConfigRoles.IsHorseMode.Value = !ConfigRoles.IsHorseMode.Value;
-            }
-            return ConfigRoles.IsHorseMode.Value;
-        }
+
         private static GameObject popUp;
         private static TextMeshPro titleText;
 
@@ -38,7 +32,7 @@ namespace SuperNewRoles.Patch
 
         private static ToggleButtonBehaviour buttonPrefab;
         private static Vector3? _origin;
-        
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
         public static void MainMenuManager_StartPostfix(MainMenuManager __instance)
@@ -52,14 +46,16 @@ namespace SuperNewRoles.Patch
             titleText.gameObject.SetActive(false);
             Object.DontDestroyOnLoad(titleText);
         }
-        private static Vector3? origin;
         public static float xOffset = 1.75f;
-        [HarmonyPatch(typeof(OptionsMenuBehaviour),nameof(OptionsMenuBehaviour.Update))]
-        class OptionsUpdate {
+        [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Update))]
+        class OptionsUpdate
+        {
             public static void Postfix(OptionsMenuBehaviour __instance)
             {
-                if (__instance.CensorChatButton?.gameObject != null) __instance.CensorChatButton.gameObject.SetActive(false);
-                if (__instance.EnableFriendInvitesButton?.gameObject != null) __instance.EnableFriendInvitesButton.gameObject.SetActive(false);
+                if (__instance.CensorChatButton != null) __instance.CensorChatButton.gameObject.SetActive(false);
+                if (__instance.EnableFriendInvitesButton != null) __instance.EnableFriendInvitesButton.gameObject.SetActive(false);
+                if (__instance.StreamerModeButton != null) __instance.StreamerModeButton.gameObject.SetActive(false);
+                if (__instance.ColorBlindButton != null) __instance.ColorBlindButton.gameObject.SetActive(false);
             }
         }
         [HarmonyPostfix]
@@ -71,7 +67,7 @@ namespace SuperNewRoles.Patch
             {
                 CreateCustom(__instance);
             }
-            
+
             if (!buttonPrefab)
             {
                 buttonPrefab = Object.Instantiate(__instance.CensorChatButton);
@@ -79,8 +75,6 @@ namespace SuperNewRoles.Patch
                 buttonPrefab.name = "CensorChatPrefab";
                 buttonPrefab.gameObject.SetActive(false);
             }
-            
-
             SetUpOptions(__instance);
             InitializeMoreButton(__instance);
         }
@@ -91,16 +85,15 @@ namespace SuperNewRoles.Patch
             Object.DontDestroyOnLoad(popUp);
             var transform = popUp.transform;
             var pos = transform.localPosition;
-            pos.z = -810f; 
+            pos.z = -810f;
             transform.localPosition = pos;
 
             Object.Destroy(popUp.GetComponent<OptionsMenuBehaviour>());
             foreach (var gObj in popUp.gameObject.GetAllChilds())
             {
-                if (gObj.name != "Background" && gObj.name != "CloseButton")
+                if (gObj.name is not "Background" and not "CloseButton")
                     Object.Destroy(gObj);
             }
-            
             popUp.SetActive(false);
         }
 
@@ -109,22 +102,26 @@ namespace SuperNewRoles.Patch
             moreOptions = Object.Instantiate(buttonPrefab, __instance.CensorChatButton.transform.parent);
             var transform = __instance.CensorChatButton.transform;
             _origin ??= transform.localPosition;
-            
+
             transform.localPosition = _origin.Value + Vector3.left * 1.3f;
             moreOptions.transform.localPosition = _origin.Value + Vector3.right * 1.3f;
+            var pos = moreOptions.transform.localPosition;
+            moreOptions.transform.localScale *= 1.1f;
+            float count = 1.55f;
+            moreOptions.transform.localPosition = new Vector3(pos.x*1.5f, pos.y * count, pos.z);
             var trans = moreOptions.transform.localPosition;
             moreOptions.gameObject.SetActive(true);
             trans = moreOptions.transform.position;
             moreOptions.Text.text = ModTranslation.getString("modOptionsText");
             var moreOptionsButton = moreOptions.GetComponent<PassiveButton>();
             moreOptionsButton.OnClick = new ButtonClickedEvent();
-            moreOptionsButton.OnClick.AddListener((Action) (() =>
+            moreOptionsButton.OnClick.AddListener((Action)(() =>
             {
                 if (!popUp) return;
 
-                if (__instance.transform.parent && __instance.transform.parent == HudManager.Instance.transform)
+                if (__instance.transform.parent && __instance.transform.parent == FastDestroyableSingleton<HudManager>.Instance.transform)
                 {
-                    popUp.transform.SetParent(HudManager.Instance.transform);
+                    popUp.transform.SetParent(FastDestroyableSingleton<HudManager>.Instance.transform);
                     popUp.transform.localPosition = new Vector3(0, 0, -800f);
                 }
                 else
@@ -132,7 +129,6 @@ namespace SuperNewRoles.Patch
                     popUp.transform.SetParent(null);
                     Object.DontDestroyOnLoad(popUp);
                 }
-                
                 CheckSetTitle();
                 RefreshOpen(__instance);
             }));
@@ -144,11 +140,11 @@ namespace SuperNewRoles.Patch
             popUp.gameObject.SetActive(true);
             SetUpOptions(__instance);
         }
-        
+
         private static void CheckSetTitle()
         {
             if (!popUp || popUp.GetComponentInChildren<TextMeshPro>() || !titleText) return;
-            
+
             var title = titleTextTitle = Object.Instantiate(titleText, popUp.transform);
             title.GetComponent<RectTransform>().localPosition = Vector3.up * 2.3f;
             title.gameObject.SetActive(true);
@@ -173,7 +169,7 @@ namespace SuperNewRoles.Patch
                 {
                     button = __instance.EnableFriendInvitesButton;
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("ƒ{ƒ^ƒ“:"+button.name);
+                SuperNewRolesPlugin.Logger.LogInfo("ï¿½{ï¿½^ï¿½ï¿½:"+button.name);
                 var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
 
                 button.transform.position = new Vector3(0,0,0);
@@ -201,15 +197,23 @@ namespace SuperNewRoles.Patch
                     spr.size = new Vector2(2.2f, .7f);
                 modButtons.Add(button);
             }*/
-            for (var i = 0; i < 2; i++)
+            for (var i = 0; i < 4; i++)
             {
                 ToggleButtonBehaviour mainbutton = null;
-                if (i == 0)
+                switch (i)
                 {
-                    mainbutton = __instance.CensorChatButton;
-                } else
-                {
-                    mainbutton = __instance.EnableFriendInvitesButton;
+                    case 0:
+                        mainbutton = __instance.CensorChatButton;
+                        break;
+                    case 1:
+                        mainbutton = __instance.EnableFriendInvitesButton;
+                        break;
+                    case 2:
+                        mainbutton = __instance.StreamerModeButton;
+                        break;
+                    case 3:
+                        mainbutton = __instance.ColorBlindButton;
+                        break;
                 }
                 var button = Object.Instantiate(buttonPrefab, popUp.transform);
                 var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
@@ -221,24 +225,38 @@ namespace SuperNewRoles.Patch
                 button.Background.color = mainbutton.onState ? Color.green : Palette.ImpostorRed;
                 try
                 {
-                    if (i == 0)
+                    switch (i)
                     {
-                        button.Text.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsCensorChat);
-                    }
-                    else
-                    {
-                        button.Text.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsEnableFriendInvites);
+                        case 0:
+                            button.Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsCensorChat);
+                            break;
+                        case 1:
+                            button.Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsEnableFriendInvites);
+                            break;
+                        case 2:
+                            button.Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsStreamerMode);
+                            break;
+                        case 3:
+                            button.Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsColorblind);
+                            break;
                     }
                 }
                 catch
                 {
-                    if (i == 0)
+                    switch (i)
                     {
-                        button.Text.text = __instance.CensorChatButton.Text.text;
-                    }
-                    else
-                    {
-                        button.Text.text = __instance.EnableFriendInvitesButton.Text.text;
+                        case 0:
+                            button.Text.text = __instance.CensorChatButton.Text.text;
+                            break;
+                        case 1:
+                            button.Text.text = __instance.EnableFriendInvitesButton.Text.text;
+                            break;
+                        case 2:
+                            button.Text.text = __instance.StreamerModeButton.Text.text;
+                            break;
+                        case 3:
+                            button.Text.text = __instance.ColorBlindButton.Text.text;
+                            break;
                     }
                 }
                 button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
@@ -269,10 +287,10 @@ namespace SuperNewRoles.Patch
                     spr.size = new Vector2(2.2f, .7f);
                 modButtons.Add(button);
             }
-            for (var i = 2; i < AllOptions.Length+2; i++)
+            for (var i = 4; i < AllOptions.Length + 4; i++)
             {
-                var info = AllOptions[i-2];
-                
+                var info = AllOptions[i - 4];
+
                 var button = Object.Instantiate(buttonPrefab, popUp.transform);
                 var pos = new Vector3(i % 2 == 0 ? -1.17f : 1.17f, 1.3f - i / 2 * 0.8f, -.5f);
 
@@ -281,7 +299,7 @@ namespace SuperNewRoles.Patch
 
                 button.onState = info.DefaultValue;
                 button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
-                
+
                 button.Text.text = ModTranslation.getString(info.Title);
                 button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
                 button.Text.font = Object.Instantiate(titleText.font);
@@ -289,24 +307,24 @@ namespace SuperNewRoles.Patch
 
                 button.name = info.Title.Replace(" ", "") + "Toggle";
                 button.gameObject.SetActive(true);
-                
+
                 var passiveButton = button.GetComponent<PassiveButton>();
                 var colliderButton = button.GetComponent<BoxCollider2D>();
-                
+
                 colliderButton.size = new Vector2(2.2f, .7f);
-                
+
                 passiveButton.OnClick = new ButtonClickedEvent();
                 passiveButton.OnMouseOut = new UnityEvent();
                 passiveButton.OnMouseOver = new UnityEvent();
 
-                passiveButton.OnClick.AddListener((Action) (() =>
+                passiveButton.OnClick.AddListener((Action)(() =>
                 {
                     button.onState = info.OnClick();
                     button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
                 }));
-                
-                passiveButton.OnMouseOver.AddListener((Action) (() => button.Background.color = new Color32(34 ,139, 34, byte.MaxValue)));
-                passiveButton.OnMouseOut.AddListener((Action) (() => button.Background.color = button.onState ? Color.green : Palette.ImpostorRed));
+
+                passiveButton.OnMouseOver.AddListener((Action)(() => button.Background.color = new Color32(34, 139, 34, byte.MaxValue)));
+                passiveButton.OnMouseOut.AddListener((Action)(() => button.Background.color = button.onState ? Color.green : Palette.ImpostorRed));
 
                 foreach (var spr in button.gameObject.GetComponentsInChildren<SpriteRenderer>())
                     spr.size = new Vector2(2.2f, .7f);
@@ -314,10 +332,10 @@ namespace SuperNewRoles.Patch
                 modButtons.Add(button);
             }
         }
-        
+
         private static IEnumerable<GameObject> GetAllChilds(this GameObject Go)
         {
-            for (var i = 0; i< Go.transform.childCount; i++)
+            for (var i = 0; i < Go.transform.childCount; i++)
             {
                 yield return Go.transform.GetChild(i).gameObject;
             }
@@ -332,18 +350,18 @@ namespace SuperNewRoles.Patch
                 moreOptions.Text.text = ModTranslation.getString("modOptionsText");
             try
             {
-                modButtons[0].Text.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsCensorChat);
-                modButtons[1].Text.text = DestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsEnableFriendInvites);
+                modButtons[0].Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsCensorChat);
+                modButtons[1].Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsEnableFriendInvites);
             }
             catch { }
             for (int i = 0; i < AllOptions.Length; i++)
             {
                 if (i >= modButtons.Count) break;
-                modButtons[i+2].Text.text = ModTranslation.getString(AllOptions[i].Title);
+                modButtons[i + 2].Text.text = ModTranslation.getString(AllOptions[i].Title);
             }
         }
 
-        private class SelectionBehaviour
+        public class SelectionBehaviour
         {
             public string Title;
             public Func<bool> OnClick;
@@ -357,14 +375,14 @@ namespace SuperNewRoles.Patch
             }
         }
     }
-    
+
     [HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.SetText))]
-	public static class HiddenTextPatch
-	{
-		private static void Postfix(TextBoxTMP __instance)
-		{
-			bool flag = ConfigRoles.StreamerMode.Value && (__instance.name == "GameIdText" || __instance.name == "IpTextBox" || __instance.name == "PortTextBox");
-			if (flag) __instance.outputText.text = new string('*', __instance.text.Length);
-		}
-	}
+    public static class HiddenTextPatch
+    {
+        private static void Postfix(TextBoxTMP __instance)
+        {
+            bool flag = ConfigRoles.StreamerMode.Value && (__instance.name == "GameIdText" || __instance.name == "IpTextBox" || __instance.name == "PortTextBox");
+            if (flag) __instance.outputText.text = new string('*', __instance.text.Length);
+        }
+    }
 }

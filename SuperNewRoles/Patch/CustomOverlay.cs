@@ -1,18 +1,17 @@
-﻿
-using HarmonyLib;
+
 using System;
-using System.Linq;
-using System.Collections.Generic;
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using HarmonyLib;
 using SuperNewRoles.CustomOption;
+using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
     [Harmony]
     public class CustomOverlays
     {
-
         public static Sprite helpButton;
         private static Sprite colorBG;
         private static SpriteRenderer meetingUnderlay;
@@ -36,7 +35,7 @@ namespace SuperNewRoles.Patch
 
         public static bool initializeOverlays()
         {
-            HudManager hudManager = DestroyableSingleton<HudManager>.Instance;
+            HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
             if (hudManager == null) return false;
 
             if (helpButton == null)
@@ -94,13 +93,12 @@ namespace SuperNewRoles.Patch
                 infoOverlayRoles.color = Palette.White;
                 infoOverlayRoles.enabled = false;
             }
-
             return true;
         }
 
         public static void showBlackBG()
         {
-            if (HudManager.Instance == null) return;
+            if (FastDestroyableSingleton<HudManager>.Instance == null) return;
             if (!initializeOverlays()) return;
 
             meetingUnderlay.sprite = colorBG;
@@ -108,7 +106,7 @@ namespace SuperNewRoles.Patch
             meetingUnderlay.transform.localScale = new Vector3(20f, 20f, 1f);
             var clearBlack = new Color32(0, 0, 0, 0);
 
-            HudManager.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
             {
                 meetingUnderlay.color = Color.Lerp(clearBlack, Palette.Black, t);
             })));
@@ -124,8 +122,8 @@ namespace SuperNewRoles.Patch
         {
             if (overlayShown) return;
 
-            HudManager hudManager = DestroyableSingleton<HudManager>.Instance;
-            if (ShipStatus.Instance == null || PlayerControl.LocalPlayer == null || hudManager == null || HudManager.Instance.IsIntroDisplayed || (!PlayerControl.LocalPlayer.CanMove && MeetingHud.Instance == null))
+            HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
+            if (MapUtilities.CachedShipStatus == null || PlayerControl.LocalPlayer == null || hudManager == null || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || (!PlayerControl.LocalPlayer.CanMove && MeetingHud.Instance == null))
                 return;
 
             if (!initializeOverlays()) return;
@@ -167,7 +165,7 @@ namespace SuperNewRoles.Patch
 
             var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
             var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
-            HudManager.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
             {
                 infoUnderlay.color = Color.Lerp(underlayTransparent, underlayOpaque, t);
                 infoOverlayRules.color = Color.Lerp(Palette.ClearWhite, Palette.White, t);
@@ -179,13 +177,13 @@ namespace SuperNewRoles.Patch
         {
             if (!overlayShown) return;
 
-            if (MeetingHud.Instance == null) DestroyableSingleton<HudManager>.Instance.SetHudActive(true);
+            if (MeetingHud.Instance == null) FastDestroyableSingleton<HudManager>.Instance.SetHudActive(true);
 
             overlayShown = false;
             var underlayTransparent = new Color(0.1f, 0.1f, 0.1f, 0.0f);
             var underlayOpaque = new Color(0.1f, 0.1f, 0.1f, 0.88f);
 
-            HudManager.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(0.2f, new Action<float>(t =>
             {
                 if (infoUnderlay != null)
                 {

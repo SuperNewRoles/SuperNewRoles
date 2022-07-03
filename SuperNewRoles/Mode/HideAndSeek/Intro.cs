@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -7,10 +7,11 @@ namespace SuperNewRoles.Mode.HideAndSeek
 {
     class Intro
     {
-        public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance) {
-            Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+        public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance)
+        {
+            Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
             int ImpostorNum = 0;
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.Data.Role.IsImpostor)
                 {
@@ -20,10 +21,11 @@ namespace SuperNewRoles.Mode.HideAndSeek
             }
             return ImpostorTeams;
         }
-        public static void IntroHandler(IntroCutscene __instance) {
-            Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+        public static void IntroHandler(IntroCutscene __instance)
+        {
+            Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
             int ImpostorNum = 0;
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.Data.Role.IsImpostor)
                 {

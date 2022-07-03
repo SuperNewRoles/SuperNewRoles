@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -6,11 +6,11 @@ using UnityEngine;
 namespace SuperNewRoles.Map.Agartha
 {
     public static class ImageManager
-	{
+    {
         private static Sprite m_MiniMap;
-		public static Sprite MiniMap
-		{
-			get
+        public static Sprite MiniMap
+        {
+            get
             {
                 if (m_MiniMap != null) return m_MiniMap;
                 m_MiniMap = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Agartha.MiniMap.png", 115f);

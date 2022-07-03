@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -36,15 +36,15 @@ namespace SuperNewRoles
 
                 if (_submarineStatus is null || _submarineStatus.WasCollected || !_submarineStatus || _submarineStatus == null)
                 {
-                    if (ShipStatus.Instance is null || ShipStatus.Instance.WasCollected || !ShipStatus.Instance || ShipStatus.Instance == null)
+                    if (MapUtilities.CachedShipStatus is null || MapUtilities.CachedShipStatus.WasCollected || !MapUtilities.CachedShipStatus || MapUtilities.CachedShipStatus == null)
                     {
                         return _submarineStatus = null;
                     }
                     else
                     {
-                        if (ShipStatus.Instance.Type == SUBMERGED_MAP_TYPE)
+                        if (MapUtilities.CachedShipStatus.Type == SUBMERGED_MAP_TYPE)
                         {
-                            return _submarineStatus = ShipStatus.Instance.GetComponent(Il2CppType.From(SubmarineStatusType))?.TryCast(SubmarineStatusType) as MonoBehaviour;
+                            return _submarineStatus = MapUtilities.CachedShipStatus.GetComponent(Il2CppType.From(SubmarineStatusType))?.TryCast(SubmarineStatusType) as MonoBehaviour;
                         }
                         else
                         {
@@ -147,7 +147,7 @@ namespace SuperNewRoles
             RpcRequestChangeFloorMethod.Invoke(_floorHandler, new object[] { toUpper });
         }
 
-        public static void ChangeFloor(bool toUpper,PlayerControl player)
+        public static void ChangeFloor(bool toUpper, PlayerControl player)
         {
             if (!Loaded) return;
             MonoBehaviour _floorHandler = ((Component)GetFloorHandlerMethod.Invoke(null, new object[] { player })) as MonoBehaviour;
@@ -179,19 +179,18 @@ namespace SuperNewRoles
             if (!Loaded) return;
             try
             {
-                ShipStatus.Instance.RpcRepairSystem((SystemTypes)130, 64);
+                MapUtilities.CachedShipStatus.RpcRepairSystem((SystemTypes)130, 64);
                 RepairDamageMethod.Invoke(SubmarineOxygenSystemInstanceField.GetValue(null), new object[] { PlayerControl.LocalPlayer, 64 });
             }
             catch (System.NullReferenceException)
             {
                 SuperNewRolesPlugin.Logger.LogMessage("null reference in engineer oxygen fix");
             }
-
         }
 
         public static bool isSubmerged()
         {
-            return Loaded && ShipStatus.Instance && ShipStatus.Instance.Type == SUBMERGED_MAP_TYPE;
+            return Loaded && MapUtilities.CachedShipStatus && MapUtilities.CachedShipStatus.Type == SUBMERGED_MAP_TYPE;
         }
     }
 

@@ -1,7 +1,7 @@
-﻿using SuperNewRoles.Roles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.Roles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -10,15 +10,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance)
         {
-            Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+            Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
             Teams.Add(PlayerControl.LocalPlayer);
             try
             {
                 if (PlayerControl.LocalPlayer.isCrew())
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId && p.IsPlayer())
+                        if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && p.IsPlayer())
                         {
                             Teams.Add(p);
                         }
@@ -26,17 +26,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 else if (PlayerControl.LocalPlayer.isImpostor())
                 {
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.isImpostor() && p.PlayerId != PlayerControl.LocalPlayer.PlayerId && p.IsPlayer())
+                        if ((p.isImpostor() || p.isRole(CustomRPC.RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && p.IsPlayer())
                         {
                             Teams.Add(p);
                         }
                     }
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("イントロエラー:"+e);
+                SuperNewRolesPlugin.Logger.LogInfo("[SHR:Intro] Intro Error:" + e);
             }
             return Teams;
         }
@@ -52,7 +53,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void RoleTextHandler(IntroCutscene __instance)
         {
             var myrole = PlayerControl.LocalPlayer.getRole();
-            if (!(myrole == CustomRPC.RoleId.DefaultRole || myrole == CustomRPC.RoleId.Bestfalsecharge))
+            if (myrole is not (CustomRPC.RoleId.DefaultRole or CustomRPC.RoleId.Bestfalsecharge))
             {
                 var date = SuperNewRoles.Intro.IntroDate.GetIntroDate(myrole);
                 __instance.YouAreText.color = date.color;

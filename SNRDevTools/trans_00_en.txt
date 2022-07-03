@@ -55,10 +55,16 @@ Preset
 <color=#a9ceec>Crewmate</color> Settings
 Minimum Crewmate Roles
 Maximum Crewmate Roles
+Minimum Crewmate Ghost Roles
+Maximum Crewmate Ghost Roles
 Minimum Neutral Roles
 Maximum Neutral Roles
+Minimum Neutral Ghost Roles
+Maximum Neutral Ghost Roles
 Minimum Impostor Roles
 Maximum Impostor Roles
+Minimum Impostor Ghost Roles
+Maximum Impostor GhostRoles
 Hide Setting
 Position setting of crewmate camp
 Imposter camp position setting
@@ -85,15 +91,18 @@ It has been updated. It will be applied when you reboot. Latest Version:v{0}
 Options
 Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings
 Role Player
-StremerMode
+Hide Server Url
 Auto Update
 Game Code Auto Copy
 Update Process Down
 Show players that are not in or have different versions.
-Horse mode (can be changed only outside the game including the lobby)
+Hide Tasks Arrows
 CrewMate Setting
+CrewMate GhostRole Setting
 Neutral Setting
+Neutral GhostRole Setting
 Impostor Setting
+Impostor GhostRole Setting
 On
 Off
 Press Tab For More
@@ -116,6 +125,11 @@ Super Host Roles
 Zombie Mode
 Random Color Mode
 Not Impostor Check Mode
+CopsRobbers
+Thief
+Finish the task and win without getting caught by the police!
+Police
+Catch all the thieves and win!
 Detective Mode
 Not include the detective in the win condition determination.
 No tasks for detective
@@ -542,9 +556,10 @@ Amount of tasks that will be able to be checked (of all tasks)
 NiceHawk
 See it all.
 Let's catch the crime.
-Bakery
+Baker
 Would you like some breads?
 Bakery baked some breads for crewmates.
+Bakery baked YOKINGDELICIOUSSSSSSSSS!!!!
 MadStuntman
 Prevent kills and connect with impostors.
 Can prevent himself from being killed
@@ -644,6 +659,127 @@ CoolDown
 MadCleaner
 Destroy the evidence and help impostors to win!
 Kill CoolDown
+Samurai
+Let's cut through the crew!
+KillCoolTime
+AttackCoolTime
+SamuraiScope
+UseSword!
 MayorFriends
 Let's abuse our power at the meeting.
 It is judged as Crewmate. but is in the Jackal camp. Jackals can win if they win. MayorFriends is not recognized by Jackal. Help Jackal so that the Jackal camp wins!
+VentMaker
+Let's make a vent!
+GhostMechanic
+Let's get rid of the loose ends that we couldn't fix the machine.
+Number of times sabotage can be repaired
+Repair
+GhostMechanic
+EvilHacker
+Hack to Win!
+Can an EvilHacker Make a Madmate
+ADMIN
+Remaining: {0}
+Time up
+Device Restrictions
+Admin Restrictions
+Camera Restrictions
+Vital Restrictions
+Can use time
+ykundesuBeplnEx
+ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?
+HauntedWolf
+Don't let the crew find out.
+Reactor Duration Time
+Polus Reactor Duration Time
+Mira Reactor Duration Time
+Airship  Reactor Duration Time
+Make Vent
+Adding vitals to Mira
+No Vent Animation
+Map Remodeling
+AirShipAdditionalVents
+PolusAdditionalVents
+MiraAdditionalVents
+Welcome to SuperNewRoles!
+You can play a variety of modes and different hard on any model with SuperNewRoles!
+Please visit the official wiki for a detailed description of the roles and modes!
+SuperNewRoles Official Wiki
+https://wikiwiki.jp/amas-snr(Japanese)
+You will get the information if you run the command.
+Send this command if you want to see a list of commands.
+[/commands] or [/cmd]
+Commands in the command list:\n() are also possible.\nIt is not case sensitive.
+/commands (/cmd) : \nDisplays a list of commands. (This command.)
+/version (/v) : \nShow SuperNewRoles Version.
+/discord (/dc) : \nShow the link to the Official Discord.
+/twitter (/tw) : \nShow the link to the Official Twitter.
+/GetInRoles (/gr) ： Displays all activate roles.(Send to all player when you're hosts.)
+/GetInRoles myplayer ([/gr mp] or [/gr myp]) : \nDisplays all activate roles only you.(Send only to yourself even if you are the host.)
+/AllRoles (/ar) : \nDisplays all activate roles' description and settings.(Send to all player when you're hosts.)\nTransmitted at 1.5 second intervals.
+/AllRoles [transmission interval] (/ar [transmission interval]): \nAdditional transmission intervals can be specified for /AllRoles.
+/AllRoles [send interval] myplayer (/ar [send interval] (mp or myp)): \nAdd to /AllRoles [send interval] and send only to yourself even if you are the host.
+Come here to visit the official SuperNewRoles Discord server.
+Come here to visit the official SuperNewRoles Twitter Accounts.
+Official Account : https://twitter.com/SuperNewRoles
+Development Information Account : https://twitter.com/SNRDevs
+Team
+Settings
+Activate Roles
+【Team:{0}】
+Players
+DebugMode:ON
+Remaining until kills can be made
+Player
+Remaining until the Imposter arrives
+Hunter
+Let's die with someone else.
+Werewolf
+Let's Eat Villager and Win!
+Madmate
+Help the werewolves and win!
+Villager
+Expel the werewolves in the debate and win!
+FortuneTeller
+Divination to discover the werewolf and win!
+Medium
+Search out the role of the dead and win!
+This is Meeting Time.
+This is Use to Ability Time.
+{0}'s Role is {1}!
+Position Swapper
+Let's Swap crewmates.
+Swapping limits
+Swapping cooltime
+Limits:{0}
+PositionSwap
+Position swapper swapped you!
+Position swapper swapped you!\n by the way，ykundesu is delicious，isn't it?
+Tuna
+Always move!
+Stopping Time
+Black Cat
+Give your life for your master.
+Mafia
+Let's avenge our fellow impostor
+When all the imposters except Mafia are dead the kill will be possible.\nThe kill cool time will continue to advance while no kills are made.
+Cannot Use Archive Admin
+Spy
+Deceive the Imposter and lead the Cluemate camp to victory!
+Spies are crewmates but they look like friends to the Imposter.\n Spies are crewmates and have no special abilities.
+Move Vital to specimen (polus)
+Download custom hat
+Secretly Killer
+Please be quiet during the power outage.
+Same in kill buttons
+Kill cool charge during power outage
+Ability limit
+Secretly\nKill
+Zoom function after death
+Mouse wheel Mode
+ClairvoyantMode
+ClairvoyantCoolTime
+ClairvoyantDurationTime
+Clairvoyant!
+Ladder Death
+Ladder Death Chance

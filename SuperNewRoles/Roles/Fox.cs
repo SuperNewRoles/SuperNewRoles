@@ -1,44 +1,17 @@
 using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patches;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
-using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Roles
 {
     class Fox
     {
-        public static void SetFoxButton()
-        {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Fox))
-            {
-                if (!RoleClass.Fox.UseReport)
-                {
-                    if (HudManager.Instance.ReportButton.gameObject.active) {
-                        HudManager.Instance.ReportButton.SetActive(false);
-                    }
-                }
-            }
-        }
         public static void setPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null || target.MyRend == null) return;
 
-            target.MyRend.material.SetFloat("_Outline", 1f);
-            target.MyRend.material.SetColor("_OutlineColor", color);
-        }
-        public class FixedUpdate
-        {
-            public static void Postfix()
-            {
-                SetFoxButton();
-            }
+            target.MyRend().material.SetFloat("_Outline", 1f);
+            target.MyRend().material.SetColor("_OutlineColor", color);
         }
 
         public static class FoxMurderPatch
@@ -62,6 +35,5 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
-
     }
 }

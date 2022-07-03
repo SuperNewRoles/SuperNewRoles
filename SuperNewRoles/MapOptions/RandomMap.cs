@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
-using UnityEngine;
 using UnhollowerBaseLib;
+using UnityEngine;
 
 namespace SuperNewRoles.MapOptions
 {
@@ -15,10 +15,10 @@ namespace SuperNewRoles.MapOptions
             if (MapOption.IsRandomMap)
             {
                 var rand = new System.Random();
-                List<byte> RandomMaps = new System.Collections.Generic.List<byte>();
+                List<byte> RandomMaps = new();
                 if (MapOption.ValidationSkeld) RandomMaps.Add(0);
-                if (MapOption.ValidationMira) RandomMaps.Add(1);   
-                if (MapOption.ValidationPolus) RandomMaps.Add(2);                 
+                if (MapOption.ValidationMira) RandomMaps.Add(1);
+                if (MapOption.ValidationPolus) RandomMaps.Add(2);
                 if (MapOption.ValidationAirship) RandomMaps.Add(4);
                 if (MapOption.ValidationSubmerged && SubmergedCompatibility.Loaded) RandomMaps.Add(5);
                 if (RandomMaps.Count <= 0)
@@ -27,7 +27,7 @@ namespace SuperNewRoles.MapOptions
                 }
                 var MapsId = RandomMaps[rand.Next(RandomMaps.Count)];
                 PlayerControl.GameOptions.MapId = MapsId;
-                PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+                CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
             }
             return;
         }

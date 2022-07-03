@@ -1,37 +1,36 @@
-﻿
-using HarmonyLib;
-using Hazel;
-using InnerNet;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using Hazel;
+using InnerNet;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.NotImpostorCheck
 {
     public static class NotBlackOut
     {
-
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
         class CheckForEndVotingPatch
         {
             public static void Prefix(MeetingHud __instance)
             {
-				if (ModeHandler.isMode(Mode.ModeId.NotImpostorCheck))
-				{
-					EndMeetingPatch();
-				}
-				else if (ModeHandler.isMode(ModeId.SuperHostRoles)) {
-					SuperHostRoles.MorePatch.MeetingEnd();
-				}
+                if (ModeHandler.isMode(Mode.ModeId.NotImpostorCheck))
+                {
+                    EndMeetingPatch();
+                }
+                else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                {
+                    SuperHostRoles.MorePatch.MeetingEnd();
+                }
             }
-
         }
         public static void EndMeetingPatch()
         {/*
             //霊界用暗転バグ対処
-            foreach (var pc in PlayerControl.AllPlayerControls)
+            foreach (var pc in CachedPlayer.AllPlayers)
                 if (main.Impostors.Contains(pc.PlayerId) && pc.Data.IsDead) pc.ResetPlayerCam(12.5f);
         }
 		public static void ResetPlayerCam(this PlayerControl pc, float delay = 0f)
@@ -52,7 +51,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
 			IEnumerator ReactorDesync()
 			{
 				yield return new WaitForSeconds(delay);
-				MessageWriter val4 = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, 28, (SendOption)1, clientId);
+				MessageWriter val4 = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, 28, (SendOption)1, clientId);
 				val4.Write(reactorId);
 				val4.WriteNetObject(pc);
 				val4.Write((byte)128);
@@ -68,7 +67,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
 			IEnumerator FixDesyncReactor()
 			{
 				yield return new WaitForSeconds(0.4f + delay);
-				MessageWriter val2 = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, 28, (SendOption)1, clientId);
+				MessageWriter val2 = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, 28, (SendOption)1, clientId);
 				val2.Write(reactorId);
 				val2.WriteNetObject(pc);
 				val2.Write((byte)16);
@@ -80,13 +79,14 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
 				IEnumerator FixDesyncReactor2()
 				{
 					yield return new WaitForSeconds(0.4f + delay);
-					MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, 28, (SendOption)1, clientId);
+					MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, 28, (SendOption)1, clientId);
 					val.Write(reactorId);
 					val.WriteNetObject(pc);
 					val.Write((byte)17);
 					AmongUsClient.Instance.FinishRpcImmediately(val);
 				}
 			}
-		*/}
-	}
+		*/
+        }
+    }
 }

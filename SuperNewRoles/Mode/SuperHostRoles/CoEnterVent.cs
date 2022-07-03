@@ -1,11 +1,11 @@
-﻿
-using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Roles;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Hazel;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Roles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -38,6 +38,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.Technician:
                     if (RoleHelpers.IsSabotage()) return true;
+                    break;
+                case RoleId.Samurai:
+                    if (RoleClass.Samurai.UseVent) return true;
                     break;
                 case RoleId.RemoteSheriff:
                 case RoleId.Sheriff:

@@ -1,7 +1,6 @@
-﻿using SuperNewRoles.Buttons;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using SuperNewRoles.Buttons;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -10,10 +9,11 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetCoolDown()
         {
-            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
             {
                 HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.EvilDoorr.CoolTime;
-            } else
+            }
+            else
             {
                 HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.Doorr.CoolTime;
             }
@@ -21,7 +21,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool isDoorr(PlayerControl Player)
         {
-            if (RoleClass.Doorr.DoorrPlayer.IsCheckListPlayerControl(Player) || RoleClass.EvilDoorr.EvilDoorrPlayer.IsCheckListPlayerControl(Player) )
+            if (RoleClass.Doorr.DoorrPlayer.IsCheckListPlayerControl(Player) || RoleClass.EvilDoorr.EvilDoorrPlayer.IsCheckListPlayerControl(Player))
             {
                 return true;
             }
@@ -43,7 +43,8 @@ namespace SuperNewRoles.Roles
                 door.SetDoorway(!door.Open);
             }
         }
-        private static float IsPos(Vector3 mypos,PlainDoor Door,float distance) {
+        private static float IsPos(Vector3 mypos, PlainDoor Door, float distance)
+        {
             var Distance = Vector3.Distance(mypos, Door.transform.position);
             if (Distance <= distance)
             {
@@ -53,9 +54,9 @@ namespace SuperNewRoles.Roles
         }
         private static PlainDoor GetDoor()
         {
-            Vector3 position = PlayerControl.LocalPlayer.transform.position;
-            List<PlainDoor> selectdoors = new List<PlainDoor>();
-            foreach (PlainDoor door in ShipStatus.Instance.AllDoors)
+            Vector3 position = CachedPlayer.LocalPlayer.transform.position;
+            List<PlainDoor> selectdoors = new();
+            foreach (PlainDoor door in MapUtilities.CachedShipStatus.AllDoors)
             {
                 var getispos = IsPos(position, door, 2);
                 if (getispos != 0)
@@ -76,7 +77,8 @@ namespace SuperNewRoles.Roles
                     {
                         selectdoors.Remove(selectdoors[1]);
                     }
-                } else
+                }
+                else
                 {
                     flag = false;
                 }
@@ -85,10 +87,11 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            if (PlayerControl.LocalPlayer.Data.Role.IsImpostor)
+            if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
             {
                 HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.EvilDoorr.CoolTime;
-            } else
+            }
+            else
             {
                 HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.Doorr.CoolTime;
             }

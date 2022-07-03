@@ -1,10 +1,9 @@
-﻿using Hazel;
+using System;
+using System.Collections.Generic;
+using Hazel;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Roles
 {
@@ -20,7 +19,8 @@ namespace SuperNewRoles.Roles
                 Writer.Write(target.PlayerId);
                 Writer.EndRPC();
                 RPCProcedure.DemonCurse(source.PlayerId, target.PlayerId);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 SuperNewRolesPlugin.Logger.LogError(e);
             }
@@ -28,21 +28,21 @@ namespace SuperNewRoles.Roles
 
         public static List<PlayerControl> GetCurseData(this PlayerControl player)
         {
-            return RoleClass.Demon.CurseDatas.ContainsKey(player.PlayerId) ? RoleClass.Demon.CurseDatas[player.PlayerId] : new List<PlayerControl>();
+            return RoleClass.Demon.CurseDatas.ContainsKey(player.PlayerId) ? RoleClass.Demon.CurseDatas[player.PlayerId] : new();
         }
 
         public static List<PlayerControl> GetUntarget()
         {
-            if (RoleClass.Demon.CurseDatas.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
+            if (RoleClass.Demon.CurseDatas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
             {
-                return RoleClass.Demon.CurseDatas[PlayerControl.LocalPlayer.PlayerId];
+                return RoleClass.Demon.CurseDatas[CachedPlayer.LocalPlayer.PlayerId];
             }
-            return new List<PlayerControl>();
+            return new();
         }
 
         public static bool IsCursed(this PlayerControl source, PlayerControl target)
         {
-            if (source == null || source.Data.Disconnected || target == null || target.Data.Disconnected || target.IsBot()) return true;
+            if (source == null || source.Data.Disconnected || target == null || target.isDead() || target.IsBot()) return true;
             if (source.PlayerId == target.PlayerId) return true;
             if (RoleClass.Demon.CurseDatas.ContainsKey(source.PlayerId))
             {
@@ -61,9 +61,10 @@ namespace SuperNewRoles.Roles
             {
                 return RoleClass.Demon.CurseDatas[player.PlayerId];
             }
-            return new List<PlayerControl>();
+            return new();
         }
-        public static bool IsViewIcon(PlayerControl player) {
+        public static bool IsViewIcon(PlayerControl player)
+        {
             if (player == null) return false;
             foreach (var data in RoleClass.Demon.CurseDatas)
             {
@@ -78,13 +79,14 @@ namespace SuperNewRoles.Roles
             return false;
         }
 
-        public static bool IsButton() {
+        public static bool IsButton()
+        {
             return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Demon) && ModeHandler.isMode(ModeId.Default);
         }
 
         public static bool IsWin(PlayerControl Demon)
         {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.PlayerId != Demon.PlayerId && !IsCursed(Demon, player))
                 {

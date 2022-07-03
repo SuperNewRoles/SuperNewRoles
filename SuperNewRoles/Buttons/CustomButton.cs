@@ -2,14 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using HarmonyLib;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 using UnityEngine.UI;
-using HarmonyLib;
 
-namespace SuperNewRoles.Buttons {
+namespace SuperNewRoles.Buttons
+{
     public class CustomButton
     {
-        public static List<CustomButton> buttons = new List<CustomButton>();
+        public static List<CustomButton> buttons = new();
         public ActionButton actionButton;
         public Vector3 PositionOffset;
         public Vector3 LocalScale = Vector3.one;
@@ -18,7 +20,7 @@ namespace SuperNewRoles.Buttons {
         public bool effectCancellable = false;
         private Action OnClick;
         private Action OnMeetingEnds;
-        private Func<bool> HasButton;
+        private Func<bool, RoleId, bool> HasButton;
         private Func<bool> CouldUse;
         private Action OnEffectEnds;
         public bool HasEffect;
@@ -31,9 +33,8 @@ namespace SuperNewRoles.Buttons {
         private bool mirror;
         private KeyCode? hotkey;
         private int joystickkey;
-
-
-        public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey,bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = "")
+        private Func<bool> StopCountCool;
+        public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = "")
         {
             this.hudManager = hudManager;
             this.OnClick = OnClick;
@@ -49,12 +50,13 @@ namespace SuperNewRoles.Buttons {
             this.hotkey = hotkey;
             this.joystickkey = joystickkey;
             this.buttonText = buttonText;
+            this.StopCountCool = StopCountCool;
             Timer = 16.2f;
             buttons.Add(this);
             actionButton = UnityEngine.Object.Instantiate(textTemplate, textTemplate.transform.parent);
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
-            
+
             button.OnClick.AddListener((UnityEngine.Events.UnityAction)onClickEvent);
 
             LocalScale = actionButton.transform.localScale;
@@ -63,16 +65,14 @@ namespace SuperNewRoles.Buttons {
                 UnityEngine.Object.Destroy(actionButton.buttonLabelText);
                 actionButton.buttonLabelText = UnityEngine.Object.Instantiate(textTemplate.buttonLabelText, actionButton.transform);
             }
-
             setActive(false);
         }
-
-        public CustomButton(Action OnClick, Func<bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton? textTemplate, KeyCode? hotkey, int joystickkey,bool mirror = false, string buttonText = "")
-        : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey,false, 0f, () => { }, mirror, buttonText) { }
+        public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool mirror = false, string buttonText = "")
+        : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, StopCountCool, false, 0f, () => { }, mirror, buttonText) { }
 
         void onClickEvent()
         {
-            if ((Timer <= 0f || (HasEffect && isEffectActive && effectCancellable) && HasButton() && CouldUse()))
+            if ((Timer <= 0f || (HasEffect && isEffectActive && effectCancellable)) && CouldUse())
             {
                 actionButton.graphic.color = new Color(1f, 1f, 1f, 0.3f);
                 OnClick();
@@ -83,15 +83,17 @@ namespace SuperNewRoles.Buttons {
         {
             buttons.RemoveAll(item => item.actionButton == null);
 
+            bool isAlive = PlayerControl.LocalPlayer.isAlive();
+            RoleId role = PlayerControl.LocalPlayer.getRole();
             foreach (CustomButton btn in buttons)
             {
                 try
                 {
-                    btn.Update();
+                    btn.Update(isAlive, role);
                 }
                 catch (Exception e)
                 {
-                    if (ConfigRoles.DebugMode.Value) System.Console.WriteLine("ButtonError:" + e);
+                    System.Console.WriteLine("ButtonError:" + e);
                 }
             }
         }
@@ -99,12 +101,17 @@ namespace SuperNewRoles.Buttons {
         public static void MeetingEndedUpdate()
         {
             buttons.RemoveAll(item => item.actionButton == null);
+            bool isAlive = PlayerControl.LocalPlayer.isAlive();
+            RoleId role = PlayerControl.LocalPlayer.getRole();
             foreach (CustomButton btn in buttons)
             {
                 try
                 {
-                    btn.OnMeetingEnds();
-                    btn.Update();
+                    if (btn.HasButton(isAlive, role))
+                    {
+                        btn.OnMeetingEnds();
+                        btn.Update(isAlive, role);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -113,52 +120,65 @@ namespace SuperNewRoles.Buttons {
             }
         }
 
-        public void setActive(bool isActive) {
-            if (isActive) {
+        public void setActive(bool isActive)
+        {
+            if (isActive)
+            {
                 actionButton.gameObject.SetActive(true);
                 actionButton.graphic.enabled = true;
-            } else {
+            }
+            else
+            {
                 actionButton.gameObject.SetActive(false);
                 actionButton.graphic.enabled = false;
             }
         }
 
-        private void Update()
+        private void Update(bool isAlive, RoleId role)
         {
-            if (PlayerControl.LocalPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton()) {
+            var localPlayer = CachedPlayer.LocalPlayer;
+            var moveable = localPlayer.PlayerControl.moveable;
+
+            if (localPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton(isAlive, role))
+            {
                 setActive(false);
                 return;
             }
             setActive(hudManager.UseButton.isActiveAndEnabled);
 
             actionButton.graphic.sprite = Sprite;
-            if (showButtonText && buttonText != "") {
+            if (showButtonText && buttonText != "")
+            {
                 actionButton.OverrideText(buttonText);
             }
             actionButton.buttonLabelText.enabled = showButtonText; // Only show the text if it's a kill button
 
-            if (hudManager.UseButton != null) {
+            if (hudManager.UseButton != null)
+            {
                 Vector3 pos = hudManager.UseButton.transform.localPosition;
                 if (mirror) pos = new Vector3(-pos.x, pos.y, pos.z);
                 actionButton.transform.localPosition = pos + PositionOffset;
-                actionButton.transform.localScale = LocalScale;
             }
-            if (CouldUse()) {
+            if (CouldUse())
+            {
                 actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.EnabledColor;
                 actionButton.graphic.material.SetFloat("_Desat", 0f);
-            } else {
+            }
+            else
+            {
                 actionButton.graphic.color = actionButton.buttonLabelText.color = Palette.DisabledClear;
                 actionButton.graphic.material.SetFloat("_Desat", 1f);
             }
 
-            if (Timer >= 0) {
-                if (HasEffect && isEffectActive)
-                    Timer -= Time.deltaTime;
-                else if (!PlayerControl.LocalPlayer.inVent && PlayerControl.LocalPlayer.moveable)
+            if (Timer >= 0)
+            {
+                if ((HasEffect && isEffectActive) ||
+                    (!localPlayer.PlayerControl.inVent && moveable && !StopCountCool()))
                     Timer -= Time.deltaTime;
             }
 
-            if (Timer <= 0 && HasEffect && isEffectActive) {
+            if (Timer <= 0 && HasEffect && isEffectActive)
+            {
                 isEffectActive = false;
                 actionButton.cooldownTimerText.color = Palette.EnabledColor;
                 OnEffectEnds();
@@ -166,7 +186,7 @@ namespace SuperNewRoles.Buttons {
 
             actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
             // Trigger OnClickEvent if the hotkey is being pressed down
-            if (Input.GetButtonDown(hotkey.Value.ToString()) || ConsoleJoystick.player.GetButtonDown(joystickkey)) onClickEvent();
+            if ((hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(joystickkey)) onClickEvent();
         }
     }
 
@@ -176,7 +196,6 @@ namespace SuperNewRoles.Buttons {
         static void Postfix(HudManager __instance)
         {
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
-
             CustomButton.HudUpdate();
             ButtonTime.Update();
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -9,7 +9,7 @@ namespace SuperNewRoles.Mode.Zombie
     {
         public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance)
         {
-            Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
+            Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
 
             if (PlayerControl.LocalPlayer.IsZombie())
             {
@@ -18,9 +18,9 @@ namespace SuperNewRoles.Mode.Zombie
             else
             {
                 Teams.Add(PlayerControl.LocalPlayer);
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                    if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         Teams.Add(p);
                     }
@@ -53,7 +53,6 @@ namespace SuperNewRoles.Mode.Zombie
             __instance.RoleBlurbText.text = desc;
             __instance.RoleBlurbText.color = backcolor;
             /**
-
             if (PlayerControl.LocalPlayer.IsQuarreled())
             {
                 __instance.RoleBlurbText.text = __instance.RoleBlurbText.text + "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));

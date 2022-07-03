@@ -1,13 +1,12 @@
-﻿using Hazel;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using SuperNewRoles.EndGame;
 using HarmonyLib;
+using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
+using SuperNewRoles.EndGame;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -33,21 +32,21 @@ namespace SuperNewRoles.Roles
 
         public static List<PlayerControl> GetDouseData(this PlayerControl player)
         {
-            return RoleClass.Arsonist.DouseDatas.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseDatas[player.PlayerId] : new List<PlayerControl>();
+            return RoleClass.Arsonist.DouseDatas.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseDatas[player.PlayerId] : new();
         }
 
         public static List<PlayerControl> GetUntarget()
         {
-            if (RoleClass.Arsonist.DouseDatas.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
+            if (RoleClass.Arsonist.DouseDatas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
             {
-                return RoleClass.Arsonist.DouseDatas[PlayerControl.LocalPlayer.PlayerId];
+                return RoleClass.Arsonist.DouseDatas[CachedPlayer.LocalPlayer.PlayerId];
             }
-            return new List<PlayerControl>();
+            return new();
         }
 
         public static bool IsDoused(this PlayerControl source, PlayerControl target)
         {
-            if (source == null || source.Data.Disconnected || target == null || target.Data.Disconnected || target.IsBot()) return true;
+            if (source == null || source.Data.Disconnected || target == null || target.isDead() || target.IsBot()) return true;
             if (source.PlayerId == target.PlayerId) return true;
             if (RoleClass.Arsonist.DouseDatas.ContainsKey(source.PlayerId))
             {
@@ -66,7 +65,7 @@ namespace SuperNewRoles.Roles
             {
                 return RoleClass.Arsonist.DouseDatas[player.PlayerId];
             }
-            return new List<PlayerControl>();
+            return new();
         }
         public static bool IsViewIcon(PlayerControl player)
         {
@@ -91,13 +90,13 @@ namespace SuperNewRoles.Roles
 
         public static bool IseveryButton()
         {
-            return ModeHandler.isMode(ModeId.SuperHostRoles) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist) || ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist);
+            return (ModeHandler.isMode(ModeId.SuperHostRoles) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist)) || (ModeHandler.isMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist));
 
         }
 
         public static bool IsWin(PlayerControl Arsonist)
         {
-            foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.PlayerId != Arsonist.PlayerId && !IsDoused(Arsonist, player))
                 {
@@ -164,7 +163,7 @@ namespace SuperNewRoles.Roles
         {
             RoleClass.Arsonist.TriggerArsonistWin = true;
         }
-        public static Dictionary<byte, float> ArsonistTimer = new Dictionary<byte, float>();
+        public static Dictionary<byte, float> ArsonistTimer = new();
 
         public static void ArsonistFinalStatus(PlayerControl __instance)
         {

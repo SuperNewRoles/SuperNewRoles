@@ -1,10 +1,8 @@
-﻿using HarmonyLib;
-using Hazel;
-using SuperNewRoles.CustomObject;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Patch;
 using System;
 using System.Collections.Generic;
+using HarmonyLib;
+using SuperNewRoles.CustomObject;
+using SuperNewRoles.Patch;
 using UnityEngine;
 using static UnityEngine.UI.Button;
 
@@ -25,14 +23,14 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
             IsYellow = true;
             foreach (Vector2 data in Datas)
             {
-                Arrow arrow = new Arrow(Color.yellow);
+                Arrow arrow = new(Color.yellow);
                 arrow.arrow.SetActive(true);
                 ArrowDatas.Add(arrow);
             }
             UpdateTime = 0;// DefaultUpdateTime;
             DistanceTime = DefaultDistanceTime;
             ArrowUpdateColor = 0.25f;
-            OKPlayers = new List<PlayerControl>();
+            OKPlayers = new();
         }
         public static float DefaultUpdateTime = 2;
         private static float ArrowUpdateColor = 1;
@@ -40,7 +38,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
         private static float DistanceTime;
         public static float DefaultDistanceTime = 5;
         private static bool IsYellow;
-        private static List<Arrow> ArrowDatas = new List<Arrow>();
+        private static List<Arrow> ArrowDatas = new();
         private static Vector2[] Datas = new Vector2[] { new Vector2(-13.9f, -15.5f), new Vector2(-24.7f, -1f), new Vector2(10.6f, -15.5f) };
         public static List<PlayerControl> OKPlayers;
         public static bool IsLocalEnd;
@@ -72,21 +70,23 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                 if (IsAllEndSabotage)
                 {
                     SabotageManager.InfectedOverlayInstance.SabSystem.Timer = SabotageManager.SabotageMaxTime;
-                } else if (!IsLocalEnd)
+                }
+                else if (!IsLocalEnd)
                 {
                     SabotageManager.InfectedOverlayInstance.SabSystem.Timer = SabotageManager.SabotageMaxTime;
                 }
             }
             bool IsOK = true;
-            foreach (PlayerControl p3 in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p3 in CachedPlayer.AllPlayers)
             {
-                if (p3.isAlive() && !OKPlayers.IsCheckListPlayerControl(p3)) {
+                if (p3.isAlive() && !OKPlayers.IsCheckListPlayerControl(p3))
+                {
                     IsOK = false;
                     if (PlayerControl.LocalPlayer.isImpostor())
                     {
                         if (!(p3.isImpostor() || p3.isRole(CustomRPC.RoleId.MadKiller)))
                         {
-                            SetNamesClass.SetPlayerNameColor(p3,new Color32(18, 112, 214,byte.MaxValue));
+                            SetNamesClass.SetPlayerNameColor(p3, new Color32(18, 112, 214, byte.MaxValue));
                         }
                     }
                 }
@@ -146,15 +146,15 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                 UpdateTime -= Time.fixedDeltaTime;
                 if (UpdateTime <= 0)
                 {
-                    List<PlayerControl> target = new List<PlayerControl>();
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    List<PlayerControl> target = new();
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (!p.Data.Disconnected && p.isAlive())
                         {
                             target.Add(p);
                         }
                     }
-                    foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (target.Count > 0)
                         {
@@ -171,7 +171,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
         public static void EndSabotage(PlayerControl p)
         {
             OKPlayers.Add(p);
-            if (p.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+            if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
                 IsLocalEnd = true;
                 if (PlayerControl.GameOptions.TaskBarMode != TaskBarMode.Invisible)
@@ -183,7 +183,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                     GameObject.Destroy(aw.arrow);
                 }
                 ArrowDatas = new List<Arrow>();
-                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                 {
                     p2.resetChange();
                 }

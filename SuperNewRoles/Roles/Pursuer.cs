@@ -1,25 +1,22 @@
-﻿using HarmonyLib;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
     public class Pursuer
     {
-       public class PursureUpdate
+        public class PursureUpdate
         {
             public static void Postfix()
             {
                 float min_target_distance = float.MaxValue;
                 PlayerControl target = null;
 
-                foreach (var p in PlayerControl.AllPlayerControls)
+                foreach (var p in CachedPlayer.AllPlayers)
                 {
-                    if (p.isAlive() && !p.isImpostor())
+                    if (p.PlayerControl.isAlive() && !p.PlayerControl.isImpostor())
                     {
-                        float target_distance = Vector3.Distance(PlayerControl.LocalPlayer.transform.position, p.transform.position);
+                        float target_distance = Vector3.Distance(CachedPlayer.LocalPlayer.transform.position, p.transform.position);
 
                         if (target_distance < min_target_distance)
                         {
@@ -28,16 +25,16 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("ターゲット:"+target?.nameText.text);
+                SuperNewRolesPlugin.Logger.LogInfo("[Pursuer]Target:" + target?.nameText().text);
                 if (target != null)
                 {
                     try
                     {
                         RoleClass.Pursuer.arrow.Update(target.transform.position, color: RoleClass.Pursuer.color);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
-                        SuperNewRolesPlugin.Logger.LogInfo("error:"+e);
+                        SuperNewRolesPlugin.Logger.LogInfo("[Pursuer]Error:" + e);
                     }
                 }
             }

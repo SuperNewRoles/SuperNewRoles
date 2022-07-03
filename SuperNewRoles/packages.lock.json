@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "dependencies": {
+    ".NETStandard,Version=v2.1": {
+      "GitInfo": {
+        "type": "Direct",
+        "requested": "[2.0.20, )",
+        "resolved": "2.0.20",
+        "contentHash": "mCzyI02VtCPy/O/GGa7y9iiCVRkwklU6hhyjbDPF1nPM8+sIjLe84iZA5jRKZzhu0u5kLC0SMvPQztcr/I28DQ=="
+      }
+    }
+  }
+}

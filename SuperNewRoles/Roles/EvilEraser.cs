@@ -1,8 +1,5 @@
-﻿using Hazel;
+using Hazel;
 using SuperNewRoles.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SuperNewRoles.Roles
 {
@@ -20,7 +17,7 @@ namespace SuperNewRoles.Roles
             NekomataExiled,
             FoxGuard
         }
-        public static bool IsBlock(BlockTypes blocktype,PlayerControl player = null)
+        public static bool IsBlock(BlockTypes blocktype, PlayerControl player = null)
         {
             if (player == null) player = PlayerControl.LocalPlayer;
             if (!player.isRole(CustomRPC.RoleId.EvilEraser)) return false;
@@ -28,26 +25,19 @@ namespace SuperNewRoles.Roles
             {
                 return false;
             }
-            switch (blocktype)
+            return blocktype switch
             {
-                case (BlockTypes.StuntmanGuard):
-                    return true;
-                case (BlockTypes.ClergymanLightOut):
-                    return true;
-                case (BlockTypes.BaitReport):
-                    return true;
-                case (BlockTypes.RedRidingHoodRevive):
-                    return true;
-                case (BlockTypes.JackalSidekick):
-                    return true;
-                case (BlockTypes.NekomataExiled):
-                    return true;
-                case (BlockTypes.FoxGuard):
-                    return true;
-            }
-            return false;
+                BlockTypes.StuntmanGuard => true,
+                BlockTypes.ClergymanLightOut => true,
+                BlockTypes.BaitReport => true,
+                BlockTypes.RedRidingHoodRevive => true,
+                BlockTypes.JackalSidekick => true,
+                BlockTypes.NekomataExiled => true,
+                BlockTypes.FoxGuard => true,
+                _ => false,
+            };
         }
-        public static bool IsBlockAndTryUse(BlockTypes blocktype,PlayerControl player = null)
+        public static bool IsBlockAndTryUse(BlockTypes blocktype, PlayerControl player = null)
         {
             bool BlockData = IsBlock(blocktype, player);
             if (BlockData)
@@ -63,7 +53,8 @@ namespace SuperNewRoles.Roles
             writer.EndRPC();
             CustomRPC.RPCProcedure.UseEraserCount(player.PlayerId);
         }
-        public static bool IsOKAndTryUse(BlockTypes blocktype,PlayerControl player = null) {
+        public static bool IsOKAndTryUse(BlockTypes blocktype, PlayerControl player = null)
+        {
             return !IsBlockAndTryUse(blocktype, player);
         }
         public static bool IsWinGodGuard = false;
@@ -86,9 +77,11 @@ namespace SuperNewRoles.Roles
                 return true;
             }
             PlayerControl player = GetOnCount();
-            if (player == null){
+            if (player == null)
+            {
                 return false;
-            } else
+            }
+            else
             {
                 IsWinGodGuard = true;
                 UseCount(player);
@@ -116,9 +109,11 @@ namespace SuperNewRoles.Roles
                 return true;
             }
             PlayerControl player = GetOnCount();
-            if (player == null){
+            if (player == null)
+            {
                 return false;
-            } else
+            }
+            else
             {
                 IsWinFoxGuard = true;
                 UseCount(player);

@@ -1,15 +1,11 @@
-﻿using HarmonyLib;
-using Hazel;
 using System;
-using System.Collections.Generic;
-using SuperNewRoles.Patches;
-using UnityEngine;
+using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Roles
 {
-    class EvilSpeedBooster { 
+    class EvilSpeedBooster
+    {
         public static void ResetCoolDown()
         {
             HudManagerStartPatch.EvilSpeedBoosterBoostButton.MaxTimer = RoleClass.EvilSpeedBooster.CoolTime;
@@ -19,9 +15,9 @@ namespace SuperNewRoles.Roles
         {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, Hazel.SendOption.Reliable, -1);
             writer.Write(true);
-            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetSpeedBoost(true, PlayerControl.LocalPlayer.PlayerId);
+            CustomRPC.RPCProcedure.SetSpeedBoost(true, CachedPlayer.LocalPlayer.PlayerId);
             RoleClass.EvilSpeedBooster.IsSpeedBoost = true;
             EvilSpeedBooster.ResetCoolDown();
         }
@@ -29,9 +25,9 @@ namespace SuperNewRoles.Roles
         {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedBoost, Hazel.SendOption.Reliable, -1);
             writer.Write(false);
-            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetSpeedBoost(false, PlayerControl.LocalPlayer.PlayerId);
+            CustomRPC.RPCProcedure.SetSpeedBoost(false, CachedPlayer.LocalPlayer.PlayerId);
             RoleClass.EvilSpeedBooster.IsSpeedBoost = false;
         }
 

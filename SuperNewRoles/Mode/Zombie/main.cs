@@ -1,10 +1,10 @@
-﻿using HarmonyLib;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patch;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patch;
 using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
@@ -12,10 +12,11 @@ namespace SuperNewRoles.Mode.Zombie
 {
     static class main
     {
-        public static Color Zombiecolor = new Color32(143, 188, 143,byte.MaxValue);
+        public static Color Zombiecolor = new Color32(143, 188, 143, byte.MaxValue);
         public static Color Policecolor = Color.blue;
         public static List<int> ZombiePlayers;
-        public static bool IsZombie(this PlayerControl player) {
+        public static bool IsZombie(this PlayerControl player)
+        {
             try
             {
                 if (player.Data.Disconnected) return true;
@@ -41,7 +42,6 @@ namespace SuperNewRoles.Mode.Zombie
         }
         public static void SetZombie(this PlayerControl player)
         {
-            
             //player.RpcSetHat("");
             /*
             player.RpcSetSkin("");
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Mode.Zombie
             /*
             player.UncheckSetVisor("visor_pk01_DumStickerVisor");
             */
-            
+
             foreach (PlayerTask task in player.myTasks)
             {
                 task.Complete();
@@ -70,7 +70,7 @@ namespace SuperNewRoles.Mode.Zombie
         public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
         {
             bool IsZombieWin = true;
-            foreach(PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
                 if (!ZombiePlayers.Contains(p.PlayerId) && p.isAlive())
                 {
@@ -93,13 +93,13 @@ namespace SuperNewRoles.Mode.Zombie
         }
         public static void ClearAndReload()
         {
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                p.SetHat("",0);
+                p.SetHat("", 0);
             }
             /*
             PlayerControl.GameOptions.ImpostorLightMod = ZombieOptions.ZombieLight.getFloat();
-            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
+            CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
             */
             SyncSetting.OptionData = PlayerControl.GameOptions;
             ZombieOptions.ZombieLight = ZombieOptions.ZombieLightOption.getFloat();
@@ -107,22 +107,22 @@ namespace SuperNewRoles.Mode.Zombie
             ZombieOptions.PoliceLight = ZombieOptions.PoliceLightOption.getFloat();
             ZombieOptions.PoliceSpeed = ZombieOptions.PoliceSpeedOption.getFloat();
             if (!AmongUsClient.Instance.AmHost) return;
-            ZombiePlayers = new List<int>();
-            if (AmongUsClient.Instance.AmHost) { 
+            ZombiePlayers = new();
+            if (AmongUsClient.Instance.AmHost)
+            {
                 FixedUpdate.IsStart = false;
-                foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     p.getDefaultName();
                     /*
                     p.UncheckSetVisor("visor_EmptyVisor");
                     */
-                    
+
                     //p.RpcSetHat("");
-                    
+
                     /*
                     p.RpcSetSkin("");
                     */
-                    
                 }
             }
             ZombieOptions.FirstChangeSettings();
@@ -130,9 +130,9 @@ namespace SuperNewRoles.Mode.Zombie
         public static void SetTimer()
         {
             FixedUpdate.IsStart = true;
-            foreach (PlayerControl p in PlayerControl.AllPlayerControls)
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
                 {
                     if (p2.PlayerId != p.PlayerId)
                     {

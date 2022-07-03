@@ -1,21 +1,21 @@
-using HarmonyLib;
-using Hazel;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using System;
-using SuperNewRoles.Patches;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.Roles;
-using SuperNewRoles.CustomCosmetics.ShareCosmetics;
-using System.Collections;
-using SuperNewRoles.EndGame;
+using HarmonyLib;
+using Hazel;
 using InnerNet;
-using static SuperNewRoles.EndGame.FinalStatusPatch;
+using SuperNewRoles.CustomCosmetics.ShareCosmetics;
+using SuperNewRoles.CustomOption;
+using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Sabotage;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patches;
+using SuperNewRoles.Roles;
+using SuperNewRoles.Sabotage;
+using UnityEngine;
+using static SuperNewRoles.EndGame.FinalStatusPatch;
 
 namespace SuperNewRoles.CustomRPC
 {
@@ -116,7 +116,18 @@ namespace SuperNewRoles.CustomRPC
         Chief,
         Cleaner,
         MadCleaner,
+        Samurai,
         MayorFriends,
+        VentMaker,
+        GhostMechanic,
+        EvilHacker,
+        HauntedWolf,
+        PositionSwapper,
+        Tuna,
+        Mafia,
+        BlackCat,
+        SecretlyKiller,
+        Spy,
         //RoleId
     }
 
@@ -177,15 +188,27 @@ namespace SuperNewRoles.CustomRPC
         ShielderProtect,
         SetShielder,
         SetSpeedFreeze,
+        BySamuraiKillRPC,
+        MakeVent,
+        PositionSwapperTP,
+        UseAdminTime,
+        UseCameraTime,
+        UseVitalsTime,
+        FixLights,
     }
     public static class RPCProcedure
     {
+        public static void FixLights()
+        {
+            SwitchSystem switchSystem = MapUtilities.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
+            switchSystem.ActualSwitches = switchSystem.ExpectedSwitches;
+        }
         public static void ArsonistDouse(byte source, byte target)
         {
             PlayerControl TargetPlayer = ModHelpers.playerById(target);
             PlayerControl SourcePlayer = ModHelpers.playerById(source);
             if (TargetPlayer == null || SourcePlayer == null) return;
-            if (!RoleClass.Arsonist.DouseDatas.ContainsKey(source)) RoleClass.Arsonist.DouseDatas[source] = new List<PlayerControl>();
+            if (!RoleClass.Arsonist.DouseDatas.ContainsKey(source)) RoleClass.Arsonist.DouseDatas[source] = new();
             if (!Arsonist.IsDoused(SourcePlayer, TargetPlayer))
             {
                 RoleClass.Arsonist.DouseDatas[source].Add(TargetPlayer);
@@ -196,7 +219,7 @@ namespace SuperNewRoles.CustomRPC
             PlayerControl TargetPlayer = ModHelpers.playerById(target);
             PlayerControl SourcePlayer = ModHelpers.playerById(source);
             if (TargetPlayer == null || SourcePlayer == null) return;
-            if (!RoleClass.Demon.CurseDatas.ContainsKey(source)) RoleClass.Demon.CurseDatas[source] = new List<PlayerControl>();
+            if (!RoleClass.Demon.CurseDatas.ContainsKey(source)) RoleClass.Demon.CurseDatas[source] = new();
             if (!Demon.IsCursed(SourcePlayer, TargetPlayer))
             {
                 RoleClass.Demon.CurseDatas[source].Add(TargetPlayer);
@@ -212,7 +235,7 @@ namespace SuperNewRoles.CustomRPC
                 return;
             }
             SuperNewRolesPlugin.Logger.LogInfo("通過:" + player.name);
-            if (BotManager.AllBots == null) BotManager.AllBots = new List<PlayerControl>();
+            if (BotManager.AllBots == null) BotManager.AllBots = new();
             BotManager.AllBots.Add(player);
 
         }
@@ -406,7 +429,7 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void ShareCosmetics(byte id, string url)
         {/**
-            
+
             if (ModHelpers.playerById(id) == null) return;
             if (!SharePatch.PlayerUrl.ContainsKey(id))
             {
@@ -472,8 +495,12 @@ namespace SuperNewRoles.CustomRPC
         public static void SetRole(byte playerid, byte RPCRoleId)
         {
             var player = ModHelpers.playerById(playerid);
-            player.ClearRole();
-            player.setRole((RoleId)RPCRoleId);
+            var roleId = (RoleId)RPCRoleId;
+            if (!roleId.isGhostRole())
+            {
+                player.ClearRole();
+            }
+            player.setRole(roleId);
         }
         public static void SetQuarreled(byte playerid1, byte playerid2)
         {
@@ -504,7 +531,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 if (sheriff.isRole(RoleId.RemoteSheriff) && !RoleClass.RemoteSheriff.IsKillTeleport)
                 {
-                    if (PlayerControl.LocalPlayer.PlayerId == SheriffId)
+                    if (CachedPlayer.LocalPlayer.PlayerId == SheriffId)
                     {
                         target.MurderPlayer(target);
                     }
@@ -529,14 +556,14 @@ namespace SuperNewRoles.CustomRPC
             if (sheriff == null || target == null) return;
             if (!PlayerControl.LocalPlayer.isAlive())
             {
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は" + target.name + "をシェリフキルした！");
+                FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は" + target.name + "をシェリフキルした！");
                 if (MissFire)
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は誤爆した！");
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は誤爆した！");
                 }
                 else
                 {
-                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は成功した！");
+                    FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は成功した！");
                 }
             }
             if (MissFire)
@@ -545,7 +572,7 @@ namespace SuperNewRoles.CustomRPC
                 FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.MeetingSheriffMisFire;
                 if (PlayerControl.LocalPlayer == sheriff)
                 {
-                    HudManager.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(sheriff.Data, sheriff.Data);
                 }
 
             }
@@ -555,7 +582,7 @@ namespace SuperNewRoles.CustomRPC
                 FinalStatusData.FinalStatuses[sheriff.PlayerId] = FinalStatus.MeetingSheriffKill;
                 if (PlayerControl.LocalPlayer == target)
                 {
-                    HudManager.Instance.KillOverlay.ShowKillAnimation(target.Data, sheriff.Data);
+                    FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, sheriff.Data);
                 }
             }
             if (MeetingHud.Instance)
@@ -723,6 +750,16 @@ namespace SuperNewRoles.CustomRPC
                 FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.BySelfBomb;
             }
         }
+        public static void BySamuraiKillRPC(byte sourceId, byte targetId)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceId);
+            PlayerControl target = ModHelpers.playerById(targetId);
+            if (source != null && target != null)
+            {
+                source.MurderPlayer(target);
+                FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+            }
+        }
         public static void ExiledRPC(byte playerid)
         {
             var player = ModHelpers.playerById(playerid);
@@ -778,12 +815,12 @@ namespace SuperNewRoles.CustomRPC
         public static void TeleporterTP(byte playerid)
         {
             var p = ModHelpers.playerById(playerid);
-            PlayerControl.LocalPlayer.transform.position = p.transform.position;
+            CachedPlayer.LocalPlayer.transform.position = p.transform.position;
             if (SubmergedCompatibility.isSubmerged())
             {
                 SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
             }
-            new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"), p.nameText.text), 3);
+            new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"), p.nameText().text), 3);
         }
         public static void SetWinCond(byte Cond)
         {
@@ -805,12 +842,91 @@ namespace SuperNewRoles.CustomRPC
             source.ProtectPlayer(target, colorid);
             PlayerControl.LocalPlayer.MurderPlayer(target);
             source.ProtectPlayer(target, colorid);
-            if (targetId == PlayerControl.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
+            if (targetId == CachedPlayer.LocalPlayer.PlayerId) Buttons.HudManagerStartPatch.ShielderButton.Timer = 0f;
         }
         public static void SetShielder(byte PlayerId, bool Is)
         {
-            RoleClass.Shielder.IsShield[PlayerId] = (RoleClass.Shielder.IsShield[PlayerId] = Is);
+            RoleClass.Shielder.IsShield[PlayerId] = RoleClass.Shielder.IsShield[PlayerId] = Is;
         }
+        public static void MakeVent(float x, float y, float z)
+        {
+            Vent template = UnityEngine.Object.FindObjectOfType<Vent>();
+            Vent VentMakerVent = UnityEngine.Object.Instantiate<Vent>(template);
+            if (RoleClass.VentMaker.VentCount == 2)
+            {
+                RoleClass.VentMaker.Vent.Right = VentMakerVent;
+                VentMakerVent.Right = RoleClass.VentMaker.Vent;
+                VentMakerVent.Left = null;
+                VentMakerVent.Center = null;
+            }
+            else
+            {
+                VentMakerVent.Right = null;
+                VentMakerVent.Left = null;
+                VentMakerVent.Center = null;
+            }
+
+            VentMakerVent.transform.position = new Vector3(x, y, z);
+            VentMakerVent.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+            VentMakerVent.Id = MapUtilities.CachedShipStatus.AllVents.Select(x => x.Id).Max() + 1;
+            var allVentsList = MapUtilities.CachedShipStatus.AllVents.ToList();
+            allVentsList.Add(VentMakerVent);
+            MapUtilities.CachedShipStatus.AllVents = allVentsList.ToArray();
+            VentMakerVent.name = "VentMakerVent" + VentMakerVent.Id;
+            VentMakerVent.gameObject.SetActive(true);
+        }
+        public static void PositionSwapperTP(byte SwapPlayerID, byte SwapperID)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo("スワップ開始！");
+            /*if (SubmergedCompatibility.isSubmerged())
+            {
+                if (PlayerControl.LocalPlayer.PlayerId == SwapPlayerID){
+                    SubmergedCompatibility.ChangeFloor(SwapperPlayerFloor);
+                }
+                else{
+                    SubmergedCompatibility.ChangeFloor(SwapPlayerFloor);
+                }
+            }*/
+
+            var SwapPlayer = ModHelpers.playerById(SwapPlayerID);
+            var SwapperPlayer = ModHelpers.playerById(SwapperID);
+            var SwapPosition = SwapPlayer.transform.position;
+            var SwapperPosition = SwapperPlayer.transform.position;
+            //Text
+            var rand = new System.Random();
+            if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)*/)
+            {
+                CachedPlayer.LocalPlayer.transform.position = SwapPosition;
+                SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
+                return;
+            }
+            else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId)
+            {
+                CachedPlayer.LocalPlayer.transform.position = SwapperPosition;
+                SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");
+                if (rand.Next(1, 20) == 1)
+                {
+                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
+                }
+                else
+                {
+                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
+                }
+            }
+        }
+        /*
+        public static void UseAdminTime(float time)
+        {
+            Patch.AdminPatch.RestrictAdminTime -= time;
+        }
+        public static void UseCameraTime(float time)
+        {
+            Patch.CameraPatch.RestrictCameraTime -= time;
+        }
+        public static void UseVitalTime(float time)
+        {
+            Patch.VitalsPatch.RestrictVitalsTime -= time;
+        }*/
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -823,205 +939,232 @@ namespace SuperNewRoles.CustomRPC
         {
             static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
             {
-                byte packetId = callId;
-                switch (packetId)
+                try
                 {
+                    byte packetId = callId;
+                    switch ((CustomRPC)packetId)
+                    {
 
-                    // Main Controls
-                    /*
-                        case (byte)CustomRPC.TORVersionShare:
-                         int majorTOR = reader.ReadPackedInt32();
-                         int minorTOR = reader.ReadPackedInt32();
-                         int patchTOR = reader.ReadPackedInt32();
-                         int versionOwnerIdTOR = reader.ReadPackedInt32();
-                         byte revisionTOR = 0xFF;
-                         byte[] guidTOR;
-                         revisionTOR = reader.ReadByte();
-                         guidTOR = reader.ReadBytes(16);
-                         RPCProcedure.TORVersionShare(majorTOR, minorTOR, patchTOR, revisionTOR == 0xFF ? -1 : revisionTOR, guidTOR, versionOwnerIdTOR);
-                        break;*/
-                    case (byte)CustomRPC.ShareOptions:
-                        RPCProcedure.ShareOptions((int)reader.ReadPackedUInt32(), reader);
+                        // Main Controls
+                        /*
+                            case CustomRPC.TORVersionShare:
+                             int majorTOR = reader.ReadPackedInt32();
+                             int minorTOR = reader.ReadPackedInt32();
+                             int patchTOR = reader.ReadPackedInt32();
+                             int versionOwnerIdTOR = reader.ReadPackedInt32();
+                             byte revisionTOR = 0xFF;
+                             byte[] guidTOR;
+                             revisionTOR = reader.ReadByte();
+                             guidTOR = reader.ReadBytes(16);
+                             CustomRPC.TORVersionShare(majorTOR, minorTOR, patchTOR, revisionTOR == 0xFF ? -1 : revisionTOR, guidTOR, versionOwnerIdTOR);
+                            break;*/
+                        case CustomRPC.ShareOptions:
+                            ShareOptions((int)reader.ReadPackedUInt32(), reader);
+                            break;
+                        case CustomRPC.ShareSNRVersion:
+                            byte major = reader.ReadByte();
+                            byte minor = reader.ReadByte();
+                            byte patch = reader.ReadByte();
+                            int versionOwnerId = reader.ReadPackedInt32();
+                            byte revision = 0xFF;
+                            Guid guid;
+                            if (reader.Length - reader.Position >= 17)
+                            { // enough bytes left to read
+                                revision = reader.ReadByte();
+                                // GUID
+                                byte[] gbytes = reader.ReadBytes(16);
+                                guid = new Guid(gbytes);
+                            }
+                            else
+                            {
+                                guid = new Guid(new byte[16]);
+                            }
+                            ShareSNRversion(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
+                            break;
+                        case CustomRPC.SetRole:
+                            SetRole(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SheriffKill:
+                            SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.MeetingSheriffKill:
+                            MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.CustomRPCKill:
+                            CustomRPCKill(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.RPCClergymanLightOut:
+                            RPCClergymanLightOut(reader.ReadBoolean());
+                            break;
+                        case CustomRPC.ReportDeadBody:
+                            ReportDeadBody(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.UncheckedMeeting:
+                            UncheckedMeeting(reader.ReadByte());
+                            break;
+                        case CustomRPC.CleanBody:
+                            CleanBody(reader.ReadByte());
+                            break;
+                        case CustomRPC.RPCMurderPlayer:
+                            byte source = reader.ReadByte();
+                            byte target = reader.ReadByte();
+                            byte showAnimation = reader.ReadByte();
+                            RPCMurderPlayer(source, target, showAnimation);
+                            break;
+                        case CustomRPC.ExiledRPC:
+                            ExiledRPC(reader.ReadByte());
+                            break;
+                        case CustomRPC.ShareWinner:
+                            ShareWinner(reader.ReadByte());
+                            break;
+                        case CustomRPC.TeleporterTP:
+                            TeleporterTP(reader.ReadByte());
+                            break;
+                        case CustomRPC.SetQuarreled:
+                            SetQuarreled(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SidekickPromotes:
+                            SidekickPromotes();
+                            break;
+                        case CustomRPC.CreateSidekick:
+                            CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SetSpeedBoost:
+                            SetSpeedBoost(reader.ReadBoolean(), reader.ReadByte());
+                            break;
+                        case CustomRPC.ShareCosmetics:
+                            ShareCosmetics(reader.ReadByte(), reader.ReadString());
+                            break;
+                        case CustomRPC.SetShareNamePlate:
+                            SetShareNamePlate(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.AutoCreateRoom:
+                            AutoCreateRoom();
+                            break;
+                        case CustomRPC.BomKillRPC:
+                            BomKillRPC(reader.ReadByte());
+                            break;
+                        case CustomRPC.ByBomKillRPC:
+                            ByBomKillRPC(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.NekomataExiledRPC:
+                            NekomataExiledRPC(reader.ReadByte());
+                            break;
+                        case CustomRPC.CountChangerSetRPC:
+                            CountChangerSetRPC(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetRoomTimerRPC:
+                            SetRoomTimerRPC(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetScientistRPC:
+                            SetScientistRPC(reader.ReadBoolean(), reader.ReadByte());
+                            break;
+                        case CustomRPC.ReviveRPC:
+                            ReviveRPC(reader.ReadByte());
+                            break;
+                        case CustomRPC.SetHaison:
+                            SetHaison();
+                            break;
+                        case CustomRPC.SetWinCond:
+                            SetWinCond(reader.ReadByte());
+                            break;
+                        case CustomRPC.SetDetective:
+                            SetDetective(reader.ReadByte());
+                            break;
+                        case CustomRPC.UseEraserCount:
+                            UseEraserCount(reader.ReadByte());
+                            break;
+                        case CustomRPC.StartGameRPC:
+                            StartGameRPC();
+                            break;
+                        case CustomRPC.UncheckedSetTasks:
+                            uncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
+                            break;
+                        case CustomRPC.SetLovers:
+                            SetLovers(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetUseDevice:
+                            SetUseDevice(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SetDeviceTime:
+                            SetDeviceTime(reader.ReadSingle(), reader.ReadByte());
+                            break;
+                        case CustomRPC.UncheckedSetColor:
+                            __instance.SetColor(reader.ReadByte());
+                            break;
+                        case CustomRPC.UncheckedSetVanilaRole:
+                            UncheckedSetVanilaRole(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetMadKiller:
+                            SetMadKiller(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetCustomSabotage:
+                            SabotageManager.SetSabotage(ModHelpers.playerById(reader.ReadByte()), (SabotageManager.CustomSabotage)reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.CustomEndGame:
+                            if (AmongUsClient.Instance.AmHost)
+                            {
+                                MapUtilities.CachedShipStatus.enabled = false;
+                                CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
+                            }
+                            break;
+                        case CustomRPC.UncheckedProtect:
+                            UncheckedProtect(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetBot:
+                            SetBot(reader.ReadByte());
+                            break;
+                        case CustomRPC.DemonCurse:
+                            DemonCurse(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SidekickSeerPromotes:
+                            SidekickSeerPromotes();
+                            break;
+                        case CustomRPC.CreateSidekickSeer:
+                            CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.ArsonistDouse:
+                            ArsonistDouse(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetSpeedDown:
+                            SetSpeedDown(reader.ReadBoolean());
+                            break;
+                        case CustomRPC.ShielderProtect:
+                            ShielderProtect(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetShielder:
+                            SetShielder(reader.ReadByte(), reader.ReadBoolean());
+                            break;
+                        case CustomRPC.SetSpeedFreeze:
+                            SetSpeedFreeze(reader.ReadBoolean());
+                            break;
+                        case CustomRPC.MakeVent:
+                            MakeVent(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+                            break;
+                        case CustomRPC.PositionSwapperTP:
+                            RPCProcedure.PositionSwapperTP(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        /*
+                    case CustomRPC.UseAdminTime:
+                        UseAdminTime(reader.ReadSingle());
                         break;
-                    case (byte)CustomRPC.ShareSNRVersion:
-                        byte major = reader.ReadByte();
-                        byte minor = reader.ReadByte();
-                        byte patch = reader.ReadByte();
-                        int versionOwnerId = reader.ReadPackedInt32();
-                        byte revision = 0xFF;
-                        Guid guid;
-                        if (reader.Length - reader.Position >= 17)
-                        { // enough bytes left to read
-                            revision = reader.ReadByte();
-                            // GUID
-                            byte[] gbytes = reader.ReadBytes(16);
-                            guid = new Guid(gbytes);
-                        }
-                        else
-                        {
-                            guid = new Guid(new byte[16]);
-                        }
-                        RPCProcedure.ShareSNRversion(major, minor, patch, revision == 0xFF ? -1 : revision, guid, versionOwnerId);
+                    case CustomRPC.UseCameraTime:
+                        UseCameraTime(reader.ReadSingle());
                         break;
-                    case (byte)CustomRPC.SetRole:
-                        RPCProcedure.SetRole(reader.ReadByte(), reader.ReadByte());
+                    case CustomRPC.UseVitalsTime:
+                        UseVitalTime(reader.ReadSingle());
                         break;
-                    case (byte)CustomRPC.SheriffKill:
-                        RPCProcedure.SheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case (byte)CustomRPC.MeetingSheriffKill:
-                        RPCProcedure.MeetingSheriffKill(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case (byte)CustomRPC.CustomRPCKill:
-                        RPCProcedure.CustomRPCKill(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.RPCClergymanLightOut:
-                        RPCProcedure.RPCClergymanLightOut(reader.ReadBoolean());
-                        break;
-                    case (byte)CustomRPC.ReportDeadBody:
-                        RPCProcedure.ReportDeadBody(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.UncheckedMeeting:
-                        RPCProcedure.UncheckedMeeting(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.CleanBody:
-                        RPCProcedure.CleanBody(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.RPCMurderPlayer:
-                        byte source = reader.ReadByte();
-                        byte target = reader.ReadByte();
-                        byte showAnimation = reader.ReadByte();
-                        RPCProcedure.RPCMurderPlayer(source, target, showAnimation);
-                        break;
-                    case (byte)CustomRPC.ExiledRPC:
-                        RPCProcedure.ExiledRPC(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.ShareWinner:
-                        RPCProcedure.ShareWinner(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.TeleporterTP:
-                        RPCProcedure.TeleporterTP(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SetQuarreled:
-                        RPCProcedure.SetQuarreled(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SidekickPromotes:
-                        RPCProcedure.SidekickPromotes();
-                        break;
-                    case (byte)CustomRPC.CreateSidekick:
-                        RPCProcedure.CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case (byte)CustomRPC.SetSpeedBoost:
-                        RPCProcedure.SetSpeedBoost(reader.ReadBoolean(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.ShareCosmetics:
-                        RPCProcedure.ShareCosmetics(reader.ReadByte(), reader.ReadString());
-                        break;
-                    case (byte)CustomRPC.SetShareNamePlate:
-                        RPCProcedure.SetShareNamePlate(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.AutoCreateRoom:
-                        RPCProcedure.AutoCreateRoom();
-                        break;
-                    case (byte)CustomRPC.BomKillRPC:
-                        RPCProcedure.BomKillRPC(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.ByBomKillRPC:
-                        RPCProcedure.ByBomKillRPC(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.NekomataExiledRPC:
-                        RPCProcedure.NekomataExiledRPC(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.CountChangerSetRPC:
-                        RPCProcedure.CountChangerSetRPC(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SetRoomTimerRPC:
-                        RPCProcedure.SetRoomTimerRPC(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SetScientistRPC:
-                        RPCProcedure.SetScientistRPC(reader.ReadBoolean(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.ReviveRPC:
-                        RPCProcedure.ReviveRPC(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SetHaison:
-                        SetHaison();
-                        break;
-                    case (byte)CustomRPC.SetWinCond:
-                        RPCProcedure.SetWinCond(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SetDetective:
-                        RPCProcedure.SetDetective(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.UseEraserCount:
-                        RPCProcedure.UseEraserCount(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.StartGameRPC:
-                        RPCProcedure.StartGameRPC();
-                        break;
-                    case (byte)CustomRPC.UncheckedSetTasks:
-                        RPCProcedure.uncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
-                        break;
-                    case (byte)CustomRPC.SetLovers:
-                        RPCProcedure.SetLovers(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SetUseDevice:
-                        RPCProcedure.SetUseDevice(reader.ReadByte(), reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case (byte)CustomRPC.SetDeviceTime:
-                        RPCProcedure.SetDeviceTime(reader.ReadSingle(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.UncheckedSetColor:
-                        __instance.SetColor(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.UncheckedSetVanilaRole:
-                        UncheckedSetVanilaRole(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SetMadKiller:
-                        SetMadKiller(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SetCustomSabotage:
-                        SabotageManager.SetSabotage(ModHelpers.playerById(reader.ReadByte()), (SabotageManager.CustomSabotage)reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case (byte)CustomRPC.CustomEndGame:
-                        if (AmongUsClient.Instance.AmHost)
-                        {
-                            CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
-                        }
-                        break;
-                    case (byte)CustomRPC.UncheckedProtect:
-                        UncheckedProtect(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SetBot:
-                        SetBot(reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.DemonCurse:
-                        DemonCurse(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SidekickSeerPromotes:
-                        RPCProcedure.SidekickSeerPromotes();
-                        break;
-                    case (byte)CustomRPC.CreateSidekickSeer:
-                        RPCProcedure.CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case (byte)CustomRPC.ArsonistDouse:
-                        ArsonistDouse(reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SetSpeedDown:
-                        SetSpeedDown(reader.ReadBoolean());
-                        break;
-                    case (byte)CustomRPC.ShielderProtect:
-                        ShielderProtect(reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
-                        break;
-                    case (byte)CustomRPC.SetShielder:
-                        SetShielder(reader.ReadByte(), reader.ReadBoolean());
-                        break;
-                    case (byte)CustomRPC.SetSpeedFreeze:
-                        SetSpeedFreeze(reader.ReadBoolean());
-                        break;
+                        */
+                        case CustomRPC.FixLights:
+                            FixLights();
+                            break;
+                    }
+                }
+                catch(Exception e)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo((CustomRPC)callId+"でエラー:"+e);
                 }
             }
         }
-
     }
 }
