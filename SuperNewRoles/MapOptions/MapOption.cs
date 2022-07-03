@@ -26,6 +26,18 @@ namespace SuperNewRoles.MapOptions
         public static bool ValidationAirship;
         public static bool ValidationSubmerged;
         public static bool IsRestrict;
+
+        //千里眼・ズーム関連
+        public static bool MouseZoom;
+        public static bool ClairvoyantZoom;
+        public static float CoolTime;
+        public static float DurationTime;
+        public static bool IsZoomOn;
+        public static float Timer;
+        public static DateTime ButtonTimer;
+        private static Sprite buttonSprite;
+        public static float Default;
+        public static float CameraDefault;
         public static void ClearAndReload()
         {
             if (MapOptionSetting.getBool())
@@ -111,6 +123,17 @@ namespace SuperNewRoles.MapOptions
             PolusReactorTimeLimit.getFloat();
             MiraReactorTimeLimit.getFloat();
             AirshipReactorTimeLimit.getFloat();
+
+            //千里眼・ズーム関連
+            ClairvoyantZoom = CustomOptions.ClairvoyantZoom.getBool();
+            MouseZoom = CustomOptions.MouseZoom.getBool();
+            CoolTime = CustomOptions.ZoomCoolTime.getFloat();
+            DurationTime = CustomOptions.ZoomDurationTime.getFloat();
+            IsZoomOn = false;
+            Timer = 0;
+            ButtonTimer = DateTime.Now;
+            CameraDefault = Camera.main.orthographicSize;
+            Default = FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize;
         }
         public static CustomOption.CustomOption MapOptionSetting;
         public static CustomOption.CustomOption DeviceOptions;
@@ -200,6 +223,8 @@ namespace SuperNewRoles.MapOptions
 
 
             VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
+            LadderDead = CustomOption.CustomOption.Create(617, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
+            LadderDeadChance = CustomOption.CustomOption.Create(618, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);
         }
     }
 }
