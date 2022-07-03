@@ -15,10 +15,15 @@ namespace SuperNewRoles
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
     class RpcSetRolePatch
     {
+        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
+        {
+            SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName + " => " + roleType);
+        }
+        /*
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName+" => "+roleType);
-            return true;
+            SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName + " => " + roleType);
+            if (!AmongUsClient.Instance.AmHost) return true;
             if (RoleManagerSelectRolesPatch.IsShapeSet)
             {
                 MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
@@ -54,7 +59,7 @@ namespace SuperNewRoles
                 }
             }
             return false;
-        }
+        }*/
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
     class startgamepatch
@@ -115,6 +120,7 @@ namespace SuperNewRoles
                         SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                     }
                 }
+                RoleSelectHandler.RoleSelect();
                 foreach (PlayerControl player in AllRoleSetClass.impostors)
                 {
                     player.RpcSetRole(RoleTypes.Impostor);
@@ -126,7 +132,6 @@ namespace SuperNewRoles
                         player.RpcSetRole(RoleTypes.Crewmate);
                     }
                 }
-                RoleSelectHandler.RoleSelect();
 
                 try
                 {
@@ -836,7 +841,9 @@ namespace SuperNewRoles
                 RoleId.Tuna => CustomOptions.TunaPlayerCount.getFloat(),
                 RoleId.Mafia => CustomOptions.MafiaPlayerCount.getFloat(),
                 RoleId.BlackCat => CustomOptions.BlackCatPlayerCount.getFloat(),
+                RoleId.SecretlyKiller => CustomOptions.SecretlyKillerPlayerCount.getFloat(),
                 RoleId.Spy => CustomOptions.SpyPlayerCount.getFloat(),
+                //プレイヤーカウント
                 _ => 1,
             };
         }

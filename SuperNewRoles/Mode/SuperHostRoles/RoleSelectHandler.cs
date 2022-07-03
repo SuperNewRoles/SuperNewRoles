@@ -95,7 +95,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 if (CustomOptions.SpyOption.getSelection() != 0)
                 {
-                    for (int i = 0; i < CustomOptions.SpyPlayerCount.getFloat() - (crewmate-(impostor - PlayerControl.GameOptions.NumImpostors)) + 1; i++)
+                    for (int i = 0; i < CustomOptions.SpyPlayerCount.getFloat() - (crewmate - (impostor - PlayerControl.GameOptions.NumImpostors)) + 1; i++)
                     {
                         PlayerControl bot1 = BotManager.Spawn("暗転対策BOT");
                         bot1.RpcSetRole(RoleTypes.Crewmate);
@@ -211,7 +211,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (RoleClass.Spy.CanUseVent)
                     {
                         p.RpcSetRoleDesync(crsSpy, RoleTypes.Engineer);
-                    } else
+                    }
+                    else
                     {
                         p.RpcSetRoleDesync(crsSpy, RoleTypes.Crewmate);
                     }
@@ -225,16 +226,19 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 if (p2.PlayerId != 0)
                                 {
                                     p.RpcSetRoleDesync(crsSpy, RoleTypes.Crewmate, p2);
-                                } else
+                                }
+                                else
                                 {
                                     p.SetRole(RoleTypes.Crewmate);
                                 }
-                            } else
+                            }
+                            else
                             {
                                 if (p2.isImpostor() || p2.isRole(RoleId.Spy))
                                 {
                                     p.RpcSetRoleDesync(crsSpy, RoleTypes.Impostor, p2);
-                                } else
+                                }
+                                else
                                 {
                                     p.RpcSetRoleDesync(crsSpy, RoleTypes.Crewmate, p2);
                                 }

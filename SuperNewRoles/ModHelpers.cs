@@ -671,5 +671,24 @@ namespace SuperNewRoles
             if (dis <= distance) return true;
             return false;
         }
+
+    }
+    public static class CreateFlag
+    {
+        public static List<string> OneTimeList = new List<string>();
+        public static List<string> FirstRunList = new List<string>();
+        public static void Run(Action action, string type, bool firstrun = false)
+        {
+            if ((OneTimeList.Contains(type)) || (firstrun && !FirstRunList.Contains(type)))
+            {
+                if (!FirstRunList.Contains(type)) FirstRunList.Add(type);
+                OneTimeList.Remove(type);
+                action();
+            }
+        }
+        public static void NewFlag(string type)
+        {
+            if (!OneTimeList.Contains(type)) OneTimeList.Add(type);
+        }
     }
 }

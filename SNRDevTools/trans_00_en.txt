@@ -47,6 +47,8 @@ Melon
 Crasyu Blue
 Light Green
 <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats
+Map Custom
+(Airship)Secret Room
 enable MirroMap
 Preset
 <color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings
@@ -687,7 +689,7 @@ Camera Restrictions
 Vital Restrictions
 Can use time
 ykundesuBeplnEx
-ykundesuBeplnExDelicious
+ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?
 HauntedWolf
 Don't let the crew find out.
 Reactor Duration Time
@@ -754,7 +756,7 @@ Swapping cooltime
 Limits:{0}
 PositionSwap
 Position swapper swapped you!
-Position swapper swapped you!\n by the way，ykundesu isn't delicious?
+Position swapper swapped you!\n by the way，ykundesu is delicious，isn't it?
 Tuna
 Always move!
 Stopping Time
@@ -769,3 +771,17 @@ Deceive the Imposter and lead the Cluemate camp to victory!
 Spies are crewmates but they look like friends to the Imposter.\n Spies are crewmates and have no special abilities.
 Move Vital to specimen (polus)
 Download custom hat
+Secretly Killer
+Please be quiet during the power outage.
+Same in kill buttons
+Kill cool charge during power outage
+Ability limit
+Secretly\nKill
+Zoom function after death
+Mouse wheel Mode
+ClairvoyantMode
+ClairvoyantCoolTime
+ClairvoyantDurationTime
+Clairvoyant!
+Ladder Death
+Ladder Death Chance

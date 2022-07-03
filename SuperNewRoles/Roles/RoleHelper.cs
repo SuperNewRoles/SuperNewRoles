@@ -567,6 +567,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.SecretlyKiller):
+                    Roles.RoleClass.SecretlyKiller.SecretlyKillerPlayer.Add(player);
+                    break;
                 case (CustomRPC.RoleId.Spy):
                     Roles.RoleClass.Spy.SpyPlayer.Add(player);
                     break;
@@ -907,7 +910,10 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.Spy):
+                case (CustomRPC.RoleId.SecretlyKiller):
+                    Roles.RoleClass.SecretlyKiller.SecretlyKillerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Spy):
                     Roles.RoleClass.Spy.SpyPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
@@ -1831,6 +1837,10 @@ namespace SuperNewRoles
                 else if (Roles.RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.BlackCat;
+                }
+                else if (Roles.RoleClass.SecretlyKiller.SecretlyKillerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SecretlyKiller;
                 }
                 else if (Roles.RoleClass.Spy.SpyPlayer.IsCheckListPlayerControl(player))
                 {
