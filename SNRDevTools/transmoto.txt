@@ -47,6 +47,8 @@ colorMelon
 colorCrasyublue
 colorLightgreen
 Hat_SNR
+MapCustom
+SecretRoom
 enableMirroMap
 SettingpresetSelection
 SettingSuperNewRoles

@@ -196,6 +196,14 @@
         "0" : "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats" ,
         "11" : "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats"
         } ,
+ "MapCustom" : {
+        "0" : "Map Custom" ,
+        "11" : "\u30de\u30c3\u30d7\u6539\u9020"
+        } ,
+ "SecretRoom" : {
+        "0" : "(Airship)Secret Room" ,
+        "11" : "(\u30a8\u30a2\u30fc\u30b7\u30c3\u30d7)\u30b7\u30fc\u30af\u30ec\u30c3\u30c8\u30eb\u30fc\u30e0"
+        } ,
  "enableMirroMap" : {
         "0" : "enable MirroMap" ,
         "11" : "\u53cd\u8ee2\u30de\u30c3\u30d7\u3092\u6709\u52b9\u306b\u3059\u308b"
@@ -3139,10 +3147,6 @@
  "LadderDeadChance" : {
         "0" : "Ladder Death Chance" ,
         "11" : "\u8ee2\u843d\u6b7b\u3059\u308b\u78ba\u7387"
-        } ,
- "" : {
-        "0" : "" ,
-        "11" : ""
         } 
 
 }
