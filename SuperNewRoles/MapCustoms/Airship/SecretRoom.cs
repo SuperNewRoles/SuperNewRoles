@@ -26,6 +26,7 @@ namespace SuperNewRoles.MapCustoms.Airship
         static PoolablePlayer right;
         public static PlayerControl UsePlayer;
         public static bool IsWait = false;
+        public static TextMeshPro LowerInfoText;
         static List<Vector2> TeleportPositions = new List<Vector2>
         {
             new Vector2(-0.78f, -1f), new Vector2(-13, -1), new Vector2(-13, 1.5f), new Vector2(-21, -1.2f), new Vector2(-10, -7), new Vector2(-6.2f, -11),
@@ -45,12 +46,10 @@ namespace SuperNewRoles.MapCustoms.Airship
 
         public static void SetSecretRoomTeleportStatus(Status status, byte data1, byte data2)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(status + " => "+data1+" , "+data2);
             switch (status)
             {
                 case Status.UseConsole:
                     PlayerControl useplayer = ModHelpers.playerById(data1);
-                    SuperNewRolesPlugin.Logger.LogInfo(UsePlayer == null);
                     if (UsePlayer != null)
                     {
                         if (data1 == CachedPlayer.LocalPlayer.PlayerId)
@@ -63,13 +62,17 @@ namespace SuperNewRoles.MapCustoms.Airship
                         }
                         return;
                     }
-                    SuperNewRolesPlugin.Logger.LogInfo(useplayer.Data.PlayerName);
                     if (useplayer == null) return;
                     UsePlayer = useplayer;
                     break;
                 case Status.CloseConsole:
                     UsePlayer = null;
                     IsWait = false;
+                    if ((leftplayer != null && leftplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId) ||
+                        (rightplayer != null && rightplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId))
+                    {
+                        LowerInfoText.text = "Escで実験から抜ける";
+                    }
                     break;
                 case Status.Join:
                     PlayerControl player = ModHelpers.playerById(data1);
@@ -98,6 +101,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         (rightplayer != null && rightplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId))
                     {
                         PlayerControl.LocalPlayer.moveable = false;
+                        LowerInfoText.text = "実験中...";
                     }
                     IsWait = true;
                     break;
@@ -293,6 +297,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         left.gameObject.SetActive(true);
                     }
                     left.UpdateFromPlayerOutfit(leftplayer.CurrentOutfit, PlayerMaterial.MaskType.ComplexUI, false, true);
+                    left.nameText().text = leftplayer.CurrentOutfit.PlayerName;
                 } else
                 {
                     left.gameObject.SetActive(false);
@@ -309,6 +314,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         right.gameObject.SetActive(true);
                     }
                     right.UpdateFromPlayerOutfit(rightplayer.CurrentOutfit, PlayerMaterial.MaskType.ComplexUI, false, true);
+                    right.nameText().text = rightplayer.CurrentOutfit.PlayerName;
                 } else
                 {
                     right.gameObject.SetActive(false);
@@ -332,9 +338,24 @@ namespace SuperNewRoles.MapCustoms.Airship
             {
                 if (__instance.name == "secretroom_teleport-on" || __instance.name == "secretroom_teleport-on2")
                 {
+                    if (LowerInfoText == null)
+                    {
+                        LowerInfoText = UnityEngine.Object.Instantiate(PlayerControl.LocalPlayer.nameText());
+                        LowerInfoText.transform.parent = HudManager.Instance.transform;
+                        LowerInfoText.transform.localPosition = new Vector3(0, -1.5f, 0);
+                        LowerInfoText.transform.localScale = new Vector3(2, 2f, 2);
+                        LowerInfoText.alignment = TextAlignmentOptions.Center;
+                        LowerInfoText.overflowMode = TextOverflowModes.Overflow;
+                        LowerInfoText.enableWordWrapping = false;
+                        LowerInfoText.color = Color.white;
+                        LowerInfoText.fontSizeMin = 2.0f;
+                        LowerInfoText.fontSizeMax = 2.0f;
+                    }
                     __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
                     if (canUse)
                     {
+                        LowerInfoText.text = "Escで実験から抜ける";
+                        //LowerInfoText.
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetSecretRoomTeleportStatus);
                         writer.Write((byte)Status.Join);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
@@ -468,12 +489,14 @@ namespace SuperNewRoles.MapCustoms.Airship
                         {
                             if (RoleClass.IsMeeting || (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started && AmongUsClient.Instance.GameMode != GameModes.FreePlay))
                             {
+                                LowerInfoText.text = "";
                                 yield break;
                             }
                             yield return null;
                         }
                         if (Input.GetKey(KeyCode.Escape))
                         {
+                            LowerInfoText.text = "";
                             if (IsWait) yield break;
                             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetSecretRoomTeleportStatus);
                             writer.Write((byte)Status.Break);
@@ -495,6 +518,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         }
                     } else
                     {
+                        LowerInfoText.text = "";
                         Camera.main.GetComponent<FollowerCamera>().Locked = false;
                         yield break;
                     }
