@@ -40,7 +40,7 @@ namespace SuperNewRoles
             __instance.RoleOptions.ProtectionDurationSeconds = 10f;
             __instance.RoleOptions.EngineerCooldown = 30f;
             __instance.RoleOptions.EngineerInVentMaxTime = 15f;
-            if (ModeHandler.isMode(ModeId.HideAndSeek)) //ハイドアンドシーク
+            if (ModeHandler.isMode(ModeId.HideAndSeek, false)) //ハイドアンドシーク
             {
                 __instance.PlayerSpeedMod = 1.75f;
                 __instance.CrewLightMod = 5f;
@@ -51,13 +51,13 @@ namespace SuperNewRoles
                 __instance.NumShortTasks = 6;
                 __instance.KillCooldown = 10f;
             }
-            if (ModeHandler.isMode(ModeId.BattleRoyal)) //バトルロイヤルモード
+            if (ModeHandler.isMode(ModeId.BattleRoyal, false)) //バトルロイヤルモード
             {
                 __instance.PlayerSpeedMod = 1.75f;
                 __instance.ImpostorLightMod = 2f;
                 __instance.KillCooldown = 1f;
             }
-            if (ModeHandler.isMode(ModeId.Zombie)) //ゾンビモード
+            if (ModeHandler.isMode(ModeId.Zombie, false)) //ゾンビモード
             {
                 __instance.PlayerSpeedMod = 1.5f;
                 __instance.CrewLightMod = 1.5f;
