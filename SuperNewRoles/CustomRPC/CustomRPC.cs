@@ -195,7 +195,7 @@ namespace SuperNewRoles.CustomRPC
         UseCameraTime,
         UseVitalsTime,
         FixLights,
-        SetSecretRoomTeleportStatus
+        SetSecretRoomTeleportStatus,
         ChiefSidekick
     }
     public static class RPCProcedure
@@ -1173,6 +1173,7 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.SetSecretRoomTeleportStatus:
                             MapCustoms.Airship.SecretRoom.SetSecretRoomTeleportStatus((MapCustoms.Airship.SecretRoom.Status)reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
                         case CustomRPC.ChiefSidekick:
                             ChiefSidekick(reader.ReadByte());
                             break;
