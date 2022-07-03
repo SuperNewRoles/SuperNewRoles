@@ -1,12 +1,8 @@
-using HarmonyLib;
+using System.Collections.Generic;
+using System.Linq;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patches;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -15,12 +11,12 @@ namespace SuperNewRoles.Roles
     {
         public static void resetCoolDown()
         {
-            HudManagerStartPatch.JackalSeerKillButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
-            HudManagerStartPatch.JackalSeerKillButton.Timer = RoleClass.JackalSeer.KillCoolDown;
+            HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
+            HudManagerStartPatch.JackalKillButton.Timer = RoleClass.JackalSeer.KillCoolDown;
             HudManagerStartPatch.JackalSeerSidekickButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
             HudManagerStartPatch.JackalSeerSidekickButton.Timer = RoleClass.JackalSeer.KillCoolDown;
         }
-       public static void EndMeeting()
+        public static void EndMeeting()
         {
             resetCoolDown();
         }
@@ -28,8 +24,8 @@ namespace SuperNewRoles.Roles
         {
             if (target == null || target.MyRend == null) return;
 
-            target.MyRend.material.SetFloat("_Outline", 1f);
-            target.MyRend.material.SetColor("_OutlineColor", color);
+            target.MyRend().material.SetFloat("_Outline", 1f);
+            target.MyRend().material.SetColor("_OutlineColor", color);
         }
         public class JackalSeerFixedPatch
         {
@@ -43,7 +39,7 @@ namespace SuperNewRoles.Roles
 
                 if (untargetablePlayers == null)
                 {
-                    untargetablePlayers = new List<PlayerControl>();
+                    untargetablePlayers = new();
                 }
 
                 Vector2 truePosition = targetingPlayer.GetTruePosition();
@@ -51,7 +47,7 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < allPlayers.Count; i++)
                 {
                     GameData.PlayerInfo playerInfo = allPlayers[i];
-                    if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && playerInfo.Object.isAlive() && (!RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(playerInfo.Object)) && !RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(playerInfo.Object) && (!RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.JackalSeer.SidekickSeerPlayer.IsCheckListPlayerControl(playerInfo.Object)))
+                    if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && playerInfo.Object.isAlive() && !playerInfo.Object.isDead() && !RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(playerInfo.Object) && !RoleClass.JackalSeer.SidekickSeerPlayer.IsCheckListPlayerControl(playerInfo.Object))
                     {
                         PlayerControl @object = playerInfo.Object;
                         if (untargetablePlayers.Any(x => x == @object))
@@ -78,11 +74,11 @@ namespace SuperNewRoles.Roles
             {
                 setPlayerOutline(JackalSeersetTarget(), RoleClass.JackalSeer.color);
             }
-            public static void Postfix(PlayerControl __instance)
+            public static void Postfix(PlayerControl __instance, RoleId role)
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    if (RoleClass.JackalSeer.SidekickSeerPlayer.Count != 0)
+                    if (RoleClass.JackalSeer.SidekickSeerPlayer.Count > 0)
                     {
                         var upflag = true;
                         foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer)
@@ -94,13 +90,13 @@ namespace SuperNewRoles.Roles
                         }
                         if (upflag)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SidekickSeerPromotes, Hazel.SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SidekickSeerPromotes, Hazel.SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             RPCProcedure.SidekickSeerPromotes();
                         }
                     }
                 }
-                if (PlayerControl.LocalPlayer.isRole(RoleId.JackalSeer))
+                if (role == RoleId.JackalSeer)
                 {
                     JackalSeerPlayerOutLineTarget();
                 }

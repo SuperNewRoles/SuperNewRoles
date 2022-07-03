@@ -1,13 +1,8 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using Hazel;
-using System;
-using System.Collections.Generic;
-using SuperNewRoles.Patches;
-using UnityEngine;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.CustomOption;
-using System.Linq;
 using SuperNewRoles.Mode;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
@@ -21,14 +16,14 @@ namespace SuperNewRoles.Roles
         }
         public static void DownStart()
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedFreeze, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedFreeze, SendOption.Reliable, -1);
             writer.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             CustomRPC.RPCProcedure.SetSpeedFreeze(true);
         }
         public static void ResetSpeed()
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedFreeze, SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedFreeze, SendOption.Reliable, -1);
             writer.Write(false);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             CustomRPC.RPCProcedure.SetSpeedFreeze(false);

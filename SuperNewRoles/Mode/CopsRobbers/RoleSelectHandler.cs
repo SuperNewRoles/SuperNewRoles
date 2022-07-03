@@ -1,7 +1,7 @@
-﻿using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using SuperNewRoles.Mode.SuperHostRoles;
 
 namespace SuperNewRoles.Mode.CopsRobbers
 {
@@ -9,8 +9,8 @@ namespace SuperNewRoles.Mode.CopsRobbers
     {
         public static void Handler()
         {
-            List<PlayerControl> SelectPlayers = new List<PlayerControl>();
-            List<PlayerControl> impostors = new List<PlayerControl>();
+            List<PlayerControl> SelectPlayers = new();
+            List<PlayerControl> impostors = new();
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (!player.Data.Disconnected && player.IsPlayer())
@@ -49,7 +49,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     {
                         player.RpcSetRole(RoleTypes.Crewmate);
                     }
-                   // player.RpcSetName("");
+                    // player.RpcSetName("");
                 }
             }
             main.ChangeCosmetics();

@@ -1,22 +1,19 @@
-using HarmonyLib;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
 using SuperNewRoles.CustomObject;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
     public class Vulture
     {
-        private static List<DeadBody> Targets = new List<DeadBody>();
+        private static List<DeadBody> Targets = new();
         public class FixedUpdate
         {
             public static void Postfix()
             {
                 if (RoleClass.Vulture.Arrow == null)
                 {
-                    Arrow arrow = new Arrow(RoleClass.Vulture.color);
+                    Arrow arrow = new(RoleClass.Vulture.color);
                     arrow.arrow.SetActive(true);
                     RoleClass.Vulture.Arrow = arrow;
                 }

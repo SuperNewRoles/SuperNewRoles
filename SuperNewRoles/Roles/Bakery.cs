@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
-using Hazel;
-using SuperNewRoles.Patches;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.UI;
-using SuperNewRoles;
-using SuperNewRoles.Roles;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
@@ -18,7 +7,6 @@ namespace SuperNewRoles.Roles
     public class Bakery
     {
         private static TMPro.TextMeshPro breadText;
-        private static TMPro.TextMeshPro text;
         public static bool Prefix(
             ExileController __instance,
             [HarmonyArgument(0)] GameData.PlayerInfo exiled,
@@ -74,7 +62,8 @@ namespace SuperNewRoles.Roles
             SuperNewRolesPlugin.Logger.LogInfo("パン屋が生きていないと判定されました");
             return false;
         }
-        public static string GetExileText(){
+        public static string GetExileText()
+        {
             //翻訳
             var rand = new System.Random();
             if (rand.Next(1, 10) == 1)

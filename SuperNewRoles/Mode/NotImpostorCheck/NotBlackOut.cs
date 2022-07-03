@@ -1,32 +1,31 @@
-﻿
-using HarmonyLib;
-using Hazel;
-using InnerNet;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using Hazel;
+using InnerNet;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.NotImpostorCheck
 {
     public static class NotBlackOut
     {
-
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
         class CheckForEndVotingPatch
         {
             public static void Prefix(MeetingHud __instance)
             {
-				if (ModeHandler.isMode(Mode.ModeId.NotImpostorCheck))
-				{
-					EndMeetingPatch();
-				}
-				else if (ModeHandler.isMode(ModeId.SuperHostRoles)) {
-					SuperHostRoles.MorePatch.MeetingEnd();
-				}
+                if (ModeHandler.isMode(Mode.ModeId.NotImpostorCheck))
+                {
+                    EndMeetingPatch();
+                }
+                else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                {
+                    SuperHostRoles.MorePatch.MeetingEnd();
+                }
             }
-
         }
         public static void EndMeetingPatch()
         {/*
@@ -87,6 +86,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
 					AmongUsClient.Instance.FinishRpcImmediately(val);
 				}
 			}
-		*/}
-	}
+		*/
+        }
+    }
 }

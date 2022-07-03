@@ -1,9 +1,8 @@
-﻿using HarmonyLib;
-using SuperNewRoles.Patch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using HarmonyLib;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
 {
@@ -14,7 +13,7 @@ namespace SuperNewRoles.Roles
         {
             static float vitalsTimer = 0f;
             static TMPro.TextMeshPro TimeRemaining;
-            private static List<TMPro.TextMeshPro> hackerTexts = new List<TMPro.TextMeshPro>();
+            private static List<TMPro.TextMeshPro> hackerTexts = new();
 
             public static void ResetData()
             {
@@ -44,7 +43,7 @@ namespace SuperNewRoles.Roles
                                 DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == player?.PlayerId)?.FirstOrDefault();
                                 if (deadPlayer != null && deadPlayer.timeOfDeath != null && k < hackerTexts.Count && hackerTexts[k] != null)
                                 {
-                                    float timeSinceDeath = ((float)(DateTime.UtcNow - deadPlayer.timeOfDeath).TotalMilliseconds);
+                                    float timeSinceDeath = (float)(DateTime.UtcNow - deadPlayer.timeOfDeath).TotalMilliseconds;
                                     hackerTexts[k].gameObject.SetActive(true);
                                     hackerTexts[k].text = Math.Round(timeSinceDeath / 1000) + "s";
                                 }

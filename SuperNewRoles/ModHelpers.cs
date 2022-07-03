@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Collections;
-using UnhollowerBaseLib;
-using UnityEngine;
-using UnityEngine.Events;
 using System.Linq;
+using System.Reflection;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Roles;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.Roles;
+using TMPro;
+using UnhollowerBaseLib;
+using UnityEngine;
 
 namespace SuperNewRoles
 {
@@ -30,8 +29,8 @@ namespace SuperNewRoles
             get
             {
                 return !(MapBehaviour.Instance && MapBehaviour.Instance.IsOpen) &&
-                      !MeetingHud.Instance &&
-                      !ExileController.Instance;
+                        !MeetingHud.Instance &&
+                        !ExileController.Instance;
             }
         }
         public static void SetKillTimerUnchecked(this PlayerControl player, float time, float max = float.NegativeInfinity)
@@ -58,13 +57,14 @@ namespace SuperNewRoles
         {
             foreach (var data in dec)
             {
-                if(data.Value == Value)
+                if (data.Value == Value)
                 {
                     return data.Key;
                 }
             }
             return null;
-        }// parent直下の子オブジェクトをforeachループで取得する
+        }
+
         public static GameObject[] GetChildren(this GameObject ParentObject)
         {
             GameObject[] ChildObject = new GameObject[ParentObject.transform.childCount];
@@ -75,9 +75,9 @@ namespace SuperNewRoles
             }
             return ChildObject;
         }
-        public static void DeleteObject(this Transform[] trans,string notdelete)
+        public static void DeleteObject(this Transform[] trans, string notdelete)
         {
-            foreach(Transform tran in trans)
+            foreach (Transform tran in trans)
             {
                 if (tran.name != notdelete)
                 {
@@ -99,7 +99,7 @@ namespace SuperNewRoles
         {
             get
             {
-                List<PlayerControl> ps = new List<PlayerControl>();
+                List<PlayerControl> ps = new();
                 foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                 {
                     if (!p.Data.Disconnected) ps.Add(p.PlayerControl);
@@ -107,7 +107,7 @@ namespace SuperNewRoles
                 return ps;
             }
         }
-        public static void SetActiveAllObject(this GameObject[] trans, string notdelete,bool IsActive)
+        public static void SetActiveAllObject(this GameObject[] trans, string notdelete, bool IsActive)
         {
             foreach (GameObject tran in trans)
             {
@@ -121,9 +121,9 @@ namespace SuperNewRoles
         {
             SkinViewData nextSkin = DestroyableSingleton<HatManager>.Instance.GetSkinById(SkinId).viewData.viewData;
             AnimationClip clip = null;
-            var spriteAnim = playerPhysics.Skin.animator;
+            var spriteAnim = playerPhysics.GetSkin().animator;
             var anim = spriteAnim.m_animator;
-            var skinLayer = playerPhysics.Skin;
+            var skinLayer = playerPhysics.GetSkin();
 
             var currentPhysicsAnim = playerPhysics.Animator.GetCurrentAnimation();
             if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.RunAnim) clip = nextSkin.RunAnim;
@@ -142,7 +142,7 @@ namespace SuperNewRoles
         }
         public static Dictionary<byte, PlayerControl> allPlayersById()
         {
-            Dictionary<byte, PlayerControl> res = new Dictionary<byte, PlayerControl>();
+            Dictionary<byte, PlayerControl> res = new();
             foreach (CachedPlayer player in CachedPlayer.AllPlayers)
                 res.Add(player.PlayerId, player);
             return res;
@@ -236,7 +236,6 @@ namespace SuperNewRoles
                         }
                     }
 
-
                     if (IsSend)
                     {
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseStuntmanCount);
@@ -300,7 +299,7 @@ namespace SuperNewRoles
 
             List<byte> taskTypeIds = generateTasks(numCommon, numShort, numLong);
 
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetTasks, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetTasks, Hazel.SendOption.Reliable, -1);
             writer.Write(player.PlayerId);
             writer.WriteBytesAndSize(taskTypeIds.ToArray());
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -349,30 +348,31 @@ namespace SuperNewRoles
             {
                 if (tien <= 0)
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
                     writer.Write(killer.PlayerId);
                     writer.Write(target.PlayerId);
                     writer.Write(showAnimation ? byte.MaxValue : 0);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
-                } else
+                }
+                else
                 {
                     new LateTask(() =>
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
                         writer.Write(killer.PlayerId);
                         writer.Write(target.PlayerId);
                         writer.Write(showAnimation ? byte.MaxValue : 0);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         RPCProcedure.RPCMurderPlayer(killer.PlayerId, target.PlayerId, showAnimation ? Byte.MaxValue : (byte)0);
-                    },tien);
+                    }, tien);
                 }
             }
             return murder;
         }
         public static void UncheckedMurderPlayer(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
             writer.Write(killer.PlayerId);
             writer.Write(target.PlayerId);
             writer.Write(showAnimation ? byte.MaxValue : 0);
@@ -383,7 +383,7 @@ namespace SuperNewRoles
         {
             if (player == null) return;
             if (seer == null) seer = player;
-            var clientId = seer.clientId;
+            var clientId = seer.PlayerControl.getClientId();
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, Hazel.SendOption.Reliable, clientId);
             writer.Write((ushort)role);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -405,11 +405,11 @@ namespace SuperNewRoles
             else if (source.isDead() || source.isRole(RoleId.God)) return false;
             else if (source.PlayerId == target.PlayerId) return false; // Player sees his own name
             else if (source.isImpostor() && target.isImpostor()) return false;
-            else if ((target.isRole(RoleId.NiceScientist) || target.isRole(RoleId.EvilScientist))  && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[target.PlayerId]) return true;
+            else if ((target.isRole(RoleId.NiceScientist) || target.isRole(RoleId.EvilScientist)) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[target.PlayerId]) return true;
             return false;
         }
 
-        public static Dictionary<string, Sprite> CachedSprites = new Dictionary<string, Sprite>();
+        public static Dictionary<string, Sprite> CachedSprites = new();
 
         public static Sprite loadSpriteFromResources(string path, float pixelsPerUnit)
         {
@@ -432,7 +432,7 @@ namespace SuperNewRoles
         {
             if (FastDestroyableSingleton<ServerManager>.Instance == null) return false;
             StringNames n = FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
-            return n != StringNames.ServerNA && n != StringNames.ServerEU && n != StringNames.ServerAS;
+            return n is not StringNames.ServerNA and not StringNames.ServerEU and not StringNames.ServerAS;
         }
         public static object TryCast(this Il2CppObjectBase self, Type type)
         {
@@ -447,7 +447,7 @@ namespace SuperNewRoles
         {
             try
             {
-                Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+                Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 Stream stream = assembly.GetManifestResourceStream(path);
                 var byteTexture = new byte[stream.Length];
@@ -481,13 +481,141 @@ namespace SuperNewRoles
             var indexdate = UnityEngine.Random.Range(0, list.Count);
             return indexdate;
         }
+
+        public static Dictionary<byte, SpriteRenderer> MyRendCache = new();
+        public static Dictionary<byte, SkinLayer> SkinLayerCache = new();
+        public static Dictionary<byte, HatParent> HatRendererCache = new();
+        public static Dictionary<byte, SpriteRenderer> HatRendCache = new();
+        public static Dictionary<byte, VisorLayer> VisorSlotCache = new();
+        public static TextMeshPro nameText(this PlayerControl player)
+        {
+            return player.cosmetics.nameText;
+        }
+        public static TextMeshPro nameText(this PoolablePlayer player)
+        {
+            return player.transform.FindChild("NameText_TMP").GetComponent<TextMeshPro>();
+        }
+        public static SpriteRenderer MyRend(this PlayerControl player)
+        {
+            bool Isnull = true;
+            if (MyRendCache.ContainsKey(player.PlayerId))
+            {
+                if (MyRendCache[player.PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                MyRendCache[player.PlayerId] = player.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+            }
+            return MyRendCache[player.PlayerId];
+        }
+        public static SpriteRenderer rend(this PlayerPhysics player)
+        {
+            byte PlayerId = player.myPlayer.PlayerId;
+            bool Isnull = true;
+            if (MyRendCache.ContainsKey(PlayerId))
+            {
+                if (MyRendCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                MyRendCache[PlayerId] = player.transform.FindChild("Sprite").GetComponent<SpriteRenderer>();
+            }
+            return MyRendCache[PlayerId];
+        }
+        public static SkinLayer GetSkin(this PlayerControl player)
+        {
+            byte PlayerId = player.PlayerId;
+            bool Isnull = true;
+            if (SkinLayerCache.ContainsKey(PlayerId))
+            {
+                if (SkinLayerCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                SkinLayerCache[PlayerId] = player.transform.FindChild("Skin").GetComponent<SkinLayer>();
+            }
+            return SkinLayerCache[PlayerId];
+        }
+        public static SkinLayer GetSkin(this PlayerPhysics player)
+        {
+            byte PlayerId = player.myPlayer.PlayerId;
+            bool Isnull = true;
+            if (SkinLayerCache.ContainsKey(PlayerId))
+            {
+                if (SkinLayerCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                SkinLayerCache[PlayerId] = player.transform.FindChild("Skin").GetComponent<SkinLayer>();
+            }
+            return SkinLayerCache[PlayerId];
+        }
+        public static HatParent HatRenderer(this PlayerControl player)
+        {
+            byte PlayerId = player.PlayerId;
+            bool Isnull = true;
+            if (HatRendererCache.ContainsKey(PlayerId))
+            {
+                if (HatRendererCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                HatRendererCache[PlayerId] = player.transform.FindChild("Sprite/Hat").GetComponent<HatParent>();
+            }
+            return HatRendererCache[PlayerId];
+        }
+        public static SpriteRenderer HatRend(this PlayerControl player)
+        {
+            byte PlayerId = player.PlayerId;
+            bool Isnull = true;
+            if (HatRendCache.ContainsKey(PlayerId))
+            {
+                if (HatRendCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                HatRendCache[PlayerId] = player.transform.FindChild("Sprite/Hat").GetComponent<SpriteRenderer>();
+            }
+            return HatRendCache[PlayerId];
+        }
+        public static VisorLayer VisorSlot(this PlayerControl player)
+        {
+            byte PlayerId = player.PlayerId;
+            bool Isnull = true;
+            if (VisorSlotCache.ContainsKey(PlayerId))
+            {
+                if (VisorSlotCache[PlayerId] == null) Isnull = true;
+                else Isnull = false;
+            }
+            if (Isnull)
+            {
+                VisorSlotCache[PlayerId] = player.transform.FindChild("Sprite/Visor").GetComponent<VisorLayer>();
+            }
+            return VisorSlotCache[PlayerId];
+        }
+
+        public static HatParent HatSlot(this PoolablePlayer player)
+        {
+            return player.transform.FindChild("HatSlot").GetComponent<HatParent>();
+        }
+        public static VisorLayer VisorSlot(this PoolablePlayer player)
+        {
+            return player.transform.FindChild("Visor").GetComponent<VisorLayer>();
+        }
+
         public static Texture2D loadTextureFromDisk(string path)
         {
             try
             {
                 if (File.Exists(path))
                 {
-                    Texture2D texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
+                    Texture2D texture = new(2, 2, TextureFormat.ARGB32, true);
                     byte[] byteTexture = File.ReadAllBytes(path);
                     LoadImage(texture, byteTexture, false);
                     return texture;
@@ -523,7 +651,7 @@ namespace SuperNewRoles
 
         public static bool IsCheckListPlayerControl(this List<PlayerControl> ListDate, PlayerControl CheckPlayer)
         {
-            foreach(PlayerControl Player in ListDate)
+            foreach (PlayerControl Player in ListDate)
             {
                 if (Player.PlayerId == CheckPlayer.PlayerId)
                 {
@@ -532,16 +660,35 @@ namespace SuperNewRoles
             }
             return false;
         }
-        public static bool IsPosition(Vector3 pos,Vector2 pos2)
+        public static bool IsPosition(Vector3 pos, Vector2 pos2)
         {
             if (pos.x == pos2.x && pos.y == pos2.y) return true;
             return false;
         }
-        public static bool IsPositionDistance(Vector2 pos, Vector2 pos2,float distance)
+        public static bool IsPositionDistance(Vector2 pos, Vector2 pos2, float distance)
         {
-            float dis = Vector2.Distance(pos,pos2);
+            float dis = Vector2.Distance(pos, pos2);
             if (dis <= distance) return true;
             return false;
+        }
+
+    }
+    public static class CreateFlag
+    {
+        public static List<string> OneTimeList = new List<string>();
+        public static List<string> FirstRunList = new List<string>();
+        public static void Run(Action action, string type, bool firstrun = false)
+        {
+            if ((OneTimeList.Contains(type)) || (firstrun && !FirstRunList.Contains(type)))
+            {
+                if (!FirstRunList.Contains(type)) FirstRunList.Add(type);
+                OneTimeList.Remove(type);
+                action();
+            }
+        }
+        public static void NewFlag(string type)
+        {
+            if (!OneTimeList.Contains(type)) OneTimeList.Add(type);
         }
     }
 }

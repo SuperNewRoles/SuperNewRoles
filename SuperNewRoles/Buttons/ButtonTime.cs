@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using UnityEngine;
-using UnityEngine.UI;
 using HarmonyLib;
 using SuperNewRoles.Roles;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace SuperNewRoles.Buttons
 {
@@ -17,21 +17,12 @@ namespace SuperNewRoles.Buttons
             {
                 ClergymanDuration();
             }
-            catch {}
-            SpeedBoosterButton();
-            EvilSpeedBoosterButton();
-            SheriffKillButton();
-            ClergymanButton();
-            LighterButton();
-            MovingButton();
-            DoorrButton();
-            TeleporterButton();
+            catch { }
             HawkDuration();
-            ScientistButton();
+            ClairvoyantDuration();
         }
         public static void ScientistButton()
         {
-
             float durationtime;
             float cooltime;
             if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
@@ -88,6 +79,15 @@ namespace SuperNewRoles.Buttons
             RoleClass.Hawk.Timer = (float)((Roles.RoleClass.Hawk.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
             if (RoleClass.Hawk.Timer <= 0f && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk)) RoleClass.Hawk.Timer = 0f; Hawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
         }
+        public static void ClairvoyantDuration()
+        {
+            if (MapOptions.MapOption.Timer == 0 && PlayerControl.LocalPlayer.Data.IsDead && MapOptions.MapOption.ClairvoyantZoom) return;
+            MapOptions.MapOption.IsZoomOn = true;
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)MapOptions.MapOption.DurationTime);
+            TimeSpanDate = new TimeSpan(0, 0, 0, (int)MapOptions.MapOption.DurationTime);
+            MapOptions.MapOption.Timer = (float)((MapOptions.MapOption.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            if (MapOptions.MapOption.Timer <= 0f) MapOptions.MapOption.Timer = 0f; Patch.Clairvoyant.TimerEnd(); MapOptions.MapOption.IsZoomOn = false; return;
+        }
         public static void TeleporterButton()
         {
             if (Roles.RoleClass.Teleporter.ButtonTimer == null)
@@ -105,7 +105,7 @@ namespace SuperNewRoles.Buttons
             {
                 Roles.RoleClass.Doorr.ButtonTimer = DateTime.Now;
             }
-            TimeSpan TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Doorr.CoolTime);
+            TimeSpan TimeSpanDate = new(0, 0, 0, (int)Roles.RoleClass.Doorr.CoolTime);
             if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
             {
                 TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.EvilDoorr.CoolTime);
@@ -128,7 +128,6 @@ namespace SuperNewRoles.Buttons
             Buttons.HudManagerStartPatch.MovingTpButton.Timer = (float)((Roles.RoleClass.Moving.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
             if (Buttons.HudManagerStartPatch.MovingTpButton.Timer <= 0f) Buttons.HudManagerStartPatch.MovingTpButton.Timer = 0f; return;
         }
-
         public static void LighterButton()
         {
             if (Roles.RoleClass.Lighter.IsLightOn)
@@ -166,13 +165,13 @@ namespace SuperNewRoles.Buttons
         }
         public static void ClergymanButton()
         {
-                if (Roles.RoleClass.Clergyman.ButtonTimer == null)
-                {
-                    Roles.RoleClass.Clergyman.ButtonTimer = DateTime.Now;
-                }
-                var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Clergyman.CoolTime);
-                Buttons.HudManagerStartPatch.ClergymanLightOutButton.Timer = (float)((Roles.RoleClass.Clergyman.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
-                if (Buttons.HudManagerStartPatch.ClergymanLightOutButton.Timer <= 0f) Buttons.HudManagerStartPatch.ClergymanLightOutButton.Timer = 0f; return;
+            if (Roles.RoleClass.Clergyman.ButtonTimer == null)
+            {
+                Roles.RoleClass.Clergyman.ButtonTimer = DateTime.Now;
+            }
+            var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.Clergyman.CoolTime);
+            Buttons.HudManagerStartPatch.ClergymanLightOutButton.Timer = (float)((Roles.RoleClass.Clergyman.ButtonTimer + TimeSpanDate) - DateTime.Now).TotalSeconds;
+            if (Buttons.HudManagerStartPatch.ClergymanLightOutButton.Timer <= 0f) Buttons.HudManagerStartPatch.ClergymanLightOutButton.Timer = 0f; return;
         }
         public static void SheriffKillButton()
         {
@@ -187,7 +186,6 @@ namespace SuperNewRoles.Buttons
         }
         public static void SpeedBoosterButton()
         {
-
             if (Roles.RoleClass.SpeedBooster.IsSpeedBoost)
             {
                 var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.SpeedBooster.DurationTime);
@@ -202,7 +200,8 @@ namespace SuperNewRoles.Buttons
                     Buttons.HudManagerStartPatch.SpeedBoosterBoostButton.actionButton.cooldownTimerText.color = Color.white;
                     Roles.RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
                 }
-            } else
+            }
+            else
             {
                 if (Roles.RoleClass.SpeedBooster.ButtonTimer == null)
                 {
@@ -215,7 +214,6 @@ namespace SuperNewRoles.Buttons
         }
         public static void EvilSpeedBoosterButton()
         {
-
             if (Roles.RoleClass.EvilSpeedBooster.IsSpeedBoost)
             {
                 var TimeSpanDate = new TimeSpan(0, 0, 0, (int)Roles.RoleClass.EvilSpeedBooster.DurationTime);

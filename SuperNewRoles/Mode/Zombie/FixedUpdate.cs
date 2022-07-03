@@ -1,21 +1,22 @@
-﻿using HarmonyLib;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using SuperNewRoles.Helpers;
+using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.Zombie
 {
-    class FixedUpdate {
+    class FixedUpdate
+    {
         /*
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetSkin))]
         class Setcolorskin
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string skinid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(__instance.nameText.text + ":" + skinid);
+                SuperNewRolesPlugin.Logger.LogInfo(__instance.nameText().text + ":" + skinid);
             }
         }
         [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.SetColor))]
@@ -23,7 +24,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref int colorid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(__instance.nameText.text+":"+colorid);
+                SuperNewRolesPlugin.Logger.LogInfo(__instance.nameText().text+":"+colorid);
             }
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetHat))]
@@ -31,7 +32,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string colorid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[SetHat]"+__instance.nameText.text + ":" + colorid);
+                SuperNewRolesPlugin.Logger.LogInfo("[SetHat]"+__instance.nameText().text + ":" + colorid);
             }
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetVisor))]
@@ -39,7 +40,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string colorid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[SetVisor]" + __instance.nameText.text + ":" + colorid);
+                SuperNewRolesPlugin.Logger.LogInfo("[SetVisor]" + __instance.nameText().text + ":" + colorid);
             }
         }
         */
@@ -53,41 +54,42 @@ namespace SuperNewRoles.Mode.Zombie
                 if (!(AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)) return;
                 Mode.ModeHandler.HudUpdate(__instance);
                 if (IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.Zombie) && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
-                if (ModeHandler.isMode(ModeId.Zombie) && IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
-                {
-                    if (NameChangeTimer >= 0f)
+                    if (ModeHandler.isMode(ModeId.Zombie) && IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
                     {
-                        NameChangeTimer -= Time.deltaTime;
-                    } else if(NameChangeTimer != -10)
-                    {
-                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                        if (NameChangeTimer >= 0f)
                         {
-                            p.RpcSetName("　");
-                            if (p.isImpostor())
-                            {
-                                main.SetZombie(p);
-                            }
+                            NameChangeTimer -= Time.deltaTime;
                         }
-                        byte BlueIndex = 1;
-                        foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                        else if (NameChangeTimer != -10)
                         {
-                            if (!p.IsZombie())
+                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
                             {
-                                /*
-                                p.UncheckSetVisor("visor_EmptyVisor");
-                                */
-                                p.RpcSetColor(BlueIndex);
-                                /*
-                                p.RpcSetHat("hat_police");
-                                
-                                p.RpcSetSkin("skin_Police");
-                                */
-                                ZombieOptions.ChengeSetting(p);
+                                p.RpcSetName("　");
+                                if (p.isImpostor())
+                                {
+                                    main.SetZombie(p);
+                                }
                             }
+                            byte BlueIndex = 1;
+                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                            {
+                                if (!p.IsZombie())
+                                {
+                                    /*
+                                    p.UncheckSetVisor("visor_EmptyVisor");
+                                    */
+                                    p.RpcSetColor(BlueIndex);
+                                    /*
+                                    p.RpcSetHat("hat_police");
+
+                                    p.RpcSetSkin("skin_Police");
+                                    */
+                                    ZombieOptions.ChengeSetting(p);
+                                }
+                            }
+                            NameChangeTimer = -10;
                         }
-                        NameChangeTimer = -10;
                     }
-                }
             }
         }
         public static int FixedUpdateTimer = 0;

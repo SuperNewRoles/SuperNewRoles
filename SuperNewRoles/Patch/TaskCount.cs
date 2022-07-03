@@ -1,8 +1,8 @@
-﻿using HarmonyLib;
-using SuperNewRoles.Mode;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Patch
 {
@@ -32,14 +32,14 @@ namespace SuperNewRoles.Patch
             int TotalTasks = 0;
             int CompletedTasks = 0;
 
-                for (int j = 0; j < playerInfo.Tasks.Count; j++)
+            for (int j = 0; j < playerInfo.Tasks.Count; j++)
+            {
+                TotalTasks++;
+                if (playerInfo.Tasks[j].Complete)
                 {
-                    TotalTasks++;
-                    if (playerInfo.Tasks[j].Complete)
-                    {
-                        CompletedTasks++;
-                    }
+                    CompletedTasks++;
                 }
+            }
             return Tuple.Create(CompletedTasks, TotalTasks);
         }
         public static Tuple<int, int> TaskDate(GameData.PlayerInfo playerInfo)
@@ -52,7 +52,6 @@ namespace SuperNewRoles.Patch
                 playerInfo.Role && playerInfo.Role.TasksCountTowardProgress
                 )
             {
-
                 for (int j = 0; j < playerInfo.Tasks.Count; j++)
                 {
                     TotalTasks++;

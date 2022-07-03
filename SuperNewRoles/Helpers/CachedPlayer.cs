@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +7,12 @@ using HarmonyLib;
 using InnerNet;
 using UnityEngine;
 
-namespace SuperNewRoles {
-
+namespace SuperNewRoles
+{
     public class CachedPlayer
     {
-        public static readonly Dictionary<IntPtr, CachedPlayer> PlayerPtrs = new Dictionary<IntPtr, CachedPlayer>();
-        public static readonly List<CachedPlayer> AllPlayers = new List<CachedPlayer>();
+        public static readonly Dictionary<IntPtr, CachedPlayer> PlayerPtrs = new();
+        public static readonly List<CachedPlayer> AllPlayers = new();
         public static CachedPlayer LocalPlayer;
 
         public Transform transform;
@@ -22,7 +22,6 @@ namespace SuperNewRoles {
         public GameData.PlayerInfo Data;
         public byte PlayerId;
         public uint NetId;
-        public int clientId;
 
         public static implicit operator bool(CachedPlayer player)
         {
@@ -31,7 +30,6 @@ namespace SuperNewRoles {
 
         public static implicit operator PlayerControl(CachedPlayer player) => player.PlayerControl;
         public static implicit operator PlayerPhysics(CachedPlayer player) => player.PlayerPhysics;
-
     }
 
     [HarmonyPatch]
@@ -86,7 +84,7 @@ namespace SuperNewRoles {
             {
                 if (!cachedPlayer.PlayerControl || !cachedPlayer.PlayerPhysics || !cachedPlayer.NetTransform || !cachedPlayer.transform)
                 {
-                    SuperNewRolesPlugin.Logger.LogError($"CachedPlayer {cachedPlayer.PlayerControl.name} has null fields");
+                    SuperNewRolesPlugin.Logger.LogError("CachedPlayer {cachedPlayer.PlayerControl.name} has null fields");
                 }
             }
 #endif
@@ -110,7 +108,6 @@ namespace SuperNewRoles {
                 cachedPlayer.Data = cachedPlayer.PlayerControl.Data;
                 cachedPlayer.PlayerId = cachedPlayer.PlayerControl.PlayerId;
                 cachedPlayer.NetId = cachedPlayer.PlayerControl.NetId;
-                cachedPlayer.clientId = cachedPlayer.PlayerControl.getClientId();
             }
         }
 
@@ -123,7 +120,6 @@ namespace SuperNewRoles {
                 cachedPlayer.Data = cachedPlayer.PlayerControl.Data;
                 cachedPlayer.PlayerId = cachedPlayer.PlayerControl.PlayerId;
                 cachedPlayer.NetId = cachedPlayer.PlayerControl.NetId;
-                cachedPlayer.clientId = cachedPlayer.PlayerControl.getClientId();
             }
         }
 
@@ -133,7 +129,6 @@ namespace SuperNewRoles {
         {
             CachedPlayer.PlayerPtrs[__instance.Pointer].PlayerId = __instance.PlayerId;
             CachedPlayer.PlayerPtrs[__instance.Pointer].NetId = __instance.NetId;
-            CachedPlayer.PlayerPtrs[__instance.Pointer].clientId = __instance.getClientId();
         }
     }
 }

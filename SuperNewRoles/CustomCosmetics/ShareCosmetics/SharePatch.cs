@@ -1,18 +1,19 @@
-﻿using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using HarmonyLib;
+using Hazel;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
 {
     class SharePatch
     {
-        public static Dictionary<int,string> PlayerUrl;
+        public static Dictionary<int, string> PlayerUrl;
         public static Dictionary<int, string> PlayerDatas;
         public static Dictionary<int, CosmeticsObject> PlayerObjects;
+        /*
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
         public class AmongUsClientOnPlayerJoinedPatch
         {
@@ -21,7 +22,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
                 return;
                 if (PlayerControl.LocalPlayer != null && ConfigRoles.IsShareCosmetics.Value && ConfigRoles.ShareCosmeticsNamePlatesURL.Value != "")
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(ConfigRoles.ShareCosmeticsNamePlatesURL.Value);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -32,6 +33,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
                 }
             }
         }
+        */
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
         public class GameStartManagerUpdatePatch
         {
@@ -41,7 +43,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
                 Proce++;
                 if (Proce >= 10)
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(ConfigRoles.ShareCosmeticsNamePlatesURL.Value);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -78,6 +80,5 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
                 PlayerObjects = new Dictionary<int, CosmeticsObject>();
             }
         }
-        
     }
 }

@@ -5,6 +5,7 @@
         <Description>SuperNewRoles</Description>
         <Authors>ykundesu</Authors>
         <AmongUs Condition=" '$(AmongUs)' == '' ">C:/Program Files/Epic Games/AmongUs_mymod</AmongUs>
+        <langVersion>preview</langVersion>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -18,7 +19,6 @@
     <ItemGroup>
         <EmbeddedResource Include="Resources\CustomHats\*.png" />
         <EmbeddedResource Include="Resources\*.png" />
-        <EmbeddedResource Include="Resources\Agartha\*.png" />
         <EmbeddedResource Include="Resources\*.json" />
         <EmbeddedResource Include="Resources\TricksterAnimation\*.png" />
     </ItemGroup>
@@ -32,4 +32,11 @@
         <Message Text="Second occurrence" />
         <Copy SourceFiles="$(ProjectDir)bin\$(Configuration)\netstandard2.1\SuperNewRoles.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" />
     </Target>
+
+    <ItemGroup>
+    <PackageReference Include="GitInfo" Version="2.0.20">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    </ItemGroup>
 </Project>

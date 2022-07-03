@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+using System;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -28,7 +25,6 @@ namespace SuperNewRoles.Roles
                 {
                     Camera.main.orthographicSize = RoleClass.NiceHawk.CameraDefault * 3f;
                     FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize = RoleClass.NiceHawk.Default * 3f;
-                    
                 }
                 else
                 {
@@ -42,7 +38,7 @@ namespace SuperNewRoles.Roles
                     CachedPlayer.LocalPlayer.transform.localPosition = RoleClass.NiceHawk.Postion;
                     SuperNewRolesPlugin.Logger.LogInfo(RoleClass.NiceHawk.timer1);
                 }
-            }               
+            }
         }
     }
 }

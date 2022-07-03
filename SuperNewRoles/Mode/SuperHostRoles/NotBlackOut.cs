@@ -1,30 +1,29 @@
-﻿
-using HarmonyLib;
-using Hazel;
-using InnerNet;
-using SuperNewRoles.CustomRPC;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using HarmonyLib;
+using Hazel;
+using InnerNet;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 
-namespace SuperNewRoles.Mode.SuperHostRoles { 
+namespace SuperNewRoles.Mode.SuperHostRoles
+{
     public static class NotBlackOut
     {
-
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
         class CheckForEndVotingPatch
         {
             public static void Prefix(MeetingHud __instance)
-			{
-				if (!AmongUsClient.Instance.AmHost) return ;
-				if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
+            {
+                if (!AmongUsClient.Instance.AmHost) return;
+                if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
                 {
                     EndMeetingPatch();
                 }
             }
-
         }
         public static void EndMeetingPatch()
         {/*
@@ -32,9 +31,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
             foreach (var pc in CachedPlayer.AllPlayers)
                 if (IsAntiBlackOut(pc) && pc.isDead()) pc.ResetPlayerCam(19f);*/
         }
-		public static bool IsAntiBlackOut(PlayerControl player)
+        public static bool IsAntiBlackOut(PlayerControl player)
         {
-			if (player.IsMod()) return false;
+            if (player.IsMod()) return false;
             /*
 			if (player.isRole(RoleId.Egoist)) return true;
 			if (player.isRole(RoleId.Sheriff)) return true;
@@ -51,15 +50,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
 
             byte reactorId = 3;
             if (PlayerControl.GameOptions.MapId == 2) reactorId = 21;
-
-            
-            new LateTask(() => {
+            new LateTask(() =>
+            {
                 MessageWriter MurderWriter = AmongUsClient.Instance.StartRpcImmediately(pc.NetId, (byte)RpcCalls.MurderPlayer, SendOption.Reliable, clientId);
                 MessageExtensions.WriteNetObject(MurderWriter, pc);
                 AmongUsClient.Instance.FinishRpcImmediately(MurderWriter);
             }, delay, "Murder To Reset Cam");
-            
-            new LateTask(() => {
+            new LateTask(() =>
+            {
                 SuperNewRolesPlugin.Logger.LogInfo("SetDesyncSabotage");
                 MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
                 SabotageWriter.Write(reactorId);
@@ -67,7 +65,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
                 SabotageWriter.Write((byte)128);
                 AmongUsClient.Instance.FinishRpcImmediately(SabotageWriter);
             }, delay, "Reactor Desync");
-            new LateTask(() => {
+            new LateTask(() =>
+            {
                 MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
                 SabotageFixWriter.Write(reactorId);
                 MessageExtensions.WriteNetObject(SabotageFixWriter, pc);
@@ -76,7 +75,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles {
             }, 0.1f + delay, "Fix Desync Reactor");
 
             if (PlayerControl.GameOptions.MapId == 4) //Airship用
-                new LateTask(() => {
+                new LateTask(() =>
+                {
                     MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, clientId);
                     SabotageFixWriter.Write(reactorId);
                     MessageExtensions.WriteNetObject(SabotageFixWriter, pc);

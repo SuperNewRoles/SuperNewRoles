@@ -1,4 +1,4 @@
-﻿/*
+/*
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Patches;
@@ -29,7 +29,6 @@ namespace SuperNewRoles.Mode.BattleRoyal
             BattleRoyalKillButton.MaxTimer = PlayerControl.GameOptions.KillCooldown;
             BattleRoyalKillButton.Timer = PlayerControl.GameOptions.KillCooldown;
         }
-
 
         private static PlayerControl SheriffKillTarget;
 
