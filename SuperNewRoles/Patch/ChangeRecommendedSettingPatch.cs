@@ -21,6 +21,7 @@ namespace SuperNewRoles
             __instance.NumLongTasks = 3;
             __instance.NumShortTasks = 5;
             __instance.NumEmergencyMeetings = 1;
+            __instance.TaskBarMode = TaskBarMode.Invisible;
             if (modes != GameModes.OnlineGame)
                 __instance.NumImpostors = GameOptionsData.RecommendedImpostors[numPlayers];
             __instance.KillDistance = 0;
@@ -50,12 +51,14 @@ namespace SuperNewRoles
                 __instance.NumLongTasks = 0;
                 __instance.NumShortTasks = 6;
                 __instance.KillCooldown = 10f;
+                __instance.TaskBarMode = 0;
             }
             if (ModeHandler.isMode(ModeId.BattleRoyal, false)) //バトルロイヤルモード
             {
                 __instance.PlayerSpeedMod = 1.75f;
                 __instance.ImpostorLightMod = 2f;
                 __instance.KillCooldown = 1f;
+                __instance.TaskBarMode = TaskBarMode.Invisible;
             }
             if (ModeHandler.isMode(ModeId.Zombie, false)) //ゾンビモード
             {
@@ -66,6 +69,17 @@ namespace SuperNewRoles
                 __instance.NumCommonTasks = 0;
                 __instance.NumLongTasks = 0;
                 __instance.NumShortTasks = 6;
+                __instance.TaskBarMode = 0;
+            }
+            if (ModeHandler.isMode(ModeId.CopsRobbers, false)) //ケイドロモード
+            {
+                __instance.PlayerSpeedMod = 1.5f;
+                __instance.CrewLightMod = 2.0f;
+                __instance.ImpostorLightMod = 1.5f;
+                __instance.NumCommonTasks = 0;
+                __instance.NumLongTasks = 0;
+                __instance.NumShortTasks = 6;
+                __instance.TaskBarMode = 0;
             }
             return false;
         }
