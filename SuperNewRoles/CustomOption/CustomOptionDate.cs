@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +7,7 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -38,6 +39,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption IsDebugMode;
 
         public static CustomOption DisconnectNotPCOption;
+
+        public static CustomOption ZoomOption;
+        public static CustomOption ClairvoyantZoom;
+        public static CustomOption MouseZoom;
+        public static CustomOption ZoomCoolTime;
+        public static CustomOption ZoomDurationTime;
 
         public static CustomOption DetectiveRate;
         public static CustomOption DetectivePlayerCount;
@@ -564,6 +571,11 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption ChiefOption;
         public static CustomOption ChiefPlayerCount;
+        public static CustomOption ChiefSheriffCoolTime;
+        public static CustomOption ChiefIsNeutralKill;
+        public static CustomOption ChiefIsLoversKill;
+        public static CustomOption ChiefIsMadRoleKill;
+        public static CustomOption ChiefKillLimit;
 
         public static CustomRoleOption CleanerOption;
         public static CustomOption CleanerPlayerCount;
@@ -609,6 +621,14 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption EvilHackerPlayerCount;
         public static CustomOption EvilHackerMadmateSetting;
 
+        public static CustomRoleOption SecretlyKillerOption;
+        public static CustomOption SecretlyKillerPlayerCount;
+        public static CustomOption SecretlyKillerKillCoolTime;
+        public static CustomOption SecretlyKillerIsKillCoolTimeChange;
+        public static CustomOption SecretlyKillerIsBlackOutKillCharge;
+        public static CustomOption SecretlyKillerSecretKillLimit;
+        public static CustomOption SecretlyKillerSecretKillCoolTime;
+
         public static CustomRoleOption SpyOption;
         public static CustomOption SpyPlayerCount;
         public static CustomOption SpyCanUseVent;
@@ -634,6 +654,8 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption LoversCommonTask;
         public static CustomOption LoversLongTask;
         public static CustomOption LoversShortTask;
+        public static CustomOption LadderDead;
+        public static CustomOption LadderDeadChance;
 
         private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
@@ -688,10 +710,18 @@ namespace SuperNewRoles.CustomOption
 
             DisconnectNotPCOption = CustomOption.Create(11, true, CustomOptionType.Generic, cs(Color.white, "PC以外はキックする"), true, null, isHeader: true);
 
+            ZoomOption = CustomOption.Create(618, false, CustomOptionType.Generic, cs(Color.white, "Zoomafterdeath"), true, null, isHeader: true);
+            MouseZoom = CustomOption.Create(619, false, CustomOptionType.Generic, "mousemode", false, ZoomOption);
+            ClairvoyantZoom = CustomOption.Create(620, false, CustomOptionType.Generic, "clairvoyantmode", false, ZoomOption);
+            ZoomCoolTime = CustomOption.Create(621, false, CustomOptionType.Generic, "clairvoyantCoolTime", 15f, 1f, 120f, 2.5f, ClairvoyantZoom, format: "unitCouples");
+            ZoomDurationTime = CustomOption.Create(622, false, CustomOptionType.Generic, "clairvoyantDurationTime", 5f, 1f, 60f, 2.5f, ClairvoyantZoom, format: "unitCouples");
+
             MapOptions.MapOption.LoadOption();
 
             //SoothSayerRate = CustomOption.Create(2, cs(SoothSayer.color,"soothName"),rates, null, true);
             Mode.ModeHandler.OptionLoad();
+
+            MapCustom.CreateOption();
 
             Sabotage.Options.Load();
 
@@ -1184,6 +1214,11 @@ namespace SuperNewRoles.CustomOption
 
             ChiefOption = new CustomRoleOption(394, false, CustomOptionType.Crewmate, "ChiefName", RoleClass.Chief.color, 1);
             ChiefPlayerCount = CustomOption.Create(395, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ChiefOption);
+            ChiefSheriffCoolTime = CustomOption.Create(626, false, CustomOptionType.Crewmate, "SheriffCoolDownSetting", 30f, 2.5f, 60f, 2.5f, ChiefOption, format: "unitSeconds");
+            ChiefIsNeutralKill = CustomOption.Create(627, false, CustomOptionType.Crewmate, "SheriffIsKillNewtralSetting", false, ChiefOption);
+            ChiefIsLoversKill = CustomOption.Create(628, false, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, ChiefOption);
+            ChiefIsMadRoleKill = CustomOption.Create(629, false, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, ChiefOption);
+            ChiefKillLimit = CustomOption.Create(630, false, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, ChiefOption, format: "unitSeconds");
 
             CleanerOption = new CustomRoleOption(396, false, CustomOptionType.Impostor, "CleanerName", RoleClass.Cleaner.color, 1);
             CleanerPlayerCount = CustomOption.Create(397, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], CleanerOption);
@@ -1240,7 +1275,7 @@ namespace SuperNewRoles.CustomOption
             TunaStoppingTime = CustomOption.Create(554, true, CustomOptionType.Neutral, "TunaStoppingTimeSetting", 1f, 1f, 3f, 1f, TunaOption);
             TunaIsUseVent = CustomOption.Create(555, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TunaOption);
 
-            MafiaOption = new CustomRoleOption(602, true, CustomOptionType.Impostor, "MafiaName",RoleClass.Mafia.color, 1);
+            MafiaOption = new CustomRoleOption(602, true, CustomOptionType.Impostor, "MafiaName", RoleClass.Mafia.color, 1);
             MafiaPlayerCount = CustomOption.Create(603, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MafiaOption);
 
             BlackCatOption = new CustomRoleOption(556, true, CustomOptionType.Crewmate, "BlackCatName", RoleClass.ImpostorRed, 1);
@@ -1254,6 +1289,14 @@ namespace SuperNewRoles.CustomOption
             BlackCatCheckImpostorTask = CustomOption.Create(562, true, CustomOptionType.Crewmate, "MadMateCheckImpostorTaskSetting", rates4, BlackCatIsCheckImpostor);
             BlackCatIsUseVent = CustomOption.Create(563, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, BlackCatOption);
             BlackCatIsImpostorLight = CustomOption.Create(564, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, BlackCatOption);
+
+            SecretlyKillerOption = new CustomRoleOption(607, false, CustomOptionType.Impostor, "SecretlyKillerName",RoleClass.SecretlyKiller.color, 1);
+            SecretlyKillerPlayerCount = CustomOption.Create(608, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SecretlyKillerOption);
+            SecretlyKillerKillCoolTime = CustomOption.Create(632, false, CustomOptionType.Impostor, "SheriffCoolDownSetting", 2.5f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
+            SecretlyKillerIsKillCoolTimeChange = CustomOption.Create(633, false, CustomOptionType.Impostor, "SettingCoolCharge", true, SecretlyKillerOption);
+            SecretlyKillerIsBlackOutKillCharge = CustomOption.Create(634, false, CustomOptionType.Impostor, "SettingBlackoutCharge", false, SecretlyKillerOption);
+            SecretlyKillerSecretKillLimit = CustomOption.Create(635, false, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 99f, 1f, SecretlyKillerOption);
+            SecretlyKillerSecretKillCoolTime = CustomOption.Create(636, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 45f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
 
             SpyOption = new CustomRoleOption(614, true, CustomOptionType.Crewmate, "SpyName",RoleClass.Spy.color, 1);
             SpyPlayerCount = CustomOption.Create(615, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);

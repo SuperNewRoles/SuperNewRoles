@@ -41,15 +41,14 @@ namespace SuperNewRoles.Patches
                 var credentials = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(__instance.text);
                 credentials.transform.position = new Vector3(0, 0f, 0);
                 //ブランチ名表示
+                string credentialsText = "";
                 if (ThisAssembly.Git.Branch != "master")//masterビルド以外の時
                 {
                     //色+ブランチ名+コミット番号
-                    credentials.SetText($"\r\n<color={modColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>");
+                    credentialsText = $"\r\n<color={modColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>";
                 }
-                else
-                {
-                    credentials.SetText(ModTranslation.getString("creditsMain"));
-                }
+                credentialsText += ModTranslation.getString("creditsMain");
+                credentials.SetText(credentialsText);
 
                 credentials.alignment = TMPro.TextAlignmentOptions.Center;
                 credentials.fontSize *= 0.9f;
@@ -272,11 +271,11 @@ namespace SuperNewRoles.Patches
                 popup.TextAreaTMP.fontSize *= 0.7f;
                 popup.TextAreaTMP.enableAutoSizing = false;
 
-                void onClick()
+                async void onClick()
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Downloading Submerged!");
                     showPopup(ModTranslation.getString("ダウンロード中です。\nサブマージドのファイルは大きいため、時間がかかります。"));
-                    DownloadSubmarged();
+                    await DownloadSubmarged();
                     button.SetActive(false);
                 }
             }

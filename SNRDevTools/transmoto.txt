@@ -47,6 +47,8 @@ colorMelon
 colorCrasyublue
 colorLightgreen
 Hat_SNR
+MapCustom
+SecretRoom
 enableMirroMap
 SettingpresetSelection
 SettingSuperNewRoles
@@ -774,3 +776,17 @@ KunoichiTitle1
 KunoichiCoolTime
 KunoichiKillKunai
 KunoichiKunai
+SecretlyKillerName
+SecretlyKillerTitle1
+SettingCoolCharge
+SettingBlackoutCharge
+SettingLimitName
+SecretlyKillButtonName
+Zoomafterdeath
+mousemode
+clairvoyantmode
+clairvoyantCoolTime
+clairvoyantDurationTime
+ClairvoyantButtonName
+LadderDead
+LadderDeadChance

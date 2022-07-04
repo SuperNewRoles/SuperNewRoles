@@ -126,6 +126,7 @@ namespace SuperNewRoles.CustomRPC
         Tuna,
         Mafia,
         BlackCat,
+        SecretlyKiller,
         Spy,
         Kunoichi,
         //RoleId
@@ -195,6 +196,7 @@ namespace SuperNewRoles.CustomRPC
         UseCameraTime,
         UseVitalsTime,
         FixLights,
+<<<<<<< HEAD
         KunaiKill
     }
     public static class RPCProcedure
@@ -211,6 +213,23 @@ namespace SuperNewRoles.CustomRPC
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, source.Data);
             }
+=======
+        SetSecretRoomTeleportStatus,
+        ChiefSidekick
+    }
+    public static class RPCProcedure
+    {
+        public static void ChiefSidekick(byte targetid)
+        {
+            RoleClass.Chief.SheriffPlayer.Add(targetid);
+            SetRole(targetid, (byte)RoleId.Sheriff);
+            if (targetid == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                Sheriff.ResetKillCoolDown();
+                RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
+            }
+            UncheckedSetVanilaRole(targetid, 0);
+>>>>>>> develop
         }
         public static void FixLights()
         {
@@ -911,16 +930,7 @@ namespace SuperNewRoles.CustomRPC
             if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)*/)
             {
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
-                //SwapPlayer.transform.position = SwapperPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
-                if (rand.Next(1, 20) == 1)
-                {
-                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
-                }
-                else
-                {
-                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
-                }
                 return;
             }
             else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId)
@@ -1181,8 +1191,16 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.FixLights:
                             FixLights();
                             break;
+<<<<<<< HEAD
                         case CustomRPC.KunaiKill:
                             KunaiKill(reader.ReadByte(), reader.ReadByte());
+=======
+                        case CustomRPC.SetSecretRoomTeleportStatus:
+                            MapCustoms.Airship.SecretRoom.SetSecretRoomTeleportStatus((MapCustoms.Airship.SecretRoom.Status)reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.ChiefSidekick:
+                            ChiefSidekick(reader.ReadByte());
+>>>>>>> develop
                             break;
                     }
                 }
