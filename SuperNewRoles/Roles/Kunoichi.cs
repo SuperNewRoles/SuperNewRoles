@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
+using Hazel;
+using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -39,20 +42,22 @@ namespace SuperNewRoles.Roles
         public static void KillButtonClick()
         {
             if (!RoleClass.Kunoichi.Kunai.kunai.active) return;
-            var shoot = GetShootPlayer();
+            if (!RoleClass.Kunoichi.HideKunai && RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(CachedPlayer.LocalPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[CachedPlayer.LocalPlayer.PlayerId]) return;
             PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Kunoichi.KillCoolTime, RoleClass.Kunoichi.KillCoolTime);
-            SuperNewRolesPlugin.Logger.LogInfo("ターゲット:"+shoot?.Data?.PlayerName);
-            if (shoot != null)
-            {
-                if (!RoleClass.Kunoichi.HitCount.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId] = new();
-                if (!RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId].ContainsKey(shoot.PlayerId)) RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][shoot.PlayerId] = 0;
-                RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][shoot.PlayerId]++;
-                if (RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][shoot.PlayerId] >= RoleClass.Kunoichi.KillKunai)
-                {
-                    ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, shoot);
-                    RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][shoot.PlayerId] = 0;
-                }
-            }
+            RoleClass.Kunoichi.SendKunai = RoleClass.Kunoichi.Kunai;
+            RoleClass.Kunoichi.Kunai = new CustomObject.Kunai();
+            RoleClass.Kunoichi.Kunai.kunai.transform.position = CachedPlayer.LocalPlayer.transform.position;
+            RoleClass.Kunoichi.KunaiSend = true;
+            RoleClass.Kunoichi.Kunais.Add(RoleClass.Kunoichi.SendKunai);
+            // クリックした座標の取得（スクリーン座標からワールド座標に変換）
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            Vector3 shotForward = Vector3.Scale((mouseWorldPos - RoleClass.Kunoichi.SendKunai.kunai.transform.position), new Vector3(1, 1, 0)).normalized;
+
+            // 弾に速度を与える
+            var body = RoleClass.Kunoichi.SendKunai.kunai.AddComponent<Rigidbody2D>();
+            body.gravityScale = 0f;
+            body.velocity = shotForward * 10f;
         }
         public static void Update()
         {
@@ -74,6 +79,154 @@ namespace SuperNewRoles.Roles
 
             if (PlayerControl.LocalPlayer.inVent)
                 RoleClass.Kunoichi.Kunai.kunai.active = false;
+            foreach (Kunai kunai in RoleClass.Kunoichi.Kunais.ToArray())
+            {
+                if (Vector2.Distance(CachedPlayer.LocalPlayer.transform.position, kunai.kunai.transform.position) > 6f)
+                {
+                    GameObject.Destroy(kunai.kunai);
+                    RoleClass.Kunoichi.Kunais.Remove(kunai);
+                } else 
+                {
+                    var kunaipos = kunai.kunai.transform.position;
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    {
+                        if (p.isDead()) continue;
+                        if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
+                        if (Vector2.Distance(p.GetTruePosition() + new Vector2(0,0.4f), kunaipos) < 0.4f)
+                        {
+                            if (!RoleClass.Kunoichi.HitCount.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId] = new();
+                            if (!RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId].ContainsKey(p.PlayerId)) RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
+                            RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId]++;
+                            if (RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] >= RoleClass.Kunoichi.KillKunai)
+                            {
+                                ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation:false);
+                                RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
+                            }
+                            RoleClass.Kunoichi.Kunais.Remove(kunai);
+                            GameObject.Destroy(kunai.kunai);
+                            break;
+                        }
+                    }
+                }
+            }
+            if (RoleClass.Kunoichi.HideTime != -1)
+            {
+                if (!HudManager.Instance.IsIntroDisplayed)
+                {
+                    if (RoleClass.Kunoichi.OldPosition == CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition())
+                    {
+                        RoleClass.Kunoichi.StopTime += Time.fixedDeltaTime;
+                        if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, Hazel.SendOption.Reliable, -1);
+                            writer.Write(true);
+                            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            CustomRPC.RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
+                        }
+                    }
+                    else
+                    {
+                        if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
+                        {
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, Hazel.SendOption.Reliable, -1);
+                            writer.Write(false);
+                            writer.Write(CachedPlayer.LocalPlayer.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer);
+                            CustomRPC.RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
+                        }
+                        RoleClass.Kunoichi.StopTime = 0;
+                    }
+                    RoleClass.Kunoichi.OldPosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition();
+                }
+            }
+            /*
+            if (RoleClass.Kunoichi.KunaiSend)
+            {
+                if (PhysicsHelpers.AnythingBetween(RoleClass.Kunoichi.SendKunai.kunai.transform.position, , Constants.ShipAndObjectsMask, false);)
+                {
+                    RoleClass.Kunoichi.SendKunai.kunai.transform.position += new Vector3(0.1f, 0, 0);
+                } else
+                {
+                    return;
+                }
+                RoleClass.Kunoichi.SendKunai.kunai.GetComponent<Rigidbody2D>().velocity = new Vector2();
+                RoleClass.Kunoichi.Kunais.Add(RoleClass.Kunoichi.SendKunai);
+                RoleClass.Kunoichi.SendKunai = null;
+                RoleClass.Kunoichi.KunaiSend = false;
+            }*/
+        }
+
+        public static void setOpacity(PlayerControl player, float opacity, bool cansee)
+        {
+            // Sometimes it just doesn't work?
+            var color = Color.Lerp(Palette.ClearWhite, Palette.White, opacity);
+            try
+            {
+                if (player.MyRend() != null)
+                    player.MyRend().color = color;
+
+                if (player.GetSkin().layer != null)
+                    player.GetSkin().layer.color = color;
+
+                if (player.cosmetics.hat != null)
+                    player.cosmetics.hat.SpriteColor = color;
+
+                if (player.GetPet()?.rend != null)
+                    player.GetPet().rend.color = color;
+
+                if (player.GetPet()?.shadowRend != null)
+                    player.GetPet().shadowRend.color = color;
+
+                if (player.VisorSlot() != null)
+                    player.VisorSlot().Image.color = color;
+
+                if (player.cosmetics.colorBlindText != null)
+                    player.cosmetics.colorBlindText.color = color;
+
+                if (player.nameText != null)
+                    if (opacity == 0.1f)
+                    {
+                        player.nameText().text = "";
+                    }
+            }
+            catch { }
+        }
+        public static void WrapUp()
+        {
+            RoleClass.Kunoichi.StopTime = 0;
+            foreach (PlayerControl p in RoleClass.Kunoichi.KunoichiPlayer)
+            {
+                RoleClass.NiceScientist.IsScientistPlayers[p.PlayerId] = false;
+            }
+        }
+        [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.FixedUpdate))]
+        public static class PlayerPhysicsScientist
+        {
+            public static void Postfix(PlayerPhysics __instance)
+            {
+                if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
+                if (!ModeHandler.isMode(ModeId.Default)) return;
+                if (__instance.myPlayer.isRole(CustomRPC.RoleId.Kunoichi))
+                {
+                    var Scientist = __instance.myPlayer;
+                    if (Scientist == null || Scientist.isDead()) return;
+                    var ison = RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(__instance.myPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[__instance.myPlayer.PlayerId];
+                    bool canSee = !ison || PlayerControl.LocalPlayer.isDead() || __instance.myPlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
+
+                    var opacity = canSee ? 0.1f : 0.0f;
+                    if (ison)
+                    {
+                        opacity = Math.Max(opacity, 0);
+                        Scientist.MyRend().material.SetFloat("_Outline", 0f);
+                    }
+                    else
+                    {
+                        opacity = Math.Max(opacity, 1.5f);
+                    }
+                    setOpacity(Scientist, opacity, canSee);
+                }
+            }
         }
     }
 }

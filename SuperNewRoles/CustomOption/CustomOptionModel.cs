@@ -597,7 +597,7 @@ namespace SuperNewRoles.CustomOption
             {
                 PlayerControl.GameOptions = gameOptions;
                 SaveManager.GameHostOptions = gameOptions;
-                MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 2, SendOption.Reliable);
+                MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 2, SendOption.None);
                 obj.WriteBytesAndSize(gameOptions.ToBytes(6));
                 obj.EndMessage();
             }

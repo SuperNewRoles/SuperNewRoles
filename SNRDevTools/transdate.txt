@@ -776,7 +776,10 @@ KunoichiName,Kunoichi,クノイチ
 KunoichiTitle1,Use your ninjutsu to deceive the village.,忍術を駆使して村を欺け
 KunoichiCoolTime,Kunai Cool Time,クナイのクールタイム
 KunoichiKillKunai,Number of kunai required for a kill,キルに必要なクナイ数
+KunoichiIsHide,Transparency,透明化
+KunoichiHideTime,Time required for transparency,透明化に必要な時間
 KunoichiKunai,Kunai,クナイ
+KunoichiHideKunai,Can throw kunai during invisibility.,透明化中にクナイを投げれる
 SecretlyKillerName,Secretly Killer,シークレットリーキラー
 SecretlyKillerTitle1,Please be quiet during the power outage.,停電中はお静かに
 SettingCoolCharge,Same in kill buttons,キル時のクール同期

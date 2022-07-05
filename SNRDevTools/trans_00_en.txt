@@ -775,7 +775,10 @@ Kunoichi
 Use your ninjutsu to deceive the village.
 Kunai Cool Time
 Number of kunai required for a kill
+Transparency
+Time required for transparency
 Kunai
+Can throw kunai during invisibility.
 Secretly Killer
 Please be quiet during the power outage.
 Same in kill buttons

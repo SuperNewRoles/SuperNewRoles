@@ -60,13 +60,10 @@ namespace SuperNewRoles.Buttons
         public static CustomButton EvilHackerButton;
         public static CustomButton EvilHackerMadmateSetting;
         public static CustomButton PositionSwapperButton;
-<<<<<<< HEAD
         public static CustomButton KunoichiKunaiButton;
-=======
         public static CustomButton SecretlyKillerMainButton;
         public static CustomButton SecretlyKillerSecretlyKillButton;
         public static CustomButton ClairvoyantButton;
->>>>>>> develop
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -115,7 +112,8 @@ namespace SuperNewRoles.Buttons
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,
-                49
+                49,
+                () => { return false; }
             )
             {
                 buttonText = ModTranslation.getString("KunoichiKunai"),

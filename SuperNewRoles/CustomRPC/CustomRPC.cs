@@ -196,8 +196,9 @@ namespace SuperNewRoles.CustomRPC
         UseCameraTime,
         UseVitalsTime,
         FixLights,
-<<<<<<< HEAD
-        KunaiKill
+        KunaiKill,
+        SetSecretRoomTeleportStatus,
+        ChiefSidekick
     }
     public static class RPCProcedure
     {
@@ -213,12 +214,8 @@ namespace SuperNewRoles.CustomRPC
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, source.Data);
             }
-=======
-        SetSecretRoomTeleportStatus,
-        ChiefSidekick
-    }
-    public static class RPCProcedure
-    {
+        }
+
         public static void ChiefSidekick(byte targetid)
         {
             RoleClass.Chief.SheriffPlayer.Add(targetid);
@@ -229,7 +226,6 @@ namespace SuperNewRoles.CustomRPC
                 RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
             }
             UncheckedSetVanilaRole(targetid, 0);
->>>>>>> develop
         }
         public static void FixLights()
         {
@@ -1191,16 +1187,14 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.FixLights:
                             FixLights();
                             break;
-<<<<<<< HEAD
                         case CustomRPC.KunaiKill:
                             KunaiKill(reader.ReadByte(), reader.ReadByte());
-=======
+                            break;
                         case CustomRPC.SetSecretRoomTeleportStatus:
                             MapCustoms.Airship.SecretRoom.SetSecretRoomTeleportStatus((MapCustoms.Airship.SecretRoom.Status)reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.ChiefSidekick:
                             ChiefSidekick(reader.ReadByte());
->>>>>>> develop
                             break;
                     }
                 }

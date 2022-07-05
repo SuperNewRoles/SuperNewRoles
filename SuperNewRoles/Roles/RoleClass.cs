@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -23,6 +23,7 @@ namespace SuperNewRoles.Roles
 
         public static void ClearAndReloadRoles()
         {
+            AllRoleSetClass.Assigned = false;
             LateTask.Tasks = new();
             LateTask.AddTasks = new();
             BotManager.AllBots = new();
@@ -2322,7 +2323,15 @@ namespace SuperNewRoles.Roles
             public static float KillCoolTime;
             public static int KillKunai;
             public static Kunai Kunai;
+            public static Kunai SendKunai;
+            public static List<Kunai> Kunais = new();
             public static Dictionary<byte, Dictionary<byte, int>> HitCount;
+            public static bool KunaiSend;
+            public static bool HideKunai;
+            public static float MouseAngle;
+            public static Vector2 OldPosition;
+            public static float StopTime;
+            public static float HideTime;
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
@@ -2332,6 +2341,16 @@ namespace SuperNewRoles.Roles
             }
             public static void ClearAndReload()
             {
+                HideKunai = CustomOptions.KunoichiHideKunai.getBool();
+                OldPosition = new();
+                StopTime = 0;
+                if (CustomOptions.KunoichiIsHide.getBool())
+                {
+                    HideTime = CustomOptions.KunoichiHideTime.getFloat();
+                } else
+                {
+                    HideTime = -1;
+                }
                 KunoichiPlayer = new List<PlayerControl>();
                 KillCoolTime = CustomOptions.KunoichiCoolTime.getFloat();
                 KillKunai = (int)CustomOptions.KunoichiKillKunai.getFloat();
@@ -2340,8 +2359,25 @@ namespace SuperNewRoles.Roles
                 {
                     GameObject.Destroy(Kunai.kunai);
                 }
+                if (SendKunai != null)
+                {
+                    GameObject.Destroy(SendKunai.kunai);
+                }
+                if (Kunais.Count > 0)
+                {
+                    foreach (Kunai kunai in Kunais)
+                    {
+                        if (kunai != null)
+                        {
+                            GameObject.Destroy(kunai.kunai);
+                        }
+                    }
+                }
+                Kunais = new();
+                SendKunai = null;
                 Kunai = new Kunai();
                 Kunai.kunai.SetActive(false);
+                KunaiSend = false;
             }
         }
         //新ロールクラス

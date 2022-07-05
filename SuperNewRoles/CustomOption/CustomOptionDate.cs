@@ -637,6 +637,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption KunoichiPlayerCount;
         public static CustomOption KunoichiCoolTime;
         public static CustomOption KunoichiKillKunai;
+        public static CustomOption KunoichiIsHide;
+        public static CustomOption KunoichiHideTime;
+        public static CustomOption KunoichiHideKunai;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1302,10 +1305,13 @@ namespace SuperNewRoles.CustomOption
             SpyPlayerCount = CustomOption.Create(615, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
             SpyCanUseVent = CustomOption.Create(617, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
             
-            KunoichiOption = new CustomRoleOption(424, false, CustomOptionType.Impostor, "KunoichiName",RoleClass.Kunoichi.color, 1);
-            KunoichiPlayerCount = CustomOption.Create(425, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], KunoichiOption);
-            KunoichiCoolTime = CustomOption.Create(426, false, CustomOptionType.Impostor, "KunoichiCoolTime", 2.5f , 0f , 15f, 0.5f, KunoichiOption);
-            KunoichiKillKunai = CustomOption.Create(427, false, CustomOptionType.Impostor, "KunoichiKillKunai", 10f, 1f, 20f, 1f, KunoichiOption);
+            KunoichiOption = new CustomRoleOption(638, false, CustomOptionType.Impostor, "KunoichiName",RoleClass.Kunoichi.color, 1);
+            KunoichiPlayerCount = CustomOption.Create(639, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], KunoichiOption);
+            KunoichiCoolTime = CustomOption.Create(640, false, CustomOptionType.Impostor, "KunoichiCoolTime", 2.5f , 0f , 15f, 0.5f, KunoichiOption);
+            KunoichiKillKunai = CustomOption.Create(641, false, CustomOptionType.Impostor, "KunoichiKillKunai", 10f, 1f, 20f, 1f, KunoichiOption);
+            KunoichiIsHide = CustomOption.Create(642, false, CustomOptionType.Impostor, "KunoichiIsHide", true, KunoichiOption);
+            KunoichiHideTime = CustomOption.Create(643, false, CustomOptionType.Impostor, "KunoichiHideTime", 3f, 0.5f, 10f, 0.5f, KunoichiIsHide);
+            KunoichiHideKunai = CustomOption.Create(644, false, CustomOptionType.Impostor, "KunoichiHideKunai", false, KunoichiIsHide);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

@@ -775,7 +775,10 @@ KunoichiName
 KunoichiTitle1
 KunoichiCoolTime
 KunoichiKillKunai
+KunoichiIsHide
+KunoichiHideTime
 KunoichiKunai
+KunoichiHideKunai
 SecretlyKillerName
 SecretlyKillerTitle1
 SettingCoolCharge
