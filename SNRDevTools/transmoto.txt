@@ -793,3 +793,4 @@ clairvoyantDurationTime
 ClairvoyantButtonName
 LadderDead
 LadderDeadChance
+ContainsMod
