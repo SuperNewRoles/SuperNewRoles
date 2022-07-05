@@ -132,7 +132,8 @@ namespace SuperNewRoles.MapCustoms.Airship
         }
         public static void ShipStatusAwake(ShipStatus __instance)
         {
-            if (__instance.Type != ShipStatus.MapType.Ship || SecretRoomOption.getBool())
+            if (PlayerControl.GameOptions.MapId != (int)MapNames.Airship) return;
+            if (__instance.Type == ShipStatus.MapType.Ship && SecretRoomOption.getBool())
             {
                 Transform room = __instance.transform.FindChild("HallwayPortrait");
                 Transform Walls = room.FindChild("Walls");
@@ -383,6 +384,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                     __instance.CanUse(PlayerControl.LocalPlayer.Data, out var canUse, out var _);
                     if (canUse)
                     {
+                        if (RoleHelpers.IsComms()) return false;
                         MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetSecretRoomTeleportStatus);
                         writer.Write((byte)Status.UseConsole);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);

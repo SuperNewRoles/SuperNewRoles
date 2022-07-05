@@ -207,6 +207,7 @@ namespace SuperNewRoles
                     }
                 }, 3f, "SetImpostor");
             }
+            AllRoleSetClass.Assigned = true;
         }
     }
     class AllRoleSetClass
@@ -220,6 +221,8 @@ namespace SuperNewRoles
         public static List<RoleId> Crewnotonepar;
         public static List<PlayerControl> CrewMatePlayers;
         public static List<PlayerControl> ImpostorPlayers;
+
+        public static bool Assigned;
 
         public static int ImpostorPlayerNum;
         public static int ImpostorGhostRolePlayerNum;
@@ -843,6 +846,7 @@ namespace SuperNewRoles
                 RoleId.BlackCat => CustomOptions.BlackCatPlayerCount.getFloat(),
                 RoleId.SecretlyKiller => CustomOptions.SecretlyKillerPlayerCount.getFloat(),
                 RoleId.Spy => CustomOptions.SpyPlayerCount.getFloat(),
+                RoleId.Kunoichi => CustomOptions.KunoichiPlayerCount.getFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

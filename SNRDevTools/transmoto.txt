@@ -771,6 +771,14 @@ SpyTitle1
 SpyDescription
 SpecimenVitalSetting
 CustomDownloadSuperNewNamePlates
+KunoichiName
+KunoichiTitle1
+KunoichiCoolTime
+KunoichiKillKunai
+KunoichiIsHide
+KunoichiHideTime
+KunoichiKunai
+KunoichiHideKunai
 SecretlyKillerName
 SecretlyKillerTitle1
 SettingCoolCharge
@@ -785,3 +793,4 @@ clairvoyantDurationTime
 ClairvoyantButtonName
 LadderDead
 LadderDeadChance
+ContainsMod

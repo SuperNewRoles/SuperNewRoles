@@ -62,7 +62,8 @@ namespace SuperNewRoles.Patch
             }
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
-                player.nameText().text = ModHelpers.hidePlayerName(PlayerControl.LocalPlayer, player) ? "" : player.CurrentOutfit.PlayerName;
+                bool hidename = ModHelpers.hidePlayerName(PlayerControl.LocalPlayer, player);
+                player.nameText().text = hidename ? "" : player.CurrentOutfit.PlayerName;
                 if (PlayerControl.LocalPlayer.isImpostor() && (player.isImpostor() || player.isRole(RoleId.Spy)))
                 {
                     SetPlayerNameColor(player, RoleClass.ImpostorRed);

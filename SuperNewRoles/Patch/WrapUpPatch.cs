@@ -74,6 +74,7 @@ namespace SuperNewRoles.Patch
         }
         public static void Postfix(GameData.PlayerInfo exiled)
         {
+            Kunoichi.WrapUp();
             SerialKiller.WrapUp();
             Assassin.WrapUp(exiled);
             CountChanger.CountChangerPatch.WrapUpPatch();
