@@ -3181,8 +3181,8 @@
         "11" : "\u8ee2\u843d\u6b7b\u3059\u308b\u78ba\u7387"
         } ,
  "ContainsMod" : {
-        "0" : "You cannot make a room public contains \"mod\" in your name." ,
-        "11" : "\"mod\"\u304c\u540d\u524d\u306b\u542b\u307e\u308c\u3066\u3044\u308b\u72b6\u614b\u3067\u306f\u516c\u958b\u90e8\u5c4b\u306b\u3059\u308b\u3053\u3068\u306f\u3067\u304d\u307e\u305b\u3093\u3002"
+        "0" : "You cannot make a room public contains "mod" in your name." ,
+        "11" : ""mod"\u304c\u540d\u524d\u306b\u542b\u307e\u308c\u3066\u3044\u308b\u72b6\u614b\u3067\u306f\u516c\u958b\u90e8\u5c4b\u306b\u3059\u308b\u3053\u3068\u306f\u3067\u304d\u307e\u305b\u3093\u3002"
         } 
 
 }
