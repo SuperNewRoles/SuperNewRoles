@@ -567,15 +567,15 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.Add(player);
                     break;
-                case (CustomRPC.RoleId.SecretlyKiller):
-                    Roles.RoleClass.SecretlyKiller.SecretlyKillerPlayer.Add(player);
-                    break;
                 case (CustomRPC.RoleId.Spy):
                     Roles.RoleClass.Spy.SpyPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.Kunoichi):
+                    Roles.RoleClass.Kunoichi.KunoichiPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
-                    SuperNewRolesPlugin.Logger.LogError("[SetRole]:No Method Found for Role Type {role}");
+                    SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
                     return;
             }
             bool flag = player.getRole() != role && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
@@ -910,10 +910,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
                     break;
-                case (CustomRPC.RoleId.SecretlyKiller):
-                    Roles.RoleClass.SecretlyKiller.SecretlyKillerPlayer.RemoveAll(ClearRemove);
-                    break;
-                case (CustomRPC.RoleId.Spy):
+                    case (CustomRPC.RoleId.Spy):
                     Roles.RoleClass.Spy.SpyPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
@@ -1322,11 +1319,7 @@ namespace SuperNewRoles
         public static float GetEndMeetingKillCoolTime(PlayerControl p)
         {
             var role = p.getRole();
-            return role switch
-            {
-                RoleId.Minimalist or RoleId.Survivor or RoleId.SideKiller or RoleId.MadKiller or RoleId.OverKiller or RoleId.SerialKiller or RoleId.Cleaner or RoleId.Samurai => getCoolTime(p),
-                _ => PlayerControl.GameOptions.killCooldown,
-            };
+            return getCoolTime(p);
         }
         public static RoleId getGhostRole(this PlayerControl player, bool IsChache = true)
         {
@@ -1838,13 +1831,13 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.BlackCat;
                 }
-                else if (Roles.RoleClass.SecretlyKiller.SecretlyKillerPlayer.IsCheckListPlayerControl(player))
-                {
-                    return CustomRPC.RoleId.SecretlyKiller;
-                }
                 else if (Roles.RoleClass.Spy.SpyPlayer.IsCheckListPlayerControl(player))
                 {
                     return CustomRPC.RoleId.Spy;
+                }
+                else if (Roles.RoleClass.Kunoichi.KunoichiPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Kunoichi;
                 }
                 //ロールチェック
             }

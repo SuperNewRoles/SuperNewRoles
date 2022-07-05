@@ -3092,6 +3092,38 @@
         "0" : "Download custom hat" ,
         "11" : "\u30ab\u30b9\u30bf\u30e0\u30cf\u30c3\u30c8\u3092\u30c0\u30a6\u30f3\u30ed\u30fc\u30c9\u3059\u308b"
         } ,
+ "KunoichiName" : {
+        "0" : "Kunoichi" ,
+        "11" : "\u30af\u30ce\u30a4\u30c1"
+        } ,
+ "KunoichiTitle1" : {
+        "0" : "Use your ninjutsu to deceive the village." ,
+        "11" : "\u5fcd\u8853\u3092\u99c6\u4f7f\u3057\u3066\u6751\u3092\u6b3a\u3051"
+        } ,
+ "KunoichiCoolTime" : {
+        "0" : "Kunai Cool Time" ,
+        "11" : "\u30af\u30ca\u30a4\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+        } ,
+ "KunoichiKillKunai" : {
+        "0" : "Number of kunai required for a kill" ,
+        "11" : "\u30ad\u30eb\u306b\u5fc5\u8981\u306a\u30af\u30ca\u30a4\u6570"
+        } ,
+ "KunoichiIsHide" : {
+        "0" : "Transparency" ,
+        "11" : "\u900f\u660e\u5316"
+        } ,
+ "KunoichiHideTime" : {
+        "0" : "Time required for transparency" ,
+        "11" : "\u900f\u660e\u5316\u306b\u5fc5\u8981\u306a\u6642\u9593"
+        } ,
+ "KunoichiKunai" : {
+        "0" : "Kunai" ,
+        "11" : "\u30af\u30ca\u30a4"
+        } ,
+ "KunoichiHideKunai" : {
+        "0" : "Can throw kunai during invisibility." ,
+        "11" : "\u900f\u660e\u5316\u4e2d\u306b\u30af\u30ca\u30a4\u3092\u6295\u3052\u308c\u308b"
+        } ,
  "SecretlyKillerName" : {
         "0" : "Secretly Killer" ,
         "11" : "\u30b7\u30fc\u30af\u30ec\u30c3\u30c8\u30ea\u30fc\u30ad\u30e9\u30fc"

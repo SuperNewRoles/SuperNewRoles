@@ -771,6 +771,14 @@ Deceive the Imposter and lead the Cluemate camp to victory!
 Spies are crewmates but they look like friends to the Imposter.\n Spies are crewmates and have no special abilities.
 Move Vital to specimen (polus)
 Download custom hat
+Kunoichi
+Use your ninjutsu to deceive the village.
+Kunai Cool Time
+Number of kunai required for a kill
+Transparency
+Time required for transparency
+Kunai
+Can throw kunai during invisibility.
 Secretly Killer
 Please be quiet during the power outage.
 Same in kill buttons

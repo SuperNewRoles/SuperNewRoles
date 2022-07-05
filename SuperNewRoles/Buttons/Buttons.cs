@@ -60,6 +60,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton EvilHackerButton;
         public static CustomButton EvilHackerMadmateSetting;
         public static CustomButton PositionSwapperButton;
+        public static CustomButton KunoichiKunaiButton;
         public static CustomButton SecretlyKillerMainButton;
         public static CustomButton SecretlyKillerSecretlyKillButton;
         public static CustomButton ClairvoyantButton;
@@ -85,6 +86,39 @@ namespace SuperNewRoles.Buttons
 
         public static void Postfix(HudManager __instance)
         {
+            KunoichiKunaiButton = new CustomButton(
+                () =>
+                {
+                    if (RoleClass.Kunoichi.Kunai.kunai.active)
+                    {
+                        RoleClass.Kunoichi.Kunai.kunai.SetActive(false);
+                    } else
+                    {
+                        RoleClass.Kunoichi.Kunai.kunai.SetActive(true);
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Kunoichi; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    KunoichiKunaiButton.MaxTimer = 0f;
+                    KunoichiKunaiButton.Timer = 0f;
+                },
+                RoleClass.Kunoichi.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.getString("KunoichiKunai"),
+                showButtonText = true
+            };
             FalseChargesFalseChargeButton = new CustomButton(
                 () =>
                 {

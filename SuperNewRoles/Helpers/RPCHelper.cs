@@ -161,7 +161,7 @@ namespace SuperNewRoles.Helpers
         {
             public static bool Prefix(CustomNetworkTransform __instance, [HarmonyArgument(0)] Vector2 position)
             {
-                if (__instance.NetId == PlayerControl.LocalPlayer.NetId) return true;
+                if (__instance.NetId == PlayerControl.LocalPlayer.NetTransform.NetId) return true;
                 ushort minSid = (ushort)(__instance.lastSequenceId + 5);
                 if (AmongUsClient.Instance.AmClient)
                 {
