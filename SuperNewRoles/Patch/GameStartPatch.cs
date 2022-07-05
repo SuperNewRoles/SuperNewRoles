@@ -23,6 +23,21 @@ namespace SuperNewRoles.Patch
 {
     class GameStartPatch
     {
+        [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
+        class MakePublicPatch
+        {
+            public static bool Prefix()
+            {
+                bool ContainsMod = PlayerControl.LocalPlayer.Data.PlayerName.ToLower().Contains("mod");
+                bool ContainsSNR = PlayerControl.LocalPlayer.Data.PlayerName.ToUpper().Contains("SNR") || PlayerControl.LocalPlayer.Data.PlayerName.ToUpper().Contains("SHR");
+                if (ContainsMod && !ContainsSNR)
+                {
+                    SuperNewRolesPlugin.Logger.LogWarning("\"mod\"が名前に含まれている状態では公開部屋にすることはできません。");
+                    return false;
+                }
+                return true;
+            }
+        }
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
         public static class LobbyCountDownTimer
         {
