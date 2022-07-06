@@ -350,16 +350,18 @@ namespace SuperNewRoles.Patch
                 yield return new WaitForSeconds(time);
             }
             var crs = CustomRpcSender.Create();
-            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
+            crs.StartMessage()
+                .StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
                 .Write(SendName)
-                .EndRpc();
-            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SendChat)
+                .EndRpc()
+                .StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SendChat)
                 .Write(command)
-                .EndRpc(); ;
-            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
+                .EndRpc()
+                .StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
                 .Write(name)
-                .EndRpc();
-            crs.SendMessage();
+                .EndRpc()
+                .EndMessage()
+                .SendMessage();
             PlayerControl.LocalPlayer.SetName(SendName);
             FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, command);
             PlayerControl.LocalPlayer.SetName(name);
@@ -371,16 +373,18 @@ namespace SuperNewRoles.Patch
                 yield return new WaitForSeconds(time);
             }
             var crs = CustomRpcSender.Create();
-            crs.StartRpc(target.NetId, RpcCalls.SetName, target.getClientId())
+            crs.StartMessage(target.getClientId())
+                .StartRpc(target.NetId, RpcCalls.SetName)
                 .Write(SendName)
-                .EndRpc();
-            crs.StartRpc(target.NetId, RpcCalls.SendChat, target.getClientId())
+                .EndRpc()
+                .StartRpc(target.NetId, RpcCalls.SendChat)
                 .Write(command)
-                .EndRpc();
-            crs.StartRpc(target.NetId, RpcCalls.SetName, target.getClientId())
+                .EndRpc()
+                .StartRpc(target.NetId, RpcCalls.SetName)
                 .Write(target.Data.PlayerName)
-                .EndRpc();
-            crs.SendMessage();
+                .EndRpc()
+                .EndMessage()
+                .SendMessage();
         }
     }/*
     [HarmonyPatch(typeof(ChatController),nameof(ChatController.AddChat))]
