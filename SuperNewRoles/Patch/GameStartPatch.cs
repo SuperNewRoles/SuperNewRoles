@@ -28,8 +28,8 @@ namespace SuperNewRoles.Patch
         {
             public static bool Prefix()
             {
-                bool ContainsMod = PlayerControl.LocalPlayer.Data.PlayerName.ToLower().Contains("mod");
-                bool ContainsSNR = PlayerControl.LocalPlayer.Data.PlayerName.ToUpper().Contains("SNR") || PlayerControl.LocalPlayer.Data.PlayerName.ToUpper().Contains("SHR");
+                bool ContainsMod = SaveManager.PlayerName.ToLower().Contains("mod");
+                bool ContainsSNR = SaveManager.PlayerName.ToUpper().Contains("SNR") || SaveManager.PlayerName.ToUpper().Contains("SHR");
                 if (ContainsMod && !ContainsSNR)
                 {
                     SuperNewRolesPlugin.Logger.LogWarning("\"mod\"が名前に含まれている状態では公開部屋にすることはできません。");
