@@ -15,7 +15,7 @@ namespace SuperNewRoles.MapCustoms
 
         public static CustomOption.CustomOption MiraSetting;//ミラ
         public static CustomOption.CustomOption MiraAdditionalVents;
-                public static CustomOption.CustomOption AddVitalsMira;
+        public static CustomOption.CustomOption AddVitalsMira;
 
 
         public static CustomOption.CustomOption PolusSetting;//ポーラス
@@ -27,7 +27,7 @@ namespace SuperNewRoles.MapCustoms
         public static CustomOption.CustomOption SecretRoomOption;
         public static CustomOption.CustomOption AirShipAdditionalVents;
         public static CustomOption.CustomOption AirshipDisableMovingPlatform;
-
+        public static CustomOption.CustomOption RecordsAdminDestroy;
 
 
         public static void CreateOption()
@@ -40,7 +40,7 @@ namespace SuperNewRoles.MapCustoms
             /*===============ミラ===============*/
             MiraSetting = CustomOption.CustomOption.Create(606, false, CustomOptionType.Generic, "Mira", false, MapCustomOption);
             MiraAdditionalVents = CustomOption.CustomOption.Create(631, false, CustomOptionType.Generic, "MiraAdditionalVents", false, MiraSetting);
-                        AddVitalsMira = CustomOption.CustomOption.Create(472, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MiraSetting);
+            AddVitalsMira = CustomOption.CustomOption.Create(472, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MiraSetting);
 
             /*===============ポーラス===============*/
             PolusSetting = CustomOption.CustomOption.Create(606, false, CustomOptionType.Generic, "Polus", false, MapCustomOption);
@@ -51,7 +51,8 @@ namespace SuperNewRoles.MapCustoms
             AirshipSetting = CustomOption.CustomOption.Create(624, false, CustomOptionType.Generic, "Airship", false, MapCustomOption);
             SecretRoomOption = CustomOption.CustomOption.Create(624, false, CustomOptionType.Generic, "SecretRoom", false, AirshipSetting);
             AirShipAdditionalVents = CustomOption.CustomOption.Create(605, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, AirshipSetting);
-            AirshipDisableMovingPlatform = CustomOption.CustomOption.Create(100000000,false, CustomOptionType.Generic, "AirshipDisableMovingPlatform", false, AirshipSetting);
+            AirshipDisableMovingPlatform = CustomOption.CustomOption.Create(100000000, false, CustomOptionType.Generic, "AirshipDisableMovingPlatform", false, AirshipSetting);
+            RecordsAdminDestroy = CustomOption.CustomOption.Create(612, false, CustomOptionType.Generic, "RecordsAdminDestroySetting", false, AirshipSetting);
         }
     }
 }
