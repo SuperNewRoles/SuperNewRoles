@@ -10,6 +10,7 @@ using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
+using static SuperNewRoles.MapCustoms.MapCustom;
 using TMPro;
 using UnityEngine;
 
@@ -17,8 +18,6 @@ namespace SuperNewRoles.MapCustoms.Airship
 {
     public static class SecretRoom
     {
-        public static CustomOption.CustomOption SecretRoomOption;
-
         public static PlayerControl leftplayer;
         public static PlayerControl rightplayer;
 
@@ -125,10 +124,6 @@ namespace SuperNewRoles.MapCustoms.Airship
             leftplayer = null;
             rightplayer = null;
             UsePlayer = null;
-        }
-        public static void CreateOption()
-        {
-            SecretRoomOption = CustomOption.CustomOption.Create(624, false, CustomOptionType.Generic, "SecretRoom", false, MapCustom.MapCustomOption);
         }
         public static void ShipStatusAwake(ShipStatus __instance)
         {

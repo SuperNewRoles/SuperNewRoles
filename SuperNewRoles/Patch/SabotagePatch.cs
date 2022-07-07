@@ -2,7 +2,7 @@ using HarmonyLib;
 
 //参考=>https://github.com/Koke1024/Town-Of-Moss/blob/main/TownOfMoss/Patches/MeltDownBoost.cs
 
-namespace SuperNewRoles
+namespace SuperNewRoles.Patch
 {
     [HarmonyPatch(typeof(ReactorSystemType), nameof(ReactorSystemType.Detoriorate))]
     public static class MeltdownBooster

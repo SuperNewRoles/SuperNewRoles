@@ -1,7 +1,7 @@
 using UnityEngine;
 using SuperNewRoles.Mode;
 
-namespace SuperNewRoles.MapOptions
+namespace SuperNewRoles.MapCustoms
 {
     public class SpecimenVital
     {
@@ -15,7 +15,7 @@ namespace SuperNewRoles.MapOptions
         public static void moveVital()
         {
             if (SpecimenVital.flag) return;
-            if (PlayerControl.GameOptions.MapId == 2 && MapOption.SpecimenVital.getBool() && ModeHandler.isMode(ModeId.Default) && MapOption.MapOptionSetting.getBool() && MapOption.MapRemodelingOption.getBool())
+            if (PlayerControl.GameOptions.MapId == 2 && MapCustoms.MapCustom.SpecimenVital.getBool() && ModeHandler.isMode(ModeId.Default) && MapCustom.MapCustomOption.getBool())
             {
                 var panel = GameObject.Find("panel_vitals");
                 if (panel != null)
