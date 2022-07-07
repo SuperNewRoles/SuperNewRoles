@@ -17,7 +17,9 @@ namespace SuperNewRoles
     {
         public const string Id = "jp.ykundesu.supernewroles";
 
+        //バージョンと同時にIsBetaも変える
         public const string VersionString = "1.4.1.4";
+        public const bool IsBeta = true;
 
         public static System.Version Version = System.Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;

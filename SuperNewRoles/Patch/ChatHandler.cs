@@ -62,7 +62,12 @@ namespace SuperNewRoles.Patch
             if (Commands[0].Equals("/version", StringComparison.OrdinalIgnoreCase) ||
                 Commands[0].Equals("/v", StringComparison.OrdinalIgnoreCase))
             {
-                SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu");
+                string betatext = "";
+                if (SuperNewRolesPlugin.IsBeta)
+                {
+                    betatext = "\nベータ版です！バグには注意してください！";
+                }
+                SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu" + betatext);
                 return false;
             }
             else if (
