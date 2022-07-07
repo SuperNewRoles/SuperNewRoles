@@ -51,7 +51,7 @@ namespace SuperNewRoles.MapCustoms
             AirshipSetting = CustomOption.CustomOption.Create(624, false, CustomOptionType.Generic, "Airship", false, MapCustomOption);
             SecretRoomOption = CustomOption.CustomOption.Create(624, false, CustomOptionType.Generic, "SecretRoom", false, AirshipSetting);
             AirShipAdditionalVents = CustomOption.CustomOption.Create(605, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, AirshipSetting);
-            AirshipDisableMovingPlatform = CustomOption.CustomOption.Create(100000000, false, CustomOptionType.Generic, "AirshipDisableMovingPlatform", false, AirshipSetting);
+            AirshipDisableMovingPlatform = CustomOption.CustomOption.Create(623, false, CustomOptionType.Generic, "AirshipDisableMovingPlatform", false, AirshipSetting);
             RecordsAdminDestroy = CustomOption.CustomOption.Create(612, false, CustomOptionType.Generic, "RecordsAdminDestroySetting", false, AirshipSetting);
         }
     }
