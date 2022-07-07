@@ -111,7 +111,7 @@ namespace SuperNewRoles
                         SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                     }
                 }
-                RoleSelectHandler.RoleSelect(sender);
+                sender = RoleSelectHandler.RoleSelect(sender);
 
                 foreach (PlayerControl player in AllRoleSetClass.impostors)
                 {

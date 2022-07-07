@@ -14,11 +14,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     public static class RoleSelectHandler
     {
         public static CustomRpcSender sender = null;
-        public static void RoleSelect(CustomRpcSender send)
+        public static CustomRpcSender RoleSelect(CustomRpcSender send)
         {
             sender = send;
             SuperNewRolesPlugin.Logger.LogInfo("[SHR] ROLESELECT");
-            if (!AmongUsClient.Instance.AmHost) return;
+            if (!AmongUsClient.Instance.AmHost) return null;
             SuperNewRolesPlugin.Logger.LogInfo("[SHR] つうか");
             CrewOrImpostorSet();
             OneOrNotListSet();
@@ -27,21 +27,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
             main.SendAllRoleChat();
-
-            //BotHandler.AddBot(3, "キルされるBot");
-            new LateTask(() =>
-            {
-                if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
-                {
-                    PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
-                    PlayerControl.LocalPlayer.RpcSendChat("＊注意(自動送信)＊\nこのMODは、バグ等がたくさん発生します。\nいろいろな重大なバグがあるため、あくまで自己責任でお願いします。");
-                    foreach (var pc in CachedPlayer.AllPlayers)
-                    {
-                        pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
-                        SuperNewRolesPlugin.Logger.LogInfo("[SHR] シェイプシフターセット！");
-                    }
-                }
-            }, 3f, "SetImpostor");
+            return sender;
         }
         public static void SpawnBots()
         {
