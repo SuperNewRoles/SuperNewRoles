@@ -31,7 +31,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             //player: 名前の変更対象
             //seer: 上の変更を確認することができるプレイヤー
-
             if (player == null) return;
             if (seer == null) seer = player;
             var clientId = seer.getClientId();
