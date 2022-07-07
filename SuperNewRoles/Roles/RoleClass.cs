@@ -40,8 +40,8 @@ namespace SuperNewRoles.Roles
             Mode.BattleRoyal.main.VentData = new();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
-            MapOptions.AdditionalVents.ClearAndReload();
-            MapOptions.SpecimenVital.ClearAndReload();
+            MapCustoms.AdditionalVents.ClearAndReload();
+            MapCustoms.SpecimenVital.ClearAndReload();
             SoothSayer.ClearAndReload();
             Jester.ClearAndReload();
             Lighter.ClearAndReload();

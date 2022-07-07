@@ -2,14 +2,14 @@ using HarmonyLib;
 
 //参考=>https://github.com/Koke1024/Town-Of-Moss/blob/main/TownOfMoss/Patches/MeltDownBoost.cs
 
-namespace SuperNewRoles
+namespace SuperNewRoles.Patch
 {
     [HarmonyPatch(typeof(ReactorSystemType), nameof(ReactorSystemType.Detoriorate))]
     public static class MeltdownBooster
     {
         public static void Prefix(ReactorSystemType __instance, float deltaTime)
         {
-            if (MapOptions.MapOption.ReactorDurationOption.getBool() && MapOptions.MapOption.MapRemodelingOption.getBool())
+            if (MapOptions.MapOption.ReactorDurationOption.getBool())
             {
                 if (!__instance.IsActive)
                 {
@@ -41,7 +41,7 @@ namespace SuperNewRoles
     {
         public static void Prefix(HeliSabotageSystem __instance, float deltaTime)
         {
-            if (MapOptions.MapOption.ReactorDurationOption.getBool() && MapOptions.MapOption.MapRemodelingOption.getBool())
+            if (MapOptions.MapOption.ReactorDurationOption.getBool())
             {
                 if (!__instance.IsActive)
                 {
