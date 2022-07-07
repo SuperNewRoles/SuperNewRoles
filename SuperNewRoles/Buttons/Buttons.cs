@@ -316,24 +316,24 @@ namespace SuperNewRoles.Buttons
                         RoleClass.Hawk.IsHawkOn = true;
                     }
                 },
-                (bool isAlive, RoleId role) => { return (PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk)) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk) || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk); },
+                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Hawk ||role == RoleId.NiceHawk || role == RoleId.MadHawk); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
                 },
                 () =>
                 {
-                    if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.Hawk))
                     {
                         HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
                         HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
                     }
-                    if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk))
+                    else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk))
                     {
                         HawkHawkEyeButton.MaxTimer = RoleClass.NiceHawk.CoolTime;
                         HawkHawkEyeButton.Timer = RoleClass.NiceHawk.CoolTime;
                     }
-                    if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk))
+                    else if (PlayerControl.LocalPlayer.isRole(RoleId.MadHawk))
                     {
                         HawkHawkEyeButton.MaxTimer = RoleClass.MadHawk.CoolTime;
                         HawkHawkEyeButton.Timer = RoleClass.MadHawk.CoolTime;

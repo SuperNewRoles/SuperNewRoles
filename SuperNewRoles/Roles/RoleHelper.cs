@@ -19,8 +19,7 @@ namespace SuperNewRoles
 
         public static bool isImpostor(this PlayerControl player)
         {
-            if (player.isRole(RoleId.Sheriff)) return false;
-            if (player.isRole(RoleId.Jackal)) return false;
+            if (player.isRole(RoleId.Sheriff, RoleId.Sheriff)) return false;
             return player != null && player.Data.Role.IsImpostor;
         }
 
@@ -1055,7 +1054,7 @@ namespace SuperNewRoles
             if (role == RoleId.Minimalist) return RoleClass.Minimalist.UseVent;
             if (role == RoleId.Samurai) return RoleClass.Samurai.UseVent;
             else if (player.isImpostor()) return true;
-            else if (player.isRole(RoleId.Jackal) || player.isRole(RoleId.Sidekick)) return RoleClass.Jackal.IsUseVent;
+            else if (player.isRole(RoleId.Jackal, RoleId.Sidekick)) return RoleClass.Jackal.IsUseVent;
             else if (ModeHandler.isMode(ModeId.SuperHostRoles) && IsComms()) return false;
             switch (role)
             {

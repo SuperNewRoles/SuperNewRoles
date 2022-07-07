@@ -284,9 +284,20 @@ namespace SuperNewRoles.Mode
         }
         public static bool isMode(params ModeId[] modes)
         {
+            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)))
+            {
+                foreach (ModeId mode in modes)
+                {
+                    if (mode == ModeId.Default)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
             foreach (ModeId mode in modes)
             {
-                if (isMode(mode))
+                if (thisMode == mode)
                 {
                     return true;
                 }
