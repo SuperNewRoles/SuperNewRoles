@@ -306,7 +306,7 @@ namespace SuperNewRoles.Mode
         }
         public static bool isMode(ModeId mode, bool IsChache = true)
         {
-            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)))
+            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId))
             {
                 if (mode == ModeId.Default)
                 {
