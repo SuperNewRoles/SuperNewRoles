@@ -355,17 +355,15 @@ namespace SuperNewRoles.Patch
                 yield return new WaitForSeconds(time);
             }
             var crs = CustomRpcSender.Create();
-            crs.StartMessage()
-                .StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
+            crs.AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
                 .Write(SendName)
                 .EndRpc()
-                .StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SendChat)
+                .AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SendChat)
                 .Write(command)
                 .EndRpc()
-                .StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
+                .AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
                 .Write(name)
                 .EndRpc()
-                .EndMessage()
                 .SendMessage();
             PlayerControl.LocalPlayer.SetName(SendName);
             FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, command);
@@ -378,17 +376,15 @@ namespace SuperNewRoles.Patch
                 yield return new WaitForSeconds(time);
             }
             var crs = CustomRpcSender.Create();
-            crs.StartMessage(target.getClientId())
-                .StartRpc(target.NetId, RpcCalls.SetName)
+            crs.AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.getClientId())
                 .Write(SendName)
                 .EndRpc()
-                .StartRpc(target.NetId, RpcCalls.SendChat)
+                .AutoStartRpc(target.NetId, (byte)RpcCalls.SendChat, target.getClientId())
                 .Write(command)
                 .EndRpc()
-                .StartRpc(target.NetId, RpcCalls.SetName)
+                .AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.getClientId())
                 .Write(target.Data.PlayerName)
                 .EndRpc()
-                .EndMessage()
                 .SendMessage();
         }
     }/*

@@ -20,16 +20,7 @@ namespace SuperNewRoles
         public delegate void onSendDelegateType();
         public onSendDelegateType onSendDelegate;
 
-        public State CurrentState
-        {
-            get { return currentState; }
-            set
-            {
-                if (isUnsafe) currentState = value;
-                else Logger.Warn("CurrentStateはisUnsafeがtrueの時のみ上書きできます", "CustomRpcSender");
-            }
-        }
-        private State currentState = State.BeforeInit;
+        private State currentState = State.Ready;
 
         //0~: targetClientId (GameDataTo)
         //-1: 全プレイヤー (GameData)
@@ -60,7 +51,7 @@ namespace SuperNewRoles
         {
             if (currentState != State.Ready)
             {
-                string errorMsg = $"Messageを開始しようとしましたが、StateがReadyではありません (in: \"{name}\")";
+                string errorMsg = $"Messageを開始しようとしましたが、StateがReadyではありません (in: \"{name}\") (State: \"{currentState}\")";
                 if (isUnsafe)
                 {
                     Logger.Warn(errorMsg, "CustomRpcSender.Warn");
@@ -263,6 +254,10 @@ namespace SuperNewRoles
             sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetRole, targetClientId)
               .Write((ushort)role)
               .EndRpc();
+            if (targetClientId == -1)
+            {
+                player.SetRole(role);
+            }
         }
         public static void RpcMurderPlayer(this CustomRpcSender sender, PlayerControl player, PlayerControl target, int targetClientId = -1)
         {
