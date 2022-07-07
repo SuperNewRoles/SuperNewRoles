@@ -1274,9 +1274,18 @@ namespace SuperNewRoles
         }
         public static bool isRole(this PlayerControl p, params RoleId[] roles)
         {
+            RoleId MyRole;
+            try
+            {
+                MyRole = ChacheManager.MyRoleChache[p.PlayerId];
+            }
+            catch
+            {
+                MyRole = RoleId.DefaultRole;
+            }
             foreach (RoleId role in roles)
             {
-                if (p.isRole(role)) return true;
+                if (role == MyRole) return true;
             }
             return false;
         }
