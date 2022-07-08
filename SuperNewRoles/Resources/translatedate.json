@@ -3191,6 +3191,10 @@
  "AirshipDisableMovingPlatformSetting" : {
         "0" : "Disable Moving Platform" ,
         "11" : "\u6607\u964d\u6a5f\u306e\u30ea\u30d5\u30c8\u3092\u7121\u52b9\u5316\u3059\u308b"
+        } ,
+ "AddWireTaskSetting" : {
+        "0" : "Add Wire Task" ,
+        "11" : "\u914d\u7dda\u30bf\u30b9\u30af\u3092\u8ffd\u52a0\u3059\u308b"
         } 
 
 }

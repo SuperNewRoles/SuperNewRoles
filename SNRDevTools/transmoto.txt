@@ -796,3 +796,4 @@ LadderDeadChance
 NameIncludeMod
 MoveElecPadSetting
 AirshipDisableMovingPlatformSetting
+AddWireTaskSetting

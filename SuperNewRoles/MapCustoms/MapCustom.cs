@@ -29,6 +29,7 @@ namespace SuperNewRoles.MapCustoms
         public static CustomOption.CustomOption AirshipDisableMovingPlatform;
         public static CustomOption.CustomOption RecordsAdminDestroy;
         public static CustomOption.CustomOption MoveElecPad;
+        public static CustomOption.CustomOption AddWireTask;
 
 
         public static void CreateOption()
@@ -54,7 +55,8 @@ namespace SuperNewRoles.MapCustoms
             AirShipAdditionalVents = CustomOption.CustomOption.Create(605, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, AirshipSetting);
             AirshipDisableMovingPlatform = CustomOption.CustomOption.Create(623, false, CustomOptionType.Generic, "AirshipDisableMovingPlatformSetting", false, AirshipSetting);
             RecordsAdminDestroy = CustomOption.CustomOption.Create(612, false, CustomOptionType.Generic, "RecordsAdminDestroySetting", false, AirshipSetting);
-            MoveElecPad = CustomOption.CustomOption.Create(612, false, CustomOptionType.Generic, "MoveElecPadSetting", false, AirshipSetting);
+            MoveElecPad = CustomOption.CustomOption.Create(645, false, CustomOptionType.Generic, "MoveElecPadSetting", false, AirshipSetting);
+            AddWireTask = CustomOption.CustomOption.Create(646, false, CustomOptionType.Generic, "AddWireTaskSetting", false, AirshipSetting);
         }
     }
 }
