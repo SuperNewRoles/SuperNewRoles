@@ -129,6 +129,7 @@ namespace SuperNewRoles.CustomRPC
         SecretlyKiller,
         Spy,
         Kunoichi,
+        DoubleKiller,
         //RoleId
     }
 

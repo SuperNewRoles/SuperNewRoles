@@ -145,6 +145,7 @@ namespace SuperNewRoles.Roles
             SecretlyKiller.ClearAndReload();
             Spy.ClearAndReload();
             Kunoichi.ClearAndReload();
+            DoubleKiller.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2379,6 +2380,15 @@ namespace SuperNewRoles.Roles
                 Kunai = new Kunai();
                 Kunai.kunai.SetActive(false);
                 KunaiSend = false;
+            }
+        }
+        public static class DoubleKiller
+        {
+            public static List<PlayerControl> DoubleKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                DoubleKillerPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス

@@ -185,6 +185,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate SecretlyKillerIntro = new("SecretlyKiller", RoleClass.SecretlyKiller.color, 1, CustomRPC.RoleId.SecretlyKiller, TeamRoleType.Impostor);
         public static IntroDate SpyIntro = new("Spy", RoleClass.Spy.color, 1, CustomRPC.RoleId.Spy, TeamRoleType.Crewmate);
             public static IntroDate KunoichiIntro = new("Kunoichi", RoleClass.Kunoichi.color, 1, CustomRPC.RoleId.Kunoichi, TeamRoleType.Impostor);
-            //イントロオブジェ
+            public static IntroDate DoubleKillerIntro = new IntroDate("DoubleKiller", RoleClass.DoubleKiller.color, 1, CustomRPC.RoleId.DoubleKiller);
+        //イントロオブジェ
     }
 }
