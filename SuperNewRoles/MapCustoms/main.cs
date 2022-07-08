@@ -39,6 +39,9 @@ namespace SuperNewRoles.MapCustoms
             // スペシメンにバイタルを移動する
             SpecimenVital.moveVital();
 
+            //配電盤を移動させる
+            MoveElecPad.MoveElecPads();
+
             GameObject gapRoom = DestroyableSingleton<ShipStatus>.Instance.FastRooms[SystemTypes.GapRoom].gameObject;
             // ぬ～んを消す
             if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirshipDisableMovingPlatform.getBool())
