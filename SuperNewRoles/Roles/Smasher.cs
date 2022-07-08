@@ -23,6 +23,7 @@ namespace SuperNewRoles.Roles
         public static void EndMeeting()
         {
             resetCoolDown();
+            resetSmashCoolDown();
             HudManagerStartPatch.DoubleKillerMainKillButton.MaxTimer = RoleClass.Smasher.KillCoolTime;
             HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer = 0.1f;
         }
