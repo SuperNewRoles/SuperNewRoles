@@ -804,3 +804,5 @@ SubCoolTimeSetting,SubKillCoolDown,サブのキルボタンのクールダウン
 DoubleKillerSaboSetting,DoubleKillerCanUseSabotage,ダブルキラーがサボを使えるか
 SmasherName,Smasher,スマッシャー
 KillCoolTimeSetting,KillCoolDown,キルクールダウン
+DoubleKillerTitle1,Let's master the independent kill button!,独立したキルボタンを使いこなそう
+SmasherTitle1,Let's do continuous kills!,連続キルを行おう

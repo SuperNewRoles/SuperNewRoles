@@ -803,3 +803,5 @@ SubKillCoolDown
 DoubleKillerCanUseSabotage
 Smasher
 KillCoolDown
+Let's master the independent kill button!
+Let's do continuous kills!

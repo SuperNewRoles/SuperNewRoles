@@ -803,3 +803,5 @@ SubCoolTimeSetting
 DoubleKillerSaboSetting
 SmasherName
 KillCoolTimeSetting
+DoubleKillerTitle1
+SmasherTitle1
