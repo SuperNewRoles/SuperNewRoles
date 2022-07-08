@@ -71,14 +71,12 @@ namespace SuperNewRoles
         public static bool IsNotDesync = false;
         public static bool Prefix()
         {
-            Logger.Info("一番最初", "仮");
             AllRoleSetClass.SetPlayerNum();
             IsNotPrefix = false;
             IsSetRoleRpc = false;
             IsRPCSetRoleOK = true;
             IsShapeSet = false;
             IsNotDesync = true;
-            Logger.Info("ahrhre", "仮");
             if (ModeHandler.isMode(ModeId.NotImpostorCheck))
             {
                 IsNotDesync = false;
@@ -89,12 +87,9 @@ namespace SuperNewRoles
                 IsNotDesync = false;
             }
             */
-            Logger.Info("まえa", "仮");
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
-                Logger.Info("a","仮");
                 CustomRpcSender sender = CustomRpcSender.Create("SelectRoles Sender", SendOption.Reliable);
-                Logger.Info("b", "仮");
                 List<PlayerControl> SelectPlayers = new();
                 AllRoleSetClass.impostors = new();
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
@@ -115,20 +110,16 @@ namespace SuperNewRoles
                         SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                     }
                 }
-                Logger.Info("c", "仮");
                 sender = RoleSelectHandler.RoleSelect(sender);
-                Logger.Info("d", "仮");
 
                 foreach (PlayerControl player in AllRoleSetClass.impostors)
                 {
-                    Logger.Info("e", "仮");
                     sender.RpcSetRole(player, RoleTypes.Impostor);
                 }
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (!player.Data.Disconnected && !AllRoleSetClass.impostors.IsCheckListPlayerControl(player))
                     {
-                        Logger.Info("f", "仮");
                         sender.RpcSetRole(player, RoleTypes.Crewmate);
                     }
                 }
@@ -136,15 +127,12 @@ namespace SuperNewRoles
                 //サーバーの役職判定をだます
                 foreach (var pc in PlayerControl.AllPlayerControls)
                 {
-
-                    Logger.Info("g", "仮");
                     sender.AutoStartRpc(pc.NetId, (byte)RpcCalls.SetRole)
                         .Write((ushort)RoleTypes.Shapeshifter)
                         .EndRpc();
                 }
                 //RpcSetRoleReplacerの送信処理
                 sender.SendMessage();
-                Logger.Info("h", "仮");
 
                 try
                 {
