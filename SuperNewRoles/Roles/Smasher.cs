@@ -24,7 +24,6 @@ namespace SuperNewRoles.Roles
         {
             resetCoolDown();
             resetSmashCoolDown();
-            HudManagerStartPatch.DoubleKillerMainKillButton.MaxTimer = RoleClass.Smasher.KillCoolTime;
             HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer = 0.1f;
         }
         public static void setPlayerOutline(PlayerControl target, Color color)
