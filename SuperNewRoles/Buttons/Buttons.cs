@@ -1844,10 +1844,13 @@ namespace SuperNewRoles.Buttons
                             case RoleId.DoubleKiller:
                                 DoubleKiller.resetMainCoolDown();
                                 break;
+                            case RoleId.Smasher:
+                                Smasher.resetCoolDown();
+                                break;
                         }
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.DoubleKiller) && ModeHandler.isMode(ModeId.Default); },
+                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.DoubleKiller) && ModeHandler.isMode(ModeId.Default) || isAlive && (role == RoleId.Smasher) && ModeHandler.isMode(ModeId.Default); },
                 () =>
                 {
                     return DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -1880,10 +1883,17 @@ namespace SuperNewRoles.Buttons
                             case RoleId.DoubleKiller:
                                 DoubleKiller.resetSubCoolDown();
                                 break;
+                            case RoleId.Smasher:
+                                Smasher.resetSmashCoolDown();
+                                break;
                         }
                     }
+                    if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Smasher))
+                    {
+                        RoleClass.Smasher.SmashOn = true;
+                    }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.DoubleKiller) && ModeHandler.isMode(ModeId.Default); },
+                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.DoubleKiller) && ModeHandler.isMode(ModeId.Default) || isAlive && (role == RoleId.Smasher) && ModeHandler.isMode(ModeId.Default) && !RoleClass.Smasher.SmashOn; },
                 () =>
                 {
                     return DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget() && PlayerControl.LocalPlayer.CanMove;

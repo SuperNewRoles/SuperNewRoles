@@ -146,6 +146,7 @@ namespace SuperNewRoles.Roles
             Spy.ClearAndReload();
             Kunoichi.ClearAndReload();
             DoubleKiller.ClearAndReload();
+            Smasher.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2396,6 +2397,19 @@ namespace SuperNewRoles.Roles
                 MainCoolTime = CustomOptions.MainKillCoolTime.getFloat();
                 SubCoolTime = CustomOptions.SubKillCoolTime.getFloat();
                 CanUseSabo = CustomOptions.DoubleKillerSabo.getBool();
+            }
+        }
+        public static class Smasher
+        {
+            public static List<PlayerControl> SmasherPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static bool SmashOn;
+            public static void ClearAndReload()
+            {
+                SmasherPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.SmasherKillCoolTime.getFloat();
+                SmashOn = false;
             }
         }
         //新ロールクラス

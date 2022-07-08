@@ -646,6 +646,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MainKillCoolTime;
         public static CustomOption SubKillCoolTime;
         public static CustomOption DoubleKillerSabo;
+
+        public static CustomRoleOption SmasherOption;
+        public static CustomOption SmasherPlayerCount;
+        public static CustomOption SmasherKillCoolTime;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1324,6 +1328,10 @@ namespace SuperNewRoles.CustomOption
             MainKillCoolTime = CustomOption.Create(647, false, CustomOptionType.Impostor, "MainCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption, format: "unitSeconds");
             SubKillCoolTime = CustomOption.Create(648, false, CustomOptionType.Impostor, "SubCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption, format: "unitSeconds");
             DoubleKillerSabo = CustomOption.Create(649, false, CustomOptionType.Impostor, "DoubleKillerSaboSetting", false, DoubleKillerOption);
+
+            SmasherOption = new CustomRoleOption(650, false, CustomOptionType.Impostor, "SmasherName", RoleClass.Smasher.color, 1);
+            SmasherPlayerCount = CustomOption.Create(651, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SmasherOption);
+            SmasherKillCoolTime = CustomOption.Create(652, false, CustomOptionType.Impostor, "KillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SmasherOption, format: "unitSeconds");
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
