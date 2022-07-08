@@ -632,7 +632,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption SpyOption;
         public static CustomOption SpyPlayerCount;
         public static CustomOption SpyCanUseVent;
-        
+
         public static CustomRoleOption KunoichiOption;
         public static CustomOption KunoichiPlayerCount;
         public static CustomOption KunoichiCoolTime;
@@ -724,7 +724,7 @@ namespace SuperNewRoles.CustomOption
             //SoothSayerRate = CustomOption.Create(2, cs(SoothSayer.color,"soothName"),rates, null, true);
             Mode.ModeHandler.OptionLoad();
 
-            MapCustom.CreateOption();
+            MapCustoms.MapCustom.CreateOption();
 
             Sabotage.Options.Load();
 
@@ -1304,7 +1304,7 @@ namespace SuperNewRoles.CustomOption
             SpyOption = new CustomRoleOption(614, true, CustomOptionType.Crewmate, "SpyName",RoleClass.Spy.color, 1);
             SpyPlayerCount = CustomOption.Create(615, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
             SpyCanUseVent = CustomOption.Create(617, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
-            
+
             KunoichiOption = new CustomRoleOption(638, false, CustomOptionType.Impostor, "KunoichiName",RoleClass.Kunoichi.color, 1);
             KunoichiPlayerCount = CustomOption.Create(639, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], KunoichiOption);
             KunoichiCoolTime = CustomOption.Create(640, false, CustomOptionType.Impostor, "KunoichiCoolTime", 2.5f , 0f , 15f, 0.5f, KunoichiOption);

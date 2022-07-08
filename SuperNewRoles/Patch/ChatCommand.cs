@@ -70,12 +70,7 @@ namespace SuperNewRoles.Patch
                     else if (text.ToLower().StartsWith("/rename "))
                     {
                         handled = true;
-                        bool ContainsMod = PlayerControl.LocalPlayer.Data.PlayerName.ToLower().Contains("mod");
-                        bool ContainsSNR = PlayerControl.LocalPlayer.Data.PlayerName.ToUpper().Contains("SNR") || PlayerControl.LocalPlayer.Data.PlayerName.ToUpper().Contains("SHR");
-                        if (ContainsMod && !ContainsSNR)
-                            HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, ModTranslation.getString("ContainsMod"));
-                        else
-                            PlayerControl.LocalPlayer.RpcSetName(text.ToLower().Replace("/rename ", ""));
+                        PlayerControl.LocalPlayer.RpcSetName(text.ToLower().Replace("/rename ", ""));
                     }
 
                     if (AmongUsClient.Instance.GameMode == GameModes.FreePlay)

@@ -794,4 +794,4 @@ clairvoyantDurationTime,ClairvoyantDurationTime,千里眼の継続時間
 ClairvoyantButtonName,Clairvoyant!,千里眼
 LadderDead,Ladder Death,転落死
 LadderDeadChance,Ladder Death Chance,転落死する確率
-ContainsMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。
+NameIncludeMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。
