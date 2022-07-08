@@ -12,54 +12,43 @@ using SuperNewRoles.Roles;
 
 namespace SuperNewRoles
 {
+
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
-    class RpcSetRolePatch
+    class RpcSetRoleReplacer
     {
-        public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
-        {
-            SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName + " => " + roleType);
-        }
-        /*
+        public static bool doReplace = false;
+        public static CustomRpcSender sender;
+        public static List<(PlayerControl, RoleTypes)> StoragedData = new();
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
-            SuperNewRolesPlugin.Logger.LogInfo(__instance.Data.PlayerName + " => " + roleType);
-            if (!AmongUsClient.Instance.AmHost) return true;
-            if (RoleManagerSelectRolesPatch.IsShapeSet)
+            return true;
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return true;
+            if (doReplace && sender != null)
             {
-                MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
-                messageWriter.Write((ushort)roleType);
-                messageWriter.EndMessage();
+                StoragedData.Add((__instance, roleType));
+                return false;
             }
-            else
+            else return true;
+        }
+        public static void Release()
+        {
+            sender.StartMessage(-1);
+            foreach (var pair in StoragedData)
             {
-                if (RoleManagerSelectRolesPatch.IsNotDesync)
-                {
-                    SuperNewRolesPlugin.Logger.LogInfo("SetOK!:" + roleType);
-                    if (AmongUsClient.Instance.AmClient)
-                        __instance.SetRole(roleType);
-                    MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
-                    messageWriter.Write((ushort)roleType);
-                    messageWriter.EndMessage();
-                }
-                else
-                {
-                    if (!RoleManagerSelectRolesPatch.IsNotPrefix)
-                    {
-                        __instance.Data.Role.Role = roleType;
-                        DestroyableSingleton<RoleManager>.Instance.SetRole(__instance, roleType);
-                    }
-                    if (RoleManagerSelectRolesPatch.IsSetRoleRpc)
-                    {
-                        if (AmongUsClient.Instance.AmClient)
-                            __instance.SetRole(roleType);
-                        MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SetRole);
-                        messageWriter.Write((ushort)roleType);
-                        messageWriter.EndMessage();
-                    }
-                }
+                pair.Item1.SetRole(pair.Item2);
+                sender.StartRpc(pair.Item1.NetId, RpcCalls.SetRole)
+                    .Write((ushort)pair.Item2)
+                    .EndRpc();
             }
-            return false;
-        }*/
+            sender.EndMessage();
+            doReplace = false;
+        }
+        public static void StartReplace(CustomRpcSender sender)
+        {
+            RpcSetRoleReplacer.sender = sender;
+            StoragedData = new();
+            doReplace = true;
+        }
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
     class startgamepatch
@@ -100,6 +89,7 @@ namespace SuperNewRoles
             */
             if (ModeHandler.isMode(ModeId.SuperHostRoles))
             {
+                CustomRpcSender sender = CustomRpcSender.Create("SelectRoles Sender", SendOption.Reliable);
                 List<PlayerControl> SelectPlayers = new();
                 AllRoleSetClass.impostors = new();
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
@@ -120,18 +110,29 @@ namespace SuperNewRoles
                         SelectPlayers.RemoveAll(a => a.PlayerId == newimpostor.PlayerId);
                     }
                 }
-                RoleSelectHandler.RoleSelect();
+                sender = RoleSelectHandler.RoleSelect(sender);
+
                 foreach (PlayerControl player in AllRoleSetClass.impostors)
                 {
-                    player.RpcSetRole(RoleTypes.Impostor);
+                    sender.RpcSetRole(player, RoleTypes.Impostor);
                 }
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
                     if (!player.Data.Disconnected && !AllRoleSetClass.impostors.IsCheckListPlayerControl(player))
                     {
-                        player.RpcSetRole(RoleTypes.Crewmate);
+                        sender.RpcSetRole(player, RoleTypes.Crewmate);
                     }
                 }
+
+                //サーバーの役職判定をだます
+                foreach (var pc in PlayerControl.AllPlayerControls)
+                {
+                    sender.AutoStartRpc(pc.NetId, (byte)RpcCalls.SetRole)
+                        .Write((ushort)RoleTypes.Shapeshifter)
+                        .EndRpc();
+                }
+                //RpcSetRoleReplacerの送信処理
+                sender.SendMessage();
 
                 try
                 {
@@ -847,6 +848,8 @@ namespace SuperNewRoles
                 RoleId.SecretlyKiller => CustomOptions.SecretlyKillerPlayerCount.getFloat(),
                 RoleId.Spy => CustomOptions.SpyPlayerCount.getFloat(),
                 RoleId.Kunoichi => CustomOptions.KunoichiPlayerCount.getFloat(),
+                RoleId.DoubleKiller => CustomOptions.DoubleKillerPlayerCount.getFloat(),
+                RoleId.Smasher => CustomOptions.SmasherPlayerCount.getFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

@@ -62,7 +62,12 @@ namespace SuperNewRoles.Patch
             if (Commands[0].Equals("/version", StringComparison.OrdinalIgnoreCase) ||
                 Commands[0].Equals("/v", StringComparison.OrdinalIgnoreCase))
             {
-                SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu");
+                string betatext = "";
+                if (SuperNewRolesPlugin.IsBeta)
+                {
+                    betatext = "\nベータ版です！バグには注意してください！";
+                }
+                SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu" + betatext);
                 return false;
             }
             else if (
@@ -350,16 +355,16 @@ namespace SuperNewRoles.Patch
                 yield return new WaitForSeconds(time);
             }
             var crs = CustomRpcSender.Create();
-            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
+            crs.AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
                 .Write(SendName)
-                .EndRpc();
-            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SendChat)
+                .EndRpc()
+                .AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SendChat)
                 .Write(command)
-                .EndRpc(); ;
-            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
+                .EndRpc()
+                .AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
                 .Write(name)
-                .EndRpc();
-            crs.SendMessage();
+                .EndRpc()
+                .SendMessage();
             PlayerControl.LocalPlayer.SetName(SendName);
             FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, command);
             PlayerControl.LocalPlayer.SetName(name);
@@ -371,16 +376,16 @@ namespace SuperNewRoles.Patch
                 yield return new WaitForSeconds(time);
             }
             var crs = CustomRpcSender.Create();
-            crs.StartRpc(target.NetId, RpcCalls.SetName, target.getClientId())
+            crs.AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.getClientId())
                 .Write(SendName)
-                .EndRpc();
-            crs.StartRpc(target.NetId, RpcCalls.SendChat, target.getClientId())
+                .EndRpc()
+                .AutoStartRpc(target.NetId, (byte)RpcCalls.SendChat, target.getClientId())
                 .Write(command)
-                .EndRpc();
-            crs.StartRpc(target.NetId, RpcCalls.SetName, target.getClientId())
+                .EndRpc()
+                .AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.getClientId())
                 .Write(target.Data.PlayerName)
-                .EndRpc();
-            crs.SendMessage();
+                .EndRpc()
+                .SendMessage();
         }
     }/*
     [HarmonyPatch(typeof(ChatController),nameof(ChatController.AddChat))]

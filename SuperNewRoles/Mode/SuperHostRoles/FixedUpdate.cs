@@ -368,12 +368,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
             }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal) ||
-                PlayerControl.LocalPlayer.isRole(RoleId.MadMaker) ||
-                PlayerControl.LocalPlayer.isRole(RoleId.Egoist) ||
-                PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff) ||
-                PlayerControl.LocalPlayer.isRole(RoleId.Demon) ||
-                PlayerControl.LocalPlayer.isRole(RoleId.Arsonist)
+            else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal,RoleId.MadMaker,RoleId.Egoist,RoleId.RemoteSheriff,
+                RoleId.Demon,RoleId.Arsonist)
                 )
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);

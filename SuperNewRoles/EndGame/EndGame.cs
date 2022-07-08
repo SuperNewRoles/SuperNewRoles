@@ -467,7 +467,7 @@ namespace SuperNewRoles.EndGame
 
         public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
-            if (AmongUsClient.Instance.AmHost && (ModeHandler.isMode(ModeId.SuperHostRoles) || ModeHandler.isMode(ModeId.Zombie)))
+            if (AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.SuperHostRoles, ModeId.Zombie))
             {
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
                 CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
@@ -866,19 +866,6 @@ namespace SuperNewRoles.EndGame
                 }
                 AdditionalTempData.winCondition = WinCondition.QuarreledWin;
             }
-            else if (BUGEND)
-            {
-                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                {
-                    if (p.isImpostor() || p.isRole(CustomRPC.RoleId.Jackal) || RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(p) || p.isRole(CustomRPC.RoleId.JackalFriends) || p.isRole(CustomRPC.RoleId.SeerFriends) || p.isRole(CustomRPC.RoleId.MayorFriends))
-                    {
-                        WinningPlayerData wpd = new(p.Data);
-                        TempData.winners.Add(wpd);
-                    }
-                }
-                AdditionalTempData.winCondition = WinCondition.BugEnd;
-            }
             bool IsSingleTeam = CustomOptions.LoversSingleTeam.getBool();
             foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
             {
@@ -1213,7 +1200,7 @@ namespace SuperNewRoles.EndGame
                         if (playerInfo.Object.isAlive())
                         {
                             numTotalAlive++;
-                            if (playerInfo.Object.isRole(RoleId.Jackal) || playerInfo.Object.isRole(CustomRPC.RoleId.Sidekick) || playerInfo.Object.isRole(CustomRPC.RoleId.TeleportingJackal) || playerInfo.Object.isRole(CustomRPC.RoleId.JackalSeer) || playerInfo.Object.isRole(CustomRPC.RoleId.SidekickSeer))
+                            if (playerInfo.Object.isRole(RoleId.Jackal, RoleId.Sidekick, RoleId.TeleportingJackal, RoleId.JackalSeer, RoleId.SidekickSeer))
                             {
                                 numTotalJackalTeam++;
                             }
@@ -1227,7 +1214,7 @@ namespace SuperNewRoles.EndGame
                             }
                             else if (playerInfo.Object.isNeutral())
                             {
-                                if (playerInfo.Object.isRole(CustomRPC.RoleId.Egoist))
+                                if (playerInfo.Object.isRole(RoleId.Egoist))
                                 {
                                     numTotalEgoist++;
                                     numImpostorsAlive++;

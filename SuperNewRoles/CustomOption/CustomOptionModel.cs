@@ -591,18 +591,6 @@ namespace SuperNewRoles.CustomOption
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSyncSettings))]
     public class RpcSyncSettingsPatch
     {
-        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameOptionsData gameOptions)
-        {
-            if (AmongUsClient.Instance.AmHost && !DestroyableSingleton<TutorialManager>.InstanceExists)
-            {
-                PlayerControl.GameOptions = gameOptions;
-                SaveManager.GameHostOptions = gameOptions;
-                MessageWriter obj = AmongUsClient.Instance.StartRpc(__instance.NetId, 2, SendOption.None);
-                obj.WriteBytesAndSize(gameOptions.ToBytes(6));
-                obj.EndMessage();
-            }
-            return false;
-        }
         public static void Postfix()
         {
             CustomOption.ShareOptionSelections();

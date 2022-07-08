@@ -794,3 +794,14 @@ ClairvoyantButtonName
 LadderDead
 LadderDeadChance
 NameIncludeMod
+MoveElecPadSetting
+AirshipDisableMovingPlatformSetting
+AddWireTaskSetting
+DoubleKillerName
+MainCoolTimeSetting
+SubCoolTimeSetting
+DoubleKillerSaboSetting
+SmasherName
+KillCoolTimeSetting
+DoubleKillerTitle1
+SmasherTitle1
