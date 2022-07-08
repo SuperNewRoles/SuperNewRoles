@@ -2349,7 +2349,8 @@ namespace SuperNewRoles.Roles
                 if (CustomOptions.KunoichiIsHide.getBool())
                 {
                     HideTime = CustomOptions.KunoichiHideTime.getFloat();
-                } else
+                }
+                else
                 {
                     HideTime = -1;
                 }
@@ -2386,9 +2387,15 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> DoubleKillerPlayer;
             public static Color32 color = ImpostorRed;
+            public static float MainCoolTime;
+            public static float SubCoolTime;
+            public static bool CanUseSabo;
             public static void ClearAndReload()
             {
                 DoubleKillerPlayer = new List<PlayerControl>();
+                MainCoolTime = CustomOptions.MainKillCoolTime.getFloat();
+                SubCoolTime = CustomOptions.SubKillCoolTime.getFloat();
+                CanUseSabo = CustomOptions.DoubleKillerSabo.getBool();
             }
         }
         //新ロールクラス
