@@ -794,3 +794,5 @@ ClairvoyantButtonName
 LadderDead
 LadderDeadChance
 NameIncludeMod
+MoveElecPadSetting
+AirshipDisableMovingPlatformSetting

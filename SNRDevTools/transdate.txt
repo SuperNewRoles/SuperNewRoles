@@ -795,3 +795,5 @@ ClairvoyantButtonName,Clairvoyant!,千里眼
 LadderDead,Ladder Death,転落死
 LadderDeadChance,Ladder Death Chance,転落死する確率
 NameIncludeMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。
+MoveElecPadSetting,Move the switchboard.,配電盤を移動する
+AirshipDisableMovingPlatformSetting,Disable Moving Platform,昇降機のリフトを無効化する

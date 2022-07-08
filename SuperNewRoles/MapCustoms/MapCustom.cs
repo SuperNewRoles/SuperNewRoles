@@ -28,6 +28,7 @@ namespace SuperNewRoles.MapCustoms
         public static CustomOption.CustomOption AirShipAdditionalVents;
         public static CustomOption.CustomOption AirshipDisableMovingPlatform;
         public static CustomOption.CustomOption RecordsAdminDestroy;
+        public static CustomOption.CustomOption MoveElecPad;
 
 
         public static void CreateOption()
@@ -51,8 +52,9 @@ namespace SuperNewRoles.MapCustoms
             AirshipSetting = CustomOption.CustomOption.Create(624, false, CustomOptionType.Generic, "Airship", false, MapCustomOption);
             SecretRoomOption = CustomOption.CustomOption.Create(624, false, CustomOptionType.Generic, "SecretRoom", false, AirshipSetting);
             AirShipAdditionalVents = CustomOption.CustomOption.Create(605, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, AirshipSetting);
-            AirshipDisableMovingPlatform = CustomOption.CustomOption.Create(623, false, CustomOptionType.Generic, "AirshipDisableMovingPlatform", false, AirshipSetting);
+            AirshipDisableMovingPlatform = CustomOption.CustomOption.Create(623, false, CustomOptionType.Generic, "AirshipDisableMovingPlatformSetting", false, AirshipSetting);
             RecordsAdminDestroy = CustomOption.CustomOption.Create(612, false, CustomOptionType.Generic, "RecordsAdminDestroySetting", false, AirshipSetting);
+            MoveElecPad = CustomOption.CustomOption.Create(612, false, CustomOptionType.Generic, "MoveElecPadSetting", false, AirshipSetting);
         }
     }
 }
