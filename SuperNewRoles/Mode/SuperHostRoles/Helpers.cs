@@ -36,9 +36,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (seer == null) seer = player;
             var clientId = seer.getClientId();
             SuperNewRolesPlugin.Logger.LogInfo("(Desync => " + seer.Data.PlayerName + " ) " + player.Data.PlayerName + " => " + role);
-            sender.StartRpc(player.NetId, RpcCalls.SetRole, targetClientId: clientId);
-            sender.Write((ushort)role);
-            sender.EndRpc();
+            sender.StartMessage(clientId)
+                .StartRpc(player.NetId, RpcCalls.SetRole)
+                .Write((ushort)role)
+                .EndRpc()
+                .EndMessage();
         }
         public static void RpcSetRole(this PlayerControl player, CustomRpcSender sender, RoleTypes role)
         {
