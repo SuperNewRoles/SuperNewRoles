@@ -3,27 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
 using Hazel;
+using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
-{
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckColor))]
-    class AwakePatcha
-    {
-        public static bool Prefix(PlayerControl __instance,byte bodyColor)
-        {
-            if (!__instance.AmOwner) return true;
-            if (AmongUsClient.Instance.AmClient)
-            {
-                __instance.SetColor(bodyColor);
-            }
-            MessageWriter obj = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 8, SendOption.None);
-            obj.Write(bodyColor);
-            AmongUsClient.Instance.FinishRpcImmediately(obj);
-            return false;
-        }
-    }
-    
+{   
     [HarmonyPatch(typeof(PlayerCustomizationMenu),nameof(PlayerCustomizationMenu.Start))]
     class AwakePatch
     {
@@ -46,32 +30,19 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
                 i++;
             }
-            __instance.transform.FindChild("Background/RightPanel").localPosition = new Vector3(0, 0, -4.29f);
+
             UpdatePatch.area = __instance.transform.FindChild("Background/RightPanel/PlayerVoteArea").GetComponent<PlayerVoteArea>();
-        }
-    }
-    [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.Update))]
-    class UpdatePatch
-    {
-        public static PlayerVoteArea area;
-        public static void Postfix(PlayerCustomizationMenu __instance)
-        {
-            __instance.equipButton.SetActive(false);
-            __instance.equippedText.SetActive(false);
-            foreach (TabButton button in __instance.Tabs)
-            {
-                GameObject btn = button.Tab.gameObject;
-                if (btn.active)
-                {
-                    btn.SetActive(false);
-                }
-            }
-            var panel = __instance.transform.FindChild("Background/RightPanel");
-            panel.localPosition = new Vector3(0, 0, -4.29f);
-            panel.FindChild("Gradient").gameObject.SetActive(false);
-            panel.FindChild("Item Name").gameObject.SetActive(false);
-            area.PreviewNameplate(SaveManager.LastNamePlate);
-            area.gameObject.SetActive(true);
+
+            ObjectData.HatText = GameObject.Instantiate(__instance.transform.FindChild("ColorGroup/Text").GetComponent<TextMeshPro>(), __instance.Tabs[0].Tab.transform);
+            GameObject.Destroy(ObjectData.HatText.GetComponent<TextTranslatorTMP>());
+            ObjectData.VisorText = GameObject.Instantiate(ObjectData.HatText, __instance.Tabs[0].Tab.transform);
+            ObjectData.SkinText = GameObject.Instantiate(ObjectData.HatText, __instance.Tabs[0].Tab.transform);
+            ObjectData.ColorText = GameObject.Instantiate(ObjectData.HatText, __instance.Tabs[0].Tab.transform);
+
+            ObjectData.HatText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.HatLabel);
+            ObjectData.VisorText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Visor);
+            ObjectData.SkinText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SkinLabel);
+            ObjectData.ColorText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Colors);
 
         }
     }
@@ -81,7 +52,6 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static bool IsFirst = false;
         public static bool Prefix(PlayerCustomizationMenu __instance, InventoryTab tab)
         {
-            return true;
             return IsFirst;
         }
     }
