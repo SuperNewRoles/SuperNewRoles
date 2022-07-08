@@ -575,6 +575,12 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Kunoichi):
                     Roles.RoleClass.Kunoichi.KunoichiPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.DoubleKiller):
+                    Roles.RoleClass.DoubleKiller.DoubleKillerPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Smasher):
+                    Roles.RoleClass.Smasher.SmasherPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -914,6 +920,12 @@ namespace SuperNewRoles
                     break;
                     case (CustomRPC.RoleId.Spy):
                     Roles.RoleClass.Spy.SpyPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.DoubleKiller):
+                    Roles.RoleClass.DoubleKiller.DoubleKillerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Smasher):
+                    Roles.RoleClass.Smasher.SmasherPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1857,7 +1869,15 @@ namespace SuperNewRoles
                 {
                     return CustomRPC.RoleId.Kunoichi;
                 }
-                //ロールチェック
+                else if (Roles.RoleClass.DoubleKiller.DoubleKillerPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.DoubleKiller;
+            }
+            else if (Roles.RoleClass.Smasher.SmasherPlayer.IsCheckListPlayerControl(player))
+            {
+                return CustomRPC.RoleId.Smasher;
+            }
+            //ロールチェック
             }
             catch (Exception e)
             {

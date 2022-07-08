@@ -848,6 +848,8 @@ namespace SuperNewRoles
                 RoleId.SecretlyKiller => CustomOptions.SecretlyKillerPlayerCount.getFloat(),
                 RoleId.Spy => CustomOptions.SpyPlayerCount.getFloat(),
                 RoleId.Kunoichi => CustomOptions.KunoichiPlayerCount.getFloat(),
+                RoleId.DoubleKiller => CustomOptions.DoubleKillerPlayerCount.getFloat(),
+                RoleId.Smasher => CustomOptions.SmasherPlayerCount.getFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

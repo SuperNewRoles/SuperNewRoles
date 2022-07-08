@@ -64,6 +64,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SecretlyKillerMainButton;
         public static CustomButton SecretlyKillerSecretlyKillButton;
         public static CustomButton ClairvoyantButton;
+        public static CustomButton DoubleKillerMainKillButton;
+        public static CustomButton DoubleKillerSubKillButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -92,7 +94,8 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.Kunoichi.Kunai.kunai.active)
                     {
                         RoleClass.Kunoichi.Kunai.kunai.SetActive(false);
-                    } else
+                    }
+                    else
                     {
                         RoleClass.Kunoichi.Kunai.kunai.SetActive(true);
                     }
@@ -316,7 +319,7 @@ namespace SuperNewRoles.Buttons
                         RoleClass.Hawk.IsHawkOn = true;
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Hawk ||role == RoleId.NiceHawk || role == RoleId.MadHawk); },
+                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Hawk || role == RoleId.NiceHawk || role == RoleId.MadHawk); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
@@ -1827,6 +1830,88 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.getString("ClairvoyantButtonName"),
+                showButtonText = true
+            };
+
+            DoubleKillerMainKillButton = new CustomButton(
+                () =>
+                {
+                    if (DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget());
+                        switch (PlayerControl.LocalPlayer.getRole())
+                        {
+                            case RoleId.DoubleKiller:
+                                DoubleKiller.resetMainCoolDown();
+                                break;
+                            case RoleId.Smasher:
+                                Smasher.resetCoolDown();
+                                break;
+                        }
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.DoubleKiller) && ModeHandler.isMode(ModeId.Default) || isAlive && (role == RoleId.Smasher) && ModeHandler.isMode(ModeId.Default); },
+                () =>
+                {
+                    return DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.DoubleKiller)) { DoubleKiller.EndMeeting(); }
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+                showButtonText = true
+            };
+
+            DoubleKillerSubKillButton = new CustomButton(
+                () =>
+                {
+                    if (DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget());
+                        switch (PlayerControl.LocalPlayer.getRole())
+                        {
+                            case RoleId.DoubleKiller:
+                                DoubleKiller.resetSubCoolDown();
+                                break;
+                            case RoleId.Smasher:
+                                Smasher.resetSmashCoolDown();
+                                break;
+                        }
+                    }
+                    if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Smasher))
+                    {
+                        RoleClass.Smasher.SmashOn = true;
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.DoubleKiller) && ModeHandler.isMode(ModeId.Default) || isAlive && (role == RoleId.Smasher) && ModeHandler.isMode(ModeId.Default) && !RoleClass.Smasher.SmashOn; },
+                () =>
+                {
+                    return DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.DoubleKiller)) { DoubleKiller.EndMeeting(); }
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
                 showButtonText = true
             };
 

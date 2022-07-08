@@ -3195,6 +3195,30 @@
  "AddWireTaskSetting" : {
         "0" : "Add Wire Task" ,
         "11" : "\u914d\u7dda\u30bf\u30b9\u30af\u3092\u8ffd\u52a0\u3059\u308b"
+        } ,
+ "DoubleKillerName" : {
+        "0" : "DoubleKiller" ,
+        "11" : "\u30c0\u30d6\u30eb\u30ad\u30e9\u30fc"
+        } ,
+ "MainCoolTimeSetting" : {
+        "0" : "MainKillCoolDown" ,
+        "11" : "\u30e1\u30a4\u30f3\u30ad\u30eb\u30dc\u30bf\u30f3\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "SubCoolTimeSetting" : {
+        "0" : "SubKillCoolDown" ,
+        "11" : "\u30b5\u30d6\u306e\u30ad\u30eb\u30dc\u30bf\u30f3\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "DoubleKillerSaboSetting" : {
+        "0" : "DoubleKillerCanUseSabotage" ,
+        "11" : "\u30c0\u30d6\u30eb\u30ad\u30e9\u30fc\u304c\u30b5\u30dc\u3092\u4f7f\u3048\u308b\u304b"
+        } ,
+ "SmasherName" : {
+        "0" : "Smasher" ,
+        "11" : "\u30b9\u30de\u30c3\u30b7\u30e3\u30fc"
+        } ,
+ "KillCoolTimeSetting" : {
+        "0" : "KillCoolDown" ,
+        "11" : "\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } 
 
 }

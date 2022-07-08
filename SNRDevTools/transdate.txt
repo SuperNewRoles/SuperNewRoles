@@ -798,3 +798,9 @@ NameIncludeMod,You cannot make a room public contains mod in your name.,modが�
 MoveElecPadSetting,Move the switchboard.,配電盤を移動する
 AirshipDisableMovingPlatformSetting,Disable Moving Platform,昇降機のリフトを無効化する
 AddWireTaskSetting,Add Wire Task,配線タスクを追加する
+DoubleKillerName,DoubleKiller,ダブルキラー
+MainCoolTimeSetting,MainKillCoolDown,メインキルボタンのクールダウン
+SubCoolTimeSetting,SubKillCoolDown,サブのキルボタンのクールダウン
+DoubleKillerSaboSetting,DoubleKillerCanUseSabotage,ダブルキラーがサボを使えるか
+SmasherName,Smasher,スマッシャー
+KillCoolTimeSetting,KillCoolDown,キルクールダウン

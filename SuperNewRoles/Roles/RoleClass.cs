@@ -145,6 +145,8 @@ namespace SuperNewRoles.Roles
             SecretlyKiller.ClearAndReload();
             Spy.ClearAndReload();
             Kunoichi.ClearAndReload();
+            DoubleKiller.ClearAndReload();
+            Smasher.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2348,7 +2350,8 @@ namespace SuperNewRoles.Roles
                 if (CustomOptions.KunoichiIsHide.getBool())
                 {
                     HideTime = CustomOptions.KunoichiHideTime.getFloat();
-                } else
+                }
+                else
                 {
                     HideTime = -1;
                 }
@@ -2379,6 +2382,36 @@ namespace SuperNewRoles.Roles
                 Kunai = new Kunai();
                 Kunai.kunai.SetActive(false);
                 KunaiSend = false;
+            }
+        }
+        public static class DoubleKiller
+        {
+            public static List<PlayerControl> DoubleKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float MainCoolTime;
+            public static float SubCoolTime;
+            public static bool CanUseSabo;
+            public static bool CanUseVent;
+            public static void ClearAndReload()
+            {
+                DoubleKillerPlayer = new List<PlayerControl>();
+                MainCoolTime = CustomOptions.MainKillCoolTime.getFloat();
+                SubCoolTime = CustomOptions.SubKillCoolTime.getFloat();
+                CanUseSabo = CustomOptions.DoubleKillerSabo.getBool();
+                CanUseVent = CustomOptions.DoubleKillerVent.getBool();
+            }
+        }
+        public static class Smasher
+        {
+            public static List<PlayerControl> SmasherPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static bool SmashOn;
+            public static void ClearAndReload()
+            {
+                SmasherPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.SmasherKillCoolTime.getFloat();
+                SmashOn = false;
             }
         }
         //新ロールクラス
