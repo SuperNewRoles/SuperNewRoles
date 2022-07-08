@@ -2391,12 +2391,14 @@ namespace SuperNewRoles.Roles
             public static float MainCoolTime;
             public static float SubCoolTime;
             public static bool CanUseSabo;
+            public static bool CanUseVent;
             public static void ClearAndReload()
             {
                 DoubleKillerPlayer = new List<PlayerControl>();
                 MainCoolTime = CustomOptions.MainKillCoolTime.getFloat();
                 SubCoolTime = CustomOptions.SubKillCoolTime.getFloat();
                 CanUseSabo = CustomOptions.DoubleKillerSabo.getBool();
+                CanUseVent = CustomOptions.DoubleKillerVent.getBool();
             }
         }
         public static class Smasher
