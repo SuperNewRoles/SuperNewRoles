@@ -70,6 +70,10 @@ namespace SuperNewRoles.Roles
                     //純正キルボタン削除
                     HudManager.Instance.KillButton.gameObject.SetActive(false);
                 }
+                else if (role == RoleId.Smasher)
+                {
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                }
             }
         }
     }
