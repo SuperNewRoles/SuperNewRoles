@@ -632,7 +632,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption SpyOption;
         public static CustomOption SpyPlayerCount;
         public static CustomOption SpyCanUseVent;
-        
+
         public static CustomRoleOption KunoichiOption;
         public static CustomOption KunoichiPlayerCount;
         public static CustomOption KunoichiCoolTime;
@@ -640,6 +640,17 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption KunoichiIsHide;
         public static CustomOption KunoichiHideTime;
         public static CustomOption KunoichiHideKunai;
+
+        public static CustomRoleOption DoubleKillerOption;
+        public static CustomOption DoubleKillerPlayerCount;
+        public static CustomOption MainKillCoolTime;
+        public static CustomOption SubKillCoolTime;
+        public static CustomOption DoubleKillerSabo;
+        public static CustomOption DoubleKillerVent;
+
+        public static CustomRoleOption SmasherOption;
+        public static CustomOption SmasherPlayerCount;
+        public static CustomOption SmasherKillCoolTime;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -724,7 +735,7 @@ namespace SuperNewRoles.CustomOption
             //SoothSayerRate = CustomOption.Create(2, cs(SoothSayer.color,"soothName"),rates, null, true);
             Mode.ModeHandler.OptionLoad();
 
-            MapCustom.CreateOption();
+            MapCustoms.MapCustom.CreateOption();
 
             Sabotage.Options.Load();
 
@@ -1293,7 +1304,7 @@ namespace SuperNewRoles.CustomOption
             BlackCatIsUseVent = CustomOption.Create(563, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, BlackCatOption);
             BlackCatIsImpostorLight = CustomOption.Create(564, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, BlackCatOption);
 
-            SecretlyKillerOption = new CustomRoleOption(607, false, CustomOptionType.Impostor, "SecretlyKillerName",RoleClass.SecretlyKiller.color, 1);
+            SecretlyKillerOption = new CustomRoleOption(607, false, CustomOptionType.Impostor, "SecretlyKillerName", RoleClass.SecretlyKiller.color, 1);
             SecretlyKillerPlayerCount = CustomOption.Create(608, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SecretlyKillerOption);
             SecretlyKillerKillCoolTime = CustomOption.Create(632, false, CustomOptionType.Impostor, "SheriffCoolDownSetting", 2.5f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
             SecretlyKillerIsKillCoolTimeChange = CustomOption.Create(633, false, CustomOptionType.Impostor, "SettingCoolCharge", true, SecretlyKillerOption);
@@ -1301,17 +1312,28 @@ namespace SuperNewRoles.CustomOption
             SecretlyKillerSecretKillLimit = CustomOption.Create(635, false, CustomOptionType.Impostor, "SettingLimitName", 1f, 0f, 99f, 1f, SecretlyKillerOption);
             SecretlyKillerSecretKillCoolTime = CustomOption.Create(636, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 45f, 2.5f, 60f, 2.5f, SecretlyKillerOption);
 
-            SpyOption = new CustomRoleOption(614, true, CustomOptionType.Crewmate, "SpyName",RoleClass.Spy.color, 1);
+            SpyOption = new CustomRoleOption(614, true, CustomOptionType.Crewmate, "SpyName", RoleClass.Spy.color, 1);
             SpyPlayerCount = CustomOption.Create(615, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpyOption);
             SpyCanUseVent = CustomOption.Create(617, true, CustomOptionType.Crewmate, "JesterIsVentSetting", false, SpyOption);
-            
-            KunoichiOption = new CustomRoleOption(638, false, CustomOptionType.Impostor, "KunoichiName",RoleClass.Kunoichi.color, 1);
+
+            KunoichiOption = new CustomRoleOption(638, false, CustomOptionType.Impostor, "KunoichiName", RoleClass.Kunoichi.color, 1);
             KunoichiPlayerCount = CustomOption.Create(639, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], KunoichiOption);
-            KunoichiCoolTime = CustomOption.Create(640, false, CustomOptionType.Impostor, "KunoichiCoolTime", 2.5f , 0f , 15f, 0.5f, KunoichiOption);
+            KunoichiCoolTime = CustomOption.Create(640, false, CustomOptionType.Impostor, "KunoichiCoolTime", 2.5f, 0f, 15f, 0.5f, KunoichiOption);
             KunoichiKillKunai = CustomOption.Create(641, false, CustomOptionType.Impostor, "KunoichiKillKunai", 10f, 1f, 20f, 1f, KunoichiOption);
             KunoichiIsHide = CustomOption.Create(642, false, CustomOptionType.Impostor, "KunoichiIsHide", true, KunoichiOption);
             KunoichiHideTime = CustomOption.Create(643, false, CustomOptionType.Impostor, "KunoichiHideTime", 3f, 0.5f, 10f, 0.5f, KunoichiIsHide);
             KunoichiHideKunai = CustomOption.Create(644, false, CustomOptionType.Impostor, "KunoichiHideKunai", false, KunoichiIsHide);
+
+            DoubleKillerOption = new CustomRoleOption(647, false, CustomOptionType.Impostor, "DoubleKillerName", RoleClass.DoubleKiller.color, 1);
+            DoubleKillerPlayerCount = CustomOption.Create(648, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DoubleKillerOption);
+            MainKillCoolTime = CustomOption.Create(649, false, CustomOptionType.Impostor, "MainCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption, format: "unitSeconds");
+            SubKillCoolTime = CustomOption.Create(650, false, CustomOptionType.Impostor, "SubCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, DoubleKillerOption, format: "unitSeconds");
+            DoubleKillerSabo = CustomOption.Create(651, false, CustomOptionType.Impostor, "DoubleKillerSaboSetting", false, DoubleKillerOption);
+            DoubleKillerVent = CustomOption.Create(652, false, CustomOptionType.Impostor, "MinimalistVentSetting", false, DoubleKillerOption);
+
+            SmasherOption = new CustomRoleOption(653, false, CustomOptionType.Impostor, "SmasherName", RoleClass.Smasher.color, 1);
+            SmasherPlayerCount = CustomOption.Create(654, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SmasherOption);
+            SmasherKillCoolTime = CustomOption.Create(655, false, CustomOptionType.Impostor, "KillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SmasherOption, format: "unitSeconds");
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

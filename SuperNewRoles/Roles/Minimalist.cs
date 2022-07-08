@@ -57,6 +57,30 @@ namespace SuperNewRoles.Roles
                     HudManager.Instance.KillButton.gameObject.SetActive(false);
                     //FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
                 }
+                else if (role == RoleId.DoubleKiller)
+                {
+                    //ボタン削除
+                    if (!RoleClass.DoubleKiller.CanUseSabo)
+                    {
+                        if (FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.active)
+                        {
+                            FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(false);
+                        }
+                    }
+                    if (!RoleClass.DoubleKiller.CanUseVent)
+                    {
+                        if (FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.active)
+                        {
+                            FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
+                        }
+                    }
+                    //純正キルボタン削除
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                }
+                else if (role == RoleId.Smasher)
+                {
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                }
             }
         }
     }

@@ -3180,9 +3180,45 @@
         "0" : "Ladder Death Chance" ,
         "11" : "\u8ee2\u843d\u6b7b\u3059\u308b\u78ba\u7387"
         } ,
- "ContainsMod" : {
-        "0" : "You cannot make a room public contains "mod" in your name." ,
-        "11" : ""mod"\u304c\u540d\u524d\u306b\u542b\u307e\u308c\u3066\u3044\u308b\u72b6\u614b\u3067\u306f\u516c\u958b\u90e8\u5c4b\u306b\u3059\u308b\u3053\u3068\u306f\u3067\u304d\u307e\u305b\u3093\u3002"
+ "NameIncludeMod" : {
+        "0" : "You cannot make a room public contains mod in your name." ,
+        "11" : "mod\u304c\u540d\u524d\u306b\u542b\u307e\u308c\u3066\u3044\u308b\u72b6\u614b\u3067\u306f\u516c\u958b\u90e8\u5c4b\u306b\u3059\u308b\u3053\u3068\u306f\u3067\u304d\u307e\u305b\u3093\u3002"
+        } ,
+ "MoveElecPadSetting" : {
+        "0" : "Move the switchboard." ,
+        "11" : "\u914d\u96fb\u76e4\u3092\u79fb\u52d5\u3059\u308b"
+        } ,
+ "AirshipDisableMovingPlatformSetting" : {
+        "0" : "Disable Moving Platform" ,
+        "11" : "\u6607\u964d\u6a5f\u306e\u30ea\u30d5\u30c8\u3092\u7121\u52b9\u5316\u3059\u308b"
+        } ,
+ "AddWireTaskSetting" : {
+        "0" : "Add Wire Task" ,
+        "11" : "\u914d\u7dda\u30bf\u30b9\u30af\u3092\u8ffd\u52a0\u3059\u308b"
+        } ,
+ "DoubleKillerName" : {
+        "0" : "DoubleKiller" ,
+        "11" : "\u30c0\u30d6\u30eb\u30ad\u30e9\u30fc"
+        } ,
+ "MainCoolTimeSetting" : {
+        "0" : "MainKillCoolDown" ,
+        "11" : "\u30e1\u30a4\u30f3\u30ad\u30eb\u30dc\u30bf\u30f3\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "SubCoolTimeSetting" : {
+        "0" : "SubKillCoolDown" ,
+        "11" : "\u30b5\u30d6\u306e\u30ad\u30eb\u30dc\u30bf\u30f3\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "DoubleKillerSaboSetting" : {
+        "0" : "DoubleKillerCanUseSabotage" ,
+        "11" : "\u30c0\u30d6\u30eb\u30ad\u30e9\u30fc\u304c\u30b5\u30dc\u3092\u4f7f\u3048\u308b\u304b"
+        } ,
+ "SmasherName" : {
+        "0" : "Smasher" ,
+        "11" : "\u30b9\u30de\u30c3\u30b7\u30e3\u30fc"
+        } ,
+ "KillCoolTimeSetting" : {
+        "0" : "KillCoolDown" ,
+        "11" : "\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
         } 
 
 }

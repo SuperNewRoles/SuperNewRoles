@@ -793,4 +793,13 @@ ClairvoyantDurationTime
 Clairvoyant!
 Ladder Death
 Ladder Death Chance
-You cannot make a room public contains "mod" in your name.
+You cannot make a room public contains mod in your name.
+Move the switchboard.
+Disable Moving Platform
+Add Wire Task
+DoubleKiller
+MainKillCoolDown
+SubKillCoolDown
+DoubleKillerCanUseSabotage
+Smasher
+KillCoolDown

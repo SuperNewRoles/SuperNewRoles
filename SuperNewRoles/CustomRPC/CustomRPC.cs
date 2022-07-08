@@ -129,6 +129,8 @@ namespace SuperNewRoles.CustomRPC
         SecretlyKiller,
         Spy,
         Kunoichi,
+        DoubleKiller,
+        Smasher,
         //RoleId
     }
 
@@ -707,20 +709,20 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SidekickPromotes()
         {
-            for (int i = 0; i < RoleClass.Jackal.SidekickPlayer.Count; i++)
+            foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
             {
-                RoleClass.Jackal.JackalPlayer.Add(RoleClass.Jackal.SidekickPlayer[i]);
-                RoleClass.Jackal.SidekickPlayer.RemoveAt(i);
+                p.ClearRole();
+                p.setRole(RoleId.Jackal);
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
         public static void SidekickSeerPromotes()
         {
-            for (int i = 0; i < RoleClass.JackalSeer.SidekickSeerPlayer.Count; i++)
+            foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
             {
-                RoleClass.JackalSeer.JackalSeerPlayer.Add(RoleClass.JackalSeer.SidekickSeerPlayer[i]);
-                RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAt(i);
+                p.ClearRole();
+                p.setRole(RoleId.JackalSeer);
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
