@@ -96,7 +96,7 @@ It is already on the Discord server.
 | [EvilHacker](#イビルハッカー)|[NiceTeleporter](#ナイステレポーター)
 | [PositionSwapper](#ポジションスワッパー)|[Celebrity](#スター)
 | [Mafia](#マフィア)|[Nocturnality](#夜行性)
-| |[Observer](#選挙管理委員)
+| [SuicideWisher](#スーサイドウィッシャー‌)|[Observer](#選挙管理委員)
 | |[Seer](#シーア)
 | |[MadSeer](#マッドシーア)
 | |[RemoteSheriff](#リモートシェリフ)

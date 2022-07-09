@@ -806,3 +806,6 @@ SmasherName,Smasher,スマッシャー
 KillCoolTimeSetting,KillCoolDown,キルクールダウン
 DoubleKillerTitle1,Let's master the independent kill button!,独立したキルボタンを使いこなそう
 SmasherTitle1,Let's do continuous kills!,連続キルを行おう
+SuicideWisherName,Suicide Wisher,スーサイドウィッシャー‌
+SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺しよう
+SuicideName,Suicide,自殺
