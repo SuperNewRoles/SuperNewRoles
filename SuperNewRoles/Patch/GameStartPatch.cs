@@ -27,16 +27,6 @@ namespace SuperNewRoles.Patch
                 return true;
             }
         }
-
-        public static void FixedUpdate(PlayerControl __instance)
-        {
-            if (ModeHandler.isMode(ModeId.SuperHostRoles, false))
-            {
-                //PlayerControl.LocalPlayer.RpcSetName("<size=>次のターゲット:よッキング</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-                Mode.SuperHostRoles.FixedUpdate.Update();
-            }
-        }
-
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
         public static class LobbyCountDownTimer
         {
