@@ -150,7 +150,7 @@ namespace SuperNewRoles.CustomCosmetics
                 hat.hatViewData.viewData.ClimbImage = CreateHatSprite(ch.climbresource, fromDisk);
             hat.name = ch.name + "\nby " + ch.author;
             hat.displayOrder = 99;
-            hat.ProductId = "hat_" + ch.name.Replace(' ', '_');
+            hat.ProductId = "MOD_"+ch.package+"_" + ch.name.Replace(' ', '_');
             hat.InFront = !ch.behind;
             hat.NoBounce = !ch.bounce;
             hat.ChipOffset = new Vector2(0f, 0.2f);
@@ -320,10 +320,34 @@ namespace SuperNewRoles.CustomCosmetics
         {
             public static TMPro.TMP_Text textTemplate;
 
+            public static void PositionUpdate(HatsTab __instance, float YStart)
+            {
+                float offset = YStart;
+                int i = 0;
+                foreach (var data in DestroyableSingleton<HatManager>.Instance.GetUnlockedHats())
+                {
+                    HatData hat = data;
+                    if ((CustomCosmeticsMenus.Patch.ObjectData.Selected == "InnerSloth" && !hat.ProductId.StartsWith("MOD_")) || hat.ProductId.StartsWith("MOD_" + CustomCosmeticsMenus.Patch.ObjectData.Selected))
+                    {
+                        float xpos = __instance.XRange.Lerp((i % __instance.NumPerRow) / (__instance.NumPerRow - 1f));
+                        float ypos = offset - (i / __instance.NumPerRow) * __instance.YOffset;
+                        ColorChip Chip = null;
+                        foreach (ColorChip chip in __instance.ColorChips)
+                        {
+                            if (chip.ProductId == hat.ProductId)
+                            {
+                                Chip = chip;
+                                break;
+                            }
+                        }
+                        Chip.transform.localPosition = new Vector3(xpos, ypos, inventoryZ);
+                        i++;
+                    }
+                }
+            }
             public static float createHatPackage(List<System.Tuple<HatData, HatExtension>> hats, string packageName, float YStart, HatsTab __instance)
             {
                 float offset = YStart;
-
                 if (textTemplate != null)
                 {
                     TMPro.TMP_Text title = UnityEngine.Object.Instantiate<TMPro.TMP_Text>(textTemplate, __instance.scroller.Inner);
@@ -335,7 +359,6 @@ namespace SuperNewRoles.CustomCosmetics
                     title.enableAutoSizing = false;
                     title.autoSizeTextContainer = true;
                     title.text = ModTranslation.getString(packageName);
-
                     switch (packageName)
                     {
                         case "shiuneCollection":
@@ -357,34 +380,39 @@ namespace SuperNewRoles.CustomCosmetics
 
                 var numHats = hats.Count;
 
+                int i2 = 0;
                 for (int i = 0; i < hats.Count; i++)
                 {
                     HatData hat = hats[i].Item1;
-                    HatExtension ext = hats[i].Item2;
-
-                    float xpos = __instance.XRange.Lerp((i % __instance.NumPerRow) / (__instance.NumPerRow - 1f));
-                    float ypos = offset - (i / __instance.NumPerRow) * __instance.YOffset;
-                    ColorChip colorChip = UnityEngine.Object.Instantiate<ColorChip>(__instance.ColorTabPrefab, __instance.scroller.Inner);
-
-                    int color = __instance.HasLocalPlayer() ? CachedPlayer.LocalPlayer.Data.DefaultOutfit.ColorId : SaveManager.BodyColor;
-
-                    colorChip.transform.localPosition = new Vector3(xpos, ypos, inventoryZ);
-                    if (ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard)
+                    if ((CustomCosmeticsMenus.Patch.ObjectData.Selected == "InnerSloth" && !hat.ProductId.StartsWith("MOD_")) || hat.ProductId.StartsWith("MOD_" + CustomCosmeticsMenus.Patch.ObjectData.Selected))
                     {
-                        colorChip.Button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(hat)));
-                        colorChip.Button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(DestroyableSingleton<HatManager>.Instance.GetHatById(SaveManager.LastHat))));
-                        colorChip.Button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.ClickEquip()));
-                    }
-                    else
-                    {
-                        colorChip.Button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(hat)));
-                    }
+                        HatExtension ext = hats[i].Item2;
 
-                    colorChip.Inner.SetHat(hat, color);
-                    colorChip.Inner.transform.localPosition = hat.ChipOffset;
-                    colorChip.Tag = hat;
-                    colorChip.Button.ClickMask = __instance.scroller.Hitbox;
-                    __instance.ColorChips.Add(colorChip);
+                        float xpos = __instance.XRange.Lerp((i2 % __instance.NumPerRow) / (__instance.NumPerRow - 1f));
+                        float ypos = offset - (i2 / __instance.NumPerRow) * __instance.YOffset;
+                        ColorChip colorChip = UnityEngine.Object.Instantiate<ColorChip>(__instance.ColorTabPrefab, __instance.scroller.Inner);
+
+                        int color = __instance.HasLocalPlayer() ? CachedPlayer.LocalPlayer.Data.DefaultOutfit.ColorId : SaveManager.BodyColor;
+
+                        colorChip.transform.localPosition = new Vector3(xpos, ypos, inventoryZ);
+                        if (ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard)
+                        {
+                            colorChip.Button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(hat)));
+                            colorChip.Button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(DestroyableSingleton<HatManager>.Instance.GetHatById(SaveManager.LastHat))));
+                            colorChip.Button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.ClickEquip()));
+                        }
+                        else
+                        {
+                            colorChip.Button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(hat)));
+                        }
+
+                        colorChip.Inner.SetHat(hat, color);
+                        colorChip.Inner.transform.localPosition = hat.ChipOffset;
+                        colorChip.Tag = hat;
+                        colorChip.Button.ClickMask = __instance.scroller.Hitbox;
+                        __instance.ColorChips.Add(colorChip);
+                        i2++;
+                    }
                 }
                 return offset - ((numHats - 1) / __instance.NumPerRow) * __instance.YOffset - headerSize;
             }
@@ -446,13 +474,12 @@ namespace SuperNewRoles.CustomCosmetics
                 return false;
             }
         }
-
+        public static List<string> Keys = new();
         [HarmonyPatch(typeof(HatsTab), nameof(HatsTab.Update))]
         public class HatsTabUpdatePatch
         {
             public static bool Prefix()
             {
-                //return false;
                 return true;
             }
 
@@ -479,12 +506,13 @@ namespace SuperNewRoles.CustomCosmetics
         public static string[] hatRepos = new string[]
         {
             "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master",
+            /*
             "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master",
             "https://raw.githubusercontent.com/Ujet222/TOPHats/main"
-            /*
-            "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master"*/,
+            
+            "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master",
             "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master",
-            "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"
+            "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"*/
         };
 
         public static List<CustomHatOnline> hatDetails = new();
@@ -589,6 +617,11 @@ namespace SuperNewRoles.CustomCosmetics
                         info.reshashbf = current["reshashbf"]?.ToString();
 
                         info.package = current["package"]?.ToString();
+                        SuperNewRolesPlugin.Logger.LogInfo(info.package);
+                        if (info.package != null && !CustomHats.Keys.Contains(info.package))
+                        {
+                            CustomHats.Keys.Add(info.package);
+                        }
                         info.condition = current["condition"]?.ToString();
                         info.bounce = current["bounce"] != null;
                         info.adaptive = current["adaptive"] != null;
@@ -603,6 +636,7 @@ namespace SuperNewRoles.CustomCosmetics
                         hatdatas.Add(info);
                     }
                 }
+                CustomHats.Keys.Add("InnerSloth");
 
                 List<string> markedfordownload = new();
 

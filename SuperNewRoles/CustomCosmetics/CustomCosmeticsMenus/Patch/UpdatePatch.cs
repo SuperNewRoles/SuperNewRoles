@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using HarmonyLib;
@@ -12,35 +13,74 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static PlayerVoteArea area;
         public static void Postfix(PlayerCustomizationMenu __instance)
         {
+            var ClosetTab = __instance.Tabs[0].Tab.transform;
+            var PresetTab = __instance.Tabs[1].Tab.transform;
+            if (area.gameObject.active) area.PreviewNameplate(SaveManager.LastNamePlate);
             __instance.equipButton.SetActive(false);
             __instance.equippedText.SetActive(false);
-            foreach (ColorChip chip in GameObject.FindObjectOfType<PlayerTab>().ColorChips)
+            if (!ObjectData.IsShow)
             {
-                chip.gameObject.SetActive(false);
-            }
-
-            foreach (TabButton button in __instance.Tabs)
-            {
-                GameObject btn = button.Tab.gameObject;
-                if (btn.active && (btn.name != "ColorGroup" && btn.name != "HatsGroup"))
+                foreach (ColorChip chip in GameObject.FindObjectOfType<PlayerTab>().ColorChips)
                 {
-                    btn.SetActive(false);
+                    chip.gameObject.SetActive(false);
                 }
             }
+
             var panel = __instance.transform.FindChild("Background/RightPanel");
 
             panel.FindChild("Gradient").gameObject.SetActive(false);
-            panel.FindChild("Item Name").gameObject.SetActive(false);
-            area.gameObject.SetActive(true);
-
+            
             panel.localPosition = new Vector3(0, 0, -4.29f);
-            __instance.PreviewArea.transform.localPosition = new Vector3(0, -0.5f, -3);
             area.transform.localPosition = new Vector3(3.5f, 1.75f, -70.71f);
-            __instance.transform.FindChild("Header/Tabs/ColorTab").localPosition = new Vector3(-0.5f, 0, -5);
-            __instance.transform.FindChild("Header/Tabs/HatsTab").localPosition = new Vector3(0.5f, 0, -5);
+            var colortab = __instance.transform.FindChild("Header/Tabs/ColorTab");
+            var closettab = __instance.transform.FindChild("Header/Tabs/HatsTab");
 
-            area.PreviewNameplate(SaveManager.LastNamePlate);
+            if (!ObjectData.IsShow) {
+                ObjectData.ColorText.transform.localPosition = new Vector3(7, -1.25f, -55);
+                __instance.PreviewArea.transform.localPosition = new Vector3(0, -1f, -3);
+                //__instance.PreviewArea.transform.localScale = new Vector3(1, 1, 1);
+                area.gameObject.SetActive(true);
+                __instance.itemName.gameObject.SetActive(false);
+            }
+            else {
+                ObjectData.ColorText.transform.localPosition = new Vector3(0.4223f, 2.2f, -55f);
+                __instance.PreviewArea.transform.localPosition = new Vector3(3.5f, -0.5f, -3);
+                //__instance.PreviewArea.transform.localScale = new Vector3(-1, 1, 1);
+                __instance.itemName.gameObject.SetActive(true);
+                __instance.itemName.transform.localPosition = new Vector3(3.5f, -1.74f, -5);
+            }
+            ObjectData.PetText.transform.localPosition = new Vector3(8f, -1.25f, -55);
+            ObjectData.HatText.transform.localPosition = new Vector3(6.7f, 0.25f, -55);
+            ObjectData.VisorText.transform.localPosition = new Vector3(2.5f, 0.75f, -55);
+            ObjectData.SkinText.transform.localPosition = new Vector3(2.6f, -1f, -55);
+            ObjectData.NamePlateText.transform.localPosition = new Vector3(3.8f, 1.6f, -55);
 
+            ObjectData.ColorButton.transform.localPosition = new Vector3(4.85f, -0.6f, -1);
+            ObjectData.HatButton.transform.localPosition = new Vector3(4.9f, 1, -1);
+            ObjectData.SkinButton.transform.localPosition = new Vector3(0.9f, - 0.25f, -1);
+            ObjectData.PetButton.transform.localPosition = new Vector3(6.25f, -0.5f, -55);
+
+            ObjectData.VisorButton.transform.localPosition = new Vector3(0.9f, 1.5f, -1);
+            ObjectData.NamePlateButton.transform.localPosition = new Vector3(3, 2.25f, -1);
+            ObjectData.NamePlateButton.transform.localScale = new Vector3(8.498f, 2.145f, 2.145f);
+
+            colortab.localPosition = new Vector3(-0.5f, 0, -5);
+            closettab.localPosition = new Vector3(0.5f, 0, -5);
+
+            if (!ObjectData.IsShow)
+            {
+                ObjectData.ColorButton_SpriteRend.color = Palette.PlayerColors[SaveManager.BodyColor];
+                ObjectData.ColorButton.transform.localScale = new Vector3(1.56f, 1.56f, 1.56f);
+
+                ObjectData.HatButton_Hat.SetHat(SaveManager.lastHat, SaveManager.BodyColor);
+                ObjectData.HatButton_Hat.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+
+                ObjectData.SkinButton_Skin.SetSkin(SaveManager.lastSkin, SaveManager.BodyColor, false);
+                ObjectData.SkinButton_Skin.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+
+                ObjectData.VisorButton_Visor.SetVisor(FastDestroyableSingleton<HatManager>.Instance.GetVisorById(SaveManager.LastVisor));
+                ObjectData.VisorButton_Visor.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            }
         }
     }
 }
