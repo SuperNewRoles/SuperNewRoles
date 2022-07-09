@@ -147,6 +147,7 @@ namespace SuperNewRoles.Roles
             Kunoichi.ClearAndReload();
             DoubleKiller.ClearAndReload();
             Smasher.ClearAndReload();
+            SuicideWisher.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2412,6 +2413,15 @@ namespace SuperNewRoles.Roles
                 SmasherPlayer = new List<PlayerControl>();
                 KillCoolTime = CustomOptions.SmasherKillCoolTime.getFloat();
                 SmashOn = false;
+            }
+        }
+        public static class SuicideWisher
+        {
+            public static List<PlayerControl> SuicideWisherPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                SuicideWisherPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス
