@@ -35,7 +35,7 @@ namespace SuperNewRoles.MapOptions
         public static bool IsZoomOn;
         public static float Timer;
         public static DateTime ButtonTimer;
-        private static Sprite buttonSprite;
+        //private static Sprite buttonSprite;
         public static float Default;
         public static float CameraDefault;
         public static void ClearAndReload()

@@ -84,7 +84,7 @@ It is already on the Discord server.
 | [OverKiller](#オーバーキラー) | [NicScientist](#ナイスサイエンティスト)| [JackalSeer](#ジャッカルシーア)
 | [EvilMoving](#イビルムービング) |[NiceRedRidingHood](#ナイス赤ずきん)| [Sidekick(Seer)](#サイドキック(シーア))
 | [Levelinger](#レベリンガー) | [Mayor](#メイヤー) | [Arsonist](#アーソニスト)
-| [SideKiller](#サイドキラー) | [Technician](#技術者)
+| [SideKiller](#サイドキラー) | [Technician](#技術者) | [Neet](#ニート)
 | [Survivor](#サバイバー) | [SoothSayer](#占い師)
 | [EvilSeer](#イビルシーア)|[Spirit Medium](#霊媒師)
 | [DarkKiller](#ダークキラー)|[MadMayor](#マッドメイヤー)

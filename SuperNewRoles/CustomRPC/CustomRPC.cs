@@ -132,6 +132,7 @@ namespace SuperNewRoles.CustomRPC
         DoubleKiller,
         Smasher,
         SuicideWisher,
+        Neet,
         //RoleId
     }
 
