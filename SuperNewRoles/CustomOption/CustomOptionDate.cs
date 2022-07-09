@@ -1338,8 +1338,8 @@ namespace SuperNewRoles.CustomOption
             SmasherPlayerCount = CustomOption.Create(654, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SmasherOption);
             SmasherKillCoolTime = CustomOption.Create(655, false, CustomOptionType.Impostor, "KillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SmasherOption, format: "unitSeconds");
 
-            SuicideWisherOption = new CustomRoleOption(656, false, CustomOptionType.Impostor, "SuicideWisherName", RoleClass.SuicideWisher.color, 1);
-            SuicideWisherPlayerCount = CustomOption.Create(657, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SuicideWisherOption);
+            SuicideWisherOption = new CustomRoleOption(656, true, CustomOptionType.Impostor, "SuicideWisherName", RoleClass.SuicideWisher.color, 1);
+            SuicideWisherPlayerCount = CustomOption.Create(657, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SuicideWisherOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

@@ -125,6 +125,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<PlayerControl> DesyncShapeshifters = new();
             DesyncShapeshifters.AddRange(RoleClass.Arsonist.ArsonistPlayer);
             DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
+            DesyncShapeshifters.AddRange(RoleClass.SuicideWisher.SuicideWisherPlayer);
             //Desync
             foreach (PlayerControl Player in DesyncImpostors)
             {
