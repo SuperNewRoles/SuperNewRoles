@@ -522,6 +522,19 @@ namespace SuperNewRoles.Patches
                         case RoleId.Mafia:
                             if (!Mafia.IsKillFlag()) return false;
                             break;
+                        case RoleId.Jackal:
+                            if (!RoleClass.Jackal.IsCreatedFriend)
+                            {
+                                if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                                RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
+                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+                                target.setRoleRPC(RoleId.JackalFriends);
+                                //__instance.RpcSetRoleDesync(RoleTypes.GuardianAngel);
+                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);
+                                RoleClass.Jackal.IsCreatedFriend = true;
+                            }
+                            else{ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, DoubleKiller.DoubleKillerFixedPatch.DoubleKillersetTarget());}
+                            return false;
                     }
                     break;
                 case ModeId.Detective:
