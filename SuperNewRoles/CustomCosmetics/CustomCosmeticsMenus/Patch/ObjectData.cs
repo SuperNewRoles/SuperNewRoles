@@ -135,12 +135,13 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 hats = PlayerCustomizationMenu.Instance.transform.FindChild("HatsGroup").GetComponentsInChildren<HatParent>();
             }
             HatsTab hatstab = PlayerCustomizationMenu.Instance.transform.FindChild("HatsGroup").GetComponent<HatsTab>();
-            foreach (var data in hatstab.ColorChips)
+            foreach (var data in CustomHats.HatsTabOnEnablePatch.Chips)
             {
                 SuperNewRolesPlugin.Logger.LogInfo(data+"をDestroy");
                 GameObject.Destroy(data);
             }
             hatstab.ColorChips = new();
+            CustomHats.HatsTabOnEnablePatch.Chips = new();
             hatstab.OnEnable();
         }
         public static HatParent[] hats;

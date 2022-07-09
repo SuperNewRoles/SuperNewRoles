@@ -17,6 +17,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         }
         public static void Postfix(PlayerCustomizationMenu __instance)
         {
+            CustomHats.HatsTabOnEnablePatch.Chips = new();
             ObjectData.hats = new HatParent[] { };
             ObjectData.Selected = "";
             ObjectData.HatTabButtons = new Transform[] { };

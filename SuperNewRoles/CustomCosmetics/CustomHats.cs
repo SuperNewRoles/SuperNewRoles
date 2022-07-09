@@ -320,31 +320,6 @@ namespace SuperNewRoles.CustomCosmetics
         {
             public static TMPro.TMP_Text textTemplate;
 
-            public static void PositionUpdate(HatsTab __instance, float YStart)
-            {
-                float offset = YStart;
-                int i = 0;
-                foreach (var data in DestroyableSingleton<HatManager>.Instance.GetUnlockedHats())
-                {
-                    HatData hat = data;
-                    if ((CustomCosmeticsMenus.Patch.ObjectData.Selected == "InnerSloth" && !hat.ProductId.StartsWith("MOD_")) || hat.ProductId.StartsWith("MOD_" + CustomCosmeticsMenus.Patch.ObjectData.Selected))
-                    {
-                        float xpos = __instance.XRange.Lerp((i % __instance.NumPerRow) / (__instance.NumPerRow - 1f));
-                        float ypos = offset - (i / __instance.NumPerRow) * __instance.YOffset;
-                        ColorChip Chip = null;
-                        foreach (ColorChip chip in __instance.ColorChips)
-                        {
-                            if (chip.ProductId == hat.ProductId)
-                            {
-                                Chip = chip;
-                                break;
-                            }
-                        }
-                        Chip.transform.localPosition = new Vector3(xpos, ypos, inventoryZ);
-                        i++;
-                    }
-                }
-            }
             public static float createHatPackage(List<System.Tuple<HatData, HatExtension>> hats, string packageName, float YStart, HatsTab __instance)
             {
                 float offset = YStart;
@@ -411,12 +386,13 @@ namespace SuperNewRoles.CustomCosmetics
                         colorChip.Tag = hat;
                         colorChip.Button.ClickMask = __instance.scroller.Hitbox;
                         __instance.ColorChips.Add(colorChip);
+                        Chips.Add(colorChip);
                         i2++;
                     }
                 }
                 return offset - ((numHats - 1) / __instance.NumPerRow) * __instance.YOffset - headerSize;
             }
-
+            public static List<ColorChip> Chips;
             public static bool Prefix(HatsTab __instance)
             {
                 calcItemBounds(__instance);
@@ -506,13 +482,13 @@ namespace SuperNewRoles.CustomCosmetics
         public static string[] hatRepos = new string[]
         {
             "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master",
-            /*
+            
             "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master",
-            "https://raw.githubusercontent.com/Ujet222/TOPHats/main"
+            "https://raw.githubusercontent.com/Ujet222/TOPHats/main",
             
             "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master",
             "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master",
-            "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"*/
+            "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"
         };
 
         public static List<CustomHatOnline> hatDetails = new();
