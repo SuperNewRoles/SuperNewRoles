@@ -312,9 +312,9 @@ namespace SuperNewRoles.Patch
                         {
                             if (ps == null) continue;
                             var voter = ModHelpers.playerById(ps.TargetPlayerId);
-                            if (voter == null || voter.Data == null || voter.Data.Disconnected || voter.IsBot() || voter.isDead()) continue;
-                            //BOTならスキップ判定
-                            if (ps.VotedFor != 253 && ps.VotedFor != 254 && ModHelpers.playerById(ps.VotedFor).IsBot())
+                            if (voter == null || voter.Data == null || voter.Data.Disconnected || voter.IsBot() || voter.isDead() || ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Neet)) continue;
+                            //BOT・ニートならスキップ判定
+                            if (ps.VotedFor != 253 && ps.VotedFor != 254 && ModHelpers.playerById(ps.VotedFor).IsBot() || ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Neet))
                             {
                                 ps.VotedFor = 253;
                             }
