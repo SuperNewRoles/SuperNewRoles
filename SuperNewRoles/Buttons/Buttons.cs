@@ -1928,7 +1928,7 @@ namespace SuperNewRoles.Buttons
                 },
                 () => { },
                 RoleClass.SuicideWisher.getButtonSprite(),
-                new Vector3(-2.7f, -0.06f, 0),
+                new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.Q,
@@ -1936,7 +1936,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("Suicide"),
+                buttonText = ModTranslation.getString("SuicideName"),
                 showButtonText = true
             };
 

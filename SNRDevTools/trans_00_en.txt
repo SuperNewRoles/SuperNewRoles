@@ -805,3 +805,6 @@ Smasher
 KillCoolDown
 Let's master the independent kill button!
 Let's do continuous kills!
+Suicide Wisher
+Let's just kill ourselves for now.
+Suicide
