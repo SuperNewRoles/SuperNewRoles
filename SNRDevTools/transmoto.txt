@@ -810,3 +810,4 @@ SuicideWisherTitle1
 SuicideName
 NeetName
 NeetTitle1
+JackalCreateFriendSetting
