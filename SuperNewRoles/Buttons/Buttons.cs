@@ -66,6 +66,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ClairvoyantButton;
         public static CustomButton DoubleKillerMainKillButton;
         public static CustomButton DoubleKillerSubKillButton;
+        public static CustomButton SuicideWisherSuicideButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -1912,6 +1913,30 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+                showButtonText = true
+            };
+            SuicideWisherSuicideButton = new CustomButton(
+                () =>
+                {
+                    //自殺
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SuicideWisher && ModeHandler.isMode(ModeId.Default); },
+                () =>
+                {
+                    return true;
+                },
+                () => { },
+                RoleClass.SuicideWisher.getButtonSprite(),
+                new Vector3(-2.7f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.getString("Suicide"),
                 showButtonText = true
             };
 

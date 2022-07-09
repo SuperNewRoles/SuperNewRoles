@@ -2419,6 +2419,13 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SuicideWisherPlayer;
             public static Color32 color = ImpostorRed;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SuicideWisherButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 SuicideWisherPlayer = new List<PlayerControl>();
