@@ -38,7 +38,14 @@ namespace SuperNewRoles.Roles
                     {
                         if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
                         {
-                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);//通報
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActiveRecursively(false);
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.enabled = false;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.enabled = false;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.sprite = null;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.enabled = false;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
+
                         }
                     }
                 }
@@ -48,8 +55,15 @@ namespace SuperNewRoles.Roles
                     {
                         if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
                         {
-                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);//通報
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActiveRecursively(false);
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.enabled = false;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.enabled = false;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.sprite = null;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.enabled = false;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
                         }
+
                     }
                 }
                 else if (role == RoleId.SecretlyKiller)
@@ -90,6 +104,12 @@ namespace SuperNewRoles.Roles
                     if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
                     {
                         FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);//通報
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActiveRecursively(false);
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.enabled = false;
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.enabled = false;
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.sprite = null;
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.enabled = false;
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
                     }
                 }
             }
