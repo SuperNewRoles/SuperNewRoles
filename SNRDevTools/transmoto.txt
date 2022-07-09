@@ -808,3 +808,5 @@ SmasherTitle1
 SuicideWisherName
 SuicideWisherTitle1
 SuicideName
+NeetName
+NeetTitle1

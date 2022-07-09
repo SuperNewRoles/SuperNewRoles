@@ -3239,6 +3239,14 @@
  "SuicideName" : {
         "0" : "Suicide" ,
         "11" : "\u81ea\u6bba"
+        } ,
+ "NeetName" : {
+        "0" : "Neet" ,
+        "11" : "\u30cb\u30fc\u30c8"
+        } ,
+ "NeetTitle1" : {
+        "0" : "NeetLet others handle it." ,
+        "11" : "\u4ed6\u4eba\u306b\u4efb\u305b\u3088\u3046"
         } 
 
 }
