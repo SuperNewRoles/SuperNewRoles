@@ -81,6 +81,17 @@ namespace SuperNewRoles.Roles
                 {
                     HudManager.Instance.KillButton.gameObject.SetActive(false);
                 }
+                else if (role == RoleId.Neet)//ニートのボタン削除
+                {
+                    if (FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.active)//使うボタンが有効の時
+                    {
+                        HudManager.Instance.UseButton.gameObject.SetActive(false);//使うボタンを無効化
+                    }
+                    if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
+                    {
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);//通報
+                    }
+                }
             }
         }
     }

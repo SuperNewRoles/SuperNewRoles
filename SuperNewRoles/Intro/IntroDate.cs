@@ -188,6 +188,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate DoubleKillerIntro = new IntroDate("DoubleKiller", RoleClass.DoubleKiller.color, 1, CustomRPC.RoleId.DoubleKiller, TeamRoleType.Impostor);
         public static IntroDate SmasherIntro = new IntroDate("Smasher", RoleClass.Smasher.color, 1, CustomRPC.RoleId.Smasher, TeamRoleType.Impostor);
         public static IntroDate SuicideWisherIntro = new IntroDate("SuicideWisher", RoleClass.SuicideWisher.color, 1, CustomRPC.RoleId.SuicideWisher, TeamRoleType.Impostor);
+        public static IntroDate NeetIntro = new("Neet", RoleClass.Neet.color, 1, CustomRPC.RoleId.Neet, TeamRoleType.Neutral);
         //イントロオブジェ
     }
 }

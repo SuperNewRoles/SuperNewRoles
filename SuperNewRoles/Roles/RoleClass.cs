@@ -148,6 +148,7 @@ namespace SuperNewRoles.Roles
             DoubleKiller.ClearAndReload();
             Smasher.ClearAndReload();
             SuicideWisher.ClearAndReload();
+            Neet.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2429,6 +2430,15 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 SuicideWisherPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class Neet
+        {
+            public static List<PlayerControl> NeetPlayer;
+            public static Color32 color = new(127, 127, 127, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                NeetPlayer = new();
             }
         }
         //新ロールクラス
