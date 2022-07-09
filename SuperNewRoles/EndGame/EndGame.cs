@@ -281,6 +281,18 @@ namespace SuperNewRoles.EndGame
                     }
                 }
             }
+            bool IsNeetTextOn = false;
+            foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
+            {
+                if (player.isAlive())
+                {
+                    if (!IsNeetTextOn && !haison)
+                    {
+                        IsNeetTextOn = true;
+                        text = text + "&" + ModHelpers.cs(RoleClass.Neet.color, ModTranslation.getString("NeetName"));
+                    }
+                }
+            }
             bool IsLovetexton = false;
             bool Temp1;
             if (!CustomOptions.LoversSingleTeam.getBool())
@@ -547,6 +559,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.MayorFriends.MayorFriendsPlayer);
             notWinners.AddRange(RoleClass.Tuna.TunaPlayer);
             notWinners.AddRange(RoleClass.BlackCat.BlackCatPlayer);
+            notWinners.AddRange(RoleClass.Neet.NeetPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
@@ -836,6 +849,13 @@ namespace SuperNewRoles.EndGame
                     TempData.winners.Add(new WinningPlayerData(player.Data));
                 }
             }
+            foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
+            {
+                if (player.isAlive())
+                {
+                    TempData.winners.Add(new WinningPlayerData(player.Data));
+                }
+            }
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
             {
                 notWinners.AddRange(players);
@@ -856,7 +876,7 @@ namespace SuperNewRoles.EndGame
             if (QuarreledWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                List<PlayerControl> winplays = new(){ WinnerPlayer };
+                List<PlayerControl> winplays = new() { WinnerPlayer };
                 winplays.Add(WinnerPlayer.GetOneSideQuarreled());
                 foreach (PlayerControl p in winplays)
                 {
