@@ -40,20 +40,20 @@ namespace SuperNewRoles.MapCustoms
             SkeldSetting = CustomOption.CustomOption.Create(624, false, CustomOptionType.Generic, "Skeld", false, MapCustomOption);
 
             /*===============ミラ===============*/
-            MiraSetting = CustomOption.CustomOption.Create(606, false, CustomOptionType.Generic, "Mira", false, MapCustomOption);
+            MiraSetting = CustomOption.CustomOption.Create(660, false, CustomOptionType.Generic, "Mira", false, MapCustomOption);
             MiraAdditionalVents = CustomOption.CustomOption.Create(631, false, CustomOptionType.Generic, "MiraAdditionalVents", false, MiraSetting);
             AddVitalsMira = CustomOption.CustomOption.Create(472, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MiraSetting);
 
             /*===============ポーラス===============*/
-            PolusSetting = CustomOption.CustomOption.Create(606, false, CustomOptionType.Generic, "Polus", false, MapCustomOption);
-            PolusAdditionalVents = CustomOption.CustomOption.Create(606, false, CustomOptionType.Generic, "PolusAdditionalVents", false, PolusSetting);
+            PolusSetting = CustomOption.CustomOption.Create(661, false, CustomOptionType.Generic, "Polus", false, MapCustomOption);
+            PolusAdditionalVents = CustomOption.CustomOption.Create(662, false, CustomOptionType.Generic, "PolusAdditionalVents", false, PolusSetting);
             SpecimenVital = CustomOption.CustomOption.Create(613, false, CustomOptionType.Generic, "SpecimenVitalSetting", false, PolusSetting);
 
             /*===============エアーシップ===============*/
-            AirshipSetting = CustomOption.CustomOption.Create(624, false, CustomOptionType.Generic, "Airship", false, MapCustomOption);
-            SecretRoomOption = CustomOption.CustomOption.Create(624, false, CustomOptionType.Generic, "SecretRoom", false, AirshipSetting);
+            AirshipSetting = CustomOption.CustomOption.Create(663, false, CustomOptionType.Generic, "Airship", false, MapCustomOption);
+            SecretRoomOption = CustomOption.CustomOption.Create(664, false, CustomOptionType.Generic, "SecretRoom", false, AirshipSetting);
             AirShipAdditionalVents = CustomOption.CustomOption.Create(605, false, CustomOptionType.Generic, "AirShipAdditionalVents", false, AirshipSetting);
-            AirshipDisableMovingPlatform = CustomOption.CustomOption.Create(623, false, CustomOptionType.Generic, "AirshipDisableMovingPlatformSetting", false, AirshipSetting);
+            AirshipDisableMovingPlatform = CustomOption.CustomOption.Create(665, false, CustomOptionType.Generic, "AirshipDisableMovingPlatformSetting", false, AirshipSetting);
             RecordsAdminDestroy = CustomOption.CustomOption.Create(612, false, CustomOptionType.Generic, "RecordsAdminDestroySetting", false, AirshipSetting);
             MoveElecPad = CustomOption.CustomOption.Create(645, false, CustomOptionType.Generic, "MoveElecPadSetting", false, AirshipSetting);
             AddWireTask = CustomOption.CustomOption.Create(646, false, CustomOptionType.Generic, "AddWireTaskSetting", false, AirshipSetting);
