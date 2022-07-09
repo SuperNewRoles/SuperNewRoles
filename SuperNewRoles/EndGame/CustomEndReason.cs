@@ -23,6 +23,7 @@ namespace SuperNewRoles.EndGame
         ArsonistWin,
         VultureWin,
         TunaWin,
+        NeetWin,
         BugEnd
     }
 }

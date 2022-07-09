@@ -38,6 +38,7 @@ namespace SuperNewRoles.EndGame
         ArsonistWin,
         VultureWin,
         TunaWin,
+        NeetWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -240,6 +241,11 @@ namespace SuperNewRoles.EndGame
                     textRenderer.color = RoleClass.Tuna.color;
                     __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Tuna.color);
                     break;
+                case WinCondition.NeetWin:
+                    text = "NeetName";
+                    textRenderer.color = RoleClass.Neet.color;
+                    __instance.BackgroundBar.material.SetColor("_Color", RoleClass.Neet.color);
+                    break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
                     {
@@ -278,18 +284,6 @@ namespace SuperNewRoles.EndGame
                     {
                         IsOpptexton = true;
                         text = text + "&" + ModHelpers.cs(RoleClass.Opportunist.color, ModTranslation.getString("OpportunistName"));
-                    }
-                }
-            }
-            bool IsNeetTextOn = false;
-            foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
-            {
-                if (player.isAlive())
-                {
-                    if (!IsNeetTextOn && !haison)
-                    {
-                        IsNeetTextOn = true;
-                        text = text + "&" + ModHelpers.cs(RoleClass.Neet.color, ModTranslation.getString("NeetName"));
                     }
                 }
             }
@@ -590,6 +584,7 @@ namespace SuperNewRoles.EndGame
             bool DemonWin = gameOverReason == (GameOverReason)CustomGameOverReason.DemonWin;
             bool ArsonistWin = gameOverReason == (GameOverReason)CustomGameOverReason.ArsonistWin;
             bool VultureWin = gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
+            bool NeetWin = gameOverReason == (GameOverReason)CustomGameOverReason.NeetWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
@@ -603,6 +598,7 @@ namespace SuperNewRoles.EndGame
                 DemonWin = EndData == CustomGameOverReason.DemonWin;
                 ArsonistWin = EndData == CustomGameOverReason.ArsonistWin;
                 VultureWin = EndData == CustomGameOverReason.VultureWin;
+                NeetWin = EndData == CustomGameOverReason.NeetWin;
             }
 
             if (JesterWin)
@@ -838,6 +834,17 @@ namespace SuperNewRoles.EndGame
                     WinningPlayerData wpd = new(p.Data);
                     TempData.winners.Add(wpd);
                     AdditionalTempData.winCondition = WinCondition.TunaWin;
+
+                }
+            }
+            foreach (PlayerControl p in RoleClass.Neet.NeetPlayer)
+            {
+                if (p.isAlive())
+                {
+                    TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                    WinningPlayerData wpd = new(p.Data);
+                    TempData.winners.Add(wpd);
+                    AdditionalTempData.winCondition = WinCondition.NeetWin;
 
                 }
             }
@@ -1088,7 +1095,7 @@ namespace SuperNewRoles.EndGame
 
         public static bool CheckAndEndGameForImpostorWin(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard())
+            if (statistics.TeamImpostorsAlive >= statistics.TotalAlive - statistics.TeamImpostorsAlive && statistics.TeamJackalAlive == 0 && !EvilEraser.IsGodWinGuard() && !EvilEraser.IsFoxWinGuard()&&!EvilEraser.IsNeetWinGuard())
             {
                 __instance.enabled = false;
                 var endReason = TempData.LastDeathReason switch
