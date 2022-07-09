@@ -18,6 +18,7 @@ using Il2CppSystem.Linq;
 using UnhollowerBaseLib;
 using UnityEngine;
 using UnityEngine.UI;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Patch
 {
@@ -29,10 +30,16 @@ namespace SuperNewRoles.Patch
             public static bool Prefix()
             {
                 bool NameIncludeMod = SaveManager.PlayerName.ToLower().Contains("mod");
-                bool NameIncludeSNR = SaveManager.PlayerName.ToUpper().Contains("SNR") || SaveManager.PlayerName.ToUpper().Contains("SHR");
+                bool NameIncludeSNR = SaveManager.PlayerName.ToUpper().Contains("SNR");
+                bool NameIncludeSHR = SaveManager.PlayerName.ToUpper().Contains("SHR");
                 if (NameIncludeMod && !NameIncludeSNR)
                 {
                     SuperNewRolesPlugin.Logger.LogWarning("\"mod\"が名前に含まれている状態では公開部屋にすることはできません。");
+                    return false;
+                }
+                else if (ModeHandler.isMode(ModeId.SuperHostRoles, false) && NameIncludeSNR && !NameIncludeSHR || ModeHandler.isMode(ModeId.SuperHostRoles, false) && NameIncludeMod && !NameIncludeSHR)
+                {
+                    SuperNewRolesPlugin.Logger.LogWarning("SHRモードで\"SNR\"が名前に含まれている状態では公開部屋にすることはできません。");
                     return false;
                 }
                 return true;
