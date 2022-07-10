@@ -21,7 +21,7 @@ while True:
         isimpo = True
     else:
         isimpo = False
-    with open(baseurl+r"CustomRPC\\CustomRPC.cs", mode="r", encoding="utf-8") as r:
+    with open(baseurl+"CustomRPC\\CustomRPC.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()
         with open(baseurl+"CustomRPC\\CustomRPC.cs", mode="w", encoding="utf-8") as f:
             temp = temp.replace("//RoleId", rolename+",\n        //RoleId")
