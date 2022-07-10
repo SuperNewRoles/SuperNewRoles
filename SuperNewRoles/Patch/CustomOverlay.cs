@@ -218,7 +218,9 @@ namespace SuperNewRoles.Patch
         {
             public static void Postfix(KeyboardJoystick __instance)
             {
-                if (Input.GetKeyDown(KeyCode.H) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started && !HudManager.Instance.Chat.IsOpen)
+                if (HudManager.Instance.Chat.IsOpen && overlayShown)
+                    hideInfoOverlay();
+                if (Input.GetKeyDown(KeyCode.H) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
                     toggleInfoOverlay();
                 }
