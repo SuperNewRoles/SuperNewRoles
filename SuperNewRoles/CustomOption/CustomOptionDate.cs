@@ -1115,10 +1115,10 @@ namespace SuperNewRoles.CustomOption
             MadJesterIsUseVent = CustomOption.Create(298, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadJesterOption);
             MadJesterIsImpostorLight = CustomOption.Create(299, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadJesterOption);
             IsMadJesterTaskClearWin = CustomOption.Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
-            var madjesteroption = SelectTask.TaskSetting(21, 22, 23, IsMadJesterTaskClearWin, CustomOptionType.Neutral, true);
-            MadJesterCommonTask = jesteroption.Item1;
-            MadJesterShortTask = jesteroption.Item2;
-            MadJesterLongTask = jesteroption.Item3;
+            var MadJesteroption = SelectTask.TaskSetting(1000, 1001, 1002, IsMadJesterTaskClearWin, CustomOptionType.Crewmate, true);
+            MadJesterCommonTask = MadJesteroption.Item1;
+            MadJesterShortTask = MadJesteroption.Item2;
+            MadJesterLongTask = MadJesteroption.Item3;
 
             FalseChargesOption = new CustomRoleOption(517, true, CustomOptionType.Neutral, "FalseChargesName", RoleClass.FalseCharges.color, 1);
             FalseChargesPlayerCount = CustomOption.Create(518, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FalseChargesOption);
