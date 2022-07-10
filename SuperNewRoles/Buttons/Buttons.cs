@@ -1945,7 +1945,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = setTarget();
-                    if (target && PlayerControl.LocalPlayer.CanMove)
+                    if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadMate)
                     {
                         target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
                         target.setRoleRPC(RoleId.MadMate);
@@ -1955,14 +1955,14 @@ namespace SuperNewRoles.Buttons
                         PlayerControl.LocalPlayer.RpcMurderPlayer(target);
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && ModeHandler.isMode(ModeId.Default) && !RoleClass.FastMaker.IsCreatedMadMate; },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && ModeHandler.isMode(ModeId.Default); },
                 () =>
                 {
                     return setTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { },
-                RoleClass.Jackal.getButtonSprite(),
-                new Vector3(-1.8f, -0.06f, 0),
+                RoleClass.FastMaker.getButtonSprite(),
+                new Vector3(0,1, 0),
                 __instance,
                 __instance.AbilityButton,
                 KeyCode.F,

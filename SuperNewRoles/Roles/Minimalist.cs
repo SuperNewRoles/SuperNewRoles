@@ -112,6 +112,11 @@ namespace SuperNewRoles.Roles
                         FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
                     }
                 }
+                else if (role == RoleId.FastMaker)
+                {
+                    //純正キルボタン削除
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                }
             }
         }
     }
