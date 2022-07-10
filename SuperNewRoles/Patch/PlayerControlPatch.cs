@@ -522,6 +522,22 @@ namespace SuperNewRoles.Patches
                         case RoleId.Mafia:
                             if (!Mafia.IsKillFlag()) return false;
                             break;
+                        case RoleId.FastMaker:
+                            if (!RoleClass.FastMaker.IsCreatedMadMate)//まだ作ってなくて、設定が有効の時
+                            {
+                                if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                                RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
+                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
+                                target.setRoleRPC(RoleId.MadMate);//マッドにする
+                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                                RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
+                            }
+                            else
+                            {
+                                //作ってたら普通のキル
+                                __instance.RpcMurderPlayer(target);
+                            }
+                            return false;
                     }
                     break;
                 case ModeId.Detective:

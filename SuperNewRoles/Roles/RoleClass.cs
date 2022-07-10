@@ -2438,6 +2438,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> FastMakerPlayer;
             public static Color32 color = ImpostorRed;
             public static bool IsCreatedMadMate;
+            public static List<int> CreatePlayers;
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
@@ -2449,6 +2450,7 @@ namespace SuperNewRoles.Roles
             {
                 FastMakerPlayer = new List<PlayerControl>();
                 IsCreatedMadMate = false;
+                CreatePlayers = new();
             }
         }
         public static class Neet
