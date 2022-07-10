@@ -120,6 +120,37 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
+                public static bool IsWinNeetGuard = false;
+        public static bool IsNeetWinGuard()
+        {
+            bool IsAlive = false;
+            foreach (PlayerControl p in RoleClass.Neet.NeetPlayer)
+            {
+                if (p.isAlive())
+                {
+                    IsAlive = true;
+                }
+            }
+            if (!IsAlive)
+            {
+                return false;
+            }
+            if (IsWinNeetGuard)
+            {
+                return true;
+            }
+            PlayerControl player = GetOnCount();
+            if (player == null)
+            {
+                return false;
+            }
+            else
+            {
+                IsWinNeetGuard = true;
+                UseCount(player);
+            }
+            return false;
+        }
         public static PlayerControl GetOnCount()
         {
 

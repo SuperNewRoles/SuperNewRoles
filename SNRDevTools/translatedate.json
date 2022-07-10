@@ -3227,6 +3227,26 @@
  "SmasherTitle1" : {
         "0" : "Let's do continuous kills!" ,
         "11" : "\u9023\u7d9a\u30ad\u30eb\u3092\u884c\u304a\u3046"
+        } ,
+ "SuicideWisherName" : {
+        "0" : "Suicide Wisher" ,
+        "11" : "\u30b9\u30fc\u30b5\u30a4\u30c9\u30a6\u30a3\u30c3\u30b7\u30e3\u30fc\u200c"
+        } ,
+ "SuicideWisherTitle1" : {
+        "0" : "Let's just kill ourselves for now." ,
+        "11" : "\u3068\u308a\u3042\u3048\u305a\u81ea\u6bba\u3057\u3088\u3046"
+        } ,
+ "SuicideName" : {
+        "0" : "Suicide" ,
+        "11" : "\u81ea\u6bba"
+        } ,
+ "NeetName" : {
+        "0" : "Neet" ,
+        "11" : "\u30cb\u30fc\u30c8"
+        } ,
+ "NeetTitle1" : {
+        "0" : "NeetLet others handle it." ,
+        "11" : "\u4ed6\u4eba\u306b\u4efb\u305b\u3088\u3046"
         } 
 
 }

@@ -151,6 +151,12 @@ namespace SuperNewRoles.Patches
                             }
                         }
                         return false;
+                    case RoleId.SuicideWisher:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            __instance.RpcMurderPlayer(__instance);
+                        }
+                        return false;
                 }
             }
             return true;
@@ -301,7 +307,7 @@ namespace SuperNewRoles.Patches
         public static bool isKill = false;
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("a(Murder)"+__instance.Data.PlayerName+" => "+target.Data.PlayerName);
+            SuperNewRolesPlugin.Logger.LogInfo("a(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
             if (__instance.IsBot() || target.IsBot()) return false;
 
             if (__instance.isDead()) return false;

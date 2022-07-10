@@ -198,7 +198,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (Player.PlayerId != 0)
                     {
                         sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.getClientId());
-                    } else {
+                    }
+                    else
+                    {
                         Player.SetRole(RoleTypes.Crewmate); //ホスト視点用
                     }
                     sender.RpcSetRole(Player, RoleTypes.Impostor);
@@ -266,6 +268,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 sender.RpcSetRole(p, RoleTypes.Shapeshifter);
             }
             foreach (PlayerControl p in RoleClass.Samurai.SamuraiPlayer)
+            {
+                sender.RpcSetRole(p, RoleTypes.Shapeshifter);
+            }
+            foreach (PlayerControl p in RoleClass.SuicideWisher.SuicideWisherPlayer)
             {
                 sender.RpcSetRole(p, RoleTypes.Shapeshifter);
             }
