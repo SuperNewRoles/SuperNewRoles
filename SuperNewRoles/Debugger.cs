@@ -50,7 +50,6 @@ namespace SuperNewRoles
         }
         private static void SendToFile(string text, LogLevel level = LogLevel.Info, string tag = "", int lineNumber = 0, string fileName = "")
         {
-            if (!isEnable || disableList.Contains(tag)) return;
             var logger = SuperNewRolesPlugin.Logger;
             string t = DateTime.Now.ToString("HH:mm:ss");
             if (sendToGameList.Contains(tag) || isAlsoInGame) SendInGame($"[{tag}]{text}");

@@ -18,6 +18,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static void Postfix(PlayerCustomizationMenu __instance)
         {
             CustomHats.HatsTabOnEnablePatch.Chips = new();
+            ObjectData.Presets = new Transform[] { };
             ObjectData.hats = new HatParent[] { };
             ObjectData.Selected = "";
             ObjectData.HatTabButtons = new Transform[] { };
@@ -46,6 +47,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ColorButton.name = "ColorButton";
 
             ColorButton.GetComponent<SpriteRenderer>().color = new Color32(0xA8, 0xDF, 0xFF, byte.MaxValue);
+            ColorButton.SelectionHighlight.color = Color.white;
             var HatButton = GameObject.Instantiate(ColorButton, ClosetTab);
             var HatButton_Passive = HatButton.Button;
             HatButton_Passive.OnClick = new();
@@ -53,6 +55,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ObjectData.HatButton = HatButton;
             HatButton.name = "HatButton";
             HatButton.transform.localScale *= 2.75f;
+            HatButton.SelectionHighlight.color = Color.white;
 
             var SkinButton = GameObject.Instantiate(HatButton, ClosetTab);
             var SkinButton_Passive = SkinButton.Button;
@@ -127,6 +130,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
 
             ObjectData.VisorButton_Visor = GameObject.Instantiate(__instance.PreviewArea.cosmetics.visor, ClosetTab);
             ObjectData.VisorButton_Visor.transform.localPosition = new Vector3(0.78f, 1.55f, -10);
+
+            ObjectData.ClosetShow();
         }
     }
     [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.OpenTab))]

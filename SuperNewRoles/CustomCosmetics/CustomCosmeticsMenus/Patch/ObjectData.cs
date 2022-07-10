@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using BepInEx.Configuration;
 using TMPro;
 using UnityEngine;
 
@@ -29,7 +30,12 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static string Selected;
         public static Transform[] HatTabButtons;
         public static PassiveButton area_pas;
+
+        public static Transform[] Presets;
+        public static PoolablePlayer[] PresetAreas;
+
         public static bool IsShow;
+        public static bool IsCloset;
         public static void HatShow()
         {
             ResetShow();
@@ -158,7 +164,10 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static void ResetShow()
         {
             ShowDefaultTabButton();
+            PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/HatsTab/Hat Button/Tab Background").GetComponent<SpriteRenderer>().enabled = false;
+            PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/ColorTab/ColorButton/Tab Background").GetComponent<SpriteRenderer>().enabled = false;
             IsShow = false;
+            IsCloset = false;
             ClosetHide();
             PresetHide();
             ShowDefaultTabButton();
@@ -196,6 +205,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static void ClosetShow()
         {
             ResetShow();
+            PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/ColorTab/ColorButton/Tab Background").GetComponent<SpriteRenderer>().enabled = true;
+            IsCloset = true;
             HatText.gameObject.SetActive(true);
             VisorText.gameObject.SetActive(true);
             SkinText.gameObject.SetActive(true);
@@ -218,10 +229,115 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         }
         public static void PresetHide()
         {
+            foreach (Transform tfm in Presets)
+            {
+                tfm.gameObject.SetActive(false);
+            }
         }
         public static void PresetShow()
         {
             ResetShow();
+            PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/HatsTab/Hat Button/Tab Background").GetComponent<SpriteRenderer>().enabled = true;
+            PlayerCustomizationMenu.Instance.itemName.text = "プリセット" + (SelectedPreset.Value + 1);
+            Logger.Info("PresetShow!", "");
+            if (Presets.Length > 0)
+            {
+                Logger.Info("0以上", "");
+                foreach (Transform trf in Presets)
+                {
+                    if (trf != null)
+                    {
+                        GameObject.Destroy(trf.gameObject);
+                    }
+                }
+                foreach (PoolablePlayer pl in PresetAreas)
+                {
+                    if (pl != null)
+                    {
+                        GameObject.Destroy(pl.gameObject);
+                    }
+                }
+            }
+            List<Transform> presets = new();
+            List<PoolablePlayer> presetplayers = new();
+            for (float i = 0;i < 10; i++)
+            {
+                var obj = GameObject.Instantiate(ColorButton, PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup"));
+                Set(obj.Button, (int)i);
+                obj.Button.OnMouseOver = new();
+                obj.Button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => obj.GetComponent<SpriteRenderer>().color = Color.yellow));
+                obj.Button.OnMouseOut = new();
+                obj.Button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => obj.GetComponent<SpriteRenderer>().color = Color.white));
+                obj.GetComponent<SpriteRenderer>().color = Color.white;
+                obj.transform.localScale = new Vector3(4, 6, 1);
+                GameObject.Destroy(obj.GetComponent<BoxCollider2D>());
+                obj.Button.Colliders = new List<Collider2D>() { obj.gameObject.AddComponent<PolygonCollider2D>() }.ToArray();
+                if (i > 4)
+                {
+                    obj.transform.localPosition = new Vector3(-1.2f + ((i - 5) * 1.7f), -0.75f, 4);
+                }
+                else
+                {
+                    obj.transform.localPosition = new Vector3(-1.2f + (i * 1.7f), 1.6f, 4);
+                }
+                var player = GameObject.Instantiate(PlayerCustomizationMenu.Instance.PreviewArea ,obj.transform);
+                player.transform.localScale = new(0.2f, 0.135f, 0.25f);
+                player.transform.localPosition = new();
+                obj.gameObject.SetActive(true);
+                presets.Add(obj.transform);
+                presetplayers.Add(player);
+            }
+            Presets = presets.ToArray();
+            PresetAreas = presetplayers.ToArray();
+            PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup").gameObject.SetActive(true);
+        }
+        static void Set(PassiveButton btn, int index)
+        {
+            btn.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => SetPreset(index)));
+        }
+        public static Dictionary<int, ClosetPresetData> ClosetPresetDatas = new();
+        public static ConfigEntry<int> SelectedPreset;
+        public class ClosetPresetData{
+            public ConfigEntry<byte> BodyColor;
+            public ConfigEntry<string> Hat;
+            public ConfigEntry<string> Visor;
+            public ConfigEntry<string> Skin;
+            public ConfigEntry<string> NamePlate;
+            public ConfigEntry<string> Pet;
+        }
+        public static void SetPreset(int index)
+        {
+            SelectedPreset.Value = index;
+            SuperNewRolesPlugin.Logger.LogInfo("セットプリセット:"+index);
+            ClosetPresetData data = null;
+            if (!ClosetPresetDatas.ContainsKey(index)) {
+                data = new();
+                data.BodyColor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "BodyColor", (byte)0);
+                data.Hat = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Hat", "");
+                data.Visor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Visor", "");
+                data.Skin = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Skin", "");
+                data.NamePlate = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "NamePlate", "");
+                data.Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "");
+            }
+            else {
+                data = ClosetPresetDatas[index];
+            }
+            SaveManager.BodyColor = data.BodyColor.Value;
+            SaveManager.LastHat = data.Hat.Value;
+            SaveManager.LastVisor = data.Visor.Value;
+            SaveManager.LastSkin = data.Skin.Value;
+            SaveManager.LastNamePlate = data.NamePlate.Value;
+            SaveManager.LastPet = data.Pet.Value;
+            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
+            {
+                PlayerControl.LocalPlayer.CheckColor(SaveManager.BodyColor);
+                PlayerControl.LocalPlayer.RpcSetHat(SaveManager.LastHat);
+                PlayerControl.LocalPlayer.RpcSetVisor(SaveManager.LastVisor);
+                PlayerControl.LocalPlayer.RpcSetSkin(SaveManager.LastSkin);
+                PlayerControl.LocalPlayer.RpcSetNamePlate(SaveManager.LastNamePlate);
+                PlayerControl.LocalPlayer.RpcSetPet(SaveManager.LastPet);
+            }
+            PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromSaveManager(PlayerMaterial.MaskType.ComplexUI);
         }
     }
 }

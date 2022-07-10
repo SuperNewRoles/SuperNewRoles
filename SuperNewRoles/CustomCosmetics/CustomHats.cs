@@ -359,7 +359,10 @@ namespace SuperNewRoles.CustomCosmetics
                 for (int i = 0; i < hats.Count; i++)
                 {
                     HatData hat = hats[i].Item1;
-                    if ((CustomCosmeticsMenus.Patch.ObjectData.Selected == "InnerSloth" && !hat.ProductId.StartsWith("MOD_")) || hat.ProductId.StartsWith("MOD_" + CustomCosmeticsMenus.Patch.ObjectData.Selected))
+                    if (!CustomHats.IsEnd || (
+                        (CustomCosmeticsMenus.Patch.ObjectData.Selected == "InnerSloth" && !hat.ProductId.StartsWith("MOD_")) ||
+                        hat.ProductId.StartsWith("MOD_" + CustomCosmeticsMenus.Patch.ObjectData.Selected)
+                        ))
                     {
                         HatExtension ext = hats[i].Item2;
 
