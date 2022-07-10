@@ -21,14 +21,14 @@ while True:
         isimpo = True
     else:
         isimpo = False
-    with open(baseurl+"CustomRPC\\CustomRPC.cs", mode="r", encoding="utf-8") as r:
+    with open(baseurl+r"CustomRPC\\CustomRPC.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()
-        with open(baseurl+"CustomRPC\\CustomRPC.cs", mode="w", encoding="utf-8") as f:
+        with open(baseurl+r"CustomRPC\\CustomRPC.cs", mode="w", encoding="utf-8") as f:
             temp = temp.replace("//RoleId", rolename+",\n        //RoleId")
             f.write(temp)
-    with open(baseurl+"Roles\\RoleClass.cs", mode="r", encoding="utf-8") as r:
+    with open(baseurl+r"Roles\\RoleClass.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()
-        with open(baseurl+"Roles\\RoleClass.cs", mode="w", encoding="utf-8") as f:
+        with open(baseurl+r"Roles\\RoleClass.cs", mode="w", encoding="utf-8") as f:
             temp = temp.replace("//ロールクリア", rolename +
                                 ".ClearAndReload();\n            //ロールクリア")
             temp = temp.replace("//新ロールクラス",
@@ -42,9 +42,9 @@ while True:
             }
         }\n        //新ロールクラス""".replace("ROLE!!", rolename).replace("COLORS", color))
             f.write(temp)
-    with open(baseurl+"AllRoleSetClass.cs", mode="r", encoding="utf-8") as r:
+    with open(baseurl+r"AllRoleSetClass.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()
-        with open(baseurl+"AllRoleSetClass.cs", mode="w", encoding="utf-8") as f:
+        with open(baseurl+r"AllRoleSetClass.cs", mode="w", encoding="utf-8") as f:
             temp = temp.replace("//セットクラス",
                                 """if (!(CustomOption.CustomOptions.ROLEID!!Option.getString().Replace("0%", "") == ""))
             {
@@ -64,9 +64,9 @@ while True:
             }\n        //セットクラス""".replace("ROLEID!!", rolename).replace("TEAM", ARolename))
             temp = temp.replace("//プレイヤーカウント", """RoleId.ROLENAME => CustomOptions.ROLENAMEPlayerCount.getFloat(),\n                //プレイヤーカウント""".replace("ROLENAME", rolename))
             f.write(temp)
-    with open(baseurl+"Roles\\RoleHelper.cs", mode="r", encoding="utf-8") as r:
+    with open(baseurl+r"Roles\\RoleHelper.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()
-        with open(baseurl+"Roles\\RoleHelper.cs", mode="w", encoding="utf-8") as f:
+        with open(baseurl+r"Roles\\RoleHelper.cs", mode="w", encoding="utf-8") as f:
             temp = temp.replace("//ロールチェック",
                                 """else if (Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
             {
@@ -91,9 +91,9 @@ while True:
                     break; 
                 //タスククリアか""".replace("ROLENAME", rolename))
             f.write(temp)
-    with open(baseurl+"Intro\\IntroDate.cs", mode="r", encoding="utf-8") as r:
+    with open(baseurl+r"Intro\\IntroDate.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()
-        with open(baseurl+"Intro\\IntroDate.cs", mode="w", encoding="utf-8") as f:
+        with open(baseurl+r"Intro\\IntroDate.cs", mode="w", encoding="utf-8") as f:
             temp = temp.replace("//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME);
         //イントロオブジェ""".replace("ROLENAME", rolename))
             temp = temp.replace("//イントロ検知", """case (CustomRPC.RoleId.ROLENAME):
