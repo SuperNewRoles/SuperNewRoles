@@ -2448,13 +2448,6 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static bool IsCreatedMadMate;
             public static List<int> CreatePlayers;
-            private static Sprite buttonSprite;
-            public static Sprite getButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.FastMakerButton.png", 115f);
-                return buttonSprite;
-            }
             public static void ClearAndReload()
             {
                 FastMakerPlayer = new List<PlayerControl>();
