@@ -5,6 +5,7 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using SuperNewRoles.AntiCheat;
 using SuperNewRoles.CustomCosmetics.ShareCosmetics;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.EndGame;
@@ -974,6 +975,8 @@ namespace SuperNewRoles.CustomRPC
             {
                 try
                 {
+                    PlayerControl player = null;
+                    byte playerid = byte.MaxValue;
                     byte packetId = callId;
                     switch ((CustomRPC)packetId)
                     {
@@ -1057,7 +1060,7 @@ namespace SuperNewRoles.CustomRPC
                             SetQuarreled(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SidekickPromotes:
-                            SidekickPromotes();
+                            if (CheckRpc.CheckSidekickPromotes(RoleId.Sidekick)) SidekickPromotes();
                             break;
                         case CustomRPC.CreateSidekick:
                             CreateSidekick(reader.ReadByte(), reader.ReadBoolean());
@@ -1093,7 +1096,14 @@ namespace SuperNewRoles.CustomRPC
                             SetScientistRPC(reader.ReadBoolean(), reader.ReadByte());
                             break;
                         case CustomRPC.ReviveRPC:
-                            ReviveRPC(reader.ReadByte());
+                            playerid = reader.ReadByte();
+                            player = ModHelpers.playerById(playerid);
+                            if (player == null)
+                            {
+                                Logger.Error($"ReviveRPCでプレイヤーが取得できませんでした。ID:{}","CustomRPC")
+                                return;
+                            }
+                            if (CheckRpc.CheckRevive(player)) ReviveRPC(player.PlayerId);
                             break;
                         case CustomRPC.SetHaison:
                             SetHaison();
@@ -1151,7 +1161,7 @@ namespace SuperNewRoles.CustomRPC
                             DemonCurse(reader.ReadByte(), reader.ReadByte());
                             break;
                         case CustomRPC.SidekickSeerPromotes:
-                            SidekickSeerPromotes();
+                            if (CheckRpc.CheckSidekickPromotes(RoleId.SidekickSeer)) SidekickSeerPromotes();
                             break;
                         case CustomRPC.CreateSidekickSeer:
                             CreateSidekickSeer(reader.ReadByte(), reader.ReadBoolean());
