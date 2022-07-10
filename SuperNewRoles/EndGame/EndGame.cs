@@ -366,27 +366,7 @@ namespace SuperNewRoles.EndGame
 
             IsHaison = false;
 
-            static string GetStatusText(FinalStatus status) //ローカル関数
-            {
-                /*return status switch
-                {
-                    FinalStatus.Alive => ModTranslation.getString("FinalStatusAlive"),
-                    FinalStatus.Kill => ModTranslation.getString("FinalStatusKill"),
-                    FinalStatus.NekomataExiled => ModTranslation.getString("FinalStatusNekomataExiled"),
-                    FinalStatus.SheriffKill => ModTranslation.getString("FinalStatusSheriffKill"),
-                    FinalStatus.SheriffMisFire => ModTranslation.getString("FinalStatusSheriffMisFire"),
-                    FinalStatus.MeetingSheriffKill => ModTranslation.getString("FinalStatusMeetingSheriffKill"),
-                    FinalStatus.MeetingSheriffMisFire => ModTranslation.getString("FinalStatusMeetingSheriffMisFire"),
-                    FinalStatus.SelfBomb => ModTranslation.getString("FinalStatusSelfBomb"),
-                    FinalStatus.BySelfBomb => ModTranslation.getString("FinalStatusBySelfBomb"),
-                    FinalStatus.Ignite => ModTranslation.getString("FinalStatusIgnite"),
-                    FinalStatus.Disconnected => ModTranslation.getString("FinalStatusDisconnected"),
-                    FinalStatus.Dead => ModTranslation.getString("FinalStatusDead"),
-                    FinalStatus.Sabotage => ModTranslation.getString("FinalStatusSabotage"),
-                    _ => ModTranslation.getString("FinalStatusAlive")
-                };*/
-                return ModTranslation.getString("FinalStatus" + status.ToString());
-            }
+            static string GetStatusText(FinalStatus status) => ModTranslation.getString("FinalStatus" + status.ToString()); //ローカル関数
         }
     }
 
@@ -538,12 +518,6 @@ namespace SuperNewRoles.EndGame
                 VultureWin = EndData == CustomGameOverReason.VultureWin;
                 NeetWin = EndData == CustomGameOverReason.NeetWin;
             }
-
-            foreach (var cp in CachedPlayer.AllPlayers)
-            {
-
-            }
-
             if (JesterWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
@@ -563,45 +537,13 @@ namespace SuperNewRoles.EndGame
             else if (JackalWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                foreach (PlayerControl p in (RoleClass.Jackal.JackalPlayer))
+                foreach (var cp in CachedPlayer.AllPlayers)
                 {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.JackalFriends.JackalFriendsPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.SeerFriends.SeerFriendsPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.TeleportingJackal.TeleportingJackalPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.MayorFriends.MayorFriendsPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
+                    if (cp.PlayerControl.IsJackalTeam())
+                    {
+                        WinningPlayerData wpd = new(cp.Data);
+                        TempData.winners.Add(wpd);
+                    }
                 }
                 AdditionalTempData.winCondition = WinCondition.JackalWin;
             }
@@ -669,55 +611,13 @@ namespace SuperNewRoles.EndGame
 
             if (TempData.winners.GetFastEnumerator().ToArray().Any(x => x.IsImpostor))
             {
-                foreach (PlayerControl p in RoleClass.MadMate.MadMatePlayer)
+                foreach (var cp in CachedPlayer.AllPlayers)
                 {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.MadMayor.MadMayorPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.MadStuntMan.MadStuntManPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.MadJester.MadJesterPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.MadSeer.MadSeerPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.MadMaker.MadMakerPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.MadHawk.MadHawkPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.MadCleaner.MadCleanerPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
-                }
-                foreach (PlayerControl p in RoleClass.BlackCat.BlackCatPlayer)
-                {
-                    WinningPlayerData wpd = new(p.Data);
-                    TempData.winners.Add(wpd);
+                    if (cp.PlayerControl.isMadRole())
+                    {
+                        WinningPlayerData wpd = new(cp.Data);
+                        TempData.winners.Add(wpd);
+                    }
                 }
             }
 
