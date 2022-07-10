@@ -811,3 +811,6 @@ SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺し�
 SuicideName,Suicide,自殺
 NeetName,Neet,ニート
 NeetTitle1,NeetLet others handle it.,他人に任せよう
+FastMakerName,Fast Maker,ファストメーカー
+FastMakerTitle1,Let's make Mad Mate with a light heart.,軽い気持ちでマッドメイトを作ろう
+KillName,KILL,キル

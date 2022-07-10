@@ -1945,13 +1945,16 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var target = setTarget();
+                    //マッド作ってないなら
                     if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadMate)
                     {
-                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
-                        target.setRoleRPC(RoleId.MadMate);
-                        RoleClass.FastMaker.IsCreatedMadMate = true;
+                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
+                        target.setRoleRPC(RoleId.MadMate);//マッドにする
+                        RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことに
                     }
-                    else{
+                    else//マッド作ってるなら
+                    {
+                        //targetをぶっこわーす！
                         PlayerControl.LocalPlayer.RpcMurderPlayer(target);
                     }
                 },
@@ -1961,16 +1964,16 @@ namespace SuperNewRoles.Buttons
                     return setTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { },
-                RoleClass.FastMaker.getButtonSprite(),
-                new Vector3(0,1, 0),
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
                 __instance,
-                __instance.AbilityButton,
+                __instance.KillButton,
                 KeyCode.F,
                 49,
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("FastMakeName"),
+                buttonText = ModTranslation.getString("KillName"),
                 showButtonText = true
             };
 

@@ -2433,6 +2433,15 @@ namespace SuperNewRoles.Roles
                 SuicideWisherPlayer = new List<PlayerControl>();
             }
         }
+        public static class Neet
+        {
+            public static List<PlayerControl> NeetPlayer;
+            public static Color32 color = new(127, 127, 127, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                NeetPlayer = new();
+            }
+        }
         public static class FastMaker
         {
             public static List<PlayerControl> FastMakerPlayer;
@@ -2451,15 +2460,6 @@ namespace SuperNewRoles.Roles
                 FastMakerPlayer = new List<PlayerControl>();
                 IsCreatedMadMate = false;
                 CreatePlayers = new();
-            }
-        }
-        public static class Neet
-        {
-            public static List<PlayerControl> NeetPlayer;
-            public static Color32 color = new(127, 127, 127, byte.MaxValue);
-            public static void ClearAndReload()
-            {
-                NeetPlayer = new();
             }
         }
         //新ロールクラス
