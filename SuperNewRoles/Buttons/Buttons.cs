@@ -1183,34 +1183,14 @@ namespace SuperNewRoles.Buttons
                         if (!target.isImpostor())
                         {
                             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ChiefSidekick);
-                            writer.Write(target);
+                            writer.Write(target.PlayerId);
                             RPCHelper.EndRPC(writer);
+                            CustomRPC.RPCProcedure.ChiefSidekick(target.PlayerId);
                             RoleClass.Chief.IsCreateSheriff = true;
                         }
                         else
                         {
-                            if (ModeHandler.isMode(ModeId.Default))
-                            {
-                                if (PlayerControl.LocalPlayer.isRole(RoleId.Chief))
-                                {
-                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-                                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                                    writer.Write(byte.MaxValue);
-                                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-                                    RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.PlayerId, byte.MaxValue);
-                                }
-                            }
-                            else if (ModeHandler.isMode(ModeId.SuperHostRoles))
-                            {
-                                if (AmongUsClient.Instance.AmHost)
-                                {
-                                    foreach (PlayerControl p in RoleClass.Chief.ChiefPlayer)
-                                    {
-                                        p.RpcMurderPlayer(p);
-                                    }
-                                }
-                            }
+                            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
                         }
                     }
                 },
