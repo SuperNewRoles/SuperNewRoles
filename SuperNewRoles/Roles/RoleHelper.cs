@@ -218,7 +218,15 @@ namespace SuperNewRoles
         }
         public static bool IsJackalTeam(this PlayerControl player)
         {
-            return player.IsJackalTeamJackal() || player.IsJackalTeamSidekick();
+            return player.getRole() is
+                RoleId.Jackal or
+                RoleId.Sidekick or
+                RoleId.JackalFriends or
+                RoleId.SeerFriends or
+                RoleId.TeleportingJackal or
+                RoleId.JackalSeer or
+                RoleId.SidekickSeer or
+                RoleId.MayorFriends;
         }
         public static bool IsJackalTeamJackal(this PlayerControl player)
         {
