@@ -16,6 +16,8 @@ namespace SuperNewRoles.Patch
         {
             public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
             {
+                if (RoleClass.IsMeeting) return false;
+                if (target.Object.isAlive()) return false;
                 if (!AmongUsClient.Instance.AmHost) return true;
                 if (ModeHandler.isMode(ModeId.Default))
                 {
