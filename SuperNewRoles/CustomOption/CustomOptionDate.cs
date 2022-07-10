@@ -657,6 +657,9 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption NeetOption;
         public static CustomOption NeetPlayerCount;
+
+        public static CustomRoleOption FastMakerOption;
+        public static CustomOption FastMakerPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1346,6 +1349,9 @@ namespace SuperNewRoles.CustomOption
 
             NeetOption = new CustomRoleOption(658, false, CustomOptionType.Neutral, "NeetName", RoleClass.Neet.color, 1);
             NeetPlayerCount = CustomOption.Create(659, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NeetOption);
+
+            FastMakerOption = new CustomRoleOption(660, true, CustomOptionType.Impostor, "FastMakerName", RoleClass.FastMaker.color, 1);
+            FastMakerPlayerCount = CustomOption.Create(661, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NeetOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

@@ -149,6 +149,7 @@ namespace SuperNewRoles.Roles
             Smasher.ClearAndReload();
             SuicideWisher.ClearAndReload();
             Neet.ClearAndReload();
+            FastMaker.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2430,6 +2431,24 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 SuicideWisherPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class FastMaker
+        {
+            public static List<PlayerControl> FastMakerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsCreatedMadMate;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.FastMakerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                FastMakerPlayer = new List<PlayerControl>();
+                IsCreatedMadMate = false;
             }
         }
         public static class Neet
