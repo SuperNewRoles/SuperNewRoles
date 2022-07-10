@@ -331,6 +331,9 @@ namespace SuperNewRoles.Roles
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
             public static bool IsCreateSidekick;
+            public static List<int> CreatePlayers;
+            public static bool IsCreatedFriend;
+            public static bool CanCreateFriend;
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
@@ -350,6 +353,9 @@ namespace SuperNewRoles.Roles
                 CreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 IsCreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
+                IsCreatedFriend = false;
+                CreatePlayers= new();
+                CanCreateFriend = CustomOptions.JackalCreateFriend.getBool();
             }
         }
         public static class Teleporter

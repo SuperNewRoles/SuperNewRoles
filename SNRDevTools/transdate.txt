@@ -811,3 +811,4 @@ SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺し�
 SuicideName,Suicide,自殺
 NeetName,Neet,ニート
 NeetTitle1,NeetLet others handle it.,他人に任せよう
+JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズを作れる
