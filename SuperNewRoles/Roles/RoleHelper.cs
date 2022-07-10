@@ -595,6 +595,9 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Neet):
                     Roles.RoleClass.Neet.NeetPlayer.Add(player);
                     break;
+                    case (CustomRPC.RoleId.FastMaker):
+                    Roles.RoleClass.FastMaker.FastMakerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -946,6 +949,9 @@ namespace SuperNewRoles
                     break;
                 case (CustomRPC.RoleId.Neet):
                     Roles.RoleClass.Neet.NeetPlayer.RemoveAll(ClearRemove);
+                    break;
+                    case (CustomRPC.RoleId.FastMaker):
+                    Roles.RoleClass.FastMaker.FastMakerPlayer.RemoveAll(ClearRemove);
                     break;
                     //ロールリモベ
             }
@@ -1910,6 +1916,10 @@ namespace SuperNewRoles
                 else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player))
                 {
                     return RoleId.Neet;
+                }
+                else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player))
+                {
+                    return RoleId.FastMaker;
                 }
                 //ロールチェック
             }

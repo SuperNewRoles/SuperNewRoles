@@ -810,4 +810,7 @@ SuicideWisherTitle1
 SuicideName
 NeetName
 NeetTitle1
+FastMakerName
+FastMakerTitle1
+KillName
 JackalCreateFriendSetting

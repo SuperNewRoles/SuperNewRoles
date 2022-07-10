@@ -67,6 +67,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton DoubleKillerMainKillButton;
         public static CustomButton DoubleKillerSubKillButton;
         public static CustomButton SuicideWisherSuicideButton;
+        public static CustomButton FastMakerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -1918,6 +1919,42 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.getString("SuicideName"),
+                showButtonText = true
+            };
+
+            FastMakerButton = new CustomButton(
+                () =>
+                {
+                    var target = setTarget();
+                    //マッド作ってないなら
+                    if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadMate)
+                    {
+                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
+                        target.setRoleRPC(RoleId.MadMate);//マッドにする
+                        RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことに
+                    }
+                    else//マッド作ってるなら
+                    {
+                        //targetをぶっこわーす！
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(target);
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && ModeHandler.isMode(ModeId.Default); },
+                () =>
+                {
+                    return setTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.getString("KillName"),
                 showButtonText = true
             };
 

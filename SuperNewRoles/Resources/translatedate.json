@@ -3248,6 +3248,18 @@
         "0" : "NeetLet others handle it." ,
         "11" : "\u4ed6\u4eba\u306b\u4efb\u305b\u3088\u3046"
         } ,
+ "FastMakerName" : {
+        "0" : "Fast Maker" ,
+        "11" : "\u30d5\u30a1\u30b9\u30c8\u30e1\u30fc\u30ab\u30fc"
+        } ,
+ "FastMakerTitle1" : {
+        "0" : "Let's make Mad Mate with a light heart." ,
+        "11" : "\u8efd\u3044\u6c17\u6301\u3061\u3067\u30de\u30c3\u30c9\u30e1\u30a4\u30c8\u3092\u4f5c\u308d\u3046"
+        } ,
+ "KillName" : {
+        "0" : "KILL" ,
+        "11" : "\u30ad\u30eb"
+ },
  "JackalCreateFriendSetting" : {
         "0" : "Can Create JackalFriends" ,
         "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb\u30d5\u30ec\u30f3\u30ba\u3092\u4f5c\u308c\u308b"
