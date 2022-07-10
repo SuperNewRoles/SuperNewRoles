@@ -216,8 +216,30 @@ namespace SuperNewRoles.Patches
             }
             static bool Downloaded = false;
             public static MainMenuManager instance;
+            static IEnumerator ShowAnnouncementPopUp(MainMenuManager __instance)
+            {
+                while (true)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo(AutoUpdate.announcement);
+                    if (AutoUpdate.announcement == "None")
+                        yield return null;
+                    else
+                        break;
+                }
+                var AnnouncementPopup = __instance.transform.FindChild("Announcement").GetComponent<AnnouncementPopUp>();
+                if (AnnouncementPopup != null)
+                {
+                    AnnouncementPopup.Show();
+                    AnnouncementPopup.AnnounceTextMeshPro.text = AutoUpdate.announcement;
+                }
+                ConfigRoles.IsUpdated = false;
+            }
             public static void Postfix(MainMenuManager __instance)
             {
+                if (ConfigRoles.IsUpdated)
+                {
+                    __instance.StartCoroutine(ShowAnnouncementPopUp(__instance));
+                }
                 DownLoadCustomhat.Load();
                 DownLoadClass.Load();
                 DownLoadClassVisor.Load();

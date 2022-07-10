@@ -128,6 +128,12 @@ namespace SuperNewRoles.CustomRPC
         BlackCat,
         SecretlyKiller,
         Spy,
+        Kunoichi,
+        DoubleKiller,
+        Smasher,
+        SuicideWisher,
+        Neet,
+        FastMaker,
         //RoleId
     }
 
@@ -195,9 +201,37 @@ namespace SuperNewRoles.CustomRPC
         UseCameraTime,
         UseVitalsTime,
         FixLights,
+        KunaiKill,
+        SetSecretRoomTeleportStatus,
+        ChiefSidekick
     }
     public static class RPCProcedure
     {
+        public static void KunaiKill(byte sourceid, byte targetid)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceid);
+            PlayerControl target = ModHelpers.playerById(targetid);
+            if (source == null || target == null) return;
+            RPCMurderPlayer(sourceid, targetid, 0);
+            FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+
+            if (targetid == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, source.Data);
+            }
+        }
+
+        public static void ChiefSidekick(byte targetid)
+        {
+            RoleClass.Chief.SheriffPlayer.Add(targetid);
+            SetRole(targetid, (byte)RoleId.Sheriff);
+            if (targetid == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                Sheriff.ResetKillCoolDown();
+                RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
+            }
+            UncheckedSetVanilaRole(targetid, 0);
+        }
         public static void FixLights()
         {
             SwitchSystem switchSystem = MapUtilities.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
@@ -678,20 +712,20 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SidekickPromotes()
         {
-            for (int i = 0; i < RoleClass.Jackal.SidekickPlayer.Count; i++)
+            foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
             {
-                RoleClass.Jackal.JackalPlayer.Add(RoleClass.Jackal.SidekickPlayer[i]);
-                RoleClass.Jackal.SidekickPlayer.RemoveAt(i);
+                p.ClearRole();
+                p.setRole(RoleId.Jackal);
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
         public static void SidekickSeerPromotes()
         {
-            for (int i = 0; i < RoleClass.JackalSeer.SidekickSeerPlayer.Count; i++)
+            foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
             {
-                RoleClass.JackalSeer.JackalSeerPlayer.Add(RoleClass.JackalSeer.SidekickSeerPlayer[i]);
-                RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAt(i);
+                p.ClearRole();
+                p.setRole(RoleId.JackalSeer);
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
@@ -1157,6 +1191,15 @@ namespace SuperNewRoles.CustomRPC
                         */
                         case CustomRPC.FixLights:
                             FixLights();
+                            break;
+                        case CustomRPC.KunaiKill:
+                            KunaiKill(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetSecretRoomTeleportStatus:
+                            MapCustoms.Airship.SecretRoom.SetSecretRoomTeleportStatus((MapCustoms.Airship.SecretRoom.Status)reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.ChiefSidekick:
+                            ChiefSidekick(reader.ReadByte());
                             break;
                     }
                 }

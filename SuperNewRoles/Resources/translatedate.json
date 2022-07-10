@@ -196,6 +196,14 @@
         "0" : "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats" ,
         "11" : "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats"
         } ,
+ "MapCustom" : {
+        "0" : "Map Custom" ,
+        "11" : "\u30de\u30c3\u30d7\u6539\u9020"
+        } ,
+ "SecretRoom" : {
+        "0" : "(Airship)Secret Room" ,
+        "11" : "(\u30a8\u30a2\u30fc\u30b7\u30c3\u30d7)\u30b7\u30fc\u30af\u30ec\u30c3\u30c8\u30eb\u30fc\u30e0"
+        } ,
  "enableMirroMap" : {
         "0" : "enable MirroMap" ,
         "11" : "\u53cd\u8ee2\u30de\u30c3\u30d7\u3092\u6709\u52b9\u306b\u3059\u308b"
@@ -954,7 +962,7 @@
         } ,
  "SheriffCoolDownSetting" : {
         "0" : "Kill Cooldown" ,
-        "11" : "\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        "11" : "\u30ad\u30eb\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
         } ,
  "SheriffIsKillNewtralSetting" : {
         "0" : "Can Kill a Neutral" ,
@@ -3084,6 +3092,38 @@
         "0" : "Download custom hat" ,
         "11" : "\u30ab\u30b9\u30bf\u30e0\u30cf\u30c3\u30c8\u3092\u30c0\u30a6\u30f3\u30ed\u30fc\u30c9\u3059\u308b"
         } ,
+ "KunoichiName" : {
+        "0" : "Kunoichi" ,
+        "11" : "\u30af\u30ce\u30a4\u30c1"
+        } ,
+ "KunoichiTitle1" : {
+        "0" : "Use your ninjutsu to deceive the village." ,
+        "11" : "\u5fcd\u8853\u3092\u99c6\u4f7f\u3057\u3066\u6751\u3092\u6b3a\u3051"
+        } ,
+ "KunoichiCoolTime" : {
+        "0" : "Kunai Cool Time" ,
+        "11" : "\u30af\u30ca\u30a4\u306e\u30af\u30fc\u30eb\u30bf\u30a4\u30e0"
+        } ,
+ "KunoichiKillKunai" : {
+        "0" : "Number of kunai required for a kill" ,
+        "11" : "\u30ad\u30eb\u306b\u5fc5\u8981\u306a\u30af\u30ca\u30a4\u6570"
+        } ,
+ "KunoichiIsHide" : {
+        "0" : "Transparency" ,
+        "11" : "\u900f\u660e\u5316"
+        } ,
+ "KunoichiHideTime" : {
+        "0" : "Time required for transparency" ,
+        "11" : "\u900f\u660e\u5316\u306b\u5fc5\u8981\u306a\u6642\u9593"
+        } ,
+ "KunoichiKunai" : {
+        "0" : "Kunai" ,
+        "11" : "\u30af\u30ca\u30a4"
+        } ,
+ "KunoichiHideKunai" : {
+        "0" : "Can throw kunai during invisibility." ,
+        "11" : "\u900f\u660e\u5316\u4e2d\u306b\u30af\u30ca\u30a4\u3092\u6295\u3052\u308c\u308b"
+        } ,
  "SecretlyKillerName" : {
         "0" : "Secretly Killer" ,
         "11" : "\u30b7\u30fc\u30af\u30ec\u30c3\u30c8\u30ea\u30fc\u30ad\u30e9\u30fc"
@@ -3140,9 +3180,89 @@
         "0" : "Ladder Death Chance" ,
         "11" : "\u8ee2\u843d\u6b7b\u3059\u308b\u78ba\u7387"
         } ,
- "" : {
-        "0" : "" ,
-        "11" : ""
+ "NameIncludeMod" : {
+        "0" : "You cannot make a room public contains mod in your name." ,
+        "11" : "mod\u304c\u540d\u524d\u306b\u542b\u307e\u308c\u3066\u3044\u308b\u72b6\u614b\u3067\u306f\u516c\u958b\u90e8\u5c4b\u306b\u3059\u308b\u3053\u3068\u306f\u3067\u304d\u307e\u305b\u3093\u3002"
+        } ,
+ "MoveElecPadSetting" : {
+        "0" : "Move the switchboard." ,
+        "11" : "\u914d\u96fb\u76e4\u3092\u79fb\u52d5\u3059\u308b"
+        } ,
+ "AirshipDisableMovingPlatformSetting" : {
+        "0" : "Disable Moving Platform" ,
+        "11" : "\u6607\u964d\u6a5f\u306e\u30ea\u30d5\u30c8\u3092\u7121\u52b9\u5316\u3059\u308b"
+        } ,
+ "AddWireTaskSetting" : {
+        "0" : "Add Wire Task" ,
+        "11" : "\u914d\u7dda\u30bf\u30b9\u30af\u3092\u8ffd\u52a0\u3059\u308b"
+        } ,
+ "DoubleKillerName" : {
+        "0" : "DoubleKiller" ,
+        "11" : "\u30c0\u30d6\u30eb\u30ad\u30e9\u30fc"
+        } ,
+ "MainCoolTimeSetting" : {
+        "0" : "MainKillCoolDown" ,
+        "11" : "\u30e1\u30a4\u30f3\u30ad\u30eb\u30dc\u30bf\u30f3\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "SubCoolTimeSetting" : {
+        "0" : "SubKillCoolDown" ,
+        "11" : "\u30b5\u30d6\u306e\u30ad\u30eb\u30dc\u30bf\u30f3\u306e\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "DoubleKillerSaboSetting" : {
+        "0" : "DoubleKillerCanUseSabotage" ,
+        "11" : "\u30c0\u30d6\u30eb\u30ad\u30e9\u30fc\u304c\u30b5\u30dc\u3092\u4f7f\u3048\u308b\u304b"
+        } ,
+ "SmasherName" : {
+        "0" : "Smasher" ,
+        "11" : "\u30b9\u30de\u30c3\u30b7\u30e3\u30fc"
+        } ,
+ "KillCoolTimeSetting" : {
+        "0" : "KillCoolDown" ,
+        "11" : "\u30ad\u30eb\u30af\u30fc\u30eb\u30c0\u30a6\u30f3"
+        } ,
+ "DoubleKillerTitle1" : {
+        "0" : "Let's master the independent kill button!" ,
+        "11" : "\u72ec\u7acb\u3057\u305f\u30ad\u30eb\u30dc\u30bf\u30f3\u3092\u4f7f\u3044\u3053\u306a\u305d\u3046"
+        } ,
+ "SmasherTitle1" : {
+        "0" : "Let's do continuous kills!" ,
+        "11" : "\u9023\u7d9a\u30ad\u30eb\u3092\u884c\u304a\u3046"
+        } ,
+ "SuicideWisherName" : {
+        "0" : "Suicide Wisher" ,
+        "11" : "\u30b9\u30fc\u30b5\u30a4\u30c9\u30a6\u30a3\u30c3\u30b7\u30e3\u30fc\u200c"
+        } ,
+ "SuicideWisherTitle1" : {
+        "0" : "Let's just kill ourselves for now." ,
+        "11" : "\u3068\u308a\u3042\u3048\u305a\u81ea\u6bba\u3057\u3088\u3046"
+        } ,
+ "SuicideName" : {
+        "0" : "Suicide" ,
+        "11" : "\u81ea\u6bba"
+        } ,
+ "NeetName" : {
+        "0" : "Neet" ,
+        "11" : "\u30cb\u30fc\u30c8"
+        } ,
+ "NeetTitle1" : {
+        "0" : "NeetLet others handle it." ,
+        "11" : "\u4ed6\u4eba\u306b\u4efb\u305b\u3088\u3046"
+        } ,
+ "FastMakerName" : {
+        "0" : "Fast Maker" ,
+        "11" : "\u30d5\u30a1\u30b9\u30c8\u30e1\u30fc\u30ab\u30fc"
+        } ,
+ "FastMakerTitle1" : {
+        "0" : "Let's make Mad Mate with a light heart." ,
+        "11" : "\u8efd\u3044\u6c17\u6301\u3061\u3067\u30de\u30c3\u30c9\u30e1\u30a4\u30c8\u3092\u4f5c\u308d\u3046"
+        } ,
+ "KillName" : {
+        "0" : "KILL" ,
+        "11" : "\u30ad\u30eb"
+ },
+ "JackalCreateFriendSetting" : {
+        "0" : "Can Create JackalFriends" ,
+        "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb\u30d5\u30ec\u30f3\u30ba\u3092\u4f5c\u308c\u308b"
         } 
 
 }

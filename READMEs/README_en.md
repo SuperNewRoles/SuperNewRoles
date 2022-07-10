@@ -33,7 +33,14 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Idea for the Lovers role comes from **Woodi-dev**<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - The idea for Sheriff comes from **Woodi-dev**. (Taken from TheOtherRoles)<br>
 [au.libhalt.net](https://au.libhalt.net) - Nice Nekomata/Ivil Nekomata idea came from **au.libhalt.net**.<br>
-[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - Used for Add Vents and move vital. Thanks to **haoming37**!
+[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - Used for Add Vents , Remove Lift , AddWireTasks and move vital. Thanks to **haoming37**!
+
+## Used custom cosmetics
+[SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)<br>
+[TheOtherHats](https://github.com/Eisbison/TheOtherHats)(TOR)Thanks to **Eisbison**！<br>
+[TheOtherHats-GM](https://github.com/yukinogatari/TheOtherHats-GM)(TORGM)Thanks to **yukinogatari**！<br>
+[TheOtherHats](https://github.com/hinakkyu/TheOtherHats)(Me-Me-MuraSkins)Thanks to **hinakkyu**！<br>
+[TOPHats](https://github.com/Ujet222/TOPHats)(TOP、YJ)Thanks to **tugaru1975**and**Ujet222(Sakura_White)**！<br>
 
 ## Developers
 [Yking](https://github.com/ykundesu) ([Twitter](https://twitter.com/SNRDevs))<br>
@@ -70,20 +77,34 @@ It is already on the Discord server.
 | [Pursuer](#追跡者) | [Home Security Guard](#自宅警備員) |  [True Lover](#純愛者) |  |
 | [EvilScientist](#イビルサイエンティスト) | [Stuntman](#スタントマン) | [Amnesiac](#忘却者) |  |
 | [Hawk](#ホーク) | [Moving](#ムービング) |[Jackal Friends](#ジャッカルフレンズ)  |  |
-| [Minimalist](#ミニマリスト) | [Best False Charge](#ベスト冤罪ヤー) |  |  |
-| [Magaziner](#マガジナー)| [Nice Nekomata](#ナイス猫又) |  |  |
-| [SerialKiller](#シリアルキラー) | [Doctor](#ドクター)
-| [EvilEraser](#イビルイレイサー) | [MeetingSheriff](#ミーティングシェリフ)
-| [OverKiller](#オーバーキラー) | [NicScientist](#ナイスサイエンティスト)
-| [EvilMoving](#イビルムービング) |[NiceRedRidingHood](#ナイス赤ずきん)
-| [Levelinger](#レベリンガー) | [Mayor](#メイヤー)
-| [SideKiller](#サイドキラー) | [Technician](#技術者)
+| [Minimalist](#ミニマリスト) | [Best False Charge](#ベスト冤罪ヤー) | [FalseCharges](#冤罪師) |  |
+| [Magaziner](#マガジナー)| [Nice Nekomata](#ナイス猫又) | [Fox](#妖狐) |  |
+| [SerialKiller](#シリアルキラー) | [Doctor](#ドクター)|[TeleportingJackal](#テレポートジャッカル)
+| [EvilEraser](#イビルイレイサー) | [MeetingSheriff](#ミーティングシェリフ)| [Demon](#悪魔)
+| [OverKiller](#オーバーキラー) | [NicScientist](#ナイスサイエンティスト)| [JackalSeer](#ジャッカルシーア)
+| [EvilMoving](#イビルムービング) |[NiceRedRidingHood](#ナイス赤ずきん)| [Sidekick(Seer)](#サイドキック(シーア))
+| [Levelinger](#レベリンガー) | [Mayor](#メイヤー) | [Arsonist](#アーソニスト)
+| [SideKiller](#サイドキラー) | [Technician](#技術者) | [Neet](#ニート)
 | [Survivor](#サバイバー) | [SoothSayer](#占い師)
-| |[Spirit Medium](#霊媒師)
-| |[MadMayor](#マッドメイヤー)
-| |[NiceHawk](#ナイスホーク)
-| |[MadStuntman](#マッドスタントマン)
-| |[MadHawk](#マッドホーク)
-| |[Bakery](#パン屋)
-| |[MadJester](#マッドてるてる)
+| [EvilSeer](#イビルシーア)|[Spirit Medium](#霊媒師)
+| [DarkKiller](#ダークキラー)|[MadMayor](#マッドメイヤー)
+| [Vampire](#ヴァンパイア)|[NiceHawk](#ナイスホーク)
+| [AssassinAndMarine](#アサシン&マーリン)|[MadStuntman](#マッドスタントマン)
+| [Cleaner](#クリーナー)|[MadHawk](#マッドホーク)
+| [Samurai](#侍)|[Bakery](#パン屋)
+| [VentMaker](#ベントメーカー)|[MadJester](#マッドてるてる)
+| [EvilHacker](#イビルハッカー)|[NiceTeleporter](#ナイステレポーター)
+| [PositionSwapper](#ポジションスワッパー)|[Celebrity](#スター)
+| [Mafia](#マフィア)|[Nocturnality](#夜行性)
+| [SuicideWisher](#スーサイドウィッシャー‌)|[Observer](#選挙管理委員)
+| |[Seer](#シーア)
+| |[MadSeer](#マッドシーア)
+| |[RemoteSheriff](#リモートシェリフ)
+| |[TaskManager](#タスクマネージャー)
+| |[MadMaker](#マッドメーカー)
+| |[Chief](#村長)
+| |[MadCleaner](#マッドクリーナー)
+| |[MayorFriends](#メイヤーフレンズ)
 | |[HauntedWolf](#狐憑き)
+| |[BlackCat](#黒猫)
+| |[Spy](#スパイ)
