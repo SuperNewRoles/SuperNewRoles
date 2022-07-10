@@ -734,6 +734,7 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
+            if (!CheckRpc.CheckCreateSidekick(player)) return;
             if (IsFake)
             {
                 RoleClass.Jackal.FakeSidekickPlayer.Add(player);
@@ -751,6 +752,7 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
+            if (!CheckRpc.CheckCreateSidekick(player)) return;
             if (IsFake)
             {
                 RoleClass.JackalSeer.FakeSidekickSeerPlayer.Add(player);
