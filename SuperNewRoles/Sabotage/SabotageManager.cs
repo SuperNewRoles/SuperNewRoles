@@ -76,12 +76,12 @@ namespace SuperNewRoles.Sabotage
                         button.spriteRenderer.material.SetFloat("_Percent", specialActive);
                     }
                 }
-                switch (thisSabotage)
-                {
-                    case CustomSabotage.CognitiveDeficit:
-                        CognitiveDeficit.main.Update();
-                        break;
-                }
+            }
+            switch (thisSabotage)
+            {
+                case CustomSabotage.CognitiveDeficit:
+                    CognitiveDeficit.main.Update();
+                    break;
             }
         }
         public static void CustomSabotageRPC(PlayerControl p, CustomSabotage type, bool Is)

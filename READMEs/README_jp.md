@@ -54,6 +54,7 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)<br>
 [au.libhalt.net](https://au.libhalt.net) - ナイス猫又/イビル猫又のアイデアは **au.libhalt.net** から来ています。<br>
 [TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - ベント追加、バイタル移動、昇降機のリフト削除、配線タスク追加のコードを参考にさせていただきました！**Haoming37**さんありがとうございます！<br>
+[ExtremeRoles](https://github.com/yukieiji/ExtremeRoles) - マップのタスクが正常に動作しない問題の修正、アサシン&マーリンなどのアイデア元となりました！**yukieiji**さんありがとうございます！<br>
 
 ## 使用させて頂いているカスタムコスメティック
 [SuperNewNamePlates](https://github.com/ykundesu/SuperNewNamePlates)(SNR)<br>
