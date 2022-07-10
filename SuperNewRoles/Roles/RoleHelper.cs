@@ -614,8 +614,20 @@ namespace SuperNewRoles
                 PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             }
             SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " >= " + role);
+            RoleClass.AssignedPlayer.Add(player.PlayerId);
         }
         private static PlayerControl ClearTarget;
+        public static bool IsInGameAssignRole(RoleId role)
+        {
+            switch (role)
+            {
+                case RoleId.MadMate:
+                case RoleId.JackalFriends:
+                case RoleId.MadKiller:
+                    return true;
+            }
+            return false;
+        }
         public static void ClearRole(this PlayerControl player)
         {
             static bool ClearRemove(PlayerControl p)

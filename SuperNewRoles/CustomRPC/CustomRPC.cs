@@ -476,6 +476,7 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SetRoomTimerRPC(byte min, byte seconds)
         {
+            if (!CheckRpc.CheckSetRoomTimerRPC(min, seconds)) return;
             Patch.ShareGameVersion.timer = (min * 60) + seconds;
         }
         public static void CountChangerSetRPC(byte sourceid, byte targetid)
@@ -531,7 +532,9 @@ namespace SuperNewRoles.CustomRPC
         public static void SetRole(byte playerid, byte RPCRoleId)
         {
             var player = ModHelpers.playerById(playerid);
+            if (player == null) return;
             var roleId = (RoleId)RPCRoleId;
+            if (!CheckRpc.CheckSetRole(player, roleId)) return;
             if (!roleId.isGhostRole())
             {
                 player.ClearRole();

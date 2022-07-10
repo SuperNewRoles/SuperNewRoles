@@ -20,9 +20,11 @@ namespace SuperNewRoles.Roles
         public static Color CrewmateWhite = Color.white;
         public static Color FoxPurple = Palette.Purple;
         public static bool IsStart;
+        public static List<byte> AssignedPlayer;
 
         public static void ClearAndReloadRoles()
         {
+            AssignedPlayer = new();
             AllRoleSetClass.Assigned = false;
             LateTask.Tasks = new();
             LateTask.AddTasks = new();

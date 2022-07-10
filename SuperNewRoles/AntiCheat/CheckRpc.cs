@@ -9,6 +9,35 @@ namespace SuperNewRoles.AntiCheat
 {
     class CheckRpc
     {
+        public static bool CheckSetRole(PlayerControl player, RoleId role)
+        {
+            if (!role.isGhostRole() && RoleClass.AssignedPlayer.Contains(player.PlayerId) &&
+                !RoleHelpers.IsInGameAssignRole(role) && !player.isRole(RoleId.Amnesiac))
+            {
+                Logger.Error($"SetRoleでAssignedPlayerのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                return false;
+            }
+            if (!RoleClass.AssignedPlayer.Contains(player.PlayerId) && role == RoleId.MadKiller)
+            {
+                Logger.Error($"SetRoleでMadKillerCheckのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                return false;
+            }
+            return true;
+        }
+        public static bool CheckSetRoomTimerRPC(byte min, byte seconds)
+        {
+            if (AmongUsClient.Instance.AmHost)
+            {
+                Logger.Error($"SetRoomTimerでAmHostのアンチチートが発生しました。min:{min}、seconds:{seconds}", "AntiCheat");
+                return false;
+            }
+            if (Patch.ShareGameVersion.timer < ((min * 60) + seconds))
+            {
+                Logger.Error($"SetRoomTimerでTimerCheckのアンチチートが発生しました。min:{min}、seconds{seconds}", "AntiCheat");
+                return false;
+            }
+            return true;
+        }
         public static bool CheckCustomEndGame(CustomGameOverReason reason, bool showAd)
         {
             switch (reason)
