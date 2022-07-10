@@ -208,10 +208,6 @@ namespace SuperNewRoles.Patches
                             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
                             PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
-                            new LateTask(() =>
-                            {
-                                CachedPlayer.LocalPlayer.transform.localScale *= 1.4f;
-                            }, 1.1f);
 
                             CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
                             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
