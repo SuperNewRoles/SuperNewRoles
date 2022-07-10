@@ -282,6 +282,8 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void CustomEndGame(GameOverReason reason, bool showAd)
         {
+            if (!CheckRpc.CheckCustomEndGame((CustomGameOverReason)reason, showAd)) return;
+            MapUtilities.CachedShipStatus.enabled = false;
             CheckGameEndPatch.CustomEndGame(reason, showAd);
         }
         public static void UseStuntmanCount(byte playerid)
@@ -1099,7 +1101,7 @@ namespace SuperNewRoles.CustomRPC
                             player = ModHelpers.playerById(playerid);
                             if (player == null)
                             {
-                                Logger.Error($"ReviveRPCでプレイヤーが取得できませんでした。ID:{}","CustomRPC")
+                                Logger.Error($"ReviveRPCでプレイヤーが取得できませんでした。ID:{playerid} 送信者:{__instance.Data.PlayerName}", "CustomRPC");
                                 return;
                             }
                             if (CheckRpc.CheckRevive(player)) ReviveRPC(player.PlayerId);
@@ -1146,7 +1148,6 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.CustomEndGame:
                             if (AmongUsClient.Instance.AmHost)
                             {
-                                MapUtilities.CachedShipStatus.enabled = false;
                                 CustomEndGame((GameOverReason)reader.ReadByte(), reader.ReadBoolean());
                             }
                             break;
