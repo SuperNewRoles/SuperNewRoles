@@ -733,6 +733,7 @@ namespace SuperNewRoles.Buttons
                             killWriter.Write(misfire);
                             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                             Sheriff.ResetKillCoolDown();
+                            RoleClass.Sheriff.KillMaxCount--;
                         }
                     }
                 },

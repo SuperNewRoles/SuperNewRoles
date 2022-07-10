@@ -91,6 +91,7 @@ namespace SuperNewRoles.Patch
                 var ThisMode = ModeHandler.GetMode();
                 if (ThisMode == ModeId.Default)
                 {
+                    return;
                     SabotageManager.Update();
                     SetNameUpdate.Postfix(__instance);
                     Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
