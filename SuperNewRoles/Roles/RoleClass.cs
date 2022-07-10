@@ -147,6 +147,8 @@ namespace SuperNewRoles.Roles
             Kunoichi.ClearAndReload();
             DoubleKiller.ClearAndReload();
             Smasher.ClearAndReload();
+            SuicideWisher.ClearAndReload();
+            Neet.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -329,6 +331,9 @@ namespace SuperNewRoles.Roles
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
             public static bool IsCreateSidekick;
+            public static List<int> CreatePlayers;
+            public static bool IsCreatedFriend;
+            public static bool CanCreateFriend;
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
@@ -348,6 +353,9 @@ namespace SuperNewRoles.Roles
                 CreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 IsCreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
+                IsCreatedFriend = false;
+                CreatePlayers= new();
+                CanCreateFriend = CustomOptions.JackalCreateFriend.getBool();
             }
         }
         public static class Teleporter
@@ -2412,6 +2420,31 @@ namespace SuperNewRoles.Roles
                 SmasherPlayer = new List<PlayerControl>();
                 KillCoolTime = CustomOptions.SmasherKillCoolTime.getFloat();
                 SmashOn = false;
+            }
+        }
+        public static class SuicideWisher
+        {
+            public static List<PlayerControl> SuicideWisherPlayer;
+            public static Color32 color = ImpostorRed;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SuicideWisherButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                SuicideWisherPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class Neet
+        {
+            public static List<PlayerControl> NeetPlayer;
+            public static Color32 color = new(127, 127, 127, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                NeetPlayer = new();
             }
         }
         //新ロールクラス

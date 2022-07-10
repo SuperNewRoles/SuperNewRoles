@@ -218,7 +218,15 @@ namespace SuperNewRoles
         }
         public static bool IsJackalTeam(this PlayerControl player)
         {
-            return player.IsJackalTeamJackal() || player.IsJackalTeamSidekick();
+            return player.getRole() is
+                RoleId.Jackal or
+                RoleId.Sidekick or
+                RoleId.JackalFriends or
+                RoleId.SeerFriends or
+                RoleId.TeleportingJackal or
+                RoleId.JackalSeer or
+                RoleId.SidekickSeer or
+                RoleId.MayorFriends;
         }
         public static bool IsJackalTeamJackal(this PlayerControl player)
         {
@@ -581,6 +589,12 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Smasher):
                     Roles.RoleClass.Smasher.SmasherPlayer.Add(player);
                     break;
+                case (CustomRPC.RoleId.SuicideWisher):
+                    Roles.RoleClass.SuicideWisher.SuicideWisherPlayer.Add(player);
+                    break;
+                case (CustomRPC.RoleId.Neet):
+                    Roles.RoleClass.Neet.NeetPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -918,7 +932,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.BlackCat):
                     Roles.RoleClass.BlackCat.BlackCatPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.Spy):
+                case (CustomRPC.RoleId.Spy):
                     Roles.RoleClass.Spy.SpyPlayer.RemoveAll(ClearRemove);
                     break;
                 case (CustomRPC.RoleId.DoubleKiller):
@@ -927,7 +941,13 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Smasher):
                     Roles.RoleClass.Smasher.SmasherPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                case (CustomRPC.RoleId.SuicideWisher):
+                    Roles.RoleClass.SuicideWisher.SuicideWisherPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (CustomRPC.RoleId.Neet):
+                    Roles.RoleClass.Neet.NeetPlayer.RemoveAll(ClearRemove);
+                    break;
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1038,6 +1058,9 @@ namespace SuperNewRoles
                     IsTaskClear = true;
                     break;
                 case RoleId.BlackCat:
+                    IsTaskClear = true;
+                    break;
+                case RoleId.Neet:
                     IsTaskClear = true;
                     break;
                     //タスククリアか
@@ -1250,6 +1273,9 @@ namespace SuperNewRoles
                     IsNeutral = true;
                     break;
                 case RoleId.Tuna:
+                    IsNeutral = true;
+                    break;
+                case RoleId.Neet:
                     IsNeutral = true;
                     break;
                     //第三か
@@ -1870,14 +1896,22 @@ namespace SuperNewRoles
                     return CustomRPC.RoleId.Kunoichi;
                 }
                 else if (Roles.RoleClass.DoubleKiller.DoubleKillerPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.DoubleKiller;
-            }
-            else if (Roles.RoleClass.Smasher.SmasherPlayer.IsCheckListPlayerControl(player))
-            {
-                return CustomRPC.RoleId.Smasher;
-            }
-            //ロールチェック
+                {
+                    return CustomRPC.RoleId.DoubleKiller;
+                }
+                else if (Roles.RoleClass.Smasher.SmasherPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.Smasher;
+                }
+                else if (Roles.RoleClass.SuicideWisher.SuicideWisherPlayer.IsCheckListPlayerControl(player))
+                {
+                    return CustomRPC.RoleId.SuicideWisher;
+                }
+                else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player))
+                {
+                    return RoleId.Neet;
+                }
+                //ロールチェック
             }
             catch (Exception e)
             {

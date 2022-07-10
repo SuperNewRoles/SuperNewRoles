@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
                 if (RoleClass.NiceRedRidingHood.Count >= 1)
                 {
                     DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == CachedPlayer.LocalPlayer.PlayerId)?.FirstOrDefault();
-                    if (deadPlayer.killerIfExisting != null && deadPlayer.killerIfExisting.isDead())
+                    if (deadPlayer.killerIfExisting != null && (deadPlayer.killerIfExisting.isDead() || deadPlayer.killerIfExisting.PlayerId == player.Object.PlayerId))
                     {
                         if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.RedRidingHoodRevive, deadPlayer.killerIfExisting))
                         {

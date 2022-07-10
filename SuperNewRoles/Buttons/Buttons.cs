@@ -66,6 +66,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ClairvoyantButton;
         public static CustomButton DoubleKillerMainKillButton;
         public static CustomButton DoubleKillerSubKillButton;
+        public static CustomButton SuicideWisherSuicideButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -732,6 +733,7 @@ namespace SuperNewRoles.Buttons
                             killWriter.Write(misfire);
                             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                             Sheriff.ResetKillCoolDown();
+                            RoleClass.Sheriff.KillMaxCount--;
                         }
                     }
                 },
@@ -1182,34 +1184,14 @@ namespace SuperNewRoles.Buttons
                         if (!target.isImpostor())
                         {
                             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ChiefSidekick);
-                            writer.Write(target);
+                            writer.Write(target.PlayerId);
                             RPCHelper.EndRPC(writer);
+                            CustomRPC.RPCProcedure.ChiefSidekick(target.PlayerId);
                             RoleClass.Chief.IsCreateSheriff = true;
                         }
                         else
                         {
-                            if (ModeHandler.isMode(ModeId.Default))
-                            {
-                                if (PlayerControl.LocalPlayer.isRole(RoleId.Chief))
-                                {
-                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
-                                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
-                                    writer.Write(byte.MaxValue);
-                                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-                                    RPCProcedure.RPCMurderPlayer(CachedPlayer.LocalPlayer.PlayerId, CachedPlayer.LocalPlayer.PlayerId, byte.MaxValue);
-                                }
-                            }
-                            else if (ModeHandler.isMode(ModeId.SuperHostRoles))
-                            {
-                                if (AmongUsClient.Instance.AmHost)
-                                {
-                                    foreach (PlayerControl p in RoleClass.Chief.ChiefPlayer)
-                                    {
-                                        p.RpcMurderPlayer(p);
-                                    }
-                                }
-                            }
+                            PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
                         }
                     }
                 },
@@ -1912,6 +1894,30 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+                showButtonText = true
+            };
+            SuicideWisherSuicideButton = new CustomButton(
+                () =>
+                {
+                    //自殺
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SuicideWisher && ModeHandler.isMode(ModeId.Default); },
+                () =>
+                {
+                    return true;
+                },
+                () => { },
+                RoleClass.SuicideWisher.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.getString("SuicideName"),
                 showButtonText = true
             };
 

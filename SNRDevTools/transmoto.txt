@@ -805,3 +805,9 @@ SmasherName
 KillCoolTimeSetting
 DoubleKillerTitle1
 SmasherTitle1
+SuicideWisherName
+SuicideWisherTitle1
+SuicideName
+NeetName
+NeetTitle1
+JackalCreateFriendSetting
