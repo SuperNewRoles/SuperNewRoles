@@ -128,7 +128,13 @@ namespace SuperNewRoles.AntiCheat
         }
         public static bool CheckRevive(PlayerControl player)
         {
-            return true;
+            switch (player.getRole())
+            {
+                case RoleId.NiceRedRidingHood:
+                case RoleId.Levelinger:
+                    return true;
+            }
+            return false;
         }
         public static bool CheckCreateSidekick(PlayerControl player)
         {
