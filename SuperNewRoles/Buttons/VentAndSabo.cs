@@ -17,10 +17,10 @@ namespace SuperNewRoles.Buttons
             {
                 if (!MeetingHud.Instance)
                 {
-                    if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons && !__instance.IsOpen)
+                    if (PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
                     {
                         __instance.Close();
-                        FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                        DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                         return false;
                     }
                 }
