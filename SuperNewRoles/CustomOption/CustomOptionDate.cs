@@ -109,6 +109,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption JackalUseVent;
         public static CustomOption JackalUseSabo;
         public static CustomOption JackalIsImpostorLight;
+        public static CustomOption JackalCreateFriend;
         public static CustomOption JackalCreateSidekick;
         public static CustomOption JackalNewJackalCreateSidekick;
 
@@ -811,6 +812,7 @@ namespace SuperNewRoles.CustomOption
             JackalUseVent = CustomOption.Create(61, true, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalOption);
             JackalUseSabo = CustomOption.Create(62, true, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalOption);
             JackalIsImpostorLight = CustomOption.Create(63, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, JackalOption);
+            JackalCreateFriend = CustomOption.Create(666, true, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, JackalOption);
             JackalCreateSidekick = CustomOption.Create(64, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalOption);
             JackalNewJackalCreateSidekick = CustomOption.Create(65, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalCreateSidekick);
 
