@@ -28,7 +28,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
 
             __instance.equipButton.SetActive(false);
             __instance.equippedText.SetActive(false);
-            if (ObjectData.IsCloset)
+            if (ObjectData.IsCloset || ObjectData.IsShow)
             {
                 if (area.gameObject.active) area.PreviewNameplate(SaveManager.LastNamePlate);
 
