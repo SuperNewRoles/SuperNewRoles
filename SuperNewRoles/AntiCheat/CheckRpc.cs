@@ -9,17 +9,36 @@ namespace SuperNewRoles.AntiCheat
 {
     class CheckRpc
     {
+        public static bool CheckUncheckedSetVanilaRole(PlayerControl player, RoleTypes role)
+        {
+            switch (player.getRole())
+            {
+                case RoleId.Sheriff:
+                    if (RoleClass.Chief.SheriffPlayer.Contains(player.PlayerId) && role == RoleTypes.Crewmate) return true;
+                    break;
+                case RoleId.MadMate:
+                    if (role == RoleTypes.Crewmate) return true;
+                    break;
+                case RoleId.SideKiller:
+                    if (role == RoleTypes.Impostor) return true;
+                    break;
+                case RoleId.Amnesiac:
+                    return true;
+            }
+            Logger.Error($"UncheckedSetVanilaRoleでアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}、相手:{role}", "AntiCheat");
+            return false;
+        }
         public static bool CheckSetRole(PlayerControl player, RoleId role)
         {
             if (!role.isGhostRole() && RoleClass.AssignedPlayer.Contains(player.PlayerId) &&
                 !RoleHelpers.IsInGameAssignRole(role) && !player.isRole(RoleId.Amnesiac))
             {
-                Logger.Error($"SetRoleでAssignedPlayerのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                Logger.Error($"SetRoleでAssignedPlayerのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}", "AntiCheat");
                 return false;
             }
             if (!RoleClass.AssignedPlayer.Contains(player.PlayerId) && role == RoleId.MadKiller)
             {
-                Logger.Error($"SetRoleでMadKillerCheckのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                Logger.Error($"SetRoleでMadKillerCheckのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}", "AntiCheat");
                 return false;
             }
             return true;
@@ -55,22 +74,22 @@ namespace SuperNewRoles.AntiCheat
         {
             if (!player.isRole(RoleId.MeetingSheriff))
             {
-                Logger.Error($"MeetingSheriffKillでisRoleのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                Logger.Error($"MeetingSheriffKillでisRoleのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}", "AntiCheat");
                 return false;
             }
             if (!RoleClass.IsMeeting)
             {
-                Logger.Error($"MeetingSheriffKillでIsMeetingのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                Logger.Error($"MeetingSheriffKillでIsMeetingのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}", "AntiCheat");
                 return false;
             }
             if (target.isDead())
             {
-                Logger.Error($"MeetingSheriffKillでtargetisDeadのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                Logger.Error($"MeetingSheriffKillでtargetisDeadのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}", "AntiCheat");
                 return false;
             }
             if (player.isDead())
             {
-                Logger.Error($"MeetingSheriffKillでplayerisAliveのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                Logger.Error($"MeetingSheriffKillでplayerisAliveのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}", "AntiCheat");
                 return false;
             }
             return true;
@@ -79,22 +98,22 @@ namespace SuperNewRoles.AntiCheat
         {
             if (!player.isRole(RoleId.Sheriff, RoleId.RemoteSheriff))
             {
-                Logger.Error($"CheckSheriffKillでisRoleのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                Logger.Error($"CheckSheriffKillでisRoleのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}", "AntiCheat");
                 return false;
             }
             if (RoleClass.IsMeeting)
             {
-                Logger.Error($"CheckSheriffKillでIsMeetingのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                Logger.Error($"CheckSheriffKillでIsMeetingのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}", "AntiCheat");
                 return false;
             }
             if (target.isDead())
             {
-                Logger.Error($"CheckSheriffKillでtargetisDeadのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                Logger.Error($"CheckSheriffKillでtargetisDeadのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}", "AntiCheat");
                 return false;
             }
             if (player.isDead())
             {
-                Logger.Error($"CheckSheriffKillでplayerisDeadのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                Logger.Error($"CheckSheriffKillでplayerisDeadのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}", "AntiCheat");
                 return false;
             }
             return true;
@@ -102,7 +121,7 @@ namespace SuperNewRoles.AntiCheat
         public static bool CheckCustomRPCKill(PlayerControl player)
         {
             if (RoleClass.IsMeeting) {
-                Logger.Error($"CustomRPCKillでIsMeetingのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}" ,"AntiCheat");
+                Logger.Error($"CustomRPCKillでIsMeetingのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}" ,"AntiCheat");
                 return false;
             }
             return true;
@@ -115,7 +134,7 @@ namespace SuperNewRoles.AntiCheat
         {
             if (player.IsJackalTeam())
             {
-                Logger.Error($"CreateSidekickでIsJackalTeamのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職{player.getRole()}", "AntiCheat");
+                Logger.Error($"CreateSidekickでIsJackalTeamのアンチチートが発生しました。ID:{player.PlayerId}、プレイヤー:{player.Data.PlayerName}、役職:{player.getRole()}", "AntiCheat");
                 return false;
             }
             return true;

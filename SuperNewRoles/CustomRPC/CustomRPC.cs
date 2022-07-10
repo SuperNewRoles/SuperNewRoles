@@ -329,6 +329,7 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
+            if (!CheckRpc.CheckUncheckedSetVanilaRole(player, (RoleTypes)roletype)) return;
             DestroyableSingleton<RoleManager>.Instance.SetRole(player, (RoleTypes)roletype);
             player.Data.Role.Role = (RoleTypes)roletype;
         }
