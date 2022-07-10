@@ -550,11 +550,10 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SheriffKill(byte SheriffId, byte TargetId, bool MissFire)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("シェリフ");
             PlayerControl sheriff = ModHelpers.playerById(SheriffId);
             PlayerControl target = ModHelpers.playerById(TargetId);
             if (sheriff == null || target == null) return;
-            SuperNewRolesPlugin.Logger.LogInfo("通過");
+            if (!CheckRpc.CheckSheriffKill(sheriff, target)) return;
 
             if (MissFire)
             {
@@ -586,8 +585,9 @@ namespace SuperNewRoles.CustomRPC
         {
             PlayerControl sheriff = ModHelpers.playerById(SheriffId);
             PlayerControl target = ModHelpers.playerById(TargetId);
-            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
             if (sheriff == null || target == null) return;
+            if (!CheckRpc.CheckMeetingSheriffKill(sheriff, target)) return;
+            if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
             if (!PlayerControl.LocalPlayer.isAlive())
             {
                 FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は" + target.name + "をシェリフキルした！");
@@ -659,9 +659,6 @@ namespace SuperNewRoles.CustomRPC
             if (Start)
             {
                 Roles.Clergyman.LightOutStartRPC();
-            }
-            else
-            {
             }
         }
         public static void SetSpeedBoost(bool Is, byte id)
