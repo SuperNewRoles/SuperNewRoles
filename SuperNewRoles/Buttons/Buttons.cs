@@ -67,6 +67,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton DoubleKillerMainKillButton;
         public static CustomButton DoubleKillerSubKillButton;
         public static CustomButton SuicideWisherSuicideButton;
+        public static CustomButton FastMakerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -1937,6 +1938,39 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.getString("SuicideName"),
+                showButtonText = true
+            };
+
+            FastMakerButton = new CustomButton(
+                () =>
+                {
+                    var target = setTarget();
+                    if (target && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);
+                        target.setRoleRPC(RoleId.MadMate);
+                        RoleClass.FastMaker.IsCreatedMadMate = true;
+                    }
+                    else{
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(target);
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && ModeHandler.isMode(ModeId.Default) && !RoleClass.FastMaker.IsCreatedMadMate; },
+                () =>
+                {
+                    return setTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { },
+                RoleClass.Jackal.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.getString("FastMakeName"),
                 showButtonText = true
             };
 
