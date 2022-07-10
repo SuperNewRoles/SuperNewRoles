@@ -208,10 +208,6 @@ namespace SuperNewRoles.Patches
                             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
                             PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
-                            new LateTask(() =>
-                            {
-                                CachedPlayer.LocalPlayer.transform.localScale *= 1.4f;
-                            }, 1.1f);
 
                             CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
                             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
@@ -522,6 +518,24 @@ namespace SuperNewRoles.Patches
                         case RoleId.Mafia:
                             if (!Mafia.IsKillFlag()) return false;
                             break;
+                        case RoleId.Jackal:
+                            if (!RoleClass.Jackal.IsCreatedFriend && RoleClass.Jackal.CanCreateFriend)//まだ作ってなくて、設定が有効の時
+                            {
+                                SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
+                                if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                                RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
+                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
+                                target.setRoleRPC(RoleId.JackalFriends);//フレンズにする
+                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                                RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
+                            }
+                            else
+                            {
+                                //作ってたら普通のキル
+                                SuperNewRolesPlugin.Logger.LogInfo("作ったので普通のキル");
+                                __instance.RpcMurderPlayer(target);
+                            }
+                            return false;
                     }
                     break;
                 case ModeId.Detective:

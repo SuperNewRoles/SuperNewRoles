@@ -180,7 +180,7 @@ namespace SuperNewRoles.Roles
 
             MeetingUpdatePatch.IsFlag = false;
             MeetingUpdatePatch.IsSHRFlag = false;
-            if (!ModeHandler.isMode(ModeId.SuperHostRoles) && CachedPlayer.AllPlayers.Count > 15)
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles) && PlayerControl.AllPlayerControls.Count > 15)
             {
                 MeetingUpdatePatch.IsFlag = true;
                 meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();
@@ -203,7 +203,7 @@ namespace SuperNewRoles.Roles
                 meetingsheriff_updatepatch.index = 1;
                 CreateAreaButton(__instance);
             }
-            if (ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count != 0)
+            if (ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count > 0)
             {
                 List<PlayerVoteArea> newareas = new();
                 List<PlayerVoteArea> deadareas = new();

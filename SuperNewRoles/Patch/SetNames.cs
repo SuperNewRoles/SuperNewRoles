@@ -344,14 +344,15 @@ namespace SuperNewRoles.Patch
                     LocalRole == RoleId.SidekickSeer ||
                     JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
-                    List<PlayerControl> Sets = RoleClass.Jackal.JackalPlayer;
-                    Sets.AddRange(RoleClass.Jackal.SidekickPlayer);
-                    Sets.AddRange(RoleClass.TeleportingJackal.TeleportingJackalPlayer);
-                    Sets.AddRange(RoleClass.JackalSeer.JackalSeerPlayer);
-                    Sets.AddRange(RoleClass.JackalSeer.SidekickSeerPlayer);
-                    foreach (PlayerControl p in Sets)
+                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p != PlayerControl.LocalPlayer)
+                        RoleId role = p.getRole();
+                        if ((role == RoleId.Jackal ||
+                            role == RoleId.Sidekick ||
+                            role == RoleId.TeleportingJackal ||
+                            role == RoleId.JackalSeer ||
+                            role == RoleId.SidekickSeer
+                            ) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                         {
                             SetNamesClass.SetPlayerRoleNames(p);
                             SetNamesClass.SetPlayerNameColors(p);
