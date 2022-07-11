@@ -46,6 +46,11 @@ namespace SuperNewRoles.Patch
                     ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                     MapUtilities.CachedShipStatus.enabled = false;
                 }
+
+                if (Input.GetKeyDown(KeyCode.M) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift) && AmongUsClient.Instance.AmHost)//Mと右左シフトを押したとき
+                {
+                    MeetingHud.Instance.RpcClose();//会議を強制終了
+                }
             }
         }
     }
