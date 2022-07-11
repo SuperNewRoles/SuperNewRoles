@@ -8,52 +8,70 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
 {
     class SelectPatch
     {
-        [HarmonyPatch(typeof(PlayerTab), nameof(PlayerTab.SelectColor))]
-        class SelectColor
+        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.BodyColor), MethodType.Setter)]
+        public static class SelectColor
         {
-            public static void Postfix(int colorId)
+            public static void Postfix(ref byte value)
             {
-                GetData().BodyColor.Value = (byte)colorId;
+                if (GetData().BodyColor.Value != value)
+                {
+                    GetData().BodyColor.Value = value;
+                }
             }
         }
-        [HarmonyPatch(typeof(HatsTab),nameof(HatsTab.SelectHat))]
-        class SelectHat
+        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastVisor), MethodType.Setter)]
+        public static class SelectVisor
         {
-            public static void Postfix(HatData hat)
+            public static void Postfix(ref string value)
             {
-                GetData().Hat.Value = hat.ProductId;
+                if (GetData().Visor.Value != value)
+                {
+                    GetData().Visor.Value = value;
+                }
             }
         }
-        [HarmonyPatch(typeof(VisorsTab), nameof(VisorsTab.SelectVisor))]
-        class SelectVisor
+        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastHat), MethodType.Setter)]
+        public static class SelectHat
         {
-            public static void Postfix(VisorData visor)
+            public static void Postfix(ref string value)
             {
-                GetData().Visor.Value = visor.ProductId;
+                if (GetData().Hat.Value != value)
+                {
+                    GetData().Hat.Value = value;
+                }
             }
         }
-        [HarmonyPatch(typeof(SkinsTab), nameof(SkinsTab.SelectSkin))]
-        class SelectSkin
+        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastSkin), MethodType.Setter)]
+        public static class SelectSkin
         {
-            public static void Postfix(SkinData skin)
+            public static void Postfix(ref string value)
             {
-                GetData().Skin.Value = skin.ProductId;
+                if (GetData().Skin.Value != value)
+                {
+                    GetData().Skin.Value = value;
+                }
             }
         }
-        [HarmonyPatch(typeof(NameplatesTab), nameof(NameplatesTab.SelectNameplate))]
-        class SelectNamePlate
+        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastNamePlate), MethodType.Setter)]
+        public static class SelectNamePlate
         {
-            public static void Postfix(NamePlateData plate)
+            public static void Postfix(ref string value)
             {
-                GetData().NamePlate.Value = plate.ProductId;
+                if (GetData().NamePlate.Value != value)
+                {
+                    GetData().NamePlate.Value = value;
+                }
             }
         }
-        [HarmonyPatch(typeof(PetsTab), nameof(PetsTab.SelectPet))]
-        class SelectPet
+        [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.LastPet), MethodType.Setter)]
+        public static class SelectPet
         {
-            public static void Postfix(PetData pet)
+            public static void Postfix(ref string value)
             {
-                GetData().Pet.Value = pet.ProductId;
+                if (GetData().Pet.Value != value)
+                {
+                    GetData().Pet.Value = value;
+                }
             }
         }
         public static ClosetPresetData GetData(int index = -1)
