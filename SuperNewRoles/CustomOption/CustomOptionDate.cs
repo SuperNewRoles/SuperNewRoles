@@ -1,17 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using BepInEx.Configuration;
-using HarmonyLib;
-using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using static System.Drawing.Color;
 
 namespace SuperNewRoles.CustomOption
 {

@@ -1,12 +1,6 @@
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using Hazel;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
-using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Hazel;
-using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
@@ -595,7 +594,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Neet):
                     Roles.RoleClass.Neet.NeetPlayer.Add(player);
                     break;
-                    case (CustomRPC.RoleId.FastMaker):
+                case (CustomRPC.RoleId.FastMaker):
                     Roles.RoleClass.FastMaker.FastMakerPlayer.Add(player);
                     break;
                 //ロールアド
@@ -950,7 +949,7 @@ namespace SuperNewRoles
                 case (CustomRPC.RoleId.Neet):
                     Roles.RoleClass.Neet.NeetPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (CustomRPC.RoleId.FastMaker):
+                case (CustomRPC.RoleId.FastMaker):
                     Roles.RoleClass.FastMaker.FastMakerPlayer.RemoveAll(ClearRemove);
                     break;
                     //ロールリモベ

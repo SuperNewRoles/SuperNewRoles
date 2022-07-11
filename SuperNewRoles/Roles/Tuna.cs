@@ -1,4 +1,3 @@
-using System;
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
@@ -44,7 +43,8 @@ namespace SuperNewRoles.Roles
                             {
                                 p.RpcMurderPlayer(p);
                             }
-                        } else
+                        }
+                        else
                         {
                             RoleClass.Tuna.Timers[p.PlayerId] = RoleClass.Tuna.StoppingTime;
                         }
