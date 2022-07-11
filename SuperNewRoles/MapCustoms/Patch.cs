@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
-using static PlayerControl;
-using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.MapCustoms
 {

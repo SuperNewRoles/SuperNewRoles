@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.CustomOption;
 using SuperNewRoles.Mode;
 using UnityEngine;
 
@@ -85,21 +82,22 @@ namespace SuperNewRoles.Roles
                 {
                     GameObject.Destroy(kunai.kunai);
                     RoleClass.Kunoichi.Kunais.Remove(kunai);
-                } else 
+                }
+                else
                 {
                     var kunaipos = kunai.kunai.transform.position;
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p.isDead()) continue;
                         if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
-                        if (Vector2.Distance(p.GetTruePosition() + new Vector2(0,0.4f), kunaipos) < 0.4f)
+                        if (Vector2.Distance(p.GetTruePosition() + new Vector2(0, 0.4f), kunaipos) < 0.4f)
                         {
                             if (!RoleClass.Kunoichi.HitCount.ContainsKey(PlayerControl.LocalPlayer.PlayerId)) RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId] = new();
                             if (!RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId].ContainsKey(p.PlayerId)) RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
                             RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId]++;
                             if (RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] >= RoleClass.Kunoichi.KillKunai)
                             {
-                                ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation:false);
+                                ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation: false);
                                 RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
                             }
                             RoleClass.Kunoichi.Kunais.Remove(kunai);

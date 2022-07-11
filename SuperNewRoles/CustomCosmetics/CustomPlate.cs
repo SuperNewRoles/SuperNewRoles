@@ -2,14 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
 using HarmonyLib;
-using Hazel;
-using UnhollowerBaseLib;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics

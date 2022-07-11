@@ -1,19 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Security.Cryptography;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
 using HarmonyLib;
-using Hazel;
-using InnerNet;
 using SuperNewRoles.CustomOption;
-using UnhollowerBaseLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch

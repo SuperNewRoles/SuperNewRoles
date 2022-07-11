@@ -5,8 +5,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
-using Twitch;
-using UnityEngine;
 
 namespace SuperNewRoles
 {

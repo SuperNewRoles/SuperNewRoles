@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Assets.CoreScripts;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Helpers
 {
@@ -95,7 +92,8 @@ namespace SuperNewRoles.Helpers
         {
             public static bool Prefix(PlayerControl __instance, PlayerControl target)
             {
-                if (!AmongUsClient.Instance.AmHost) { 
+                if (!AmongUsClient.Instance.AmHost)
+                {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, Hazel.SendOption.Reliable, -1);
                     writer.Write(__instance.PlayerId);
                     writer.Write(target.PlayerId);
