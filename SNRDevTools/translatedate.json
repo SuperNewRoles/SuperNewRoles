@@ -748,6 +748,10 @@
         "0" : "Kill" ,
         "11" : "\u30ad\u30eb"
         } ,
+ "FinalStatusExiled" : {
+        "0" : "Exiled" ,
+        "11" : "\u8ffd\u653e"
+        } ,
  "FinalStatusNekomataExiled" : {
         "0" : "The Way of the Nekomata" ,
         "11" : "\u732b\u53c8\u306e\u9053\u9023\u308c"
@@ -3259,7 +3263,7 @@
  "KillName" : {
         "0" : "KILL" ,
         "11" : "\u30ad\u30eb"
- },
+        } ,
  "JackalCreateFriendSetting" : {
         "0" : "Can Create JackalFriends" ,
         "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb\u30d5\u30ec\u30f3\u30ba\u3092\u4f5c\u308c\u308b"

@@ -185,6 +185,7 @@ HASUseSaboSetting
 HASUseVentSetting
 FinalStatusAlive
 FinalStatusKill
+FinalStatusExiled
 FinalStatusNekomataExiled
 FinalStatusSheriffKill
 FinalStatusSheriffMisFire
