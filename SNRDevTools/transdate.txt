@@ -4,8 +4,8 @@ StartLogText,\n---------------\nSuperNewRoles\nCreate By ykundesu\nThank You Pla
 second,Second,秒
 announcementUpdate,<size=125%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> NewData</size>\nVersion:{0}\n{1},<size=200%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の最新情報</size>\n<size=150%>バージョン:{0}</size>\n{1}
 GameCommonTasks,Common Tasks,通常タスク
-GameShortTasks,Long Tasks,ロングタスク
-GameLongTasks,Short Tasks,ショートタスク
+GameShortTasks,Short Tasks,ショートタスク
+GameLongTasks,Long Tasks,ロングタスク
 colorSalmon,Salmon,サーモン
 colorBordeaux,Bordeaux,ボルドー
 colorOlive,Olive,オリーブ
