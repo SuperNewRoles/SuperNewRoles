@@ -141,6 +141,19 @@ namespace SuperNewRoles.Patch
                     }
                 }
             }
+            else if (p.isRole(RoleId.MadJester))
+            {
+                if (CustomOptions.IsMadJesterTaskClearWin.getBool())
+                {
+                    int commont = (int)CustomOptions.MadJesterCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.MadJesterShortTask.getFloat();
+                    int longt = (int)CustomOptions.MadJesterLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }
             else if (p.isRole(RoleId.God))
             {
                 if (CustomOptions.GodIsEndTaskWin.getBool())

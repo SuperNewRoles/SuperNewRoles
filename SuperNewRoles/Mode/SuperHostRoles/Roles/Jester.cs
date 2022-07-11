@@ -58,7 +58,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         Writer.EndRPC();
                         CustomRPC.RPCProcedure.ShareWinner(exiled.Object.PlayerId);
                         Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
-                        Writer.Write((byte)CustomGameOverReason.JesterWin);
+                        Writer.Write((byte)CustomGameOverReason.ImpostorWin);
                         Writer.EndRPC();
                         CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.ImpostorWin);
                         var winplayers = new List<PlayerControl>

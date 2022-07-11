@@ -355,7 +355,7 @@ namespace SuperNewRoles.Roles
                 IsCreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
                 IsCreatedFriend = false;
-                CreatePlayers= new();
+                CreatePlayers = new();
                 CanCreateFriend = CustomOptions.JackalCreateFriend.getBool();
             }
         }
@@ -1515,6 +1515,7 @@ namespace SuperNewRoles.Roles
             public static bool IsUseVent;
             public static bool IsImpostorLight;
             public static bool IsMadJesterTaskClearWin;
+
             public static void ClearAndReload()
             {
                 MadJesterPlayer = new();
@@ -1522,6 +1523,16 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.MadJesterIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.getBool();
                 IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.getBool();
+                int Common = (int)CustomOptions.MadJesterCommonTask.getFloat();
+                int Long = (int)CustomOptions.MadJesterLongTask.getFloat();
+                int Short = (int)CustomOptions.MadJesterShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
             }
         }
         public static class FalseCharges
