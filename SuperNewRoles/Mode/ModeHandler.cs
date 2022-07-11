@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
-using SuperNewRoles.EndGame;
 using SuperNewRoles.Patch;
-using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode

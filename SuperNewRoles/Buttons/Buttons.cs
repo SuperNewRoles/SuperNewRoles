@@ -1,14 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
-using SuperNewRoles.CustomOption;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;

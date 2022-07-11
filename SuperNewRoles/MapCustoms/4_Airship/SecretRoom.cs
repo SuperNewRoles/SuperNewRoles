@@ -2,12 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
 using static SuperNewRoles.MapCustoms.MapCustom;
@@ -86,7 +83,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                     }
                     break;
                 case Status.Break:
-                    if (data1== 0)
+                    if (data1 == 0)
                     {
                         leftplayer = null;
                     }
@@ -294,7 +291,8 @@ namespace SuperNewRoles.MapCustoms.Airship
                     }
                     left.UpdateFromPlayerOutfit(leftplayer.CurrentOutfit, PlayerMaterial.MaskType.ComplexUI, false, true);
                     left.nameText().text = leftplayer.CurrentOutfit.PlayerName;
-                } else
+                }
+                else
                 {
                     left.gameObject.SetActive(false);
                 }
@@ -311,7 +309,8 @@ namespace SuperNewRoles.MapCustoms.Airship
                     }
                     right.UpdateFromPlayerOutfit(rightplayer.CurrentOutfit, PlayerMaterial.MaskType.ComplexUI, false, true);
                     right.nameText().text = rightplayer.CurrentOutfit.PlayerName;
-                } else
+                }
+                else
                 {
                     right.gameObject.SetActive(false);
                 }
@@ -360,7 +359,8 @@ namespace SuperNewRoles.MapCustoms.Airship
                         {
                             if (leftplayer != null) return false;
                             id = 0;
-                        } else
+                        }
+                        else
                         {
                             if (rightplayer != null) return false;
                         }
@@ -513,7 +513,8 @@ namespace SuperNewRoles.MapCustoms.Airship
                             Camera.main.GetComponent<FollowerCamera>().Locked = false;
                             yield break;
                         }
-                    } else
+                    }
+                    else
                     {
                         LowerInfoText.text = "";
                         Camera.main.GetComponent<FollowerCamera>().Locked = false;
@@ -562,7 +563,8 @@ namespace SuperNewRoles.MapCustoms.Airship
                 if (__instance.name == "secretroom_teleport-console")
                 {
                     if (UsePlayer != null) return false;
-                } else
+                }
+                else
                 {
                     if (IsWait) return false;
                     if (__instance.name.Contains("2"))

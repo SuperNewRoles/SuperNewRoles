@@ -1,16 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.HideAndSeek;
-using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches

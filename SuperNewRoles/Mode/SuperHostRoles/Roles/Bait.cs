@@ -1,14 +1,4 @@
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles
 {

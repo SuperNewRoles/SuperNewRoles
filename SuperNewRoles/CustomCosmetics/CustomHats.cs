@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,18 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
 using HarmonyLib;
-using Il2CppSystem;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using UnhollowerBaseLib;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics
