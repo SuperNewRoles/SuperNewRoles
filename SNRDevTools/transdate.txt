@@ -186,6 +186,7 @@ HASUseSaboSetting,Use Sabotage,サボタージュが使える
 HASUseVentSetting,Use Vent,ベントが使える
 FinalStatusAlive,Survival,生存
 FinalStatusKill,Kill,キル
+FinalStatusExiled,Exiled,追放
 FinalStatusNekomataExiled,The Way of the Nekomata,猫又の道連れ
 FinalStatusSheriffKill,Sheriff kill,シェリフキル
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆

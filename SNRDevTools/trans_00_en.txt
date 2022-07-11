@@ -185,6 +185,7 @@ Use Sabotage
 Use Vent
 Survival
 Kill
+Exiled
 The Way of the Nekomata
 Sheriff kill
 Sheriff misfire
