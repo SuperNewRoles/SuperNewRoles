@@ -3,8 +3,8 @@ SuperNewRoles
 秒
 <size=200%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の最新情報</size>\n<size=150%>バージョン:{0}</size>\n{1}
 通常タスク
-ロングタスク
 ショートタスク
+ロングタスク
 サーモン
 ボルドー
 オリーブ

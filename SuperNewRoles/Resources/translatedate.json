@@ -21,12 +21,12 @@
         "11" : "\u901a\u5e38\u30bf\u30b9\u30af"
         } ,
  "GameShortTasks" : {
-        "0" : "Long Tasks" ,
-        "11" : "\u30ed\u30f3\u30b0\u30bf\u30b9\u30af"
-        } ,
- "GameLongTasks" : {
         "0" : "Short Tasks" ,
         "11" : "\u30b7\u30e7\u30fc\u30c8\u30bf\u30b9\u30af"
+        } ,
+ "GameLongTasks" : {
+        "0" : "Long Tasks" ,
+        "11" : "\u30ed\u30f3\u30b0\u30bf\u30b9\u30af"
         } ,
  "colorSalmon" : {
         "0" : "Salmon" ,
