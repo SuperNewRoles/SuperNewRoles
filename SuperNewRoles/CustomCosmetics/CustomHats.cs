@@ -359,39 +359,33 @@ namespace SuperNewRoles.CustomCosmetics
                 for (int i = 0; i < hats.Count; i++)
                 {
                     HatData hat = hats[i].Item1;
-                    if (!CustomHats.IsEnd || (
-                        (CustomCosmeticsMenus.Patch.ObjectData.Selected == "InnerSloth" && !hat.ProductId.StartsWith("MOD_")) ||
-                        hat.ProductId.StartsWith("MOD_" + CustomCosmeticsMenus.Patch.ObjectData.Selected)
-                        ))
+                    HatExtension ext = hats[i].Item2;
+
+                    float xpos = __instance.XRange.Lerp((i2 % __instance.NumPerRow) / (__instance.NumPerRow - 1f));
+                    float ypos = offset - (i2 / __instance.NumPerRow) * __instance.YOffset;
+                    ColorChip colorChip = UnityEngine.Object.Instantiate<ColorChip>(__instance.ColorTabPrefab, __instance.scroller.Inner);
+
+                    int color = __instance.HasLocalPlayer() ? CachedPlayer.LocalPlayer.Data.DefaultOutfit.ColorId : SaveManager.BodyColor;
+
+                    colorChip.transform.localPosition = new Vector3(xpos, ypos, inventoryZ);
+                    if (ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard)
                     {
-                        HatExtension ext = hats[i].Item2;
-
-                        float xpos = __instance.XRange.Lerp((i2 % __instance.NumPerRow) / (__instance.NumPerRow - 1f));
-                        float ypos = offset - (i2 / __instance.NumPerRow) * __instance.YOffset;
-                        ColorChip colorChip = UnityEngine.Object.Instantiate<ColorChip>(__instance.ColorTabPrefab, __instance.scroller.Inner);
-
-                        int color = __instance.HasLocalPlayer() ? CachedPlayer.LocalPlayer.Data.DefaultOutfit.ColorId : SaveManager.BodyColor;
-
-                        colorChip.transform.localPosition = new Vector3(xpos, ypos, inventoryZ);
-                        if (ActiveInputManager.currentControlType == ActiveInputManager.InputType.Keyboard)
-                        {
-                            colorChip.Button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(hat)));
-                            colorChip.Button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(DestroyableSingleton<HatManager>.Instance.GetHatById(SaveManager.LastHat))));
-                            colorChip.Button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.ClickEquip()));
-                        }
-                        else
-                        {
-                            colorChip.Button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(hat)));
-                        }
-
-                        colorChip.Inner.SetHat(hat, color);
-                        colorChip.Inner.transform.localPosition = hat.ChipOffset;
-                        colorChip.Tag = hat;
-                        colorChip.Button.ClickMask = __instance.scroller.Hitbox;
-                        __instance.ColorChips.Add(colorChip);
-                        Chips.Add(colorChip);
-                        i2++;
+                        colorChip.Button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(hat)));
+                        colorChip.Button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(DestroyableSingleton<HatManager>.Instance.GetHatById(SaveManager.LastHat))));
+                        colorChip.Button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.ClickEquip()));
                     }
+                    else
+                    {
+                        colorChip.Button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => __instance.SelectHat(hat)));
+                    }
+
+                    colorChip.Inner.SetHat(hat, color);
+                    colorChip.Inner.transform.localPosition = hat.ChipOffset;
+                    colorChip.Tag = hat;
+                    colorChip.Button.ClickMask = __instance.scroller.Hitbox;
+                    __instance.ColorChips.Add(colorChip);
+                    Chips.Add(colorChip);
+                    i2++;
                 }
                 return offset - ((numHats - 1) / __instance.NumPerRow) * __instance.YOffset - headerSize;
             }

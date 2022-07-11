@@ -81,15 +81,12 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         }
         public static void HideHatTabsButton()
         {
-            foreach (Transform obj in HatTabButtons)
-            {
-                obj.gameObject.SetActive(false);
-            }
         }
         public static void ShowHatTabsButton()
         {
-            SuperNewRolesPlugin.Logger.LogInfo(CustomHats.IsEnd);
-            if (!CustomHats.IsEnd) {
+            //SuperNewRolesPlugin.Logger.LogInfo(CustomHats.IsEnd);
+            //if (!CustomHats.IsEnd)
+            {
                 ShowDefaultTabButton();
                 return;
             }
