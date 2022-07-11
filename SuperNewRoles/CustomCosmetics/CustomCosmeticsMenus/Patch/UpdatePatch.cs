@@ -109,8 +109,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                         outfit.NamePlateId = data.NamePlate.Value;
                         outfit.PetId = data.Pet.Value;
                         Logger.Info(outfit.PetId, "");
-                        player.UpdateFromPlayerOutfit(outfit, PlayerMaterial.MaskType.ComplexUI, false, false);
-                        player.transform.FindChild("PetSlot").gameObject.SetActive(outfit.PetId != "");
+                        player.UpdateFromPlayerOutfit(outfit, PlayerMaterial.MaskType.ComplexUI, false, data.Pet.Value == "");
+                        player.transform.FindChild("PetSlot").gameObject.SetActive(data.Pet.Value != "");
                         i++;
                     }
                 }
