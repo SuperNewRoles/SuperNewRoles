@@ -194,10 +194,6 @@ namespace SuperNewRoles.EndGame
                     text = "WorkpersonName";
                     RoleColor = RoleClass.Workperson.color;
                     break;
-                case WinCondition.MadJesterWin:
-                    text = "MadJesterName";
-                    RoleColor = RoleClass.MadJester.color;
-                    break;
                 case WinCondition.FalseChargesWin:
                     text = "FalseChargesName";
                     RoleColor = RoleClass.FalseCharges.color;
@@ -239,6 +235,8 @@ namespace SuperNewRoles.EndGame
                         case GameOverReason.ImpostorBySabotage:
                         case GameOverReason.ImpostorByVote:
                         case GameOverReason.ImpostorDisconnect:
+                        //MadJester勝利をインポスター勝利とみなした
+                        case (GameOverReason)CustomGameOverReason.MadJesterWin:
                             text = "ImpostorName";
                             RoleColor = RoleClass.ImpostorRed;
                             break;
@@ -507,6 +505,7 @@ namespace SuperNewRoles.EndGame
             if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
             {
                 JesterWin = EndData == CustomGameOverReason.JesterWin;
+                MadJesterWin = EndData == CustomGameOverReason.MadJesterWin;
                 EgoistWin = EndData == CustomGameOverReason.EgoistWin;
                 WorkpersonWin = EndData == CustomGameOverReason.WorkpersonWin;
                 FalseChargesWin = EndData == CustomGameOverReason.FalseChargesWin;
