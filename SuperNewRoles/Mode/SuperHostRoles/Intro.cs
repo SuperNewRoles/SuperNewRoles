@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using SuperNewRoles.Roles;
-using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -28,7 +26,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if ((p.isImpostor() || p.isRole(CustomRPC.RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && p.IsPlayer())
+                        if ((p.isImpostor() || p.isRole(RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && p.IsPlayer())
                         {
                             Teams.Add(p);
                         }
@@ -53,7 +51,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void RoleTextHandler(IntroCutscene __instance)
         {
             var myrole = PlayerControl.LocalPlayer.getRole();
-            if (myrole is not (CustomRPC.RoleId.DefaultRole or CustomRPC.RoleId.Bestfalsecharge))
+            if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
             {
                 var date = SuperNewRoles.Intro.IntroDate.GetIntroDate(myrole);
                 __instance.YouAreText.color = date.color;

@@ -1,17 +1,14 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using SuperNewRoles.CustomCosmetics.ShareCosmetics;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.EndGame;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patches;
+using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
@@ -133,6 +130,7 @@ namespace SuperNewRoles.CustomRPC
         Smasher,
         SuicideWisher,
         Neet,
+        FastMaker,
         //RoleId
     }
 
@@ -681,6 +679,7 @@ namespace SuperNewRoles.CustomRPC
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
             player.Revive();
+            DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == playerid);
             FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Alive;
         }
         public static void SetScientistRPC(bool Is, byte id)
@@ -1202,9 +1201,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo((CustomRPC)callId+"でエラー:"+e);
+                    SuperNewRolesPlugin.Logger.LogInfo((CustomRPC)callId + "でエラー:" + e);
                 }
             }
         }

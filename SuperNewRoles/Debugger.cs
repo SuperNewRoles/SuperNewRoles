@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net.Http;
 using System.Runtime.CompilerServices;
 using LogLevel = BepInEx.Logging.LogLevel;
 
@@ -50,7 +49,6 @@ namespace SuperNewRoles
         }
         private static void SendToFile(string text, LogLevel level = LogLevel.Info, string tag = "", int lineNumber = 0, string fileName = "")
         {
-            if (!isEnable || disableList.Contains(tag)) return;
             var logger = SuperNewRolesPlugin.Logger;
             string t = DateTime.Now.ToString("HH:mm:ss");
             if (sendToGameList.Contains(tag) || isAlsoInGame) SendInGame($"[{tag}]{text}");
@@ -86,7 +84,7 @@ namespace SuperNewRoles
                     break;
             }
         }
-        public static void Info(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
+        public static void Info(string text, string tag = "", [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
             SendToFile(text, LogLevel.Info, tag, lineNumber, fileName);
         public static void Warn(string text, string tag, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
             SendToFile(text, LogLevel.Warning, tag, lineNumber, fileName);

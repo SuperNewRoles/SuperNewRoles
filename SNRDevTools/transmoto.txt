@@ -185,6 +185,7 @@ HASUseSaboSetting
 HASUseVentSetting
 FinalStatusAlive
 FinalStatusKill
+FinalStatusExiled
 FinalStatusNekomataExiled
 FinalStatusSheriffKill
 FinalStatusSheriffMisFire
@@ -810,4 +811,7 @@ SuicideWisherTitle1
 SuicideName
 NeetName
 NeetTitle1
+FastMakerName
+FastMakerTitle1
+KillName
 JackalCreateFriendSetting

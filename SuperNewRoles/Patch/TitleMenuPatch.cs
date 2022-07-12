@@ -1,21 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using HarmonyLib;
-using Newtonsoft.Json.Linq;
-using SuperNewRoles.CustomCosmetics;
-using SuperNewRoles.Patch;
-using Twitch;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.UI.Button;
-using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.Patch
 {

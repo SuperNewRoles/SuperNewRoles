@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles.Roles;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
@@ -49,7 +48,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             public void Prefix()
             {
-                if (ModeHandler.isMode(ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff)) { }
+                if (ModeHandler.isMode(ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.isRole(RoleId.Sheriff)) { }
             }
         }*/
         //public static Dictionary<byte, float> UpdateTime;

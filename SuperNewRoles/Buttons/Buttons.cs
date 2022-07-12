@@ -1,14 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
-using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
-using SuperNewRoles.CustomOption;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patches;
@@ -67,6 +63,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton DoubleKillerMainKillButton;
         public static CustomButton DoubleKillerSubKillButton;
         public static CustomButton SuicideWisherSuicideButton;
+        public static CustomButton FastMakerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -262,7 +259,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     if (!PlayerControl.LocalPlayer.CanMove) return;
-                    Roles.RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
+                    RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
                     ScientistButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Scientist.Start();
                 },
@@ -290,14 +287,14 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControl.LocalPlayer.CanMove)
                     {
-                        if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Hawk))
+                        if (PlayerControl.LocalPlayer.isRole(RoleId.Hawk))
                         {
                             RoleClass.Hawk.Timer = RoleClass.Hawk.DurationTime;
                             RoleClass.Hawk.ButtonTimer = DateTime.Now;
                             HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
                             HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
                         }
-                        if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk))
+                        if (PlayerControl.LocalPlayer.isRole(RoleId.NiceHawk))
                         {
                             RoleClass.NiceHawk.Timer = RoleClass.NiceHawk.DurationTime;
                             RoleClass.NiceHawk.ButtonTimer = DateTime.Now;
@@ -307,7 +304,7 @@ namespace SuperNewRoles.Buttons
                             RoleClass.NiceHawk.timer1 = 10;
                             RoleClass.NiceHawk.Timer2 = DateTime.Now;
                         }
-                        if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MadHawk))
+                        if (PlayerControl.LocalPlayer.isRole(RoleId.MadHawk))
                         {
                             RoleClass.MadHawk.Timer = RoleClass.MadHawk.DurationTime;
                             RoleClass.MadHawk.ButtonTimer = DateTime.Now;
@@ -332,7 +329,7 @@ namespace SuperNewRoles.Buttons
                         HawkHawkEyeButton.MaxTimer = RoleClass.Hawk.CoolTime;
                         HawkHawkEyeButton.Timer = RoleClass.Hawk.CoolTime;
                     }
-                    else if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceHawk))
+                    else if (PlayerControl.LocalPlayer.isRole(RoleId.NiceHawk))
                     {
                         HawkHawkEyeButton.MaxTimer = RoleClass.NiceHawk.CoolTime;
                         HawkHawkEyeButton.Timer = RoleClass.NiceHawk.CoolTime;
@@ -584,7 +581,7 @@ namespace SuperNewRoles.Buttons
                     if (Doorr.CheckTarget() && PlayerControl.LocalPlayer.CanMove)
                     {
                         Doorr.DoorrBtn();
-                        Roles.RoleClass.Doorr.ButtonTimer = DateTime.Now;
+                        RoleClass.Doorr.ButtonTimer = DateTime.Now;
                         Doorr.ResetCoolDown();
                     }
                 },
@@ -779,7 +776,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     RoleClass.Clergyman.IsLightOff = true;
-                    Roles.RoleClass.Clergyman.ButtonTimer = DateTime.Now;
+                    RoleClass.Clergyman.ButtonTimer = DateTime.Now;
                     ClergymanLightOutButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Clergyman.LightOutStart();
                 },
@@ -805,7 +802,7 @@ namespace SuperNewRoles.Buttons
             SpeedBoosterBoostButton = new Buttons.CustomButton(
                 () =>
                 {
-                    Roles.RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
+                    RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
                     SpeedBoosterBoostButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     SpeedBooster.BoostStart();
                 },
@@ -836,7 +833,7 @@ namespace SuperNewRoles.Buttons
             EvilSpeedBoosterBoostButton = new Buttons.CustomButton(
                 () =>
                 {
-                    Roles.RoleClass.EvilSpeedBooster.ButtonTimer = DateTime.Now;
+                    RoleClass.EvilSpeedBooster.ButtonTimer = DateTime.Now;
                     EvilSpeedBoosterBoostButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     EvilSpeedBooster.BoostStart();
                 },
@@ -867,7 +864,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     RoleClass.Lighter.IsLightOn = true;
-                    Roles.RoleClass.Lighter.ButtonTimer = DateTime.Now;
+                    RoleClass.Lighter.ButtonTimer = DateTime.Now;
                     LighterLightOnButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Lighter.LightOnStart();
                 },
@@ -1870,7 +1867,7 @@ namespace SuperNewRoles.Buttons
                                 break;
                         }
                     }
-                    if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Smasher))
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.Smasher))
                     {
                         RoleClass.Smasher.SmashOn = true;
                     }
@@ -1918,6 +1915,42 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.getString("SuicideName"),
+                showButtonText = true
+            };
+
+            FastMakerButton = new CustomButton(
+                () =>
+                {
+                    var target = setTarget();
+                    //マッド作ってないなら
+                    if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadMate)
+                    {
+                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
+                        target.setRoleRPC(RoleId.MadMate);//マッドにする
+                        RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことに
+                    }
+                    else//マッド作ってるなら
+                    {
+                        //targetをぶっこわーす！
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(target);
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && ModeHandler.isMode(ModeId.Default); },
+                () =>
+                {
+                    return setTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.getString("KillName"),
                 showButtonText = true
             };
 

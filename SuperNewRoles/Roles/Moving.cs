@@ -1,6 +1,7 @@
 using System;
 using SuperNewRoles.Buttons;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -8,7 +9,7 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetCoolDown()
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilMoving))
+            if (PlayerControl.LocalPlayer.isRole(RoleId.EvilMoving))
             {
                 HudManagerStartPatch.MovingTpButton.MaxTimer = RoleClass.EvilMoving.CoolTime;
             }
@@ -33,7 +34,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsMoving(PlayerControl Player)
         {
-            if (Player.isRole(CustomRPC.RoleId.Moving) || Player.isRole(CustomRPC.RoleId.EvilMoving))
+            if (Player.isRole(RoleId.Moving) || Player.isRole(RoleId.EvilMoving))
             {
                 return true;
             }
@@ -45,7 +46,7 @@ namespace SuperNewRoles.Roles
         public static void EndMeeting()
         {
             HudManagerStartPatch.MovingSetButton.Timer = 0f;
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.EvilMoving))
+            if (PlayerControl.LocalPlayer.isRole(RoleId.EvilMoving))
             {
                 HudManagerStartPatch.MovingTpButton.MaxTimer = RoleClass.EvilMoving.CoolTime;
             }

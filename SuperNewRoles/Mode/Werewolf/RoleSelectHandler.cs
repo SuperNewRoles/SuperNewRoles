@@ -1,12 +1,5 @@
-
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Patch;
-using SuperNewRoles.Roles;
-using UnityEngine;
 
 namespace SuperNewRoles.Mode.Werewolf
 {

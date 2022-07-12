@@ -1,16 +1,11 @@
-
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.SuperHostRoles

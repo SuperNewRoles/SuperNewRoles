@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Roles;
 using SuperNewRoles.CustomOption;
 using UnityEngine;
 

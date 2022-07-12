@@ -7,6 +7,7 @@ using SuperNewRoles.Patch;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -23,6 +24,7 @@ namespace SuperNewRoles.Roles
 
         public static void ClearAndReloadRoles()
         {
+            DeadPlayer.deadPlayers = new();
             AllRoleSetClass.Assigned = false;
             LateTask.Tasks = new();
             LateTask.AddTasks = new();
@@ -149,6 +151,7 @@ namespace SuperNewRoles.Roles
             Smasher.ClearAndReload();
             SuicideWisher.ClearAndReload();
             Neet.ClearAndReload();
+            FastMaker.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -354,7 +357,7 @@ namespace SuperNewRoles.Roles
                 IsCreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
                 IsCreatedFriend = false;
-                CreatePlayers= new();
+                CreatePlayers = new();
                 CanCreateFriend = CustomOptions.JackalCreateFriend.getBool();
             }
         }
@@ -1273,7 +1276,7 @@ namespace SuperNewRoles.Roles
             public static LevelPowerTypes GetThisPower(int Level = 0, PlayerControl player = null)
             {
                 if (player == null) player = PlayerControl.LocalPlayer;
-                if (!player.isRole(CustomRPC.RoleId.Levelinger)) return LevelPowerTypes.None;
+                if (!player.isRole(RoleId.Levelinger)) return LevelPowerTypes.None;
                 if (Level == 0)
                 {
                     Level = ThisXP / UpLevelXp;
@@ -1514,6 +1517,7 @@ namespace SuperNewRoles.Roles
             public static bool IsUseVent;
             public static bool IsImpostorLight;
             public static bool IsMadJesterTaskClearWin;
+
             public static void ClearAndReload()
             {
                 MadJesterPlayer = new();
@@ -1521,6 +1525,16 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.MadJesterIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.getBool();
                 IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.getBool();
+                int Common = (int)CustomOptions.MadJesterCommonTask.getFloat();
+                int Long = (int)CustomOptions.MadJesterLongTask.getFloat();
+                int Short = (int)CustomOptions.MadJesterShortTask.getFloat();
+                int AllTask = Common + Long + Short;
+                if (AllTask == 0)
+                {
+                    Common = PlayerControl.GameOptions.NumCommonTasks;
+                    Long = PlayerControl.GameOptions.NumLongTasks;
+                    Short = PlayerControl.GameOptions.NumShortTasks;
+                }
             }
         }
         public static class FalseCharges
@@ -2445,6 +2459,19 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 NeetPlayer = new();
+            }
+        }
+        public static class FastMaker
+        {
+            public static List<PlayerControl> FastMakerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static bool IsCreatedMadMate;
+            public static List<int> CreatePlayers;
+            public static void ClearAndReload()
+            {
+                FastMakerPlayer = new List<PlayerControl>();
+                IsCreatedMadMate = false;
+                CreatePlayers = new();
             }
         }
         //新ロールクラス

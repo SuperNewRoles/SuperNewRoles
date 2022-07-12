@@ -9,19 +9,23 @@ namespace SuperNewRoles.Patch
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.MakePublic))]
         class MakePublicPatch
         {
-            public static bool Prefix()
+            public static bool Prefix(GameStartManager __instance)
             {
                 bool NameIncludeMod = SaveManager.PlayerName.ToLower().Contains("mod");
                 bool NameIncludeSNR = SaveManager.PlayerName.ToUpper().Contains("SNR");
                 bool NameIncludeSHR = SaveManager.PlayerName.ToUpper().Contains("SHR");
-                if (NameIncludeMod && !NameIncludeSNR)
+                if (NameIncludeMod && !NameIncludeSNR && !NameIncludeSHR)
                 {
                     SuperNewRolesPlugin.Logger.LogWarning("\"mod\"が名前に含まれている状態では公開部屋にすることはできません。");
+                    __instance.MakePublicButton.color = Palette.DisabledClear;
+                    __instance.privatePublicText.color = Palette.DisabledClear;
+                    PlayerControl.LocalPlayer.RpcSendChat(string.Format("Modが名前に含まれている状態では公開部屋にすることはできません。"));
                     return false;
                 }
                 else if (ModeHandler.isMode(ModeId.SuperHostRoles, false) && NameIncludeSNR && !NameIncludeSHR || ModeHandler.isMode(ModeId.SuperHostRoles, false) && NameIncludeMod && !NameIncludeSHR)
                 {
                     SuperNewRolesPlugin.Logger.LogWarning("SHRモードで\"SNR\"が名前に含まれている状態では公開部屋にすることはできません。");
+                    PlayerControl.LocalPlayer.RpcSendChat(string.Format("SHRモードでSNRが名前に含まれている状態では公開部屋にすることはできません。"));
                     return false;
                 }
                 return true;

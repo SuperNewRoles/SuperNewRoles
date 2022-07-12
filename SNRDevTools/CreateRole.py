@@ -62,23 +62,24 @@ while True:
                     }
                 }
             }\n        //セットクラス""".replace("ROLEID!!", rolename).replace("TEAM", ARolename))
-            temp = temp.replace("//プレイヤーカウント", """RoleId.ROLENAME => CustomOptions.ROLENAMEPlayerCount.getFloat(),\n                //プレイヤーカウント""".replace("ROLENAME", rolename))
+            temp = temp.replace(
+                "//プレイヤーカウント", """RoleId.ROLENAME => CustomOptions.ROLENAMEPlayerCount.getFloat(),\n                //プレイヤーカウント""".replace("ROLENAME", rolename))
             f.write(temp)
     with open(baseurl+"Roles\\RoleHelper.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()
         with open(baseurl+"Roles\\RoleHelper.cs", mode="w", encoding="utf-8") as f:
             temp = temp.replace("//ロールチェック",
-                                """else if (Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
+                                """else if (RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
             {
-                return CustomRPC.RoleId.ROLENAME;
+                return RoleId.ROLENAME;
             }\n            //ロールチェック""".replace("ROLENAME", rolename))
             temp = temp.replace("//ロールアド",
-                                """case (CustomRPC.RoleId.ROLENAME):
-                    Roles.RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
+                                """case (RoleId.ROLENAME):
+                    RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
                     break;\n                //ロールアド""".replace("ROLENAME", rolename))
             temp = temp.replace("//ロールリモベ",
-                                """case (CustomRPC.RoleId.ROLENAME):
-                    Roles.RoleClass.ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
+                                """case (RoleId.ROLENAME):
+                    RoleClass.ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
                     break;\n                //ロールリモベ""".replace("ROLENAME", rolename))
             if isneut:
                 temp = temp.replace("//第三か",
@@ -94,9 +95,9 @@ while True:
     with open(baseurl+"Intro\\IntroDate.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()
         with open(baseurl+"Intro\\IntroDate.cs", mode="w", encoding="utf-8") as f:
-            temp = temp.replace("//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME);
+            temp = temp.replace("//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME);
         //イントロオブジェ""".replace("ROLENAME", rolename))
-            temp = temp.replace("//イントロ検知", """case (CustomRPC.RoleId.ROLENAME):
+            temp = temp.replace("//イントロ検知", """case (RoleId.ROLENAME):
                     return ROLENAMEIntro;
                 //イントロ検知""".replace("ROLENAME", rolename))
             f.write(temp)

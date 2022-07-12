@@ -8,7 +8,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Minimalist))
+                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(RoleId.Minimalist))
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Minimalist.KillCoolTime);
                 }
@@ -111,6 +111,11 @@ namespace SuperNewRoles.Roles
                         FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.enabled = false;
                         FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
                     }
+                }
+                else if (role == RoleId.FastMaker && !RoleClass.FastMaker.IsCreatedMadMate)//マッドが作られていないとき
+                {
+                    //純正キルボタン削除
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
                 }
             }
         }

@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using SuperNewRoles.Roles;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles
 {
@@ -14,7 +12,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             public static void Postfix(HudManager __instance, [HarmonyArgument(0)] bool isActive)
             {
                 if (!AmongUsClient.Instance.AmHost) return;
-                if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Samurai))
+                if (PlayerControl.LocalPlayer.isRole(RoleId.Samurai))
                 {
                     __instance.SabotageButton.ToggleVisible(visible: RoleClass.Samurai.UseSabo);
                     __instance.ImpostorVentButton.ToggleVisible(visible: RoleClass.Samurai.UseVent);

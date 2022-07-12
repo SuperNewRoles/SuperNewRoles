@@ -162,7 +162,8 @@ namespace SuperNewRoles.Patch
                     RoleCommand(SendTime: sendtime, target: target);
                 }
                 return false;
-            } else
+            }
+            else
             {
                 return true;
             }
@@ -283,7 +284,7 @@ namespace SuperNewRoles.Patch
                 if (target == null)
                 {
                     string name = PlayerControl.LocalPlayer.getDefaultName();
-                    AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander+rolename, text, name));
+                    AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name));
                     return;
                 }
                 if (target.PlayerId != 0)
@@ -293,7 +294,7 @@ namespace SuperNewRoles.Patch
                 else
                 {
                     string name = PlayerControl.LocalPlayer.getDefaultName();
-                    PlayerControl.LocalPlayer.SetName(SNRCommander+"\n"+rolename);
+                    PlayerControl.LocalPlayer.SetName(SNRCommander + "\n" + rolename);
                     FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
                     PlayerControl.LocalPlayer.SetName(name);
                 }
@@ -398,7 +399,7 @@ namespace SuperNewRoles.Patch
                 return false;
             GameData.PlayerInfo data1 = CachedPlayer.LocalPlayer.Data;
             GameData.PlayerInfo data2 = sourcePlayer.Data;
-            if (data2 == null || data1 == null || data2.IsDead && (!PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceRedRidingHood)))
+            if (data2 == null || data1 == null || data2.IsDead && (!PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.NiceRedRidingHood)))
                 return false;
             if (__instance.chatBubPool.NotInUse == 0)
                 __instance.chatBubPool.ReclaimOldest();

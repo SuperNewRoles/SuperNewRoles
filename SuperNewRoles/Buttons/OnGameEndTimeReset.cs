@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using static SuperNewRoles.Roles.EvilGambler;
 
 namespace SuperNewRoles.Buttons
 {

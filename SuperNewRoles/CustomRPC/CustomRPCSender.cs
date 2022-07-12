@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HarmonyLib;
 using Hazel;
 using InnerNet;
 using UnhollowerBaseLib;
@@ -10,7 +6,7 @@ using UnhollowerBaseLib;
 
 namespace SuperNewRoles
 {
-    
+
     public class CustomRpcSender
     {
         public MessageWriter stream;
