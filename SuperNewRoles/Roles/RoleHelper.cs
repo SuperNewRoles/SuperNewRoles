@@ -1289,8 +1289,7 @@ namespace SuperNewRoles
             }
             try
             {
-                if (RoleClass.GhostMechanic.GhostMechanicPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.GhostMechanic;
+                if (RoleClass.GhostMechanic.GhostMechanicPlayer.IsCheckListPlayerControl(player)) return RoleId.GhostMechanic;
                 //ここが幽霊役職
             }
             catch { }
@@ -1342,242 +1341,124 @@ namespace SuperNewRoles
             }
             try
             {
-                if (RoleClass.SoothSayer.SoothSayerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.SoothSayer;
-                else if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Jester;
-                else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Lighter;
-                else if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.EvilLighter;
-                else if (RoleClass.EvilScientist.EvilScientistPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.EvilScientist;
-                else if (RoleClass.Sheriff.SheriffPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Sheriff;
-                else if (RoleClass.MeetingSheriff.MeetingSheriffPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.MeetingSheriff;
-                else if (RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Jackal;
-                else if (RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Sidekick;
-                else if (RoleClass.Teleporter.TeleporterPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Teleporter;
-                else if (RoleClass.SpiritMedium.SpiritMediumPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.SpiritMedium;
-                else if (RoleClass.SpeedBooster.SpeedBoosterPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.SpeedBooster;
-                else if (RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.EvilSpeedBooster;
-                else if (RoleClass.Tasker.TaskerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Tasker;
-                else if (RoleClass.Doorr.DoorrPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Doorr;
-                else if (RoleClass.EvilDoorr.EvilDoorrPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.EvilDoorr;
-                else if (RoleClass.Shielder.ShielderPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Shielder;
-                else if (RoleClass.Shielder.ShielderPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Shielder;
-                else if (RoleClass.Speeder.SpeederPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Speeder;
-                else if (RoleClass.Freezer.FreezerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Freezer;
-                else if (RoleClass.Guesser.GuesserPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Guesser;
-                else if (RoleClass.EvilGuesser.EvilGuesserPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.EvilGuesser;
-                else if (RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Vulture;
-                else if (RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.NiceScientist;
-                else if (RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Clergyman;
-                else if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player))
-                    return RoleId.MadMate;
-                else if (RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Bait;
-                else if (RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.HomeSecurityGuard;
-                else if (RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.StuntMan;
-                else if (RoleClass.Moving.MovingPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Moving;
-                else if (RoleClass.Opportunist.OpportunistPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Opportunist;
-                else if (RoleClass.NiceGambler.NiceGamblerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.NiceGambler;
-                else if (RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.EvilGambler;
-                else if (RoleClass.Bestfalsecharge.BestfalsechargePlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Bestfalsecharge;
-                else if (RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Researcher;
-                else if (RoleClass.SelfBomber.SelfBomberPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.SelfBomber;
-                else if (RoleClass.God.GodPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.God;
-                else if (RoleClass.AllCleaner.AllCleanerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.AllCleaner;
-                else if (RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.NiceNekomata;
-                else if (RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.EvilNekomata;
-                else if (RoleClass.JackalFriends.JackalFriendsPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.JackalFriends;
-                else if (RoleClass.Doctor.DoctorPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Doctor;
-                else if (RoleClass.CountChanger.CountChangerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.CountChanger;
-                else if (RoleClass.Pursuer.PursuerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Pursuer;
-                else if (RoleClass.Minimalist.MinimalistPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Minimalist;
-                else if (RoleClass.Hawk.HawkPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Hawk;
-                else if (RoleClass.Egoist.EgoistPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Egoist;
-                else if (RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.NiceRedRidingHood;
-                else if (RoleClass.EvilEraser.EvilEraserPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.EvilEraser;
-                else if (RoleClass.Workperson.WorkpersonPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Workperson;
-                else if (RoleClass.Magaziner.MagazinerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Magaziner;
-                else if (RoleClass.Mayor.MayorPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Mayor;
-                else if (RoleClass.truelover.trueloverPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.truelover;
-                else if (RoleClass.Technician.TechnicianPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Technician;
-                else if (RoleClass.SerialKiller.SerialKillerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.SerialKiller;
-                else if (RoleClass.OverKiller.OverKillerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.OverKiller;
-                else if (RoleClass.Levelinger.LevelingerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Levelinger;
-                else if (RoleClass.EvilMoving.EvilMovingPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.EvilMoving;
-                else if (RoleClass.Amnesiac.AmnesiacPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Amnesiac;
-                else if (RoleClass.SideKiller.SideKillerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.SideKiller;
-                else if (RoleClass.SideKiller.MadKillerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.MadKiller;
-                else if (RoleClass.Survivor.SurvivorPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Survivor;
-                else if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.MadMayor;
-                else if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.MadStuntMan;
-                else if (RoleClass.NiceHawk.NiceHawkPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.NiceHawk;
-                else if (RoleClass.Bakery.BakeryPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Bakery;
-                else if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.MadHawk;
-                else if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.MadJester;
-                else if (RoleClass.FalseCharges.FalseChargesPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.FalseCharges;
-                else if (RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.NiceTeleporter;
-                else if (RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.NiceTeleporter;
-                else if (RoleClass.Celebrity.CelebrityPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Celebrity;
-                else if (RoleClass.Nocturnality.NocturnalityPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Nocturnality;
-                else if (RoleClass.Observer.ObserverPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Observer;
-                else if (RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Vampire;
-                else if (RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.DarkKiller;
-                else if (RoleClass.Seer.SeerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Seer;
-                else if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.MadSeer;
-                else if (RoleClass.EvilSeer.EvilSeerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.EvilSeer;
-                else if (RoleClass.RemoteSheriff.RemoteSheriffPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.RemoteSheriff;
-                else if (RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Vampire;
-                else if (RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.DarkKiller;
-                else if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Fox;
-                else if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.TeleportingJackal;
-                else if (RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.MadMaker;
-                else if (RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.DarkKiller;
-                else if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Fox;
-                else if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.TeleportingJackal;
-                else if (RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.MadMaker;
-                else if (RoleClass.Demon.DemonPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Demon;
-                else if (RoleClass.TaskManager.TaskManagerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.TaskManager;
-                else if (RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.SeerFriends;
-                else if (RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.JackalSeer;
-                else if (RoleClass.JackalSeer.SidekickSeerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.SidekickSeer;
-                else if (RoleClass.Assassin.AssassinPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Assassin;
-                else if (RoleClass.Marine.MarinePlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Marine;
-                else if (RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.SeerFriends;
-                else if (RoleClass.Arsonist.ArsonistPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Arsonist;
-                else if (RoleClass.Chief.ChiefPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Chief;
-                else if (RoleClass.Cleaner.CleanerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Cleaner;
-                else if (RoleClass.Samurai.SamuraiPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Samurai;
-                else if (RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.MadCleaner;
-                else if (RoleClass.MayorFriends.MayorFriendsPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.MayorFriends;
-                else if (RoleClass.VentMaker.VentMakerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.VentMaker;
-                else if (RoleClass.EvilHacker.EvilHackerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.EvilHacker;
-                else if (RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.HauntedWolf;
-                else if (RoleClass.PositionSwapper.PositionSwapperPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.PositionSwapper;
-                else if (RoleClass.Tuna.TunaPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Tuna;
-                else if (RoleClass.Mafia.MafiaPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Mafia;
-                else if (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.BlackCat;
-                else if (RoleClass.SecretlyKiller.SecretlyKillerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.SecretlyKiller;
-                else if (RoleClass.Spy.SpyPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Spy;
-                else if (RoleClass.Kunoichi.KunoichiPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Kunoichi;
-                else if (RoleClass.DoubleKiller.DoubleKillerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.DoubleKiller;
-                else if (RoleClass.Smasher.SmasherPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Smasher;
-                else if (RoleClass.SuicideWisher.SuicideWisherPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.SuicideWisher;
-                else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.Neet;
-                else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player))
-                    return RoleId.FastMaker;
+                if (RoleClass.SoothSayer.SoothSayerPlayer.IsCheckListPlayerControl(player)) return RoleId.SoothSayer;
+                else if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(player)) return RoleId.Jester;
+                else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player)) return RoleId.Lighter;
+                else if (RoleClass.EvilLighter.EvilLighterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilLighter;
+                else if (RoleClass.EvilScientist.EvilScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilScientist;
+                else if (RoleClass.Sheriff.SheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.Sheriff;
+                else if (RoleClass.MeetingSheriff.MeetingSheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.MeetingSheriff;
+                else if (RoleClass.Jackal.JackalPlayer.IsCheckListPlayerControl(player)) return RoleId.Jackal;
+                else if (RoleClass.Jackal.SidekickPlayer.IsCheckListPlayerControl(player)) return RoleId.Sidekick;
+                else if (RoleClass.Teleporter.TeleporterPlayer.IsCheckListPlayerControl(player)) return RoleId.Teleporter;
+                else if (RoleClass.SpiritMedium.SpiritMediumPlayer.IsCheckListPlayerControl(player)) return RoleId.SpiritMedium;
+                else if (RoleClass.SpeedBooster.SpeedBoosterPlayer.IsCheckListPlayerControl(player)) return RoleId.SpeedBooster;
+                else if (RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilSpeedBooster;
+                else if (RoleClass.Tasker.TaskerPlayer.IsCheckListPlayerControl(player)) return RoleId.Tasker;
+                else if (RoleClass.Doorr.DoorrPlayer.IsCheckListPlayerControl(player)) return RoleId.Doorr;
+                else if (RoleClass.EvilDoorr.EvilDoorrPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilDoorr;
+                else if (RoleClass.Shielder.ShielderPlayer.IsCheckListPlayerControl(player)) return RoleId.Shielder;
+                else if (RoleClass.Shielder.ShielderPlayer.IsCheckListPlayerControl(player)) return RoleId.Shielder;
+                else if (RoleClass.Speeder.SpeederPlayer.IsCheckListPlayerControl(player)) return RoleId.Speeder;
+                else if (RoleClass.Freezer.FreezerPlayer.IsCheckListPlayerControl(player)) return RoleId.Freezer;
+                else if (RoleClass.Guesser.GuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.Guesser;
+                else if (RoleClass.EvilGuesser.EvilGuesserPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilGuesser;
+                else if (RoleClass.Vulture.VulturePlayer.IsCheckListPlayerControl(player)) return RoleId.Vulture;
+                else if (RoleClass.NiceScientist.NiceScientistPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceScientist;
+                else if (RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(player)) return RoleId.Clergyman;
+                else if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(player)) return RoleId.MadMate;
+                else if (RoleClass.Bait.BaitPlayer.IsCheckListPlayerControl(player)) return RoleId.Bait;
+                else if (RoleClass.HomeSecurityGuard.HomeSecurityGuardPlayer.IsCheckListPlayerControl(player)) return RoleId.HomeSecurityGuard;
+                else if (RoleClass.StuntMan.StuntManPlayer.IsCheckListPlayerControl(player)) return RoleId.StuntMan;
+                else if (RoleClass.Moving.MovingPlayer.IsCheckListPlayerControl(player)) return RoleId.Moving;
+                else if (RoleClass.Opportunist.OpportunistPlayer.IsCheckListPlayerControl(player)) return RoleId.Opportunist;
+                else if (RoleClass.NiceGambler.NiceGamblerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceGambler;
+                else if (RoleClass.EvilGambler.EvilGamblerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilGambler;
+                else if (RoleClass.Bestfalsecharge.BestfalsechargePlayer.IsCheckListPlayerControl(player)) return RoleId.Bestfalsecharge;
+                else if (RoleClass.Researcher.ResearcherPlayer.IsCheckListPlayerControl(player)) return RoleId.Researcher;
+                else if (RoleClass.SelfBomber.SelfBomberPlayer.IsCheckListPlayerControl(player)) return RoleId.SelfBomber;
+                else if (RoleClass.God.GodPlayer.IsCheckListPlayerControl(player)) return RoleId.God;
+                else if (RoleClass.AllCleaner.AllCleanerPlayer.IsCheckListPlayerControl(player)) return RoleId.AllCleaner;
+                else if (RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceNekomata;
+                else if (RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilNekomata;
+                else if (RoleClass.JackalFriends.JackalFriendsPlayer.IsCheckListPlayerControl(player)) return RoleId.JackalFriends;
+                else if (RoleClass.Doctor.DoctorPlayer.IsCheckListPlayerControl(player)) return RoleId.Doctor;
+                else if (RoleClass.CountChanger.CountChangerPlayer.IsCheckListPlayerControl(player)) return RoleId.CountChanger;
+                else if (RoleClass.Pursuer.PursuerPlayer.IsCheckListPlayerControl(player)) return RoleId.Pursuer;
+                else if (RoleClass.Minimalist.MinimalistPlayer.IsCheckListPlayerControl(player)) return RoleId.Minimalist;
+                else if (RoleClass.Hawk.HawkPlayer.IsCheckListPlayerControl(player)) return RoleId.Hawk;
+                else if (RoleClass.Egoist.EgoistPlayer.IsCheckListPlayerControl(player)) return RoleId.Egoist;
+                else if (RoleClass.NiceRedRidingHood.NiceRedRidingHoodPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceRedRidingHood;
+                else if (RoleClass.EvilEraser.EvilEraserPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilEraser;
+                else if (RoleClass.Workperson.WorkpersonPlayer.IsCheckListPlayerControl(player)) return RoleId.Workperson;
+                else if (RoleClass.Magaziner.MagazinerPlayer.IsCheckListPlayerControl(player)) return RoleId.Magaziner;
+                else if (RoleClass.Mayor.MayorPlayer.IsCheckListPlayerControl(player)) return RoleId.Mayor;
+                else if (RoleClass.truelover.trueloverPlayer.IsCheckListPlayerControl(player)) return RoleId.truelover;
+                else if (RoleClass.Technician.TechnicianPlayer.IsCheckListPlayerControl(player)) return RoleId.Technician;
+                else if (RoleClass.SerialKiller.SerialKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.SerialKiller;
+                else if (RoleClass.OverKiller.OverKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.OverKiller;
+                else if (RoleClass.Levelinger.LevelingerPlayer.IsCheckListPlayerControl(player)) return RoleId.Levelinger;
+                else if (RoleClass.EvilMoving.EvilMovingPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilMoving;
+                else if (RoleClass.Amnesiac.AmnesiacPlayer.IsCheckListPlayerControl(player)) return RoleId.Amnesiac;
+                else if (RoleClass.SideKiller.SideKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.SideKiller;
+                else if (RoleClass.SideKiller.MadKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadKiller;
+                else if (RoleClass.Survivor.SurvivorPlayer.IsCheckListPlayerControl(player)) return RoleId.Survivor;
+                else if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(player)) return RoleId.MadMayor;
+                else if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(player)) return RoleId.MadStuntMan;
+                else if (RoleClass.NiceHawk.NiceHawkPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceHawk;
+                else if (RoleClass.Bakery.BakeryPlayer.IsCheckListPlayerControl(player)) return RoleId.Bakery;
+                else if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(player)) return RoleId.MadHawk;
+                else if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(player)) return RoleId.MadJester;
+                else if (RoleClass.FalseCharges.FalseChargesPlayer.IsCheckListPlayerControl(player)) return RoleId.FalseCharges;
+                else if (RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceTeleporter;
+                else if (RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceTeleporter;
+                else if (RoleClass.Celebrity.CelebrityPlayer.IsCheckListPlayerControl(player)) return RoleId.Celebrity;
+                else if (RoleClass.Nocturnality.NocturnalityPlayer.IsCheckListPlayerControl(player)) return RoleId.Nocturnality;
+                else if (RoleClass.Observer.ObserverPlayer.IsCheckListPlayerControl(player)) return RoleId.Observer;
+                else if (RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player)) return RoleId.Vampire;
+                else if (RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.DarkKiller;
+                else if (RoleClass.Seer.SeerPlayer.IsCheckListPlayerControl(player)) return RoleId.Seer;
+                else if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadSeer;
+                else if (RoleClass.EvilSeer.EvilSeerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilSeer;
+                else if (RoleClass.RemoteSheriff.RemoteSheriffPlayer.IsCheckListPlayerControl(player)) return RoleId.RemoteSheriff;
+                else if (RoleClass.Vampire.VampirePlayer.IsCheckListPlayerControl(player)) return RoleId.Vampire;
+                else if (RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.DarkKiller;
+                else if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player)) return RoleId.Fox;
+                else if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.TeleportingJackal;
+                else if (RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadMaker;
+                else if (RoleClass.DarkKiller.DarkKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.DarkKiller;
+                else if (RoleClass.Fox.FoxPlayer.IsCheckListPlayerControl(player)) return RoleId.Fox;
+                else if (RoleClass.TeleportingJackal.TeleportingJackalPlayer.IsCheckListPlayerControl(player)) return RoleId.TeleportingJackal;
+                else if (RoleClass.MadMaker.MadMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadMaker;
+                else if (RoleClass.Demon.DemonPlayer.IsCheckListPlayerControl(player)) return RoleId.Demon;
+                else if (RoleClass.TaskManager.TaskManagerPlayer.IsCheckListPlayerControl(player)) return RoleId.TaskManager;
+                else if (RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player)) return RoleId.SeerFriends;
+                else if (RoleClass.JackalSeer.JackalSeerPlayer.IsCheckListPlayerControl(player)) return RoleId.JackalSeer;
+                else if (RoleClass.JackalSeer.SidekickSeerPlayer.IsCheckListPlayerControl(player)) return RoleId.SidekickSeer;
+                else if (RoleClass.Assassin.AssassinPlayer.IsCheckListPlayerControl(player)) return RoleId.Assassin;
+                else if (RoleClass.Marine.MarinePlayer.IsCheckListPlayerControl(player)) return RoleId.Marine;
+                else if (RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(player)) return RoleId.SeerFriends;
+                else if (RoleClass.Arsonist.ArsonistPlayer.IsCheckListPlayerControl(player)) return RoleId.Arsonist;
+                else if (RoleClass.Chief.ChiefPlayer.IsCheckListPlayerControl(player)) return RoleId.Chief;
+                else if (RoleClass.Cleaner.CleanerPlayer.IsCheckListPlayerControl(player)) return RoleId.Cleaner;
+                else if (RoleClass.Samurai.SamuraiPlayer.IsCheckListPlayerControl(player)) return RoleId.Samurai;
+                else if (RoleClass.MadCleaner.MadCleanerPlayer.IsCheckListPlayerControl(player)) return RoleId.MadCleaner;
+                else if (RoleClass.MayorFriends.MayorFriendsPlayer.IsCheckListPlayerControl(player)) return RoleId.MayorFriends;
+                else if (RoleClass.VentMaker.VentMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.VentMaker;
+                else if (RoleClass.EvilHacker.EvilHackerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilHacker;
+                else if (RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(player)) return RoleId.HauntedWolf;
+                else if (RoleClass.PositionSwapper.PositionSwapperPlayer.IsCheckListPlayerControl(player)) return RoleId.PositionSwapper;
+                else if (RoleClass.Tuna.TunaPlayer.IsCheckListPlayerControl(player)) return RoleId.Tuna;
+                else if (RoleClass.Mafia.MafiaPlayer.IsCheckListPlayerControl(player)) return RoleId.Mafia;
+                else if (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(player)) return RoleId.BlackCat;
+                else if (RoleClass.SecretlyKiller.SecretlyKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.SecretlyKiller;
+                else if (RoleClass.Spy.SpyPlayer.IsCheckListPlayerControl(player)) return RoleId.Spy;
+                else if (RoleClass.Kunoichi.KunoichiPlayer.IsCheckListPlayerControl(player)) return RoleId.Kunoichi;
+                else if (RoleClass.DoubleKiller.DoubleKillerPlayer.IsCheckListPlayerControl(player)) return RoleId.DoubleKiller;
+                else if (RoleClass.Smasher.SmasherPlayer.IsCheckListPlayerControl(player)) return RoleId.Smasher;
+                else if (RoleClass.SuicideWisher.SuicideWisherPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicideWisher;
+                else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
+                else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 //ロールチェック
             }
             catch (Exception e)
