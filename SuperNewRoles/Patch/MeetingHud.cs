@@ -106,7 +106,7 @@ namespace SuperNewRoles.Patch
                         foreach (var ps in __instance.playerStates)
                         {
                             PlayerControl player = ModHelpers.playerById(ps.TargetPlayerId);
-                            if (!ps.AmDead && !ps.DidVote && (player.isImpostor() || (!player.isRole(CustomRPC.RoleId.DefaultRole) && !player.isRole(CustomRPC.RoleId.MadMate) && !player.isRole(CustomRPC.RoleId.SpiritMedium) && !(player.PlayerId == Mode.Werewolf.main.HunterExilePlayer.PlayerId && Mode.Werewolf.main.HunterPlayers.IsCheckListPlayerControl(player)))))
+                            if (!ps.AmDead && !ps.DidVote && (player.isImpostor() || (!player.isRole(RoleId.DefaultRole) && !player.isRole(RoleId.MadMate) && !player.isRole(RoleId.SpiritMedium) && !(player.PlayerId == Mode.Werewolf.main.HunterExilePlayer.PlayerId && Mode.Werewolf.main.HunterPlayers.IsCheckListPlayerControl(player)))))
                                 return false;
                         }
                         for (var i = 0; i < __instance.playerStates.Length; i++)
@@ -150,7 +150,7 @@ namespace SuperNewRoles.Patch
                             PlayerVoteArea ps = __instance.playerStates[i];
                             if (ModeHandler.isMode(ModeId.BattleRoyal))
                             {
-                                if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(CustomRPC.RoleId.Sheriff)) { }
+                                if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Sheriff)) { }
                             }
                             else
                             {
@@ -302,7 +302,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (ModeHandler.isMode(ModeId.BattleRoyal))
                         {
-                            if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(CustomRPC.RoleId.Sheriff)) { }
+                            if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Sheriff)) { }
                         }
                         else
                         {

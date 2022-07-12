@@ -230,15 +230,15 @@ namespace SuperNewRoles.Roles
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールチェック",
                                 """else if (Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
                 {
-                    return CustomRPC.RoleId.ROLENAME;
+                    return RoleId.ROLENAME;
                 }\n                //ロールチェック""".replace("ROLENAME",MainClass.GetInput("RoleName")))
 
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールアド",
-                                """case (CustomRPC.RoleId.ROLENAME):
+                                """case (RoleId.ROLENAME):
                     Roles.RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
                     break;\n                //ロールアド""".replace("ROLENAME",MainClass.GetInput("RoleName")))
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールリモベ",
-                                """case (CustomRPC.RoleId.ROLENAME):
+                                """case (RoleId.ROLENAME):
                     Roles.RoleClass.ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
                     break;\n                //ロールリモベ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("Neut")):
@@ -273,15 +273,15 @@ namespace SuperNewRoles.Roles
 
         # Intro/IntroDate.cs
         if (MainClass.GetBool("Impo")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Impostor);
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Impostor);
             //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
         elif (MainClass.GetBool("Crew")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Crewmate);
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate);
             //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
         elif (MainClass.GetBool("Neut")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Neutral);
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Neutral);
             //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
-            '''MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロ検知","""case (CustomRPC.RoleId.ROLENAME):
+            '''MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロ検知","""case (RoleId.ROLENAME):
                     return ROLENAMEIntro;
                 //イントロ検知""".replace("ROLENAME",MainClass.GetInput("RoleName")))'''#⇐なにこれ？
         elif (MainClass.GetBool("TeamOne")):
@@ -289,7 +289,7 @@ namespace SuperNewRoles.Roles
         elif (MainClass.GetBool("TeamTwo")):
             print()
         elif (MainClass.GetBool("TeamGhost")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Crewmate, true);
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate, true);
             //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
 
 
@@ -365,7 +365,7 @@ namespace SuperNewRoles.Roles
                     MainClass.WriteCodes("Roles/RoleHelper.cs", "//ここが幽霊役職",
                 """if (SuperNewRoles.Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
                     {
-                        return SuperNewRoles.CustomRPC.RoleId.ROLENAME;
+                        return SuperNewRoles.RoleId.ROLENAME;
                     }\n                //ここが幽霊役職""".replace("ROLENAME", MainClass.GetInput("RoleName")))
                 MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベントが使える",
                 """case RoleId.ROLENAME:

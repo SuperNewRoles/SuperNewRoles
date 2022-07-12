@@ -1,3 +1,5 @@
+using SuperNewRoles.CustomRPC;
+
 namespace SuperNewRoles.Roles
 {
     class IntroHandler
@@ -13,7 +15,7 @@ namespace SuperNewRoles.Roles
             {
                 RoleClass.IsStart = true;
             }, time, "IsStartOn");
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Pursuer))
+            if (PlayerControl.LocalPlayer.isRole(RoleId.Pursuer))
             {
                 RoleClass.Pursuer.arrow.arrow.SetActive(false);
                 RoleClass.Pursuer.arrow.arrow.SetActive(true);

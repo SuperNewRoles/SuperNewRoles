@@ -1,6 +1,7 @@
 using HarmonyLib;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -12,13 +13,13 @@ namespace SuperNewRoles.Roles
             {
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
-                    if (__instance.isRole(CustomRPC.RoleId.EvilGambler))
+                    if (__instance.isRole(RoleId.EvilGambler))
                     {
                         SyncSetting.GamblersetCool(__instance);
                     }
                     return;
                 }
-                else if (__instance == PlayerControl.LocalPlayer && __instance.isRole(CustomRPC.RoleId.EvilGambler))
+                else if (__instance == PlayerControl.LocalPlayer && __instance.isRole(RoleId.EvilGambler))
                 {
                     if (RoleClass.EvilGambler.GetSuc())
                     {

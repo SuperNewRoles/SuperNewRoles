@@ -1,4 +1,5 @@
 using SuperNewRoles.Roles;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles
 {
@@ -6,11 +7,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
     {
         public static void MurderPostfix(PlayerControl __instance, PlayerControl target)
         {
-            if (target.isRole(CustomRPC.RoleId.Bait) && (!__instance.isRole(CustomRPC.RoleId.Minimalist) || RoleClass.Minimalist.UseReport))
+            if (target.isRole(RoleId.Bait) && (!__instance.isRole(RoleId.Minimalist) || RoleClass.Minimalist.UseReport))
             {
                 new LateTask(() =>
                 {
-                    if (!(__instance.isRole(CustomRPC.RoleId.Minimalist) && !RoleClass.Minimalist.UseReport))
+                    if (!(__instance.isRole(RoleId.Minimalist) && !RoleClass.Minimalist.UseReport))
                     {
                         RoleClass.Bait.ReportedPlayer.Add(target.PlayerId);
                         __instance.CmdReportDeadBody(target.Data);

@@ -269,7 +269,7 @@ namespace SuperNewRoles.Patches
                     Kunoichi.KillButtonClick();
                     return false;
                 }
-                if (!(__instance.currentTarget.isRole(CustomRPC.RoleId.Bait) || __instance.currentTarget.isRole(CustomRPC.RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
+                if (!(__instance.currentTarget.isRole(RoleId.Bait) || __instance.currentTarget.isRole(RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.isRole(RoleId.Vampire))
                 {
                     PlayerControl.LocalPlayer.killTimer = RoleHelpers.getCoolTime(PlayerControl.LocalPlayer);
                     RoleClass.Vampire.target = __instance.currentTarget;
@@ -555,7 +555,7 @@ namespace SuperNewRoles.Patches
                                 SuperNewRolesPlugin.Logger.LogInfo("作ったので普通のキル");
                                 __instance.RpcMurderPlayer(target);
                             }
-                                break;
+                            break;
                         case RoleId.Jackal:
                             if (!RoleClass.Jackal.IsCreatedFriend && RoleClass.Jackal.CanCreateFriend)//まだ作ってなくて、設定が有効の時
                             {

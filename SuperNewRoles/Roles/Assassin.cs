@@ -127,7 +127,7 @@ namespace SuperNewRoles.Roles
                 ShipStatus.RpcEndGame(GameOverReason.ImpostorByVote, false);
             }
             var exile = Mode.SuperHostRoles.main.RealExiled;
-            if (ModeHandler.isMode(ModeId.SuperHostRoles) && exile != null && exile.isRole(CustomRPC.RoleId.Assassin))
+            if (ModeHandler.isMode(ModeId.SuperHostRoles) && exile != null && exile.isRole(RoleId.Assassin))
             {
                 if (AmongUsClient.Instance.AmHost)
                 {

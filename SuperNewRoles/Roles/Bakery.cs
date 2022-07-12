@@ -1,5 +1,6 @@
 using HarmonyLib;
 using SuperNewRoles.Mode;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -29,7 +30,7 @@ namespace SuperNewRoles.Roles
             string printStr;
 
             var exile = ModeHandler.isMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.main.RealExiled : exiled.Object;
-            if (exile != null && exile.isRole(CustomRPC.RoleId.Marine))
+            if (exile != null && exile.isRole(RoleId.Marine))
             {
                 printStr = player.Data.PlayerName + ModTranslation.getString("AssassinSucsess");
                 RoleClass.Assassin.IsImpostorWin = true;

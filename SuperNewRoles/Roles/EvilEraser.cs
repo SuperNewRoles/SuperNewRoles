@@ -1,5 +1,6 @@
 using Hazel;
 using SuperNewRoles.Helpers;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -20,7 +21,7 @@ namespace SuperNewRoles.Roles
         public static bool IsBlock(BlockTypes blocktype, PlayerControl player = null)
         {
             if (player == null) player = PlayerControl.LocalPlayer;
-            if (!player.isRole(CustomRPC.RoleId.EvilEraser)) return false;
+            if (!player.isRole(RoleId.EvilEraser)) return false;
             if (RoleClass.EvilEraser.Counts.ContainsKey(player.PlayerId) && RoleClass.EvilEraser.Counts[player.PlayerId] <= 0)
             {
                 return false;
@@ -120,7 +121,7 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
-                public static bool IsWinNeetGuard = false;
+        public static bool IsWinNeetGuard = false;
         public static bool IsNeetWinGuard()
         {
             bool IsAlive = false;

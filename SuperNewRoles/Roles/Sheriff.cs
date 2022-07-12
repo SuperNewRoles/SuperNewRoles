@@ -1,5 +1,6 @@
 using System;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -7,7 +8,7 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetKillCoolDown()
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.RemoteSheriff))
+            if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
             {
                 HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
                 HudManagerStartPatch.SheriffKillButton.Timer = RoleClass.RemoteSheriff.CoolTime;
@@ -18,7 +19,8 @@ namespace SuperNewRoles.Roles
                 if (RoleClass.Chief.SheriffPlayer.Contains(CachedPlayer.LocalPlayer.PlayerId))
                 {
                     HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Chief.CoolTime;
-                } else
+                }
+                else
                 {
                     HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.Sheriff.CoolTime;
                 }
@@ -33,7 +35,7 @@ namespace SuperNewRoles.Roles
             if (Target.isFriendRole() && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isNeutral() && RoleClass.Sheriff.IsNeutralKill) return true;
             if (RoleClass.Sheriff.IsLoversKill && Target.IsLovers()) return true;
-            if (Target.isRole(CustomRPC.RoleId.HauntedWolf)) return true;
+            if (Target.isRole(RoleId.HauntedWolf)) return true;
             return false;
         }
         public static bool IsChiefSheriffKill(PlayerControl Target)
@@ -44,7 +46,7 @@ namespace SuperNewRoles.Roles
             if (Target.isFriendRole() && RoleClass.Chief.IsMadRoleKill) return true;
             if (Target.isNeutral() && RoleClass.Chief.IsNeutralKill) return true;
             if (RoleClass.Chief.IsLoversKill && Target.IsLovers()) return true;
-            if (Target.isRole(CustomRPC.RoleId.HauntedWolf)) return true;
+            if (Target.isRole(RoleId.HauntedWolf)) return true;
             return false;
         }
         public static bool IsRemoteSheriffKill(PlayerControl Target)
@@ -55,12 +57,12 @@ namespace SuperNewRoles.Roles
             if (Target.isFriendRole() && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
             if (Target.isNeutral() && RoleClass.RemoteSheriff.IsNeutralKill) return true;
             if (RoleClass.RemoteSheriff.IsLoversKill && Target.IsLovers()) return true;
-            if (Target.isRole(CustomRPC.RoleId.HauntedWolf)) return true;
+            if (Target.isRole(RoleId.HauntedWolf)) return true;
             return false;
         }
         public static bool IsSheriff(PlayerControl Player)
         {
-            if (Player.isRole(CustomRPC.RoleId.Sheriff) || Player.isRole(CustomRPC.RoleId.RemoteSheriff))
+            if (Player.isRole(RoleId.Sheriff) || Player.isRole(RoleId.RemoteSheriff))
             {
                 return true;
             }
@@ -71,14 +73,14 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSheriffButton(PlayerControl Player)
         {
-            if (Player.isRole(CustomRPC.RoleId.Sheriff))
+            if (Player.isRole(RoleId.Sheriff))
             {
                 if (RoleClass.Sheriff.KillMaxCount > 0)
                 {
                     return true;
                 }
             }
-            else if (Player.isRole(CustomRPC.RoleId.RemoteSheriff))
+            else if (Player.isRole(RoleId.RemoteSheriff))
             {
                 if (RoleClass.RemoteSheriff.KillMaxCount > 0)
                 {

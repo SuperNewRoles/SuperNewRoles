@@ -48,7 +48,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             public void Prefix()
             {
-                if (ModeHandler.isMode(ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Sheriff)) { }
+                if (ModeHandler.isMode(ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.isRole(RoleId.Sheriff)) { }
             }
         }*/
         //public static Dictionary<byte, float> UpdateTime;

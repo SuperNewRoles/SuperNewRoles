@@ -6,6 +6,7 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.BattleRoyal
@@ -144,7 +145,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     return false;
                 }
                 if ((ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.HideAndSeek) || ModeHandler.isMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
-                if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.isRole(CustomRPC.RoleId.MadMate))
+                if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.isRole(RoleId.MadMate))
                 {
                     return false;
                 }
@@ -163,9 +164,9 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 if (!RoleHelpers.IsSabotage())
                 {
                     new LateTask(() =>
-                    { 
-                    foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
                     {
+                        foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
+                        {
                             if (p.inVent && p.isAlive() && VentData.ContainsKey(p.PlayerId) && VentData[p.PlayerId] != null)
                             {
                                 p.MyPhysics.RpcBootFromVent((int)VentData[p.PlayerId]);
@@ -173,7 +174,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         }
                     }, 0.1f, "TecExitVent");
                 }
-                SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName+" => "+systemType+" : "+amount);
+                SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => " + systemType + " : " + amount);
                 if (ModeHandler.isMode(ModeId.SuperHostRoles))
                 {
                     SyncSetting.CustomSyncSettings();
