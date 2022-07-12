@@ -13,6 +13,7 @@ namespace SuperNewRoles.Patch
             {
                 AmongUsClient.Instance.KickPlayer(client.Id, true);
                 Logger.Info($"ブロックしているプレイヤー{client?.PlayerName}({client.FriendCode})をBANしました。", "BAN");
+                SuperNewRolesPlugin.Logger.LogInfo($"ブロックされているプレイヤー{client?.PlayerName}({client.FriendCode})をBANしました");
             }
         }
     }
