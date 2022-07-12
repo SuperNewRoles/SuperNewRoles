@@ -109,8 +109,8 @@ It is already on the Discord server.
 
 | Impostor | Crewmate | Neutral | Redundant Camps |
 |----------|-------------|-----------------|----------------|
-| [Teleporter](#テレポーター) | [Lighter](#ライター) | [Jester](#てるてる) | [Quarreled](#クラード) |
-| [EvilSpeedBooster](#イビルスピードブースター) | [Sheriff](#シェリフ) | [Opportunist](#オポチュニスト) | [Lovers](#ラバーズ) |
+| [Teleporter](#Teleporter) | [Lighter](#ライター) | [Jester](#てるてる) | [Quarreled](#クラード) |
+| [EvilSpeedBooster](#EvilSpeedBooster) | [Sheriff](#シェリフ) | [Opportunist](#オポチュニスト) | [Lovers](#ラバーズ) |
 | [EvilDoorr](#イビルドアー) | [SpeedBooster](#スピードブースター) | [Jackal](#ジャッカル) |  |
 | [EvilGambler](#イビルギャンブラー) | [Doorr](#ドアー) | [Sidekick](#サイドキック) |  |
 | [SelfBomber](#自爆魔) | [Clergyman](#聖職者) | [God](#神) | |
