@@ -163,7 +163,8 @@ Teleport everyone to one randomly selected person.
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Cool Down | Button Cool Down. 
+| Cool Down | Button Cool Down.
+
 ----------------------- 
 ## EvilSpeedBooster
 ### Imposter camp 
@@ -176,6 +177,7 @@ You can speed up your own speed for a certain period of time.
 | Duration Time | Speed Boost Duration. 
 | Double the speed | Speed during boosting. 
 | If this position is selected, the speed booster will not be selected. 
+
 ----------------------- 
 ## EvilDoorr
 ### Imposter camp 
@@ -187,6 +189,7 @@ The door can be opened and closed. There is a cool time.
 | Name | Description 
 |----------|:-------------:| 
 | Door Cool Time | Button Cool Down. 
+
 ----------------------- 
 ## EvilGambler
 ### Imposter camp 
@@ -200,6 +203,7 @@ It is recommended to set a short cool for success and a long cool for failure. <
 | Kill cool time on success| It is kill-cool time for success.
 | Kill Cool Time on Failure| It's kill-cool time for failure.
 | Success probability| The probability of successful gambling.
+
 ----------------------- 
 ## SelfBomber
 ### Imposter camp 
@@ -210,12 +214,15 @@ Note that another imposter will also be selected as a target.
 | Name | Description 
 |----------|:-------------:| 
 | Range (radius) | The range of the self-destruct. 
+
 ----------------------- 
 ## EvilNekomata 
+
 ### Imposter camp 
 When I am expelled from a meeting, <br>. 
 We will take one of them on the road, regardless of their position. <br> 
 Whether or not Nekomata are chained together can be changed by the Nice Nekomata. <br> 
+
 ----------------------- 
 ## CountChanger
 ### Imposter camp 
@@ -227,10 +234,12 @@ him, etc.<br><br>.
 |----------|:-------------:| 
 | Maximum count | You can set the number of times the capability can be used. 
 | Reflected in next turn| You can set whether the decision is exchanged on the next turn after the ability is used. 
+
 ----------------------- 
 ## Pursuer
 ### Imposter camp 
 Arrows will be displayed to the location of nearby non-imposter camp players. 
+
 ----------------------- 
 ## EvilScientist
 ### Imposter camp 
@@ -249,7 +258,8 @@ Clicking the Hawkeye button widens the visible area for a certain period of time
 | Name | Description 
 |----------|:-------------:| 
 | Cool Time | You can set the cooldown before the ability can be used. 
-| Duration | Duration You can set the duration of the capability. 
+| Duration | Duration You can set the duration of the capability.
+
 ----------------------- 
 ## Minimalist
 ### Imposter camp 
@@ -262,6 +272,7 @@ SuperHostRoles support
 | Use Vent | You can set whether minimalists can use vents. 
 | Use Sabotage | Minimalists can set whether they can use sabotage. 
 | DeadBody Report | You can set whether the minimalist can report. 
+
 ----------------------- 
 ## Magaziner
 ### Imposter camp 
@@ -277,6 +288,7 @@ button to the set time.
 |----------|:-------------:| 
 | Kill cool time after magazine use | You can set the kill cool time after pressing the Use 
 button. 
+
 ----------------------- 
 ## SerialKiller
 ### Imposter camp 
@@ -289,6 +301,7 @@ SuperHostRoles support
 | Name | Description 
 |----------|:-------------:| 
 | Time to suicide | You can set the kill cool time after you press the Use button. 
+
 ----------------------- 
 ## EvilEraser
 ### Imposter camp 
@@ -299,6 +312,7 @@ The number of times it can be used is reduced each time it is defended.
 | Name | Description 
 |----------|:-------------:| 
 | Max Erase Count | You can set the number of times the capability can be used. 
+
 ----------------------- 
 ## OverKiller
 ### Imposter camp 
@@ -313,6 +327,7 @@ SuperHostRoles support.
 |----------|:-------------:| 
 | OverKiller Kill Cool Time | You can set the cooldown before the ability can be used. 
 | Number of bodies per | Number of corpses per kill. 
+
 ----------------------- 
 ## EvilMoving
 ### Imposter camp 
@@ -324,6 +339,7 @@ A button appears that allows you to teleport to the move location.
 | Name | Description 
 |----------|:-------------:| 
 | Teleportation Cool Time | You can set the cooldown before the ability can be used. 
+
 ----------------------- 
 ## Levelinger
 ### Imposter camp 
@@ -343,6 +359,7 @@ In addition, the killcools accumulate while the levelers are doing their tasks. 
 | 5 Abilities gained at level | You can set the abilities that you can get at the 5 levels. 
 | Can be revived by spending XP | You can set whether you can revive by spending experience. 
 | Amount of XP to use | Amount of experience to be used | You can set the amount of experience to be used. 
+
 ----------------------- 
 ## SideKiller
 ### Imposter camp 
@@ -359,6 +376,7 @@ Imposter can't kill mad killer
 |----------|:-------------:| 
 | SideKiller Kill Cool Time | You can set the kill cool time for the side killer. 
 | MadKiller Kill Cool Time | You can set the kill cool time for the mud killer. 
+
 ----------------------- 
 ## Survivor
 ### Imposter camp 
@@ -368,6 +386,7 @@ Survivors can kill with n times faster than normal kill cool.
 | Name | Description 
 |----------|:-------------:| 
 | Kill Cool Time | You can set the survivor's kill cool time. 
+
 ----------------------- 
 ## Vampire
 ### Imposter camp 
@@ -377,6 +396,7 @@ If another person is killed before the kill occurs, another person is targeted.
 | Name | Description 
 |----------|:-------------:| 
 | Kill Delay | You can set the delay time for vampire kills. 
+
 ----------------------- 
 ## Samurai
 ### Imposter camp 
@@ -393,6 +413,7 @@ samurai can release a special move.
 | Use Vent | You can set whether a samurai can use a vent. 
 | Use Sabotage | You can set whether the samurai can use sabotage. 
 | SamuraiScope | Range of Special Moves | You can set the range of special moves. 
+
 ----------------------- 
 ## SuicideWisher
 ### Imposter camp 
@@ -401,6 +422,7 @@ Can commit suicide.
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
+
 ----------------------- 
 ## FastMaker
 ### Imposter camp 
@@ -409,6 +431,7 @@ The second and subsequent kills are normal kills.
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
+
 ----------------------- 
 ## Kunoichi
 ### Imposter camp 
@@ -426,6 +449,7 @@ The F key can be used to equip a kunai. <br>
 | Number of kunai required for a kill | How many kunai are needed to get a kill? 
 | Time required for transparency | Time taken from stop to transparency 
 | Can throw kunai during invisibility. | You can throw a kunai during invisibility. 
+
 ----------------------- 
 ## SecretlyKiller
 ### Imposter camp 
@@ -438,6 +462,7 @@ Ability to kill targets remotely with no sound and no kill warp<br>.
 | Same in kill buttons | Is the coold time reset when using the normal kill button and the secretly kill button synchronized?
 | Kill cool charge during power outage
 | Ability limit | 
+
 ----------------------- 
 ## Smasher 
 ### Imposter camp 
@@ -450,6 +475,7 @@ only at the beginning of the match. <br>
 | Name | Description 
 |----------|:-------------:| 
 | KillCoolDown | You can set the kill cool time for the smasher. 
+
 ----------------------- 
 ## DoubleKiller
 ### Imposter camp 
@@ -463,6 +489,7 @@ You can change in the settings whether you can use sabotage or not. <br>
 key. 
 | SubKillCoolDown | You can set the kill cool down time for the sub kill button operated by the F key. 
 | Use Sabotage | You can set whether double killers can use sabotage. 
+
 ----------------------- 
 ## Lighter
 ### Crew camp 
@@ -474,6 +501,7 @@ Changes to a set field of view for a set period of time
 | Lighter Cooldown | You can set the cooldown before the ability can be used. 
 | Lighter Duration | You can set the duration of the capability. 
 | View in light | You can set the visibility while the ability is in use. 
+
 ----------------------- 
 ## Sheriff 
 ### Crew camp 
@@ -489,6 +517,7 @@ SuperHostRoles support
 | Can Kill a Lovers |You can set whether Lovers can be killed. 
 | Can Kill a MadRole |You can set whether you can kill MAD & FRIENDS positions. 
 | Maximum number of kills |You can set the number of kills a sheriff can make. 
+
 ----------------------- 
 ## SpeedBooster 
 ### Crew camp 
@@ -501,6 +530,7 @@ You can speed up your own speed for a certain amount of time. <br>
 | Speed Up Cooldown | You can set the cooldown before the ability can be used. 
 | Duration of speed-up | You can set the duration of the capability. 
 | Double your speed | Allows you to set the double speed of the speed. 
+
 ----------------------- 
 ## Doorr
 ### Crew camp 
@@ -510,6 +540,7 @@ The door can be opened and closed. There is a cool time.
 | Name | Description 
 |----------|:-------------:| 
 | Door Cool Time | You can set the cooldown before the ability can be used. 
+
 ----------------------- 
 ## Clergyman
 ### Crew camp 
@@ -521,6 +552,7 @@ The capacity is currently not functioning.
 | Cool Time | You can set the cooldown before the ability can be used. 
 | Duration Time | You can set the duration of the capability. 
 | Impostor Down Vision. | You can set the visibility during power outage. 
+
 ----------------------- 
 ## MadMate
 ### Imposter camp 
@@ -540,6 +572,7 @@ SuperHostRoles support
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
 | Impostor Light | You can set whether the view will be the same as the imposter's view. 
+
 ----------------------- 
 ## Bait
 ### Crew camp 
@@ -549,12 +582,15 @@ SuperHostRoles support
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Time to report a call 
+| Time to report a call
+
 ----------------------- 
 ## HomeSecurityGuard
+
 ### Crew camp 
 Crew mate with no task. 
 SuperHostRoles support 
+
 ----------------------- 
 ## StuntMan
 ### Crew camp 
@@ -565,6 +601,7 @@ SuperHostRoles support
 | Name | Description 
 |----------|:-------------:| 
 | Guard Max Count | The number of times you can guard. 
+
 ----------------------- 
 ## Moving
 ### Crew camp 
@@ -576,11 +613,14 @@ A button appears that allows you to teleport to the move location.
 | Name | Description 
 |----------|:-------------:| 
 | Teleportation Cool Time | You can set the cooldown time before the ability can be used. 
+
 ----------------------- 
 ## Best False Charge
+
 ### Crew camp 
 Death at the end of the first meeting<br>. 
 SuperHostRoles support 
+
 ----------------------- 
 ## NiceNekomata
 ### Crew camp 
@@ -591,10 +631,13 @@ SuperHostRoles support
 | Name | Description 
 |----------|:-------------:| 
 | If a nekomata is taken as a companion, is it to be taken as a companion again? 
+
 ----------------------- 
 ## Doctor
+
 ### Crew camp 
 You can see the vitals at any time. 
+
 ----------------------- 
 ## MeetingSheriff
 ### Crew camp 
@@ -609,6 +652,7 @@ The sheriff himself dies.
 | Can Kill a MadRole |You can set whether you can kill MAD & FRIENDS positions. 
 | Maximum number of Meeting Sheriff kills | The maximum number of kills for a meeting sheriff. 
 | Can you get multiple kills in one meeting? | You can set whether multiple kills are allowed in one meeting. 
+
 ----------------------- 
 ## NiceScientist
 ### Crew camp 
@@ -619,6 +663,7 @@ You become invisible for a certain period of time.
 |----------|:-------------:| 
 | Cool Time | You can set the cooldown before the ability can be used. 
 | Duration Time | You can set the duration of the capability. 
+
 ----------------------- 
 ## NiceRedRidingHood
 ### Crew camp 
@@ -628,6 +673,7 @@ All positions are not displayed at the time of death
 | Name | Description 
 |----------|:-------------:| 
 | Maximum number of revives | You can set the maximum number of revivals. 
+
 ----------------------- 
 ## Mayor
 ### Crew camp 
@@ -639,12 +685,15 @@ result in the normal vote count.
 | Name | Description 
 |----------|:-------------:| 
 | Mayer's vote count | You can set the number of votes for Mayer. 
+
 ----------------------- 
 ## Technician
+
 ### Crew camp 
 Only during sabotage can you enter the vent<br>. 
 After the saboteur is finished, he is forced to leave. <br> 
 SuperHostRoles support 
+
 ----------------------- 
 ## Diviner
 ### Crew camp 
@@ -655,6 +704,7 @@ When you press that button, the position of the person you pressed will appear i
 |----------|:-------------:| 
 | Position visibility | You can set whether to show the camps or not. 
 | Number of times you can divine | Number of times you can divvy up 
+
 ----------------------- 
 ## Medium
 ### Crew camp 
@@ -665,6 +715,7 @@ When you press that button, the position of the person you pressed will appear i
 |----------|:-------------:| 
 | Position visibility | You can set whether to show the camps or not. 
 | Number of times you can divine | Number of times you can divvy up 
+
 ----------------------- 
 ## MadMayor
 ### Imposter camp 
@@ -686,6 +737,7 @@ SuperHostRoles support
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
 | Impostor Light | You can set whether the view will be the same as the imposter's view. 
+
 ----------------------- 
 ## NiceHawk
 ### Crew camp 
@@ -696,6 +748,7 @@ However, if Hawkeye is used, it will not be able to move for 10 seconds afterwar
 |----------|:-------------:| 
 | Cooldown | You can set the cooldown time before the ability can be used. 
 | Duration | You can set the duration of the capability. 
+
 ----------------------- 
 ## MadHawk
 ### Imposter camp 
@@ -729,6 +782,7 @@ SuperHostRoles support
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
+
 ----------------------- 
 ## MadJester
 ### Imposter camp 
@@ -742,6 +796,7 @@ SuperHostRoles support
 | Impostor Light | You can set whether the view will be the same as the imposter's view.
 | YJester was Clear Task Win | You cannot win without doing a task. Individual task 
 settings are available 
+
 ----------------------- 
 ## Teru teru teru 
 ### Third camp 
@@ -754,12 +809,15 @@ SuperHostRoles support
 | You can sabotage it. | Sabotage can be used. 
 | I can put it in a vent. | You can enter vents. 
 | Jester was Clear Task Win | You can't win if you don't do the task. 
+
 ----------------------- 
 ## Opportunist
+
 ### Third camp 
 If the player survives until the end of the game, he or she wins an additional victory. <br> 
 You can win with any camp. <br>. 
 SuperHostRoles support 
+
 ----------------------- 
 ## Jackal 
 ### Third camp 
@@ -778,13 +836,16 @@ It is also possible to change in the settings whether a side kick can be made. <
 | Can Create JackalFriends | You can make [JackalFriends](#JackalFriends) with your first kill! 
 | Jackal can make a Sidekick | Jackals can make side kicks. 
 | New jackals can make side kicks | Promoted jackals can make side kicks. 
+
 ----------------------- 
 ## Sidekick 
+
 ### Third camp 
 You will not be the first to be selected. <br>. 
 Being side-kicked by a [jackal](#Jackal)<br>. 
 This position. <br> 
 When all jackals die, they are promoted to a side kick. 
+
 ----------------------- 
 ## JackalFriends 
 ### Third camp 
@@ -817,6 +878,7 @@ You will not be killed by your allies. but will be affected by sabotage. <br>.
 If you achieve an Imposter Victory after all the Imposters visible to you are gone, you override 
 the Imposter Victory and achieve an Egoist Victory. <br> 
 SuperHostRoles support 
+
 ----------------------- 
 ## Workperson
 ### Third camp 
@@ -829,17 +891,20 @@ SuperHostRoles support
 | Common Tasks | You can set the number of normal tasks for a worker. 
 | Short Tasks | You can set the number of short tasks for a worker. 
 | Long Tasks | You can set the number of long tasks for a worker. 
+
 ----------------------- 
 ## TrueLover
 ### Third camp 
 You can become lovers with the person with whom you press the button. However, you cannot<br>
 be with someone who is already a Lovers. <br>
 SuperHostRoles support (replaced by kill button) 
+
 ----------------------- 
 ## Amnesiac
 ### Third camp 
 If you report a corpse, it changes to the position of the person you report! (If you report the 
 corpse of an amputee, it will not change.) 
+
 ----------------------- 
 ## Seer
 ### Crew camp 
@@ -866,6 +931,7 @@ When on, you can set the time for the ghost to disappear from after the report m
 corpse. 
 | Soul Duration | The time when the ghost is visible | The time[s] when the ghost disappears after the corpse 
 report meeting. 
+
 ----------------------- 
 ## MadSeer 
 ### Imposter camp 
@@ -904,6 +970,7 @@ report meeting.
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
 | Impostor Light | You can set whether the view will be the same as the imposter's view. 
+
 ----------------------- 
 ## EvilSeer 
 ### Imposter camp 
@@ -1018,6 +1085,7 @@ You will not be the first to be selected. <br>.
 Being side-kicked by a [jackalSeer](#JackalSeer)<br>. 
 This position. <br> 
 When all jackals die, they are promoted to jackal seers. 
+
 ----------------------- 
 ## DarkKiller
 ### Imposter camp 
@@ -1027,6 +1095,7 @@ Instead, the killcool is short. <br>
 | Name | Description 
 |----------|:-------------:| 
 | Dark Killer's Kill Cool Time | Allows you to set an individual kill cool time. 
+
 ----------------------- 
 ## Fox
 ### Third camp 
@@ -1041,6 +1110,7 @@ SHR Support
 | Use Vent | You will be able to put in a vent. 
 | Impostor Light | You can set whether the view will be the same as the imposter's view.
 | Use DeadBody Report | Off to disable reporting. 
+
 ----------------------- 
 ## Assassins & Merlin 
 ### Imposter & Crew camps 
@@ -1060,8 +1130,9 @@ Both are SHR compatible<br>.
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Number of <color=#ff0000>Assassin</color> | Number of Assassins 
-| Number of <color=#AFDFE4>Merine</color> | Number of Marlins 
+| Number of Assassin | Number of Assassins 
+| Number of Merine | Number of Marlins 
+
 ----------------------- 
 ## Cleaner
 ### Imposter camp 
@@ -1072,6 +1143,7 @@ If the corpse is erased, the killcool is reset to the specified value. <br>
 |----------|:-------------:| 
 | Kill CoolDown | Kill Cool Down for Cleaner | Allows you to set individual kill cool time. 
 | CoolDown | You can set the kill cooldown time for the ability to erase corpses. 
+
 ----------------------- 
 ## Samurai
 ### Imposter camp 
@@ -1090,7 +1162,8 @@ extinguisher
 | Special Move Cooldown | 
 | Use Vent | You can set whether Samurai can use vents. 
 | Use Sabotage | You can set whether the samurai can use sabotage. 
-| SamuraiScope | Range of special moves 
+| SamuraiScope | Range of special moves
+
 ----------------------- 
 ## VentMaker
 ### Imposter camp 
@@ -1100,6 +1173,7 @@ A pair of vents can be made.<br>
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
+
 ----------------------- 
 ## Evil Hacker 
 ### Imposter camp 
@@ -1110,6 +1184,7 @@ Possible to make side kick mad mate in settings<br>.
 | Name | Description 
 |----------|:-------------:| 
 | Can an EvilHacker Make a Madmate | Can Evil Hackers Make Mad Mate 
+
 ----------------------- 
 ## Mad stuntman 
 ### Imposter camp 
@@ -1120,26 +1195,27 @@ It cannot see the imposter, but it can unconditionally prevent kills. <br>
 |----------|:-------------:| 
 | Use Vent | You will be able to put in a vent. 
 | Impostor Light | You can set whether the view will be the same as the imposter's view.  
+
 ----------------------- 
 ## Nocturnality
 ### Crew camp 
 Crew camps where normal visibility is reduced and, conversely, widened during power 
 outages. <br> 
-SHR compatible<br>. 
+SHR compatible.<br>
+
 ----------------------- 
 ## Celebrity
 ### Crew camp 
 The Celebrity's name is visible in yellow to all players, so they know who the Celebrity is. <br> 
-SHR compatible<br>. 
+SHR compatible.<br>
+
 ----------------------- 
 ## Remote Sheriff 
 ### Crew camp 
 A version of [Sheriff](#Sheriff) that can do remote kills. <br> 
 Able to shapeshift target to kill the shapeshifter. <br> 
-SHR compatible<br>. 
+SHR compatible.<br>
 ### Game Settings 
-| Name | Description 
-|----------|:-------------:| 
 | Name | Description 
 |----------|:-------------:| 
 | Kill Cooldown | Individual kill cool down time can be set. 
@@ -1148,6 +1224,7 @@ SHR compatible<br>.
 | Can Kill a MadRole |You can set whether you can kill MAD & FRIENDS positions. 
 | Maximum number of kills |You can set the number of kills a sheriff can make. 
 | Kill Teleport | You can set whether a kill warp will occur.
+
 ----------------------- 
 ## Task Manager 
 ### Crew camp 
@@ -1161,6 +1238,7 @@ SHR compatible. <br>
 | Common Tasks | You can set the number of individual normal tasks. 
 | Long Tasks | You can set the number of individual long tasks. 
 | Short Tasks | You can set the number of individual short tasks. 
+
 ----------------------- 
 ## Mudmaker 
 ### Imposter camp 
@@ -1171,6 +1249,7 @@ SHR compatible<br>.
 |----------|:-------------:| 
 | Use Vent | You will be able to put in a vent. 
 | Impostor Light | You can set whether the view will be the same as the imposter's view.
+
 ----------------------- 
 ## Chief
 ### Crew camp 
@@ -1184,6 +1263,7 @@ Trying to make an imposter a sheriff is self-destructive<br>.
 | Can Kill a Lovers |You can set whether Lovers can be killed. 
 | Can Kill a MadRole |You can set whether you can kill MAD & FRIENDS positions. 
 | Maximum number of kills |You can set the number of kills a sheriff can make. 
+
 ----------------------- 
 ## Mud Cleaner 
 ### Imposter camp 
@@ -1195,6 +1275,7 @@ Instead of being able to make corpses disappear, it does not have the fanatic ab
 | CoolDown | You can set the kill cooldown time for the ability to erase corpses. 
 | Use Vent | You will be able to put in a vent. 
 | Impostor Light | You can set whether the view will be the same as the imposter's view.
+
 ----------------------- 
 ## Mayer Friends 
 ### Third camp 
@@ -1219,14 +1300,17 @@ SuperHostRoles support
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
 | Impostor Light | You can set whether the view will be the same as the imposter's view. 
+
 ----------------------- 
 ## FalseCharges
+
 ### Third camp 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
 | Turn of the false accusation range | 
 | Cool Time | Allows you to set an individual kill cool time. 
+
 ----------------------- 
 ## TeleportingJackal
 ### Third camp 
@@ -1246,6 +1330,7 @@ The ability to sabotage can be changed in the settings. <br>
 | Impostor Light | You can set whether the view will be the same as the imposter's view.
 | Cool Down | Button Cool Down. 
 | Time to be teleported
+
 ----------------------- 
 ## Demon
 ### Third camp 
@@ -1260,6 +1345,7 @@ alone. <br>
 a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent.
 | You have to be alive to win. | You can set whether you can only win if you are alive or not 
+
 ----------------------- 
 ## Arsonist
 ### Third camp 
@@ -1277,6 +1363,7 @@ Shape-shifting with everyone painted is the winner. <br>
 | Cooldown | You can set the cooldown before the ability can be used. 
 | Douse Duration | Time required to finish oiling.
 | Use Vent | You will be able to put in a vent.
+
 ----------------------- 
 ## NEET 
 ### Third camp 
@@ -1285,6 +1372,7 @@ Report button.<br>
 Voting rights.<br>
 There is no. <br>
 If it survives to the end, it is the third camp that wins alone, just like [God](#God). 
+
 ----------------------- 
 ## HauntedWolf
 ### Crew camp 
@@ -1294,6 +1382,7 @@ SHR compatible<br>.
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
+
 ----------------------- 
 ## GhostMechanic
 ### Crew camp (ghost position) 
@@ -1303,6 +1392,7 @@ It will be able to cure sabotage, like the engineer's repair of TheOtherRoles.
 | Name | Description 
 |----------|:-------------:| 
 | Number of times sabotage can be repaired | Number of times you can use the Sabotage Repair capability. 
+
 ----------------------- 
 ## PositionSwapper
 ### Imposter camp 
@@ -1315,6 +1405,7 @@ It could be strong if you know how to use it. <br>
 | Swapping limits | You can set the number of times the swap capability can be used 
 | Swapping cooltime | Allows you to set the amount of time between swapping and being able 
 to swap again 
+
 ----------------------- 
 ## Tuna
 ### Third camp 
@@ -1330,6 +1421,7 @@ SuperHostRoles support
 |----------|:-------------:| 
 | Stopping Time | 
 | Use Vent | You can set whether Maguro can use the vent. 
+
 ----------------------- 
 ## Mafia 
 ### Imposter camp 
@@ -1339,6 +1431,7 @@ SuperHostRoles support
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
+
 ----------------------- 
 ## BlackCat 
 ### Imposter camp 
@@ -1354,6 +1447,7 @@ SuperHostRoles support
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
 | Impostor Light | You can set whether the view will be the same as the imposter's view. 
+
 ----------------------- 
 ## Quarreled
 ### overlapping camps 
@@ -1364,6 +1458,7 @@ If you live to the end, you are defeated.
 | Name | Description 
 |----------|:-------------:| 
 | Only Crewmate Team | Clade can be selected or not only for the clade. 
+
 ----------------------- 
 ## Lovers
 ### overlapping camps 
@@ -1383,4 +1478,5 @@ SuperHostRoles support
 | Tasks are counted when surviving | Sets whether or not Lovers' tasks are counted in the overall amount of tasks for the crewmate 
 when alive. 
 | Does not overlap with Quarreled | You can set whether or not to duplicate with Quarreled. 
+
 ----------------------- 
