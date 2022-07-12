@@ -1,19 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Security.Cryptography;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
 using HarmonyLib;
-using Hazel;
-using InnerNet;
 using SuperNewRoles.CustomOption;
-using UnhollowerBaseLib;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch
@@ -83,9 +72,10 @@ namespace SuperNewRoles.Patch
                 {
                     PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.nameText().text);
 
-                    new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
-                    new LateTask(() => { foreach (var pc in CachedPlayer.AllPlayers) pc.PlayerControl.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
-                    new LateTask(() => bot.Despawn(), 0.6f, "Bot Despawn Task");
+                    bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);
+                    //new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
+                    //new LateTask(() => { foreach (var pc in CachedPlayer.AllPlayers) pc.PlayerControl.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
+                    //new LateTask(() => bot.Despawn(), 0.6f, "Bot Despawn Task");
                 }
                 /*
                 if (Input.GetKeyDown(KeyCode.I))

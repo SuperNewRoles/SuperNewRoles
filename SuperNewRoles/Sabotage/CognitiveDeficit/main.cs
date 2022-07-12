@@ -4,6 +4,7 @@ using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Patch;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 using static UnityEngine.UI.Button;
 
 namespace SuperNewRoles.Sabotage.CognitiveDeficit
@@ -84,7 +85,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                     IsOK = false;
                     if (PlayerControl.LocalPlayer.isImpostor())
                     {
-                        if (!(p3.isImpostor() || p3.isRole(CustomRPC.RoleId.MadKiller)))
+                        if (!(p3.isImpostor() || p3.isRole(RoleId.MadKiller)))
                         {
                             SetNamesClass.SetPlayerNameColor(p3, new Color32(18, 112, 214, byte.MaxValue));
                         }

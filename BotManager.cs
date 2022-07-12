@@ -1,9 +1,7 @@
-using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine;
 
 namespace SuperNewRoles
 {
@@ -23,9 +21,10 @@ namespace SuperNewRoles
                         temp = p.PlayerId;
                     }
                 }
-                newid = (byte)((byte)temp+1);
+                newid = (byte)((byte)temp + 1);
                 SuperNewRolesPlugin.Logger.LogInfo("あいでぃー:" + newid);
-            } else
+            }
+            else
             {
                 newid = (byte)id;
             }

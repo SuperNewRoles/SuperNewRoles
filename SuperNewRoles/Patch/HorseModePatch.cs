@@ -1,7 +1,6 @@
 using HarmonyLib;
 using SuperNewRoles.Patch;
 using UnityEngine;
-using UnityEngine.UI;
 using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;
 

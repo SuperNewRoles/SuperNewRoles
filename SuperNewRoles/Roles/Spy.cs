@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 namespace SuperNewRoles.Roles
 {
     internal class Spy
     {
-        //‚±‚±‚ÉƒR[ƒh‚ğ‘‚«‚±‚ñ‚Å‚­‚¾‚³‚¢
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ÉƒRï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     }
 }

@@ -8,7 +8,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Minimalist))
+                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(RoleId.Minimalist))
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Minimalist.KillCoolTime);
                 }
@@ -38,7 +38,14 @@ namespace SuperNewRoles.Roles
                     {
                         if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
                         {
-                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);//通報
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActiveRecursively(false);
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.enabled = false;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.enabled = false;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.sprite = null;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.enabled = false;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
+
                         }
                     }
                 }
@@ -48,9 +55,67 @@ namespace SuperNewRoles.Roles
                     {
                         if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
                         {
-                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);//通報
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActiveRecursively(false);
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.enabled = false;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.enabled = false;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.sprite = null;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.enabled = false;
+                            FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
+                        }
+
+                    }
+                }
+                else if (role == RoleId.SecretlyKiller)
+                {
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                    //FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
+                }
+                else if (role == RoleId.DoubleKiller)
+                {
+                    //ボタン削除
+                    if (!RoleClass.DoubleKiller.CanUseSabo)
+                    {
+                        if (FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.active)
+                        {
+                            FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(false);
                         }
                     }
+                    if (!RoleClass.DoubleKiller.CanUseVent)
+                    {
+                        if (FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.active)
+                        {
+                            FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
+                        }
+                    }
+                    //純正キルボタン削除
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                }
+                else if (role == RoleId.Smasher)
+                {
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                }
+                else if (role == RoleId.Neet)//ニートのボタン削除
+                {
+                    if (FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.active)//使うボタンが有効の時
+                    {
+                        HudManager.Instance.UseButton.gameObject.SetActive(false);//使うボタンを無効化
+                    }
+                    if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
+                    {
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.SetActive(false);//通報
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActiveRecursively(false);
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.enabled = false;
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.enabled = false;
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.graphic.sprite = null;
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.enabled = false;
+                        FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
+                    }
+                }
+                else if (role == RoleId.FastMaker && !RoleClass.FastMaker.IsCreatedMadMate)//マッドが作られていないとき
+                {
+                    //純正キルボタン削除
+                    HudManager.Instance.KillButton.gameObject.SetActive(false);
                 }
                 if (role == RoleId.Conjurer)
                 {

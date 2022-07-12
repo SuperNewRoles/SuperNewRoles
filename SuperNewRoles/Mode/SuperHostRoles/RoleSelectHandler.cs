@@ -1,22 +1,19 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
-using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
     public static class RoleSelectHandler
     {
-        public static void RoleSelect()
+        public static CustomRpcSender sender = null;
+        public static CustomRpcSender RoleSelect(CustomRpcSender send)
         {
+            sender = send;
             SuperNewRolesPlugin.Logger.LogInfo("[SHR] ROLESELECT");
-            if (!AmongUsClient.Instance.AmHost) return;
+            if (!AmongUsClient.Instance.AmHost) return null;
             SuperNewRolesPlugin.Logger.LogInfo("[SHR] つうか");
             CrewOrImpostorSet();
             OneOrNotListSet();
@@ -25,21 +22,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
             main.SendAllRoleChat();
-
-            //BotHandler.AddBot(3, "キルされるBot");
-            new LateTask(() =>
-            {
-                if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
-                {
-                    PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
-                    PlayerControl.LocalPlayer.RpcSendChat("＊注意(自動送信)＊\nこのMODは、バグ等がたくさん発生します。\nいろいろな重大なバグがあるため、あくまで自己責任でお願いします。");
-                    foreach (var pc in CachedPlayer.AllPlayers)
-                    {
-                        pc.PlayerControl.RpcSetRole(RoleTypes.Shapeshifter);
-                        SuperNewRolesPlugin.Logger.LogInfo("[SHR] シェイプシフターセット！");
-                    }
-                }
-            }, 3f, "SetImpostor");
+            return sender;
         }
         public static void SpawnBots()
         {
@@ -95,7 +78,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 if (CustomOptions.SpyOption.getSelection() != 0)
                 {
-                    for (int i = 0; i < CustomOptions.SpyPlayerCount.getFloat() - (crewmate-(impostor - PlayerControl.GameOptions.NumImpostors)) + 1; i++)
+                    for (int i = 0; i < CustomOptions.SpyPlayerCount.getFloat() - (crewmate - (impostor - PlayerControl.GameOptions.NumImpostors)) + 1; i++)
                     {
                         PlayerControl bot1 = BotManager.Spawn("暗転対策BOT");
                         bot1.RpcSetRole(RoleTypes.Crewmate);
@@ -137,142 +120,155 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<PlayerControl> DesyncShapeshifters = new();
             DesyncShapeshifters.AddRange(RoleClass.Arsonist.ArsonistPlayer);
             DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
-            //シェイプシフターにDesync
+            //Desync
             foreach (PlayerControl Player in DesyncImpostors)
             {
                 if (!Player.IsMod())
                 {
-                    Player.RpcSetRoleDesync(RoleTypes.Impostor);
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    int PlayerCID = Player.getClientId();
+                    sender.RpcSetRole(Player, RoleTypes.Impostor, PlayerCID);
+                    foreach (var pc in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != Player.PlayerId && p.IsPlayer())
-                        {
-                            Player.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                            p.RpcSetRoleDesync(RoleTypes.Scientist, Player);
-                        }
+                        if (pc.PlayerId == Player.PlayerId) continue;
+                        sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
+                    }
+                    //他視点で科学者にするループ
+                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    {
+                        if (pc.PlayerId == Player.PlayerId) continue;
+                        if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
+                        else sender.RpcSetRole(Player, RoleTypes.Scientist, pc.getClientId());
                     }
                 }
                 else
                 {
-                    Player.RpcSetRole(RoleTypes.Crewmate);
+                    //ホストは代わりに普通のクルーにする
+                    Player.SetRole(RoleTypes.Crewmate); //ホスト視点用
+                    sender.RpcSetRole(Player, RoleTypes.Crewmate);
                 }
             }
             foreach (PlayerControl Player in DesyncShapeshifters)
             {
                 if (!Player.IsMod())
                 {
-                    Player.RpcSetRoleDesync(RoleTypes.Shapeshifter);
-                    foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                    int PlayerCID = Player.getClientId();
+                    sender.RpcSetRole(Player, RoleTypes.Shapeshifter, PlayerCID);
+                    foreach (var pc in PlayerControl.AllPlayerControls)
                     {
-                        if (p.PlayerId != Player.PlayerId && p.IsPlayer())
-                        {
-                            Player.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                            p.RpcSetRoleDesync(RoleTypes.Scientist, Player);
-                        }
+                        if (pc.PlayerId == Player.PlayerId) continue;
+                        sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
+                    }
+                    //他視点で科学者にするループ
+                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    {
+                        if (pc.PlayerId == Player.PlayerId) continue;
+                        if (pc.PlayerId == 0) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
+                        else sender.RpcSetRole(Player, RoleTypes.Scientist, pc.getClientId());
                     }
                 }
                 else
                 {
-                    Player.RpcSetRole(RoleTypes.Crewmate);
+                    //ホストは代わりに普通のクルーにする
+                    Player.SetRole(RoleTypes.Crewmate); //ホスト視点用
+                    sender.RpcSetRole(Player, RoleTypes.Crewmate);
                 }
             }
-            foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
+            foreach (PlayerControl Player in RoleClass.Egoist.EgoistPlayer)
             {
-                if (!p.IsMod())
+                if (!Player.IsMod())
                 {
-                    p.RpcSetRole(RoleTypes.Impostor);
-                    foreach (PlayerControl p2 in CachedPlayer.AllPlayers)
+                    int PlayerCID = Player.getClientId();
+                    //ただしホスト、お前はDesyncするな。
+                    sender.RpcSetRole(Player, RoleTypes.Impostor);
+                    //役職者で他プレイヤーを科学者にするループ
+                    foreach (var pc in PlayerControl.AllPlayerControls)
                     {
-                        if (p2.PlayerId != p.PlayerId && !p.isRole(RoleId.Sheriff) && !p.isRole(RoleId.truelover) && p.IsPlayer())
-                        {
-                            p2.RpcSetRoleDesync(RoleTypes.Scientist, p);
-                        }
+                        if (pc.PlayerId == Player.PlayerId) continue;
+                        sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
                     }
                 }
                 else
                 {
-                    if (p.PlayerId != 0)
+                    //ホストは代わりに普通のクルーにする
+                    if (Player.PlayerId != 0)
                     {
-                        p.RpcSetRoleDesync(RoleTypes.Crewmate);
+                        sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.getClientId());
                     }
                     else
                     {
-                        p.SetRole(RoleTypes.Crewmate);
+                        Player.SetRole(RoleTypes.Crewmate); //ホスト視点用
                     }
-                    p.RpcSetRole(RoleTypes.Impostor);
+                    sender.RpcSetRole(Player, RoleTypes.Impostor);
                 }
                 //p.Data.IsDead = true;
             }
-            foreach (PlayerControl p in RoleClass.Spy.SpyPlayer)
+            foreach (PlayerControl Player in RoleClass.Spy.SpyPlayer)
             {
-                var crsSpy = CustomRpcSender.Create(Hazel.SendOption.Reliable);
-                if (!p.IsMod())
+                if (!Player.IsMod())
                 {
+                    int PlayerCID = Player.getClientId();
                     if (RoleClass.Spy.CanUseVent)
                     {
-                        p.RpcSetRoleDesync(crsSpy, RoleTypes.Engineer);
-                    } else
-                    {
-                        p.RpcSetRoleDesync(crsSpy, RoleTypes.Crewmate);
+                        sender.RpcSetRole(Player, RoleTypes.Engineer, PlayerCID);
                     }
-                    foreach (PlayerControl p2 in PlayerControl.AllPlayerControls)
+                    else
                     {
-                        if (p.PlayerId == p2.PlayerId) continue;
-                        if (p2.IsPlayer())
+                        sender.RpcSetRole(Player, RoleTypes.Crewmate, PlayerCID);
+                    }
+                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    {
+                        if (pc.PlayerId == Player.PlayerId) continue;
+                        sender.RpcSetRole(pc, RoleTypes.Scientist, PlayerCID);
+                    }
+                    //他視点で科学者にするループ
+                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    {
+                        if (pc.PlayerId == Player.PlayerId) continue;
+                        if (pc.IsMod()) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
+                        else
                         {
-                            if (p2.IsMod())
+                            if (pc.isImpostor() || pc.isRole(RoleId.Spy))
                             {
-                                if (p2.PlayerId != 0)
-                                {
-                                    p.RpcSetRoleDesync(crsSpy, RoleTypes.Crewmate, p2);
-                                } else
-                                {
-                                    p.SetRole(RoleTypes.Crewmate);
-                                }
-                            } else
+                                sender.RpcSetRole(Player, RoleTypes.Impostor, pc.getClientId());
+                            }
+                            else
                             {
-                                if (p2.isImpostor() || p2.isRole(RoleId.Spy))
-                                {
-                                    p.RpcSetRoleDesync(crsSpy, RoleTypes.Impostor, p2);
-                                } else
-                                {
-                                    p.RpcSetRoleDesync(crsSpy, RoleTypes.Crewmate, p2);
-                                }
+                                sender.RpcSetRole(Player, RoleTypes.Scientist, pc.getClientId());
                             }
                         }
                     }
-                    p.RpcSetRole(crsSpy, RoleTypes.Impostor);
                 }
                 else
                 {
-                    if (p.PlayerId != 0)
+                    if (Player.PlayerId != 0)
                     {
-                        p.RpcSetRoleDesync(crsSpy, RoleTypes.Crewmate);
+                        sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.getClientId());
                     }
                     else
                     {
-                        p.SetRole(RoleTypes.Crewmate);
+                        Player.SetRole(RoleTypes.Crewmate);
                     }
-                    p.RpcSetRole(crsSpy, RoleTypes.Impostor);
                 }
-                crsSpy.SendMessage();
-                //p.Data.IsDead = true;
             }
 
             foreach (PlayerControl p in SetRoleEngineers)
             {
                 if (!p.IsMod())
                 {
-                    p.RpcSetRole(RoleTypes.Engineer);
+                    sender.RpcSetRole(p, RoleTypes.Engineer);
                 }
             }
             foreach (PlayerControl p in RoleClass.SelfBomber.SelfBomberPlayer)
             {
-                p.RpcSetRole(RoleTypes.Shapeshifter);
+                sender.RpcSetRole(p, RoleTypes.Shapeshifter);
             }
             foreach (PlayerControl p in RoleClass.Samurai.SamuraiPlayer)
             {
-                p.RpcSetRole(RoleTypes.Shapeshifter);
+                sender.RpcSetRole(p, RoleTypes.Shapeshifter);
+            }
+            foreach (PlayerControl p in RoleClass.SuicideWisher.SuicideWisherPlayer)
+            {
+                sender.RpcSetRole(p, RoleTypes.Shapeshifter);
             }
             return;
         }

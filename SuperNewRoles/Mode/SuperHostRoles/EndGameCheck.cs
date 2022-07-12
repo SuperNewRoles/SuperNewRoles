@@ -1,16 +1,11 @@
-
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
@@ -44,7 +39,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void CustomEndGame(ShipStatus __instance, GameOverReason reason, bool showAd)
         {
             Chat.IsOldSHR = true;
-            List<PlayerControl>? WinGods = null;
+            List<PlayerControl> WinGods = null;
             foreach (PlayerControl p in RoleClass.God.GodPlayer)
             {
                 if (p.isAlive())
