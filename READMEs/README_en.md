@@ -107,6 +107,7 @@ Please use the Discord server:[Discord server](https://discord.gg/95YuUZp4kM)
 ## List of Positions
 It is already on the Discord server.
 
+
 | Impostor | Crewmate | Neutral | Redundant Camps |
 |----------|-------------|-----------------|----------------|
 | [Teleporter](#Teleporter) | [Lighter](#Lighter) | [Jester](#Jester) | [Quarreled](#Quarreled) |
@@ -136,7 +137,7 @@ It is already on the Discord server.
 | [Samurai](#Samurai)|[Bakery](#Bakery)
 | [VentMaker](#VentMaker)|[MadJester](#MadJester)
 | [EvilHacker](#EvilHacker)|[NiceTeleporter](#[NiceTeleporter)
-| [PositionSwapper](#ポジションスワッパー)|[Celebrity](#スター)
+| [PositionSwapper](#PositionSwapper)|[Celebrity](#Celebrity)
 | [Mafia](#Mafia)|[Nocturnality](#Nocturnality)
 | [SuicideWisher](#SuicideWisher‌)|[Observer](#Observer)
 | [Fast Maker](#FastMaker)|[Seer](#Seer)
@@ -176,7 +177,7 @@ You can speed up your own speed for a certain period of time.
 | Double the speed | Speed during boosting. 
 | If this position is selected, the speed booster will not be selected. 
 ----------------------- 
-## ibid. 
+## EvilDoorr
 ### Imposter camp 
 Subscribe to DeepL Pro to edit this document.
 Visit www.DeepL.com/profor more information.
@@ -187,20 +188,20 @@ The door can be opened and closed. There is a cool time.
 |----------|:-------------:| 
 | Door Cool Time | Button Cool Down. 
 ----------------------- 
-## Evil Gambler 
+## EvilGambler
 ### Imposter camp 
 When a kill is made, success or failure is determined by a set probability. <br> 
-If it becomes a success, to the successful kill cooldown of the setting,<br>. 
+If it becomes a success, to the successful kill cooldown of the setting,<br>
 Failure will result in a kill cooldown on the failure of the setup. <br> 
 It is recommended to set a short cool for success and a long cool for failure. <br> 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| The kill cool time at the time of success. 
-| The kill cool time at the time of failure. 
-| The probability of success in gambling. 
+| Kill cool time on success| It is kill-cool time for success.
+| Kill Cool Time on Failure| It's kill-cool time for failure.
+| Success probability| The probability of successful gambling.
 ----------------------- 
-## Self-destructive man 
+## SelfBomber
 ### Imposter camp 
 Press the self-destruct button. 
 People around you and yourself will die. <br> 
@@ -208,15 +209,15 @@ Note that another imposter will also be selected as a target.
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Range | The range of the self-destruct. 
+| Range (radius) | The range of the self-destruct. 
 ----------------------- 
-## Evil Nekomata 
+## EvilNekomata 
 ### Imposter camp 
 When I am expelled from a meeting, <br>. 
 We will take one of them on the road, regardless of their position. <br> 
 Whether or not Nekomata are chained together can be changed by the Nice Nekomata. <br> 
 ----------------------- 
-## Count changer 
+## CountChanger
 ### Imposter camp 
 You can change the decision of the opponent and the position. <br>. 
 If the opponent exchanges with a crewmate, he will not die even if the sheriff suicide attacks 
@@ -224,45 +225,45 @@ him, etc.<br><br>.
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Maximum number of times | You can set the number of times the capability can be used. 
-| You can set whether the decision is exchanged on the next turn after the ability is used. 
+| Maximum count | You can set the number of times the capability can be used. 
+| Reflected in next turn| You can set whether the decision is exchanged on the next turn after the ability is used. 
 ----------------------- 
-## Tracker 
+## Pursuer
 ### Imposter camp 
 Arrows will be displayed to the location of nearby non-imposter camp players. 
 ----------------------- 
-## Evil Scientist 
+## EvilScientist
 ### Imposter camp 
 By pressing the transparency button, <br>. 
 You become invisible for a certain period of time. 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Transparent cooldown | Allows you to set the cooldown before the ability can be used 
-| Transparency Duration You can set the duration of the capability. 
+| Evil Scientist Invisibility Cooldown | Allows you to set the cooldown before the ability can be used 
+| Evil Scientist's Invisibility Duration | Transparency Duration You can set the duration of the capability. 
 ----------------------- 
-## Hawk 
+## Hawk
 ### Imposter camp 
 Clicking the Hawkeye button widens the visible area for a certain period of time. 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Cooldown | You can set the cooldown before the ability can be used. 
-| Duration You can set the duration of the capability. 
+| Cool Time | You can set the cooldown before the ability can be used. 
+| Duration | Duration You can set the duration of the capability. 
 ----------------------- 
-## Minimalist 
+## Minimalist
 ### Imposter camp 
 This is a position with a short kill cool time instead of the absence of some buttons. <br> 
 SuperHostRoles support 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| You can set the cooldown time before the ability can be used. 
-| You can set whether minimalists can use vents. 
-| Minimalists can set whether they can use sabotage. 
-| You can set whether the minimalist can report. 
+| Minimalist Kill Cool Time | You can set the cooldown time before the ability can be used. 
+| Use Vent | You can set whether minimalists can use vents. 
+| Use Sabotage | Minimalists can set whether they can use sabotage. 
+| DeadBody Report | You can set whether the minimalist can report. 
 ----------------------- 
-## Magaziner 
+## Magaziner
 ### Imposter camp 
 When kill cool time is accumulated, the save button becomes available. <br> 
 Press the Save button to save your kills. <br> 
@@ -274,10 +275,10 @@ button to the set time.
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Kill Cool Time After Using Magazine | You can set the kill cool time after pressing the Use 
+| Kill cool time after magazine use | You can set the kill cool time after pressing the Use 
 button. 
 ----------------------- 
-## Serial killer 
+## SerialKiller
 ### Imposter camp 
 Once a kill is made, the suicide timer starts running. <br> 
 When the suicide timer reaches 0, it commits suicide. <br> 
@@ -287,9 +288,9 @@ SuperHostRoles support
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Time until suicide | You can set the kill cool time after you press the Use button. 
+| Time to suicide | You can set the kill cool time after you press the Use button. 
 ----------------------- 
-## Evil Eraser 
+## EvilEraser
 ### Imposter camp 
 You can activate the ability only a specified number of times. <br> 
 Can defend against baits, stuntmen, red hoods, divine victory, and clergy. <br> 
@@ -297,9 +298,9 @@ The number of times it can be used is reduced each time it is defended.
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Maximum number of deletions | You can set the number of times the capability can be used. 
+| Max Erase Count | You can set the number of times the capability can be used. 
 ----------------------- 
-## Overkiller 
+## OverKiller
 ### Imposter camp 
 A set number (default: 30) of corpses will be generated (not additional)<br> when you are 
 killed. 
@@ -310,10 +311,10 @@ SuperHostRoles support.
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Overkiller's kill cooldown time | You can set the cooldown before the ability can be used. 
-| Number of corpses per kill. 
+| OverKiller Kill Cool Time | You can set the cooldown before the ability can be used. 
+| Number of bodies per | Number of corpses per kill. 
 ----------------------- 
-## Evil Moving 
+## EvilMoving
 ### Imposter camp 
 First, a location set button appears. <br> 
 Press that button to set the move location. <br> 
@@ -322,9 +323,9 @@ A button appears that allows you to teleport to the move location.
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Cooldown | You can set the cooldown before the ability can be used. 
+| Teleportation Cool Time | You can set the cooldown before the ability can be used. 
 ----------------------- 
-## Reveillinger 
+## Levelinger
 ### Imposter camp 
 When you make a kill, you gain 1 experience. <br>. 
 When the experience level reaches a certain number, the level increases. <br> 
@@ -333,17 +334,17 @@ In addition, the killcools accumulate while the levelers are doing their tasks. 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Experience gained from kills | You can set the experience gained from kills. 
-| The number of experience levels that can be raised. 
-| You can set the abilities that can be obtained at the 1 level. 
-| You can set the abilities that you can get at the 2 levels. 
-| You can set the abilities that are available at the 3 levels. 
-| You can set the abilities that you can obtain at the 4 levels. 
-| You can set the abilities that you can get at the 5 levels. 
-| You can set whether you can revive by spending experience. 
-| Amount of experience to be used | You can set the amount of experience to be used. 
+| XP gained from kills | You can set the experience gained from kills. 
+| Number of experience levels gained | The number of experience levels that can be raised. 
+|1 Abilities gained at level| You can set the abilities that can be obtained at the 1 level. 
+| 2 Abilities gained at level | You can set the abilities that you can get at the 2 levels. 
+| 3 Abilities gained at level | You can set the abilities that are available at the 3 levels. 
+| 4 Abilities gained at level | You can set the abilities that you can obtain at the 4 levels. 
+| 5 Abilities gained at level | You can set the abilities that you can get at the 5 levels. 
+| Can be revived by spending XP | You can set whether you can revive by spending experience. 
+| Amount of XP to use | Amount of experience to be used | You can set the amount of experience to be used. 
 ----------------------- 
-## Sidekiller 
+## SideKiller
 ### Imposter camp 
 Side killers can make mad killers. <br> 
 When the sidekiller who made the mudkiller dies or exits, the mudkiller is promoted to an 
@@ -356,53 +357,52 @@ Imposter can't kill mad killer
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Kill Cool Time for Side Killer | You can set the kill cool time for the side killer. 
-| Mud Killer Kill Cool Time | You can set the kill cool time for the mud killer. 
+| SideKiller Kill Cool Time | You can set the kill cool time for the side killer. 
+| MadKiller Kill Cool Time | You can set the kill cool time for the mud killer. 
 ----------------------- 
-## Survivor 
+## Survivor
 ### Imposter camp 
 You must survive to win. <br>. 
 Survivors can kill with n times faster than normal kill cool. 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Survivor's kill cool time | You can set the survivor's kill cool time. 
+| Kill Cool Time | You can set the survivor's kill cool time. 
 ----------------------- 
-## Vampire 
+## Vampire
 ### Imposter camp 
 By pressing the kill button, the kill partner dies after a set time. <br><br 
 If another person is killed before the kill occurs, another person is targeted. 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Vampire's kill time | You can set the vampire's kill time. 
-| Vampire delay time | You can set the delay time for vampire kills. 
+| Kill Delay | You can set the delay time for vampire kills. 
 ----------------------- 
-## Samurai 
+## Samurai
 ### Imposter camp 
 Bent and sabo not available (can be changed in settings) killcool long (can be changed in 
-settings)<br><br><br><br><br><br><br><br 
+settings)<br>
 Instead, it has a special move button that can be used only once during the match. <br> 
 Using a special move wipes out all other players within a set area. 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| You can set the kill time of the samurai. 
-| Delayed Special Move Cool Time for Samurai | You can set the amount of time that a 
+| KillCoolTime | You can set the kill time of the samurai. 
+| AttackCoolTime | You can set the amount of time that a 
 samurai can release a special move. 
-| You can set whether a samurai can use a vent. 
-| You can set whether the samurai can use sabotage. 
-| Range of Special Moves | You can set the range of special moves. 
+| Use Vent | You can set whether a samurai can use a vent. 
+| Use Sabotage | You can set whether the samurai can use sabotage. 
+| SamuraiScope | Range of Special Moves | You can set the range of special moves. 
 ----------------------- 
-## Suicide Wisher
+## SuicideWisher
 ### Imposter camp 
-There is a suicide button, and at any time you like, you can <br>. 
+There is a suicide button, and at any time you like, you can. <br>
 Can commit suicide. 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
 ----------------------- 
-## Fast Maker 
+## FastMaker
 ### Imposter camp 
 The first kill can make a mad mate<br>. 
 The second and subsequent kills are normal kills. 
@@ -410,7 +410,7 @@ The second and subsequent kills are normal kills.
 | Name | Description 
 |----------|:-------------:| 
 ----------------------- 
-## Knoch 
+## Kunoichi
 ### Imposter camp 
 Use your ninjutsu to deceive the village<br>. 
 You can throw kunai. A kunai can be used to kill a player after the number of hits set in the 
@@ -422,12 +422,12 @@ The F key can be used to equip a kunai. <br>
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| KUNAI COOL TIME 
-| How many kunai are needed to get a kill? 
+| Kunai Cool Time |
+| Number of kunai required for a kill | How many kunai are needed to get a kill? 
 | Time required for transparency | Time taken from stop to transparency 
-| You can throw a kunai during invisibility. 
+| Can throw kunai during invisibility. | You can throw a kunai during invisibility. 
 ----------------------- 
-## Secretly Killer 
+## SecretlyKiller
 ### Imposter camp 
 Please be quiet during the power outage<br>. 
 Normal kill button and <br>. 
@@ -435,9 +435,9 @@ Ability to kill targets remotely with no sound and no kill warp<br>.
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| Cool Sync on Kill | Cool Sync on Kill 
-| Storing Cool During Power Outages 
-| Number of Limits | 
+| Same in kill buttons | Is the coold time reset when using the normal kill button and the secretly kill button synchronized?
+| Kill cool charge during power outage
+| Ability limit | 
 ----------------------- 
 ## Smasher 
 ### Imposter camp 
@@ -464,7 +464,7 @@ key.
 | You can set the kill cool down time for the sub kill button operated by the F key. 
 | You can set whether double killers can use sabotage. 
 ----------------------- 
-## Writer 
+## Lighter
 ### Crew camp 
 By pressing the light button, <br>. 
 Changes to a set field of view for a set period of time 
@@ -770,18 +770,18 @@ It is also possible to change in the settings whether a side kick can be made. <
 | You can use a vent | to enter a vent. 
 | Sabotage can be used. 
 | You can set whether the view will be the same as the imposter's view. 
-| You can make [Jackal Friends](#JackalFriends) with your first kill! 
+| You can make [JackalFriends](#JackalFriends) with your first kill! 
 | Jackals can make side kicks. 
 | New jackals can make side kicks | Promoted jackals can make side kicks. 
 ----------------------- 
-## Side kick 
+## Sidekick 
 ### Third camp 
 You will not be the first to be selected. <br>. 
 Being side-kicked by a [jackal](#jackal)<br>. 
 This position. <br> 
 When all jackals die, they are promoted to a side kick. 
 ----------------------- 
-## Jackal Friends 
+## JackalFriends 
 ### Third camp 
 Jackals are not known from Jackal Friends (can be changed in settings),<br> and 
 Jackals do not tell us who the Jackal Friends are. <br> 
@@ -836,7 +836,7 @@ SuperHostRoles support (replaced by kill button)
 If you report a corpse, it changes to the position of the person you report! (If you report the 
 corpse of an amputee, it will not change.) 
 ----------------------- 
-## SEA 
+## Seer
 ### Crew camp 
 Sia has two abilities [to see flashes of death] and [to see ghosts]. <br> 
 <br> 
@@ -862,7 +862,7 @@ corpse.
 | The time when the ghost is visible | The time[s] when the ghost disappears after the corpse 
 report meeting. 
 ----------------------- 
-## Mad Seer 
+## MadSeer 
 ### Imposter camp 
 The decision is crewmate, but<br>. 
 This is a roll of the Imposter camp. <br> 
@@ -900,7 +900,7 @@ report meeting.
 | Short Tasks | You can set the number of short tasks before the imposter can be checked. 
 | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 ----------------------- 
-## Evil Seer 
+## EvilSeer 
 ### Imposter camp 
 Evil Seer, like [Seer](#Seer), has two abilities [see flashes of death] and [see ghosts]. <br> 
 <br> 
@@ -926,7 +926,7 @@ corpse.
 | The time when the ghost is visible | The time[s] when the ghost disappears after the corpse 
 report meeting. 
 ----------------------- 
-## CEA Friends 
+## SeerFriends 
 ### Third camp 
 The decision is crewmate, but<br>. 
 The third camp (jackal camp) rolls. <br> 
@@ -966,7 +966,7 @@ title.
 | Short Tasks | You can set the number of short tasks until you can check jackals. 
 | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 ----------------------- 
-## Jackal Seer 
+## JackalSeer 
 ### Third camp 
 Can kill and vent. <br> 
 Press the side kick button<br>. 
@@ -1005,7 +1005,7 @@ report meeting.
 | Jackals can make side kicks. 
 | New jackals can make side kicks | Promoted jackals can make side kicks. 
 ----------------------- 
-## Side kick seer 
+## SidekickSeer 
 ### Third camp 
 You will not be the first to be selected. <br>. 
 Being side-kicked by a [jackal seer](#jackalseer)<br>. 
@@ -1044,13 +1044,13 @@ Kill Delay | Kill Delay | Kill Delay | Kill Delay | Kill Delay
 ----------------------- 
 ## Assassins & Merlin 
 ### Imposter & Crew camps 
-Imposter camp<br>. 
+Imposter camp<br>
 <br> 
 If hung, a meeting called the Assassin's Council can occur. <br> 
 If the imposter can designate Merlin to hang there, the imposter will win. 
 <br> 
-～Merlin~Merlin~<br><br 
-Crew camp<br>. 
+～Merlin~Merlin~<br> 
+Crew camp<br>
 <br> 
 He knows who the Assassins are from the beginning. He cannot tell who the Imposter is 
 because if he reveals his true identity, he will lose the Assassin's Conference. <br> 
@@ -1075,7 +1075,7 @@ If the corpse is erased, the killcool is reset to the specified value. <br>
 ----------------------- 
 ## Samurai 
 ### Imposter camp 
-SHR compatible<br>. 
+SHR compatible<br>
 <br> 
 Bent and Sabo are not available (can be changed in the settings) and have a long killcool (can 
 be changed in the settings), instead they have a special move button that can be used only 
