@@ -23,6 +23,7 @@ namespace SuperNewRoles
         public static bool IsUpdated = false;
         public static void Load()
         {
+            CustomCosmetics.CustomCosmeticsMenus.Patch.ObjectData.SelectedPreset = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Selected Closet Preset", 0);
             StreamerMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Enable Streamer Mode", false);
             AutoUpdate = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Auto Update", true);
             DebugMode = SuperNewRolesPlugin.Instance.Config.Bind("Custom", "Debug Mode", false);
