@@ -760,6 +760,7 @@ PositionSwapperSwapText2
 TunaName
 TunaTitle1
 TunaStoppingTimeSetting
+TunaAddWinSetting
 BlackCatName
 BlackCatTitle1
 MafiaName

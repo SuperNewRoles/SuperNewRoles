@@ -3048,6 +3048,10 @@
         "0" : "Stopping Time" ,
         "11" : "\u6b62\u307e\u308c\u308b\u6642\u9593"
         } ,
+ "TunaAddWinSetting" : {
+        "0" : "Add Win" ,
+        "11" : "\u8ffd\u52a0\u52dd\u5229"
+        } ,
  "BlackCatName" : {
         "0" : "Black Cat" ,
         "11" : "\u9ed2\u732b"
