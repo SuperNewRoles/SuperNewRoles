@@ -20,7 +20,7 @@ All crewmates can also be used as sheriffs, etc.!<br>
 In SHR mode, "everyone's sheriff" is not supported due to the specification that the sheriff replaces the Impostor.<br>
 After the match starts, the crewmate is immediately judged the winner of the task.<br>
 (No one with a task = 0 tasks left for Crew.)<br>
-Please include one Crew camp position that has a task.<br>
+Please include one Team Crewposition that has a task.<br>
 (Adding a MadMate, JackalFriends, or Home Security Guard not help.)<br>
 
 ##  Equipment settings
@@ -492,7 +492,7 @@ key.
 
 ----------------------- 
 ## Lighter
-### Crew camp 
+### Team Crew
 By pressing the light button, <br>. 
 Changes to a set field of view for a set period of time 
 ### Game Settings 
@@ -504,7 +504,7 @@ Changes to a set field of view for a set period of time
 
 ----------------------- 
 ## Sheriff 
-### Crew camp 
+### Team Crew
 Sheriffs can kill out of person. <br> 
 However, if you kill a crewmate,<br> 
 The sheriff himself will die. <br> 
@@ -520,7 +520,7 @@ SuperHostRoles support
 
 ----------------------- 
 ## SpeedBooster 
-### Crew camp 
+### Team Crew
 By pressing the Speed Boost button,<br> the 
 You can speed up your own speed for a certain amount of time. <br> 
 *Note: Since this is double speed, the original speed is relevant. 
@@ -533,7 +533,7 @@ You can speed up your own speed for a certain amount of time. <br>
 
 ----------------------- 
 ## Doorr
-### Crew camp 
+### Team Crew
 By clicking on the door button,<br> 
 The door can be opened and closed. There is a cool time. 
 ### Game Settings 
@@ -543,7 +543,7 @@ The door can be opened and closed. There is a cool time.
 
 ----------------------- 
 ## Clergyman
-### Crew camp 
+### Team Crew
 It can cause a power outage for the Impostor. <br>
 The capacity is currently not functioning.
 ### Game Settings 
@@ -575,7 +575,7 @@ SuperHostRoles support
 
 ----------------------- 
 ## Bait
-### Crew camp 
+### Team Crew
 If killed,<br> the 
 The person you kill will be made to report you. <br>. 
 SuperHostRoles support 
@@ -587,13 +587,13 @@ SuperHostRoles support
 ----------------------- 
 ## HomeSecurityGuard
 
-### Crew camp 
+### Team Crew
 Crew mate with no task. 
 SuperHostRoles support 
 
 ----------------------- 
 ## StuntMan
-### Crew camp 
+### Team Crew
 It prevents a specified number of unconditional kills. <br> 
 However, the stuntman himself will not be notified, etc. <br> <br>
 SuperHostRoles support 
@@ -604,7 +604,7 @@ SuperHostRoles support
 
 ----------------------- 
 ## Moving
-### Crew camp 
+### Team Crew
 First, a location set button appears. <br> 
 Press that button to set the move location. <br> 
 After that, there is a cool time<br>. 
@@ -617,13 +617,13 @@ A button appears that allows you to teleport to the move location.
 ----------------------- 
 ## Best False Charge
 
-### Crew camp 
+### Team Crew
 Death at the end of the first meeting<br>. 
 SuperHostRoles support 
 
 ----------------------- 
 ## NiceNekomata
-### Crew camp 
+### Team Crew
 When I am expelled from a meeting, <br>. 
 We will take one of them on the road, regardless of their position. <br> 
 SuperHostRoles support 
@@ -635,12 +635,12 @@ SuperHostRoles support
 ----------------------- 
 ## Doctor
 
-### Crew camp 
+### Team Crew
 You can see the vitals at any time. 
 
 ----------------------- 
 ## MeetingSheriff
-### Crew camp 
+### Team Crew
 Meeting Sheriffs can kill outsiders at meetings. <br> 
 However, if you kill a crewmate,<br> 
 The sheriff himself dies. 
@@ -655,7 +655,7 @@ The sheriff himself dies.
 
 ----------------------- 
 ## NiceScientist
-### Crew camp 
+### Team Crew
 By pressing the transparency button, <br>. 
 You become invisible for a certain period of time. 
 ### Game Settings 
@@ -666,7 +666,7 @@ You become invisible for a certain period of time.
 
 ----------------------- 
 ## NiceRedRidingHood
-### Crew camp 
+### Team Crew
 If the person who kills you dies, you come back to life. <br> 
 All positions are not displayed at the time of death 
 ### Game Settings 
@@ -676,7 +676,7 @@ All positions are not displayed at the time of death
 
 ----------------------- 
 ## Mayor
-### Crew camp 
+### Team Crew
 You can increase the number of your own votes. <br> 
 SuperHostRoles support 
 Note: The vote count setting will also include the normal vote count; setting it to 1 vote will 
@@ -689,14 +689,14 @@ result in the normal vote count.
 ----------------------- 
 ## Technician
 
-### Crew camp 
+### Team Crew
 Only during sabotage can you enter the vent<br>. 
 After the saboteur is finished, he is forced to leave. <br> 
 SuperHostRoles support 
 
 ----------------------- 
 ## Diviner
-### Crew camp 
+### Team Crew
 A fortune teller button will appear next to the person alive during the meeting. <br> 
 When you press that button, the position of the person you pressed will appear in the chat. 
 ### Game Settings 
@@ -707,7 +707,7 @@ When you press that button, the position of the person you pressed will appear i
 
 ----------------------- 
 ## Medium
-### Crew camp 
+### Team Crew
 A medium button appears next to the dead person during the meeting. <br> 
 When you press that button, the position of the person you pressed will appear in the chat. 
 ### Game Settings 
@@ -740,7 +740,7 @@ SuperHostRoles support
 
 ----------------------- 
 ## NiceHawk
-### Crew camp 
+### Team Crew
 Clicking the Hawkeye button widens the visible area for a certain period of time. <br> 
 However, if Hawkeye is used, it will not be able to move for 10 seconds afterwards. 
 ### Game Settings 
@@ -766,14 +766,14 @@ Help the Impostor.
 
 ----------------------- 
 ## Baker
-### Crew camp 
+### Team Crew
 If the baker is alive at the end of the meeting, the chat will say "Bread has been distributed". 
 <br> 
 SHR compatible<br>. 
 
 ----------------------- 
 ## Spy 
-### Crew camp 
+### Team Crew
 Deceive the Impostor and lead the Cluemate camp to victory<br>. 
 The spy is a crewmate, but appears to be a peer from the Impostor. <br> 
 Spies are crewmates and have no special abilities. <br> 
@@ -799,7 +799,7 @@ settings are available
 
 ----------------------- 
 ## Teru teru teru 
-### Third camp 
+### Team Third
 If you get expelled at the meeting, you win. <br> 
 Sabotage and venting can be used in the settings. <br> 
 SuperHostRoles support 
@@ -813,14 +813,14 @@ SuperHostRoles support
 ----------------------- 
 ## Opportunist
 
-### Third camp 
+### Team Third
 If the player survives until the end of the game, he or she wins an additional victory. <br> 
 You can win with any camp. <br>. 
 SuperHostRoles support 
 
 ----------------------- 
 ## Jackal 
-### Third camp 
+### Team Third
 Can kill and vent. <br> 
 Press the side kick button<br>. 
 Target can be [Sidekick](#SideKick). <br> 
@@ -840,7 +840,7 @@ It is also possible to change in the settings whether a side kick can be made. <
 ----------------------- 
 ## Sidekick 
 
-### Third camp 
+### Team Third
 You will not be the first to be selected. <br>. 
 Being side-kicked by a [jackal](#Jackal)<br>. 
 This position. <br> 
@@ -848,7 +848,7 @@ When all jackals die, they are promoted to a side kick.
 
 ----------------------- 
 ## JackalFriends 
-### Third camp 
+### Team Third
 Jackals are not known from Jackal Friends (can be changed in settings),<br> and 
 Jackals do not tell us who the Jackal Friends are. <br> 
 Jackal Friends will be put in the vent. (Can be changed in settings)<br>. 
@@ -867,14 +867,14 @@ Impostor, Jackal can kill Jackal Friends.
 ----------------------- 
 ## God
 
-### Third camp 
+### Team Third
 You can see everyone's position. <br> 
 Surviving to the end is a solo victory. <br> 
 SuperHostRoles support 
 ----------------------- 
 ## Egoist
-### Third camp 
-A third camp position that counts as an Impostor but has different win conditions. <br> 
+### Team Third
+A Team Thirdposition that counts as an Impostor but has different win conditions. <br> 
 You will not be killed by your allies. but will be affected by sabotage. <br>. 
 If you achieve an Impostor Victory after all the Impostors visible to you are gone, you override 
 the Impostor Victory and achieve an Egoist Victory. <br> 
@@ -882,7 +882,7 @@ SuperHostRoles support
 
 ----------------------- 
 ## Workperson
-### Third camp 
+### Team Third
 When all tasks are completed, the game is forcibly terminated. However, it is more than a 
 crew task. <br> 
 SuperHostRoles support 
@@ -895,20 +895,20 @@ SuperHostRoles support
 
 ----------------------- 
 ## TrueLover
-### Third camp 
+### Team Third
 You can become lovers with the person with whom you press the button. However, you cannot<br>
 be with someone who is already a Lovers. <br>
 SuperHostRoles support (replaced by kill button) 
 
 ----------------------- 
 ## Amnesiac
-### Third camp 
+### Team Third
 If you report a corpse, it changes to the position of the person you report! (If you report the 
 corpse of an amputee, it will not change.) 
 
 ----------------------- 
 ## Seer
-### Crew camp 
+### Team Crew
 Seer has two abilities [Show Death Flash] and [Show Souls]. <br> 
 <br> 
 Ability 1 [Show Death Flash]:<br>. 
@@ -1001,9 +1001,9 @@ report meeting.
 
 ----------------------- 
 ## SeerFriends 
-### Third camp 
+### Team Third
 The decision is crewmate, but<br>. 
-The third camp (jackal camp) rolls. <br> 
+The Team Third(jackal camp) rolls. <br> 
 Let's help the jackals. <br> 
 It also has a fanatic setting<br>. 
 <br> 
@@ -1041,7 +1041,7 @@ report meeting.
 
 ----------------------- 
 ## JackalSeer 
-### Third camp 
+### Team Third
 Can kill and vent. <br> 
 Press the side kick button<br>. 
 You can [Sidekick(Seer)](#SidekickSeer) the target. <br> 
@@ -1081,7 +1081,7 @@ report meeting.
 
 ----------------------- 
 ## SidekickSeer 
-### Third camp 
+### Team Third
 You will not be the first to be selected. <br>. 
 Being side-kicked by a [jackalSeer](#JackalSeer)<br>. 
 This position. <br> 
@@ -1099,8 +1099,8 @@ Instead, the killcool is short. <br>
 
 ----------------------- 
 ## Fox
-### Third camp 
-Third camp (fox camp)<br>. 
+### Team Third
+Team Third(fox camp)<br>. 
 Like God, if you survive to the end, you win alone<br>. 
 Also, you will not be killed<br>. 
 SHR compatible<br>. 
@@ -1199,20 +1199,20 @@ It cannot see the Impostor, but it can unconditionally prevent kills. <br>
 
 ----------------------- 
 ## Nocturnality
-### Crew camp 
+### Team Crew
 Crew camps where normal visibility is reduced and, conversely, widened during power 
 outages. <br> 
 SHR compatible.<br>
 
 ----------------------- 
 ## Celebrity
-### Crew camp 
+### Team Crew
 The Celebrity's name is visible in yellow to all players, so they know who the Celebrity is. <br> 
 SHR compatible.<br>
 
 ----------------------- 
 ## Remote Sheriff 
-### Crew camp 
+### Team Crew
 A version of [Sheriff](#Sheriff) that can do remote kills. <br> 
 Able to shapeshift target to kill the shapeshifter. <br> 
 SHR compatible.<br>
@@ -1228,7 +1228,7 @@ SHR compatible.<br>
 
 ----------------------- 
 ## Task Manager 
-### Crew camp 
+### Team Crew
 
 Finish the task and mount up!<br>
 A crew mate that allows you to set the number of tasks individually.<br>
@@ -1253,7 +1253,7 @@ SHR compatible<br>.
 
 ----------------------- 
 ## Chief
-### Crew camp 
+### Team Crew
 A sheriff may be appointed. <br> 
 Trying to make an Impostor a sheriff is self-destructive<br>. 
 ### Game Settings 
@@ -1279,9 +1279,9 @@ Instead of being able to make corpses disappear, it does not have the fanatic ab
 
 ----------------------- 
 ## Mayer Friends 
-### Third camp 
+### Team Third
 The decision is crewmate, but<br>. 
-The third camp (jackal camp) rolls. <br> 
+The Team Third(jackal camp) rolls. <br> 
 Let's help the jackals. <br> 
 It also has a fanatic setting<br>. 
 <br> 
@@ -1305,7 +1305,7 @@ SuperHostRoles support
 ----------------------- 
 ## FalseCharges
 
-### Third camp 
+### Team Third
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
@@ -1314,7 +1314,7 @@ SuperHostRoles support
 
 ----------------------- 
 ## TeleportingJackal
-### Third camp 
+### Team Third
 Jackal version of [Teleporter](#Teleporter). <br> 
 Can kill and vent. <br> 
 Press the side kick button<br>. 
@@ -1334,7 +1334,7 @@ The ability to sabotage can be changed in the settings. <br>
 
 ----------------------- 
 ## Demon
-### Third camp 
+### Team Third
 SHR compatible<br>. 
 If the Impostor wins with all survivors cursed, he will sidestep the Impostor victory and win 
 alone. <br> 
@@ -1349,7 +1349,7 @@ a fraction, it will be rounded down.
 
 ----------------------- 
 ## Arsonist
-### Third camp 
+### Team Third
 If you oil and burn them all, you win alone. <br> 
 Due to a glitch, we are currently only able to support one person. <br> 
 <br> 
@@ -1367,16 +1367,16 @@ Shape-shifting with everyone painted is the winner. <br>
 
 ----------------------- 
 ## NEET 
-### Third camp 
+### Team Third
 Use button.<br>
 Report button.<br>
 Voting rights.<br>
 There is no. <br>
-If it survives to the end, it is the third camp that wins alone, just like [God](#God). 
+If it survives to the end, it is the Team Thirdthat wins alone, just like [God](#God). 
 
 ----------------------- 
 ## HauntedWolf
-### Crew camp 
+### Team Crew
 It is judged as an Impostor to fortune tellers, sheriffs, etc. <br> 
 Tasks, etc. are the same as regular crews. <br> 
 SHR compatible<br>. 
@@ -1386,7 +1386,7 @@ SHR compatible<br>.
 
 ----------------------- 
 ## GhostMechanic
-### Crew camp (ghost position) 
+### Team Crew(ghost position) 
 After death, the position changes,<br> and the 
 It will be able to cure sabotage, like the engineer's repair of TheOtherRoles. 
 ### Game Settings 
@@ -1409,7 +1409,7 @@ to swap again
 
 ----------------------- 
 ## Tuna
-### Third camp 
+### Team Third
 Tuna need to be moving all the time to survive! <br> 
 If it stops, it will kill itself! <br> 
 If he survives, he wins alone! <br> <br 
