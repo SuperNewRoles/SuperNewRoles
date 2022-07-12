@@ -34,7 +34,7 @@ namespace SuperNewRoles.Roles
                 if (RoleClass.NiceHawk.timer1 >= 0.1 && !RoleClass.IsMeeting)
                 {
                     var TimeSpanDate = new TimeSpan(0, 0, 0, (int)10);
-                    RoleClass.NiceHawk.timer1 = (float)((Roles.RoleClass.NiceHawk.Timer2 + TimeSpanDate) - DateTime.Now).TotalSeconds;
+                    RoleClass.NiceHawk.timer1 = (float)((RoleClass.NiceHawk.Timer2 + TimeSpanDate) - DateTime.Now).TotalSeconds;
                     CachedPlayer.LocalPlayer.transform.localPosition = RoleClass.NiceHawk.Postion;
                     SuperNewRolesPlugin.Logger.LogInfo(RoleClass.NiceHawk.timer1);
                 }

@@ -857,7 +857,7 @@ namespace SuperNewRoles.Patches
                             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                             Writer.Write(target.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                            Roles.RoleClass.Quarreled.IsQuarreledWin = true;
+                            RoleClass.Quarreled.IsQuarreledWin = true;
                             ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
                         }
                     }

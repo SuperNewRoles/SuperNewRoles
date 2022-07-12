@@ -1,4 +1,5 @@
 using UnityEngine;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Patch
 {
@@ -26,7 +27,7 @@ namespace SuperNewRoles.Patch
             {
                 SuperNewRolesPlugin.Logger.LogInfo(count);
                 SuperNewRolesPlugin.Logger.LogInfo(MapOptions.MapOption.Timer);
-                if (MapOptions.MapOption.Timer >= 0.1 && !Roles.RoleClass.IsMeeting)
+                if (MapOptions.MapOption.Timer >= 0.1 && !RoleClass.IsMeeting)
                 {
                     Camera.main.orthographicSize = MapOptions.MapOption.CameraDefault * 3f;
                     FastDestroyableSingleton<HudManager>.Instance.UICamera.orthographicSize = MapOptions.MapOption.Default * 3f;

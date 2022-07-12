@@ -259,7 +259,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     if (!PlayerControl.LocalPlayer.CanMove) return;
-                    Roles.RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
+                    RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
                     ScientistButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Scientist.Start();
                 },
@@ -581,7 +581,7 @@ namespace SuperNewRoles.Buttons
                     if (Doorr.CheckTarget() && PlayerControl.LocalPlayer.CanMove)
                     {
                         Doorr.DoorrBtn();
-                        Roles.RoleClass.Doorr.ButtonTimer = DateTime.Now;
+                        RoleClass.Doorr.ButtonTimer = DateTime.Now;
                         Doorr.ResetCoolDown();
                     }
                 },
@@ -776,7 +776,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     RoleClass.Clergyman.IsLightOff = true;
-                    Roles.RoleClass.Clergyman.ButtonTimer = DateTime.Now;
+                    RoleClass.Clergyman.ButtonTimer = DateTime.Now;
                     ClergymanLightOutButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Clergyman.LightOutStart();
                 },
@@ -802,7 +802,7 @@ namespace SuperNewRoles.Buttons
             SpeedBoosterBoostButton = new Buttons.CustomButton(
                 () =>
                 {
-                    Roles.RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
+                    RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
                     SpeedBoosterBoostButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     SpeedBooster.BoostStart();
                 },
@@ -833,7 +833,7 @@ namespace SuperNewRoles.Buttons
             EvilSpeedBoosterBoostButton = new Buttons.CustomButton(
                 () =>
                 {
-                    Roles.RoleClass.EvilSpeedBooster.ButtonTimer = DateTime.Now;
+                    RoleClass.EvilSpeedBooster.ButtonTimer = DateTime.Now;
                     EvilSpeedBoosterBoostButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     EvilSpeedBooster.BoostStart();
                 },
@@ -864,7 +864,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     RoleClass.Lighter.IsLightOn = true;
-                    Roles.RoleClass.Lighter.ButtonTimer = DateTime.Now;
+                    RoleClass.Lighter.ButtonTimer = DateTime.Now;
                     LighterLightOnButton.actionButton.cooldownTimerText.color = new Color(0F, 0.8F, 0F);
                     Lighter.LightOnStart();
                 },

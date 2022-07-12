@@ -62,23 +62,24 @@ while True:
                     }
                 }
             }\n        //セットクラス""".replace("ROLEID!!", rolename).replace("TEAM", ARolename))
-            temp = temp.replace("//プレイヤーカウント", """RoleId.ROLENAME => CustomOptions.ROLENAMEPlayerCount.getFloat(),\n                //プレイヤーカウント""".replace("ROLENAME", rolename))
+            temp = temp.replace(
+                "//プレイヤーカウント", """RoleId.ROLENAME => CustomOptions.ROLENAMEPlayerCount.getFloat(),\n                //プレイヤーカウント""".replace("ROLENAME", rolename))
             f.write(temp)
     with open(baseurl+"Roles\\RoleHelper.cs", mode="r", encoding="utf-8") as r:
         temp = r.read()
         with open(baseurl+"Roles\\RoleHelper.cs", mode="w", encoding="utf-8") as f:
             temp = temp.replace("//ロールチェック",
-                                """else if (Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
+                                """else if (RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
             {
                 return RoleId.ROLENAME;
             }\n            //ロールチェック""".replace("ROLENAME", rolename))
             temp = temp.replace("//ロールアド",
                                 """case (RoleId.ROLENAME):
-                    Roles.RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
+                    RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
                     break;\n                //ロールアド""".replace("ROLENAME", rolename))
             temp = temp.replace("//ロールリモベ",
                                 """case (RoleId.ROLENAME):
-                    Roles.RoleClass.ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
+                    RoleClass.ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
                     break;\n                //ロールリモベ""".replace("ROLENAME", rolename))
             if isneut:
                 temp = temp.replace("//第三か",
