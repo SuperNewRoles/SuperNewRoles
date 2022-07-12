@@ -11,6 +11,42 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 
 [日本語](https://github.com/ykundesu/SuperNewRoles/blob/master/READMEs/README_jp.md)
 
+# Features of this mod
+## Controller Compatible
+Controllers can be used for button use!
+
+## Multiple people can be set up 
+All crewmates can also be used as sheriffs, etc.!
+
+##  Equipment settings
+You can set up the admin, vitals, and other settings.<br>
+In normal mode, time settings are also available.<br>
+The [ykundesuBeplnEx] setting is also included!<br>
+Currently, in SHR mode, you can only use the available/unavailable settings.<br>
+
+## Map Modification
+There is a setting to modify the map.<br>
+<br>
+
+### MiraHQ
+・Add Vitals<br>
+・Add venting ([Lab-Admin-Yventing])<br>
+### Polus
+・Add vent ([Specimenroom-Vitals-Weapon])<br>
+### AirShip
+・Add secret room!<br>
+・Add vent ([main upper left private room - infirmary - lounge],[security - elec - shower])
+・Remove elevators<br>
+・Move switchboard ([cargo -> vault task], [elevator -> back of meeting])<br>
+・Add wiring task<br>
+
+## Modes.
+[Hide and Seek mode], etc. have been added, apart from the normal ones.
+
+## Support for some hosts to be able to go there only!
+Some of the modes and positions are available for everyone, just by having the host enter!<br>
+Some positions are listed as [SHR-compatible] and [SuperHostRoles-compatible].<br>
+If the host includes this mod, the position will be available to all!<br>
 
 ## Credits.
 
