@@ -100,7 +100,7 @@ It is already on the Discord server.
 | [SuicideWisher](#スーサイドウィッシャー‌)|[Observer](#選挙管理委員)
 | [Fast Maker](#ファストメーカー)|[Seer](#シーア)
 | [Kunoichi](#クノイチ)|[MadSeer](#マッドシーア)
-| [DoubleKiller]#(ダブルキラー)|[RemoteSheriff](#リモートシェリフ)
+| [DoubleKiller](#ダブルキラー)|[RemoteSheriff](#リモートシェリフ)
 | [Smasher](#スマッシャー)|[TaskManager](#タスクマネージャー)
 | [Secretly Killer](#シークレットリーキラー) |[MadMaker](#マッドメーカー)
 | |[Chief](#村長)
