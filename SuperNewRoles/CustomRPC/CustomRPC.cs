@@ -1,17 +1,13 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using SuperNewRoles.CustomCosmetics.ShareCosmetics;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.EndGame;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
@@ -1203,9 +1199,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo((CustomRPC)callId+"でエラー:"+e);
+                    SuperNewRolesPlugin.Logger.LogInfo((CustomRPC)callId + "でエラー:" + e);
                 }
             }
         }

@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode.SuperHostRoles;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.Zombie

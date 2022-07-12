@@ -4,7 +4,6 @@ using HarmonyLib;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;
 
@@ -108,7 +107,7 @@ namespace SuperNewRoles.Patch
             var pos = moreOptions.transform.localPosition;
             moreOptions.transform.localScale *= 1.1f;
             float count = 1.55f;
-            moreOptions.transform.localPosition = new Vector3(pos.x*1.5f, pos.y * count, pos.z);
+            moreOptions.transform.localPosition = new Vector3(pos.x * 1.5f, pos.y * count, pos.z);
             var trans = moreOptions.transform.localPosition;
             moreOptions.gameObject.SetActive(true);
             trans = moreOptions.transform.position;

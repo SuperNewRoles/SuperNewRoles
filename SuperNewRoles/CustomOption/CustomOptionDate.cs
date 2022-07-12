@@ -1,17 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using BepInEx.Configuration;
-using HarmonyLib;
-using Hazel;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.MapCustoms;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using static System.Drawing.Color;
 
 namespace SuperNewRoles.CustomOption
 {
@@ -410,6 +400,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption MadJesterIsUseVent;
         public static CustomOption MadJesterIsImpostorLight;
         public static CustomOption IsMadJesterTaskClearWin;
+        public static CustomOption MadJesterCommonTask;
+        public static CustomOption MadJesterShortTask;
+        public static CustomOption MadJesterLongTask;
 
         public static CustomRoleOption FalseChargesOption;
         public static CustomOption FalseChargesPlayerCount;
@@ -1112,6 +1105,10 @@ namespace SuperNewRoles.CustomOption
             MadJesterIsUseVent = CustomOption.Create(298, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadJesterOption);
             MadJesterIsImpostorLight = CustomOption.Create(299, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadJesterOption);
             IsMadJesterTaskClearWin = CustomOption.Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
+            var MadJesteroption = SelectTask.TaskSetting(1000, 1001, 1002, IsMadJesterTaskClearWin, CustomOptionType.Crewmate, true);
+            MadJesterCommonTask = MadJesteroption.Item1;
+            MadJesterShortTask = MadJesteroption.Item2;
+            MadJesterLongTask = MadJesteroption.Item3;
 
             FalseChargesOption = new CustomRoleOption(517, true, CustomOptionType.Neutral, "FalseChargesName", RoleClass.FalseCharges.color, 1);
             FalseChargesPlayerCount = CustomOption.Create(518, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FalseChargesOption);

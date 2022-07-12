@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
@@ -49,6 +45,11 @@ namespace SuperNewRoles.Patch
                     RPCProcedure.SetHaison();
                     ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                     MapUtilities.CachedShipStatus.enabled = false;
+                }
+
+                if (Input.GetKeyDown(KeyCode.M) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift) && AmongUsClient.Instance.AmHost)//Mと右左シフトを押したとき
+                {
+                    MeetingHud.Instance.RpcClose();//会議を強制終了
                 }
             }
         }

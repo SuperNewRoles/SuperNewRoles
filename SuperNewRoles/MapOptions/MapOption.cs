@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Roles;
 using UnityEngine;
 using static SuperNewRoles.CustomOption.CustomOptions;
 

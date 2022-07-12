@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using HarmonyLib;
-using Hazel;
-using InnerNet;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnhollowerBaseLib;
-using UnityEngine;
 using static MeetingHud;
 
 namespace SuperNewRoles.Patch

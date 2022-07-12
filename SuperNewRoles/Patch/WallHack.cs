@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using UnityEngine;
 
@@ -13,7 +10,8 @@ namespace SuperNewRoles.Patch
         {
             public static void Postfix(HudManager __instance)
             {
-                if (PlayerControl.LocalPlayer?.Collider?.offset != null) {
+                if (PlayerControl.LocalPlayer?.Collider?.offset != null)
+                {
                     if (Input.GetKeyDown(KeyCode.LeftControl))
                     {
                         if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started ||

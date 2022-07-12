@@ -2,21 +2,23 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
     class PositionSwapper
     {
-        public static void ResetCoolDown(){
+        public static void ResetCoolDown()
+        {
             HudManagerStartPatch.PositionSwapperButton.MaxTimer = RoleClass.PositionSwapper.CoolTime;
             HudManagerStartPatch.PositionSwapperButton.Timer = RoleClass.PositionSwapper.CoolTime;
             RoleClass.PositionSwapper.ButtonTimer = DateTime.Now;
         }
-        public static void EndMeeting(){
+        public static void EndMeeting()
+        {
             ResetCoolDown();
         }
-        public static void SwapStart(){
+        public static void SwapStart()
+        {
             List<PlayerControl> AlivePlayer = new();
             AlivePlayer.Clear();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -25,7 +27,7 @@ namespace SuperNewRoles.Roles
                 {
                     AlivePlayer.Add(p);
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:"+p.PlayerId+"\n生存:"+p.isAlive());
+                SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:" + p.PlayerId + "\n生存:" + p.isAlive());
             }
             var RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
             var PushSwapper = PlayerControl.LocalPlayer;

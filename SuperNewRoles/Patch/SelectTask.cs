@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
@@ -135,6 +132,19 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.JesterCommonTask.getFloat();
                     int shortt = (int)CustomOptions.JesterShortTask.getFloat();
                     int longt = (int)CustomOptions.JesterLongTask.getFloat();
+                    if (!(commont == 0 && shortt == 0 && longt == 0))
+                    {
+                        return (commont, shortt, longt);
+                    }
+                }
+            }
+            else if (p.isRole(RoleId.MadJester))
+            {
+                if (CustomOptions.IsMadJesterTaskClearWin.getBool())
+                {
+                    int commont = (int)CustomOptions.MadJesterCommonTask.getFloat();
+                    int shortt = (int)CustomOptions.MadJesterShortTask.getFloat();
+                    int longt = (int)CustomOptions.MadJesterLongTask.getFloat();
                     if (!(commont == 0 && shortt == 0 && longt == 0))
                     {
                         return (commont, shortt, longt);
