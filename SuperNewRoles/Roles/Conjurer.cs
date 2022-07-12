@@ -1,16 +1,8 @@
-using System.Text.RegularExpressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using static System.Math;
-using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
-using SuperNewRoles.EndGame;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -128,7 +120,7 @@ namespace SuperNewRoles.Roles
         //一回追加されたかを判定する
         public static bool IsFirstAdded()
         {
-            if (RoleClass.Conjurer.FirstAdd)
+            if (RoleClass.Conjurer.FirstAdd && !RoleClass.Conjurer.SecondAdd && !RoleClass.Conjurer.ThirdAdd)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("IsFirstAddedがtrueeee");
                 return true;
@@ -139,7 +131,7 @@ namespace SuperNewRoles.Roles
         //二回追加されたかを判定する
         public static bool IsSecondAdded()
         {
-            if (RoleClass.Conjurer.SecondAdd)
+            if (RoleClass.Conjurer.FirstAdd && RoleClass.Conjurer.SecondAdd && !RoleClass.Conjurer.ThirdAdd)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("IsSecondAddedがtrueeee");
                 return true;
@@ -150,7 +142,7 @@ namespace SuperNewRoles.Roles
         //三回追加されたかを判定する
         public static bool IsThirdAdded()
         {
-            if (RoleClass.Conjurer.ThirdAdd)
+            if (RoleClass.Conjurer.FirstAdd && RoleClass.Conjurer.SecondAdd && RoleClass.Conjurer.ThirdAdd)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("IsThirdAddedがtrueeee");
                 return true;
@@ -179,8 +171,8 @@ namespace SuperNewRoles.Roles
                     //boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Maker_00{index + 1:00}.png", 175f);
                     Transform Conjurer_Marker = GameObject.Instantiate(GameObject.Find("JackInTheBox").transform);
                     CustomAnimation.Animation Conjurer_Marker_Animation = new CustomAnimation.Animation();
-                    Conjurer_Marker_Animation.Start(10, Conjurer_Marker);
-                    Conjurer_Marker_Animation.Sprites = CustomAnimation.LoadSprites.GetSpritesAgartha("SuperNewRoles.Resources.Animation.Conjurer_Maker", 20);
+                    Conjurer_Marker_Animation.Start(30, Conjurer_Marker);
+                    Conjurer_Marker_Animation.Sprites = CustomAnimation.LoadSprites.GetSpritesAgartha("SuperNewRoles.Resources.Animation.Conjurer_Maker_30fps", 60);
                 }
                 else//それ以外の時
                 {
@@ -244,9 +236,6 @@ namespace SuperNewRoles.Roles
             vent.gameObject.SetActive(true);
             return;
         }
-
-
-
 
         public static void clearJackInTheBoxes()
         {
