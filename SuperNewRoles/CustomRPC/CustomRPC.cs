@@ -8,6 +8,7 @@ using SuperNewRoles.CustomOption;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
@@ -678,6 +679,7 @@ namespace SuperNewRoles.CustomRPC
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
             player.Revive();
+            DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == playerid);
             FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Alive;
         }
         public static void SetScientistRPC(bool Is, byte id)
