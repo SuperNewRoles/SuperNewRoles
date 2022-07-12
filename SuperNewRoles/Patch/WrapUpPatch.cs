@@ -84,10 +84,10 @@ namespace SuperNewRoles.Patch
             }, 0.1f, "SetIsMeeting");
             if (ModeHandler.isMode(ModeId.SuperHostRoles)) Mode.SuperHostRoles.WrapUpClass.WrapUp(exiled);
             ModeHandler.Wrapup(exiled);
+            RedRidingHood.WrapUp(exiled);
             if (exiled == null) return;
 
             Seer.ExileControllerWrapUpPatch.WrapUpPostfix(exiled);
-            RedRidingHood.WrapUp(exiled);
             Nekomata.NekomataEnd(exiled);
 
             exiled.Object.Exiled();
