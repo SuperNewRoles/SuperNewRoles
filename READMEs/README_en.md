@@ -109,48 +109,48 @@ It is already on the Discord server.
 
 | Impostor | Crewmate | Neutral | Redundant Camps |
 |----------|-------------|-----------------|----------------|
-| [Teleporter](#Teleporter) | [Lighter](#ライター) | [Jester](#てるてる) | [Quarreled](#クラード) |
-| [EvilSpeedBooster](#EvilSpeedBooster) | [Sheriff](#シェリフ) | [Opportunist](#オポチュニスト) | [Lovers](#ラバーズ) |
-| [EvilDoorr](#イビルドアー) | [SpeedBooster](#スピードブースター) | [Jackal](#ジャッカル) |  |
-| [EvilGambler](#イビルギャンブラー) | [Doorr](#ドアー) | [Sidekick](#サイドキック) |  |
-| [SelfBomber](#自爆魔) | [Clergyman](#聖職者) | [God](#神) | |
-| [EvilNekomata](#イビル猫又) | [Madmate](#マッドメイト) | [Egoist](#エゴイスト) | |
-| [CountChanger](#カウントチェンジャー) | [Bait](#ベイト) | [Work Person](#仕事人) |  |
-| [Pursuer](#追跡者) | [Home Security Guard](#自宅警備員) |  [True Lover](#純愛者) |  |
-| [EvilScientist](#イビルサイエンティスト) | [Stuntman](#スタントマン) | [Amnesiac](#忘却者) |  |
-| [Hawk](#ホーク) | [Moving](#ムービング) |[Jackal Friends](#ジャッカルフレンズ)  |  |
-| [Minimalist](#ミニマリスト) | [Best False Charge](#ベスト冤罪ヤー) | [FalseCharges](#冤罪師) |  |
-| [Magaziner](#マガジナー)| [Nice Nekomata](#ナイス猫又) | [Fox](#妖狐) |  |
-| [SerialKiller](#シリアルキラー) | [Doctor](#ドクター)|[TeleportingJackal](#テレポートジャッカル)
-| [EvilEraser](#イビルイレイサー) | [MeetingSheriff](#ミーティングシェリフ)| [Demon](#悪魔)
-| [OverKiller](#オーバーキラー) | [NicScientist](#ナイスサイエンティスト)| [JackalSeer](#ジャッカルシーア)
-| [EvilMoving](#イビルムービング) |[NiceRedRidingHood](#ナイス赤ずきん)| [Sidekick(Seer)](#サイドキックシーア)
-| [Levelinger](#レベリンガー) | [Mayor](#メイヤー) | [Arsonist](#アーソニスト)
-| [SideKiller](#サイドキラー) | [Technician](#技術者) | [Neet](#ニート)
-| [Survivor](#サバイバー) | [SoothSayer](#占い師)
-| [EvilSeer](#イビルシーア)|[Spirit Medium](#霊媒師)
-| [DarkKiller](#ダークキラー)|[MadMayor](#マッドメイヤー)
-| [Vampire](#ヴァンパイア)|[NiceHawk](#ナイスホーク)
-| [AssassinAndMarine](#アサシン&マーリン)|[MadStuntman](#マッドスタントマン)
-| [Cleaner](#クリーナー)|[MadHawk](#マッドホーク)
-| [Samurai](#侍)|[Bakery](#パン屋)
-| [VentMaker](#ベントメーカー)|[MadJester](#マッドてるてる)
-| [EvilHacker](#イビルハッカー)|[NiceTeleporter](#ナイステレポーター)
+| [Teleporter](#Teleporter) | [Lighter](#Lighter) | [Jester](#Jester) | [Quarreled](#Quarreled) |
+| [EvilSpeedBooster](#EvilSpeedBooster) | [Sheriff](#Sheriff) | [Opportunist](#Opportunist) | [Lovers](#Lovers) |
+| [EvilDoorr](#EvilDoorr) | [SpeedBooster](#SpeedBooster) | [Jackal](#Jackal) |  |
+| [EvilGambler](#EvilGambler) | [Doorr](#Doorr) | [Sidekick](#Sidekick) |  |
+| [SelfBomber](#SelfBomber) | [Clergyman](#Clergyman) | [God](#God) | |
+| [EvilNekomata](#EvilNekomata) | [Madmate](#Madmate) | [Egoist](#Egoist) | |
+| [CountChanger](#CountChanger) | [Bait](#Bait) | [Work Person](#WorkPerson) |  |
+| [Pursuer](#Pursuer) | [Home Security Guard](#HomeSecurityGuard) |  [True Lover](#TrueLover) |  |
+| [EvilScientist](#EvilScientist) | [Stuntman](#Stuntman) | [Amnesiac](#Amnesiac) |  |
+| [Hawk](#Hawk) | [Moving](#Moving) |[Jackal Friends](#JackalFriends)  |  |
+| [Minimalist](#Minimalist) | [Best False Charge](#BestFalseCharge) | [FalseCharges](#FalseCharges) |  |
+| [Magaziner](#Magaziner)| [Nice Nekomata](#NiceNekomata) | [Fox](#Fox) |  |
+| [SerialKiller](#SerialKiller) | [Doctor](#Doctor)|[TeleportJackal](#TeleportJackal)
+| [EvilEraser](#EvilEraser) | [MeetingSheriff](#MeetingSheriff)| [Demon](#Demon)
+| [OverKiller](#OverKiller) | [NicScientist](#NicScientist)| [JackalSeer](#JackalSeer)
+| [EvilMoving](#EvilMoving) |[NiceRedRidingHood](#NiceRedRidingHood)| [Sidekick(Seer)](#SidekickSeer)
+| [Levelinger](#Levelinger) | [Mayor](#Mayor) | [Arsonist](#Arsonist)
+| [SideKiller](#SideKiller) | [Technician](#Technician) | [Neet](#Neet)
+| [Survivor](#Survivor) | [SoothSayer](#SoothSayer)
+| [EvilSeer](#EvilSeer)|[Spirit Medium](#SpiritMedium)
+| [DarkKiller](#DarkKiller)|[MadMayor](#MadMayor)
+| [Vampire](#Vampire)|[NiceHawk](#NiceHawk)
+| [AssassinAndMarine](#AssassinAndMarine)|[MadStuntman](#MadStuntman)
+| [Cleaner](#Cleaner)|[MadHawk](#MadHawk)
+| [Samurai](#Samurai)|[Bakery](#Bakery)
+| [VentMaker](#VentMaker)|[MadJester](#MadJester)
+| [EvilHacker](#EvilHacker)|[NiceTeleporter](#[NiceTeleporter)
 | [PositionSwapper](#ポジションスワッパー)|[Celebrity](#スター)
-| [Mafia](#マフィア)|[Nocturnality](#夜行性)
-| [SuicideWisher](#スーサイドウィッシャー‌)|[Observer](#選挙管理委員)
-| [Fast Maker](#ファストメーカー)|[Seer](#シーア)
-| [Kunoichi](#クノイチ)|[MadSeer](#マッドシーア)
-| [DoubleKiller](#ダブルキラー)|[RemoteSheriff](#リモートシェリフ)
-| [Smasher](#スマッシャー)|[TaskManager](#タスクマネージャー)
-| [Secretly Killer](#シークレットリーキラー) |[MadMaker](#マッドメーカー)
-| |[Chief](#村長)
-| |[MadCleaner](#マッドクリーナー)
-| |[MayorFriends](#メイヤーフレンズ)
-| |[HauntedWolf](#狐憑き)
-| |[BlackCat](#黒猫)
-| |[Spy](#スパイ)
-| |[GhostMechanic](#亡霊整備士)
+| [Mafia](#Mafia)|[Nocturnality](#Nocturnality)
+| [SuicideWisher](#SuicideWisher‌)|[Observer](#Observer)
+| [Fast Maker](#FastMaker)|[Seer](#Seer)
+| [Kunoichi](#Kunoichi)|[MadSeer](#MadSeer)
+| [DoubleKiller](#DoubleKiller)|[RemoteSheriff](#RemoteSheriff)
+| [Smasher](#Smasher)|[TaskManager](#TaskManager)
+| [Secretly Killer](#SecretlyKiller) |[MadMaker](#MadMaker)
+| |[Chief](#Chief)
+| |[MadCleaner](#MadCleaner)
+| |[MayorFriends](#MayorFriends)
+| |[HauntedWolf](#HauntedWolf)
+| |[BlackCat](#BlackCat)
+| |[Spy](#Spy)
+| |[GhostMechanic](#GhostMechanic)
 
 # Position Details 
 ## Attention. 
