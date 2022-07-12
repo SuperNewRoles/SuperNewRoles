@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode;
@@ -13,14 +13,35 @@ namespace SuperNewRoles.Roles
             if (__instance == null) return;
             if (AmongUsClient.Instance.AmHost)
             {
+                //もし 追放された役職が猫であるならば
                 if ((__instance != null && RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(__instance.Object)) || RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object) || RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(__instance.Object))
                 {
+                    //道連れにするプレイヤーの抽選リストを作成
                     List<PlayerControl> p = new();
                     foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
                     {
-                        if (p1.Data != __instance && p1.isAlive())
+
+                        //もし イビル猫又が追放され尚且つImpostorを道連れしない設定がオンになっているにゃら 又は 黒猫が追放され尚且つImpostorを道連れしない設定がオンなっているにゃら
+                        if ((RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object) && RoleClass.EvilNekomata.NotImpostorExiled) || (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(__instance.Object) && RoleClass.BlackCat.NotImpostorExiled))
                         {
-                            p.Add(p1);
+                            //もし 抜き出されたプレイヤーが　追放されたプレイヤーではない 且つ 生きている 且つ インポスターでないにゃら
+                            if (p1.Data != __instance && p1.isAlive() && !p1.isImpostor())
+                            {
+                                //道連れにするプレイヤーの抽選リストに追加する
+                                p.Add(p1);
+                                SuperNewRolesPlugin.Logger.LogInfo("[SNR:黒猫Info]Impostorを道連れ対象から除外しました");
+                            }
+                        }
+                        //それ以外にゃら(ナイス猫又の追放　あるいは　イビル猫又・黒猫の追放でインポスターを道連れにしない設定がオフになっているにゃら)
+                        else
+                        {
+                            //もし 抜き出されたプレイヤーが　追放されたプレイヤーではない 且つ 生きているにゃら
+                            if (p1.Data != __instance && p1.isAlive())
+                            {
+                                //道連れにするプレイヤーの抽選リストに追加する
+                                p.Add(p1);
+                                SuperNewRolesPlugin.Logger.LogInfo("[SNR:黒猫Info]Impostorを道連れ対象から除外しませんでした");
+                            }
                         }
                     }
                     MessageWriter RPCWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ExiledRPC, Hazel.SendOption.Reliable, -1);
@@ -29,6 +50,7 @@ namespace SuperNewRoles.Roles
                     CustomRPC.RPCProcedure.ExiledRPC(__instance.PlayerId);
                     NekomataProc(p);
                 }
+
             }
         }
         public static void NekomataProc(List<PlayerControl> p)
