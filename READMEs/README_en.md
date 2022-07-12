@@ -17,7 +17,7 @@ Controllers can be used for button use!
 
 ## Multiple people can be set up 
 All crewmates can also be used as sheriffs, etc.!<br>
-In SHR mode, "everyone's sheriff" is not supported due to the specification that the sheriff replaces the imposter.<br>
+In SHR mode, "everyone's sheriff" is not supported due to the specification that the sheriff replaces the Impostor.<br>
 After the match starts, the crewmate is immediately judged the winner of the task.<br>
 (No one with a task = 0 tasks left for Crew.)<br>
 Please include one Crew camp position that has a task.<br>
@@ -139,7 +139,7 @@ It is already on the Discord server.
 | [EvilHacker](#EvilHacker)|[NiceTeleporter](#[NiceTeleporter)
 | [PositionSwapper](#PositionSwapper)|[Celebrity](#Celebrity)
 | [Mafia](#Mafia)|[Nocturnality](#Nocturnality)
-| [SuicideWisher](#SuicideWisher‌)|[Observer](#Observer)
+| [SuicideWisher](#SuicideWisher)|[Observer](#Observer)
 | [Fast Maker](#FastMaker)|[Seer](#Seer)
 | [Kunoichi](#Kunoichi)|[MadSeer](#MadSeer)
 | [DoubleKiller](#DoubleKiller)|[RemoteSheriff](#RemoteSheriff)
@@ -157,7 +157,7 @@ It is already on the Discord server.
 ## Attention. 
 The number of people is omitted from the setup. 
 ## Teleporter
-### Imposter camp 
+### Team Impostor
 By pressing the teleport button, the 
 Teleport everyone to one randomly selected person. 
 ### Game Settings 
@@ -167,7 +167,7 @@ Teleport everyone to one randomly selected person.
 
 ----------------------- 
 ## EvilSpeedBooster
-### Imposter camp 
+### Team Impostor
 By pressing the Speed Boost button, the 
 You can speed up your own speed for a certain period of time. 
 ### Game Settings 
@@ -180,7 +180,7 @@ You can speed up your own speed for a certain period of time.
 
 ----------------------- 
 ## EvilDoorr
-### Imposter camp 
+### Team Impostor
 Subscribe to DeepL Pro to edit this document.
 Visit www.DeepL.com/profor more information.
 By clicking on the door button, the 
@@ -192,7 +192,7 @@ The door can be opened and closed. There is a cool time.
 
 ----------------------- 
 ## EvilGambler
-### Imposter camp 
+### Team Impostor
 When a kill is made, success or failure is determined by a set probability. <br> 
 If it becomes a success, to the successful kill cooldown of the setting,<br>
 Failure will result in a kill cooldown on the failure of the setup. <br> 
@@ -206,10 +206,10 @@ It is recommended to set a short cool for success and a long cool for failure. <
 
 ----------------------- 
 ## SelfBomber
-### Imposter camp 
+### Team Impostor
 Press the self-destruct button. 
 People around you and yourself will die. <br> 
-Note that another imposter will also be selected as a target. 
+Note that another Impostor will also be selected as a target. 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
@@ -218,14 +218,14 @@ Note that another imposter will also be selected as a target.
 ----------------------- 
 ## EvilNekomata 
 
-### Imposter camp 
+### Team Impostor
 When I am expelled from a meeting, <br>. 
 We will take one of them on the road, regardless of their position. <br> 
 Whether or not Nekomata are chained together can be changed by the Nice Nekomata. <br> 
 
 ----------------------- 
 ## CountChanger
-### Imposter camp 
+### Team Impostor
 You can change the decision of the opponent and the position. <br>. 
 If the opponent exchanges with a crewmate, he will not die even if the sheriff suicide attacks 
 him, etc.<br><br>. 
@@ -237,12 +237,12 @@ him, etc.<br><br>.
 
 ----------------------- 
 ## Pursuer
-### Imposter camp 
-Arrows will be displayed to the location of nearby non-imposter camp players. 
+### Team Impostor
+Arrows will be displayed to the location of nearby non-Team Impostorplayers. 
 
 ----------------------- 
 ## EvilScientist
-### Imposter camp 
+### Team Impostor
 By pressing the transparency button, <br>. 
 You become invisible for a certain period of time. 
 ### Game Settings 
@@ -252,7 +252,7 @@ You become invisible for a certain period of time.
 | Evil Scientist's Invisibility Duration | Transparency Duration You can set the duration of the capability. 
 ----------------------- 
 ## Hawk
-### Imposter camp 
+### Team Impostor
 Clicking the Hawkeye button widens the visible area for a certain period of time. 
 ### Game Settings 
 | Name | Description 
@@ -262,7 +262,7 @@ Clicking the Hawkeye button widens the visible area for a certain period of time
 
 ----------------------- 
 ## Minimalist
-### Imposter camp 
+### Team Impostor
 This is a position with a short kill cool time instead of the absence of some buttons. <br> 
 SuperHostRoles support 
 ### Game Settings 
@@ -275,7 +275,7 @@ SuperHostRoles support
 
 ----------------------- 
 ## Magaziner
-### Imposter camp 
+### Team Impostor
 When kill cool time is accumulated, the save button becomes available. <br> 
 Press the Save button to save your kills. <br> 
 When saved, the kill cool time is reset. <br> 
@@ -291,7 +291,7 @@ button.
 
 ----------------------- 
 ## SerialKiller
-### Imposter camp 
+### Team Impostor
 Once a kill is made, the suicide timer starts running. <br> 
 When the suicide timer reaches 0, it commits suicide. <br> 
 Each kill resets the suicide timer. <br> 
@@ -304,7 +304,7 @@ SuperHostRoles support
 
 ----------------------- 
 ## EvilEraser
-### Imposter camp 
+### Team Impostor
 You can activate the ability only a specified number of times. <br> 
 Can defend against baits, stuntmen, red hoods, divine victory, and clergy. <br> 
 The number of times it can be used is reduced each time it is defended. 
@@ -315,7 +315,7 @@ The number of times it can be used is reduced each time it is defended.
 
 ----------------------- 
 ## OverKiller
-### Imposter camp 
+### Team Impostor
 A set number (default: 30) of corpses will be generated (not additional)<br> when you are 
 killed. 
 A separate kill cool time can be set for this position<br>. 
@@ -330,7 +330,7 @@ SuperHostRoles support.
 
 ----------------------- 
 ## EvilMoving
-### Imposter camp 
+### Team Impostor
 First, a location set button appears. <br> 
 Press that button to set the move location. <br> 
 After that, there is a cool time<br>. 
@@ -342,10 +342,10 @@ A button appears that allows you to teleport to the move location.
 
 ----------------------- 
 ## Levelinger
-### Imposter camp 
+### Team Impostor
 When you make a kill, you gain 1 experience. <br>. 
 When the experience level reaches a certain number, the level increases. <br> 
-As the level increases, each imposter's special abilities become available. <br> 
+As the level increases, each Impostor's special abilities become available. <br> 
 In addition, the killcools accumulate while the levelers are doing their tasks. <br> 
 ### Game Settings 
 | Name | Description 
@@ -362,15 +362,15 @@ In addition, the killcools accumulate while the levelers are doing their tasks. 
 
 ----------------------- 
 ## SideKiller
-### Imposter camp 
+### Team Impostor
 Side killers can make mad killers. <br> 
 When the sidekiller who made the mudkiller dies or exits, the mudkiller is promoted to an 
-imposter. <br> 
-Before being promoted to Imposter, the crewmate decision was made and visibility is also 
+Impostor. <br> 
+Before being promoted to Impostor, the crewmate decision was made and visibility is also 
 crewmate,<br> but 
-If you are promoted to Imposter, you will be in the Imposter's field of view in the Imposter's 
+If you are promoted to Impostor, you will be in the Impostor's field of view in the Impostor's 
 decision<br>. 
-Imposter can't kill mad killer 
+Impostor can't kill mad killer 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
@@ -379,7 +379,7 @@ Imposter can't kill mad killer
 
 ----------------------- 
 ## Survivor
-### Imposter camp 
+### Team Impostor
 You must survive to win. <br>. 
 Survivors can kill with n times faster than normal kill cool. 
 ### Game Settings 
@@ -389,7 +389,7 @@ Survivors can kill with n times faster than normal kill cool.
 
 ----------------------- 
 ## Vampire
-### Imposter camp 
+### Team Impostor
 By pressing the kill button, the kill partner dies after a set time. <br><br 
 If another person is killed before the kill occurs, another person is targeted. 
 ### Game Settings 
@@ -399,7 +399,7 @@ If another person is killed before the kill occurs, another person is targeted.
 
 ----------------------- 
 ## Samurai
-### Imposter camp 
+### Team Impostor
 Bent and sabo not available (can be changed in settings) killcool long (can be changed in 
 settings)<br>
 Instead, it has a special move button that can be used only once during the match. <br> 
@@ -416,7 +416,7 @@ samurai can release a special move.
 
 ----------------------- 
 ## SuicideWisher
-### Imposter camp 
+### Team Impostor
 There is a suicide button, and at any time you like, you can. <br>
 Can commit suicide. 
 ### Game Settings 
@@ -425,7 +425,7 @@ Can commit suicide.
 
 ----------------------- 
 ## FastMaker
-### Imposter camp 
+### Team Impostor
 The first kill can make a mad mate<br>. 
 The second and subsequent kills are normal kills. 
 ### Game Settings 
@@ -434,7 +434,7 @@ The second and subsequent kills are normal kills.
 
 ----------------------- 
 ## Kunoichi
-### Imposter camp 
+### Team Impostor
 Use your ninjutsu to deceive the village<br>. 
 You can throw kunai. A kunai can be used to kill a player after the number of hits set in the 
 "Number of kunai required for a kill" section<br>. 
@@ -452,7 +452,7 @@ The F key can be used to equip a kunai. <br>
 
 ----------------------- 
 ## SecretlyKiller
-### Imposter camp 
+### Team Impostor
 Please be quiet during the power outage<br>. 
 Normal kill button and <br>. 
 Ability to kill targets remotely with no sound and no kill warp<br>. 
@@ -465,7 +465,7 @@ Ability to kill targets remotely with no sound and no kill warp<br>.
 
 ----------------------- 
 ## Smasher 
-### Imposter camp 
+### Team Impostor
 Let's do a series of kills<br>. 
 You have two kill buttons, but the second one can only be used once during the match, instead 
 of having a kill kill cooler. <br> 
@@ -478,7 +478,7 @@ only at the beginning of the match. <br>
 
 ----------------------- 
 ## DoubleKiller
-### Imposter camp 
+### Team Impostor
 Use the independent kill button<br>. 
 It has two kill buttons, each with its own cooldown. <br>. 
 You can change in the settings whether you can use sabotage or not. <br> 
@@ -544,7 +544,7 @@ The door can be opened and closed. There is a cool time.
 ----------------------- 
 ## Clergyman
 ### Crew camp 
-It can cause a power outage for the imposter. <br>
+It can cause a power outage for the Impostor. <br>
 The capacity is currently not functioning.
 ### Game Settings 
 | Name | Description 
@@ -555,23 +555,23 @@ The capacity is currently not functioning.
 
 ----------------------- 
 ## MadMate
-### Imposter camp 
+### Team Impostor
 The verdict is in on Crewmate. 
-This is a roll of the Imposter camp. <br> 
-Help the Imposter. <br> 
-You can check the imposter in the settings. <br> 
+This is a roll of the Impostor camp. <br> 
+Help the Impostor. <br> 
+You can check the Impostor in the settings. <br> 
 You can also set whether to put in a vent. 
 SuperHostRoles support 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| You can check the Imposter. | The name of the imposter turns red after the specified task is completed. 
-| Common Tasks | You can set the number of normal tasks before the imposter can be checked. 
-| Long Tasks | You can set the number of long tasks before the imposter can be checked. 
-| Short Tasks | You can set the number of short tasks before the imposter can be checked. 
+| You can check the Impostor. | The name of the Impostor turns red after the specified task is completed. 
+| Common Tasks | You can set the number of normal tasks before the Impostor can be checked. 
+| Long Tasks | You can set the number of long tasks before the Impostor can be checked. 
+| Short Tasks | You can set the number of short tasks before the Impostor can be checked. 
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view. 
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. 
 
 ----------------------- 
 ## Bait
@@ -718,11 +718,11 @@ When you press that button, the position of the person you pressed will appear i
 
 ----------------------- 
 ## MadMayor
-### Imposter camp 
+### Team Impostor
 The decision is crewmate, but<br>. 
-This is a roll of the Imposter camp. <br> 
+This is a roll of the Impostor camp. <br> 
 As with Mayer, you can increase the number of your votes. <br> 
-Help the Imposter. <br> 
+Help the Impostor. <br> 
 Note: The vote count setting will also include the normal vote count; setting it to 1 vote will 
 result in the normal vote count. <br> 
 SuperHostRoles support 
@@ -730,13 +730,13 @@ SuperHostRoles support
 | Name | Description 
 |----------|:-------------:| 
 | MadMayer's vote count | You can set the number of votes for Madmaier. 
-| You can check the Imposter. | The name of the imposter turns red after the specified task is completed. 
-| Common Tasks | You can set the number of normal tasks before the imposter can be checked. 
-| Long Tasks | You can set the number of long tasks before the imposter can be checked. 
-| Short Tasks | You can set the number of short tasks before the imposter can be checked. 
+| You can check the Impostor. | The name of the Impostor turns red after the specified task is completed. 
+| Common Tasks | You can set the number of normal tasks before the Impostor can be checked. 
+| Long Tasks | You can set the number of long tasks before the Impostor can be checked. 
+| Short Tasks | You can set the number of short tasks before the Impostor can be checked. 
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view. 
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. 
 
 ----------------------- 
 ## NiceHawk
@@ -751,18 +751,18 @@ However, if Hawkeye is used, it will not be able to move for 10 seconds afterwar
 
 ----------------------- 
 ## MadHawk
-### Imposter camp 
+### Team Impostor
 Clicking the Hawkeye button widens the visible area for a certain period of time. <br> 
 The decision is crewmate, but<br>. 
-This is a roll of the Imposter camp. <br> 
-Help the Imposter. 
+This is a roll of the Impostor camp. <br> 
+Help the Impostor. 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
 | Cooldown | You can set the cooldown time before the ability can be used. 
 | Duration | You can set the duration of the capability. 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view.
+| Impostor Light | You can set whether the view will be the same as the Impostor's view.
 
 ----------------------- 
 ## Baker
@@ -774,10 +774,10 @@ SHR compatible<br>.
 ----------------------- 
 ## Spy 
 ### Crew camp 
-Deceive the Imposter and lead the Cluemate camp to victory<br>. 
-The spy is a crewmate, but appears to be a peer from the imposter. <br> 
+Deceive the Impostor and lead the Cluemate camp to victory<br>. 
+The spy is a crewmate, but appears to be a peer from the Impostor. <br> 
 Spies are crewmates and have no special abilities. <br> 
-In normal mode, an imposter cannot cut fellow imposters and spies<br>. 
+In normal mode, an Impostor cannot cut fellow Impostors and spies<br>. 
 SuperHostRoles support 
 ### Game Settings 
 | Name | Description 
@@ -785,15 +785,15 @@ SuperHostRoles support
 
 ----------------------- 
 ## MadJester
-### Imposter camp 
+### Team Impostor
 If you are expelled with the task completed (even if you are not doing the task if the task win 
-off), the imposter camp wins. <br> 
+off), the Team Impostorwins. <br> 
 SuperHostRoles support 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view.
+| Impostor Light | You can set whether the view will be the same as the Impostor's view.
 | YJester was Clear Task Win | You cannot win without doing a task. Individual task 
 settings are available 
 
@@ -832,7 +832,7 @@ It is also possible to change in the settings whether a side kick can be made. <
 | Jackal's kill cool time | Individual kill cool time can be set for each jackal. 
 | Use Vent | to enter a vent. 
 | Use Sabotage | Sabotage can be used. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view.
+| Impostor Light | You can set whether the view will be the same as the Impostor's view.
 | Can Create JackalFriends | You can make [JackalFriends](#JackalFriends) with your first kill! 
 | Jackal can make a Sidekick | Jackals can make side kicks. 
 | New jackals can make side kicks | Promoted jackals can make side kicks. 
@@ -852,7 +852,7 @@ When all jackals die, they are promoted to a side kick.
 Jackals are not known from Jackal Friends (can be changed in settings),<br> and 
 Jackals do not tell us who the Jackal Friends are. <br> 
 Jackal Friends will be put in the vent. (Can be changed in settings)<br>. 
-Imposter, Jackal can kill Jackal Friends. 
+Impostor, Jackal can kill Jackal Friends. 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
@@ -862,10 +862,11 @@ Imposter, Jackal can kill Jackal Friends.
 | Short Tasks | You can set the number of short tasks until you can check jackals. 
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view.
+| Impostor Light | You can set whether the view will be the same as the Impostor's view.
 
 ----------------------- 
 ## God
+
 ### Third camp 
 You can see everyone's position. <br> 
 Surviving to the end is a solo victory. <br> 
@@ -873,10 +874,10 @@ SuperHostRoles support
 ----------------------- 
 ## Egoist
 ### Third camp 
-A third camp position that counts as an imposter but has different win conditions. <br> 
+A third camp position that counts as an Impostor but has different win conditions. <br> 
 You will not be killed by your allies. but will be affected by sabotage. <br>. 
-If you achieve an Imposter Victory after all the Imposters visible to you are gone, you override 
-the Imposter Victory and achieve an Egoist Victory. <br> 
+If you achieve an Impostor Victory after all the Impostors visible to you are gone, you override 
+the Impostor Victory and achieve an Egoist Victory. <br> 
 SuperHostRoles support 
 
 ----------------------- 
@@ -934,10 +935,10 @@ report meeting.
 
 ----------------------- 
 ## MadSeer 
-### Imposter camp 
+### Team Impostor
 The decision is crewmate, but<br>. 
-This is a roll of the Imposter camp. <br> 
-Help the Imposter. <br> 
+This is a roll of the Impostor camp. <br> 
+Help the Impostor. <br> 
 It also has a fanatic setting<br>. 
 <br> 
 Mad Seer, like [Seer](#Seer), has two abilities [see flashes of death] and [see ghosts]. <br> 
@@ -963,17 +964,17 @@ When on, you can set the time for the ghost to disappear from after the report m
 corpse. 
 | Soul Duration | The time when the ghost is visible | The time[s] when the ghost disappears after the corpse 
 report meeting. 
-| You can check the Imposter. | The name of the imposter turns red after the specified task is completed. 
-| Common Tasks | You can set the number of normal tasks before the imposter can be checked. 
-| Long Tasks | You can set the number of long tasks before the imposter can be checked. 
-| Short Tasks | You can set the number of short tasks before the imposter can be checked. 
+| You can check the Impostor. | The name of the Impostor turns red after the specified task is completed. 
+| Common Tasks | You can set the number of normal tasks before the Impostor can be checked. 
+| Long Tasks | You can set the number of long tasks before the Impostor can be checked. 
+| Short Tasks | You can set the number of short tasks before the Impostor can be checked. 
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view. 
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. 
 
 ----------------------- 
 ## EvilSeer 
-### Imposter camp 
+### Team Impostor
 Evil Seer, like [Seer](#Seer), has two abilities [see flashes of death] and [see ghosts]. <br>  <br> 
 <br> 
 Ability 1 [Show Death Flash]:<br>. 
@@ -1036,7 +1037,7 @@ report meeting.
 | Short Tasks | You can set the number of short tasks until you can check jackals. 
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view. 
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. 
 
 ----------------------- 
 ## JackalSeer 
@@ -1074,7 +1075,7 @@ report meeting.
 | Jackal's kill cool time | Individual kill cool time can be set for each jackal. 
 | Use Vent | to enter a vent. 
 | Use Sabotage | Sabotage can be used. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view. 
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. 
 | Jackal can make a Sidekick | Jackals can make side kicks. 
 | New jackals can make side kicks | Promoted jackals can make side kicks. 
 
@@ -1088,8 +1089,8 @@ When all jackals die, they are promoted to jackal seers.
 
 ----------------------- 
 ## DarkKiller
-### Imposter camp 
-The Dark Killer is an imposter that can only be killed during a power outage. <br> 
+### Team Impostor
+The Dark Killer is an Impostor that can only be killed during a power outage. <br> 
 Instead, the killcool is short. <br> 
 ### Game Settings 
 | Name | Description 
@@ -1108,21 +1109,21 @@ SHR Support
 | Name | Description 
 |----------|:-------------:| 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view.
+| Impostor Light | You can set whether the view will be the same as the Impostor's view.
 | Use DeadBody Report | Off to disable reporting. 
 
 ----------------------- 
 ## Assassins & Merlin 
-### Imposter & Crew camps 
-Imposter camp<br>
+### Impostor & Crew camps 
+Impostor camp<br>
 <br> 
 If hung, a meeting called the Assassin's Council can occur. <br> 
-If the imposter can designate Merlin to hang there, the imposter will win. 
+If the Impostor can designate Merlin to hang there, the Impostor will win. 
 <br> 
 ～Merlin~Merlin~<br> 
 Crew camp<br>
 <br> 
-He knows who the Assassins are from the beginning. He cannot tell who the Imposter is 
+He knows who the Assassins are from the beginning. He cannot tell who the Impostor is 
 because if he reveals his true identity, he will lose the Assassin's Conference. <br> 
 <br> 
 Both are SHR compatible<br>. 
@@ -1135,8 +1136,8 @@ Both are SHR compatible<br>.
 
 ----------------------- 
 ## Cleaner
-### Imposter camp 
-Imposter that can make dead bodies disappear. <br> 
+### Team Impostor
+Impostor that can make dead bodies disappear. <br> 
 If the corpse is erased, the killcool is reset to the specified value. <br> 
 ### Game Settings 
 | Name | Description 
@@ -1146,7 +1147,7 @@ If the corpse is erased, the killcool is reset to the specified value. <br>
 
 ----------------------- 
 ## Samurai
-### Imposter camp 
+### Team Impostor
 SHR compatible<br>
 <br> 
 Bent and Sabo are not available (can be changed in the settings) and have a long killcool (can 
@@ -1166,7 +1167,7 @@ extinguisher
 
 ----------------------- 
 ## VentMaker
-### Imposter camp 
+### Team Impostor
 Let's make a vent!<br>
 A pair of vents can be made.<br>
 
@@ -1175,9 +1176,9 @@ A pair of vents can be made.<br>
 |----------|:-------------:| 
 
 ----------------------- 
-## Evil Hacker 
-### Imposter camp 
-Imposter to see Admin anytime<br>. 
+## EvilHacker 
+### Team Impostor
+Impostor to see Admin anytime<br>. 
 When looking at the admins, they cannot move and do not accumulate any kill cool time<br>. 
 Possible to make side kick mad mate in settings<br>. 
 ### Game Settings 
@@ -1187,14 +1188,14 @@ Possible to make side kick mad mate in settings<br>.
 
 ----------------------- 
 ## Mad stuntman 
-### Imposter camp 
+### Team Impostor
 Madmate version of [Stuntman](#Stuntman)<br>. 
-It cannot see the imposter, but it can unconditionally prevent kills. <br> 
+It cannot see the Impostor, but it can unconditionally prevent kills. <br> 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view.  
+| Impostor Light | You can set whether the view will be the same as the Impostor's view.  
 
 ----------------------- 
 ## Nocturnality
@@ -1241,20 +1242,20 @@ SHR compatible. <br>
 
 ----------------------- 
 ## Mudmaker 
-### Imposter camp 
+### Team Impostor
 Mud Mate that can make mad mate<br>. 
 SHR compatible<br>. 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view.
+| Impostor Light | You can set whether the view will be the same as the Impostor's view.
 
 ----------------------- 
 ## Chief
 ### Crew camp 
 A sheriff may be appointed. <br> 
-Trying to make an imposter a sheriff is self-destructive<br>. 
+Trying to make an Impostor a sheriff is self-destructive<br>. 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
@@ -1266,7 +1267,7 @@ Trying to make an imposter a sheriff is self-destructive<br>.
 
 ----------------------- 
 ## Mud Cleaner 
-### Imposter camp 
+### Team Impostor
 Cleaner - Madmate version of cleaner. <br>. 
 Instead of being able to make corpses disappear, it does not have the fanatic ability. <br> 
 ### Game Settings 
@@ -1274,7 +1275,7 @@ Instead of being able to make corpses disappear, it does not have the fanatic ab
 |----------|:-------------:| 
 | CoolDown | You can set the kill cooldown time for the ability to erase corpses. 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view.
+| Impostor Light | You can set whether the view will be the same as the Impostor's view.
 
 ----------------------- 
 ## Mayer Friends 
@@ -1299,7 +1300,7 @@ SuperHostRoles support
 | Short Tasks | You can set the number of short tasks until you can check jackals. 
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view. 
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. 
 
 ----------------------- 
 ## FalseCharges
@@ -1327,7 +1328,7 @@ The ability to sabotage can be changed in the settings. <br>
 | Short Tasks | You can set the number of short tasks until you can check jackals. 
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view.
+| Impostor Light | You can set whether the view will be the same as the Impostor's view.
 | Cool Down | Button Cool Down. 
 | Time to be teleported
 
@@ -1335,13 +1336,13 @@ The ability to sabotage can be changed in the settings. <br>
 ## Demon
 ### Third camp 
 SHR compatible<br>. 
-If the Imposter wins with all survivors cursed, he will sidestep the Imposter victory and win 
+If the Impostor wins with all survivors cursed, he will sidestep the Impostor victory and win 
 alone. <br> 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
 | Cooldown | You can set the cooldown time for the ability to curse. 
-| You can check the Imposter. | The name of the imposter turns red after the specified task is completed. 
+| You can check the Impostor. | The name of the Impostor turns red after the specified task is completed. 
 a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent.
 | You have to be alive to win. | You can set whether you can only win if you are alive or not 
@@ -1376,7 +1377,7 @@ If it survives to the end, it is the third camp that wins alone, just like [God]
 ----------------------- 
 ## HauntedWolf
 ### Crew camp 
-It is judged as an imposter to fortune tellers, sheriffs, etc. <br> 
+It is judged as an Impostor to fortune tellers, sheriffs, etc. <br> 
 Tasks, etc. are the same as regular crews. <br> 
 SHR compatible<br>. 
 ### Game Settings 
@@ -1395,7 +1396,7 @@ It will be able to cure sabotage, like the engineer's repair of TheOtherRoles.
 
 ----------------------- 
 ## PositionSwapper
-### Imposter camp 
+### Team Impostor
 When using the ability, swap your position with a random player. <br> 
 Just that. <br> 
 It could be strong if you know how to use it. <br> 
@@ -1424,8 +1425,8 @@ SuperHostRoles support
 
 ----------------------- 
 ## Mafia 
-### Imposter camp 
-When all non-Mafia imposters are dead, they can be killed. <br> 
+### Team Impostor
+When all non-Mafia Impostors are dead, they can be killed. <br> 
 The kill-cool time will continue to advance while the kill is not made. <br> 
 SuperHostRoles support 
 ### Game Settings 
@@ -1434,19 +1435,19 @@ SuperHostRoles support
 
 ----------------------- 
 ## BlackCat 
-### Imposter camp 
+### Team Impostor
 A [Mad Mate](#Mad Mate) version of [Nice Nekomata](#Nice Nekomata)<br>. 
 SuperHostRoles support 
 ### Game Settings 
 | Name | Description 
 |----------|:-------------:| 
-| You can check the Imposter. | The name of the imposter turns red after the specified task is completed. 
-| Common Tasks | You can set the number of normal tasks before the imposter can be checked. 
-| Long Tasks | You can set the number of long tasks before the imposter can be checked. 
-| Short Tasks | You can set the number of short tasks before the imposter can be checked. 
+| You can check the Impostor. | The name of the Impostor turns red after the specified task is completed. 
+| Common Tasks | You can set the number of normal tasks before the Impostor can be checked. 
+| Long Tasks | You can set the number of long tasks before the Impostor can be checked. 
+| Short Tasks | You can set the number of short tasks before the Impostor can be checked. 
 | Amount of tasks that will be able to be checked (of all tasks) | If the result of the calculation of the task amount is a fraction, it will be rounded down. 
 | Use Vent | You will be able to put in a vent. 
-| Impostor Light | You can set whether the view will be the same as the imposter's view. 
+| Impostor Light | You can set whether the view will be the same as the Impostor's view. 
 
 ----------------------- 
 ## Quarreled
