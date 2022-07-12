@@ -16,7 +16,12 @@ This mod is not affiliated with Among Us or Innersloth LLC, and the content cont
 Controllers can be used for button use!
 
 ## Multiple people can be set up 
-All crewmates can also be used as sheriffs, etc.!
+All crewmates can also be used as sheriffs, etc.!<br>
+In SHR mode, "everyone's sheriff" is not supported due to the specification that the sheriff replaces the imposter.<br>
+After the match starts, the crewmate is immediately judged the winner of the task.<br>
+(No one with a task = 0 tasks left for Crew.)<br>
+Please include one Crew camp position that has a task.<br>
+(Adding a MadMate, JackalFriends, or Home Security Guard not help.)<br>
 
 ##  Equipment settings
 You can set up the admin, vitals, and other settings.<br>
