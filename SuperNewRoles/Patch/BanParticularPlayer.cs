@@ -4,8 +4,9 @@ using InnerNet;
 namespace SuperNewRoles.Patch
 {
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
-    class OnPlayerJoinedPatch
+    class BanBlockedPlayerPatch
     {
+        //TOHより、ありがとうございます
         public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ClientData client)
         {
             SuperNewRolesPlugin.Logger.LogInfo($"{client.PlayerName}(ClientID:{client.Id})が参加");
