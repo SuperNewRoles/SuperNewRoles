@@ -147,17 +147,20 @@ namespace SuperNewRoles.Patch
                             case RoleId.SerialKiller:
                                 SerialKiller.FixedUpdate();
                                 break;
+                            case RoleId.Kunoichi:
+                                Kunoichi.Update();
+                                break;
                             default:
                                 Minimalist.FixedUpdate.Postfix(MyRole);
                                 break;
                         }
                     }
-                    else if (PlayerControl.LocalPlayer.Data.IsDead && MapOptions.MapOption.ClairvoyantZoom)
-                    {
-                        Clairvoyant.FixedUpdate.Postfix();
-                    }
                     else
                     {
+                        if (MapOptions.MapOption.ClairvoyantZoom)
+                        {
+                            Clairvoyant.FixedUpdate.Postfix();
+                        }
                         switch (MyRole)
                         {
                             case RoleId.Bait:

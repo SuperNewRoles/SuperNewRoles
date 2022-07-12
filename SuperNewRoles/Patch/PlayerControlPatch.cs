@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -151,6 +151,12 @@ namespace SuperNewRoles.Patches
                             }
                         }
                         return false;
+                    case RoleId.SuicideWisher:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            __instance.RpcMurderPlayer(__instance);
+                        }
+                        return false;
                 }
             }
             return true;
@@ -202,10 +208,6 @@ namespace SuperNewRoles.Patches
                             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
                             PlayerControl.LocalPlayer.RpcShapeshift(PlayerControl.LocalPlayer, true);
-                            new LateTask(() =>
-                            {
-                                CachedPlayer.LocalPlayer.transform.localScale *= 1.4f;
-                            }, 1.1f);
 
                             CustomRPC.RPCProcedure.SheriffKill(LocalID, TargetID, misfire);
                             MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
@@ -262,6 +264,11 @@ namespace SuperNewRoles.Patches
             }
             if (__instance.isActiveAndEnabled && __instance.currentTarget && !__instance.isCoolingDown && PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.CanMove)
             {
+                if (PlayerControl.LocalPlayer.isRole(RoleId.Kunoichi))
+                {
+                    Kunoichi.KillButtonClick();
+                    return false;
+                }
                 if (!(__instance.currentTarget.isRole(CustomRPC.RoleId.Bait) || __instance.currentTarget.isRole(CustomRPC.RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
                 {
                     PlayerControl.LocalPlayer.killTimer = RoleHelpers.getCoolTime(PlayerControl.LocalPlayer);
@@ -296,7 +303,7 @@ namespace SuperNewRoles.Patches
         public static bool isKill = false;
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
-            SuperNewRolesPlugin.Logger.LogInfo("a(Murder)"+__instance.Data.PlayerName+" => "+target.Data.PlayerName);
+            SuperNewRolesPlugin.Logger.LogInfo("a(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
             if (__instance.IsBot() || target.IsBot()) return false;
 
             if (__instance.isDead()) return false;
@@ -511,6 +518,24 @@ namespace SuperNewRoles.Patches
                         case RoleId.Mafia:
                             if (!Mafia.IsKillFlag()) return false;
                             break;
+                        case RoleId.Jackal:
+                            if (!RoleClass.Jackal.IsCreatedFriend && RoleClass.Jackal.CanCreateFriend)//まだ作ってなくて、設定が有効の時
+                            {
+                                SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
+                                if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
+                                RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
+                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
+                                target.setRoleRPC(RoleId.JackalFriends);//フレンズにする
+                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                                RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
+                            }
+                            else
+                            {
+                                //作ってたら普通のキル
+                                SuperNewRolesPlugin.Logger.LogInfo("作ったので普通のキル");
+                                __instance.RpcMurderPlayer(target);
+                            }
+                            return false;
                     }
                     break;
                 case ModeId.Detective:

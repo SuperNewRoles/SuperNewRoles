@@ -14,9 +14,9 @@ namespace SuperNewRoles.Roles
             if (RoleClass.IsMeeting) return;
             if (ModeHandler.isMode(ModeId.Default))
             {
-                if (!CachedPlayer.LocalPlayer.PlayerControl.Data.IsDead && CachedPlayer.LocalPlayer.PlayerControl.isRole(CustomRPC.RoleId.Tuna) && Mode.ModeHandler.isMode(Mode.ModeId.Default) && RoleClass.Tuna.IsMeetingEnd)
+                if (PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Tuna) && RoleClass.Tuna.IsMeetingEnd)
                 {
-                    if (RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerControl.PlayerId] == CachedPlayer.LocalPlayer.PlayerControl.transform.position)
+                    if (RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerId] == CachedPlayer.LocalPlayer.transform.position)
                     {
                         if (RoleClass.Tuna.Timer <= 0.1f)
                         {
@@ -27,7 +27,7 @@ namespace SuperNewRoles.Roles
                     else
                     {
                         RoleClass.Tuna.Timer = RoleClass.Tuna.StoppingTime;
-                        RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerControl.PlayerId] = CachedPlayer.LocalPlayer.PlayerControl.transform.position;
+                        RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerId] = CachedPlayer.LocalPlayer.transform.position;
                     }
                 }
             }

@@ -23,7 +23,7 @@ namespace SuperNewRoles.Patch
                     taskTypeIds = new byte[0];
                     return;
                 }
-                if (ModeHandler.isMode(ModeId.SuperHostRoles) || (ModeHandler.isMode(ModeId.Default) && AmongUsClient.Instance.GameMode != GameModes.FreePlay))
+                if (ModeHandler.isMode(ModeId.SuperHostRoles, ModeId.Default) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 {
                     var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
                     var TasksList = ModHelpers.generateTasks(commont, shortt, longt);
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
             }
-                        else if (p.isRole(RoleId.BlackCat))
+            else if (p.isRole(RoleId.BlackCat))
             {
                 if (CustomOptions.BlackCatIsCheckImpostor.getBool())
                 {

@@ -20,9 +20,11 @@ namespace SuperNewRoles.Helpers
         {
             PlayerControl SeePlayer = see;
             if (see == null) SeePlayer = source;
-            sender.StartRpc(source.NetId, RpcCalls.MurderPlayer, SeePlayer.getClientId())
+            sender.StartMessage(SeePlayer.getClientId())
+                .StartRpc(source.NetId, RpcCalls.MurderPlayer)
                 .WriteNetObject(target)
-                .EndRpc();
+                .EndRpc()
+                .EndMessage();
         }
     }
 }

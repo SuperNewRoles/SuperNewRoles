@@ -23,6 +23,7 @@ namespace SuperNewRoles.Roles
 
         public static void ClearAndReloadRoles()
         {
+            AllRoleSetClass.Assigned = false;
             LateTask.Tasks = new();
             LateTask.AddTasks = new();
             BotManager.AllBots = new();
@@ -39,8 +40,9 @@ namespace SuperNewRoles.Roles
             Mode.BattleRoyal.main.VentData = new();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
-            MapOptions.AdditionalVents.ClearAndReload();
-            MapOptions.SpecimenVital.ClearAndReload();
+            MapCustoms.AdditionalVents.ClearAndReload();
+            MapCustoms.SpecimenVital.ClearAndReload();
+            MapCustoms.MoveElecPad.ClearAndReload();
             SoothSayer.ClearAndReload();
             Jester.ClearAndReload();
             Lighter.ClearAndReload();
@@ -142,6 +144,11 @@ namespace SuperNewRoles.Roles
             BlackCat.ClearAndReload();
             SecretlyKiller.ClearAndReload();
             Spy.ClearAndReload();
+            Kunoichi.ClearAndReload();
+            DoubleKiller.ClearAndReload();
+            Smasher.ClearAndReload();
+            SuicideWisher.ClearAndReload();
+            Neet.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -324,6 +331,9 @@ namespace SuperNewRoles.Roles
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
             public static bool IsCreateSidekick;
+            public static List<int> CreatePlayers;
+            public static bool IsCreatedFriend;
+            public static bool CanCreateFriend;
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
@@ -343,6 +353,9 @@ namespace SuperNewRoles.Roles
                 CreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 IsCreateSidekick = CustomOptions.JackalCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalNewJackalCreateSidekick.getBool();
+                IsCreatedFriend = false;
+                CreatePlayers= new();
+                CanCreateFriend = CustomOptions.JackalCreateFriend.getBool();
             }
         }
         public static class Teleporter
@@ -1982,8 +1995,15 @@ namespace SuperNewRoles.Roles
         public static class Chief
         {
             public static List<PlayerControl> ChiefPlayer;
+            public static List<byte> SheriffPlayer;
             public static Color32 color = new(255, 255, 0, byte.MaxValue);
             public static bool IsCreateSheriff;
+            public static float CoolTime;
+            public static bool IsNeutralKill;
+            public static bool IsLoversKill;
+            public static bool IsMadRoleKill;
+            public static bool MadRoleKill;
+            public static int KillLimit;
             private static Sprite buttonSprite;
             public static Sprite getButtonSprite()
             {
@@ -1994,7 +2014,13 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 ChiefPlayer = new();
+                SheriffPlayer = new();
                 IsCreateSheriff = false;
+                CoolTime = CustomOptions.ChiefSheriffCoolTime.getFloat();
+                IsNeutralKill = CustomOptions.ChiefIsNeutralKill.getBool();
+                IsLoversKill = CustomOptions.ChiefIsLoversKill.getBool();
+                IsMadRoleKill = CustomOptions.ChiefIsMadRoleKill.getBool();
+                KillLimit = (int)CustomOptions.ChiefKillLimit.getFloat();
             }
         }
         public static class Cleaner
@@ -2301,6 +2327,126 @@ namespace SuperNewRoles.Roles
             {
                 SpyPlayer = new List<PlayerControl>();
                 CanUseVent = CustomOptions.SpyCanUseVent.getBool();
+            }
+        }
+        public static class Kunoichi
+        {
+            public static List<PlayerControl> KunoichiPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static int KillKunai;
+            public static Kunai Kunai;
+            public static Kunai SendKunai;
+            public static List<Kunai> Kunais = new();
+            public static Dictionary<byte, Dictionary<byte, int>> HitCount;
+            public static bool KunaiSend;
+            public static bool HideKunai;
+            public static float MouseAngle;
+            public static Vector2 OldPosition;
+            public static float StopTime;
+            public static float HideTime;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                HideKunai = CustomOptions.KunoichiHideKunai.getBool();
+                OldPosition = new();
+                StopTime = 0;
+                if (CustomOptions.KunoichiIsHide.getBool())
+                {
+                    HideTime = CustomOptions.KunoichiHideTime.getFloat();
+                }
+                else
+                {
+                    HideTime = -1;
+                }
+                KunoichiPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.KunoichiCoolTime.getFloat();
+                KillKunai = (int)CustomOptions.KunoichiKillKunai.getFloat();
+                HitCount = new();
+                if (Kunai != null)
+                {
+                    GameObject.Destroy(Kunai.kunai);
+                }
+                if (SendKunai != null)
+                {
+                    GameObject.Destroy(SendKunai.kunai);
+                }
+                if (Kunais.Count > 0)
+                {
+                    foreach (Kunai kunai in Kunais)
+                    {
+                        if (kunai != null)
+                        {
+                            GameObject.Destroy(kunai.kunai);
+                        }
+                    }
+                }
+                Kunais = new();
+                SendKunai = null;
+                Kunai = new Kunai();
+                Kunai.kunai.SetActive(false);
+                KunaiSend = false;
+            }
+        }
+        public static class DoubleKiller
+        {
+            public static List<PlayerControl> DoubleKillerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float MainCoolTime;
+            public static float SubCoolTime;
+            public static bool CanUseSabo;
+            public static bool CanUseVent;
+            public static void ClearAndReload()
+            {
+                DoubleKillerPlayer = new List<PlayerControl>();
+                MainCoolTime = CustomOptions.MainKillCoolTime.getFloat();
+                SubCoolTime = CustomOptions.SubKillCoolTime.getFloat();
+                CanUseSabo = CustomOptions.DoubleKillerSabo.getBool();
+                CanUseVent = CustomOptions.DoubleKillerVent.getBool();
+            }
+        }
+        public static class Smasher
+        {
+            public static List<PlayerControl> SmasherPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float KillCoolTime;
+            public static bool SmashOn;
+            public static void ClearAndReload()
+            {
+                SmasherPlayer = new List<PlayerControl>();
+                KillCoolTime = CustomOptions.SmasherKillCoolTime.getFloat();
+                SmashOn = false;
+            }
+        }
+        public static class SuicideWisher
+        {
+            public static List<PlayerControl> SuicideWisherPlayer;
+            public static Color32 color = ImpostorRed;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SuicideWisherButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                SuicideWisherPlayer = new List<PlayerControl>();
+            }
+        }
+        public static class Neet
+        {
+            public static List<PlayerControl> NeetPlayer;
+            public static Color32 color = new(127, 127, 127, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                NeetPlayer = new();
             }
         }
         //新ロールクラス
