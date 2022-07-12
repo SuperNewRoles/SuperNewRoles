@@ -815,3 +815,4 @@ FastMakerName
 FastMakerTitle1
 KillName
 JackalCreateFriendSetting
+NotImpostorExiled
