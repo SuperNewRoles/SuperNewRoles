@@ -42,7 +42,7 @@ namespace SuperNewRoles.Roles
         /*public static Vector3 GetSwapPosition(byte SwapPlayerID, byte SwapperID){
             var SwapPlayer = ModHelpers.playerById(SwapPlayerID);
             var SwapperPlayer = ModHelpers.playerById(SwapperID);
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.PositionSwapper)){
+            if (PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)){
                 return SwapPlayer.transform.position;
             }
             else{

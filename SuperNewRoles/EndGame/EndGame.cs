@@ -165,7 +165,7 @@ namespace SuperNewRoles.EndGame
                     break;
                 case WinCondition.GodWin:
                     text = "GodName";
-                    RoleColor = Roles.RoleClass.God.color;
+                    RoleColor = RoleClass.God.color;
                     break;
                 case WinCondition.HAISON:
                     text = "HAISON";
@@ -176,19 +176,19 @@ namespace SuperNewRoles.EndGame
                     break;
                 case WinCondition.JesterWin:
                     text = "JesterName";
-                    RoleColor = Roles.RoleClass.Jester.color;
+                    RoleColor = RoleClass.Jester.color;
                     break;
                 case WinCondition.JackalWin:
                     text = "JackalName";
-                    RoleColor = Roles.RoleClass.Jackal.color;
+                    RoleColor = RoleClass.Jackal.color;
                     break;
                 case WinCondition.QuarreledWin:
                     text = "QuarreledName";
-                    RoleColor = Roles.RoleClass.Quarreled.color;
+                    RoleColor = RoleClass.Quarreled.color;
                     break;
                 case WinCondition.EgoistWin:
                     text = "EgoistName";
-                    RoleColor = Roles.RoleClass.Egoist.color;
+                    RoleColor = RoleClass.Egoist.color;
                     break;
                 case WinCondition.WorkpersonWin:
                     text = "WorkpersonName";
@@ -200,7 +200,7 @@ namespace SuperNewRoles.EndGame
                     break;
                 case WinCondition.FoxWin:
                     text = "FoxName";
-                    RoleColor = Roles.RoleClass.Fox.color;
+                    RoleColor = RoleClass.Fox.color;
                     break;
                 case WinCondition.DemonWin:
                     text = "DemonName";

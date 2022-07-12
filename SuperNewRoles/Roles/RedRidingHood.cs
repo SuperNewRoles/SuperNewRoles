@@ -1,6 +1,7 @@
 using System.Linq;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -8,8 +9,7 @@ namespace SuperNewRoles.Roles
     {
         public static void WrapUp(GameData.PlayerInfo player)
         {
-            Logger.Info($"あ:{PlayerControl.LocalPlayer.isDead()} && {PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceRedRidingHood)}");
-            if (PlayerControl.LocalPlayer.isDead() && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceRedRidingHood))
+            if (PlayerControl.LocalPlayer.isDead() && PlayerControl.LocalPlayer.isRole(RoleId.NiceRedRidingHood))
             {
                 Logger.Info("い:"+RoleClass.NiceRedRidingHood.Count);
                 if (RoleClass.NiceRedRidingHood.Count >= 1)

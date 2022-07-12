@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.Mode;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -205,7 +206,7 @@ namespace SuperNewRoles.Roles
             {
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 if (!ModeHandler.isMode(ModeId.Default)) return;
-                if (__instance.myPlayer.isRole(CustomRPC.RoleId.Kunoichi))
+                if (__instance.myPlayer.isRole(RoleId.Kunoichi))
                 {
                     var Scientist = __instance.myPlayer;
                     if (Scientist == null || Scientist.isDead()) return;
