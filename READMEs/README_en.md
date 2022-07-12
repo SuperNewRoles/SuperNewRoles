@@ -155,7 +155,7 @@ It is already on the Discord server.
 # Position Details 
 ## Attention. 
 The number of people is omitted from the setup. 
-## Teleporter 
+## Teleporter
 ### Imposter camp 
 By pressing the teleport button, the 
 Teleport everyone to one randomly selected person. 
@@ -164,7 +164,7 @@ Teleport everyone to one randomly selected person.
 |----------|:-------------:| 
 | Cool Down | Button Cool Down. 
 ----------------------- 
-## Evil speed booster 
+## EvilSpeedBooster
 ### Imposter camp 
 By pressing the Speed Boost button, the 
 You can speed up your own speed for a certain period of time. 
