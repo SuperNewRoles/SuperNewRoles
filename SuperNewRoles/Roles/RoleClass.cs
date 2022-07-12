@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -2202,6 +2202,7 @@ namespace SuperNewRoles.Roles
             public static bool IsUseVent;
             public static Dictionary<byte, float> Timers;
             public static bool IsMeetingEnd;
+            public static bool IsTunaAddWin;
             public static void ClearAndReload()
             {
                 TunaPlayer = new();
@@ -2210,6 +2211,7 @@ namespace SuperNewRoles.Roles
                 StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.getFloat();
                 if (Mode.ModeHandler.isMode(Mode.ModeId.Default)) Timer = StoppingTime;
                 IsUseVent = CustomOptions.TunaIsUseVent.getBool();
+                IsTunaAddWin = CustomOptions.TunaIsAddWin.getBool();
                 IsMeetingEnd = false;
                 if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
                 {
