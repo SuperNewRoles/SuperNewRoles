@@ -17,7 +17,7 @@ namespace SuperNewRoles.MapCustoms
         public static CustomOption.CustomOption PolusSetting;//ポーラス
         public static CustomOption.CustomOption PolusAdditionalVents;
         public static CustomOption.CustomOption SpecimenVital;
-                public static CustomOption.CustomOption PolusRandomSpawn;
+        public static CustomOption.CustomOption PolusRandomSpawn;
 
 
         public static CustomOption.CustomOption AirshipSetting;//エアーシップ
