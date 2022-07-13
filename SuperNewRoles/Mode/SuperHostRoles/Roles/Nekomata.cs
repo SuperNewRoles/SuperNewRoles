@@ -9,6 +9,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
     {
         public static void WrapUp(GameData.PlayerInfo exiled)
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             //もし 追放された役職が猫であるならば
             if (exiled.Object.isRole(RoleId.NiceNekomata) || exiled.Object.isRole(RoleId.EvilNekomata) || exiled.Object.isRole(RoleId.BlackCat))
             {
