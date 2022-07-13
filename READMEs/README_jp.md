@@ -74,7 +74,7 @@ SHRモードでは、シェリフはインポスターを置き換えている�
 [Among-Us-Love-Couple-Mod](https://github.com/Woodi-dev/Among-Us-Love-Couple-Mod) - Lovers(ラバーズ)のアイデアは、**Woodi-dev**から来ています。(TheOtherRolesから引用)<br>
 [Among-Us-Sheriff-Mod](https://github.com/Woodi-dev/Among-Us-Sheriff-Mod) - Sheriffのアイデアは **Woodi-dev** から来ています。(TheOtherRolesから引用)<br>
 [au.libhalt.net](https://au.libhalt.net) - ナイス猫又/イビル猫又のアイデアは **au.libhalt.net** から来ています。<br>
-[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - ベント追加、バイタル移動、昇降機のリフト削除、配線タスク追加のコードを参考にさせていただきました！**Haoming37**さんありがとうございます！<br>
+[TheOtherRolesGMHaoming](https://github.com/haoming37/TheOtherRoles-GM-Haoming) - ベント追加、バイタル移動、昇降機のリフト削除、配線タスク追加、ランダムスポーンのコードを参考にさせていただきました！**Haoming37**さんありがとうございます！<br>
 [ExtremeRoles](https://github.com/yukieiji/ExtremeRoles) - マップのタスクが正常に動作しない問題の修正、アサシン&マーリンなどのアイデア元となりました！**yukieiji**さんありがとうございます！<br>
 
 ## 使用させて頂いているカスタムコスメティック
@@ -100,7 +100,6 @@ kibou102様<br>
 windows7様<br>
 渋谷先生様<br>
 cRox様<br>
-
 
 ## 連絡について
 Discordサーバーからお願いします:[Discordサーバー](https://discord.gg/95YuUZp4kM)

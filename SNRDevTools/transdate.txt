@@ -817,4 +817,5 @@ FastMakerName,Fast Maker,ファストメーカー
 FastMakerTitle1,Let's make Mad Mate with a light heart.,軽い気持ちでマッドメイトを作ろう
 KillName,KILL,キル
 JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズを作れる
+PolusrandomSpawn,RandomSpawn,ランダムスポーン
 NotImpostorExiled,Not taking the Imposter off the road,インポスターを道連れにしない
