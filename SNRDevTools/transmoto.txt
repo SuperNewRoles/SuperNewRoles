@@ -817,3 +817,4 @@ FastMakerTitle1
 KillName
 JackalCreateFriendSetting
 PolusrandomSpawn
+NotImpostorExiled
