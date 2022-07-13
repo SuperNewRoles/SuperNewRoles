@@ -18,8 +18,8 @@ namespace SuperNewRoles.MapCustoms
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.SpawnPlayer))]
         public static void Postfix(ShipStatus __instance, PlayerControl player, int numPlayers, bool initialSpawn)
         {
-            // Polusの湧き位置をランダムにする 無駄に人数分シャッフルが走るのをそのうち直す
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustoms.MapCustom.PolusRandomSpawn.getBool())
+            // Polusの湧き位置をランダムにする
+            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustoms.MapCustom.PolusRandomSpawn.getBool() &&player.PlayerId == CachedPlayer.LocalPlayer.PlayerId&&AmongUsClient.Instance.AmHost)
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
