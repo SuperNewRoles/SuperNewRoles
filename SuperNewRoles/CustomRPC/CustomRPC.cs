@@ -972,6 +972,11 @@ namespace SuperNewRoles.CustomRPC
                     Vector2 O2Spawn = new(3.28f, -21.67f);
                     Vector2 SpecimenSpawn = new(36.54f, -20.84f);
                     Vector2 LaboSpawn = new(34.91f, -6.50f);
+                    Vector2 CommsSpawn = new(12.24f, -15.9473f);
+                    Vector2 StorageSpawn = new(20.9707f, -12.3396f);
+                    Vector2 MeetingSpawnUnder = new(22.0948f, -25.1668f);
+                    Vector2 LocketSpawn = new(26.6442f, -6.775f);
+                    Vector2 LeftReactorSpawn = new(4.6395f, -4.2884f);
                     var loc = locId switch
                     {
                         0 => InitialSpawnCenter,
@@ -980,6 +985,11 @@ namespace SuperNewRoles.CustomRPC
                         3 => O2Spawn,
                         4 => SpecimenSpawn,
                         5 => LaboSpawn,
+                        6 => CommsSpawn,
+                        7 => StorageSpawn,
+                        8 => MeetingSpawnUnder,
+                        9 => LocketSpawn,
+                        10 => LeftReactorSpawn,
                         _ => InitialSpawnCenter,
                     };
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)

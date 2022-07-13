@@ -24,7 +24,7 @@ namespace SuperNewRoles.MapCustoms
                 if (AmongUsClient.Instance.AmHost)
                 {
                     System.Random rand = new();
-                    int randVal = rand.Next(0, 6);
+                    int randVal = rand.Next(0, 11);
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RandomSpawn, Hazel.SendOption.Reliable, -1);
                     writer.Write((byte)player.Data.PlayerId);
                     writer.Write((byte)randVal);
@@ -46,7 +46,7 @@ namespace SuperNewRoles.MapCustoms
                     foreach (PlayerControl player in PlayerControl.AllPlayerControls)
                     {
                         System.Random rand = new();
-                        int randVal = rand.Next(0, 6);
+                        int randVal = rand.Next(0, 11);
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RandomSpawn, Hazel.SendOption.Reliable, -1);
                         writer.Write((byte)player.Data.PlayerId);
                         writer.Write((byte)randVal);
