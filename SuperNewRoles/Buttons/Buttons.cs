@@ -1963,7 +1963,7 @@ namespace SuperNewRoles.Buttons
                     ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
                     ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.ToiletFan && ModeHandler.isMode(ModeId.Default); },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.ToiletFan; },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
