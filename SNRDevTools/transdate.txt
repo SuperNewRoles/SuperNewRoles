@@ -818,5 +818,6 @@ FastMakerTitle1,Let's make Mad Mate with a light heart.,軽い気持ちでマッ
 KillName,KILL,キル
 JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズを作れる
 ToiletFanName,Toilet Fan,トイレファン
-ToiletCoolDownSetting,A little faster...,少しでも早く...
-ToiletName,Toilet Cool Time,トイレクールタイム
+ToiletFanTitle1,A little faster...,少しでも早く...
+ToiletCoolDownSetting,Toilet Cool Time,トイレクールタイム
+ToiletName,DoorOpen,ドア開放
