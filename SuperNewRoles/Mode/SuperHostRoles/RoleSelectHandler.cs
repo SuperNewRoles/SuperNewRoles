@@ -56,7 +56,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     CustomOptions.RemoteSheriffOption.getSelection() != 0 ||
                     CustomOptions.MadMakerOption.getSelection() != 0 ||
                     CustomOptions.SamuraiOption.getSelection() != 0 ||
-                    CustomOptions.DemonOption.getSelection() != 0)
+                    CustomOptions.DemonOption.getSelection() != 0||
+                    CustomOptions.ToiletFanOption.getSelection() != 0)
                 {
                     PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                     bot1.RpcSetRole(RoleTypes.Impostor);
@@ -120,7 +121,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<PlayerControl> DesyncShapeshifters = new();
             DesyncShapeshifters.AddRange(RoleClass.Arsonist.ArsonistPlayer);
             DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
-            //Desync
+            DesyncShapeshifters.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
+            //シェイプシフターDesync
             foreach (PlayerControl Player in DesyncImpostors)
             {
                 if (!Player.IsMod())
