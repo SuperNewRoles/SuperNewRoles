@@ -762,7 +762,6 @@ PositionSwapperSwapText2,Position swapper swapped you!\n by the way，ykundesu i
 TunaName,Tuna,マグロ
 TunaTitle1,Always move!,常に動け！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間
-TunaAddWinSetting,Add Win,追加勝利
 BlackCatName,Black Cat,黒猫
 BlackCatTitle1,Give your life for your master.,主人のために命を捧げよ
 MafiaName,Mafia,マフィア
