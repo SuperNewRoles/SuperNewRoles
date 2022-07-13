@@ -29,7 +29,18 @@ namespace SuperNewRoles.Roles
                             {
                                 //道連れにするプレイヤーの抽選リストに追加する
                                 p.Add(p1);
-                                SuperNewRolesPlugin.Logger.LogInfo("[SNR:黒猫Info]Impostorを道連れ対象から除外しました");
+                                if (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(__instance.Object))
+                                {
+                                    SuperNewRolesPlugin.Logger.LogInfo("[SNR:黒猫Info]Impostorを道連れ対象から除外しました");
+                                }
+                                else if (RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object))
+                                {
+                                    SuperNewRolesPlugin.Logger.LogInfo("[SNR:イビル猫又Info]Impostorを道連れ対象から除外しました");
+                                }
+                                else
+                                {
+                                    SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error][NotImpostorExiled == true] 異常な抽選リストです");
+                                }
                             }
                         }
                         //それ以外にゃら(ナイス猫又の追放　あるいは　イビル猫又・黒猫の追放でインポスターを道連れにしない設定がオフになっているにゃら)
@@ -40,7 +51,18 @@ namespace SuperNewRoles.Roles
                             {
                                 //道連れにするプレイヤーの抽選リストに追加する
                                 p.Add(p1);
-                                SuperNewRolesPlugin.Logger.LogInfo("[SNR:黒猫Info]Impostorを道連れ対象から除外しませんでした");
+                                if (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(__instance.Object))
+                                {
+                                    SuperNewRolesPlugin.Logger.LogInfo("[SNR:黒猫Info]Impostorを道連れ対象から除外しませんでした");
+                                }
+                                else if (RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object))
+                                {
+                                    SuperNewRolesPlugin.Logger.LogInfo("[SNR:イビル猫又Info]Impostorを道連れ対象から除外しませんでした");
+                                }
+                                else
+                                {
+                                    SuperNewRolesPlugin.Logger.LogError("[SNR:猫又Error][NotImpostorExiled != true] 異常な抽選リストです");
+                                }
                             }
                         }
                     }

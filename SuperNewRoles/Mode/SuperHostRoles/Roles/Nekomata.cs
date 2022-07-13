@@ -22,25 +22,47 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
             {
                 //もし イビル猫又が追放され尚且つImpostorを道連れしない設定がオンになっているにゃら 又は 黒猫が追放され尚且つImpostorを道連れしない設定がオンなっているにゃら
-                if ((exiled.Object.isRole(RoleId.EvilNekomata) && RoleClass.EvilNekomata.NotImpostorExiled ) || ( exiled.Object.isRole(RoleId.BlackCat) && RoleClass.BlackCat.NotImpostorExiled))
+                if ((exiled.Object.isRole(RoleId.EvilNekomata) && RoleClass.EvilNekomata.NotImpostorExiled) || (exiled.Object.isRole(RoleId.BlackCat) && RoleClass.BlackCat.NotImpostorExiled))
                 {
-                    //もし 抜き出されたプレイヤーが　追放されたプレイヤーではない 且つ生きている 且つプレイヤーである(Botでない) 且つインポスターでないにゃら
-                    if (p1.Data.PlayerId != exiled.PlayerId && p1.isAlive()  && p1.IsPlayer() && !p1.isImpostor() )
+                    //もし 抜き出されたプレイヤーが　追放されたプレイヤーではない 且つ生きている 且つプレイヤーである 且つボットでない 且つインポスターでないにゃら
+                    if (p1.Data.PlayerId != exiled.PlayerId && p1.isAlive() && p1.IsPlayer() && !p1.IsBot() && !p1.isImpostor())
                     {
                         //道連れにするプレイヤーの抽選リストに追加する
                         p.Add(p1);
-                        SuperNewRolesPlugin.Logger.LogInfo("[SHR:黒猫Info]Impostorを道連れ対象から除外しました");
+                        if (exiled.Object.isRole(RoleId.BlackCat))
+                        {
+                            SuperNewRolesPlugin.Logger.LogInfo("[SHR:黒猫Info]Impostorを道連れ対象から除外しました");
+                        }
+                        else if (exiled.Object.isRole(RoleId.EvilNekomata))
+                        {
+                            SuperNewRolesPlugin.Logger.LogInfo("[SHR:イビル猫又Info]Impostorを道連れ対象から除外しました");
+                        }
+                        else
+                        {
+                            SuperNewRolesPlugin.Logger.LogError("[SHR:猫又Error][NotImpostorExiled == true] 異常な抽選リストです");
+                        }
                     }
                 }
                 //それ以外にゃら(ナイス猫又の追放　あるいは　イビル猫又・黒猫の追放でインポスターを道連れにしない設定がオフになっているにゃら)
                 else
                 {
-                    //もし 抜き出されたプレイヤーが　追放されたプレイヤーではない 且つ プレイヤーである 且つ 生きているにゃら
-                    if (p1.Data.PlayerId != exiled.PlayerId && p1.isAlive() && p1.IsPlayer())
+                    //もし 抜き出されたプレイヤーが　追放されたプレイヤーではない 且つ 生きている 且つ プレイヤーである 且つボットでないにゃら
+                    if (p1.Data.PlayerId != exiled.PlayerId && p1.isAlive() && p1.IsPlayer() && !p1.IsBot())
                     {
                         //道連れにするプレイヤーの抽選リストに追加する
                         p.Add(p1);
-                        SuperNewRolesPlugin.Logger.LogInfo("[SHR:黒猫Info]Impostorを道連れ対象から除外しませんでした");
+                        if (exiled.Object.isRole(RoleId.BlackCat))
+                        {
+                            SuperNewRolesPlugin.Logger.LogInfo("[SHR:黒猫Info]Impostorを道連れ対象から除外しませんでした");
+                        }
+                        else if (exiled.Object.isRole(RoleId.EvilNekomata))
+                        {
+                            SuperNewRolesPlugin.Logger.LogInfo("[SHR:イビル猫又Info]を道連れ対象から除外しませんでした");
+                        }
+                        else
+                        {
+                            SuperNewRolesPlugin.Logger.LogError("[SHR:猫又Error][NotImpostorExiled != true ] 異常な抽選リストです");
+                        }
                     }
                 }
             }
