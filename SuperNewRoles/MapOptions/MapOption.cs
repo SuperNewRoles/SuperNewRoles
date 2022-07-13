@@ -168,8 +168,6 @@ namespace SuperNewRoles.MapOptions
 
         public static CustomOption.CustomOption VentAnimation;
 
-        public static CustomOption.CustomOption PolusRandomSpawn;
-
 
         public static void LoadOption()
         {
@@ -208,8 +206,6 @@ namespace SuperNewRoles.MapOptions
 
             VentAnimation = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "VentAnimation", false, MapOptionSetting);
 
-            //AirshipRandomSpawn = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "AirshipRandomSpawn", false, MapOptionSetting);
-            PolusRandomSpawn = CustomOption.CustomOption.Create(600, false, CustomOptionType.Generic, "PolusrandomSpawn", false, MapOptionSetting);
             LadderDead = CustomOption.CustomOption.Create(637, true, CustomOptionType.Generic, "LadderDead", false, isHeader: true);
             LadderDeadChance = CustomOption.CustomOption.Create(625, true, CustomOptionType.Generic, "LadderDeadChance", rates[1..], LadderDead);
         }

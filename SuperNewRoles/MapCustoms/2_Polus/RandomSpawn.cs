@@ -9,7 +9,7 @@ using UnhollowerBaseLib;
 using UnityEngine;
 using SuperNewRoles.CustomRPC;
 
-namespace SuperNewRoles.MapOptions
+namespace SuperNewRoles.MapCustoms
 {
     [HarmonyPatch(typeof(ShipStatus))]
     class PolusRandomSpawn
@@ -19,7 +19,7 @@ namespace SuperNewRoles.MapOptions
         public static void Postfix(ShipStatus __instance, PlayerControl player, int numPlayers, bool initialSpawn)
         {
             // Polusの湧き位置をランダムにする 無駄に人数分シャッフルが走るのをそのうち直す
-            if (PlayerControl.GameOptions.MapId == 2 && MapOption.PolusRandomSpawn.getBool())
+            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustoms.MapCustom.PolusRandomSpawn.getBool())
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
@@ -39,7 +39,7 @@ namespace SuperNewRoles.MapOptions
     {
         static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.GameOptions.MapId == 2 && MapOption.PolusRandomSpawn.getBool())
+            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustoms.MapCustom.PolusRandomSpawn.getBool())
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
@@ -57,15 +57,5 @@ namespace SuperNewRoles.MapOptions
             }
         }
     }
-    public static class Extensions
-    {
-        public static T Random<T>(this IList<T> self)
-        {
-            if (self.Count > 0)
-            {
-                return self[UnityEngine.Random.Range(0, self.Count)];
-            }
-            return default;
-        }
-    }
+
 }
