@@ -29,6 +29,8 @@ namespace SuperNewRoles.Roles
                             {
                                 //道連れにするプレイヤーの抽選リストに追加する
                                 p.Add(p1);
+
+                                //Logへの記載
                                 if (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(__instance.Object))
                                 {
                                     SuperNewRolesPlugin.Logger.LogInfo("[SNR:黒猫Info]Impostorを道連れ対象から除外しました");
@@ -51,6 +53,8 @@ namespace SuperNewRoles.Roles
                             {
                                 //道連れにするプレイヤーの抽選リストに追加する
                                 p.Add(p1);
+
+                                //Logへの記載
                                 if (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(__instance.Object))
                                 {
                                     SuperNewRolesPlugin.Logger.LogInfo("[SNR:黒猫Info]Impostorを道連れ対象から除外しませんでした");
