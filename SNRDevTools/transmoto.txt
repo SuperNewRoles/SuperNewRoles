@@ -761,6 +761,7 @@ PositionSwapperSwapText2
 TunaName
 TunaTitle1
 TunaStoppingTimeSetting
+TunaAddWinSetting
 BlackCatName
 BlackCatTitle1
 MafiaName
@@ -815,3 +816,9 @@ FastMakerName
 FastMakerTitle1
 KillName
 JackalCreateFriendSetting
+ToiletFanName
+ToiletFanTitle1
+ToiletCoolDownSetting
+ToiletName
+PolusrandomSpawn
+NotImpostorExiled

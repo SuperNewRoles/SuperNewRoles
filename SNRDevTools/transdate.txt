@@ -762,6 +762,7 @@ PositionSwapperSwapText2,Position swapper swapped you!\n by the way，ykundesu i
 TunaName,Tuna,マグロ
 TunaTitle1,Always move!,常に動け！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間
+TunaAddWinSetting,Add Win,追加勝利
 BlackCatName,Black Cat,黒猫
 BlackCatTitle1,Give your life for your master.,主人のために命を捧げよ
 MafiaName,Mafia,マフィア
@@ -816,3 +817,9 @@ FastMakerName,Fast Maker,ファストメーカー
 FastMakerTitle1,Let's make Mad Mate with a light heart.,軽い気持ちでマッドメイトを作ろう
 KillName,KILL,キル
 JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズを作れる
+ToiletFanName,Toilet Fan,トイレファン
+ToiletFanTitle1,A little faster...,少しでも早く...
+ToiletCoolDownSetting,Toilet Cool Time,トイレクールタイム
+ToiletName,DoorOpen,ド
+PolusrandomSpawn,RandomSpawn,ランダムスポーン
+NotImpostorExiled,Not taking the Imposter off the road,インポスターを道連れにしない

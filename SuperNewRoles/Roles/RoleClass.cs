@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -152,6 +152,7 @@ namespace SuperNewRoles.Roles
             SuicideWisher.ClearAndReload();
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
+            ToiletFan.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -907,9 +908,11 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> EvilNekomataPlayer;
             public static Color32 color = ImpostorRed;
+            public static bool NotImpostorExiled;
             public static void ClearAndReload()
             {
                 EvilNekomataPlayer = new();
+                NotImpostorExiled = CustomOptions.EvilNekomataNotImpostorExiled.getBool();
             }
         }
         public static class JackalFriends
@@ -2242,6 +2245,7 @@ namespace SuperNewRoles.Roles
             public static bool IsUseVent;
             public static Dictionary<byte, float> Timers;
             public static bool IsMeetingEnd;
+            public static bool IsTunaAddWin;
             public static void ClearAndReload()
             {
                 TunaPlayer = new();
@@ -2250,6 +2254,7 @@ namespace SuperNewRoles.Roles
                 StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.getFloat();
                 if (Mode.ModeHandler.isMode(Mode.ModeId.Default)) Timer = StoppingTime;
                 IsUseVent = CustomOptions.TunaIsUseVent.getBool();
+                IsTunaAddWin = CustomOptions.TunaIsAddWin.getBool();
                 IsMeetingEnd = false;
                 if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
                 {
@@ -2273,6 +2278,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> BlackCatPlayer;
             public static Color32 color = ImpostorRed;
+            public static bool NotImpostorExiled;
             public static bool IsImpostorCheck;
             public static int ImpostorCheckTask;
             public static bool IsUseVent;
@@ -2280,6 +2286,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 BlackCatPlayer = new List<PlayerControl>();
+                NotImpostorExiled = CustomOptions.BlackCatNotImpostorExiled.getBool();
                 IsImpostorCheck = CustomOptions.BlackCatIsCheckImpostor.getBool();
                 IsUseVent = CustomOptions.BlackCatIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.BlackCatIsImpostorLight.getBool();
@@ -2472,6 +2479,24 @@ namespace SuperNewRoles.Roles
                 FastMakerPlayer = new List<PlayerControl>();
                 IsCreatedMadMate = false;
                 CreatePlayers = new();
+            }
+        }
+        public static class ToiletFan
+        {
+            public static List<PlayerControl> ToiletFanPlayer;
+            public static Color32 color = new(116, 80, 48, byte.MaxValue);
+            public static float ToiletCool;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ToiletFanButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                ToiletFanPlayer = new List<PlayerControl>();
+                ToiletCool = CustomOptions.ToiletFanCoolTime.getFloat();
             }
         }
         //新ロールクラス
