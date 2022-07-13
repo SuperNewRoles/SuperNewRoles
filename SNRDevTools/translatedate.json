@@ -3273,8 +3273,8 @@
         "11" : "\u30b8\u30e3\u30c3\u30ab\u30eb\u30d5\u30ec\u30f3\u30ba\u3092\u4f5c\u308c\u308b"
         } ,
  "PolusrandomSpawn" : {
-        "0" : "Polus RandomSpawn" ,
-        "11" : "\u30e9\u30f3\u30c0\u30e0\u30b9\u30dd\u30fc\u30f3(\u30dd\u30fc\u30e9\u30b9)"
+        "0" : "RandomSpawn" ,
+        "11" : "\u30e9\u30f3\u30c0\u30e0\u30b9\u30dd\u30fc\u30f3"
         } 
 
 }
