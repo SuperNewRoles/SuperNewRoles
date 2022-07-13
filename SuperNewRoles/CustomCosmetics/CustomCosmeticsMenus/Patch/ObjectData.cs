@@ -327,7 +327,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             SaveManager.LastPet = data.Pet.Value;
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
             {
-                PlayerControl.LocalPlayer.CheckColor(SaveManager.BodyColor);
+                PlayerControl.LocalPlayer.CmdCheckColor(SaveManager.BodyColor);
                 PlayerControl.LocalPlayer.RpcSetHat(SaveManager.LastHat);
                 PlayerControl.LocalPlayer.RpcSetVisor(SaveManager.LastVisor);
                 PlayerControl.LocalPlayer.RpcSetSkin(SaveManager.LastSkin);
