@@ -761,6 +761,7 @@ Position swapper swapped you!\n by the way，ykundesu is delicious，isn't it?
 Tuna
 Always move!
 Stopping Time
+Add Win
 Black Cat
 Give your life for your master.
 Mafia
