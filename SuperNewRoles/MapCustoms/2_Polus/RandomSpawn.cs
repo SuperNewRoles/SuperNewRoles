@@ -19,18 +19,15 @@ namespace SuperNewRoles.MapCustoms
         public static void Postfix(ShipStatus __instance, PlayerControl player, int numPlayers, bool initialSpawn)
         {
             // Polusの湧き位置をランダムにする
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustoms.MapCustom.PolusRandomSpawn.getBool() &&player.PlayerId == CachedPlayer.LocalPlayer.PlayerId&&AmongUsClient.Instance.AmHost)
+            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustoms.MapCustom.PolusRandomSpawn.getBool() && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId && AmongUsClient.Instance.AmHost)
             {
-                if (AmongUsClient.Instance.AmHost)
-                {
-                    System.Random rand = new();
-                    int randVal = rand.Next(0, 11);
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RandomSpawn, Hazel.SendOption.Reliable, -1);
-                    writer.Write((byte)player.Data.PlayerId);
-                    writer.Write((byte)randVal);
-                    AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    RPCProcedure.randomSpawn((byte)player.Data.PlayerId, (byte)randVal);
-                }
+                System.Random rand = new();
+                int randVal = rand.Next(0, 11);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RandomSpawn, Hazel.SendOption.Reliable, -1);
+                writer.Write((byte)player.Data.PlayerId);
+                writer.Write((byte)randVal);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                RPCProcedure.randomSpawn((byte)player.Data.PlayerId, (byte)randVal);
             }
         }
     }
