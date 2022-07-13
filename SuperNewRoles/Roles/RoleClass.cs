@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -152,6 +152,7 @@ namespace SuperNewRoles.Roles
             SuicideWisher.ClearAndReload();
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
+            ToiletFan.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2478,6 +2479,24 @@ namespace SuperNewRoles.Roles
                 FastMakerPlayer = new List<PlayerControl>();
                 IsCreatedMadMate = false;
                 CreatePlayers = new();
+            }
+        }
+        public static class ToiletFan
+        {
+            public static List<PlayerControl> ToiletFanPlayer;
+            public static Color32 color = new(116, 80, 48, byte.MaxValue);
+            public static float ToiletCool;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ToiletFanButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                ToiletFanPlayer = new List<PlayerControl>();
+                ToiletCool = CustomOptions.ToiletFanCoolTime.getFloat();
             }
         }
         //新ロールクラス

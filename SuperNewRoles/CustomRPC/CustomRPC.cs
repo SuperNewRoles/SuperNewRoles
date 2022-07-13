@@ -131,6 +131,7 @@ namespace SuperNewRoles.CustomRPC
         SuicideWisher,
         Neet,
         FastMaker,
+        ToiletFan,
         //RoleId
     }
 

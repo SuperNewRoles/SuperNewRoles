@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -156,6 +156,12 @@ namespace SuperNewRoles.Patches
                         {
                             __instance.RpcMurderPlayer(__instance);
                         }
+                        return false;
+                    case RoleId.ToiletFan:
+                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
+                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
+                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
+                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
                         return false;
                 }
             }

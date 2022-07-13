@@ -816,5 +816,9 @@ FastMakerName
 FastMakerTitle1
 KillName
 JackalCreateFriendSetting
+ToiletFanName
+ToiletFanTitle1
+ToiletCoolDownSetting
+ToiletName
 PolusrandomSpawn
 NotImpostorExiled

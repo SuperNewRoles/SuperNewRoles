@@ -64,6 +64,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton DoubleKillerSubKillButton;
         public static CustomButton SuicideWisherSuicideButton;
         public static CustomButton FastMakerButton;
+        public static CustomButton ToiletFanButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -1951,6 +1952,37 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.getString("KillName"),
+                showButtonText = true
+            };
+
+            ToiletFanButton = new CustomButton(
+                () =>
+                {
+                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
+                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
+                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
+                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.ToiletFan; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    ToiletFanButton.MaxTimer = RoleClass.ToiletFan.ToiletCool;
+                    ToiletFanButton.Timer = RoleClass.ToiletFan.ToiletCool;
+                },
+                RoleClass.ToiletFan.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.getString("ToiletName"),
                 showButtonText = true
             };
 
