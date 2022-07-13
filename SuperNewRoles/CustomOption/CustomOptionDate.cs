@@ -249,6 +249,7 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption EvilNekomataOption;
         public static CustomOption EvilNekomataPlayerCount;
+        public static CustomOption EvilNekomataNotImpostorExiled;
 
         public static CustomRoleOption JackalFriendsOption;
         public static CustomOption JackalFriendsPlayerCount;
@@ -537,6 +538,7 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption BlackCatOption;
         public static CustomOption BlackCatPlayerCount;
+        public static CustomOption BlackCatNotImpostorExiled;
         public static CustomOption BlackCatIsCheckImpostor;
         public static CustomOption BlackCatCommonTask;
         public static CustomOption BlackCatShortTask;
@@ -963,6 +965,7 @@ namespace SuperNewRoles.CustomOption
 
             EvilNekomataOption = new CustomRoleOption(178, true, CustomOptionType.Impostor, "EvilNekomataName", RoleClass.EvilNekomata.color, 1);
             EvilNekomataPlayerCount = CustomOption.Create(179, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilNekomataOption);
+            EvilNekomataNotImpostorExiled = CustomOption.Create(670, true, CustomOptionType.Impostor, "NotImpostorExiled", false, EvilNekomataOption);
 
             JackalFriendsOption = new CustomRoleOption(180, true, CustomOptionType.Crewmate, "JackalFriendsName", RoleClass.JackalFriends.color, 1);
             JackalFriendsPlayerCount = CustomOption.Create(181, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalFriendsOption);
@@ -1110,7 +1113,7 @@ namespace SuperNewRoles.CustomOption
             MadJesterIsUseVent = CustomOption.Create(298, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadJesterOption);
             MadJesterIsImpostorLight = CustomOption.Create(299, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadJesterOption);
             IsMadJesterTaskClearWin = CustomOption.Create(300, true, CustomOptionType.Crewmate, "JesterIsWinClearTaskSetting", false, MadJesterOption);
-            var MadJesteroption = SelectTask.TaskSetting(1000, 1001, 1002, IsMadJesterTaskClearWin, CustomOptionType.Crewmate, true);
+            var MadJesteroption = SelectTask.TaskSetting(667, 668, 669, IsMadJesterTaskClearWin, CustomOptionType.Crewmate, true);
             MadJesterCommonTask = MadJesteroption.Item1;
             MadJesterShortTask = MadJesteroption.Item2;
             MadJesterLongTask = MadJesteroption.Item3;
@@ -1301,13 +1304,15 @@ namespace SuperNewRoles.CustomOption
             TunaPlayerCount = CustomOption.Create(553, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], TunaOption);
             TunaStoppingTime = CustomOption.Create(554, true, CustomOptionType.Neutral, "TunaStoppingTimeSetting", 1f, 1f, 3f, 1f, TunaOption);
             TunaIsUseVent = CustomOption.Create(555, true, CustomOptionType.Neutral, "MadMateUseVentSetting", false, TunaOption);
-            TunaIsAddWin = CustomOption.Create(618, true, CustomOptionType.Neutral, "TunaAddWinSetting", false, TunaOption);
+            TunaIsAddWin = CustomOption.Create(671, true, CustomOptionType.Neutral, "TunaAddWinSetting", false, TunaOption);
+            TunaIsAddWin = CustomOption.Create(673, true, CustomOptionType.Neutral, "TunaAddWinSetting", false, TunaOption);
 
             MafiaOption = new CustomRoleOption(602, true, CustomOptionType.Impostor, "MafiaName", RoleClass.Mafia.color, 1);
             MafiaPlayerCount = CustomOption.Create(603, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], MafiaOption);
 
             BlackCatOption = new CustomRoleOption(556, true, CustomOptionType.Crewmate, "BlackCatName", RoleClass.ImpostorRed, 1);
             BlackCatPlayerCount = CustomOption.Create(557, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BlackCatOption);
+            BlackCatNotImpostorExiled = CustomOption.Create(671, true, CustomOptionType.Crewmate, "NotImpostorExiled", false, BlackCatOption);
             BlackCatIsCheckImpostor = CustomOption.Create(558, true, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, BlackCatOption);
             var blackcatoption = SelectTask.TaskSetting(559, 560, 561, BlackCatIsCheckImpostor, CustomOptionType.Crewmate, true);
             BlackCatCommonTask = blackcatoption.Item1;
@@ -1361,6 +1366,9 @@ namespace SuperNewRoles.CustomOption
             ToiletFanOption = new CustomRoleOption(656, true, CustomOptionType.Crewmate, "ToiletFanName", RoleClass.ToiletFan.color, 1);
             ToiletFanPlayerCount = CustomOption.Create(657, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ToiletFanOption);
             ToiletFanCoolTime = CustomOption.Create(658, true, CustomOptionType.Crewmate, "ToiletCoolDownSetting", 30f, 0f, 60f, 2.5f, ToiletFanOption);
+            FastMakerOption = new CustomRoleOption(672, true, CustomOptionType.Impostor, "FastMakerName", RoleClass.FastMaker.color, 1);
+            FastMakerPlayerCount = CustomOption.Create(673, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FastMakerOption);
+            FastMakerPlayerCount = CustomOption.Create(674, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FastMakerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

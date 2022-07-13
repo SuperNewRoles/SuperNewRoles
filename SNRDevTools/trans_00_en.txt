@@ -820,3 +820,5 @@ Toilet Fan
 A little faster...
 Toilet Cool Time
 DoorOpen
+RandomSpawn
+Not taking the Imposter off the road

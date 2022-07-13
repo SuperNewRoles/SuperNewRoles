@@ -348,28 +348,25 @@ namespace SuperNewRoles.Patches
                             }
 
                         }
+                        SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                        isKill = true;
+
+                        if (__instance.PlayerId != 0)
+                        {
+                            target.Data.IsDead = true;
+                            __instance.RpcMurderPlayer(target);
+                            isKill = false;
+                        }
                         else
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
-                            isKill = true;
-
-                            if (__instance.PlayerId != 0)
+                            new LateTask(() =>
                             {
-                                target.Data.IsDead = true;
-                                __instance.RpcMurderPlayer(target);
-                                isKill = false;
-                            }
-                            else
-                            {
-                                new LateTask(() =>
+                                if (__instance.isAlive() && target.isAlive())
                                 {
-                                    if (__instance.isAlive() && target.isAlive())
-                                    {
-                                        __instance.RpcMurderPlayer(target);
-                                    }
-                                    isKill = false;
-                                }, (AmongUsClient.Instance.Ping / 1000f) * 1.1f);
-                            }
+                                    __instance.RpcMurderPlayer(target);
+                                }
+                                isKill = false;
+                            }, (AmongUsClient.Instance.Ping / 1000f) * 1.1f);
                         }
                     }
                     return false;

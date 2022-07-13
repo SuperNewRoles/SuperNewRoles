@@ -908,9 +908,11 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> EvilNekomataPlayer;
             public static Color32 color = ImpostorRed;
+            public static bool NotImpostorExiled;
             public static void ClearAndReload()
             {
                 EvilNekomataPlayer = new();
+                NotImpostorExiled = CustomOptions.EvilNekomataNotImpostorExiled.getBool();
             }
         }
         public static class JackalFriends
@@ -2276,6 +2278,7 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> BlackCatPlayer;
             public static Color32 color = ImpostorRed;
+            public static bool NotImpostorExiled;
             public static bool IsImpostorCheck;
             public static int ImpostorCheckTask;
             public static bool IsUseVent;
@@ -2283,6 +2286,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 BlackCatPlayer = new List<PlayerControl>();
+                NotImpostorExiled = CustomOptions.BlackCatNotImpostorExiled.getBool();
                 IsImpostorCheck = CustomOptions.BlackCatIsCheckImpostor.getBool();
                 IsUseVent = CustomOptions.BlackCatIsUseVent.getBool();
                 IsImpostorLight = CustomOptions.BlackCatIsImpostorLight.getBool();

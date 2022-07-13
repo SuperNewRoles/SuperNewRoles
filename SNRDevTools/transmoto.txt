@@ -820,3 +820,5 @@ ToiletFanName
 ToiletFanTitle1
 ToiletCoolDownSetting
 ToiletName
+PolusrandomSpawn
+NotImpostorExiled

@@ -820,4 +820,6 @@ JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズ�
 ToiletFanName,Toilet Fan,トイレファン
 ToiletFanTitle1,A little faster...,少しでも早く...
 ToiletCoolDownSetting,Toilet Cool Time,トイレクールタイム
-ToiletName,DoorOpen,ドア開放
+ToiletName,DoorOpen,ド
+PolusrandomSpawn,RandomSpawn,ランダムスポーン
+NotImpostorExiled,Not taking the Imposter off the road,インポスターを道連れにしない
