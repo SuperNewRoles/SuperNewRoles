@@ -61,7 +61,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         }
                         else if (exiled.Object.isRole(RoleId.EvilNekomata))
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("[SHR:イビル猫又Info]を道連れ対象から除外しませんでした");
+                            SuperNewRolesPlugin.Logger.LogInfo("[SHR:イビル猫又Info]Impostorを道連れ対象から除外しませんでした");
                         }
                         else
                         {

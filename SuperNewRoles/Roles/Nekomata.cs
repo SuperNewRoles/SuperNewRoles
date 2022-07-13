@@ -91,7 +91,7 @@ namespace SuperNewRoles.Roles
                 RPCWriter.Write(random.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                 RPCProcedure.ExiledRPC(random.PlayerId);
-                if ( random.isRole(RoleId.NiceNekomata) || random.isRole(RoleId.EvilNekomata) || random.isRole(RoleId.BlackCat) && RoleClass.NiceNekomata.IsChain )
+                if (random.isRole(RoleId.NiceNekomata) || random.isRole(RoleId.EvilNekomata) || random.isRole(RoleId.BlackCat) && RoleClass.NiceNekomata.IsChain)
                 {
                     p.RemoveAt(rdm);
                     NekomataProc(p);
