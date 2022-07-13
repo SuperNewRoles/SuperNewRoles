@@ -15,12 +15,14 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static TextMeshPro ColorText;
         public static TextMeshPro NamePlateText;
         public static TextMeshPro PetText;
+        public static TextMeshPro CubeText;
         public static ColorChip ColorButton;
         public static ColorChip HatButton;
         public static ColorChip SkinButton;
         public static ColorChip PetButton;
         public static ColorChip VisorButton;
         public static ColorChip NamePlateButton;
+        public static ColorChip CubeButton;
         public static HatParent HatButton_Hat;
         public static SkinLayer SkinButton_Skin;
         public static PetBehaviour PetButton_Pet;
@@ -30,6 +32,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static string Selected;
         public static Transform[] HatTabButtons;
         public static PassiveButton area_pas;
+        public static SpriteRenderer CosmicubeMenuHolderTint;
+        public static bool IsCube;
 
         public static Transform[] Presets;
         public static PoolablePlayer[] PresetAreas;
@@ -49,6 +53,14 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ResetShow();
             IsShow = true;
             PlayerCustomizationMenu.Instance.transform.FindChild("SkinGroup").gameObject.SetActive(true);
+        }
+        public static void CubeShow()
+        {
+            ResetShow();
+            IsShow = true;
+            IsCube = true;
+            PlayerCustomizationMenu.Instance.cubesTab.gameObject.SetActive(true);
+            PlayerCustomizationMenu.Instance.transform.FindChild("Background/RightPanel/CubeView").gameObject.SetActive(true);
         }
         public static void PetShow()
         {
@@ -165,6 +177,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/ColorTab/ColorButton/Tab Background").GetComponent<SpriteRenderer>().enabled = false;
             IsShow = false;
             IsCloset = false;
+            IsCube = false;
             ClosetHide();
             PresetHide();
             ShowDefaultTabButton();
@@ -178,6 +191,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 }
             }
             UpdatePatch.area.gameObject.SetActive(false);
+            PlayerCustomizationMenu.Instance.transform.FindChild("Background/RightPanel/CubeView").gameObject.SetActive(false);
         }
         public static void ClosetHide()
         {
@@ -187,12 +201,14 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ColorText.gameObject.SetActive(false);
             NamePlateText.gameObject.SetActive(false);
             PetText.gameObject.SetActive(false);
+            CubeText.gameObject.SetActive(false);
             ColorButton.gameObject.SetActive(false);
             HatButton.gameObject.SetActive(false);
             SkinButton.gameObject.SetActive(false);
             PetButton.gameObject.SetActive(false);
             VisorButton.gameObject.SetActive(false);
             NamePlateButton.gameObject.SetActive(false);
+            CubeButton.gameObject.SetActive(false);
             HatButton_Hat.gameObject.SetActive(false);
             SkinButton_Skin.gameObject.SetActive(false);
             //PetButton_Pet.gameObject.SetActive(false);
@@ -210,12 +226,14 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ColorText.gameObject.SetActive(true);
             NamePlateText.gameObject.SetActive(true);
             PetText.gameObject.SetActive(true);
+            CubeText.gameObject.SetActive(true);
             ColorButton.gameObject.SetActive(true);
             HatButton.gameObject.SetActive(true);
             SkinButton.gameObject.SetActive(true);
             PetButton.gameObject.SetActive(true);
             VisorButton.gameObject.SetActive(true);
             NamePlateButton.gameObject.SetActive(true);
+            CubeButton.gameObject.SetActive(true);
             HatButton_Hat.gameObject.SetActive(true);
             SkinButton_Skin.gameObject.SetActive(true);
             //PetButton_Pet.gameObject.SetActive(true);
@@ -235,7 +253,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         {
             ResetShow();
             PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/HatsTab/Hat Button/Tab Background").GetComponent<SpriteRenderer>().enabled = true;
-            PlayerCustomizationMenu.Instance.itemName.text = "プリセット" + (SelectedPreset.Value + 1);
+            //PlayerCustomizationMenu.Instance.itemName.text = "プリセット" + (SelectedPreset.Value + 1);
             Logger.Info("PresetShow!", "");
             if (Presets.Length > 0)
             {
