@@ -132,6 +132,11 @@ namespace SuperNewRoles.Patches
                         case RoleId.MadJester:
                         case RoleId.MadStuntMan:
                         case RoleId.MadMayor:
+                        case RoleId.MadHawk:
+                        case RoleId.MadSeer:
+                        case RoleId.MadMaker:
+                        case RoleId.BlackCat:
+                        case RoleId.JackalFriends:
                         case RoleId.SeerFriends:
                         case RoleId.MayorFriends:
                             IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
