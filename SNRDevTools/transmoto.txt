@@ -816,3 +816,6 @@ FastMakerName
 FastMakerTitle1
 KillName
 JackalCreateFriendSetting
+ToiletFanName
+ToiletCoolDownSetting
+ToiletName
