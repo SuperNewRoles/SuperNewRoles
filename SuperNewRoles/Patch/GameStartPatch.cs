@@ -28,6 +28,12 @@ namespace SuperNewRoles.Patch
                     PlayerControl.LocalPlayer.RpcSendChat(string.Format("SHRモードでSNRが名前に含まれている状態では公開部屋にすることはできません。"));
                     return false;
                 }
+                else if (!NameIncludeSNR && !NameIncludeSHR)
+                {
+                    SuperNewRolesPlugin.Logger.LogWarning("Mod関連のワードが名前にないので公開部屋にできません");
+                    PlayerControl.LocalPlayer.RpcSendChat(string.Format("Mod関連のワードが名前に入っていないと公開部屋にすることはできません。特殊モードをご利用の場合は名前に「SHR」を入れてください。"));
+                    return false;
+                }
                 return true;
             }
         }
