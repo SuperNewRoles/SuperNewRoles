@@ -269,7 +269,7 @@ namespace SuperNewRoles.Patches
                     Kunoichi.KillButtonClick();
                     return false;
                 }
-                if (!(__instance.currentTarget.isRole(CustomRPC.RoleId.Bait) || __instance.currentTarget.isRole(CustomRPC.RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Vampire))
+                if (!(__instance.currentTarget.isRole(RoleId.Bait) || __instance.currentTarget.isRole(RoleId.NiceRedRidingHood)) && PlayerControl.LocalPlayer.isRole(RoleId.Vampire))
                 {
                     PlayerControl.LocalPlayer.killTimer = RoleHelpers.getCoolTime(PlayerControl.LocalPlayer);
                     RoleClass.Vampire.target = __instance.currentTarget;
@@ -555,7 +555,7 @@ namespace SuperNewRoles.Patches
                                 SuperNewRolesPlugin.Logger.LogInfo("作ったので普通のキル");
                                 __instance.RpcMurderPlayer(target);
                             }
-                                break;
+                            break;
                         case RoleId.Jackal:
                             if (!RoleClass.Jackal.IsCreatedFriend && RoleClass.Jackal.CanCreateFriend)//まだ作ってなくて、設定が有効の時
                             {
@@ -792,8 +792,13 @@ namespace SuperNewRoles.Patches
         {
             // SuperNewRolesPlugin.Logger.LogInfo("MurderPlayer発生！元:" + __instance.getDefaultName() + "、ターゲット:" + target.getDefaultName());
             // Collect dead player info
+            Logger.Info("追加");
             DeadPlayer deadPlayer = new(target, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
+            foreach (var p in DeadPlayer.deadPlayers)
+            {
+                Logger.Info($"{p.killerIfExisting.Data.PlayerName}が{p.player.Data.PlayerName}を切る");
+            }
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
             SerialKiller.MurderPlayer(__instance, target);
@@ -857,7 +862,7 @@ namespace SuperNewRoles.Patches
                             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                             Writer.Write(target.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                            Roles.RoleClass.Quarreled.IsQuarreledWin = true;
+                            RoleClass.Quarreled.IsQuarreledWin = true;
                             ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.QuarreledWin, false);
                         }
                     }

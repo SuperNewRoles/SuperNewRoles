@@ -7,6 +7,7 @@ using SuperNewRoles.Patch;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -23,6 +24,7 @@ namespace SuperNewRoles.Roles
 
         public static void ClearAndReloadRoles()
         {
+            DeadPlayer.deadPlayers = new();
             AllRoleSetClass.Assigned = false;
             LateTask.Tasks = new();
             LateTask.AddTasks = new();
@@ -1274,7 +1276,7 @@ namespace SuperNewRoles.Roles
             public static LevelPowerTypes GetThisPower(int Level = 0, PlayerControl player = null)
             {
                 if (player == null) player = PlayerControl.LocalPlayer;
-                if (!player.isRole(CustomRPC.RoleId.Levelinger)) return LevelPowerTypes.None;
+                if (!player.isRole(RoleId.Levelinger)) return LevelPowerTypes.None;
                 if (Level == 0)
                 {
                     Level = ThisXP / UpLevelXp;
@@ -2240,6 +2242,7 @@ namespace SuperNewRoles.Roles
             public static bool IsUseVent;
             public static Dictionary<byte, float> Timers;
             public static bool IsMeetingEnd;
+            public static bool IsTunaAddWin;
             public static void ClearAndReload()
             {
                 TunaPlayer = new();
@@ -2248,6 +2251,7 @@ namespace SuperNewRoles.Roles
                 StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.getFloat();
                 if (Mode.ModeHandler.isMode(Mode.ModeId.Default)) Timer = StoppingTime;
                 IsUseVent = CustomOptions.TunaIsUseVent.getBool();
+                IsTunaAddWin = CustomOptions.TunaIsAddWin.getBool();
                 IsMeetingEnd = false;
                 if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
                 {

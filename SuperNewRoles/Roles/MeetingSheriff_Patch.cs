@@ -4,6 +4,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patch;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -50,7 +51,7 @@ namespace SuperNewRoles.Roles
     {
         static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isDead())
+            if (PlayerControl.LocalPlayer.isRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isDead())
             {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
@@ -146,7 +147,7 @@ namespace SuperNewRoles.Roles
         }
         static void Event(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
+            if (PlayerControl.LocalPlayer.isRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {

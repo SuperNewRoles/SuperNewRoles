@@ -6,7 +6,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return true;
                 PlayerControl player = ModHelpers.playerById(playerId);
                 if (player == null) return false;
-                if (player.isClearTask() && !player.isRole(CustomRPC.RoleId.Workperson))
+                if (player.isClearTask() && !player.isRole(RoleId.Workperson))
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
@@ -24,7 +24,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                     return false;
-                } else if (player.isRole(CustomRPC.RoleId.Workperson))
+                } else if (player.isRole(RoleId.Workperson))
                 {
                     var tasks = ModHelpers.generateTasks((int)CustomOptions.WorkpersonCommonTask.getFloat(), (int)CustomOptions.WorkpersonShortTask.getFloat(), (int)CustomOptions.WorkpersonLongTask.getFloat()).ToArray();
                     MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(player.NetId, (byte)29);

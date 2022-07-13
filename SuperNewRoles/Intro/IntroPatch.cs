@@ -74,7 +74,7 @@ namespace SuperNewRoles.Patches
                             int FoxNum = 0;
                             foreach (PlayerControl player in CachedPlayer.AllPlayers)
                             {
-                                if (player.isRole(CustomRPC.RoleId.Fox))
+                                if (player.isRole(RoleId.Fox))
                                 {
                                     FoxNum++;
                                     FoxTeams.Add(player);
@@ -203,7 +203,7 @@ namespace SuperNewRoles.Patches
                     if (ModeHandler.isMode(ModeId.Default))
                     {
                         var myrole = PlayerControl.LocalPlayer.getRole();
-                        if (myrole is not (CustomRPC.RoleId.DefaultRole or CustomRPC.RoleId.Bestfalsecharge))
+                        if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                         {
                             var date = Intro.IntroDate.GetIntroDate(myrole);
                             __instance.YouAreText.color = date.color;

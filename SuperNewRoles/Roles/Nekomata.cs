@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
             if (__instance == null) return;
             if (AmongUsClient.Instance.AmHost)
             {
-                if ((__instance != null && RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(__instance.Object)) || RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object) ||RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(__instance.Object))
+                if ((__instance != null && RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(__instance.Object)) || RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(__instance.Object) || RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(__instance.Object))
                 {
                     List<PlayerControl> p = new();
                     foreach (PlayerControl p1 in CachedPlayer.AllPlayers)
@@ -42,20 +42,20 @@ namespace SuperNewRoles.Roles
                 RPCWriter.Write(random.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                 CustomRPC.RPCProcedure.ExiledRPC(random.PlayerId);
-                if ((RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(random) || RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(random)||RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(random)) && RoleClass.NiceNekomata.IsChain)
+                if ((RoleClass.NiceNekomata.NiceNekomataPlayer.IsCheckListPlayerControl(random) || RoleClass.EvilNekomata.EvilNekomataPlayer.IsCheckListPlayerControl(random) || RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(random)) && RoleClass.NiceNekomata.IsChain)
                 {
                     p.RemoveAt(rdm);
                     NekomataProc(p);
                 }
                 if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(random))
                 {
-                    if (!Roles.RoleClass.Jester.IsJesterTaskClearWin || (Roles.RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
+                    if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                     {
                         CustomRPC.RPCProcedure.ShareWinner(random.PlayerId);
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
                         Writer.Write(random.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                        Roles.RoleClass.Jester.IsJesterWin = true;
+                        RoleClass.Jester.IsJesterWin = true;
                         ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
                     }
                 }
