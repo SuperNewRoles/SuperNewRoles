@@ -17,11 +17,11 @@ namespace SuperNewRoles.Roles
     public class Conjurer
     {
         //ベクトル内積
-        public double dot_product(Vector3 vl, Vector3 vr)
+        public static double dot_product(Vector3 vl, Vector3 vr)
         {
             return vl.x * vr.x + vl.y * vr.y + vl.z * vr.z;
         }
-        public bool TriangleArea(Vector3 A, Vector3 B, Vector3 C, Vector3 P)
+        public static bool TriangleArea(Vector3 A, Vector3 B, Vector3 C, Vector3 P)
         {
             Vector3 sub_vector(Vector3 a, Vector3 b)
             {
@@ -43,18 +43,15 @@ namespace SuperNewRoles.Roles
                 return ret;
             }
 
-            Vector3 A2 = Vecs.pos1;
-            Vector3 B2 = Vecs.pos2;
-            Vector3 C2 = Vecs.pos3;
 
-            Vector3 AB = sub_vector(B2, A2);
-            Vector3 BP = sub_vector(C2, B2);
+            Vector3 AB = sub_vector(B, A);
+            Vector3 BP = sub_vector(C, B);
 
-            Vector3 BC = sub_vector(C2, B2);
+            Vector3 BC = sub_vector(C, B);
             Vector3 CP = sub_vector(P, C);
 
-            Vector3 CA = sub_vector(A2, C);
-            Vector3 AP = sub_vector(P, A2);
+            Vector3 CA = sub_vector(A, C);
+            Vector3 AP = sub_vector(P, A);
 
             Vector3 c1 = cross_product(AB, BP);
             Vector3 c2 = cross_product(BC, CP);
@@ -72,8 +69,23 @@ namespace SuperNewRoles.Roles
             }
             else
             {
-                SuperNewRolesPlugin.Logger.LogInfo("TriangleAreaがfalse");
+                //SuperNewRolesPlugin.Logger.LogInfo("TriangleAreaがfalse");
                 return false;
+            }
+        }
+        public static void TraingleInKill()
+        {
+            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+            {
+                if (p.isAlive())//生きてるなら
+                {
+                    //魔術師1、２,３個目の座標とプレイヤーの座標を代入
+                    if (TriangleArea(Vecs.pos1, Vecs.pos2, Vecs.pos3, PlayerControl.LocalPlayer.transform.position))
+                    {
+                        //殺す
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    }
+                }
             }
         }
 
@@ -91,23 +103,6 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.ConjurerThirdAddButton.Timer = RoleClass.Conjurer.CoolTime;
         }
 
-        //FirstAddをtrueに
-        public static void FirstAddAdd()
-        {
-            RoleClass.Conjurer.FirstAdd = true;
-        }
-
-        //SecondAddをtrueに
-        public static void SecondAddAdd()
-        {
-            RoleClass.Conjurer.SecondAdd = true;
-        }
-
-        //ThirdAddをtrueに
-        public static void ThirdAddAdd()
-        {
-            RoleClass.Conjurer.ThirdAdd = true;
-        }
 
         //全部falseに
         public static void AllClear()
@@ -122,7 +117,7 @@ namespace SuperNewRoles.Roles
         {
             if (RoleClass.Conjurer.FirstAdd && !RoleClass.Conjurer.SecondAdd && !RoleClass.Conjurer.ThirdAdd)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("IsFirstAddedがtrueeee");
+                //SuperNewRolesPlugin.Logger.LogInfo("IsFirstAddedがtrueeee");
                 return true;
             }
             return false;
@@ -133,7 +128,7 @@ namespace SuperNewRoles.Roles
         {
             if (RoleClass.Conjurer.FirstAdd && RoleClass.Conjurer.SecondAdd && !RoleClass.Conjurer.ThirdAdd)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("IsSecondAddedがtrueeee");
+                //SuperNewRolesPlugin.Logger.LogInfo("IsSecondAddedがtrueeee");
                 return true;
             }
             return false;
@@ -144,7 +139,7 @@ namespace SuperNewRoles.Roles
         {
             if (RoleClass.Conjurer.FirstAdd && RoleClass.Conjurer.SecondAdd && RoleClass.Conjurer.ThirdAdd)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("IsThirdAddedがtrueeee");
+                //SuperNewRolesPlugin.Logger.LogInfo("IsThirdAddedがtrueeee");
                 return true;
             }
             return false;
@@ -168,16 +163,23 @@ namespace SuperNewRoles.Roles
             {
                 if (PlayerControl.LocalPlayer.isRole(RoleId.Conjurer) || p.isDead())//魔術師と死人のとき
                 {
-                    //boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources($"SuperNewRoles.Resources.Animation.Conjurer_Maker_00{index + 1:00}.png", 175f);
-                    Transform Conjurer_Marker = GameObject.Instantiate(GameObject.Find("JackInTheBox").transform);
+                    /*アニメーション*/
                     CustomAnimation.Animation Conjurer_Marker_Animation = new CustomAnimation.Animation();
-                    Conjurer_Marker_Animation.Start(30, Conjurer_Marker);
                     Conjurer_Marker_Animation.Sprites = CustomAnimation.LoadSprites.GetSpritesAgartha("SuperNewRoles.Resources.Animation.Conjurer_Maker_30fps", 60);
+                    /*========1個目==========*/
+                    Transform Conjurer_Marker1 = GameObject.Instantiate(GameObject.Find("Marker1").transform);
+                    Conjurer_Marker_Animation.Start(30, Conjurer_Marker1);
+                    /*========2個目==========*/
+                    Transform Conjurer_Marker2 = GameObject.Instantiate(GameObject.Find("Marker2").transform);
+                    Conjurer_Marker_Animation.Start(30, Conjurer_Marker2);
+                    /*========3個目==========*/
+                    Transform Conjurer_Marker3 = GameObject.Instantiate(GameObject.Find("Marker3").transform);
+                    Conjurer_Marker_Animation.Start(30, Conjurer_Marker3);
                 }
-                else//それ以外の時
+               /* else//それ以外の時
                 {
-                    boxAnimationSprites[index] = ModHelpers.loadSpriteFromResources("", 175f);
-                }
+                    boxAnimationSprites[index] = null;
+                }*/
             }
             return boxAnimationSprites[index];
         }
@@ -205,7 +207,18 @@ namespace SuperNewRoles.Roles
 
         public JackInTheBox(Vector2 p)
         {
-            gameObject = new GameObject("JackInTheBox") { layer = 11 };
+            if (!Conjurer.IsFirstAdded())
+            {
+                gameObject = new GameObject("Marker1") { layer = 11 };
+            }
+           else if (!Conjurer.IsSecondAdded())
+            {
+                gameObject = new GameObject("Marker2") { layer = 11 };
+            }
+          else  if (!Conjurer.IsThirdAdded())
+            {
+                gameObject = new GameObject("Marker3") { layer = 11 };
+            }
             gameObject.AddSubmergedComponent(SubmergedCompatibility.Classes.ElevatorMover);
             Vector3 position = new(p.x, p.y, p.y / 1000f + 0.01f);
             position += (Vector3)PlayerControl.LocalPlayer.Collider.offset; // Add collider offset that DoMove moves the player up at a valid position
@@ -218,23 +231,6 @@ namespace SuperNewRoles.Roles
             gameObject.SetActive(playerIsTrickster);
 
             AllJackInTheBoxes.Add(this);
-        }
-
-        public static void UpdateStates()
-        {
-            if (boxesConvertedToVents == true) return;
-            foreach (var box in AllJackInTheBoxes)
-            {
-                var playerIsTrickster = PlayerControl.LocalPlayer;
-                box.gameObject.SetActive(playerIsTrickster);
-            }
-        }
-
-        public void convertToVent()
-        {
-            gameObject.SetActive(true);
-            vent.gameObject.SetActive(true);
-            return;
         }
 
         public static void clearJackInTheBoxes()

@@ -1962,7 +1962,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                     {
                         //マーカー設置
-                        Vecs.pos1 = PlayerControl.LocalPlayer.transform.position;
+                        var pos1 = PlayerControl.LocalPlayer.transform.position;
                         byte[] buff = new byte[sizeof(float) * 2];
                         Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos1.x), 0, buff, 0 * sizeof(float), sizeof(float));
                         Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos1.y), 0, buff, 1 * sizeof(float), sizeof(float));
@@ -1977,6 +1977,7 @@ namespace SuperNewRoles.Buttons
 
                         //全ボタンのクールリセット
                         Conjurer.AllCoolReset();
+                        pos1 = Vecs.pos1;
 
                     },
                     (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && !Conjurer.IsFirstAdded(); },
@@ -2006,7 +2007,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     //マーカー設置
-                    Vecs.pos2 = PlayerControl.LocalPlayer.transform.position;
+                    var pos2 = PlayerControl.LocalPlayer.transform.position;
                     byte[] buff = new byte[sizeof(float) * 2];
                     Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos2.x), 0, buff, 0 * sizeof(float), sizeof(float));
                     Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos2.y), 0, buff, 1 * sizeof(float), sizeof(float));
@@ -2021,9 +2022,10 @@ namespace SuperNewRoles.Buttons
 
                     //全ボタンのクールリセット
                     Conjurer.AllCoolReset();
+                    pos2 = Vecs.pos2;
 
                 },
-                (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && Conjurer.IsFirstAdded() && !Conjurer.IsSecondAdded(); },
+                (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && Conjurer.IsFirstAdded(); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
@@ -2052,7 +2054,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     //マーカー設置
-                    Vecs.pos3 = PlayerControl.LocalPlayer.transform.position;
+                    var pos3 = PlayerControl.LocalPlayer.transform.position;
                     byte[] buff = new byte[sizeof(float) * 2];
                     Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos3.x), 0, buff, 0 * sizeof(float), sizeof(float));
                     Buffer.BlockCopy(BitConverter.GetBytes(Vecs.pos3.y), 0, buff, 1 * sizeof(float), sizeof(float));
@@ -2068,9 +2070,9 @@ namespace SuperNewRoles.Buttons
                     //全ボタンのクールリセット
                     Conjurer.AllCoolReset();
 
-
+                    pos3 = Vecs.pos3;
                 },
-                (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && Conjurer.IsFirstAdded() && Conjurer.IsSecondAdded() && !Conjurer.IsThirdAdded(); },
+                (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && Conjurer.IsSecondAdded(); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
@@ -2098,6 +2100,7 @@ namespace SuperNewRoles.Buttons
                     () =>
                     {
                         //ニセレに任せた
+                                                        Conjurer.TraingleInKill();
                         //発光(色)
                         RoleHelpers.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
 
@@ -2119,7 +2122,6 @@ namespace SuperNewRoles.Buttons
                         {
                             ConjurerStartButton.MaxTimer = 0f;
                             ConjurerStartButton.Timer = 0f;
-                            Conjurer.AllCoolReset();
                         },
                     RoleClass.Conjurer.getStartButtonSprite(),
                     new Vector3(0f, 1f, 0f),
