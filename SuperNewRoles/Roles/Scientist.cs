@@ -4,6 +4,7 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -89,7 +90,7 @@ namespace SuperNewRoles.Roles
             {
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 if (!ModeHandler.isMode(ModeId.Default)) return;
-                if (__instance.myPlayer.isRole(CustomRPC.RoleId.EvilScientist) || __instance.myPlayer.isRole(CustomRPC.RoleId.NiceScientist))
+                if (__instance.myPlayer.isRole(RoleId.EvilScientist) || __instance.myPlayer.isRole(RoleId.NiceScientist))
                 {
                     var Scientist = __instance.myPlayer;
                     if (Scientist == null || Scientist.isDead()) return;

@@ -17,10 +17,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Resources\CustomHats\*.png" />
-        <EmbeddedResource Include="Resources\*.png" />
-        <EmbeddedResource Include="Resources\*.json" />
-        <EmbeddedResource Include="Resources\TricksterAnimation\*.png" />
+        <EmbeddedResource Include="Resources\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -38,5 +35,9 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="新しいフォルダー\" />
     </ItemGroup>
 </Project>

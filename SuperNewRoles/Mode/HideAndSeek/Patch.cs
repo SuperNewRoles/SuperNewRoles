@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HarmonyLib;
-using Hazel;
 using UnityEngine;
+using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.HideAndSeek
 {
@@ -63,7 +58,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
                     {
                         if (player.isImpostor())
                         {
-                            player.RpcSetName(ModHelpers.cs(Roles.RoleClass.ImpostorRed, player.Data.GetPlayerName(PlayerOutfitType.Default)));
+                            player.RpcSetName(ModHelpers.cs(RoleClass.ImpostorRed, player.Data.GetPlayerName(PlayerOutfitType.Default)));
                         }
                         else
                         {

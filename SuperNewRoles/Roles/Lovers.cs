@@ -2,6 +2,7 @@ using System;
 using HarmonyLib;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -26,7 +27,7 @@ namespace SuperNewRoles.Roles
                     }
                     if (ModeHandler.isMode(ModeId.Default))
                     {
-                        if (player.isRole(CustomRPC.RoleId.SideKiller))
+                        if (player.isRole(RoleId.SideKiller))
                         {
                             var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
                             if (sideplayer != null)
@@ -38,7 +39,7 @@ namespace SuperNewRoles.Roles
                                 }
                             }
                         }
-                        else if (player.isRole(CustomRPC.RoleId.MadKiller))
+                        else if (player.isRole(RoleId.MadKiller))
                         {
                             var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
                             if (sideplayer != null)

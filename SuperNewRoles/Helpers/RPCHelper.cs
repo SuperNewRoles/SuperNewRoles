@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using HarmonyLib;
 using Hazel;
 using InnerNet;
 using UnityEngine;
@@ -62,12 +58,21 @@ namespace SuperNewRoles.Helpers
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
 
-        public static void RpcSnapToPrivate(this CustomNetworkTransform __instance, Vector2 position, PlayerControl SeePlayer)
+        public static void RpcSnapTo(this PlayerControl __instance, Vector2 position)
         {
-            ushort minSid = (ushort)(__instance.lastSequenceId + 5);
-            MessageWriter val = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 21, SendOption.None, SeePlayer.getClientId());
-            __instance.WriteVector2(position, val);
-            val.Write(__instance.lastSequenceId);
+            if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                __instance.NetTransform.RpcSnapTo(position);
+                return;
+            }
+            ushort minSid = (ushort)(__instance.NetTransform.lastSequenceId + 5);
+            if (AmongUsClient.Instance.AmClient)
+            {
+                __instance.NetTransform.SnapTo(position, minSid);
+            }
+            MessageWriter val = AmongUsClient.Instance.StartRpc(__instance.NetTransform.NetId, 21, SendOption.None);
+            __instance.NetTransform.WriteVector2(position, val);
+            val.Write(__instance.NetTransform.lastSequenceId);
             val.EndMessage();
         }
 
@@ -87,10 +92,12 @@ namespace SuperNewRoles.Helpers
             if (SourcePlayer == null || target == null || !AmongUsClient.Instance.AmHost) return;
             if (SeePlayer == null) SeePlayer = SourcePlayer;
             var clientId = SeePlayer.getClientId();
-            sender.StartRpc(SourcePlayer.NetId, RpcCalls.ProtectPlayer, clientId)
+            sender.StartMessage(clientId)
+                .StartRpc(SourcePlayer.NetId, RpcCalls.ProtectPlayer)
                 .WriteNetObject(target)
                 .Write(colorId)
-                .EndRpc();
+                .EndRpc()
+                .EndMessage();
         }
 
         public static void RPCSendChatPrivate(this PlayerControl TargetPlayer, string Chat, PlayerControl SeePlayer = null)
@@ -154,24 +161,6 @@ namespace SuperNewRoles.Helpers
                 writer.Write(0);
                 writer.Write(0);
                 writer.EndRPC();
-            }
-        }
-        [HarmonyPatch(typeof(CustomNetworkTransform), nameof(CustomNetworkTransform.RpcSnapTo))]
-        class RpcSnapToPatch
-        {
-            public static bool Prefix(CustomNetworkTransform __instance, [HarmonyArgument(0)] Vector2 position)
-            {
-                if (__instance.NetId == PlayerControl.LocalPlayer.NetId) return true;
-                ushort minSid = (ushort)(__instance.lastSequenceId + 5);
-                if (AmongUsClient.Instance.AmClient)
-                {
-                    __instance.SnapTo(position, minSid);
-                }
-                MessageWriter val = AmongUsClient.Instance.StartRpc(__instance.NetId, 21, SendOption.None);
-                __instance.WriteVector2(position, val);
-                val.Write(__instance.lastSequenceId);
-                val.EndMessage();
-                return false;
             }
         }
     }

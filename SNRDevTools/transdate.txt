@@ -4,8 +4,8 @@ StartLogText,\n---------------\nSuperNewRoles\nCreate By ykundesu\nThank You Pla
 second,Second,秒
 announcementUpdate,<size=125%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> NewData</size>\nVersion:{0}\n{1},<size=200%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>の最新情報</size>\n<size=150%>バージョン:{0}</size>\n{1}
 GameCommonTasks,Common Tasks,通常タスク
-GameShortTasks,Long Tasks,ロングタスク
-GameLongTasks,Short Tasks,ショートタスク
+GameShortTasks,Short Tasks,ショートタスク
+GameLongTasks,Long Tasks,ロングタスク
 colorSalmon,Salmon,サーモン
 colorBordeaux,Bordeaux,ボルドー
 colorOlive,Olive,オリーブ
@@ -48,6 +48,8 @@ colorMelon,Melon,メロン
 colorCrasyublue,Crasyu Blue,クラッシュブルー
 colorLightgreen,Light Green,ライトグリーン
 Hat_SNR,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats,<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats
+MapCustom,Map Custom,マップ改造
+SecretRoom,(Airship)Secret Room,(エアーシップ)シークレットルーム
 enableMirroMap,enable MirroMap,反転マップを有効にする
 SettingpresetSelection,Preset,プリセット
 SettingSuperNewRoles,<color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings,<color=#ffa500> S u p e r </color><color=#ff0000>N e w</color><color=#00ff00> R o l e s </color>の設定
@@ -184,6 +186,7 @@ HASUseSaboSetting,Use Sabotage,サボタージュが使える
 HASUseVentSetting,Use Vent,ベントが使える
 FinalStatusAlive,Survival,生存
 FinalStatusKill,Kill,キル
+FinalStatusExiled,Exiled,追放
 FinalStatusNekomataExiled,The Way of the Nekomata,猫又の道連れ
 FinalStatusSheriffKill,Sheriff kill,シェリフキル
 FinalStatusSheriffMisFire,Sheriff misfire,シェリフ誤爆
@@ -237,7 +240,7 @@ SheriffName,Sheriff,シェリフ
 SheriffTitle1,Kill the outsider!,人外をキルしよう
 SheriffTitle2,Kill the outsider and lead your crewmates to victory!,人外をキルしてクルーメイトを勝利に導こう
 SheriffDescription,Can shoot and kill an imposter if he is a crewmate. he will self-destruct.,インポスター陣営(設定により第三陣営など)をキルすることが出来、クルーだった場合、自爆します
-SheriffCoolDownSetting,Kill Cooldown,キルクールダウン
+SheriffCoolDownSetting,Kill Cooldown,キルクールタイム
 SheriffIsKillNewtralSetting,Can Kill a Neutral,第三陣営をキルできる
 SheriffIsKillLoversSetting,Can Kill a Lovers,ラバーズをキルできる
 SheriffIsKillMadRoleSetting,Can Kill a MadRole,マッド系役職をキルできる
@@ -688,7 +691,7 @@ RestrictCameraSetting,Camera Restrictions,カメラの制限
 RestrictVitalSetting,Vital Restrictions,バイタルの制限
 DeviceTimeSetting,Can use time,使用可能時間
 IsYkundesuBeplnExSetting,ykundesuBeplnEx,ykundesuBeplnEx
-restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnExDelicious,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい
+restrictOutOfTimeVerYkundesuBeplnEx,ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?,ﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽおいしい
 HauntedWolfName,HauntedWolf,狼憑き
 HauntedWolfTitle1,Don't let the crew find out.,クルーにバレるな
 ReactorDurationSetting,Reactor Duration Time,リアクター継続時間の設定
@@ -755,10 +758,11 @@ SettingPositionSwapperSwapCoolTimeName,Swapping cooltime,スワップクール�
 PositionSwapperNumTextName,Limits:{0},残り{0}回
 PositionSwapperButtonName,PositionSwap,スワップ
 PositionSwapperSwapText,Position swapper swapped you!,スワッパーによってスワップされました!
-PositionSwapperSwapText2,Position swapper swapped you!\n by the way，ykundesu isn't delicious?,スワッパーによってスワップされました!\nところでﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽｵｲｼｲﾃﾞｽﾖﾈ
+PositionSwapperSwapText2,Position swapper swapped you!\n by the way，ykundesu is delicious，isn't it?,スワッパーによってスワップされました!\nところでﾖｯｷﾝｸﾞﾍﾞｯﾋﾟﾝｲｰｴｯｸｽｵｲｼｲﾃﾞｽﾖﾈ
 TunaName,Tuna,マグロ
 TunaTitle1,Always move!,常に動け！
 TunaStoppingTimeSetting,Stopping Time,止まれる時間
+TunaAddWinSetting,Add Win,追加勝利
 BlackCatName,Black Cat,黒猫
 BlackCatTitle1,Give your life for your master.,主人のために命を捧げよ
 MafiaName,Mafia,マフィア
@@ -770,3 +774,46 @@ SpyTitle1,Deceive the Imposter and lead the Cluemate camp to victory!,インポ�
 SpyDescription,Spies are crewmates but they look like friends to the Imposter.\n Spies are crewmates and have no special abilities.,スパイはクルーメイトですが、インポスターからは仲間に見えます。\nスパイはクルーメイトであり、特別な能力はありません。
 SpecimenVitalSetting,Move Vital to specimen (polus),標本室にバイタルを移動する(ポーラス)
 CustomDownloadSuperNewNamePlates,Download custom hat,カスタムハットをダウンロードする
+KunoichiName,Kunoichi,クノイチ
+KunoichiTitle1,Use your ninjutsu to deceive the village.,忍術を駆使して村を欺け
+KunoichiCoolTime,Kunai Cool Time,クナイのクールタイム
+KunoichiKillKunai,Number of kunai required for a kill,キルに必要なクナイ数
+KunoichiIsHide,Transparency,透明化
+KunoichiHideTime,Time required for transparency,透明化に必要な時間
+KunoichiKunai,Kunai,クナイ
+KunoichiHideKunai,Can throw kunai during invisibility.,透明化中にクナイを投げれる
+SecretlyKillerName,Secretly Killer,シークレットリーキラー
+SecretlyKillerTitle1,Please be quiet during the power outage.,停電中はお静かに
+SettingCoolCharge,Same in kill buttons,キル時のクール同期
+SettingBlackoutCharge,Kill cool charge during power outage,停電中にクールをためる
+SettingLimitName,Ability limit,制限回数
+SecretlyKillButtonName,Secretly\nKill,シークレットリー\nキル
+Zoomafterdeath,Zoom function after death,死後のズーム機能
+mousemode,Mouse wheel Mode,マウスホイールモード
+clairvoyantmode,ClairvoyantMode,千里眼モード
+clairvoyantCoolTime,ClairvoyantCoolTime,千里眼のクールダウン
+clairvoyantDurationTime,ClairvoyantDurationTime,千里眼の継続時間
+ClairvoyantButtonName,Clairvoyant!,千里眼
+LadderDead,Ladder Death,転落死
+LadderDeadChance,Ladder Death Chance,転落死する確率
+NameIncludeMod,You cannot make a room public contains mod in your name.,modが名前に含まれている状態では公開部屋にすることはできません。
+MoveElecPadSetting,Move the switchboard.,配電盤を移動する
+AirshipDisableMovingPlatformSetting,Disable Moving Platform,昇降機のリフトを無効化する
+AddWireTaskSetting,Add Wire Task,配線タスクを追加する
+DoubleKillerName,DoubleKiller,ダブルキラー
+MainCoolTimeSetting,MainKillCoolDown,メインキルボタンのクールダウン
+SubCoolTimeSetting,SubKillCoolDown,サブのキルボタンのクールダウン
+DoubleKillerSaboSetting,DoubleKillerCanUseSabotage,ダブルキラーがサボを使えるか
+SmasherName,Smasher,スマッシャー
+KillCoolTimeSetting,KillCoolDown,キルクールダウン
+DoubleKillerTitle1,Let's master the independent kill button!,独立したキルボタンを使いこなそう
+SmasherTitle1,Let's do continuous kills!,連続キルを行おう
+SuicideWisherName,Suicide Wisher,スーサイドウィッシャー‌
+SuicideWisherTitle1,Let's just kill ourselves for now.,とりあえず自殺しよう
+SuicideName,Suicide,自殺
+NeetName,Neet,ニート
+NeetTitle1,NeetLet others handle it.,他人に任せよう
+FastMakerName,Fast Maker,ファストメーカー
+FastMakerTitle1,Let's make Mad Mate with a light heart.,軽い気持ちでマッドメイトを作ろう
+KillName,KILL,キル
+JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズを作れる

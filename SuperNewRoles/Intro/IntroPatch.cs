@@ -1,16 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.HideAndSeek;
-using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
-using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.Patches
@@ -81,7 +74,7 @@ namespace SuperNewRoles.Patches
                             int FoxNum = 0;
                             foreach (PlayerControl player in CachedPlayer.AllPlayers)
                             {
-                                if (player.isRole(CustomRPC.RoleId.Fox))
+                                if (player.isRole(RoleId.Fox))
                                 {
                                     FoxNum++;
                                     FoxTeams.Add(player);
@@ -93,7 +86,8 @@ namespace SuperNewRoles.Patches
                             if (PlayerControl.LocalPlayer.isImpostor())
                             {
                                 goto ImpostorIntroTeam;
-                            } else if (PlayerControl.LocalPlayer.IsJackalTeamJackal())
+                            }
+                            else if (PlayerControl.LocalPlayer.IsJackalTeamJackal())
                             {
                                 goto JackalIntroTeam;
                             }
@@ -124,13 +118,13 @@ namespace SuperNewRoles.Patches
             {
                 if (PlayerControl.LocalPlayer.isNeutral())
                 {
-                    ChangeIntroName:
                     IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
                     __instance.BackgroundBar.material.color = Intro.color;
                     __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
                     __instance.TeamTitle.color = Intro.color;
                     __instance.ImpostorText.text = "";
-                } else
+                }
+                else
                 {
                     switch (PlayerControl.LocalPlayer.getRole())
                     {
@@ -209,7 +203,7 @@ namespace SuperNewRoles.Patches
                     if (ModeHandler.isMode(ModeId.Default))
                     {
                         var myrole = PlayerControl.LocalPlayer.getRole();
-                        if (myrole is not (CustomRPC.RoleId.DefaultRole or CustomRPC.RoleId.Bestfalsecharge))
+                        if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                         {
                             var date = Intro.IntroDate.GetIntroDate(myrole);
                             __instance.YouAreText.color = date.color;

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using HarmonyLib;
 using SuperNewRoles.CustomRPC;
 using UnityEngine;
@@ -33,8 +31,8 @@ namespace SuperNewRoles.Buttons
         private bool mirror;
         private KeyCode? hotkey;
         private int joystickkey;
-
-        public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = "")
+        private Func<bool> StopCountCool;
+        public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = "")
         {
             this.hudManager = hudManager;
             this.OnClick = OnClick;
@@ -50,6 +48,7 @@ namespace SuperNewRoles.Buttons
             this.hotkey = hotkey;
             this.joystickkey = joystickkey;
             this.buttonText = buttonText;
+            this.StopCountCool = StopCountCool;
             Timer = 16.2f;
             buttons.Add(this);
             actionButton = UnityEngine.Object.Instantiate(textTemplate, textTemplate.transform.parent);
@@ -66,9 +65,8 @@ namespace SuperNewRoles.Buttons
             }
             setActive(false);
         }
-
-        public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, bool mirror = false, string buttonText = "")
-        : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, false, 0f, () => { }, mirror, buttonText) { }
+        public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool mirror = false, string buttonText = "")
+        : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, StopCountCool, false, 0f, () => { }, mirror, buttonText) { }
 
         void onClickEvent()
         {
@@ -173,7 +171,7 @@ namespace SuperNewRoles.Buttons
             if (Timer >= 0)
             {
                 if ((HasEffect && isEffectActive) ||
-                    (!localPlayer.PlayerControl.inVent && moveable))
+                    (!localPlayer.PlayerControl.inVent && moveable && !StopCountCool()))
                     Timer -= Time.deltaTime;
             }
 

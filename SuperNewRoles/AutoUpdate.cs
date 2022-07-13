@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
-using Twitch;
 
 namespace SuperNewRoles
 {
@@ -21,16 +20,21 @@ namespace SuperNewRoles
                 return false;
             }
         }
-        public static string announcement;
+        [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Init))]
+        public static class AnnouncementInitpatch
+        {
+            public static bool Prefix(AnnouncementPopUp __instance)
+            {
+                __instance.UpdateAnnounceText();
+                return false;
+            }
+        }
+        public static string announcement = "None";
         public static GenericPopup InfoPopup;
         private static bool IsLoad = false;
         public static string updateURL = null;
         public static void Load()
         {
-            TwitchManager man = DestroyableSingleton<TwitchManager>.Instance;
-            InfoPopup = UnityEngine.Object.Instantiate<GenericPopup>(man.TwitchPopup);
-            InfoPopup.TextAreaTMP.fontSize *= 0.7f;
-            InfoPopup.TextAreaTMP.enableAutoSizing = false;
         }
         public static async Task<bool> Update()
         {
@@ -70,15 +74,6 @@ namespace SuperNewRoles
         }
         public static async Task<bool> checkForUpdate(TMPro.TextMeshPro setdate)
         {
-            if (!ConfigRoles.AutoUpdate.Value)
-            {
-                return false;
-            }
-            if (!IsLoad)
-            {
-                AutoUpdate.Load();
-                IsLoad = true;
-            }
             try
             {
                 HttpClient http = new();
@@ -104,6 +99,15 @@ namespace SuperNewRoles
                 System.Version newver = System.Version.Parse(SuperNewRolesPlugin.NewVersion);
                 System.Version Version = SuperNewRolesPlugin.Version;
                 announcement = string.Format(ModTranslation.getString("announcementUpdate"), newver, announcement);
+                if (!ConfigRoles.AutoUpdate.Value)
+                {
+                    return false;
+                }
+                if (!IsLoad)
+                {
+                    AutoUpdate.Load();
+                    IsLoad = true;
+                }
                 if (newver == Version)
                 {
                     if (ConfigRoles.DebugMode.Value)
@@ -131,6 +135,7 @@ namespace SuperNewRoles
                                 updateURL = browser_download_url;
                                 await Update();
                                 setdate.SetText(ModTranslation.getString("creditsMain") + "\n" + string.Format(ModTranslation.getString("creditsUpdateOk"), SuperNewRolesPlugin.NewVersion));
+                                ConfigRoles.IsUpdate.Value = true;
                             }
                         }
                     }

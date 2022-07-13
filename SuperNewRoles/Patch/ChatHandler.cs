@@ -62,7 +62,12 @@ namespace SuperNewRoles.Patch
             if (Commands[0].Equals("/version", StringComparison.OrdinalIgnoreCase) ||
                 Commands[0].Equals("/v", StringComparison.OrdinalIgnoreCase))
             {
-                SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu");
+                string betatext = "";
+                if (SuperNewRolesPlugin.IsBeta)
+                {
+                    betatext = "\nベータ版です！バグには注意してください！";
+                }
+                SendCommand(sourcePlayer, " SuperNewRoles v" + SuperNewRolesPlugin.VersionString + "\nCreate by ykundesu" + betatext);
                 return false;
             }
             else if (
@@ -157,7 +162,8 @@ namespace SuperNewRoles.Patch
                     RoleCommand(SendTime: sendtime, target: target);
                 }
                 return false;
-            } else
+            }
+            else
             {
                 return true;
             }
@@ -278,7 +284,7 @@ namespace SuperNewRoles.Patch
                 if (target == null)
                 {
                     string name = PlayerControl.LocalPlayer.getDefaultName();
-                    AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander+rolename, text, name));
+                    AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name));
                     return;
                 }
                 if (target.PlayerId != 0)
@@ -288,7 +294,7 @@ namespace SuperNewRoles.Patch
                 else
                 {
                     string name = PlayerControl.LocalPlayer.getDefaultName();
-                    PlayerControl.LocalPlayer.SetName(SNRCommander+"\n"+rolename);
+                    PlayerControl.LocalPlayer.SetName(SNRCommander + "\n" + rolename);
                     FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
                     PlayerControl.LocalPlayer.SetName(name);
                 }
@@ -350,16 +356,16 @@ namespace SuperNewRoles.Patch
                 yield return new WaitForSeconds(time);
             }
             var crs = CustomRpcSender.Create();
-            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
+            crs.AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
                 .Write(SendName)
-                .EndRpc();
-            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SendChat)
+                .EndRpc()
+                .AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SendChat)
                 .Write(command)
-                .EndRpc(); ;
-            crs.StartRpc(PlayerControl.LocalPlayer.NetId, RpcCalls.SetName)
+                .EndRpc()
+                .AutoStartRpc(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName)
                 .Write(name)
-                .EndRpc();
-            crs.SendMessage();
+                .EndRpc()
+                .SendMessage();
             PlayerControl.LocalPlayer.SetName(SendName);
             FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, command);
             PlayerControl.LocalPlayer.SetName(name);
@@ -371,16 +377,16 @@ namespace SuperNewRoles.Patch
                 yield return new WaitForSeconds(time);
             }
             var crs = CustomRpcSender.Create();
-            crs.StartRpc(target.NetId, RpcCalls.SetName, target.getClientId())
+            crs.AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.getClientId())
                 .Write(SendName)
-                .EndRpc();
-            crs.StartRpc(target.NetId, RpcCalls.SendChat, target.getClientId())
+                .EndRpc()
+                .AutoStartRpc(target.NetId, (byte)RpcCalls.SendChat, target.getClientId())
                 .Write(command)
-                .EndRpc();
-            crs.StartRpc(target.NetId, RpcCalls.SetName, target.getClientId())
+                .EndRpc()
+                .AutoStartRpc(target.NetId, (byte)RpcCalls.SetName, target.getClientId())
                 .Write(target.Data.PlayerName)
-                .EndRpc();
-            crs.SendMessage();
+                .EndRpc()
+                .SendMessage();
         }
     }/*
     [HarmonyPatch(typeof(ChatController),nameof(ChatController.AddChat))]
@@ -393,7 +399,7 @@ namespace SuperNewRoles.Patch
                 return false;
             GameData.PlayerInfo data1 = CachedPlayer.LocalPlayer.Data;
             GameData.PlayerInfo data2 = sourcePlayer.Data;
-            if (data2 == null || data1 == null || data2.IsDead && (!PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.NiceRedRidingHood)))
+            if (data2 == null || data1 == null || data2.IsDead && (!PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.NiceRedRidingHood)))
                 return false;
             if (__instance.chatBubPool.NotInUse == 0)
                 __instance.chatBubPool.ReclaimOldest();

@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
             {
                 if (AmongUsClient.Instance.AmHost && __instance.PlayerId != target.PlayerId)
                 {
-                    if (target.isRole(CustomRPC.RoleId.StuntMan))
+                    if (target.isRole(RoleId.StuntMan))
                     {
                         if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard,__instance)) {
                             if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))

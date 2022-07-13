@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HarmonyLib;
 using Hazel;
 using InnerNet;
 using UnhollowerBaseLib;
@@ -10,43 +6,56 @@ using UnhollowerBaseLib;
 
 namespace SuperNewRoles
 {
+
     public class CustomRpcSender
     {
         public MessageWriter stream;
-        public SendOption sendOption;
+        public readonly string name;
+        public readonly SendOption sendOption;
         public bool isUnsafe;
+        public delegate void onSendDelegateType();
+        public onSendDelegateType onSendDelegate;
 
-        private State currentState = State.BeforeInit;
+        private State currentState = State.Ready;
+
+        //0~: targetClientId (GameDataTo)
+        //-1: 全プレイヤー (GameData)
+        //-2: 未設定
+        private int currentRpcTarget;
 
         private CustomRpcSender() { }
-        public CustomRpcSender(SendOption sendOption, bool isUnsafe)
+        public CustomRpcSender(string name, SendOption sendOption, bool isUnsafe)
         {
             stream = MessageWriter.Get(sendOption);
 
+            this.name = name;
             this.sendOption = sendOption;
             this.isUnsafe = isUnsafe;
+            this.currentRpcTarget = -2;
+            onSendDelegate = () => Logger.Info($"{this.name}'s onSendDelegate =>", "CustomRpcSender");
 
             currentState = State.Ready;
+            Logger.Info($"\"{name}\" is ready", "CustomRpcSender");
         }
-        public static CustomRpcSender Create(SendOption sendOption = SendOption.None, bool isUnsafe = false)
+        public static CustomRpcSender Create(string name = "No Name Sender", SendOption sendOption = SendOption.None, bool isUnsafe = false)
         {
-            return new CustomRpcSender(sendOption, isUnsafe);
+            return new CustomRpcSender(name, sendOption, isUnsafe);
         }
 
-        public CustomRpcSender StartRpc(
-            uint targetNetId,
-            RpcCalls rpcCall,
-            int targetClientId = -1)
-            => StartRpc(targetNetId, (byte)rpcCall, targetClientId);
-        public CustomRpcSender StartRpc(
-            uint targetNetId,
-            byte callId,
-            int targetClientId = -1)
+        #region Start/End Message
+        public CustomRpcSender StartMessage(int targetClientId = -1)
         {
-            if (currentState != State.Ready && !isUnsafe)
+            if (currentState != State.Ready)
             {
-                SuperNewRolesPlugin.Logger.LogError("[RPC:Error] RPCを開始しようとしましたが、StateがReady(準備完了)ではありません");
-                return this;
+                string errorMsg = $"Messageを開始しようとしましたが、StateがReadyではありません (in: \"{name}\") (State: \"{currentState}\")";
+                if (isUnsafe)
+                {
+                    Logger.Warn(errorMsg, "CustomRpcSender.Warn");
+                }
+                else
+                {
+                    throw new InvalidOperationException(errorMsg);
+                }
             }
 
             if (targetClientId < 0)
@@ -62,40 +71,132 @@ namespace SuperNewRoles
                 stream.Write(AmongUsClient.Instance.GameId);
                 stream.WritePacked(targetClientId);
             }
+
+            currentRpcTarget = targetClientId;
+            currentState = State.InRootMessage;
+            return this;
+        }
+        public CustomRpcSender EndMessage(int targetClientId = -1)
+        {
+            if (currentState != State.InRootMessage)
+            {
+                string errorMsg = $"Messageを終了しようとしましたが、StateがInRootMessageではありません (in: \"{name}\")";
+                if (isUnsafe)
+                {
+                    Logger.Warn(errorMsg, "CustomRpcSender.Warn");
+                }
+                else
+                {
+                    throw new InvalidOperationException(errorMsg);
+                }
+            }
+            stream.EndMessage();
+
+            currentRpcTarget = -2;
+            currentState = State.Ready;
+            return this;
+        }
+        #endregion
+        #region Start/End Rpc
+        public CustomRpcSender StartRpc(uint targetNetId, RpcCalls rpcCall)
+            => StartRpc(targetNetId, (byte)rpcCall);
+        public CustomRpcSender StartRpc(
+          uint targetNetId,
+          byte callId)
+        {
+            if (currentState != State.InRootMessage)
+            {
+                string errorMsg = $"RPCを開始しようとしましたが、StateがInRootMessageではありません (in: \"{name}\")";
+                if (isUnsafe)
+                {
+                    Logger.Warn(errorMsg, "CustomRpcSender.Warn");
+                }
+                else
+                {
+                    throw new InvalidOperationException(errorMsg);
+                }
+            }
+
             stream.StartMessage(2);
             stream.WritePacked(targetNetId);
             stream.Write(callId);
 
-            currentState = State.Writing;
+            currentState = State.InRpc;
             return this;
         }
-        public void EndRpc()
+        public CustomRpcSender EndRpc()
         {
-            if (currentState != State.Writing && !isUnsafe)
+            if (currentState != State.InRpc)
             {
-                SuperNewRolesPlugin.Logger.LogError("[RPC:Error] RPCを終了しようとしましたが、StateがWriting(書き込み中)ではありません");
-                return;
+                string errorMsg = $"RPCを終了しようとしましたが、StateがInRpcではありません (in: \"{name}\")";
+                if (isUnsafe)
+                {
+                    Logger.Warn(errorMsg, "CustomRpcSender.Warn");
+                }
+                else
+                {
+                    throw new InvalidOperationException(errorMsg);
+                }
             }
 
             stream.EndMessage();
-            stream.EndMessage();
-            currentState = State.Ready;
+            currentState = State.InRootMessage;
+            return this;
+        }
+        #endregion
+        public CustomRpcSender AutoStartRpc(
+          uint targetNetId,
+          byte callId,
+          int targetClientId = -1)
+        {
+            if (targetClientId == -2) targetClientId = -1;
+            if (currentState != State.Ready && currentState != State.InRootMessage)
+            {
+                string errorMsg = $"RPCを自動で開始しようとしましたが、StateがReadyまたはInRootMessageではありません (in: \"{name}\")";
+                if (isUnsafe)
+                {
+                    Logger.Warn(errorMsg, "CustomRpcSender.Warn");
+                }
+                else
+                {
+                    throw new InvalidOperationException(errorMsg);
+                }
+            }
+            if (currentRpcTarget != targetClientId)
+            {
+                //StartMessage処理
+                if (currentState == State.InRootMessage) this.EndMessage();
+                this.StartMessage(targetClientId);
+            }
+            this.StartRpc(targetNetId, callId);
+
+            return this;
         }
         public void SendMessage()
         {
-            if (currentState != State.Ready && !isUnsafe)
+            if (currentState == State.InRootMessage) this.EndMessage();
+            if (currentState != State.Ready)
             {
-                SuperNewRolesPlugin.Logger.LogError("[RPC:Error] RPCを終了しようとしましたが、StateがReady(準備完了)ではありません");
-                return;
+                string errorMsg = $"RPCを送信しようとしましたが、StateがReadyではありません (in: \"{name}\")";
+                if (isUnsafe)
+                {
+                    Logger.Warn(errorMsg, "CustomRpcSender.Warn");
+                }
+                else
+                {
+                    throw new InvalidOperationException(errorMsg);
+                }
             }
 
             AmongUsClient.Instance.SendOrDisconnect(stream);
+            onSendDelegate();
             currentState = State.Finished;
+            Logger.Info($"\"{name}\" is finished", "CustomRpcSender");
             stream.Recycle();
         }
 
         // Write
-        public CustomRpcSender Write(MessageWriter msg, bool includeHeader) => Write(w => w.Write(msg, includeHeader));
+        #region PublicWriteMethods
         public CustomRpcSender Write(float val) => Write(w => w.Write(val));
         public CustomRpcSender Write(string val) => Write(w => w.Write(val));
         public CustomRpcSender Write(ulong val) => Write(w => w.Write(val));
@@ -111,22 +212,54 @@ namespace SuperNewRoles
         public CustomRpcSender WritePacked(int val) => Write(w => w.WritePacked(val));
         public CustomRpcSender WritePacked(uint val) => Write(w => w.WritePacked(val));
         public CustomRpcSender WriteNetObject(InnerNetObject obj) => Write(w => w.WriteNetObject(obj));
+        #endregion
 
         private CustomRpcSender Write(Action<MessageWriter> action)
         {
-            if (currentState != State.Writing && !isUnsafe)
-                SuperNewRolesPlugin.Logger.LogError("[RPC:Error] RPCを書き込もうとしましたが、StateがWrite(書き込み中)ではありません");
-            else
-                action(stream);
+            if (currentState != State.InRpc)
+            {
+                string errorMsg = $"RPCを書き込もうとしましたが、StateがWrite(書き込み中)ではありません (in: \"{name}\")";
+                if (isUnsafe)
+                {
+                    Logger.Warn(errorMsg, "CustomRpcSender.Warn");
+                }
+                else
+                {
+                    throw new InvalidOperationException(errorMsg);
+                }
+            }
+            action(stream);
+
             return this;
         }
 
         public enum State
         {
             BeforeInit = 0, //初期化前 何もできない
-            Ready, //送信準備完了 StartRpcとSendMessageを実行可能
-            Writing, //RPC書き込み中 WriteとEndRpcを実行可能
+            Ready, //送信準備完了 StartMessageとSendMessageを実行可能
+            InRootMessage, //StartMessage～EndMessageの間の状態 StartRpcとEndMessageを実行可能
+            InRpc, //StartRpc～EndRpcの間の状態 WriteとEndRpcを実行可能
             Finished, //送信後 何もできない
+        }
+    }
+
+    public static class CustomRpcSenderExtensions
+    {
+        public static void RpcSetRole(this CustomRpcSender sender, PlayerControl player, RoleTypes role, int targetClientId = -1)
+        {
+            sender.AutoStartRpc(player.NetId, (byte)RpcCalls.SetRole, targetClientId)
+              .Write((ushort)role)
+              .EndRpc();
+            if (targetClientId == -1)
+            {
+                player.SetRole(role);
+            }
+        }
+        public static void RpcMurderPlayer(this CustomRpcSender sender, PlayerControl player, PlayerControl target, int targetClientId = -1)
+        {
+            sender.AutoStartRpc(player.NetId, (byte)RpcCalls.MurderPlayer, targetClientId)
+              .WriteNetObject(target)
+              .EndRpc();
         }
     }
 }

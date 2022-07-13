@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 using HarmonyLib;
 using Hazel;
 using UnityEngine;
@@ -13,6 +10,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
         public static Dictionary<int, string> PlayerUrl;
         public static Dictionary<int, string> PlayerDatas;
         public static Dictionary<int, CosmeticsObject> PlayerObjects;
+        /*
         [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
         public class AmongUsClientOnPlayerJoinedPatch
         {
@@ -32,6 +30,7 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
                 }
             }
         }
+        */
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
         public class GameStartManagerUpdatePatch
         {

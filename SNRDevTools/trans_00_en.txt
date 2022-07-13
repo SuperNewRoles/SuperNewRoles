@@ -3,8 +3,8 @@ SuperNewRoles
 Second
 <size=125%><color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> NewData</size>\nVersion:{0}\n{1}
 Common Tasks
-Long Tasks
 Short Tasks
+Long Tasks
 Salmon
 Bordeaux
 Olive
@@ -47,6 +47,8 @@ Melon
 Crasyu Blue
 Light Green
 <color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>Hats
+Map Custom
+(Airship)Secret Room
 enable MirroMap
 Preset
 <color=#ffa500> S u p e r </color><color=#ff0000>N e w </color><color=#00ff00>R o l e s</color> Settings
@@ -183,6 +185,7 @@ Use Sabotage
 Use Vent
 Survival
 Kill
+Exiled
 The Way of the Nekomata
 Sheriff kill
 Sheriff misfire
@@ -687,7 +690,7 @@ Camera Restrictions
 Vital Restrictions
 Can use time
 ykundesuBeplnEx
-ykundesuBeplnExDelicious
+ykundesuBeplnEx IS! VERY! VERY DELICIOUSSSSS!!!!!，isn't it?
 HauntedWolf
 Don't let the crew find out.
 Reactor Duration Time
@@ -754,10 +757,11 @@ Swapping cooltime
 Limits:{0}
 PositionSwap
 Position swapper swapped you!
-Position swapper swapped you!\n by the way，ykundesu isn't delicious?
+Position swapper swapped you!\n by the way，ykundesu is delicious，isn't it?
 Tuna
 Always move!
 Stopping Time
+Add Win
 Black Cat
 Give your life for your master.
 Mafia
@@ -769,3 +773,46 @@ Deceive the Imposter and lead the Cluemate camp to victory!
 Spies are crewmates but they look like friends to the Imposter.\n Spies are crewmates and have no special abilities.
 Move Vital to specimen (polus)
 Download custom hat
+Kunoichi
+Use your ninjutsu to deceive the village.
+Kunai Cool Time
+Number of kunai required for a kill
+Transparency
+Time required for transparency
+Kunai
+Can throw kunai during invisibility.
+Secretly Killer
+Please be quiet during the power outage.
+Same in kill buttons
+Kill cool charge during power outage
+Ability limit
+Secretly\nKill
+Zoom function after death
+Mouse wheel Mode
+ClairvoyantMode
+ClairvoyantCoolTime
+ClairvoyantDurationTime
+Clairvoyant!
+Ladder Death
+Ladder Death Chance
+You cannot make a room public contains mod in your name.
+Move the switchboard.
+Disable Moving Platform
+Add Wire Task
+DoubleKiller
+MainKillCoolDown
+SubKillCoolDown
+DoubleKillerCanUseSabotage
+Smasher
+KillCoolDown
+Let's master the independent kill button!
+Let's do continuous kills!
+Suicide Wisher
+Let's just kill ourselves for now.
+Suicide
+Neet
+NeetLet others handle it.
+Fast Maker
+Let's make Mad Mate with a light heart.
+KILL
+Can Create JackalFriends

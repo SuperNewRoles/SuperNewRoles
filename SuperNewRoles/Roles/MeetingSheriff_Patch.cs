@@ -3,6 +3,8 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patch;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -49,7 +51,7 @@ namespace SuperNewRoles.Roles
     {
         static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isDead())
+            if (PlayerControl.LocalPlayer.isRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isDead())
             {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
@@ -145,7 +147,7 @@ namespace SuperNewRoles.Roles
         }
         static void Event(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
+            if (PlayerControl.LocalPlayer.isRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -170,6 +172,7 @@ namespace SuperNewRoles.Roles
 
         static void Postfix(MeetingHud __instance)
         {
+            LadderDead.Reset();
             RoleClass.IsMeeting = true;
             if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
             {
@@ -178,7 +181,7 @@ namespace SuperNewRoles.Roles
 
             MeetingUpdatePatch.IsFlag = false;
             MeetingUpdatePatch.IsSHRFlag = false;
-            if (!ModeHandler.isMode(ModeId.SuperHostRoles) && CachedPlayer.AllPlayers.Count > 15)
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles) && PlayerControl.AllPlayerControls.Count > 15)
             {
                 MeetingUpdatePatch.IsFlag = true;
                 meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();
@@ -201,7 +204,7 @@ namespace SuperNewRoles.Roles
                 meetingsheriff_updatepatch.index = 1;
                 CreateAreaButton(__instance);
             }
-            if (ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count != 0)
+            if (ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count > 0)
             {
                 List<PlayerVoteArea> newareas = new();
                 List<PlayerVoteArea> deadareas = new();
