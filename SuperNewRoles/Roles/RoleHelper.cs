@@ -1278,8 +1278,8 @@ namespace SuperNewRoles
                         addition = RoleClass.Kunoichi.KillCoolTime;
                         break;
                     case RoleId.SuperVitaler:
-                        PlayerControl.GameOptions.RoleOptions.ScientistBatteryCharge = 0f;
-                        PlayerControl.GameOptions.RoleOptions.ScientistCooldown = 0f;
+                        PlayerControl.GameOptions.RoleOptions.ScientistBatteryCharge = -1f;
+                        PlayerControl.GameOptions.RoleOptions.ScientistCooldown = 10000f;
                         break;
                 }
             }

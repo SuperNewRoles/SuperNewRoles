@@ -346,8 +346,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
                 case RoleId.SuperVitaler:
-                    optdata.RoleOptions.ScientistBatteryCharge = 0f;
-                    optdata.RoleOptions.ScientistCooldown = 0f;
+                    optdata.RoleOptions.ScientistBatteryCharge = -1f;
+                    optdata.RoleOptions.ScientistCooldown = 10000f;
                     break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
