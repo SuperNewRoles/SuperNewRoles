@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using SuperNewRoles.Buttons;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -21,7 +22,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool isDoorr(PlayerControl Player)
         {
-            if (RoleClass.Doorr.DoorrPlayer.IsCheckListPlayerControl(Player) || RoleClass.EvilDoorr.EvilDoorrPlayer.IsCheckListPlayerControl(Player))
+            if (Player.isRole(RoleId.Doorr) || Player.isRole(RoleId.EvilDoorr))
             {
                 return true;
             }
