@@ -3303,6 +3303,10 @@
  "SuperVitalerTitle1" : {
         "0" : "Let's look at the vitals." ,
         "11" : "\u30d0\u30a4\u30bf\u30eb\u3092\u30ac\u30f3\u898b\u3057\u3088\u3046"
+        } ,
+ "SuperVitalerDescription" : {
+        "0" : "You can see the vitals for 255 seconds." ,
+        "11" : "255\u79d2\u30d0\u30a4\u30bf\u30eb\u3092\u898b\u308c\u307e\u3059"
         } 
 
 }

@@ -824,3 +824,4 @@ PolusrandomSpawn
 NotImpostorExiled
 SuperVitalerName
 SuperVitalerTitle1
+SuperVitalerDescription

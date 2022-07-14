@@ -824,3 +824,4 @@ RandomSpawn
 Not taking the Imposter off the road
 Super Vitaler
 Let's look at the vitals.
+You can see the vitals for 255 seconds.

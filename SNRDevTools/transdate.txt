@@ -825,3 +825,4 @@ PolusrandomSpawn,RandomSpawn,ランダムスポーン
 NotImpostorExiled,Not taking the Imposter off the road,インポスターを道連れにしない
 SuperVitalerName,Super Vitaler,スーパーバイタラー
 SuperVitalerTitle1,Let's look at the vitals.,バイタルをガン見しよう
+SuperVitalerDescription,You can see the vitals for 255 seconds.,255秒バイタルを見れます
