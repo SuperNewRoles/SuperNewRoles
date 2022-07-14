@@ -57,7 +57,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     CustomOptions.MadMakerOption.getSelection() != 0 ||
                     CustomOptions.SamuraiOption.getSelection() != 0 ||
                     CustomOptions.DemonOption.getSelection() != 0 ||
-                    CustomOptions.ToiletFanOption.getSelection() != 0)
+                    CustomOptions.ToiletFanOption.getSelection() != 0||
+                    CustomOptions.AllOpenerOption.getSelection() != 0)
                 {
                     PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                     bot1.RpcSetRole(RoleTypes.Impostor);
