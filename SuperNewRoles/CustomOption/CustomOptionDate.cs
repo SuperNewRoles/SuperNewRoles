@@ -661,6 +661,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption ToiletFanOption;
         public static CustomOption ToiletFanPlayerCount;
         public static CustomOption ToiletFanCoolTime;
+
+        public static CustomRoleOption AllOpenerOption;
+        public static CustomOption AllOpenerPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1368,6 +1371,9 @@ namespace SuperNewRoles.CustomOption
 
             FastMakerOption = new CustomRoleOption(672, true, CustomOptionType.Impostor, "FastMakerName", RoleClass.FastMaker.color, 1);
             FastMakerPlayerCount = CustomOption.Create(673, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FastMakerOption);
+
+            AllOpenerOption = new CustomRoleOption(674, true, CustomOptionType.Crewmate, "AllOpenerName", RoleClass.AllOpener.color, 1);
+            AllOpenerPlayerCount = CustomOption.Create(675, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AllOpenerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

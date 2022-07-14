@@ -153,6 +153,7 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
+            AllOpener.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2229,7 +2230,7 @@ namespace SuperNewRoles.Roles
             }
             public static void ClearAndReload()
             {
-                PositionSwapperPlayer = new List<PlayerControl>();
+                PositionSwapperPlayer = new();
                 CoolTime = CustomOptions.PositionSwapperCoolTime.getFloat();
                 SwapCount = (int)CustomOptions.PositionSwapperSwapCount.getFloat();
             }
@@ -2270,7 +2271,7 @@ namespace SuperNewRoles.Roles
             public static bool CachedIs;
             public static void ClearAndReload()
             {
-                MafiaPlayer = new List<PlayerControl>();
+                MafiaPlayer = new();
                 CachedIs = false;
             }
         }
@@ -2285,7 +2286,7 @@ namespace SuperNewRoles.Roles
             public static bool IsImpostorLight;
             public static void ClearAndReload()
             {
-                BlackCatPlayer = new List<PlayerControl>();
+                BlackCatPlayer = new();
                 NotImpostorExiled = CustomOptions.BlackCatNotImpostorExiled.getBool();
                 IsImpostorCheck = CustomOptions.BlackCatIsCheckImpostor.getBool();
                 IsUseVent = CustomOptions.BlackCatIsUseVent.getBool();
@@ -2328,7 +2329,7 @@ namespace SuperNewRoles.Roles
             }*/
             public static void ClearAndReload()
             {
-                SecretlyKillerPlayer = new List<PlayerControl>();
+                SecretlyKillerPlayer = new();
                 KillCoolTime = CustomOptions.SecretlyKillerKillCoolTime.getFloat();
                 IsKillCoolChange = CustomOptions.SecretlyKillerIsKillCoolTimeChange.getBool();
                 IsBlackOutKillCharge = CustomOptions.SecretlyKillerIsBlackOutKillCharge.getBool();
@@ -2344,7 +2345,7 @@ namespace SuperNewRoles.Roles
             public static bool CanUseVent;
             public static void ClearAndReload()
             {
-                SpyPlayer = new List<PlayerControl>();
+                SpyPlayer = new();
                 CanUseVent = CustomOptions.SpyCanUseVent.getBool();
             }
         }
@@ -2384,7 +2385,7 @@ namespace SuperNewRoles.Roles
                 {
                     HideTime = -1;
                 }
-                KunoichiPlayer = new List<PlayerControl>();
+                KunoichiPlayer = new();
                 KillCoolTime = CustomOptions.KunoichiCoolTime.getFloat();
                 KillKunai = (int)CustomOptions.KunoichiKillKunai.getFloat();
                 HitCount = new();
@@ -2423,7 +2424,7 @@ namespace SuperNewRoles.Roles
             public static bool CanUseVent;
             public static void ClearAndReload()
             {
-                DoubleKillerPlayer = new List<PlayerControl>();
+                DoubleKillerPlayer = new();
                 MainCoolTime = CustomOptions.MainKillCoolTime.getFloat();
                 SubCoolTime = CustomOptions.SubKillCoolTime.getFloat();
                 CanUseSabo = CustomOptions.DoubleKillerSabo.getBool();
@@ -2438,7 +2439,7 @@ namespace SuperNewRoles.Roles
             public static bool SmashOn;
             public static void ClearAndReload()
             {
-                SmasherPlayer = new List<PlayerControl>();
+                SmasherPlayer = new();
                 KillCoolTime = CustomOptions.SmasherKillCoolTime.getFloat();
                 SmashOn = false;
             }
@@ -2456,7 +2457,7 @@ namespace SuperNewRoles.Roles
             }
             public static void ClearAndReload()
             {
-                SuicideWisherPlayer = new List<PlayerControl>();
+                SuicideWisherPlayer = new();
             }
         }
         public static class Neet
@@ -2476,7 +2477,7 @@ namespace SuperNewRoles.Roles
             public static List<int> CreatePlayers;
             public static void ClearAndReload()
             {
-                FastMakerPlayer = new List<PlayerControl>();
+                FastMakerPlayer = new();
                 IsCreatedMadMate = false;
                 CreatePlayers = new();
             }
@@ -2495,8 +2496,26 @@ namespace SuperNewRoles.Roles
             }
             public static void ClearAndReload()
             {
-                ToiletFanPlayer = new List<PlayerControl>();
+                ToiletFanPlayer = new();
                 ToiletCool = CustomOptions.ToiletFanCoolTime.getFloat();
+            }
+        }
+        public static class AllOpener
+        {
+            public static List<PlayerControl> AllOpenerPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static bool IsOpened;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.AllOpenerButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                AllOpenerPlayer = new();
+                IsOpened = false;
             }
         }
         //新ロールクラス

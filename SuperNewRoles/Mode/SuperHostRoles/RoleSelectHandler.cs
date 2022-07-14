@@ -56,7 +56,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     CustomOptions.RemoteSheriffOption.getSelection() != 0 ||
                     CustomOptions.MadMakerOption.getSelection() != 0 ||
                     CustomOptions.SamuraiOption.getSelection() != 0 ||
-                    CustomOptions.DemonOption.getSelection() != 0||
+                    CustomOptions.DemonOption.getSelection() != 0 ||
                     CustomOptions.ToiletFanOption.getSelection() != 0)
                 {
                     PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
@@ -98,6 +98,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void SetCustomRoles()
         {
+            /*==========インポスターにDesync==========*/
             List<PlayerControl> DesyncImpostors = new();
             DesyncImpostors.AddRange(RoleClass.Jackal.JackalPlayer);
             DesyncImpostors.AddRange(RoleClass.Sheriff.SheriffPlayer);
@@ -105,7 +106,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             DesyncImpostors.AddRange(RoleClass.truelover.trueloverPlayer);
             DesyncImpostors.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
             DesyncImpostors.AddRange(RoleClass.MadMaker.MadMakerPlayer);
-            //インポスターにDesync
+            /*==========インポスターにDesync==========*/
+
+
+            /*==========エンジニアに役職設定==========*/
             List<PlayerControl> SetRoleEngineers = new();
             if (RoleClass.Jester.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Jester.JesterPlayer);
             if (RoleClass.JackalFriends.IsUseVent) SetRoleEngineers.AddRange(RoleClass.JackalFriends.JackalFriendsPlayer);
@@ -118,12 +122,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.Tuna.IsUseVent) SetRoleEngineers.AddRange(RoleClass.Tuna.TunaPlayer);
             SetRoleEngineers.AddRange(RoleClass.Technician.TechnicianPlayer);
             if (RoleClass.BlackCat.IsUseVent) SetRoleEngineers.AddRange(RoleClass.BlackCat.BlackCatPlayer);
-            //エンジニアに役職設定
+            /*==========エンジニアに役職設定==========*/
+
+
+            /*==========シェイプシフターDesync==========*/
             List<PlayerControl> DesyncShapeshifters = new();
             DesyncShapeshifters.AddRange(RoleClass.Arsonist.ArsonistPlayer);
             DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
             DesyncShapeshifters.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
-            //シェイプシフターDesync
+            DesyncShapeshifters.AddRange(RoleClass.AllOpener.AllOpenerPlayer);
+            /*==========シェイプシフターDesync==========*/
+
             foreach (PlayerControl Player in DesyncImpostors)
             {
                 if (!Player.IsMod())

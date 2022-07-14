@@ -163,6 +163,10 @@ namespace SuperNewRoles.Patches
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
                         return false;
+                    case RoleId.AllOpener:
+                        if (!RoleClass.AllOpener.IsOpened) { AllOpener.AllDoorsOpen(); }//開けてなければ開ける
+                        RoleClass.AllOpener.IsOpened = true;
+                        break;
                 }
             }
             return true;

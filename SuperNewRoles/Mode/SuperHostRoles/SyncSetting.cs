@@ -345,6 +345,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.ToiletFan.ToiletCool;
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
+                case RoleId.AllOpener:
+                    optdata.RoleOptions.ShapeshifterCooldown = 1f;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    break;
+
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;

@@ -65,6 +65,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SuicideWisherSuicideButton;
         public static CustomButton FastMakerButton;
         public static CustomButton ToiletFanButton;
+        public static CustomButton AllOpenerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -1983,6 +1984,35 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.getString("ToiletName"),
+                showButtonText = true
+            };
+
+            AllOpenerButton = new CustomButton(
+                () =>
+                {
+                    AllOpener.AllDoorsOpen();
+                    RoleClass.AllOpener.IsOpened = true;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.AllOpener && !RoleClass.AllOpener.IsOpened; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    AllOpenerButton.MaxTimer = 0.1f;
+                    AllOpenerButton.Timer = 0.1f;
+                },
+                RoleClass.AllOpener.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.getString("OpenName"),
                 showButtonText = true
             };
 

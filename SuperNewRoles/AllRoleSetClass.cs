@@ -852,6 +852,7 @@ namespace SuperNewRoles
                 RoleId.Smasher => CustomOptions.SmasherPlayerCount.getFloat(),
                 RoleId.SuicideWisher => CustomOptions.SuicideWisherPlayerCount.getFloat(),
                 RoleId.Neet => CustomOptions.NeetPlayerCount.getFloat(),
+                RoleId.AllOpener => CustomOptions.AllOpenerPlayerCount.getFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

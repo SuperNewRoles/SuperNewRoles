@@ -7,7 +7,7 @@ namespace SuperNewRoles
 {
     public static class BotManager
     {
-        public static List<PlayerControl> Bots = new List<PlayerControl>();
+        public static List<PlayerControl> Bots = new();
         public static PlayerControl Spawn(string name = "", int id = -1)
         {
             byte newid = 0;
@@ -70,7 +70,7 @@ namespace SuperNewRoles
             {
                 bot.BotDespawn();
             }
-            Bots = new List<PlayerControl>();
+            Bots = new();
         }
     }
 }

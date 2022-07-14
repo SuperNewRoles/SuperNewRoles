@@ -189,6 +189,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate NeetIntro = new("Neet", RoleClass.Neet.color, 1, RoleId.Neet, TeamRoleType.Neutral);
         public static IntroDate FastMakerIntro = new IntroDate("FastMaker", RoleClass.FastMaker.color, 1, RoleId.FastMaker, TeamRoleType.Impostor);
         public static IntroDate ToiletFanIntro = new("ToiletFan", RoleClass.ToiletFan.color, 1, RoleId.ToiletFan, TeamRoleType.Crewmate);
+        public static IntroDate AllOpenerIntro = new IntroDate("AllOpener", RoleClass.AllOpener.color, 1, RoleId.AllOpener);
         //イントロオブジェ
     }
 }
