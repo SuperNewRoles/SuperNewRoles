@@ -1,6 +1,7 @@
 using System;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -13,7 +14,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool isClergyman(PlayerControl Player)
         {
-            if (RoleClass.Clergyman.ClergymanPlayer.IsCheckListPlayerControl(Player))
+            if (Player.isRole(RoleId.Clergyman))
             {
                 return true;
             }

@@ -317,7 +317,6 @@ namespace SuperNewRoles.Roles
                 MeetingSheriffPlayer = new();
                 NeutralKill = CustomOptions.MeetingSheriffNeutralKill.getBool();
                 MadRoleKill = CustomOptions.MeetingSheriffMadRoleKill.getBool();
-                MadRoleKill = CustomOptions.MeetingSheriffMadRoleKill.getBool();
                 KillMaxCount = CustomOptions.MeetingSheriffKillMaxCount.getFloat();
                 OneMeetingMultiKill = CustomOptions.MeetingSheriffOneMeetingMultiKill.getBool();
             }

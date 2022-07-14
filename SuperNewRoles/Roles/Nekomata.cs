@@ -96,7 +96,7 @@ namespace SuperNewRoles.Roles
                     p.RemoveAt(rdm);
                     NekomataProc(p);
                 }
-                if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(random))
+                if (random.isRole(RoleId.Jester)||random.isRole(RoleId.MadJester))
                 {
                     if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                     {
@@ -106,6 +106,15 @@ namespace SuperNewRoles.Roles
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         RoleClass.Jester.IsJesterWin = true;
                         ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.JesterWin, false);
+                    }
+                    if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
+                    {
+                        RPCProcedure.ShareWinner(random.PlayerId);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        Writer.Write(random.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(Writer);
+                        RoleClass.MadJester.IsMadJesterWin = true;
+                        ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.MadJesterWin, false);
                     }
                 }
             }

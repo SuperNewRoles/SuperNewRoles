@@ -118,7 +118,7 @@ namespace SuperNewRoles
                 }
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
-                    if (!player.Data.Disconnected && !AllRoleSetClass.impostors.IsCheckListPlayerControl(player))
+                    if (!player.Data.Disconnected && !player.isImpostor())
                     {
                         sender.RpcSetRole(player, RoleTypes.Crewmate);
                     }

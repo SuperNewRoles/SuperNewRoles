@@ -110,18 +110,10 @@ namespace SuperNewRoles.Roles
         {
             var roledata = CountChanger.GetRoleType(Target);
             if (roledata == TeamRoleType.Impostor) return true;
-            if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            if (Target.isMadRole() && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            if (Target.isFriendRole() && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (Target.isNeutral() && RoleClass.MeetingSheriff.NeutralKill) return true;
-            if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.JackalFriends.JackalFriendsPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(Target)) return true;
-            if (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            if (Target.isRole(RoleId.HauntedWolf)) return true;
             return false;
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)

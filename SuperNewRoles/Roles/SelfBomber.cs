@@ -1,6 +1,7 @@
 using Hazel;
 using SuperNewRoles.Buttons;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -18,7 +19,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool isSelfBomber(PlayerControl Player)
         {
-            if (RoleClass.SelfBomber.SelfBomberPlayer.IsCheckListPlayerControl(Player))
+            if (Player.isRole(RoleId.SelfBomber))
             {
                 return true;
             }
