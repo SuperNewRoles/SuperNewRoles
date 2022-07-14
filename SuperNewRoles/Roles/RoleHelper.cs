@@ -961,10 +961,10 @@ namespace SuperNewRoles
                 case (RoleId.ToiletFan):
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (RoleId.SuperVitaler):
+                case (RoleId.SuperVitaler):
                     RoleClass.SuperVitaler.SuperVitalerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1277,6 +1277,10 @@ namespace SuperNewRoles
                     case RoleId.Kunoichi:
                         addition = RoleClass.Kunoichi.KillCoolTime;
                         break;
+                    case RoleId.SuperVitaler:
+                        PlayerControl.GameOptions.RoleOptions.ScientistBatteryCharge = 0f;
+                        PlayerControl.GameOptions.RoleOptions.ScientistCooldown = 0f;
+                        break;
                 }
             }
             return addition;
@@ -1473,10 +1477,10 @@ namespace SuperNewRoles
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
                 else if (RoleClass.SuperVitaler.SuperVitalerPlayer.IsCheckListPlayerControl(player))
-            {
-                return RoleId.SuperVitaler;
-            }
-            //ロールチェック
+                {
+                    return RoleId.SuperVitaler;
+                }
+                //ロールチェック
             }
             catch (Exception e)
             {

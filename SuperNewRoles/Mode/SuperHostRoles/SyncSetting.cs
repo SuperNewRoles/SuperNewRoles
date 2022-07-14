@@ -345,6 +345,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.ToiletFan.ToiletCool;
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
+                case RoleId.SuperVitaler:
+                    optdata.RoleOptions.ScientistBatteryCharge = 0f;
+                    optdata.RoleOptions.ScientistCooldown = 0f;
+                    break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;
