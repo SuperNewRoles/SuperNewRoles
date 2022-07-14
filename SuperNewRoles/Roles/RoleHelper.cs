@@ -600,6 +600,9 @@ namespace SuperNewRoles
                 case (RoleId.ToiletFan):
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
+                case (RoleId.SuperVitaler):
+                    RoleClass.SuperVitaler.SuperVitalerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -958,7 +961,10 @@ namespace SuperNewRoles
                 case (RoleId.ToiletFan):
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (RoleId.SuperVitaler):
+                    RoleClass.SuperVitaler.SuperVitalerPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1466,7 +1472,11 @@ namespace SuperNewRoles
                 else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
-                //ロールチェック
+                else if (RoleClass.SuperVitaler.SuperVitalerPlayer.IsCheckListPlayerControl(player))
+            {
+                return RoleId.SuperVitaler;
+            }
+            //ロールチェック
             }
             catch (Exception e)
             {

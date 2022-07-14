@@ -153,6 +153,7 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
+            SuperVitaler.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2497,6 +2498,15 @@ namespace SuperNewRoles.Roles
             {
                 ToiletFanPlayer = new List<PlayerControl>();
                 ToiletCool = CustomOptions.ToiletFanCoolTime.getFloat();
+            }
+        }
+        public static class SuperVitaler
+        {
+            public static List<PlayerControl> SuperVitalerPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                SuperVitalerPlayer = new List<PlayerControl>();
             }
         }
         //新ロールクラス
