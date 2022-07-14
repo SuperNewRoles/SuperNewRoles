@@ -798,10 +798,6 @@ namespace SuperNewRoles.Patches
             Logger.Info("追加");
             DeadPlayer deadPlayer = new(target, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
-            foreach (var p in DeadPlayer.deadPlayers)
-            {
-                Logger.Info($"{p.killerIfExisting.Data.PlayerName}が{p.player.Data.PlayerName}を切る");
-            }
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
             SerialKiller.MurderPlayer(__instance, target);
