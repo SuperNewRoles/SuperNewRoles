@@ -822,3 +822,6 @@ Toilet Cool Time
 DoorOpen
 RandomSpawn
 Not taking the Imposter off the road
+All Opener
+Open All
+Open

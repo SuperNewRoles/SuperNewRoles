@@ -4,6 +4,7 @@ namespace SuperNewRoles.Roles
     {//ドア開けるやつ
         public static void AllDoorsOpen()
         {//amount(RpcRepairSystemの数字)がいくつあるかわからないため、とりあえず100
+         //そのうちリファクタします
             ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 0);
             ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 1);
             ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 2);

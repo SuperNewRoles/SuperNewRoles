@@ -823,3 +823,6 @@ ToiletCoolDownSetting,Toilet Cool Time,トイレクールタイム
 ToiletName,DoorOpen,ドア開放
 PolusrandomSpawn,RandomSpawn,ランダムスポーン
 NotImpostorExiled,Not taking the Imposter off the road,インポスターを道連れにしない
+AllOpenerName,All Opener,オールオープナー
+AllOpenerTitle1,Open All,全て開けろ
+OpenName,Open,開ける
