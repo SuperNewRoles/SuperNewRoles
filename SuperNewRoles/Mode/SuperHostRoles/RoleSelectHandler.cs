@@ -140,6 +140,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetRoleShapeshifters.AddRange(RoleClass.SuicideWisher.SuicideWisherPlayer);
             /*============シェイプシフター役職設定============*/
 
+            /*============科学者役職設定============*/
+            List<PlayerControl> SetRoleScientists = new();
+            SetRoleScientists.AddRange(RoleClass.SuperVitaler.SuperVitalerPlayer);
+            /*============科学者役職設定============*/
+
             foreach (PlayerControl Player in DesyncImpostors)
             {
                 if (!Player.IsMod())
@@ -280,6 +285,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             foreach (PlayerControl p in SetRoleShapeshifters)
             {
                 sender.RpcSetRole(p, RoleTypes.Shapeshifter);
+            }
+            foreach (PlayerControl p in SetRoleScientists)
+            {
+                sender.RpcSetRole(p, RoleTypes.Scientist);
             }
             return;
         }
