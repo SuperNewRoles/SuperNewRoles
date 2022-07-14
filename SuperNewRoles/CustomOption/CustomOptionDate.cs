@@ -965,7 +965,7 @@ namespace SuperNewRoles.CustomOption
 
             EvilNekomataOption = new CustomRoleOption(178, true, CustomOptionType.Impostor, "EvilNekomataName", RoleClass.EvilNekomata.color, 1);
             EvilNekomataPlayerCount = CustomOption.Create(179, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilNekomataOption);
-            EvilNekomataNotImpostorExiled = CustomOption.Create(670, true, CustomOptionType.Impostor, "NotImpostorExiled", false, EvilNekomataOption);
+            EvilNekomataNotImpostorExiled = CustomOption.Create(674, true, CustomOptionType.Impostor, "NotImpostorExiled", false, EvilNekomataOption);
 
             JackalFriendsOption = new CustomRoleOption(180, true, CustomOptionType.Crewmate, "JackalFriendsName", RoleClass.JackalFriends.color, 1);
             JackalFriendsPlayerCount = CustomOption.Create(181, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], JackalFriendsOption);
@@ -1311,7 +1311,7 @@ namespace SuperNewRoles.CustomOption
 
             BlackCatOption = new CustomRoleOption(556, true, CustomOptionType.Crewmate, "BlackCatName", RoleClass.ImpostorRed, 1);
             BlackCatPlayerCount = CustomOption.Create(557, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], BlackCatOption);
-            BlackCatNotImpostorExiled = CustomOption.Create(671, true, CustomOptionType.Crewmate, "NotImpostorExiled", false, BlackCatOption);
+            BlackCatNotImpostorExiled = CustomOption.Create(675, true, CustomOptionType.Crewmate, "NotImpostorExiled", false, BlackCatOption);
             BlackCatIsCheckImpostor = CustomOption.Create(558, true, CustomOptionType.Crewmate, "MadMateIsCheckImpostorSetting", false, BlackCatOption);
             var blackcatoption = SelectTask.TaskSetting(559, 560, 561, BlackCatIsCheckImpostor, CustomOptionType.Crewmate, true);
             BlackCatCommonTask = blackcatoption.Item1;
@@ -1353,13 +1353,13 @@ namespace SuperNewRoles.CustomOption
             SmasherPlayerCount = CustomOption.Create(654, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SmasherOption);
             SmasherKillCoolTime = CustomOption.Create(655, false, CustomOptionType.Impostor, "KillCoolTimeSetting", 30f, 2.5f, 60f, 2.5f, SmasherOption, format: "unitSeconds");
 
-            SuicideWisherOption = new CustomRoleOption(656, true, CustomOptionType.Impostor, "SuicideWisherName", RoleClass.SuicideWisher.color, 1);
-            SuicideWisherPlayerCount = CustomOption.Create(657, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SuicideWisherOption);
+            SuicideWisherOption = new CustomRoleOption(678, true, CustomOptionType.Impostor, "SuicideWisherName", RoleClass.SuicideWisher.color, 1);
+            SuicideWisherPlayerCount = CustomOption.Create(679, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], SuicideWisherOption);
 
-            NeetOption = new CustomRoleOption(658, false, CustomOptionType.Neutral, "NeetName", RoleClass.Neet.color, 1);
+            NeetOption = new CustomRoleOption(680, false, CustomOptionType.Neutral, "NeetName", RoleClass.Neet.color, 1);
             NeetPlayerCount = CustomOption.Create(659, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NeetOption);
 
-            FastMakerOption = new CustomRoleOption(660, true, CustomOptionType.Impostor, "FastMakerName", RoleClass.FastMaker.color, 1);
+            FastMakerOption = new CustomRoleOption(676, true, CustomOptionType.Impostor, "FastMakerName", RoleClass.FastMaker.color, 1);
             FastMakerPlayerCount = CustomOption.Create(661, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FastMakerOption);
 
             ToiletFanOption = new CustomRoleOption(656, true, CustomOptionType.Crewmate, "ToiletFanName", RoleClass.ToiletFan.color, 1);

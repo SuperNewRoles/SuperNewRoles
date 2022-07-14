@@ -42,7 +42,7 @@ namespace SuperNewRoles.MapCustoms
             AddVitalsMira = CustomOption.CustomOption.Create(472, false, CustomOptionType.Generic, "AddVitalsMiraSetting", false, MiraSetting);
 
             /*===============ポーラス===============*/
-            PolusSetting = CustomOption.CustomOption.Create(661, false, CustomOptionType.Generic, "<color=#4b0082>Polus</color>", false, MapCustomOption);
+            PolusSetting = CustomOption.CustomOption.Create(677, false, CustomOptionType.Generic, "<color=#4b0082>Polus</color>", false, MapCustomOption);
             PolusAdditionalVents = CustomOption.CustomOption.Create(662, false, CustomOptionType.Generic, "PolusAdditionalVents", false, PolusSetting);
             SpecimenVital = CustomOption.CustomOption.Create(613, false, CustomOptionType.Generic, "SpecimenVitalSetting", false, PolusSetting);
             PolusRandomSpawn = CustomOption.CustomOption.Create(670, false, CustomOptionType.Generic, "PolusrandomSpawn", false, PolusSetting);
