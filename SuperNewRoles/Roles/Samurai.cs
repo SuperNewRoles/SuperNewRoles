@@ -51,7 +51,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool isSamurai(PlayerControl Player)
         {
-            if (RoleClass.Samurai.SamuraiPlayer.IsCheckListPlayerControl(Player))
+            if (Player.isRole(RoleId.Samurai))
             {
                 return true;
             }

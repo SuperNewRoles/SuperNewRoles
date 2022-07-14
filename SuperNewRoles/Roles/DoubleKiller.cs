@@ -51,7 +51,7 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < allPlayers.Count; i++)
                 {
                     GameData.PlayerInfo playerInfo = allPlayers[i];
-                    if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && playerInfo.Object.isAlive() && !playerInfo.Object.isDead() && !RoleClass.DoubleKiller.DoubleKillerPlayer.IsCheckListPlayerControl(playerInfo.Object))
+                    if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && playerInfo.Object.isAlive() && !playerInfo.Object.isDead() && !playerInfo.Object.isRole(RoleId.DoubleKiller))
                     {
                         PlayerControl @object = playerInfo.Object;
                         if (untargetablePlayers.Any(x => x == @object))

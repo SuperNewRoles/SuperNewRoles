@@ -1,6 +1,7 @@
 using System;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -43,7 +44,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsEvilSpeedBooster(PlayerControl Player)
         {
-            if (RoleClass.EvilSpeedBooster.EvilSpeedBoosterPlayer.IsCheckListPlayerControl(Player))
+            if (Player.isRole(RoleId.EvilSpeedBooster))
             {
                 return true;
             }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -31,7 +32,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsNiceTeleporter(PlayerControl Player)
         {
-            if (RoleClass.NiceTeleporter.NiceTeleporterPlayer.IsCheckListPlayerControl(Player))
+            if (Player.isRole(RoleId.NiceTeleporter))
             {
                 return true;
             }
