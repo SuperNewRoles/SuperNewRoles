@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.Mode;
+using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Patch
 {
@@ -47,6 +48,13 @@ namespace SuperNewRoles.Patch
                 if (Input.GetKeyDown(KeyCode.F8) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
                 {
                     GameStartManager.Instance.countDownTimer = 0;
+                }
+                if (CustomOptions.DebugModeFastStart.getBool() && CustomOptions.IsDebugMode.getBool())//デバッグモードでデバッグ即開始が有効
+                {//カウントダウン中
+                    if (GameStartManager.InstanceExists && GameStartManager.Instance.startState == GameStartManager.StartingStates.Countdown)
+                    {//カウント0
+                        GameStartManager.Instance.countDownTimer = 0;
+                    }
                 }
                 if (Input.GetKeyDown(KeyCode.F7) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
                 {
