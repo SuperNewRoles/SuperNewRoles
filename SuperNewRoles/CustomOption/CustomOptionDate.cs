@@ -1360,7 +1360,7 @@ namespace SuperNewRoles.CustomOption
             NeetPlayerCount = CustomOption.Create(659, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NeetOption);
 
             FastMakerOption = new CustomRoleOption(676, true, CustomOptionType.Impostor, "FastMakerName", RoleClass.FastMaker.color, 1);
-            FastMakerPlayerCount = CustomOption.Create(661, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FastMakerOption);
+            FastMakerPlayerCount = CustomOption.Create(661, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FastMakerOption);
 
             ToiletFanOption = new CustomRoleOption(656, true, CustomOptionType.Crewmate, "ToiletFanName", RoleClass.ToiletFan.color, 1);
             ToiletFanPlayerCount = CustomOption.Create(657, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ToiletFanOption);
