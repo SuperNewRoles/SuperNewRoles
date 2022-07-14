@@ -3287,9 +3287,11 @@
  "ToiletName" : {
         "0" : "DoorOpen" ,
         "11" : "\u30c9\u30a2\u958b\u653e"
+        } ,
  "PolusrandomSpawn" : {
         "0" : "RandomSpawn" ,
         "11" : "\u30e9\u30f3\u30c0\u30e0\u30b9\u30dd\u30fc\u30f3"
+        } ,
  "NotImpostorExiled" : {
         "0" : "Not taking the Imposter off the road" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u9053\u9023\u308c\u306b\u3057\u306a\u3044"
