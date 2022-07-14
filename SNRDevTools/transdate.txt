@@ -823,3 +823,5 @@ ToiletCoolDownSetting,Toilet Cool Time,トイレクールタイム
 ToiletName,DoorOpen,ドア開放
 PolusrandomSpawn,RandomSpawn,ランダムスポーン
 NotImpostorExiled,Not taking the Imposter off the road,インポスターを道連れにしない
+SuperVitalerName,Super Vitaler,スーパーバイタラー
+SuperVitalerTitle1,Let's look at the vitals.,バイタルをガン見しよう

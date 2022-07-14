@@ -822,3 +822,5 @@ ToiletCoolDownSetting
 ToiletName
 PolusrandomSpawn
 NotImpostorExiled
+SuperVitalerName
+SuperVitalerTitle1

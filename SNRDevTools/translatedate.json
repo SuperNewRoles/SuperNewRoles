@@ -3295,6 +3295,14 @@
  "NotImpostorExiled" : {
         "0" : "Not taking the Imposter off the road" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u9053\u9023\u308c\u306b\u3057\u306a\u3044"
+        } ,
+ "SuperVitalerName" : {
+        "0" : "Super Vitaler" ,
+        "11" : "\u30b9\u30fc\u30d1\u30fc\u30d0\u30a4\u30bf\u30e9\u30fc"
+        } ,
+ "SuperVitalerTitle1" : {
+        "0" : "Let's look at the vitals." ,
+        "11" : "\u30d0\u30a4\u30bf\u30eb\u3092\u30ac\u30f3\u898b\u3057\u3088\u3046"
         } 
 
 }
