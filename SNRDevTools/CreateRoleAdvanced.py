@@ -246,10 +246,8 @@ namespace SuperNewRoles.Roles
         # Roles/RoleHelper.cs
         if (not MainClass.GetBool("TeamGhost")):
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールチェック",
-                                 """else if (RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
-                {
-                    return RoleId.ROLENAME;
-                }\n                //ロールチェック""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """else if (RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player)) return RoleId.ROLENAME;
+                //ロールチェック""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールアド",
                              """case (RoleId.ROLENAME):
