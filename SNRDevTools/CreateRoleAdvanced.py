@@ -200,7 +200,7 @@ using System.Collections.Generic;
 using System.Text;
 namespace SuperNewRoles.Roles
 {
-    internal class ROLENAME
+    public static class ROLENAME
     {
         //ここにコードを書きこんでください
     }
