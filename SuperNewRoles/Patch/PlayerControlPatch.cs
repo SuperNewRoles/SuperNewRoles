@@ -398,6 +398,7 @@ namespace SuperNewRoles.Patches
                     switch (__instance.getRole())
                     {
                         case RoleId.RemoteSheriff:
+                        case RoleId.ToiletFan:
                             return false;
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;
