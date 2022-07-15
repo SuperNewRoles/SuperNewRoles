@@ -38,7 +38,7 @@ while True:
             public static Color32 color = COLORS;
             public static void ClearAndReload()
             {
-                ROLE!!Player = new List<PlayerControl>();
+                ROLE!!Player = new();
             }
         }\n        //新ロールクラス""".replace("ROLE!!", rolename).replace("COLORS", color))
             f.write(temp)

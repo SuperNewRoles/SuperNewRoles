@@ -285,7 +285,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = COLORS;
             public static void ClearAndReload()
             {
-                ROLENAMEPlayer = new List<PlayerControl>();
+                ROLENAMEPlayer = new();
                 //くりあぁあんどりろぉどぉ
             }
         }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))
