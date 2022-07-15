@@ -958,7 +958,7 @@ namespace SuperNewRoles
                 case (RoleId.ToiletFan):
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
