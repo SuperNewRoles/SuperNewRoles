@@ -51,7 +51,7 @@ namespace SuperNewRoles.Modules
         //スケジュール
         public static void ScheduleProctedMessage(string Text)
         {
-            SuperNewRolesPlugin.Logger.LogDebug("守護メッセージがスケジュールされました");
+            SuperNewRolesPlugin.Logger.LogDebug("守護メッセージがスケジュールされました。:"+Text);
             //もしProctedMessagesが空なら行替えなしに、空じゃなきゃ行替えありに
             ProctedMessages = ProctedMessages==string.Empty ? Text : string.Concat(ProctedMessages, "\n", Text);
         }
