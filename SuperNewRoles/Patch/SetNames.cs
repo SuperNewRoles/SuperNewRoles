@@ -291,16 +291,15 @@ namespace SuperNewRoles.Patch
             if (PlayerControl.LocalPlayer.isRole(RoleId.SatsumaAndImo) || PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God))
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
-                {
+                {//クルーなら
                     if (!player.nameText().text.Contains(ModHelpers.cs(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
-                    {
+                    {//名前に(C)をつける
                         SetNamesClass.SetPlayerNameText(player, player.nameText().text + ModHelpers.cs(Palette.White, " (C)"));
                     }
                     if (!player.nameText().text.Contains(ModHelpers.cs(RoleClass.Arsonist.color, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
                     {
                         SetNamesClass.SetPlayerNameText(player, player.nameText().text + ModHelpers.cs(RoleClass.ImpostorRed, " (M)"));
                     }
-
                 }
             }
         }
