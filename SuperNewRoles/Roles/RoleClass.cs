@@ -153,6 +153,7 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
+            SatsumaAndImo.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2496,6 +2497,19 @@ namespace SuperNewRoles.Roles
             {
                 ToiletFanPlayer = new();
                 ToiletCool = CustomOptions.ToiletFanCoolTime.getFloat();
+            }
+        }
+        public static class SatsumaAndImo
+        {
+            public static List<PlayerControl> SatsumaAndImoPlayer;
+            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static int TeamNumber;
+            public static void ClearAndReload()
+            {
+                SatsumaAndImoPlayer = new();
+                TeamNumber = 1;
+                //0=imp
+                //1=crew
             }
         }
         //新ロールクラス
