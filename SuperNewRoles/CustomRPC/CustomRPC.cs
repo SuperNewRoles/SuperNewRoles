@@ -6,6 +6,7 @@ using Hazel;
 using InnerNet;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.EndGame;
+using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Patch;
@@ -202,7 +203,8 @@ namespace SuperNewRoles.CustomRPC
         RandomSpawn,
         KunaiKill,
         SetSecretRoomTeleportStatus,
-        ChiefSidekick
+        ChiefSidekick,
+        RpcSetDoorway
     }
     public static class RPCProcedure
     {
@@ -1248,6 +1250,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.ChiefSidekick:
                             ChiefSidekick(reader.ReadByte());
+                            break;
+                        case CustomRPC.RpcSetDoorway:
+                            RPCHelper.RpcSetDoorway(reader.ReadByte(), reader.ReadBoolean());
                             break;
                     }
                 }

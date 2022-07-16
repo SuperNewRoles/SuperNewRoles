@@ -1,3 +1,4 @@
+using System.Linq;
 using Hazel;
 using InnerNet;
 using UnityEngine;
@@ -35,6 +36,18 @@ namespace SuperNewRoles.Helpers
         public static void EndRPC(this MessageWriter Writer)
         {
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
+        }
+        public static void RpcSetDoorway(byte id, bool Open)
+        {
+            ShipStatus.Instance.AllDoors.FirstOrDefault((a) => a.Id == id).RpcSetDoorway(Open);
+        }
+        public static void RpcSetDoorway(this PlainDoor door, bool Open)
+        {
+            door.SetDoorway(Open);
+            MessageWriter writer = StartRPC(CustomRPC.CustomRPC.RpcSetDoorway);
+            writer.Write(door.Id);
+            writer.Write(Open);
+            writer.EndRPC();
         }
         public static void RPCGameOptionsPrivate(GameOptionsData Data, PlayerControl target)
         {
