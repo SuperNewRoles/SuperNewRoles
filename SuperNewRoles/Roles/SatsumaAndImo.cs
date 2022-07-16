@@ -14,7 +14,6 @@ namespace SuperNewRoles.Roles
         {
             if (RoleClass.SatsumaAndImo.TeamNumber == 1) { RoleClass.SatsumaAndImo.color = Palette.White; }
             else if (RoleClass.SatsumaAndImo.TeamNumber == 2) { RoleClass.SatsumaAndImo.color = RoleClass.ImpostorRed; }
-            else if (RoleClass.SatsumaAndImo.TeamNumber == 3) { RoleClass.SatsumaAndImo.color = RoleClass.JackalFriends.color; }
             if (RoleClass.SatsumaAndImo.TeamNumber == 1)//クルーなら
             {
                 SuperNewRolesPlugin.Logger.LogDebug("まｄｄ");
@@ -24,14 +23,8 @@ namespace SuperNewRoles.Roles
             else if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
             {
                 SuperNewRolesPlugin.Logger.LogDebug("かｓｆ");
-                RoleClass.SatsumaAndImo.TeamNumber = 3;//ジャカフレに
+                RoleClass.SatsumaAndImo.TeamNumber = 2;//ジャカフレに
                 RoleClass.SatsumaAndImo.color = RoleClass.JackalFriends.color;
-            }
-            else//ジャカフレなら
-            {
-                SuperNewRolesPlugin.Logger.LogDebug("kuruu");
-                RoleClass.SatsumaAndImo.TeamNumber = 1;//クルーに
-                RoleClass.SatsumaAndImo.color = Palette.White;
             }
             //SatsumaRoleSelect.SetRole();//役職割り当て
         }

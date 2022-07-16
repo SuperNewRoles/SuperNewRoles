@@ -539,14 +539,6 @@ namespace SuperNewRoles.EndGame
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 foreach (var cp in CachedPlayer.AllPlayers)
                 {
-                    foreach (PlayerControl smp in RoleClass.SatsumaAndImo.SatsumaAndImoPlayer)
-                    {
-                        WinningPlayerData wpd = new(smp.Data);
-                        if (RoleClass.SatsumaAndImo.TeamNumber == 3)//ジャッカルフレンズなら
-                        {
-                            TempData.winners.Add(wpd);//さつまいもも勝ち
-                        }
-                    }
                     if (cp.PlayerControl.IsJackalTeam())
                     {
                         WinningPlayerData wpd = new(cp.Data);
