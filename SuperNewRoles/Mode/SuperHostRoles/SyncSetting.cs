@@ -33,15 +33,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
                 }
             }
+            if (player.isZeroCoolEngineer())
+            {
+                optdata.RoleOptions.EngineerCooldown = 0f;
+                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+            }
             switch (role)
             {
-                case RoleId.Jester:
-                    if (RoleClass.Jester.IsUseVent)
-                    {
-                        optdata.RoleOptions.EngineerCooldown = 0f;
-                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
-                    break;
                 case RoleId.Sheriff:
                     optdata.KillCooldown = KillCoolSet(CustomOptions.SheriffCoolTime.getFloat());
                     break;
@@ -58,34 +56,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.Observer:
                     optdata.AnonymousVotes = !RoleClass.Observer.IsVoteView;
-                    break;
-                case RoleId.MadMate:
-                    if (RoleClass.MadMate.IsUseVent)
-                    {
-                        optdata.RoleOptions.EngineerCooldown = 0f;
-                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
-                    break;
-                case RoleId.MadMayor:
-                    if (RoleClass.MadMayor.IsUseVent)
-                    {
-                        optdata.RoleOptions.EngineerCooldown = 0f;
-                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
-                    break;
-                case RoleId.MadStuntMan:
-                    if (RoleClass.MadStuntMan.IsUseVent)
-                    {
-                        optdata.RoleOptions.EngineerCooldown = 0f;
-                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
-                    break;
-                case RoleId.MadJester:
-                    if (RoleClass.MadJester.IsUseVent)
-                    {
-                        optdata.RoleOptions.EngineerCooldown = 0f;
-                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
                     break;
                 case RoleId.MadMaker:
                     if (!player.IsMod())
@@ -121,20 +91,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.KillCooldown = 0.001f;
                     }
                     break;
-                case RoleId.JackalFriends:
-                    if (RoleClass.JackalFriends.IsUseVent)
-                    {
-                        optdata.RoleOptions.EngineerCooldown = 0f;
-                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
-                    break;
-                case RoleId.Fox:
-                    if (RoleClass.Fox.IsUseVent)
-                    {
-                        optdata.RoleOptions.EngineerCooldown = 0f;
-                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
-                    break;
                 case RoleId.truelover:
                     if (RoleClass.truelover.CreatePlayers.Contains(player.PlayerId))
                     {
@@ -144,10 +100,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         optdata.KillCooldown = 0.001f;
                     }
-                    break;
-                case RoleId.Technician:
-                    optdata.RoleOptions.EngineerCooldown = 0f;
-                    optdata.RoleOptions.EngineerInVentMaxTime = 0f;
                     break;
                 case RoleId.SerialKiller:
                     optdata.killCooldown = KillCoolSet(RoleClass.SerialKiller.KillTime);
@@ -228,34 +180,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     break;
                 case RoleId.Demon:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Demon.CoolTime);
-                    break;
-                case RoleId.MayorFriends:
-                    if (RoleClass.MayorFriends.IsUseVent)
-                    {
-                        optdata.RoleOptions.EngineerCooldown = 0f;
-                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
-                    break;
-                case RoleId.Tuna:
-                    if (RoleClass.Tuna.IsUseVent)
-                    {
-                        optdata.RoleOptions.EngineerCooldown = 0f;
-                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
-                    break;
-                case RoleId.BlackCat:
-                    if (RoleClass.BlackCat.IsUseVent)
-                    {
-                        optdata.RoleOptions.EngineerCooldown = 0f;
-                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
-                    break;
-                case RoleId.Spy:
-                    if (RoleClass.Spy.CanUseVent)
-                    {
-                        optdata.RoleOptions.EngineerCooldown = 0f;
-                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
                     break;
                 case RoleId.ToiletFan:
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.ToiletFan.ToiletCool;

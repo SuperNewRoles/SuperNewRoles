@@ -45,9 +45,45 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     return RoleClass.MayorFriends.IsImpostorLight;
                 case RoleId.BlackCat:
                     return RoleClass.BlackCat.IsImpostorLight;
-                //インポ視界か
+                    //インポ視界か
             }
             return false;
+        }
+        public static bool isZeroCoolEngineer(this PlayerControl player)
+        {
+            var IsZeroCoolEngineer = false;
+            switch (player.getRole())
+            {
+                case RoleId.Technician:
+                    IsZeroCoolEngineer = true;
+                    break;
+                case RoleId.Jester:
+                    return RoleClass.Jester.IsUseVent;
+                case RoleId.MadMate:
+                    return RoleClass.MadMate.IsUseVent;
+                case RoleId.MadMayor:
+                    return RoleClass.MadMayor.IsUseVent;
+                case RoleId.MadStuntMan:
+                    return RoleClass.MadStuntMan.IsUseVent;
+                case RoleId.MadJester:
+                    return RoleClass.MadJester.IsUseVent;
+                case RoleId.JackalFriends:
+                    return RoleClass.JackalFriends.IsUseVent;
+                case RoleId.Fox:
+                    return RoleClass.Fox.IsUseVent;
+                case RoleId.MayorFriends:
+                    return RoleClass.MayorFriends.IsUseVent;
+                case RoleId.Tuna:
+                    return RoleClass.Tuna.IsUseVent;
+                case RoleId.BlackCat:
+                    return RoleClass.BlackCat.IsUseVent;
+                case RoleId.Spy:
+                    return RoleClass.Spy.CanUseVent;
+                case RoleId.Arsonist:
+                    return RoleClass.Arsonist.IsUseVent;
+                    //ベント無限か
+            }
+            return IsZeroCoolEngineer;
         }
     }
 }
