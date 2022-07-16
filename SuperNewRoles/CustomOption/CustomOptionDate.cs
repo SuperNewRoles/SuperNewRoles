@@ -652,6 +652,7 @@ namespace SuperNewRoles.CustomOption
 
         public static CustomRoleOption NeetOption;
         public static CustomOption NeetPlayerCount;
+        public static CustomOption NeetIsAddWin;
 
         public static CustomRoleOption FastMakerOption;
         public static CustomOption FastMakerPlayerCount;
@@ -1350,6 +1351,7 @@ namespace SuperNewRoles.CustomOption
 
             NeetOption = new CustomRoleOption(658, false, CustomOptionType.Neutral, "NeetName", RoleClass.Neet.color, 1);
             NeetPlayerCount = CustomOption.Create(659, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NeetOption);
+            NeetIsAddWin = CustomOption.Create(662, false, CustomOptionType.Neutral, "TunaAddWinSetting", false, NeetOption);
 
             FastMakerOption = new CustomRoleOption(660, true, CustomOptionType.Impostor, "FastMakerName", RoleClass.FastMaker.color, 1);
             FastMakerPlayerCount = CustomOption.Create(661, true, CustomOptionType.Impostor, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], FastMakerOption);
