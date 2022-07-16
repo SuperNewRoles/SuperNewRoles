@@ -2508,8 +2508,9 @@ namespace SuperNewRoles.Roles
             {
                 SatsumaAndImoPlayer = new();
                 TeamNumber = 1;
-                //0=imp
-                //1=crew
+                //1=クルー
+                //2=マッド
+                //3=ジャカフレ
             }
         }
         //新ロールクラス

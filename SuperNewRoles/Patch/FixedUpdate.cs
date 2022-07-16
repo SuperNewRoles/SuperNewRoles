@@ -1,4 +1,4 @@
-using HarmonyLib;
+﻿using HarmonyLib;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
@@ -153,6 +153,7 @@ namespace SuperNewRoles.Patch
                                 break;
                             default:
                                 Minimalist.FixedUpdate.Postfix(MyRole);
+                                SatsumaRoleSelect.SetRole();
                                 break;
                         }
                     }
