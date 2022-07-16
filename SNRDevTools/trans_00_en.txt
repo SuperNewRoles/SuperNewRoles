@@ -822,3 +822,6 @@ Toilet Cool Time
 DoorOpen
 RandomSpawn
 Not taking the Imposter off the road
+Satsuma And Imo
+Let's spin your palm around.
+Each meeting will be replaced by a crewmate and a madmate.\nInitially it is crewmate.

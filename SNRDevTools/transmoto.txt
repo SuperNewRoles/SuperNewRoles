@@ -822,3 +822,6 @@ ToiletCoolDownSetting
 ToiletName
 PolusrandomSpawn
 NotImpostorExiled
+SatsumaAndImoName
+SatsumaAndImoTitle1
+SatsumaAndImoDescription
