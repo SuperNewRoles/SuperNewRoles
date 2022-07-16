@@ -286,6 +286,24 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
+        public static void SatsumaimoSet()
+        {
+            if (PlayerControl.LocalPlayer.isRole(RoleId.SatsumaAndImo) || PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God))
+            {
+                foreach (PlayerControl player in CachedPlayer.AllPlayers)
+                {
+                    if (!player.nameText().text.Contains(ModHelpers.cs(RoleClass.Arsonist.color, " (C)")) && RoleClass.SatsumaAndImo.TeamNumber == 1)
+                    {
+                        SetNamesClass.SetPlayerNameText(player, player.nameText().text + ModHelpers.cs(Palette.White, " (C)"));
+                    }
+                    if (!player.nameText().text.Contains(ModHelpers.cs(RoleClass.Arsonist.color, " (M)")) && RoleClass.SatsumaAndImo.TeamNumber == 2)
+                    {
+                        SetNamesClass.SetPlayerNameText(player, player.nameText().text + ModHelpers.cs(RoleClass.ImpostorRed, " (M)"));
+                    }
+
+                }
+            }
+        }
     }
     public class SetNameUpdate
     {
@@ -365,6 +383,7 @@ namespace SuperNewRoles.Patch
             SetNamesClass.CelebritySet();
             SetNamesClass.QuarreledSet();
             SetNamesClass.LoversSet();
+            SetNamesClass.SatsumaimoSet();
             if (ModeHandler.isMode(ModeId.Default))
             {
                 if (Sabotage.SabotageManager.thisSabotage == Sabotage.SabotageManager.CustomSabotage.CognitiveDeficit)

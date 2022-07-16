@@ -2510,7 +2510,6 @@ namespace SuperNewRoles.Roles
                 TeamNumber = 1;
                 //1=クルー
                 //2=マッド
-                //3=ジャカフレ
             }
         }
         //新ロールクラス
