@@ -40,6 +40,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.Sheriff:
                 case RoleId.truelover:
                 case RoleId.FalseCharges:
+                case RoleId.ToiletFan:
                     break;
                 default:
                     return true;
