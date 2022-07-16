@@ -1472,10 +1472,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
-                else if (RoleClass.AllOpener.AllOpenerPlayer.IsCheckListPlayerControl(player))
-                {
-                    return RoleId.AllOpener;
-                }
+                else if (RoleClass.AllOpener.AllOpenerPlayer.IsCheckListPlayerControl(player)) return RoleId.AllOpener;
                 //ロールチェック
             }
             catch (Exception e)
