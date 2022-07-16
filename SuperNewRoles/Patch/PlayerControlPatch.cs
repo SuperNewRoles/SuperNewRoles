@@ -403,7 +403,8 @@ namespace SuperNewRoles.Patches
                     {
                         case RoleId.RemoteSheriff:
                         case RoleId.ToiletFan:
-                            return false;
+                        case RoleId.AllCleaner:
+                            return false;//キルさせない
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;
                             break;

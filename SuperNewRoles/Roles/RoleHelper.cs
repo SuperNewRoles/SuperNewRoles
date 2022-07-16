@@ -1022,8 +1022,8 @@ namespace SuperNewRoles
             {
                 IsTaskClear = true;
             }
-            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan)))
-            {
+            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan) || player.isRole(RoleId.AllOpener)))
+            {//SHRでタスク無効化
                 IsTaskClear = true;
             }
             if (!IsTaskClear && player.IsQuarreled())
