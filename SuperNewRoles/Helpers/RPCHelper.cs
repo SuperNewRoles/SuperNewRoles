@@ -60,6 +60,7 @@ namespace SuperNewRoles.Helpers
 
         public static void RpcSnapTo(this PlayerControl __instance, Vector2 position)
         {
+            Logger.Info("CustomRpcSnapToが呼び出されました");
             if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
                 __instance.NetTransform.RpcSnapTo(position);

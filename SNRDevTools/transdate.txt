@@ -817,3 +817,10 @@ FastMakerName,Fast Maker,ファストメーカー
 FastMakerTitle1,Let's make Mad Mate with a light heart.,軽い気持ちでマッドメイトを作ろう
 KillName,KILL,キル
 JackalCreateFriendSetting,Can Create JackalFriends,ジャッカルフレンズを作れる
+ToiletFanName,Toilet Fan,トイレファン
+ToiletFanTitle1,A little faster...,少しでも早く...
+ToiletCoolDownSetting,Toilet Cool Time,トイレクールタイム
+ToiletName,DoorOpen,ドア開放
+PolusrandomSpawn,RandomSpawn,ランダムスポーン
+NotImpostorExiled,Not taking the Imposter off the road,インポスターを道連れにしない
+NeutralSubIntro,Think only of yourself. Use others.,自分の事だけ考えろ。他人の事は利用せよ。

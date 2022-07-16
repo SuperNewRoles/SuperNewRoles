@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -156,6 +156,12 @@ namespace SuperNewRoles.Patches
                         {
                             __instance.RpcMurderPlayer(__instance);
                         }
+                        return false;
+                    case RoleId.ToiletFan:
+                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
+                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
+                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
+                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
                         return false;
                 }
             }
@@ -342,28 +348,25 @@ namespace SuperNewRoles.Patches
                             }
 
                         }
+                        SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                        isKill = true;
+
+                        if (__instance.PlayerId != 0)
+                        {
+                            target.Data.IsDead = true;
+                            __instance.RpcMurderPlayer(target);
+                            isKill = false;
+                        }
                         else
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
-                            isKill = true;
-
-                            if (__instance.PlayerId != 0)
+                            new LateTask(() =>
                             {
-                                target.Data.IsDead = true;
-                                __instance.RpcMurderPlayer(target);
-                                isKill = false;
-                            }
-                            else
-                            {
-                                new LateTask(() =>
+                                if (__instance.isAlive() && target.isAlive())
                                 {
-                                    if (__instance.isAlive() && target.isAlive())
-                                    {
-                                        __instance.RpcMurderPlayer(target);
-                                    }
-                                    isKill = false;
-                                }, (AmongUsClient.Instance.Ping / 1000f) * 1.1f);
-                            }
+                                    __instance.RpcMurderPlayer(target);
+                                }
+                                isKill = false;
+                            }, (AmongUsClient.Instance.Ping / 1000f) * 1.1f);
                         }
                     }
                     return false;
@@ -395,6 +398,7 @@ namespace SuperNewRoles.Patches
                     switch (__instance.getRole())
                     {
                         case RoleId.RemoteSheriff:
+                        case RoleId.ToiletFan:
                             return false;
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;
@@ -795,10 +799,6 @@ namespace SuperNewRoles.Patches
             Logger.Info("追加");
             DeadPlayer deadPlayer = new(target, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
-            foreach (var p in DeadPlayer.deadPlayers)
-            {
-                Logger.Info($"{p.killerIfExisting.Data.PlayerName}が{p.player.Data.PlayerName}を切る");
-            }
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
             SerialKiller.MurderPlayer(__instance, target);

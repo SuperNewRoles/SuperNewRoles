@@ -60,5 +60,13 @@ namespace SuperNewRoles.MapCustoms
                 todo(self[i]);
             }
         }
+        public static T Random<T>(this IList<T> self)
+        {
+            if (self.Count > 0)
+            {
+                return self[UnityEngine.Random.Range(0, self.Count)];
+            }
+            return default;
+        }
     }
 }
