@@ -3295,6 +3295,10 @@
  "NotImpostorExiled" : {
         "0" : "Not taking the Imposter off the road" ,
         "11" : "\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3092\u9053\u9023\u308c\u306b\u3057\u306a\u3044"
+        } ,
+ "NeutralSubIntro" : {
+        "0" : "Think only of yourself. Use others." ,
+        "11" : "\u81ea\u5206\u306e\u4e8b\u3060\u3051\u8003\u3048\u308d\u3002\u4ed6\u4eba\u306e\u4e8b\u306f\u5229\u7528\u305b\u3088\u3002"
         } 
 
 }
