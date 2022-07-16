@@ -15,13 +15,22 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
             var role = player.getRole();
             var optdata = OptionData.DeepCopy();
-            if (player.isImpostorCrewVision())
+            if (player.isCrewVision())
             {
                 optdata.ImpostorLightMod = optdata.CrewLightMod;
-                var switchSystem = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                if (switchSystem != null && switchSystem.IsActive)
+                var switchSystemToiletFan = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                if (switchSystemToiletFan != null && switchSystemToiletFan.IsActive)
                 {
                     optdata.ImpostorLightMod /= 5;
+                }
+            }
+            if (player.isImpostorVision())
+            {
+                optdata.CrewLightMod = optdata.ImpostorLightMod;
+                var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                if (switchSystem2 != null && switchSystem2.IsActive)
+                {
+                    optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
                 }
             }
             switch (role)

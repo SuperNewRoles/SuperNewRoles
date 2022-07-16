@@ -8,9 +8,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     public static class RoleHelper
     {
-        public static bool isImpostorCrewVision(this PlayerControl player)
+        public static bool isCrewVision(this PlayerControl player)
         {
-            var IsImpostorCrewVision = false;
+            var IsCrewVision = false;
             switch (player.getRole())
             {
                 case RoleId.Sheriff:
@@ -19,8 +19,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.RemoteSheriff:
                 case RoleId.Arsonist:
                 case RoleId.ToiletFan:
-                    IsImpostorCrewVision = true;
+                    IsCrewVision = true;
                     break;
+                    //クルー視界か
+            }
+            return IsCrewVision;
+        }
+        public static bool isImpostorVision(this PlayerControl player)
+        {
+            switch (player.getRole())
+            {
                 case RoleId.MadMate:
                     return RoleClass.MadMate.IsImpostorLight;
                 case RoleId.MadMayor:
@@ -37,9 +45,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     return RoleClass.MayorFriends.IsImpostorLight;
                 case RoleId.BlackCat:
                     return RoleClass.BlackCat.IsImpostorLight;
-                    //クルー視界か
+                //インポ視界か
             }
-            return IsImpostorCrewVision;
+            return false;
         }
     }
 }
