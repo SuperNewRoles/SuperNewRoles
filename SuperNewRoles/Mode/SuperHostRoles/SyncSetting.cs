@@ -15,6 +15,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
             var role = player.getRole();
             var optdata = OptionData.DeepCopy();
+            if (player.isImpostorCrewVision())
+            {
+                optdata.ImpostorLightMod = optdata.CrewLightMod;
+                var switchSystem = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                if (switchSystem != null && switchSystem.IsActive)
+                {
+                    optdata.ImpostorLightMod /= 5;
+                }
+            }
             switch (role)
             {
                 case RoleId.Jester:
@@ -25,12 +34,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     break;
                 case RoleId.Sheriff:
-                    optdata.ImpostorLightMod = optdata.CrewLightMod;
-                    var switchSystem = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                    if (switchSystem != null && switchSystem.IsActive)
-                    {
-                        optdata.ImpostorLightMod /= 5;
-                    }
                     optdata.KillCooldown = KillCoolSet(CustomOptions.SheriffCoolTime.getFloat());
                     break;
                 case RoleId.Minimalist:
@@ -53,30 +56,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.RoleOptions.EngineerCooldown = 0f;
                         optdata.RoleOptions.EngineerInVentMaxTime = 0f;
                     }
-                    if (RoleClass.MadMate.IsImpostorLight)
-                    {
-                        optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                        if (switchSystem2 != null && switchSystem2.IsActive)
-                        {
-                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
-                        }
-                    }
                     break;
                 case RoleId.MadMayor:
                     if (RoleClass.MadMayor.IsUseVent)
                     {
                         optdata.RoleOptions.EngineerCooldown = 0f;
                         optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
-                    if (RoleClass.MadMayor.IsImpostorLight)
-                    {
-                        optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                        if (switchSystem2 != null && switchSystem2.IsActive)
-                        {
-                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
-                        }
                     }
                     break;
                 case RoleId.MadStuntMan:
@@ -85,30 +70,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.RoleOptions.EngineerCooldown = 0f;
                         optdata.RoleOptions.EngineerInVentMaxTime = 0f;
                     }
-                    if (RoleClass.MadStuntMan.IsImpostorLight)
-                    {
-                        optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                        if (switchSystem2 != null && switchSystem2.IsActive)
-                        {
-                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
-                        }
-                    }
                     break;
                 case RoleId.MadJester:
                     if (RoleClass.MadJester.IsUseVent)
                     {
                         optdata.RoleOptions.EngineerCooldown = 0f;
                         optdata.RoleOptions.EngineerInVentMaxTime = 0f;
-                    }
-                    if (RoleClass.MadJester.IsImpostorLight)
-                    {
-                        optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                        if (switchSystem2 != null && switchSystem2.IsActive)
-                        {
-                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
-                        }
                     }
                     break;
                 case RoleId.MadMaker:
@@ -151,15 +118,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.RoleOptions.EngineerCooldown = 0f;
                         optdata.RoleOptions.EngineerInVentMaxTime = 0f;
                     }
-                    if (RoleClass.JackalFriends.IsImpostorLight)
-                    {
-                        optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                        if (switchSystem2 != null && switchSystem2.IsActive)
-                        {
-                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
-                        }
-                    }
                     break;
                 case RoleId.Fox:
                     if (RoleClass.Fox.IsUseVent)
@@ -167,23 +125,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.RoleOptions.EngineerCooldown = 0f;
                         optdata.RoleOptions.EngineerInVentMaxTime = 0f;
                     }
-                    if (RoleClass.Fox.IsImpostorLight)
-                    {
-                        optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                        if (switchSystem2 != null && switchSystem2.IsActive)
-                        {
-                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
-                        }
-                    }
                     break;
                 case RoleId.truelover:
-                    optdata.ImpostorLightMod = optdata.CrewLightMod;
-                    var switchSystemtruelover = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                    if (switchSystemtruelover != null && switchSystemtruelover.IsActive)
-                    {
-                        optdata.ImpostorLightMod /= 5;
-                    }
                     if (RoleClass.truelover.CreatePlayers.Contains(player.PlayerId))
                     {
                         optdata.KillCooldown = -1f;
@@ -204,21 +147,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.killCooldown = KillCoolSet(RoleClass.OverKiller.KillCoolTime);
                     break;
                 case RoleId.FalseCharges:
-                    optdata.ImpostorLightMod = optdata.CrewLightMod;
-                    var switchSystemFalseCharges = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                    if (switchSystemFalseCharges != null && switchSystemFalseCharges.IsActive)
-                    {
-                        optdata.ImpostorLightMod /= 5;
-                    }
                     optdata.killCooldown = KillCoolSet(RoleClass.FalseCharges.CoolTime);
                     break;
                 case RoleId.RemoteSheriff:
-                    optdata.ImpostorLightMod = optdata.CrewLightMod;
-                    var switchSystemRemoteSheriff = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                    if (switchSystemRemoteSheriff != null && switchSystemRemoteSheriff.IsActive)
-                    {
-                        optdata.ImpostorLightMod /= 5;
-                    }
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     optdata.RoleOptions.ShapeshifterCooldown = KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime);
                     if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId) && RoleClass.RemoteSheriff.KillCount[player.PlayerId] < 1)
@@ -236,12 +167,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     break;
                 case RoleId.Arsonist:
-                    optdata.ImpostorLightMod = optdata.CrewLightMod;
-                    var switchSystemArsonist = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                    if (switchSystemArsonist != null && switchSystemArsonist.IsActive)
-                    {
-                        optdata.ImpostorLightMod /= 5;
-                    }
                     optdata.RoleOptions.ShapeshifterCooldown = 1f;
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     optdata.KillCooldown = KillCoolSet(RoleClass.Arsonist.CoolTime);
@@ -301,15 +226,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.RoleOptions.EngineerCooldown = 0f;
                         optdata.RoleOptions.EngineerInVentMaxTime = 0f;
                     }
-                    if (RoleClass.MayorFriends.IsImpostorLight)
-                    {
-                        optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                        if (switchSystem2 != null && switchSystem2.IsActive)
-                        {
-                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
-                        }
-                    }
                     break;
                 case RoleId.Tuna:
                     if (RoleClass.Tuna.IsUseVent)
@@ -324,15 +240,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.RoleOptions.EngineerCooldown = 0f;
                         optdata.RoleOptions.EngineerInVentMaxTime = 0f;
                     }
-                    if (RoleClass.BlackCat.IsImpostorLight)
-                    {
-                        optdata.CrewLightMod = optdata.ImpostorLightMod;
-                        var switchSystem2 = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                        if (switchSystem2 != null && switchSystem2.IsActive)
-                        {
-                            optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
-                        }
-                    }
                     break;
                 case RoleId.Spy:
                     if (RoleClass.Spy.CanUseVent)
@@ -342,12 +249,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     break;
                 case RoleId.ToiletFan:
-                    optdata.ImpostorLightMod = optdata.CrewLightMod;
-                    var switchSystemToiletFan = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                    if (switchSystemToiletFan != null && switchSystemToiletFan.IsActive)
-                    {
-                        optdata.ImpostorLightMod /= 5;
-                    }
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.ToiletFan.ToiletCool;
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
