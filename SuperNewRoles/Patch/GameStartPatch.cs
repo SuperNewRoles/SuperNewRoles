@@ -1,6 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 using SuperNewRoles.Mode;
+using SuperNewRoles.CustomOption;
 
 namespace SuperNewRoles.Patch
 {
@@ -28,6 +29,14 @@ namespace SuperNewRoles.Patch
                     PlayerControl.LocalPlayer.RpcSendChat(string.Format("SHRモードでSNRが名前に含まれている状態では公開部屋にすることはできません。"));
                     return false;
                 }
+                else if (!NameIncludeSNR && !NameIncludeSHR)
+                {
+                    SuperNewRolesPlugin.Logger.LogWarning("Mod関連のワードが名前にないので公開部屋にできません");
+                    __instance.MakePublicButton.color = Palette.DisabledClear;
+                    __instance.privatePublicText.color = Palette.DisabledClear;
+                    PlayerControl.LocalPlayer.RpcSendChat(string.Format("Mod関連のワードが名前に入っていないと公開部屋にすることはできません。特殊モードをご利用の場合は名前に「SHR」を入れてください。"));
+                    return false;
+                }
                 return true;
             }
         }
@@ -39,6 +48,13 @@ namespace SuperNewRoles.Patch
                 if (Input.GetKeyDown(KeyCode.F8) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
                 {
                     GameStartManager.Instance.countDownTimer = 0;
+                }
+                if (CustomOptions.DebugModeFastStart.getBool() && CustomOptions.IsDebugMode.getBool())//デバッグモードでデバッグ即開始が有効
+                {//カウントダウン中
+                    if (GameStartManager.InstanceExists && GameStartManager.Instance.startState == GameStartManager.StartingStates.Countdown)
+                    {//カウント0
+                        GameStartManager.Instance.countDownTimer = 0;
+                    }
                 }
                 if (Input.GetKeyDown(KeyCode.F7) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
                 {

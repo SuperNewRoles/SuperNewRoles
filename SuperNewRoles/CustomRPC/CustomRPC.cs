@@ -132,6 +132,7 @@ namespace SuperNewRoles.CustomRPC
         SuicideWisher,
         Neet,
         FastMaker,
+        ToiletFan,
         //RoleId
     }
 
@@ -200,6 +201,7 @@ namespace SuperNewRoles.CustomRPC
         UseVitalsTime,
         FixLights,
         AddMarker,
+        RandomSpawn,
         KunaiKill,
         SetSecretRoomTeleportStatus,
         ChiefSidekick
@@ -968,7 +970,49 @@ namespace SuperNewRoles.CustomRPC
             position.y = BitConverter.ToSingle(buff, 1 * sizeof(float));
             new JackInTheBox(position);
         }
-
+        public static void randomSpawn(byte playerId, byte locId)
+        {
+            HudManager.Instance.StartCoroutine(Effects.Lerp(3f, new Action<float>((p) =>
+            { // Delayed action
+                if (p == 1f)
+                {
+                    Vector2 InitialSpawnCenter = new(16.64f, -2.46f);
+                    Vector2 MeetingSpawnCenter = new(17.4f, -16.286f);
+                    Vector2 ElectricalSpawn = new(5.53f, -9.84f);
+                    Vector2 O2Spawn = new(3.28f, -21.67f);
+                    Vector2 SpecimenSpawn = new(36.54f, -20.84f);
+                    Vector2 LaboSpawn = new(34.91f, -6.50f);
+                    Vector2 CommsSpawn = new(12.24f, -15.9473f);
+                    Vector2 StorageSpawn = new(20.9707f, -12.3396f);
+                    Vector2 MeetingSpawnUnder = new(22.0948f, -25.1668f);
+                    Vector2 LocketSpawn = new(26.6442f, -6.775f);
+                    Vector2 LeftReactorSpawn = new(4.6395f, -4.2884f);
+                    var loc = locId switch
+                    {
+                        0 => InitialSpawnCenter,
+                        1 => MeetingSpawnCenter,
+                        2 => ElectricalSpawn,
+                        3 => O2Spawn,
+                        4 => SpecimenSpawn,
+                        5 => LaboSpawn,
+                        6 => CommsSpawn,
+                        7 => StorageSpawn,
+                        8 => MeetingSpawnUnder,
+                        9 => LocketSpawn,
+                        10 => LeftReactorSpawn,
+                        _ => InitialSpawnCenter,
+                    };
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.Data.PlayerId == playerId)
+                        {
+                            player.transform.position = loc;
+                            break;
+                        }
+                    }
+                }
+            })));
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -1202,6 +1246,11 @@ namespace SuperNewRoles.CustomRPC
                         break;
                         case CustomRPC.FixLights:
                             FixLights();
+                            break;
+                        case CustomRPC.RandomSpawn:
+                            byte pId = reader.ReadByte();
+                            byte locId = reader.ReadByte();
+                            RPCProcedure.randomSpawn(pId, locId);
                             break;
                         case CustomRPC.KunaiKill:
                             KunaiKill(reader.ReadByte(), reader.ReadByte());

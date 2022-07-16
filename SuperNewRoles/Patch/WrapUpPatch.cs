@@ -128,7 +128,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
 
-                if (RoleClass.Jester.JesterPlayer.IsCheckListPlayerControl(Player))
+                if (Player.isRole(RoleId.Jester))
                 {
 
                     if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
@@ -143,7 +143,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
 
-                if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(Player))
+                if (Player.isRole(RoleId.MadJester))
                 {
                     if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
                     {
