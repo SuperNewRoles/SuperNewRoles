@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.Patch;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -30,7 +31,7 @@ namespace SuperNewRoles.Roles
             {
                 static void Postfix(VitalsMinigame __instance)
                 {
-                    if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Doctor) && !RoleClass.Doctor.MyPanelFlag)
+                    if (PlayerControl.LocalPlayer.isRole(RoleId.Doctor) && !RoleClass.Doctor.MyPanelFlag)
                     {
                         for (int k = 0; k < __instance.vitals.Length; k++)
                         {

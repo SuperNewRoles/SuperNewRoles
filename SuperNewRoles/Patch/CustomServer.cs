@@ -1,8 +1,5 @@
 using System;
 using System.Linq;
-using BepInEx;
-using BepInEx.Configuration;
-using BepInEx.IL2CPP;
 using HarmonyLib;
 using UnityEngine;
 using UnityEngine.Events;

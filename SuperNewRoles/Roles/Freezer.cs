@@ -3,6 +3,7 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -35,7 +36,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsFreezer(PlayerControl Player)
         {
-            if (RoleClass.Freezer.FreezerPlayer.IsCheckListPlayerControl(Player))
+            if (Player.isRole(RoleId.Freezer))
             {
                 return true;
             }

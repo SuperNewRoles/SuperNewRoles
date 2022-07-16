@@ -3,6 +3,8 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Patch;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -49,7 +51,7 @@ namespace SuperNewRoles.Roles
     {
         static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isDead())
+            if (PlayerControl.LocalPlayer.isRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isDead())
             {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
@@ -108,18 +110,10 @@ namespace SuperNewRoles.Roles
         {
             var roledata = CountChanger.GetRoleType(Target);
             if (roledata == TeamRoleType.Impostor) return true;
-            if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.MadJester.MadJesterPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            if (Target.isMadRole() && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            if (Target.isFriendRole() && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (Target.isNeutral() && RoleClass.MeetingSheriff.NeutralKill) return true;
-            if (RoleClass.MadStuntMan.MadStuntManPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.MadMayor.MadMayorPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.MadHawk.MadHawkPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.MadSeer.MadSeerPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.JackalFriends.JackalFriendsPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.SeerFriends.SeerFriendsPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (RoleClass.HauntedWolf.HauntedWolfPlayer.IsCheckListPlayerControl(Target)) return true;
-            if (RoleClass.BlackCat.BlackCatPlayer.IsCheckListPlayerControl(Target) && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            if (Target.isRole(RoleId.HauntedWolf)) return true;
             return false;
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
@@ -145,7 +139,7 @@ namespace SuperNewRoles.Roles
         }
         static void Event(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
+            if (PlayerControl.LocalPlayer.isRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
@@ -170,6 +164,7 @@ namespace SuperNewRoles.Roles
 
         static void Postfix(MeetingHud __instance)
         {
+            LadderDead.Reset();
             RoleClass.IsMeeting = true;
             if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
             {
@@ -178,7 +173,7 @@ namespace SuperNewRoles.Roles
 
             MeetingUpdatePatch.IsFlag = false;
             MeetingUpdatePatch.IsSHRFlag = false;
-            if (!ModeHandler.isMode(ModeId.SuperHostRoles) && CachedPlayer.AllPlayers.Count > 15)
+            if (!ModeHandler.isMode(ModeId.SuperHostRoles) && PlayerControl.AllPlayerControls.Count > 15)
             {
                 MeetingUpdatePatch.IsFlag = true;
                 meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();
@@ -201,7 +196,7 @@ namespace SuperNewRoles.Roles
                 meetingsheriff_updatepatch.index = 1;
                 CreateAreaButton(__instance);
             }
-            if (ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count != 0)
+            if (ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count > 0)
             {
                 List<PlayerVoteArea> newareas = new();
                 List<PlayerVoteArea> deadareas = new();

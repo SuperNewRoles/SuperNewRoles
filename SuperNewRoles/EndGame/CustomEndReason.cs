@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace SuperNewRoles.EndGame
 {
@@ -23,6 +21,7 @@ namespace SuperNewRoles.EndGame
         ArsonistWin,
         VultureWin,
         TunaWin,
+        NeetWin,
         BugEnd
     }
 }

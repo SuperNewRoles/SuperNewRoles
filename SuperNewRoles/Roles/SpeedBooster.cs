@@ -3,6 +3,7 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.Mode;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -37,7 +38,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSpeedBooster(PlayerControl Player)
         {
-            if (RoleClass.SpeedBooster.SpeedBoosterPlayer.IsCheckListPlayerControl(Player))
+            if (Player.isRole(RoleId.SpeedBooster))
             {
                 return true;
             }
@@ -61,7 +62,7 @@ namespace SuperNewRoles.Roles
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 if (ModeHandler.isMode(ModeId.Default))
                 {
-                    if (__instance.AmOwner && __instance.myPlayer.isRole(CustomRPC.RoleId.SpeedBooster) && RoleClass.SpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
+                    if (__instance.AmOwner && __instance.myPlayer.isRole(RoleId.SpeedBooster) && RoleClass.SpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
                     {
                         __instance.body.velocity = __instance.body.velocity * RoleClass.SpeedBooster.Speed;
                     }

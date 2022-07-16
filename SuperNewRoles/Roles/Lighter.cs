@@ -1,5 +1,6 @@
 using System;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -12,7 +13,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool isLighter(PlayerControl Player)
         {
-            if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(Player))
+            if (Player.isRole(RoleId.Lighter))
             {
                 return true;
             }

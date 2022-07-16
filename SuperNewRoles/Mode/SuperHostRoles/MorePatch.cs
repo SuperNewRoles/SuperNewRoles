@@ -1,12 +1,6 @@
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
-using UnityEngine;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -28,10 +22,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {
-                if ((player.isRole(RoleId.Jackal) && !RoleClass.Jackal.IsUseSabo) || player.isRole(RoleId.Demon) || player.isRole(RoleId.Arsonist) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.Sheriff) || player.isRole(RoleId.truelover) || player.isRole(RoleId.FalseCharges) || player.isRole(RoleId.MadMaker)) return false;
-                if (!RoleClass.Minimalist.UseSabo && player.isRole(CustomRPC.RoleId.Minimalist)) return false;
-                if (!RoleClass.Samurai.UseSabo && player.isRole(CustomRPC.RoleId.Samurai)) return false;
-                if (!RoleClass.Egoist.UseSabo && player.isRole(CustomRPC.RoleId.Egoist)) return false;
+                if ((player.isRole(RoleId.Jackal) && !RoleClass.Jackal.IsUseSabo) || player.isRole(RoleId.Demon, RoleId.Arsonist, RoleId.RemoteSheriff, RoleId.Sheriff,
+                    RoleId.truelover, RoleId.FalseCharges, RoleId.MadMaker, RoleId.ToiletFan)) return false;
+                if (!RoleClass.Minimalist.UseSabo && player.isRole(RoleId.Minimalist)) return false;
+                if (!RoleClass.Samurai.UseSabo && player.isRole(RoleId.Samurai)) return false;
+                if (!RoleClass.Egoist.UseSabo && player.isRole(RoleId.Egoist)) return false;
             }
             if (PlayerControl.LocalPlayer.IsUseVent() && RoleHelpers.IsComms())
             {

@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
-using SuperNewRoles.EndGame;
 using SuperNewRoles.Patch;
-using UnityEngine;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode
@@ -284,9 +279,20 @@ namespace SuperNewRoles.Mode
         }
         public static bool isMode(params ModeId[] modes)
         {
+            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)))
+            {
+                foreach (ModeId mode in modes)
+                {
+                    if (mode == ModeId.Default)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
             foreach (ModeId mode in modes)
             {
-                if (isMode(mode))
+                if (thisMode == mode)
                 {
                     return true;
                 }
@@ -295,7 +301,7 @@ namespace SuperNewRoles.Mode
         }
         public static bool isMode(ModeId mode, bool IsChache = true)
         {
-            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)))
+            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId))
             {
                 if (mode == ModeId.Default)
                 {

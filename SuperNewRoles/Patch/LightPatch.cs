@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
@@ -57,11 +54,11 @@ namespace SuperNewRoles.Patch
 
             if (player == null || player.IsDead)
                 __result = __instance.MaxLightRadius;
-            else if (player.Object.isRole(CustomRPC.RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate)
+            else if (player.Object.isRole(RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate)
                 __result = GetNeutralLightRadius(__instance, false);
             else if (player.Object.isImpostor() || RoleHelpers.IsImpostorLight(player.Object))
                 __result = GetNeutralLightRadius(__instance, true);
-            else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player.Object) && RoleClass.Lighter.IsLightOn)
+            else if (player.Object.isRole(RoleId.Lighter)&& RoleClass.Lighter.IsLightOn)
                 __result = Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num);
             else
                 __result = GetNeutralLightRadius(__instance, false);

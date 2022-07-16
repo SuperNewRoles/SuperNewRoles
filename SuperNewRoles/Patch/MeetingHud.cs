@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using HarmonyLib;
-using Hazel;
-using InnerNet;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnhollowerBaseLib;
-using UnityEngine;
 using static MeetingHud;
 
 namespace SuperNewRoles.Patch
@@ -110,7 +106,7 @@ namespace SuperNewRoles.Patch
                         foreach (var ps in __instance.playerStates)
                         {
                             PlayerControl player = ModHelpers.playerById(ps.TargetPlayerId);
-                            if (!ps.AmDead && !ps.DidVote && (player.isImpostor() || (!player.isRole(CustomRPC.RoleId.DefaultRole) && !player.isRole(CustomRPC.RoleId.MadMate) && !player.isRole(CustomRPC.RoleId.SpiritMedium) && !(player.PlayerId == Mode.Werewolf.main.HunterExilePlayer.PlayerId && Mode.Werewolf.main.HunterPlayers.IsCheckListPlayerControl(player)))))
+                            if (!ps.AmDead && !ps.DidVote && (player.isImpostor() || (!player.isRole(RoleId.DefaultRole) && !player.isRole(RoleId.MadMate) && !player.isRole(RoleId.SpiritMedium) && !(player.PlayerId == Mode.Werewolf.main.HunterExilePlayer.PlayerId && Mode.Werewolf.main.HunterPlayers.IsCheckListPlayerControl(player)))))
                                 return false;
                         }
                         for (var i = 0; i < __instance.playerStates.Length; i++)
@@ -154,7 +150,7 @@ namespace SuperNewRoles.Patch
                             PlayerVoteArea ps = __instance.playerStates[i];
                             if (ModeHandler.isMode(ModeId.BattleRoyal))
                             {
-                                if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(CustomRPC.RoleId.Sheriff)) { }
+                                if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Sheriff)) { }
                             }
                             else
                             {
@@ -306,15 +302,15 @@ namespace SuperNewRoles.Patch
                     {
                         if (ModeHandler.isMode(ModeId.BattleRoyal))
                         {
-                            if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(CustomRPC.RoleId.Sheriff)) { }
+                            if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Sheriff)) { }
                         }
                         else
                         {
                             if (ps == null) continue;
                             var voter = ModHelpers.playerById(ps.TargetPlayerId);
-                            if (voter == null || voter.Data == null || voter.Data.Disconnected || voter.IsBot() || voter.isDead()) continue;
-                            //BOTならスキップ判定
-                            if (ps.VotedFor != 253 && ps.VotedFor != 254 && ModHelpers.playerById(ps.VotedFor).IsBot())
+                            if (voter == null || voter.Data == null || voter.Data.Disconnected || voter.IsBot() || voter.isDead() || ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Neet)) continue;
+                            //BOT・ニートならスキップ判定
+                            if (ps.VotedFor != 253 && ps.VotedFor != 254 && ModHelpers.playerById(ps.VotedFor).IsBot() || ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Neet))
                             {
                                 ps.VotedFor = 253;
                             }

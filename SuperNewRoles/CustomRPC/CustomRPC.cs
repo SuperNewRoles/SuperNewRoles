@@ -1,17 +1,14 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
-using SuperNewRoles.CustomCosmetics.ShareCosmetics;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.EndGame;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Patches;
+using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using SuperNewRoles.Sabotage;
 using UnityEngine;
@@ -126,7 +123,15 @@ namespace SuperNewRoles.CustomRPC
         Tuna,
         Mafia,
         BlackCat,
+        SecretlyKiller,
         Spy,
+        Kunoichi,
+        DoubleKiller,
+        Smasher,
+        SuicideWisher,
+        Neet,
+        FastMaker,
+        ToiletFan,
         //RoleId
     }
 
@@ -194,9 +199,38 @@ namespace SuperNewRoles.CustomRPC
         UseCameraTime,
         UseVitalsTime,
         FixLights,
+        RandomSpawn,
+        KunaiKill,
+        SetSecretRoomTeleportStatus,
+        ChiefSidekick
     }
     public static class RPCProcedure
     {
+        public static void KunaiKill(byte sourceid, byte targetid)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceid);
+            PlayerControl target = ModHelpers.playerById(targetid);
+            if (source == null || target == null) return;
+            RPCMurderPlayer(sourceid, targetid, 0);
+            FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
+
+            if (targetid == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                FastDestroyableSingleton<HudManager>.Instance.KillOverlay.ShowKillAnimation(target.Data, source.Data);
+            }
+        }
+
+        public static void ChiefSidekick(byte targetid)
+        {
+            RoleClass.Chief.SheriffPlayer.Add(targetid);
+            SetRole(targetid, (byte)RoleId.Sheriff);
+            if (targetid == CachedPlayer.LocalPlayer.PlayerId)
+            {
+                Sheriff.ResetKillCoolDown();
+                RoleClass.Sheriff.KillMaxCount = RoleClass.Chief.KillLimit;
+            }
+            UncheckedSetVanilaRole(targetid, 0);
+        }
         public static void FixLights()
         {
             SwitchSystem switchSystem = MapUtilities.Systems[SystemTypes.Electrical].TryCast<SwitchSystem>();
@@ -647,6 +681,7 @@ namespace SuperNewRoles.CustomRPC
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
             player.Revive();
+            DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == playerid);
             FinalStatusData.FinalStatuses[player.PlayerId] = FinalStatus.Alive;
         }
         public static void SetScientistRPC(bool Is, byte id)
@@ -677,20 +712,20 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void SidekickPromotes()
         {
-            for (int i = 0; i < RoleClass.Jackal.SidekickPlayer.Count; i++)
+            foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
             {
-                RoleClass.Jackal.JackalPlayer.Add(RoleClass.Jackal.SidekickPlayer[i]);
-                RoleClass.Jackal.SidekickPlayer.RemoveAt(i);
+                p.ClearRole();
+                p.setRole(RoleId.Jackal);
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
         }
         public static void SidekickSeerPromotes()
         {
-            for (int i = 0; i < RoleClass.JackalSeer.SidekickSeerPlayer.Count; i++)
+            foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
             {
-                RoleClass.JackalSeer.JackalSeerPlayer.Add(RoleClass.JackalSeer.SidekickSeerPlayer[i]);
-                RoleClass.JackalSeer.SidekickSeerPlayer.RemoveAt(i);
+                p.ClearRole();
+                p.setRole(RoleId.JackalSeer);
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
@@ -896,16 +931,7 @@ namespace SuperNewRoles.CustomRPC
             if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)*/)
             {
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
-                //SwapPlayer.transform.position = SwapperPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
-                if (rand.Next(1, 20) == 1)
-                {
-                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
-                }
-                else
-                {
-                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
-                }
                 return;
             }
             else if (SwapPlayerID == PlayerControl.LocalPlayer.PlayerId)
@@ -935,6 +961,49 @@ namespace SuperNewRoles.CustomRPC
         {
             Patch.VitalsPatch.RestrictVitalsTime -= time;
         }*/
+        public static void randomSpawn(byte playerId, byte locId)
+        {
+            HudManager.Instance.StartCoroutine(Effects.Lerp(3f, new Action<float>((p) =>
+            { // Delayed action
+                if (p == 1f)
+                {
+                    Vector2 InitialSpawnCenter = new(16.64f, -2.46f);
+                    Vector2 MeetingSpawnCenter = new(17.4f, -16.286f);
+                    Vector2 ElectricalSpawn = new(5.53f, -9.84f);
+                    Vector2 O2Spawn = new(3.28f, -21.67f);
+                    Vector2 SpecimenSpawn = new(36.54f, -20.84f);
+                    Vector2 LaboSpawn = new(34.91f, -6.50f);
+                    Vector2 CommsSpawn = new(12.24f, -15.9473f);
+                    Vector2 StorageSpawn = new(20.9707f, -12.3396f);
+                    Vector2 MeetingSpawnUnder = new(22.0948f, -25.1668f);
+                    Vector2 LocketSpawn = new(26.6442f, -6.775f);
+                    Vector2 LeftReactorSpawn = new(4.6395f, -4.2884f);
+                    var loc = locId switch
+                    {
+                        0 => InitialSpawnCenter,
+                        1 => MeetingSpawnCenter,
+                        2 => ElectricalSpawn,
+                        3 => O2Spawn,
+                        4 => SpecimenSpawn,
+                        5 => LaboSpawn,
+                        6 => CommsSpawn,
+                        7 => StorageSpawn,
+                        8 => MeetingSpawnUnder,
+                        9 => LocketSpawn,
+                        10 => LeftReactorSpawn,
+                        _ => InitialSpawnCenter,
+                    };
+                    foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                    {
+                        if (player.Data.PlayerId == playerId)
+                        {
+                            player.transform.position = loc;
+                            break;
+                        }
+                    }
+                }
+            })));
+        }
         [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartEndGame))]
         class STARTENDGAME
         {
@@ -1166,11 +1235,25 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.FixLights:
                             FixLights();
                             break;
+                        case CustomRPC.RandomSpawn:
+                            byte pId = reader.ReadByte();
+                            byte locId = reader.ReadByte();
+                            RPCProcedure.randomSpawn(pId, locId);
+                            break;
+                        case CustomRPC.KunaiKill:
+                            KunaiKill(reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.SetSecretRoomTeleportStatus:
+                            MapCustoms.Airship.SecretRoom.SetSecretRoomTeleportStatus((MapCustoms.Airship.SecretRoom.Status)reader.ReadByte(), reader.ReadByte(), reader.ReadByte());
+                            break;
+                        case CustomRPC.ChiefSidekick:
+                            ChiefSidekick(reader.ReadByte());
+                            break;
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo((CustomRPC)callId+"でエラー:"+e);
+                    SuperNewRolesPlugin.Logger.LogInfo((CustomRPC)callId + "でエラー:" + e);
                 }
             }
         }

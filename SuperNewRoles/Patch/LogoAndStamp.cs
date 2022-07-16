@@ -1,13 +1,10 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
@@ -41,15 +38,14 @@ namespace SuperNewRoles.Patches
                 var credentials = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(__instance.text);
                 credentials.transform.position = new Vector3(0, 0f, 0);
                 //ブランチ名表示
+                string credentialsText = "";
                 if (ThisAssembly.Git.Branch != "master")//masterビルド以外の時
                 {
                     //色+ブランチ名+コミット番号
-                    credentials.SetText($"\r\n<color={modColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>");
+                    credentialsText = $"\r\n<color={modColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>";
                 }
-                else
-                {
-                    credentials.SetText(ModTranslation.getString("creditsMain"));
-                }
+                credentialsText += ModTranslation.getString("creditsMain");
+                credentials.SetText(credentialsText);
 
                 credentials.alignment = TMPro.TextAlignmentOptions.Center;
                 credentials.fontSize *= 0.9f;
@@ -217,8 +213,30 @@ namespace SuperNewRoles.Patches
             }
             static bool Downloaded = false;
             public static MainMenuManager instance;
+            static IEnumerator ShowAnnouncementPopUp(MainMenuManager __instance)
+            {
+                while (true)
+                {
+                    SuperNewRolesPlugin.Logger.LogInfo(AutoUpdate.announcement);
+                    if (AutoUpdate.announcement == "None")
+                        yield return null;
+                    else
+                        break;
+                }
+                var AnnouncementPopup = __instance.transform.FindChild("Announcement").GetComponent<AnnouncementPopUp>();
+                if (AnnouncementPopup != null)
+                {
+                    AnnouncementPopup.Show();
+                    AnnouncementPopup.AnnounceTextMeshPro.text = AutoUpdate.announcement;
+                }
+                ConfigRoles.IsUpdated = false;
+            }
             public static void Postfix(MainMenuManager __instance)
             {
+                if (ConfigRoles.IsUpdated)
+                {
+                    __instance.StartCoroutine(ShowAnnouncementPopUp(__instance));
+                }
                 DownLoadCustomhat.Load();
                 DownLoadClass.Load();
                 DownLoadClassVisor.Load();
@@ -251,6 +269,8 @@ namespace SuperNewRoles.Patches
                 SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Passage ahhhhhh!:" + Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"));
                 //サブマージド追加ボタン
 
+                /*サブマージドのダウンロードボタン隠しSTART 今日の日はさようならまた逢う日まで・・・
+
                 var template = GameObject.Find("ExitGameButton");
                 if (template == null) return;
 
@@ -272,13 +292,15 @@ namespace SuperNewRoles.Patches
                 popup.TextAreaTMP.fontSize *= 0.7f;
                 popup.TextAreaTMP.enableAutoSizing = false;
 
-                void onClick()
+                async void onClick()
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Downloading Submerged!");
                     showPopup(ModTranslation.getString("ダウンロード中です。\nサブマージドのファイルは大きいため、時間がかかります。"));
-                    DownloadSubmarged();
+                    await DownloadSubmarged();
                     button.SetActive(false);
                 }
+
+                サブマージドのダウンロードボタン隠し End　復活する際はSTARTとENDのコメント行を削除してください*/
             }
 
             private static IEnumerator Download()

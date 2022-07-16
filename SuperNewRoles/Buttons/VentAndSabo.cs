@@ -1,15 +1,64 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using SuperNewRoles.MapOptions;
 using SuperNewRoles.Roles;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Buttons
 {
     public static class VentAndSabo
     {
+
+        [HarmonyPatch(typeof(MapTaskOverlay), nameof(MapTaskOverlay.SetIconLocation))]
+        public static class MapTaskOverlaySetIconLocationPatch
+        {
+            public static bool Prefix(
+                MapTaskOverlay __instance,
+                [HarmonyArgument(0)] PlayerTask task)
+            {
+                Il2CppSystem.Collections.Generic.List<Vector2> locations = task.Locations;
+                for (int i = 0; i < locations.Count; i++)
+                {
+                    Vector3 localPosition = locations[i] / ShipStatus.Instance.MapScale;
+                    localPosition.z = -1f;
+                    PooledMapIcon pooledMapIcon = __instance.icons.Get<PooledMapIcon>();
+                    pooledMapIcon.transform.localScale = new Vector3(
+                        pooledMapIcon.NormalSize,
+                        pooledMapIcon.NormalSize,
+                        pooledMapIcon.NormalSize);
+                    if (PlayerTask.TaskIsEmergency(task))
+                    {
+                        pooledMapIcon.rend.color = Color.red;
+                        pooledMapIcon.alphaPulse.enabled = true;
+                        pooledMapIcon.rend.material.SetFloat("_Outline", 1f);
+                    }
+                    else
+                    {
+                        pooledMapIcon.rend.color = Color.yellow;
+                    }
+                    pooledMapIcon.name = task.name;
+                    pooledMapIcon.lastMapTaskStep = task.TaskStep;
+                    pooledMapIcon.transform.localPosition = localPosition;
+                    if (task.TaskStep > 0)
+                    {
+                        pooledMapIcon.alphaPulse.enabled = true;
+                        pooledMapIcon.rend.material.SetFloat("_Outline", 1f);
+                    }
+
+                    string key = $"{task.name}{i}";
+                    int index = 0;
+
+                    while (__instance.data.ContainsKey(key))
+                    {
+                        key = $"{key}_{index}";
+                        ++index;
+                    }
+
+                    __instance.data.Add(key, pooledMapIcon);
+                }
+                return false;
+            }
+        }
         [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
         class MapBehaviourPatch
         {
@@ -17,10 +66,10 @@ namespace SuperNewRoles.Buttons
             {
                 if (!MeetingHud.Instance)
                 {
-                    if (PlayerControl.LocalPlayer.IsUseSabo() && !ModHelpers.ShowButtons && !__instance.IsOpen)
+                    if (PlayerControl.LocalPlayer.IsUseSabo() && !__instance.IsOpen)
                     {
                         __instance.Close();
-                        FastDestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+                        DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
                         return false;
                     }
                 }
@@ -155,7 +204,7 @@ namespace SuperNewRoles.Buttons
             public static bool Prefix(Vent __instance)
             {
                 __instance.CanUse(CachedPlayer.LocalPlayer.Data, out bool canUse, out bool couldUse);
-                bool canMoveInVents = !RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer);
+                bool canMoveInVents = !PlayerControl.LocalPlayer.isRole(RoleId.NiceNekomata);
                 if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
                 bool isEnter = !PlayerControl.LocalPlayer.inVent;

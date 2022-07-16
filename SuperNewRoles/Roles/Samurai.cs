@@ -1,6 +1,7 @@
 using Hazel;
 using SuperNewRoles.Buttons;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -10,7 +11,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Samurai))
+                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(RoleId.Samurai))
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Samurai.KillCoolTime);
                 }
@@ -18,7 +19,7 @@ namespace SuperNewRoles.Roles
         }
         public static void SetSamuraiButton()
         {
-            if (PlayerControl.LocalPlayer.isRole(CustomRPC.RoleId.Samurai))
+            if (PlayerControl.LocalPlayer.isRole(RoleId.Samurai))
             {
                 if (!RoleClass.Samurai.UseVent)
                 {
@@ -50,7 +51,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool isSamurai(PlayerControl Player)
         {
-            if (RoleClass.Samurai.SamuraiPlayer.IsCheckListPlayerControl(Player))
+            if (Player.isRole(RoleId.Samurai))
             {
                 return true;
             }

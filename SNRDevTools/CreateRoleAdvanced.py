@@ -1,4 +1,4 @@
-## import
+# import
 import string
 from tkinter import getboolean
 import PySimpleGUI as psg
@@ -9,11 +9,13 @@ from codecs import Codec
 from encodings import utf_8
 from importlib.resources import Resource
 
-## 関数
+# 関数
 # オブジェクト指向用
+
+
 class ReturnClass:
     def WriteCodes(self, Path, OldCode, NewCode):
-    # w→書く　r→読む　a→合成　r+既存を読む　w+→新規で書く　a+→追加読み書き　t→テキストモード　b→バイナリモード x→ファイル作成
+        # w→書く　r→読む　a→合成　r+既存を読む　w+→新規で書く　a+→追加読み書き　t→テキストモード　b→バイナリモード x→ファイル作成
         with open(BasePath+Path, mode="r", encoding="utf-8") as r:
             Template = r.read()
             with open(BasePath+Path, mode="w", encoding="utf-8") as w:
@@ -21,7 +23,8 @@ class ReturnClass:
                 print("ファイルを書き込みました:"+Template)
                 print("パス:"+BasePath+Path)
                 w.write(Template)
-    #入力をゲット+戻り値として返す
+    # 入力をゲット+戻り値として返す
+
     def GetInput(self, key):
         if values[key] == "":
             MainClass.CreateErrorWindow("エラーが発生しました。\n値が空白です\n" + "Key:" + key)
@@ -29,31 +32,37 @@ class ReturnClass:
         else:
             print("入力した値を読み込みました:" + values[key])
             return values[key]
+
     def GetBool(self, key):
         if values[key]:
             return True
         else:
             return False
     # Bool(C#用)
+
     def GetCBool(self, key):
         if values[key]:
             return "true"
         else:
             return "false"
-    #画像読み込み
+    # 画像読み込み
+
     def GetResource(self, ResourceName):
         print("画像を読み込みました:" + ResourcePath + ResourceName)
         return ResourcePath + ResourceName
-    #Config読み込み
+    # Config読み込み
+
     def GetConfig(self, MainPath, SubPath):
         #print("Config:"+MainPath + SubPath)
         Modify = Config_ini[MainPath][SubPath]
         print("Configを読み込みました:" + Modify)
         return Modify
-    #選択から色を返す
+    # 選択から色を返す
+
     def GetRoleColor(self):
         if (MainClass.GetInput("ColorHash") != "ImposterRed"):
-            Template = "new Color32(RGBCOLOR, byte.MaxValue)".replace("RGBCOLOR", str(MainClass.HashToRGB()))
+            Template = "new Color32(RGBCOLOR, byte.MaxValue)".replace(
+                "RGBCOLOR", str(MainClass.HashToRGB()))
             print("ハッシュを取得しました:", Template)
             return Template
         elif (MainClass.GetBool("ImpoColor")):
@@ -62,16 +71,19 @@ class ReturnClass:
         elif (MainClass.GetBool("CrewColor")):
             print("クルー色を取得しました")
             return "new Color32(0, 255, 0, byte.MaxValue)"
-    #ハッシュをRGBに変換
+    # ハッシュをRGBに変換
+
     def HashToRGB(self):
         Hash = MainClass.GetInput("ColorHash")
-        RGB = str(int(Hash[1:3],16))+", "+ str(int(Hash[3:5],16))+", "+ str(int(Hash[5:7],16))
+        RGB = str(int(Hash[1:3], 16))+", " + \
+            str(int(Hash[3:5], 16))+", " + str(int(Hash[5:7], 16))
         #RGB = str(RGB).strip()
         print(RGB)
         return RGB
         print(RGB.strip())
         return RGB.strip()
-    #チーム取得
+    # チーム取得
+
     def GetTeam(self):
         if (MainClass.GetBool("Impo")):
             return "Impo"
@@ -82,9 +94,10 @@ class ReturnClass:
     # CustomOption重複防止
     Num = 0
     Access = False
+
     def PlusIDNum(self):
-        #if (MainClass.Access):
-            #MainClass.Access = True
+        # if (MainClass.Access):
+        #MainClass.Access = True
         PlusNum = MainClass.Num + 1
         MainClass.Num = PlusNum
         Return = str(int(MainClass.GetInput("OptionNumber"))+MainClass.Num)
@@ -92,24 +105,27 @@ class ReturnClass:
         print("ID:", Return)
         return Return
     # チェックボックス、ラジオを更新
+
     def UpdateBool(self, key, bool):
-        MainWindow[key].Update(value = bool)
+        MainWindow[key].Update(value=bool)
     # 上の表示板
-    #def UpdateGUI(self, key, bool):
+    # def UpdateGUI(self, key, bool):
         #MainWindow[key].Update(disabled = bool)
 
     # エラーウィンドウ作成
     def CreateErrorWindow(self, text):
-        ErrorPop = psg.popup_error(text,title="エラー")
+        ErrorPop = psg.popup_error(text, title="エラー")
         print("エラー:"+text)
         while True:
             if ErrorPop == "Error":
                 MainWindow.close()
                 sys.exit()
     # 通知作成
+
     def CreateNotify(self, Title, Text):
-        psg.popup_notify(Text,title=Title)
+        psg.popup_notify(Text, title=Title)
     # OK_Cancel系統
+
     def CreateOKCancelWindow(self, Title, Text):
         ComfirmPop = psg.popup_ok_cancel(Text, title=Title)
         while True:
@@ -118,6 +134,7 @@ class ReturnClass:
             else:
                 return "Cancel"
     # OK系統
+
     def CreateOKWindow(self, Title, Text):
         OKPop = psg.popup_ok(Text, title=Title)
         while True:
@@ -135,7 +152,7 @@ class AllCheck:
         MainClass.GetTeam()
         if (MainClass.GetBool("AddSetting")):
             MainClass.GetInput("OptionNumber")
-            #MainClass.PlusIDNum()
+            # MainClass.PlusIDNum()
 
         MainClass.GetBool("A_CreateFile")
         MainClass.GetBool("A_ClearTask")
@@ -183,15 +200,16 @@ using System.Collections.Generic;
 using System.Text;
 namespace SuperNewRoles.Roles
 {
-    internal class ROLENAME
+    public static class ROLENAME
     {
         //ここにコードを書きこんでください
     }
 }""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         # CustomRPC/CustomRPC.cs
-        MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//RoleId", MainClass.GetInput("RoleName")+",\n        //RoleId")
+        MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//RoleId",
+                             MainClass.GetInput("RoleName")+",\n        //RoleId")
         MainClass.WriteCodes("CustomRPC/CustomRPC.cs", "//新ロールクラス",
-                                """public static class ROLENAME
+                             """public static class ROLENAME
         {
             public static List<PlayerControl> ROLENAMEPlayer;
             public static Color32 color = COLORS;
@@ -201,7 +219,7 @@ namespace SuperNewRoles.Roles
                 ROLENAMEPlayer = new List<PlayerControl>();
                 //その他クリｱァ
             }
-        }\n        //新ロールクラス""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("COLORS",MainClass.GetRoleColor()))
+        }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))
 
         # AllRoleSetClass.cs
         '''MainClass.WriteCodes("AllRoleSetClass.cs", "//セットクラス",
@@ -222,122 +240,119 @@ namespace SuperNewRoles.Roles
                 }
             }\n        //セットクラス""".replace("ROLEID!!",MainClass.GetInput("RoleName")).replace("TEAM",MainClass.GetTeam()))'''
 
-
-        MainClass.WriteCodes("AllRoleSetClass.cs", "//プレイヤーカウント","""RoleId.ROLENAME => CustomOption.CustomOptions.ROLENAMEPlayerCount.getFloat(),\n                    //プレイヤーカウント""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+        MainClass.WriteCodes("AllRoleSetClass.cs", "//プレイヤーカウント",
+                             """RoleId.ROLENAME => CustomOptions.ROLENAMEPlayerCount.getFloat(),\n                //プレイヤーカウント""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # Roles/RoleHelper.cs
         if (not MainClass.GetBool("TeamGhost")):
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールチェック",
-                                """else if (Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
-                {
-                    return CustomRPC.RoleId.ROLENAME;
-                }\n                //ロールチェック""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+                                 """else if (RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player)) return RoleId.ROLENAME;
+                //ロールチェック""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールアド",
-                                """case (CustomRPC.RoleId.ROLENAME):
-                    Roles.RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
-                    break;\n                //ロールアド""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+                             """case (RoleId.ROLENAME):
+                    RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
+                    break;\n                //ロールアド""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         MainClass.WriteCodes("Roles/RoleHelper.cs", "//ロールリモベ",
-                                """case (CustomRPC.RoleId.ROLENAME):
-                    Roles.RoleClass.ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
-                    break;\n                //ロールリモベ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+                             """case (RoleId.ROLENAME):
+                    RoleClass.ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
+                    break;\n                //ロールリモベ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("Neut")):
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//第三か",
-                                """case (RoleId.ROLENAME):
+                                 """case (RoleId.ROLENAME):
                     IsNeutral = true;
-                    break;\n                //第三か""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+                    break;\n                //第三か""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//タスククリアか",
-                                """case (RoleId.ROLENAME):
+                                 """case (RoleId.ROLENAME):
                     IsTaskClear = true;
-                    break; \n                //タスククリアか""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+                    break; \n                //タスククリアか""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("A_ClearTask")):
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//タスククリアか",
-                                """case (RoleId.ROLENAME):
+                                 """case (RoleId.ROLENAME):
                     IsTaskClear = true;
                     break;
-                //タスククリアか""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+                //タスククリアか""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # Roles/RoleClass.cs
-        MainClass.WriteCodes("Roles/RoleClass.cs", "//ロールクリア", MainClass.GetInput("RoleName")+".ClearAndReload();\n            //ロールクリア")
+        MainClass.WriteCodes("Roles/RoleClass.cs", "//ロールクリア", MainClass.GetInput(
+            "RoleName")+".ClearAndReload();\n            //ロールクリア")
         MainClass.WriteCodes("Roles/RoleClass.cs", "//新ロールクラス",
-                                """public static class ROLENAME
+                             """public static class ROLENAME
         {
             public static List<PlayerControl> ROLENAMEPlayer;
             public static Color32 color = COLORS;
             public static void ClearAndReload()
             {
-                ROLENAMEPlayer = new List<PlayerControl>();
+                ROLENAMEPlayer = new();
                 //くりあぁあんどりろぉどぉ
             }
         }\n        //新ロールクラス""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("COLORS", MainClass.GetRoleColor()))
 
         # Intro/IntroDate.cs
         if (MainClass.GetBool("Impo")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Impostor);
-            //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Impostor);
+        //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         elif (MainClass.GetBool("Crew")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Crewmate);
-            //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate);
+        //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         elif (MainClass.GetBool("Neut")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Neutral);
-            //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
-            '''MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロ検知","""case (CustomRPC.RoleId.ROLENAME):
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Neutral);
+        //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+            '''MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロ検知","""case (RoleId.ROLENAME):
                     return ROLENAMEIntro;
-                //イントロ検知""".replace("ROLENAME",MainClass.GetInput("RoleName")))'''#⇐なにこれ？
+                //イントロ検知""".replace("ROLENAME",MainClass.GetInput("RoleName")))'''  # ⇐なにこれ？
         elif (MainClass.GetBool("TeamOne")):
             print()
         elif (MainClass.GetBool("TeamTwo")):
             print()
         elif (MainClass.GetBool("TeamGhost")):
-            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ","""public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, CustomRPC.RoleId.ROLENAME, TeamRoleType.Crewmate, true);
-            //イントロオブジェ""".replace("ROLENAME",MainClass.GetInput("RoleName")))
-
-
+            MainClass.WriteCodes("Intro/IntroDate.cs", "//イントロオブジェ", """public static IntroDate ROLENAMEIntro = new IntroDate("ROLENAME", RoleClass.ROLENAME.color, 1, RoleId.ROLENAME, TeamRoleType.Crewmate, true);
+        //イントロオブジェ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # CustomOption/CustomOptionDate.cs
         MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//CustomOption",
-        """\n        public static CustomRoleOption ROLENAMEOption;
-        public static CustomOption ROLENAMEPlayerCount;\n        //CustomOption""".replace("ROLENAME",MainClass.GetInput("RoleName")))
+                             """\n        public static CustomRoleOption ROLENAMEOption;
+        public static CustomOption ROLENAMEPlayerCount;\n        //CustomOption""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("AddSetting")):
             if (MainClass.GetBool("TeamImpo") or MainClass.GetBool("TeamGhost")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定",
-                """\n            ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
-            ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
+                                     """\n            ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Impostor, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
+            ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
             elif (MainClass.GetBool("TeamCrew")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定",
-                """\n            ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Crewmate, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
-            ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
+                                     """\n            ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Crewmate, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
+            ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
             elif (MainClass.GetBool("TeamNeut")):
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定",
-                """\n            ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Neutral, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
-            ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME",MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON",MainClass.GetCBool("IsSHRON")))
+                                     """\n            ROLENAMEOption = new CustomRoleOption(IDNUM, SHRON, CustomOptionType.Neutral, "ROLENAMEName",RoleClass.ROLENAME.color, 1);
+            ROLENAMEPlayerCount = CustomOption.Create(IDNUM2, SHRON, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("IDNUM2", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
             elif (MainClass.GetBool("TeamOne")):
                 print("まだできてねぇ")
             elif (MainClass.GetBool("TeamTwo")):
                 print("まだできてねぇ")
 
-            #else:
-                #MainClass.CreateErrorWindow("設定タブの値が空白です")
-        ## シェリフキル
+            # else:
+                # MainClass.CreateErrorWindow("設定タブの値が空白です")
+        # シェリフキル
         if (MainClass.GetBool("A_CanSheriffKill_Mad")):
             # Roles/RoleHelper.cs
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//isMad",
-                """RoleId.ROLENAME => true,\n                //isMad""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """RoleId.ROLENAME => true,\n                //isMad""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         elif(MainClass.GetBool("A_CanSheriffKill_Friends")):
             # Roles/RoleHelper.cs
             MainClass.WriteCodes("Roles/RoleHelper.cs", "//isFriends",
-                """RoleId.ROLENAME => true,\n                //isFriends""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """RoleId.ROLENAME => true,\n                //isFriends""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
-        ## キルボタン
+        # キルボタン
         if (MainClass.GetBool("A_CanKill")):
             # Buttons/CustomButton.cs
             MainClass.WriteCodes("Buttons/Buttons.cs", "//カスタムなボタン達",
-            """        public static CustomButton ROLENAMEKillButton""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """        public static CustomButton ROLENAMEKillButton""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             MainClass.WriteCodes("Buttons/Buttons.cs", "//クールダウンリセット",
-            """        ROLENAME.resetCoolDown();\n        //クールダウンリセット""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """        ROLENAME.resetCoolDown();\n        //クールダウンリセット""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             # Roles/ROLENAME.cs
             MainClass.WriteCodes("Roles/ROLENAME.cs".replace("ROLENAME", MainClass.GetInput("RoleName")), "//ここにコードを書きこんでください",
-            """        public static void resetCoolDown() {
+                                 """        public static void resetCoolDown() {
             HudManagerStartPatch.ROLENAMEKillButton.MaxTimer = RoleClass.ROLENAME.KillCoolDown;
             HudManagerStartPatch.ROLENAMEKillButton.Timer = RoleClass.ROLENAME.KillCoolDown;
         }
@@ -345,37 +360,37 @@ namespace SuperNewRoles.Roles
             resetCoolDown();
         }\n        //ここにコードを書き込んでください""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
-        ## ベントボタン
+        # ベントボタン
         if (MainClass.GetBool("A_CanVent")):
             if (MainClass.GetBool("A_CanVentOption")):
                 # CustomOption/CustomOptionDate.cs
                 MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//CustomOption",
-                """public static CustomOption ROLENAMEIsUseVent;\n        //CustomOption""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                     """public static CustomOption ROLENAMEIsUseVent;\n        //CustomOption""".replace("ROLENAME", MainClass.GetInput("RoleName")))
                 if (MainClass.GetBool("TeamImpo")):
                     MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定",
-                """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "MadMateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
+                                         """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Impostor, "MadMateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
                 elif (MainClass.GetBool("TeamCrew")):
                     MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定",
-                """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
+                                         """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
                 elif (MainClass.GetInput("TeamNeut")):
                     MainClass.WriteCodes("CustomOption/CustomOptionDate.cs", "//表示設定",
-                """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Neutral, "MadMateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM",MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
+                                         """ROLENAMEIsUseVent = CustomOption.Create(IDNUM, SHRON, CustomOptionType.Neutral, "MadMateUseVentSetting", false, ROLENAMEOption);\n            //表示設定""".replace("ROLENAME", MainClass.GetInput("RoleName")).replace("IDNUM", MainClass.PlusIDNum()).replace("SHRON", MainClass.GetCBool("IsSHRON")))
                 # Roles/RoleHelper.cs
                 if (MainClass.GetBool("TeamGhost")):
                     MainClass.WriteCodes("Roles/RoleHelper.cs", "//ここが幽霊役職",
-                """if (SuperNewRoles.Roles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
+                                         """if (SuperNewRoles.RoleClass.ROLENAME.ROLENAMEPlayer.IsCheckListPlayerControl(player))
                     {
-                        return SuperNewRoles.CustomRPC.RoleId.ROLENAME;
+                        return SuperNewRoles.RoleId.ROLENAME;
                     }\n                //ここが幽霊役職""".replace("ROLENAME", MainClass.GetInput("RoleName")))
                 MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベントが使える",
-                """case RoleId.ROLENAME:
+                                     """case RoleId.ROLENAME:
                     return RoleClass.ROLENAME.IsUseVent;\n                //ベントが使える""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
                 # Roles/RoleClass.cs
                 MainClass.WriteCodes("Roles/RoleClass.cs", "//その他Option",
-                """public static bool IsUseVent;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                     """public static bool IsUseVent;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
                 MainClass.WriteCodes("Roles/RoleClass.cs", "//くりあぁあんどりろぉどぉ",
-                """IsUseVent = true\n                //くりあぁあんどりろぉどぉ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                     """IsUseVent = true\n                //くりあぁあんどりろぉどぉ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             '''else:
                 # Roles/RoleHelper.cs
                 MainClass.WriteCodes("Roles/RoleHelper.cs", "//ベントが使える",
@@ -389,16 +404,16 @@ namespace SuperNewRoles.Roles
                 """case RoleId.ROLENAME:
                     returntext = CustomOptions.FoxIsUseVent.name + ":" + CustomOptions.ROLENAMEIsUseVent.getString() + "\n";
                     break;\n                //ベント設定可視化""".replace("ROLENAME", MainClass.GetInput("RoleName")))'''
-        ## インポの視界設定
+        # インポの視界設定
         if (MainClass.GetBool("A_ImpoVisible")):
             # Roles/RoleClass.cs
             MainClass.WriteCodes("Roles/RoleClass.cs", "//その他Option",
-                """public static bool IsImpostorLight;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """public static bool IsImpostorLight;\n            //その他Option""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             MainClass.WriteCodes("Roles/RoleClass.cs", "//くりあぁあんどりろぉどぉ",
-                 "IsImpostorLight = CustomOptions.MayorFriendsIsImpostorLight.getBool();\n                //くりあぁあんどりろぉどぉ")
+                                 "IsImpostorLight = CustomOptions.MayorFriendsIsImpostorLight.getBool();\n                //くりあぁあんどりろぉどぉ")
             # Roles/RoleHelper.cs
             MainClass.WriteCodes("Roles.RoleHelper.cs", "                //インポの視界",
-            """case RoleId.ROLENAME:
+                                 """case RoleId.ROLENAME:
                     return RoleClass.ROLENAME.IsImpostorLight;\n                //インポの視界""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # いらないやつ(次実行するときに複数書いてしまうため)の削除　(例:Jackal→//その他Option, NewRole→//その他Optionの場合、二つに書かれてしまうため重複する)
@@ -409,7 +424,8 @@ namespace SuperNewRoles.Roles
         # 終了報告
         MainClass.CreateNotify("CreateRoleAdvanced.py", "役職の作成が終了しました")
 
-## 変数
+
+# 変数
 '''DevPath = Path(__file__).parent
 DevPath /= "../SNRDevTools/"
 BasePath = Path(__file__).parent
@@ -424,57 +440,60 @@ ConfigPath = r"CreateRoleAdvance/"
 ResourcePath = r"CreateRoleAdvance/Resources/"
 MainClass = ReturnClass()
 AllActClass = AllCheck()
-## Config
+# Config
 # 宣言
 Config_ini = configparser.ConfigParser()
-Config_ini.read((ConfigPath+"Config.ini"),encoding="utf_8")
+Config_ini.read((ConfigPath+"Config.ini"), encoding="utf_8")
 
 
-
-
-
-
-
-## レイアウト
+# レイアウト
 # メイン画面
 psg.theme(MainClass.GetConfig("Main", "Theme"))
 MainTab = psg.Tab("メイン", [
-                [psg.Text("Role名(英名):",key="RoleNameText"),psg.InputText(MainClass.GetConfig("MainDefaultSetting", "RoleName"),size=(15,1),key="RoleName")],
-                [psg.Text("イントロ:",key="IntroText"), psg.Combo(("役職のみ表示","陣営でも表示"),size=(30,2),default_value=MainClass.GetConfig("MainDefaultSetting", "Intro"))],
-                [psg.Text("陣営:    ",key="TeamText"),psg.Radio("インポ陣営","TeamName",key="Impo",default=True),psg.Radio("クルー陣営","TeamName",key="Crew"),psg.Radio("第三陣営","TeamName",key="Neut")],
-                [psg.Radio("重複陣営(ペア)",group_id="TeamName",key="TeamTwo"), psg.Radio("重複陣営(個人)",group_id="TeamName",key="TeamOne"), psg.Radio("幽霊役職",group_id="TeamName",key="TeamGhost")],
-                [psg.Text("役職カラー:",key="ColorText"), psg.Radio("インポ色","RoleColor",key="ImpoColor",default=True), psg.Radio("ナイス緑色","RoleColor",key="CrewColor"),  psg.ColorChooserButton("色選択",key="ColorButton",target="ColorHash")],
-                [psg.Text("取得ハッシュ:",key="ColorHashText"), psg.Input("ImposterRed",key="ColorHash")],
-                [psg.Text()],
-                [psg.Check("設定を追加する",key="AddSetting")],
-                [psg.Text(), psg.Text("タブ:",key="SettingTabText"), psg.Radio("インポスター",group_id="OptionTab",key="TeamImpo"), psg.Radio("クルー",group_id="OptionTab",key="TeamCrew"), psg.Radio("第三陣営",group_id="OptionTab",key="TeamNeut")],
-                [psg.Text(), psg.Check("SHR対応",key="IsSHRON")],
-                [psg.Text(), psg.Text("設定ID(int)",key="OptionNumberIDText"), psg.Input("",key="OptionNumber",size=(10,3))], ])
+    [psg.Text("Role名(英名):", key="RoleNameText"), psg.InputText(MainClass.GetConfig(
+        "MainDefaultSetting", "RoleName"), size=(15, 1), key="RoleName")],
+    [psg.Text("イントロ:", key="IntroText"), psg.Combo(("役職のみ表示", "陣営でも表示"), size=(
+        30, 2), default_value=MainClass.GetConfig("MainDefaultSetting", "Intro"))],
+    [psg.Text("陣営:    ", key="TeamText"), psg.Radio("インポ陣営", "TeamName", key="Impo", default=True),
+     psg.Radio("クルー陣営", "TeamName", key="Crew"), psg.Radio("第三陣営", "TeamName", key="Neut")],
+    [psg.Radio("重複陣営(ペア)", group_id="TeamName", key="TeamTwo"), psg.Radio(
+        "重複陣営(個人)", group_id="TeamName", key="TeamOne"), psg.Radio("幽霊役職", group_id="TeamName", key="TeamGhost")],
+    [psg.Text("役職カラー:", key="ColorText"), psg.Radio("インポ色", "RoleColor", key="ImpoColor", default=True), psg.Radio(
+        "ナイス緑色", "RoleColor", key="CrewColor"),  psg.ColorChooserButton("色選択", key="ColorButton", target="ColorHash")],
+    [psg.Text("取得ハッシュ:", key="ColorHashText"),
+     psg.Input("ImposterRed", key="ColorHash")],
+    [psg.Text()],
+    [psg.Check("設定を追加する", key="AddSetting")],
+    [psg.Text(), psg.Text("タブ:", key="SettingTabText"), psg.Radio("インポスター", group_id="OptionTab", key="TeamImpo"),
+     psg.Radio("クルー", group_id="OptionTab", key="TeamCrew"), psg.Radio("第三陣営", group_id="OptionTab", key="TeamNeut")],
+    [psg.Text(), psg.Check("SHR対応", key="IsSHRON")],
+    [psg.Text(), psg.Text("設定ID(int)", key="OptionNumberIDText"), psg.Input("", key="OptionNumber", size=(10, 3))], ])
 AdvanceTab = psg.Tab("詳細設定", [
-                [psg.Check("役職ファイルを作成する", key="A_CreateFile")],
-                [psg.Check("タスクを削除する", key="A_ClearTask")],
-                [psg.Check("シェリフキル(マッド)", key="A_CanSheriffKill_Mad")],
-                [psg.Check("シェリフキル(フレンズ)", key="A_CanSheriffKill_Friends")],
-                [psg.Text("ボタン")],
-                [psg.Text(),psg.Check("ベント", key="A_CanVent")],
-                #[psg.Text(),psg.Check("ベント設定の追加", key="A_CanVentOption")],
-                [psg.Text(),psg.Check("キルができる", key="A_CanKill")],
-                [psg.Text(),psg.Check("カスタムボタン",key="A_CustomButton")],
-                [psg.Text("    画像名:"),psg.InputText("", size=(15,1))],
-                [psg.Check("インポの視界", key="A_ImpoVisible")],
-                [psg.Check("インポを視認可能", key="A_CanVisibleImpo")],
-                [psg.Check("独自勝利辞書追加", key="A_PersonalWin")],
-                [], ])
+    [psg.Check("役職ファイルを作成する", key="A_CreateFile")],
+    [psg.Check("タスクを削除する", key="A_ClearTask")],
+    [psg.Check("シェリフキル(マッド)", key="A_CanSheriffKill_Mad")],
+    [psg.Check("シェリフキル(フレンズ)", key="A_CanSheriffKill_Friends")],
+    [psg.Text("ボタン")],
+    [psg.Text(), psg.Check("ベント", key="A_CanVent")],
+    #[psg.Text(),psg.Check("ベント設定の追加", key="A_CanVentOption")],
+    [psg.Text(), psg.Check("キルができる", key="A_CanKill")],
+    [psg.Text(), psg.Check("カスタムボタン", key="A_CustomButton")],
+    [psg.Text("    画像名:"), psg.InputText("", size=(15, 1))],
+    [psg.Check("インポの視界", key="A_ImpoVisible")],
+    [psg.Check("インポを視認可能", key="A_CanVisibleImpo")],
+    [psg.Check("独自勝利辞書追加", key="A_PersonalWin")],
+    [], ])
 '''TeachingTab = psg.Tab("即席コードチェック", [
                 [psg.Button("Harmony一覧")],
-                [], ])'''#←いらなくね？
+                [], ])'''  # ←いらなくね？
 CreateTab = psg.Tab("作成", [
-                [psg.Button("作成",key="Main_CreateButton", pad=((10,10),(10,10)), size=(15,2))] ])
-MainLayOut = [[psg.TabGroup ([[MainTab, AdvanceTab, CreateTab]])]]
+    [psg.Button("作成", key="Main_CreateButton", pad=((10, 10), (10, 10)), size=(15, 2))]])
+MainLayOut = [[psg.TabGroup([[MainTab, AdvanceTab, CreateTab]])]]
 
-MainWindow = psg.Window(title=MainClass.GetConfig("Main", "WindowName"), layout=MainLayOut, size=(MainClass.GetConfig("Main", "SizeX"), MainClass.GetConfig("Main", "SizeY")), icon=MainClass.GetResource("pictures/icon.png"))
+MainWindow = psg.Window(title=MainClass.GetConfig("Main", "WindowName"), layout=MainLayOut, size=(MainClass.GetConfig(
+    "Main", "SizeX"), MainClass.GetConfig("Main", "SizeY")), icon=MainClass.GetResource("pictures/icon.png"))
 
-## イベントループ
+# イベントループ
 while True:
     event, values = MainWindow.read()
     if event == psg.WIN_CLOSED:

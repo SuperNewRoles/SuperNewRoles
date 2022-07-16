@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
@@ -343,6 +340,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.RoleOptions.EngineerCooldown = 0f;
                         optdata.RoleOptions.EngineerInVentMaxTime = 0f;
                     }
+                    break;
+                case RoleId.ToiletFan:
+                    optdata.ImpostorLightMod = optdata.CrewLightMod;
+                    var switchSystemToiletFan = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                    if (switchSystemToiletFan != null && switchSystemToiletFan.IsActive)
+                    {
+                        optdata.ImpostorLightMod /= 5;
+                    }
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.ToiletFan.ToiletCool;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;

@@ -405,7 +405,7 @@ namespace SuperNewRoles
             else if (source.isDead() || source.isRole(RoleId.God)) return false;
             else if (source.PlayerId == target.PlayerId) return false; // Player sees his own name
             else if (source.isImpostor() && target.isImpostor()) return false;
-            else if ((target.isRole(RoleId.NiceScientist) || target.isRole(RoleId.EvilScientist)) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[target.PlayerId]) return true;
+            else if (GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(target.PlayerId) && RoleClass.NiceScientist.IsScientistPlayers[target.PlayerId]) return true;
             return false;
         }
 
@@ -670,6 +670,25 @@ namespace SuperNewRoles
             float dis = Vector2.Distance(pos, pos2);
             if (dis <= distance) return true;
             return false;
+        }
+
+    }
+    public static class CreateFlag
+    {
+        public static List<string> OneTimeList = new List<string>();
+        public static List<string> FirstRunList = new List<string>();
+        public static void Run(Action action, string type, bool firstrun = false)
+        {
+            if ((OneTimeList.Contains(type)) || (firstrun && !FirstRunList.Contains(type)))
+            {
+                if (!FirstRunList.Contains(type)) FirstRunList.Add(type);
+                OneTimeList.Remove(type);
+                action();
+            }
+        }
+        public static void NewFlag(string type)
+        {
+            if (!OneTimeList.Contains(type)) OneTimeList.Add(type);
         }
     }
 }

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
-using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.CustomRPC;
@@ -50,6 +46,11 @@ namespace SuperNewRoles.Patch
                     ShipStatus.RpcEndGame(GameOverReason.HumansByTask, false);
                     MapUtilities.CachedShipStatus.enabled = false;
                 }
+
+                if (Input.GetKeyDown(KeyCode.M) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift) && AmongUsClient.Instance.AmHost)//Mと右左シフトを押したとき
+                {
+                    MeetingHud.Instance.RpcClose();//会議を強制終了
+                }
             }
         }
     }
@@ -86,6 +87,8 @@ namespace SuperNewRoles.Patch
                 var MyRole = PlayerControl.LocalPlayer.getRole();
                 setBasePlayerOutlines();
                 VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
+                if (CustomOptions.LadderDead.getBool())
+                    LadderDead.FixedUpdate();
                 var ThisMode = ModeHandler.GetMode();
                 if (ThisMode == ModeId.Default)
                 {
@@ -145,6 +148,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.SerialKiller:
                                 SerialKiller.FixedUpdate();
                                 break;
+                            case RoleId.Kunoichi:
+                                Kunoichi.Update();
+                                break;
                             default:
                                 Minimalist.FixedUpdate.Postfix(MyRole);
                                 break;
@@ -152,6 +158,10 @@ namespace SuperNewRoles.Patch
                     }
                     else
                     {
+                        if (MapOptions.MapOption.ClairvoyantZoom)
+                        {
+                            Clairvoyant.FixedUpdate.Postfix();
+                        }
                         switch (MyRole)
                         {
                             case RoleId.Bait:

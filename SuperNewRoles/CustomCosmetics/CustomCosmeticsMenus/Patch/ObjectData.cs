@@ -1,0 +1,358 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using BepInEx.Configuration;
+using TMPro;
+using UnityEngine;
+
+namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
+{
+    public static class ObjectData
+    {
+        public static TextMeshPro HatText;
+        public static TextMeshPro VisorText;
+        public static TextMeshPro SkinText;
+        public static TextMeshPro ColorText;
+        public static TextMeshPro NamePlateText;
+        public static TextMeshPro PetText;
+        public static TextMeshPro CubeText;
+        public static ColorChip ColorButton;
+        public static ColorChip HatButton;
+        public static ColorChip SkinButton;
+        public static ColorChip PetButton;
+        public static ColorChip VisorButton;
+        public static ColorChip NamePlateButton;
+        public static ColorChip CubeButton;
+        public static HatParent HatButton_Hat;
+        public static SkinLayer SkinButton_Skin;
+        public static PetBehaviour PetButton_Pet;
+        public static VisorLayer VisorButton_Visor;
+        public static NameplateChip NamePlateButton_NamePlate;
+        public static SpriteRenderer ColorButton_SpriteRend;
+        public static string Selected;
+        public static Transform[] HatTabButtons;
+        public static PassiveButton area_pas;
+        public static SpriteRenderer CosmicubeMenuHolderTint;
+        public static bool IsCube;
+
+        public static Transform[] Presets;
+        public static PoolablePlayer[] PresetAreas;
+
+        public static bool IsShow;
+        public static bool IsCloset;
+        public static void HatShow()
+        {
+            ResetShow();
+            IsShow = true;
+            HideDefaultTabButton();
+            PlayerCustomizationMenu.Instance.transform.FindChild("HatsGroup").gameObject.SetActive(true);
+            ShowHatTabsButton();
+        }
+        public static void SkinShow()
+        {
+            ResetShow();
+            IsShow = true;
+            PlayerCustomizationMenu.Instance.transform.FindChild("SkinGroup").gameObject.SetActive(true);
+        }
+        public static void CubeShow()
+        {
+            ResetShow();
+            IsShow = true;
+            IsCube = true;
+            PlayerCustomizationMenu.Instance.cubesTab.gameObject.SetActive(true);
+            PlayerCustomizationMenu.Instance.transform.FindChild("Background/RightPanel/CubeView").gameObject.SetActive(true);
+        }
+        public static void PetShow()
+        {
+            ResetShow();
+            IsShow = true;
+            PlayerCustomizationMenu.Instance.transform.FindChild("PetsGroup").gameObject.SetActive(true);
+        }
+        public static void VisorShow()
+        {
+            ResetShow();
+            IsShow = true;
+            PlayerCustomizationMenu.Instance.transform.FindChild("VisorGroup").gameObject.SetActive(true);
+        }
+        public static void NamePlateShow()
+        {
+            ResetShow();
+            IsShow = true;
+            PlayerCustomizationMenu.Instance.transform.FindChild("NameplateGroup").gameObject.SetActive(true);
+        }
+        public static void ColorShow()
+        {
+            ResetShow();
+            IsShow = true;
+            PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup").gameObject.SetActive(true);
+            foreach (ColorChip chip in GameObject.FindObjectOfType<PlayerTab>().ColorChips)
+            {
+                chip.gameObject.SetActive(true);
+            }
+            ColorText.gameObject.SetActive(true);
+        }
+        public static void HideHatTabsButton()
+        {
+        }
+        public static void ShowHatTabsButton()
+        {
+            //SuperNewRolesPlugin.Logger.LogInfo(CustomHats.IsEnd);
+            //if (!CustomHats.IsEnd)
+            {
+                ShowDefaultTabButton();
+                return;
+            }
+            SuperNewRolesPlugin.Logger.LogInfo(HatTabButtons.Length);
+            if (HatTabButtons.Length > 0)
+            {
+                foreach (Transform obj in HatTabButtons)
+                {
+                    obj.gameObject.SetActive(true);
+                }
+                return;
+            }
+            Transform parent = PlayerCustomizationMenu.Instance.Tabs[0].Button.transform.parent.parent.parent;
+            List<Transform> Tabs = new();
+            SuperNewRolesPlugin.Logger.LogInfo(CustomHats.Keys.Count);
+            int i = 1;
+            foreach (string key in CustomHats.Keys)
+            {
+                var obj = GameObject.Instantiate(PlayerCustomizationMenu.Instance.Tabs[0].Button.transform.parent.parent, parent);
+                obj.GetChild(0).gameObject.SetActive(true);
+                PassiveButton button = obj.GetChild(0).FindChild("Tab Background").GetComponent<PassiveButton>();
+                button.OnClick = new();
+                button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ClickHatTab(key)));
+                obj.transform.localPosition = new Vector3(-3.75f + (i * 0.75f), 0, -5);
+                obj.name = key;
+                Tabs.Add(obj);
+                i++;
+                SuperNewRolesPlugin.Logger.LogInfo("追加:" + key);
+            }
+            HatTabButtons = Tabs.ToArray();
+            ClickHatTab(CustomHats.Keys[0]);
+        }
+        public static void ClickHatTab(string package)
+        {
+            Selected = package;
+            foreach (Transform obj in HatTabButtons)
+            {
+                if (obj.name == package)
+                {
+                    obj.GetChild(0).FindChild("Tab Background").GetComponent<SpriteRenderer>().enabled = true;
+                }
+                else
+                {
+                    obj.GetChild(0).FindChild("Tab Background").GetComponent<SpriteRenderer>().enabled = false;
+                }
+            }
+            if (hats.Length <= 0)
+            {
+                hats = PlayerCustomizationMenu.Instance.transform.FindChild("HatsGroup").GetComponentsInChildren<HatParent>();
+            }
+            HatsTab hatstab = PlayerCustomizationMenu.Instance.transform.FindChild("HatsGroup").GetComponent<HatsTab>();
+            foreach (var data in CustomHats.HatsTabOnEnablePatch.Chips)
+            {
+                SuperNewRolesPlugin.Logger.LogInfo(data+"をDestroy");
+                GameObject.Destroy(data);
+            }
+            hatstab.ColorChips = new();
+            CustomHats.HatsTabOnEnablePatch.Chips = new();
+            hatstab.OnEnable();
+        }
+        public static HatParent[] hats;
+        public static void HideDefaultTabButton()
+        {
+            PlayerCustomizationMenu.Instance.Tabs[0].Button.transform.parent.gameObject.SetActive(false);
+            PlayerCustomizationMenu.Instance.Tabs[1].Button.transform.parent.gameObject.SetActive(false);
+        }
+        public static void ShowDefaultTabButton()
+        {
+            PlayerCustomizationMenu.Instance.Tabs[0].Button.transform.parent.gameObject.SetActive(true);
+            PlayerCustomizationMenu.Instance.Tabs[1].Button.transform.parent.gameObject.SetActive(true);
+        }
+        public static void ResetShow()
+        {
+            ShowDefaultTabButton();
+            PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/HatsTab/Hat Button/Tab Background").GetComponent<SpriteRenderer>().enabled = false;
+            PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/ColorTab/ColorButton/Tab Background").GetComponent<SpriteRenderer>().enabled = false;
+            IsShow = false;
+            IsCloset = false;
+            IsCube = false;
+            ClosetHide();
+            PresetHide();
+            ShowDefaultTabButton();
+            HideHatTabsButton();
+            foreach (TabButton button in PlayerCustomizationMenu.Instance.Tabs)
+            {
+                GameObject btn = button.Tab.gameObject;
+                if (btn.active)
+                {
+                    btn.SetActive(false);
+                }
+            }
+            UpdatePatch.area.gameObject.SetActive(false);
+            PlayerCustomizationMenu.Instance.transform.FindChild("Background/RightPanel/CubeView").gameObject.SetActive(false);
+        }
+        public static void ClosetHide()
+        {
+            HatText.gameObject.SetActive(false);
+            VisorText.gameObject.SetActive(false);
+            SkinText.gameObject.SetActive(false);
+            ColorText.gameObject.SetActive(false);
+            NamePlateText.gameObject.SetActive(false);
+            PetText.gameObject.SetActive(false);
+            CubeText.gameObject.SetActive(false);
+            ColorButton.gameObject.SetActive(false);
+            HatButton.gameObject.SetActive(false);
+            SkinButton.gameObject.SetActive(false);
+            PetButton.gameObject.SetActive(false);
+            VisorButton.gameObject.SetActive(false);
+            NamePlateButton.gameObject.SetActive(false);
+            CubeButton.gameObject.SetActive(false);
+            HatButton_Hat.gameObject.SetActive(false);
+            SkinButton_Skin.gameObject.SetActive(false);
+            //PetButton_Pet.gameObject.SetActive(false);
+            VisorButton_Visor.Visible = false;
+            //NamePlateButton_NamePlate.gameObject.SetActive(false);
+        }
+        public static void ClosetShow()
+        {
+            ResetShow();
+            PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/ColorTab/ColorButton/Tab Background").GetComponent<SpriteRenderer>().enabled = true;
+            IsCloset = true;
+            HatText.gameObject.SetActive(true);
+            VisorText.gameObject.SetActive(true);
+            SkinText.gameObject.SetActive(true);
+            ColorText.gameObject.SetActive(true);
+            NamePlateText.gameObject.SetActive(true);
+            PetText.gameObject.SetActive(true);
+            CubeText.gameObject.SetActive(true);
+            ColorButton.gameObject.SetActive(true);
+            HatButton.gameObject.SetActive(true);
+            SkinButton.gameObject.SetActive(true);
+            PetButton.gameObject.SetActive(true);
+            VisorButton.gameObject.SetActive(true);
+            NamePlateButton.gameObject.SetActive(true);
+            CubeButton.gameObject.SetActive(true);
+            HatButton_Hat.gameObject.SetActive(true);
+            SkinButton_Skin.gameObject.SetActive(true);
+            //PetButton_Pet.gameObject.SetActive(true);
+            VisorButton_Visor.Visible = true;
+            //NamePlateButton_NamePlate.gameObject.SetActive(true);
+            UpdatePatch.area.gameObject.SetActive(true);
+            PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup").gameObject.SetActive(true);
+        }
+        public static void PresetHide()
+        {
+            foreach (Transform tfm in Presets)
+            {
+                tfm.gameObject.SetActive(false);
+            }
+        }
+        public static void PresetShow()
+        {
+            ResetShow();
+            PlayerCustomizationMenu.Instance.transform.FindChild("Header/Tabs/HatsTab/Hat Button/Tab Background").GetComponent<SpriteRenderer>().enabled = true;
+            //PlayerCustomizationMenu.Instance.itemName.text = "プリセット" + (SelectedPreset.Value + 1);
+            Logger.Info("PresetShow!", "");
+            if (Presets.Length > 0)
+            {
+                Logger.Info("0以上", "");
+                foreach (Transform trf in Presets)
+                {
+                    if (trf != null)
+                    {
+                        GameObject.Destroy(trf.gameObject);
+                    }
+                }
+                foreach (PoolablePlayer pl in PresetAreas)
+                {
+                    if (pl != null)
+                    {
+                        GameObject.Destroy(pl.gameObject);
+                    }
+                }
+            }
+            List<Transform> presets = new();
+            List<PoolablePlayer> presetplayers = new();
+            for (float i = 0;i < 10; i++)
+            {
+                var obj = GameObject.Instantiate(ColorButton, PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup"));
+                Set(obj.Button, (int)i);
+                obj.Button.OnMouseOver = new();
+                obj.Button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => obj.GetComponent<SpriteRenderer>().color = Color.yellow));
+                obj.Button.OnMouseOut = new();
+                obj.Button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => obj.GetComponent<SpriteRenderer>().color = Color.white));
+                obj.GetComponent<SpriteRenderer>().color = Color.white;
+                obj.transform.localScale = new Vector3(4, 6, 1);
+                GameObject.Destroy(obj.GetComponent<BoxCollider2D>());
+                obj.Button.Colliders = new List<Collider2D>() { obj.gameObject.AddComponent<PolygonCollider2D>() }.ToArray();
+                if (i > 4)
+                {
+                    obj.transform.localPosition = new Vector3(-1.2f + ((i - 5) * 1.7f), -0.75f, 4);
+                }
+                else
+                {
+                    obj.transform.localPosition = new Vector3(-1.2f + (i * 1.7f), 1.6f, 4);
+                }
+                var player = GameObject.Instantiate(PlayerCustomizationMenu.Instance.PreviewArea ,obj.transform);
+                player.transform.localScale = new(0.2f, 0.135f, 0.25f);
+                player.transform.localPosition = new();
+                obj.gameObject.SetActive(true);
+                presets.Add(obj.transform);
+                presetplayers.Add(player);
+            }
+            Presets = presets.ToArray();
+            PresetAreas = presetplayers.ToArray();
+            PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup").gameObject.SetActive(true);
+        }
+        static void Set(PassiveButton btn, int index)
+        {
+            btn.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => SetPreset(index)));
+        }
+        public static Dictionary<int, ClosetPresetData> ClosetPresetDatas = new();
+        public static ConfigEntry<int> SelectedPreset;
+        public class ClosetPresetData{
+            public ConfigEntry<byte> BodyColor;
+            public ConfigEntry<string> Hat;
+            public ConfigEntry<string> Visor;
+            public ConfigEntry<string> Skin;
+            public ConfigEntry<string> NamePlate;
+            public ConfigEntry<string> Pet;
+        }
+        public static void SetPreset(int index)
+        {
+            SelectedPreset.Value = index;
+            SuperNewRolesPlugin.Logger.LogInfo("セットプリセット:"+index);
+            ClosetPresetData data = null;
+            if (!ClosetPresetDatas.ContainsKey(index)) {
+                data = new();
+                data.BodyColor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "BodyColor", (byte)0);
+                data.Hat = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Hat", "");
+                data.Visor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Visor", "");
+                data.Skin = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Skin", "");
+                data.NamePlate = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "NamePlate", "");
+                data.Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "");
+            }
+            else {
+                data = ClosetPresetDatas[index];
+            }
+            SaveManager.BodyColor = data.BodyColor.Value;
+            SaveManager.LastHat = data.Hat.Value;
+            SaveManager.LastVisor = data.Visor.Value;
+            SaveManager.LastSkin = data.Skin.Value;
+            SaveManager.LastNamePlate = data.NamePlate.Value;
+            SaveManager.LastPet = data.Pet.Value;
+            if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined)
+            {
+                PlayerControl.LocalPlayer.CmdCheckColor(SaveManager.BodyColor);
+                PlayerControl.LocalPlayer.RpcSetHat(SaveManager.LastHat);
+                PlayerControl.LocalPlayer.RpcSetVisor(SaveManager.LastVisor);
+                PlayerControl.LocalPlayer.RpcSetSkin(SaveManager.LastSkin);
+                PlayerControl.LocalPlayer.RpcSetNamePlate(SaveManager.LastNamePlate);
+                PlayerControl.LocalPlayer.RpcSetPet(SaveManager.LastPet);
+            }
+            PlayerCustomizationMenu.Instance.PreviewArea.UpdateFromSaveManager(PlayerMaterial.MaskType.ComplexUI);
+        }
+    }
+}
