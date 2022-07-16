@@ -961,10 +961,10 @@ namespace SuperNewRoles
                 case (RoleId.ToiletFan):
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (RoleId.AllOpener):
+                case (RoleId.AllOpener):
                     RoleClass.AllOpener.AllOpenerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1022,7 +1022,7 @@ namespace SuperNewRoles
             {
                 IsTaskClear = true;
             }
-            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
+            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan)))
             {
                 IsTaskClear = true;
             }
@@ -1473,10 +1473,10 @@ namespace SuperNewRoles
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
                 else if (RoleClass.AllOpener.AllOpenerPlayer.IsCheckListPlayerControl(player))
-            {
-                return RoleId.AllOpener;
-            }
-            //ロールチェック
+                {
+                    return RoleId.AllOpener;
+                }
+                //ロールチェック
             }
             catch (Exception e)
             {

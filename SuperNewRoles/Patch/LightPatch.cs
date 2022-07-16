@@ -58,7 +58,7 @@ namespace SuperNewRoles.Patch
                 __result = GetNeutralLightRadius(__instance, false);
             else if (player.Object.isImpostor() || RoleHelpers.IsImpostorLight(player.Object))
                 __result = GetNeutralLightRadius(__instance, true);
-            else if (RoleClass.Lighter.LighterPlayer.IsCheckListPlayerControl(player.Object) && RoleClass.Lighter.IsLightOn)
+            else if (player.Object.isRole(RoleId.Lighter)&& RoleClass.Lighter.IsLightOn)
                 __result = Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num);
             else
                 __result = GetNeutralLightRadius(__instance, false);

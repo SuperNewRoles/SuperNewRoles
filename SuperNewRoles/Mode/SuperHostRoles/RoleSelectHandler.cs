@@ -292,7 +292,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (Player.IsPlayer())
                 {
-                    if (AllRoleSetClass.impostors.IsCheckListPlayerControl(Player))
+                    if (Player.isImpostor())
                     {
                         AllRoleSetClass.ImpostorPlayers.Add(Player);
                     }

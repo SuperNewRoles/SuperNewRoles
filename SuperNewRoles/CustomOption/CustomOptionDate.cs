@@ -27,6 +27,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption enableMirroMap;
 
         public static CustomOption IsDebugMode;
+        public static CustomOption DebugModeFastStart;
 
         public static CustomOption DisconnectNotPCOption;
 
@@ -733,6 +734,7 @@ namespace SuperNewRoles.CustomOption
             if (ConfigRoles.DebugMode.Value)
             {
                 IsDebugMode = CustomOption.Create(10, true, CustomOptionType.Generic, "デバッグモード", false, null, isHeader: true);
+                DebugModeFastStart = CustomOption.Create(681, true, CustomOptionType.Generic, "即開始", false, IsDebugMode);
             }
 
             DisconnectNotPCOption = CustomOption.Create(11, true, CustomOptionType.Generic, cs(Color.white, "PC以外はキックする"), true, null, isHeader: true);
