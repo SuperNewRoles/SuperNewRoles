@@ -153,7 +153,6 @@ namespace SuperNewRoles.Patch
                                 break;
                             default:
                                 Minimalist.FixedUpdate.Postfix(MyRole);
-                                SatsumaRoleSelect.SetRole();
                                 break;
                         }
                     }

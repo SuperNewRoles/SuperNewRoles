@@ -2502,7 +2502,7 @@ namespace SuperNewRoles.Roles
         public static class SatsumaAndImo
         {
             public static List<PlayerControl> SatsumaAndImoPlayer;
-            public static Color32 color = new Color32(0, 255, 0, byte.MaxValue);
+            public static Color32 color = new(255, 255, 255, byte.MaxValue);
             public static int TeamNumber;
             public static void ClearAndReload()
             {

@@ -12,24 +12,30 @@ namespace SuperNewRoles.Roles
     {
         public static void Prefix(MeetingHud __instance)
         {
+            if (RoleClass.SatsumaAndImo.TeamNumber == 1) { RoleClass.SatsumaAndImo.color = Palette.White; }
+            else if (RoleClass.SatsumaAndImo.TeamNumber == 2) { RoleClass.SatsumaAndImo.color = RoleClass.ImpostorRed; }
+            else if (RoleClass.SatsumaAndImo.TeamNumber == 3) { RoleClass.SatsumaAndImo.color = RoleClass.JackalFriends.color; }
             if (RoleClass.SatsumaAndImo.TeamNumber == 1)//クルーなら
             {
                 SuperNewRolesPlugin.Logger.LogDebug("まｄｄ");
                 RoleClass.SatsumaAndImo.TeamNumber = 2;//マッドに
+                RoleClass.SatsumaAndImo.color = RoleClass.ImpostorRed;
             }
             else if (RoleClass.SatsumaAndImo.TeamNumber == 2)//マッドなら
             {
                 SuperNewRolesPlugin.Logger.LogDebug("かｓｆ");
                 RoleClass.SatsumaAndImo.TeamNumber = 3;//ジャカフレに
+                RoleClass.SatsumaAndImo.color = RoleClass.JackalFriends.color;
             }
             else//ジャカフレなら
             {
                 SuperNewRolesPlugin.Logger.LogDebug("kuruu");
                 RoleClass.SatsumaAndImo.TeamNumber = 1;//クルーに
+                RoleClass.SatsumaAndImo.color = Palette.White;
             }
-            SatsumaRoleSelect.SetRole();//役職割り当て
+            //SatsumaRoleSelect.SetRole();//役職割り当て
         }
-    }
+    }/*
     public static class SatsumaRoleSelect
     {
         public static void SetRole()
@@ -58,5 +64,5 @@ namespace SuperNewRoles.Roles
                 }
             }
         }
-    }
+    }*/
 }
