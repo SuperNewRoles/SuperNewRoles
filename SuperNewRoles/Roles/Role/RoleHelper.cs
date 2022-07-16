@@ -9,6 +9,13 @@ using UnityEngine;
 
 namespace SuperNewRoles
 {
+        public enum TeamRoleType
+    {
+        Crewmate,
+        Impostor,
+        Neutral,
+        Error
+    }
     public static class RoleHelpers
     {
         public static bool isCrew(this PlayerControl player)
