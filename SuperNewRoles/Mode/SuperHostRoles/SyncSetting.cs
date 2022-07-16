@@ -342,6 +342,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                     break;
                 case RoleId.ToiletFan:
+                    optdata.ImpostorLightMod = optdata.CrewLightMod;
+                    var switchSystemToiletFan = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                    if (switchSystemToiletFan != null && switchSystemToiletFan.IsActive)
+                    {
+                        optdata.ImpostorLightMod /= 5;
+                    }
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.ToiletFan.ToiletCool;
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
