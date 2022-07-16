@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 using TMPro;
 
@@ -10,6 +11,8 @@ namespace SuperNewRoles.Modules
 
         public static void StartMeeting(MeetingIntroAnimation __instance)
         {
+            __instance.ProtectedRecently.SetActive(false);
+            SoundManager.Instance.StopSound(__instance.ProtectedRecentlySound);
             //このターンで誰か守った？
             bool AnythingPlayerProcted = false;
 			foreach(PlayerControl player in CachedPlayer.AllPlayers)
@@ -25,7 +28,7 @@ namespace SuperNewRoles.Modules
 			}
 
             //誰か守ってたら音声あり
-            if (AnythingPlayerProcted || ProctedMessages != null)
+            if (AnythingPlayerProcted || ProctedMessages != String.Empty)
             {
                 __instance.ProtectedRecently.SetActive(true);
                 SoundManager.Instance.PlaySound(__instance.ProtectedRecentlySound, false, 1f);
@@ -45,7 +48,7 @@ namespace SuperNewRoles.Modules
         //初期化
         public static void Init()
         {
-            ProctedMessages = "";
+            ProctedMessages = String.Empty;
         }
 
         //スケジュール
