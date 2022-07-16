@@ -112,7 +112,7 @@ namespace SuperNewRoles.Patch
                 }
                 if (Input.GetKeyDown(KeyCode.F1))
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2("+(PlayerControl.LocalPlayer.transform.position.x - 12.559f) +"f, "+ (PlayerControl.LocalPlayer.transform.position.y + 3.37f) + "f), ");
+                    SuperNewRolesPlugin.Logger.LogInfo("new Vector2(" + (PlayerControl.LocalPlayer.transform.position - new Vector3(12.63f, -3.46f, 5)) + "f), ");
                 }
             }
 
