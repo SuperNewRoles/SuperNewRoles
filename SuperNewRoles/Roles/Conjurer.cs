@@ -7,13 +7,6 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
-    public class Vecs
-    {
-        public static Vector3 pos1;
-        public static Vector3 pos2;
-        public static Vector3 pos3;
-    }
-
     public class Conjurer
     {
         //ベクトル内積
@@ -64,7 +57,7 @@ namespace SuperNewRoles.Roles
             if (dot_12 > 0 && dot_13 > 0)
             {
                 //三角形の内側に点がある
-                SuperNewRolesPlugin.Logger.LogInfo("TriangleAreaがtrue");
+                //SuperNewRolesPlugin.Logger.LogInfo("TriangleAreaがtrue");
                 return true;
             }
             else
@@ -73,76 +66,14 @@ namespace SuperNewRoles.Roles
                 return false;
             }
         }
-        public static void TraingleInKill()
-        {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            {
-                if (p.isAlive())//生きてるなら
-                {
-                    //魔術師1、２,３個目の座標とプレイヤーの座標を代入
-                    if (TriangleArea(Vecs.pos1, Vecs.pos2, Vecs.pos3, PlayerControl.LocalPlayer.transform.position))
-                    {
-                        //殺す
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                    }
-                }
-            }
-        }
+
 
 
         //Buttonのクールリセット
         public static void AllCoolReset()
         {
-            HudManagerStartPatch.ConjurerFirstAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
-            HudManagerStartPatch.ConjurerFirstAddButton.Timer = RoleClass.Conjurer.CoolTime;
-
-            HudManagerStartPatch.ConjurerSecondAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
-            HudManagerStartPatch.ConjurerSecondAddButton.Timer = RoleClass.Conjurer.CoolTime;
-
-            HudManagerStartPatch.ConjurerThirdAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
-            HudManagerStartPatch.ConjurerThirdAddButton.Timer = RoleClass.Conjurer.CoolTime;
-        }
-
-
-        //全部falseに
-        public static void AllClear()
-        {
-            RoleClass.Conjurer.FirstAdd = false;
-            RoleClass.Conjurer.SecondAdd = false;
-            RoleClass.Conjurer.ThirdAdd = false;
-        }
-
-        //一回追加されたかを判定する
-        public static bool IsFirstAdded()
-        {
-            if (RoleClass.Conjurer.FirstAdd && !RoleClass.Conjurer.SecondAdd && !RoleClass.Conjurer.ThirdAdd)
-            {
-                //SuperNewRolesPlugin.Logger.LogInfo("IsFirstAddedがtrueeee");
-                return true;
-            }
-            return false;
-        }
-
-        //二回追加されたかを判定する
-        public static bool IsSecondAdded()
-        {
-            if (RoleClass.Conjurer.FirstAdd && RoleClass.Conjurer.SecondAdd && !RoleClass.Conjurer.ThirdAdd)
-            {
-                //SuperNewRolesPlugin.Logger.LogInfo("IsSecondAddedがtrueeee");
-                return true;
-            }
-            return false;
-        }
-
-        //三回追加されたかを判定する
-        public static bool IsThirdAdded()
-        {
-            if (RoleClass.Conjurer.FirstAdd && RoleClass.Conjurer.SecondAdd && RoleClass.Conjurer.ThirdAdd)
-            {
-                //SuperNewRolesPlugin.Logger.LogInfo("IsThirdAddedがtrueeee");
-                return true;
-            }
-            return false;
+            HudManagerStartPatch.ConjurerAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
+            HudManagerStartPatch.ConjurerAddButton.Timer = RoleClass.Conjurer.CoolTime;
         }
     }
 
@@ -176,10 +107,10 @@ namespace SuperNewRoles.Roles
                     Transform Conjurer_Marker3 = GameObject.Instantiate(GameObject.Find("Marker3").transform);
                     Conjurer_Marker_Animation.Start(30, Conjurer_Marker3);
                 }
-               /* else//それ以外の時
-                {
-                    boxAnimationSprites[index] = null;
-                }*/
+                /* else//それ以外の時
+                 {
+                     boxAnimationSprites[index] = null;
+                 }*/
             }
             return boxAnimationSprites[index];
         }
@@ -207,15 +138,15 @@ namespace SuperNewRoles.Roles
 
         public JackInTheBox(Vector2 p)
         {
-            if (!Conjurer.IsFirstAdded())
+            if (RoleClass.Conjurer.AddedCount == 0)
             {
                 gameObject = new GameObject("Marker1") { layer = 11 };
             }
-           else if (!Conjurer.IsSecondAdded())
+            else if (RoleClass.Conjurer.AddedCount ==1)
             {
                 gameObject = new GameObject("Marker2") { layer = 11 };
             }
-          else  if (!Conjurer.IsThirdAdded())
+            else if (RoleClass.Conjurer.AddedCount ==2)
             {
                 gameObject = new GameObject("Marker3") { layer = 11 };
             }

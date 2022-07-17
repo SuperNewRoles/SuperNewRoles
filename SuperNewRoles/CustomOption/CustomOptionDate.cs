@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -662,12 +662,13 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption ToiletFanOption;
         public static CustomOption ToiletFanPlayerCount;
         public static CustomOption ToiletFanCoolTime;
-        //CustomOption
 
         public static CustomRoleOption ConjurerOption;
         public static CustomOption ConjurerPlayerCount;
         public static CustomOption ConjurerCoolTime;
         public static CustomOption ConjurerScreenFrash;
+        public static CustomOption ConjurerCanKillImpostor;
+        //CustomOption
 
         public static CustomOption QuarreledOption;
         public static CustomOption QuarreledTeamCount;
@@ -1303,6 +1304,7 @@ namespace SuperNewRoles.CustomOption
             ConjurerPlayerCount = CustomOption.Create(508, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], ConjurerOption);
             ConjurerCoolTime = CustomOption.Create(502, false, CustomOptionType.Impostor, "NiceScientistCoolDownSetting", 30f, 2.5f, 60f, 2.5f, ConjurerOption);
             ConjurerScreenFrash = CustomOption.Create(509, false, CustomOptionType.Impostor, "ConjurerFrashSetting", false, ConjurerOption);
+            ConjurerCanKillImpostor = CustomOption.Create(509, false, CustomOptionType.Impostor, "CanKillImpostorSetting", false, ConjurerOption);
 
             HauntedWolfOption = new CustomRoleOption(530, true, CustomOptionType.Crewmate, "HauntedWolfName", RoleClass.HauntedWolf.color, 1);
             HauntedWolfPlayerCount = CustomOption.Create(531, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], HauntedWolfOption);

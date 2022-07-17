@@ -2308,11 +2308,12 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> ConjurerPlayer;
             public static Color32 color = ImpostorRed;
-            public static bool FirstAdd;
-            public static bool SecondAdd;
-            public static bool ThirdAdd;
             public static float CoolTime;
             public static bool ScreenFrash;
+            public static int AddedCount;
+            public static Vector3 pos1;
+            public static Vector3 pos2;
+            public static Vector3 pos3;
             private static Sprite AddbuttonSprite;
             private static Sprite StartbuttonSprite;
             public static Sprite getAddButtonSprite()
@@ -2330,11 +2331,12 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 ConjurerPlayer = new List<PlayerControl>();
-                FirstAdd = false;
-                SecondAdd = false;
-                ThirdAdd = false;
                 CoolTime = CustomOptions.ConjurerCoolTime.getFloat();
                 ScreenFrash = CustomOptions.ConjurerScreenFrash.getBool();
+                AddedCount = 0;
+                pos1 = new();
+                pos2 = new();
+                pos3 = new();
             }
         }
         public static class SecretlyKiller
