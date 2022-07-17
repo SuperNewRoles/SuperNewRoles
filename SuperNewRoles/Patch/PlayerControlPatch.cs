@@ -377,8 +377,8 @@ namespace SuperNewRoles.Patches
                             if (!RoleClass.FastMaker.IsCreatedMadMate)//まだ作ってなくて、設定が有効の時
                             {
                                 if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                                 target.RpcProtectPlayer(target, 0);//キルを無効にする為守護をかける
-                                 //守護がかかるのを待つためのLateTask
+                                target.RpcProtectPlayer(target, 0);//キルを無効にする為守護をかける
+                                //守護がかかるのを待つためのLateTask
                                 new LateTask(() =>
                                     {
                                         RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
@@ -576,11 +576,18 @@ namespace SuperNewRoles.Patches
                             {
                                 SuperNewRolesPlugin.Logger.LogInfo("まだ作ってなくて、設定が有効の時なんでフレンズ作成");
                                 if (target == null || RoleClass.Jackal.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                                RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
-                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                target.setRoleRPC(RoleId.JackalFriends);//フレンズにする
-                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                                RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
+
+                                target.RpcProtectPlayer(target, 0);//ジャッカルフレンズにできたことを示すモーションとしての守護をかける
+                                //キルする前に守護を発動させるためのLateTask
+                                new LateTask(() =>
+                                    {
+                                        __instance.RpcMurderPlayer(target);//キルをして守護モーションの発動(守護解除)
+                                        RoleClass.Jackal.CreatePlayers.Add(__instance.PlayerId);
+                                        target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
+                                        target.setRoleRPC(RoleId.JackalFriends);//フレンズにする
+                                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                                        RoleClass.Jackal.IsCreatedFriend = true;//作ったことにする
+                                    }, 0.5f);
                             }
                             else
                             {
