@@ -33,7 +33,7 @@ namespace SuperNewRoles.Roles
             IsCoolTimeSetted = false;
             IsStart = false;
             LadderDead.Reset();
-            Map.Data.ClearAndReloads();
+            //Map.Data.ClearAndReloads();
             SabotageManager.ClearAndReloads();
             Madmate.CheckedImpostor = new();
             Roles.MadMayor.CheckedImpostor = new();
