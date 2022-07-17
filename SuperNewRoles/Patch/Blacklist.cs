@@ -1,14 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using InnerNet;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+
 namespace SuperNewRoles.Patch
 {
     public static class Blacklist
