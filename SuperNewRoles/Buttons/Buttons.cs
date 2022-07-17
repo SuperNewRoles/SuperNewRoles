@@ -512,8 +512,8 @@ namespace SuperNewRoles.Buttons
                     if (Jackal.JackalFixedPatch.JackalsetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
                         if ((PlayerControl.LocalPlayer.isRole(RoleId.Jackal) && !RoleClass.Jackal.IsCreatedFriend && RoleClass.Jackal.CanCreateFriend) ||
-                            (PlayerControl.LocalPlayer.isRole(RoleId.JackalSeer) && !RoleClass.JackalSeer.IsCreatedFriend && RoleClass.JackalSeer.CanCreateFriend) ||
-                            (PlayerControl.LocalPlayer.isRole(RoleId.TeleportingJackal) && !RoleClass.TeleportingJackal.IsCreatedFriend && RoleClass.TeleportingJackal.CanCreateFriend))
+                            (PlayerControl.LocalPlayer.isRole(RoleId.JackalSeer) && !RoleClass.Jackal.IsCreatedFriend && RoleClass.JackalSeer.CanCreateFriend) ||
+                            (PlayerControl.LocalPlayer.isRole(RoleId.TeleportingJackal) && !RoleClass.Jackal.IsCreatedFriend && RoleClass.TeleportingJackal.CanCreateFriend))
                         {
                             Jackal.CreateFriend();
                         }

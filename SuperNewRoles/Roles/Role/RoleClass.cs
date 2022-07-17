@@ -1779,13 +1779,6 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float DurationTime;
             public static DateTime ButtonTimer;
-            private static Sprite ButtonSprite;
-            public static Sprite GetButtonSprite()
-            {
-                if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
-                return ButtonSprite;
-            }
             public static void ClearAndReload()
             {
                 TeleportingJackalPlayer = new();
@@ -1793,7 +1786,6 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.TeleportingJackalUseVent.getBool();
                 IsUseSabo = CustomOptions.TeleportingJackalUseSabo.getBool();
                 IsImpostorLight = CustomOptions.TeleportingJackalIsImpostorLight.getBool();
-                IsCreatedFriend = false;
                 CanCreateFriend = CustomOptions.TeleportingJackalCreateFriend.getBool();
                 CoolTime = CustomOptions.TeleportingJackalCoolTime.getFloat();
                 DurationTime = CustomOptions.TeleportingJackalDurationTime.getFloat();
@@ -1922,7 +1914,6 @@ namespace SuperNewRoles.Roles
             public static bool NewJackalCreateSidekick;
             public static bool IsCreateSidekick;
 
-            public static bool IsCreatedFriend;
             public static bool CanCreateFriend;
 
             public static void ClearAndReload()
@@ -1944,7 +1935,6 @@ namespace SuperNewRoles.Roles
                 IsCreateSidekick = CustomOptions.JackalSeerCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.getBool();
 
-                IsCreatedFriend = false;
                 CanCreateFriend = CustomOptions.JackalSeerCreateFriend.getBool();
             }
         }

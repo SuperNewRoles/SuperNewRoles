@@ -31,24 +31,12 @@ namespace SuperNewRoles.Roles
                 {
                     PlayerControl.LocalPlayer.RpcMurderPlayer(target);//キルをして守護モーションの発動(守護解除)
                     target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
-                    switch (PlayerControl.LocalPlayer.getRole())
-                    {
-                        case RoleId.Jackal:
-                            target.setRoleRPC(RoleId.JackalFriends);//ジャッカルフレンズにする
-                            RoleClass.Jackal.IsCreatedFriend = true;//作ったことに
-                            SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend:Jackal]フレンズを作ったから普通のキルボタンに戻すよ!");
-                            break;
-                        case RoleId.JackalSeer:
-                            target.setRoleRPC(RoleId.JackalFriends);//ジャッカルフレンズにする
-                            RoleClass.JackalSeer.IsCreatedFriend = true;//作ったことに
-                            SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend:JackalSeer]フレンズを作ったから普通のキルボタンに戻すよ!");
-                            break;
-                        case RoleId.TeleportingJackal:
-                            target.setRoleRPC(RoleId.JackalFriends);//ジャッカルフレンズにする
-                            RoleClass.TeleportingJackal.IsCreatedFriend = true;//作ったことに
-                            SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend:TeleportingJackal]フレンズを作ったから普通のキルボタンに戻すよ!");
-                            break;
-                    }
+
+                    var RoleName = PlayerControl.LocalPlayer.getRole();//ログに表示する為、此処にたどり着いた役職の名前を取得
+                    target.setRoleRPC(RoleId.JackalFriends);//ジャッカルフレンズにする
+                    RoleClass.Jackal.IsCreatedFriend = true;//作ったことに
+                    SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend_RoleName:" + RoleName + "]フレンズを作ったから普通のキルボタンに戻すよ!");
+
                 }, 0.1f);
 
         }
