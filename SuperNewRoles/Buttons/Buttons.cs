@@ -511,18 +511,27 @@ namespace SuperNewRoles.Buttons
                 {
                     if (Jackal.JackalFixedPatch.JackalsetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, Jackal.JackalFixedPatch.JackalsetTarget());
-                        switch (PlayerControl.LocalPlayer.getRole())
+                        if ((PlayerControl.LocalPlayer.isRole(RoleId.Jackal) && !RoleClass.Jackal.IsCreatedFriend && RoleClass.Jackal.CanCreateFriend) ||
+                            (PlayerControl.LocalPlayer.isRole(RoleId.JackalSeer) && !RoleClass.JackalSeer.IsCreatedFriend && RoleClass.JackalSeer.CanCreateFriend) ||
+                            (PlayerControl.LocalPlayer.isRole(RoleId.TeleportingJackal) && !RoleClass.TeleportingJackal.IsCreatedFriend && RoleClass.TeleportingJackal.CanCreateFriend))
                         {
-                            case RoleId.Jackal:
-                                Jackal.resetCoolDown();
-                                break;
-                            case RoleId.JackalSeer:
-                                JackalSeer.resetCoolDown();
-                                break;
-                            case RoleId.TeleportingJackal:
-                                TeleportingJackal.resetCoolDown();
-                                break;
+                            Jackal.CreateFriend();
+                        }
+                        else
+                        {
+                            ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, Jackal.JackalFixedPatch.JackalsetTarget());
+                            switch (PlayerControl.LocalPlayer.getRole())
+                            {
+                                case RoleId.Jackal:
+                                    Jackal.resetCoolDown();
+                                    break;
+                                case RoleId.JackalSeer:
+                                    JackalSeer.resetCoolDown();
+                                    break;
+                                case RoleId.TeleportingJackal:
+                                    TeleportingJackal.resetCoolDown();
+                                    break;
+                            }
                         }
                     }
                 },

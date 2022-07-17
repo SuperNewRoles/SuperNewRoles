@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -479,6 +479,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption TeleportingJackalUseVent;
         public static CustomOption TeleportingJackalUseSabo;
         public static CustomOption TeleportingJackalIsImpostorLight;
+        public static CustomOption TeleportingJackalCreateFriend;
         public static CustomOption TeleportingJackalCoolTime;
         public static CustomOption TeleportingJackalDurationTime;
 
@@ -560,6 +561,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption JackalSeerUseVent;
         public static CustomOption JackalSeerUseSabo;
         public static CustomOption JackalSeerIsImpostorLight;
+        public static CustomOption JackalSeerCreateFriend;
         public static CustomOption JackalSeerCreateSidekick;
         public static CustomOption JackalSeerNewJackalCreateSidekick;
 
@@ -1185,6 +1187,7 @@ namespace SuperNewRoles.CustomOption
             TeleportingJackalKillCoolDown = CustomOption.Create(341, false, CustomOptionType.Neutral, "JackalCoolDownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
             TeleportingJackalUseVent = CustomOption.Create(342, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, TeleportingJackalOption);
             TeleportingJackalIsImpostorLight = CustomOption.Create(343, false, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, TeleportingJackalOption);
+            TeleportingJackalCreateFriend = CustomOption.Create(682, false, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, TeleportingJackalOption);
             TeleportingJackalUseSabo = CustomOption.Create(344, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, TeleportingJackalOption);
             TeleportingJackalCoolTime = CustomOption.Create(345, false, CustomOptionType.Neutral, "TeleporterCoolDownSetting", 30f, 2.5f, 60f, 2.5f, TeleportingJackalOption, format: "unitSeconds");
             TeleportingJackalDurationTime = CustomOption.Create(346, false, CustomOptionType.Neutral, "TeleporterTeleportTimeSetting", 10f, 1f, 20f, 0.5f, TeleportingJackalOption, format: "unitSeconds");
@@ -1231,6 +1234,7 @@ namespace SuperNewRoles.CustomOption
             JackalSeerUseVent = CustomOption.Create(381, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalSeerOption);
             JackalSeerUseSabo = CustomOption.Create(382, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalSeerOption);
             JackalSeerIsImpostorLight = CustomOption.Create(383, false, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, JackalSeerOption);
+            JackalSeerCreateFriend = CustomOption.Create(683, false, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, JackalSeerOption);
             JackalSeerCreateSidekick = CustomOption.Create(384, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalSeerOption);
             JackalSeerNewJackalCreateSidekick = CustomOption.Create(385, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
 

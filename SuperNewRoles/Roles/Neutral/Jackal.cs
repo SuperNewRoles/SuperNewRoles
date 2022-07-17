@@ -4,6 +4,7 @@ using Hazel;
 using SuperNewRoles.Buttons;
 using SuperNewRoles.CustomRPC;
 using UnityEngine;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles
 {
@@ -19,6 +20,37 @@ namespace SuperNewRoles.Roles
         public static void EndMeeting()
         {
             resetCoolDown();
+        }
+        public static void CreateFriend()
+        {
+            var target = Jackal.JackalFixedPatch.JackalsetTarget();
+            target.RpcProtectPlayer(target, 0);//ジャッカルフレンズにできたことを示すモーションとしての守護をかける
+
+            //キルする前に守護を発動させるためのLateTask
+            new LateTask(() =>
+                {
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(target);//キルをして守護モーションの発動(守護解除)
+                    target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
+                    switch (PlayerControl.LocalPlayer.getRole())
+                    {
+                        case RoleId.Jackal:
+                            target.setRoleRPC(RoleId.JackalFriends);//ジャッカルフレンズにする
+                            RoleClass.Jackal.IsCreatedFriend = true;//作ったことに
+                            SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend:Jackal]フレンズを作ったから普通のキルボタンに戻すよ!");
+                            break;
+                        case RoleId.JackalSeer:
+                            target.setRoleRPC(RoleId.JackalFriends);//ジャッカルフレンズにする
+                            RoleClass.JackalSeer.IsCreatedFriend = true;//作ったことに
+                            SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend:JackalSeer]フレンズを作ったから普通のキルボタンに戻すよ!");
+                            break;
+                        case RoleId.TeleportingJackal:
+                            target.setRoleRPC(RoleId.JackalFriends);//ジャッカルフレンズにする
+                            RoleClass.TeleportingJackal.IsCreatedFriend = true;//作ったことに
+                            SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend:TeleportingJackal]フレンズを作ったから普通のキルボタンに戻すよ!");
+                            break;
+                    }
+                }, 0.1f);
+
         }
         public static void setPlayerOutline(PlayerControl target, Color color)
         {
