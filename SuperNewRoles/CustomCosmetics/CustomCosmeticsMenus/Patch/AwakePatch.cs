@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
-using Hazel;
 using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
-{   
+{
     [HarmonyPatch(typeof(PlayerCustomizationMenu),nameof(PlayerCustomizationMenu.Start))]
     class AwakePatch
     {
