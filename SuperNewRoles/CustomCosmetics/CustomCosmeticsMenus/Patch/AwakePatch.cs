@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
 {
-    [HarmonyPatch(typeof(PlayerCustomizationMenu), nameof(PlayerCustomizationMenu.Start))]
+    [HarmonyPatch(typeof(PlayerCustomizationMenu),nameof(PlayerCustomizationMenu.Start))]
     class AwakePatch
     {
         public static void Prefix()

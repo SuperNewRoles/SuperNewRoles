@@ -152,7 +152,8 @@ namespace SuperNewRoles.Patch
                                 Kunoichi.Update();
                                 break;
                             default:
-                                Minimalist.FixedUpdate.Postfix(MyRole);
+                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                                NormalButtonDestroy.Postfix(p);
                                 break;
                         }
                     }

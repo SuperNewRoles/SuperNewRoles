@@ -2,9 +2,8 @@ using HarmonyLib;
 using SuperNewRoles.Mode;
 using UnityEngine;
 
-namespace SuperNewRoles
-
 //TOHより!
+namespace SuperNewRoles
 {
     [HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.SetRecommendations))]
     public static class ChangeRecommendedSettingPatch

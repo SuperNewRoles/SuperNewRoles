@@ -221,30 +221,6 @@ namespace SuperNewRoles
             return role is RoleId.Sidekick or RoleId.SidekickSeer;
         }
 
-        public static void ShowFlash(Color color, float duration = 1f)
-        //Seerで使用している画面を光らせるコード
-        {
-            if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
-            FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
-            FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
-            {
-                var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
-
-                if (p < 0.5)
-                {
-                    if (renderer != null)
-                        renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
-                }
-                else
-                {
-                    if (renderer != null)
-                        renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
-                }
-                if (p == 1f && renderer != null) renderer.enabled = false;
-            })));
-        }
-
         public static void setRole(this PlayerControl player, RoleId role)
         {
             switch (role)
@@ -994,19 +970,11 @@ namespace SuperNewRoles
                     break;
                     //タスククリアか
             }
-            if (player.isImpostor())
-            {
-                IsTaskClear = true;
-            }
-            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan)))
-            {
-                IsTaskClear = true;
-            }
-            if (!IsTaskClear && player.IsQuarreled())
-            {
-                IsTaskClear = true;
-            }
-            if (!IsTaskClear && !RoleClass.Lovers.AliveTaskCount && player.IsLovers())
+            if (!IsTaskClear
+                && (ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan))
+                || player.IsQuarreled()
+                || !RoleClass.Lovers.AliveTaskCount && player.IsLovers()
+                || player.isImpostor()))
             {
                 IsTaskClear = true;
             }
@@ -1015,65 +983,38 @@ namespace SuperNewRoles
         public static bool IsUseVent(this PlayerControl player)
         {
             RoleId role = player.getRole();
-            if (role == RoleId.Minimalist) return RoleClass.Minimalist.UseVent;
-            if (role == RoleId.Samurai) return RoleClass.Samurai.UseVent;
-            else if (player.isImpostor()) return true;
-            else if (player.isRole(RoleId.Jackal, RoleId.Sidekick)) return RoleClass.Jackal.IsUseVent;
+            if (player.isImpostor()) return true;
             else if (ModeHandler.isMode(ModeId.SuperHostRoles) && IsComms()) return false;
-            switch (role)
+            return role switch
             {
-                case RoleId.Jester:
-                    return RoleClass.Jester.IsUseVent;
-                case RoleId.MadMate:
-                    if (CachedPlayer.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return false;
-                    return RoleClass.MadMate.IsUseVent;
-                case RoleId.TeleportingJackal:
-                    return RoleClass.TeleportingJackal.IsUseVent;
-                case RoleId.JackalFriends:
-                    return RoleClass.JackalFriends.IsUseVent;
-                case RoleId.Egoist:
-                    return RoleClass.Egoist.UseVent;
-                case RoleId.Technician:
-                    return IsSabotage();
-                case RoleId.MadMayor:
-                    return RoleClass.MadMayor.IsUseVent;
-                case RoleId.MadJester:
-                    return RoleClass.MadJester.IsUseVent;
-                case RoleId.MadStuntMan:
-                    return RoleClass.MadStuntMan.IsUseVent;
-                case RoleId.MadHawk:
-                    return RoleClass.MadHawk.IsUseVent;
-                case RoleId.MadSeer:
-                    return RoleClass.MadSeer.IsUseVent;
-                case RoleId.MadMaker:
-                    return RoleClass.MadMaker.IsUseVent;
-                case RoleId.Fox:
-                    return RoleClass.Fox.IsUseVent;
-                case RoleId.Demon:
-                    return RoleClass.Demon.IsUseVent;
-                case RoleId.SeerFriends:
-                    return RoleClass.SeerFriends.IsUseVent;
-                case RoleId.SidekickSeer:
-                case RoleId.JackalSeer:
-                    return RoleClass.JackalSeer.IsUseVent;
-                case RoleId.MadCleaner:
-                    return RoleClass.MadCleaner.IsUseVent;
-                case RoleId.Arsonist:
-                    return RoleClass.Arsonist.IsUseVent;
-                case RoleId.Vulture:
-                    return RoleClass.Vulture.IsUseVent;
-                case RoleId.MayorFriends:
-                    return RoleClass.MayorFriends.IsUseVent;
-                case RoleId.Tuna:
-                    return RoleClass.Tuna.IsUseVent;
-                case RoleId.BlackCat:
-                    if (CachedPlayer.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return false;
-                    return RoleClass.BlackCat.IsUseVent;
-                case RoleId.Spy:
-                    return RoleClass.Spy.CanUseVent;
-                    //ベントが使える
-            }
-            return false;
+                RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
+                RoleId.Minimalist => RoleClass.Minimalist.UseVent,
+                RoleId.Samurai => RoleClass.Samurai.UseVent,
+                RoleId.Jester => RoleClass.Jester.IsUseVent,
+                RoleId.MadMate => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.MadMate.IsUseVent,
+                RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
+                RoleId.JackalFriends => RoleClass.JackalFriends.IsUseVent,
+                RoleId.Egoist => RoleClass.Egoist.UseVent,
+                RoleId.Technician => IsSabotage(),
+                RoleId.MadMayor => RoleClass.MadMayor.IsUseVent,
+                RoleId.MadJester => RoleClass.MadJester.IsUseVent,
+                RoleId.MadStuntMan => RoleClass.MadStuntMan.IsUseVent,
+                RoleId.MadHawk => RoleClass.MadHawk.IsUseVent,
+                RoleId.MadSeer => RoleClass.MadSeer.IsUseVent,
+                RoleId.MadMaker => RoleClass.MadMaker.IsUseVent,
+                RoleId.Fox => RoleClass.Fox.IsUseVent,
+                RoleId.Demon => RoleClass.Demon.IsUseVent,
+                RoleId.SeerFriends => RoleClass.SeerFriends.IsUseVent,
+                RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsUseVent,
+                RoleId.MadCleaner => RoleClass.MadCleaner.IsUseVent,
+                RoleId.Arsonist => RoleClass.Arsonist.IsUseVent,
+                RoleId.Vulture => RoleClass.Vulture.IsUseVent,
+                RoleId.MayorFriends => RoleClass.MayorFriends.IsUseVent,
+                RoleId.Tuna => RoleClass.Tuna.IsUseVent,
+                RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
+                RoleId.Spy => RoleClass.Spy.CanUseVent,
+                _ => false,
+            };
         }
         public static bool IsSabotage()
         {
