@@ -245,30 +245,6 @@ namespace SuperNewRoles
             return role == RoleId.Sidekick || role == RoleId.SidekickSeer;
         }
 
-        public static void ShowFlash(Color color, float duration = 1f)
-        //Seerで使用している画面を光らせるコード
-        {
-            if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
-            FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
-            FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
-            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
-            {
-                var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
-
-                if (p < 0.5)
-                {
-                    if (renderer != null)
-                        renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
-                }
-                else
-                {
-                    if (renderer != null)
-                        renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
-                }
-                if (p == 1f && renderer != null) renderer.enabled = false;
-            })));
-        }
-
         public static void setRole(this PlayerControl player, RoleId role)
         {
             switch (role)
