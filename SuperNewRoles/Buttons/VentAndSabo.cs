@@ -79,7 +79,7 @@ namespace SuperNewRoles.Buttons
         [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]
         class EnterVentAnimPatch
         {
-            public static bool Prefix(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
+            public static bool Prefix([HarmonyArgument(0)] PlayerControl pc)
             {
                 return MapOption.VentAnimation.getBool() ? pc.AmOwner : true;
             }
@@ -87,7 +87,7 @@ namespace SuperNewRoles.Buttons
         [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))]
         class ExitVentAnimPatch
         {
-            public static bool Prefix(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
+            public static bool Prefix([HarmonyArgument(0)] PlayerControl pc)
             {
                 return MapOption.VentAnimation.getBool() ? pc.AmOwner : true;
             }

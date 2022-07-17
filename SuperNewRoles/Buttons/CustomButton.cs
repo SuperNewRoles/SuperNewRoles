@@ -55,7 +55,7 @@ namespace SuperNewRoles.Buttons
             PassiveButton button = actionButton.GetComponent<PassiveButton>();
             button.OnClick = new Button.ButtonClickedEvent();
 
-            button.OnClick.AddListener((UnityEngine.Events.UnityAction)onClickEvent);
+            button.OnClick.AddListener((UnityEngine.Events.UnityAction)OnClickEvent);
 
             LocalScale = actionButton.transform.localScale;
             if (textTemplate)
@@ -63,12 +63,12 @@ namespace SuperNewRoles.Buttons
                 UnityEngine.Object.Destroy(actionButton.buttonLabelText);
                 actionButton.buttonLabelText = UnityEngine.Object.Instantiate(textTemplate.buttonLabelText, actionButton.transform);
             }
-            setActive(false);
+            SetActive(false);
         }
         public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool mirror = false, string buttonText = "")
         : this(OnClick, HasButton, CouldUse, OnMeetingEnds, Sprite, PositionOffset, hudManager, textTemplate, hotkey, joystickkey, StopCountCool, false, 0f, () => { }, mirror, buttonText) { }
 
-        void onClickEvent()
+        void OnClickEvent()
         {
             if ((Timer <= 0f || (HasEffect && isEffectActive && effectCancellable)) && CouldUse())
             {
@@ -118,7 +118,7 @@ namespace SuperNewRoles.Buttons
             }
         }
 
-        public void setActive(bool isActive)
+        public void SetActive(bool isActive)
         {
             if (isActive)
             {
@@ -139,10 +139,10 @@ namespace SuperNewRoles.Buttons
 
             if (localPlayer.Data == null || MeetingHud.Instance || ExileController.Instance || !HasButton(isAlive, role))
             {
-                setActive(false);
+                SetActive(false);
                 return;
             }
-            setActive(hudManager.UseButton.isActiveAndEnabled);
+            SetActive(hudManager.UseButton.isActiveAndEnabled);
 
             actionButton.graphic.sprite = Sprite;
             if (showButtonText && buttonText != "")
@@ -184,7 +184,7 @@ namespace SuperNewRoles.Buttons
 
             actionButton.SetCoolDown(Timer, (HasEffect && isEffectActive) ? EffectDuration : MaxTimer);
             // Trigger OnClickEvent if the hotkey is being pressed down
-            if ((hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(joystickkey)) onClickEvent();
+            if ((hotkey.HasValue && Input.GetButtonDown(hotkey.Value.ToString())) || ConsoleJoystick.player.GetButtonDown(joystickkey)) OnClickEvent();
         }
     }
 
