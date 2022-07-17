@@ -114,15 +114,16 @@ namespace SuperNewRoles.Patches
         public static void setupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
             IntroHandler.Handler();
+            Color32 color = new(127, 127, 127, byte.MaxValue);
             if (ModeHandler.isMode(ModeId.Default, ModeId.SuperHostRoles))
             {
                 if (PlayerControl.LocalPlayer.isNeutral())
                 {
                     IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
-                    __instance.BackgroundBar.material.color = Intro.color;
-                    __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
-                    __instance.TeamTitle.color = Intro.color;
-                    __instance.ImpostorText.text = "";
+                    __instance.BackgroundBar.material.color = color;
+                    __instance.TeamTitle.text = ModTranslation.getString("Neutral");
+                    __instance.TeamTitle.color = color;
+                    __instance.ImpostorText.text = ModTranslation.getString("NeutralSubIntro");
                 }
                 else
                 {

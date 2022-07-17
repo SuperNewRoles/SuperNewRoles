@@ -826,3 +826,4 @@ NotImpostorExiled,Not taking the Imposter off the road,インポスターを道�
 SatsumaAndImoName,Satsuma And Imo,さつまといも
 SatsumaAndImoTitle1,Let's spin your palm around.,手のひらをくるくるまわそう。
 SatsumaAndImoDescription,Each meeting will be replaced by a crewmate and a madmate.\nInitially it is crewmate.,会議ごとにクルーメイトとマッドメイトで入れ替わります。\n初めはクルーメイトです。
+NeutralSubIntro,Think only of yourself. Use others.,自分の事だけ考えろ。他人の事は利用せよ。

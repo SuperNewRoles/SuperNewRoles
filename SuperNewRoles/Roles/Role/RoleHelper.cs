@@ -9,6 +9,13 @@ using UnityEngine;
 
 namespace SuperNewRoles
 {
+        public enum TeamRoleType
+    {
+        Crewmate,
+        Impostor,
+        Neutral,
+        Error
+    }
     public static class RoleHelpers
     {
         public static bool isCrew(this PlayerControl player)
@@ -1022,7 +1029,7 @@ namespace SuperNewRoles
             {
                 IsTaskClear = true;
             }
-            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff)))
+            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan)))
             {
                 IsTaskClear = true;
             }
