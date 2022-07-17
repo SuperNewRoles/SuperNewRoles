@@ -9,8 +9,8 @@ namespace SuperNewRoles.Roles
     class Seer
     //&MadSeer & EvilSeer & SeerFriends & JackalSeer & Sidekick(Seer)
     {
-                public static void ShowFlash(Color color, float duration = 1f)
-        //Seerで使用している画面を光らせるコード
+        public static void ShowFlash(Color color, float duration = 1f)
+        //画面を光らせる
         {
             if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);

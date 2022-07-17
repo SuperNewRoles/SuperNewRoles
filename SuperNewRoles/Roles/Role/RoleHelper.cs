@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace SuperNewRoles
 {
-        public enum TeamRoleType
+    public enum TeamRoleType
     {
         Crewmate,
         Impostor,
@@ -941,7 +941,7 @@ namespace SuperNewRoles
                 case (RoleId.ToiletFan):
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1016,65 +1016,40 @@ namespace SuperNewRoles
         public static bool IsUseVent(this PlayerControl player)
         {
             RoleId role = player.getRole();
-            if (role == RoleId.Minimalist) return RoleClass.Minimalist.UseVent;
-            if (role == RoleId.Samurai) return RoleClass.Samurai.UseVent;
-            else if (player.isImpostor()) return true;
+            if (player.isImpostor()) return true;
             else if (player.isRole(RoleId.Jackal, RoleId.Sidekick)) return RoleClass.Jackal.IsUseVent;
             else if (ModeHandler.isMode(ModeId.SuperHostRoles) && IsComms()) return false;
-            switch (role)
+            return role switch
             {
-                case RoleId.Jester:
-                    return RoleClass.Jester.IsUseVent;
-                case RoleId.MadMate:
-                    if (CachedPlayer.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return false;
-                    return RoleClass.MadMate.IsUseVent;
-                case RoleId.TeleportingJackal:
-                    return RoleClass.TeleportingJackal.IsUseVent;
-                case RoleId.JackalFriends:
-                    return RoleClass.JackalFriends.IsUseVent;
-                case RoleId.Egoist:
-                    return RoleClass.Egoist.UseVent;
-                case RoleId.Technician:
-                    return IsSabotage();
-                case RoleId.MadMayor:
-                    return RoleClass.MadMayor.IsUseVent;
-                case RoleId.MadJester:
-                    return RoleClass.MadJester.IsUseVent;
-                case RoleId.MadStuntMan:
-                    return RoleClass.MadStuntMan.IsUseVent;
-                case RoleId.MadHawk:
-                    return RoleClass.MadHawk.IsUseVent;
-                case RoleId.MadSeer:
-                    return RoleClass.MadSeer.IsUseVent;
-                case RoleId.MadMaker:
-                    return RoleClass.MadMaker.IsUseVent;
-                case RoleId.Fox:
-                    return RoleClass.Fox.IsUseVent;
-                case RoleId.Demon:
-                    return RoleClass.Demon.IsUseVent;
-                case RoleId.SeerFriends:
-                    return RoleClass.SeerFriends.IsUseVent;
-                case RoleId.SidekickSeer:
-                case RoleId.JackalSeer:
-                    return RoleClass.JackalSeer.IsUseVent;
-                case RoleId.MadCleaner:
-                    return RoleClass.MadCleaner.IsUseVent;
-                case RoleId.Arsonist:
-                    return RoleClass.Arsonist.IsUseVent;
-                case RoleId.Vulture:
-                    return RoleClass.Vulture.IsUseVent;
-                case RoleId.MayorFriends:
-                    return RoleClass.MayorFriends.IsUseVent;
-                case RoleId.Tuna:
-                    return RoleClass.Tuna.IsUseVent;
-                case RoleId.BlackCat:
-                    if (CachedPlayer.LocalPlayer.Data.Role.Role == RoleTypes.GuardianAngel) return false;
-                    return RoleClass.BlackCat.IsUseVent;
-                case RoleId.Spy:
-                    return RoleClass.Spy.CanUseVent;
-                    //ベントが使える
-            }
-            return false;
+                RoleId.Minimalist => RoleClass.Minimalist.UseVent,
+                RoleId.Samurai => RoleClass.Samurai.UseVent,
+                RoleId.Jester => RoleClass.Jester.IsUseVent,
+                RoleId.MadMate => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.MadMate.IsUseVent,
+                RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
+                RoleId.JackalFriends => RoleClass.JackalFriends.IsUseVent,
+                RoleId.Egoist => RoleClass.Egoist.UseVent,
+                RoleId.Technician => IsSabotage(),
+                RoleId.MadMayor => RoleClass.MadMayor.IsUseVent,
+                RoleId.MadJester => RoleClass.MadJester.IsUseVent,
+                RoleId.MadStuntMan => RoleClass.MadStuntMan.IsUseVent,
+                RoleId.MadHawk => RoleClass.MadHawk.IsUseVent,
+                RoleId.MadSeer => RoleClass.MadSeer.IsUseVent,
+                RoleId.MadMaker => RoleClass.MadMaker.IsUseVent,
+                RoleId.Fox => RoleClass.Fox.IsUseVent,
+                RoleId.Demon => RoleClass.Demon.IsUseVent,
+                RoleId.SeerFriends => RoleClass.SeerFriends.IsUseVent,
+                RoleId.SidekickSeer => RoleClass.JackalSeer.IsUseVent,
+                RoleId.JackalSeer => RoleClass.JackalSeer.IsUseVent,
+                RoleId.MadCleaner => RoleClass.MadCleaner.IsUseVent,
+                RoleId.Arsonist => RoleClass.Arsonist.IsUseVent,
+                RoleId.Vulture => RoleClass.Vulture.IsUseVent,
+                RoleId.MayorFriends => RoleClass.MayorFriends.IsUseVent,
+                RoleId.Tuna => RoleClass.Tuna.IsUseVent,
+                RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
+                RoleId.Spy => RoleClass.Spy.CanUseVent,
+                //ベントが使える
+                _ => false,
+            };
         }
         public static bool IsSabotage()
         {
