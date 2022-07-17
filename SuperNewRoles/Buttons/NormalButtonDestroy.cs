@@ -40,15 +40,12 @@ namespace SuperNewRoles.Buttons
         public static bool isDestroySabo(this PlayerControl player)
         {
             var IsDestroySabo = false;
-            switch (player.getRole())
+            return player.getRole() switch
             {
-                case RoleId.Minimalist:
-                    return !RoleClass.Minimalist.UseSabo;
-                case RoleId.DoubleKiller:
-                    return !RoleClass.DoubleKiller.CanUseSabo;
-                    //サボタージュボタン無効か
-            }
-            return IsDestroySabo;
+                RoleId.Minimalist => !RoleClass.Minimalist.UseSabo,
+                RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseSabo,
+                _ => IsDestroySabo,
+            };
         }
         public static bool isDestroyUse(this PlayerControl player)
         {
@@ -65,15 +62,12 @@ namespace SuperNewRoles.Buttons
         public static bool isDestroyVent(this PlayerControl player)
         {
             var IsDestroyVent = false;
-            switch (player.getRole())
+            return player.getRole() switch
             {
-                case RoleId.Minimalist:
-                    return !RoleClass.Minimalist.UseVent;
-                case RoleId.DoubleKiller:
-                    return !RoleClass.DoubleKiller.CanUseVent;
-                    //ベントボタン無効か
-            }
-            return IsDestroyVent;
+                RoleId.Minimalist => !RoleClass.Minimalist.UseVent,
+                RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseVent,
+                _ => IsDestroyVent,
+            };
         }
     }
     public class NormalButtonDestroy

@@ -25,12 +25,12 @@ namespace SuperNewRoles
 
         public static bool isImpostor(this PlayerControl player)
         {
-            return player.isRole(RoleId.Sheriff, RoleId.Sheriff) ? false : player != null && player.Data.Role.IsImpostor;
+            return !player.isRole(RoleId.Sheriff, RoleId.Sheriff) && player != null && player.Data.Role.IsImpostor;
         }
 
         public static bool isHauntedWolf(this PlayerControl player)
         {
-            return player.isRole(RoleId.HauntedWolf) ? true : player != null && !player.isImpostor() && !player.isNeutral() && !player.isCrew();
+            return player.isRole(RoleId.HauntedWolf) || player != null && !player.isImpostor() && !player.isNeutral() && !player.isCrew();
         }
 
         //We are Mad!
@@ -166,7 +166,7 @@ namespace SuperNewRoles
         {
             if (IsChache)
             {
-                return ChacheManager.QuarreledChache[player.PlayerId] == null ? null : ChacheManager.QuarreledChache[player.PlayerId];
+                return ChacheManager.QuarreledChache[player.PlayerId] ?? null;
             }
             foreach (List<PlayerControl> players in RoleClass.Quarreled.QuarreledPlayer)
             {
@@ -184,7 +184,7 @@ namespace SuperNewRoles
         {
             if (IsChache)
             {
-                return ChacheManager.LoversChache[player.PlayerId] == null ? null : ChacheManager.LoversChache[player.PlayerId];
+                return ChacheManager.LoversChache[player.PlayerId] ?? null;
             }
             foreach (List<PlayerControl> players in RoleClass.Lovers.LoversPlayer)
             {
@@ -971,9 +971,9 @@ namespace SuperNewRoles
                     //タスククリアか
             }
             if (!IsTaskClear
-                && (ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan))
+                && ((ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan)))
                 || player.IsQuarreled()
-                || !RoleClass.Lovers.AliveTaskCount && player.IsLovers()
+                || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
                 || player.isImpostor()))
             {
                 IsTaskClear = true;
@@ -1057,29 +1057,29 @@ namespace SuperNewRoles
         public static bool IsImpostorLight(this PlayerControl player)
         {
             RoleId role = player.getRole();
-            if (role == RoleId.Egoist) return RoleClass.Egoist.ImpostorLight;
-            return ModeHandler.isMode(ModeId.SuperHostRoles)
-                ? false
-                : role switch
-            {
-                RoleId.MadMate => RoleClass.MadMate.IsImpostorLight,
-                RoleId.MadMayor => RoleClass.MadMayor.IsImpostorLight,
-                RoleId.MadStuntMan => RoleClass.MadStuntMan.IsImpostorLight,
-                RoleId.MadHawk => RoleClass.MadHawk.IsImpostorLight,
-                RoleId.MadJester => RoleClass.MadJester.IsImpostorLight,
-                RoleId.MadSeer => RoleClass.MadSeer.IsImpostorLight,
-                RoleId.Fox => RoleClass.Fox.IsImpostorLight,
-                RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsImpostorLight,
-                RoleId.MadMaker => RoleClass.MadMaker.IsImpostorLight,
-                RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsImpostorLight,
-                RoleId.JackalFriends => RoleClass.JackalFriends.IsImpostorLight,
-                RoleId.SeerFriends => RoleClass.SeerFriends.IsImpostorLight,
-                RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsImpostorLight,
-                RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
-                RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
-                RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
-                _ => false,
-            };
+            return role == RoleId.Egoist
+                ? RoleClass.Egoist.ImpostorLight
+                : !ModeHandler.isMode(ModeId.SuperHostRoles)
+&& role switch
+                {
+                    RoleId.MadMate => RoleClass.MadMate.IsImpostorLight,
+                    RoleId.MadMayor => RoleClass.MadMayor.IsImpostorLight,
+                    RoleId.MadStuntMan => RoleClass.MadStuntMan.IsImpostorLight,
+                    RoleId.MadHawk => RoleClass.MadHawk.IsImpostorLight,
+                    RoleId.MadJester => RoleClass.MadJester.IsImpostorLight,
+                    RoleId.MadSeer => RoleClass.MadSeer.IsImpostorLight,
+                    RoleId.Fox => RoleClass.Fox.IsImpostorLight,
+                    RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsImpostorLight,
+                    RoleId.MadMaker => RoleClass.MadMaker.IsImpostorLight,
+                    RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsImpostorLight,
+                    RoleId.JackalFriends => RoleClass.JackalFriends.IsImpostorLight,
+                    RoleId.SeerFriends => RoleClass.SeerFriends.IsImpostorLight,
+                    RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsImpostorLight,
+                    RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
+                    RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
+                    RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
+                    _ => false,
+                };
         }
         public static bool isNeutral(this PlayerControl player)
         {

@@ -152,8 +152,8 @@ namespace SuperNewRoles.Patch
                                 Kunoichi.Update();
                                 break;
                             default:
-                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
-                                NormalButtonDestroy.Postfix(p);
+                                foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                                    NormalButtonDestroy.Postfix(p);
                                 break;
                         }
                     }

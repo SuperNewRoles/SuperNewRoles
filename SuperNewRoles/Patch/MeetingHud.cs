@@ -527,9 +527,7 @@ namespace SuperNewRoles.Patch
         public static bool Prefix(
             MeetingHud __instance)
         {
-            if (RoleClass.Assassin.TriggerPlayer == null) { return true; }
-
-            return !RoleClass.Assassin.TriggerPlayer.AmOwner;
+            return RoleClass.Assassin.TriggerPlayer == null ? true : !RoleClass.Assassin.TriggerPlayer.AmOwner;
         }
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]

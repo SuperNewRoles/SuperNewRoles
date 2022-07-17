@@ -1650,8 +1650,9 @@ namespace SuperNewRoles.Buttons
                     PositionSwapperNumText.text = swapcount > 0
                         ? String.Format(ModTranslation.getString("PositionSwapperNumTextName"), swapcount)
                         : String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
-                    if (!PlayerControl.LocalPlayer.CanMove) return false;
-                    return RoleClass.PositionSwapper.SwapCount <= 0 ? false : true && PlayerControl.LocalPlayer.CanMove;
+                    return !PlayerControl.LocalPlayer.CanMove
+                        ? false
+                        : RoleClass.PositionSwapper.SwapCount > 0 && true && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { PositionSwapper.EndMeeting(); },
                 RoleClass.PositionSwapper.GetButtonSprite(),
@@ -1688,9 +1689,8 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.SecretlyKiller.MainCool > 0f) return false;
 
                     RoleClass.SecretlyKiller.target = setTarget();
-                    return RoleClass.SecretlyKiller.target == null
-                        ? false
-                        : !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
+                    return RoleClass.SecretlyKiller.target != null
+&& !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { SecretlyKiller.EndMeeting(); },
                 __instance.KillButton.graphic.sprite,
@@ -1729,9 +1729,8 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.SecretlyKiller.SecretlyKillLimit < 1 || RoleClass.SecretlyKiller.SecretlyCool > 0f) return false;
                     //メイン
                     RoleClass.SecretlyKiller.target = setTarget();
-                    return RoleClass.SecretlyKiller.target == null
-                        ? false
-                        : !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
+                    return RoleClass.SecretlyKiller.target != null
+&& !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { SecretlyKiller.EndMeeting(); },
                 __instance.KillButton.graphic.sprite,
@@ -1743,7 +1742,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var ma = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                    return (ma != null && !ma.IsActive) || RoleClass.SecretlyKiller.IsBlackOutKillCharge ? !PlayerControl.LocalPlayer.CanMove : true;
+                    return (ma == null || ma.IsActive) && !RoleClass.SecretlyKiller.IsBlackOutKillCharge || !PlayerControl.LocalPlayer.CanMove;
                 }
             );
             {

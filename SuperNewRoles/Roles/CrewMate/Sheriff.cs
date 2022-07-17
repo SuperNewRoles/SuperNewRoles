@@ -29,8 +29,7 @@ namespace SuperNewRoles.Roles
             if (Target.isMadRole() && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isFriendRole() && RoleClass.Sheriff.IsMadRoleKill) return true;
             if (Target.isNeutral() && RoleClass.Sheriff.IsNeutralKill) return true;
-            if (RoleClass.Sheriff.IsLoversKill && Target.IsLovers()) return true;
-            return Target.isRole(RoleId.HauntedWolf);
+            return RoleClass.Sheriff.IsLoversKill && Target.IsLovers() ? true : Target.isRole(RoleId.HauntedWolf);
         }
         public static bool IsChiefSheriffKill(PlayerControl Target)
         {
@@ -39,8 +38,7 @@ namespace SuperNewRoles.Roles
             if (Target.isMadRole() && RoleClass.Chief.IsMadRoleKill) return true;
             if (Target.isFriendRole() && RoleClass.Chief.IsMadRoleKill) return true;
             if (Target.isNeutral() && RoleClass.Chief.IsNeutralKill) return true;
-            if (RoleClass.Chief.IsLoversKill && Target.IsLovers()) return true;
-            return Target.isRole(RoleId.HauntedWolf);
+            return RoleClass.Chief.IsLoversKill && Target.IsLovers() ? true : Target.isRole(RoleId.HauntedWolf);
         }
         public static bool IsRemoteSheriffKill(PlayerControl Target)
         {
@@ -49,8 +47,7 @@ namespace SuperNewRoles.Roles
             if (Target.isMadRole() && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
             if (Target.isFriendRole() && RoleClass.RemoteSheriff.IsMadRoleKill) return true;
             if (Target.isNeutral() && RoleClass.RemoteSheriff.IsNeutralKill) return true;
-            if (RoleClass.RemoteSheriff.IsLoversKill && Target.IsLovers()) return true;
-            return Target.isRole(RoleId.HauntedWolf);
+            return RoleClass.RemoteSheriff.IsLoversKill && Target.IsLovers() ? true : Target.isRole(RoleId.HauntedWolf);
         }
         public static bool IsSheriff(PlayerControl Player)
         {

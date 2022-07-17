@@ -36,16 +36,11 @@ namespace SuperNewRoles
 
                 if (_submarineStatus is null || _submarineStatus.WasCollected || !_submarineStatus || _submarineStatus == null)
                 {
-                    if (MapUtilities.CachedShipStatus is null || MapUtilities.CachedShipStatus.WasCollected || !MapUtilities.CachedShipStatus || MapUtilities.CachedShipStatus == null)
-                    {
-                        return _submarineStatus = null;
-                    }
-                    else
-                    {
-                        return MapUtilities.CachedShipStatus.Type == SUBMERGED_MAP_TYPE
+                    return MapUtilities.CachedShipStatus is null || MapUtilities.CachedShipStatus.WasCollected || !MapUtilities.CachedShipStatus || MapUtilities.CachedShipStatus == null
+                        ? (_submarineStatus = null)
+                        : MapUtilities.CachedShipStatus.Type == SUBMERGED_MAP_TYPE
                             ? (_submarineStatus = MapUtilities.CachedShipStatus.GetComponent(Il2CppType.From(SubmarineStatusType))?.TryCast(SubmarineStatusType) as MonoBehaviour)
                             : (_submarineStatus = null);
-                    }
                 }
                 else
                 {
@@ -164,7 +159,7 @@ namespace SuperNewRoles
 
         public static bool getInTransition()
         {
-            return !Loaded ? false : (bool)InTransitionField.GetValue(null);
+            return Loaded && (bool)InTransitionField.GetValue(null);
         }
 
         public static void RepairOxygen()

@@ -25,14 +25,7 @@ namespace SuperNewRoles.Roles
         {
             //各役職にあったアサインをする
             var Team = TeamRoleType.Error;
-            if (player.isCrew())
-            {
-                Team = TeamRoleType.Crewmate;
-            }
-            else
-            {
-                Team = player.isNeutral() ? TeamRoleType.Neutral : TeamRoleType.Impostor;
-            }
+            Team = player.isCrew() ? TeamRoleType.Crewmate : player.isNeutral() ? TeamRoleType.Neutral : TeamRoleType.Impostor;
             List<IntroDate> GhostRoles = new();
             foreach (IntroDate intro in IntroDate.GhostRoleDatas)
             {

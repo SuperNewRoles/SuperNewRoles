@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
-        [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Update))]
+    [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Update))]
     class SplashLogoAnimatorPatch
     {
         public static void Prefix(SplashManager __instance)

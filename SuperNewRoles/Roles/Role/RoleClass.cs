@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -1298,13 +1298,11 @@ namespace SuperNewRoles.Roles
                     {
                         return LevelPowerTypes.Sidekick;
                     }
-                    else if (name == CustomOptions.LevelingerTexts[5])
-                    {
-                        return LevelPowerTypes.SpeedBooster;
-                    }
                     else
                     {
-                        return name == CustomOptions.LevelingerTexts[6] ? LevelPowerTypes.Moving : LevelPowerTypes.None;
+                        return name == CustomOptions.LevelingerTexts[5]
+                            ? LevelPowerTypes.SpeedBooster
+                            : name == CustomOptions.LevelingerTexts[6] ? LevelPowerTypes.Moving : LevelPowerTypes.None;
                     }
                 }
                 catch

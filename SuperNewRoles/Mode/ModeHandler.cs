@@ -201,8 +201,7 @@ namespace SuperNewRoles.Mode
             if (isMode(ModeId.NotImpostorCheck, false)) return ModeId.NotImpostorCheck;
             if (isMode(ModeId.Detective, false)) return ModeId.Detective;
             if (isMode(ModeId.Werewolf, false)) return ModeId.Werewolf;
-            if (isMode(ModeId.CopsRobbers, false)) return ModeId.CopsRobbers;
-            return isMode(ModeId.LevelUp, false) ? ModeId.LevelUp : ModeId.No;
+            return isMode(ModeId.CopsRobbers, false) ? ModeId.CopsRobbers : isMode(ModeId.LevelUp, false) ? ModeId.LevelUp : ModeId.No;
         }
         public static string GetThisModeIntro()
         {
@@ -232,11 +231,9 @@ namespace SuperNewRoles.Mode
         }
         public static bool isMode(ModeId mode, bool IsChache = true)
         {
-            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId))
-            {
-                return mode == ModeId.Default;
-            }
-            return IsChache
+            return AmongUsClient.Instance.GameMode == GameModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId)
+                ? mode == ModeId.Default
+                : IsChache
                 ? mode == thisMode
                 : mode switch
                 {
@@ -270,12 +267,11 @@ namespace SuperNewRoles.Mode
         public static bool IsBlockVanilaRole()
         {
             if (isMode(ModeId.NotImpostorCheck)) return false;
-            if (isMode(ModeId.Detective)) return false;
-            return !isMode(ModeId.Default);
+            return isMode(ModeId.Detective) ? false : !isMode(ModeId.Default);
         }
         public static bool IsBlockGuardianAngelRole()
         {
-            return isMode(ModeId.Default) ? true : IsBlockVanilaRole();
+            return isMode(ModeId.Default) || IsBlockVanilaRole();
         }
     }
 }
