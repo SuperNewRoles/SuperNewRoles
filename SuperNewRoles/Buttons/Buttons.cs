@@ -1926,17 +1926,20 @@ namespace SuperNewRoles.Buttons
                     //マッド作ってないなら
                     if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadMate)
                     {
-                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
-                        target.setRoleRPC(RoleId.MadMate);//マッドにする
-                        RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことに
-                    }
-                    else//マッド作ってるなら
-                    {
-                        //targetをぶっこわーす！
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(target);
+                        target.RpcProtectPlayer(target, 0);//マッドにできたことを示すモーションとしての守護をかける
+                        //キルする前に守護を発動させるためのLateTask
+                        new LateTask(() =>
+                            {
+                                PlayerControl.LocalPlayer.RpcMurderPlayer(target);//キルをして守護モーションの発動(守護解除)
+                                target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
+                                target.setRoleRPC(RoleId.MadMate);//マッドにする
+                                RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことに
+                                SuperNewRolesPlugin.Logger.LogInfo("[FastMakerButton]マッドを作ったから普通のキルボタンに戻すよ!");
+                            }, 0.1f);
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && ModeHandler.isMode(ModeId.Default); },
+                //マッドを作った後はカスタムキルボタンを消去する
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && !RoleClass.FastMaker.IsCreatedMadMate && ModeHandler.isMode(ModeId.Default); },
                 () =>
                 {
                     return setTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -1946,8 +1949,9 @@ namespace SuperNewRoles.Buttons
                 new Vector3(0, 1, 0),
                 __instance,
                 __instance.KillButton,
-                KeyCode.F,
-                49,
+                //マッドを作る前はキルボタンに擬態する
+                KeyCode.Q,
+                8,
                 () => { return false; }
             )
             {

@@ -822,3 +822,4 @@ Toilet Cool Time
 DoorOpen
 RandomSpawn
 Not taking the Imposter off the road
+Think only of yourself. Use others.

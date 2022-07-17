@@ -112,10 +112,18 @@ namespace SuperNewRoles.Roles
                         FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
                     }
                 }
-                else if (role == RoleId.FastMaker && !RoleClass.FastMaker.IsCreatedMadMate)//マッドが作られていないとき
+                else if (role == RoleId.FastMaker)
                 {
-                    //純正キルボタン削除
-                    HudManager.Instance.KillButton.gameObject.SetActive(false);
+                    if (!RoleClass.FastMaker.IsCreatedMadMate)//マッドが作られていないとき
+                    {
+                        //純正キルボタン削除
+                        HudManager.Instance.KillButton.gameObject.SetActive(false);
+                    }
+                    else//マッドが作られた後
+                    {
+                        //純正キルボタン復活
+                        HudManager.Instance.KillButton.gameObject.SetActive(true);
+                    }
                 }
             }
         }
