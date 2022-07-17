@@ -32,8 +32,8 @@ namespace SuperNewRoles.Mode
         {
             return Modeid switch
             {
-                PlusModeId.NotSabotage => Options.PlusModeSetting.getBool() && Options.NoSabotageModeSetting.getBool(),
-                PlusModeId.NotTaskWin => Options.PlusModeSetting.getBool() && Options.NoTaskWinModeSetting.getBool(),
+                PlusModeId.NotSabotage => Options.PlusModeSetting.GetBool() && Options.NoSabotageModeSetting.GetBool(),
+                PlusModeId.NotTaskWin => Options.PlusModeSetting.GetBool() && Options.NoTaskWinModeSetting.GetBool(),
                 _ => false,
             };
         }

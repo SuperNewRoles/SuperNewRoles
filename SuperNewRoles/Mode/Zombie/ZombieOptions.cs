@@ -32,8 +32,8 @@ namespace SuperNewRoles.Mode.Zombie
         public static void FirstChangeSettings()
         {
             var optdata = SyncSetting.OptionData.DeepCopy();
-            optdata.CrewLightMod = GetSpeed(ZombieCommingLightOption.getFloat());
-            optdata.ImpostorLightMod = GetSpeed(ZombieCommingSpeedOption.getFloat());
+            optdata.CrewLightMod = GetSpeed(ZombieCommingLightOption.GetFloat());
+            optdata.ImpostorLightMod = GetSpeed(ZombieCommingSpeedOption.GetFloat());
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.AmOwner) PlayerControl.GameOptions = optdata;

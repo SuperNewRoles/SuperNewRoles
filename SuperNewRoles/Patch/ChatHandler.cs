@@ -173,7 +173,7 @@ namespace SuperNewRoles.Patch
             string text = "";
             foreach (CustomOption.CustomOption option in options)
             {
-                text += indent + option.getName() + ":" + option.getString() + "\n";
+                text += indent + option.getName() + ":" + option.GetString() + "\n";
                 if (option.children.Count > 0)
                 {
                     text += GetChildText(option.children, indent + "  ");
@@ -234,7 +234,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (opt.getName() == CustomOptions.SheriffPlayerCount.getName())
                     {
-                        PlayerCount = (int)opt.getFloat();
+                        PlayerCount = (int)opt.GetFloat();
                         break;
                     }
                 }

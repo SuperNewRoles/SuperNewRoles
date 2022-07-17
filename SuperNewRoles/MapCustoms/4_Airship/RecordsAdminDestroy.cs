@@ -8,7 +8,7 @@ namespace SuperNewRoles.MapCustoms
     {
         public static void Postfix()
         {
-            if (MapCustom.RecordsAdminDestroy.getBool() && MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship))
+            if (MapCustom.RecordsAdminDestroy.GetBool() && MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship))
             {
                 //アーカイブのアドミンをSeeyou!
                 Transform Admin = GameObject.Find("Airship(Clone)").transform.FindChild("Records").FindChild("records_admin_map");

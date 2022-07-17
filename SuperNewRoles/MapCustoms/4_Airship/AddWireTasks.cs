@@ -14,7 +14,7 @@ namespace SuperNewRoles.MapCustoms
         public static void addWireTasks()
         {
             // Airship配線タスク追加
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AddWireTask.getBool())
+            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AddWireTask.GetBool())
             {
                 ActivateWiring("task_wiresHallway2", 2);
                 ActivateWiring("task_electricalside2", 3).Room = SystemTypes.Armory;

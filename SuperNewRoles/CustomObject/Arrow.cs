@@ -10,7 +10,7 @@ namespace SuperNewRoles.CustomObject
         private Vector3 oldTarget;
 
         private static Sprite sprite;
-        public static Sprite getSprite()
+        public static Sprite GetSprite()
         {
             if (sprite) return sprite;
             sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Arrow.png", 200f);
@@ -24,7 +24,7 @@ namespace SuperNewRoles.CustomObject
                 layer = 5
             };
             image = arrow.AddComponent<SpriteRenderer>();
-            image.sprite = getSprite();
+            image.sprite = GetSprite();
             image.color = color;
         }
 

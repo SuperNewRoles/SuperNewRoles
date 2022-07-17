@@ -60,9 +60,9 @@ namespace SuperNewRoles.Mode
             {
                 thisMode = ModeId.RandomColor;
                 RandomColor.FixedUpdate.UpdateTime = 0f;
-                RandomColor.FixedUpdate.IsRandomNameColor = RandomColor.RandomColorOptions.RandomNameColor.getBool();
-                RandomColor.FixedUpdate.IsHideName = RandomColor.RandomColorOptions.HideName.getBool();
-                RandomColor.FixedUpdate.IsRandomColorMeeting = RandomColor.RandomColorOptions.RandomColorMeeting.getBool();
+                RandomColor.FixedUpdate.IsRandomNameColor = RandomColor.RandomColorOptions.RandomNameColor.GetBool();
+                RandomColor.FixedUpdate.IsHideName = RandomColor.RandomColorOptions.HideName.GetBool();
+                RandomColor.FixedUpdate.IsRandomColorMeeting = RandomColor.RandomColorOptions.RandomColorMeeting.GetBool();
                 RandomColor.FixedUpdate.IsHideNameSet = false;
             }
             else if (isMode(ModeId.NotImpostorCheck, false))
@@ -273,7 +273,7 @@ namespace SuperNewRoles.Mode
         }
         public static string GetThisModeIntro()
         {
-            return ThisModeSetting.getString();
+            return ThisModeSetting.GetString();
         }
         public static bool isMode(params ModeId[] modes)
         {
@@ -306,20 +306,20 @@ namespace SuperNewRoles.Mode
             return IsChache
                 ? mode == thisMode
                 : mode switch
-            {
-                ModeId.Default => !ModeSetting.getBool(),
-                ModeId.HideAndSeek => ModeSetting.getBool() && ThisModeSetting.getString() == modes[0],
-                ModeId.BattleRoyal => ModeSetting.getBool() && ThisModeSetting.getString() == modes[2],
-                ModeId.SuperHostRoles => ModeSetting.getBool() && ThisModeSetting.getString() == modes[1],
-                ModeId.Zombie => ModeSetting.getBool() && ThisModeSetting.getString() == modes[3],
-                ModeId.RandomColor => ModeSetting.getBool() && ThisModeSetting.getString() == modes[4],
-                ModeId.NotImpostorCheck => ModeSetting.getBool() && ThisModeSetting.getString() == modes[5],
-                ModeId.Detective => ModeSetting.getBool() && ThisModeSetting.getString() == modes[6],
-                ModeId.CopsRobbers => ModeSetting.getBool() && ThisModeSetting.getString() == modes[7],
-                ModeId.Werewolf => false,//ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
-                ModeId.LevelUp => false,//ModeSetting.getBool() && ThisModeSetting.getString() == modes[7];
-                _ => false,
-            };
+                {
+                    ModeId.Default => !ModeSetting.GetBool(),
+                    ModeId.HideAndSeek => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[0],
+                    ModeId.BattleRoyal => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[2],
+                    ModeId.SuperHostRoles => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[1],
+                    ModeId.Zombie => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[3],
+                    ModeId.RandomColor => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[4],
+                    ModeId.NotImpostorCheck => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[5],
+                    ModeId.Detective => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[6],
+                    ModeId.CopsRobbers => ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7],
+                    ModeId.Werewolf => false,//ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7];
+                    ModeId.LevelUp => false,//ModeSetting.GetBool() && ThisModeSetting.GetString() == modes[7];
+                    _ => false,
+                };
         }
         public static bool EndGameChecks(ShipStatus __instance, PlayerStatistics statistics)
         {

@@ -291,14 +291,14 @@ namespace SuperNewRoles.Mode.BattleRoyal
         static bool IsSeted;
         public static void ClearAndReload()
         {
-            IsViewAlivePlayer = BROption.IsViewAlivePlayer.getBool();
+            IsViewAlivePlayer = BROption.IsViewAlivePlayer.GetBool();
             AlivePlayer = 0;
             AllPlayer = 0;
             IsStart = false;
-            StartSeconds = BROption.StartSeconds.getFloat() + 4.5f;
+            StartSeconds = BROption.StartSeconds.GetFloat() + 4.5f;
             IsCountOK = false;
             UpdateTime = 0f;
-            IsTeamBattle = BROption.IsTeamBattle.getBool();
+            IsTeamBattle = BROption.IsTeamBattle.GetBool();
             Teams = new List<List<PlayerControl>>();
             IsSeted = false;
             Winners = new();
@@ -311,7 +311,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 {
                     if (IsTeamBattle)
                     {
-                        float count = BROption.TeamAmount.getFloat();
+                        float count = BROption.TeamAmount.GetFloat();
                         var oneteamcount = Mathf.CeilToInt(CachedPlayer.AllPlayers.Count / count);
                         List<PlayerControl> target = new();
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)

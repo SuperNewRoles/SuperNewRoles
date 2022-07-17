@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
                         if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard,__instance)) {
                             if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
                             {
-                                RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
+                                RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.GetFloat() - 1;
                                 target.RpcProtectPlayer(target, 0);
                             }
                             else

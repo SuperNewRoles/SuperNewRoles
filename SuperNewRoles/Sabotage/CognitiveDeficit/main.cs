@@ -50,7 +50,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
             {
                 ButtonBehavior button = InfectedOverlay.Instantiate(__instance.allButtons[0], __instance.allButtons[0].transform.parent);
                 button.transform.localPosition += new Vector3(0.2f, -1.7f, 0);
-                button.spriteRenderer.sprite = IconManager.CognitiveDeficitgetButtonSprite();
+                button.spriteRenderer.sprite = IconManager.CognitiveDeficitGetButtonSprite();
                 button.OnClick = new ButtonClickedEvent();
 
                 button.OnClick.AddListener((Action)(() =>

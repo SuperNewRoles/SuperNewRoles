@@ -15,8 +15,8 @@ namespace SuperNewRoles.Patch
         {
             ResetData();
 
-            RestrictAdminTime = MapOptions.MapOption.CanUseAdminTime.getFloat();
-            RestrictAdminTimeMax = MapOptions.MapOption.CanUseAdminTime.getFloat();
+            RestrictAdminTime = MapOptions.MapOption.CanUseAdminTime.GetFloat();
+            RestrictAdminTimeMax = MapOptions.MapOption.CanUseAdminTime.GetFloat();
             //OutOfTime.gameObject.SetActive(false);
         }
 
@@ -24,7 +24,7 @@ namespace SuperNewRoles.Patch
         {
             get
             {
-                return MapOptions.MapOption.RestrictAdmin.getBool() || RestrictAdminTime > 0f;
+                return MapOptions.MapOption.RestrictAdmin.GetBool() || RestrictAdminTime > 0f;
             }
         }
         static Dictionary<SystemTypes, List<Color>> playerColors = new();
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Patch
 
         public static void ResetData()
         {
-            adminTimer = MapOptions.MapOption.CanUseCameraTime.getFloat();
+            adminTimer = MapOptions.MapOption.CanUseCameraTime.GetFloat();
             if (TimeRemaining != null)
             {
                 UnityEngine.Object.Destroy(TimeRemaining);
@@ -52,7 +52,7 @@ namespace SuperNewRoles.Patch
         static void UseAdminTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.MapOption.RestrictAdmin.getBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.RestrictDevicesOption.getBool())
+            if (MapOptions.MapOption.RestrictAdmin.GetBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.RestrictDevicesOption.GetBool())
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseAdminTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(adminTimer);
@@ -104,7 +104,7 @@ namespace SuperNewRoles.Patch
         {
             static bool Prefix(MapCountOverlay __instance)
             {
-                if (MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictAdmin.getBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && !PlayerControl.LocalPlayer.isRole(RoleId.EvilHacker))
+                if (MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictAdmin.GetBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && !PlayerControl.LocalPlayer.isRole(RoleId.EvilHacker))
                 {
                     adminTimer += Time.deltaTime;
                     if (adminTimer > 0.1f)
@@ -120,16 +120,16 @@ namespace SuperNewRoles.Patch
 
                     playerColors = new Dictionary<SystemTypes, List<Color>>();
 
-                    if (MapOptions.MapOption.RestrictAdmin.getBool() && MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictAdmin.getBool())
+                    if (MapOptions.MapOption.RestrictAdmin.GetBool() && MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictAdmin.GetBool())
                     {
                         if (OutOfTime == null)
                         {
                             OutOfTime = UnityEngine.Object.Instantiate(__instance.SabotageText, __instance.SabotageText.transform.parent);
-                            if (MapOptions.MapOption.IsYkundesuBeplnEx.getBool())
+                            if (MapOptions.MapOption.IsYkundesuBeplnEx.GetBool())
                             {
                                 OutOfTime.text = ModTranslation.getString("restrictOutOfTimeVerYkundesuBeplnEx");
                             }
-                            else if (!MapOptions.MapOption.IsYkundesuBeplnEx.getBool())
+                            else if (!MapOptions.MapOption.IsYkundesuBeplnEx.GetBool())
                             {
                                 OutOfTime.text = ModTranslation.getString("restrictOutOfTime");
                             }

@@ -16,10 +16,10 @@ namespace SuperNewRoles.Mode.Detective
         public static Color32 DetectiveColor = new(255, 0, 255, byte.MaxValue);
         public static void ClearAndReload()
         {
-            IsNotDetectiveWin = DetectiveOptions.IsWinNotCheckDetective.getBool();
-            IsNotDetectiveVote = DetectiveOptions.IsNotDetectiveVote.getBool();
-            IsDetectiveNotTask = DetectiveOptions.DetectiveIsNotTask.getBool();
-            IsNotDetectiveMeetingButton = DetectiveOptions.IsNotDetectiveMeetingButton.getBool();
+            IsNotDetectiveWin = DetectiveOptions.IsWinNotCheckDetective.GetBool();
+            IsNotDetectiveVote = DetectiveOptions.IsNotDetectiveVote.GetBool();
+            IsDetectiveNotTask = DetectiveOptions.DetectiveIsNotTask.GetBool();
+            IsNotDetectiveMeetingButton = DetectiveOptions.IsNotDetectiveMeetingButton.GetBool();
         }
         public static void RoleSelect()
         {

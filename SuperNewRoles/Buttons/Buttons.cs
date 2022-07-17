@@ -109,7 +109,7 @@ namespace SuperNewRoles.Buttons
                     KunoichiKunaiButton.MaxTimer = 0f;
                     KunoichiKunaiButton.Timer = 0f;
                 },
-                RoleClass.Kunoichi.getButtonSprite(),
+                RoleClass.Kunoichi.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -179,7 +179,7 @@ namespace SuperNewRoles.Buttons
                     return PlayerControl.LocalPlayer.CanMove && setTarget();
                 },
                 () => { trueloverLoveButton.Timer = 0f; trueloverLoveButton.MaxTimer = 0f; },
-                RoleClass.truelover.getButtonSprite(),
+                RoleClass.truelover.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -270,7 +270,7 @@ namespace SuperNewRoles.Buttons
                     return PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { Scientist.EndMeeting(); },
-                RoleClass.NiceScientist.getButtonSprite(),
+                RoleClass.NiceScientist.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -342,7 +342,7 @@ namespace SuperNewRoles.Buttons
                     }
                     RoleClass.Hawk.IsHawkOn = false;
                 },
-                RoleClass.Hawk.getButtonSprite(),
+                RoleClass.Hawk.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -383,7 +383,7 @@ namespace SuperNewRoles.Buttons
                     CountChangerButton.MaxTimer = PlayerControl.GameOptions.KillCooldown;
                     CountChangerButton.Timer = PlayerControl.GameOptions.KillCooldown;
                 },
-                RoleClass.CountChanger.getButtonSprite(),
+                RoleClass.CountChanger.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -455,7 +455,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
                 },
-                RoleClass.Jackal.getButtonSprite(),
+                RoleClass.Jackal.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -493,7 +493,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControl.LocalPlayer.isRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
                 },
-                RoleClass.Jackal.getButtonSprite(),
+                RoleClass.Jackal.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -754,7 +754,7 @@ namespace SuperNewRoles.Buttons
                     return flag;
                 },
                 () => { Sheriff.EndMeeting(); },
-                RoleClass.Sheriff.getButtonSprite(),
+                RoleClass.Sheriff.GetButtonSprite(),
                 new Vector3(0f, 1f, 0),
                 __instance,
                 __instance.KillButton,
@@ -784,7 +784,7 @@ namespace SuperNewRoles.Buttons
                     return ClergymanLightOutButton.Timer <= 0;
                 },
                 () => { Clergyman.EndMeeting(); },
-                RoleClass.Clergyman.getButtonSprite(),
+                RoleClass.Clergyman.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -864,7 +864,7 @@ namespace SuperNewRoles.Buttons
                     return LighterLightOnButton.Timer <= 0;
                 },
                 () => { Lighter.EndMeeting(); },
-                RoleClass.Lighter.getButtonSprite(),
+                RoleClass.Lighter.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -897,7 +897,7 @@ namespace SuperNewRoles.Buttons
                     ImpostorSidekickButton.MaxTimer = PlayerControl.GameOptions.KillCooldown;
                     ImpostorSidekickButton.Timer = PlayerControl.GameOptions.KillCooldown;
                 },
-                RoleClass.Jackal.getButtonSprite(),
+                RoleClass.Jackal.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -935,7 +935,7 @@ namespace SuperNewRoles.Buttons
                     SideKillerSidekickButton.MaxTimer = RoleClass.SideKiller.KillCoolTime;
                     SideKillerSidekickButton.Timer = RoleClass.SideKiller.KillCoolTime;
                 },
-                RoleClass.Jackal.getButtonSprite(),
+                RoleClass.Jackal.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -990,7 +990,7 @@ namespace SuperNewRoles.Buttons
                     return setTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { },
-                RoleClass.Jackal.getButtonSprite(),
+                RoleClass.Jackal.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1025,7 +1025,7 @@ namespace SuperNewRoles.Buttons
                     DemonButton.MaxTimer = RoleClass.Demon.CoolTime;
                     DemonButton.Timer = RoleClass.Demon.CoolTime;
                 },
-                RoleClass.Demon.getButtonSprite(),
+                RoleClass.Demon.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1180,7 +1180,7 @@ namespace SuperNewRoles.Buttons
                     return setTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { },
-                RoleClass.Chief.getButtonSprite(),
+                RoleClass.Chief.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1250,7 +1250,7 @@ namespace SuperNewRoles.Buttons
                     VultureButton.MaxTimer = RoleClass.Vulture.CoolTime;
                     VultureButton.Timer = RoleClass.Vulture.CoolTime;
                 },
-                RoleClass.Vulture.getButtonSprite(),
+                RoleClass.Vulture.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1341,7 +1341,7 @@ namespace SuperNewRoles.Buttons
                     CleanerButton.MaxTimer = RoleClass.Cleaner.CoolTime;
                     CleanerButton.Timer = RoleClass.Cleaner.CoolTime;
                 },
-                RoleClass.Cleaner.getButtonSprite(),
+                RoleClass.Cleaner.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1390,7 +1390,7 @@ namespace SuperNewRoles.Buttons
                     MadCleanerButton.MaxTimer = RoleClass.MadCleaner.CoolTime;
                     MadCleanerButton.Timer = RoleClass.MadCleaner.CoolTime;
                 },
-                RoleClass.MadCleaner.getButtonSprite(),
+                RoleClass.MadCleaner.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1479,7 +1479,7 @@ namespace SuperNewRoles.Buttons
                     return PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { },
-                RoleClass.VentMaker.getButtonSprite(),
+                RoleClass.VentMaker.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1548,7 +1548,7 @@ namespace SuperNewRoles.Buttons
                     return sabotageActive && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { GhostMechanicRepairButton.MaxTimer = 0f; GhostMechanicRepairButton.Timer = 0f; },
-                RoleClass.GhostMechanic.getButtonSprite(),
+                RoleClass.GhostMechanic.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1581,7 +1581,7 @@ namespace SuperNewRoles.Buttons
                     EvilHackerButton.MaxTimer = 0f;
                     EvilHackerButton.Timer = 0f;
                 },
-                RoleClass.EvilHacker.getButtonSprite(),
+                RoleClass.EvilHacker.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1615,7 +1615,7 @@ namespace SuperNewRoles.Buttons
                     return setTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { },
-                RoleClass.Jackal.getButtonSprite(),
+                RoleClass.Jackal.GetButtonSprite(),
                 new Vector3(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1654,7 +1654,7 @@ namespace SuperNewRoles.Buttons
                     return RoleClass.PositionSwapper.SwapCount <= 0 ? false : true && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { PositionSwapper.EndMeeting(); },
-                RoleClass.PositionSwapper.getButtonSprite(),
+                RoleClass.PositionSwapper.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1779,7 +1779,7 @@ namespace SuperNewRoles.Buttons
                     ClairvoyantButton.Timer = MapOptions.MapOption.CoolTime;
                     MapOptions.MapOption.IsZoomOn = false;
                 },
-                RoleClass.Hawk.getButtonSprite(),
+                RoleClass.Hawk.GetButtonSprite(),
                 new Vector3(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1885,7 +1885,7 @@ namespace SuperNewRoles.Buttons
                     return true;
                 },
                 () => { },
-                RoleClass.SuicideWisher.getButtonSprite(),
+                RoleClass.SuicideWisher.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -1956,7 +1956,7 @@ namespace SuperNewRoles.Buttons
                     ToiletFanButton.MaxTimer = RoleClass.ToiletFan.ToiletCool;
                     ToiletFanButton.Timer = RoleClass.ToiletFan.ToiletCool;
                 },
-                RoleClass.ToiletFan.getButtonSprite(),
+                RoleClass.ToiletFan.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,

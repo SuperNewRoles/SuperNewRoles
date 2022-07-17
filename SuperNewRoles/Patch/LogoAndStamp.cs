@@ -77,7 +77,7 @@ namespace SuperNewRoles.Patches
                         }
                         if (!Mode.ModeHandler.isMode(Mode.ModeId.Default))
                         {
-                            __instance.text.text += "\n" + ModTranslation.getString("SettingMode") + ":" + Mode.ModeHandler.ThisModeSetting.getString();
+                            __instance.text.text += "\n" + ModTranslation.getString("SettingMode") + ":" + Mode.ModeHandler.ThisModeSetting.GetString();
                         }
                     }
                     catch { }

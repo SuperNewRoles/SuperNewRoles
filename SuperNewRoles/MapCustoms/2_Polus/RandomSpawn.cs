@@ -19,7 +19,7 @@ namespace SuperNewRoles.MapCustoms
         public static void Postfix(ShipStatus __instance, PlayerControl player, int numPlayers, bool initialSpawn)
         {
             // Polusの湧き位置をランダムにする
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustoms.MapCustom.PolusRandomSpawn.getBool() && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId && AmongUsClient.Instance.AmHost)
+            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustoms.MapCustom.PolusRandomSpawn.GetBool() && player.PlayerId == CachedPlayer.LocalPlayer.PlayerId && AmongUsClient.Instance.AmHost)
             {
                 System.Random rand = new();
                 int randVal = rand.Next(0, 11);
@@ -36,7 +36,7 @@ namespace SuperNewRoles.MapCustoms
     {
         static void Postfix(MeetingHud __instance)
         {
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustoms.MapCustom.PolusRandomSpawn.getBool())
+            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustoms.MapCustom.PolusRandomSpawn.GetBool())
             {
                 if (AmongUsClient.Instance.AmHost)
                 {

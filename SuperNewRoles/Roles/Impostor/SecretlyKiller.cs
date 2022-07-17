@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.KillCoolTime;
             HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.KillCoolTime;
             //シークレットリーリセット
-            /*if (SuperNewRoles.CustomOption.CustomOptions.SecretlyKillerKillCoolTimeChange.getBool()){
+            /*if (SuperNewRoles.CustomOption.CustomOptions.SecretlyKillerKillCoolTimeChange.GetBool()){
                 HudManagerStartPatch.SecretlyKillerSecretlyKillButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
                 HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
             }*/
@@ -28,7 +28,7 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.SecretlyKillerSecretlyKillButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
             HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
             /*//ノーマルリセット
-            if (SuperNewRoles.CustomOption.CustomOptions.SecretlyKillerKillCoolTimeChange.getBool()){
+            if (SuperNewRoles.CustomOption.CustomOptions.SecretlyKillerKillCoolTimeChange.GetBool()){
                 HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
                 HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
             }*/

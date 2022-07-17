@@ -125,7 +125,7 @@ namespace SuperNewRoles.MapCustoms.Airship
         public static void ShipStatusAwake(ShipStatus __instance)
         {
             if (PlayerControl.GameOptions.MapId != (int)MapNames.Airship) return;
-            if (__instance.Type == ShipStatus.MapType.Ship && MapCustom.MapCustomOption.getBool() && MapCustom.AirshipSetting.getBool() && SecretRoomOption.getBool())
+            if (__instance.Type == ShipStatus.MapType.Ship && MapCustom.MapCustomOption.GetBool() && MapCustom.AirshipSetting.GetBool() && SecretRoomOption.GetBool())
             {
                 Transform room = __instance.transform.FindChild("HallwayPortrait");
                 Transform Walls = room.FindChild("Walls");

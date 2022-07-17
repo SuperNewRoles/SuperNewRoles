@@ -77,7 +77,7 @@ namespace SuperNewRoles.Roles
                         targetBox.name = "SoothSayerButton";
                         targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
                         SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
-                        renderer.sprite = RoleClass.SoothSayer.getButtonSprite();
+                        renderer.sprite = RoleClass.SoothSayer.GetButtonSprite();
                         PassiveButton button = targetBox.GetComponent<PassiveButton>();
                         button.OnClick.RemoveAllListeners();
                         int copiedIndex = i;
@@ -145,7 +145,7 @@ namespace SuperNewRoles.Roles
                         targetBox.name = "SoothSayerButton";
                         targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
                         SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
-                        renderer.sprite = RoleClass.SoothSayer.getButtonSprite();
+                        renderer.sprite = RoleClass.SoothSayer.GetButtonSprite();
                         PassiveButton button = targetBox.GetComponent<PassiveButton>();
                         button.OnClick.RemoveAllListeners();
                         int copiedIndex = i;

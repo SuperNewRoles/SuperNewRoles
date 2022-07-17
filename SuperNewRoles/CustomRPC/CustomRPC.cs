@@ -291,7 +291,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(playerid))
                 {
-                    RoleClass.MadStuntMan.GuardCount[playerid] = ((int)CustomOptions.MadStuntManMaxGuardCount.getFloat()) - 1;
+                    RoleClass.MadStuntMan.GuardCount[playerid] = ((int)CustomOptions.MadStuntManMaxGuardCount.GetFloat()) - 1;
                 }
                 else
                 {
@@ -302,7 +302,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
                 {
-                    RoleClass.StuntMan.GuardCount[playerid] = ((int)CustomOptions.StuntManMaxGuardCount.getFloat()) - 1;
+                    RoleClass.StuntMan.GuardCount[playerid] = ((int)CustomOptions.StuntManMaxGuardCount.GetFloat()) - 1;
                 }
                 else
                 {
@@ -412,7 +412,7 @@ namespace SuperNewRoles.CustomRPC
                 }
             }*/
         }
-        public static void uncheckedSetTasks(byte playerId, byte[] taskTypeIds)
+        public static void UncheckedSetTasks(byte playerId, byte[] taskTypeIds)
         {
             var player = ModHelpers.playerById(playerId);
             player.clearAllTasks();
@@ -480,7 +480,7 @@ namespace SuperNewRoles.CustomRPC
             var source = ModHelpers.playerById(sourceid);
             var target = ModHelpers.playerById(targetid);
             if (source == null || target == null) return;
-            if (CustomOptions.CountChangerNextTurn.getBool())
+            if (CustomOptions.CountChangerNextTurn.GetBool())
             {
                 RoleClass.CountChanger.Setdata[source.PlayerId] = target.PlayerId;
             }
@@ -507,7 +507,7 @@ namespace SuperNewRoles.CustomRPC
                     uint optionId = reader.ReadPackedUInt32();
                     uint selection = reader.ReadPackedUInt32();
                     CustomOption.CustomOption option = CustomOption.CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
-                    option.updateSelection((int)selection);
+                    option.UpdateSelection((int)selection);
                 }
             }
             catch (Exception e)
@@ -957,7 +957,7 @@ namespace SuperNewRoles.CustomRPC
         {
             Patch.VitalsPatch.RestrictVitalsTime -= time;
         }*/
-        public static void randomSpawn(byte playerId, byte locId)
+        public static void RandomSpawn(byte playerId, byte locId)
         {
             HudManager.Instance.StartCoroutine(Effects.Lerp(3f, new Action<float>((p) =>
             { // Delayed action
@@ -1151,7 +1151,7 @@ namespace SuperNewRoles.CustomRPC
                             StartGameRPC();
                             break;
                         case CustomRPC.UncheckedSetTasks:
-                            uncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
+                            UncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
                             break;
                         case CustomRPC.SetLovers:
                             SetLovers(reader.ReadByte(), reader.ReadByte());
@@ -1215,7 +1215,7 @@ namespace SuperNewRoles.CustomRPC
                             MakeVent(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
                             break;
                         case CustomRPC.PositionSwapperTP:
-                            RPCProcedure.PositionSwapperTP(reader.ReadByte(), reader.ReadByte());
+                            PositionSwapperTP(reader.ReadByte(), reader.ReadByte());
                             break;
                         /*
                     case CustomRPC.UseAdminTime:
@@ -1234,7 +1234,7 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.RandomSpawn:
                             byte pId = reader.ReadByte();
                             byte locId = reader.ReadByte();
-                            RPCProcedure.randomSpawn(pId, locId);
+                            RandomSpawn(pId, locId);
                             break;
                         case CustomRPC.KunaiKill:
                             KunaiKill(reader.ReadByte(), reader.ReadByte());

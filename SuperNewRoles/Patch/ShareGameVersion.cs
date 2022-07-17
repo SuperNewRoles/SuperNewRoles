@@ -95,7 +95,7 @@ namespace SuperNewRoles.Patch
                 bool blockStart = false;
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    if (CustomOptions.DisconnectNotPCOption.getBool())
+                    if (CustomOptions.DisconnectNotPCOption.GetBool())
                     {
                         foreach (InnerNet.ClientData p in AmongUsClient.Instance.allClients.GetFastEnumerator())
                         {
@@ -143,7 +143,7 @@ namespace SuperNewRoles.Patch
                         {
                             if (!VersionPlayers.ContainsKey(client.Id))
                             {
-                                if (!(client.PlatformData.Platform != Platforms.StandaloneEpicPC && client.PlatformData.Platform != Platforms.StandaloneSteamPC && CustomOptions.DisconnectNotPCOption.getBool()))
+                                if (!(client.PlatformData.Platform != Platforms.StandaloneEpicPC && client.PlatformData.Platform != Platforms.StandaloneSteamPC && CustomOptions.DisconnectNotPCOption.GetBool()))
                                 {
                                     message += string.Format(ModTranslation.getString("ErrorClientNoVersion"), client.PlayerName) + "\n";
                                     blockStart = true;

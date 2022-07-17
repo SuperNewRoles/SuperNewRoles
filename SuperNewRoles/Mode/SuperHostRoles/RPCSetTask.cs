@@ -26,7 +26,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     return false;
                 } else if (player.isRole(RoleId.Workperson))
                 {
-                    var tasks = ModHelpers.generateTasks((int)CustomOptions.WorkpersonCommonTask.getFloat(), (int)CustomOptions.WorkpersonShortTask.getFloat(), (int)CustomOptions.WorkpersonLongTask.getFloat()).ToArray();
+                    var tasks = ModHelpers.generateTasks((int)CustomOptions.WorkpersonCommonTask.GetFloat(), (int)CustomOptions.WorkpersonShortTask.GetFloat(), (int)CustomOptions.WorkpersonLongTask.GetFloat()).ToArray();
                     MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(player.NetId, (byte)29);
                     messageWriter.Write(playerId);
                     messageWriter.WriteBytesAndSize(tasks);

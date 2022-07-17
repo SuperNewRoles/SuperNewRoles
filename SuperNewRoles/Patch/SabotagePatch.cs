@@ -9,7 +9,7 @@ namespace SuperNewRoles.Patch
     {
         public static void Prefix(ReactorSystemType __instance, float deltaTime)
         {
-            if (MapOptions.MapOption.ReactorDurationOption.getBool())
+            if (MapOptions.MapOption.ReactorDurationOption.GetBool())
             {
                 if (!__instance.IsActive)
                 {
@@ -17,17 +17,17 @@ namespace SuperNewRoles.Patch
                 }
                 if (MapUtilities.CachedShipStatus.Type == ShipStatus.MapType.Pb)
                 {
-                    if (__instance.Countdown >= MapOptions.MapOption.PolusReactorTimeLimit.getFloat())
+                    if (__instance.Countdown >= MapOptions.MapOption.PolusReactorTimeLimit.GetFloat())
                     {
-                        __instance.Countdown = MapOptions.MapOption.PolusReactorTimeLimit.getFloat();
+                        __instance.Countdown = MapOptions.MapOption.PolusReactorTimeLimit.GetFloat();
                     }
                     return;
                 }
                 if (MapUtilities.CachedShipStatus.Type == ShipStatus.MapType.Hq)
                 {
-                    if (__instance.Countdown >= MapOptions.MapOption.MiraReactorTimeLimit.getFloat())
+                    if (__instance.Countdown >= MapOptions.MapOption.MiraReactorTimeLimit.GetFloat())
                     {
-                        __instance.Countdown = MapOptions.MapOption.MiraReactorTimeLimit.getFloat();
+                        __instance.Countdown = MapOptions.MapOption.MiraReactorTimeLimit.GetFloat();
                     }
                     return;
                 }
@@ -41,7 +41,7 @@ namespace SuperNewRoles.Patch
     {
         public static void Prefix(HeliSabotageSystem __instance, float deltaTime)
         {
-            if (MapOptions.MapOption.ReactorDurationOption.getBool())
+            if (MapOptions.MapOption.ReactorDurationOption.GetBool())
             {
                 if (!__instance.IsActive)
                 {
@@ -50,9 +50,9 @@ namespace SuperNewRoles.Patch
 
                 if (MapUtilities.CachedShipStatus != null)
                 {
-                    if (__instance.Countdown >= MapOptions.MapOption.AirshipReactorTimeLimit.getFloat())
+                    if (__instance.Countdown >= MapOptions.MapOption.AirshipReactorTimeLimit.GetFloat())
                     {
-                        __instance.Countdown = MapOptions.MapOption.AirshipReactorTimeLimit.getFloat();
+                        __instance.Countdown = MapOptions.MapOption.AirshipReactorTimeLimit.GetFloat();
                     }
                 }
             }

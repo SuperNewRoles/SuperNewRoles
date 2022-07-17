@@ -8,7 +8,7 @@ namespace SuperNewRoles.CustomObject
         public GameObject kunai;
 
         private static Sprite sprite;
-        public static Sprite getSprite()
+        public static Sprite GetSprite()
         {
             if (sprite) return sprite;
             sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunai.png", 200f);
@@ -22,7 +22,7 @@ namespace SuperNewRoles.CustomObject
                 layer = 5
             };
             image = kunai.AddComponent<SpriteRenderer>();
-            image.sprite = getSprite();
+            image.sprite = GetSprite();
         }
     }
 }

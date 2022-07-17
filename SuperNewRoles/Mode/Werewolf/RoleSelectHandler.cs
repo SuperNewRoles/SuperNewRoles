@@ -20,9 +20,9 @@ namespace SuperNewRoles.Mode.Werewolf
             List<RoleId> Neutnotonepar = new();
             List<RoleId> Crewonepar = new();
             List<RoleId> Crewnotonepar = new();
-            if (!(CustomOption.CustomOptions.MadMateOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.MadMateOption.GetString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.MadMateOption.getString().Replace("0%", ""));
+                int OptionDate = int.Parse(CustomOption.CustomOptions.MadMateOption.GetString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.MadMate;
                 if (OptionDate == 10)
                 {
@@ -36,9 +36,9 @@ namespace SuperNewRoles.Mode.Werewolf
                     }
                 }
             }
-            if (!(CustomOption.CustomOptions.SoothSayerOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.SoothSayerOption.GetString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.SoothSayerOption.getString().Replace("0%", ""));
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SoothSayerOption.GetString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.SoothSayer;
                 if (OptionDate == 10)
                 {
@@ -52,9 +52,9 @@ namespace SuperNewRoles.Mode.Werewolf
                     }
                 }
             }
-            if (!(CustomOption.CustomOptions.SpiritMediumOption.getString().Replace("0%", "") == ""))
+            if (!(CustomOption.CustomOptions.SpiritMediumOption.GetString().Replace("0%", "") == ""))
             {
-                int OptionDate = int.Parse(CustomOption.CustomOptions.SpiritMediumOption.getString().Replace("0%", ""));
+                int OptionDate = int.Parse(CustomOption.CustomOptions.SpiritMediumOption.GetString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.SpiritMedium;
                 if (OptionDate == 10)
                 {
@@ -68,10 +68,10 @@ namespace SuperNewRoles.Mode.Werewolf
                     }
                 }
             }
-            if (!(Mode.Werewolf.WerewolfOptions.WerewolfHunterOption.getString().Replace("0%", "") == ""))
+            if (!(Mode.Werewolf.WerewolfOptions.WerewolfHunterOption.GetString().Replace("0%", "") == ""))
             {
                 SuperNewRolesPlugin.Logger.LogInfo("[WereWolf] ADDWOLF@ame");
-                int OptionDate = int.Parse(Mode.Werewolf.WerewolfOptions.WerewolfHunterOption.getString().Replace("0%", ""));
+                int OptionDate = int.Parse(Mode.Werewolf.WerewolfOptions.WerewolfHunterOption.GetString().Replace("0%", ""));
                 RoleId ThisRoleId = RoleId.Hunter;
                 if (OptionDate == 10)
                 {

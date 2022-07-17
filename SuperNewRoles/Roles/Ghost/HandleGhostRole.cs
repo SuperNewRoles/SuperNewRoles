@@ -83,7 +83,7 @@ namespace SuperNewRoles.Roles
                 //設定を取得
                 var option = IntroDate.GetOption(data.RoleId);
                 //確率を取得
-                var selection = option.getSelection();
+                var selection = option.GetSelection();
 
                 //確率が0%ではないかつ、
                 //もう割り当てきられてないか(最大人数まで割り当てられていないか)

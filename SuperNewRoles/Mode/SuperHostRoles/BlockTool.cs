@@ -95,7 +95,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 }
                             }
                             //AirShip(アーカイブ)用のアドミンチェック。AirShipはアドミンが2つあるから
-                            if ((!IsGuard && PlayerControl.GameOptions.MapId == 4 && !MapOption.UseAdmin) || (!IsGuard && PlayerControl.GameOptions.MapId == 4 && MapCustoms.MapCustom.RecordsAdminDestroy.getBool() && MapOption.MapOptionSetting.getBool()))
+                            if ((!IsGuard && PlayerControl.GameOptions.MapId == 4 && !MapOption.UseAdmin) || (!IsGuard && PlayerControl.GameOptions.MapId == 4 && MapCustoms.MapCustom.RecordsAdminDestroy.GetBool() && MapOption.MapOptionSetting.GetBool()))
                             {
                                 var AdminDistance = Vector2.Distance(playerposition, new Vector2(19.9f, 12.9f));
                                 if (AdminDistance <= UsableDistance)

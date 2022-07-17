@@ -15,11 +15,11 @@ namespace SuperNewRoles.Sabotage
         }
         public static bool IsOK(CustomSabotage sabotage)
         {
-            if (!Options.SabotageSetting.getBool()) return false;
+            if (!Options.SabotageSetting.GetBool()) return false;
             switch (sabotage)
             {
                 case CustomSabotage.CognitiveDeficit:
-                    return PlayerControl.GameOptions.MapId != 4 ? false : Options.CognitiveDeficitSetting.getBool();
+                    return PlayerControl.GameOptions.MapId != 4 ? false : Options.CognitiveDeficitSetting.GetBool();
             }
             return false;
         }
@@ -29,10 +29,10 @@ namespace SuperNewRoles.Sabotage
             return thisSabotage == CustomSabotage.None
                 ? true
                 : thisSabotage switch
-            {
-                CustomSabotage.CognitiveDeficit => CognitiveDeficit.main.IsLocalEnd,
-                _ => false,
-            };
+                {
+                    CustomSabotage.CognitiveDeficit => CognitiveDeficit.main.IsLocalEnd,
+                    _ => false,
+                };
         }
         public static InfectedOverlay InfectedOverlayInstance;
         public const float SabotageMaxTime = 30f;
@@ -59,9 +59,9 @@ namespace SuperNewRoles.Sabotage
             CustomButtons = new List<ButtonBehavior>();
             if (IsOK(CustomSabotage.CognitiveDeficit))
             {
-                CognitiveDeficit.main.DefaultDistanceTime = Options.CognitiveDeficitReleaseTimeSetting.getFloat();
-                CognitiveDeficit.main.DefaultUpdateTime = Options.CognitiveDeficitOutfitUpdateTimeSetting.getFloat();
-                CognitiveDeficit.main.IsAllEndSabotage = Options.CognitiveDeficitIsAllEndSabotageSetting.getBool();
+                CognitiveDeficit.main.DefaultDistanceTime = Options.CognitiveDeficitReleaseTimeSetting.GetFloat();
+                CognitiveDeficit.main.DefaultUpdateTime = Options.CognitiveDeficitOutfitUpdateTimeSetting.GetFloat();
+                CognitiveDeficit.main.IsAllEndSabotage = Options.CognitiveDeficitIsAllEndSabotageSetting.GetBool();
             }
         }
         public static void Update()

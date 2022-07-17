@@ -11,7 +11,7 @@ namespace SuperNewRoles.MapCustoms
     {
         public static void Postfix()
         {
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Mira) && MapCustoms.MapCustom.AddVitalsMira.getBool())
+            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Mira) && MapCustoms.MapCustom.AddVitalsMira.GetBool())
             {
                 Transform Vital = GameObject.Instantiate(PolusObject.transform.FindChild("Office").FindChild("panel_vitals"), GameObject.Find("MiraShip(Clone)").transform);
                 Vital.transform.position = new Vector3(8.5969f, 14.6337f, 0.0142f);

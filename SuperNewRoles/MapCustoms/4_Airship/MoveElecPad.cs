@@ -15,7 +15,7 @@ namespace SuperNewRoles.MapCustoms
         public static void MoveElecPads()
         {
             if (SpecimenVital.flag) return;
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.MoveElecPad.getBool())
+            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.MoveElecPad.GetBool())
             {
                 var gap = GameObject.Find("task_lightssabotage (gap)");//昇降機配電盤
                 var cargo = GameObject.Find("task_lightssabotage (cargo)");//貨物室配電盤

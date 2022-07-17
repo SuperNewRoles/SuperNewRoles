@@ -57,7 +57,7 @@ namespace SuperNewRoles.EndGame
         public static Dictionary<int, PlayerControl> plagueDoctorInfected = new();
         public static Dictionary<int, float> plagueDoctorProgress = new();
 
-        public static void clear()
+        public static void Clear()
         {
             playerRoles.Clear();
             additionalWinConditions.Clear();
@@ -105,24 +105,24 @@ namespace SuperNewRoles.EndGame
             List<WinningPlayerData> list = TempData.winners.GetFastEnumerator().ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
             {
                 return !b.IsYou ? 0 : -1;
-            }).ToList<WinningPlayerData>();
+            }).ToList();
 
             for (int i = 0; i < list.Count; i++)
             {
                 WinningPlayerData winningPlayerData2 = list[i];
                 int num2 = (i % 2 == 0) ? -1 : 1;
                 int num3 = (i + 1) / 2;
-                float num4 = (float)num3 / (float)num;
+                float num4 = num3 / (float)num;
                 float num5 = Mathf.Lerp(1f, 0.75f, num4);
-                float num6 = (float)((i == 0) ? -8 : -1);
-                PoolablePlayer poolablePlayer = UnityEngine.Object.Instantiate<PoolablePlayer>(__instance.PlayerPrefab, __instance.transform);
+                float num6 = (i == 0) ? -8 : -1;
+                PoolablePlayer poolablePlayer = UnityEngine.Object.Instantiate(__instance.PlayerPrefab, __instance.transform);
 
-                poolablePlayer.transform.localPosition = new Vector3(1f * (float)num2 * (float)num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + (float)num3 * 0.01f) * 0.9f;
+                poolablePlayer.transform.localPosition = new Vector3(1f * num2 * num3 * num5, FloatRange.SpreadToEdges(-1.125f, 0f, num3, num), num6 + num3 * 0.01f) * 0.9f;
 
                 float num7 = Mathf.Lerp(1f, 0.65f, num4) * 0.9f;
                 Vector3 vector = new(num7, num7, 1f);
                 poolablePlayer.transform.localScale = vector;
-                poolablePlayer.UpdateFromPlayerOutfit((GameData.PlayerOutfit)winningPlayerData2, PlayerMaterial.MaskType.ComplexUI, winningPlayerData2.IsDead, true);
+                poolablePlayer.UpdateFromPlayerOutfit(winningPlayerData2, PlayerMaterial.MaskType.ComplexUI, winningPlayerData2.IsDead, true);
                 if (winningPlayerData2.IsDead)
                 {
                     poolablePlayer.cosmetics.currentBodySprite.BodySprite.sprite = poolablePlayer.cosmetics.currentBodySprite.GhostSprite;
@@ -265,7 +265,7 @@ namespace SuperNewRoles.EndGame
             }
             bool IsLovetexton = false;
             bool Temp1;
-            if (!CustomOptions.LoversSingleTeam.getBool())
+            if (!CustomOptions.LoversSingleTeam.GetBool())
             {
                 foreach (List<PlayerControl> PlayerList in RoleClass.Lovers.LoversPlayer)
                 {
@@ -356,7 +356,7 @@ namespace SuperNewRoles.EndGame
             {
                 SuperNewRolesPlugin.Logger.LogInfo("エラー:" + e);
             }
-            AdditionalTempData.clear();
+            AdditionalTempData.Clear();
 
             IsHaison = false;
 
@@ -369,7 +369,7 @@ namespace SuperNewRoles.EndGame
     {
         public static PlayerControl WinnerPlayer;
         public static CustomGameOverReason? EndData = null;
-        public static void Prefix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
+        public static void Prefix([HarmonyArgument(0)] ref EndGameResult endGameResult)
         {
             AdditionalTempData.gameOverReason = endGameResult.GameOverReason;
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -383,7 +383,7 @@ namespace SuperNewRoles.EndGame
             if ((int)endGameResult.GameOverReason >= 10) endGameResult.GameOverReason = GameOverReason.ImpostorByKill;
         }
 
-        public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ref EndGameResult endGameResult)
+        public static void Postfix()
         {
             if (AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.SuperHostRoles, ModeId.Zombie))
             {
@@ -391,7 +391,7 @@ namespace SuperNewRoles.EndGame
                 CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
             }
             var gameOverReason = AdditionalTempData.gameOverReason;
-            AdditionalTempData.clear();
+            AdditionalTempData.Clear();
 
             foreach (var p in GameData.Instance.AllPlayers.GetFastEnumerator())
             {
@@ -738,7 +738,7 @@ namespace SuperNewRoles.EndGame
                 }
                 AdditionalTempData.winCondition = WinCondition.QuarreledWin;
             }
-            bool IsSingleTeam = CustomOptions.LoversSingleTeam.getBool();
+            bool IsSingleTeam = CustomOptions.LoversSingleTeam.GetBool();
             foreach (List<PlayerControl> plist in RoleClass.Lovers.LoversPlayer)
             {
                 bool IsWinLovers = false;

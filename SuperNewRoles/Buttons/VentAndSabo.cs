@@ -81,7 +81,7 @@ namespace SuperNewRoles.Buttons
         {
             public static bool Prefix([HarmonyArgument(0)] PlayerControl pc)
             {
-                return MapOption.VentAnimation.getBool() ? pc.AmOwner : true;
+                return MapOption.VentAnimation.GetBool() ? pc.AmOwner : true;
             }
         }
         [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))]
@@ -89,7 +89,7 @@ namespace SuperNewRoles.Buttons
         {
             public static bool Prefix([HarmonyArgument(0)] PlayerControl pc)
             {
-                return MapOption.VentAnimation.getBool() ? pc.AmOwner : true;
+                return MapOption.VentAnimation.GetBool() ? pc.AmOwner : true;
             }
         }
         [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]

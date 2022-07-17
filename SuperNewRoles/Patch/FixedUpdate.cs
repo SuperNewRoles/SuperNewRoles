@@ -87,7 +87,7 @@ namespace SuperNewRoles.Patch
                 var MyRole = PlayerControl.LocalPlayer.getRole();
                 setBasePlayerOutlines();
                 VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
-                if (CustomOptions.LadderDead.getBool())
+                if (CustomOptions.LadderDead.GetBool())
                     LadderDead.FixedUpdate();
                 var ThisMode = ModeHandler.GetMode();
                 if (ThisMode == ModeId.Default)

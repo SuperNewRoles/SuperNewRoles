@@ -41,7 +41,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             switch (role)
             {
                 case RoleId.Sheriff:
-                    optdata.KillCooldown = KillCoolSet(CustomOptions.SheriffCoolTime.getFloat());
+                    optdata.KillCooldown = KillCoolSet(CustomOptions.SheriffCoolTime.GetFloat());
                     break;
                 case RoleId.Minimalist:
                     optdata.KillCooldown = KillCoolSet(RoleClass.Minimalist.KillCoolTime);

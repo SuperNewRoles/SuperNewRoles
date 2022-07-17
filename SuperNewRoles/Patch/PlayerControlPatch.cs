@@ -67,7 +67,7 @@ namespace SuperNewRoles.Patches
                                     }
                                     else
                                     {
-                                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.RemoteSheriffKillMaxCount.getFloat() - 1;
+                                        RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.RemoteSheriffKillMaxCount.GetFloat() - 1;
                                     }
                                     if (RoleClass.RemoteSheriff.IsKillTeleport)
                                     {
@@ -442,7 +442,7 @@ namespace SuperNewRoles.Patches
                                     }
                                     else
                                     {
-                                        RoleClass.Sheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.SheriffKillMaxCount.getFloat() - 1;
+                                        RoleClass.Sheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.SheriffKillMaxCount.GetFloat() - 1;
                                     }
                                     __instance.RpcMurderPlayerCheck(target);
                                     Mode.SuperHostRoles.FixedUpdate.SetRoleName(__instance);
@@ -605,7 +605,7 @@ namespace SuperNewRoles.Patches
                     {
                         if (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId))
                         {
-                            RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.getFloat() - 1;
+                            RoleClass.StuntMan.GuardCount[target.PlayerId] = (int)CustomOptions.StuntManMaxGuardCount.GetFloat() - 1;
                             target.RpcProtectPlayer(target, 0);
                             new LateTask(() => __instance.RpcMurderPlayer(target), 0.5f);
                             return false;

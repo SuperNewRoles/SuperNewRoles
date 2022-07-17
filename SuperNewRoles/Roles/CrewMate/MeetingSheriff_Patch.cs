@@ -144,7 +144,7 @@ namespace SuperNewRoles.Roles
                         targetBox.name = "ShootButton";
                         targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
                         SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
-                        renderer.sprite = RoleClass.MeetingSheriff.getButtonSprite();
+                        renderer.sprite = RoleClass.MeetingSheriff.GetButtonSprite();
                         PassiveButton button = targetBox.GetComponent<PassiveButton>();
                         button.OnClick.RemoveAllListeners();
                         int copiedIndex = i;
