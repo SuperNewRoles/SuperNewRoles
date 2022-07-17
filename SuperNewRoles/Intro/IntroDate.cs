@@ -157,7 +157,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate MadSeerIntro = new("MadSeer", RoleClass.MadSeer.color, 1, RoleId.MadSeer);
         public static IntroDate EvilSeerIntro = new("EvilSeer", RoleClass.EvilSeer.color, 1, RoleId.EvilSeer, TeamRoleType.Impostor);
         public static IntroDate RemoteSheriffIntro = new("RemoteSheriff", RoleClass.RemoteSheriff.color, 1, RoleId.RemoteSheriff);
-        public static IntroDate TeleportingJackalIntro = new("TeleportingJackal", RoleClass.TeleportingJackal.color, 1, RoleId.TeleportingJackal);
+        public static IntroDate TeleportingJackalIntro = new("TeleportingJackal", RoleClass.TeleportingJackal.color, 1, RoleId.TeleportingJackal, TeamRoleType.Neutral);
         public static IntroDate MadMakerIntro = new("MadMaker", RoleClass.MadMaker.color, 1, RoleId.MadMaker);
         public static IntroDate DemonIntro = new("Demon", RoleClass.Demon.color, 1, RoleId.Demon, TeamRoleType.Neutral);
         public static IntroDate TaskManagerIntro = new("TaskManager", RoleClass.TaskManager.color, 1, RoleId.TaskManager);
