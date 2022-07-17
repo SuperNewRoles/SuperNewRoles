@@ -25,12 +25,12 @@ namespace SuperNewRoles.Helpers
         }
         public static MessageWriter StartRPC(byte RPCId, PlayerControl SendTarget = null)
         {
-            return StartRPC(PlayerControl.LocalPlayer.NetId, (byte)RPCId, SendTarget);
+            return StartRPC(PlayerControl.LocalPlayer.NetId, RPCId, SendTarget);
         }
         public static MessageWriter StartRPC(uint NetId, byte RPCId, PlayerControl SendTarget = null)
         {
             var target = SendTarget != null ? SendTarget.getClientId() : -1;
-            return AmongUsClient.Instance.StartRpcImmediately(NetId, RPCId, Hazel.SendOption.Reliable, target);
+            return AmongUsClient.Instance.StartRpcImmediately(NetId, RPCId, SendOption.Reliable, target);
         }
         public static void EndRPC(this MessageWriter Writer)
         {
@@ -38,8 +38,8 @@ namespace SuperNewRoles.Helpers
         }
         public static void RPCGameOptionsPrivate(GameOptionsData Data, PlayerControl target)
         {
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)2, Hazel.SendOption.None, target.getClientId());
-            messageWriter.WriteBytesAndSize(Data.ToBytes((byte)5));
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, 2, SendOption.None, target.getClientId());
+            messageWriter.WriteBytesAndSize(Data.ToBytes(5));
             messageWriter.EndMessage();
         }
         /// <summary>
@@ -129,7 +129,7 @@ namespace SuperNewRoles.Helpers
         public static void RpcInnerExiled(this PlayerControl TargetPlayer)
         {
             if (TargetPlayer == null) return;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.Exiled, Hazel.SendOption.None);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(TargetPlayer.NetId, (byte)RpcCalls.Exiled, SendOption.None);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             TargetPlayer.Exiled();
         }

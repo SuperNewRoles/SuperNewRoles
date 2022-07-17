@@ -15,11 +15,6 @@ namespace SuperNewRoles
     {
         private struct Il2CppListStruct
         {
-#pragma warning disable CS0169
-            private readonly IntPtr _unusedPtr1;
-            private readonly IntPtr _unusedPtr2;
-#pragma warning restore CS0169
-
 #pragma warning disable CS0649
             public IntPtr _items;
             public int _size;

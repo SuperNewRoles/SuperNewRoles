@@ -872,7 +872,7 @@ namespace SuperNewRoles.EndGame
             if (!GameData.Instance) return false;
             if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
             if (!RoleManagerSelectRolesPatch.IsSetRoleRpc) return false;
-            if (Patch.DebugMode.IsDebugMode()) return false;
+            if (DebugMode.IsDebugMode()) return false;
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             var statistics = new PlayerStatistics(__instance);
             if (!ModeHandler.isMode(ModeId.Default))
@@ -1026,10 +1026,10 @@ namespace SuperNewRoles.EndGame
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                            CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
+                            RPCProcedure.ShareWinner(p.PlayerId);
                             __instance.enabled = false;
                             CustomEndGame((GameOverReason)CustomGameOverReason.WorkpersonWin, false);
                             return true;
