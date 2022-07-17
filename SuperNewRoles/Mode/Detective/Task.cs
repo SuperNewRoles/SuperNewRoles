@@ -20,10 +20,7 @@ namespace SuperNewRoles.Mode.Detective
                         __instance.CompletedTasks += playerCompleted;
                     }
                 }
-                catch
-                {
-
-                }
+                catch { }
             }
         }
     }

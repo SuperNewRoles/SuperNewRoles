@@ -9,6 +9,29 @@ namespace SuperNewRoles.Roles
     class Seer
     //&MadSeer & EvilSeer & SeerFriends & JackalSeer & Sidekick(Seer)
     {
+        public static void ShowFlash(Color color, float duration = 1f)
+        //画面を光らせる
+        {
+            if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
+            FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
+            FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
+            FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
+            {
+                var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
+
+                if (p < 0.5)
+                {
+                    if (renderer != null)
+                        renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01(p * 2 * 0.75f));
+                }
+                else
+                {
+                    if (renderer != null)
+                        renderer.color = new Color(color.r, color.g, color.b, Mathf.Clamp01((1 - p) * 2 * 0.75f));
+                }
+                if (p == 1f && renderer != null) renderer.enabled = false;
+            })));
+        }
         private static Sprite SoulSprite;
         public static Sprite getSoulSprite()
         {
@@ -125,7 +148,7 @@ namespace SuperNewRoles.Roles
                         }
                         if (PlayerControl.LocalPlayer.isAlive() && CachedPlayer.LocalPlayer.PlayerId != target.PlayerId && ModeFlag)
                         {
-                            RoleHelpers.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+                            ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
                         }
                     }
                 }
