@@ -10,7 +10,7 @@ using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.BattleRoyal
 {
-    class main
+    class Main
     {
         public static void FixedUpdate()
         {
@@ -20,7 +20,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = true;
                 if (!IsTeamBattle)
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.setTarget());
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.SetTarget());
                 }
                 int alives = 0;
                 int allplayer = 0;
@@ -155,7 +155,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 }
                 return true;
             }
-            public static void Postfix(ShipStatus __instance,
+            public static void Postfix(
                 [HarmonyArgument(0)] SystemTypes systemType,
                 [HarmonyArgument(1)] PlayerControl player,
                 [HarmonyArgument(2)] byte amount)
@@ -179,14 +179,14 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     SyncSetting.CustomSyncSettings();
                     if (systemType == SystemTypes.Comms)
                     {
-                        Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                        SuperHostRoles.FixedUpdate.SetRoleNames();
                     }
                 }
             }
         }
         public static List<PlayerControl> Winners;
         public static bool IsViewAlivePlayer;
-        public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
+        public static bool EndGameCheck(ShipStatus __instance)
         {
             if (IsTeamBattle)
             {

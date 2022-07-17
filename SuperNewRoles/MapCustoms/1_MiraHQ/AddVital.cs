@@ -21,7 +21,7 @@ namespace SuperNewRoles.MapCustoms
         public static ShipStatus Polus;
         public static IEnumerator LoadPolus()
         {
-            while ((UnityEngine.Object)(object)AmongUsClient.Instance == null)
+            while ((Object)(object)AmongUsClient.Instance == null)
             {
                 yield return null;
             }

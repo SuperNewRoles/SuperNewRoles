@@ -303,7 +303,7 @@ namespace SuperNewRoles
             writer.Write(player.PlayerId);
             writer.WriteBytesAndSize(taskTypeIds.ToArray());
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            RPCProcedure.uncheckedSetTasks(player.PlayerId, taskTypeIds.ToArray());
+            RPCProcedure.UncheckedSetTasks(player.PlayerId, taskTypeIds.ToArray());
         }
         public static List<byte> generateTasks(int numCommon, int numShort, int numLong)
         {

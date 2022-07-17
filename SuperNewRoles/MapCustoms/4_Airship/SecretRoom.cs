@@ -106,7 +106,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                         (rightplayer != null && rightplayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId))
                     {
                         PlayerControl.LocalPlayer.moveable = true;
-                        PlayerControl.LocalPlayer.transform.position = ModHelpers.GetRandom<Vector2>(TeleportPositions);
+                        PlayerControl.LocalPlayer.transform.position = ModHelpers.GetRandom(TeleportPositions);
                     }
                     IsWait = false;
                     rightplayer = null;
@@ -125,7 +125,7 @@ namespace SuperNewRoles.MapCustoms.Airship
         public static void ShipStatusAwake(ShipStatus __instance)
         {
             if (PlayerControl.GameOptions.MapId != (int)MapNames.Airship) return;
-            if (__instance.Type == ShipStatus.MapType.Ship && MapCustom.MapCustomOption.GetBool() && MapCustom.AirshipSetting.GetBool() && SecretRoomOption.GetBool())
+            if (__instance.Type == ShipStatus.MapType.Ship && MapCustomOption.GetBool() && AirshipSetting.GetBool() && SecretRoomOption.GetBool())
             {
                 Transform room = __instance.transform.FindChild("HallwayPortrait");
                 Transform Walls = room.FindChild("Walls");
@@ -323,7 +323,7 @@ namespace SuperNewRoles.MapCustoms.Airship
         [HarmonyPatch(typeof(VitalsMinigame), nameof(VitalsMinigame.Begin))]
         class VitalsMinigameStartPatch
         {
-            static void Postfix(VitalsMinigame __instance)
+            static void Postfix()
             {
                 onTask = true;
             }

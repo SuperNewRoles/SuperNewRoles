@@ -9,9 +9,9 @@ namespace SuperNewRoles.MapCustoms
     {
         public static void Postfix(ShipStatus __instance)
         {
-            addWireTasks();
+            AddWireTasks();
         }
-        public static void addWireTasks()
+        public static void AddWireTasks()
         {
             // Airship配線タスク追加
             if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AddWireTask.GetBool())
@@ -47,7 +47,7 @@ namespace SuperNewRoles.MapCustoms
         }
         protected static Console ActivateConsole(string objectName)
         {
-            GameObject obj = UnityEngine.GameObject.Find(objectName);
+            GameObject obj = GameObject.Find(objectName);
             if (obj == null)
             {
                 SuperNewRolesPlugin.Logger.LogError($"Object \"{objectName}\" was not found!");

@@ -4,7 +4,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
 {
     class Intro
     {
-        public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance)
+        public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler()
         {
             Il2CppSystem.Collections.Generic.List<PlayerControl> Teams = new();
             Teams.Add(PlayerControl.LocalPlayer);

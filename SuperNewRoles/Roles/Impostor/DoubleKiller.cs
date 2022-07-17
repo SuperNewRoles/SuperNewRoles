@@ -33,7 +33,7 @@ namespace SuperNewRoles.Roles
         }
         public class DoubleKillerFixedPatch
         {
-            public static PlayerControl DoubleKillersetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+            public static PlayerControl DoubleKillerSetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
             {
                 PlayerControl result = null;
                 float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Roles
             }
             static void DoubleKillerPlayerOutLineTarget()
             {
-                setPlayerOutline(DoubleKillersetTarget(), RoleClass.DoubleKiller.color);
+                setPlayerOutline(DoubleKillerSetTarget(), RoleClass.DoubleKiller.color);
             }
             public static void Postfix(PlayerControl __instance)
             {

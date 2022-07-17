@@ -37,16 +37,16 @@ namespace SuperNewRoles.Mode.BattleRoyal
             BattleRoyalKillButton = new CustomButton(
                 () =>
                 {
-                    if (PlayerControlFixedUpdatePatch.setTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && ModeHandler.isMode(ModeId.BattleRoyal) && PlayerControl.LocalPlayer.CanMove)
+                    if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && ModeHandler.isMode(ModeId.BattleRoyal) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.setTarget());
+                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, PlayerControlFixedUpdatePatch.SetTarget());
                         resetCoolDown();
                     }
                 },
                 () => { return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && ModeHandler.isMode(ModeId.BattleRoyal); },
                 () =>
                 {
-                    return PlayerControlFixedUpdatePatch.setTarget() && PlayerControl.LocalPlayer.CanMove;
+                    return PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => {  },
                 __instance.KillButton.graphic.sprite,

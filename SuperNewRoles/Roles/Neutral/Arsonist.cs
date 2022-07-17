@@ -108,7 +108,7 @@ namespace SuperNewRoles.Roles
                 if (RoleClass.Arsonist.DouseTarget == null) return;
                 if (RoleClass.Arsonist.IsDouse)
                 {
-                    if (!(RoleClass.Arsonist.DouseTarget == HudManagerStartPatch.setTarget(untarget: Arsonist.GetUntarget())))
+                    if (!(RoleClass.Arsonist.DouseTarget == HudManagerStartPatch.SetTarget(untarget: Arsonist.GetUntarget())))
                     {
                         RoleClass.Arsonist.IsDouse = false;
                         HudManagerStartPatch.ArsonistDouseButton.Timer = 0;

@@ -173,7 +173,7 @@ namespace SuperNewRoles.Patch
             string text = "";
             foreach (CustomOption.CustomOption option in options)
             {
-                text += indent + option.getName() + ":" + option.GetString() + "\n";
+                text += indent + option.GetName() + ":" + option.GetString() + "\n";
                 if (option.children.Count > 0)
                 {
                     text += GetChildText(option.children, indent + "  ");
@@ -232,7 +232,7 @@ namespace SuperNewRoles.Patch
                 int PlayerCount = 0;
                 foreach (CustomOption.CustomOption opt in option.children)
                 {
-                    if (opt.getName() == CustomOptions.SheriffPlayerCount.getName())
+                    if (opt.GetName() == CustomOptions.SheriffPlayerCount.GetName())
                     {
                         PlayerCount = (int)opt.GetFloat();
                         break;
@@ -248,7 +248,7 @@ namespace SuperNewRoles.Patch
             List<CustomRoleOption> EnableOptions = new();
             foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
             {
-                if (option.isRoleEnable && option.isSHROn)
+                if (option.IsRoleEnable && option.isSHROn)
                 {
                     EnableOptions.Add(option);
                 }
@@ -269,7 +269,7 @@ namespace SuperNewRoles.Patch
             List<CustomRoleOption> EnableOptions = new();
             foreach (CustomRoleOption option in CustomRoleOption.RoleOptions)
             {
-                if (option.isRoleEnable && option.isSHROn)
+                if (option.IsRoleEnable && option.isSHROn)
                 {
                     EnableOptions.Add(option);
                 }

@@ -37,7 +37,7 @@ namespace SuperNewRoles.MapCustoms
             AdditionalVents.AddAdditionalVents();
 
             // スペシメンにバイタルを移動する
-            SpecimenVital.moveVital();
+            SpecimenVital.MoveVital();
 
             //配電盤を移動させる
             MoveElecPad.MoveElecPads();

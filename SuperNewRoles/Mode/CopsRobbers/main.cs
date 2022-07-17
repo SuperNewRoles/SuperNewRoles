@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.CopsRobbers
 {
-    public static class main
+    public static class Main
     {
         public static void ClearAndReloads()
         {
@@ -130,7 +130,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             player.RpcSetVisor("");
 
         }
-        public static Vector2 getPosition(SystemTypes type)
+        public static Vector2 GetPosition(SystemTypes type)
         {
             //return new Vector2(-13.4818f, -5.3336f);
             var MAP = GetMap();
@@ -280,7 +280,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     {
                         if (!p.PlayerControl.isImpostor())
                         {
-                            p.PlayerControl.RpcSnapTo(getPosition(GetRandomSpawnPosition(p)));
+                            p.PlayerControl.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
                         }
                     }
                 }
@@ -325,7 +325,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                         p.RpcSetName("　");
                         if (p.isImpostor())
                         {
-                            p.RpcSnapTo(getPosition(GetRandomSpawnPosition(p)));
+                            p.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
                         }
                     }
                 }
@@ -347,12 +347,12 @@ namespace SuperNewRoles.Mode.CopsRobbers
                                     var DistanceData = Vector2.Distance(player.transform.position, p.transform.position);
                                     if (DistanceData <= 0.5f)
                                     {
-                                        Teleport(p, getPosition(SetRandomArrestPosition(p)));
+                                        Teleport(p, GetPosition(SetRandomArrestPosition(p)));
                                     }
                                 }
                                 else
                                 {
-                                    Vector2 getpos = getPosition((SystemTypes)ArrestPositions[p.PlayerId]);
+                                    Vector2 getpos = GetPosition((SystemTypes)ArrestPositions[p.PlayerId]);
                                     var DistanceData = Vector2.Distance(p.transform.position, getpos);
                                     bool flag = false;
                                     flag = DistanceData >= 1f;

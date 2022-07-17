@@ -11,7 +11,7 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch]
     class IntroPatch
     {
-        public static void setupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+        public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
             if (ModeHandler.isMode(ModeId.Default))
             {
@@ -111,7 +111,7 @@ namespace SuperNewRoles.Patches
             }
         }
 
-        public static void setupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+        public static void SetupIntroTeam(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
             IntroHandler.Handler();
             Color32 color = new(127, 127, 127, byte.MaxValue);
@@ -159,7 +159,7 @@ namespace SuperNewRoles.Patches
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
         class IntroCutsceneDestroyPatch
         {
-            public static void Prefix(IntroCutscene __instance)
+            public static void Prefix()
             {
                 float SetTime = 0;
                 bool Flag = true;
@@ -211,7 +211,7 @@ namespace SuperNewRoles.Patches
                         var myrole = PlayerControl.LocalPlayer.getRole();
                         if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                         {
-                            var date = Intro.IntroDate.GetIntroDate(myrole);
+                            var date = IntroDate.GetIntroDate(myrole);
                             __instance.YouAreText.color = date.color;
                             __instance.RoleText.text = ModTranslation.getString(date.NameKey + "Name");
                             __instance.RoleText.color = date.color;
@@ -240,12 +240,12 @@ namespace SuperNewRoles.Patches
         {
             public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
             {
-                setupIntroTeamIcons(__instance, ref teamToDisplay);
+                SetupIntroTeamIcons(__instance, ref teamToDisplay);
             }
 
             public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
             {
-                setupIntroTeam(__instance, ref teamToDisplay);
+                SetupIntroTeam(__instance, ref teamToDisplay);
             }
         }
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
@@ -253,12 +253,12 @@ namespace SuperNewRoles.Patches
         {
             public static void Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
             {
-                setupIntroTeamIcons(__instance, ref yourTeam);
+                SetupIntroTeamIcons(__instance, ref yourTeam);
             }
 
             public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
             {
-                setupIntroTeam(__instance, ref yourTeam);
+                SetupIntroTeam(__instance, ref yourTeam);
             }
         }
 

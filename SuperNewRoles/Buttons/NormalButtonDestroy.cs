@@ -5,7 +5,7 @@ namespace SuperNewRoles.Buttons
 {
     public static class DestroyPlayerList
     {
-        public static bool isDestroyKill(this PlayerControl player)
+        public static bool IsDestroyKill(this PlayerControl player)
         {
             var IsDestroyKill = false;
             switch (player.getRole())
@@ -21,7 +21,7 @@ namespace SuperNewRoles.Buttons
             }
             return IsDestroyKill;
         }
-        public static bool isDestroyReport(this PlayerControl player)
+        public static bool IsDestroyReport(this PlayerControl player)
         {
             var IsDestroyReport = false;
             switch (player.getRole())
@@ -37,7 +37,7 @@ namespace SuperNewRoles.Buttons
             }
             return IsDestroyReport;
         }
-        public static bool isDestroySabo(this PlayerControl player)
+        public static bool IsDestroySabo(this PlayerControl player)
         {
             var IsDestroySabo = false;
             return player.getRole() switch
@@ -47,7 +47,7 @@ namespace SuperNewRoles.Buttons
                 _ => IsDestroySabo,
             };
         }
-        public static bool isDestroyUse(this PlayerControl player)
+        public static bool IsDestroyUse(this PlayerControl player)
         {
             var IsDestroyUse = false;
             switch (player.getRole())
@@ -59,7 +59,7 @@ namespace SuperNewRoles.Buttons
             }
             return IsDestroyUse;
         }
-        public static bool isDestroyVent(this PlayerControl player)
+        public static bool IsDestroyVent(this PlayerControl player)
         {
             var IsDestroyVent = false;
             return player.getRole() switch
@@ -74,11 +74,11 @@ namespace SuperNewRoles.Buttons
     {
         public static void Postfix(PlayerControl player)
         {
-            if (player.isDestroyKill())
+            if (player.IsDestroyKill())
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(false);
             }
-            if (player.isDestroyReport())
+            if (player.IsDestroyReport())
             {
                 if (FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.active)
                 {
@@ -91,21 +91,21 @@ namespace SuperNewRoles.Buttons
                     FastDestroyableSingleton<HudManager>.Instance.ReportButton.buttonLabelText.SetText("");
                 }
             }
-            if (player.isDestroySabo())
+            if (player.IsDestroySabo())
             {
                 if (FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.active)
                 {
                     FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(false);
                 }
             }
-            if (player.isDestroyUse())
+            if (player.IsDestroyUse())
             {
                 if (FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.active)//使うボタンが有効の時
                 {
                     FastDestroyableSingleton<HudManager>.Instance.UseButton.gameObject.SetActive(false);//使うボタンを無効化
                 }
             }
-            if (player.isDestroyVent())
+            if (player.IsDestroyVent())
             {
                 if (FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.active)
                 {

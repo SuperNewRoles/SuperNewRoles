@@ -123,8 +123,8 @@ namespace SuperNewRoles.MapOptions
             //千里眼・ズーム関連
             ClairvoyantZoom = CustomOptions.ClairvoyantZoom.GetBool();
             MouseZoom = CustomOptions.MouseZoom.GetBool();
-            CoolTime = CustomOptions.ZoomCoolTime.GetFloat();
-            DurationTime = CustomOptions.ZoomDurationTime.GetFloat();
+            CoolTime = ZoomCoolTime.GetFloat();
+            DurationTime = ZoomDurationTime.GetFloat();
             IsZoomOn = false;
             Timer = 0;
             ButtonTimer = DateTime.Now;

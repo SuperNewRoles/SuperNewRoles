@@ -354,7 +354,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
                     CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = true;
-                    FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.SetTarget());
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
                         FastDestroyableSingleton<HudManager>.Instance.KillButton.DoClick();
@@ -373,7 +373,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
                 CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = true;
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.setTarget());
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControlFixedUpdatePatch.SetTarget());
                 if (Input.GetKeyDown(KeyCode.Q))
                 {
                     FastDestroyableSingleton<HudManager>.Instance.KillButton.DoClick();

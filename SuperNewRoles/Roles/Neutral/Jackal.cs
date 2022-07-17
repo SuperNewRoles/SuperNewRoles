@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles
         }
         public class JackalFixedPatch
         {
-            public static PlayerControl JackalsetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+            public static PlayerControl JackalSetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
             {
                 PlayerControl result = null;
                 float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
@@ -73,7 +73,7 @@ namespace SuperNewRoles.Roles
             }
             static void JackalPlayerOutLineTarget()
             {
-                setPlayerOutline(JackalsetTarget(), RoleClass.Jackal.color);
+                setPlayerOutline(JackalSetTarget(), RoleClass.Jackal.color);
             }
             public static void Postfix(PlayerControl __instance, RoleId role)
             {
