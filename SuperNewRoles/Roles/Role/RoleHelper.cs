@@ -1017,10 +1017,10 @@ namespace SuperNewRoles
         {
             RoleId role = player.getRole();
             if (player.isImpostor()) return true;
-            else if (player.isRole(RoleId.Jackal, RoleId.Sidekick)) return RoleClass.Jackal.IsUseVent;
             else if (ModeHandler.isMode(ModeId.SuperHostRoles) && IsComms()) return false;
             return role switch
             {
+                RoleId.Jackal or RoleId.Sidekick =>RoleClass.Jackal.IsUseVent,
                 RoleId.Minimalist => RoleClass.Minimalist.UseVent,
                 RoleId.Samurai => RoleClass.Samurai.UseVent,
                 RoleId.Jester => RoleClass.Jester.IsUseVent,
