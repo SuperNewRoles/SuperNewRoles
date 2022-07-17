@@ -142,11 +142,11 @@ namespace SuperNewRoles.Roles
             {
                 gameObject = new GameObject("Marker1") { layer = 11 };
             }
-            else if (RoleClass.Conjurer.AddedCount ==1)
+            else if (RoleClass.Conjurer.AddedCount == 1)
             {
                 gameObject = new GameObject("Marker2") { layer = 11 };
             }
-            else if (RoleClass.Conjurer.AddedCount ==2)
+            else if (RoleClass.Conjurer.AddedCount == 2)
             {
                 gameObject = new GameObject("Marker3") { layer = 11 };
             }
