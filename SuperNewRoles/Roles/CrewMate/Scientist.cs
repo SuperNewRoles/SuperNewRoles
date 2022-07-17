@@ -2,9 +2,9 @@ using System;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -18,15 +18,7 @@ namespace SuperNewRoles.Roles
         }
         public static void ResetCoolDown()
         {
-            float CoolTime;
-            if (PlayerControl.LocalPlayer.isImpostor())
-            {
-                CoolTime = RoleClass.EvilScientist.CoolTime;
-            }
-            else
-            {
-                CoolTime = RoleClass.NiceScientist.CoolTime;
-            }
+            float CoolTime = PlayerControl.LocalPlayer.isImpostor() ? RoleClass.EvilScientist.CoolTime : RoleClass.NiceScientist.CoolTime;
             HudManagerStartPatch.ScientistButton.MaxTimer = CoolTime;
             RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
         }

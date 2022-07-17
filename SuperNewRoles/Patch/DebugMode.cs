@@ -26,7 +26,7 @@ namespace SuperNewRoles.Patch
         public static class DebugManager
         {
             private static readonly System.Random random = new((int)DateTime.Now.Ticks);
-            private static List<PlayerControl> bots = new();
+            private static readonly List<PlayerControl> bots = new();
             public class LateTask
             {
                 public string name;

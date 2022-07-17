@@ -107,14 +107,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsTeleportingJackal(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.TeleportingJackal))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.isRole(RoleId.TeleportingJackal);
         }
     }
 }

@@ -34,13 +34,11 @@ namespace SuperNewRoles.Roles
                 var player = ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]);
                 return Get(player);
             }
-            else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
-            {
-                return Get(ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)));
-            }
             else
             {
-                return Get(p);
+                return RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId)
+                    ? Get(ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)))
+                    : Get(p);
             }
         }
         public static bool IsChangeMadmate(this PlayerControl p)

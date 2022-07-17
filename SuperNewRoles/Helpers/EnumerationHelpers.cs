@@ -16,8 +16,8 @@ namespace SuperNewRoles
         private struct Il2CppListStruct
         {
 #pragma warning disable CS0169
-            private IntPtr _unusedPtr1;
-            private IntPtr _unusedPtr2;
+            private readonly IntPtr _unusedPtr1;
+            private readonly IntPtr _unusedPtr2;
 #pragma warning restore CS0169
 
 #pragma warning disable CS0649
@@ -28,7 +28,7 @@ namespace SuperNewRoles
 
         private static readonly int _elemSize;
         private static readonly int _offset;
-        private static Func<IntPtr, T> _objFactory;
+        private static readonly Func<IntPtr, T> _objFactory;
 
         static Il2CppListEnumerable()
         {

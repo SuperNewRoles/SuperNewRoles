@@ -682,9 +682,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption LadderDead;
         public static CustomOption LadderDeadChance;
 
-        private static string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
+        private static readonly string[] GuesserCount = new string[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
         public static string[] LevelingerTexts = new string[] { };
-        private static string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
+        private static readonly string[] VultureDeadBodyCount = new string[] { "1", "2", "3", "4", "5", "6" };
         public static List<float> CrewPlayers = new() { 1f, 1f, 15f, 1f };
         public static List<float> AlonePlayers = new() { 1f, 1f, 1f, 1f };
         public static List<float> ImpostorPlayers = new() { 1f, 1f, 5f, 1f };

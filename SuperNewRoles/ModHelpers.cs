@@ -130,8 +130,7 @@ namespace SuperNewRoles
             else if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.SpawnAnim) clip = nextSkin.SpawnAnim;
             else if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.EnterVentAnim) clip = nextSkin.EnterVentAnim;
             else if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.ExitVentAnim) clip = nextSkin.ExitVentAnim;
-            else if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.IdleAnim) clip = nextSkin.IdleAnim;
-            else clip = nextSkin.IdleAnim;
+            else clip = currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.IdleAnim ? nextSkin.IdleAnim : nextSkin.IdleAnim;
 
             float progress = playerPhysics.Animator.m_animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
             skinLayer.skin = nextSkin;
@@ -396,8 +395,7 @@ namespace SuperNewRoles
         public static int getClientId(this PlayerControl player)
         {
             var client = player.getClient();
-            if (client == null) return -1;
-            return client.Id;
+            return client == null ? -1 : client.Id;
         }
         public static bool hidePlayerName(PlayerControl source, PlayerControl target)
         {
@@ -500,8 +498,7 @@ namespace SuperNewRoles
             bool Isnull = true;
             if (MyRendCache.ContainsKey(player.PlayerId))
             {
-                if (MyRendCache[player.PlayerId] == null) Isnull = true;
-                else Isnull = false;
+                Isnull = MyRendCache[player.PlayerId] == null;
             }
             if (Isnull)
             {
@@ -515,8 +512,7 @@ namespace SuperNewRoles
             bool Isnull = true;
             if (MyRendCache.ContainsKey(PlayerId))
             {
-                if (MyRendCache[PlayerId] == null) Isnull = true;
-                else Isnull = false;
+                Isnull = MyRendCache[PlayerId] == null;
             }
             if (Isnull)
             {
@@ -530,8 +526,7 @@ namespace SuperNewRoles
             bool Isnull = true;
             if (SkinLayerCache.ContainsKey(PlayerId))
             {
-                if (SkinLayerCache[PlayerId] == null) Isnull = true;
-                else Isnull = false;
+                Isnull = SkinLayerCache[PlayerId] == null;
             }
             if (Isnull)
             {
@@ -545,8 +540,7 @@ namespace SuperNewRoles
             bool Isnull = true;
             if (SkinLayerCache.ContainsKey(PlayerId))
             {
-                if (SkinLayerCache[PlayerId] == null) Isnull = true;
-                else Isnull = false;
+                Isnull = SkinLayerCache[PlayerId] == null;
             }
             if (Isnull)
             {
@@ -560,8 +554,7 @@ namespace SuperNewRoles
             bool Isnull = true;
             if (HatRendererCache.ContainsKey(PlayerId))
             {
-                if (HatRendererCache[PlayerId] == null) Isnull = true;
-                else Isnull = false;
+                Isnull = HatRendererCache[PlayerId] == null;
             }
             if (Isnull)
             {
@@ -575,8 +568,7 @@ namespace SuperNewRoles
             bool Isnull = true;
             if (HatRendCache.ContainsKey(PlayerId))
             {
-                if (HatRendCache[PlayerId] == null) Isnull = true;
-                else Isnull = false;
+                Isnull = HatRendCache[PlayerId] == null;
             }
             if (Isnull)
             {
@@ -590,8 +582,7 @@ namespace SuperNewRoles
             bool Isnull = true;
             if (VisorSlotCache.ContainsKey(PlayerId))
             {
-                if (VisorSlotCache[PlayerId] == null) Isnull = true;
-                else Isnull = false;
+                Isnull = VisorSlotCache[PlayerId] == null;
             }
             if (Isnull)
             {
@@ -662,24 +653,22 @@ namespace SuperNewRoles
         }
         public static bool IsPosition(Vector3 pos, Vector2 pos2)
         {
-            if (pos.x == pos2.x && pos.y == pos2.y) return true;
-            return false;
+            return pos.x == pos2.x && pos.y == pos2.y;
         }
         public static bool IsPositionDistance(Vector2 pos, Vector2 pos2, float distance)
         {
             float dis = Vector2.Distance(pos, pos2);
-            if (dis <= distance) return true;
-            return false;
+            return dis <= distance;
         }
 
     }
     public static class CreateFlag
     {
-        public static List<string> OneTimeList = new List<string>();
-        public static List<string> FirstRunList = new List<string>();
+        public static List<string> OneTimeList = new();
+        public static List<string> FirstRunList = new();
         public static void Run(Action action, string type, bool firstrun = false)
         {
-            if ((OneTimeList.Contains(type)) || (firstrun && !FirstRunList.Contains(type)))
+            if (OneTimeList.Contains(type) || (firstrun && !FirstRunList.Contains(type)))
             {
                 if (!FirstRunList.Contains(type)) FirstRunList.Add(type);
                 OneTimeList.Remove(type);

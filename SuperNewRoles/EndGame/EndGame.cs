@@ -104,11 +104,7 @@ namespace SuperNewRoles.EndGame
             int num = Mathf.CeilToInt(7.5f);
             List<WinningPlayerData> list = TempData.winners.GetFastEnumerator().ToArray().ToList().OrderBy(delegate (WinningPlayerData b)
             {
-                if (!b.IsYou)
-                {
-                    return 0;
-                }
-                return -1;
+                return !b.IsYou ? 0 : -1;
             }).ToList<WinningPlayerData>();
 
             for (int i = 0; i < list.Count; i++)
@@ -729,8 +725,11 @@ namespace SuperNewRoles.EndGame
             if (QuarreledWin)
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                List<PlayerControl> winplays = new() { WinnerPlayer };
-                winplays.Add(WinnerPlayer.GetOneSideQuarreled());
+                List<PlayerControl> winplays = new()
+                {
+                    WinnerPlayer,
+                    WinnerPlayer.GetOneSideQuarreled()
+                };
                 foreach (PlayerControl p in winplays)
                 {
                     p.Data.IsDead = false;

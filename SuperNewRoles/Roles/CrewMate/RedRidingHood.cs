@@ -1,7 +1,7 @@
 using System.Linq;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Patch;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -11,15 +11,15 @@ namespace SuperNewRoles.Roles
         {
             if (PlayerControl.LocalPlayer.isDead() && PlayerControl.LocalPlayer.isRole(RoleId.NiceRedRidingHood))
             {
-                Logger.Info("い:"+RoleClass.NiceRedRidingHood.Count);
+                Logger.Info("い:" + RoleClass.NiceRedRidingHood.Count);
                 if (RoleClass.NiceRedRidingHood.Count >= 1)
                 {
                     DeadPlayer deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == CachedPlayer.LocalPlayer.PlayerId)?.FirstOrDefault();
                     if (deadPlayer.killerIfExisting == null) return;
-                    var killer = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault((PlayerControl a)=> a.PlayerId == deadPlayer.killerIfExistingId);
-                    
-                        Logger.Info($"え:{killer.isDead()} || {killer.PlayerId == player.Object.PlayerId}");
-                    
+                    var killer = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault((PlayerControl a) => a.PlayerId == deadPlayer.killerIfExistingId);
+
+                    Logger.Info($"え:{killer.isDead()} || {killer.PlayerId == player.Object.PlayerId}");
+
                     if (killer != null && (killer.isDead() || killer.PlayerId == player.Object.PlayerId))
                     {
                         Logger.Info($"お:{!EvilEraser.IsBlock(EvilEraser.BlockTypes.RedRidingHoodRevive, killer)}");

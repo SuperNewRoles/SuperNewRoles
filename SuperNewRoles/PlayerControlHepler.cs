@@ -13,18 +13,17 @@ namespace SuperNewRoles
     {
         public static bool IsMod(this PlayerControl player)
         {
-            if (player == null) return false;
-            return IsMod(player.getClientId());
+            return player == null ? false : IsMod(player.getClientId());
         }
         public static bool IsMod(this ClientData player)
         {
-            if (player == null) return false;
-            return IsMod(player.Id);
+            return player == null ? false : IsMod(player.Id);
         }
         public static bool IsMod(this int player)
         {
-            if (player == AmongUsClient.Instance.HostId && AmongUsClient.Instance.AmHost) return true;
-            return GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(player);
+            return player == AmongUsClient.Instance.HostId && AmongUsClient.Instance.AmHost
+                ? true
+                : GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(player);
         }
         public static void clearAllTasks(this PlayerControl player)
         {

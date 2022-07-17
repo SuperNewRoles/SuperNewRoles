@@ -44,14 +44,7 @@ namespace SuperNewRoles.Intro
         {
             if (RoleId == RoleId.DefaultRole)
             {
-                if (p != null && p.isImpostor())
-                {
-                    return ImpostorIntro;
-                }
-                else
-                {
-                    return CrewmateIntro;
-                }
+                return p != null && p.isImpostor() ? ImpostorIntro : CrewmateIntro;
             }
             try
             {
@@ -183,11 +176,11 @@ namespace SuperNewRoles.Intro
         public static IntroDate SecretlyKillerIntro = new("SecretlyKiller", RoleClass.SecretlyKiller.color, 1, RoleId.SecretlyKiller, TeamRoleType.Impostor);
         public static IntroDate SpyIntro = new("Spy", RoleClass.Spy.color, 1, RoleId.Spy, TeamRoleType.Crewmate);
         public static IntroDate KunoichiIntro = new("Kunoichi", RoleClass.Kunoichi.color, 1, RoleId.Kunoichi, TeamRoleType.Impostor);
-        public static IntroDate DoubleKillerIntro = new IntroDate("DoubleKiller", RoleClass.DoubleKiller.color, 1, RoleId.DoubleKiller, TeamRoleType.Impostor);
-        public static IntroDate SmasherIntro = new IntroDate("Smasher", RoleClass.Smasher.color, 1, RoleId.Smasher, TeamRoleType.Impostor);
-        public static IntroDate SuicideWisherIntro = new IntroDate("SuicideWisher", RoleClass.SuicideWisher.color, 1, RoleId.SuicideWisher, TeamRoleType.Impostor);
+        public static IntroDate DoubleKillerIntro = new("DoubleKiller", RoleClass.DoubleKiller.color, 1, RoleId.DoubleKiller, TeamRoleType.Impostor);
+        public static IntroDate SmasherIntro = new("Smasher", RoleClass.Smasher.color, 1, RoleId.Smasher, TeamRoleType.Impostor);
+        public static IntroDate SuicideWisherIntro = new("SuicideWisher", RoleClass.SuicideWisher.color, 1, RoleId.SuicideWisher, TeamRoleType.Impostor);
         public static IntroDate NeetIntro = new("Neet", RoleClass.Neet.color, 1, RoleId.Neet, TeamRoleType.Neutral);
-        public static IntroDate FastMakerIntro = new IntroDate("FastMaker", RoleClass.FastMaker.color, 1, RoleId.FastMaker, TeamRoleType.Impostor);
+        public static IntroDate FastMakerIntro = new("FastMaker", RoleClass.FastMaker.color, 1, RoleId.FastMaker, TeamRoleType.Impostor);
         public static IntroDate ToiletFanIntro = new("ToiletFan", RoleClass.ToiletFan.color, 1, RoleId.ToiletFan, TeamRoleType.Crewmate);
         //イントロオブジェ
     }

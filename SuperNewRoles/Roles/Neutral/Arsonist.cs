@@ -37,11 +37,9 @@ namespace SuperNewRoles.Roles
 
         public static List<PlayerControl> GetUntarget()
         {
-            if (RoleClass.Arsonist.DouseDatas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
-            {
-                return RoleClass.Arsonist.DouseDatas[CachedPlayer.LocalPlayer.PlayerId];
-            }
-            return new();
+            return RoleClass.Arsonist.DouseDatas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId)
+                ? RoleClass.Arsonist.DouseDatas[CachedPlayer.LocalPlayer.PlayerId]
+                : (new());
         }
 
         public static bool IsDoused(this PlayerControl source, PlayerControl target)
@@ -61,11 +59,7 @@ namespace SuperNewRoles.Roles
         public static List<PlayerControl> GetIconPlayers(PlayerControl player = null)
         {
             if (player == null) player = PlayerControl.LocalPlayer;
-            if (RoleClass.Arsonist.DouseDatas.ContainsKey(player.PlayerId))
-            {
-                return RoleClass.Arsonist.DouseDatas[player.PlayerId];
-            }
-            return new();
+            return RoleClass.Arsonist.DouseDatas.ContainsKey(player.PlayerId) ? RoleClass.Arsonist.DouseDatas[player.PlayerId] : (new());
         }
         public static bool IsViewIcon(PlayerControl player)
         {
@@ -103,8 +97,7 @@ namespace SuperNewRoles.Roles
                     return false;
                 }
             }
-            if (Arsonist.isDead()) return false;
-            return true;
+            return !Arsonist.isDead();
         }
 
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

@@ -25,8 +25,7 @@ namespace SuperNewRoles
             {
                 IntPtr objectPointer;
                 IL2CPP.il2cpp_field_static_get_value(_fieldPtr, &objectPointer);
-                if (objectPointer == IntPtr.Zero) return DestroyableSingleton<T>.Instance;
-                return _createObject(objectPointer);
+                return objectPointer == IntPtr.Zero ? DestroyableSingleton<T>.Instance : _createObject(objectPointer);
             }
         }
     }

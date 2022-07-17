@@ -1,8 +1,8 @@
 using HarmonyLib;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.MapOptions;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Buttons
 {
@@ -81,11 +81,7 @@ namespace SuperNewRoles.Buttons
         {
             public static bool Prefix(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
             {
-                if (MapOption.VentAnimation.getBool())
-                {
-                    return pc.AmOwner;
-                }
-                return true;
+                return MapOption.VentAnimation.getBool() ? pc.AmOwner : true;
             }
         }
         [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))]
@@ -93,11 +89,7 @@ namespace SuperNewRoles.Buttons
         {
             public static bool Prefix(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
             {
-                if (MapOption.VentAnimation.getBool())
-                {
-                    return pc.AmOwner;
-                }
-                return true;
+                return MapOption.VentAnimation.getBool() ? pc.AmOwner : true;
             }
         }
         [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]

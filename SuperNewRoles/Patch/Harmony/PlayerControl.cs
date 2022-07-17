@@ -7,7 +7,8 @@ namespace SuperNewRoles.Patch.Harmony
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
     class PlayerControl_MurderPlayer
     {
-        private static void Postfix(PlayerControl __instance){
+        private static void Postfix(PlayerControl __instance)
+        {
             var MyRole = PlayerControl.LocalPlayer.getRole();
             Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
             JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);

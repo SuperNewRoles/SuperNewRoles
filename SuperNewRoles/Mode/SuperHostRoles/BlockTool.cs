@@ -43,7 +43,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static List<byte> CameraPlayers;
         public static List<byte> OldDesyncCommsPlayers;
-        private static float UsableDistance = 1.5f;
+        private static readonly float UsableDistance = 1.5f;
         private static int Count = 0;
         public static bool IsCom;
         public static float CameraTime;
@@ -95,7 +95,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 }
                             }
                             //AirShip(アーカイブ)用のアドミンチェック。AirShipはアドミンが2つあるから
-                            if (!IsGuard && PlayerControl.GameOptions.MapId == 4 && !MapOption.UseAdmin || !IsGuard && PlayerControl.GameOptions.MapId == 4 && MapCustoms.MapCustom.RecordsAdminDestroy.getBool() && MapOption.MapOptionSetting.getBool())
+                            if ((!IsGuard && PlayerControl.GameOptions.MapId == 4 && !MapOption.UseAdmin) || (!IsGuard && PlayerControl.GameOptions.MapId == 4 && MapCustoms.MapCustom.RecordsAdminDestroy.getBool() && MapOption.MapOptionSetting.getBool()))
                             {
                                 var AdminDistance = Vector2.Distance(playerposition, new Vector2(19.9f, 12.9f));
                                 if (AdminDistance <= UsableDistance)

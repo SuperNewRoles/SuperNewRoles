@@ -517,11 +517,7 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void ShareSNRversion(int major, int minor, int build, int revision, Guid guid, int clientId)
         {
-            System.Version ver;
-            if (revision < 0)
-                ver = new System.Version(major, minor, build);
-            else
-                ver = new System.Version(major, minor, build, revision);
+            Version ver = revision < 0 ? new System.Version(major, minor, build) : new System.Version(major, minor, build, revision);
             Patch.ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[clientId] = new Patch.PlayerVersion(ver, guid);
             //SuperNewRolesPlugin.Logger.LogInfo("PATCHES:"+ Patch.ShareGameVersion.playerVersions);
         }

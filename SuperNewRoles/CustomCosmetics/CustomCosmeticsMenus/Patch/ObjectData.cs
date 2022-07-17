@@ -136,14 +136,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             Selected = package;
             foreach (Transform obj in HatTabButtons)
             {
-                if (obj.name == package)
-                {
-                    obj.GetChild(0).FindChild("Tab Background").GetComponent<SpriteRenderer>().enabled = true;
-                }
-                else
-                {
-                    obj.GetChild(0).FindChild("Tab Background").GetComponent<SpriteRenderer>().enabled = false;
-                }
+                obj.GetChild(0).FindChild("Tab Background").GetComponent<SpriteRenderer>().enabled = obj.name == package;
             }
             if (hats.Length <= 0)
             {
@@ -152,7 +145,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             HatsTab hatstab = PlayerCustomizationMenu.Instance.transform.FindChild("HatsGroup").GetComponent<HatsTab>();
             foreach (var data in CustomHats.HatsTabOnEnablePatch.Chips)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(data+"をDestroy");
+                SuperNewRolesPlugin.Logger.LogInfo(data + "をDestroy");
                 GameObject.Destroy(data);
             }
             hatstab.ColorChips = new();
@@ -275,7 +268,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             }
             List<Transform> presets = new();
             List<PoolablePlayer> presetplayers = new();
-            for (float i = 0;i < 10; i++)
+            for (float i = 0; i < 10; i++)
             {
                 var obj = GameObject.Instantiate(ColorButton, PlayerCustomizationMenu.Instance.transform.FindChild("ColorGroup"));
                 Set(obj.Button, (int)i);
@@ -287,15 +280,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 obj.transform.localScale = new Vector3(4, 6, 1);
                 GameObject.Destroy(obj.GetComponent<BoxCollider2D>());
                 obj.Button.Colliders = new List<Collider2D>() { obj.gameObject.AddComponent<PolygonCollider2D>() }.ToArray();
-                if (i > 4)
-                {
-                    obj.transform.localPosition = new Vector3(-1.2f + ((i - 5) * 1.7f), -0.75f, 4);
-                }
-                else
-                {
-                    obj.transform.localPosition = new Vector3(-1.2f + (i * 1.7f), 1.6f, 4);
-                }
-                var player = GameObject.Instantiate(PlayerCustomizationMenu.Instance.PreviewArea ,obj.transform);
+                obj.transform.localPosition = i > 4 ? new Vector3(-1.2f + ((i - 5) * 1.7f), -0.75f, 4) : new Vector3(-1.2f + (i * 1.7f), 1.6f, 4);
+                var player = GameObject.Instantiate(PlayerCustomizationMenu.Instance.PreviewArea, obj.transform);
                 player.transform.localScale = new(0.2f, 0.135f, 0.25f);
                 player.transform.localPosition = new();
                 obj.gameObject.SetActive(true);
@@ -312,7 +298,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         }
         public static Dictionary<int, ClosetPresetData> ClosetPresetDatas = new();
         public static ConfigEntry<int> SelectedPreset;
-        public class ClosetPresetData{
+        public class ClosetPresetData
+        {
             public ConfigEntry<byte> BodyColor;
             public ConfigEntry<string> Hat;
             public ConfigEntry<string> Visor;
@@ -323,20 +310,18 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static void SetPreset(int index)
         {
             SelectedPreset.Value = index;
-            SuperNewRolesPlugin.Logger.LogInfo("セットプリセット:"+index);
-            ClosetPresetData data = null;
-            if (!ClosetPresetDatas.ContainsKey(index)) {
-                data = new();
-                data.BodyColor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "BodyColor", (byte)0);
-                data.Hat = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Hat", "");
-                data.Visor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Visor", "");
-                data.Skin = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Skin", "");
-                data.NamePlate = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "NamePlate", "");
-                data.Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "");
-            }
-            else {
-                data = ClosetPresetDatas[index];
-            }
+            SuperNewRolesPlugin.Logger.LogInfo("セットプリセット:" + index);
+            ClosetPresetData data = !ClosetPresetDatas.ContainsKey(index)
+                ? (new()
+                {
+                    BodyColor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "BodyColor", (byte)0),
+                    Hat = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Hat", ""),
+                    Visor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Visor", ""),
+                    Skin = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Skin", ""),
+                    NamePlate = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "NamePlate", ""),
+                    Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "")
+                })
+                : ClosetPresetDatas[index];
             SaveManager.BodyColor = data.BodyColor.Value;
             SaveManager.LastHat = data.Hat.Value;
             SaveManager.LastVisor = data.Visor.Value;

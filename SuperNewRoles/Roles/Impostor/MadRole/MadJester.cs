@@ -6,6 +6,6 @@ namespace SuperNewRoles.Roles
 {
     class MadJester
     {
-        
+
     }
 }

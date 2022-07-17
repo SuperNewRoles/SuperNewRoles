@@ -1,6 +1,6 @@
 using Hazel;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Helpers;
 
 namespace SuperNewRoles.Roles
 {
@@ -22,11 +22,9 @@ namespace SuperNewRoles.Roles
         {
             if (player == null) player = PlayerControl.LocalPlayer;
             if (!player.isRole(RoleId.EvilEraser)) return false;
-            if (RoleClass.EvilEraser.Counts.ContainsKey(player.PlayerId) && RoleClass.EvilEraser.Counts[player.PlayerId] <= 0)
-            {
-                return false;
-            }
-            return blocktype switch
+            return RoleClass.EvilEraser.Counts.ContainsKey(player.PlayerId) && RoleClass.EvilEraser.Counts[player.PlayerId] <= 0
+                ? false
+                : blocktype switch
             {
                 BlockTypes.StuntmanGuard => true,
                 BlockTypes.ClergymanLightOut => true,

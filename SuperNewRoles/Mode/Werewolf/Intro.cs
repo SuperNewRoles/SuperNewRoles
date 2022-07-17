@@ -1,6 +1,6 @@
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Mode.Werewolf
 {

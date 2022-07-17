@@ -2,8 +2,8 @@ using System;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.Mode;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
 {
@@ -38,14 +38,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSpeedBooster(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.SpeedBooster))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.isRole(RoleId.SpeedBooster);
         }
         public static void EndMeeting()
         {

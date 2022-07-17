@@ -36,7 +36,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (player.isZeroCoolEngineer())
             {
                 optdata.RoleOptions.EngineerCooldown = 0f;
-                        optdata.RoleOptions.EngineerInVentMaxTime = 0f;
+                optdata.RoleOptions.EngineerInVentMaxTime = 0f;
             }
             switch (role)
             {
@@ -82,24 +82,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             }
                         }
                     }
-                    if (RoleClass.MadMaker.CreatePlayers.Contains(player.PlayerId))
-                    {
-                        optdata.KillCooldown = -1f;
-                    }
-                    else
-                    {
-                        optdata.KillCooldown = 0.001f;
-                    }
+                    optdata.KillCooldown = RoleClass.MadMaker.CreatePlayers.Contains(player.PlayerId) ? -1f : 0.001f;
                     break;
                 case RoleId.truelover:
-                    if (RoleClass.truelover.CreatePlayers.Contains(player.PlayerId))
-                    {
-                        optdata.KillCooldown = -1f;
-                    }
-                    else
-                    {
-                        optdata.KillCooldown = 0.001f;
-                    }
+                    optdata.KillCooldown = RoleClass.truelover.CreatePlayers.Contains(player.PlayerId) ? -1f : 0.001f;
                     break;
                 case RoleId.SerialKiller:
                     optdata.killCooldown = KillCoolSet(RoleClass.SerialKiller.KillTime);
@@ -118,14 +104,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.RoleOptions.ShapeshifterDuration = 1f;
                         optdata.RoleOptions.ShapeshifterCooldown = -1f;
                     }
-                    if (player.IsMod())
-                    {
-                        optdata.killCooldown = KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime);
-                    }
-                    else
-                    {
-                        optdata.killCooldown = -1f;
-                    }
+                    optdata.killCooldown = player.IsMod() ? KillCoolSet(RoleClass.RemoteSheriff.KillCoolTime) : -1f;
                     break;
                 case RoleId.Arsonist:
                     optdata.RoleOptions.ShapeshifterCooldown = 1f;
@@ -195,14 +174,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static float KillCoolSet(float cool)
         {
-            if (cool <= 0)
-            {
-                return 0.001f;
-            }
-            else
-            {
-                return cool;
-            }
+            return cool <= 0 ? 0.001f : cool;
         }
         public static void MurderSyncSetting(PlayerControl player)
         {
@@ -242,14 +214,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!AmongUsClient.Instance.AmHost) return;
             var role = p.getRole();
             var optdata = OptionData.DeepCopy();
-            if (RoleClass.EvilGambler.GetSuc())
-            {
-                optdata.KillCooldown = KillCoolSet(RoleClass.EvilGambler.SucCool);
-            }
-            else
-            {
-                optdata.KillCooldown = KillCoolSet(RoleClass.EvilGambler.NotSucCool);
-            }
+            optdata.KillCooldown = RoleClass.EvilGambler.GetSuc() ? KillCoolSet(RoleClass.EvilGambler.SucCool) : KillCoolSet(RoleClass.EvilGambler.NotSucCool);
             if (p.AmOwner) PlayerControl.GameOptions = optdata;
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, p.getClientId());
             writer.WriteBytesAndSize(optdata.ToBytes(5));

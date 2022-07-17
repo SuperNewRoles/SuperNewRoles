@@ -1,7 +1,7 @@
 using System;
-using SuperNewRoles.Roles;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.MapOptions;
+using SuperNewRoles.Roles;
 using UnityEngine;
 
 namespace SuperNewRoles.Buttons

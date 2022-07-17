@@ -87,14 +87,9 @@ namespace SuperNewRoles.Patches
                         //改行+Branch名+コミット番号
                         __instance.text.text += "\n" + ($"{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})");
                     }
-                    if (CachedPlayer.LocalPlayer.Data.IsDead)
-                    {
-                        __instance.transform.localPosition = new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
-                    }
-                    else
-                    {
-                        __instance.transform.localPosition = new Vector3(4.2f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
-                    }
+                    __instance.transform.localPosition = CachedPlayer.LocalPlayer.Data.IsDead
+                        ? new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z)
+                        : new Vector3(4.2f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
                 }
                 else
                 {
@@ -335,7 +330,7 @@ namespace SuperNewRoles.Patches
                 }
             }
 
-            private static Task DownloadTask = null;
+            private static readonly Task DownloadTask = null;
             public static async Task<bool> DownloadSubmarged()
             {
                 try

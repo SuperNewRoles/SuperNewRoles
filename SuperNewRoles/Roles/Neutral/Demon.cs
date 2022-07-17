@@ -33,11 +33,9 @@ namespace SuperNewRoles.Roles
 
         public static List<PlayerControl> GetUntarget()
         {
-            if (RoleClass.Demon.CurseDatas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
-            {
-                return RoleClass.Demon.CurseDatas[CachedPlayer.LocalPlayer.PlayerId];
-            }
-            return new();
+            return RoleClass.Demon.CurseDatas.ContainsKey(CachedPlayer.LocalPlayer.PlayerId)
+                ? RoleClass.Demon.CurseDatas[CachedPlayer.LocalPlayer.PlayerId]
+                : (new());
         }
 
         public static bool IsCursed(this PlayerControl source, PlayerControl target)
@@ -57,11 +55,7 @@ namespace SuperNewRoles.Roles
         public static List<PlayerControl> GetIconPlayers(PlayerControl player = null)
         {
             if (player == null) player = PlayerControl.LocalPlayer;
-            if (RoleClass.Demon.CurseDatas.ContainsKey(player.PlayerId))
-            {
-                return RoleClass.Demon.CurseDatas[player.PlayerId];
-            }
-            return new();
+            return RoleClass.Demon.CurseDatas.ContainsKey(player.PlayerId) ? RoleClass.Demon.CurseDatas[player.PlayerId] : (new());
         }
         public static bool IsViewIcon(PlayerControl player)
         {
@@ -93,8 +87,7 @@ namespace SuperNewRoles.Roles
                     return false;
                 }
             }
-            if (RoleClass.Demon.IsAliveWin && Demon.isDead()) return false;
-            return true;
+            return !RoleClass.Demon.IsAliveWin || !Demon.isDead();
         }
 
         public static bool IsDemonWinFlag()

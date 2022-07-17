@@ -30,14 +30,7 @@ namespace SuperNewRoles.Patch
             var LocalPlayer = PlayerControl.LocalPlayer;
             if (LocalPlayer.isRole(RoleId.Nocturnality))
             {
-                if (1 - lerpValue >= 0)
-                {
-                    lerpValue = 1f - lerpValue;
-                }
-                else
-                {
-                    lerpValue = 1f + (1f - lerpValue);
-                }
+                lerpValue = 1 - lerpValue >= 0 ? 1f - lerpValue : 1f + (1f - lerpValue);
             }
             return Mathf.Lerp(shipStatus.MinLightRadius, shipStatus.MaxLightRadius, lerpValue) * PlayerControl.GameOptions.CrewLightMod;
         }
@@ -58,10 +51,9 @@ namespace SuperNewRoles.Patch
                 __result = GetNeutralLightRadius(__instance, false);
             else if (player.Object.isImpostor() || RoleHelpers.IsImpostorLight(player.Object))
                 __result = GetNeutralLightRadius(__instance, true);
-            else if (player.Object.isRole(RoleId.Lighter)&& RoleClass.Lighter.IsLightOn)
-                __result = Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num);
-            else
-                __result = GetNeutralLightRadius(__instance, false);
+            else __result = player.Object.isRole(RoleId.Lighter) && RoleClass.Lighter.IsLightOn
+                ? Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num)
+                : GetNeutralLightRadius(__instance, false);
             return false;
         }
     }

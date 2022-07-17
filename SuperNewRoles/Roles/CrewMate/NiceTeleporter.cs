@@ -32,14 +32,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsNiceTeleporter(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.NiceTeleporter))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.isRole(RoleId.NiceTeleporter);
         }
         public static void EndMeeting()
         {

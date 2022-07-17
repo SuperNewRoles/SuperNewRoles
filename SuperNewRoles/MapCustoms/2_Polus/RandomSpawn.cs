@@ -4,10 +4,10 @@ using System.Linq;
 using HarmonyLib;
 using Hazel;
 using PowerTools;
+using SuperNewRoles.CustomRPC;
 using TMPro;
 using UnhollowerBaseLib;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.MapCustoms
 {

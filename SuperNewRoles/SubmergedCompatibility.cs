@@ -42,14 +42,9 @@ namespace SuperNewRoles
                     }
                     else
                     {
-                        if (MapUtilities.CachedShipStatus.Type == SUBMERGED_MAP_TYPE)
-                        {
-                            return _submarineStatus = MapUtilities.CachedShipStatus.GetComponent(Il2CppType.From(SubmarineStatusType))?.TryCast(SubmarineStatusType) as MonoBehaviour;
-                        }
-                        else
-                        {
-                            return _submarineStatus = null;
-                        }
+                        return MapUtilities.CachedShipStatus.Type == SUBMERGED_MAP_TYPE
+                            ? (_submarineStatus = MapUtilities.CachedShipStatus.GetComponent(Il2CppType.From(SubmarineStatusType))?.TryCast(SubmarineStatusType) as MonoBehaviour)
+                            : (_submarineStatus = null);
                     }
                 }
                 else
@@ -136,8 +131,7 @@ namespace SuperNewRoles
 
         public static float GetSubmergedNeutralLightRadius(bool isImpostor)
         {
-            if (!Loaded) return 0;
-            return (float)CalculateLightRadiusMethod.Invoke(SubmarineStatus, new object[] { null, true, isImpostor });
+            return !Loaded ? 0 : (float)CalculateLightRadiusMethod.Invoke(SubmarineStatus, new object[] { null, true, isImpostor });
         }
 
         public static void ChangeFloor(bool toUpper)
@@ -170,8 +164,7 @@ namespace SuperNewRoles
 
         public static bool getInTransition()
         {
-            if (!Loaded) return false;
-            return (bool)InTransitionField.GetValue(null);
+            return !Loaded ? false : (bool)InTransitionField.GetValue(null);
         }
 
         public static void RepairOxygen()

@@ -36,14 +36,7 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < MeetingHud.Instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = MeetingHud.Instance.playerStates[i];
-                    if (playerVoteArea.TargetPlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId)
-                    {
-                        playerVoteArea.VotedFor = player.Data.PlayerId;
-                    }
-                    else
-                    {
-                        playerVoteArea.VotedFor = 254;
-                    }
+                    playerVoteArea.VotedFor = playerVoteArea.TargetPlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId ? player.Data.PlayerId : (byte)254;
                     MeetingHud.Instance.SetDirtyBit(1U);
 
                     array[i] = new MeetingHud.VoterState

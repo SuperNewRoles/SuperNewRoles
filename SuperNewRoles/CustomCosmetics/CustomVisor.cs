@@ -39,14 +39,9 @@ namespace SuperNewRoles.CustomCosmetics
                         plate.ChipOffset = new Vector2(0f, 0.2f);
                         plate.Free = true;
                         plate.viewData.viewData = new VisorViewData();
-                        if (Data.IsTOP)
-                        {
-                            plate.viewData.viewData.IdleFrame = ModHelpers.CreateSprite("SuperNewRoles\\CustomVisorsChache\\" + file.Name, true);
-                        }
-                        else
-                        {
-                            plate.viewData.viewData.IdleFrame = LoadTex.loadSprite("SuperNewRoles\\CustomVisorsChache\\" + file.Name);
-                        }
+                        plate.viewData.viewData.IdleFrame = Data.IsTOP
+                            ? ModHelpers.CreateSprite("SuperNewRoles\\CustomVisorsChache\\" + file.Name, true)
+                            : LoadTex.loadSprite("SuperNewRoles\\CustomVisorsChache\\" + file.Name);
                         __instance.allVisors.Add(plate);
                         SuperNewRolesPlugin.Logger.LogInfo("[CustomVisor] バイザー読み込み完了:" + file.Name);
                     }

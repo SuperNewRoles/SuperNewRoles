@@ -150,7 +150,7 @@ namespace SuperNewRoles
           int targetClientId = -1)
         {
             if (targetClientId == -2) targetClientId = -1;
-            if (currentState != State.Ready && currentState != State.InRootMessage)
+            if (currentState is not State.Ready and not State.InRootMessage)
             {
                 string errorMsg = $"RPCを自動で開始しようとしましたが、StateがReadyまたはInRootMessageではありません (in: \"{name}\")";
                 if (isUnsafe)

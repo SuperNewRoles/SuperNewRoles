@@ -42,10 +42,12 @@ namespace SuperNewRoles.Patch
             var json = JObject.Parse(request.downloadHandler.text);
             for (var user = json["blockedUsers"].First; user != null; user = user.Next)
             {
-                BlackPlayer player = new();
-                player.FriendCode = user["FriendCode"]?.ToString();
-                player.Reason = user["Reason"]?.ToString();
-                player.clientId = user["clientId"]?.ToString();
+                BlackPlayer player = new()
+                {
+                    FriendCode = user["FriendCode"]?.ToString(),
+                    Reason = user["Reason"]?.ToString(),
+                    clientId = user["clientId"]?.ToString()
+                };
                 SuperNewRolesPlugin.Logger.LogInfo(player.FriendCode);
             }
         }

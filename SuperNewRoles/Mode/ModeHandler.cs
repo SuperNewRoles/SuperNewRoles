@@ -10,10 +10,9 @@ namespace SuperNewRoles.Mode
     {
         public static bool Prefix(ShipStatus __instance)
         {
-            if (ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.Werewolf) ||
-                ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.HideAndSeek) ||
-                ModeHandler.isMode(ModeId.CopsRobbers)) return false;
-            return true;
+            return !ModeHandler.isMode(ModeId.Zombie) && !ModeHandler.isMode(ModeId.Werewolf) &&
+!ModeHandler.isMode(ModeId.BattleRoyal) && !ModeHandler.isMode(ModeId.HideAndSeek) &&
+!ModeHandler.isMode(ModeId.CopsRobbers);
         }
     }
     enum ModeId
@@ -270,8 +269,7 @@ namespace SuperNewRoles.Mode
             if (isMode(ModeId.Detective, false)) return ModeId.Detective;
             if (isMode(ModeId.Werewolf, false)) return ModeId.Werewolf;
             if (isMode(ModeId.CopsRobbers, false)) return ModeId.CopsRobbers;
-            if (isMode(ModeId.LevelUp, false)) return ModeId.LevelUp;
-            return ModeId.No;
+            return isMode(ModeId.LevelUp, false) ? ModeId.LevelUp : ModeId.No;
         }
         public static string GetThisModeIntro()
         {
@@ -303,20 +301,11 @@ namespace SuperNewRoles.Mode
         {
             if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId))
             {
-                if (mode == ModeId.Default)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return mode == ModeId.Default;
             }
-            if (IsChache)
-            {
-                return mode == thisMode;
-            }
-            return mode switch
+            return IsChache
+                ? mode == thisMode
+                : mode switch
             {
                 ModeId.Default => !ModeSetting.getBool(),
                 ModeId.HideAndSeek => ModeSetting.getBool() && ThisModeSetting.getString() == modes[0],
@@ -376,13 +365,11 @@ namespace SuperNewRoles.Mode
         {
             if (isMode(ModeId.NotImpostorCheck)) return false;
             if (isMode(ModeId.Detective)) return false;
-            if (isMode(ModeId.Default)) return false;
-            return true;
+            return !isMode(ModeId.Default);
         }
         public static bool IsBlockGuardianAngelRole()
         {
-            if (isMode(ModeId.Default)) return true;
-            return IsBlockVanilaRole();
+            return isMode(ModeId.Default) ? true : IsBlockVanilaRole();
         }
     }
 }

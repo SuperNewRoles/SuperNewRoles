@@ -27,28 +27,14 @@ namespace SuperNewRoles
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.IsQuarreled(false))
-                {
-                    QuarreledChache[p.PlayerId] = p.GetOneSideQuarreled(false);
-                }
-                else
-                {
-                    QuarreledChache[p.PlayerId] = null;
-                }
+                QuarreledChache[p.PlayerId] = p.IsQuarreled(false) ? p.GetOneSideQuarreled(false) : null;
             }
         }
         public static void ResetLoversChache()
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.IsLovers(false))
-                {
-                    LoversChache[p.PlayerId] = p.GetOneSideLovers(false);
-                }
-                else
-                {
-                    LoversChache[p.PlayerId] = null;
-                }
+                LoversChache[p.PlayerId] = p.IsLovers(false) ? p.GetOneSideLovers(false) : null;
             }
         }
         public static void ResetMyRoleChache()

@@ -1,7 +1,7 @@
 using HarmonyLib;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {

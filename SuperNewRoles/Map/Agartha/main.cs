@@ -8,25 +8,11 @@ namespace SuperNewRoles.Map.Agartha
         {
             get
             {
-                if (thisfloor == 0x73)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return thisfloor;
-                }
+                return thisfloor == 0x73 ? 1 : thisfloor;
             }
             set
             {
-                if (value is 1 or 2)
-                {
-                    thisfloor = value;
-                }
-                else
-                {
-                    thisfloor = 1;
-                }
+                thisfloor = value is 1 or 2 ? value : 1;
             }
         }
         public static void ClearAndReloads()

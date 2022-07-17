@@ -27,11 +27,7 @@ namespace SuperNewRoles.Mode.Zombie
         }
         static float GetSpeed(float speed)
         {
-            if (speed <= 0)
-            {
-                return 0.001f;
-            }
-            return speed;
+            return speed <= 0 ? 0.001f : speed;
         }
         public static void FirstChangeSettings()
         {

@@ -103,7 +103,7 @@ namespace SuperNewRoles
                 announcement = string.Format(ModTranslation.getString("announcementUpdate"), newver, announcement);
                 if (!ConfigRoles.AutoUpdate.Value)
                 {
-                    Logger.Info("AutoUpdateRETURN","AutoUpdate");
+                    Logger.Info("AutoUpdateRETURN", "AutoUpdate");
                     return false;
                 }
                 if (!IsLoad)

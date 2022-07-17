@@ -210,14 +210,7 @@ namespace SuperNewRoles.Patch
                         for (int i = 0; i < __instance.playerStates.Length; i++)
                         {
                             PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                            if (playerVoteArea.TargetPlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId)
-                            {
-                                playerVoteArea.VotedFor = voteFor;
-                            }
-                            else
-                            {
-                                playerVoteArea.VotedFor = 254;
-                            }
+                            playerVoteArea.VotedFor = playerVoteArea.TargetPlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId ? voteFor : (byte)254;
                             __instance.SetDirtyBit(1U);
 
                             array[i] = new MeetingHud.VoterState
@@ -310,7 +303,7 @@ namespace SuperNewRoles.Patch
                             var voter = ModHelpers.playerById(ps.TargetPlayerId);
                             if (voter == null || voter.Data == null || voter.Data.Disconnected || voter.IsBot() || voter.isDead() || ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Neet)) continue;
                             //BOT・ニートならスキップ判定
-                            if (ps.VotedFor != 253 && ps.VotedFor != 254 && ModHelpers.playerById(ps.VotedFor).IsBot() || ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Neet))
+                            if ((ps.VotedFor != 253 && ps.VotedFor != 254 && ModHelpers.playerById(ps.VotedFor).IsBot()) || ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Neet))
                             {
                                 ps.VotedFor = 253;
                             }
@@ -536,14 +529,7 @@ namespace SuperNewRoles.Patch
         {
             if (RoleClass.Assassin.TriggerPlayer == null) { return true; }
 
-            if (!RoleClass.Assassin.TriggerPlayer.AmOwner)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return !RoleClass.Assassin.TriggerPlayer.AmOwner;
         }
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]

@@ -14,14 +14,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool isClergyman(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.Clergyman))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.isRole(RoleId.Clergyman);
         }
         public static void LightOutStart()
         {
@@ -46,13 +39,11 @@ namespace SuperNewRoles.Roles
             if (CountChanger.IsChangeSeerFriends(PlayerControl.LocalPlayer)) return true;
             if (CountChanger.IsChangeJackalSeer(PlayerControl.LocalPlayer)) return true;
             if (CountChanger.IsChangeSidekickSeer(PlayerControl.LocalPlayer)) return true;
-            if (CountChanger.IsChangeBlackCat(PlayerControl.LocalPlayer)) return true;
-            return false;
+            return CountChanger.IsChangeBlackCat(PlayerControl.LocalPlayer);
         }
         public static bool IsLightOutVisionNoTime()
         {
-            if (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor) return true;
-            return false;
+            return CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor;
         }
         public static void LightOutStartRPC()
         {

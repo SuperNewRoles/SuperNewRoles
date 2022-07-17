@@ -1,7 +1,7 @@
 using Hazel;
 using SuperNewRoles.Buttons;
-using UnityEngine;
 using SuperNewRoles.CustomRPC;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
@@ -51,14 +51,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool isSamurai(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.Samurai))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.isRole(RoleId.Samurai);
         }
         public static void SamuraiKill()
         {

@@ -7,9 +7,9 @@ using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Roles;
-using static SuperNewRoles.MapCustoms.MapCustom;
 using TMPro;
 using UnityEngine;
+using static SuperNewRoles.MapCustoms.MapCustom;
 
 namespace SuperNewRoles.MapCustoms.Airship
 {
@@ -23,7 +23,7 @@ namespace SuperNewRoles.MapCustoms.Airship
         public static PlayerControl UsePlayer;
         public static bool IsWait = false;
         public static TextMeshPro LowerInfoText;
-        static List<Vector2> TeleportPositions = new List<Vector2>
+        static readonly List<Vector2> TeleportPositions = new()
         {
             new Vector2(-0.78f, -1f), new Vector2(-13, -1), new Vector2(-13, 1.5f), new Vector2(-21, -1.2f), new Vector2(-10, -7), new Vector2(-6.2f, -11),
             new Vector2(-13.4f, -12.2f), new Vector2(2.2f, -12), new Vector2(7.2f, -11.4f), new Vector2(16.3f, -8.6f), new Vector2(24.9f, -5.7f), new Vector2(33.6f, -0.6f), new Vector2(31.5f, 5.6f),
@@ -174,9 +174,11 @@ namespace SuperNewRoles.MapCustoms.Airship
                 shadow_new.Add(new Vector2(7.05f, 6f));
                 shadow_new.Add(new Vector2(3.15f, 6f));
 
-                List<Vector2> newshadow_new = new();
-                newshadow_new.Add(new Vector2(3.15f, 6f));
-                newshadow_new.Add(new Vector2(3.15f, 0.8332f));
+                List<Vector2> newshadow_new = new()
+                {
+                    new Vector2(3.15f, 6f),
+                    new Vector2(3.15f, 0.8332f)
+                };
                 newshadow_new.AddRange(shadow.points.ToArray()[16..].ToList());
                 newshadow.points = newshadow_new.ToArray();
                 shadow.points = shadow_new.ToArray();
@@ -331,7 +333,7 @@ namespace SuperNewRoles.MapCustoms.Airship
         {
             public static bool Prefix(Console __instance)
             {
-                if (__instance.name == "secretroom_teleport-on" || __instance.name == "secretroom_teleport-on2")
+                if (__instance.name is "secretroom_teleport-on" or "secretroom_teleport-on2")
                 {
                     if (LowerInfoText == null)
                     {
@@ -558,7 +560,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 couldUse = true;
                 __result = byte.MaxValue;
 
-                if (__instance.name != "secretroom_teleport-on2" && __instance.name != "secretroom_teleport-on" && __instance.name != "secretroom_teleport-console") return true;
+                if (__instance.name is not "secretroom_teleport-on2" and not "secretroom_teleport-on" and not "secretroom_teleport-console") return true;
 
                 if (__instance.name == "secretroom_teleport-console")
                 {
@@ -581,7 +583,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 PlayerControl @object = pc.Object;
                 Vector2 truePosition = @object.GetTruePosition();
                 Vector3 position = __instance.transform.position;
-                couldUse = (!pc.IsDead || @object.CanMove && pc.Role.CanUse(__instance.TryCast<IUsable>()) && (!__instance.onlyFromBelow || truePosition.y < position.y));
+                couldUse = !pc.IsDead || (@object.CanMove && pc.Role.CanUse(__instance.TryCast<IUsable>()) && (!__instance.onlyFromBelow || truePosition.y < position.y));
                 canUse = couldUse;
                 if (canUse)
                 {

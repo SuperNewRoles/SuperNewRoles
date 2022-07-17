@@ -12,17 +12,17 @@ namespace SuperNewRoles.Modules
         {
             //このターンで誰か守った？
             bool AnythingPlayerProcted = false;
-			foreach(PlayerControl player in CachedPlayer.AllPlayers)
-			{
-				if (player.protectedByGuardianThisRound)
-				{
-					player.protectedByGuardianThisRound = false;
-					if (player.Data != null && player.isAlive())
-					{
-						AnythingPlayerProcted = true;
-					}
-				}
-			}
+            foreach (PlayerControl player in CachedPlayer.AllPlayers)
+            {
+                if (player.protectedByGuardianThisRound)
+                {
+                    player.protectedByGuardianThisRound = false;
+                    if (player.Data != null && player.isAlive())
+                    {
+                        AnythingPlayerProcted = true;
+                    }
+                }
+            }
 
             //誰か守ってたら音声あり
             if (AnythingPlayerProcted || ProctedMessages != null)
@@ -51,9 +51,9 @@ namespace SuperNewRoles.Modules
         //スケジュール
         public static void ScheduleProctedMessage(string Text)
         {
-            SuperNewRolesPlugin.Logger.LogDebug("守護メッセージがスケジュールされました。:"+Text);
+            SuperNewRolesPlugin.Logger.LogDebug("守護メッセージがスケジュールされました。:" + Text);
             //もしProctedMessagesが空なら行替えなしに、空じゃなきゃ行替えありに
-            ProctedMessages = ProctedMessages==string.Empty ? Text : string.Concat(ProctedMessages, "\n", Text);
+            ProctedMessages = ProctedMessages == string.Empty ? Text : string.Concat(ProctedMessages, "\n", Text);
         }
     }
 }

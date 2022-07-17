@@ -16,22 +16,22 @@ namespace SuperNewRoles.Buttons
         public float MaxTimer = float.MaxValue;
         public float Timer = 0f;
         public bool effectCancellable = false;
-        private Action OnClick;
-        private Action OnMeetingEnds;
-        private Func<bool, RoleId, bool> HasButton;
-        private Func<bool> CouldUse;
-        private Action OnEffectEnds;
+        private readonly Action OnClick;
+        private readonly Action OnMeetingEnds;
+        private readonly Func<bool, RoleId, bool> HasButton;
+        private readonly Func<bool> CouldUse;
+        private readonly Action OnEffectEnds;
         public bool HasEffect;
         public bool isEffectActive = false;
         public bool showButtonText = true;
         public string buttonText = null;
         public float EffectDuration;
         public Sprite Sprite;
-        private HudManager hudManager;
-        private bool mirror;
-        private KeyCode? hotkey;
-        private int joystickkey;
-        private Func<bool> StopCountCool;
+        private readonly HudManager hudManager;
+        private readonly bool mirror;
+        private readonly KeyCode? hotkey;
+        private readonly int joystickkey;
+        private readonly Func<bool> StopCountCool;
         public CustomButton(Action OnClick, Func<bool, RoleId, bool> HasButton, Func<bool> CouldUse, Action OnMeetingEnds, Sprite Sprite, Vector3 PositionOffset, HudManager hudManager, ActionButton textTemplate, KeyCode? hotkey, int joystickkey, Func<bool> StopCountCool, bool HasEffect, float EffectDuration, Action OnEffectEnds, bool mirror = false, string buttonText = "")
         {
             this.hudManager = hudManager;

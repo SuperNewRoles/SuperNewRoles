@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.BattleRoyal

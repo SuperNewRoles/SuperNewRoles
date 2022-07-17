@@ -33,8 +33,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
         public static Dictionary<int, SystemTypes?> SpawnPosition;
         public static bool IsArrest(this PlayerControl player)
         {
-            if (Arrest.Contains(player.PlayerId)) return true;
-            return false;
+            return Arrest.Contains(player.PlayerId);
         }
         public static Dictionary<MapNames, List<SystemTypes>> Rooms = new()
         {

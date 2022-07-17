@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using HarmonyLib;
-using SuperNewRoles.Mode;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Patch

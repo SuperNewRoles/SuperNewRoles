@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Hazel;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.EndGame;
 using SuperNewRoles.Mode;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -91,12 +91,12 @@ namespace SuperNewRoles.Roles
                 RPCWriter.Write(random.PlayerId);
                 AmongUsClient.Instance.FinishRpcImmediately(RPCWriter);
                 RPCProcedure.ExiledRPC(random.PlayerId);
-                if (random.isRole(RoleId.NiceNekomata) || random.isRole(RoleId.EvilNekomata) || random.isRole(RoleId.BlackCat) && RoleClass.NiceNekomata.IsChain)
+                if (random.isRole(RoleId.NiceNekomata) || random.isRole(RoleId.EvilNekomata) || (random.isRole(RoleId.BlackCat) && RoleClass.NiceNekomata.IsChain))
                 {
                     p.RemoveAt(rdm);
                     NekomataProc(p);
                 }
-                if (random.isRole(RoleId.Jester)||random.isRole(RoleId.MadJester))
+                if (random.isRole(RoleId.Jester) || random.isRole(RoleId.MadJester))
                 {
                     if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(random.Data).Item1 == 0))
                     {

@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Patch;
-using SuperNewRoles.CustomRPC;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -79,14 +79,7 @@ namespace SuperNewRoles.Roles
             {
                 try
                 {
-                    if (!(index * 15 < i && i >= 15 * (index - 1)))
-                    {
-                        area.transform.localPosition = Positions[i - ((index - 1) * 15)];
-                    }
-                    else
-                    {
-                        area.transform.localPosition = new Vector3(100, 100, 100);
-                    }
+                    area.transform.localPosition = !(index * 15 < i && i >= 15 * (index - 1)) ? Positions[i - ((index - 1) * 15)] : new Vector3(100, 100, 100);
                 }
                 catch
                 {
@@ -113,8 +106,7 @@ namespace SuperNewRoles.Roles
             if (Target.isMadRole() && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (Target.isFriendRole() && RoleClass.MeetingSheriff.MadRoleKill) return true;
             if (Target.isNeutral() && RoleClass.MeetingSheriff.NeutralKill) return true;
-            if (Target.isRole(RoleId.HauntedWolf)) return true;
-            return false;
+            return Target.isRole(RoleId.HauntedWolf);
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
         {

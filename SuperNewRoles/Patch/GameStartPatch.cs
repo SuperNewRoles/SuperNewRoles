@@ -1,7 +1,7 @@
 using HarmonyLib;
-using UnityEngine;
-using SuperNewRoles.Mode;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.Mode;
+using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
@@ -23,7 +23,7 @@ namespace SuperNewRoles.Patch
                     PlayerControl.LocalPlayer.RpcSendChat(string.Format("Modが名前に含まれている状態では公開部屋にすることはできません。"));
                     return false;
                 }
-                else if (ModeHandler.isMode(ModeId.SuperHostRoles, false) && NameIncludeSNR && !NameIncludeSHR || ModeHandler.isMode(ModeId.SuperHostRoles, false) && NameIncludeMod && !NameIncludeSHR)
+                else if ((ModeHandler.isMode(ModeId.SuperHostRoles, false) && NameIncludeSNR && !NameIncludeSHR) || (ModeHandler.isMode(ModeId.SuperHostRoles, false) && NameIncludeMod && !NameIncludeSHR))
                 {
                     SuperNewRolesPlugin.Logger.LogWarning("SHRモードで\"SNR\"が名前に含まれている状態では公開部屋にすることはできません。");
                     PlayerControl.LocalPlayer.RpcSendChat(string.Format("SHRモードでSNRが名前に含まれている状態では公開部屋にすることはできません。"));

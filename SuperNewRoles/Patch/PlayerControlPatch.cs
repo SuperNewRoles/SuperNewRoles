@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -173,8 +173,7 @@ namespace SuperNewRoles.Patches
     {
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
-            if (ModeHandler.isMode(ModeId.SuperHostRoles)) return false;
-            return true;
+            return !ModeHandler.isMode(ModeId.SuperHostRoles);
         }
     }
 
@@ -377,8 +376,8 @@ namespace SuperNewRoles.Patches
                             if (!RoleClass.FastMaker.IsCreatedMadMate)//まだ作ってなくて、設定が有効の時
                             {
                                 if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                                 target.RpcProtectPlayer(target, 0);//キルを無効にする為守護をかける
-                                 //守護がかかるのを待つためのLateTask
+                                target.RpcProtectPlayer(target, 0);//キルを無効にする為守護をかける
+                                                                   //守護がかかるのを待つためのLateTask
                                 new LateTask(() =>
                                     {
                                         RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
@@ -974,11 +973,7 @@ namespace SuperNewRoles.Patches
                     }
                 }
             }
-            if (result.isDead())
-            {
-                return null;
-            }
-            return result;
+            return result.isDead() ? null : result;
         }
     }
 }

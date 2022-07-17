@@ -134,12 +134,7 @@ namespace SuperNewRoles.Patch
 
             overlayShown = true;
 
-            Transform parent;
-            if (MeetingHud.Instance != null)
-                parent = MeetingHud.Instance.transform;
-            else
-                parent = hudManager.transform;
-
+            Transform parent = MeetingHud.Instance != null ? MeetingHud.Instance.transform : hudManager.transform;
             infoUnderlay.transform.parent = parent;
             infoOverlayRules.transform.parent = parent;
             infoOverlayRoles.transform.parent = parent;

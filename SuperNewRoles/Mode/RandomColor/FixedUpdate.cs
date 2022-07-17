@@ -6,7 +6,7 @@ namespace SuperNewRoles.Mode.RandomColor
 {
     public static class FixedUpdate
     {
-        private static int MaxColorCount = 15;
+        private static readonly int MaxColorCount = 15;
         public static float UpdateTime;
         public static bool IsRandomNameColor;
         public static bool IsHideName;

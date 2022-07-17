@@ -167,11 +167,7 @@ namespace SuperNewRoles.CustomOption
         public virtual string getString()
         {
             string sel = selections[selection].ToString();
-            if (format != "")
-            {
-                return sel;
-            }
-            return ModTranslation.getString(sel);
+            return format != "" ? sel : ModTranslation.getString(sel);
         }
 
         public virtual string getName()
@@ -235,10 +231,7 @@ namespace SuperNewRoles.CustomOption
         {
             get
             {
-                if (countOption != null)
-                    return Mathf.RoundToInt(countOption.getFloat());
-
-                return 1;
+                return countOption != null ? Mathf.RoundToInt(countOption.getFloat()) : 1;
             }
         }
 
@@ -616,8 +609,7 @@ namespace SuperNewRoles.CustomOption
         {
             if (option.isHidden) return true;
 
-            if (option.isSHROn) return false;
-            else return ModeHandler.isMode(ModeId.SuperHostRoles, false);
+            return option.isSHROn ? false : ModeHandler.isMode(ModeId.SuperHostRoles, false);
         }
         public static void Postfix(GameOptionsMenu __instance)
         {
@@ -833,8 +825,7 @@ namespace SuperNewRoles.CustomOption
 
         public static string optionToString(CustomOption option)
         {
-            if (option == null) return "";
-            return $"{option.getName()}: {option.getString()}";
+            return option == null ? "" : $"{option.getName()}: {option.getString()}";
         }
 
         public static string optionsToString(CustomOption option, bool skipFirst = false)

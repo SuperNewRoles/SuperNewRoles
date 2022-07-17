@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 using static UnityEngine.UI.Button;
 
 namespace SuperNewRoles.Sabotage.CognitiveDeficit
@@ -40,7 +40,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
         public static float DefaultDistanceTime = 5;
         private static bool IsYellow;
         private static List<Arrow> ArrowDatas = new();
-        private static Vector2[] Datas = new Vector2[] { new Vector2(-13.9f, -15.5f), new Vector2(-24.7f, -1f), new Vector2(10.6f, -15.5f) };
+        private static readonly Vector2[] Datas = new Vector2[] { new Vector2(-13.9f, -15.5f), new Vector2(-24.7f, -1f), new Vector2(10.6f, -15.5f) };
         public static List<PlayerControl> OKPlayers;
         public static bool IsLocalEnd;
         public static bool IsAllEndSabotage;

@@ -2,8 +2,8 @@ using System;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.Mode;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Roles
             // クリックした座標の取得（スクリーン座標からワールド座標に変換）
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            Vector3 shotForward = Vector3.Scale((mouseWorldPos - RoleClass.Kunoichi.SendKunai.kunai.transform.position), new Vector3(1, 1, 0)).normalized;
+            Vector3 shotForward = Vector3.Scale(mouseWorldPos - RoleClass.Kunoichi.SendKunai.kunai.transform.position, new Vector3(1, 1, 0)).normalized;
 
             // 弾に速度を与える
             var body = RoleClass.Kunoichi.SendKunai.kunai.AddComponent<Rigidbody2D>();

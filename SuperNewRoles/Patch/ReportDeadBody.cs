@@ -36,8 +36,7 @@ namespace SuperNewRoles.Patch
                 if (ModeHandler.isMode(ModeId.CopsRobbers)) return false;
                 if (ModeHandler.isMode(ModeId.SuperHostRoles)) return Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target);
                 if (ModeHandler.isMode(ModeId.Zombie)) return false;
-                if (ModeHandler.isMode(ModeId.Detective) && target == null && Mode.Detective.main.IsNotDetectiveMeetingButton && __instance.PlayerId != Mode.Detective.main.DetectivePlayer.PlayerId) return false;
-                return true;
+                return !ModeHandler.isMode(ModeId.Detective) || target != null || !Mode.Detective.main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId;
             }
         }
     }

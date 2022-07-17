@@ -1,9 +1,9 @@
-using HarmonyLib;
-using UnityEngine;
-using System.Collections.Generic;
 using System;
-using static PlayerControl;
+using System.Collections.Generic;
+using HarmonyLib;
 using SuperNewRoles.Mode;
+using UnityEngine;
+using static PlayerControl;
 
 namespace SuperNewRoles.MapCustoms
 {
@@ -62,11 +62,7 @@ namespace SuperNewRoles.MapCustoms
         }
         public static T Random<T>(this IList<T> self)
         {
-            if (self.Count > 0)
-            {
-                return self[UnityEngine.Random.Range(0, self.Count)];
-            }
-            return default;
+            return self.Count > 0 ? self[UnityEngine.Random.Range(0, self.Count)] : default;
         }
     }
 }

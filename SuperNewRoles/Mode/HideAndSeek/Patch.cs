@@ -1,5 +1,5 @@
-using UnityEngine;
 using SuperNewRoles.Roles;
+using UnityEngine;
 
 namespace SuperNewRoles.Mode.HideAndSeek
 {

@@ -1,7 +1,7 @@
 using System;
 using SuperNewRoles.Buttons;
-using UnityEngine;
 using SuperNewRoles.CustomRPC;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
@@ -9,20 +9,12 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetCoolDown()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.EvilMoving))
-            {
-                HudManagerStartPatch.MovingTpButton.MaxTimer = RoleClass.EvilMoving.CoolTime;
-            }
-            else
-            {
-                HudManagerStartPatch.MovingTpButton.MaxTimer = RoleClass.Moving.CoolTime;
-            }
+            HudManagerStartPatch.MovingTpButton.MaxTimer = PlayerControl.LocalPlayer.isRole(RoleId.EvilMoving) ? RoleClass.EvilMoving.CoolTime : RoleClass.Moving.CoolTime;
             RoleClass.Moving.ButtonTimer = DateTime.Now;
         }
         public static bool IsSetPostion()
         {
-            if (!(RoleClass.Moving.setpostion == new Vector3(0, 0, 0))) return true;
-            return false;
+            return !(RoleClass.Moving.setpostion == new Vector3(0, 0, 0));
         }
         public static void TP()
         {
@@ -34,26 +26,12 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsMoving(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.Moving) || Player.isRole(RoleId.EvilMoving))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.isRole(RoleId.Moving) || Player.isRole(RoleId.EvilMoving);
         }
         public static void EndMeeting()
         {
             HudManagerStartPatch.MovingSetButton.Timer = 0f;
-            if (PlayerControl.LocalPlayer.isRole(RoleId.EvilMoving))
-            {
-                HudManagerStartPatch.MovingTpButton.MaxTimer = RoleClass.EvilMoving.CoolTime;
-            }
-            else
-            {
-                HudManagerStartPatch.MovingTpButton.MaxTimer = RoleClass.Moving.CoolTime;
-            }
+            HudManagerStartPatch.MovingTpButton.MaxTimer = PlayerControl.LocalPlayer.isRole(RoleId.EvilMoving) ? RoleClass.EvilMoving.CoolTime : RoleClass.Moving.CoolTime;
             RoleClass.Moving.ButtonTimer = DateTime.Now;
         }
     }

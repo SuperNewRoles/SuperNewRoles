@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using SuperNewRoles.Patch;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
 {
@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
         {
             static float vitalsTimer = 0f;
             static TMPro.TextMeshPro TimeRemaining;
-            private static List<TMPro.TextMeshPro> hackerTexts = new();
+            private static readonly List<TMPro.TextMeshPro> hackerTexts = new();
 
             public static void ResetData()
             {

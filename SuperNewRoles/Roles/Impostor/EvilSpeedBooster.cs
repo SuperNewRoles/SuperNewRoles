@@ -44,14 +44,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsEvilSpeedBooster(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.EvilSpeedBooster))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.isRole(RoleId.EvilSpeedBooster);
         }
         public static void EndMeeting()
         {

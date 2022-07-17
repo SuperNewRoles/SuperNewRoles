@@ -6,7 +6,7 @@ namespace SuperNewRoles.Roles
 {
     public class Vulture
     {
-        private static List<DeadBody> Targets = new();
+        private static readonly List<DeadBody> Targets = new();
         public class FixedUpdate
         {
             public static void Postfix()

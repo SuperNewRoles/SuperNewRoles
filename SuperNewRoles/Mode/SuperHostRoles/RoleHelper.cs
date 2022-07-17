@@ -24,27 +24,18 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static bool isImpostorVision(this PlayerControl player)
         {
-            switch (player.getRole())
+            return player.getRole() switch
             {
-                case RoleId.MadMate:
-                    return RoleClass.MadMate.IsImpostorLight;
-                case RoleId.MadMayor:
-                    return RoleClass.MadMayor.IsImpostorLight;
-                case RoleId.MadStuntMan:
-                    return RoleClass.MadStuntMan.IsImpostorLight;
-                case RoleId.MadJester:
-                    return RoleClass.MadJester.IsImpostorLight;
-                case RoleId.JackalFriends:
-                    return RoleClass.JackalFriends.IsImpostorLight;
-                case RoleId.Fox:
-                    return RoleClass.Fox.IsImpostorLight;
-                case RoleId.MayorFriends:
-                    return RoleClass.MayorFriends.IsImpostorLight;
-                case RoleId.BlackCat:
-                    return RoleClass.BlackCat.IsImpostorLight;
-                    //インポ視界か
-            }
-            return false;
+                RoleId.MadMate => RoleClass.MadMate.IsImpostorLight,
+                RoleId.MadMayor => RoleClass.MadMayor.IsImpostorLight,
+                RoleId.MadStuntMan => RoleClass.MadStuntMan.IsImpostorLight,
+                RoleId.MadJester => RoleClass.MadJester.IsImpostorLight,
+                RoleId.JackalFriends => RoleClass.JackalFriends.IsImpostorLight,
+                RoleId.Fox => RoleClass.Fox.IsImpostorLight,
+                RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
+                RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
+                _ => false,
+            };
         }
         public static bool isZeroCoolEngineer(this PlayerControl player)
         {

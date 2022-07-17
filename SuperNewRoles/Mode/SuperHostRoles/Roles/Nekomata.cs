@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patches;
 using SuperNewRoles.Roles;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Mode.SuperHostRoles.Roles
 {

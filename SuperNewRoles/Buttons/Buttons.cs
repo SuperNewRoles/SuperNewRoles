@@ -750,10 +750,7 @@ namespace SuperNewRoles.Buttons
                         killcount = RoleClass.Sheriff.KillMaxCount;
                         flag = PlayerControlFixedUpdatePatch.setTarget() && PlayerControl.LocalPlayer.CanMove;
                     }
-                    if (killcount > 0)
-                        sheriffNumShotsText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), killcount);
-                    else
-                        sheriffNumShotsText.text = "";
+                    sheriffNumShotsText.text = killcount > 0 ? String.Format(ModTranslation.getString("SheriffNumTextName"), killcount) : "";
                     return flag;
                 },
                 () => { Sheriff.EndMeeting(); },
@@ -810,11 +807,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SpeedBooster; },
                 () =>
                 {
-                    if (SpeedBoosterBoostButton.Timer <= 0)
-                    {
-                        return true;
-                    }
-                    return false;
+                    return SpeedBoosterBoostButton.Timer <= 0;
                 },
                 () => { SpeedBooster.EndMeeting(); },
                 RoleClass.SpeedBooster.GetSpeedBoostButtonSprite(),
@@ -841,11 +834,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.EvilSpeedBooster || RoleClass.Levelinger.IsPower(RoleClass.Levelinger.LevelPowerTypes.SpeedBooster)); },
                 () =>
                 {
-                    if (EvilSpeedBoosterBoostButton.Timer <= 0)
-                    {
-                        return true;
-                    }
-                    return false;
+                    return EvilSpeedBoosterBoostButton.Timer <= 0;
                 },
                 () => { EvilSpeedBooster.EndMeeting(); },
                 RoleClass.SpeedBooster.GetSpeedBoostButtonSprite(),
@@ -872,11 +861,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Lighter; },
                 () =>
                 {
-                    if (LighterLightOnButton.Timer <= 0)
-                    {
-                        return true;
-                    }
-                    return false;
+                    return LighterLightOnButton.Timer <= 0;
                 },
                 () => { Lighter.EndMeeting(); },
                 RoleClass.Lighter.getButtonSprite(),
@@ -1120,11 +1105,7 @@ namespace SuperNewRoles.Buttons
                 (bool isAlive, RoleId role) => { return Arsonist.IseveryButton(); },
                 () =>
                 {
-                    if (Arsonist.IsWin(PlayerControl.LocalPlayer))
-                    {
-                        return true;
-                    }
-                    return false;
+                    return Arsonist.IsWin(PlayerControl.LocalPlayer);
                 },
                 () =>
                 {
@@ -1666,13 +1647,11 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     float swapcount = RoleClass.PositionSwapper.SwapCount;
-                    if (swapcount > 0)
-                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), swapcount);
-                    else
-                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
+                    PositionSwapperNumText.text = swapcount > 0
+                        ? String.Format(ModTranslation.getString("PositionSwapperNumTextName"), swapcount)
+                        : String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
                     if (!PlayerControl.LocalPlayer.CanMove) return false;
-                    if (RoleClass.PositionSwapper.SwapCount <= 0) return false;
-                    return true && PlayerControl.LocalPlayer.CanMove;
+                    return RoleClass.PositionSwapper.SwapCount <= 0 ? false : true && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { PositionSwapper.EndMeeting(); },
                 RoleClass.PositionSwapper.getButtonSprite(),
@@ -1709,8 +1688,9 @@ namespace SuperNewRoles.Buttons
                     if (RoleClass.SecretlyKiller.MainCool > 0f) return false;
 
                     RoleClass.SecretlyKiller.target = setTarget();
-                    if (RoleClass.SecretlyKiller.target == null) return false;
-                    return !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
+                    return RoleClass.SecretlyKiller.target == null
+                        ? false
+                        : !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { SecretlyKiller.EndMeeting(); },
                 __instance.KillButton.graphic.sprite,
@@ -1741,17 +1721,17 @@ namespace SuperNewRoles.Buttons
                 {
                     //テキストぉ
                     float SecretKillLimit = RoleClass.SecretlyKiller.SecretlyKillLimit;
-                    if (SecretKillLimit > 0)
-                        SecretlyKillNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), SecretKillLimit);
-                    else
-                        SecretlyKillNumText.text = String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
+                    SecretlyKillNumText.text = SecretKillLimit > 0
+                        ? String.Format(ModTranslation.getString("PositionSwapperNumTextName"), SecretKillLimit)
+                        : String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
 
                     if (RoleClass.SecretlyKiller.MainCool > 0f/* || RoleClass.SecretlyKiller.SecretlyCool>0f */&& RoleClass.SecretlyKiller.IsKillCoolChange) return false;
                     if (RoleClass.SecretlyKiller.SecretlyKillLimit < 1 || RoleClass.SecretlyKiller.SecretlyCool > 0f) return false;
                     //メイン
                     RoleClass.SecretlyKiller.target = setTarget();
-                    if (RoleClass.SecretlyKiller.target == null) return false;
-                    return !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
+                    return RoleClass.SecretlyKiller.target == null
+                        ? false
+                        : !RoleClass.SecretlyKiller.target.isImpostor() && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { SecretlyKiller.EndMeeting(); },
                 __instance.KillButton.graphic.sprite,
@@ -1763,8 +1743,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                     var ma = ShipStatus.Instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-                    if ((ma != null && !ma.IsActive) || RoleClass.SecretlyKiller.IsBlackOutKillCharge) return !PlayerControl.LocalPlayer.CanMove;
-                    return true;
+                    return (ma != null && !ma.IsActive) || RoleClass.SecretlyKiller.IsBlackOutKillCharge ? !PlayerControl.LocalPlayer.CanMove : true;
                 }
             );
             {

@@ -1,6 +1,6 @@
 using HarmonyLib;
-using SuperNewRoles.Mode;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
 {
@@ -67,14 +67,7 @@ namespace SuperNewRoles.Roles
         {
             //翻訳
             var rand = new System.Random();
-            if (rand.Next(1, 10) == 1)
-            {
-                return ModTranslation.getString("BakeryExileText2");
-            }
-            else
-            {
-                return ModTranslation.getString("BakeryExileText");
-            }
+            return rand.Next(1, 10) == 1 ? ModTranslation.getString("BakeryExileText2") : ModTranslation.getString("BakeryExileText");
         }
 
         static void Postfix(ExileController __instance)

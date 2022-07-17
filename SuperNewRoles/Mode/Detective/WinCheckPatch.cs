@@ -10,8 +10,7 @@ namespace SuperNewRoles.Mode.Detective
             if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
             if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
-            if (CheckAndEndGameForDisconnectWin(__instance)) return false;
-            return false;
+            return CheckAndEndGameForDisconnectWin(__instance) ? false : false;
         }
         public static void CustomEndGame(ShipStatus __instance, GameOverReason reason, bool showAd)
         {

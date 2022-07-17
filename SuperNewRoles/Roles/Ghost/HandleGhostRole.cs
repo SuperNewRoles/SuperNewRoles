@@ -29,13 +29,9 @@ namespace SuperNewRoles.Roles
             {
                 Team = TeamRoleType.Crewmate;
             }
-            else if (player.isNeutral())
-            {
-                Team = TeamRoleType.Neutral;
-            }
             else
             {
-                Team = TeamRoleType.Impostor;
+                Team = player.isNeutral() ? TeamRoleType.Neutral : TeamRoleType.Impostor;
             }
             List<IntroDate> GhostRoles = new();
             foreach (IntroDate intro in IntroDate.GhostRoleDatas)

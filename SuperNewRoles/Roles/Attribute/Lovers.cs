@@ -1,8 +1,8 @@
 using System;
 using HarmonyLib;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {

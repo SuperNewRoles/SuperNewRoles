@@ -19,9 +19,13 @@ namespace SuperNewRoles
 
         //バージョンと同時にIsBetaも変える
         public const string VersionString = "1.4.1.8";
-        public static bool IsBeta { get {
+        public static bool IsBeta
+        {
+            get
+            {
                 return ThisAssembly.Git.Branch != "master";
-            } }
+            }
+        }
 
         public static System.Version Version = System.Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
@@ -116,14 +120,7 @@ namespace SuperNewRoles
                 }
                 if (__instance.IsOpen)
                 {
-                    if (__instance.animating)
-                    {
-                        __instance.BanButton.MenuButton.enabled = false;
-                    }
-                    else
-                    {
-                        __instance.BanButton.MenuButton.enabled = true;
-                    }
+                    __instance.BanButton.MenuButton.enabled = !__instance.animating;
                 }
             }
         }

@@ -18,8 +18,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
             if (CheckAndEndGameForSabotageWin(__instance)) return false;
             if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
-            if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
-            return false;
+            return CheckAndEndGameForWorkpersonWin(__instance) ? false : false;
         }
         public static void WinNeutral(List<PlayerControl> players)
         {

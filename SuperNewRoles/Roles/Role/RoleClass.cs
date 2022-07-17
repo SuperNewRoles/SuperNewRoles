@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Sabotage;
 using TMPro;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -788,14 +788,7 @@ namespace SuperNewRoles.Roles
                 SucCool = (int)CustomOptions.EvilGamblerSucTime.getFloat();
                 NotSucCool = (int)CustomOptions.EvilGamblerNotSucTime.getFloat();
                 var temp = CustomOptions.EvilGamblerSucpar.getString().Replace("0%", "");
-                if (temp == "")
-                {
-                    SucPar = 0;
-                }
-                else
-                {
-                    SucPar = int.Parse(temp);
-                }
+                SucPar = temp == "" ? 0 : int.Parse(temp);
             }
             public static bool GetSuc()
             {
@@ -808,14 +801,7 @@ namespace SuperNewRoles.Roles
                 {
                     a.Add("No");
                 }
-                if (ModHelpers.GetRandom<string>(a) == "Suc")
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return ModHelpers.GetRandom<string>(a) == "Suc";
             }
         }
         public static class Bestfalsecharge
@@ -834,7 +820,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> ResearcherPlayer;
             public static Color32 color = new(0, 255, 0, byte.MaxValue);
             //public static Vector3 SamplePosition;
-            private static List<Vector3> SamplePoss = new()
+            private static readonly List<Vector3> SamplePoss = new()
             {
                 new Vector3(-11, -2.1f, 0),
                 new Vector3(16.9f, 0.4f, 0),
@@ -1316,13 +1302,9 @@ namespace SuperNewRoles.Roles
                     {
                         return LevelPowerTypes.SpeedBooster;
                     }
-                    else if (name == CustomOptions.LevelingerTexts[6])
-                    {
-                        return LevelPowerTypes.Moving;
-                    }
                     else
                     {
-                        return LevelPowerTypes.None;
+                        return name == CustomOptions.LevelingerTexts[6] ? LevelPowerTypes.Moving : LevelPowerTypes.None;
                     }
                 }
                 catch
@@ -1380,8 +1362,7 @@ namespace SuperNewRoles.Roles
                 else if (MadKillerPair.ContainsValue(p.PlayerId))
                 {
                     var key = MadKillerPair.GetKey(p.PlayerId);
-                    if (key == null) return null;
-                    return ModHelpers.playerById((byte)key);
+                    return key == null ? null : ModHelpers.playerById((byte)key);
                 }
                 return null;
             }
@@ -2375,14 +2356,7 @@ namespace SuperNewRoles.Roles
                 HideKunai = CustomOptions.KunoichiHideKunai.getBool();
                 OldPosition = new();
                 StopTime = 0;
-                if (CustomOptions.KunoichiIsHide.getBool())
-                {
-                    HideTime = CustomOptions.KunoichiHideTime.getFloat();
-                }
-                else
-                {
-                    HideTime = -1;
-                }
+                HideTime = CustomOptions.KunoichiIsHide.getBool() ? CustomOptions.KunoichiHideTime.getFloat() : -1;
                 KunoichiPlayer = new();
                 KillCoolTime = CustomOptions.KunoichiCoolTime.getFloat();
                 KillKunai = (int)CustomOptions.KunoichiKillKunai.getFloat();

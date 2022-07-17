@@ -19,16 +19,16 @@ namespace SuperNewRoles.Sabotage
             switch (sabotage)
             {
                 case CustomSabotage.CognitiveDeficit:
-                    if (PlayerControl.GameOptions.MapId != 4) return false;
-                    else return Options.CognitiveDeficitSetting.getBool();
+                    return PlayerControl.GameOptions.MapId != 4 ? false : Options.CognitiveDeficitSetting.getBool();
             }
             return false;
         }
         public static bool IsOKMeeting()
         {
             if (RoleHelpers.IsSabotage()) return false;
-            if (thisSabotage == CustomSabotage.None) return true;
-            return thisSabotage switch
+            return thisSabotage == CustomSabotage.None
+                ? true
+                : thisSabotage switch
             {
                 CustomSabotage.CognitiveDeficit => CognitiveDeficit.main.IsLocalEnd,
                 _ => false,

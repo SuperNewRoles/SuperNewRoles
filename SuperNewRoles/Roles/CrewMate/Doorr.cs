@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using SuperNewRoles.Buttons;
-using UnityEngine;
 using SuperNewRoles.CustomRPC;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
@@ -10,31 +10,17 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetCoolDown()
         {
-            if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
-            {
-                HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.EvilDoorr.CoolTime;
-            }
-            else
-            {
-                HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.Doorr.CoolTime;
-            }
+            HudManagerStartPatch.DoorrDoorButton.MaxTimer = CachedPlayer.LocalPlayer.Data.Role.IsImpostor ? RoleClass.EvilDoorr.CoolTime : RoleClass.Doorr.CoolTime;
             RoleClass.Doorr.ButtonTimer = DateTime.Now;
         }
         public static bool isDoorr(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.Doorr) || Player.isRole(RoleId.EvilDoorr))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.isRole(RoleId.Doorr) || Player.isRole(RoleId.EvilDoorr);
         }
         public static bool CheckTarget()
         {
             PlainDoor door = GetDoor();
-            if (door == null) return false; else return true;
+            return door != null;
         }
         public static void DoorrBtn()
         {
@@ -47,11 +33,7 @@ namespace SuperNewRoles.Roles
         private static float IsPos(Vector3 mypos, PlainDoor Door, float distance)
         {
             var Distance = Vector3.Distance(mypos, Door.transform.position);
-            if (Distance <= distance)
-            {
-                return Distance;
-            }
-            return 0f;
+            return Distance <= distance ? Distance : 0f;
         }
         private static PlainDoor GetDoor()
         {
@@ -88,14 +70,7 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            if (CachedPlayer.LocalPlayer.Data.Role.IsImpostor)
-            {
-                HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.EvilDoorr.CoolTime;
-            }
-            else
-            {
-                HudManagerStartPatch.DoorrDoorButton.MaxTimer = RoleClass.Doorr.CoolTime;
-            }
+            HudManagerStartPatch.DoorrDoorButton.MaxTimer = CachedPlayer.LocalPlayer.Data.Role.IsImpostor ? RoleClass.EvilDoorr.CoolTime : RoleClass.Doorr.CoolTime;
             RoleClass.Doorr.ButtonTimer = DateTime.Now;
         }
     }
