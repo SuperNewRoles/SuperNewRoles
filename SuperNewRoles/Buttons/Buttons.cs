@@ -64,6 +64,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton DoubleKillerSubKillButton;
         public static CustomButton SuicideWisherSuicideButton;
         public static CustomButton FastMakerButton;
+        public static CustomButton ToiletFanButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -1925,17 +1926,20 @@ namespace SuperNewRoles.Buttons
                     //マッド作ってないなら
                     if (target && PlayerControl.LocalPlayer.CanMove && !RoleClass.FastMaker.IsCreatedMadMate)
                     {
-                        target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
-                        target.setRoleRPC(RoleId.MadMate);//マッドにする
-                        RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことに
-                    }
-                    else//マッド作ってるなら
-                    {
-                        //targetをぶっこわーす！
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(target);
+                        target.RpcProtectPlayer(target, 0);//マッドにできたことを示すモーションとしての守護をかける
+                        //キルする前に守護を発動させるためのLateTask
+                        new LateTask(() =>
+                            {
+                                PlayerControl.LocalPlayer.RpcMurderPlayer(target);//キルをして守護モーションの発動(守護解除)
+                                target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
+                                target.setRoleRPC(RoleId.MadMate);//マッドにする
+                                RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことに
+                                SuperNewRolesPlugin.Logger.LogInfo("[FastMakerButton]マッドを作ったから普通のキルボタンに戻すよ!");
+                            }, 0.1f);
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && ModeHandler.isMode(ModeId.Default); },
+                //マッドを作った後はカスタムキルボタンを消去する
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.FastMaker && !RoleClass.FastMaker.IsCreatedMadMate && ModeHandler.isMode(ModeId.Default); },
                 () =>
                 {
                     return setTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -1945,12 +1949,44 @@ namespace SuperNewRoles.Buttons
                 new Vector3(0, 1, 0),
                 __instance,
                 __instance.KillButton,
-                KeyCode.F,
-                49,
+                //マッドを作る前はキルボタンに擬態する
+                KeyCode.Q,
+                8,
                 () => { return false; }
             )
             {
                 buttonText = ModTranslation.getString("KillName"),
+                showButtonText = true
+            };
+
+            ToiletFanButton = new CustomButton(
+                () =>
+                {
+                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
+                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
+                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
+                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.ToiletFan; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    ToiletFanButton.MaxTimer = RoleClass.ToiletFan.ToiletCool;
+                    ToiletFanButton.Timer = RoleClass.ToiletFan.ToiletCool;
+                },
+                RoleClass.ToiletFan.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.getString("ToiletName"),
                 showButtonText = true
             };
 

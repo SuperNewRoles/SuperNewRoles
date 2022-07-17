@@ -20,7 +20,6 @@ namespace SuperNewRoles.CustomOption
         Impostor,
         Neutral,
         Crewmate
-
     }
 
     public class CustomOption

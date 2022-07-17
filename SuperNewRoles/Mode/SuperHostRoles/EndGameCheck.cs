@@ -61,18 +61,19 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 WinNeutral(WinGods);
                 Chat.Winner = WinGods;
             }
-            foreach (PlayerControl p in RoleClass.Sheriff.SheriffPlayer)
+
+            /*============死亡時守護天使============*/
+            List<PlayerControl> SetDeadGuardianAngel = new();
+            SetDeadGuardianAngel.AddRange(RoleClass.Sheriff.SheriffPlayer);
+            SetDeadGuardianAngel.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
+            SetDeadGuardianAngel.AddRange(RoleClass.Arsonist.ArsonistPlayer);
+            SetDeadGuardianAngel.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
+            /*============死亡時守護天使============*/
+            foreach (PlayerControl p in SetDeadGuardianAngel)
             {
                 p.RpcSetRole(RoleTypes.GuardianAngel);
             }
-            foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
-            {
-                p.RpcSetRole(RoleTypes.GuardianAngel);
-            }
-            foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
-            {
-                p.RpcSetRole(RoleTypes.GuardianAngel);
-            }
+
             if (OnGameEndPatch.EndData == null && (reason == GameOverReason.ImpostorByKill || reason == GameOverReason.ImpostorBySabotage || reason == GameOverReason.ImpostorByVote || reason == GameOverReason.ImpostorDisconnect))
             {
                 foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)

@@ -74,6 +74,7 @@ namespace SuperNewRoles
         }
         public static async Task<bool> checkForUpdate(TMPro.TextMeshPro setdate)
         {
+            Logger.Info("checkForUpdateが来ました");
             try
             {
                 HttpClient http = new();
@@ -90,6 +91,7 @@ namespace SuperNewRoles
                 string tagname = data["tag_name"]?.ToString();
                 if (tagname == null)
                 {
+                    Logger.Info("自動アップデートなのにタグね～じゃん！フィクションはバグだけにしとけよな！");
                     return false; // Something went wrong
                 }
                 string changeLog = data["body"]?.ToString();
@@ -101,6 +103,7 @@ namespace SuperNewRoles
                 announcement = string.Format(ModTranslation.getString("announcementUpdate"), newver, announcement);
                 if (!ConfigRoles.AutoUpdate.Value)
                 {
+                    Logger.Info("AutoUpdateRETURN","AutoUpdate");
                     return false;
                 }
                 if (!IsLoad)

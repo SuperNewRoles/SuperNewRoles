@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -156,6 +156,12 @@ namespace SuperNewRoles.Patches
                         {
                             __instance.RpcMurderPlayer(__instance);
                         }
+                        return false;
+                    case RoleId.ToiletFan:
+                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
+                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
+                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
+                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
                         return false;
                 }
             }
@@ -342,28 +348,25 @@ namespace SuperNewRoles.Patches
                             }
 
                         }
+                        SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
+                        isKill = true;
+
+                        if (__instance.PlayerId != 0)
+                        {
+                            target.Data.IsDead = true;
+                            __instance.RpcMurderPlayer(target);
+                            isKill = false;
+                        }
                         else
                         {
-                            SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
-                            isKill = true;
-
-                            if (__instance.PlayerId != 0)
+                            new LateTask(() =>
                             {
-                                target.Data.IsDead = true;
-                                __instance.RpcMurderPlayer(target);
-                                isKill = false;
-                            }
-                            else
-                            {
-                                new LateTask(() =>
+                                if (__instance.isAlive() && target.isAlive())
                                 {
-                                    if (__instance.isAlive() && target.isAlive())
-                                    {
-                                        __instance.RpcMurderPlayer(target);
-                                    }
-                                    isKill = false;
-                                }, (AmongUsClient.Instance.Ping / 1000f) * 1.1f);
-                            }
+                                    __instance.RpcMurderPlayer(target);
+                                }
+                                isKill = false;
+                            }, (AmongUsClient.Instance.Ping / 1000f) * 1.1f);
                         }
                     }
                     return false;
@@ -374,16 +377,22 @@ namespace SuperNewRoles.Patches
                             if (!RoleClass.FastMaker.IsCreatedMadMate)//まだ作ってなくて、設定が有効の時
                             {
                                 if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                                RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
-                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                target.setRoleRPC(RoleId.MadMate);//マッドにする
-                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                                RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
+                                 target.RpcProtectPlayer(target, 0);//キルを無効にする為守護をかける
+                                 //守護がかかるのを待つためのLateTask
+                                new LateTask(() =>
+                                    {
+                                        RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
+                                        target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
+                                        target.setRoleRPC(RoleId.MadMate);//マッドにする
+                                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                                        RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
+                                        SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSNR]マッドを作ったよ");
+                                    }, 0.5f);
                             }
                             else
                             {
-                                //作ってたら普通のキル
-                                __instance.RpcMurderPlayer(target);
+                                //作ってたら普通のキル(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
+                                SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSNR]作ったので普通のキル");
                             }
                             return false;
                     }
@@ -395,6 +404,7 @@ namespace SuperNewRoles.Patches
                     switch (__instance.getRole())
                     {
                         case RoleId.RemoteSheriff:
+                        case RoleId.ToiletFan:
                             return false;
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;
@@ -543,17 +553,22 @@ namespace SuperNewRoles.Patches
                             if (!RoleClass.FastMaker.IsCreatedMadMate)//まだ作ってなくて、設定が有効の時
                             {
                                 if (target == null || RoleClass.FastMaker.CreatePlayers.Contains(__instance.PlayerId)) return false;
-                                RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
-                                target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
-                                target.setRoleRPC(RoleId.MadMate);//マッドにする
-                                Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
-                                RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
+                                target.RpcProtectPlayer(target, 0);//キルを無効にする為守護をかける
+                                //守護がかかるのを待つためのLateTask
+                                new LateTask(() =>
+                                    {
+                                        RoleClass.FastMaker.CreatePlayers.Add(__instance.PlayerId);
+                                        target.RpcSetRoleDesync(RoleTypes.GuardianAngel);//守護天使にして
+                                        target.setRoleRPC(RoleId.MadMate);//マッドにする
+                                        Mode.SuperHostRoles.FixedUpdate.SetRoleName(target);//名前も変える
+                                        RoleClass.FastMaker.IsCreatedMadMate = true;//作ったことにする
+                                        SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]マッドを作ったよ");
+                                    }, 0.5f);
                             }
                             else
                             {
-                                //作ってたら普通のキル
-                                SuperNewRolesPlugin.Logger.LogInfo("作ったので普通のキル");
-                                __instance.RpcMurderPlayer(target);
+                                //作ってたら普通のキル(此処にMurderPlayerを使用すると2回キルされる為ログのみ表示)
+                                SuperNewRolesPlugin.Logger.LogInfo("[FastMakerSHR]作ったので普通のキル");
                             }
                             break;
                         case RoleId.Jackal:
@@ -795,10 +810,6 @@ namespace SuperNewRoles.Patches
             Logger.Info("追加");
             DeadPlayer deadPlayer = new(target, DateTime.UtcNow, DeathReason.Kill, __instance);
             DeadPlayer.deadPlayers.Add(deadPlayer);
-            foreach (var p in DeadPlayer.deadPlayers)
-            {
-                Logger.Info($"{p.killerIfExisting.Data.PlayerName}が{p.player.Data.PlayerName}を切る");
-            }
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
             SerialKiller.MurderPlayer(__instance, target);

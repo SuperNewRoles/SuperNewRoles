@@ -1,7 +1,7 @@
 using HarmonyLib;
 using SuperNewRoles.MapOptions;
-using SuperNewRoles.Roles;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Buttons
 {
@@ -203,7 +203,7 @@ namespace SuperNewRoles.Buttons
             public static bool Prefix(Vent __instance)
             {
                 __instance.CanUse(CachedPlayer.LocalPlayer.Data, out bool canUse, out bool couldUse);
-                bool canMoveInVents = !RoleClass.MadMate.MadMatePlayer.IsCheckListPlayerControl(PlayerControl.LocalPlayer);
+                bool canMoveInVents = !PlayerControl.LocalPlayer.isRole(RoleId.NiceNekomata);
                 if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
                 bool isEnter = !PlayerControl.LocalPlayer.inVent;

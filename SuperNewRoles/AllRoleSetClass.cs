@@ -8,11 +8,9 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Roles;
 
 namespace SuperNewRoles
 {
-
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
     class RpcSetRoleReplacer
     {
@@ -118,7 +116,7 @@ namespace SuperNewRoles
                 }
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
-                    if (!player.Data.Disconnected && !AllRoleSetClass.impostors.IsCheckListPlayerControl(player))
+                    if (!player.Data.Disconnected && !player.isImpostor())
                     {
                         sender.RpcSetRole(player, RoleTypes.Crewmate);
                     }
@@ -852,6 +850,7 @@ namespace SuperNewRoles
                 RoleId.Smasher => CustomOptions.SmasherPlayerCount.getFloat(),
                 RoleId.SuicideWisher => CustomOptions.SuicideWisherPlayerCount.getFloat(),
                 RoleId.Neet => CustomOptions.NeetPlayerCount.getFloat(),
+                RoleId.ToiletFan => CustomOptions.ToiletFanPlayerCount.getFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

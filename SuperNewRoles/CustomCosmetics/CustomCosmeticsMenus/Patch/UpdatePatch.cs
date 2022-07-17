@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
 using UnityEngine;
 
@@ -15,6 +11,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         {
             var ClosetTab = __instance.Tabs[0].Tab.transform;
             var PresetTab = __instance.Tabs[1].Tab.transform;
+            ObjectData.CosmicubeMenuHolderTint.enabled = false;
             if (!ObjectData.IsShow)
             {
                 if (GameObject.FindObjectOfType<PlayerTab>()?.ColorChips != null)
@@ -30,6 +27,11 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             __instance.equippedText.SetActive(false);
             if (ObjectData.IsCloset || ObjectData.IsShow)
             {
+                if (ObjectData.IsCube)
+                {
+                    __instance.cubesTab.gameObject.SetActive(true);
+                    PlayerCustomizationMenu.Instance.transform.FindChild("Background/RightPanel/CubeView").transform.localPosition = new Vector3(2.75f, -0.27f, 0);
+                }
                 if (area.gameObject.active) area.PreviewNameplate(SaveManager.LastNamePlate);
 
                 var panel = __instance.transform.FindChild("Background/RightPanel");
@@ -54,7 +56,9 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                     ObjectData.ColorText.transform.localPosition = new Vector3(0.4223f, 2.2f, -55f);
                     __instance.PreviewArea.transform.localPosition = new Vector3(3.5f, -0.5f, -3);
                     //__instance.PreviewArea.transform.localScale = new Vector3(-1, 1, 1);
-                    __instance.itemName.gameObject.SetActive(true);
+                    if (!__instance.cubesTab.gameObject.active) {
+                        __instance.itemName.gameObject.SetActive(true);
+                    }
                     __instance.itemName.transform.localPosition = new Vector3(3.5f, -1.74f, -5);
                 }
                 ObjectData.PetText.transform.localPosition = new Vector3(8f, -1.25f, -55);
@@ -62,11 +66,13 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 ObjectData.VisorText.transform.localPosition = new Vector3(2.5f, 0.75f, -55);
                 ObjectData.SkinText.transform.localPosition = new Vector3(2.6f, -1f, -55);
                 ObjectData.NamePlateText.transform.localPosition = new Vector3(3.8f, 1.6f, -55);
+                ObjectData.CubeText.transform.localPosition = new Vector3(0.625f, -1f, -55);
 
                 ObjectData.ColorButton.transform.localPosition = new Vector3(4.85f, -0.6f, -1);
                 ObjectData.HatButton.transform.localPosition = new Vector3(4.9f, 1, -1);
                 ObjectData.SkinButton.transform.localPosition = new Vector3(0.9f, -0.25f, -1);
                 ObjectData.PetButton.transform.localPosition = new Vector3(6.25f, -0.5f, -55);
+                ObjectData.CubeButton.transform.localPosition = new Vector3(-1.1f, 0, -1);
 
                 ObjectData.VisorButton.transform.localPosition = new Vector3(0.9f, 1.5f, -1);
                 ObjectData.NamePlateButton.transform.localPosition = new Vector3(3, 2.25f, -1);

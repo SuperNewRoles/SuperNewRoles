@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
 {
+    class ShareNamePlate
+    {
+        public static Dictionary<int, Sprite> NamePlateSprites;
+    }
     class SharePatch
     {
         public static Dictionary<int, string> PlayerUrl;

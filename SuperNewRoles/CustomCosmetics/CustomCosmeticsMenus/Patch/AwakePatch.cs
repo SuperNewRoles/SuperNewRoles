@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HarmonyLib;
-using Hazel;
 using TMPro;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
-{   
+{
     [HarmonyPatch(typeof(PlayerCustomizationMenu),nameof(PlayerCustomizationMenu.Start))]
     class AwakePatch
     {
@@ -85,6 +81,13 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ObjectData.NamePlateButton = NamePlateButton;
             NamePlateButton.name = "NamePlateButton";
 
+            var CubeButton = GameObject.Instantiate(HatButton, ClosetTab);
+            var CubeButton_Passive = CubeButton.Button;
+            CubeButton_Passive.OnClick = new();
+            CubeButton_Passive.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => ObjectData.CubeShow()));
+            ObjectData.CubeButton = CubeButton;
+            CubeButton.name = "CubeButton";
+
             UpdatePatch.area = __instance.transform.FindChild("Background/RightPanel/PlayerVoteArea").GetComponent<PlayerVoteArea>();
 
             ObjectData.ColorText = __instance.transform.FindChild("ColorGroup/Text").GetComponent<TextMeshPro>();
@@ -94,13 +97,15 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ObjectData.SkinText = GameObject.Instantiate(ObjectData.HatText, ClosetTab);
             ObjectData.NamePlateText = GameObject.Instantiate(ObjectData.HatText, ClosetTab);
             ObjectData.PetText = GameObject.Instantiate(ObjectData.HatText, ClosetTab);
+            ObjectData.CubeText = GameObject.Instantiate(ObjectData.HatText, ClosetTab);
 
             ObjectData.ColorText.name = "ColorText";
             ObjectData.HatText.name = "HatText";
             ObjectData.VisorText.name = "VisorText";
             ObjectData.SkinText.name = "SkinText";
             ObjectData.NamePlateText.name = "NamePlateText";
-            ObjectData.PetText.name = "PetText";
+            ObjectData.PetText.name = "PetText"; ;
+            ObjectData.CubeText.name = "CubeText";
 
             ObjectData.HatText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.HatLabel);
             ObjectData.VisorText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Visor);
@@ -108,6 +113,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             ObjectData.ColorText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Colors);
             ObjectData.NamePlateText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NamePlate);
             ObjectData.PetText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.PetLabel);
+            ObjectData.CubeText.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.Cosmicubes);
 
             ObjectData.ColorButton_SpriteRend = ObjectData.ColorButton.GetComponent<SpriteRenderer>();
 
@@ -130,6 +136,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
 
             ObjectData.VisorButton_Visor = GameObject.Instantiate(__instance.PreviewArea.cosmetics.visor, ClosetTab);
             ObjectData.VisorButton_Visor.transform.localPosition = new Vector3(0.78f, 1.55f, -10);
+
+            ObjectData.CosmicubeMenuHolderTint = __instance.transform.FindChild("CosmicubeMenuHolder/Tint").GetComponent<SpriteRenderer>();
 
             ObjectData.ClosetShow();
         }
