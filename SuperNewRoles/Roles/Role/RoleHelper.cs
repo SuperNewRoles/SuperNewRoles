@@ -995,19 +995,11 @@ namespace SuperNewRoles
                     break;
                     //タスククリアか
             }
-            if (player.isImpostor())
-            {
-                IsTaskClear = true;
-            }
-            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan)))
-            {
-                IsTaskClear = true;
-            }
-            if (!IsTaskClear && player.IsQuarreled())
-            {
-                IsTaskClear = true;
-            }
-            if (!IsTaskClear && !RoleClass.Lovers.AliveTaskCount && player.IsLovers())
+            if (!IsTaskClear
+                && (ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan))
+                || player.IsQuarreled()
+                || !RoleClass.Lovers.AliveTaskCount && player.IsLovers()
+                || player.isImpostor()))
             {
                 IsTaskClear = true;
             }
@@ -1020,7 +1012,7 @@ namespace SuperNewRoles
             else if (ModeHandler.isMode(ModeId.SuperHostRoles) && IsComms()) return false;
             return role switch
             {
-                RoleId.Jackal or RoleId.Sidekick =>RoleClass.Jackal.IsUseVent,
+                RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
                 RoleId.Minimalist => RoleClass.Minimalist.UseVent,
                 RoleId.Samurai => RoleClass.Samurai.UseVent,
                 RoleId.Jester => RoleClass.Jester.IsUseVent,
