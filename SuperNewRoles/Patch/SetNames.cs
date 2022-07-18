@@ -363,7 +363,7 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (PlayerControl p3 in CachedPlayer.AllPlayers)
                     {
-                        if (p3.IsAlive() && !Sabotage.CognitiveDeficit.main.OKPlayers.IsCheckListPlayerControl(p3))
+                        if (p3.IsAlive() && !Sabotage.CognitiveDeficit.Main.OKPlayers.IsCheckListPlayerControl(p3))
                         {
                             if (PlayerControl.LocalPlayer.IsImpostor())
                             {

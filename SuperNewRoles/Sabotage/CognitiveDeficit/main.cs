@@ -9,7 +9,7 @@ using static UnityEngine.UI.Button;
 
 namespace SuperNewRoles.Sabotage.CognitiveDeficit
 {
-    public static class main
+    public static class Main
     {
         public static void StartSabotage()
         {

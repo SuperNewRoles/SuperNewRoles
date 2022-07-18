@@ -22,7 +22,6 @@ namespace SuperNewRoles.Sabotage
             public static void Postfix(InfectedOverlay __instance)
             {
                 SabotageManager.InfectedOverlayInstance = __instance;
-                //SuperNewRolesPlugin.Logger.LogInfo("ローカルの座標:"+CachedPlayer.LocalPlayer.transform.position);
             }
         }
         [HarmonyPatch(typeof(InfectedOverlay), nameof(InfectedOverlay.Start))]
@@ -32,7 +31,7 @@ namespace SuperNewRoles.Sabotage
             {
                 if (ModeHandler.IsMode(ModeId.Default))
                 {
-                    CognitiveDeficit.main.Create(__instance);
+                    CognitiveDeficit.Main.Create(__instance);
                 }
             }
         }

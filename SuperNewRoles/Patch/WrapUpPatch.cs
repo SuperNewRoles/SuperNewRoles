@@ -47,9 +47,9 @@ namespace SuperNewRoles.Patch
             {
                 if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit)
                 {
-                    if (!Sabotage.CognitiveDeficit.main.IsLocalEnd)
+                    if (!Sabotage.CognitiveDeficit.Main.IsLocalEnd)
                     {
-                        Sabotage.CognitiveDeficit.main.UpdateTime = 0;
+                        Sabotage.CognitiveDeficit.Main.UpdateTime = 0;
                     }
                 }
                 if (exiled == null) return;

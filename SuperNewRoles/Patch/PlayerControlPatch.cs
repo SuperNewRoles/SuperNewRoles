@@ -751,7 +751,7 @@ namespace SuperNewRoles.Patches
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.SideKiller))
                     {
-                        var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                        var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
                         if (sideplayer != null)
                         {
                             if (!RoleClass.SideKiller.IsUpMadKiller)
@@ -799,7 +799,7 @@ namespace SuperNewRoles.Patches
             FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.Kill;
 
             SerialKiller.MurderPlayer(__instance, target);
-            Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(__instance, target);
+            Seer.ExileControllerWrapUpPatch.MurderPlayerPatch.Postfix(target);
 
             if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {

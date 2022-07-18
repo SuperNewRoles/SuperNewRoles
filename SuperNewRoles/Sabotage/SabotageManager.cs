@@ -28,10 +28,10 @@ namespace SuperNewRoles.Sabotage
                 ? false
                 : thisSabotage == CustomSabotage.None
 || thisSabotage switch
-                {
-                    CustomSabotage.CognitiveDeficit => CognitiveDeficit.main.IsLocalEnd,
-                    _ => false,
-                };
+{
+    CustomSabotage.CognitiveDeficit => CognitiveDeficit.Main.IsLocalEnd,
+    _ => false,
+};
         }
         public static InfectedOverlay InfectedOverlayInstance;
         public const float SabotageMaxTime = 30f;
@@ -42,11 +42,11 @@ namespace SuperNewRoles.Sabotage
                 case CustomSabotage.CognitiveDeficit:
                     if (Is)
                     {
-                        CognitiveDeficit.main.StartSabotage();
+                        CognitiveDeficit.Main.StartSabotage();
                     }
                     else
                     {
-                        CognitiveDeficit.main.EndSabotage(player);
+                        CognitiveDeficit.Main.EndSabotage(player);
                     }
                     break;
             }
@@ -58,9 +58,9 @@ namespace SuperNewRoles.Sabotage
             CustomButtons = new List<ButtonBehavior>();
             if (IsOK(CustomSabotage.CognitiveDeficit))
             {
-                CognitiveDeficit.main.DefaultDistanceTime = Options.CognitiveDeficitReleaseTimeSetting.GetFloat();
-                CognitiveDeficit.main.DefaultUpdateTime = Options.CognitiveDeficitOutfitUpdateTimeSetting.GetFloat();
-                CognitiveDeficit.main.IsAllEndSabotage = Options.CognitiveDeficitIsAllEndSabotageSetting.GetBool();
+                CognitiveDeficit.Main.DefaultDistanceTime = Options.CognitiveDeficitReleaseTimeSetting.GetFloat();
+                CognitiveDeficit.Main.DefaultUpdateTime = Options.CognitiveDeficitOutfitUpdateTimeSetting.GetFloat();
+                CognitiveDeficit.Main.IsAllEndSabotage = Options.CognitiveDeficitIsAllEndSabotageSetting.GetBool();
             }
         }
         public static void Update()
@@ -79,7 +79,7 @@ namespace SuperNewRoles.Sabotage
             switch (thisSabotage)
             {
                 case CustomSabotage.CognitiveDeficit:
-                    CognitiveDeficit.main.Update();
+                    CognitiveDeficit.Main.Update();
                     break;
             }
         }
