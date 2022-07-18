@@ -128,6 +128,7 @@ namespace SuperNewRoles.Patches
             }
             public static string SponsersData = "";
             public static string DevsData = "";
+            public static string TransData = "";
 
             public static async Task<HttpStatusCode> FetchBoosters()
             {
@@ -169,6 +170,15 @@ namespace SuperNewRoles.Patches
                                 SponsersData += current["name"]?.ToString() + "\n";
                             }
                         }
+
+                        var Translator = jobj["Translate"];
+                        for (JToken current = Translator.First; current != null; current = current.Next)
+                        {
+                            if (current.HasValues)
+                            {
+                                TransData += current["name"]?.ToString() + "\n";
+                            }
+                        }
                     }
                     catch (Exception e)
                     {
@@ -185,7 +195,7 @@ namespace SuperNewRoles.Patches
                 CreditsPopup = obj;
                 GameObject.Destroy(obj.GetComponent<StatsPopup>());
                 var devtitletext = obj.transform.FindChild("StatNumsText_TMP");
-                devtitletext.GetComponent<TextMeshPro>().text = "開発者";
+                devtitletext.GetComponent<TextMeshPro>().text = ModTranslation.getString("Developer");
                 devtitletext.localPosition = new Vector3(-3.25f, -1.65f, -2f);
                 devtitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
                 var devtext = obj.transform.FindChild("StatsText_TMP");
@@ -194,7 +204,7 @@ namespace SuperNewRoles.Patches
                 devtext.GetComponent<TextMeshPro>().text = DevsData;
 
                 var boostertitletext = GameObject.Instantiate(devtitletext, obj.transform);
-                boostertitletext.GetComponent<TextMeshPro>().text = "スポンサー";
+                boostertitletext.GetComponent<TextMeshPro>().text = ModTranslation.getString("Sponsor");
                 boostertitletext.localPosition = new Vector3(1.45f, -1.65f, -2f);
                 boostertitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
 
@@ -203,10 +213,19 @@ namespace SuperNewRoles.Patches
                 boostertext.localScale = new Vector3(1.25f, 1.25f, 1f);
                 boostertext.GetComponent<TextMeshPro>().text = SponsersData;
 
+                var transtitletext = GameObject.Instantiate(devtitletext, obj.transform);
+                transtitletext.GetComponent<TextMeshPro>().text = ModTranslation.getString("Translator");
+                transtitletext.localPosition = new Vector3(0.5f, -4.5f, -2f);
+                transtitletext.localScale = new Vector3(1.5f, 1.5f, 1f);
+
+                var transtext = GameObject.Instantiate(devtext, obj.transform);
+                transtext.localPosition = new Vector3(3f, -5f, -2f);
+                transtext.localScale = new Vector3(1.5f, 1.5f, 1f);
+                transtext.GetComponent<TextMeshPro>().text = TransData;
 
                 var textobj = obj.transform.FindChild("Title_TMP");
                 GameObject.Destroy(textobj.GetComponent<TextTranslatorTMP>());
-                textobj.GetComponent<TextMeshPro>().text = "開発者&支援者";
+                textobj.GetComponent<TextMeshPro>().text = ModTranslation.getString("DevAndSpnTitle");
                 textobj.localScale = new Vector3(1.5f, 1.5f, 1f);
                 obj.transform.FindChild("Background").localScale = new Vector3(1.5f, 1f, 1f);
                 obj.transform.FindChild("CloseButton").localPosition = new Vector3(-3.75f, 2.65f, 0);
