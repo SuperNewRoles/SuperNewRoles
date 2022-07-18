@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -2394,9 +2394,11 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> NeetPlayer;
             public static Color32 color = new(127, 127, 127, byte.MaxValue);
+            public static bool IsAddWin;
             public static void ClearAndReload()
             {
                 NeetPlayer = new();
+                IsAddWin = CustomOptions.NeetIsAddWin.GetBool();
             }
         }
         public static class FastMaker
