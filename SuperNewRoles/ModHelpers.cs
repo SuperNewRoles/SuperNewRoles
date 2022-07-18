@@ -126,9 +126,11 @@ namespace SuperNewRoles
             var skinLayer = playerPhysics.GetSkin();
 
             var currentPhysicsAnim = playerPhysics.Animator.GetCurrentAnimation();
-            if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.RunAnim) clip = nextSkin.RunAnim;
-            else if (currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.SpawnAnim) clip = nextSkin.SpawnAnim;
-            else clip = currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.EnterVentAnim
+            clip = currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.RunAnim
+                ? nextSkin.RunAnim
+                : currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.SpawnAnim
+                ? nextSkin.SpawnAnim
+                : currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.EnterVentAnim
                 ? nextSkin.EnterVentAnim
                 : currentPhysicsAnim == playerPhysics.CurrentAnimationGroup.ExitVentAnim
                 ? nextSkin.ExitVentAnim

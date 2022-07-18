@@ -41,30 +41,26 @@ namespace SuperNewRoles.Roles
         public static bool IsChangeMadmate(this PlayerControl p)
         {
             var getroledata = GetRoleType(p);
-            if (getroledata == TeamRoleType.Crewmate)
-            {
-                return (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId)
+            return getroledata == TeamRoleType.Crewmate
+                ? (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId)
                     && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.MadMate))
                     || (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId)
                     && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadMate))
                     ? true
-                    : p.IsRole(RoleId.MadMate);
-            }
-            return false;
+                    : p.IsRole(RoleId.MadMate)
+                : false;
         }
         public static bool IsChangeMadMayor(this PlayerControl p)
         {
             var getroledata = GetRoleType(p);
-            if (getroledata == TeamRoleType.Crewmate)
-            {
-                return RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId)
+            return getroledata == TeamRoleType.Crewmate
+                ? RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId)
                     && (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.MadMayor)
                     || (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId)
                     && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadMayor)))
                     ? true
-                    : p.IsRole(RoleId.MadMayor);
-            }
-            return false;
+                    : p.IsRole(RoleId.MadMayor)
+                : false;
         }
         public static bool IsChangeMadStuntMan(this PlayerControl p)
         {

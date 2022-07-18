@@ -32,9 +32,9 @@ namespace SuperNewRoles
         {
             get
             {
-                if (!Loaded) return null;
-
-                return _submarineStatus is null || _submarineStatus.WasCollected || !_submarineStatus || _submarineStatus == null
+                return !Loaded
+                    ? null
+                    : _submarineStatus is null || _submarineStatus.WasCollected || !_submarineStatus || _submarineStatus == null
                     ? MapUtilities.CachedShipStatus is null || MapUtilities.CachedShipStatus.WasCollected || !MapUtilities.CachedShipStatus || MapUtilities.CachedShipStatus == null
                         ? (_submarineStatus = null)
                         : MapUtilities.CachedShipStatus.Type == SUBMERGED_MAP_TYPE

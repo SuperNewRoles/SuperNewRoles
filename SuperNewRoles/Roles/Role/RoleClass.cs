@@ -1265,11 +1265,13 @@ namespace SuperNewRoles.Roles
                 {
                     if (name == CustomOptions.LevelingerTexts[0]) { return LevelPowerTypes.None; }
                     else if (name == CustomOptions.LevelingerTexts[1]) { return LevelPowerTypes.Keep; }
-                    else if (name == CustomOptions.LevelingerTexts[2]) { return LevelPowerTypes.Pursuer; }
-                    else if (name == CustomOptions.LevelingerTexts[3]) { return LevelPowerTypes.Teleporter; }
                     else
                     {
-                        return name == CustomOptions.LevelingerTexts[4]
+                        return name == CustomOptions.LevelingerTexts[2]
+                        ? LevelPowerTypes.Pursuer
+                        : name == CustomOptions.LevelingerTexts[3]
+                        ? LevelPowerTypes.Teleporter
+                        : name == CustomOptions.LevelingerTexts[4]
                         ? LevelPowerTypes.Sidekick
                         : name == CustomOptions.LevelingerTexts[5]
                             ? LevelPowerTypes.SpeedBooster

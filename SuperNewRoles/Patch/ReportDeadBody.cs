@@ -28,13 +28,14 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
-                if ((RoleClass.Assassin.TriggerPlayer != null)
+                return (RoleClass.Assassin.TriggerPlayer != null)
                 || (!MapOptions.MapOption.UseDeadBodyReport && target != null)
                 || (!MapOptions.MapOption.UseMeetingButton && target == null)
                 || ModeHandler.IsMode(ModeId.HideAndSeek)
                 || ModeHandler.IsMode(ModeId.BattleRoyal)
-                || ModeHandler.IsMode(ModeId.CopsRobbers)) return false;
-                return ModeHandler.IsMode(ModeId.SuperHostRoles)
+                || ModeHandler.IsMode(ModeId.CopsRobbers)
+                    ? false
+                    : ModeHandler.IsMode(ModeId.SuperHostRoles)
                     ? Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target)
                     : !ModeHandler.IsMode(ModeId.Zombie)
 && (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId);

@@ -198,9 +198,11 @@ namespace SuperNewRoles.Mode
             if (IsMode(ModeId.BattleRoyal, false)) return ModeId.BattleRoyal;
             if (IsMode(ModeId.Zombie, false)) return ModeId.Zombie;
             if (IsMode(ModeId.RandomColor, false)) return ModeId.RandomColor;
-            if (IsMode(ModeId.NotImpostorCheck, false)) return ModeId.NotImpostorCheck;
-            if (IsMode(ModeId.Detective, false)) return ModeId.Detective;
-            return IsMode(ModeId.Werewolf, false)
+            return IsMode(ModeId.NotImpostorCheck, false)
+                ? ModeId.NotImpostorCheck
+                : IsMode(ModeId.Detective, false)
+                ? ModeId.Detective
+                : IsMode(ModeId.Werewolf, false)
                 ? ModeId.Werewolf
                 : IsMode(ModeId.CopsRobbers, false) ? ModeId.CopsRobbers : IsMode(ModeId.LevelUp, false) ? ModeId.LevelUp : ModeId.No;
         }
