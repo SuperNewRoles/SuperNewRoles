@@ -32,7 +32,7 @@ namespace SuperNewRoles.Roles
         public static void SpeedDownEnd()
         {
             ResetSpeed();
-            Freezer.ResetCoolDown();
+            ResetCoolDown();
         }
         public static bool IsFreezer(PlayerControl Player)
         {
@@ -40,7 +40,7 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            Freezer.ResetCoolDown();
+            ResetCoolDown();
             ResetSpeed();
         }
     }

@@ -17,7 +17,7 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.SelfBomberButton.MaxTimer = PlayerControl.GameOptions.KillCooldown;
             HudManagerStartPatch.SelfBomberButton.Timer = PlayerControl.GameOptions.KillCooldown;
         }
-        public static bool isSelfBomber(PlayerControl Player)
+        public static bool IsSelfBomber(PlayerControl Player)
         {
             return Player.isRole(RoleId.SelfBomber);
         }

@@ -43,7 +43,7 @@ namespace SuperNewRoles.Roles
             if (!RoleClass.Kunoichi.HideKunai && RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(CachedPlayer.LocalPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[CachedPlayer.LocalPlayer.PlayerId]) return;
             PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Kunoichi.KillCoolTime, RoleClass.Kunoichi.KillCoolTime);
             RoleClass.Kunoichi.SendKunai = RoleClass.Kunoichi.Kunai;
-            RoleClass.Kunoichi.Kunai = new CustomObject.Kunai();
+            RoleClass.Kunoichi.Kunai = new Kunai();
             RoleClass.Kunoichi.Kunai.kunai.transform.position = CachedPlayer.LocalPlayer.transform.position;
             RoleClass.Kunoichi.KunaiSend = true;
             RoleClass.Kunoichi.Kunais.Add(RoleClass.Kunoichi.SendKunai);
@@ -156,7 +156,7 @@ namespace SuperNewRoles.Roles
             }*/
         }
 
-        public static void setOpacity(PlayerControl player, float opacity, bool cansee)
+        public static void SetOpacity(PlayerControl player, float opacity, bool cansee)
         {
             // Sometimes it just doesn't work?
             var color = Color.Lerp(Palette.ClearWhite, Palette.White, opacity);
@@ -223,7 +223,7 @@ namespace SuperNewRoles.Roles
                     {
                         opacity = Math.Max(opacity, 1.5f);
                     }
-                    setOpacity(Scientist, opacity, canSee);
+                    SetOpacity(Scientist, opacity, canSee);
                 }
             }
         }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using SuperNewRoles.CustomRPC;
 
+//TODO:さつまいも、いつかリファクタします
 namespace SuperNewRoles.Roles
 {
     public static class CountChanger
@@ -14,16 +15,12 @@ namespace SuperNewRoles.Roles
                 RoleClass.CountChanger.Setdata = new();
             }
         }
-        public static bool isChange(this PlayerControl p)
+        public static bool IsChange(this PlayerControl p)
         {
             if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
-            {
                 return true;
-            }
             else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
-            {
                 return true;
-            }
             return false;
         }
 
@@ -46,18 +43,13 @@ namespace SuperNewRoles.Roles
             var getroledata = GetRoleType(p);
             if (getroledata == TeamRoleType.Crewmate)
             {
-                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
-                {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.MadMate)) return true;
-                }
-                else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
-                {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.MadMate)) return true;
-                }
+                if ((RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId)
+                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.MadMate))
+                    || (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId)
+                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.MadMate)))
+                    return true;
                 else
-                {
                     return p.isRole(RoleId.MadMate);
-                }
             }
             return false;
         }
@@ -66,18 +58,13 @@ namespace SuperNewRoles.Roles
             var getroledata = GetRoleType(p);
             if (getroledata == TeamRoleType.Crewmate)
             {
-                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
-                {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.MadMayor)) return true;
-                }
-                else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
-                {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.MadMayor)) return true;
-                }
+                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId)
+                    && (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.MadMayor)
+                    || (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId)
+                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.MadMayor))))
+                    return true;
                 else
-                {
                     return p.isRole(RoleId.MadMayor);
-                }
             }
             return false;
         }

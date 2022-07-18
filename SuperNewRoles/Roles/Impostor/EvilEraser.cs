@@ -2,6 +2,7 @@ using Hazel;
 using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 
+//TODO:さつまいも、いつかリファクタします
 namespace SuperNewRoles.Roles
 {
     public static class EvilEraser

@@ -1,3 +1,4 @@
+//元:https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/AirShipStatusPatch.cs
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
@@ -12,7 +13,6 @@ namespace SuperNewRoles.Roles
 {
     public static class Assassin
     {
-        //元:https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/AirShipStatusPatch.cs
         [HarmonyPatch(typeof(AirshipStatus), nameof(AirshipStatus.PrespawnStep))]
         public static class AirshipStatusPrespawnStepPatch
         {
@@ -53,7 +53,7 @@ namespace SuperNewRoles.Roles
                     var outfit = target.DefaultOutfit;
                     exileplayer = target;
                     PlayerControl exile = null;
-                    Mode.SuperHostRoles.Main.RealExiled = target.Object;
+                    Main.RealExiled = target.Object;
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
                         foreach (PlayerControl p in BotManager.AllBots)
@@ -97,7 +97,7 @@ namespace SuperNewRoles.Roles
                 new LateTask(() => MeetingHud.Instance.RpcVotingComplete(array, exileplayer, true), 0.2f);
             }
         }
-        public static void WrapUp(GameData.PlayerInfo exiled)
+        public static void WrapUp()
         {
             if (RoleClass.Assassin.DeadPlayer != null)
             {
@@ -119,7 +119,7 @@ namespace SuperNewRoles.Roles
                 MapUtilities.CachedShipStatus.enabled = false;
                 ShipStatus.RpcEndGame(GameOverReason.ImpostorByVote, false);
             }
-            var exile = Mode.SuperHostRoles.Main.RealExiled;
+            var exile = Main.RealExiled;
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && exile != null && exile.isRole(RoleId.Assassin))
             {
                 if (AmongUsClient.Instance.AmHost)

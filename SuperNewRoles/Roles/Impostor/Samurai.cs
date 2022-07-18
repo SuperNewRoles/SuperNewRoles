@@ -49,7 +49,7 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.SamuraiButton.MaxTimer = RoleClass.Samurai.SwordCoolTime;
             HudManagerStartPatch.SamuraiButton.Timer = RoleClass.Samurai.SwordCoolTime;
         }
-        public static bool isSamurai(PlayerControl Player)
+        public static bool IsSamurai(PlayerControl Player)
         {
             return Player.isRole(RoleId.Samurai);
         }

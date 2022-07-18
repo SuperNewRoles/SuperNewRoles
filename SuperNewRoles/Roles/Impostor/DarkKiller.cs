@@ -21,12 +21,9 @@ namespace SuperNewRoles.Roles
                 if (!RoleClass.DarkKiller.KillButtonDisable)
                 {
                     FastDestroyableSingleton<HudManager>.Instance.KillButton.enabled = true;
-
                     var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
                     if (ma != null && !ma.IsActive)
-                    {
                         FastDestroyableSingleton<HudManager>.Instance.KillButton.enabled = false;
-                    }
                 }
             }
         }

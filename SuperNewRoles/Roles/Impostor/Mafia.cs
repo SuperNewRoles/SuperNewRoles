@@ -36,7 +36,6 @@ namespace SuperNewRoles.Roles
                 {
                     HudManager.Instance.KillButton.Hide();
                 }
-
                 if (!RoleClass.IsMeeting)
                 {
                     PlayerControl.LocalPlayer.SetKillTimer(PlayerControl.LocalPlayer.killTimer - Time.fixedDeltaTime);
