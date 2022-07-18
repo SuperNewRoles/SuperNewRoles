@@ -850,7 +850,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
             }
-            new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"), p.nameText().text), 3);
+            new CustomMessage(string.Format(ModTranslation.GetString("TeleporterTPTextMessage"), p.NameText().text), 3);
         }
         public static void SetWinCond(byte Cond)
         {
@@ -936,11 +936,11 @@ namespace SuperNewRoles.CustomRPC
                 SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");
                 if (rand.Next(1, 20) == 1)
                 {
-                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
+                    new CustomMessage(string.Format(ModTranslation.GetString("PositionSwapperSwapText2")), 3);
                 }
                 else
                 {
-                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
+                    new CustomMessage(string.Format(ModTranslation.GetString("PositionSwapperSwapText")), 3);
                 }
             }
         }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
 {
@@ -45,11 +46,11 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
                 if (Proce >= 10)
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, SendOption.Reliable, -1);
-                    writer.Write((byte)CachedPlayer.LocalPlayer.PlayerId);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(ConfigRoles.ShareCosmeticsNamePlatesURL.Value);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                     RPCProcedure.ShareCosmetics(
-                        (byte)CachedPlayer.LocalPlayer.PlayerId,
+                        CachedPlayer.LocalPlayer.PlayerId,
                         ConfigRoles.ShareCosmeticsNamePlatesURL.Value
                         );
                     Proce = 0;

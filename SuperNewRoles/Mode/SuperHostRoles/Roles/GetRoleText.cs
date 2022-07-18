@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                     {
                         if (RoleClass.SerialKiller.SuicideTimers.TryGetValue(p.PlayerId, out float Time))
                         {
-                            returndata = ModHelpers.cs(RoleClass.SerialKiller.color, "(" + ((int)Time + 1).ToString() + ")");
+                            returndata = ModHelpers.Cs(RoleClass.SerialKiller.color, "(" + ((int)Time + 1).ToString() + ")");
                         }
                     }
                 }

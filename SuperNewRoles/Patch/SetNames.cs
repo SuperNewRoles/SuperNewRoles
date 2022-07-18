@@ -18,7 +18,7 @@ namespace SuperNewRoles.Patch
         public static void SetPlayerNameColor(PlayerControl p, Color color)
         {
             if (p.IsBot()) return;
-            p.nameText().color = color;
+            p.NameText().color = color;
             if (MeetingHud.Instance)
             {
                 foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
@@ -33,7 +33,7 @@ namespace SuperNewRoles.Patch
         public static void SetPlayerNameText(PlayerControl p, string text)
         {
             if (p.IsBot()) return;
-            p.nameText().text = text;
+            p.NameText().text = text;
             if (MeetingHud.Instance)
             {
                 foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates)
@@ -48,7 +48,7 @@ namespace SuperNewRoles.Patch
         }
         public static void ResetNameTagsAndColors()
         {
-            Dictionary<byte, PlayerControl> playersById = ModHelpers.allPlayersById();
+            Dictionary<byte, PlayerControl> playersById = ModHelpers.AllPlayersById();
 
             foreach (var pro in PlayerInfos)
             {
@@ -60,8 +60,8 @@ namespace SuperNewRoles.Patch
             }
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
-                bool hidename = ModHelpers.hidePlayerName(PlayerControl.LocalPlayer, player);
-                player.nameText().text = hidename ? "" : player.CurrentOutfit.PlayerName;
+                bool hidename = ModHelpers.HidePlayerName(PlayerControl.LocalPlayer, player);
+                player.NameText().text = hidename ? "" : player.CurrentOutfit.PlayerName;
                 if (PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy)))
                 {
                     SetPlayerNameColor(player, RoleClass.ImpostorRed);
@@ -82,14 +82,14 @@ namespace SuperNewRoles.Patch
             TMPro.TextMeshPro playerInfo = PlayerInfos.ContainsKey(p.PlayerId) ? PlayerInfos[p.PlayerId] : null;
             if (playerInfo == null)
             {
-                playerInfo = UnityEngine.Object.Instantiate(p.nameText(), p.nameText().transform.parent);
+                playerInfo = UnityEngine.Object.Instantiate(p.NameText(), p.NameText().transform.parent);
                 playerInfo.fontSize *= 0.75f;
                 playerInfo.gameObject.name = "Info";
                 PlayerInfos[p.PlayerId] = playerInfo;
             }
 
             // Set the position every time bc it sometimes ends up in the wrong place due to camoflauge
-            playerInfo.transform.localPosition = p.nameText().transform.localPosition + Vector3.up * 0.5f;
+            playerInfo.transform.localPosition = p.NameText().transform.localPosition + Vector3.up * 0.5f;
 
             PlayerVoteArea playerVoteArea = MeetingHud.Instance?.playerStates?.FirstOrDefault(x => x.TargetPlayerId == p.PlayerId);
             TMPro.TextMeshPro meetingInfo = MeetingPlayerInfos.ContainsKey(p.PlayerId) ? MeetingPlayerInfos[p.PlayerId] : null;
@@ -116,28 +116,28 @@ namespace SuperNewRoles.Patch
                     if (commsActive)
                     {
                         var all = TaskCount.TaskDateNoClearCheck(p.Data).Item2;
-                        TaskText += ModHelpers.cs(Color.yellow, "(?/" + all + ")");
+                        TaskText += ModHelpers.Cs(Color.yellow, "(?/" + all + ")");
                     }
                     else
                     {
                         var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
-                        TaskText += ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                        TaskText += ModHelpers.Cs(Color.yellow, "(" + complate + "/" + all + ")");
                     }
                 }
             }
             catch { }
             string playerInfoText = "";
             string meetingInfoText = "";
-            playerInfoText = $"{CustomOptions.cs(roleColors, roleNames)}";
+            playerInfoText = $"{CustomOptions.Cs(roleColors, roleNames)}";
             if (GhostRoleNames != "")
             {
-                playerInfoText = $"{CustomOptions.cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
+                playerInfoText = $"{CustomOptions.Cs((Color)GhostRoleColor, GhostRoleNames)}({playerInfoText})";
             }
             playerInfoText += TaskText;
             meetingInfoText = playerInfoText.Trim();
             playerInfo.text = playerInfoText;
             playerInfo.gameObject.SetActive(p.Visible);
-            if (meetingInfo != null) meetingInfo.text = MeetingHud.Instance.state == MeetingHud.VoteStates.Results ? "" : meetingInfoText; p.nameText().color = roleColors;
+            if (meetingInfo != null) meetingInfo.text = MeetingHud.Instance.state == MeetingHud.VoteStates.Results ? "" : meetingInfoText; p.NameText().color = roleColors;
         }
         public static void SetPlayerRoleInfo(PlayerControl p)
         {
@@ -187,14 +187,14 @@ namespace SuperNewRoles.Patch
         }
         public static void QuarreledSet()
         {
-            string suffix = ModHelpers.cs(RoleClass.Quarreled.color, "○");
+            string suffix = ModHelpers.Cs(RoleClass.Quarreled.color, "○");
             if (PlayerControl.LocalPlayer.IsQuarreled() && PlayerControl.LocalPlayer.IsAlive())
             {
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideQuarreled();
-                SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.nameText().text + suffix);
+                SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.NameText().text + suffix);
                 if (!side.Data.Disconnected)
                 {
-                    SetPlayerNameText(side, side.nameText().text + suffix);
+                    SetPlayerNameText(side, side.NameText().text + suffix);
                 }
             }
             if (!PlayerControl.LocalPlayer.IsAlive() && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
@@ -205,7 +205,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (!p.Data.Disconnected)
                         {
-                            SetPlayerNameText(p, p.nameText().text + suffix);
+                            SetPlayerNameText(p, p.NameText().text + suffix);
                         }
                     }
                 }
@@ -213,13 +213,13 @@ namespace SuperNewRoles.Patch
         }
         public static void LoversSet()
         {
-            string suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+            string suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
             if (PlayerControl.LocalPlayer.IsLovers() && PlayerControl.LocalPlayer.IsAlive())
             {
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideLovers();
-                SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.nameText().text + suffix);
+                SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.NameText().text + suffix);
                 if (!side.Data.Disconnected)
-                    SetPlayerNameText(side, side.nameText().text + suffix);
+                    SetPlayerNameText(side, side.NameText().text + suffix);
             }
             if ((PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
             {
@@ -228,7 +228,7 @@ namespace SuperNewRoles.Patch
                     foreach (PlayerControl p in ps)
                     {
                         if (!p.Data.Disconnected)
-                            SetPlayerNameText(p, p.nameText().text + suffix);
+                            SetPlayerNameText(p, p.NameText().text + suffix);
                     }
                 }
             }
@@ -241,8 +241,8 @@ namespace SuperNewRoles.Patch
                 {
                     if (Demon.IsViewIcon(player))
                     {
-                        if (!player.nameText().text.Contains(ModHelpers.cs(RoleClass.Demon.color, " ▲")))
-                            SetPlayerNameText(player, player.nameText().text + ModHelpers.cs(RoleClass.Demon.color, " ▲"));
+                        if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Demon.color, " ▲")))
+                            SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.Demon.color, " ▲"));
                     }
                 }
             }
@@ -255,8 +255,8 @@ namespace SuperNewRoles.Patch
                 {
                     if (Arsonist.IsViewIcon(player))
                     {
-                        if (!player.nameText().text.Contains(ModHelpers.cs(RoleClass.Arsonist.color, " §")))
-                            SetPlayerNameText(player, player.nameText().text + ModHelpers.cs(RoleClass.Arsonist.color, " §"));
+                        if (!player.NameText().text.Contains(ModHelpers.Cs(RoleClass.Arsonist.color, " §")))
+                            SetPlayerNameText(player, player.NameText().text + ModHelpers.Cs(RoleClass.Arsonist.color, " §"));
                     }
                 }
             }

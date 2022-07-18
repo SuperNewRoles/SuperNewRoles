@@ -43,7 +43,7 @@ namespace SuperNewRoles
 
         public static Sprite CreateSprite(string path, bool fromDisk = false)
         {
-            Texture2D texture = fromDisk ? ModHelpers.loadTextureFromDisk(path) : ModHelpers.loadTextureFromResources(path);
+            Texture2D texture = fromDisk ? ModHelpers.loadTextureFromDisk(path) : ModHelpers.LoadTextureFromResources(path);
             if (texture == null)
                 return null;
             Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
@@ -117,7 +117,7 @@ namespace SuperNewRoles
                 }
             }
         }
-        public static void setSkinWithAnim(PlayerPhysics playerPhysics, string SkinId)
+        public static void SetSkinWithAnim(PlayerPhysics playerPhysics, string SkinId)
         {
             SkinViewData nextSkin = DestroyableSingleton<HatManager>.Instance.GetSkinById(SkinId).viewData.viewData;
             AnimationClip clip = null;
@@ -140,7 +140,7 @@ namespace SuperNewRoles
             anim.Play("a", 0, progress % 1);
             anim.Update(0f);
         }
-        public static Dictionary<byte, PlayerControl> allPlayersById()
+        public static Dictionary<byte, PlayerControl> AllPlayersById()
         {
             Dictionary<byte, PlayerControl> res = new();
             foreach (CachedPlayer player in CachedPlayer.AllPlayers)
@@ -148,7 +148,7 @@ namespace SuperNewRoles
             return res;
         }
 
-        public static void destroyList<T>(Il2CppSystem.Collections.Generic.List<T> items) where T : UnityEngine.Object
+        public static void DestroyList<T>(Il2CppSystem.Collections.Generic.List<T> items) where T : UnityEngine.Object
         {
             if (items == null) return;
             foreach (T item in items)
@@ -156,7 +156,7 @@ namespace SuperNewRoles
                 UnityEngine.Object.Destroy(item);
             }
         }
-        public static void destroyList<T>(List<T> items) where T : UnityEngine.Object
+        public static void DestroyList<T>(List<T> items) where T : UnityEngine.Object
         {
             if (items == null) return;
             foreach (T item in items)
@@ -164,7 +164,7 @@ namespace SuperNewRoles
                 UnityEngine.Object.Destroy(item);
             }
         }
-        public static MurderAttemptResult checkMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
+        public static MurderAttemptResult CheckMuderAttempt(PlayerControl killer, PlayerControl target, bool blockRewind = false)
         {
             // Modified vanilla checks
             if (AmongUsClient.Instance.IsGameOver) return MurderAttemptResult.SuppressKill;
@@ -293,11 +293,11 @@ namespace SuperNewRoles
             }
             return MurderAttemptResult.PerformKill;
         }
-        public static void generateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
+        public static void GenerateAndAssignTasks(this PlayerControl player, int numCommon, int numShort, int numLong)
         {
             if (player == null) return;
 
-            List<byte> taskTypeIds = generateTasks(numCommon, numShort, numLong);
+            List<byte> taskTypeIds = GenerateTasks(numCommon, numShort, numLong);
 
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UncheckedSetTasks, SendOption.Reliable, -1);
             writer.Write(player.PlayerId);
@@ -305,7 +305,7 @@ namespace SuperNewRoles
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.UncheckedSetTasks(player.PlayerId, taskTypeIds.ToArray());
         }
-        public static List<byte> generateTasks(int numCommon, int numShort, int numLong)
+        public static List<byte> GenerateTasks(int numCommon, int numShort, int numLong)
         {
             if (numCommon + numShort + numLong <= 0)
             {
@@ -336,14 +336,14 @@ namespace SuperNewRoles
             return tasks.ToArray().ToList();
         }
         static float tien;
-        public static MurderAttemptResult checkMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
+        public static MurderAttemptResult CheckMuderAttemptAndKill(PlayerControl killer, PlayerControl target, bool isMeetingStart = false, bool showAnimation = true)
         {
             // The local player checks for the validity of the kill and performs it afterwards (different to vanilla, where the host performs all the checks)
             // The kill attempt will be shared using a custom RPC, hence combining modded and unmodded versions is impossible
 
             tien = 0;
 
-            MurderAttemptResult murder = checkMuderAttempt(killer, target, isMeetingStart);
+            MurderAttemptResult murder = CheckMuderAttempt(killer, target, isMeetingStart);
             if (murder == MurderAttemptResult.PerformKill)
             {
                 if (tien <= 0)
@@ -383,22 +383,22 @@ namespace SuperNewRoles
         {
             if (player == null) return;
             if (seer == null) seer = player;
-            var clientId = seer.PlayerControl.getClientId();
+            var clientId = seer.PlayerControl.GetClientId();
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable, clientId);
             writer.Write((ushort)role);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
-        public static InnerNet.ClientData getClient(this PlayerControl player)
+        public static InnerNet.ClientData GetClient(this PlayerControl player)
         {
             var client = AmongUsClient.Instance.allClients.GetFastEnumerator().ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
             return client;
         }
-        public static int getClientId(this PlayerControl player)
+        public static int GetClientId(this PlayerControl player)
         {
-            var client = player.getClient();
+            var client = player.GetClient();
             return client == null ? -1 : client.Id;
         }
-        public static bool hidePlayerName(PlayerControl source, PlayerControl target)
+        public static bool HidePlayerName(PlayerControl source, PlayerControl target)
         {
             if (source == null || target == null) return true;
             else if (source.IsDead() || source.IsRole(RoleId.God)) return false;
@@ -410,12 +410,12 @@ namespace SuperNewRoles
 
         public static Dictionary<string, Sprite> CachedSprites = new();
 
-        public static Sprite loadSpriteFromResources(string path, float pixelsPerUnit)
+        public static Sprite LoadSpriteFromResources(string path, float pixelsPerUnit)
         {
             try
             {
                 if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
-                Texture2D texture = loadTextureFromResources(path);
+                Texture2D texture = LoadTextureFromResources(path);
                 sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
                 sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
                 return CachedSprites[path + pixelsPerUnit] = sprite;
@@ -427,7 +427,7 @@ namespace SuperNewRoles
             return null;
         }
 
-        public static bool isCustomServer()
+        public static bool IsCustomServer()
         {
             if (FastDestroyableSingleton<ServerManager>.Instance == null) return false;
             StringNames n = FastDestroyableSingleton<ServerManager>.Instance.CurrentRegion.TranslateName;
@@ -437,12 +437,12 @@ namespace SuperNewRoles
         {
             return AccessTools.Method(self.GetType(), nameof(Il2CppObjectBase.TryCast)).MakeGenericMethod(type).Invoke(self, Array.Empty<object>());
         }
-        internal static string cs(object unityEngine, string v)
+        internal static string Cs(object unityEngine, string v)
         {
             throw new NotImplementedException();
         }
 
-        public static Texture2D loadTextureFromResources(string path)
+        public static Texture2D LoadTextureFromResources(string path)
         {
             try
             {
@@ -461,7 +461,7 @@ namespace SuperNewRoles
             return null;
         }
 
-        public static string cs(Color c, string s)
+        public static string Cs(Color c, string s)
         {
             return string.Format("<color=#{0:X2}{1:X2}{2:X2}{3:X2}>{4}</color>", CustomOptions.ToByte(c.r), CustomOptions.ToByte(c.g), CustomOptions.ToByte(c.b), CustomOptions.ToByte(c.a), s);
         }
@@ -486,11 +486,11 @@ namespace SuperNewRoles
         public static Dictionary<byte, HatParent> HatRendererCache = new();
         public static Dictionary<byte, SpriteRenderer> HatRendCache = new();
         public static Dictionary<byte, VisorLayer> VisorSlotCache = new();
-        public static TextMeshPro nameText(this PlayerControl player)
+        public static TextMeshPro NameText(this PlayerControl player)
         {
             return player.cosmetics.nameText;
         }
-        public static TextMeshPro nameText(this PoolablePlayer player)
+        public static TextMeshPro NameText(this PoolablePlayer player)
         {
             return player.transform.FindChild("NameText_TMP").GetComponent<TextMeshPro>();
         }

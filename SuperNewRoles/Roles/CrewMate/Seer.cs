@@ -34,7 +34,7 @@ namespace SuperNewRoles.Roles
         public static Sprite GetSoulSprite()
         {
             if (SoulSprite) return SoulSprite;
-            SoulSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Soul.png", 500f);
+            SoulSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Soul.png", 500f);
             return SoulSprite;
         }
 

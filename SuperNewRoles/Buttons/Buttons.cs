@@ -118,7 +118,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("KunoichiKunai"),
+                buttonText = ModTranslation.GetString("KunoichiKunai"),
                 showButtonText = true
             };
             FalseChargesFalseChargeButton = new CustomButton(
@@ -157,7 +157,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("FalseChargesButtonTitle"),
+                buttonText = ModTranslation.GetString("FalseChargesButtonTitle"),
                 showButtonText = true
             };
 
@@ -188,7 +188,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("trueloverloveButtonName"),
+                buttonText = ModTranslation.GetString("trueloverloveButtonName"),
                 showButtonText = true
             };
 
@@ -224,7 +224,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("MagazinerGetButtonName"),
+                buttonText = ModTranslation.GetString("MagazinerGetButtonName"),
                 showButtonText = true
             };
 
@@ -252,7 +252,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("MagazinerAddButtonName"),
+                buttonText = ModTranslation.GetString("MagazinerAddButtonName"),
                 showButtonText = true
             };
 
@@ -279,7 +279,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("ScientistButtonName"),
+                buttonText = ModTranslation.GetString("ScientistButtonName"),
                 showButtonText = true
             };
 
@@ -351,7 +351,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("HawkButtonName"),
+                buttonText = ModTranslation.GetString("HawkButtonName"),
                 showButtonText = true
             };
 
@@ -392,7 +392,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("CountChangerButtonName"),
+                buttonText = ModTranslation.GetString("CountChangerButtonName"),
                 showButtonText = true
             };
 
@@ -426,7 +426,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("DoctorVitalName"),
+                buttonText = ModTranslation.GetString("DoctorVitalName"),
                 showButtonText = true
             };
 
@@ -464,7 +464,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("JackalCreateSidekickButtonName"),
+                buttonText = ModTranslation.GetString("JackalCreateSidekickButtonName"),
                 showButtonText = true
             };
 
@@ -502,7 +502,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("JackalCreateSidekickButtonName"),
+                buttonText = ModTranslation.GetString("JackalCreateSidekickButtonName"),
                 showButtonText = true
             };
 
@@ -511,7 +511,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (Jackal.JackalFixedPatch.JackalSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, Jackal.JackalFixedPatch.JackalSetTarget());
+                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, Jackal.JackalFixedPatch.JackalSetTarget());
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Jackal:
@@ -572,7 +572,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("SelfBomberButtonName"),
+                buttonText = ModTranslation.GetString("SelfBomberButtonName"),
                 showButtonText = true
             };
 
@@ -601,7 +601,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("DoorrButtonText"),
+                buttonText = ModTranslation.GetString("DoorrButtonText"),
                 showButtonText = true
             };
 
@@ -629,7 +629,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("TeleporterTeleportButton"),
+                buttonText = ModTranslation.GetString("TeleporterTeleportButton"),
                 showButtonText = true
             };
 
@@ -658,7 +658,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("MovingButtonSetName"),
+                buttonText = ModTranslation.GetString("MovingButtonSetName"),
                 showButtonText = true
             };
 
@@ -687,7 +687,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("MovingButtonTpName"),
+                buttonText = ModTranslation.GetString("MovingButtonTpName"),
                 showButtonText = true
             };
 
@@ -750,7 +750,7 @@ namespace SuperNewRoles.Buttons
                         killcount = RoleClass.Sheriff.KillMaxCount;
                         flag = PlayerControlFixedUpdatePatch.SetTarget() && PlayerControl.LocalPlayer.CanMove;
                     }
-                    sheriffNumShotsText.text = killcount > 0 ? String.Format(ModTranslation.getString("SheriffNumTextName"), killcount) : "";
+                    sheriffNumShotsText.text = killcount > 0 ? String.Format(ModTranslation.GetString("SheriffNumTextName"), killcount) : "";
                     return flag;
                 },
                 () => { Sheriff.EndMeeting(); },
@@ -767,7 +767,7 @@ namespace SuperNewRoles.Buttons
             sheriffNumShotsText.enableWordWrapping = false;
             sheriffNumShotsText.transform.localScale = Vector3.one * 0.5f;
             sheriffNumShotsText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
-            SheriffKillButton.buttonText = ModTranslation.getString("SheriffKillButtonName");
+            SheriffKillButton.buttonText = ModTranslation.GetString("SheriffKillButtonName");
             SheriffKillButton.showButtonText = true;
 
             ClergymanLightOutButton = new Buttons.CustomButton(
@@ -793,7 +793,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("ClergymanLightOutButtonName"),
+                buttonText = ModTranslation.GetString("ClergymanLightOutButtonName"),
                 showButtonText = true
             };
 
@@ -819,7 +819,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("SpeedBoosterBoostButtonName"),
+                buttonText = ModTranslation.GetString("SpeedBoosterBoostButtonName"),
                 showButtonText = true,
                 HasEffect = true
             };
@@ -846,7 +846,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("EvilSpeedBoosterBoostButtonName"),
+                buttonText = ModTranslation.GetString("EvilSpeedBoosterBoostButtonName"),
                 showButtonText = true
             };
 
@@ -873,7 +873,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("LighterButtonName"),
+                buttonText = ModTranslation.GetString("LighterButtonName"),
                 showButtonText = true
             };
 
@@ -906,7 +906,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("SidekickName"),
+                buttonText = ModTranslation.GetString("SidekickName"),
                 showButtonText = true
             };
 
@@ -944,7 +944,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("SidekickName"),
+                buttonText = ModTranslation.GetString("SidekickName"),
                 showButtonText = true
             };
 
@@ -999,7 +999,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("SidekickName"),
+                buttonText = ModTranslation.GetString("SidekickName"),
                 showButtonText = true
             };
 
@@ -1034,7 +1034,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("DemonButtonName"),
+                buttonText = ModTranslation.GetString("DemonButtonName"),
                 showButtonText = true
             };
 
@@ -1068,7 +1068,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("ArsonistDouseButtonName"),
+                buttonText = ModTranslation.GetString("ArsonistDouseButtonName"),
                 showButtonText = true
             };
 
@@ -1121,7 +1121,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("ArsonistIgniteButtonName"),
+                buttonText = ModTranslation.GetString("ArsonistIgniteButtonName"),
                 showButtonText = true
             };
 
@@ -1149,7 +1149,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("SpeederButtonName"),
+                buttonText = ModTranslation.GetString("SpeederButtonName"),
                 showButtonText = true,
                 HasEffect = true
             };
@@ -1189,7 +1189,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("SidekickName"),
+                buttonText = ModTranslation.GetString("SidekickName"),
                 showButtonText = true
             };
 
@@ -1259,7 +1259,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("VultureButtonName"),
+                buttonText = ModTranslation.GetString("VultureButtonName"),
                 showButtonText = true
             };
 
@@ -1294,7 +1294,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("ShielderButtonName"),
+                buttonText = ModTranslation.GetString("ShielderButtonName"),
                 showButtonText = true
             };
 
@@ -1350,7 +1350,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("CleanerButtonName"),
+                buttonText = ModTranslation.GetString("CleanerButtonName"),
                 showButtonText = true
             };
 
@@ -1399,7 +1399,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("CleanerButtonName"),
+                buttonText = ModTranslation.GetString("CleanerButtonName"),
                 showButtonText = true
             };
 
@@ -1426,7 +1426,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("FreezerButtonName"),
+                buttonText = ModTranslation.GetString("FreezerButtonName"),
                 showButtonText = true,
                 HasEffect = true
             };
@@ -1454,7 +1454,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("SamuraiButtonName"),
+                buttonText = ModTranslation.GetString("SamuraiButtonName"),
                 showButtonText = true
             };
 
@@ -1488,7 +1488,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("VentMakerButtonName"),
+                buttonText = ModTranslation.GetString("VentMakerButtonName"),
                 showButtonText = true
             };
 
@@ -1544,7 +1544,7 @@ namespace SuperNewRoles.Buttons
                             sabotageActive = true;
                             break;
                         }
-                    GhostMechanicNumRepairText.text = String.Format(ModTranslation.getString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
+                    GhostMechanicNumRepairText.text = String.Format(ModTranslation.GetString("GhostMechanicCountText"), RoleClass.GhostMechanic.LimitCount);
                     return sabotageActive && PlayerControl.LocalPlayer.CanMove;
                 },
                 () => { GhostMechanicRepairButton.MaxTimer = 0f; GhostMechanicRepairButton.Timer = 0f; },
@@ -1561,7 +1561,7 @@ namespace SuperNewRoles.Buttons
             GhostMechanicNumRepairText.enableWordWrapping = false;
             GhostMechanicNumRepairText.transform.localScale = Vector3.one * 0.5f;
             GhostMechanicNumRepairText.transform.localPosition += new Vector3(0f, 0.7f, 0);
-            GhostMechanicRepairButton.buttonText = ModTranslation.getString("GhostMechanicButtonName");
+            GhostMechanicRepairButton.buttonText = ModTranslation.GetString("GhostMechanicButtonName");
             GhostMechanicRepairButton.showButtonText = true;
 
             EvilHackerButton = new CustomButton(
@@ -1590,7 +1590,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("ADMINButton"),
+                buttonText = ModTranslation.GetString("ADMINButton"),
                 showButtonText = true
             };
 
@@ -1624,7 +1624,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("SidekickName"),
+                buttonText = ModTranslation.GetString("SidekickName"),
                 showButtonText = true
             };
 
@@ -1633,7 +1633,7 @@ namespace SuperNewRoles.Buttons
                 {
                     RoleClass.PositionSwapper.SwapCount--;
                     /*if (RoleClass.PositionSwapper.SwapCount >= 1){
-                        PositionSwapperNumText.text = String.Format(ModTranslation.getString("SheriffNumTextName"), RoleClass.PositionSwapper.SwapCount);
+                        PositionSwapperNumText.text = String.Format(ModTranslation.GetString("SheriffNumTextName"), RoleClass.PositionSwapper.SwapCount);
                     }
                     else{
                         PositionSwapperNumText.text = "";
@@ -1648,8 +1648,8 @@ namespace SuperNewRoles.Buttons
                 {
                     float swapcount = RoleClass.PositionSwapper.SwapCount;
                     PositionSwapperNumText.text = swapcount > 0
-                        ? String.Format(ModTranslation.getString("PositionSwapperNumTextName"), swapcount)
-                        : String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
+                        ? String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), swapcount)
+                        : String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
                     return !PlayerControl.LocalPlayer.CanMove
                         ? false
                         : RoleClass.PositionSwapper.SwapCount > 0 && true && PlayerControl.LocalPlayer.CanMove;
@@ -1669,14 +1669,14 @@ namespace SuperNewRoles.Buttons
                 PositionSwapperNumText.enableWordWrapping = false;
                 PositionSwapperNumText.transform.localScale = Vector3.one * 0.5f;
                 PositionSwapperNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
-                PositionSwapperButton.buttonText = ModTranslation.getString("PositionSwapperButtonName");
+                PositionSwapperButton.buttonText = ModTranslation.GetString("PositionSwapperButtonName");
                 PositionSwapperButton.showButtonText = true;
             };
 
             SecretlyKillerMainButton = new CustomButton(
                 () =>
                 {
-                    ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.SecretlyKiller.target);
+                    ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, RoleClass.SecretlyKiller.target);
                     SecretlyKiller.MainResetCoolDown();
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SecretlyKiller; },
@@ -1705,7 +1705,7 @@ namespace SuperNewRoles.Buttons
                 }
             )
             {
-                buttonText = ModTranslation.getString("FinalStatusKill"),
+                buttonText = ModTranslation.GetString("FinalStatusKill"),
                 showButtonText = true
             };
 
@@ -1722,8 +1722,8 @@ namespace SuperNewRoles.Buttons
                     //テキストぉ
                     float SecretKillLimit = RoleClass.SecretlyKiller.SecretlyKillLimit;
                     SecretlyKillNumText.text = SecretKillLimit > 0
-                        ? String.Format(ModTranslation.getString("PositionSwapperNumTextName"), SecretKillLimit)
-                        : String.Format(ModTranslation.getString("PositionSwapperNumTextName"), "0");
+                        ? String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), SecretKillLimit)
+                        : String.Format(ModTranslation.GetString("PositionSwapperNumTextName"), "0");
 
                     if (RoleClass.SecretlyKiller.MainCool > 0f/* || RoleClass.SecretlyKiller.SecretlyCool>0f */&& RoleClass.SecretlyKiller.IsKillCoolChange) return false;
                     if (RoleClass.SecretlyKiller.SecretlyKillLimit < 1 || RoleClass.SecretlyKiller.SecretlyCool > 0f) return false;
@@ -1751,7 +1751,7 @@ namespace SuperNewRoles.Buttons
                 SecretlyKillNumText.enableWordWrapping = false;
                 SecretlyKillNumText.transform.localScale = Vector3.one * 0.5f;
                 SecretlyKillNumText.transform.localPosition += new Vector3(-0.05f, 0.7f, 0);
-                SecretlyKillerSecretlyKillButton.buttonText = ModTranslation.getString("SecretlyKillButtonName");
+                SecretlyKillerSecretlyKillButton.buttonText = ModTranslation.GetString("SecretlyKillButtonName");
                 SecretlyKillerSecretlyKillButton.showButtonText = true;
             };
 
@@ -1787,7 +1787,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("ClairvoyantButtonName"),
+                buttonText = ModTranslation.GetString("ClairvoyantButtonName"),
                 showButtonText = true
             };
 
@@ -1796,7 +1796,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (DoubleKiller.DoubleKillerFixedPatch.DoubleKillerSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, DoubleKiller.DoubleKillerFixedPatch.DoubleKillerSetTarget());
+                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, DoubleKiller.DoubleKillerFixedPatch.DoubleKillerSetTarget());
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.DoubleKiller:
@@ -1835,7 +1835,7 @@ namespace SuperNewRoles.Buttons
                 {
                     if (DoubleKiller.DoubleKillerFixedPatch.DoubleKillerSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, DoubleKiller.DoubleKillerFixedPatch.DoubleKillerSetTarget());
+                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, DoubleKiller.DoubleKillerFixedPatch.DoubleKillerSetTarget());
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.DoubleKiller:
@@ -1893,7 +1893,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("SuicideName"),
+                buttonText = ModTranslation.GetString("SuicideName"),
                 showButtonText = true
             };
 
@@ -1933,7 +1933,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("KillName"),
+                buttonText = ModTranslation.GetString("KillName"),
                 showButtonText = true
             };
 
@@ -1964,7 +1964,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.getString("ToiletName"),
+                buttonText = ModTranslation.GetString("ToiletName"),
                 showButtonText = true
             };
 

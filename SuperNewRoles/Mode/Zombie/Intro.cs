@@ -28,7 +28,7 @@ namespace SuperNewRoles.Mode.Zombie
         public static void IntroHandler(IntroCutscene __instance)
         {
             __instance.BackgroundBar.material.color = main.Zombiecolor;
-            __instance.TeamTitle.text = ModTranslation.getString("ZombieModeName");
+            __instance.TeamTitle.text = ModTranslation.GetString("ZombieModeName");
             __instance.TeamTitle.color = main.Zombiecolor;
             __instance.ImpostorText.text = "";
         }
@@ -36,12 +36,12 @@ namespace SuperNewRoles.Mode.Zombie
         public static void YouAreHandle(IntroCutscene __instance)
         {
             Color backcolor = main.Policecolor;
-            string text = ModTranslation.getString("ZombiePoliceName");
-            string desc = ModTranslation.getString("ZombiePoliceTitle1");
+            string text = ModTranslation.GetString("ZombiePoliceName");
+            string desc = ModTranslation.GetString("ZombiePoliceTitle1");
             if (PlayerControl.LocalPlayer.IsZombie())
             {
-                text = ModTranslation.getString("ZombieZombieName");
-                desc = ModTranslation.getString("ZombieZombieTitle1");
+                text = ModTranslation.GetString("ZombieZombieName");
+                desc = ModTranslation.GetString("ZombieZombieTitle1");
                 backcolor = main.Zombiecolor;
             }
             __instance.YouAreText.color = backcolor;
@@ -52,7 +52,7 @@ namespace SuperNewRoles.Mode.Zombie
             /**
             if (PlayerControl.LocalPlayer.IsQuarreled())
             {
-                __instance.RoleBlurbText.text = __instance.RoleBlurbText.text + "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
+                __instance.RoleBlurbText.text = __instance.RoleBlurbText.text + "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, String.Format(ModTranslation.GetString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
             }
             */
         }

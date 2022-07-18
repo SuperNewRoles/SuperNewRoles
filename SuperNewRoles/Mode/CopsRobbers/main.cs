@@ -296,7 +296,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     //string name = "\n\n\n\n\n<size=300%><color=white>" + SuperNewRoles.Mode.ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>インポスターが来るまで残り5秒</size>";
                     //PlayerControl.LocalPlayer.RpcSetName(name);
                     LastUpdate = ImpostorMoveTime;
-                    string name = "\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>" + ModTranslation.getString("CopsImpostorCome") + ((int)(LastUpdate + 1)).ToString() + ModTranslation.getString("second") + "</size>";
+                    string name = "\n\n\n\n\n<size=300%><color=white>" + ModeHandler.PlayingOnSuperNewRoles + "</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<size=200%>" + ModTranslation.GetString("CopsImpostorCome") + ((int)(LastUpdate + 1)).ToString() + ModTranslation.GetString("second") + "</size>";
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (!p.AmOwner)

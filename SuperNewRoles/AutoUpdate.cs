@@ -100,7 +100,7 @@ namespace SuperNewRoles
                 SuperNewRolesPlugin.NewVersion = tagname.Replace("v", "");
                 System.Version newver = System.Version.Parse(SuperNewRolesPlugin.NewVersion);
                 System.Version Version = SuperNewRolesPlugin.Version;
-                announcement = string.Format(ModTranslation.getString("announcementUpdate"), newver, announcement);
+                announcement = string.Format(ModTranslation.GetString("announcementUpdate"), newver, announcement);
                 if (!ConfigRoles.AutoUpdate.Value)
                 {
                     Logger.Info("AutoUpdateRETURN", "AutoUpdate");
@@ -137,7 +137,7 @@ namespace SuperNewRoles
                             {
                                 updateURL = browser_download_url;
                                 await Update();
-                                setdate.SetText(ModTranslation.getString("creditsMain") + "\n" + string.Format(ModTranslation.getString("creditsUpdateOk"), SuperNewRolesPlugin.NewVersion));
+                                setdate.SetText(ModTranslation.GetString("creditsMain") + "\n" + string.Format(ModTranslation.GetString("creditsUpdateOk"), SuperNewRolesPlugin.NewVersion));
                                 ConfigRoles.IsUpdate.Value = true;
                             }
                         }

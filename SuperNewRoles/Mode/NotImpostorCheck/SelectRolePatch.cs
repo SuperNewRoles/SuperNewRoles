@@ -10,7 +10,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
             {
                 if (p.IsImpostor())
                 {
-                    SuperNewRolesPlugin.Logger.LogInfo("[NotImpostorCheck] ImpostorName:" + p.nameText().text);
+                    SuperNewRolesPlugin.Logger.LogInfo("[NotImpostorCheck] ImpostorName:" + p.NameText().text);
                     Main.Impostors.Add(p.PlayerId);
                 }
             }

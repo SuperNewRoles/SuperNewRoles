@@ -35,7 +35,7 @@ namespace SuperNewRoles.Roles
                 if (!RoleClass.IsMeeting && RoleClass.SerialKiller.IsSuicideView)
                 {
                     RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
-                    RoleClass.SerialKiller.SuicideKillText.text = string.Format(ModTranslation.getString("SerialKillerSuicideText"), ((int)RoleClass.SerialKiller.SuicideTime) + 1);
+                    RoleClass.SerialKiller.SuicideKillText.text = string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.SerialKiller.SuicideTime) + 1);
                 }
                 else if (RoleClass.SerialKiller.SuicideKillText.text != "")
                 {
@@ -63,7 +63,7 @@ namespace SuperNewRoles.Roles
             }
             if (!RoleClass.IsMeeting && RoleClass.SerialKiller.IsSuicideView)
             {
-                RoleClass.SerialKiller.SuicideKillText.text = string.Format(ModTranslation.getString("SerialKillerSuicideText"), ((int)RoleClass.SerialKiller.SuicideTime) + 1);
+                RoleClass.SerialKiller.SuicideKillText.text = string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.SerialKiller.SuicideTime) + 1);
             }
             else
             {

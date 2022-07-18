@@ -40,7 +40,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             /*
             __instance.BackgroundBar.material.color = Color.white;
-            __instance.TeamTitle.text = ModTranslation.getString("BattleRoyalModeName");
+            __instance.TeamTitle.text = ModTranslation.GetString("BattleRoyalModeName");
             __instance.TeamTitle.color = new Color32(116,80,48,byte.MaxValue);
             __instance.ImpostorText.text = "";
             */
@@ -52,13 +52,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 var date = SuperNewRoles.Intro.IntroDate.GetIntroDate(myrole);
                 __instance.YouAreText.color = date.color;
-                __instance.RoleText.text = ModTranslation.getString(date.NameKey + "Name");
+                __instance.RoleText.text = ModTranslation.GetString(date.NameKey + "Name");
                 __instance.RoleText.color = date.color;
                 __instance.RoleBlurbText.text = date.TitleDesc;
                 __instance.RoleBlurbText.color = date.color;
             }
-            if (PlayerControl.LocalPlayer.IsLovers()) __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.GetDefaultName() ?? ""));
-            if (PlayerControl.LocalPlayer.IsQuarreled()) __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
+            if (PlayerControl.LocalPlayer.IsLovers()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.GetDefaultName() ?? ""));
+            if (PlayerControl.LocalPlayer.IsQuarreled()) __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
         }
     }
 }

@@ -11,7 +11,7 @@ namespace SuperNewRoles.CustomObject
         public static Sprite GetSprite()
         {
             if (sprite) return sprite;
-            sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunai.png", 200f);
+            sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunai.png", 200f);
             return sprite;
         }
 

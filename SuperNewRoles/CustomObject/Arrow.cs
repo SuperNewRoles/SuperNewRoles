@@ -13,7 +13,7 @@ namespace SuperNewRoles.CustomObject
         public static Sprite GetSprite()
         {
             if (sprite) return sprite;
-            sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Arrow.png", 200f);
+            sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Arrow.png", 200f);
             return sprite;
         }
 

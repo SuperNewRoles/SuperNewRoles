@@ -155,17 +155,17 @@ namespace SuperNewRoles.EndGame
                     poolablePlayer.SetFlipX(i % 2 == 0);
                 }
 
-                poolablePlayer.nameText().color = Color.white;
-                poolablePlayer.nameText().lineSpacing *= 0.7f;
-                poolablePlayer.nameText().transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
-                poolablePlayer.nameText().transform.localPosition = new Vector3(poolablePlayer.nameText().transform.localPosition.x, poolablePlayer.nameText().transform.localPosition.y, -15f);
+                poolablePlayer.NameText().color = Color.white;
+                poolablePlayer.NameText().lineSpacing *= 0.7f;
+                poolablePlayer.NameText().transform.localScale = new Vector3(1f / vector.x, 1f / vector.y, 1f / vector.z);
+                poolablePlayer.NameText().transform.localPosition = new Vector3(poolablePlayer.NameText().transform.localPosition.x, poolablePlayer.NameText().transform.localPosition.y, -15f);
 
-                poolablePlayer.nameText().text = winningPlayerData2.PlayerName;
+                poolablePlayer.NameText().text = winningPlayerData2.PlayerName;
 
                 foreach (var data in AdditionalTempData.playerRoles)
                 {
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
-                    poolablePlayer.nameText().text = data.PlayerName + data.NameSuffix + $"\n<size=80%>{string.Join("\n", CustomOptions.cs(data.IntroDate.color, data.IntroDate.NameKey + "Name"))}</size>";
+                    poolablePlayer.NameText().text = data.PlayerName + data.NameSuffix + $"\n<size=80%>{string.Join("\n", CustomOptions.Cs(data.IntroDate.color, data.IntroDate.NameKey + "Name"))}</size>";
                 }
             }
             GameObject bonusTextObject = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
@@ -187,7 +187,7 @@ namespace SuperNewRoles.EndGame
                     break;
                 case WinCondition.HAISON:
                     text = "HAISON";
-                    __instance.WinText.text = ModTranslation.getString("HaisonName");
+                    __instance.WinText.text = ModTranslation.GetString("HaisonName");
                     Color32 HaisonColor = new(163, 163, 162, byte.MaxValue);
                     __instance.WinText.color = HaisonColor;
                     RoleColor = HaisonColor;
@@ -267,11 +267,11 @@ namespace SuperNewRoles.EndGame
             if (text == "HAISON")
             {
                 haison = true;
-                text = ModTranslation.getString("HaisonName");
+                text = ModTranslation.GetString("HaisonName");
             }
             else
             {
-                text = ModTranslation.getString(text);
+                text = ModTranslation.GetString(text);
             }
             bool IsOpptexton = false;
             foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
@@ -281,7 +281,7 @@ namespace SuperNewRoles.EndGame
                     if (!IsOpptexton && !haison)
                     {
                         IsOpptexton = true;
-                        text = text + "&" + ModHelpers.cs(RoleClass.Opportunist.color, ModTranslation.getString("OpportunistName"));
+                        text = text + "&" + ModHelpers.Cs(RoleClass.Opportunist.color, ModTranslation.GetString("OpportunistName"));
                     }
                 }
             }
@@ -303,7 +303,7 @@ namespace SuperNewRoles.EndGame
                             if (!IsLovetexton && !haison)
                             {
                                 IsLovetexton = true;
-                                text = text + "&" + CustomOptions.cs(RoleClass.Lovers.color, "LoversName");
+                                text = text + "&" + CustomOptions.Cs(RoleClass.Lovers.color, "LoversName");
                             }
                         }
                     }
@@ -313,12 +313,12 @@ namespace SuperNewRoles.EndGame
             {
                 if (AdditionalTempData.winCondition == WinCondition.Default)
                 {
-                    text = ModTranslation.getString("ZombieZombieName");
+                    text = ModTranslation.GetString("ZombieZombieName");
                     textRenderer.color = Mode.Zombie.Main.Zombiecolor;
                 }
                 else if (AdditionalTempData.winCondition == WinCondition.WorkpersonWin)
                 {
-                    text = ModTranslation.getString("ZombiePoliceName");
+                    text = ModTranslation.GetString("ZombiePoliceName");
                     textRenderer.color = Mode.Zombie.Main.Policecolor;
                 }
             }
@@ -328,12 +328,12 @@ namespace SuperNewRoles.EndGame
                 {
                     if (p.IsAlive())
                     {
-                        text = p.nameText().text;
+                        text = p.NameText().text;
                         textRenderer.color = new Color32(116, 80, 48, byte.MaxValue);
                     }
                 }
             }
-            textRenderer.text = haison ? text : string.Format(text + " " + ModTranslation.getString("WinName"));
+            textRenderer.text = haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName"));
             try
             {
                 var position = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
@@ -342,22 +342,22 @@ namespace SuperNewRoles.EndGame
                 roleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
 
                 var roleSummaryText = new StringBuilder();
-                roleSummaryText.AppendLine(ModTranslation.getString("最終結果"));
+                roleSummaryText.AppendLine(ModTranslation.GetString("最終結果"));
 
                 foreach (var datas in AdditionalTempData.playerRoles)
                 {
                     var taskInfo = datas.TasksTotal > 0 ? $"<color=#FAD934FF>({datas.TasksCompleted}/{datas.TasksTotal})</color>" : "";
-                    string roleText = CustomOptions.cs(datas.IntroDate.color, datas.IntroDate.NameKey + "Name");
+                    string roleText = CustomOptions.Cs(datas.IntroDate.color, datas.IntroDate.NameKey + "Name");
                     if (datas.GhostIntroDate.RoleId != RoleId.DefaultRole)
                     {
-                        roleText += $" → {CustomOptions.cs(datas.GhostIntroDate.color, datas.GhostIntroDate.NameKey + "Name")}";
+                        roleText += $" → {CustomOptions.Cs(datas.GhostIntroDate.color, datas.GhostIntroDate.NameKey + "Name")}";
                     }
-                    string result = $"{ModHelpers.cs(Palette.PlayerColors[datas.ColorId], datas.PlayerName)}{datas.NameSuffix}{taskInfo} - {GetStatusText(datas.Status)} - {roleText}";
+                    string result = $"{ModHelpers.Cs(Palette.PlayerColors[datas.ColorId], datas.PlayerName)}{datas.NameSuffix}{taskInfo} - {GetStatusText(datas.Status)} - {roleText}";
                     if (ModeHandler.IsMode(ModeId.Zombie))
                     {
-                        roleText = datas.ColorId == 1 ? CustomOptions.cs(Mode.Zombie.Main.Policecolor, "ZombiePoliceName") : CustomOptions.cs(Mode.Zombie.Main.Zombiecolor, "ZombieZombieName");
+                        roleText = datas.ColorId == 1 ? CustomOptions.Cs(Mode.Zombie.Main.Policecolor, "ZombiePoliceName") : CustomOptions.Cs(Mode.Zombie.Main.Zombiecolor, "ZombieZombieName");
                         if (datas.ColorId == 2) taskInfo = "";
-                        result = $"{ModHelpers.cs(Palette.PlayerColors[datas.ColorId], datas.PlayerName)}{taskInfo} : {roleText}";
+                        result = $"{ModHelpers.Cs(Palette.PlayerColors[datas.ColorId], datas.PlayerName)}{taskInfo} : {roleText}";
                     }
                     roleSummaryText.AppendLine(result);
                 }
@@ -382,7 +382,7 @@ namespace SuperNewRoles.EndGame
 
             IsHaison = false;
 
-            static string GetStatusText(FinalStatus status) => ModTranslation.getString("FinalStatus" + status.ToString()); //ローカル関数
+            static string GetStatusText(FinalStatus status) => ModTranslation.GetString("FinalStatus" + status.ToString()); //ローカル関数
         }
     }
 
@@ -437,7 +437,7 @@ namespace SuperNewRoles.EndGame
                     string namesuffix = "";
                     if (p.Object.IsLovers())
                     {
-                        namesuffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                        namesuffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
                     }
                     AdditionalTempData.playerRoles.Add(new AdditionalTempData.PlayerRoleInfo()
                     {
@@ -857,7 +857,7 @@ namespace SuperNewRoles.EndGame
                     // Exile role text
                     if (id is StringNames.ExileTextPN or StringNames.ExileTextSN or StringNames.ExileTextPP or StringNames.ExileTextSP)
                     {
-                        __result = player.Data.PlayerName + " は " + ModTranslation.getString(Intro.IntroDate.GetIntroDate(player.GetRole(), player).NameKey + "Name") + " だった！";
+                        __result = player.Data.PlayerName + " は " + ModTranslation.GetString(Intro.IntroDate.GetIntroDate(player.GetRole(), player).NameKey + "Name") + " だった！";
                     }
                 }
             }

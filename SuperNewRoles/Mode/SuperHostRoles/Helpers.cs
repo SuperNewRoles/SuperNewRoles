@@ -19,7 +19,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
             if (player == null) return;
             if (seer == null) seer = player;
-            var clientId = seer.getClientId();
+            var clientId = seer.GetClientId();
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.Reliable, clientId);
             writer.Write((ushort)role);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -30,7 +30,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             //seer: 上の変更を確認することができるプレイヤー
             if (player == null) return;
             if (seer == null) seer = player;
-            var clientId = seer.getClientId();
+            var clientId = seer.GetClientId();
             SuperNewRolesPlugin.Logger.LogInfo("(Desync => " + seer.Data.PlayerName + " ) " + player.Data.PlayerName + " => " + role);
             sender.StartMessage(clientId)
                 .StartRpc(player.NetId, RpcCalls.SetRole)

@@ -59,11 +59,11 @@ namespace SuperNewRoles.Mode.HideAndSeek
                     {
                         if (player.IsImpostor())
                         {
-                            player.RpcSetName(ModHelpers.cs(RoleClass.ImpostorRed, player.Data.GetPlayerName(PlayerOutfitType.Default)));
+                            player.RpcSetName(ModHelpers.Cs(RoleClass.ImpostorRed, player.Data.GetPlayerName(PlayerOutfitType.Default)));
                         }
                         else
                         {
-                            player.RpcSetName(ModHelpers.cs(new Color32(0, 255, 0, byte.MaxValue), player.Data.GetPlayerName(PlayerOutfitType.Default)));
+                            player.RpcSetName(ModHelpers.Cs(new Color32(0, 255, 0, byte.MaxValue), player.Data.GetPlayerName(PlayerOutfitType.Default)));
                         }
                     }
                     RepairSystemPatch.Postfix();

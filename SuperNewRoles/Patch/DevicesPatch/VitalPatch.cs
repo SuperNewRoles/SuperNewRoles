@@ -88,7 +88,7 @@ namespace SuperNewRoles.Patch
                         }
 
                         string timeString = TimeSpan.FromSeconds(RestrictVitalsTime).ToString(@"mm\:ss\.ff");
-                        TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
+                        TimeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
                         TimeRemaining.gameObject.SetActive(true);
                     }
 

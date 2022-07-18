@@ -45,7 +45,7 @@ namespace SuperNewRoles.Patches
                     //色+ブランチ名+コミット番号
                     credentialsText = $"\r\n<color={modColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>";
                 }
-                credentialsText += ModTranslation.getString("creditsMain");
+                credentialsText += ModTranslation.GetString("creditsMain");
                 credentials.SetText(credentialsText);
 
                 credentials.alignment = TMPro.TextAlignmentOptions.Center;
@@ -54,7 +54,7 @@ namespace SuperNewRoles.Patches
 
                 var version = UnityEngine.Object.Instantiate(credentials);
                 version.transform.position = new Vector3(0, -0.35f, 0);
-                version.SetText(string.Format(ModTranslation.getString("creditsVersion"), SuperNewRolesPlugin.Version.ToString()));
+                version.SetText(string.Format(ModTranslation.GetString("creditsVersion"), SuperNewRolesPlugin.Version.ToString()));
 
                 credentials.transform.SetParent(amongUsLogo.transform);
                 version.transform.SetParent(amongUsLogo.transform);
@@ -74,11 +74,11 @@ namespace SuperNewRoles.Patches
                     {
                         if (DebugMode.IsDebugMode())
                         {
-                            __instance.text.text += "\n" + ModTranslation.getString("DebugModeOn");
+                            __instance.text.text += "\n" + ModTranslation.GetString("DebugModeOn");
                         }
                         if (!Mode.ModeHandler.IsMode(Mode.ModeId.Default))
                         {
-                            __instance.text.text += "\n" + ModTranslation.getString("SettingMode") + ":" + Mode.ModeHandler.ThisModeSetting.GetString();
+                            __instance.text.text += "\n" + ModTranslation.GetString("SettingMode") + ":" + Mode.ModeHandler.ThisModeSetting.GetString();
                         }
                     }
                     catch { }
@@ -94,7 +94,7 @@ namespace SuperNewRoles.Patches
                 }
                 else
                 {
-                    __instance.text.text = $"{baseCredentials}\n{ModTranslation.getString("creditsFull")}\n{__instance.text.text}";
+                    __instance.text.text = $"{baseCredentials}\n{ModTranslation.GetString("creditsFull")}\n{__instance.text.text}";
                     __instance.transform.localPosition = new Vector3(3.5f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
                 }
             }
@@ -256,7 +256,7 @@ namespace SuperNewRoles.Patches
                 snrLogo.transform.position = Vector3.up;
                 renderer = snrLogo.AddComponent<SpriteRenderer>();
                 LoadSprites();
-                renderer.sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
+                renderer.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
 
                 LoadSprites();
                 renderer.sprite = HorseModeOption.enableHorseMode ? horseBannerSprite : bannerSprite;
@@ -280,7 +280,7 @@ namespace SuperNewRoles.Patches
                 var text = button.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 __instance.StartCoroutine(Effects.Lerp(0.1f, new System.Action<float>((p) =>
                 {
-                    text.SetText(ModTranslation.getString("サブマージドを適用する"));
+                    text.SetText(ModTranslation.GetString("サブマージドを適用する"));
                 })));
 
                 TwitchManager man = DestroyableSingleton<TwitchManager>.Instance;
@@ -291,7 +291,7 @@ namespace SuperNewRoles.Patches
                 async void onClick()
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[Submerged]Downloading Submerged!");
-                    showPopup(ModTranslation.getString("ダウンロード中です。\nサブマージドのファイルは大きいため、時間がかかります。"));
+                    showPopup(ModTranslation.GetString("ダウンロード中です。\nサブマージドのファイルは大きいため、時間がかかります。"));
                     await DownloadSubmarged();
                     button.SetActive(false);
                 }
@@ -306,8 +306,8 @@ namespace SuperNewRoles.Patches
 
             public static void LoadSprites()
             {
-                if (bannerSprite == null) bannerSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
-                if (horseBannerSprite == null) horseBannerSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SuperHorseRoles.png", 150f);
+                if (bannerSprite == null) bannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
+                if (horseBannerSprite == null) horseBannerSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuperHorseRoles.png", 150f);
             }
 
             public static void UpdateSprite()
@@ -378,7 +378,7 @@ namespace SuperNewRoles.Patches
                         // probably want to have proper name here
                         responseStream.CopyTo(fileStream);
                     }
-                    ShowPopup(ModTranslation.getString("ダウンロード完了！\n再起動してください！"));
+                    ShowPopup(ModTranslation.GetString("ダウンロード完了！\n再起動してください！"));
                     return true;
                 }
                 catch (System.Exception ex)
@@ -386,7 +386,7 @@ namespace SuperNewRoles.Patches
                     SuperNewRolesPlugin.Instance.Log.LogError(ex.ToString());
                     System.Console.WriteLine(ex);
                 }
-                ShowPopup(ModTranslation.getString("ダウンロード失敗！"));
+                ShowPopup(ModTranslation.GetString("ダウンロード失敗！"));
                 return false;
             }
             private static void ShowPopup(string message)

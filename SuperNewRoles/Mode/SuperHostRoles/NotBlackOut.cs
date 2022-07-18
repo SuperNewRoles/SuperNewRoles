@@ -39,7 +39,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void ResetPlayerCam(this PlayerControl pc, float delay = 0f)
         {
             if (pc == null || !AmongUsClient.Instance.AmHost || pc.AmOwner) return;
-            int clientId = pc.getClientId();
+            int clientId = pc.GetClientId();
 
             byte reactorId = 3;
             if (PlayerControl.GameOptions.MapId == 2) reactorId = 21;

@@ -120,8 +120,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
             Transform ClosetIcon = ClosetTabButton.FindChild("Icon");
             Transform PresetIcon = PresetTabButton.FindChild("Icon");
 
-            ClosetIcon.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Cosmetics.ClosetButton.png", 115f);
-            PresetIcon.GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Cosmetics.PresetButton.png", 115f);
+            ClosetIcon.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Cosmetics.ClosetButton.png", 115f);
+            PresetIcon.GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Cosmetics.PresetButton.png", 115f);
 
             ClosetIcon.localScale *= 2;
             PresetIcon.localScale *= 2;

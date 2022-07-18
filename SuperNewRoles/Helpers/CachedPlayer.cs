@@ -28,7 +28,7 @@ namespace SuperNewRoles
         }
 
         public static implicit operator PlayerControl(CachedPlayer player) => player.PlayerControl;
-        public static implicit operator PlayerPhysics(CachedPlayer player) => player.PlayerPhysics;
+        public static implicit operator PlayerPhysiCs(CachedPlayer player) => player.PlayerPhysics;
     }
 
     [HarmonyPatch]

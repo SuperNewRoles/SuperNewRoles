@@ -231,7 +231,7 @@ namespace SuperNewRoles.Patch
                                         exile = p;
                                         p.RpcSetColor((byte)outfit.ColorId);
                                         p.RpcSetName(target.Object.GetDefaultName() +
-                                            ModTranslation.getString(target.Object.IsRole(RoleId.Marine) ?
+                                            ModTranslation.GetString(target.Object.IsRole(RoleId.Marine) ?
                                             "AssassinSucsess" :
                                             "AssassinFail")
                                             + "<size=0%>");
@@ -409,7 +409,7 @@ namespace SuperNewRoles.Patch
                                     {
                                         if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
                                         {
-                                            p.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
+                                            p.RpcSetNamePrivate("<size=300%>" + ModTranslation.GetString("BakeryExileText") + "\n" + FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
                                         }
                                     }
                                     new LateTask(() => p.RpcSetName(p.GetDefaultName()), 5f);
@@ -424,7 +424,7 @@ namespace SuperNewRoles.Patch
                             {
                                 if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
                                 {
-                                    exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + exiledPlayer.Object.GetDefaultName(), p2);
+                                    exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.GetString("BakeryExileText") + "\n" + exiledPlayer.Object.GetDefaultName(), p2);
                                 }
                             }
                             new LateTask(() => exiledPlayer.Object.RpcSetName(exiledPlayer.Object.GetDefaultName()), 5f);

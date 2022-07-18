@@ -119,7 +119,7 @@ namespace SuperNewRoles.Patch
                             }
 
                             string timeString = TimeSpan.FromSeconds(RestrictCameraTime).ToString(@"mm\:ss\.ff");
-                            TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
+                            TimeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
                             TimeRemaining.gameObject.SetActive(true);
                         }
 
@@ -231,7 +231,7 @@ namespace SuperNewRoles.Patch
                         }
 
                         string timeString = TimeSpan.FromSeconds(RestrictCameraTime).ToString(@"mm\:ss\.ff");
-                        TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
+                        TimeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
                         TimeRemaining.gameObject.SetActive(true);
                     }
                     return true;
@@ -300,7 +300,7 @@ namespace SuperNewRoles.Patch
                         }
 
                         string timeString = TimeSpan.FromSeconds(RestrictCameraTime).ToString(@"mm\:ss\.ff");
-                        TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
+                        TimeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
                         TimeRemaining.gameObject.SetActive(true);
                     }
                     return true;

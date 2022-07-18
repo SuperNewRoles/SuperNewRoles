@@ -284,7 +284,7 @@ namespace SuperNewRoles.Patches
                 */
 
                 // Use an unchecked kill command, to allow shorter kill cooldowns etc. without getting kicked
-                MurderAttemptResult res = checkMuderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
+                MurderAttemptResult res = CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
                 // Handle blank kill
                 if (res == MurderAttemptResult.BlankKill)
                 {
@@ -674,11 +674,11 @@ namespace SuperNewRoles.Patches
                 }, 0.5f);
                 new LateTask(() =>
                 {
-                    __instance.RpcSetName($"<size=200%>{CustomOptions.cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？</size>");
+                    __instance.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？</size>");
                 }, 2f);
                 new LateTask(() =>
                 {
-                    __instance.RpcSendChat($"\n{ModTranslation.getString("MarineWhois")}");
+                    __instance.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
                 }, 2.5f);
                 new LateTask(() =>
                 {
@@ -705,11 +705,11 @@ namespace SuperNewRoles.Patches
                 }, 0.5f);
                 new LateTask(() =>
                 {
-                    target.RpcSetName($"<size=200%>{CustomOptions.cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？</size>");
+                    target.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}は誰だ？</size>");
                 }, 2f);
                 new LateTask(() =>
                 {
-                    target.RpcSendChat($"\n{ModTranslation.getString("MarineWhois")}");
+                    target.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
                 }, 2.5f);
                 new LateTask(() =>
                 {

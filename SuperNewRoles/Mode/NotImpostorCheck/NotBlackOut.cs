@@ -32,7 +32,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
 			{
 				return;
 			}
-			int clientId = pc.getClientId();
+			int clientId = pc.GetClientId();
 			byte reactorId = 3;
 			if (PlayerControl.GameOptions.MapId == 2)
 			{

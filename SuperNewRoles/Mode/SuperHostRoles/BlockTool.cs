@@ -59,7 +59,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         if (p.IsAlive() && !p.IsMod())
                         {
-                            var cid = p.getClientId();
+                            var cid = p.GetClientId();
                             bool IsGuard = false;
                             Vector2 playerposition = p.GetTruePosition();
                             //カメラチェック

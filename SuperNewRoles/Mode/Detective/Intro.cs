@@ -7,9 +7,9 @@ namespace SuperNewRoles.Mode.Detective
             if (main.DetectivePlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
                 __instance.YouAreText.color = main.DetectiveColor;
-                __instance.RoleText.text = ModTranslation.getString("DetectiveName");
+                __instance.RoleText.text = ModTranslation.GetString("DetectiveName");
                 __instance.RoleText.color = main.DetectiveColor;
-                __instance.RoleBlurbText.text = ModTranslation.getString("DetectiveTitle1");
+                __instance.RoleBlurbText.text = ModTranslation.GetString("DetectiveTitle1");
                 __instance.RoleBlurbText.color = main.DetectiveColor;
             }
         }

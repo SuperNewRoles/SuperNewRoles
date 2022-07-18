@@ -41,7 +41,7 @@ namespace SuperNewRoles.Mode.Werewolf
         public static void IntroHandler()
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.getString("WereWolfMeetingNormal"));
+            PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.GetString("WereWolfMeetingNormal"));
             new LateTask(() =>
             {
                 IsDiscussion = true;
@@ -59,7 +59,7 @@ namespace SuperNewRoles.Mode.Werewolf
             if (IsAbility)
             {
                 PlayerControl.GameOptions.VotingTime = AbilityTime;
-                PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.getString("WereWolfMeetingAbility"));
+                PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.GetString("WereWolfMeetingAbility"));
                 HunterExilePlayer = null;
                 SoothRoles = new();
                 HunterKillPlayers = new();
@@ -68,7 +68,7 @@ namespace SuperNewRoles.Mode.Werewolf
             else
             {
                 PlayerControl.GameOptions.VotingTime = DiscussionTime;
-                PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.getString("WereWolfMeetingNormal"));
+                PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.GetString("WereWolfMeetingNormal"));
                 if (HunterExilePlayer != null)
                 {
                     HunterExilePlayer.RpcMurderPlayer(HunterExilePlayer);
@@ -89,8 +89,8 @@ namespace SuperNewRoles.Mode.Werewolf
                     if (source == null || target == null || source.Data.Disconnected) break;
                     string Chat = "";
                     var RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
-                    var RoleName = ModTranslation.getString("Werewolf" + RoleDate.NameKey + "Name");
-                    Chat += string.Format(ModTranslation.getString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
+                    var RoleName = ModTranslation.GetString("Werewolf" + RoleDate.NameKey + "Name");
+                    Chat += string.Format(ModTranslation.GetString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
                     new LateTask(() =>
                     {
                         source.RPCSendChatPrivate(Chat);
@@ -104,8 +104,8 @@ namespace SuperNewRoles.Mode.Werewolf
                         string Chat = "";
                         PlayerControl target = exiled.Object;
                         var RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
-                        var RoleName = ModTranslation.getString("Werewolf" + RoleDate.NameKey + "Name");
-                        Chat += string.Format(ModTranslation.getString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
+                        var RoleName = ModTranslation.GetString("Werewolf" + RoleDate.NameKey + "Name");
+                        Chat += string.Format(ModTranslation.GetString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
                         new LateTask(() =>
                         {
                             player.RPCSendChatPrivate(Chat);
@@ -136,7 +136,7 @@ namespace SuperNewRoles.Mode.Werewolf
                     MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, target);
                     FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcStartMeeting(target);
-                    PlayerControl.LocalPlayer.RpcSetName(ModTranslation.getString("WereWolfMeetingNormal"));
+                    PlayerControl.LocalPlayer.RpcSetName(ModTranslation.GetString("WereWolfMeetingNormal"));
                     SetDefaultName();
                 }, Time, "KillStartMeeting");
 
@@ -157,7 +157,7 @@ namespace SuperNewRoles.Mode.Werewolf
                     MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
                     FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcStartMeeting(null);
-                    PlayerControl.LocalPlayer.RpcSetName(ModTranslation.getString("WereWolfMeetingAbility"));
+                    PlayerControl.LocalPlayer.RpcSetName(ModTranslation.GetString("WereWolfMeetingAbility"));
                 }, 11, "AbilityStartMeeting");
                 new LateTask(() =>
                 {

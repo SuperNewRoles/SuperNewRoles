@@ -15,9 +15,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
         }
 
-        public static bool RepairSystem(
+        public static bool RepairSystem
+        (ShipStatus __instance,
                 SystemTypes systemType,
-                PlayerControl player)
+                PlayerControl player,
+                byte amount)
         {
             if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {

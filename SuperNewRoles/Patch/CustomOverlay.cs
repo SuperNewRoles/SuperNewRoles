@@ -39,12 +39,12 @@ namespace SuperNewRoles.Patch
 
             if (helpButton == null)
             {
-                helpButton = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.HelpButton.png", 115f);
+                helpButton = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HelpButton.png", 115f);
             }
 
             if (colorBG == null)
             {
-                colorBG = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.White.png", 100f);
+                colorBG = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.White.png", 100f);
             }
 
             if (meetingUnderlay == null)

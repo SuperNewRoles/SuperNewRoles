@@ -28,12 +28,12 @@ namespace SuperNewRoles.Roles
             var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : exiled.Object;
             if (exile != null && exile.IsRole(RoleId.Marine))
             {
-                printStr = player.Data.PlayerName + ModTranslation.getString("AssassinSucsess");
+                printStr = player.Data.PlayerName + ModTranslation.GetString("AssassinSucsess");
                 RoleClass.Assassin.IsImpostorWin = true;
             }
             else
             {
-                printStr = player.Data.PlayerName + ModTranslation.getString(
+                printStr = player.Data.PlayerName + ModTranslation.GetString(
                     "AssassinFail");
                 RoleClass.Assassin.DeadPlayer = RoleClass.Assassin.TriggerPlayer;
             }
@@ -63,7 +63,7 @@ namespace SuperNewRoles.Roles
         {
             //翻訳
             var rand = new System.Random();
-            return rand.Next(1, 10) == 1 ? ModTranslation.getString("BakeryExileText2") : ModTranslation.getString("BakeryExileText");
+            return rand.Next(1, 10) == 1 ? ModTranslation.GetString("BakeryExileText2") : ModTranslation.GetString("BakeryExileText");
         }
 
         static void Postfix(ExileController __instance)

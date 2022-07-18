@@ -98,7 +98,7 @@ namespace SuperNewRoles.Roles
                             RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId]++;
                             if (RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] >= RoleClass.Kunoichi.KillKunai)
                             {
-                                ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation: false);
+                                ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation: false);
                                 RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
                             }
                             RoleClass.Kunoichi.Kunais.Remove(kunai);
@@ -183,10 +183,10 @@ namespace SuperNewRoles.Roles
                 if (player.cosmetics.colorBlindText != null)
                     player.cosmetics.colorBlindText.color = color;
 
-                if (player.nameText != null)
+                if (player.NameText != null)
                     if (opacity == 0.1f)
                     {
-                        player.nameText().text = "";
+                        player.NameText().text = "";
                     }
             }
             catch { }

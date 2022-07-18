@@ -67,10 +67,10 @@ namespace SuperNewRoles.Roles
                 if (player.VisorSlot() != null)
                     player.VisorSlot().Image.color = color;
 
-                if (player.nameText != null)
+                if (player.NameText != null)
                     if (opacity == 0.1f)
                     {
-                        player.nameText().text = "";
+                        player.NameText().text = "";
                     }
             }
             catch { }

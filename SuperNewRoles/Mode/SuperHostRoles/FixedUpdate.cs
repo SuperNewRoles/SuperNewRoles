@@ -23,9 +23,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 DefaultName = new Dictionary<int, string>();
                 foreach (var pc in CachedPlayer.AllPlayers)
                 {
-                    //SuperNewRolesPlugin.Logger.LogInfo($"{pc.PlayerId}:{pc.name}:{pc.nameText().text}");
+                    //SuperNewRolesPlugin.Logger.LogInfo($"{pc.PlayerId}:{pc.name}:{pc.NameText().text}");
                     DefaultName[pc.PlayerId] = pc.PlayerControl.name;
-                    pc.PlayerControl.nameText().text = pc.PlayerControl.name;
+                    pc.PlayerControl.NameText().text = pc.PlayerControl.name;
                 }
             }
         }
@@ -102,7 +102,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             foreach (PlayerControl CelebrityPlayer in RoleClass.Celebrity.CelebrityPlayer)
             {
                 if (CelebrityPlayer == player) continue;
-                ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.cs(RoleClass.Celebrity.color, CelebrityPlayer.GetDefaultName()));
+                ChangePlayers.Add(CelebrityPlayer.PlayerId, ModHelpers.Cs(RoleClass.Celebrity.color, CelebrityPlayer.GetDefaultName()));
             }
 
             if (Madmate.CheckImpostor(player) ||
@@ -116,7 +116,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         if (!ChangePlayers.ContainsKey(Impostor.PlayerId))
                         {
-                            ChangePlayers.Add(Impostor.PlayerId, ModHelpers.cs(RoleClass.ImpostorRed, Impostor.GetDefaultName()));
+                            ChangePlayers.Add(Impostor.PlayerId, ModHelpers.Cs(RoleClass.ImpostorRed, Impostor.GetDefaultName()));
                         }
                     }
                 }
@@ -127,8 +127,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (!Jackal.Data.Disconnected)
                     {
-                        if (!ChangePlayers.ContainsKey(Jackal.PlayerId)) ChangePlayers.Add(Jackal.PlayerId, ModHelpers.cs(RoleClass.Jackal.color, Jackal.GetDefaultName()));
-                        else ChangePlayers[Jackal.PlayerId] = ModHelpers.cs(RoleClass.Jackal.color, ChangePlayers[Jackal.PlayerId]);
+                        if (!ChangePlayers.ContainsKey(Jackal.PlayerId)) ChangePlayers.Add(Jackal.PlayerId, ModHelpers.Cs(RoleClass.Jackal.color, Jackal.GetDefaultName()));
+                        else ChangePlayers[Jackal.PlayerId] = ModHelpers.Cs(RoleClass.Jackal.color, ChangePlayers[Jackal.PlayerId]);
                     }
                 }
             }
@@ -140,8 +140,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     {
                         if (Impostor.IsImpostor() && Impostor.IsPlayer())
                         {
-                            if (!ChangePlayers.ContainsKey(Impostor.PlayerId)) ChangePlayers.Add(Impostor.PlayerId, ModHelpers.cs(RoleClass.ImpostorRed, Impostor.GetDefaultName()));
-                            else ChangePlayers[Impostor.PlayerId] = ModHelpers.cs(RoleClass.ImpostorRed, ChangePlayers[Impostor.PlayerId]);
+                            if (!ChangePlayers.ContainsKey(Impostor.PlayerId)) ChangePlayers.Add(Impostor.PlayerId, ModHelpers.Cs(RoleClass.ImpostorRed, Impostor.GetDefaultName()));
+                            else ChangePlayers[Impostor.PlayerId] = ModHelpers.Cs(RoleClass.ImpostorRed, ChangePlayers[Impostor.PlayerId]);
                         }
                     }
                 }
@@ -149,8 +149,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (CursePlayer.IsPlayer())
                     {
-                        if (!ChangePlayers.ContainsKey(CursePlayer.PlayerId)) ChangePlayers.Add(CursePlayer.PlayerId, CursePlayer.GetDefaultName() + ModHelpers.cs(RoleClass.Demon.color, " ▲"));
-                        else ChangePlayers[CursePlayer.PlayerId] = ChangePlayers[CursePlayer.PlayerId] + ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                        if (!ChangePlayers.ContainsKey(CursePlayer.PlayerId)) ChangePlayers.Add(CursePlayer.PlayerId, CursePlayer.GetDefaultName() + ModHelpers.Cs(RoleClass.Demon.color, " ▲"));
+                        else ChangePlayers[CursePlayer.PlayerId] = ChangePlayers[CursePlayer.PlayerId] + ModHelpers.Cs(RoleClass.Demon.color, " ▲");
                     }
                 }
             }
@@ -160,15 +160,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (DousePlayer.IsPlayer())
                     {
-                        if (!ChangePlayers.ContainsKey(DousePlayer.PlayerId)) ChangePlayers.Add(DousePlayer.PlayerId, DousePlayer.GetDefaultName() + ModHelpers.cs(RoleClass.Arsonist.color, " §"));
-                        else ChangePlayers[DousePlayer.PlayerId] = ChangePlayers[DousePlayer.PlayerId] + ModHelpers.cs(RoleClass.Arsonist.color, " §");
+                        if (!ChangePlayers.ContainsKey(DousePlayer.PlayerId)) ChangePlayers.Add(DousePlayer.PlayerId, DousePlayer.GetDefaultName() + ModHelpers.Cs(RoleClass.Arsonist.color, " §"));
+                        else ChangePlayers[DousePlayer.PlayerId] = ChangePlayers[DousePlayer.PlayerId] + ModHelpers.Cs(RoleClass.Arsonist.color, " §");
                     }
                 }
             }
 
             if (player.IsLovers())
             {
-                var suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
+                var suffix = ModHelpers.Cs(RoleClass.Lovers.color, " ♥");
                 PlayerControl Side = player.GetOneSideLovers();
                 string name = Side.GetDefaultName();
                 if (!ChangePlayers.ContainsKey(Side.PlayerId)) ChangePlayers.Add(Side.PlayerId, Side.GetDefaultName() + suffix);
@@ -177,7 +177,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             if (player.IsQuarreled())
             {
-                var suffix = ModHelpers.cs(RoleClass.Quarreled.color, "○");
+                var suffix = ModHelpers.Cs(RoleClass.Quarreled.color, "○");
                 PlayerControl Side = player.GetOneSideQuarreled();
                 string name = Side.GetDefaultName();
                 if (!ChangePlayers.ContainsKey(Side.PlayerId)) ChangePlayers.Add(Side.PlayerId, Side.GetDefaultName() + suffix);
@@ -213,11 +213,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 try
                 {
-                    if (commsActive) TaskText = ModHelpers.cs(Color.yellow, "(?/" + TaskCount.TaskDateNoClearCheck(player.Data).Item2 + ")");
+                    if (commsActive) TaskText = ModHelpers.Cs(Color.yellow, "(?/" + TaskCount.TaskDateNoClearCheck(player.Data).Item2 + ")");
                     else
                     {
                         var (complate, all) = TaskCount.TaskDateNoClearCheck(player.Data);
-                        TaskText = ModHelpers.cs(Color.yellow, "(" + complate + "/" + all + ")");
+                        TaskText = ModHelpers.Cs(Color.yellow, "(" + complate + "/" + all + ")");
                     }
                 }
                 catch { }
@@ -228,15 +228,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (Demon.IsViewIcon(player))
                 {
-                    MySuffix += ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                    MySuffix += ModHelpers.Cs(RoleClass.Demon.color, " ▲");
                     IsDemonVIew = true;
                 }
                 if (Arsonist.IsViewIcon(player))
                 {
-                    MySuffix += ModHelpers.cs(RoleClass.Arsonist.color, " §");
+                    MySuffix += ModHelpers.Cs(RoleClass.Arsonist.color, " §");
                     IsArsonistVIew = true;
                 }
-                NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, Name + MySuffix);
+                NewName = "(<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.Cs(introdate.color, Name + MySuffix);
             }
             else if (player.IsAlive() || IsUnchecked)
             {
@@ -244,16 +244,16 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (Demon.IsViewIcon(player))
                     {
-                        MySuffix += ModHelpers.cs(RoleClass.Demon.color, " ▲");
+                        MySuffix += ModHelpers.Cs(RoleClass.Demon.color, " ▲");
                         IsDemonVIew = true;
                     }
                     if (Arsonist.IsViewIcon(player))
                     {
-                        MySuffix += ModHelpers.cs(RoleClass.Arsonist.color, " §");
+                        MySuffix += ModHelpers.Cs(RoleClass.Arsonist.color, " §");
                         IsArsonistVIew = true;
                     }
                 }
-                NewName = "<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.cs(introdate.color, Name + MySuffix);
+                NewName = "<size=75%>" + ModHelpers.Cs(introdate.color, introdate.Name) + TaskText + "</size>\n" + ModHelpers.Cs(introdate.color, Name + MySuffix);
                 SuperNewRolesPlugin.Logger.LogInfo(NewName);
             }
             if (!player.IsMod())
@@ -272,8 +272,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
             string DieSuffix = "";
-            if (!IsDemonVIew && Demon.IsViewIcon(player)) { DieSuffix += ModHelpers.cs(RoleClass.Demon.color, " ▲"); }
-            if (!IsArsonistVIew && Arsonist.IsViewIcon(player)) { DieSuffix += ModHelpers.cs(RoleClass.Arsonist.color, " §"); }
+            if (!IsDemonVIew && Demon.IsViewIcon(player)) { DieSuffix += ModHelpers.Cs(RoleClass.Demon.color, " ▲"); }
+            if (!IsArsonistVIew && Arsonist.IsViewIcon(player)) { DieSuffix += ModHelpers.Cs(RoleClass.Arsonist.color, " §"); }
             NewName += DieSuffix;
             foreach (PlayerControl DiePlayer in DiePlayers)
             {

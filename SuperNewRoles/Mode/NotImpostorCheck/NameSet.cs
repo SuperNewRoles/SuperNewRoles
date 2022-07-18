@@ -13,7 +13,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                 {
                     if (p.IsAlive() && p.PlayerId != LocalId)
                     {
-                        p.nameText().color = Color.white;
+                        p.NameText().color = Color.white;
                     }
                 }
             }

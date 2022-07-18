@@ -30,7 +30,7 @@ namespace SuperNewRoles.Patch
                             }
                             else
                             {
-                                if (!ModHelpers.isCustomServer())
+                                if (!ModHelpers.IsCustomServer())
                                 {
                                     LobbyLimit = Math.Clamp(LobbyLimit, 4, 15);
                                 }

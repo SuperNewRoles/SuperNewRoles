@@ -12,7 +12,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string skinid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(__instance.nameText().text + ":" + skinid);
+                SuperNewRolesPlugin.Logger.LogInfo(__instance.NameText().text + ":" + skinid);
             }
         }
         [HarmonyPatch(typeof(PlayerControl),nameof(PlayerControl.SetColor))]
@@ -20,7 +20,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref int colorid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo(__instance.nameText().text+":"+colorid);
+                SuperNewRolesPlugin.Logger.LogInfo(__instance.NameText().text+":"+colorid);
             }
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetHat))]
@@ -28,7 +28,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string colorid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[SetHat]"+__instance.nameText().text + ":" + colorid);
+                SuperNewRolesPlugin.Logger.LogInfo("[SetHat]"+__instance.NameText().text + ":" + colorid);
             }
         }
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetVisor))]
@@ -36,7 +36,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] ref string colorid)
             {
-                SuperNewRolesPlugin.Logger.LogInfo("[SetVisor]" + __instance.nameText().text + ":" + colorid);
+                SuperNewRolesPlugin.Logger.LogInfo("[SetVisor]" + __instance.NameText().text + ":" + colorid);
             }
         }
         */
@@ -100,7 +100,7 @@ namespace SuperNewRoles.Mode.Zombie
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        p.RpcSetNamePrivate(string.Format(ModTranslation.getString("ZombieTimerText"), (int)NameChangeTimer + 1));
+                        p.RpcSetNamePrivate(string.Format(ModTranslation.GetString("ZombieTimerText"), (int)NameChangeTimer + 1));
                     }
                 }
                 else

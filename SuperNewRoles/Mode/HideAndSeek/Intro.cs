@@ -32,7 +32,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
                 }
             }
             __instance.BackgroundBar.material.color = Color.white;
-            __instance.TeamTitle.text = ModTranslation.getString("HideAndSeekModeName");
+            __instance.TeamTitle.text = ModTranslation.GetString("HideAndSeekModeName");
             __instance.TeamTitle.color = Color.yellow;
             __instance.ImpostorText.text = string.Format("この{0}人が鬼だ。", ImpostorNum.ToString());
             __instance.ImpostorText.color = Color.yellow;

@@ -121,9 +121,9 @@ namespace SuperNewRoles.Patches
                 {
                     IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
                     __instance.BackgroundBar.material.color = color;
-                    __instance.TeamTitle.text = ModTranslation.getString("Neutral");
+                    __instance.TeamTitle.text = ModTranslation.GetString("Neutral");
                     __instance.TeamTitle.color = color;
-                    __instance.ImpostorText.text = ModTranslation.getString("NeutralSubIntro");
+                    __instance.ImpostorText.text = ModTranslation.GetString("NeutralSubIntro");
                 }
                 else
                 {
@@ -142,7 +142,7 @@ namespace SuperNewRoles.Patches
                         case RoleId.MayorFriends:
                             IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
                             __instance.BackgroundBar.material.color = Intro.color;
-                            __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
+                            __instance.TeamTitle.text = ModTranslation.GetString(Intro.NameKey + "Name");
                             __instance.TeamTitle.color = Intro.color;
                             __instance.ImpostorText.text = "";
                             break;
@@ -213,18 +213,18 @@ namespace SuperNewRoles.Patches
                         {
                             var date = IntroDate.GetIntroDate(myrole);
                             __instance.YouAreText.color = date.color;
-                            __instance.RoleText.text = ModTranslation.getString(date.NameKey + "Name");
+                            __instance.RoleText.text = ModTranslation.GetString(date.NameKey + "Name");
                             __instance.RoleText.color = date.color;
                             __instance.RoleBlurbText.text = date.TitleDesc;
                             __instance.RoleBlurbText.color = date.color;
                         }
                         if (PlayerControl.LocalPlayer.IsLovers())
                         {
-                            __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
                         }
                         if (PlayerControl.LocalPlayer.IsQuarreled())
                         {
-                            __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
+                            __instance.RoleBlurbText.text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, string.Format(ModTranslation.GetString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
                         }
                     }
                     else if (ModeHandler.IsMode(ModeId.SuperHostRoles))

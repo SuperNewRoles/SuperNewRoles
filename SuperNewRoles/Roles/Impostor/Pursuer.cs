@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles
                         }
                     }
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("[Pursuer]Target:" + target?.nameText().text);
+                SuperNewRolesPlugin.Logger.LogInfo("[Pursuer]Target:" + target?.NameText().text);
                 if (target != null)
                 {
                     try

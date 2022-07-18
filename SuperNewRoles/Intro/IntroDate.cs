@@ -26,11 +26,11 @@ namespace SuperNewRoles.Intro
         {
             this.color = color;
             this.NameKey = NameKey;
-            this.Name = ModTranslation.getString(NameKey + "Name");
+            this.Name = ModTranslation.GetString(NameKey + "Name");
             this.RoleId = RoleId;
             this.TitleNum = TitleNum;
             this.TitleDesc = GetTitle(NameKey, TitleNum);
-            this.Description = ModTranslation.getString(NameKey + "Description");
+            this.Description = ModTranslation.GetString(NameKey + "Description");
             this.Team = team;
             this.IsGhostRole = IsGhostRole;
 
@@ -66,7 +66,7 @@ namespace SuperNewRoles.Intro
         public static string GetTitle(string name, Int16 num)
         {
             System.Random r1 = new();
-            return ModTranslation.getString(name + "Title" + r1.Next(1, num + 1).ToString());
+            return ModTranslation.GetString(name + "Title" + r1.Next(1, num + 1).ToString());
         }
 
         public static IntroDate CrewmateIntro = new("CrewMate", Color.white, 1, RoleId.DefaultRole);

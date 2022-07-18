@@ -27,7 +27,7 @@ namespace SuperNewRoles
             }
         }
 
-        public static System.Version Version = System.Version.Parse(VersionString);
+        public static Version Version = Version.Parse(VersionString);
         internal static BepInEx.Logging.ManualLogSource Logger;
         public static Sprite ModStamp;
         public static int optionsPage = 1;
@@ -67,7 +67,7 @@ namespace SuperNewRoles
 
             // Old Delete End
 
-            Logger.LogInfo(ModTranslation.getString("StartLogText"));
+            Logger.LogInfo(ModTranslation.GetString("StartLogText"));
 
             var assembly = Assembly.GetExecutingAssembly();
 

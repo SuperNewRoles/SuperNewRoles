@@ -23,7 +23,7 @@ namespace SuperNewRoles.Patch
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Default) && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
                 {
                     var (commont, shortt, longt) = GameData.Instance.GetPlayerById(playerId).Object.GetTaskCount();
-                    var TasksList = ModHelpers.generateTasks(commont, shortt, longt);
+                    var TasksList = ModHelpers.GenerateTasks(commont, shortt, longt);
                     taskTypeIds = new UnhollowerBaseLib.Il2CppStructArray<byte>(TasksList.Count);
                     for (int i = 0; i < TasksList.Count; i++)
                     {

@@ -29,7 +29,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             Chat = "\n";
                         }
                         SuperNewRolesPlugin.Logger.LogInfo("テスト");
-                        string RoleName = ModTranslation.getString(RoleIntroDate.NameKey + "Name");
+                        string RoleName = ModTranslation.GetString(RoleIntroDate.NameKey + "Name");
                         Chat += "あなたの役職は「" + RoleName + "」です！\n";
                         Chat += IntroDate.GetTitle(RoleIntroDate.NameKey, RoleIntroDate.TitleNum) + "\n";
                         Chat += RoleIntroDate.Description + "\n";
@@ -70,7 +70,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 IntroDate RoleIntroDate2 = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                 string Chat2 = "";
-                string RoleName2 = ModTranslation.getString(RoleIntroDate2.NameKey + "Name");
+                string RoleName2 = ModTranslation.GetString(RoleIntroDate2.NameKey + "Name");
                 Chat2 = Chat2 + "あなたの役職は「" + RoleName2 + "」です！\n";
                 Chat2 += IntroDate.GetTitle(RoleIntroDate2.NameKey, RoleIntroDate2.TitleNum) + "\n";
                 Chat2 += RoleIntroDate2.Description + "\n";

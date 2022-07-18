@@ -17,7 +17,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                             {
                                 tasks = (new() { }).ToArray();
                             }
-                            MessageWriter messageWriter2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SetTasks, SendOption.Reliable,p.getClientId());
+                            MessageWriter messageWriter2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SetTasks, SendOption.Reliable,p.GetClientId());
                             messageWriter2.Write(playerId);
                             messageWriter2.WriteBytesAndSize(tasks);
                             messageWriter2.EndRPC();
@@ -26,7 +26,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     return false;
                 } else if (player.IsRole(RoleId.Workperson))
                 {
-                    var tasks = ModHelpers.generateTasks((int)CustomOptions.WorkpersonCommonTask.GetFloat(), (int)CustomOptions.WorkpersonShortTask.GetFloat(), (int)CustomOptions.WorkpersonLongTask.GetFloat()).ToArray();
+                    var tasks = ModHelpers.GenerateTasks((int)CustomOptions.WorkpersonCommonTask.GetFloat(), (int)CustomOptions.WorkpersonShortTask.GetFloat(), (int)CustomOptions.WorkpersonLongTask.GetFloat()).ToArray();
                     MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(player.NetId, (byte)29);
                     messageWriter.Write(playerId);
                     messageWriter.WriteBytesAndSize(tasks);

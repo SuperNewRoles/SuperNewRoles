@@ -49,11 +49,11 @@ namespace SuperNewRoles.Mode.RandomColor
                         }
                         if (!IsHideName && IsRandomNameColor && (!RoleClass.IsMeeting || (RoleClass.IsMeeting && IsRandomColorMeeting)))
                         {
-                            p.RpcSetName(ModHelpers.cs(Palette.PlayerColors[SetColor], p.GetDefaultName()));
+                            p.RpcSetName(ModHelpers.Cs(Palette.PlayerColors[SetColor], p.GetDefaultName()));
                         }
                         if (RoleClass.IsMeeting && IsHideName)
                         {
-                            p.RpcSetName(ModHelpers.cs(Color.yellow, "[RandomColor] RandomColorMode!"));
+                            p.RpcSetName(ModHelpers.Cs(Color.yellow, "[RandomColor] RandomColorMode!"));
                             IsMeetingIn = true;
                         }
                         if (IsMeetingIn && !RoleClass.IsMeeting && IsHideName)

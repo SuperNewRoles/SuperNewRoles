@@ -113,7 +113,7 @@ namespace SuperNewRoles.Patch
                     {
                         if (!VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId))
                         {
-                            message += "\n" + ModTranslation.getString("ErrorHostNoVersion") + "\n";
+                            message += "\n" + ModTranslation.GetString("ErrorHostNoVersion") + "\n";
                             blockStart = true;
                         }
                         else
@@ -123,17 +123,17 @@ namespace SuperNewRoles.Patch
                             int diff = SuperNewRolesPlugin.Version.CompareTo(PV.version);
                             if (diff > 0)
                             {
-                                message += $"{ModTranslation.getString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
+                                message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
                                 blockStart = true;
                             }
                             else if (diff < 0)
                             {
-                                message += $"{ModTranslation.getString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
+                                message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
                                 blockStart = true;
                             }
                             else if (!PV.GuidMatches())
                             { // version presumably matches, check if Guid matches
-                                message += $"{ModTranslation.getString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
+                                message += $"{ModTranslation.GetString("ErrorHostChangeVersion")} (v{VersionPlayers[client.Id].version})\n";
                                 blockStart = true;
                             }
                         }
@@ -146,7 +146,7 @@ namespace SuperNewRoles.Patch
                             {
                                 if (!(client.PlatformData.Platform != Platforms.StandaloneEpicPC && client.PlatformData.Platform != Platforms.StandaloneSteamPC && CustomOptions.DisconnectNotPCOption.GetBool()))
                                 {
-                                    message += string.Format(ModTranslation.getString("ErrorClientNoVersion"), client.PlayerName) + "\n";
+                                    message += string.Format(ModTranslation.GetString("ErrorClientNoVersion"), client.PlayerName) + "\n";
                                     blockStart = true;
                                 }
                             }
@@ -156,17 +156,17 @@ namespace SuperNewRoles.Patch
                                 int diff = SuperNewRolesPlugin.Version.CompareTo(PV.version);
                                 if (diff > 0)
                                 {
-                                    message += $"{string.Format(ModTranslation.getString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
+                                    message += $"{string.Format(ModTranslation.GetString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
                                     blockStart = true;
                                 }
                                 else if (diff < 0)
                                 {
-                                    message += $"{string.Format(ModTranslation.getString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
+                                    message += $"{string.Format(ModTranslation.GetString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
                                     blockStart = true;
                                 }
                                 else if (!PV.GuidMatches())
                                 { // version presumably matches, check if Guid matches
-                                    message += $"{string.Format(ModTranslation.getString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
+                                    message += $"{string.Format(ModTranslation.GetString("ErrorClientChangeVersion"), client.Character.Data.PlayerName)} (v{VersionPlayers[client.Id].version})\n";
                                     blockStart = true;
                                 }
                             }
@@ -228,7 +228,7 @@ namespace SuperNewRoles.Patch
                 {
                     if (!playerVersions.ContainsKey(AmongUsClient.Instance.HostId) || SuperNewRolesPlugin.Version.CompareTo(playerVersions[AmongUsClient.Instance.HostId].version) != 0)
                     {
-                        __instance.GameStartText.text = ModTranslation.getString("ErrorHostNoVersion");
+                        __instance.GameStartText.text = ModTranslation.GetString("ErrorHostNoVersion");
                         __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition + Vector3.up * 2;
                     }
                     else

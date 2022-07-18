@@ -13,7 +13,7 @@ namespace SuperNewRoles
     {
         public static bool IsMod(this PlayerControl player)
         {
-            return player != null && IsMod(player.getClientId());
+            return player != null && IsMod(player.GetClientId());
         }
         public static bool IsMod(this ClientData player)
         {
@@ -56,7 +56,7 @@ namespace SuperNewRoles
                     {
                         mytxt = textTask.Text;
                     }
-                    var info = infos.FirstOrDefault(x => textTask.Text.StartsWith(ModTranslation.getString(x.NameKey + "Name")));
+                    var info = infos.FirstOrDefault(x => textTask.Text.StartsWith(ModTranslation.GetString(x.NameKey + "Name")));
                     if (info != null)
                         infos.Remove(info); // TextTask for this RoleInfo does not have to be added, as it already exists
                     else
@@ -77,20 +77,20 @@ namespace SuperNewRoles
                 var task = new GameObject("RoleTask").AddComponent<ImportantTextTask>();
                 task.transform.SetParent(player.transform, false);
 
-                task.Text = CustomOption.CustomOptions.cs(roleInfo.color, $"{ModTranslation.getString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
+                task.Text = CustomOption.CustomOptions.Cs(roleInfo.color, $"{ModTranslation.GetString(roleInfo.NameKey + "Name")}: {roleInfo.TitleDesc}");
                 if (player.IsLovers())
                 {
-                    task.Text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, ModTranslation.getString("LoversName") + ": " + string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
+                    task.Text += "\n" + ModHelpers.Cs(RoleClass.Lovers.color, ModTranslation.GetString("LoversName") + ": " + string.Format(ModTranslation.GetString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
                 }
                 if (!player.IsGhostRole(RoleId.DefaultRole))
                 {
                     var GhostRoleInfo = IntroDate.GetIntroDate(player.GetGhostRole(), player);
-                    task.Text += "\n" + CustomOption.CustomOptions.cs(GhostRoleInfo.color, $"{ModTranslation.getString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
+                    task.Text += "\n" + CustomOption.CustomOptions.Cs(GhostRoleInfo.color, $"{ModTranslation.GetString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
                 }
                 /**
                 if (player.IsQuarreled())
                 {
-                    task.Text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, String.Format(ModTranslation.getString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
+                    task.Text += "\n" + ModHelpers.Cs(RoleClass.Quarreled.color, String.Format(ModTranslation.GetString("QuarreledIntro"), SetNamesClass.AllNames[PlayerControl.LocalPlayer.GetOneSideQuarreled().PlayerId]));
                 }
                 **/
 

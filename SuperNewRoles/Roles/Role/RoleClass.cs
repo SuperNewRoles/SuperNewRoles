@@ -171,7 +171,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SoothSayerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -214,7 +214,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.LighterLightOnButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.LighterLightOnButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -250,7 +250,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.EvilScientistButton.png.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -279,7 +279,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
                 return buttonSprite;
             }
 
@@ -309,7 +309,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SheriffKillButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -341,7 +341,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.JackalSidekickButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSidekickButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -372,7 +372,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
@@ -410,7 +410,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetSpeedBoostButtonSprite()
             {
                 if (SpeedBoostButtonSprite) return SpeedBoostButtonSprite;
-                SpeedBoostButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                SpeedBoostButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
                 return SpeedBoostButtonSprite;
             }
 
@@ -468,7 +468,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.DoorrDoorButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DoorrDoorButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
@@ -500,7 +500,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ShielderButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ShielderButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
@@ -523,7 +523,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.FreezerButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.FreezerButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
@@ -546,7 +546,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedDownButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedDownButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
@@ -589,7 +589,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VultureButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -615,7 +615,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.NiceScientistButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.NiceScientistButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -645,7 +645,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ClergymanLightOutButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -737,13 +737,13 @@ namespace SuperNewRoles.Roles
             public static Sprite GetNoSetButtonSprite()
             {
                 if (setbuttonSprite) return setbuttonSprite;
-                setbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MovingLocationSetButton.png", 115f);
+                setbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MovingLocationSetButton.png", 115f);
                 return setbuttonSprite;
             }
             public static Sprite GetSetButtonSprite()
             {
                 if (nosetbuttonSprite) return nosetbuttonSprite;
-                nosetbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MovingTpButton.png", 115f);
+                nosetbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MovingTpButton.png", 115f);
                 return nosetbuttonSprite;
             }
             public static void ClearAndReload()
@@ -848,7 +848,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
@@ -961,7 +961,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CountChangerButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CountChangerButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
@@ -1021,7 +1021,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.HawkHawkEye.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HawkHawkEye.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -1102,13 +1102,13 @@ namespace SuperNewRoles.Roles
             public static Sprite GetGetButtonSprite()
             {
                 if (GetbuttonSprite) return GetbuttonSprite;
-                GetbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MagazinerGetButton.png", 115f);
+                GetbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MagazinerGetButton.png", 115f);
                 return GetbuttonSprite;
             }
             public static Sprite GetAddButtonSprite()
             {
                 if (AddbuttonSprite) return AddbuttonSprite;
-                AddbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MagazinerAddButton.png", 115f);
+                AddbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.MagazinerAddButton.png", 115f);
                 return AddbuttonSprite;
             }
             public static void ClearAndReload()
@@ -1140,7 +1140,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.trueloverloveButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.trueloverloveButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -1520,7 +1520,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
@@ -1729,7 +1729,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SpeedUpButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
@@ -1773,7 +1773,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.DemonButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.DemonButton.png", 115f);
                 return buttonSprite;
             }
 
@@ -1869,7 +1869,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSeerSidekickButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -1934,13 +1934,13 @@ namespace SuperNewRoles.Roles
             public static Sprite GetDouseButtonSprite()
             {
                 if (DousebuttonSprite) return DousebuttonSprite;
-                DousebuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistDouse.png", 115f);
+                DousebuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ArsonistDouse.png", 115f);
                 return DousebuttonSprite;
             }
             public static Sprite GetIgniteButtonSprite()
             {
                 if (IgnitebuttonSprite) return IgnitebuttonSprite;
-                IgnitebuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistIgnite.png", 115f);
+                IgnitebuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ArsonistIgnite.png", 115f);
                 return IgnitebuttonSprite;
             }
 
@@ -1972,7 +1972,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ChiefSidekickButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ChiefSidekickButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -1998,7 +1998,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -2020,7 +2020,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CleanerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -2045,7 +2045,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (ButtonSprite) return ButtonSprite;
-                ButtonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SamuraiButton.png", 115f);
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SamuraiButton.png", 115f);
                 return ButtonSprite;
             }
             public static void ClearAndReload()
@@ -2099,7 +2099,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.VentMakerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -2119,7 +2119,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.GhostMechanicRepairButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -2171,7 +2171,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.PositionSwapperButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.PositionSwapperButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -2309,7 +2309,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.KunoichiKunaiButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -2379,7 +2379,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SuicideWisherButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicideWisherButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
@@ -2418,7 +2418,7 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ToiletFanButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ToiletFanButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()

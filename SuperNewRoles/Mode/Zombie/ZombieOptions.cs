@@ -34,7 +34,7 @@ namespace SuperNewRoles.Mode.Zombie
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
                 if (player.AmOwner) PlayerControl.GameOptions = optdata;
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.getClientId());
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
                 writer.WriteBytesAndSize(optdata.ToBytes(5));
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
             }
@@ -56,7 +56,7 @@ namespace SuperNewRoles.Mode.Zombie
                 optdata.PlayerSpeedMod = GetSpeed(PoliceSpeed);
             }
             if (player.AmOwner) PlayerControl.GameOptions = optdata;
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.getClientId());
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SyncSettings, SendOption.None, player.GetClientId());
             writer.WriteBytesAndSize(optdata.ToBytes(5));
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }

@@ -57,7 +57,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         if (!p.Data.Disconnected)
                         {
-                            p.RpcSetNamePrivate(ModTranslation.getString("BattleRoyalRemaining") + ((int)StartSeconds + 1) + ModTranslation.getString("second"));
+                            p.RpcSetNamePrivate(ModTranslation.GetString("BattleRoyalRemaining") + ((int)StartSeconds + 1) + ModTranslation.GetString("second"));
                         }
                     }
                     UpdateTime += 1f;
@@ -73,7 +73,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                             {
                                 if (p.PlayerId != 0)
                                 {
-                                    PlayerControl.LocalPlayer.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, ModTranslation.getString("Player")), p);
+                                    PlayerControl.LocalPlayer.RpcSetNamePrivate(ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString("Player")), p);
                                 }
                             }
                         }
@@ -107,7 +107,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         new LateTask(() =>
                         {
-                            int clientId = __instance.myPlayer.getClientId();
+                            int clientId = __instance.myPlayer.GetClientId();
                             MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, clientId);
                             writer2.Write(id);
                             AmongUsClient.Instance.FinishRpcImmediately(writer2);

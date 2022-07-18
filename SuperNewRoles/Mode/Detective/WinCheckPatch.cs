@@ -103,7 +103,7 @@ namespace SuperNewRoles.Mode.Detective
             public int TeamImpostorsAlive { get; set; }
             public int CrewAlive { get; set; }
             public int TotalAlive { get; set; }
-            public PlayerStatistics()
+            public PlayerStatistiCs()
             {
                 GetPlayerCounts();
             }

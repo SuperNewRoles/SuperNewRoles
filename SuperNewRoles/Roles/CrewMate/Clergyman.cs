@@ -48,7 +48,7 @@ namespace SuperNewRoles.Roles
         {
             if (IsLightOutVisionNoTime())
             {
-                new CustomMessage(ModTranslation.getString("ClergymanLightOutMessage"), RoleClass.Clergyman.DurationTime);
+                new CustomMessage(ModTranslation.GetString("ClergymanLightOutMessage"), RoleClass.Clergyman.DurationTime);
             }
             if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.ClergymanLightOut))
             {

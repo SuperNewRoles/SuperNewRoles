@@ -127,11 +127,11 @@ namespace SuperNewRoles.Patch
                             OutOfTime = UnityEngine.Object.Instantiate(__instance.SabotageText, __instance.SabotageText.transform.parent);
                             if (MapOptions.MapOption.IsYkundesuBeplnEx.GetBool())
                             {
-                                OutOfTime.text = ModTranslation.getString("restrictOutOfTimeVerYkundesuBeplnEx");
+                                OutOfTime.text = ModTranslation.GetString("restrictOutOfTimeVerYkundesuBeplnEx");
                             }
                             else if (!MapOptions.MapOption.IsYkundesuBeplnEx.GetBool())
                             {
-                                OutOfTime.text = ModTranslation.getString("restrictOutOfTime");
+                                OutOfTime.text = ModTranslation.GetString("restrictOutOfTime");
                             }
                         }
 
@@ -161,7 +161,7 @@ namespace SuperNewRoles.Patch
                         clearedIcons = false;
                         OutOfTime.gameObject.SetActive(false);
                         string timeString = TimeSpan.FromSeconds(RestrictAdminTime).ToString(@"mm\:ss\.ff");
-                        TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
+                        TimeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
                         //TimeRemaining.color = MapOptions.restrictAdminTime > 10f ? Palette.AcceptedGreen : Palette.ImpostorRed;
                         TimeRemaining.gameObject.SetActive(true);
                     }

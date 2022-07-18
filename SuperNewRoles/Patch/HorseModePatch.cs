@@ -24,8 +24,8 @@ namespace SuperNewRoles.Patches
             var passiveHorseButton = horseButton.GetComponent<PassiveButton>();
             var spriteHorseButton = horseButton.GetComponent<SpriteRenderer>();
 
-            horseModeOffSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
-            horseModeOnSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOn.png", 75f);
+            horseModeOffSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
+            horseModeOnSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOn.png", 75f);
 
             spriteHorseButton.sprite = horseButtonState ? horseModeOnSprite : horseModeOffSprite;
 
@@ -36,12 +36,12 @@ namespace SuperNewRoles.Patches
                 horseButtonState = horseModeSelectionBehavior.OnClick();
                 if (horseButtonState)
                 {
-                    if (horseModeOnSprite == null) horseModeOnSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOn.png", 75f);
+                    if (horseModeOnSprite == null) horseModeOnSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOn.png", 75f);
                     spriteHorseButton.sprite = horseModeOnSprite;
                 }
                 else
                 {
-                    if (horseModeOffSprite == null) horseModeOffSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
+                    if (horseModeOffSprite == null) horseModeOffSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
                     spriteHorseButton.sprite = horseModeOffSprite;
                 }
                 CredentialsPatch.LogoPatch.updateSprite();
@@ -59,7 +59,7 @@ namespace SuperNewRoles.Patches
             var passiveCreditsButton = CreditsButton.GetComponent<PassiveButton>();
             var spriteCreditsButton = CreditsButton.GetComponent<SpriteRenderer>();
 
-            spriteCreditsButton.sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.CreditsButton.png", 75f);
+            spriteCreditsButton.sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.CreditsButton.png", 75f);
 
             passiveCreditsButton.OnClick = new ButtonClickedEvent();
 

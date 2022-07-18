@@ -35,8 +35,8 @@ namespace SuperNewRoles.Roles
             {
                 namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
-            var name = ModTranslation.getString(namedate + "Name");
-            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText().text, name));
+            var name = ModTranslation.GetString(namedate + "Name");
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("SoothSayerGetChat"), Target.NameText().text, name));
 
             RoleClass.SoothSayer.Count--;
             if (!RoleClass.SoothSayer.DisplayedPlayer.Contains(Target.PlayerId))
@@ -90,8 +90,8 @@ namespace SuperNewRoles.Roles
             {
                 namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
             }
-            var name = ModTranslation.getString(namedate + "Name");
-            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.getString("SoothSayerGetChat"), Target.nameText().text, name));
+            var name = ModTranslation.GetString(namedate + "Name");
+            FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(ModTranslation.GetString("SoothSayerGetChat"), Target.NameText().text, name));
             RoleClass.SpiritMedium.MaxCount--;
             if (!RoleClass.SoothSayer.DisplayedPlayer.Contains(Target.PlayerId))
             {

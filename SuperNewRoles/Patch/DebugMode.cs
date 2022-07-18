@@ -82,7 +82,7 @@ namespace SuperNewRoles.Patch
                 // Spawn dummys
                 if (Input.GetKeyDown(KeyCode.G))
                 {
-                    PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.nameText().text);
+                    PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text);
 
                     bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);
                     //new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
@@ -95,7 +95,7 @@ namespace SuperNewRoles.Patch
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p == PlayerControl.LocalPlayer) continue;
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.MyPhysics.NetId, (byte)RpcCalls.EnterVent, SendOption.None, p.getClientId());
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.MyPhysics.NetId, (byte)RpcCalls.EnterVent, SendOption.None, p.GetClientId());
                         writer.WritePacked(MapUtilities.CachedShipStatus.AllVents[0].Id);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         SuperNewRolesPlugin.Logger.LogInfo(MapUtilities.CachedShipStatus.AllVents[0].transform);

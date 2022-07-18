@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
         {
             if (RoleClass.Assassin.TriggerPlayer != null)
             {
-                __instance.TitleText.text = ModTranslation.getString("MarineWhois");
+                __instance.TitleText.text = ModTranslation.GetString("MarineWhois");
             }
             if (!IsFlag) return;
             if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -40,7 +40,7 @@ namespace SuperNewRoles.Roles
             {
                 if (m_Meeting_AreaTabChange == null)
                 {
-                    m_Meeting_AreaTabChange = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Meeting_AreaTabChange.png", 110f);
+                    m_Meeting_AreaTabChange = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Meeting_AreaTabChange.png", 110f);
                 }
                 return m_Meeting_AreaTabChange;
             }

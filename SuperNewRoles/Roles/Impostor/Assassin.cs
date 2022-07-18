@@ -63,7 +63,7 @@ namespace SuperNewRoles.Roles
                                 exileplayer = p.Data;
                                 exile = p;
                                 p.RpcSetColor((byte)outfit.ColorId);
-                                p.RpcSetName(target.Object.GetDefaultName() + (target.Object.IsRole(RoleId.Marine) ? ModTranslation.getString("AssassinSucsess") : ModTranslation.getString("AssassinFail")) + "<size=0%>");
+                                p.RpcSetName(target.Object.GetDefaultName() + (target.Object.IsRole(RoleId.Marine) ? ModTranslation.GetString("AssassinSucsess") : ModTranslation.GetString("AssassinFail")) + "<size=0%>");
                                 p.RpcSetHat(outfit.HatId);
                                 p.RpcSetVisor(outfit.VisorId);
                                 p.RpcSetSkin(outfit.SkinId);
@@ -132,11 +132,11 @@ namespace SuperNewRoles.Roles
                     }, 10.5f);
                     new LateTask(() =>
                     {
-                        exile.RpcSetName($"<size=200%>{CustomOptions.cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}<color=white>は誰だ？</size>");
+                        exile.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}<color=white>は誰だ？</size>");
                     }, 12f);
                     new LateTask(() =>
                     {
-                        exile.RpcSendChat($"\n{ModTranslation.getString("MarineWhois")}");
+                        exile.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
                     }, 12.5f);
                     new LateTask(() =>
                     {

@@ -113,7 +113,7 @@ namespace SuperNewRoles.CustomCosmetics
 
         private static Sprite CreateHatSprite(string path, bool fromDisk = false)
         {
-            Texture2D texture = fromDisk ? ModHelpers.loadTextureFromDisk(path) : ModHelpers.loadTextureFromResources(path);
+            Texture2D texture = fromDisk ? ModHelpers.loadTextureFromDisk(path) : ModHelpers.LoadTextureFromResources(path);
             if (texture == null)
                 return null;
             Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
@@ -312,7 +312,7 @@ namespace SuperNewRoles.CustomCosmetics
                     title.fontWeight = TMPro.FontWeight.Thin;
                     title.enableAutoSizing = false;
                     title.autoSizeTextContainer = true;
-                    title.text = ModTranslation.getString(packageName);
+                    title.text = ModTranslation.GetString(packageName);
                     switch (packageName)
                     {
                         case "shiuneCollection":
@@ -376,8 +376,8 @@ namespace SuperNewRoles.CustomCosmetics
                 HatData[] unlockedHats = DestroyableSingleton<HatManager>.Instance.GetUnlockedHats();
                 Dictionary<string, List<System.Tuple<HatData, HatExtension>>> packages = new();
 
-                ModHelpers.destroyList(hatsTabCustomTexts);
-                ModHelpers.destroyList(__instance.ColorChips);
+                ModHelpers.DestroyList(hatsTabCustomTexts);
+                ModHelpers.DestroyList(__instance.ColorChips);
 
                 hatsTabCustomTexts.Clear();
                 __instance.ColorChips.Clear();
