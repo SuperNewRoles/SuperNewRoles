@@ -36,10 +36,10 @@ namespace SuperNewRoles
 
         public override void Load()
         {
+            ModTranslation.Load();
             Logger = Log;
             Instance = this;
             // All Load() Start
-            ModTranslation.Load();
             ChacheManager.Load();
             CustomCosmetics.CustomColors.Load();
             ConfigRoles.Load();
