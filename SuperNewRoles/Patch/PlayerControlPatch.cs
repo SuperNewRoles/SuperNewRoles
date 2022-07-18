@@ -22,7 +22,7 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
     class RpcShapesihftPatch
     {
-        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target, [HarmonyArgument(1)] bool shouldAnimate)
+        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             SyncSetting.CustomSyncSettings();
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
@@ -62,17 +62,11 @@ namespace SuperNewRoles.Patches
                                 {
                                     FinalStatusPatch.FinalStatusData.FinalStatuses[target.PlayerId] = FinalStatus.SheriffKill;
                                     if (RoleClass.RemoteSheriff.KillCount.ContainsKey(__instance.PlayerId))
-                                    {
                                         RoleClass.RemoteSheriff.KillCount[__instance.PlayerId]--;
-                                    }
                                     else
-                                    {
                                         RoleClass.RemoteSheriff.KillCount[__instance.PlayerId] = (int)CustomOptions.RemoteSheriffKillMaxCount.GetFloat() - 1;
-                                    }
                                     if (RoleClass.RemoteSheriff.IsKillTeleport)
-                                    {
                                         __instance.RpcMurderPlayerCheck(target);
-                                    }
                                     else
                                     {
                                         target.RpcMurderPlayer(target);
@@ -142,10 +136,9 @@ namespace SuperNewRoles.Patches
                                     RPCProcedure.SetWinCond((byte)CustomGameOverReason.ArsonistWin);
 
                                     RoleClass.Arsonist.TriggerArsonistWin = true;
-                                    EndGame.AdditionalTempData.winCondition = EndGame.WinCondition.ArsonistWin;
-                                    // SuperNewRolesPlugin.Logger.LogInfo("CheckAndEndGame");
+                                    AdditionalTempData.winCondition = WinCondition.ArsonistWin;
                                     __instance.enabled = false;
-                                    ShipStatus.RpcEndGame((GameOverReason)EndGame.CustomGameOverReason.ArsonistWin, false);
+                                    ShipStatus.RpcEndGame((GameOverReason)CustomGameOverReason.ArsonistWin, false);
                                     return true;
                                 }
                             }
@@ -171,7 +164,7 @@ namespace SuperNewRoles.Patches
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
     class CheckProtectPatch
     {
-        public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+        public static bool Prefix()
         {
             return !ModeHandler.IsMode(ModeId.SuperHostRoles);
         }
@@ -208,7 +201,7 @@ namespace SuperNewRoles.Patches
                         if (player.isAlive())
                         {
                             var Target = player;
-                            var misfire = !Roles.Sheriff.IsRemoteSheriffKill(Target);
+                            var misfire = !Sheriff.IsRemoteSheriffKill(Target);
                             var TargetID = Target.PlayerId;
                             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
@@ -291,7 +284,7 @@ namespace SuperNewRoles.Patches
                 */
 
                 // Use an unchecked kill command, to allow shorter kill cooldowns etc. without getting kicked
-                MurderAttemptResult res = ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
+                MurderAttemptResult res = checkMuderAttemptAndKill(PlayerControl.LocalPlayer, __instance.currentTarget, showAnimation: showAnimation);
                 // Handle blank kill
                 if (res == MurderAttemptResult.BlankKill)
                 {
@@ -309,18 +302,14 @@ namespace SuperNewRoles.Patches
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             SuperNewRolesPlugin.Logger.LogInfo("a(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
-            if (__instance.IsBot() || target.IsBot()) return false;
-
-            if (__instance.isDead()) return false;
-            if (target.isDead()) return false;
+            if (__instance.IsBot() || target.IsBot()
+                || __instance.isDead()
+                || target.isDead()
+                ||(!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)) return false;
+            if (__instance.PlayerId == target.PlayerId)  {__instance.RpcMurderPlayer(target); return false;}
             SuperNewRolesPlugin.Logger.LogInfo("b(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
-            if (__instance.PlayerId == target.PlayerId) { __instance.RpcMurderPlayer(target); return false; }
-            if (!RoleClass.IsStart && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
-                return false;
             if (!AmongUsClient.Instance.AmHost)
-            {
                 return true;
-            }
             SuperNewRolesPlugin.Logger.LogInfo("c(Murder)" + __instance.Data.PlayerName + " => " + target.Data.PlayerName);
             switch (ModeHandler.GetMode())
             {
@@ -345,11 +334,9 @@ namespace SuperNewRoles.Patches
                                     }
                                 }
                             }
-
                         }
                         SuperNewRolesPlugin.Logger.LogInfo("[CheckMurder]RateTask:" + (AmongUsClient.Instance.Ping / 1000f) * 2f);
                         isKill = true;
-
                         if (__instance.PlayerId != 0)
                         {
                             target.Data.IsDead = true;
@@ -365,7 +352,7 @@ namespace SuperNewRoles.Patches
                                     __instance.RpcMurderPlayer(target);
                                 }
                                 isKill = false;
-                            }, (AmongUsClient.Instance.Ping / 1000f) * 1.1f);
+                            }, AmongUsClient.Instance.Ping / 1000f * 1.1f);
                         }
                     }
                     return false;

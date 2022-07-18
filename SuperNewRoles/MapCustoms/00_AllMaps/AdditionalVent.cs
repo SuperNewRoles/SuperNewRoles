@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 //参考=>https://github.com/haoming37/TheOtherRoles-GM-Haoming/blob/haoming-main/TheOtherRoles/Objects/AdditionalVents.cs
 
@@ -14,8 +15,8 @@ namespace SuperNewRoles.MapCustoms
         public AdditionalVents(Vector3 p)
         {
             // Create the vent
-            var referenceVent = UnityEngine.Object.FindObjectOfType<Vent>();
-            vent = UnityEngine.Object.Instantiate(referenceVent);
+            var referenceVent = Object.FindObjectOfType<Vent>();
+            vent = Object.Instantiate(referenceVent);
             vent.transform.position = p;
             vent.Left = null;
             vent.Right = null;
@@ -42,7 +43,7 @@ namespace SuperNewRoles.MapCustoms
             System.Console.WriteLine("AddAdditionalVents");
 
             //MiraHQにベントを追加する
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Mira) && MapCustom.MiraAdditionalVents.GetBool())
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Mira) && MapCustom.MiraAdditionalVents.GetBool())
             {
                 AdditionalVents vents1 = new(new Vector3(11.3518f, 10.4786f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 研究室
                 AdditionalVents vents2 = new(new Vector3(12.1288f, 7.2f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // Y字下
@@ -56,7 +57,7 @@ namespace SuperNewRoles.MapCustoms
             }
 
             // Polusにベントを追加する
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustom.PolusAdditionalVents.GetBool())
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustom.PolusAdditionalVents.GetBool())
             {
                 AdditionalVents vents1 = new(new Vector3(36.54f, -21.77f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 標本室
                 AdditionalVents vents2 = new(new Vector3(11.5522f, -21.1158f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // ウェポン
@@ -70,7 +71,7 @@ namespace SuperNewRoles.MapCustoms
             }
 
             // AirShipにベントを追加する
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirShipAdditionalVents.GetBool())
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirShipAdditionalVents.GetBool())
             {
                 SuperNewRolesPlugin.Logger.LogInfo("べんとおおおお");
                 AdditionalVents vents1 = new(new Vector3(23.5483f, -5.589f, PlayerControl.LocalPlayer.transform.position.z + 1f)); // 診察室

@@ -28,12 +28,12 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
-                if (RoleClass.Assassin.TriggerPlayer != null) return false;
-                if (!MapOptions.MapOption.UseDeadBodyReport && target != null) return false;
-                if (!MapOptions.MapOption.UseMeetingButton && target == null) return false;
-                if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;
-                if (ModeHandler.IsMode(ModeId.BattleRoyal)) return false;
-                if (ModeHandler.IsMode(ModeId.CopsRobbers)) return false;
+                if ((RoleClass.Assassin.TriggerPlayer != null)
+                || (!MapOptions.MapOption.UseDeadBodyReport && target != null)
+                || (!MapOptions.MapOption.UseMeetingButton && target == null)
+                || ModeHandler.IsMode(ModeId.HideAndSeek)
+                || ModeHandler.IsMode(ModeId.BattleRoyal)
+                || ModeHandler.IsMode(ModeId.CopsRobbers)) return false;
                 if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target);
                 return ModeHandler.IsMode(ModeId.Zombie)
                     ? false

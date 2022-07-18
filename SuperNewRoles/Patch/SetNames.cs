@@ -46,7 +46,7 @@ namespace SuperNewRoles.Patch
                 }
             }
         }
-        public static void resetNameTagsAndColors()
+        public static void ResetNameTagsAndColors()
         {
             Dictionary<byte, PlayerControl> playersById = ModHelpers.allPlayersById();
 
@@ -162,7 +162,7 @@ namespace SuperNewRoles.Patch
             }
             else
             {
-                var introdate = Intro.IntroDate.GetIntroDate(role);
+                var introdate = IntroDate.GetIntroDate(role);
                 roleNames = introdate.Name;
                 roleColors = introdate.color;
             }
@@ -179,7 +179,7 @@ namespace SuperNewRoles.Patch
         {
             var role = player.getRole();
             if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && player.isAlive())) return;
-            SetPlayerNameColor(player, Intro.IntroDate.GetIntroDate(role).color);
+            SetPlayerNameColor(player, IntroDate.GetIntroDate(role).color);
         }
         public static void SetPlayerRoleNames(PlayerControl player)
         {
@@ -219,9 +219,7 @@ namespace SuperNewRoles.Patch
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideLovers();
                 SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.nameText().text + suffix);
                 if (!side.Data.Disconnected)
-                {
                     SetPlayerNameText(side, side.nameText().text + suffix);
-                }
             }
             if ((PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
             {
@@ -230,9 +228,7 @@ namespace SuperNewRoles.Patch
                     foreach (PlayerControl p in ps)
                     {
                         if (!p.Data.Disconnected)
-                        {
                             SetPlayerNameText(p, p.nameText().text + suffix);
-                        }
                     }
                 }
             }
@@ -246,9 +242,7 @@ namespace SuperNewRoles.Patch
                     if (Demon.IsViewIcon(player))
                     {
                         if (!player.nameText().text.Contains(ModHelpers.cs(RoleClass.Demon.color, " ▲")))
-                        {
                             SetPlayerNameText(player, player.nameText().text + ModHelpers.cs(RoleClass.Demon.color, " ▲"));
-                        }
                     }
                 }
             }
@@ -262,9 +256,7 @@ namespace SuperNewRoles.Patch
                     if (Arsonist.IsViewIcon(player))
                     {
                         if (!player.nameText().text.Contains(ModHelpers.cs(RoleClass.Arsonist.color, " §")))
-                        {
-                            SetNamesClass.SetPlayerNameText(player, player.nameText().text + ModHelpers.cs(RoleClass.Arsonist.color, " §"));
-                        }
+                            SetPlayerNameText(player, player.nameText().text + ModHelpers.cs(RoleClass.Arsonist.color, " §"));
                     }
                 }
             }
@@ -291,7 +283,7 @@ namespace SuperNewRoles.Patch
     {
         public static void Postfix(PlayerControl __instance)
         {
-            SetNamesClass.resetNameTagsAndColors();
+            SetNamesClass.ResetNameTagsAndColors();
             RoleId LocalRole = PlayerControl.LocalPlayer.getRole();
             if (PlayerControl.LocalPlayer.isDead() && LocalRole != RoleId.NiceRedRidingHood)
             {

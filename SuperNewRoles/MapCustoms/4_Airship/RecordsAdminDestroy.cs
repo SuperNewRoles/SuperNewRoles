@@ -1,5 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace SuperNewRoles.MapCustoms
 {
@@ -8,11 +9,11 @@ namespace SuperNewRoles.MapCustoms
     {
         public static void Postfix()
         {
-            if (MapCustom.RecordsAdminDestroy.GetBool() && MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship))
+            if (MapCustom.RecordsAdminDestroy.GetBool() && MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship))
             {
                 //アーカイブのアドミンをSeeyou!
                 Transform Admin = GameObject.Find("Airship(Clone)").transform.FindChild("Records").FindChild("records_admin_map");
-                GameObject.Destroy(Admin.gameObject);
+                Object.Destroy(Admin.gameObject);
             }
         }
     }

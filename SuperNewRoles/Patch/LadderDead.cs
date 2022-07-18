@@ -47,7 +47,7 @@ namespace SuperNewRoles.Patch
         }
         public static Dictionary<byte, Vector3> TargetLadderData;
         [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.ClimbLadder))]
-        class ladder
+        class Ladders
         {
             public static void Postfix(PlayerPhysics __instance, Ladder source, byte climbLadderSid)
             {
@@ -58,8 +58,6 @@ namespace SuperNewRoles.Patch
                 {
                     //SuperNewRolesPlugin.Logger.LogInfo("降りています");
                     int Chance = UnityEngine.Random.Range(1, 10);
-                    //SuperNewRolesPlugin.Logger.LogInfo(aaa);
-                    //SuperNewRolesPlugin.Logger.LogInfo(100 - kakuritu);
                     if (Chance <= (CustomOptions.LadderDeadChance.GetSelection() + 1))
                     {
                         TargetLadderData[__instance.myPlayer.PlayerId] = targetpos;

@@ -43,7 +43,7 @@ namespace SuperNewRoles.Patch
         [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
         public static class LobbyCountDownTimer
         {
-            public static void Postfix(GameStartManager __instance)
+            public static void Postfix()
             {
                 if (Input.GetKeyDown(KeyCode.F8) && GameStartManager._instance && AmongUsClient.Instance.AmHost)
                 {

@@ -22,7 +22,7 @@ namespace SuperNewRoles
             __instance.NumEmergencyMeetings = 1;
             __instance.TaskBarMode = TaskBarMode.Invisible;
             if (modes != GameModes.OnlineGame)
-                __instance.NumImpostors = GameOptionsData.RecommendedImpostors[numPlayers];
+            __instance.NumImpostors = GameOptionsData.RecommendedImpostors[numPlayers];
             __instance.KillDistance = 0;
             __instance.DiscussionTime = 0;
             __instance.VotingTime = 150;
@@ -63,7 +63,6 @@ namespace SuperNewRoles
                     break;
                 //ゾンビモード
                 case ModeId.Zombie:
-
                     __instance.PlayerSpeedMod = 1.5f;
                     __instance.CrewLightMod = 1.5f;
                     __instance.ImpostorLightMod = 0.25f;

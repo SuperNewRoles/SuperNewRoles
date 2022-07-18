@@ -5,6 +5,7 @@ using System.Reflection;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomOption;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Roles;
 using UnityEngine;
 
@@ -250,7 +251,7 @@ namespace SuperNewRoles.Patch
 
         public bool GuidMatches()
         {
-            return Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.Equals(this.guid);
+            return Assembly.GetExecutingAssembly().ManifestModule.ModuleVersionId.Equals(guid);
         }
     }
 }

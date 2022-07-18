@@ -14,7 +14,7 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.StartGame))]
     public class StartGame
     {
-        public static void Postfix(PlayerControl __instance)
+        public static void Postfix()
         {
             MapOptions.RandomMap.Prefix();
             FixedUpdate.IsProDown = ConfigRoles.CustomProcessDown.Value;
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(ControllerManager), nameof(ControllerManager.Update))]
     class DebugManager
     {
-        public static void Postfix(ControllerManager __instance)
+        public static void Postfix()
         {
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
@@ -57,7 +57,7 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
     public class FixedUpdate
     {
-        static void setBasePlayerOutlines()
+        static void SetBasePlayerOutlines()
         {
             foreach (PlayerControl target in CachedPlayer.AllPlayers)
             {
@@ -85,7 +85,7 @@ namespace SuperNewRoles.Patch
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
                 var MyRole = PlayerControl.LocalPlayer.getRole();
-                setBasePlayerOutlines();
+                SetBasePlayerOutlines();
                 VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
                 if (CustomOptions.LadderDead.GetBool())
                     LadderDead.FixedUpdate();
@@ -179,7 +179,6 @@ namespace SuperNewRoles.Patch
                                     {
                                         sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);
                                         RoleClass.SideKiller.IsUpMadKiller = true;
-
                                     }
                                 }
                                 break;

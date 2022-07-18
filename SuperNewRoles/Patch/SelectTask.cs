@@ -11,7 +11,7 @@ namespace SuperNewRoles.Patch
         [HarmonyPatch(typeof(GameData), nameof(GameData.RpcSetTasks))]
         class RpcSetTasksPatch
         {
-            public static void Prefix(GameData __instance,
+            public static void Prefix(
             [HarmonyArgument(0)] byte playerId,
             [HarmonyArgument(1)] ref UnhollowerBaseLib.Il2CppStructArray<byte> taskTypeIds)
             {
@@ -41,10 +41,7 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.MadMateCommonTask.GetFloat();
                     int shortt = (int)CustomOptions.MadMateShortTask.GetFloat();
                     int longt = (int)CustomOptions.MadMateLongTask.GetFloat();
-                    if (!(commont == 0 && shortt == 0 && longt == 0))
-                    {
-                        return (commont, shortt, longt);
-                    }
+                    if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
                 }
             }
             else if (p.isRole(RoleId.MadMayor))
@@ -54,10 +51,7 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.MadMayorCommonTask.GetFloat();
                     int shortt = (int)CustomOptions.MadMayorShortTask.GetFloat();
                     int longt = (int)CustomOptions.MadMayorLongTask.GetFloat();
-                    if (!(commont == 0 && shortt == 0 && longt == 0))
-                    {
-                        return (commont, shortt, longt);
-                    }
+                    if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
                 }
             }
             else if (p.isRole(RoleId.MadSeer))
@@ -67,10 +61,7 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.MadSeerCommonTask.GetFloat();
                     int shortt = (int)CustomOptions.MadSeerShortTask.GetFloat();
                     int longt = (int)CustomOptions.MadSeerLongTask.GetFloat();
-                    if (!(commont == 0 && shortt == 0 && longt == 0))
-                    {
-                        return (commont, shortt, longt);
-                    }
+                    if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
                 }
             }
             else if (p.isRole(RoleId.BlackCat))
@@ -80,10 +71,7 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.BlackCatCommonTask.GetFloat();
                     int shortt = (int)CustomOptions.BlackCatShortTask.GetFloat();
                     int longt = (int)CustomOptions.BlackCatLongTask.GetFloat();
-                    if (!(commont == 0 && shortt == 0 && longt == 0))
-                    {
-                        return (commont, shortt, longt);
-                    }
+                    if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
                 }
             }
             else if (p.isRole(RoleId.JackalFriends))
@@ -93,10 +81,7 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.JackalFriendsCommonTask.GetFloat();
                     int shortt = (int)CustomOptions.JackalFriendsShortTask.GetFloat();
                     int longt = (int)CustomOptions.JackalFriendsLongTask.GetFloat();
-                    if (!(commont == 0 && shortt == 0 && longt == 0))
-                    {
-                        return (commont, shortt, longt);
-                    }
+                    if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
                 }
             }
             else if (p.isRole(RoleId.SeerFriends))
@@ -106,10 +91,7 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.SeerFriendsCommonTask.GetFloat();
                     int shortt = (int)CustomOptions.SeerFriendsShortTask.GetFloat();
                     int longt = (int)CustomOptions.SeerFriendsLongTask.GetFloat();
-                    if (!(commont == 0 && shortt == 0 && longt == 0))
-                    {
-                        return (commont, shortt, longt);
-                    }
+                    if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
                 }
             }
             else if (p.isRole(RoleId.MayorFriends))
@@ -119,10 +101,7 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.MayorFriendsCommonTask.GetFloat();
                     int shortt = (int)CustomOptions.MayorFriendsShortTask.GetFloat();
                     int longt = (int)CustomOptions.MayorFriendsLongTask.GetFloat();
-                    if (!(commont == 0 && shortt == 0 && longt == 0))
-                    {
-                        return (commont, shortt, longt);
-                    }
+                    if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
                 }
             }
             else if (p.isRole(RoleId.Jester))
@@ -132,10 +111,7 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.JesterCommonTask.GetFloat();
                     int shortt = (int)CustomOptions.JesterShortTask.GetFloat();
                     int longt = (int)CustomOptions.JesterLongTask.GetFloat();
-                    if (!(commont == 0 && shortt == 0 && longt == 0))
-                    {
-                        return (commont, shortt, longt);
-                    }
+                    if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
                 }
             }
             else if (p.isRole(RoleId.MadJester))
@@ -145,10 +121,7 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.MadJesterCommonTask.GetFloat();
                     int shortt = (int)CustomOptions.MadJesterShortTask.GetFloat();
                     int longt = (int)CustomOptions.MadJesterLongTask.GetFloat();
-                    if (!(commont == 0 && shortt == 0 && longt == 0))
-                    {
-                        return (commont, shortt, longt);
-                    }
+                    if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
                 }
             }
             else if (p.isRole(RoleId.God))
@@ -158,10 +131,7 @@ namespace SuperNewRoles.Patch
                     int commont = (int)CustomOptions.GodCommonTask.GetFloat();
                     int shortt = (int)CustomOptions.GodShortTask.GetFloat();
                     int longt = (int)CustomOptions.GodLongTask.GetFloat();
-                    if (!(commont == 0 && shortt == 0 && longt == 0))
-                    {
-                        return (commont, shortt, longt);
-                    }
+                    if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
                 }
             }
             else if (p.isRole(RoleId.Workperson))
@@ -169,30 +139,21 @@ namespace SuperNewRoles.Patch
                 int commont = (int)CustomOptions.WorkpersonCommonTask.GetFloat();
                 int shortt = (int)CustomOptions.WorkpersonShortTask.GetFloat();
                 int longt = (int)CustomOptions.WorkpersonLongTask.GetFloat();
-                if (!(commont == 0 && shortt == 0 && longt == 0))
-                {
-                    return (commont, shortt, longt);
-                }
+                if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
             }
             else if (p.isRole(RoleId.TaskManager))
             {
                 int commont = (int)CustomOptions.TaskManagerCommonTask.GetFloat();
                 int shortt = (int)CustomOptions.TaskManagerShortTask.GetFloat();
                 int longt = (int)CustomOptions.TaskManagerLongTask.GetFloat();
-                if (!(commont == 0 && shortt == 0 && longt == 0))
-                {
-                    return (commont, shortt, longt);
-                }
+                if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
             }
             else if (p.IsLovers() && !p.isImpostor())
             {
                 int commont = (int)CustomOptions.LoversCommonTask.GetFloat();
                 int shortt = (int)CustomOptions.LoversShortTask.GetFloat();
                 int longt = (int)CustomOptions.LoversLongTask.GetFloat();
-                if (!(commont == 0 && shortt == 0 && longt == 0))
-                {
-                    return (commont, shortt, longt);
-                }
+                if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
             }
             return (SyncSetting.OptionData.NumCommonTasks, SyncSetting.OptionData.NumShortTasks, SyncSetting.OptionData.NumLongTasks);
         }

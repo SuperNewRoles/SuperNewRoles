@@ -13,7 +13,7 @@ namespace SuperNewRoles.Patches
         private static Sprite horseModeOffSprite = null;
         private static Sprite horseModeOnSprite = null;
 
-        private static void Prefix(MainMenuManager __instance)
+        private static void Prefix()
         {
             // Horse mode stuff
             var horseModeSelectionBehavior = new ClientOptionsPatch.SelectionBehaviour("Enable Horse Mode", () => HorseModeOption.enableHorseMode = ConfigRoles.EnableHorseMode.Value = !ConfigRoles.EnableHorseMode.Value, ConfigRoles.EnableHorseMode.Value);
@@ -78,7 +78,7 @@ namespace SuperNewRoles.Patches
     {
         public static bool enableHorseMode = false;
 
-        public static void clearAndReloadMapOptions()
+        public static void ClearAndReloadMapOptions()
         {
             enableHorseMode = ConfigRoles.EnableHorseMode.Value;
         }

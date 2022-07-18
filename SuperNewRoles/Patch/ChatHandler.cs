@@ -9,13 +9,14 @@ using SuperNewRoles.Intro;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
+using static System.String;
 
 namespace SuperNewRoles.Patch
 {
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoSpawnPlayer))]
     public class AmongUsClientOnPlayerJoinedPatch
     {
-        public static void Postfix(PlayerPhysics __instance, LobbyBehaviour lobby)
+        public static void Postfix(PlayerPhysics __instance)
         {
             if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {
@@ -227,7 +228,7 @@ namespace SuperNewRoles.Patch
                 if (type != option.Intro.Team)
                 {
                     type = option.Intro.Team;
-                    text += "\n" + String.Format(ModTranslation.getString("TeamMessage"), GetTeamText(type)) + "\n\n";
+                    text += "\n" + Format(ModTranslation.getString("TeamMessage"), GetTeamText(type)) + "\n\n";
                 }
                 int PlayerCount = 0;
                 foreach (CustomOption.CustomOption opt in option.children)

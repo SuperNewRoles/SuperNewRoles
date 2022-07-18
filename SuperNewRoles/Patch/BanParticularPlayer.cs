@@ -7,7 +7,7 @@ namespace SuperNewRoles.Patch
     class BanBlockedPlayerPatch
     {
         //TOHより、ありがとうございます
-        public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ClientData client)
+        public static void Postfix([HarmonyArgument(0)] ClientData client)
         {
             SuperNewRolesPlugin.Logger.LogInfo($"{client.PlayerName}(ClientID:{client.Id})が参加");
             if (DestroyableSingleton<FriendsListManager>.Instance.IsPlayerBlockedUsername(client.FriendCode) && AmongUsClient.Instance.AmHost)

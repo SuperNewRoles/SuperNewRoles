@@ -2,6 +2,7 @@ using System;
 using HarmonyLib;
 using Hazel;
 using InnerNet;
+using static System.Int32;
 
 namespace SuperNewRoles.Patch
 {
@@ -23,7 +24,7 @@ namespace SuperNewRoles.Patch
                         if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.CanBan())
                         {
                             handled = true;
-                            if (!Int32.TryParse(text[4..], out LobbyLimit))
+                            if (!TryParse(text[4..], out LobbyLimit))
                             {
                                 __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/mp {最大人数}");
                             }
@@ -52,15 +53,9 @@ namespace SuperNewRoles.Patch
                         if (AmongUsClient.Instance.AmHost && AmongUsClient.Instance.CanBan())
                         {
                             handled = true;
-                            if (!float.TryParse(text[4..], out var cooltime))
-                            {
-                                __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/kc {キルクールタイム}");
-                            }
+                            if (!float.TryParse(text[4..], out var cooltime)) __instance.AddChat(PlayerControl.LocalPlayer, "使い方\n/kc {キルクールタイム}");
                             var settime = cooltime;
-                            if (settime == 0)
-                            {
-                                settime = 0.00001f;
-                            }
+                            if (settime == 0) settime = 0.00001f;
                             PlayerControl.GameOptions.KillCooldown = settime;
                             CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
                             __instance.AddChat(PlayerControl.LocalPlayer, $"キルクールタイムを{cooltime}秒に変更しました！");
@@ -83,7 +78,7 @@ namespace SuperNewRoles.Patch
                         else if (text.ToLower().StartsWith("/color "))
                         {
                             handled = true;
-                            if (!Int32.TryParse(text[7..], out int col))
+                            if (!TryParse(text[7..], out int col))
                             {
                                 __instance.AddChat(PlayerControl.LocalPlayer, "Unable to parse color id\nUsage: /color {id}");
                             }
@@ -111,13 +106,13 @@ namespace SuperNewRoles.Patch
             [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.HostGame))]
             public static class InnerNetClientHostPatch
             {
-                public static void Prefix(InnerNet.InnerNetClient __instance, [HarmonyArgument(0)] GameOptionsData settings)
+                public static void Prefix([HarmonyArgument(0)] GameOptionsData settings)
                 {
                     LobbyLimit = settings.MaxPlayers;
                     settings.MaxPlayers = 15; // Force 15 Player Lobby on Server
-                    SaveManager.ChatModeType = InnerNet.QuickChatModes.FreeChatOrQuickChat;
+                    SaveManager.ChatModeType = QuickChatModes.FreeChatOrQuickChat;
                 }
-                public static void Postfix(InnerNet.InnerNetClient __instance, [HarmonyArgument(0)] GameOptionsData settings)
+                public static void Postfix([HarmonyArgument(0)] GameOptionsData settings)
                 {
                     settings.MaxPlayers = LobbyLimit;
                 }
@@ -125,9 +120,9 @@ namespace SuperNewRoles.Patch
             [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.JoinGame))]
             public static class InnerNetClientJoinPatch
             {
-                public static void Prefix(InnerNet.InnerNetClient __instance)
+                public static void Prefix()
                 {
-                    SaveManager.ChatModeType = InnerNet.QuickChatModes.FreeChatOrQuickChat;
+                    SaveManager.ChatModeType = QuickChatModes.FreeChatOrQuickChat;
                 }
             }
             [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]

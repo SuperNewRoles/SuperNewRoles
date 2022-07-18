@@ -15,6 +15,7 @@ using TMPro;
 using Twitch;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace SuperNewRoles.Patches
 {
     [HarmonyPatch]
@@ -25,7 +26,7 @@ namespace SuperNewRoles.Patches
         [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
         private static class VersionShowerPatch
         {
-            static void Prefix(VersionShower __instance)
+            static void Prefix()
             {
                 //CustomPlate.UnlockedNamePlatesPatch.Postfix(HatManager.Instance);
             }
@@ -51,7 +52,7 @@ namespace SuperNewRoles.Patches
                 credentials.fontSize *= 0.9f;
                 AutoUpdate.checkForUpdate(credentials);
 
-                var version = UnityEngine.Object.Instantiate<TMPro.TextMeshPro>(credentials);
+                var version = UnityEngine.Object.Instantiate(credentials);
                 version.transform.position = new Vector3(0, -0.35f, 0);
                 version.SetText(string.Format(ModTranslation.getString("creditsVersion"), SuperNewRolesPlugin.Version.ToString()));
 
@@ -65,7 +66,7 @@ namespace SuperNewRoles.Patches
         {
             static void Postfix(PingTracker __instance)
             {
-                __instance.text.alignment = TMPro.TextAlignmentOptions.TopRight;
+                __instance.text.alignment = TextAlignmentOptions.TopRight;
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
                     __instance.text.text = $"{baseCredentials}\n{__instance.text.text}";
@@ -85,7 +86,7 @@ namespace SuperNewRoles.Patches
                     if (ThisAssembly.Git.Branch != "master")//masterビルド以外の時
                     {
                         //改行+Branch名+コミット番号
-                        __instance.text.text += "\n" + ($"{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})");
+                        __instance.text.text += "\n" + $"{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})";
                     }
                     __instance.transform.localPosition = CachedPlayer.LocalPlayer.Data.IsDead
                         ? new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z)
@@ -131,7 +132,7 @@ namespace SuperNewRoles.Patches
                     Downloaded = true;
                     HttpClient http = new();
                     http.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, OnlyIfCached = false };
-                    var response = await http.GetAsync(new System.Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
+                    var response = await http.GetAsync(new Uri("https://raw.githubusercontent.com/ykundesu/SuperNewRoles/master/CreditsData.json"), HttpCompletionOption.ResponseContentRead);
                     try
                     {
                         if (response.StatusCode != HttpStatusCode.OK)
@@ -254,10 +255,10 @@ namespace SuperNewRoles.Patches
                 var snrLogo = new GameObject("bannerLogo");
                 snrLogo.transform.position = Vector3.up;
                 renderer = snrLogo.AddComponent<SpriteRenderer>();
-                loadSprites();
+                LoadSprites();
                 renderer.sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
 
-                loadSprites();
+                LoadSprites();
                 renderer.sprite = HorseModeOption.enableHorseMode ? horseBannerSprite : bannerSprite;
 
                 if (File.Exists(Assembly.GetExecutingAssembly().Location.Replace("SuperNewRoles.dll", "Submerged.dll"))) return;
@@ -303,15 +304,15 @@ namespace SuperNewRoles.Patches
                 throw new NotImplementedException();
             }
 
-            public static void loadSprites()
+            public static void LoadSprites()
             {
                 if (bannerSprite == null) bannerSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.banner.png", 150f);
                 if (horseBannerSprite == null) horseBannerSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.SuperHorseRoles.png", 150f);
             }
 
-            public static void updateSprite()
+            public static void UpdateSprite()
             {
-                loadSprites();
+                LoadSprites();
                 if (renderer != null)
                 {
                     float fadeDuration = 1f;
@@ -337,7 +338,7 @@ namespace SuperNewRoles.Patches
                 {
                     HttpClient httpa = new();
                     httpa.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Downloader");
-                    var responsea = await httpa.GetAsync(new System.Uri("https://api.github.com/repos/submergedAmongUs/submerged/releases/latest"), HttpCompletionOption.ResponseContentRead);
+                    var responsea = await httpa.GetAsync(new Uri("https://api.github.com/repos/submergedAmongUs/submerged/releases/latest"), HttpCompletionOption.ResponseContentRead);
                     if (responsea.StatusCode != HttpStatusCode.OK || responsea.Content == null)
                     {
                         System.Console.WriteLine("Server returned no data: " + responsea.StatusCode.ToString());
@@ -363,7 +364,7 @@ namespace SuperNewRoles.Patches
                     }
                     HttpClient http = new();
                     http.DefaultRequestHeaders.Add("User-Agent", "SuperNewRoles Downloader");
-                    var response = await http.GetAsync(new System.Uri(url), HttpCompletionOption.ResponseContentRead);
+                    var response = await http.GetAsync(new Uri(url), HttpCompletionOption.ResponseContentRead);
                     if (response.StatusCode != HttpStatusCode.OK || response.Content == null)
                     {
                         System.Console.WriteLine("Server returned no data: " + response.StatusCode.ToString());
@@ -377,7 +378,7 @@ namespace SuperNewRoles.Patches
                         // probably want to have proper name here
                         responseStream.CopyTo(fileStream);
                     }
-                    showPopup(ModTranslation.getString("ダウンロード完了！\n再起動してください！"));
+                    ShowPopup(ModTranslation.getString("ダウンロード完了！\n再起動してください！"));
                     return true;
                 }
                 catch (System.Exception ex)
@@ -385,16 +386,16 @@ namespace SuperNewRoles.Patches
                     SuperNewRolesPlugin.Instance.Log.LogError(ex.ToString());
                     System.Console.WriteLine(ex);
                 }
-                showPopup(ModTranslation.getString("ダウンロード失敗！"));
+                ShowPopup(ModTranslation.getString("ダウンロード失敗！"));
                 return false;
             }
-            private static void showPopup(string message)
+            private static void ShowPopup(string message)
             {
-                setPopupText(message);
+                SetPopupText(message);
                 popup.gameObject.SetActive(true);
             }
 
-            public static void setPopupText(string message)
+            public static void SetPopupText(string message)
             {
                 if (popup == null)
                     return;

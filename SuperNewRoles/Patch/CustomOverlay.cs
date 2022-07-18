@@ -19,10 +19,10 @@ namespace SuperNewRoles.Patch
         private static TMPro.TextMeshPro infoOverlayRoles;
         public static bool overlayShown = false;
 
-        public static void resetOverlays()
+        public static void ResetOverlays()
         {
-            hideBlackBG();
-            hideInfoOverlay();
+            HideBlackBG();
+            HideInfoOverlay();
             UnityEngine.Object.Destroy(meetingUnderlay);
             UnityEngine.Object.Destroy(infoUnderlay);
             UnityEngine.Object.Destroy(infoOverlayRules);
@@ -32,7 +32,7 @@ namespace SuperNewRoles.Patch
             overlayShown = false;
         }
 
-        public static bool initializeOverlays()
+        public static bool InitializeOverlays()
         {
             HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
             if (hudManager == null) return false;
@@ -95,10 +95,10 @@ namespace SuperNewRoles.Patch
             return true;
         }
 
-        public static void showBlackBG()
+        public static void ShowBlackBG()
         {
             if (FastDestroyableSingleton<HudManager>.Instance == null) return;
-            if (!initializeOverlays()) return;
+            if (!InitializeOverlays()) return;
 
             meetingUnderlay.sprite = colorBG;
             meetingUnderlay.enabled = true;
@@ -111,21 +111,21 @@ namespace SuperNewRoles.Patch
             })));
         }
 
-        public static void hideBlackBG()
+        public static void HideBlackBG()
         {
             if (meetingUnderlay == null) return;
             meetingUnderlay.enabled = false;
         }
 
-        public static void showInfoOverlay()
+        public static void ShowInfoOverlay()
         {
             if (overlayShown) return;
 
             HudManager hudManager = FastDestroyableSingleton<HudManager>.Instance;
-            if (MapUtilities.CachedShipStatus == null || PlayerControl.LocalPlayer == null || hudManager == null || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || (!PlayerControl.LocalPlayer.CanMove && MeetingHud.Instance == null))
+            if ((MapUtilities.CachedShipStatus == null || PlayerControl.LocalPlayer == null || hudManager == null || FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed || PlayerControl.LocalPlayer.CanMove) && MeetingHud.Instance != null)
                 return;
 
-            if (!initializeOverlays()) return;
+            if (!InitializeOverlays()) return;
 
             if (MapBehaviour.Instance != null)
                 MapBehaviour.Instance.Close();
@@ -167,7 +167,7 @@ namespace SuperNewRoles.Patch
             })));
         }
 
-        public static void hideInfoOverlay()
+        public static void HideInfoOverlay()
         {
             if (!overlayShown) return;
 
@@ -199,12 +199,12 @@ namespace SuperNewRoles.Patch
             })));
         }
 
-        public static void toggleInfoOverlay()
+        public static void YoggleInfoOverlay()
         {
             if (overlayShown)
-                hideInfoOverlay();
+                HideInfoOverlay();
             else
-                showInfoOverlay();
+                ShowInfoOverlay();
         }
 
         [HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
@@ -213,10 +213,10 @@ namespace SuperNewRoles.Patch
             public static void Postfix(KeyboardJoystick __instance)
             {
                 if (HudManager.Instance.Chat.IsOpen && overlayShown)
-                    hideInfoOverlay();
+                    HideInfoOverlay();
                 if (Input.GetKeyDown(KeyCode.H) && AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {
-                    toggleInfoOverlay();
+                    YoggleInfoOverlay();
                 }
             }
         }

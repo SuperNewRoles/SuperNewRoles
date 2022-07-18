@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SuperNewRoles.Patch
 {
     [HarmonyPatch(typeof(ShipStatus), nameof(GameStartManager.Start))]
-    public class inversion
+    public class Inversion
     {
         public static GameObject skeld;
         public static GameObject mira;

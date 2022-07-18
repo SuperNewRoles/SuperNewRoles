@@ -134,7 +134,6 @@ namespace SuperNewRoles.Patch
                     if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
                     {
                         RPCProcedure.ShareWinner(Player.PlayerId);
-
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(Player.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);

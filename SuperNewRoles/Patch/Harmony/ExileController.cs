@@ -7,7 +7,7 @@ namespace SuperNewRoles.Patch.Harmony
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
     class AirShipExileController_WrapUpAndSpawn
     {
-        private static void Postfix(PlayerControl __instance)
+        private static void Postfix()//PlayerControl __instance)
         {
             //
         }

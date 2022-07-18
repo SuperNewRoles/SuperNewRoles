@@ -340,7 +340,7 @@ namespace SuperNewRoles.Patch
             }
         }
 
-        public static void updateTranslations()
+        public static void UpdateTranslations()
         {
             if (titleTextTitle)
                 titleTextTitle.text = ModTranslation.getString("moreOptionsText");

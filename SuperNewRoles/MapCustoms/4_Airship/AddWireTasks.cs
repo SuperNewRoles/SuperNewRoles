@@ -7,14 +7,14 @@ namespace SuperNewRoles.MapCustoms
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Awake))]
     class OptimizeMapPatch
     {
-        public static void Postfix(ShipStatus __instance)
+        public static void Postfix()
         {
             AddWireTasks();
         }
         public static void AddWireTasks()
         {
             // Airship配線タスク追加
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AddWireTask.GetBool())
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AddWireTask.GetBool())
             {
                 ActivateWiring("task_wiresHallway2", 2);
                 ActivateWiring("task_electricalside2", 3).Room = SystemTypes.Armory;

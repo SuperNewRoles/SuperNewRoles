@@ -14,7 +14,7 @@ namespace SuperNewRoles.MapCustoms
         public static void MoveVital()
         {
             if (flag) return;
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustom.SpecimenVital.GetBool())
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Polus) && MapCustom.SpecimenVital.GetBool())
             {
                 var panel = GameObject.Find("panel_vitals");
                 if (panel != null)

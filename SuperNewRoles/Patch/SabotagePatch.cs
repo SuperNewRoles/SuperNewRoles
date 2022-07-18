@@ -39,7 +39,7 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch(typeof(HeliSabotageSystem), nameof(HeliSabotageSystem.Detoriorate))]
     public static class HeliMeltdownBooster
     {
-        public static void Prefix(HeliSabotageSystem __instance, float deltaTime)
+        public static void Prefix(HeliSabotageSystem __instance)
         {
             if (MapOptions.MapOption.ReactorDurationOption.GetBool())
             {

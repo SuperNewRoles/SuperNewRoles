@@ -5,7 +5,6 @@ using UnityEngine;
 namespace SuperNewRoles.Patch
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-
     //Town Of Plusより!
     public static class Zoom
     {
@@ -22,7 +21,6 @@ namespace SuperNewRoles.Patch
                         __instance.UICamera.orthographicSize /= 1.5f;
                         HudManager.Instance.TaskStuff.SetActive(false);
                     }
-
                     else if (Camera.main.orthographicSize > 3.0f)
                     {
                         Camera.main.orthographicSize /= 1.5f;

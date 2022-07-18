@@ -45,7 +45,7 @@ namespace SuperNewRoles.Patch
                 public float timer;
                 public Action action;
                 public static List<LateTask> Tasks = new();
-                public bool run(float deltaTime)
+                public bool Run(float deltaTime)
                 {
                     timer -= deltaTime;
                     if (timer <= 0)
@@ -67,7 +67,7 @@ namespace SuperNewRoles.Patch
                     var TasksToRemove = new List<LateTask>();
                     Tasks.ForEach((task) =>
                     {
-                        if (task.run(deltaTime))
+                        if (task.Run(deltaTime))
                         {
                             TasksToRemove.Add(task);
                         }

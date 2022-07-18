@@ -57,9 +57,9 @@ namespace SuperNewRoles.Patch
             {
                 yield return null;
                 clientData = AmongUsClient.Instance
-                                          .allClients
-                                          .ToArray()
-                                          .FirstOrDefault(client => client.Id == clientId);
+                                        .allClients
+                                        .ToArray()
+                                        .FirstOrDefault(client => client.Id == clientId);
                 SuperNewRolesPlugin.Logger.LogInfo(clientData);
             } while (clientData == null);
             SuperNewRolesPlugin.Logger.LogInfo(clientData.FriendCode);

@@ -9,7 +9,7 @@ namespace SuperNewRoles.MapCustoms
 {
     public class MapCustomHandler
     {
-        public static bool isMapCustom(MapCustomId mapCustomId, bool IsChache = true)
+        public static bool IsMapCustom(MapCustomId mapCustomId)
         {
             return mapCustomId switch
             {
@@ -44,7 +44,7 @@ namespace SuperNewRoles.MapCustoms
 
             GameObject gapRoom = DestroyableSingleton<ShipStatus>.Instance.FastRooms[SystemTypes.GapRoom].gameObject;
             // ぬ～んを消す
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirshipDisableMovingPlatform.GetBool())
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirshipDisableMovingPlatform.GetBool())
             {
                 gapRoom.GetComponentInChildren<MovingPlatformBehaviour>().gameObject.SetActive(false);
                 gapRoom.GetComponentsInChildren<PlatformConsole>().ForEach(x => x.gameObject.SetActive(false));

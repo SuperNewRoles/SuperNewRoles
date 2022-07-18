@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using HarmonyLib;
 using UnityEngine;
+using Il2CppSystem.Collections.Generic;
 
 namespace SuperNewRoles.Patch
 {
@@ -21,10 +22,10 @@ namespace SuperNewRoles.Patch
                 var mapNameTransform = __instance.AllItems.FirstOrDefault(x => x.gameObject.activeSelf && x.name.Equals("MapName", StringComparison.OrdinalIgnoreCase));
                 if (mapNameTransform == null) return;
 
-                var options = new Il2CppSystem.Collections.Generic.List<Il2CppSystem.Collections.Generic.KeyValuePair<string, int>>();
+                var options = new List<KeyValuePair<string, int>>();
                 for (int i = 0; i < Constants.MapNames.Length; i++)
                 {
-                    var kvp = new Il2CppSystem.Collections.Generic.KeyValuePair<string, int>
+                    var kvp = new KeyValuePair<string, int>
                     {
                         key = Constants.MapNames[i],
                         value = i
