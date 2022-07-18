@@ -1235,7 +1235,7 @@ namespace SuperNewRoles.CustomOption
             JackalSeerUseVent = CustomOption.Create(381, false, CustomOptionType.Neutral, "JackalUseVentSetting", true, JackalSeerOption);
             JackalSeerUseSabo = CustomOption.Create(382, false, CustomOptionType.Neutral, "JackalUseSaboSetting", false, JackalSeerOption);
             JackalSeerIsImpostorLight = CustomOption.Create(383, false, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, JackalSeerOption);
-            JackalSeerCreateFriend = CustomOption.Create(683, false, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, JackalSeerOption);
+            JackalSeerCreateFriend = CustomOption.Create(684, false, CustomOptionType.Neutral, "JackalCreateFriendSetting", false, JackalSeerOption);
             JackalSeerCreateSidekick = CustomOption.Create(384, false, CustomOptionType.Neutral, "JackalCreateSidekickSetting", false, JackalSeerOption);
             JackalSeerNewJackalCreateSidekick = CustomOption.Create(385, false, CustomOptionType.Neutral, "JackalNewJackalCreateSidekickSetting", false, JackalSeerCreateSidekick);
 
