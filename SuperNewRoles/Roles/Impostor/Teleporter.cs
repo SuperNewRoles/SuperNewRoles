@@ -24,9 +24,9 @@ namespace SuperNewRoles.Roles
                 }
             }
             var player = ModHelpers.GetRandom<PlayerControl>(aliveplayers);
-            CustomRPC.RPCProcedure.TeleporterTP(player.PlayerId);
+            RPCProcedure.TeleporterTP(player.PlayerId);
 
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, SendOption.Reliable, -1);
             Writer.Write(player.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
         }

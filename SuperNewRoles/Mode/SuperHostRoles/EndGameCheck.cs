@@ -14,10 +14,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (CheckAndEndGameForDefaultWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForJackalWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForSabotageWin(__instance)) return false;
-            return !PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)
+            if (CheckAndEndGameForDefaultWin(__instance, statistics)
+            || CheckAndEndGameForJackalWin(__instance, statistics)
+            || CheckAndEndGameForSabotageWin(__instance)) return false;
+            return !PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)
                 ? false
                 : CheckAndEndGameForWorkpersonWin(__instance) && false;
         }
@@ -147,7 +147,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 MessageWriter Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                 Writer.Write((byte)CustomGameOverReason.JackalWin);
                 Writer.EndRPC();
-                CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JackalWin);
+                RPCProcedure.SetWinCond((byte)CustomGameOverReason.JackalWin);
                 __instance.enabled = false;
                 CustomEndGame(__instance, GameOverReason.ImpostorByKill, false);
                 return true;
@@ -255,14 +255,14 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
                         {
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
-                            CustomRPC.RPCProcedure.ShareWinner(p.PlayerId);
+                            RPCProcedure.ShareWinner(p.PlayerId);
                             Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                             Writer.Write((byte)CustomGameOverReason.WorkpersonWin);
                             Writer.EndRPC();
-                            CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.WorkpersonWin);
+                            RPCProcedure.SetWinCond((byte)CustomGameOverReason.WorkpersonWin);
                             Chat.WinCond = CustomGameOverReason.WorkpersonWin;
                             __instance.enabled = false;
                             CustomEndGame(__instance, (GameOverReason)CustomGameOverReason.CrewmateWin, false);

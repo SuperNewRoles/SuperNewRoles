@@ -13,7 +13,7 @@ namespace SuperNewRoles.Patches
     {
         public static void SetupIntroTeamIcons(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
         {
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 var newTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                 newTeam2.Add(PlayerControl.LocalPlayer);
@@ -115,7 +115,7 @@ namespace SuperNewRoles.Patches
         {
             IntroHandler.Handler();
             Color32 color = new(127, 127, 127, byte.MaxValue);
-            if (ModeHandler.isMode(ModeId.Default, ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles))
             {
                 if (PlayerControl.LocalPlayer.isNeutral())
                 {
@@ -206,7 +206,7 @@ namespace SuperNewRoles.Patches
                 new LateTask(() =>
                 {
                     CustomButton.MeetingEndedUpdate();
-                    if (ModeHandler.isMode(ModeId.Default))
+                    if (ModeHandler.IsMode(ModeId.Default))
                     {
                         var myrole = PlayerControl.LocalPlayer.getRole();
                         if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
@@ -227,7 +227,7 @@ namespace SuperNewRoles.Patches
                             __instance.RoleBlurbText.text += "\n" + ModHelpers.cs(RoleClass.Quarreled.color, string.Format(ModTranslation.getString("QuarreledIntro"), PlayerControl.LocalPlayer.GetOneSideQuarreled()?.Data?.PlayerName ?? ""));
                         }
                     }
-                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
                         Mode.SuperHostRoles.Intro.RoleTextHandler(__instance);
                     }

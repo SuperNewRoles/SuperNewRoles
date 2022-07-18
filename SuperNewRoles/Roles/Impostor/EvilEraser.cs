@@ -25,16 +25,16 @@ namespace SuperNewRoles.Roles
                 ? false
                 : (!RoleClass.EvilEraser.Counts.ContainsKey(player.PlayerId) || RoleClass.EvilEraser.Counts[player.PlayerId] > 0)
 && blocktype switch
-                {
-                    BlockTypes.StuntmanGuard => true,
-                    BlockTypes.ClergymanLightOut => true,
-                    BlockTypes.BaitReport => true,
-                    BlockTypes.RedRidingHoodRevive => true,
-                    BlockTypes.JackalSidekick => true,
-                    BlockTypes.NekomataExiled => true,
-                    BlockTypes.FoxGuard => true,
-                    _ => false,
-                };
+{
+    BlockTypes.StuntmanGuard => true,
+    BlockTypes.ClergymanLightOut => true,
+    BlockTypes.BaitReport => true,
+    BlockTypes.RedRidingHoodRevive => true,
+    BlockTypes.JackalSidekick => true,
+    BlockTypes.NekomataExiled => true,
+    BlockTypes.FoxGuard => true,
+    _ => false,
+};
         }
         public static bool IsBlockAndTryUse(BlockTypes blocktype, PlayerControl player = null)
         {
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Roles
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseEraserCount);
             writer.Write(player.PlayerId);
             writer.EndRPC();
-            CustomRPC.RPCProcedure.UseEraserCount(player.PlayerId);
+            RPCProcedure.UseEraserCount(player.PlayerId);
         }
         public static bool IsOKAndTryUse(BlockTypes blocktype, PlayerControl player = null)
         {

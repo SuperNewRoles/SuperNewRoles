@@ -39,7 +39,7 @@ namespace SuperNewRoles.Roles
             Roles.MadMayor.CheckedImpostor = new();
             Roles.MadSeer.CheckedImpostor = new();
             Roles.JackalFriends.CheckedJackal = new();
-            Mode.BattleRoyal.main.VentData = new();
+            Mode.BattleRoyal.Main.VentData = new();
             EndGame.FinalStatusPatch.FinalStatusData.ClearFinalStatusData();
             Mode.ModeHandler.ClearAndReload();
             MapCustoms.AdditionalVents.ClearAndReload();
@@ -2230,11 +2230,11 @@ namespace SuperNewRoles.Roles
                 Position = new Dictionary<byte, Vector3>();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers) Position[p.PlayerId] = new Vector3(9999f, 9999f, 9999f);
                 StoppingTime = CustomOption.CustomOptions.TunaStoppingTime.GetFloat();
-                if (Mode.ModeHandler.isMode(Mode.ModeId.Default)) Timer = StoppingTime;
+                if (Mode.ModeHandler.IsMode(Mode.ModeId.Default)) Timer = StoppingTime;
                 IsUseVent = CustomOptions.TunaIsUseVent.GetBool();
                 IsTunaAddWin = CustomOptions.TunaIsAddWin.GetBool();
                 IsMeetingEnd = false;
-                if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
+                if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
                 {
                     Timers = new();
                     foreach (PlayerControl p in CachedPlayer.AllPlayers) Timers[p.PlayerId] = StoppingTime;

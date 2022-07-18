@@ -30,7 +30,7 @@ namespace SuperNewRoles.Sabotage
         {
             public static void Postfix(InfectedOverlay __instance)
             {
-                if (ModeHandler.isMode(ModeId.Default))
+                if (ModeHandler.IsMode(ModeId.Default))
                 {
                     CognitiveDeficit.main.Create(__instance);
                 }

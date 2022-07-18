@@ -9,7 +9,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.SetHudActive))]
         class SetHudActivePatch
         {
-            public static void Postfix(HudManager __instance, [HarmonyArgument(0)] bool isActive)
+            public static void Postfix(HudManager __instance)
             {
                 if (!AmongUsClient.Instance.AmHost) return;
                 if (PlayerControl.LocalPlayer.isRole(RoleId.Samurai))

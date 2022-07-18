@@ -8,7 +8,7 @@ using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.Zombie
 {
-    static class main
+    static class Main
     {
         public static Color Zombiecolor = new Color32(143, 188, 143, byte.MaxValue);
         public static Color Policecolor = Color.blue;
@@ -109,7 +109,7 @@ namespace SuperNewRoles.Mode.Zombie
                 FixedUpdate.IsStart = false;
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    p.getDefaultName();
+                    p.GetDefaultName();
                     /*
                     p.UncheckSetVisor("visor_EmptyVisor");
                     */

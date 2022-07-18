@@ -114,9 +114,9 @@ namespace SuperNewRoles.Roles
             var TargetID = Target.PlayerId;
             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
-            CustomRPC.RPCProcedure.MeetingSheriffKill(LocalID, TargetID, misfire);
+            RPCProcedure.MeetingSheriffKill(LocalID, TargetID, misfire);
 
-            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.MeetingSheriffKill, Hazel.SendOption.Reliable, -1);
+            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.MeetingSheriffKill, SendOption.Reliable, -1);
             killWriter.Write(LocalID);
             killWriter.Write(TargetID);
             killWriter.Write(misfire);
@@ -157,14 +157,14 @@ namespace SuperNewRoles.Roles
         {
             LadderDead.Reset();
             RoleClass.IsMeeting = true;
-            if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
+            if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
             {
                 Mode.SuperHostRoles.MorePatch.StartMeeting(__instance);
             }
 
             MeetingUpdatePatch.IsFlag = false;
             MeetingUpdatePatch.IsSHRFlag = false;
-            if (!ModeHandler.isMode(ModeId.SuperHostRoles) && PlayerControl.AllPlayerControls.Count > 15)
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles) && PlayerControl.AllPlayerControls.Count > 15)
             {
                 MeetingUpdatePatch.IsFlag = true;
                 meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();
@@ -187,7 +187,7 @@ namespace SuperNewRoles.Roles
                 meetingsheriff_updatepatch.index = 1;
                 CreateAreaButton(__instance);
             }
-            if (ModeHandler.isMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count > 0)
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count > 0)
             {
                 List<PlayerVoteArea> newareas = new();
                 List<PlayerVoteArea> deadareas = new();

@@ -14,7 +14,7 @@ namespace SuperNewRoles.Patch
         }
         public static void FixedUpdate()
         {
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (PlayerControl.LocalPlayer.isDead()) return;
                 if (TargetLadderData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))

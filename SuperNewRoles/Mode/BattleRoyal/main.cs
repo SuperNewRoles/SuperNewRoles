@@ -6,7 +6,6 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.BattleRoyal
 {
@@ -101,7 +100,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    if (ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.CopsRobbers))
+                    if (ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.CopsRobbers))
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
                         writer.WritePacked(127);
@@ -116,7 +115,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         }, 0.5f, "Anti Vent");
                         return false;
                     }
-                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
                         bool data = CoEnterVent.Prefix(__instance, id);
                         if (data)
@@ -139,16 +138,16 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 [HarmonyArgument(1)] PlayerControl player,
                 [HarmonyArgument(2)] byte amount)
             {
-                if (PlusModeHandler.isMode(PlusModeId.NotSabotage))
+                if (PlusModeHandler.IsMode(PlusModeId.NotSabotage))
                 {
                     return false;
                 }
-                if ((ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.HideAndSeek) || ModeHandler.isMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
+                if ((ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.HideAndSeek) || ModeHandler.IsMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
                 if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.isRole(RoleId.MadMate))
                 {
                     return false;
                 }
-                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
                     bool returndata = MorePatch.RepairSystem(__instance, systemType, player, amount);
                     return returndata;
@@ -174,7 +173,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     }, 0.1f, "TecExitVent");
                 }
                 SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => " + systemType + " : " + amount);
-                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
                     SyncSetting.CustomSyncSettings();
                     if (systemType == SystemTypes.Comms)
@@ -409,7 +408,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     }
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        p.getDefaultName();
+                        p.GetDefaultName();
                         p.RpcSetName("");//Playing on SuperNewRoles!");
                     }
                     new LateTask(() =>

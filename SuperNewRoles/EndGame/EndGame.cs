@@ -309,20 +309,20 @@ namespace SuperNewRoles.EndGame
                     }
                 }
             }
-            if (ModeHandler.isMode(ModeId.Zombie))
+            if (ModeHandler.IsMode(ModeId.Zombie))
             {
                 if (AdditionalTempData.winCondition == WinCondition.Default)
                 {
                     text = ModTranslation.getString("ZombieZombieName");
-                    textRenderer.color = Mode.Zombie.main.Zombiecolor;
+                    textRenderer.color = Mode.Zombie.Main.Zombiecolor;
                 }
                 else if (AdditionalTempData.winCondition == WinCondition.WorkpersonWin)
                 {
                     text = ModTranslation.getString("ZombiePoliceName");
-                    textRenderer.color = Mode.Zombie.main.Policecolor;
+                    textRenderer.color = Mode.Zombie.Main.Policecolor;
                 }
             }
-            else if (ModeHandler.isMode(ModeId.BattleRoyal))
+            else if (ModeHandler.IsMode(ModeId.BattleRoyal))
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
@@ -353,9 +353,9 @@ namespace SuperNewRoles.EndGame
                         roleText += $" → {CustomOptions.cs(datas.GhostIntroDate.color, datas.GhostIntroDate.NameKey + "Name")}";
                     }
                     string result = $"{ModHelpers.cs(Palette.PlayerColors[datas.ColorId], datas.PlayerName)}{datas.NameSuffix}{taskInfo} - {GetStatusText(datas.Status)} - {roleText}";
-                    if (ModeHandler.isMode(ModeId.Zombie))
+                    if (ModeHandler.IsMode(ModeId.Zombie))
                     {
-                        roleText = datas.ColorId == 1 ? CustomOptions.cs(Mode.Zombie.main.Policecolor, "ZombiePoliceName") : CustomOptions.cs(Mode.Zombie.main.Zombiecolor, "ZombieZombieName");
+                        roleText = datas.ColorId == 1 ? CustomOptions.cs(Mode.Zombie.Main.Policecolor, "ZombiePoliceName") : CustomOptions.cs(Mode.Zombie.Main.Zombiecolor, "ZombieZombieName");
                         if (datas.ColorId == 2) taskInfo = "";
                         result = $"{ModHelpers.cs(Palette.PlayerColors[datas.ColorId], datas.PlayerName)}{taskInfo} : {roleText}";
                     }
@@ -407,7 +407,7 @@ namespace SuperNewRoles.EndGame
 
         public static void Postfix()
         {
-            if (AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.SuperHostRoles, ModeId.Zombie))
+            if (AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.SuperHostRoles, ModeId.Zombie))
             {
                 PlayerControl.GameOptions = SyncSetting.OptionData.DeepCopy();
                 CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
@@ -520,7 +520,7 @@ namespace SuperNewRoles.EndGame
             bool VultureWin = gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
             bool NeetWin = gameOverReason == (GameOverReason)CustomGameOverReason.NeetWin;
             bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
-            if (ModeHandler.isMode(ModeId.SuperHostRoles) && EndData != null)
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)
             {
                 JesterWin = EndData == CustomGameOverReason.JesterWin;
                 MadJesterWin = EndData == CustomGameOverReason.MadJesterWin;
@@ -638,12 +638,12 @@ namespace SuperNewRoles.EndGame
                 }
             }
 
-            if (ModeHandler.isMode(ModeId.BattleRoyal))
+            if (ModeHandler.IsMode(ModeId.BattleRoyal))
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
-                if (Mode.BattleRoyal.main.IsTeamBattle)
+                if (Mode.BattleRoyal.Main.IsTeamBattle)
                 {
-                    foreach (PlayerControl p in Mode.BattleRoyal.main.Winners)
+                    foreach (PlayerControl p in Mode.BattleRoyal.Main.Winners)
                     {
                         WinningPlayerData wpd = new(p.Data);
                         TempData.winners.Add(wpd);
@@ -799,7 +799,7 @@ namespace SuperNewRoles.EndGame
                     }
                 }
             }
-            if (ModeHandler.isMode(ModeId.Zombie))
+            if (ModeHandler.IsMode(ModeId.Zombie))
             {
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 if (gameOverReason == GameOverReason.ImpostorByKill)
@@ -849,7 +849,7 @@ namespace SuperNewRoles.EndGame
         {
             try
             {
-                if (ExileController.Instance != null && ExileController.Instance.exiled != null && ModeHandler.isMode(ModeId.Default))
+                if (ExileController.Instance != null && ExileController.Instance.exiled != null && ModeHandler.IsMode(ModeId.Default))
                 {
                     PlayerControl player = ModHelpers.playerById(ExileController.Instance.exiled.Object.PlayerId);
                     if (player == null) return;
@@ -897,7 +897,7 @@ namespace SuperNewRoles.EndGame
             if (DebugMode.IsDebugMode()) return false;
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             var statistics = new PlayerStatistics(__instance);
-            if (!ModeHandler.isMode(ModeId.Default))
+            if (!ModeHandler.IsMode(ModeId.Default))
             {
                 ModeHandler.EndGameChecks(__instance, statistics);
             }
@@ -909,7 +909,7 @@ namespace SuperNewRoles.EndGame
                 if (CheckAndEndGameForEgoistWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
                 if (CheckAndEndGameForWorkpersonWin(__instance)) return false;
-                if (!PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
+                if (!PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)) return false;
             }
             return false;
         }

@@ -28,13 +28,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         new LateTask(() =>
                         {
                             RPCProcedure.ShareWinner(target.PlayerId);
-                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(target.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
                             Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                             Writer.Write((byte)CustomGameOverReason.QuarreledWin);
                             Writer.EndRPC();
-                            CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
+                            RPCProcedure.SetWinCond((byte)CustomGameOverReason.QuarreledWin);
                             var winplayers = new List<PlayerControl>
                             {
                                 target
@@ -46,7 +46,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                                 target
                             };
                             RoleClass.Quarreled.IsQuarreledWin = true;
-                            SuperHostRoles.EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
+                            EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByTask, false);
                         }, 0.15f);
                     }
                 }

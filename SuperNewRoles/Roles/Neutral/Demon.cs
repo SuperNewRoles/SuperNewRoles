@@ -75,7 +75,7 @@ namespace SuperNewRoles.Roles
 
         public static bool IsButton()
         {
-            return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Demon) && ModeHandler.isMode(ModeId.Default);
+            return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Demon) && ModeHandler.IsMode(ModeId.Default);
         }
 
         public static bool IsWin(PlayerControl Demon)

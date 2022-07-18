@@ -18,7 +18,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             FixedUpdate.SetRoleNames();
             foreach (PlayerControl p in BotManager.AllBots)
             {
-                p.RpcSetName(p.getDefaultName());
+                p.RpcSetName(p.GetDefaultName());
             }
             /*
             new LateTask(() =>
@@ -52,17 +52,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }, 5f, "AntiBlack");*/
             foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
             {
-                if (p.isAlive() && !p.IsMod())
-                {
-                    p.RpcResetAbilityCooldown();
-                }
+                if (p.isAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
             }
             foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
             {
-                if (p.isAlive() && !p.IsMod())
-                {
-                    p.RpcResetAbilityCooldown();
-                }
+                if (p.isAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
             }
             AmongUsClient.Instance.StartCoroutine(nameof(ResetName));
 
@@ -96,7 +90,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     if (Side.isDead())
                     {
                         RPCProcedure.ShareWinner(exiled.Object.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, Hazel.SendOption.Reliable, -1);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(exiled.Object.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(Writer);
                         Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);

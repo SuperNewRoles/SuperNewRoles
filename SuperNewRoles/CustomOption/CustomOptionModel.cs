@@ -136,7 +136,7 @@ namespace SuperNewRoles.CustomOption
         {
             if (CachedPlayer.AllPlayers.Count <= 1 || (AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null)) return;
 
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareOptions, Hazel.SendOption.Reliable);
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareOptions, SendOption.Reliable);
             messageWriter.WritePacked((uint)CustomOption.options.Count);
             foreach (CustomOption option in CustomOption.options)
             {
@@ -606,7 +606,7 @@ namespace SuperNewRoles.CustomOption
         }
         public static bool IsHidden(this CustomOption option)
         {
-            return option.isHidden ? true : !option.isSHROn && ModeHandler.isMode(ModeId.SuperHostRoles, false);
+            return option.isHidden ? true : !option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false);
         }
         public static void Postfix(GameOptionsMenu __instance)
         {

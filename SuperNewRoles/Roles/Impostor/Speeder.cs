@@ -20,14 +20,14 @@ namespace SuperNewRoles.Roles
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedDown, SendOption.Reliable, -1);
             writer.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetSpeedDown(true);
+            RPCProcedure.SetSpeedDown(true);
         }
         public static void ResetSpeed()
         {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedDown, SendOption.Reliable, -1);
             writer.Write(false);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetSpeedDown(false);
+            RPCProcedure.SetSpeedDown(false);
         }
         public static void SpeedDownEnd()
         {
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Roles
         public static void Postfix(PlayerPhysics __instance)
         {
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (RoleClass.Speeder.IsSpeedDown)
                 {

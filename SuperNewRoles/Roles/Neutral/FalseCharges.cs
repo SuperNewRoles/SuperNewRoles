@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles
     {
         public static void WrapUp(PlayerControl exiled)
         {
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (exiled != null)
                 {
@@ -21,7 +21,7 @@ namespace SuperNewRoles.Roles
                         if (RoleClass.FalseCharges.Turns <= 0) return;
                         if (exiled.PlayerId == RoleClass.FalseCharges.FalseChargePlayer)
                         {
-                            CustomRPC.RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
+                            RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
 
                             MessageWriter Writer = RPCHelper.StartRPC((byte)CustomRPC.CustomRPC.ShareWinner);
                             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
@@ -42,7 +42,7 @@ namespace SuperNewRoles.Roles
                 }
                 RoleClass.FalseCharges.Turns--;
             }
-            else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 if (exiled != null)
                 {
@@ -65,11 +65,11 @@ namespace SuperNewRoles.Roles
                                     var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
                                     Writer.Write(player.PlayerId);
                                     Writer.EndRPC();
-                                    CustomRPC.RPCProcedure.ShareWinner(player.PlayerId);
+                                    RPCProcedure.ShareWinner(player.PlayerId);
                                     Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                                     Writer.Write((byte)CustomGameOverReason.FalseChargesWin);
                                     Writer.EndRPC();
-                                    CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.FalseChargesWin);
+                                    RPCProcedure.SetWinCond((byte)CustomGameOverReason.FalseChargesWin);
                                     var winplayers = new List<PlayerControl>
                                     {
                                         player

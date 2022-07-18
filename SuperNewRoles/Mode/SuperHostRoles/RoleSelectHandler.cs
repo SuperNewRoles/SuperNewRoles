@@ -21,12 +21,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             SetCustomRoles();
             SyncSetting.CustomSyncSettings();
             ChacheManager.ResetChache();
-            main.SendAllRoleChat();
+            Main.SendAllRoleChat();
             return sender;
         }
         public static void SpawnBots()
         {
-            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 int impostor = PlayerControl.GameOptions.NumImpostors;
                 int crewmate = 0;
@@ -226,14 +226,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!Player.IsMod())
                 {
                     int PlayerCID = Player.getClientId();
-                    if (RoleClass.Spy.CanUseVent)
-                    {
-                        sender.RpcSetRole(Player, RoleTypes.Engineer, PlayerCID);
-                    }
-                    else
-                    {
-                        sender.RpcSetRole(Player, RoleTypes.Crewmate, PlayerCID);
-                    }
+                    if (RoleClass.Spy.CanUseVent) sender.RpcSetRole(Player, RoleTypes.Engineer, PlayerCID);
+                    else sender.RpcSetRole(Player, RoleTypes.Crewmate, PlayerCID);
                     foreach (var pc in PlayerControl.AllPlayerControls)
                     {
                         if (pc.PlayerId == Player.PlayerId) continue;
@@ -259,14 +253,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 else
                 {
-                    if (Player.PlayerId != 0)
-                    {
-                        sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.getClientId());
-                    }
-                    else
-                    {
-                        Player.SetRole(RoleTypes.Crewmate);
-                    }
+                    if (Player.PlayerId != 0) sender.RpcSetRole(Player, RoleTypes.Crewmate, Player.getClientId());
+                    else Player.SetRole(RoleTypes.Crewmate);
                 }
             }
 
@@ -291,14 +279,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (Player.IsPlayer())
                 {
-                    if (Player.isImpostor())
-                    {
-                        AllRoleSetClass.ImpostorPlayers.Add(Player);
-                    }
-                    else
-                    {
-                        AllRoleSetClass.CrewMatePlayers.Add(Player);
-                    }
+                    if (Player.isImpostor()) AllRoleSetClass.ImpostorPlayers.Add(Player);
+                    else AllRoleSetClass.CrewMatePlayers.Add(Player);
                 }
             }
         }

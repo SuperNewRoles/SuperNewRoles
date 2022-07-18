@@ -12,7 +12,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             public static void Prefix(MeetingHud __instance)
             {
                 if (!AmongUsClient.Instance.AmHost) return;
-                if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
+                if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
                 {
                     EndMeetingPatch();
                 }

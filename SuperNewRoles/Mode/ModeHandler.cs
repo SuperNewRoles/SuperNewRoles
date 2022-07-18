@@ -10,9 +10,9 @@ namespace SuperNewRoles.Mode
     {
         public static bool Prefix(ShipStatus __instance)
         {
-            return !ModeHandler.isMode(ModeId.Zombie) && !ModeHandler.isMode(ModeId.Werewolf) &&
-!ModeHandler.isMode(ModeId.BattleRoyal) && !ModeHandler.isMode(ModeId.HideAndSeek) &&
-!ModeHandler.isMode(ModeId.CopsRobbers);
+            return !ModeHandler.IsMode(ModeId.Zombie) && !ModeHandler.IsMode(ModeId.Werewolf) &&
+                    !ModeHandler.IsMode(ModeId.BattleRoyal) && !ModeHandler.IsMode(ModeId.HideAndSeek) &&
+                    !ModeHandler.IsMode(ModeId.CopsRobbers);
         }
     }
     enum ModeId
@@ -36,27 +36,27 @@ namespace SuperNewRoles.Mode
         public static void ClearAndReload()
         {
             PlusModeHandler.ClearAndReload();
-            if (isMode(ModeId.HideAndSeek, false))
+            if (IsMode(ModeId.HideAndSeek, false))
             {
                 thisMode = ModeId.HideAndSeek;
-                HideAndSeek.main.ClearAndReload();
+                HideAndSeek.Main.ClearAndReload();
             }
-            else if (isMode(ModeId.BattleRoyal, false))
+            else if (IsMode(ModeId.BattleRoyal, false))
             {
                 thisMode = ModeId.BattleRoyal;
-                BattleRoyal.main.ClearAndReload();
+                BattleRoyal.Main.ClearAndReload();
             }
-            else if (isMode(ModeId.SuperHostRoles, false))
+            else if (IsMode(ModeId.SuperHostRoles, false))
             {
                 thisMode = ModeId.SuperHostRoles;
-                SuperHostRoles.main.ClearAndReloads();
+                SuperHostRoles.Main.ClearAndReloads();
             }
-            else if (isMode(ModeId.Zombie, false))
+            else if (IsMode(ModeId.Zombie, false))
             {
                 thisMode = ModeId.Zombie;
-                Zombie.main.ClearAndReload();
+                Zombie.Main.ClearAndReload();
             }
-            else if (isMode(ModeId.RandomColor, false))
+            else if (IsMode(ModeId.RandomColor, false))
             {
                 thisMode = ModeId.RandomColor;
                 RandomColor.FixedUpdate.UpdateTime = 0f;
@@ -65,27 +65,27 @@ namespace SuperNewRoles.Mode
                 RandomColor.FixedUpdate.IsRandomColorMeeting = RandomColor.RandomColorOptions.RandomColorMeeting.GetBool();
                 RandomColor.FixedUpdate.IsHideNameSet = false;
             }
-            else if (isMode(ModeId.NotImpostorCheck, false))
+            else if (IsMode(ModeId.NotImpostorCheck, false))
             {
                 thisMode = ModeId.NotImpostorCheck;
-                NotImpostorCheck.main.ClearAndReload();
+                NotImpostorCheck.Main.ClearAndReload();
             }
-            else if (isMode(ModeId.Detective, false))
+            else if (IsMode(ModeId.Detective, false))
             {
                 thisMode = ModeId.Detective;
-                Detective.main.ClearAndReload();
+                Detective.Main.ClearAndReload();
             }
-            else if (isMode(ModeId.Werewolf, false))
+            else if (IsMode(ModeId.Werewolf, false))
             {
                 thisMode = ModeId.Werewolf;
-                Werewolf.main.ClearAndReload();
+                Werewolf.Main.ClearAndReload();
             }
-            else if (isMode(ModeId.CopsRobbers, false))
+            else if (IsMode(ModeId.CopsRobbers, false))
             {
                 thisMode = ModeId.CopsRobbers;
-                CopsRobbers.main.ClearAndReloads();
+                CopsRobbers.Main.ClearAndReloads();
             }
-            /* else if (isMode(ModeId.LevelUp, false))
+            /* else if (IsMode(ModeId.LevelUp, false))
             {
                 thisMode = ModeId.LevelUp;
                 LevelUp.main.ClearAndReloads();
@@ -94,7 +94,7 @@ namespace SuperNewRoles.Mode
             {
                 thisMode = ModeId.Default;
             }
-            if (!isMode(ModeId.Default))
+            if (!IsMode(ModeId.Default))
             {
                 SuperHostRoles.BlockTool.IsCom = false;
             }
@@ -108,20 +108,20 @@ namespace SuperNewRoles.Mode
         public static CustomOption.CustomOption ThisModeSetting;
         public static Il2CppSystem.Collections.Generic.List<PlayerControl> TeamHandler(IntroCutscene __instance)
         {
-            if (isMode(ModeId.HideAndSeek)) return HideAndSeek.Intro.ModeHandler(__instance);
-            else if (isMode(ModeId.BattleRoyal)) return BattleRoyal.Intro.ModeHandler(__instance);
-            else if (isMode(ModeId.SuperHostRoles)) return SuperHostRoles.Intro.ModeHandler(__instance);
-            else if (isMode(ModeId.Zombie)) return Zombie.Intro.ModeHandler(__instance);
-            else if (isMode(ModeId.RandomColor)) return SuperHostRoles.Intro.ModeHandler(__instance);
-            else if (isMode(ModeId.NotImpostorCheck)) return SuperHostRoles.Intro.ModeHandler(__instance);
-            else if (isMode(ModeId.Detective)) return SuperHostRoles.Intro.ModeHandler(__instance);
-            else if (isMode(ModeId.Werewolf))
+            if (IsMode(ModeId.HideAndSeek)) return HideAndSeek.Intro.ModeHandler();
+            else if (IsMode(ModeId.BattleRoyal)) return BattleRoyal.Intro.ModeHandler();
+            else if (IsMode(ModeId.SuperHostRoles)) return SuperHostRoles.Intro.ModeHandler(__instance);
+            else if (IsMode(ModeId.Zombie)) return Zombie.Intro.ModeHandler();
+            else if (IsMode(ModeId.RandomColor)) return SuperHostRoles.Intro.ModeHandler(__instance);
+            else if (IsMode(ModeId.NotImpostorCheck)) return SuperHostRoles.Intro.ModeHandler(__instance);
+            else if (IsMode(ModeId.Detective)) return SuperHostRoles.Intro.ModeHandler(__instance);
+            else if (IsMode(ModeId.Werewolf))
             {
                 var Data = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                 Data.Add(PlayerControl.LocalPlayer);
                 return Data;
             }
-            else if (isMode(ModeId.CopsRobbers))
+            else if (IsMode(ModeId.CopsRobbers))
             {
                 var Data = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                 Data.Add(PlayerControl.LocalPlayer);
@@ -131,18 +131,18 @@ namespace SuperNewRoles.Mode
         }
         public static void IntroHandler(IntroCutscene __instance)
         {
-            if (isMode(ModeId.HideAndSeek)) HideAndSeek.Intro.IntroHandler(__instance);
-            else if (isMode(ModeId.BattleRoyal)) BattleRoyal.Intro.IntroHandler(__instance);
-            else if (isMode(ModeId.SuperHostRoles)) SuperHostRoles.Intro.IntroHandler(__instance);
-            else if (isMode(ModeId.Zombie)) Zombie.Intro.IntroHandler(__instance);
-            else if (isMode(ModeId.Detective)) SuperHostRoles.Intro.IntroHandler(__instance);
-            else if (isMode(ModeId.Werewolf)) SuperHostRoles.Intro.IntroHandler(__instance);
+            if (IsMode(ModeId.HideAndSeek)) HideAndSeek.Intro.IntroHandler(__instance);
+            else if (IsMode(ModeId.BattleRoyal)) BattleRoyal.Intro.IntroHandler(__instance);
+            else if (IsMode(ModeId.SuperHostRoles)) SuperHostRoles.Intro.IntroHandler();
+            else if (IsMode(ModeId.Zombie)) Zombie.Intro.IntroHandler(__instance);
+            else if (IsMode(ModeId.Detective)) SuperHostRoles.Intro.IntroHandler();
+            else if (IsMode(ModeId.Werewolf)) SuperHostRoles.Intro.IntroHandler();
         }
         public static void YouAreIntroHandler(IntroCutscene __instance)
         {
-            if (isMode(ModeId.Zombie)) Zombie.Intro.YouAreHandle(__instance);
-            else if (isMode(ModeId.Detective)) Detective.Intro.YouAreHandle(__instance);
-            else if (isMode(ModeId.Werewolf)) Werewolf.Intro.YouAreHandle(__instance);
+            if (IsMode(ModeId.Zombie)) Zombie.Intro.YouAreHandle(__instance);
+            else if (IsMode(ModeId.Detective)) Detective.Intro.YouAreHandle(__instance);
+            else if (IsMode(ModeId.Werewolf)) Werewolf.Intro.YouAreHandle(__instance);
         }
         public static void OptionLoad()
         {
@@ -164,26 +164,26 @@ namespace SuperNewRoles.Mode
             switch (GetMode())
             {
                 case ModeId.CopsRobbers:
-                    CopsRobbers.main.HudUpdate();
+                    CopsRobbers.Main.HudUpdate();
                     break;
             }
         }
         public static void FixedUpdate(PlayerControl __instance)
         {
-            if (isMode(ModeId.SuperHostRoles))
+            if (IsMode(ModeId.SuperHostRoles))
                 //PlayerControl.LocalPlayer.RpcSetName("<size=>次のターゲット:よッキング</size>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                 SuperHostRoles.FixedUpdate.Update();
-            else if (isMode(ModeId.HideAndSeek)) HideAndSeek.Patch.HASFixed.Postfix(__instance);
-            else if (isMode(ModeId.BattleRoyal)) BattleRoyal.main.FixedUpdate();
-            else if (isMode(ModeId.Zombie)) Zombie.FixedUpdate.Update();
-            else if (isMode(ModeId.RandomColor)) RandomColor.FixedUpdate.Update();
-            //else if (isMode(ModeId.LevelUp)) LevelUp.main.FixedUpdate();
+            else if (IsMode(ModeId.HideAndSeek)) HideAndSeek.Patch.HASFixed.Postfix();
+            else if (IsMode(ModeId.BattleRoyal)) BattleRoyal.Main.FixedUpdate();
+            else if (IsMode(ModeId.Zombie)) Zombie.FixedUpdate.Update();
+            else if (IsMode(ModeId.RandomColor)) RandomColor.FixedUpdate.Update();
+            //else if (IsMode(ModeId.LevelUp)) LevelUp.main.FixedUpdate();
 
         }
         public static void Wrapup(GameData.PlayerInfo exiled)
         {
-            if (isMode(ModeId.Default)) return;
-            if (isMode(ModeId.Werewolf)) Werewolf.main.Wrapup(exiled); return;
+            if (IsMode(ModeId.Default)) return;
+            if (IsMode(ModeId.Werewolf)) Werewolf.Main.Wrapup(exiled); return;
         }
         public static ModeId GetMode(bool IsChache = true)
         {
@@ -192,22 +192,22 @@ namespace SuperNewRoles.Mode
             {
                 return thisMode;
             }
-            if (isMode(ModeId.Default, false)) return ModeId.Default;
-            if (isMode(ModeId.HideAndSeek, false)) return ModeId.HideAndSeek;
-            if (isMode(ModeId.SuperHostRoles, false)) return ModeId.SuperHostRoles;
-            if (isMode(ModeId.BattleRoyal, false)) return ModeId.BattleRoyal;
-            if (isMode(ModeId.Zombie, false)) return ModeId.Zombie;
-            if (isMode(ModeId.RandomColor, false)) return ModeId.RandomColor;
-            if (isMode(ModeId.NotImpostorCheck, false)) return ModeId.NotImpostorCheck;
-            if (isMode(ModeId.Detective, false)) return ModeId.Detective;
-            if (isMode(ModeId.Werewolf, false)) return ModeId.Werewolf;
-            return isMode(ModeId.CopsRobbers, false) ? ModeId.CopsRobbers : isMode(ModeId.LevelUp, false) ? ModeId.LevelUp : ModeId.No;
+            if (IsMode(ModeId.Default, false)) return ModeId.Default;
+            if (IsMode(ModeId.HideAndSeek, false)) return ModeId.HideAndSeek;
+            if (IsMode(ModeId.SuperHostRoles, false)) return ModeId.SuperHostRoles;
+            if (IsMode(ModeId.BattleRoyal, false)) return ModeId.BattleRoyal;
+            if (IsMode(ModeId.Zombie, false)) return ModeId.Zombie;
+            if (IsMode(ModeId.RandomColor, false)) return ModeId.RandomColor;
+            if (IsMode(ModeId.NotImpostorCheck, false)) return ModeId.NotImpostorCheck;
+            if (IsMode(ModeId.Detective, false)) return ModeId.Detective;
+            if (IsMode(ModeId.Werewolf, false)) return ModeId.Werewolf;
+            return IsMode(ModeId.CopsRobbers, false) ? ModeId.CopsRobbers : IsMode(ModeId.LevelUp, false) ? ModeId.LevelUp : ModeId.No;
         }
         public static string GetThisModeIntro()
         {
             return ThisModeSetting.GetString();
         }
-        public static bool isMode(params ModeId[] modes)
+        public static bool IsMode(params ModeId[] modes)
         {
             if (AmongUsClient.Instance.GameMode == GameModes.FreePlay || (!ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(AmongUsClient.Instance.HostId)))
             {
@@ -229,7 +229,7 @@ namespace SuperNewRoles.Mode
             }
             return false;
         }
-        public static bool isMode(ModeId mode, bool IsChache = true)
+        public static bool IsMode(ModeId mode, bool IsChache = true)
         {
             return AmongUsClient.Instance.GameMode == GameModes.FreePlay || !PlayerControlHepler.IsMod(AmongUsClient.Instance.HostId)
                 ? mode == ModeId.Default
@@ -253,25 +253,25 @@ namespace SuperNewRoles.Mode
         }
         public static bool EndGameChecks(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (isMode(ModeId.HideAndSeek)) return HideAndSeek.main.EndGameCheck(__instance, statistics);
-            else if (isMode(ModeId.BattleRoyal)) return BattleRoyal.main.EndGameCheck(__instance, statistics);
-            else if (isMode(ModeId.SuperHostRoles)) return SuperHostRoles.EndGameCheck.CheckEndGame(__instance, statistics);
-            else if (isMode(ModeId.Zombie)) return Zombie.main.EndGameCheck(__instance, statistics);
-            else if (isMode(ModeId.RandomColor)) return RandomColor.main.CheckEndGame(__instance, statistics);
-            else if (isMode(ModeId.NotImpostorCheck)) return NotImpostorCheck.WinCheck.CheckEndGame(__instance);
-            else if (isMode(ModeId.Detective)) return Detective.WinCheckPatch.CheckEndGame(__instance);
-            else if (isMode(ModeId.Werewolf)) return SuperHostRoles.EndGameCheck.CheckEndGame(__instance, statistics);
-            else if (isMode(ModeId.CopsRobbers)) return CopsRobbers.main.EndGameCheck(__instance);
+            if (IsMode(ModeId.HideAndSeek)) return HideAndSeek.Main.EndGameCheck(__instance, statistics);
+            else if (IsMode(ModeId.BattleRoyal)) return BattleRoyal.Main.EndGameCheck(__instance);
+            else if (IsMode(ModeId.SuperHostRoles)) return SuperHostRoles.EndGameCheck.CheckEndGame(__instance, statistics);
+            else if (IsMode(ModeId.Zombie)) return Zombie.Main.EndGameCheck(__instance, statistics);
+            else if (IsMode(ModeId.RandomColor)) return RandomColor.Main.CheckEndGame(__instance, statistics);
+            else if (IsMode(ModeId.NotImpostorCheck)) return NotImpostorCheck.WinCheck.CheckEndGame(__instance);
+            else if (IsMode(ModeId.Detective)) return Detective.WinCheckPatch.CheckEndGame(__instance);
+            else if (IsMode(ModeId.Werewolf)) return SuperHostRoles.EndGameCheck.CheckEndGame(__instance, statistics);
+            else if (IsMode(ModeId.CopsRobbers)) return CopsRobbers.Main.EndGameCheck(__instance);
             return false;
         }
         public static bool IsBlockVanilaRole()
         {
-            if (isMode(ModeId.NotImpostorCheck)) return false;
-            return isMode(ModeId.Detective) ? false : !isMode(ModeId.Default);
+            if (IsMode(ModeId.NotImpostorCheck)) return false;
+            return IsMode(ModeId.Detective) ? false : !IsMode(ModeId.Default);
         }
         public static bool IsBlockGuardianAngelRole()
         {
-            return isMode(ModeId.Default) || IsBlockVanilaRole();
+            return IsMode(ModeId.Default) || IsBlockVanilaRole();
         }
     }
 }

@@ -3,7 +3,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     class RPCSetTask
     {/*
-                if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return true;
+                if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
                 PlayerControl player = ModHelpers.playerById(playerId);
                 if (player == null) return false;
                 if (player.isClearTask() && !player.isRole(RoleId.Workperson))

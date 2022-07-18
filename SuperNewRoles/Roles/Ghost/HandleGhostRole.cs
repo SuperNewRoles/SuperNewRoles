@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
         {
             public static bool Prefix(RoleManager __instance, [HarmonyArgument(0)] PlayerControl player)
             {
-                if (!(ModeHandler.isMode(ModeId.Default) || ModeHandler.isMode(ModeId.SuperHostRoles))) return true;
+                if (!(ModeHandler.IsMode(ModeId.Default) || ModeHandler.IsMode(ModeId.SuperHostRoles))) return true;
                 //生存者と割り当て済みの人は弾く
                 if (player.isAlive() || !player.isGhostRole(RoleId.DefaultRole)) return false;
                 //幽霊役職がアサインされていたら守護天使をアサインしない

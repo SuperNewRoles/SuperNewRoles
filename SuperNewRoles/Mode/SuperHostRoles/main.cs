@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
-    class main
+    class Main
     {
         public static void ClearAndReloads()
         {
@@ -15,7 +15,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static PlayerControl RealExiled;
         public static void SendAllRoleChat()
         {/*
-            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 float Time = 3;
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)

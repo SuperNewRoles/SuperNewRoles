@@ -283,7 +283,7 @@ namespace SuperNewRoles.Patch
             {
                 if (target == null)
                 {
-                    string name = PlayerControl.LocalPlayer.getDefaultName();
+                    string name = PlayerControl.LocalPlayer.GetDefaultName();
                     AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name));
                     return;
                 }
@@ -293,7 +293,7 @@ namespace SuperNewRoles.Patch
                 }
                 else
                 {
-                    string name = PlayerControl.LocalPlayer.getDefaultName();
+                    string name = PlayerControl.LocalPlayer.GetDefaultName();
                     PlayerControl.LocalPlayer.SetName(SNRCommander + "\n" + rolename);
                     FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(PlayerControl.LocalPlayer, text);
                     PlayerControl.LocalPlayer.SetName(name);
@@ -302,7 +302,7 @@ namespace SuperNewRoles.Patch
             }
             else
             {
-                string name = PlayerControl.LocalPlayer.getDefaultName();
+                string name = PlayerControl.LocalPlayer.GetDefaultName();
                 if (target == null)
                 {
                     AmongUsClient.Instance.StartCoroutine(AllSend(SNRCommander + rolename, text, name, time));

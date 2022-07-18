@@ -19,11 +19,11 @@ namespace SuperNewRoles.Roles
                 {
                     if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.BaitReport))
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ReportDeadBody, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ReportDeadBody, SendOption.Reliable, -1);
                         writer.Write(deadPlayer.killerIfExisting.PlayerId);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        CustomRPC.RPCProcedure.ReportDeadBody(deadPlayer.killerIfExisting.PlayerId, CachedPlayer.LocalPlayer.PlayerId);
+                        RPCProcedure.ReportDeadBody(deadPlayer.killerIfExisting.PlayerId, CachedPlayer.LocalPlayer.PlayerId);
                     }
                     RoleClass.Bait.Reported = true;
                 }

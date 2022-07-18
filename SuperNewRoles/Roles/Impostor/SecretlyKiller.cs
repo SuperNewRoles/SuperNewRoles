@@ -50,7 +50,7 @@ namespace SuperNewRoles.Roles
         {
             RoleClass.SecretlyKiller.target.RpcMurderPlayer(RoleClass.SecretlyKiller.target);
             RoleClass.SecretlyKiller.target = null;
-            //MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
+            //MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, SendOption.Reliable, -1);
             //killWriter.Write();
             //AmongUsClient.Instance.FinishRpcImmediately(killWriter);
         }

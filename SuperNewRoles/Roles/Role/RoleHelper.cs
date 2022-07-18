@@ -126,7 +126,7 @@ namespace SuperNewRoles
         }
         public static void SetQuarreledRPC(PlayerControl player1, PlayerControl player2)
         {
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetQuarreled, Hazel.SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetQuarreled, SendOption.Reliable, -1);
             Writer.Write(player1.PlayerId);
             Writer.Write(player2.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -143,7 +143,7 @@ namespace SuperNewRoles
         }
         public static void SetLoversRPC(PlayerControl player1, PlayerControl player2)
         {
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetLovers, Hazel.SendOption.Reliable, -1);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetLovers, SendOption.Reliable, -1);
             Writer.Write(player1.PlayerId);
             Writer.Write(player2.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -376,7 +376,7 @@ namespace SuperNewRoles
                     RoleClass.Magaziner.MagazinerPlayer.Add(player);
                     break;
                 case RoleId.Hunter:
-                    Mode.Werewolf.main.HunterPlayers.Add(player);
+                    Mode.Werewolf.Main.HunterPlayers.Add(player);
                     break;
                 case RoleId.Mayor:
                     RoleClass.Mayor.MayorPlayer.Add(player);
@@ -922,7 +922,7 @@ namespace SuperNewRoles
         }
         public static void setRoleRPC(this PlayerControl Player, RoleId SelectRoleDate)
         {
-            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetRole, Hazel.SendOption.Reliable, -1);
+            MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetRole, SendOption.Reliable, -1);
             killWriter.Write(Player.PlayerId);
             killWriter.Write((byte)SelectRoleDate);
             AmongUsClient.Instance.FinishRpcImmediately(killWriter);
@@ -971,7 +971,7 @@ namespace SuperNewRoles
                     //タスククリアか
             }
             if (!IsTaskClear
-                && ((ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan)))
+                && ((ModeHandler.IsMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan)))
                 || player.IsQuarreled()
                 || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
                 || player.isImpostor()))
@@ -984,7 +984,7 @@ namespace SuperNewRoles
         {
             RoleId role = player.getRole();
             if (player.isImpostor()) return true;
-            else if (ModeHandler.isMode(ModeId.SuperHostRoles) && IsComms()) return false;
+            else if (ModeHandler.IsMode(ModeId.SuperHostRoles) && IsComms()) return false;
             return role switch
             {
                 RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
@@ -1059,27 +1059,27 @@ namespace SuperNewRoles
             RoleId role = player.getRole();
             return role == RoleId.Egoist
                 ? RoleClass.Egoist.ImpostorLight
-                : !ModeHandler.isMode(ModeId.SuperHostRoles)
+                : !ModeHandler.IsMode(ModeId.SuperHostRoles)
 && role switch
-                {
-                    RoleId.MadMate => RoleClass.MadMate.IsImpostorLight,
-                    RoleId.MadMayor => RoleClass.MadMayor.IsImpostorLight,
-                    RoleId.MadStuntMan => RoleClass.MadStuntMan.IsImpostorLight,
-                    RoleId.MadHawk => RoleClass.MadHawk.IsImpostorLight,
-                    RoleId.MadJester => RoleClass.MadJester.IsImpostorLight,
-                    RoleId.MadSeer => RoleClass.MadSeer.IsImpostorLight,
-                    RoleId.Fox => RoleClass.Fox.IsImpostorLight,
-                    RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsImpostorLight,
-                    RoleId.MadMaker => RoleClass.MadMaker.IsImpostorLight,
-                    RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsImpostorLight,
-                    RoleId.JackalFriends => RoleClass.JackalFriends.IsImpostorLight,
-                    RoleId.SeerFriends => RoleClass.SeerFriends.IsImpostorLight,
-                    RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsImpostorLight,
-                    RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
-                    RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
-                    RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
-                    _ => false,
-                };
+{
+    RoleId.MadMate => RoleClass.MadMate.IsImpostorLight,
+    RoleId.MadMayor => RoleClass.MadMayor.IsImpostorLight,
+    RoleId.MadStuntMan => RoleClass.MadStuntMan.IsImpostorLight,
+    RoleId.MadHawk => RoleClass.MadHawk.IsImpostorLight,
+    RoleId.MadJester => RoleClass.MadJester.IsImpostorLight,
+    RoleId.MadSeer => RoleClass.MadSeer.IsImpostorLight,
+    RoleId.Fox => RoleClass.Fox.IsImpostorLight,
+    RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsImpostorLight,
+    RoleId.MadMaker => RoleClass.MadMaker.IsImpostorLight,
+    RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsImpostorLight,
+    RoleId.JackalFriends => RoleClass.JackalFriends.IsImpostorLight,
+    RoleId.SeerFriends => RoleClass.SeerFriends.IsImpostorLight,
+    RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsImpostorLight,
+    RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
+    RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
+    RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
+    _ => false,
+};
         }
         public static bool isNeutral(this PlayerControl player)
         {
@@ -1153,7 +1153,7 @@ namespace SuperNewRoles
         public static float getCoolTime(PlayerControl __instance)
         {
             float addition = PlayerControl.GameOptions.killCooldown;
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 RoleId role = __instance.getRole();
                 switch (role)

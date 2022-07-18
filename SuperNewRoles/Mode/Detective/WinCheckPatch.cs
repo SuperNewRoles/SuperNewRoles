@@ -4,11 +4,11 @@ namespace SuperNewRoles.Mode.Detective
     {
         public static bool CheckEndGame(ShipStatus __instance)
         {
-            PlayerStatistics statistics = new(__instance);
-            if (CheckAndEndGameForSabotageWin(__instance)) return false;
-            if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
-            if (CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
-            return !PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)
+            PlayerStatistics statistics = new();
+            if (CheckAndEndGameForSabotageWin(__instance)
+            || CheckAndEndGameForImpostorWin(__instance, statistics)
+            || CheckAndEndGameForCrewmateWin(__instance, statistics)) return false;
+            return !PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance)
                 ? false
                 : CheckAndEndGameForDisconnectWin(__instance) && false;
         }
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Mode.Detective
         }
         public static bool CheckAndEndGameForDisconnectWin(ShipStatus __instance)
         {
-            if (main.DetectivePlayer.Data.Disconnected)
+            if (Main.DetectivePlayer.Data.Disconnected)
             {
                 CustomEndGame(__instance, GameOverReason.HumansByVote, false);
                 return true;
@@ -103,7 +103,7 @@ namespace SuperNewRoles.Mode.Detective
             public int TeamImpostorsAlive { get; set; }
             public int CrewAlive { get; set; }
             public int TotalAlive { get; set; }
-            public PlayerStatistics(ShipStatus __instance)
+            public PlayerStatistics()
             {
                 GetPlayerCounts();
             }
@@ -116,7 +116,7 @@ namespace SuperNewRoles.Mode.Detective
                 for (int i = 0; i < GameData.Instance.PlayerCount; i++)
                 {
                     GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
-                    if (!playerInfo.Disconnected && (!main.IsNotDetectiveWin || playerInfo.Object.PlayerId != main.DetectivePlayer.PlayerId))
+                    if (!playerInfo.Disconnected && (!Main.IsNotDetectiveWin || playerInfo.Object.PlayerId != Main.DetectivePlayer.PlayerId))
                     {
                         if (playerInfo.Object.isAlive())
                         {

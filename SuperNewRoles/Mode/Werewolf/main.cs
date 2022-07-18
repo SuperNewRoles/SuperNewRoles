@@ -6,7 +6,7 @@ using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.Werewolf
 {
-    class main
+    class Main
     {
         public static bool IsDiscussion;
         public static bool IsFirst;
@@ -26,7 +26,7 @@ namespace SuperNewRoles.Mode.Werewolf
             CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                p.getDefaultName();
+                p.GetDefaultName();
             }
             IsDiscussion = true;
             IsFirst = true;
@@ -90,7 +90,7 @@ namespace SuperNewRoles.Mode.Werewolf
                     string Chat = "";
                     var RoleDate = IntroDate.GetIntroDate(target.getRole(), target);
                     var RoleName = ModTranslation.getString("Werewolf" + RoleDate.NameKey + "Name");
-                    Chat += string.Format(ModTranslation.getString("WereWolfMediumAbilityText"), target.getDefaultName(), RoleName);
+                    Chat += string.Format(ModTranslation.getString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
                     new LateTask(() =>
                     {
                         source.RPCSendChatPrivate(Chat);
@@ -105,7 +105,7 @@ namespace SuperNewRoles.Mode.Werewolf
                         PlayerControl target = exiled.Object;
                         var RoleDate = IntroDate.GetIntroDate(target.getRole(), target);
                         var RoleName = ModTranslation.getString("Werewolf" + RoleDate.NameKey + "Name");
-                        Chat += string.Format(ModTranslation.getString("WereWolfMediumAbilityText"), target.getDefaultName(), RoleName);
+                        Chat += string.Format(ModTranslation.getString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
                         new LateTask(() =>
                         {
                             player.RPCSendChatPrivate(Chat);
@@ -144,7 +144,7 @@ namespace SuperNewRoles.Mode.Werewolf
                 {
                     new LateTask(() =>
                     {
-                        PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
+                        PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.GetDefaultName());
                     }, 5, "NameChangeMeeting");
                 }
                 SoothRoles = new();
@@ -161,7 +161,7 @@ namespace SuperNewRoles.Mode.Werewolf
                 }, 11, "AbilityStartMeeting");
                 new LateTask(() =>
                 {
-                    PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
+                    PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.GetDefaultName());
                 }, 5, "NameChangeMeeting");
             }
             CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);

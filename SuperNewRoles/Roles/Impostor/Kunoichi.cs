@@ -117,22 +117,22 @@ namespace SuperNewRoles.Roles
                         RoleClass.Kunoichi.StopTime += Time.fixedDeltaTime;
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, Hazel.SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
                             writer.Write(true);
                             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            CustomRPC.RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
+                            RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
                         }
                     }
                     else
                     {
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, Hazel.SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
                             writer.Write(false);
                             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            CustomRPC.RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
+                            RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
                         }
                         RoleClass.Kunoichi.StopTime = 0;
                     }
@@ -205,7 +205,7 @@ namespace SuperNewRoles.Roles
             public static void Postfix(PlayerPhysics __instance)
             {
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-                if (!ModeHandler.isMode(ModeId.Default)) return;
+                if (!ModeHandler.IsMode(ModeId.Default)) return;
                 if (__instance.myPlayer.isRole(RoleId.Kunoichi))
                 {
                     var Scientist = __instance.myPlayer;

@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles
 
             string printStr;
 
-            var exile = ModeHandler.isMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.main.RealExiled : exiled.Object;
+            var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : exiled.Object;
             if (exile != null && exile.isRole(RoleId.Marine))
             {
                 printStr = player.Data.PlayerName + ModTranslation.getString("AssassinSucsess");

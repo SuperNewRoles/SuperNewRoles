@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using InnerNet;
 using SuperNewRoles.Intro;
-using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.SuperHostRoles
 {
@@ -53,14 +52,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (data == IntroDate.CrewmateIntro) return "";
 
             string team = "重複";
-            if (data.Team == TeamRoleType.Crewmate)
-            {
-                team = ModTranslation.getString("CrewMateName");
-            }
-            else if (data.Team == TeamRoleType.Impostor)
-            {
-                team = ModTranslation.getString("ImpostorName");
-            }
+            if (data.Team == TeamRoleType.Crewmate) team = ModTranslation.getString("CrewMateName");
+            else if (data.Team == TeamRoleType.Impostor) team = ModTranslation.getString("ImpostorName");
             else if (data.Team == TeamRoleType.Neutral)
             {
                 team = ModTranslation.getString("NeutralName");

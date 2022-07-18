@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.LevelUp
 {
-    class main
+    class Main
     {
         public static void ClearAndReloads()
         {

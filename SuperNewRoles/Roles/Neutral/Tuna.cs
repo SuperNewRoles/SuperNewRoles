@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles
         {
             if (AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started) return;
             if (RoleClass.IsMeeting) return;
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.isRole(RoleId.Tuna) && RoleClass.Tuna.IsMeetingEnd)
                 {

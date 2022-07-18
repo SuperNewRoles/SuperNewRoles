@@ -28,12 +28,12 @@ namespace SuperNewRoles.Roles
                             var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ReviveRPC);
                             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             Writer.EndRPC();
-                            CustomRPC.RPCProcedure.ReviveRPC(CachedPlayer.LocalPlayer.PlayerId);
+                            RPCProcedure.ReviveRPC(CachedPlayer.LocalPlayer.PlayerId);
                             Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.CleanBody);
                             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             Writer.EndRPC();
                             RoleClass.NiceRedRidingHood.deadbodypos = null;
-                            CustomRPC.RPCProcedure.CleanBody(CachedPlayer.LocalPlayer.PlayerId);
+                            RPCProcedure.CleanBody(CachedPlayer.LocalPlayer.PlayerId);
                             RoleClass.NiceRedRidingHood.Count--;
                             CachedPlayer.LocalPlayer.Data.IsDead = false;
 

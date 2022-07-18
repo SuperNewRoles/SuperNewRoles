@@ -1,5 +1,7 @@
+using System.IO;
 using System;
 using HarmonyLib;
+using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Mode.HideAndSeek
 {
@@ -8,9 +10,9 @@ namespace SuperNewRoles.Mode.HideAndSeek
         [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
         public static class DeadPlayerTaskPatch
         {
-            public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+            public static void Postfix([HarmonyArgument(0)] PlayerControl target)
             {
-                if (!ModeHandler.isMode(ModeId.HideAndSeek)) return;
+                if (!ModeHandler.IsMode(ModeId.HideAndSeek)) return;
                 if (AmongUsClient.Instance.AmHost)
                 {
                     if (!target.Data.Role.IsImpostor)
@@ -35,7 +37,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
                 GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
                 if (playerInfo.Object.isAlive() && !playerInfo.Object.isImpostor())
                 {
-                    var (playerCompleted, playerTotal) = SuperNewRoles.Patch.TaskCount.TaskDate(playerInfo);
+                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
                     __instance.TotalTasks += playerTotal;
                     __instance.CompletedTasks += playerCompleted;
                 }

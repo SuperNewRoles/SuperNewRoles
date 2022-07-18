@@ -20,7 +20,7 @@ namespace SuperNewRoles
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
             return true;
-            if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return true;
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
             if (doReplace && sender != null)
             {
                 StoragedData.Add((__instance, roleType));
@@ -54,7 +54,7 @@ namespace SuperNewRoles
         public static void Postfix()
         {
             RPCHelper.StartRPC(CustomRPC.CustomRPC.StartGameRPC).EndRPC();
-            CustomRPC.RPCProcedure.StartGameRPC();
+            RPCProcedure.StartGameRPC();
 
             RoleSelectHandler.SpawnBots();
         }
@@ -75,17 +75,17 @@ namespace SuperNewRoles
             IsRPCSetRoleOK = true;
             IsShapeSet = false;
             IsNotDesync = true;
-            if (ModeHandler.isMode(ModeId.NotImpostorCheck))
+            if (ModeHandler.IsMode(ModeId.NotImpostorCheck))
             {
                 IsNotDesync = false;
             }
             /*
-            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 IsNotDesync = false;
             }
             */
-            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 CustomRpcSender sender = CustomRpcSender.Create("SelectRoles Sender", SendOption.Reliable);
                 List<PlayerControl> SelectPlayers = new();
@@ -152,12 +152,12 @@ namespace SuperNewRoles
                 FixedUpdate.SetRoleNames();
                 return false;
             }
-            else if (ModeHandler.isMode(ModeId.BattleRoyal))
+            else if (ModeHandler.IsMode(ModeId.BattleRoyal))
             {
-                Mode.BattleRoyal.main.ChangeRole.Postfix();
+                Mode.BattleRoyal.Main.ChangeRole.Postfix();
                 return false;
             }
-            else if (ModeHandler.isMode(ModeId.CopsRobbers))
+            else if (ModeHandler.IsMode(ModeId.CopsRobbers))
             {
                 Mode.CopsRobbers.RoleSelectHandler.Handler();
                 return false;
@@ -169,23 +169,23 @@ namespace SuperNewRoles
             IsSetRoleRpc = true;
             IsRPCSetRoleOK = false;
             IsNotPrefix = true;
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 AllRoleSetClass.AllRoleSet();
             }
-            else if (ModeHandler.isMode(ModeId.Werewolf))
+            else if (ModeHandler.IsMode(ModeId.Werewolf))
             {
                 Mode.Werewolf.RoleSelectHandler.RoleSelect();
             }
-            else if (ModeHandler.isMode(ModeId.NotImpostorCheck))
+            else if (ModeHandler.IsMode(ModeId.NotImpostorCheck))
             {
                 Mode.NotImpostorCheck.SelectRolePatch.SetDesync();
             }
-            else if (ModeHandler.isMode(ModeId.Detective))
+            else if (ModeHandler.IsMode(ModeId.Detective))
             {
-                Mode.Detective.main.RoleSelect();
+                Mode.Detective.Main.RoleSelect();
             }
-            if (!ModeHandler.isMode(ModeId.NotImpostorCheck) && !ModeHandler.isMode(ModeId.BattleRoyal) && !ModeHandler.isMode(ModeId.Default) && !ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (!ModeHandler.IsMode(ModeId.NotImpostorCheck) && !ModeHandler.IsMode(ModeId.BattleRoyal) && !ModeHandler.IsMode(ModeId.Default) && !ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
@@ -193,7 +193,7 @@ namespace SuperNewRoles
                 }
                 /*AmongUsClient.Instance.StartCoroutine(nameof(SetServerRole));*/
             }
-            if (!ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 new LateTask(() =>
                 {
@@ -233,7 +233,7 @@ namespace SuperNewRoles
         public static void AllRoleSet()
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (!ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 CrewOrImpostorSet();
                 OneOrNotListSet();
@@ -264,7 +264,7 @@ namespace SuperNewRoles
             {
                 SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
             }
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 try
                 {

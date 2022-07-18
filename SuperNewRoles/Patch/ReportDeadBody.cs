@@ -14,7 +14,7 @@ namespace SuperNewRoles.Patch
             public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerInfo target)
             {
                 if (!AmongUsClient.Instance.AmHost) return true;
-                if (ModeHandler.isMode(ModeId.Default))
+                if (ModeHandler.IsMode(ModeId.Default))
                 {
                     if (__instance.isRole(RoleId.Amnesiac))
                     {
@@ -31,13 +31,13 @@ namespace SuperNewRoles.Patch
                 if (RoleClass.Assassin.TriggerPlayer != null) return false;
                 if (!MapOptions.MapOption.UseDeadBodyReport && target != null) return false;
                 if (!MapOptions.MapOption.UseMeetingButton && target == null) return false;
-                if (ModeHandler.isMode(ModeId.HideAndSeek)) return false;
-                if (ModeHandler.isMode(ModeId.BattleRoyal)) return false;
-                if (ModeHandler.isMode(ModeId.CopsRobbers)) return false;
-                if (ModeHandler.isMode(ModeId.SuperHostRoles)) return Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target);
-                return ModeHandler.isMode(ModeId.Zombie)
+                if (ModeHandler.IsMode(ModeId.HideAndSeek)) return false;
+                if (ModeHandler.IsMode(ModeId.BattleRoyal)) return false;
+                if (ModeHandler.IsMode(ModeId.CopsRobbers)) return false;
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target);
+                return ModeHandler.IsMode(ModeId.Zombie)
                     ? false
-                    : !ModeHandler.isMode(ModeId.Detective) || target != null || !Mode.Detective.main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.main.DetectivePlayer.PlayerId;
+                    : !ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId;
             }
         }
     }

@@ -5,12 +5,12 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
     {
         public static bool CheckEndGame(ShipStatus __instance)
         {
-            var statistics = new PlayerStatistics(__instance);
-            if (CheckAndEndGameForSabotageWin(__instance)) return false;
-            if (CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
+            var statistics = new PlayerStatistics();
+            if (CheckAndEndGameForSabotageWin(__instance)
+            || CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             return CheckAndEndGameForCrewmateWin(__instance, statistics)
                 ? false
-                : !PlusModeHandler.isMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance) && false;
+                : !PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance) && false;
         }
         public static void CustomEndGame(ShipStatus __instance, GameOverReason reason, bool showAd)
         {
@@ -94,7 +94,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
             public int TeamImpostorsAlive { get; set; }
             public int CrewAlive { get; set; }
             public int TotalAlive { get; set; }
-            public PlayerStatistics(ShipStatus __instance)
+            public PlayerStatistics()
             {
                 GetPlayerCounts();
             }
@@ -112,7 +112,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                         if (playerInfo.Object.isAlive())
                         {
                             numTotalAlive++;
-                            if (main.Impostors.Contains(playerInfo.PlayerId))
+                            if (Main.Impostors.Contains(playerInfo.PlayerId))
                             {
                                 numImpostorsAlive++;
                             }

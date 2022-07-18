@@ -23,11 +23,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
                         Writer.Write(exiled.Object.PlayerId);
                         Writer.EndRPC();
-                        CustomRPC.RPCProcedure.ShareWinner(exiled.Object.PlayerId);
+                        RPCProcedure.ShareWinner(exiled.Object.PlayerId);
                         Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                         Writer.Write((byte)CustomGameOverReason.JesterWin);
                         Writer.EndRPC();
-                        CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.JesterWin);
+                        RPCProcedure.SetWinCond((byte)CustomGameOverReason.JesterWin);
                         var winplayers = new List<PlayerControl>
                         {
                             exiled.Object
@@ -56,11 +56,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                         var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShareWinner);
                         Writer.Write(exiled.Object.PlayerId);
                         Writer.EndRPC();
-                        CustomRPC.RPCProcedure.ShareWinner(exiled.Object.PlayerId);
+                        RPCProcedure.ShareWinner(exiled.Object.PlayerId);
                         Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetWinCond);
                         Writer.Write((byte)CustomGameOverReason.ImpostorWin);
                         Writer.EndRPC();
-                        CustomRPC.RPCProcedure.SetWinCond((byte)CustomGameOverReason.ImpostorWin);
+                        RPCProcedure.SetWinCond((byte)CustomGameOverReason.ImpostorWin);
                         var winplayers = new List<PlayerControl>
                         {
                             exiled.Object

@@ -51,15 +51,15 @@ namespace SuperNewRoles.Patch
             try
             {
                 if (!AmongUsClient.Instance.AmHost) return true;
-                if (ModeHandler.isMode(ModeId.Detective) && Mode.Detective.main.IsNotDetectiveVote)
+                if (ModeHandler.IsMode(ModeId.Detective) && Mode.Detective.Main.IsNotDetectiveVote)
                 {
                     foreach (var ps in __instance.playerStates)
                     {
-                        if (ps.TargetPlayerId == Mode.Detective.main.DetectivePlayer.PlayerId && !ps.DidVote)
+                        if (ps.TargetPlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId && !ps.DidVote)
                         {
                             return false;
                         }
-                        else if (ps.TargetPlayerId == Mode.Detective.main.DetectivePlayer.PlayerId && ps.DidVote)
+                        else if (ps.TargetPlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId && ps.DidVote)
                         {
                             MeetingHud.VoterState[] statesdetective;
                             GameData.PlayerInfo exiledPlayerdetective = CachedPlayer.LocalPlayer.Data;
@@ -99,14 +99,14 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
-                else if (ModeHandler.isMode(ModeId.Werewolf))
+                else if (ModeHandler.IsMode(ModeId.Werewolf))
                 {
-                    if (Mode.Werewolf.main.IsAbility)
+                    if (Mode.Werewolf.Main.IsAbility)
                     {
                         foreach (var ps in __instance.playerStates)
                         {
                             PlayerControl player = ModHelpers.playerById(ps.TargetPlayerId);
-                            if (!ps.AmDead && !ps.DidVote && (player.isImpostor() || (!player.isRole(RoleId.DefaultRole) && !player.isRole(RoleId.MadMate) && !player.isRole(RoleId.SpiritMedium) && !(player.PlayerId == Mode.Werewolf.main.HunterExilePlayer.PlayerId && Mode.Werewolf.main.HunterPlayers.IsCheckListPlayerControl(player)))))
+                            if (!ps.AmDead && !ps.DidVote && (player.isImpostor() || (!player.isRole(RoleId.DefaultRole) && !player.isRole(RoleId.MadMate) && !player.isRole(RoleId.SpiritMedium) && !(player.PlayerId == Mode.Werewolf.Main.HunterExilePlayer.PlayerId && Mode.Werewolf.Main.HunterPlayers.IsCheckListPlayerControl(player)))))
                                 return false;
                         }
                         for (var i = 0; i < __instance.playerStates.Length; i++)
@@ -118,15 +118,15 @@ namespace SuperNewRoles.Patch
                             {
                                 if (player.isImpostor())
                                 {
-                                    Mode.Werewolf.main.WolfKillPlayers.Add(VoteTarget.PlayerId);
+                                    Mode.Werewolf.Main.WolfKillPlayers.Add(VoteTarget.PlayerId);
                                 }
                                 else if (player.isRole(RoleId.SoothSayer))
                                 {
-                                    Mode.Werewolf.main.SoothRoles.Add(player.PlayerId, VoteTarget.PlayerId);
+                                    Mode.Werewolf.Main.SoothRoles.Add(player.PlayerId, VoteTarget.PlayerId);
                                 }
-                                else if (player.PlayerId == Mode.Werewolf.main.HunterExilePlayer.PlayerId && Mode.Werewolf.main.HunterPlayers.IsCheckListPlayerControl(player))
+                                else if (player.PlayerId == Mode.Werewolf.Main.HunterExilePlayer.PlayerId && Mode.Werewolf.Main.HunterPlayers.IsCheckListPlayerControl(player))
                                 {
-                                    Mode.Werewolf.main.SoothRoles.Add(player.PlayerId, VoteTarget.PlayerId);
+                                    Mode.Werewolf.Main.SoothRoles.Add(player.PlayerId, VoteTarget.PlayerId);
                                 }
                             }
                         }
@@ -148,7 +148,7 @@ namespace SuperNewRoles.Patch
                         for (var i = 0; i < __instance.playerStates.Length; i++)
                         {
                             PlayerVoteArea ps = __instance.playerStates[i];
-                            if (ModeHandler.isMode(ModeId.BattleRoyal))
+                            if (ModeHandler.IsMode(ModeId.BattleRoyal))
                             {
                                 if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Sheriff)) { }
                             }
@@ -183,9 +183,9 @@ namespace SuperNewRoles.Patch
                             }
                         }
                         exiledPlayer1 = GameData.Instance.AllPlayers.GetFastEnumerator().ToArray().FirstOrDefault(info => !tie1 && info.PlayerId == exileId1);
-                        if (exiledPlayer1 != null && Mode.Werewolf.main.HunterPlayers.IsCheckListPlayerControl(exiledPlayer1.Object))
+                        if (exiledPlayer1 != null && Mode.Werewolf.Main.HunterPlayers.IsCheckListPlayerControl(exiledPlayer1.Object))
                         {
-                            Mode.Werewolf.main.HunterExilePlayer = exiledPlayer1.Object;
+                            Mode.Werewolf.Main.HunterExilePlayer = exiledPlayer1.Object;
                             __instance.RpcVotingComplete(states1, null, false); //RPC
                         }
                         else
@@ -227,7 +227,7 @@ namespace SuperNewRoles.Patch
                             exileplayer = target;
                             PlayerControl exile = null;
                             main.RealExiled = target.Object;
-                            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                             {
                                 foreach (PlayerControl p in BotManager.AllBots)
                                 {
@@ -236,7 +236,7 @@ namespace SuperNewRoles.Patch
                                         exileplayer = p.Data;
                                         exile = p;
                                         p.RpcSetColor((byte)outfit.ColorId);
-                                        p.RpcSetName(target.Object.getDefaultName() +
+                                        p.RpcSetName(target.Object.GetDefaultName() +
                                             ModTranslation.getString(target.Object.isRole(RoleId.Marine) ?
                                             "AssassinSucsess" :
                                             "AssassinFail")
@@ -261,7 +261,7 @@ namespace SuperNewRoles.Patch
                             {
                                 if (exile != null)
                                 {
-                                    exile.RpcSetName(exile.getDefaultName());
+                                    exile.RpcSetName(exile.GetDefaultName());
                                     exile.RpcSetColor(1);
                                     exile.RpcSetHat("hat_NoHat");
                                     exile.RpcSetPet("peet_EmptyPet");
@@ -293,7 +293,7 @@ namespace SuperNewRoles.Patch
                     PlayerVoteArea ps = __instance.playerStates[i];
                     if (AmongUsClient.Instance.GameMode != GameModes.FreePlay || ps.TargetPlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {
-                        if (ModeHandler.isMode(ModeId.BattleRoyal))
+                        if (ModeHandler.IsMode(ModeId.BattleRoyal))
                         {
                             if (ps != null && ModHelpers.playerById(ps.TargetPlayerId).isRole(RoleId.Sheriff)) { }
                         }
@@ -370,7 +370,7 @@ namespace SuperNewRoles.Patch
 
                 exiledPlayer = GameData.Instance.AllPlayers.GetFastEnumerator().ToArray().FirstOrDefault(info => !tie && info.PlayerId == exileId);
 
-                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
                     if (exiledPlayer != null && exiledPlayer.Object.isRole(RoleId.Assassin))
                     {
@@ -385,7 +385,7 @@ namespace SuperNewRoles.Patch
                                 exiledPlayer = p.Data;
                                 exile = p;
                                 exile.RpcSetColor((byte)outfit.ColorId);
-                                exile.RpcSetName(defaultexile.getDefaultName());
+                                exile.RpcSetName(defaultexile.GetDefaultName());
                                 exile.RpcSetHat(outfit.HatId);
                                 exile.RpcSetVisor(outfit.VisorId);
                                 exile.RpcSetSkin(outfit.SkinId);
@@ -396,7 +396,7 @@ namespace SuperNewRoles.Patch
                         {
                             if (exile != null)
                             {
-                                exile.RpcSetName(exile.getDefaultName());
+                                exile.RpcSetName(exile.GetDefaultName());
                                 exile.RpcSetColor(1);
                                 exile.RpcSetHat("hat_NoHat");
                                 exile.RpcSetPet("peet_EmptyPet");
@@ -422,7 +422,7 @@ namespace SuperNewRoles.Patch
                                             p.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.NoExileSkip) + "</size><size=0%>", p2);
                                         }
                                     }
-                                    new LateTask(() => p.RpcSetName(p.getDefaultName()), 5f);
+                                    new LateTask(() => p.RpcSetName(p.GetDefaultName()), 5f);
                                     break;
                                 }
                             }
@@ -437,10 +437,10 @@ namespace SuperNewRoles.Patch
                             {
                                 if (p2.IsPlayer() && !p2.Data.Disconnected && !p2.IsMod())
                                 {
-                                    exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + exiledPlayer.Object.getDefaultName(), p2);
+                                    exiledPlayer.Object.RpcSetNamePrivate("<size=300%>" + ModTranslation.getString("BakeryExileText") + "\n" + exiledPlayer.Object.GetDefaultName(), p2);
                                 }
                             }
-                            new LateTask(() => exiledPlayer.Object.RpcSetName(exiledPlayer.Object.getDefaultName()), 5f);
+                            new LateTask(() => exiledPlayer.Object.RpcSetName(exiledPlayer.Object.GetDefaultName()), 5f);
                         }
                     }
                 }
@@ -448,7 +448,7 @@ namespace SuperNewRoles.Patch
                 __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
 
                 /*
-                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
                     if (PlayerControl.GameOptions.MapId == 4)
                     {
@@ -561,7 +561,7 @@ namespace SuperNewRoles.Patch
         }
         public static void Postfix(MeetingHud __instance)
         {
-            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 new LateTask(() =>
                 {

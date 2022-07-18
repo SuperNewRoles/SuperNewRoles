@@ -75,7 +75,7 @@ namespace SuperNewRoles.Patches
                         {
                             __instance.text.text += "\n" + ModTranslation.getString("DebugModeOn");
                         }
-                        if (!Mode.ModeHandler.isMode(Mode.ModeId.Default))
+                        if (!Mode.ModeHandler.IsMode(Mode.ModeId.Default))
                         {
                             __instance.text.text += "\n" + ModTranslation.getString("SettingMode") + ":" + Mode.ModeHandler.ThisModeSetting.GetString();
                         }

@@ -1,12 +1,13 @@
 using UnityEngine;
+using Il2CppSystem.Collections.Generic;
 
 namespace SuperNewRoles.Mode.HideAndSeek
 {
     class Intro
     {
-        public static Il2CppSystem.Collections.Generic.List<PlayerControl> ModeHandler(IntroCutscene __instance)
+        public static List<PlayerControl> ModeHandler()
         {
-            Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
+            List<PlayerControl> ImpostorTeams = new();
             int ImpostorNum = 0;
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
@@ -20,7 +21,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
         }
         public static void IntroHandler(IntroCutscene __instance)
         {
-            Il2CppSystem.Collections.Generic.List<PlayerControl> ImpostorTeams = new();
+            List<PlayerControl> ImpostorTeams = new();
             int ImpostorNum = 0;
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {

@@ -146,7 +146,7 @@ namespace SuperNewRoles.Helpers
             writer.Write(player.PlayerId);
             writer.Write((byte)roletype);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.UncheckedSetVanilaRole(player.PlayerId, (byte)roletype);
+            RPCProcedure.UncheckedSetVanilaRole(player.PlayerId, (byte)roletype);
         }
 
         public static void RpcResetAbilityCooldown(this PlayerControl target)

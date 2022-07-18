@@ -8,7 +8,7 @@ namespace SuperNewRoles.Mode.Werewolf
     {
         public static void YouAreHandle(IntroCutscene __instance)
         {
-            if (main.HunterPlayers.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
+            if (Main.HunterPlayers.IsCheckListPlayerControl(PlayerControl.LocalPlayer))
             {
                 __instance.YouAreText.color = Color.green;
                 __instance.RoleText.text = ModTranslation.getString("WareWolfHunter");

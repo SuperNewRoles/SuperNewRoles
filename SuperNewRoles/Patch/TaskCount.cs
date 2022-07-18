@@ -75,7 +75,7 @@ namespace SuperNewRoles.Patch
                         CountDefaultTask(__instance);
                         return;
                     case ModeId.Zombie:
-                        Mode.Zombie.main.CountTaskZombie(__instance);
+                        Mode.Zombie.Main.CountTaskZombie(__instance);
                         return;
                     case ModeId.Detective:
                         Mode.Detective.Task.TaskCountDetective(__instance);

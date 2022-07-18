@@ -11,19 +11,19 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                 if (p.isImpostor())
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[NotImpostorCheck] ImpostorName:" + p.nameText().text);
-                    main.Impostors.Add(p.PlayerId);
+                    Main.Impostors.Add(p.PlayerId);
                 }
             }
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (main.Impostors.Contains(p.PlayerId))
+                if (Main.Impostors.Contains(p.PlayerId))
                 {
                     if (p.PlayerId != 0)
                     {
                         p.RpcSetRoleDesync(RoleTypes.Impostor);//p.Data.Role.Role);
                         foreach (var pc in CachedPlayer.AllPlayers)
                         {
-                            if (main.Impostors.Contains(pc.PlayerId))
+                            if (Main.Impostors.Contains(pc.PlayerId))
                             {
                                 p.RpcSetRoleDesync(RoleTypes.Scientist, pc);
                             }
@@ -42,7 +42,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                         {
                             if (pc.PlayerId != 0)
                             {
-                                if (main.Impostors.Contains(pc.PlayerId))
+                                if (Main.Impostors.Contains(pc.PlayerId))
                                 {
                                     p.RpcSetRoleDesync(RoleTypes.Scientist, pc);
                                 }

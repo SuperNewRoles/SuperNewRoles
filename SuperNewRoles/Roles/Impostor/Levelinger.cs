@@ -27,11 +27,11 @@ namespace SuperNewRoles.Roles
                     var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ReviveRPC);
                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     Writer.EndRPC();
-                    CustomRPC.RPCProcedure.ReviveRPC(CachedPlayer.LocalPlayer.PlayerId);
+                    RPCProcedure.ReviveRPC(CachedPlayer.LocalPlayer.PlayerId);
                     Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.CleanBody);
                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     Writer.EndRPC();
-                    CustomRPC.RPCProcedure.CleanBody(CachedPlayer.LocalPlayer.PlayerId);
+                    RPCProcedure.CleanBody(CachedPlayer.LocalPlayer.PlayerId);
                     CachedPlayer.LocalPlayer.Data.IsDead = false;
                     DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == CachedPlayer.LocalPlayer.PlayerId);
                     RoleClass.Levelinger.ThisXP -= RoleClass.Levelinger.ReviveUseXP;

@@ -333,7 +333,7 @@ namespace SuperNewRoles.CustomRPC
         {
             /*
             SuperNewRolesPlugin.Logger.LogInfo("TORGMシェアあああ！");
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, Hazel.SendOption.Reliable, clientId);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, SendOption.Reliable, clientId);
             writer.WritePacked(major);
             writer.WritePacked(minor);
             writer.WritePacked(build);
@@ -493,7 +493,7 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
-            Mode.Detective.main.DetectivePlayer = player;
+            Mode.Detective.Main.DetectivePlayer = player;
         }
         public static void SetShareNamePlate(byte playerid, byte id)
         {
@@ -833,13 +833,13 @@ namespace SuperNewRoles.CustomRPC
         public static void ShareWinner(byte playerid)
         {
             PlayerControl player = ModHelpers.playerById(playerid);
-            if (ModeHandler.isMode(ModeId.BattleRoyal))
+            if (ModeHandler.IsMode(ModeId.BattleRoyal))
             {
-                Mode.BattleRoyal.main.Winners.Add(player);
+                Mode.BattleRoyal.Main.Winners.Add(player);
             }
             else
             {
-                EndGame.OnGameEndPatch.WinnerPlayer = player;
+                OnGameEndPatch.WinnerPlayer = player;
             }
         }
         public static void TeleporterTP(byte playerid)

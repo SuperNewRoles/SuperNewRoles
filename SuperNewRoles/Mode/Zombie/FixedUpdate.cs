@@ -47,10 +47,10 @@ namespace SuperNewRoles.Mode.Zombie
         {
             public static void Postfix(HudManager __instance)
             {
-                if (!(AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)) return;
+                if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 Mode.ModeHandler.HudUpdate(__instance);
-                if (IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && ModeHandler.isMode(ModeId.Zombie) && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
-                    if (ModeHandler.isMode(ModeId.Zombie) && IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+                if (IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && ModeHandler.IsMode(ModeId.Zombie) && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
+                    if (ModeHandler.IsMode(ModeId.Zombie) && IsStart && NameChangeTimer != -10 && AmongUsClient.Instance.AmHost && AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started && !FastDestroyableSingleton<HudManager>.Instance.IsIntroDisplayed)
                     {
                         if (NameChangeTimer >= 0f)
                         {

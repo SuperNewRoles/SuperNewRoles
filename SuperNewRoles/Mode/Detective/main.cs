@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.Detective
 {
-    class main
+    class Main
     {
         public static bool IsNotDetectiveWin;
         public static bool IsNotDetectiveVote;
@@ -36,9 +36,9 @@ namespace SuperNewRoles.Mode.Detective
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.SetDetective);
             writer.Write(random.PlayerId);
             writer.EndRPC();
-            CustomRPC.RPCProcedure.SetDetective(random.PlayerId);
-            DetectivePlayer.RpcSetName(ModHelpers.cs(DetectiveColor, DetectivePlayer.getDefaultName()));
-            DetectivePlayer.SetName(ModHelpers.cs(DetectiveColor, DetectivePlayer.getDefaultName()));
+            RPCProcedure.SetDetective(random.PlayerId);
+            DetectivePlayer.RpcSetName(ModHelpers.cs(DetectiveColor, DetectivePlayer.GetDefaultName()));
+            DetectivePlayer.SetName(ModHelpers.cs(DetectiveColor, DetectivePlayer.GetDefaultName()));
         }
         public static void MurderPatch(PlayerControl target)
         {
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Mode.Detective
                 {
                     if (!p.Data.Disconnected && p.isImpostor())
                     {
-                        p.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p.getDefaultName()), target);
+                        p.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p.GetDefaultName()), target);
                     }
                 }
             } else
@@ -59,7 +59,7 @@ namespace SuperNewRoles.Mode.Detective
                 {
                     if (!p.Data.Disconnected && p.isImpostor())
                     {
-                        p.SetName(ModHelpers.cs(RoleClass.ImpostorRed, p.getDefaultName()));
+                        p.SetName(ModHelpers.cs(RoleClass.ImpostorRed, p.GetDefaultName()));
                     }
                 }
             }

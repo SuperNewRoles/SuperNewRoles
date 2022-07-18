@@ -54,10 +54,10 @@ namespace SuperNewRoles.Patch
             // Don't waste network traffic if we're out of time.
             if (MapOptions.MapOption.RestrictAdmin.GetBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.RestrictDevicesOption.GetBool())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseAdminTime, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseAdminTime, SendOption.Reliable, -1);
                 writer.Write(adminTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                CustomRPC.RPCProcedure.UseAdminTime(adminTimer);
+                RPCProcedure.UseAdminTime(adminTimer);
             }
             adminTimer = 0f;
         }
@@ -104,7 +104,7 @@ namespace SuperNewRoles.Patch
         {
             static bool Prefix(MapCountOverlay __instance)
             {
-                if (MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictAdmin.GetBool() && Mode.ModeHandler.isMode(Mode.ModeId.Default) && !PlayerControl.LocalPlayer.isRole(RoleId.EvilHacker))
+                if (MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictAdmin.GetBool() && Mode.ModeHandler.IsMode(Mode.ModeId.Default) && !PlayerControl.LocalPlayer.isRole(RoleId.EvilHacker))
                 {
                     adminTimer += Time.deltaTime;
                     if (adminTimer > 0.1f)

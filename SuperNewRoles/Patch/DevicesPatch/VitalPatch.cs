@@ -41,10 +41,10 @@ namespace SuperNewRoles.Patch
             // Don't waste network traffic if we're out of time.
             if (MapOptions.MapOption.RestrictVital.GetBool() && RestrictVitalsTime > 0f && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.MapOptionSetting.GetBool())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseVitalsTime, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseVitalsTime, SendOption.Reliable, -1);
                 writer.Write(vitalsTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                CustomRPC.RPCProcedure.UseVitalTime(vitalsTimer);
+                RPCProcedure.UseVitalTime(vitalsTimer);
             }
             vitalsTimer = 0f;
         }
@@ -63,7 +63,7 @@ namespace SuperNewRoles.Patch
         {
             static bool Prefix(VitalsMinigame __instance)
             {
-                if (Mode.ModeHandler.isMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictVital.GetBool())
+                if (Mode.ModeHandler.IsMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictVital.GetBool())
                 {
                     vitalsTimer += Time.deltaTime;
                     if (vitalsTimer > 0.1f)

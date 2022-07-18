@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles
                         RoleClass.Quarreled.QuarreledPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
                         ChacheManager.ResetQuarreledChache();
                     }
-                    if (ModeHandler.isMode(ModeId.Default))
+                    if (ModeHandler.IsMode(ModeId.Default))
                     {
                         if (player.isRole(RoleId.SideKiller))
                         {

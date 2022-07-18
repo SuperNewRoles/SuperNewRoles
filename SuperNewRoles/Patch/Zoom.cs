@@ -11,7 +11,7 @@ namespace SuperNewRoles.Patch
     {
         public static void Postfix(HudManager __instance)
         {
-            if (ModeHandler.isMode(ModeId.Default) && MapOptions.MapOption.MouseZoom && PlayerControl.LocalPlayer.Data.IsDead)
+            if (ModeHandler.IsMode(ModeId.Default) && MapOptions.MapOption.MouseZoom && PlayerControl.LocalPlayer.Data.IsDead)
             {
                 if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 {
@@ -42,7 +42,7 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
-                if (ModeHandler.isMode(ModeId.Default))
+                if (ModeHandler.IsMode(ModeId.Default))
                 {
                     if (Camera.main.orthographicSize != 3.0f)
                     {

@@ -20,25 +20,25 @@ namespace SuperNewRoles.Roles
                 RoleClass.Pursuer.arrow.arrow.SetActive(false);
                 RoleClass.Pursuer.arrow.arrow.SetActive(true);
             }
-            if (Mode.ModeHandler.isMode(Mode.ModeId.Zombie))
+            if (Mode.ModeHandler.IsMode(Mode.ModeId.Zombie))
             {
-                Mode.Zombie.main.SetTimer();
+                Mode.Zombie.Main.SetTimer();
             }
-            else if (Mode.ModeHandler.isMode(Mode.ModeId.BattleRoyal))
+            else if (Mode.ModeHandler.IsMode(Mode.ModeId.BattleRoyal))
             {
-                Mode.BattleRoyal.main.IsCountOK = true;
+                Mode.BattleRoyal.Main.IsCountOK = true;
             }
-            if (Mode.ModeHandler.isMode(Mode.ModeId.SuperHostRoles))
+            if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
             {
                 Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
             }
-            if (Mode.ModeHandler.isMode(Mode.ModeId.Werewolf))
+            if (Mode.ModeHandler.IsMode(Mode.ModeId.Werewolf))
             {
-                Mode.Werewolf.main.IntroHandler();
+                Mode.Werewolf.Main.IntroHandler();
             }
-            if (Mode.ModeHandler.isMode(Mode.ModeId.CopsRobbers))
+            if (Mode.ModeHandler.IsMode(Mode.ModeId.CopsRobbers))
             {
-                Mode.CopsRobbers.main.IsStart = true;
+                Mode.CopsRobbers.Main.IsStart = true;
             }
         }
     }

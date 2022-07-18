@@ -5,7 +5,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 {
     public static class RoleHelper
     {
-        public static bool isCrewVision(this PlayerControl player)
+        public static bool IsCrewVision(this PlayerControl player)
         {
             var IsCrewVision = false;
             switch (player.getRole())
@@ -22,7 +22,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             return IsCrewVision;
         }
-        public static bool isImpostorVision(this PlayerControl player)
+        public static bool IsImpostorVision(this PlayerControl player)
         {
             return player.getRole() switch
             {
@@ -37,7 +37,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 _ => false,
             };
         }
-        public static bool isZeroCoolEngineer(this PlayerControl player)
+        public static bool IsZeroCoolEngineer(this PlayerControl player)
         {
             var IsZeroCoolEngineer = false;
             switch (player.getRole())
