@@ -80,7 +80,6 @@ namespace SuperNewRoles
             {
                 return key.Replace(keyClean, data[defaultLanguage]);
             }
-
             return key;
         }
     }
