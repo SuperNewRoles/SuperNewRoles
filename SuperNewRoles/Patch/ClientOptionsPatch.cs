@@ -12,7 +12,7 @@ namespace SuperNewRoles.Patch
     [HarmonyPatch]
     public static class ClientOptionsPatch
     {
-        private static SelectionBehaviour[] AllOptions = {
+        private static readonly SelectionBehaviour[] AllOptions = {
             new SelectionBehaviour("CustomStremerMode", () => ConfigRoles.StreamerMode.Value = !ConfigRoles.StreamerMode.Value, ConfigRoles.StreamerMode.Value),
             new SelectionBehaviour("CustomAutoUpdate", () => ConfigRoles.AutoUpdate.Value = !ConfigRoles.AutoUpdate.Value, ConfigRoles.AutoUpdate.Value),
             new SelectionBehaviour("CustomAutoCopyGameCode", () => ConfigRoles.AutoCopyGameCode.Value = !ConfigRoles.AutoCopyGameCode.Value, ConfigRoles.AutoCopyGameCode.Value),
@@ -111,7 +111,7 @@ namespace SuperNewRoles.Patch
             var trans = moreOptions.transform.localPosition;
             moreOptions.gameObject.SetActive(true);
             trans = moreOptions.transform.position;
-            moreOptions.Text.text = ModTranslation.getString("modOptionsText");
+            moreOptions.Text.text = ModTranslation.GetString("modOptionsText");
             var moreOptionsButton = moreOptions.GetComponent<PassiveButton>();
             moreOptionsButton.OnClick = new ButtonClickedEvent();
             moreOptionsButton.OnClick.AddListener((Action)(() =>
@@ -147,7 +147,7 @@ namespace SuperNewRoles.Patch
             var title = titleTextTitle = Object.Instantiate(titleText, popUp.transform);
             title.GetComponent<RectTransform>().localPosition = Vector3.up * 2.3f;
             title.gameObject.SetActive(true);
-            title.text = ModTranslation.getString("moreOptionsText");
+            title.text = ModTranslation.GetString("moreOptionsText");
             title.name = "TitleText";
         }
 
@@ -299,7 +299,7 @@ namespace SuperNewRoles.Patch
                 button.onState = info.DefaultValue;
                 button.Background.color = button.onState ? Color.green : Palette.ImpostorRed;
 
-                button.Text.text = ModTranslation.getString(info.Title);
+                button.Text.text = ModTranslation.GetString(info.Title);
                 button.Text.fontSizeMin = button.Text.fontSizeMax = 2.2f;
                 button.Text.font = Object.Instantiate(titleText.font);
                 button.Text.GetComponent<RectTransform>().sizeDelta = new Vector2(2, 2);
@@ -340,13 +340,13 @@ namespace SuperNewRoles.Patch
             }
         }
 
-        public static void updateTranslations()
+        public static void UpdateTranslations()
         {
             if (titleTextTitle)
-                titleTextTitle.text = ModTranslation.getString("moreOptionsText");
+                titleTextTitle.text = ModTranslation.GetString("moreOptionsText");
 
             if (moreOptions)
-                moreOptions.Text.text = ModTranslation.getString("modOptionsText");
+                moreOptions.Text.text = ModTranslation.GetString("modOptionsText");
             try
             {
                 modButtons[0].Text.text = FastDestroyableSingleton<TranslationController>.Instance.GetString(StringNames.SettingsCensorChat);
@@ -356,7 +356,7 @@ namespace SuperNewRoles.Patch
             for (int i = 0; i < AllOptions.Length; i++)
             {
                 if (i >= modButtons.Count) break;
-                modButtons[i + 2].Text.text = ModTranslation.getString(AllOptions[i].Title);
+                modButtons[i + 2].Text.text = ModTranslation.GetString(AllOptions[i].Title);
             }
         }
 

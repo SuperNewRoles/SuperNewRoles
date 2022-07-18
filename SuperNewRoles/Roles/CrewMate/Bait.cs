@@ -1,5 +1,6 @@
 using System.Linq;
 using Hazel;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace SuperNewRoles.Roles
     {
         public class BaitUpdate
         {
-            public static void Postfix(PlayerControl __instance)
+            public static void Postfix()
             {
                 SuperNewRolesPlugin.Logger.LogInfo(RoleClass.Bait.ReportTime);
                 RoleClass.Bait.ReportTime -= Time.fixedDeltaTime;
@@ -19,11 +20,11 @@ namespace SuperNewRoles.Roles
                 {
                     if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.BaitReport))
                     {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ReportDeadBody, Hazel.SendOption.Reliable, -1);
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ReportDeadBody, SendOption.Reliable, -1);
                         writer.Write(deadPlayer.killerIfExisting.PlayerId);
                         writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        CustomRPC.RPCProcedure.ReportDeadBody(deadPlayer.killerIfExisting.PlayerId, CachedPlayer.LocalPlayer.PlayerId);
+                        RPCProcedure.ReportDeadBody(deadPlayer.killerIfExisting.PlayerId, CachedPlayer.LocalPlayer.PlayerId);
                     }
                     RoleClass.Bait.Reported = true;
                 }

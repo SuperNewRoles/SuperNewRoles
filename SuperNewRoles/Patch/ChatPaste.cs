@@ -4,7 +4,7 @@ namespace SuperNewRoles.Patch
     class ChatPaste
     {
         [HarmonyLib.HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
-        class pastepatch
+        class Pastepatch
         {
             static void Postfix()
             {

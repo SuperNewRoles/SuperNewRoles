@@ -4,13 +4,13 @@ namespace SuperNewRoles.Mode.Detective
     {
         public static void YouAreHandle(IntroCutscene __instance)
         {
-            if (main.DetectivePlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
+            if (Main.DetectivePlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
             {
-                __instance.YouAreText.color = main.DetectiveColor;
-                __instance.RoleText.text = ModTranslation.getString("DetectiveName");
-                __instance.RoleText.color = main.DetectiveColor;
-                __instance.RoleBlurbText.text = ModTranslation.getString("DetectiveTitle1");
-                __instance.RoleBlurbText.color = main.DetectiveColor;
+                __instance.YouAreText.color = Main.DetectiveColor;
+                __instance.RoleText.text = ModTranslation.GetString("DetectiveName");
+                __instance.RoleText.color = Main.DetectiveColor;
+                __instance.RoleBlurbText.text = ModTranslation.GetString("DetectiveTitle1");
+                __instance.RoleBlurbText.color = Main.DetectiveColor;
             }
         }
     }

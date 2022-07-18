@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 using SuperNewRoles.CustomRPC;
+using UnityEngine;
 
 namespace SuperNewRoles.Intro
 {
@@ -16,7 +16,7 @@ namespace SuperNewRoles.Intro
             this.color = color;
             this.BackGround = BackGround;
             this.NameKey = NameKey;
-            this.RoleIds = RoleId;
+            RoleIds = RoleId;
         }
         public static TeamDate VultureTeam = new("Test", Color.black, Color.yellow, new List<RoleId> { RoleId.Sheriff });
     }

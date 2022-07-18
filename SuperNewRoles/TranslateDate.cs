@@ -56,7 +56,7 @@ namespace SuperNewRoles
         {
             return SaveManager.LastLanguage;
         }
-        public static string getString(string key, string def = null)
+        public static string GetString(string key, string def = null)
         {
             try
             {
@@ -81,14 +81,14 @@ namespace SuperNewRoles
             key = key.Replace("\\", ".");
             key = "SuperNewRoles.Resources." + key;
 
-            return ModHelpers.loadSpriteFromResources(key, pixelsPerUnit);
+            return ModHelpers.LoadSpriteFromResources(key, pixelsPerUnit);
         }
         [HarmonyPatch(typeof(LanguageSetter), nameof(LanguageSetter.SetLanguage))]
         class SetLanguagePatch
         {
             static void Postfix()
             {
-                ClientOptionsPatch.updateTranslations();
+                ClientOptionsPatch.UpdateTranslations();
             }
         }
     }

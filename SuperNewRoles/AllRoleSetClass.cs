@@ -20,7 +20,7 @@ namespace SuperNewRoles
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
             return true;
-            if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return true;
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
             if (doReplace && sender != null)
             {
                 StoragedData.Add((__instance, roleType));
@@ -54,7 +54,7 @@ namespace SuperNewRoles
         public static void Postfix()
         {
             RPCHelper.StartRPC(CustomRPC.CustomRPC.StartGameRPC).EndRPC();
-            CustomRPC.RPCProcedure.StartGameRPC();
+            RPCProcedure.StartGameRPC();
 
             RoleSelectHandler.SpawnBots();
         }
@@ -64,28 +64,28 @@ namespace SuperNewRoles
     {
         public static bool IsNotPrefix = false;
         public static bool IsRPCSetRoleOK = false;
-        public static bool IsSetRoleRpc = false;
+        public static bool IsSetRoleRPC = false;
         public static bool IsShapeSet = false;
         public static bool IsNotDesync = false;
         public static bool Prefix()
         {
             AllRoleSetClass.SetPlayerNum();
             IsNotPrefix = false;
-            IsSetRoleRpc = false;
+            IsSetRoleRPC = false;
             IsRPCSetRoleOK = true;
             IsShapeSet = false;
             IsNotDesync = true;
-            if (ModeHandler.isMode(ModeId.NotImpostorCheck))
+            if (ModeHandler.IsMode(ModeId.NotImpostorCheck))
             {
                 IsNotDesync = false;
             }
             /*
-            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 IsNotDesync = false;
             }
             */
-            if (ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 CustomRpcSender sender = CustomRpcSender.Create("SelectRoles Sender", SendOption.Reliable);
                 List<PlayerControl> SelectPlayers = new();
@@ -116,7 +116,7 @@ namespace SuperNewRoles
                 }
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
-                    if (!player.Data.Disconnected && !player.isImpostor())
+                    if (!player.Data.Disconnected && !player.IsImpostor())
                     {
                         sender.RpcSetRole(player, RoleTypes.Crewmate);
                     }
@@ -152,12 +152,12 @@ namespace SuperNewRoles
                 FixedUpdate.SetRoleNames();
                 return false;
             }
-            else if (ModeHandler.isMode(ModeId.BattleRoyal))
+            else if (ModeHandler.IsMode(ModeId.BattleRoyal))
             {
-                Mode.BattleRoyal.main.ChangeRole.Postfix();
+                Mode.BattleRoyal.Main.ChangeRole.Postfix();
                 return false;
             }
-            else if (ModeHandler.isMode(ModeId.CopsRobbers))
+            else if (ModeHandler.IsMode(ModeId.CopsRobbers))
             {
                 Mode.CopsRobbers.RoleSelectHandler.Handler();
                 return false;
@@ -166,26 +166,26 @@ namespace SuperNewRoles
         }
         public static void Postfix()
         {
-            IsSetRoleRpc = true;
+            IsSetRoleRPC = true;
             IsRPCSetRoleOK = false;
             IsNotPrefix = true;
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 AllRoleSetClass.AllRoleSet();
             }
-            else if (ModeHandler.isMode(ModeId.Werewolf))
+            else if (ModeHandler.IsMode(ModeId.Werewolf))
             {
                 Mode.Werewolf.RoleSelectHandler.RoleSelect();
             }
-            else if (ModeHandler.isMode(ModeId.NotImpostorCheck))
+            else if (ModeHandler.IsMode(ModeId.NotImpostorCheck))
             {
                 Mode.NotImpostorCheck.SelectRolePatch.SetDesync();
             }
-            else if (ModeHandler.isMode(ModeId.Detective))
+            else if (ModeHandler.IsMode(ModeId.Detective))
             {
-                Mode.Detective.main.RoleSelect();
+                Mode.Detective.Main.RoleSelect();
             }
-            if (!ModeHandler.isMode(ModeId.NotImpostorCheck) && !ModeHandler.isMode(ModeId.BattleRoyal) && !ModeHandler.isMode(ModeId.Default) && !ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (!ModeHandler.IsMode(ModeId.NotImpostorCheck) && !ModeHandler.IsMode(ModeId.BattleRoyal) && !ModeHandler.IsMode(ModeId.Default) && !ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
@@ -193,7 +193,7 @@ namespace SuperNewRoles
                 }
                 /*AmongUsClient.Instance.StartCoroutine(nameof(SetServerRole));*/
             }
-            if (!ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 new LateTask(() =>
                 {
@@ -233,7 +233,7 @@ namespace SuperNewRoles
         public static void AllRoleSet()
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (!ModeHandler.isMode(ModeId.SuperHostRoles))
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
                 CrewOrImpostorSet();
                 OneOrNotListSet();
@@ -264,7 +264,7 @@ namespace SuperNewRoles
             {
                 SuperNewRolesPlugin.Logger.LogInfo("RoleSelectError:" + e);
             }
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 try
                 {
@@ -287,14 +287,14 @@ namespace SuperNewRoles
         }
         public static void QuarreledRandomSelect()
         {
-            if (!CustomOption.CustomOptions.QuarreledOption.getBool()) return;
+            if (!CustomOption.CustomOptions.QuarreledOption.GetBool()) return;
             SuperNewRolesPlugin.Logger.LogInfo("クラードセレクト");
             List<PlayerControl> SelectPlayers = new();
-            if (CustomOption.CustomOptions.QuarreledOnlyCrewMate.getBool())
+            if (CustomOption.CustomOptions.QuarreledOnlyCrewMate.GetBool())
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.isImpostor() && !p.isNeutral() && p.IsPlayer())
+                    if (!p.IsImpostor() && !p.IsNeutral() && p.IsPlayer())
                     {
                         SelectPlayers.Add(p);
                     }
@@ -310,7 +310,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            for (int i = 0; i < CustomOptions.QuarreledTeamCount.getFloat(); i++)
+            for (int i = 0; i < CustomOptions.QuarreledTeamCount.GetFloat(); i++)
             {
                 if (SelectPlayers.Count is not (1 or 0))
                 {
@@ -330,11 +330,11 @@ namespace SuperNewRoles
 
         public static void LoversRandomSelect()
         {
-            if (!CustomOptions.LoversOption.getBool() || (CustomOptions.LoversPar.getString() == "0%")) return;
-            if (!(CustomOptions.LoversPar.getString() == "100%"))
+            if (!CustomOptions.LoversOption.GetBool() || (CustomOptions.LoversPar.GetString() == "0%")) return;
+            if (!(CustomOptions.LoversPar.GetString() == "100%"))
             {
                 List<string> a = new();
-                var SucPar = int.Parse(CustomOptions.LoversPar.getString().Replace("0%", ""));
+                var SucPar = int.Parse(CustomOptions.LoversPar.GetString().Replace("0%", ""));
                 for (int i = 0; i < SucPar; i++)
                 {
                     a.Add("Suc");
@@ -349,12 +349,12 @@ namespace SuperNewRoles
                 }
             }
             List<PlayerControl> SelectPlayers = new();
-            bool IsQuarreledDup = CustomOptions.LoversDuplicationQuarreled.getBool();
-            if (CustomOptions.LoversOnlyCrewMate.getBool())
+            bool IsQuarreledDup = CustomOptions.LoversDuplicationQuarreled.GetBool();
+            if (CustomOptions.LoversOnlyCrewMate.GetBool())
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.isImpostor() && !p.isNeutral() && !p.isRole(RoleId.truelover) && p.IsPlayer())
+                    if (!p.IsImpostor() && !p.IsNeutral() && !p.IsRole(RoleId.truelover) && p.IsPlayer())
                     {
                         if (!IsQuarreledDup || !p.IsQuarreled())
                         {
@@ -369,14 +369,14 @@ namespace SuperNewRoles
                 {
                     if (!IsQuarreledDup || (!p.IsQuarreled() && p.IsPlayer()))
                     {
-                        if (!p.isRole(RoleId.truelover))
+                        if (!p.IsRole(RoleId.truelover))
                         {
                             SelectPlayers.Add(p);
                         }
                     }
                 }
             }
-            for (int i = 0; i < CustomOptions.LoversTeamCount.getFloat(); i++)
+            for (int i = 0; i < CustomOptions.LoversTeamCount.GetFloat(); i++)
             {
                 if (SelectPlayers.Count is not (1 or 0))
                 {
@@ -395,12 +395,12 @@ namespace SuperNewRoles
         }
         public static void SetPlayerNum()
         {
-            ImpostorPlayerNum = (int)CustomOptions.impostorRolesCountMax.getFloat();
-            ImpostorGhostRolePlayerNum = (int)CustomOptions.impostorGhostRolesCountMax.getFloat();
-            NeutralPlayerNum = (int)CustomOptions.neutralRolesCountMax.getFloat();
-            NeutralGhostRolePlayerNum = (int)CustomOptions.neutralGhostRolesCountMax.getFloat();
-            CrewMatePlayerNum = (int)CustomOptions.crewmateRolesCountMax.getFloat();
-            CrewMateGhostRolePlayerNum = (int)CustomOptions.crewmateGhostRolesCountMax.getFloat();
+            ImpostorPlayerNum = (int)CustomOptions.impostorRolesCountMax.GetFloat();
+            ImpostorGhostRolePlayerNum = (int)CustomOptions.impostorGhostRolesCountMax.GetFloat();
+            NeutralPlayerNum = (int)CustomOptions.neutralRolesCountMax.GetFloat();
+            NeutralGhostRolePlayerNum = (int)CustomOptions.neutralGhostRolesCountMax.GetFloat();
+            CrewMatePlayerNum = (int)CustomOptions.crewmateRolesCountMax.GetFloat();
+            CrewMateGhostRolePlayerNum = (int)CustomOptions.crewmateGhostRolesCountMax.GetFloat();
         }
         public static void ImpostorRandomSelect()
         {
@@ -449,7 +449,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= ImpostorPlayerNum; i++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             ImpostorPlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
@@ -460,7 +460,7 @@ namespace SuperNewRoles
                         foreach (PlayerControl Player in ImpostorPlayers)
                         {
                             ImpostorPlayerNum--;
-                            Player.setRoleRPC(SelectRoleDate);
+                            Player.SetRoleRPC(SelectRoleDate);
                         }
                         IsNotEndRandomSelect = false;
                     }
@@ -470,7 +470,7 @@ namespace SuperNewRoles
                         {
                             ImpostorPlayerNum--;
                             PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             ImpostorPlayers.Remove(p);
                         }
                     }
@@ -486,7 +486,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= ImpostorPlayerNum; i++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             ImpostorPlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
@@ -496,7 +496,7 @@ namespace SuperNewRoles
                     {
                         foreach (PlayerControl Player in ImpostorPlayers)
                         {
-                            Player.setRoleRPC(SelectRoleDate);
+                            Player.SetRoleRPC(SelectRoleDate);
                         }
                         IsNotEndRandomSelect = false;
                     }
@@ -506,7 +506,7 @@ namespace SuperNewRoles
                         {
                             ImpostorPlayerNum--;
                             PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             ImpostorPlayers.Remove(p);
                         }
                     }
@@ -533,7 +533,7 @@ namespace SuperNewRoles
                     for (int i = 1; i <= CrewMatePlayerNum; i++)
                     {
                         PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                        p.setRoleRPC(RoleId.Marine);
+                        p.SetRoleRPC(RoleId.Marine);
                         CrewMatePlayers.Remove(p);
                     }
                     CrewMatePlayerNum = 0;
@@ -542,7 +542,7 @@ namespace SuperNewRoles
                 {
                     foreach (PlayerControl Player in CrewMatePlayers)
                     {
-                        Player.setRoleRPC(RoleId.Marine);
+                        Player.SetRoleRPC(RoleId.Marine);
                     }
                     CrewMatePlayerNum = 0;
                 }
@@ -552,7 +552,7 @@ namespace SuperNewRoles
                     {
                         CrewMatePlayerNum--;
                         PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                        p.setRoleRPC(RoleId.Marine);
+                        p.SetRoleRPC(RoleId.Marine);
                         CrewMatePlayers.Remove(p);
                     }
                 }
@@ -577,7 +577,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= NeutralPlayerNum; i++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
@@ -587,7 +587,7 @@ namespace SuperNewRoles
                         foreach (PlayerControl Player in CrewMatePlayers)
                         {
                             NeutralPlayerNum--;
-                            Player.setRoleRPC(SelectRoleDate);
+                            Player.SetRoleRPC(SelectRoleDate);
                         }
                         IsNotEndRandomSelect = false;
                     }
@@ -597,7 +597,7 @@ namespace SuperNewRoles
                         {
                             NeutralPlayerNum--;
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                     }
@@ -613,7 +613,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= NeutralPlayerNum; i++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
@@ -622,7 +622,7 @@ namespace SuperNewRoles
                     {
                         foreach (PlayerControl Player in CrewMatePlayers)
                         {
-                            Player.setRoleRPC(SelectRoleDate);
+                            Player.SetRoleRPC(SelectRoleDate);
                         }
                         IsNotEndRandomSelect = false;
                     }
@@ -632,7 +632,7 @@ namespace SuperNewRoles
                         {
                             NeutralPlayerNum--;
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                     }
@@ -668,7 +668,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= CrewMatePlayerNum; i++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
@@ -678,7 +678,7 @@ namespace SuperNewRoles
                         foreach (PlayerControl Player in CrewMatePlayers)
                         {
                             CrewMatePlayerNum--;
-                            Player.setRoleRPC(SelectRoleDate);
+                            Player.SetRoleRPC(SelectRoleDate);
                         }
                         IsNotEndRandomSelect = false;
                     }
@@ -688,7 +688,7 @@ namespace SuperNewRoles
                         {
                             CrewMatePlayerNum--;
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                     }
@@ -704,7 +704,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= CrewMatePlayerNum; i++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
@@ -713,7 +713,7 @@ namespace SuperNewRoles
                     {
                         foreach (PlayerControl Player in CrewMatePlayers)
                         {
-                            Player.setRoleRPC(SelectRoleDate);
+                            Player.SetRoleRPC(SelectRoleDate);
                         }
                         IsNotEndRandomSelect = false;
                     }
@@ -723,7 +723,7 @@ namespace SuperNewRoles
                         {
                             CrewMatePlayerNum--;
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                     }
@@ -744,113 +744,113 @@ namespace SuperNewRoles
         {
             return RoleDate switch
             {
-                RoleId.SoothSayer => CustomOptions.SoothSayerPlayerCount.getFloat(),
-                RoleId.Jester => CustomOptions.JesterPlayerCount.getFloat(),
-                RoleId.Lighter => CustomOptions.LighterPlayerCount.getFloat(),
-                RoleId.EvilLighter => CustomOptions.EvilLighterPlayerCount.getFloat(),
-                RoleId.EvilScientist => CustomOptions.EvilScientistPlayerCount.getFloat(),
-                RoleId.Sheriff => CustomOptions.SheriffPlayerCount.getFloat(),
-                RoleId.MeetingSheriff => CustomOptions.MeetingSheriffPlayerCount.getFloat(),
-                RoleId.Jackal => CustomOptions.JackalPlayerCount.getFloat(),
-                RoleId.Teleporter => CustomOptions.TeleporterPlayerCount.getFloat(),
-                RoleId.SpiritMedium => CustomOptions.SpiritMediumPlayerCount.getFloat(),
-                RoleId.SpeedBooster => CustomOptions.SpeedBoosterPlayerCount.getFloat(),
-                RoleId.EvilSpeedBooster => CustomOptions.EvilSpeedBoosterPlayerCount.getFloat(),
-                RoleId.Tasker => CustomOptions.TaskerPlayerCount.getFloat(),
-                RoleId.Doorr => CustomOptions.DoorrPlayerCount.getFloat(),
-                RoleId.EvilDoorr => CustomOptions.EvilDoorrPlayerCount.getFloat(),
-                RoleId.Shielder => CustomOptions.ShielderPlayerCount.getFloat(),
-                RoleId.Speeder => CustomOptions.SpeederPlayerCount.getFloat(),
-                RoleId.Freezer => CustomOptions.FreezerPlayerCount.getFloat(),
-                RoleId.Guesser => CustomOptions.GuesserPlayerCount.getFloat(),
-                RoleId.EvilGuesser => CustomOptions.EvilGuesserPlayerCount.getFloat(),
-                RoleId.Vulture => CustomOptions.VulturePlayerCount.getFloat(),
-                RoleId.NiceScientist => CustomOptions.NiceScientistPlayerCount.getFloat(),
-                RoleId.Clergyman => CustomOptions.ClergymanPlayerCount.getFloat(),
-                RoleId.MadMate => CustomOptions.MadMatePlayerCount.getFloat(),
-                RoleId.Bait => CustomOptions.BaitPlayerCount.getFloat(),
-                RoleId.HomeSecurityGuard => CustomOptions.HomeSecurityGuardPlayerCount.getFloat(),
-                RoleId.StuntMan => CustomOptions.StuntManPlayerCount.getFloat(),
-                RoleId.Moving => CustomOptions.MovingPlayerCount.getFloat(),
-                RoleId.Opportunist => CustomOptions.OpportunistPlayerCount.getFloat(),
-                RoleId.NiceGambler => CustomOptions.NiceGamblerPlayerCount.getFloat(),
-                RoleId.EvilGambler => CustomOptions.EvilGamblerPlayerCount.getFloat(),
-                RoleId.Bestfalsecharge => CustomOptions.BestfalsechargePlayerCount.getFloat(),
-                RoleId.Researcher => CustomOptions.ResearcherPlayerCount.getFloat(),
-                RoleId.SelfBomber => CustomOptions.SelfBomberPlayerCount.getFloat(),
-                RoleId.God => CustomOptions.GodPlayerCount.getFloat(),
-                RoleId.AllCleaner => CustomOptions.AllCleanerPlayerCount.getFloat(),
-                RoleId.NiceNekomata => CustomOptions.NiceNekomataPlayerCount.getFloat(),
-                RoleId.EvilNekomata => CustomOptions.EvilNekomataPlayerCount.getFloat(),
-                RoleId.JackalFriends => CustomOptions.JackalFriendsPlayerCount.getFloat(),
-                RoleId.Doctor => CustomOptions.DoctorPlayerCount.getFloat(),
-                RoleId.CountChanger => CustomOptions.CountChangerPlayerCount.getFloat(),
-                RoleId.Pursuer => CustomOptions.PursuerPlayerCount.getFloat(),
-                RoleId.Minimalist => CustomOptions.MinimalistPlayerCount.getFloat(),
-                RoleId.Hawk => CustomOptions.HawkPlayerCount.getFloat(),
-                RoleId.Egoist => CustomOptions.EgoistPlayerCount.getFloat(),
-                RoleId.NiceRedRidingHood => CustomOptions.NiceRedRidingHoodPlayerCount.getFloat(),
-                RoleId.EvilEraser => CustomOptions.EvilEraserPlayerCount.getFloat(),
-                RoleId.Workperson => CustomOptions.WorkpersonPlayerCount.getFloat(),
-                RoleId.Magaziner => CustomOptions.MagazinerPlayerCount.getFloat(),
-                RoleId.Mayor => CustomOptions.MayorPlayerCount.getFloat(),
-                RoleId.truelover => CustomOptions.trueloverPlayerCount.getFloat(),
-                RoleId.Technician => CustomOptions.TechnicianPlayerCount.getFloat(),
-                RoleId.SerialKiller => CustomOptions.SerialKillerPlayerCount.getFloat(),
-                RoleId.OverKiller => CustomOptions.OverKillerPlayerCount.getFloat(),
-                RoleId.Levelinger => CustomOptions.LevelingerPlayerCount.getFloat(),
-                RoleId.EvilMoving => CustomOptions.EvilMovingPlayerCount.getFloat(),
-                RoleId.Amnesiac => CustomOptions.AmnesiacPlayerCount.getFloat(),
-                RoleId.SideKiller => CustomOptions.SideKillerPlayerCount.getFloat(),
-                RoleId.Survivor => CustomOptions.SurvivorPlayerCount.getFloat(),
-                RoleId.MadMayor => CustomOptions.MadMayorPlayerCount.getFloat(),
-                RoleId.NiceHawk => CustomOptions.NiceHawkPlayerCount.getFloat(),
-                RoleId.Bakery => CustomOptions.BakeryPlayerCount.getFloat(),
-                RoleId.MadJester => CustomOptions.MadJesterPlayerCount.getFloat(),
-                RoleId.MadStuntMan => CustomOptions.MadStuntManPlayerCount.getFloat(),
-                RoleId.MadHawk => CustomOptions.MadHawkPlayerCount.getFloat(),
-                RoleId.FalseCharges => CustomOptions.FalseChargesPlayerCount.getFloat(),
-                RoleId.NiceTeleporter => CustomOptions.NiceTeleporterPlayerCount.getFloat(),
-                RoleId.Celebrity => CustomOptions.CelebrityPlayerCount.getFloat(),
-                RoleId.Nocturnality => CustomOptions.NocturnalityPlayerCount.getFloat(),
-                RoleId.Observer => CustomOptions.ObserverPlayerCount.getFloat(),
-                RoleId.Vampire => CustomOptions.VampirePlayerCount.getFloat(),
-                RoleId.DarkKiller => CustomOptions.DarkKillerPlayerCount.getFloat(),
-                RoleId.Seer => CustomOptions.SeerPlayerCount.getFloat(),
-                RoleId.MadSeer => CustomOptions.MadSeerPlayerCount.getFloat(),
-                RoleId.EvilSeer => CustomOptions.EvilSeerPlayerCount.getFloat(),
-                RoleId.RemoteSheriff => CustomOptions.RemoteSheriffPlayerCount.getFloat(),
-                RoleId.Fox => CustomOptions.FoxPlayerCount.getFloat(),
-                RoleId.TeleportingJackal => CustomOptions.TeleportingJackalPlayerCount.getFloat(),
-                RoleId.MadMaker => CustomOptions.MadMakerPlayerCount.getFloat(),
-                RoleId.Demon => CustomOptions.DemonPlayerCount.getFloat(),
-                RoleId.TaskManager => CustomOptions.TaskManagerPlayerCount.getFloat(),
-                RoleId.SeerFriends => CustomOptions.SeerFriendsPlayerCount.getFloat(),
-                RoleId.JackalSeer => CustomOptions.JackalSeerPlayerCount.getFloat(),
-                RoleId.Assassin => CustomOptions.AssassinPlayerCount.getFloat(),
-                RoleId.Marine => CustomOptions.MarinePlayerCount.getFloat(),
-                RoleId.Arsonist => CustomOptions.ArsonistPlayerCount.getFloat(),
-                RoleId.Chief => CustomOptions.ChiefPlayerCount.getFloat(),
-                RoleId.Cleaner => CustomOptions.CleanerPlayerCount.getFloat(),
-                RoleId.MadCleaner => CustomOptions.MadCleanerPlayerCount.getFloat(),
-                RoleId.Samurai => CustomOptions.SamuraiPlayerCount.getFloat(),
-                RoleId.MayorFriends => CustomOptions.MayorFriendsPlayerCount.getFloat(),
-                RoleId.VentMaker => CustomOptions.VentMakerPlayerCount.getFloat(),
-                RoleId.GhostMechanic => CustomOptions.GhostMechanicPlayerCount.getFloat(),
-                RoleId.EvilHacker => CustomOptions.EvilHackerPlayerCount.getFloat(),
-                RoleId.HauntedWolf => CustomOptions.HauntedWolfPlayerCount.getFloat(),
-                RoleId.PositionSwapper => CustomOptions.PositionSwapperPlayerCount.getFloat(),
-                RoleId.Tuna => CustomOptions.TunaPlayerCount.getFloat(),
-                RoleId.Mafia => CustomOptions.MafiaPlayerCount.getFloat(),
-                RoleId.BlackCat => CustomOptions.BlackCatPlayerCount.getFloat(),
-                RoleId.SecretlyKiller => CustomOptions.SecretlyKillerPlayerCount.getFloat(),
-                RoleId.Spy => CustomOptions.SpyPlayerCount.getFloat(),
-                RoleId.Kunoichi => CustomOptions.KunoichiPlayerCount.getFloat(),
-                RoleId.DoubleKiller => CustomOptions.DoubleKillerPlayerCount.getFloat(),
-                RoleId.Smasher => CustomOptions.SmasherPlayerCount.getFloat(),
-                RoleId.SuicideWisher => CustomOptions.SuicideWisherPlayerCount.getFloat(),
-                RoleId.Neet => CustomOptions.NeetPlayerCount.getFloat(),
-                RoleId.ToiletFan => CustomOptions.ToiletFanPlayerCount.getFloat(),
+                RoleId.SoothSayer => CustomOptions.SoothSayerPlayerCount.GetFloat(),
+                RoleId.Jester => CustomOptions.JesterPlayerCount.GetFloat(),
+                RoleId.Lighter => CustomOptions.LighterPlayerCount.GetFloat(),
+                RoleId.EvilLighter => CustomOptions.EvilLighterPlayerCount.GetFloat(),
+                RoleId.EvilScientist => CustomOptions.EvilScientistPlayerCount.GetFloat(),
+                RoleId.Sheriff => CustomOptions.SheriffPlayerCount.GetFloat(),
+                RoleId.MeetingSheriff => CustomOptions.MeetingSheriffPlayerCount.GetFloat(),
+                RoleId.Jackal => CustomOptions.JackalPlayerCount.GetFloat(),
+                RoleId.Teleporter => CustomOptions.TeleporterPlayerCount.GetFloat(),
+                RoleId.SpiritMedium => CustomOptions.SpiritMediumPlayerCount.GetFloat(),
+                RoleId.SpeedBooster => CustomOptions.SpeedBoosterPlayerCount.GetFloat(),
+                RoleId.EvilSpeedBooster => CustomOptions.EvilSpeedBoosterPlayerCount.GetFloat(),
+                RoleId.Tasker => CustomOptions.TaskerPlayerCount.GetFloat(),
+                RoleId.Doorr => CustomOptions.DoorrPlayerCount.GetFloat(),
+                RoleId.EvilDoorr => CustomOptions.EvilDoorrPlayerCount.GetFloat(),
+                RoleId.Shielder => CustomOptions.ShielderPlayerCount.GetFloat(),
+                RoleId.Speeder => CustomOptions.SpeederPlayerCount.GetFloat(),
+                RoleId.Freezer => CustomOptions.FreezerPlayerCount.GetFloat(),
+                RoleId.Guesser => CustomOptions.GuesserPlayerCount.GetFloat(),
+                RoleId.EvilGuesser => CustomOptions.EvilGuesserPlayerCount.GetFloat(),
+                RoleId.Vulture => CustomOptions.VulturePlayerCount.GetFloat(),
+                RoleId.NiceScientist => CustomOptions.NiceScientistPlayerCount.GetFloat(),
+                RoleId.Clergyman => CustomOptions.ClergymanPlayerCount.GetFloat(),
+                RoleId.MadMate => CustomOptions.MadMatePlayerCount.GetFloat(),
+                RoleId.Bait => CustomOptions.BaitPlayerCount.GetFloat(),
+                RoleId.HomeSecurityGuard => CustomOptions.HomeSecurityGuardPlayerCount.GetFloat(),
+                RoleId.StuntMan => CustomOptions.StuntManPlayerCount.GetFloat(),
+                RoleId.Moving => CustomOptions.MovingPlayerCount.GetFloat(),
+                RoleId.Opportunist => CustomOptions.OpportunistPlayerCount.GetFloat(),
+                RoleId.NiceGambler => CustomOptions.NiceGamblerPlayerCount.GetFloat(),
+                RoleId.EvilGambler => CustomOptions.EvilGamblerPlayerCount.GetFloat(),
+                RoleId.Bestfalsecharge => CustomOptions.BestfalsechargePlayerCount.GetFloat(),
+                RoleId.Researcher => CustomOptions.ResearcherPlayerCount.GetFloat(),
+                RoleId.SelfBomber => CustomOptions.SelfBomberPlayerCount.GetFloat(),
+                RoleId.God => CustomOptions.GodPlayerCount.GetFloat(),
+                RoleId.AllCleaner => CustomOptions.AllCleanerPlayerCount.GetFloat(),
+                RoleId.NiceNekomata => CustomOptions.NiceNekomataPlayerCount.GetFloat(),
+                RoleId.EvilNekomata => CustomOptions.EvilNekomataPlayerCount.GetFloat(),
+                RoleId.JackalFriends => CustomOptions.JackalFriendsPlayerCount.GetFloat(),
+                RoleId.Doctor => CustomOptions.DoctorPlayerCount.GetFloat(),
+                RoleId.CountChanger => CustomOptions.CountChangerPlayerCount.GetFloat(),
+                RoleId.Pursuer => CustomOptions.PursuerPlayerCount.GetFloat(),
+                RoleId.Minimalist => CustomOptions.MinimalistPlayerCount.GetFloat(),
+                RoleId.Hawk => CustomOptions.HawkPlayerCount.GetFloat(),
+                RoleId.Egoist => CustomOptions.EgoistPlayerCount.GetFloat(),
+                RoleId.NiceRedRidingHood => CustomOptions.NiceRedRidingHoodPlayerCount.GetFloat(),
+                RoleId.EvilEraser => CustomOptions.EvilEraserPlayerCount.GetFloat(),
+                RoleId.Workperson => CustomOptions.WorkpersonPlayerCount.GetFloat(),
+                RoleId.Magaziner => CustomOptions.MagazinerPlayerCount.GetFloat(),
+                RoleId.Mayor => CustomOptions.MayorPlayerCount.GetFloat(),
+                RoleId.truelover => CustomOptions.trueloverPlayerCount.GetFloat(),
+                RoleId.Technician => CustomOptions.TechnicianPlayerCount.GetFloat(),
+                RoleId.SerialKiller => CustomOptions.SerialKillerPlayerCount.GetFloat(),
+                RoleId.OverKiller => CustomOptions.OverKillerPlayerCount.GetFloat(),
+                RoleId.Levelinger => CustomOptions.LevelingerPlayerCount.GetFloat(),
+                RoleId.EvilMoving => CustomOptions.EvilMovingPlayerCount.GetFloat(),
+                RoleId.Amnesiac => CustomOptions.AmnesiacPlayerCount.GetFloat(),
+                RoleId.SideKiller => CustomOptions.SideKillerPlayerCount.GetFloat(),
+                RoleId.Survivor => CustomOptions.SurvivorPlayerCount.GetFloat(),
+                RoleId.MadMayor => CustomOptions.MadMayorPlayerCount.GetFloat(),
+                RoleId.NiceHawk => CustomOptions.NiceHawkPlayerCount.GetFloat(),
+                RoleId.Bakery => CustomOptions.BakeryPlayerCount.GetFloat(),
+                RoleId.MadJester => CustomOptions.MadJesterPlayerCount.GetFloat(),
+                RoleId.MadStuntMan => CustomOptions.MadStuntManPlayerCount.GetFloat(),
+                RoleId.MadHawk => CustomOptions.MadHawkPlayerCount.GetFloat(),
+                RoleId.FalseCharges => CustomOptions.FalseChargesPlayerCount.GetFloat(),
+                RoleId.NiceTeleporter => CustomOptions.NiceTeleporterPlayerCount.GetFloat(),
+                RoleId.Celebrity => CustomOptions.CelebrityPlayerCount.GetFloat(),
+                RoleId.Nocturnality => CustomOptions.NocturnalityPlayerCount.GetFloat(),
+                RoleId.Observer => CustomOptions.ObserverPlayerCount.GetFloat(),
+                RoleId.Vampire => CustomOptions.VampirePlayerCount.GetFloat(),
+                RoleId.DarkKiller => CustomOptions.DarkKillerPlayerCount.GetFloat(),
+                RoleId.Seer => CustomOptions.SeerPlayerCount.GetFloat(),
+                RoleId.MadSeer => CustomOptions.MadSeerPlayerCount.GetFloat(),
+                RoleId.EvilSeer => CustomOptions.EvilSeerPlayerCount.GetFloat(),
+                RoleId.RemoteSheriff => CustomOptions.RemoteSheriffPlayerCount.GetFloat(),
+                RoleId.Fox => CustomOptions.FoxPlayerCount.GetFloat(),
+                RoleId.TeleportingJackal => CustomOptions.TeleportingJackalPlayerCount.GetFloat(),
+                RoleId.MadMaker => CustomOptions.MadMakerPlayerCount.GetFloat(),
+                RoleId.Demon => CustomOptions.DemonPlayerCount.GetFloat(),
+                RoleId.TaskManager => CustomOptions.TaskManagerPlayerCount.GetFloat(),
+                RoleId.SeerFriends => CustomOptions.SeerFriendsPlayerCount.GetFloat(),
+                RoleId.JackalSeer => CustomOptions.JackalSeerPlayerCount.GetFloat(),
+                RoleId.Assassin => CustomOptions.AssassinPlayerCount.GetFloat(),
+                RoleId.Marine => CustomOptions.MarinePlayerCount.GetFloat(),
+                RoleId.Arsonist => CustomOptions.ArsonistPlayerCount.GetFloat(),
+                RoleId.Chief => CustomOptions.ChiefPlayerCount.GetFloat(),
+                RoleId.Cleaner => CustomOptions.CleanerPlayerCount.GetFloat(),
+                RoleId.MadCleaner => CustomOptions.MadCleanerPlayerCount.GetFloat(),
+                RoleId.Samurai => CustomOptions.SamuraiPlayerCount.GetFloat(),
+                RoleId.MayorFriends => CustomOptions.MayorFriendsPlayerCount.GetFloat(),
+                RoleId.VentMaker => CustomOptions.VentMakerPlayerCount.GetFloat(),
+                RoleId.GhostMechanic => CustomOptions.GhostMechanicPlayerCount.GetFloat(),
+                RoleId.EvilHacker => CustomOptions.EvilHackerPlayerCount.GetFloat(),
+                RoleId.HauntedWolf => CustomOptions.HauntedWolfPlayerCount.GetFloat(),
+                RoleId.PositionSwapper => CustomOptions.PositionSwapperPlayerCount.GetFloat(),
+                RoleId.Tuna => CustomOptions.TunaPlayerCount.GetFloat(),
+                RoleId.Mafia => CustomOptions.MafiaPlayerCount.GetFloat(),
+                RoleId.BlackCat => CustomOptions.BlackCatPlayerCount.GetFloat(),
+                RoleId.SecretlyKiller => CustomOptions.SecretlyKillerPlayerCount.GetFloat(),
+                RoleId.Spy => CustomOptions.SpyPlayerCount.GetFloat(),
+                RoleId.Kunoichi => CustomOptions.KunoichiPlayerCount.GetFloat(),
+                RoleId.DoubleKiller => CustomOptions.DoubleKillerPlayerCount.GetFloat(),
+                RoleId.Smasher => CustomOptions.SmasherPlayerCount.GetFloat(),
+                RoleId.SuicideWisher => CustomOptions.SuicideWisherPlayerCount.GetFloat(),
+                RoleId.Neet => CustomOptions.NeetPlayerCount.GetFloat(),
+                RoleId.ToiletFan => CustomOptions.ToiletFanPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };
@@ -863,7 +863,7 @@ namespace SuperNewRoles
             {
                 if (Player.Data.Role.IsSimpleRole)
                 {
-                    if (Player.isImpostor())
+                    if (Player.IsImpostor())
                     {
                         ImpostorPlayers.Add(Player);
                     }
@@ -888,7 +888,7 @@ namespace SuperNewRoles
                 {
                     var option = IntroDate.GetOption(intro.RoleId);
                     if (option == null) continue;
-                    var selection = option.getSelection();
+                    var selection = option.GetSelection();
                     if (selection != 0)
                     {
                         if (selection == 10)
@@ -927,7 +927,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            var Assassinselection = CustomOptions.AssassinAndMarineOption.getSelection();
+            var Assassinselection = CustomOptions.AssassinAndMarineOption.GetSelection();
             SuperNewRolesPlugin.Logger.LogInfo("アサイン情報:" + Assassinselection + "、" + CrewMatePlayerNum + "、" + CrewMatePlayers.Count);
             if (Assassinselection != 0 && CrewMatePlayerNum > 0 && CrewMatePlayers.Count > 0)
             {

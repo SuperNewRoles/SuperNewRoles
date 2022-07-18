@@ -7,18 +7,16 @@ using UnityEngine;
 namespace SuperNewRoles.Roles
 {
     class Seer
-    //&MadSeer & EvilSeer & SeerFriends & JackalSeer & Sidekick(Seer)
+    //マッド・イビル・フレンズ・ジャッカル・サイドキック　シーア
     {
         public static void ShowFlash(Color color, float duration = 1f)
-        //画面を光らせる
-        {
+        {//画面を光らせる
             if (FastDestroyableSingleton<HudManager>.Instance == null || FastDestroyableSingleton<HudManager>.Instance.FullScreen == null) return;
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.gameObject.SetActive(true);
             FastDestroyableSingleton<HudManager>.Instance.FullScreen.enabled = true;
             FastDestroyableSingleton<HudManager>.Instance.StartCoroutine(Effects.Lerp(duration, new Action<float>((p) =>
             {
                 var renderer = FastDestroyableSingleton<HudManager>.Instance.FullScreen;
-
                 if (p < 0.5)
                 {
                     if (renderer != null)
@@ -33,18 +31,18 @@ namespace SuperNewRoles.Roles
             })));
         }
         private static Sprite SoulSprite;
-        public static Sprite getSoulSprite()
+        public static Sprite GetSoulSprite()
         {
             if (SoulSprite) return SoulSprite;
-            SoulSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Soul.png", 500f);
+            SoulSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Soul.png", 500f);
             return SoulSprite;
         }
 
         public static class ExileControllerWrapUpPatch
         {
-            public static void WrapUpPostfix(GameData.PlayerInfo exiled)
+            public static void WrapUpPostfix()
             {
-                var role = PlayerControl.LocalPlayer.getRole();
+                var role = PlayerControl.LocalPlayer.GetRole();
                 if (role is RoleId.Seer or RoleId.MadSeer or RoleId.EvilSeer or RoleId.SeerFriends or RoleId.JackalSeer or RoleId.SidekickSeer)
                 {
                     List<Vector3> DeadBodyPositions = new();
@@ -95,7 +93,7 @@ namespace SuperNewRoles.Roles
                         soul.transform.position = pos;
                         soul.layer = 5;
                         var rend = soul.AddComponent<SpriteRenderer>();
-                        rend.sprite = getSoulSprite();
+                        rend.sprite = GetSoulSprite();
 
                         if (limitSoulDuration)
                         {
@@ -116,9 +114,9 @@ namespace SuperNewRoles.Roles
 
             public static class MurderPlayerPatch
             {
-                public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
+                public static void Postfix([HarmonyArgument(0)] PlayerControl target)
                 {
-                    var role = PlayerControl.LocalPlayer.getRole();
+                    var role = PlayerControl.LocalPlayer.GetRole();
                     if (role is RoleId.Seer or RoleId.MadSeer or RoleId.EvilSeer or RoleId.SeerFriends or RoleId.JackalSeer or RoleId.SidekickSeer)
                     {
                         bool ModeFlag = false;
@@ -146,7 +144,7 @@ namespace SuperNewRoles.Roles
                                 ModeFlag = RoleClass.JackalSeer.mode <= 1;
                                 break;
                         }
-                        if (PlayerControl.LocalPlayer.isAlive() && CachedPlayer.LocalPlayer.PlayerId != target.PlayerId && ModeFlag)
+                        if (PlayerControl.LocalPlayer.IsAlive() && CachedPlayer.LocalPlayer.PlayerId != target.PlayerId && ModeFlag)
                         {
                             ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
                         }

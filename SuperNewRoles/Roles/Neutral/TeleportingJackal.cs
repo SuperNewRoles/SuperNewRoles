@@ -10,18 +10,18 @@ namespace SuperNewRoles.Roles
 {
     class TeleportingJackal
     {
-        public static void resetCoolDown()
+        public static void ResetCoolDowns()
         {
             HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.TeleportingJackal.KillCoolDown;
             HudManagerStartPatch.JackalKillButton.Timer = RoleClass.TeleportingJackal.KillCoolDown;
         }
         public static void EndMeeting()
         {
-            resetCoolDown();
+            ResetCoolDowns();
             HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.TeleportingJackal.CoolTime;
             RoleClass.TeleportingJackal.ButtonTimer = DateTime.Now;
         }
-        public static void setPlayerOutline(PlayerControl target, Color color)
+        public static void SetPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null || target.MyRend == null) return;
 
@@ -30,7 +30,7 @@ namespace SuperNewRoles.Roles
         }
         public class JackalFixedPatch
         {
-            public static PlayerControl TeleportingJackalsetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+            public static PlayerControl TeleportingJackalSetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
             {
                 PlayerControl result = null;
                 float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
@@ -49,7 +49,7 @@ namespace SuperNewRoles.Roles
                 {
                     GameData.PlayerInfo playerInfo = allPlayers[i];
                     //下記TeleportingJackalがbuttonのターゲットにできない役職の設定
-                    if (playerInfo.Object.isAlive() && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.Object.IsJackalTeamJackal() && !playerInfo.Object.IsJackalTeamSidekick())
+                    if (playerInfo.Object.IsAlive() && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.Object.IsJackalTeamJackal() && !playerInfo.Object.IsJackalTeamSidekick())
                     {
                         PlayerControl @object = playerInfo.Object;
                         if (untargetablePlayers.Any(x => x == @object))
@@ -74,11 +74,11 @@ namespace SuperNewRoles.Roles
             }
             static void TeleportingJackalPlayerOutLineTarget()
             {
-                setPlayerOutline(TeleportingJackalsetTarget(), RoleClass.TeleportingJackal.color);
+                SetPlayerOutline(TeleportingJackalSetTarget(), RoleClass.TeleportingJackal.color);
             }
-            public static void Postfix(PlayerControl __instance)
+            public static void Postfix()
             {
-                if (PlayerControl.LocalPlayer.isRole(RoleId.TeleportingJackal))
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.TeleportingJackal))
                 {
                     TeleportingJackalPlayerOutLineTarget();
                 }
@@ -94,27 +94,20 @@ namespace SuperNewRoles.Roles
             List<PlayerControl> aliveplayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive() && p.CanMove)
+                if (p.IsAlive() && p.CanMove)
                 {
                     aliveplayers.Add(p);
                 }
             }
-            var player = ModHelpers.GetRandom<PlayerControl>(aliveplayers);
-            CustomRPC.RPCProcedure.TeleporterTP(player.PlayerId);
-            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, Hazel.SendOption.Reliable, -1);
+            var player = ModHelpers.GetRandom(aliveplayers);
+            RPCProcedure.TeleporterTP(player.PlayerId);
+            MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, SendOption.Reliable, -1);
             Writer.Write(player.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
         }
         public static bool IsTeleportingJackal(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.TeleportingJackal))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.IsRole(RoleId.TeleportingJackal);
         }
     }
 }

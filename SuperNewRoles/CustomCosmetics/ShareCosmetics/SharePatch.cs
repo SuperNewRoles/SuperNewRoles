@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
@@ -23,11 +24,11 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
                 return;
                 if (PlayerControl.LocalPlayer != null && ConfigRoles.IsShareCosmetics.Value && ConfigRoles.ShareCosmeticsNamePlatesURL.Value != "")
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, Hazel.SendOption.Reliable, -1);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, SendOption.Reliable, -1);
                     writer.Write((byte)CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(ConfigRoles.ShareCosmeticsNamePlatesURL.Value);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    CustomRPC.RPCProcedure.ShareCosmetics(
+                    RPCProcedure.ShareCosmetics(
                         (byte)CachedPlayer.LocalPlayer.PlayerId,
                         ConfigRoles.ShareCosmeticsNamePlatesURL.Value
                         );
@@ -44,12 +45,12 @@ namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
                 Proce++;
                 if (Proce >= 10)
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, Hazel.SendOption.Reliable, -1);
-                    writer.Write((byte)CachedPlayer.LocalPlayer.PlayerId);
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareCosmetics, SendOption.Reliable, -1);
+                    writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     writer.Write(ConfigRoles.ShareCosmeticsNamePlatesURL.Value);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    CustomRPC.RPCProcedure.ShareCosmetics(
-                        (byte)CachedPlayer.LocalPlayer.PlayerId,
+                    RPCProcedure.ShareCosmetics(
+                        CachedPlayer.LocalPlayer.PlayerId,
                         ConfigRoles.ShareCosmeticsNamePlatesURL.Value
                         );
                     Proce = 0;
