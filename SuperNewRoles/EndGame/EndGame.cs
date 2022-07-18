@@ -707,13 +707,17 @@ namespace SuperNewRoles.EndGame
             }
             foreach (PlayerControl p in RoleClass.Neet.NeetPlayer)
             {
-                if (p.isAlive())
+                if (p.isAlive() && !RoleClass.Neet.IsAddWin)
                 {
                     TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                     WinningPlayerData wpd = new(p.Data);
                     TempData.winners.Add(wpd);
                     AdditionalTempData.winCondition = WinCondition.NeetWin;
 
+                }
+                if (p.isAlive() && RoleClass.Neet.IsAddWin)
+                {
+                    TempData.winners.Add(new WinningPlayerData(p.Data));
                 }
             }
 
