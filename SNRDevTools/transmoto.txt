@@ -822,3 +822,11 @@ ToiletCoolDownSetting
 ToiletName
 PolusrandomSpawn
 NotImpostorExiled
+AllCloserName
+AllCloserTitle
+AllCloserDescription
+AllCloseCoolDownSetting
+AllCloseName
+MadAllCloserName
+MadAllCloserTitle
+MadAllCloserDescription

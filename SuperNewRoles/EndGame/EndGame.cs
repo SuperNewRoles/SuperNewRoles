@@ -470,6 +470,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Tuna.TunaPlayer);
             notWinners.AddRange(RoleClass.BlackCat.BlackCatPlayer);
             notWinners.AddRange(RoleClass.Neet.NeetPlayer);
+            notWinners.AddRange(RoleClass.MadAllCloser.MadAllCloserPlayer);
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {

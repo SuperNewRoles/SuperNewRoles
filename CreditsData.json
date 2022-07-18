@@ -15,10 +15,5 @@
     { "name": "kibou102", "id": 100 },
     { "name": "windows7", "id": 100 },
     { "name": "渋谷先生", "id": 100 }
-  ],
-
-  "Translate": [
-    {"name": "DekoKiyo","id":100},
-    {"name": "四个憨批汉化组","id":100}
   ]
 }

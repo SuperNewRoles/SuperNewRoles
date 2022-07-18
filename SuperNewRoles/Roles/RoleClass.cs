@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -153,6 +153,8 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
+            AllCloser.ClearAndReload();
+            MadAllCloser.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2498,8 +2500,49 @@ namespace SuperNewRoles.Roles
                 ToiletCool = CustomOptions.ToiletFanCoolTime.getFloat();
             }
         }
-        //新ロールクラス
-        public static class Quarreled
+        public static class AllCloser
+        {
+            public static List<PlayerControl> AllCloserPlayer;
+            public static Color32 color = new Color32(245, 1, 10, byte.MaxValue);
+            public static float CloseCool;
+            private static Sprite buttonSprite;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.AllCloseButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                AllCloserPlayer = new();
+                CloseCool = CustomOptions.AllCloserCoolTime.getFloat();
+            }
+        }
+        public static class MadAllCloser
+        {
+            public static List<PlayerControl> MadAllCloserPlayer;
+            public static Color32 color = ImpostorRed;
+            public static float CloseCool;
+            private static Sprite buttonSprite;
+            public static bool IsUseVent;
+            public static bool IsImpostorLight;
+            public static Sprite getButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.AllCloseButton.png", 115f);
+                return buttonSprite;
+
+            }
+            public static void ClearAndReload()
+            {
+                MadAllCloserPlayer = new();
+                CloseCool = CustomOptions.MadAllCloserCoolTime.getFloat();
+                IsUseVent = CustomOptions.MadAllCloserIsUseVent.getBool();
+                IsImpostorLight = CustomOptions.MadAllCloserIsImpostorLight.getBool();
+            }
+        }
+            //新ロールクラス
+            public static class Quarreled
         {
             public static List<List<PlayerControl>> QuarreledPlayer;
             public static Color32 color = new(210, 105, 30, byte.MaxValue);
