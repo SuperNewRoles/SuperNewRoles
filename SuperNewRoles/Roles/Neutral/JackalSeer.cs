@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
 {
     class JackalSeer
     {
-        public static void resetCoolDown()
+        public static void ResetCoolDown()
         {
             HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
             HudManagerStartPatch.JackalKillButton.Timer = RoleClass.JackalSeer.KillCoolDown;
@@ -18,9 +18,9 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            resetCoolDown();
+            ResetCoolDown();
         }
-        public static void setPlayerOutline(PlayerControl target, Color color)
+        public static void SetPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null || target.MyRend == null) return;
 
@@ -73,7 +73,7 @@ namespace SuperNewRoles.Roles
             }
             static void JackalSeerPlayerOutLineTarget()
             {
-                setPlayerOutline(JackalSeerSetTarget(), RoleClass.JackalSeer.color);
+                SetPlayerOutline(JackalSeerSetTarget(), RoleClass.JackalSeer.color);
             }
             public static void Postfix(PlayerControl __instance, RoleId role)
             {

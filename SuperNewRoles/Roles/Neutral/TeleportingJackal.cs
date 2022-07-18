@@ -10,18 +10,18 @@ namespace SuperNewRoles.Roles
 {
     class TeleportingJackal
     {
-        public static void resetCoolDown()
+        public static void ResetCoolDowns()
         {
             HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.TeleportingJackal.KillCoolDown;
             HudManagerStartPatch.JackalKillButton.Timer = RoleClass.TeleportingJackal.KillCoolDown;
         }
         public static void EndMeeting()
         {
-            resetCoolDown();
+            ResetCoolDowns();
             HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.TeleportingJackal.CoolTime;
             RoleClass.TeleportingJackal.ButtonTimer = DateTime.Now;
         }
-        public static void setPlayerOutline(PlayerControl target, Color color)
+        public static void SetPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null || target.MyRend == null) return;
 
@@ -74,9 +74,9 @@ namespace SuperNewRoles.Roles
             }
             static void TeleportingJackalPlayerOutLineTarget()
             {
-                setPlayerOutline(TeleportingJackalSetTarget(), RoleClass.TeleportingJackal.color);
+                SetPlayerOutline(TeleportingJackalSetTarget(), RoleClass.TeleportingJackal.color);
             }
-            public static void Postfix(PlayerControl __instance)
+            public static void Postfix()
             {
                 if (PlayerControl.LocalPlayer.isRole(RoleId.TeleportingJackal))
                 {
@@ -99,7 +99,7 @@ namespace SuperNewRoles.Roles
                     aliveplayers.Add(p);
                 }
             }
-            var player = ModHelpers.GetRandom<PlayerControl>(aliveplayers);
+            var player = ModHelpers.GetRandom(aliveplayers);
             RPCProcedure.TeleporterTP(player.PlayerId);
             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.TeleporterTP, SendOption.Reliable, -1);
             Writer.Write(player.PlayerId);

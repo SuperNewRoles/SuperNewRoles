@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
         class BeginCrewmatePatch
         {
-            public static void Postfix(ShipStatus __instance)
+            public static void Postfix()
             {
                 if (PlayerControl.LocalPlayer.isRole(RoleId.Workperson))
                 {

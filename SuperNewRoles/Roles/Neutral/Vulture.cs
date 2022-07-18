@@ -6,7 +6,7 @@ namespace SuperNewRoles.Roles
 {
     public class Vulture
     {
-        private static readonly List<DeadBody> Targets = new();
+       // private static readonly List<DeadBody> Targets = new();
         public class FixedUpdate
         {
             public static void Postfix()
@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles
                 }
                 float min_target_distance = float.MaxValue;
                 DeadBody target = null;
-                DeadBody[] deadBodies = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+                DeadBody[] deadBodies = Object.FindObjectsOfType<DeadBody>();
                 foreach (DeadBody db in deadBodies)
                 {
                     if (db == null)
@@ -40,7 +40,7 @@ namespace SuperNewRoles.Roles
                 }
                 if (!PlayerControl.LocalPlayer.isAlive())
                 {
-                    UnityEngine.Object.Destroy(RoleClass.Vulture.Arrow.arrow);
+                    Object.Destroy(RoleClass.Vulture.Arrow.arrow);
                     return;
                 }
             }

@@ -5,7 +5,7 @@ namespace SuperNewRoles.Roles
 {
     class Fox
     {
-        public static void setPlayerOutline(PlayerControl target, Color color)
+        public static void SetPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null || target.MyRend == null) return;
 

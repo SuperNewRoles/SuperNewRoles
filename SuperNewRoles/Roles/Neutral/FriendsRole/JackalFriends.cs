@@ -3,7 +3,6 @@ using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Patch;
 
 namespace SuperNewRoles.Roles
-
 {
     class JackalFriends
     {

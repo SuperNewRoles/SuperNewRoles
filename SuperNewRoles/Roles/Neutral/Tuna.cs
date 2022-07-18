@@ -55,7 +55,7 @@ namespace SuperNewRoles.Roles
             }
         }
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
-        static void Prefix(MeetingHud __instance)
+        static void Prefix()
         {
             RoleClass.Tuna.IsMeetingEnd = true;
         }

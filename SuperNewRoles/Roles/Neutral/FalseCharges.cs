@@ -5,6 +5,7 @@ using SuperNewRoles.EndGame;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -22,7 +23,6 @@ namespace SuperNewRoles.Roles
                         if (exiled.PlayerId == RoleClass.FalseCharges.FalseChargePlayer)
                         {
                             RPCProcedure.ShareWinner(CachedPlayer.LocalPlayer.PlayerId);
-
                             MessageWriter Writer = RPCHelper.StartRPC((byte)CustomRPC.CustomRPC.ShareWinner);
                             Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             Writer.EndRPC();
