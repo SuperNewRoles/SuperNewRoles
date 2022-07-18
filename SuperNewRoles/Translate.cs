@@ -1,33 +1,31 @@
-using HarmonyLib;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text.RegularExpressions;
+using HarmonyLib;
+using Newtonsoft.Json.Linq;
 using SuperNewRoles.Patch;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 namespace SuperNewRoles
 {
     public class ModTranslation
     {
         public static int defaultLanguage = (int)SupportedLangs.English;
-        public static Dictionary<string, Dictionary<int, string>> stringData;
+        public static Dictionary<string, Dictionary<int, string>> stringData = new();
 
         private const string blankText = "[BLANK]";
 
+        public ModTranslation() { }
+        public static dynamic LangDate;
         public static void Load()
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             Stream stream = assembly.GetManifestResourceStream("SuperNewRoles.Resources.TranslateFile.json");
-            var byteArray = new byte[stream.Length];
-            var read = stream.Read(byteArray, 0, (int)stream.Length);
-            string json = System.Text.Encoding.UTF8.GetString(byteArray);
-
-            stringData = new Dictionary<string, Dictionary<int, string>>();
+            var byteTexture = new byte[stream.Length];
+            var read = stream.Read(byteTexture, 0, (int)stream.Length);
+            string json = System.Text.Encoding.UTF8.GetString(byteTexture);
             JObject parsed = JObject.Parse(json);
-
             for (int i = 0; i < parsed.Count; i++)
             {
                 JProperty token = parsed.ChildrenTokens[i].TryCast<JProperty>();
@@ -35,11 +33,9 @@ namespace SuperNewRoles
 
                 string stringName = token.Name;
                 var val = token.Value.TryCast<JObject>();
-
                 if (token.HasValues)
                 {
                     var strings = new Dictionary<int, string>();
-
                     for (int j = 0; j < (int)SupportedLangs.Irish + 1; j++)
                     {
                         string key = j.ToString();
@@ -55,7 +51,6 @@ namespace SuperNewRoles
                 }
             }
         }
-
         public static string getString(string key, string def = null)
         {
             // Strip out color tags.
@@ -83,7 +78,6 @@ namespace SuperNewRoles
             return key;
         }
     }
-
     [HarmonyPatch(typeof(LanguageSetter), nameof(LanguageSetter.SetLanguage))]
     class SetLanguagePatch
     {
