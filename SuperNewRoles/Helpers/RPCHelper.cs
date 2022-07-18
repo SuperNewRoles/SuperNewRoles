@@ -39,7 +39,7 @@ namespace SuperNewRoles.Helpers
         }
         public static void RpcSetDoorway(byte id, bool Open)
         {
-            ShipStatus.Instance.AllDoors.FirstOrDefault((a) => a.Id == id).RpcSetDoorway(Open);
+            ShipStatus.Instance.AllDoors.FirstOrDefault((a) => a.Id == id).SetDoorway(Open);
         }
         public static void RpcSetDoorway(this PlainDoor door, bool Open)
         {
