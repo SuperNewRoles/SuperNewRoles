@@ -44,7 +44,7 @@ namespace SuperNewRoles.Patches
                     if (horseModeOffSprite == null) horseModeOffSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.HorseModeButtonOff.png", 75f);
                     spriteHorseButton.sprite = horseModeOffSprite;
                 }
-                CredentialsPatch.LogoPatch.updateSprite();
+                CredentialsPatch.LogoPatch.UpdateSprite();
                 // Avoid wrong Player Particles floating around in the background
                 var particles = GameObject.FindObjectOfType<PlayerParticles>();
                 if (particles != null)

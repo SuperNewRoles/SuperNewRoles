@@ -102,7 +102,7 @@ namespace SuperNewRoles.Patch
                         switch (MyRole)
                         {
                             case RoleId.Researcher:
-                                Researcher.ReseUseButtonSetTargetPatch.Postfix(PlayerControl.LocalPlayer);
+                                Researcher.ReseUseButtonSetTargetPatch.Postfix();
                                 break;
                             case RoleId.Pursuer:
                                 Pursuer.PursureUpdate.Postfix();
@@ -168,13 +168,13 @@ namespace SuperNewRoles.Patch
                             case RoleId.Bait:
                                 if (!RoleClass.Bait.Reported)
                                 {
-                                    Bait.BaitUpdate.Postfix(__instance);
+                                    Bait.BaitUpdate.Postfix();
                                 }
                                 break;
                             case RoleId.SideKiller:
                                 if (!RoleClass.SideKiller.IsUpMadKiller)
                                 {
-                                    var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                                    var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
                                     if (sideplayer != null)
                                     {
                                         sideplayer.RPCSetRoleUnchecked(RoleTypes.Impostor);

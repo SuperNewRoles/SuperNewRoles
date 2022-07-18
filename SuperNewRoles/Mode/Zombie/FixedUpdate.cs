@@ -63,7 +63,7 @@ namespace SuperNewRoles.Mode.Zombie
                                 p.RpcSetName("　");
                                 if (p.IsImpostor())
                                 {
-                                    main.SetZombie(p);
+                                    Main.SetZombie(p);
                                 }
                             }
                             byte BlueIndex = 1;
@@ -105,7 +105,7 @@ namespace SuperNewRoles.Mode.Zombie
                 }
                 else
                 {
-                    foreach (int pint in main.ZombiePlayers)
+                    foreach (int pint in Main.ZombiePlayers)
                     {
                         var p1 = ModHelpers.playerById((byte)pint);
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -117,7 +117,7 @@ namespace SuperNewRoles.Mode.Zombie
                                     var DistanceData = Vector2.Distance(p.transform.position, p1.transform.position);
                                     if (DistanceData <= 0.5f)
                                     {
-                                        main.SetZombie(p);
+                                        Main.SetZombie(p);
                                     }
                                 }
                             }

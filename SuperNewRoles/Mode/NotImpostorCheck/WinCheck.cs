@@ -5,7 +5,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
     {
         public static bool CheckEndGame(ShipStatus __instance)
         {
-            var statistics = new PlayerStatistiCs();
+            var statistics = new PlayerStatistics();
             if (CheckAndEndGameForSabotageWin(__instance)
             || CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
             return CheckAndEndGameForCrewmateWin(__instance, statistics)
@@ -94,7 +94,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
             public int TeamImpostorsAlive { get; set; }
             public int CrewAlive { get; set; }
             public int TotalAlive { get; set; }
-            public PlayerStatistiCs()
+            public PlayerStatistics()
             {
                 GetPlayerCounts();
             }

@@ -27,22 +27,22 @@ namespace SuperNewRoles.Mode.Zombie
         }
         public static void IntroHandler(IntroCutscene __instance)
         {
-            __instance.BackgroundBar.material.color = main.Zombiecolor;
+            __instance.BackgroundBar.material.color = Main.Zombiecolor;
             __instance.TeamTitle.text = ModTranslation.GetString("ZombieModeName");
-            __instance.TeamTitle.color = main.Zombiecolor;
+            __instance.TeamTitle.color = Main.Zombiecolor;
             __instance.ImpostorText.text = "";
         }
 
         public static void YouAreHandle(IntroCutscene __instance)
         {
-            Color backcolor = main.Policecolor;
+            Color backcolor = Main.Policecolor;
             string text = ModTranslation.GetString("ZombiePoliceName");
             string desc = ModTranslation.GetString("ZombiePoliceTitle1");
             if (PlayerControl.LocalPlayer.IsZombie())
             {
                 text = ModTranslation.GetString("ZombieZombieName");
                 desc = ModTranslation.GetString("ZombieZombieTitle1");
-                backcolor = main.Zombiecolor;
+                backcolor = Main.Zombiecolor;
             }
             __instance.YouAreText.color = backcolor;
             __instance.RoleText.text = text;

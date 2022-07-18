@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles
                     {
                         if (player.IsRole(RoleId.SideKiller))
                         {
-                            var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                            var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
                             if (sideplayer != null)
                             {
                                 if (!RoleClass.SideKiller.IsUpMadKiller)
@@ -41,7 +41,7 @@ namespace SuperNewRoles.Roles
                         }
                         else if (player.IsRole(RoleId.MadKiller))
                         {
-                            var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                            var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
                             if (sideplayer != null)
                             {
                                 player.RPCSetRoleUnchecked(RoleTypes.Impostor);

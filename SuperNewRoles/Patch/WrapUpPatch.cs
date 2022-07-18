@@ -57,7 +57,7 @@ namespace SuperNewRoles.Patch
                 if (exiled.Object.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
                 if (exiled.Object.IsRole(RoleId.SideKiller))
                 {
-                    var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
+                    var sideplayer = RoleClass.SideKiller.GetSidePlayer(PlayerControl.LocalPlayer);
                     if (sideplayer != null)
                     {
                         if (!RoleClass.SideKiller.IsUpMadKiller)
@@ -73,7 +73,7 @@ namespace SuperNewRoles.Patch
         {
             Kunoichi.WrapUp();
             SerialKiller.WrapUp();
-            Assassin.WrapUp(exiled);
+            Assassin.WrapUp();
             CountChanger.CountChangerPatch.WrapUpPatch();
             CustomButton.MeetingEndedUpdate();
 
@@ -87,7 +87,7 @@ namespace SuperNewRoles.Patch
             RedRidingHood.WrapUp(exiled);
             if (exiled == null) return;
 
-            Seer.ExileControllerWrapUpPatch.WrapUpPostfix(exiled);
+            Seer.ExileControllerWrapUpPatch.WrapUpPostfix();
             Nekomata.NekomataEnd(exiled);
 
             exiled.Object.Exiled();

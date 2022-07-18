@@ -76,7 +76,7 @@ namespace SuperNewRoles.Buttons
             Sheriff.ResetKillCoolDown();
             Clergyman.ResetCoolDown();
             Teleporter.ResetCoolDown();
-            Jackal.resetCoolDown();
+            Jackal.ResetCoolDown();
             //クールダウンリセット
         }
 
@@ -215,7 +215,7 @@ namespace SuperNewRoles.Buttons
                     return PlayerControl.LocalPlayer.CanMove && FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown && RoleClass.Magaziner.MyPlayerCount >= 1;
                 },
                 () => { MagazinerGetButton.Timer = 0f; MagazinerGetButton.MaxTimer = 0f; },
-                RoleClass.Magaziner.getGetButtonSprite(),
+                RoleClass.Magaziner.GetGetButtonSprite(),
                 new Vector3(-2.7f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -243,7 +243,7 @@ namespace SuperNewRoles.Buttons
                     return PlayerControl.LocalPlayer.CanMove && !FastDestroyableSingleton<HudManager>.Instance.KillButton.isCoolingDown;
                 },
                 () => { MagazinerAddButton.Timer = 0f; MagazinerAddButton.MaxTimer = 0f; },
-                RoleClass.Magaziner.getAddButtonSprite(),
+                RoleClass.Magaziner.GetAddButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -417,7 +417,7 @@ namespace SuperNewRoles.Buttons
                 () =>
                 {
                 },
-                RoleClass.Doctor.getVitalsSprite(),
+                RoleClass.Doctor.GetVitalsSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -443,7 +443,7 @@ namespace SuperNewRoles.Buttons
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                         RPCProcedure.CreateSidekick(target.PlayerId, IsFakeSidekick);
                         RoleClass.Jackal.IsCreateSidekick = false;
-                        Jackal.resetCoolDown();
+                        Jackal.ResetCoolDown();
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Jackal && ModeHandler.IsMode(ModeId.Default) && RoleClass.Jackal.IsCreateSidekick; },
@@ -481,7 +481,7 @@ namespace SuperNewRoles.Buttons
                         AmongUsClient.Instance.FinishRpcImmediately(killWriter);
                         RPCProcedure.CreateSidekickSeer(target_JS.PlayerId, IsFakeSidekickSeer);
                         RoleClass.JackalSeer.IsCreateSidekick = false;
-                        JackalSeer.resetCoolDown();
+                        JackalSeer.ResetCoolDown();
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.JackalSeer && ModeHandler.IsMode(ModeId.Default) && RoleClass.JackalSeer.IsCreateSidekick; },
@@ -515,13 +515,13 @@ namespace SuperNewRoles.Buttons
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.Jackal:
-                                Jackal.resetCoolDown();
+                                Jackal.ResetCoolDown();
                                 break;
                             case RoleId.JackalSeer:
-                                JackalSeer.resetCoolDown();
+                                JackalSeer.ResetCoolDown();
                                 break;
                             case RoleId.TeleportingJackal:
-                                TeleportingJackal.resetCoolDown();
+                                TeleportingJackal.ResetCoolDown();
                                 break;
                         }
                     }
@@ -557,7 +557,7 @@ namespace SuperNewRoles.Buttons
                         SelfBomber.SelfBomb();
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && SelfBomber.isSelfBomber(PlayerControl.LocalPlayer); },
+                (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && SelfBomber.IsSelfBomber(PlayerControl.LocalPlayer); },
                 () =>
                 {
                     return PlayerControl.LocalPlayer.CanMove;
@@ -586,7 +586,7 @@ namespace SuperNewRoles.Buttons
                         Doorr.ResetCoolDown();
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && Doorr.isDoorr(PlayerControl.LocalPlayer); },
+                (bool isAlive, RoleId role) => { return isAlive && Doorr.IsDoorr(PlayerControl.LocalPlayer); },
                 () =>
                 {
                     return Doorr.CheckTarget() && PlayerControl.LocalPlayer.CanMove;
@@ -1800,10 +1800,10 @@ namespace SuperNewRoles.Buttons
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.DoubleKiller:
-                                DoubleKiller.resetMainCoolDown();
+                                DoubleKiller.ResetMainCoolDown();
                                 break;
                             case RoleId.Smasher:
-                                Smasher.resetCoolDown();
+                                Smasher.ResetCoolDown();
                                 break;
                         }
                     }
@@ -1839,10 +1839,10 @@ namespace SuperNewRoles.Buttons
                         switch (PlayerControl.LocalPlayer.GetRole())
                         {
                             case RoleId.DoubleKiller:
-                                DoubleKiller.resetSubCoolDown();
+                                DoubleKiller.ResetSubCoolDown();
                                 break;
                             case RoleId.Smasher:
-                                Smasher.resetSmashCoolDown();
+                                Smasher.ResetSmashCoolDown();
                                 break;
                         }
                     }
