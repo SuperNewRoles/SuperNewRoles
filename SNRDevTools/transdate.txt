@@ -826,3 +826,4 @@ NotImpostorExiled,Not taking the Imposter off the road,インポスターを道�
 AllOpenerName,All Opener,オールオープナー
 AllOpenerTitle1,Open All,全て開けろ
 OpenName,Open,開ける
+AllOpenerDescription,Once.\nIn Skeld And Mila、 repair the sabots.\nOpen all the doors in Polus and Airship.\nSHR can use the ability to shape-shift,一度だけ\nスケルド・ミラではサボを修理し、\nエアーシップ、ポーラスでは扉をすべて開けます\nSHRではシェイプシフトで能力を使用できます

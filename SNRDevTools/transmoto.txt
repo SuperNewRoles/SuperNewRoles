@@ -825,3 +825,4 @@ NotImpostorExiled
 AllOpenerName
 AllOpenerTitle1
 OpenName
+AllOpenerDescription

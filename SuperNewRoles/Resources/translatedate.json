@@ -3307,6 +3307,10 @@
  "OpenName" : {
         "0" : "Open" ,
         "11" : "\u958b\u3051\u308b"
+        } ,
+ "AllOpenerDescription" : {
+        "0" : "Once.\\nIn Skeld And Mila\u3001 repair the sabots.\\nOpen all the doors in Polus and Airship.\\nSHR can use the ability to shape-shift" ,
+        "11" : "\u4e00\u5ea6\u3060\u3051\\n\u30b9\u30b1\u30eb\u30c9\u30fb\u30df\u30e9\u3067\u306f\u30b5\u30dc\u3092\u4fee\u7406\u3057\u3001\\n\u30a8\u30a2\u30fc\u30b7\u30c3\u30d7\u3001\u30dd\u30fc\u30e9\u30b9\u3067\u306f\u6249\u3092\u3059\u3079\u3066\u958b\u3051\u307e\u3059\\nSHR\u3067\u306f\u30b7\u30a7\u30a4\u30d7\u30b7\u30d5\u30c8\u3067\u80fd\u529b\u3092\u4f7f\u7528\u3067\u304d\u307e\u3059"
         } 
 
 }
