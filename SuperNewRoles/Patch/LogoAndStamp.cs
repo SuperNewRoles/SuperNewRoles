@@ -171,8 +171,8 @@ namespace SuperNewRoles.Patches
                             }
                         }
 
-                        var Translator = jobj["Translator"];
-                        for (JToken current = Sponsers.First; current != null; current = current.Next)
+                        var Translator = jobj["Translate"];
+                        for (JToken current = Translator.First; current != null; current = current.Next)
                         {
                             if (current.HasValues)
                             {
