@@ -1,6 +1,5 @@
 using HarmonyLib;
 using SuperNewRoles.MapOptions;
-using SuperNewRoles.Roles;
 using UnityEngine;
 using SuperNewRoles.CustomRPC;
 

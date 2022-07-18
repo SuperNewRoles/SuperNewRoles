@@ -1,4 +1,3 @@
-
 namespace SuperNewRoles.Mode.Detective
 {
     class Intro

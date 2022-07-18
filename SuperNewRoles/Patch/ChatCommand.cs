@@ -5,7 +5,6 @@ using InnerNet;
 
 namespace SuperNewRoles.Patch
 {
-    class ChatCommand { }
     [HarmonyPatch]
     public static class DynamicLobbies
     {

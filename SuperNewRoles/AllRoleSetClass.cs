@@ -8,11 +8,9 @@ using SuperNewRoles.Helpers;
 using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Mode.SuperHostRoles;
-using SuperNewRoles.Roles;
 
 namespace SuperNewRoles
 {
-
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
     class RpcSetRoleReplacer
     {
