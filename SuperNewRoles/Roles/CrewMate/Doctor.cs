@@ -12,13 +12,13 @@ namespace SuperNewRoles.Roles
         [Harmony]
         public class VitalsPatch
         {
-            static float vitalsTimer = 0f;
+            //static float vitalsTimer = 0f;
             static TMPro.TextMeshPro TimeRemaining;
             private static readonly List<TMPro.TextMeshPro> hackerTexts = new();
 
             public static void ResetData()
             {
-                vitalsTimer = 0f;
+                //vitalsTimer = 0f;
                 if (TimeRemaining != null)
                 {
                     UnityEngine.Object.Destroy(TimeRemaining);
@@ -37,7 +37,6 @@ namespace SuperNewRoles.Roles
                         {
                             VitalsPanel vitalsPanel = __instance.vitals[k];
                             GameData.PlayerInfo player = GameData.Instance.AllPlayers[k];
-
                             // Hacker update
                             if (vitalsPanel.IsDead)
                             {

@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {

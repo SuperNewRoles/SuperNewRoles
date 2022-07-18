@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 
 namespace SuperNewRoles.Mode.Detective

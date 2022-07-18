@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles
             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.SetSpeedBoost(true, CachedPlayer.LocalPlayer.PlayerId);
-            SpeedBooster.ResetCoolDown();
+            ResetCoolDown();
         }
         public static void ResetSpeed()
         {
@@ -32,17 +32,10 @@ namespace SuperNewRoles.Roles
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             RPCProcedure.SetSpeedBoost(false, CachedPlayer.LocalPlayer.PlayerId);
         }
-        public static void SpeedBoostEnd()
-        {
-            ResetSpeed();
-        }
-        public static bool IsSpeedBooster(PlayerControl Player)
-        {
-            return Player.isRole(RoleId.SpeedBooster);
-        }
+        public static void SpeedBoostEnd() { ResetSpeed(); }
+        public static bool IsSpeedBooster(PlayerControl Player) { return Player.isRole(RoleId.SpeedBooster); }
         public static void EndMeeting()
         {
-
             HudManagerStartPatch.SpeedBoosterBoostButton.MaxTimer = RoleClass.SpeedBooster.CoolTime;
             RoleClass.SpeedBooster.ButtonTimer = DateTime.Now;
             ResetSpeed();
@@ -56,13 +49,9 @@ namespace SuperNewRoles.Roles
                 if (ModeHandler.IsMode(ModeId.Default))
                 {
                     if (__instance.AmOwner && __instance.myPlayer.isRole(RoleId.SpeedBooster) && RoleClass.SpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.SpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
-                    {
                         __instance.body.velocity = __instance.body.velocity * RoleClass.SpeedBooster.Speed;
-                    }
                     else if (__instance.AmOwner && RoleClass.EvilSpeedBooster.IsBoostPlayers.ContainsKey(__instance.myPlayer.PlayerId) && __instance.myPlayer.CanMove && GameData.Instance && RoleClass.EvilSpeedBooster.IsBoostPlayers[__instance.myPlayer.PlayerId])
-                    {
                         __instance.body.velocity = __instance.body.velocity * RoleClass.EvilSpeedBooster.Speed;
-                    }
                 }
             }
         }

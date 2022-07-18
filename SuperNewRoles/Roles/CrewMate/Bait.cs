@@ -1,6 +1,7 @@
 using System.Linq;
 using Hazel;
 using SuperNewRoles.Patch;
+using SuperNewRoles.CustomRPC;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -9,7 +10,7 @@ namespace SuperNewRoles.Roles
     {
         public class BaitUpdate
         {
-            public static void Postfix(PlayerControl __instance)
+            public static void Postfix()
             {
                 SuperNewRolesPlugin.Logger.LogInfo(RoleClass.Bait.ReportTime);
                 RoleClass.Bait.ReportTime -= Time.fixedDeltaTime;

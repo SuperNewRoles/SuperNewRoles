@@ -21,13 +21,13 @@ namespace SuperNewRoles.Roles
             if (!IsFlag) return;
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                MeetingSheriff_Patch.right();
+                MeetingSheriff_Patch.Rights();
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                MeetingSheriff_Patch.left();
+                MeetingSheriff_Patch.Lefts();
             }
-            meetingsheriff_updatepatch.Change(__instance, false);
+            Meetingsheriff_updatepatch.Change();
         }
         public static PassiveButton RightButton;
         public static PassiveButton LeftButton;
@@ -47,33 +47,25 @@ namespace SuperNewRoles.Roles
         }
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
-    class meetingsheriff_updatepatch
+    class Meetingsheriff_updatepatch
     {
         static void Postfix(MeetingHud __instance)
         {
             if (PlayerControl.LocalPlayer.isRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isDead())
             {
-                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
         }
-        public static void Change(MeetingHud __instance, bool right)
+        public static void Change()
         {
-            if (!(meetingsheriff_updatepatch.index < (CachedPlayer.AllPlayers.Count / 15) + 1))
-            {
+            if (!(index < (CachedPlayer.AllPlayers.Count / 15) + 1))
                 MeetingSheriff_Patch.Right.SetActive(false);
-            }
             else
-            {
                 MeetingSheriff_Patch.Right.SetActive(true);
-            }
             if (index <= 1)
-            {
                 MeetingSheriff_Patch.Left.SetActive(false);
-            }
             else
-            {
                 MeetingSheriff_Patch.Left.SetActive(true);
-            }
             int i = 0;
             foreach (PlayerVoteArea area in PlayerVoteAreas)
             {
@@ -102,14 +94,14 @@ namespace SuperNewRoles.Roles
         public static bool IsMeetingSheriffKill(PlayerControl Target)
         {
             var roledata = CountChanger.GetRoleType(Target);
-            if (roledata == TeamRoleType.Impostor) return true;
-            if (Target.isMadRole() && RoleClass.MeetingSheriff.MadRoleKill) return true;
-            if (Target.isFriendRole() && RoleClass.MeetingSheriff.MadRoleKill) return true;
+            if ((roledata == TeamRoleType.Impostor)
+                || (Target.isMadRole() && RoleClass.MeetingSheriff.MadRoleKill)
+                || (Target.isFriendRole() && RoleClass.MeetingSheriff.MadRoleKill)) return true;
             return Target.isNeutral() && RoleClass.MeetingSheriff.NeutralKill ? true : Target.isRole(RoleId.HauntedWolf);
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
         {
-            var Target = ModHelpers.playerById((byte)__instance.playerStates[Index].TargetPlayerId);
+            var Target = ModHelpers.playerById(__instance.playerStates[Index].TargetPlayerId);
             var misfire = !IsMeetingSheriffKill(Target);
             var TargetID = Target.PlayerId;
             var LocalID = CachedPlayer.LocalPlayer.PlayerId;
@@ -124,7 +116,7 @@ namespace SuperNewRoles.Roles
             RoleClass.MeetingSheriff.KillMaxCount--;
             if (RoleClass.MeetingSheriff.KillMaxCount <= 0 || !RoleClass.MeetingSheriff.OneMeetingMultiKill || misfire)
             {
-                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
+                __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
             }
 
         }
@@ -135,11 +127,11 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-                    var player = ModHelpers.playerById((byte)__instance.playerStates[i].TargetPlayerId);
+                    var player = ModHelpers.playerById(__instance.playerStates[i].TargetPlayerId);
                     if (player.isAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
-                        GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+                        GameObject targetBox = Object.Instantiate(template, playerVoteArea.transform);
                         targetBox.name = "ShootButton";
                         targetBox.transform.localPosition = new Vector3(1f, 0.03f, -1f);
                         SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
@@ -157,9 +149,9 @@ namespace SuperNewRoles.Roles
         {
             LadderDead.Reset();
             RoleClass.IsMeeting = true;
-            if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles))
             {
-                Mode.SuperHostRoles.MorePatch.StartMeeting(__instance);
+                Mode.SuperHostRoles.MorePatch.StartMeeting();
             }
 
             MeetingUpdatePatch.IsFlag = false;
@@ -167,13 +159,13 @@ namespace SuperNewRoles.Roles
             if (!ModeHandler.IsMode(ModeId.SuperHostRoles) && PlayerControl.AllPlayerControls.Count > 15)
             {
                 MeetingUpdatePatch.IsFlag = true;
-                meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();
+                Meetingsheriff_updatepatch.PlayerVoteAreas = new List<PlayerVoteArea>();
                 List<PlayerVoteArea> deadareas = new();
                 foreach (PlayerVoteArea area in __instance.playerStates)
                 {
                     if (ModHelpers.playerById(area.TargetPlayerId).isAlive())
                     {
-                        meetingsheriff_updatepatch.PlayerVoteAreas.Add(area);
+                        Meetingsheriff_updatepatch.PlayerVoteAreas.Add(area);
                     }
                     else
                     {
@@ -182,9 +174,9 @@ namespace SuperNewRoles.Roles
                 }
                 foreach (PlayerVoteArea area in deadareas)
                 {
-                    meetingsheriff_updatepatch.PlayerVoteAreas.Add(area);
+                    Meetingsheriff_updatepatch.PlayerVoteAreas.Add(area);
                 }
-                meetingsheriff_updatepatch.index = 1;
+                Meetingsheriff_updatepatch.index = 1;
                 CreateAreaButton(__instance);
             }
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && BotManager.AllBots.Count > 0)
@@ -196,18 +188,12 @@ namespace SuperNewRoles.Roles
                     if (ModHelpers.playerById(area.TargetPlayerId).IsPlayer())
                     {
                         if (ModHelpers.playerById(area.TargetPlayerId).isAlive())
-                        {
                             newareas.Add(area);
-                        }
                         else
-                        {
                             deadareas.Add(area);
-                        }
                     }
                     else
-                    {
                         area.gameObject.SetActive(false);
-                    }
                 }
                 foreach (PlayerVoteArea area in deadareas)
                 {
@@ -216,7 +202,7 @@ namespace SuperNewRoles.Roles
                 int i = 0;
                 foreach (PlayerVoteArea area in newareas)
                 {
-                    area.transform.localPosition = meetingsheriff_updatepatch.Positions[i];
+                    area.transform.localPosition = Meetingsheriff_updatepatch.Positions[i];
                     i++;
                 }
                 __instance.playerStates = newareas.ToArray();
@@ -229,7 +215,7 @@ namespace SuperNewRoles.Roles
         static void CreateAreaButton(MeetingHud __instance)
         {
             GameObject template = __instance.transform.FindChild("ButtonStuff").FindChild("button_skipVoting").gameObject;
-            GameObject targetBox = UnityEngine.Object.Instantiate(template, __instance.transform);
+            GameObject targetBox = Object.Instantiate(template, __instance.transform);
             targetBox.name = "RightButton";
             targetBox.gameObject.SetActive(true);
             targetBox.transform.localPosition = new Vector3(4.8f, 0f, -3f);
@@ -242,7 +228,7 @@ namespace SuperNewRoles.Roles
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
             button.Colliders = new List<Collider2D>() { targetBox.AddComponent<PolygonCollider2D>() }.ToArray();
             button.OnClick.RemoveAllListeners();
-            button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => right()));
+            button.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => Rights()));
             button.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => renderer.color = Color.green));
             button.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => renderer.color = Color.white));
 
@@ -259,22 +245,22 @@ namespace SuperNewRoles.Roles
             PassiveButton buttonl = targetBoxl.GetComponent<PassiveButton>();
             buttonl.Colliders = new List<Collider2D>() { targetBoxl.AddComponent<PolygonCollider2D>() }.ToArray();
             buttonl.OnClick.RemoveAllListeners();
-            buttonl.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => left()));
+            buttonl.OnClick.AddListener((UnityEngine.Events.UnityAction)(() => Lefts()));
             buttonl.OnMouseOver.AddListener((UnityEngine.Events.UnityAction)(() => rendererl.color = Color.green));
             buttonl.OnMouseOut.AddListener((UnityEngine.Events.UnityAction)(() => rendererl.color = Color.white));
         }
-        public static void right()
+        public static void Rights()
         {
-            if (meetingsheriff_updatepatch.index < (CachedPlayer.AllPlayers.Count / 15) + 1)
+            if (Meetingsheriff_updatepatch.index < (CachedPlayer.AllPlayers.Count / 15) + 1)
             {
-                meetingsheriff_updatepatch.index++;
+                Meetingsheriff_updatepatch.index++;
             }
         }
-        public static void left()
+        public static void Lefts()
         {
-            if (meetingsheriff_updatepatch.index > 1)
+            if (Meetingsheriff_updatepatch.index > 1)
             {
-                meetingsheriff_updatepatch.index--;
+                Meetingsheriff_updatepatch.index--;
             }
         }
     }

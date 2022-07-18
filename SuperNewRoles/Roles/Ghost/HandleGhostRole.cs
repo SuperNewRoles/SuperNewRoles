@@ -12,7 +12,7 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.TryAssignRoleOnDeath))]
         class AssignRole
         {
-            public static bool Prefix(RoleManager __instance, [HarmonyArgument(0)] PlayerControl player)
+            public static bool Prefix([HarmonyArgument(0)] PlayerControl player)
             {
                 if (!(ModeHandler.IsMode(ModeId.Default) || ModeHandler.IsMode(ModeId.SuperHostRoles))) return true;
                 //生存者と割り当て済みの人は弾く
@@ -38,23 +38,17 @@ namespace SuperNewRoles.Roles
             {
                 case TeamRoleType.Impostor:
                     if (AllRoleSetClass.ImpostorGhostRolePlayerNum <= 0)
-                    {
                         return false;
-                    }
                     AllRoleSetClass.ImpostorGhostRolePlayerNum--;
                     break;
                 case TeamRoleType.Neutral:
                     if (AllRoleSetClass.NeutralGhostRolePlayerNum <= 0)
-                    {
                         return false;
-                    }
                     AllRoleSetClass.NeutralGhostRolePlayerNum--;
                     break;
                 case TeamRoleType.Crewmate:
                     if (AllRoleSetClass.CrewMateGhostRolePlayerNum <= 0)
-                    {
                         return false;
-                    }
                     AllRoleSetClass.CrewMateGhostRolePlayerNum--;
                     break;
 

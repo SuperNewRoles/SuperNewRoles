@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(GameData), nameof(GameData.HandleDisconnect), new Type[] { typeof(PlayerControl), typeof(DisconnectReasons) })]
         class HandleDisconnectPatch
         {
-            public static void Postfix(GameData __instance, PlayerControl player, DisconnectReasons reason)
+            public static void Postfix(PlayerControl player)
             {
                 if (AmongUsClient.Instance.GameState == InnerNet.InnerNetClient.GameStates.Started)
                 {

@@ -10,15 +10,11 @@ namespace SuperNewRoles.Roles
         private static TMPro.TextMeshPro breadText;
         public static bool Prefix(
             ExileController __instance,
-            [HarmonyArgument(0)] GameData.PlayerInfo exiled,
-            [HarmonyArgument(1)] bool tie)
+            [HarmonyArgument(0)] GameData.PlayerInfo exiled)
         {
             if (RoleClass.Assassin.TriggerPlayer == null) { return true; }
 
-            if (__instance.specialInputHandler != null)
-            {
-                __instance.specialInputHandler.disableVirtualCursor = true;
-            }
+            if (__instance.specialInputHandler != null) __instance.specialInputHandler.disableVirtualCursor = true;
             ExileController.Instance = __instance;
             ControllerManager.Instance.CloseAndResetAll();
 
@@ -80,14 +76,8 @@ namespace SuperNewRoles.Roles
             if (isBakeryAlive)                                                                      //if文(Bakeryが生きていたら実行)
             {
                 SuperNewRolesPlugin.Logger.LogInfo("パン屋がパンを焼きました");                     //ログ
-                if (PlayerControl.GameOptions.ConfirmImpostor)
-                {
-                    breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.4f, 0f);    //位置がエ
-                }
-                else
-                {
-                    breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.2f, 0f);
-                }
+                if (PlayerControl.GameOptions.ConfirmImpostor) breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.4f, 0f);    //位置がエ
+                else breadText.transform.localPosition += new UnityEngine.Vector3(0f, -0.2f, 0f);
                 breadText.gameObject.SetActive(true);                                               //文字の表示
             }
         }
@@ -96,7 +86,7 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(ExileController), nameof(ExileController.ReEnableGameplay))]
         public class BakeryChatDisable
         {
-            static void Postfix(ExileController __instance)
+            static void Postfix()
             {
                 breadText.gameObject.SetActive(false);
             }

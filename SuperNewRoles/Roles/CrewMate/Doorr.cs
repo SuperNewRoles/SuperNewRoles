@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.DoorrDoorButton.MaxTimer = CachedPlayer.LocalPlayer.Data.Role.IsImpostor ? RoleClass.EvilDoorr.CoolTime : RoleClass.Doorr.CoolTime;
             RoleClass.Doorr.ButtonTimer = DateTime.Now;
         }
-        public static bool isDoorr(PlayerControl Player)
+        public static bool IsDoorr(PlayerControl Player)
         {
             return Player.isRole(RoleId.Doorr) || Player.isRole(RoleId.EvilDoorr);
         }
