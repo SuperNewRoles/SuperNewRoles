@@ -22,9 +22,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (!p.Data.Disconnected && p.PlayerId != 0)
                     {
-                        IntroDate RoleIntroDate = IntroDate.GetIntroDate(p.getRole(), p);
+                        IntroDate RoleIntroDate = IntroDate.GetIntroDate(p.GetRole(), p);
                         string Chat = "";
-                        if (p.isDead())
+                        if (p.IsDead())
                         {
                             Chat = "\n";
                         }
@@ -68,7 +68,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         Time += 3;
                     }
                 }
-                IntroDate RoleIntroDate2 = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole(), PlayerControl.LocalPlayer);
+                IntroDate RoleIntroDate2 = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole(), PlayerControl.LocalPlayer);
                 string Chat2 = "";
                 string RoleName2 = ModTranslation.getString(RoleIntroDate2.NameKey + "Name");
                 Chat2 = Chat2 + "あなたの役職は「" + RoleName2 + "」です！\n";

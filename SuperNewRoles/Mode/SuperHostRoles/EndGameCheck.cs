@@ -42,7 +42,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             List<PlayerControl> WinGods = null;
             foreach (PlayerControl p in RoleClass.God.GodPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
                     if (!RoleClass.God.IsTaskEndWin || complate >= all)
@@ -78,7 +78,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
                 {
-                    if (p.isDead())
+                    if (p.IsDead())
                     {
                         p.RpcSetRole(RoleTypes.GuardianAngel);
                     }
@@ -88,7 +88,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.isRole(RoleId.Jackal))
+                    if (!p.IsRole(RoleId.Jackal))
                     {
                         p.RpcSetRole(RoleTypes.GuardianAngel);
                     }
@@ -166,13 +166,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (!allPlayer.Disconnected && allPlayer.Object.IsPlayer())
                 {
                     //インポスター判定ならnum3にカウント
-                    if (allPlayer.Object.isImpostor() || allPlayer.Object.isRole(RoleId.Egoist))
+                    if (allPlayer.Object.IsImpostor() || allPlayer.Object.IsRole(RoleId.Egoist))
                         ++num3;
                     //生存しているかつ
                     if (!allPlayer.IsDead)
                     {
                         //インポスターならnum2に追加
-                        if (allPlayer.Object.isImpostor() || allPlayer.Object.isRole(RoleId.Egoist))
+                        if (allPlayer.Object.IsImpostor() || allPlayer.Object.IsRole(RoleId.Egoist))
                             ++num2;
                         //違うならnum1に追加
                         else
@@ -198,10 +198,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     int egoistplayer = 0;
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.isAlive())
+                        if (p.IsAlive())
                         {
-                            if (p.isImpostor()) impostorplayer++;
-                            else if (p.isRole(RoleId.Egoist)) egoistplayer++;
+                            if (p.IsImpostor()) impostorplayer++;
+                            else if (p.IsRole(RoleId.Egoist)) egoistplayer++;
                         }
                     }
                     if (impostorplayer <= 0 && egoistplayer >= 1)
@@ -250,7 +250,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (!p.Data.Disconnected)
                 {
-                    if (p.isAlive() || !RoleClass.Workperson.IsAliveWin)
+                    if (p.IsAlive() || !RoleClass.Workperson.IsAliveWin)
                     {
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)

@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
     {
         public static void WrapUp(GameData.PlayerInfo player)
         {
-            if (PlayerControl.LocalPlayer.isDead() && PlayerControl.LocalPlayer.isRole(RoleId.NiceRedRidingHood))
+            if (PlayerControl.LocalPlayer.IsDead() && PlayerControl.LocalPlayer.IsRole(RoleId.NiceRedRidingHood))
             {
                 Logger.Info("い:" + RoleClass.NiceRedRidingHood.Count);
                 if (RoleClass.NiceRedRidingHood.Count >= 1)
@@ -18,9 +18,9 @@ namespace SuperNewRoles.Roles
                     if (deadPlayer.killerIfExisting == null) return;
                     var killer = PlayerControl.AllPlayerControls.ToArray().ToList().FirstOrDefault((PlayerControl a) => a.PlayerId == deadPlayer.killerIfExistingId);
 
-                    Logger.Info($"え:{killer.isDead()} || {killer.PlayerId == player.Object.PlayerId}");
+                    Logger.Info($"え:{killer.IsDead()} || {killer.PlayerId == player.Object.PlayerId}");
 
-                    if (killer != null && (killer.isDead() || killer.PlayerId == player.Object.PlayerId))
+                    if (killer != null && (killer.IsDead() || killer.PlayerId == player.Object.PlayerId))
                     {
                         Logger.Info($"お:{!EvilEraser.IsBlock(EvilEraser.BlockTypes.RedRidingHoodRevive, killer)}");
                         if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.RedRidingHoodRevive, killer))

@@ -18,7 +18,7 @@ namespace SuperNewRoles.Roles
         }
         public static void ResetCoolDown()
         {
-            float CoolTime = PlayerControl.LocalPlayer.isImpostor() ? RoleClass.EvilScientist.CoolTime : RoleClass.NiceScientist.CoolTime;
+            float CoolTime = PlayerControl.LocalPlayer.IsImpostor() ? RoleClass.EvilScientist.CoolTime : RoleClass.NiceScientist.CoolTime;
             HudManagerStartPatch.ScientistButton.MaxTimer = CoolTime;
             RoleClass.NiceScientist.ButtonTimer = DateTime.Now;
         }
@@ -82,14 +82,14 @@ namespace SuperNewRoles.Roles
             {
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 if (!ModeHandler.IsMode(ModeId.Default)) return;
-                if (__instance.myPlayer.isRole(RoleId.EvilScientist) || __instance.myPlayer.isRole(RoleId.NiceScientist))
+                if (__instance.myPlayer.IsRole(RoleId.EvilScientist) || __instance.myPlayer.IsRole(RoleId.NiceScientist))
                 {
                     var Scientist = __instance.myPlayer;
-                    if (Scientist == null || Scientist.isDead()) return;
+                    if (Scientist == null || Scientist.IsDead()) return;
                     var ison = RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(__instance.myPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[__instance.myPlayer.PlayerId];
                     bool canSee =
-                        (__instance.myPlayer.isImpostor() && PlayerControl.LocalPlayer.isImpostor()) ||
-                        PlayerControl.LocalPlayer.isDead() || !ison;
+                        (__instance.myPlayer.IsImpostor() && PlayerControl.LocalPlayer.IsImpostor()) ||
+                        PlayerControl.LocalPlayer.IsDead() || !ison;
 
                     var opacity = canSee ? 0.1f : 0.0f;
                     if (ison)

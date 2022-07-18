@@ -48,7 +48,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             public void Prefix()
             {
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.isRole(RoleId.Sheriff)) { }
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles) && PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff)) { }
             }
         }*/
         //public static Dictionary<byte, float> UpdateTime;
@@ -85,7 +85,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (p.PlayerId != 0 && p.PlayerId != player.PlayerId && p.IsPlayer())
                 {
-                    if (p.isDead() || p.isRole(RoleId.God))
+                    if (p.IsDead() || p.IsRole(RoleId.God))
                     {
                         DiePlayers.Add(p);
                     }
@@ -107,12 +107,12 @@ namespace SuperNewRoles.Mode.SuperHostRoles
 
             if (Madmate.CheckImpostor(player) ||
                 MadMayor.CheckImpostor(player) ||
-                player.isRole(RoleId.Marine) ||
+                player.IsRole(RoleId.Marine) ||
                 BlackCat.CheckImpostor(player))
             {
                 foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
                 {
-                    if (Impostor.isImpostor() && Impostor.IsPlayer())
+                    if (Impostor.IsImpostor() && Impostor.IsPlayer())
                     {
                         if (!ChangePlayers.ContainsKey(Impostor.PlayerId))
                         {
@@ -132,13 +132,13 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-            else if (player.isRole(RoleId.Demon))
+            else if (player.IsRole(RoleId.Demon))
             {
                 if (RoleClass.Demon.IsCheckImpostor)
                 {
                     foreach (PlayerControl Impostor in CachedPlayer.AllPlayers)
                     {
-                        if (Impostor.isImpostor() && Impostor.IsPlayer())
+                        if (Impostor.IsImpostor() && Impostor.IsPlayer())
                         {
                             if (!ChangePlayers.ContainsKey(Impostor.PlayerId)) ChangePlayers.Add(Impostor.PlayerId, ModHelpers.cs(RoleClass.ImpostorRed, Impostor.GetDefaultName()));
                             else ChangePlayers[Impostor.PlayerId] = ModHelpers.cs(RoleClass.ImpostorRed, ChangePlayers[Impostor.PlayerId]);
@@ -154,7 +154,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     }
                 }
             }
-            else if (player.isRole(RoleId.Arsonist))
+            else if (player.IsRole(RoleId.Arsonist))
             {
                 foreach (PlayerControl DousePlayer in Arsonist.GetIconPlayers(player))
                 {
@@ -185,21 +185,21 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 MySuffix += suffix;
             }
 
-            if (player.isRole(RoleId.Sheriff))
+            if (player.IsRole(RoleId.Sheriff))
             {
                 if (RoleClass.Sheriff.KillCount.ContainsKey(player.PlayerId))
                 {
                     MySuffix += "(残り" + RoleClass.Sheriff.KillCount[player.PlayerId] + "発)";
                 }
             }
-            else if (player.isRole(RoleId.RemoteSheriff))
+            else if (player.IsRole(RoleId.RemoteSheriff))
             {
                 if (RoleClass.RemoteSheriff.KillCount.ContainsKey(player.PlayerId))
                 {
                     MySuffix += "(残り" + RoleClass.RemoteSheriff.KillCount[player.PlayerId] + "発)";
                 }
             }
-            else if (player.isRole(RoleId.Mafia))
+            else if (player.IsRole(RoleId.Mafia))
             {
                 if (Mafia.IsKillFlag())
                 {
@@ -207,9 +207,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
             }
 
-            var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(player.getRole(), player);
+            var introdate = SuperNewRoles.Intro.IntroDate.GetIntroDate(player.GetRole(), player);
             string TaskText = "";
-            if (!player.isClearTask())
+            if (!player.IsClearTask())
             {
                 try
                 {
@@ -224,7 +224,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             bool IsDemonVIew = false;
             bool IsArsonistVIew = false;
-            if ((player.isDead() || player.isRole(RoleId.God)) && !IsUnchecked)
+            if ((player.IsDead() || player.IsRole(RoleId.God)) && !IsUnchecked)
             {
                 if (Demon.IsViewIcon(player))
                 {
@@ -238,9 +238,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 }
                 NewName = "(<size=75%>" + ModHelpers.cs(introdate.color, introdate.Name) + TaskText + "</size>)" + ModHelpers.cs(introdate.color, Name + MySuffix);
             }
-            else if (player.isAlive() || IsUnchecked)
+            else if (player.IsAlive() || IsUnchecked)
             {
-                if (player.isDead() || player.isRole(RoleId.God))
+                if (player.IsDead() || player.IsRole(RoleId.God))
                 {
                     if (Demon.IsViewIcon(player))
                     {
@@ -259,7 +259,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (!player.IsMod())
             {
                 player.RpcSetNamePrivate(NewName);
-                if (player.isAlive())
+                if (player.IsAlive())
                 {
                     foreach (var ChangePlayerData in ChangePlayers)
                     {
@@ -297,7 +297,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void Update()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Sheriff))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff))
             {
                 if (RoleClass.Sheriff.KillMaxCount >= 1)
                 {
@@ -316,7 +316,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(null);
                 }
             }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.Jackal, RoleId.MadMaker, RoleId.Egoist, RoleId.RemoteSheriff,
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal, RoleId.MadMaker, RoleId.Egoist, RoleId.RemoteSheriff,
                 RoleId.Demon, RoleId.Arsonist)
                 )
             {

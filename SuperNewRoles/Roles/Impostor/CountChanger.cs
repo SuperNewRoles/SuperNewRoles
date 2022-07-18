@@ -44,12 +44,12 @@ namespace SuperNewRoles.Roles
             if (getroledata == TeamRoleType.Crewmate)
             {
                 if ((RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId)
-                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.MadMate))
+                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.MadMate))
                     || (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId)
-                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.MadMate)))
+                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadMate)))
                     return true;
                 else
-                    return p.isRole(RoleId.MadMate);
+                    return p.IsRole(RoleId.MadMate);
             }
             return false;
         }
@@ -59,12 +59,12 @@ namespace SuperNewRoles.Roles
             if (getroledata == TeamRoleType.Crewmate)
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId)
-                    && (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.MadMayor)
+                    && (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.MadMayor)
                     || (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId)
-                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.MadMayor))))
+                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadMayor))))
                     return true;
                 else
-                    return p.isRole(RoleId.MadMayor);
+                    return p.IsRole(RoleId.MadMayor);
             }
             return false;
         }
@@ -75,15 +75,15 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.MadStuntMan)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.MadStuntMan)) return true;
                 }
                 else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.MadStuntMan)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadStuntMan)) return true;
                 }
                 else
                 {
-                    return p.isRole(RoleId.MadStuntMan);
+                    return p.IsRole(RoleId.MadStuntMan);
                 }
             }
             return false;
@@ -95,15 +95,15 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.MadJester)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.MadJester)) return true;
                 }
                 else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.MadJester)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadJester)) return true;
                 }
                 else
                 {
-                    return p.isRole(RoleId.MadJester);
+                    return p.IsRole(RoleId.MadJester);
                 }
             }
             return false;
@@ -115,15 +115,15 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.MadHawk)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.MadHawk)) return true;
                 }
                 else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.MadHawk)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadHawk)) return true;
                 }
                 else
                 {
-                    return p.isRole(RoleId.MadHawk);
+                    return p.IsRole(RoleId.MadHawk);
                 }
             }
             return false;
@@ -135,15 +135,15 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.MadSeer)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.MadSeer)) return true;
                 }
                 else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.MadSeer)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadSeer)) return true;
                 }
                 else
                 {
-                    return p.isRole(RoleId.MadSeer);
+                    return p.IsRole(RoleId.MadSeer);
                 }
             }
             return false;
@@ -155,15 +155,15 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.MadMaker)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.MadMaker)) return true;
                 }
                 else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.MadMaker)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadMaker)) return true;
                 }
                 else
                 {
-                    return p.isRole(RoleId.MadMaker);
+                    return p.IsRole(RoleId.MadMaker);
                 }
             }
             return false;
@@ -175,15 +175,15 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.BlackCat)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.BlackCat)) return true;
                 }
                 else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.BlackCat)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.BlackCat)) return true;
                 }
                 else
                 {
-                    return p.isRole(RoleId.BlackCat);
+                    return p.IsRole(RoleId.BlackCat);
                 }
             }
             return false;
@@ -195,15 +195,15 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.Jackal)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.Jackal)) return true;
                 }
                 else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.Jackal)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.Jackal)) return true;
                 }
                 else
                 {
-                    return p.isRole(RoleId.Jackal);
+                    return p.IsRole(RoleId.Jackal);
                 }
             }
             return false;
@@ -215,15 +215,15 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.Jackal)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.Jackal)) return true;
                 }
                 else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.Jackal)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.Jackal)) return true;
                 }
                 else
                 {
-                    return p.isRole(RoleId.Sidekick);
+                    return p.IsRole(RoleId.Sidekick);
                 }
             }
             return false;
@@ -235,15 +235,15 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.JackalFriends)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.JackalFriends)) return true;
                 }
                 else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.JackalFriends)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.JackalFriends)) return true;
                 }
                 else
                 {
-                    return p.isRole(RoleId.JackalFriends);
+                    return p.IsRole(RoleId.JackalFriends);
                 }
             }
             return false;
@@ -255,15 +255,15 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.SeerFriends)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.SeerFriends)) return true;
                 }
                 else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.SeerFriends)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.SeerFriends)) return true;
                 }
                 else
                 {
-                    return p.isRole(RoleId.SeerFriends);
+                    return p.IsRole(RoleId.SeerFriends);
                 }
             }
             return false;
@@ -275,15 +275,15 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.Jackal)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.Jackal)) return true;
                 }
                 else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.Jackal)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.Jackal)) return true;
                 }
                 else
                 {
-                    return p.isRole(RoleId.JackalSeer);
+                    return p.IsRole(RoleId.JackalSeer);
                 }
             }
             return false;
@@ -295,15 +295,15 @@ namespace SuperNewRoles.Roles
             {
                 if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).isRole(RoleId.Jackal)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.Jackal)) return true;
                 }
                 else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
                 {
-                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).isRole(RoleId.Jackal)) return true;
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.Jackal)) return true;
                 }
                 else
                 {
-                    return p.isRole(RoleId.SidekickSeer);
+                    return p.IsRole(RoleId.SidekickSeer);
                 }
             }
             return false;
@@ -321,15 +321,15 @@ namespace SuperNewRoles.Roles
         }
         public static TeamRoleType Get(PlayerControl player)
         {
-            if (player.isImpostor())
+            if (player.IsImpostor())
             {
                 return TeamRoleType.Impostor;
             }
-            else if (player.isCrew())
+            else if (player.IsCrew())
             {
                 return TeamRoleType.Crewmate;
             }
-            else if (player.isNeutral())
+            else if (player.IsNeutral())
             {
                 return TeamRoleType.Neutral;
             }

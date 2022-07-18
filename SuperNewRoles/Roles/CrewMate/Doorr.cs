@@ -15,7 +15,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsDoorr(PlayerControl Player)
         {
-            return Player.isRole(RoleId.Doorr) || Player.isRole(RoleId.EvilDoorr);
+            return Player.IsRole(RoleId.Doorr) || Player.IsRole(RoleId.EvilDoorr);
         }
         public static bool CheckTarget()
         {

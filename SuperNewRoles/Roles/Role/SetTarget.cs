@@ -8,7 +8,7 @@ namespace SuperNewRoles.Roles
     {
         public static void ImpostorSetTarget()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Kunoichi))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Kunoichi))
             {
                 FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(PlayerControl.LocalPlayer);
                 return;

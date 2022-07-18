@@ -93,7 +93,7 @@ namespace SuperNewRoles.Patch
             for (int i = 0; i < __instance.AllPlayers.Count; i++)
             {
                 GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
-                if (!RoleHelpers.isClearTask(playerInfo.Object) && playerInfo.Object.IsPlayer())
+                if (!RoleHelpers.IsClearTask(playerInfo.Object) && playerInfo.Object.IsPlayer())
                 {
                     var (playerCompleted, playerTotal) = TaskDate(playerInfo);
                     __instance.TotalTasks += playerTotal;

@@ -11,7 +11,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.isAlive() && p.PlayerId != LocalId)
+                    if (p.IsAlive() && p.PlayerId != LocalId)
                     {
                         p.nameText().color = Color.white;
                     }

@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsClergyman(PlayerControl Player)
         {
-            return Player.isRole(RoleId.Clergyman);
+            return Player.IsRole(RoleId.Clergyman);
         }
         public static void LightOutStart()
         {
@@ -37,7 +37,7 @@ namespace SuperNewRoles.Roles
                 || CountChanger.IsChangeSidekick(PlayerControl.LocalPlayer)
                 || CountChanger.IsChangeJackalFriends(PlayerControl.LocalPlayer)
                 || CountChanger.IsChangeSeerFriends(PlayerControl.LocalPlayer)
-                || CountChanger.IsChangeJackalSeer(PlayerControl.LocalPlayer))return true;
+                || CountChanger.IsChangeJackalSeer(PlayerControl.LocalPlayer)) return true;
             return CountChanger.IsChangeSidekickSeer(PlayerControl.LocalPlayer) ? true : CountChanger.IsChangeBlackCat(PlayerControl.LocalPlayer);
         }
         public static bool IsLightOutVisionNoTime()

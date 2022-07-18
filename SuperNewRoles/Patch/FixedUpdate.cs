@@ -84,7 +84,7 @@ namespace SuperNewRoles.Patch
             }
             if (AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Started)
             {
-                var MyRole = PlayerControl.LocalPlayer.getRole();
+                var MyRole = PlayerControl.LocalPlayer.GetRole();
                 SetBasePlayerOutlines();
                 VentAndSabo.VentButtonVisibilityPatch.Postfix(__instance);
                 if (CustomOptions.LadderDead.GetBool())
@@ -96,9 +96,9 @@ namespace SuperNewRoles.Patch
                     SetNameUpdate.Postfix(__instance);
                     Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
                     JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
-                    if (PlayerControl.LocalPlayer.isAlive())
+                    if (PlayerControl.LocalPlayer.IsAlive())
                     {
-                        if (PlayerControl.LocalPlayer.isImpostor()) { SetTarget.ImpostorSetTarget(); }
+                        if (PlayerControl.LocalPlayer.IsImpostor()) { SetTarget.ImpostorSetTarget(); }
                         switch (MyRole)
                         {
                             case RoleId.Researcher:

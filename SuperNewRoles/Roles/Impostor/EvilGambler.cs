@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
             {
-                if (__instance.isRole(RoleId.EvilGambler))
+                if (__instance.IsRole(RoleId.EvilGambler))
                 {
                     if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {

@@ -12,9 +12,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static void Postfix(PlayerControl __instance, PlayerControl target)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (target.isAlive()) return;
+            if (target.IsAlive()) return;
             FixedUpdate.SetRoleNames();
-            if (target.isRole(RoleId.Sheriff) || target.isRole(RoleId.truelover) || target.isRole(RoleId.MadMaker))
+            if (target.IsRole(RoleId.Sheriff) || target.IsRole(RoleId.truelover) || target.IsRole(RoleId.MadMaker))
             {
                 target.RpcSetRoleDesync(RoleTypes.GuardianAngel);
             }
@@ -23,7 +23,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (AmongUsClient.Instance.AmHost)
                 {
                     var Side = RoleHelpers.GetOneSideQuarreled(target);
-                    if (Side.isDead())
+                    if (Side.IsDead())
                     {
                         new LateTask(() =>
                         {
@@ -54,7 +54,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (RoleClass.Lovers.SameDie && target.IsLovers())
             {
                 PlayerControl Side = target.GetOneSideLovers();
-                if (Side.isAlive())
+                if (Side.IsAlive())
                 {
                     Side.RpcMurderPlayer(Side);
                 }

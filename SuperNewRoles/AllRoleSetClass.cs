@@ -64,14 +64,14 @@ namespace SuperNewRoles
     {
         public static bool IsNotPrefix = false;
         public static bool IsRPCSetRoleOK = false;
-        public static bool IsSetRoleRpc = false;
+        public static bool IsSetRoleRPC = false;
         public static bool IsShapeSet = false;
         public static bool IsNotDesync = false;
         public static bool Prefix()
         {
             AllRoleSetClass.SetPlayerNum();
             IsNotPrefix = false;
-            IsSetRoleRpc = false;
+            IsSetRoleRPC = false;
             IsRPCSetRoleOK = true;
             IsShapeSet = false;
             IsNotDesync = true;
@@ -116,7 +116,7 @@ namespace SuperNewRoles
                 }
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
-                    if (!player.Data.Disconnected && !player.isImpostor())
+                    if (!player.Data.Disconnected && !player.IsImpostor())
                     {
                         sender.RpcSetRole(player, RoleTypes.Crewmate);
                     }
@@ -166,7 +166,7 @@ namespace SuperNewRoles
         }
         public static void Postfix()
         {
-            IsSetRoleRpc = true;
+            IsSetRoleRPC = true;
             IsRPCSetRoleOK = false;
             IsNotPrefix = true;
             if (ModeHandler.IsMode(ModeId.Default))
@@ -294,7 +294,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.isImpostor() && !p.isNeutral() && p.IsPlayer())
+                    if (!p.IsImpostor() && !p.IsNeutral() && p.IsPlayer())
                     {
                         SelectPlayers.Add(p);
                     }
@@ -354,7 +354,7 @@ namespace SuperNewRoles
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.isImpostor() && !p.isNeutral() && !p.isRole(RoleId.truelover) && p.IsPlayer())
+                    if (!p.IsImpostor() && !p.IsNeutral() && !p.IsRole(RoleId.truelover) && p.IsPlayer())
                     {
                         if (!IsQuarreledDup || !p.IsQuarreled())
                         {
@@ -369,7 +369,7 @@ namespace SuperNewRoles
                 {
                     if (!IsQuarreledDup || (!p.IsQuarreled() && p.IsPlayer()))
                     {
-                        if (!p.isRole(RoleId.truelover))
+                        if (!p.IsRole(RoleId.truelover))
                         {
                             SelectPlayers.Add(p);
                         }
@@ -449,7 +449,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= ImpostorPlayerNum; i++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             ImpostorPlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
@@ -460,7 +460,7 @@ namespace SuperNewRoles
                         foreach (PlayerControl Player in ImpostorPlayers)
                         {
                             ImpostorPlayerNum--;
-                            Player.setRoleRPC(SelectRoleDate);
+                            Player.SetRoleRPC(SelectRoleDate);
                         }
                         IsNotEndRandomSelect = false;
                     }
@@ -470,7 +470,7 @@ namespace SuperNewRoles
                         {
                             ImpostorPlayerNum--;
                             PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             ImpostorPlayers.Remove(p);
                         }
                     }
@@ -486,7 +486,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= ImpostorPlayerNum; i++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             ImpostorPlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
@@ -496,7 +496,7 @@ namespace SuperNewRoles
                     {
                         foreach (PlayerControl Player in ImpostorPlayers)
                         {
-                            Player.setRoleRPC(SelectRoleDate);
+                            Player.SetRoleRPC(SelectRoleDate);
                         }
                         IsNotEndRandomSelect = false;
                     }
@@ -506,7 +506,7 @@ namespace SuperNewRoles
                         {
                             ImpostorPlayerNum--;
                             PlayerControl p = ModHelpers.GetRandom(ImpostorPlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             ImpostorPlayers.Remove(p);
                         }
                     }
@@ -533,7 +533,7 @@ namespace SuperNewRoles
                     for (int i = 1; i <= CrewMatePlayerNum; i++)
                     {
                         PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                        p.setRoleRPC(RoleId.Marine);
+                        p.SetRoleRPC(RoleId.Marine);
                         CrewMatePlayers.Remove(p);
                     }
                     CrewMatePlayerNum = 0;
@@ -542,7 +542,7 @@ namespace SuperNewRoles
                 {
                     foreach (PlayerControl Player in CrewMatePlayers)
                     {
-                        Player.setRoleRPC(RoleId.Marine);
+                        Player.SetRoleRPC(RoleId.Marine);
                     }
                     CrewMatePlayerNum = 0;
                 }
@@ -552,7 +552,7 @@ namespace SuperNewRoles
                     {
                         CrewMatePlayerNum--;
                         PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                        p.setRoleRPC(RoleId.Marine);
+                        p.SetRoleRPC(RoleId.Marine);
                         CrewMatePlayers.Remove(p);
                     }
                 }
@@ -577,7 +577,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= NeutralPlayerNum; i++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
@@ -587,7 +587,7 @@ namespace SuperNewRoles
                         foreach (PlayerControl Player in CrewMatePlayers)
                         {
                             NeutralPlayerNum--;
-                            Player.setRoleRPC(SelectRoleDate);
+                            Player.SetRoleRPC(SelectRoleDate);
                         }
                         IsNotEndRandomSelect = false;
                     }
@@ -597,7 +597,7 @@ namespace SuperNewRoles
                         {
                             NeutralPlayerNum--;
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                     }
@@ -613,7 +613,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= NeutralPlayerNum; i++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
@@ -622,7 +622,7 @@ namespace SuperNewRoles
                     {
                         foreach (PlayerControl Player in CrewMatePlayers)
                         {
-                            Player.setRoleRPC(SelectRoleDate);
+                            Player.SetRoleRPC(SelectRoleDate);
                         }
                         IsNotEndRandomSelect = false;
                     }
@@ -632,7 +632,7 @@ namespace SuperNewRoles
                         {
                             NeutralPlayerNum--;
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                     }
@@ -668,7 +668,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= CrewMatePlayerNum; i++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
@@ -678,7 +678,7 @@ namespace SuperNewRoles
                         foreach (PlayerControl Player in CrewMatePlayers)
                         {
                             CrewMatePlayerNum--;
-                            Player.setRoleRPC(SelectRoleDate);
+                            Player.SetRoleRPC(SelectRoleDate);
                         }
                         IsNotEndRandomSelect = false;
                     }
@@ -688,7 +688,7 @@ namespace SuperNewRoles
                         {
                             CrewMatePlayerNum--;
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                     }
@@ -704,7 +704,7 @@ namespace SuperNewRoles
                         for (int i = 1; i <= CrewMatePlayerNum; i++)
                         {
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                         IsNotEndRandomSelect = false;
@@ -713,7 +713,7 @@ namespace SuperNewRoles
                     {
                         foreach (PlayerControl Player in CrewMatePlayers)
                         {
-                            Player.setRoleRPC(SelectRoleDate);
+                            Player.SetRoleRPC(SelectRoleDate);
                         }
                         IsNotEndRandomSelect = false;
                     }
@@ -723,7 +723,7 @@ namespace SuperNewRoles
                         {
                             CrewMatePlayerNum--;
                             PlayerControl p = ModHelpers.GetRandom(CrewMatePlayers);
-                            p.setRoleRPC(SelectRoleDate);
+                            p.SetRoleRPC(SelectRoleDate);
                             CrewMatePlayers.Remove(p);
                         }
                     }
@@ -863,7 +863,7 @@ namespace SuperNewRoles
             {
                 if (Player.Data.Role.IsSimpleRole)
                 {
-                    if (Player.isImpostor())
+                    if (Player.IsImpostor())
                     {
                         ImpostorPlayers.Add(Player);
                     }

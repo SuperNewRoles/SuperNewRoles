@@ -18,7 +18,7 @@ namespace SuperNewRoles.Roles
             List<PlayerControl> aliveplayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive() && p.CanMove)
+                if (p.IsAlive() && p.CanMove)
                 {
                     aliveplayers.Add(p);
                 }
@@ -32,7 +32,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsTeleporter(PlayerControl Player)
         {
-            return Player.isRole(RoleId.Teleporter);
+            return Player.IsRole(RoleId.Teleporter);
         }
         public static void EndMeeting()
         {

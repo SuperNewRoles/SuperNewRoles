@@ -81,8 +81,8 @@ namespace SuperNewRoles.Buttons
         {
             buttons.RemoveAll(item => item.actionButton == null);
 
-            bool isAlive = PlayerControl.LocalPlayer.isAlive();
-            RoleId role = PlayerControl.LocalPlayer.getRole();
+            bool isAlive = PlayerControl.LocalPlayer.IsAlive();
+            RoleId role = PlayerControl.LocalPlayer.GetRole();
             foreach (CustomButton btn in buttons)
             {
                 try
@@ -99,8 +99,8 @@ namespace SuperNewRoles.Buttons
         public static void MeetingEndedUpdate()
         {
             buttons.RemoveAll(item => item.actionButton == null);
-            bool isAlive = PlayerControl.LocalPlayer.isAlive();
-            RoleId role = PlayerControl.LocalPlayer.getRole();
+            bool isAlive = PlayerControl.LocalPlayer.IsAlive();
+            RoleId role = PlayerControl.LocalPlayer.GetRole();
             foreach (CustomButton btn in buttons)
             {
                 try

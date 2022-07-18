@@ -8,7 +8,7 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isImpostor())
+                if (p.IsImpostor())
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("[NotImpostorCheck] ImpostorName:" + p.nameText().text);
                     Main.Impostors.Add(p.PlayerId);

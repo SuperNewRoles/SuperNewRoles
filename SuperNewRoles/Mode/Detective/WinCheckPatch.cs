@@ -118,14 +118,14 @@ namespace SuperNewRoles.Mode.Detective
                     GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
                     if (!playerInfo.Disconnected && (!Main.IsNotDetectiveWin || playerInfo.Object.PlayerId != Main.DetectivePlayer.PlayerId))
                     {
-                        if (playerInfo.Object.isAlive())
+                        if (playerInfo.Object.IsAlive())
                         {
                             numTotalAlive++;
-                            if (playerInfo.Object.isImpostor())
+                            if (playerInfo.Object.IsImpostor())
                             {
                                 numImpostorsAlive++;
                             }
-                            else if (playerInfo.Object.isCrew())
+                            else if (playerInfo.Object.IsCrew())
                             {
                                 numCrewAlive++;
                             }

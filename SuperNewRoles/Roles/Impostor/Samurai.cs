@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(RoleId.Samurai))
+                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Samurai))
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Samurai.KillCoolTime);
                 }
@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles
         }
         public static void SetSamuraiButton()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Samurai))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Samurai))
             {
                 if (!RoleClass.Samurai.UseVent)
                 {
@@ -51,13 +51,13 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSamurai(PlayerControl Player)
         {
-            return Player.isRole(RoleId.Samurai);
+            return Player.IsRole(RoleId.Samurai);
         }
         public static void SamuraiKill()
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                if (p.IsAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
                     if (Getsword(PlayerControl.LocalPlayer, p))
                     {

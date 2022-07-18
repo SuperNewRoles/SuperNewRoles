@@ -48,7 +48,7 @@ namespace SuperNewRoles.Roles
                 {
                     GameData.PlayerInfo playerInfo = allPlayers[i];
                     //下記Jackalがbuttonのターゲットにできない役職の設定
-                    if (playerInfo.Object.isAlive() && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.Object.IsJackalTeamJackal() && !playerInfo.Object.IsJackalTeamSidekick())
+                    if (playerInfo.Object.IsAlive() && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.Object.IsJackalTeamJackal() && !playerInfo.Object.IsJackalTeamSidekick())
                     {
                         PlayerControl @object = playerInfo.Object;
                         if (untargetablePlayers.Any(x => x == @object))
@@ -84,7 +84,7 @@ namespace SuperNewRoles.Roles
                         var upflag = true;
                         foreach (PlayerControl p in RoleClass.Jackal.JackalPlayer)
                         {
-                            if (p.isAlive())
+                            if (p.IsAlive())
                             {
                                 upflag = false;
                             }

@@ -109,14 +109,14 @@ namespace SuperNewRoles.Mode.NotImpostorCheck
                     GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
                     if (!playerInfo.Disconnected)
                     {
-                        if (playerInfo.Object.isAlive())
+                        if (playerInfo.Object.IsAlive())
                         {
                             numTotalAlive++;
                             if (Main.Impostors.Contains(playerInfo.PlayerId))
                             {
                                 numImpostorsAlive++;
                             }
-                            else if (!playerInfo.Object.isNeutral())
+                            else if (!playerInfo.Object.IsNeutral())
                             {
                                 numCrewAlive++;
                             }

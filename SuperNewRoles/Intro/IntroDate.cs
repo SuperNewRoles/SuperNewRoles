@@ -44,7 +44,7 @@ namespace SuperNewRoles.Intro
         {
             if (RoleId == RoleId.DefaultRole)
             {
-                return p != null && p.isImpostor() ? ImpostorIntro : CrewmateIntro;
+                return p != null && p.IsImpostor() ? ImpostorIntro : CrewmateIntro;
             }
             try
             {
@@ -122,7 +122,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate WorkpersonIntro = new("Workperson", RoleClass.Workperson.color, 1, RoleId.Workperson, TeamRoleType.Neutral);
         public static IntroDate MagazinerIntro = new("Magaziner", RoleClass.Magaziner.color, 1, RoleId.Magaziner, TeamRoleType.Impostor);
         public static IntroDate MayorIntro = new("Mayor", RoleClass.Mayor.color, 1, RoleId.Mayor);
-        public static IntroDate trueloverIntro = new("truelover", RoleClass.truelover.color, 1, RoleId.truelover, TeamRoleType.Neutral);
+        public static IntroDate trueloverIntro = new("truelover", RoleClass.Truelover.color, 1, RoleId.truelover, TeamRoleType.Neutral);
         public static IntroDate TechnicianIntro = new("Technician", RoleClass.Technician.color, 1, RoleId.Technician);
         public static IntroDate SerialKillerIntro = new("SerialKiller", RoleClass.SerialKiller.color, 1, RoleId.SerialKiller, TeamRoleType.Impostor);
         public static IntroDate OverKillerIntro = new("OverKiller", RoleClass.OverKiller.color, 1, RoleId.OverKiller, TeamRoleType.Impostor);

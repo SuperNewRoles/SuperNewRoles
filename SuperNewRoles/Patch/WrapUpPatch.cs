@@ -55,7 +55,7 @@ namespace SuperNewRoles.Patch
                 if (exiled == null) return;
                 FinalStatusPatch.FinalStatusData.FinalStatuses[exiled.Object.PlayerId] = FinalStatus.Exiled;
                 if (exiled.Object.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
-                if (exiled.Object.isRole(RoleId.SideKiller))
+                if (exiled.Object.IsRole(RoleId.SideKiller))
                 {
                     var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
                     if (sideplayer != null)
@@ -101,7 +101,7 @@ namespace SuperNewRoles.Patch
                     if (AmongUsClient.Instance.AmHost)
                     {
                         PlayerControl SideLoverPlayer = Player.GetOneSideLovers();
-                        if (SideLoverPlayer.isAlive())
+                        if (SideLoverPlayer.IsAlive())
                         {
                             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.RPCMurderPlayer, SendOption.Reliable, -1);
                             writer.Write(SideLoverPlayer.PlayerId);
@@ -117,7 +117,7 @@ namespace SuperNewRoles.Patch
                 if (RoleHelpers.IsQuarreled(Player))
                 {
                     var Side = RoleHelpers.GetOneSideQuarreled(Player);
-                    if (Side.isDead())
+                    if (Side.IsDead())
                     {
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                         Writer.Write(Player.PlayerId);
@@ -128,7 +128,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
 
-                if (Player.isRole(RoleId.Jester))
+                if (Player.IsRole(RoleId.Jester))
                 {
 
                     if (!RoleClass.Jester.IsJesterTaskClearWin || (RoleClass.Jester.IsJesterTaskClearWin && Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - Patch.TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
@@ -142,7 +142,7 @@ namespace SuperNewRoles.Patch
                     }
                 }
 
-                if (Player.isRole(RoleId.MadJester))
+                if (Player.IsRole(RoleId.MadJester))
                 {
                     if (!RoleClass.MadJester.IsMadJesterTaskClearWin || (RoleClass.MadJester.IsMadJesterTaskClearWin && TaskCount.TaskDateNoClearCheck(Player.Data).Item2 - TaskCount.TaskDateNoClearCheck(Player.Data).Item1 == 0))
                     {

@@ -16,14 +16,14 @@ namespace SuperNewRoles.Patch
                 if (!AmongUsClient.Instance.AmHost) return true;
                 if (ModeHandler.IsMode(ModeId.Default))
                 {
-                    if (__instance.isRole(RoleId.Amnesiac))
+                    if (__instance.IsRole(RoleId.Amnesiac))
                     {
                         if (!target.Disconnected)
                         {
                             __instance.RPCSetRoleUnchecked(target.Role.Role);
                             if (target.Role.IsSimpleRole)
                             {
-                                __instance.setRoleRPC(target.Object.getRole());
+                                __instance.SetRoleRPC(target.Object.GetRole());
                             }
                         }
                     }

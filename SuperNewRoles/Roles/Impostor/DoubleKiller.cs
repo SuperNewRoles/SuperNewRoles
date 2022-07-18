@@ -51,7 +51,7 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < allPlayers.Count; i++)
                 {
                     GameData.PlayerInfo playerInfo = allPlayers[i];
-                    if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && playerInfo.Object.isAlive() && !playerInfo.Object.isDead() && !playerInfo.Object.isRole(RoleId.DoubleKiller))
+                    if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && playerInfo.Object.IsAlive() && !playerInfo.Object.IsDead() && !playerInfo.Object.IsRole(RoleId.DoubleKiller))
                     {
                         PlayerControl @object = playerInfo.Object;
                         if (untargetablePlayers.Any(x => x == @object))
@@ -80,7 +80,7 @@ namespace SuperNewRoles.Roles
             }
             public static void Postfix(PlayerControl __instance)
             {
-                if (PlayerControl.LocalPlayer.isRole(RoleId.DoubleKiller))
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.DoubleKiller))
                 {
                     DoubleKillerPlayerOutLineTarget();
                 }

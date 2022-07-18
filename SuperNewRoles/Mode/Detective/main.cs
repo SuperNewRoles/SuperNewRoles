@@ -28,7 +28,7 @@ namespace SuperNewRoles.Mode.Detective
             List<PlayerControl> selectplayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isCrew())
+                if (p.IsCrew())
                 {
                     selectplayers.Add(p);
                 }
@@ -49,7 +49,7 @@ namespace SuperNewRoles.Mode.Detective
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.Data.Disconnected && p.isImpostor())
+                    if (!p.Data.Disconnected && p.IsImpostor())
                     {
                         p.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, p.GetDefaultName()), target);
                     }
@@ -58,7 +58,7 @@ namespace SuperNewRoles.Mode.Detective
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (!p.Data.Disconnected && p.isImpostor())
+                    if (!p.Data.Disconnected && p.IsImpostor())
                     {
                         p.SetName(ModHelpers.cs(RoleClass.ImpostorRed, p.GetDefaultName()));
                     }

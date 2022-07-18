@@ -18,7 +18,7 @@ namespace SuperNewRoles.Patches
                 var newTeam2 = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                 newTeam2.Add(PlayerControl.LocalPlayer);
                 yourTeam = newTeam2;
-                if (PlayerControl.LocalPlayer.isCrew())
+                if (PlayerControl.LocalPlayer.IsCrew())
                 {
                     var newTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
                     newTeam.Add(PlayerControl.LocalPlayer);
@@ -33,7 +33,7 @@ namespace SuperNewRoles.Patches
                 }
                 else
                 {
-                    switch (PlayerControl.LocalPlayer.getRole())
+                    switch (PlayerControl.LocalPlayer.GetRole())
                     {
                         case RoleId.MadMate:
                         case RoleId.MadMayor:
@@ -46,7 +46,7 @@ namespace SuperNewRoles.Patches
                             ImpostorTeams.Add(PlayerControl.LocalPlayer);
                             foreach (PlayerControl player in CachedPlayer.AllPlayers)
                             {
-                                if ((player.isImpostor() || player.isRole(RoleId.Spy)) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                                if ((player.IsImpostor() || player.IsRole(RoleId.Spy)) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                                 {
                                     ImpostorTeams.Add(player);
                                 }
@@ -74,7 +74,7 @@ namespace SuperNewRoles.Patches
                             int FoxNum = 0;
                             foreach (PlayerControl player in CachedPlayer.AllPlayers)
                             {
-                                if (player.isRole(RoleId.Fox))
+                                if (player.IsRole(RoleId.Fox))
                                 {
                                     FoxNum++;
                                     FoxTeams.Add(player);
@@ -83,7 +83,7 @@ namespace SuperNewRoles.Patches
                             yourTeam = FoxTeams;
                             break;
                         default:
-                            if (PlayerControl.LocalPlayer.isImpostor())
+                            if (PlayerControl.LocalPlayer.IsImpostor())
                             {
                                 goto ImpostorIntroTeam;
                             }
@@ -117,9 +117,9 @@ namespace SuperNewRoles.Patches
             Color32 color = new(127, 127, 127, byte.MaxValue);
             if (ModeHandler.IsMode(ModeId.Default, ModeId.SuperHostRoles))
             {
-                if (PlayerControl.LocalPlayer.isNeutral())
+                if (PlayerControl.LocalPlayer.IsNeutral())
                 {
-                    IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
+                    IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
                     __instance.BackgroundBar.material.color = color;
                     __instance.TeamTitle.text = ModTranslation.getString("Neutral");
                     __instance.TeamTitle.color = color;
@@ -127,7 +127,7 @@ namespace SuperNewRoles.Patches
                 }
                 else
                 {
-                    switch (PlayerControl.LocalPlayer.getRole())
+                    switch (PlayerControl.LocalPlayer.GetRole())
                     {
                         case RoleId.MadMate:
                         case RoleId.MadJester:
@@ -140,7 +140,7 @@ namespace SuperNewRoles.Patches
                         case RoleId.JackalFriends:
                         case RoleId.SeerFriends:
                         case RoleId.MayorFriends:
-                            IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.getRole());
+                            IntroDate Intro = IntroDate.GetIntroDate(PlayerControl.LocalPlayer.GetRole());
                             __instance.BackgroundBar.material.color = Intro.color;
                             __instance.TeamTitle.text = ModTranslation.getString(Intro.NameKey + "Name");
                             __instance.TeamTitle.color = Intro.color;
@@ -163,7 +163,7 @@ namespace SuperNewRoles.Patches
             {
                 float SetTime = 0;
                 bool Flag = true;
-                switch (PlayerControl.LocalPlayer.getRole())
+                switch (PlayerControl.LocalPlayer.GetRole())
                 {
                     case RoleId.DarkKiller:
                         SetTime = RoleClass.DarkKiller.KillCoolTime;
@@ -208,7 +208,7 @@ namespace SuperNewRoles.Patches
                     CustomButton.MeetingEndedUpdate();
                     if (ModeHandler.IsMode(ModeId.Default))
                     {
-                        var myrole = PlayerControl.LocalPlayer.getRole();
+                        var myrole = PlayerControl.LocalPlayer.GetRole();
                         if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
                         {
                             var date = IntroDate.GetIntroDate(myrole);

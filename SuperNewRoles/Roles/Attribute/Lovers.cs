@@ -20,14 +20,14 @@ namespace SuperNewRoles.Roles
                         RoleClass.Lovers.LoversPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
                         ChacheManager.ResetLoversChache();
                     }
-                    if (player.IsQuarreled() && player.isAlive())
+                    if (player.IsQuarreled() && player.IsAlive())
                     {
                         RoleClass.Quarreled.QuarreledPlayer.RemoveAll(x => x.TrueForAll(x2 => x2.PlayerId == player.PlayerId));
                         ChacheManager.ResetQuarreledChache();
                     }
                     if (ModeHandler.IsMode(ModeId.Default))
                     {
-                        if (player.isRole(RoleId.SideKiller))
+                        if (player.IsRole(RoleId.SideKiller))
                         {
                             var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
                             if (sideplayer != null)
@@ -39,7 +39,7 @@ namespace SuperNewRoles.Roles
                                 }
                             }
                         }
-                        else if (player.isRole(RoleId.MadKiller))
+                        else if (player.IsRole(RoleId.MadKiller))
                         {
                             var sideplayer = RoleClass.SideKiller.getSidePlayer(PlayerControl.LocalPlayer);
                             if (sideplayer != null)

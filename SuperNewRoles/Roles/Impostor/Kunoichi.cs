@@ -23,7 +23,7 @@ namespace SuperNewRoles.Roles
                 //自分自身は撃ち抜かれない
                 if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
 
-                if (player.isDead()) continue;
+                if (player.IsDead()) continue;
 
                 pos = player.transform.position - PlayerControl.LocalPlayer.transform.position;
                 pos = new Vector3(
@@ -89,7 +89,7 @@ namespace SuperNewRoles.Roles
                     var kunaipos = kunai.kunai.transform.position;
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.isDead()) continue;
+                        if (p.IsDead()) continue;
                         if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
                         if (Vector2.Distance(p.GetTruePosition() + new Vector2(0, 0.4f), kunaipos) < 0.4f)
                         {
@@ -206,12 +206,12 @@ namespace SuperNewRoles.Roles
             {
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
                 if (!ModeHandler.IsMode(ModeId.Default)) return;
-                if (__instance.myPlayer.isRole(RoleId.Kunoichi))
+                if (__instance.myPlayer.IsRole(RoleId.Kunoichi))
                 {
                     var Scientist = __instance.myPlayer;
-                    if (Scientist == null || Scientist.isDead()) return;
+                    if (Scientist == null || Scientist.IsDead()) return;
                     var ison = RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(__instance.myPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[__instance.myPlayer.PlayerId];
-                    bool canSee = !ison || PlayerControl.LocalPlayer.isDead() || __instance.myPlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
+                    bool canSee = !ison || PlayerControl.LocalPlayer.IsDead() || __instance.myPlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
 
                     var opacity = canSee ? 0.1f : 0.0f;
                     if (ison)

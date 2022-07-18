@@ -170,7 +170,7 @@ namespace SuperNewRoles
             if (AmongUsClient.Instance.IsGameOver) return MurderAttemptResult.SuppressKill;
             if (killer == null || killer.Data == null || killer.Data.IsDead || killer.Data.Disconnected) return MurderAttemptResult.SuppressKill; // Allow non Impostor kills compared to vanilla code
             if (target == null || target.Data == null || target.Data.IsDead || target.Data.Disconnected) return MurderAttemptResult.SuppressKill; // Allow killing players in vents compared to vanilla code
-            if (target.isRole(RoleId.StuntMan) && !killer.isRole(RoleId.OverKiller) && (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId) || RoleClass.StuntMan.GuardCount[target.PlayerId] >= 1))
+            if (target.IsRole(RoleId.StuntMan) && !killer.IsRole(RoleId.OverKiller) && (!RoleClass.StuntMan.GuardCount.ContainsKey(target.PlayerId) || RoleClass.StuntMan.GuardCount[target.PlayerId] >= 1))
             {
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.StuntmanGuard, killer))
                 {
@@ -207,7 +207,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            if (target.isRole(RoleId.MadStuntMan) && !killer.isRole(RoleId.OverKiller) && (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId) || RoleClass.MadStuntMan.GuardCount[target.PlayerId] >= 1))
+            if (target.IsRole(RoleId.MadStuntMan) && !killer.IsRole(RoleId.OverKiller) && (!RoleClass.MadStuntMan.GuardCount.ContainsKey(target.PlayerId) || RoleClass.MadStuntMan.GuardCount[target.PlayerId] >= 1))
             {
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.MadStuntmanGuard, killer))
                 {
@@ -245,7 +245,7 @@ namespace SuperNewRoles
                     }
                 }
             }
-            if (target.isRole(RoleId.Shielder) && !killer.isRole(RoleId.OverKiller) && RoleClass.Shielder.IsShield[target.PlayerId])
+            if (target.IsRole(RoleId.Shielder) && !killer.IsRole(RoleId.OverKiller) && RoleClass.Shielder.IsShield[target.PlayerId])
             {
                 MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ShielderProtect);
                 writer.Write(target.PlayerId);
@@ -254,7 +254,7 @@ namespace SuperNewRoles
                 writer.EndRPC();
                 RPCProcedure.ShielderProtect(target.PlayerId, target.PlayerId, 0);
             }
-            if (target.isRole(RoleId.Fox) && !killer.isRole(RoleId.OverKiller) && (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId) || RoleClass.Fox.KillGuard[target.PlayerId] >= 1))
+            if (target.IsRole(RoleId.Fox) && !killer.IsRole(RoleId.OverKiller) && (!RoleClass.Fox.KillGuard.ContainsKey(target.PlayerId) || RoleClass.Fox.KillGuard[target.PlayerId] >= 1))
             {
                 if (EvilEraser.IsOKAndTryUse(EvilEraser.BlockTypes.FoxGuard, killer))
                 {
@@ -401,9 +401,9 @@ namespace SuperNewRoles
         public static bool hidePlayerName(PlayerControl source, PlayerControl target)
         {
             if (source == null || target == null) return true;
-            else if (source.isDead() || source.isRole(RoleId.God)) return false;
+            else if (source.IsDead() || source.IsRole(RoleId.God)) return false;
             else if (source.PlayerId == target.PlayerId) return false; // Player sees his own name
-            else if (source.isImpostor() && target.isImpostor()) return false;
+            else if (source.IsImpostor() && target.IsImpostor()) return false;
             else if (GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(target.PlayerId) && RoleClass.NiceScientist.IsScientistPlayers[target.PlayerId]) return true;
             return false;
         }

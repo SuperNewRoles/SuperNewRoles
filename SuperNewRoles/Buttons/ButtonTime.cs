@@ -56,25 +56,25 @@ namespace SuperNewRoles.Buttons
         }
         public static void HawkDuration()
         {
-            if (RoleClass.Hawk.Timer == 0 && PlayerControl.LocalPlayer.isRole(RoleId.Hawk)) return;
-            if (RoleClass.NiceHawk.Timer == 0 && PlayerControl.LocalPlayer.isRole(RoleId.NiceHawk)) return;
-            if (RoleClass.MadHawk.Timer == 0 && PlayerControl.LocalPlayer.isRole(RoleId.MadHawk)) return;
+            if (RoleClass.Hawk.Timer == 0 && PlayerControl.LocalPlayer.IsRole(RoleId.Hawk)) return;
+            if (RoleClass.NiceHawk.Timer == 0 && PlayerControl.LocalPlayer.IsRole(RoleId.NiceHawk)) return;
+            if (RoleClass.MadHawk.Timer == 0 && PlayerControl.LocalPlayer.IsRole(RoleId.MadHawk)) return;
             RoleClass.Hawk.IsHawkOn = true;
             var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Hawk.DurationTime);
-            if (PlayerControl.LocalPlayer.isRole(RoleId.NiceHawk))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceHawk))
             {
                 TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.NiceHawk.DurationTime);
                 RoleClass.NiceHawk.Timer = (float)(RoleClass.NiceHawk.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
                 if (RoleClass.NiceHawk.Timer <= 0f) RoleClass.NiceHawk.Timer = 0f; NiceHawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
             }
-            if (PlayerControl.LocalPlayer.isRole(RoleId.MadHawk))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.MadHawk))
             {
                 TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.MadHawk.DurationTime);
                 RoleClass.MadHawk.Timer = (float)(RoleClass.MadHawk.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
                 if (RoleClass.MadHawk.Timer <= 0f) RoleClass.MadHawk.Timer = 0f; MadHawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
             }
             RoleClass.Hawk.Timer = (float)(RoleClass.Hawk.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
-            if (RoleClass.Hawk.Timer <= 0f && PlayerControl.LocalPlayer.isRole(RoleId.Hawk)) RoleClass.Hawk.Timer = 0f; Hawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
+            if (RoleClass.Hawk.Timer <= 0f && PlayerControl.LocalPlayer.IsRole(RoleId.Hawk)) RoleClass.Hawk.Timer = 0f; Hawk.TimerEnd(); RoleClass.Hawk.IsHawkOn = false; return;
         }
         public static void ClairvoyantDuration()
         {
@@ -118,7 +118,7 @@ namespace SuperNewRoles.Buttons
                 RoleClass.Moving.ButtonTimer = DateTime.Now;
             }
             var TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.Moving.CoolTime);
-            if (PlayerControl.LocalPlayer.isRole(RoleId.EvilMoving))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilMoving))
             {
                 TimeSpanDate = new TimeSpan(0, 0, 0, (int)RoleClass.EvilMoving.CoolTime);
             }
@@ -177,7 +177,7 @@ namespace SuperNewRoles.Buttons
             {
                 RoleClass.Sheriff.ButtonTimer = DateTime.Now;
             }
-            var TimeSpanDate = new TimeSpan(0, 0, 0, PlayerControl.LocalPlayer.isRole(RoleId.Sheriff) ? (int)RoleClass.Sheriff.CoolTime : (int)RoleClass.RemoteSheriff.CoolTime);
+            var TimeSpanDate = new TimeSpan(0, 0, 0, PlayerControl.LocalPlayer.IsRole(RoleId.Sheriff) ? (int)RoleClass.Sheriff.CoolTime : (int)RoleClass.RemoteSheriff.CoolTime);
             HudManagerStartPatch.SheriffKillButton.Timer = (float)(RoleClass.Sheriff.ButtonTimer + TimeSpanDate - DateTime.Now).TotalSeconds;
             if (HudManagerStartPatch.SheriffKillButton.Timer <= 0f) HudManagerStartPatch.SheriffKillButton.Timer = 0f; return;
         }

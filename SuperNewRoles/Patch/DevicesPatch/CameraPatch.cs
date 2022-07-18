@@ -32,7 +32,7 @@ namespace SuperNewRoles.Patch
         static void UseCameraTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictCamera.GetBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.MapOptionSetting.GetBool())
+            if (MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictCamera.GetBool() && PlayerControl.LocalPlayer.IsAlive() && MapOptions.MapOption.MapOptionSetting.GetBool())
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseCameraTime, SendOption.Reliable, -1);
                 writer.Write(cameraTimer);
@@ -94,13 +94,13 @@ namespace SuperNewRoles.Patch
             {
                 public static bool Prefix(SurveillanceMinigame __instance)
                 {
-                    if (Mode.ModeHandler.IsMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictCamera.GetBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.MapOptionSetting.GetBool())
+                    if (Mode.ModeHandler.IsMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictCamera.GetBool() && PlayerControl.LocalPlayer.IsAlive() && MapOptions.MapOption.MapOptionSetting.GetBool())
                     {
                         cameraTimer += Time.deltaTime;
                         if (cameraTimer > 0.1f)
                             UseCameraTime();
 
-                        if (MapOptions.MapOption.RestrictCamera.GetBool() && Mode.ModeHandler.IsMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictCamera.GetBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.MapOptionSetting.GetBool())
+                        if (MapOptions.MapOption.RestrictCamera.GetBool() && Mode.ModeHandler.IsMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictCamera.GetBool() && PlayerControl.LocalPlayer.IsAlive() && MapOptions.MapOption.MapOptionSetting.GetBool())
                         {
                             if (TimeRemaining == null)
                             {
@@ -212,7 +212,7 @@ namespace SuperNewRoles.Patch
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.MapOption.RestrictCamera.GetBool() && Mode.ModeHandler.IsMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictCamera.GetBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.MapOptionSetting.GetBool())
+                    if (MapOptions.MapOption.RestrictCamera.GetBool() && Mode.ModeHandler.IsMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictCamera.GetBool() && PlayerControl.LocalPlayer.IsAlive() && MapOptions.MapOption.MapOptionSetting.GetBool())
                     {
                         if (TimeRemaining == null)
                         {
@@ -281,7 +281,7 @@ namespace SuperNewRoles.Patch
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.MapOption.RestrictCamera.GetBool() && Mode.ModeHandler.IsMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictCamera.GetBool() && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.MapOptionSetting.GetBool())
+                    if (MapOptions.MapOption.RestrictCamera.GetBool() && Mode.ModeHandler.IsMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictCamera.GetBool() && PlayerControl.LocalPlayer.IsAlive() && MapOptions.MapOption.MapOptionSetting.GetBool())
                     {
                         if (TimeRemaining == null)
                         {

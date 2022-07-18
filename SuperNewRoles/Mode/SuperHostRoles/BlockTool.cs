@@ -57,7 +57,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     try
                     {
-                        if (p.isAlive() && !p.IsMod())
+                        if (p.IsAlive() && !p.IsMod())
                         {
                             var cid = p.getClientId();
                             bool IsGuard = false;

@@ -68,7 +68,7 @@ namespace SuperNewRoles.Mode.Zombie
             bool IsZombieWin = true;
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (!ZombiePlayers.Contains(p.PlayerId) && p.isAlive())
+                if (!ZombiePlayers.Contains(p.PlayerId) && p.IsAlive())
                 {
                     IsZombieWin = false;
                 }

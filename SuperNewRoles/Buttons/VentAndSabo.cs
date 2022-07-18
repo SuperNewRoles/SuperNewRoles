@@ -195,7 +195,7 @@ namespace SuperNewRoles.Buttons
             public static bool Prefix(Vent __instance)
             {
                 __instance.CanUse(CachedPlayer.LocalPlayer.Data, out bool canUse, out bool couldUse);
-                bool canMoveInVents = !PlayerControl.LocalPlayer.isRole(RoleId.NiceNekomata);
+                bool canMoveInVents = !PlayerControl.LocalPlayer.IsRole(RoleId.NiceNekomata);
                 if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
                 bool isEnter = !PlayerControl.LocalPlayer.inVent;

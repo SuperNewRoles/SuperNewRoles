@@ -1031,7 +1031,7 @@ namespace SuperNewRoles.CustomOption
             MayorPlayerCount = CustomOption.Create(230, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MayorOption);
             MayorVoteCount = CustomOption.Create(231, true, CustomOptionType.Crewmate, "MayorVoteCountSetting", 2f, 1f, 100f, 1f, MayorOption);
 
-            trueloverOption = new CustomRoleOption(232, true, CustomOptionType.Neutral, "trueloverName", RoleClass.truelover.color, 1);
+            trueloverOption = new CustomRoleOption(232, true, CustomOptionType.Neutral, "trueloverName", RoleClass.Truelover.color, 1);
             trueloverPlayerCount = CustomOption.Create(233, true, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], trueloverOption);
 
             TechnicianOption = new CustomRoleOption(234, true, CustomOptionType.Crewmate, "TechnicianName", RoleClass.Technician.color, 1);

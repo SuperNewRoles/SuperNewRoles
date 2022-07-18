@@ -16,7 +16,7 @@ namespace SuperNewRoles.Patch
         {
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                if (PlayerControl.LocalPlayer.isDead()) return;
+                if (PlayerControl.LocalPlayer.IsDead()) return;
                 if (TargetLadderData.ContainsKey(CachedPlayer.LocalPlayer.PlayerId))
                 {
                     if (Vector2.Distance(TargetLadderData[CachedPlayer.LocalPlayer.PlayerId], CachedPlayer.LocalPlayer.transform.position) < 0.5f)
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Patch
                     foreach (var data in TargetLadderData)
                     {
                         PlayerControl player = ModHelpers.playerById(data.Key);
-                        if (player.isDead()) continue;
+                        if (player.IsDead()) continue;
                         if (Vector2.Distance(data.Value, player.transform.position) < 0.5f)
                         {
                             player.Data.IsDead = true;

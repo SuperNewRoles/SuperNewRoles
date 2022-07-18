@@ -13,7 +13,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool isLighter(PlayerControl Player)
         {
-            return Player.isRole(RoleId.Lighter);
+            return Player.IsRole(RoleId.Lighter);
         }
         public static void LightOnStart()
         {

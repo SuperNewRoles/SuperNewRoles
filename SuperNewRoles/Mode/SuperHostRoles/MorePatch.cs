@@ -21,11 +21,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         {
             if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {
-                if ((player.isRole(RoleId.Jackal) && !RoleClass.Jackal.IsUseSabo) || player.isRole(RoleId.Demon, RoleId.Arsonist, RoleId.RemoteSheriff, RoleId.Sheriff,
+                if ((player.IsRole(RoleId.Jackal) && !RoleClass.Jackal.IsUseSabo) || player.IsRole(RoleId.Demon, RoleId.Arsonist, RoleId.RemoteSheriff, RoleId.Sheriff,
                     RoleId.truelover, RoleId.FalseCharges, RoleId.MadMaker, RoleId.ToiletFan)
-                    || (!RoleClass.Minimalist.UseSabo && player.isRole(RoleId.Minimalist))
-                    || (!RoleClass.Samurai.UseSabo && player.isRole(RoleId.Samurai))
-                    || (!RoleClass.Egoist.UseSabo && player.isRole(RoleId.Egoist))) return false;
+                    || (!RoleClass.Minimalist.UseSabo && player.IsRole(RoleId.Minimalist))
+                    || (!RoleClass.Samurai.UseSabo && player.IsRole(RoleId.Samurai))
+                    || (!RoleClass.Egoist.UseSabo && player.IsRole(RoleId.Egoist))) return false;
             }
             if (PlayerControl.LocalPlayer.IsUseVent() && RoleHelpers.IsComms())
             {

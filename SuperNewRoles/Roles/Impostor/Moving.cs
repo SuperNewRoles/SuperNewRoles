@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetCoolDown()
         {
-            HudManagerStartPatch.MovingTpButton.MaxTimer = PlayerControl.LocalPlayer.isRole(RoleId.EvilMoving) ? RoleClass.EvilMoving.CoolTime : RoleClass.Moving.CoolTime;
+            HudManagerStartPatch.MovingTpButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.EvilMoving) ? RoleClass.EvilMoving.CoolTime : RoleClass.Moving.CoolTime;
             RoleClass.Moving.ButtonTimer = DateTime.Now;
         }
         public static bool IsSetPostion()
@@ -26,12 +26,12 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsMoving(PlayerControl Player)
         {
-            return Player.isRole(RoleId.Moving) || Player.isRole(RoleId.EvilMoving);
+            return Player.IsRole(RoleId.Moving) || Player.IsRole(RoleId.EvilMoving);
         }
         public static void EndMeeting()
         {
             HudManagerStartPatch.MovingSetButton.Timer = 0f;
-            HudManagerStartPatch.MovingTpButton.MaxTimer = PlayerControl.LocalPlayer.isRole(RoleId.EvilMoving) ? RoleClass.EvilMoving.CoolTime : RoleClass.Moving.CoolTime;
+            HudManagerStartPatch.MovingTpButton.MaxTimer = PlayerControl.LocalPlayer.IsRole(RoleId.EvilMoving) ? RoleClass.EvilMoving.CoolTime : RoleClass.Moving.CoolTime;
             RoleClass.Moving.ButtonTimer = DateTime.Now;
         }
     }

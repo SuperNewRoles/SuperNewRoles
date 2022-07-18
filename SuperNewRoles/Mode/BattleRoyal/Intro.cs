@@ -10,7 +10,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
             Teams.Add(PlayerControl.LocalPlayer);
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isImpostor() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                if (p.IsImpostor() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
                     Teams.Add(p);
                 }

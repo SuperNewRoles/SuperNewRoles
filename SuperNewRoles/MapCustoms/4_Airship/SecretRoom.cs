@@ -282,7 +282,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 if (left == null || right == null) return;
                 if (leftplayer != null)
                 {
-                    if (leftplayer.isDead())
+                    if (leftplayer.IsDead())
                     {
                         leftplayer = null;
                         return;
@@ -300,7 +300,7 @@ namespace SuperNewRoles.MapCustoms.Airship
                 }
                 if (rightplayer != null)
                 {
-                    if (rightplayer.isDead())
+                    if (rightplayer.IsDead())
                     {
                         rightplayer = null;
                         return;

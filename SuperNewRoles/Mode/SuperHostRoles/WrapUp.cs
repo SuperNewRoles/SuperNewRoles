@@ -52,11 +52,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }, 5f, "AntiBlack");*/
             foreach (PlayerControl p in RoleClass.RemoteSheriff.RemoteSheriffPlayer)
             {
-                if (p.isAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
+                if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
             }
             foreach (PlayerControl p in RoleClass.Arsonist.ArsonistPlayer)
             {
-                if (p.isAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
+                if (p.IsAlive() && !p.IsMod()) p.RpcResetAbilityCooldown();
             }
             AmongUsClient.Instance.StartCoroutine(nameof(ResetName));
 
@@ -67,7 +67,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             }
             Roles.BestFalseCharge.WrapUp();
             if (exiled == null) return;
-            if (exiled.Object.isRole(RoleId.Sheriff) || exiled.Object.isRole(RoleId.truelover) || exiled.Object.isRole(RoleId.MadMaker))
+            if (exiled.Object.IsRole(RoleId.Sheriff) || exiled.Object.IsRole(RoleId.truelover) || exiled.Object.IsRole(RoleId.MadMaker))
             {
                 exiled.Object.RpcSetRoleDesync(RoleTypes.GuardianAngel);
             }
@@ -76,7 +76,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (AmongUsClient.Instance.AmHost)
                 {
                     PlayerControl SideLoverPlayer = exiled.Object.GetOneSideLovers();
-                    if (SideLoverPlayer.isAlive())
+                    if (SideLoverPlayer.IsAlive())
                     {
                         SideLoverPlayer.RpcCheckExile();
                     }
@@ -87,7 +87,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 if (AmongUsClient.Instance.AmHost)
                 {
                     var Side = RoleHelpers.GetOneSideQuarreled(exiled.Object);
-                    if (Side.isDead())
+                    if (Side.IsDead())
                     {
                         RPCProcedure.ShareWinner(exiled.Object.PlayerId);
                         MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);

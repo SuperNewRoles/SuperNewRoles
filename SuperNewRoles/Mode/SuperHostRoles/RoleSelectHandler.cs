@@ -103,7 +103,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             DesyncImpostors.AddRange(RoleClass.Jackal.JackalPlayer);
             DesyncImpostors.AddRange(RoleClass.Sheriff.SheriffPlayer);
             DesyncImpostors.AddRange(RoleClass.Demon.DemonPlayer);
-            DesyncImpostors.AddRange(RoleClass.truelover.trueloverPlayer);
+            DesyncImpostors.AddRange(RoleClass.Truelover.trueloverPlayer);
             DesyncImpostors.AddRange(RoleClass.FalseCharges.FalseChargesPlayer);
             DesyncImpostors.AddRange(RoleClass.MadMaker.MadMakerPlayer);
             /*============インポスターにDesync============*/
@@ -240,7 +240,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         if (pc.IsMod()) Player.SetRole(RoleTypes.Scientist); //ホスト視点用
                         else
                         {
-                            if (pc.isImpostor() || pc.isRole(RoleId.Spy))
+                            if (pc.IsImpostor() || pc.IsRole(RoleId.Spy))
                             {
                                 sender.RpcSetRole(Player, RoleTypes.Impostor, pc.getClientId());
                             }
@@ -279,7 +279,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             {
                 if (Player.IsPlayer())
                 {
-                    if (Player.isImpostor()) AllRoleSetClass.ImpostorPlayers.Add(Player);
+                    if (Player.IsImpostor()) AllRoleSetClass.ImpostorPlayers.Add(Player);
                     else AllRoleSetClass.CrewMatePlayers.Add(Player);
                 }
             }

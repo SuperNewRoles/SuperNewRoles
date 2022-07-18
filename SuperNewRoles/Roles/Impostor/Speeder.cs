@@ -36,7 +36,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSpeeder(PlayerControl Player)
         {
-            return Player.isRole(RoleId.Speeder);
+            return Player.IsRole(RoleId.Speeder);
         }
         public static void EndMeeting()
         {

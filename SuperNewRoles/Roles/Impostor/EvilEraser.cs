@@ -22,7 +22,7 @@ namespace SuperNewRoles.Roles
         public static bool IsBlock(BlockTypes blocktype, PlayerControl player = null)
         {
             if (player == null) player = PlayerControl.LocalPlayer;
-            return !player.isRole(RoleId.EvilEraser)
+            return !player.IsRole(RoleId.EvilEraser)
                 ? false
                 : (!RoleClass.EvilEraser.Counts.ContainsKey(player.PlayerId) || RoleClass.EvilEraser.Counts[player.PlayerId] > 0)
 && blocktype switch
@@ -63,7 +63,7 @@ namespace SuperNewRoles.Roles
             bool IsAlive = false;
             foreach (PlayerControl p in RoleClass.God.GodPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     IsAlive = true;
                 }
@@ -95,7 +95,7 @@ namespace SuperNewRoles.Roles
             bool IsAlive = false;
             foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     IsAlive = true;
                 }
@@ -126,7 +126,7 @@ namespace SuperNewRoles.Roles
             bool IsAlive = false;
             foreach (PlayerControl p in RoleClass.Neet.NeetPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     IsAlive = true;
                 }

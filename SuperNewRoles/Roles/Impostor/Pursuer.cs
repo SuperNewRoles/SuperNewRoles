@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
 
                 foreach (var p in CachedPlayer.AllPlayers)
                 {
-                    if (p.PlayerControl.isAlive() && !p.PlayerControl.isImpostor())
+                    if (p.PlayerControl.IsAlive() && !p.PlayerControl.IsImpostor())
                     {
                         float target_distance = Vector3.Distance(CachedPlayer.LocalPlayer.transform.position, p.transform.position);
 

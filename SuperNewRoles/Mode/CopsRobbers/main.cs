@@ -54,7 +54,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             {
                 if (!p.Data.Disconnected)
                 {
-                    if (!p.isImpostor() && !p.IsArrest())
+                    if (!p.IsImpostor() && !p.IsArrest())
                     {
                         impostorwin = false;
                     }
@@ -83,7 +83,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             {
                 p.RpcSetPet("");
                 p.RpcSetVisor("");
-                if (p.isImpostor())
+                if (p.IsImpostor())
                 {
                     p.RpcSetColor(1);
                     p.RpcSetHat("");
@@ -278,7 +278,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     LastUpdate = 6;
                     foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                     {
-                        if (!p.PlayerControl.isImpostor())
+                        if (!p.PlayerControl.IsImpostor())
                         {
                             p.PlayerControl.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
                         }
@@ -312,7 +312,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 int i = 0;
                 foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                 {
-                    if (p.PlayerControl.isImpostor())
+                    if (p.PlayerControl.IsImpostor())
                     {
                         p.PlayerControl.RpcSnapTo(new Vector2(-30, 30));
                         i++;
@@ -323,7 +323,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         p.RpcSetName("　");
-                        if (p.isImpostor())
+                        if (p.IsImpostor())
                         {
                             p.RpcSnapTo(GetPosition(GetRandomSpawnPosition(p)));
                         }
@@ -333,12 +333,12 @@ namespace SuperNewRoles.Mode.CopsRobbers
             }
             foreach (PlayerControl player in CachedPlayer.AllPlayers)
             {
-                if (player.isImpostor())
+                if (player.IsImpostor())
                 {
                     foreach (CachedPlayer p in CachedPlayer.AllPlayers)
                     {
                         PlayerControl pc = p.PlayerControl;
-                        if (!pc.isImpostor() && pc.IsPlayer())
+                        if (!pc.IsImpostor() && pc.IsPlayer())
                         {
                             if (p != null && !p.Data.Disconnected)
                             {

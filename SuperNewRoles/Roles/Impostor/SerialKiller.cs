@@ -15,7 +15,7 @@ namespace SuperNewRoles.Roles
                 {
                     foreach (PlayerControl p in RoleClass.SerialKiller.SerialKillerPlayer)
                     {
-                        if (p.isAlive())
+                        if (p.IsAlive())
                         {
                             if (RoleClass.SerialKiller.IsSuicideViews.TryGetValue(p.PlayerId, out bool IsView) && IsView)
                             {
@@ -75,7 +75,7 @@ namespace SuperNewRoles.Roles
         }
         public static void MurderPlayer(PlayerControl __instance, PlayerControl target)
         {
-            if (__instance.isRole(RoleId.SerialKiller))
+            if (__instance.IsRole(RoleId.SerialKiller))
             {
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {

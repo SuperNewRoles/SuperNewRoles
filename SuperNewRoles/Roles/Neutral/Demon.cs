@@ -40,7 +40,7 @@ namespace SuperNewRoles.Roles
 
         public static bool IsCursed(this PlayerControl source, PlayerControl target)
         {
-            if (source == null || source.Data.Disconnected || target == null || target.isDead() || target.IsBot()) return true;
+            if (source == null || source.Data.Disconnected || target == null || target.IsDead() || target.IsBot()) return true;
             if (source.PlayerId == target.PlayerId) return true;
             if (RoleClass.Demon.CurseDatas.ContainsKey(source.PlayerId))
             {
@@ -75,7 +75,7 @@ namespace SuperNewRoles.Roles
 
         public static bool IsButton()
         {
-            return RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Demon) && ModeHandler.IsMode(ModeId.Default);
+            return RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Demon) && ModeHandler.IsMode(ModeId.Default);
         }
 
         public static bool IsWin(PlayerControl Demon)
@@ -87,7 +87,7 @@ namespace SuperNewRoles.Roles
                     return false;
                 }
             }
-            return !RoleClass.Demon.IsAliveWin || !Demon.isDead();
+            return !RoleClass.Demon.IsAliveWin || !Demon.IsDead();
         }
 
         public static bool IsDemonWinFlag()

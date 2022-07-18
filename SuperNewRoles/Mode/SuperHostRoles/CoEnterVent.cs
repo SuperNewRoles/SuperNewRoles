@@ -9,7 +9,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         public static bool Prefix(PlayerPhysics __instance, int id)
         {
             if (!AmongUsClient.Instance.AmHost || !ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
-            RoleId role = __instance.myPlayer.getRole();
+            RoleId role = __instance.myPlayer.GetRole();
             switch (role)
             {
                 case RoleId.Minimalist:

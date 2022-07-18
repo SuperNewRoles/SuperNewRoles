@@ -58,12 +58,12 @@ namespace SuperNewRoles.Roles
                     {
                         foreach (PlayerControl p in BotManager.AllBots)
                         {
-                            if (p.isDead())
+                            if (p.IsDead())
                             {
                                 exileplayer = p.Data;
                                 exile = p;
                                 p.RpcSetColor((byte)outfit.ColorId);
-                                p.RpcSetName(target.Object.GetDefaultName() + (target.Object.isRole(RoleId.Marine) ? ModTranslation.getString("AssassinSucsess") : ModTranslation.getString("AssassinFail")) + "<size=0%>");
+                                p.RpcSetName(target.Object.GetDefaultName() + (target.Object.IsRole(RoleId.Marine) ? ModTranslation.getString("AssassinSucsess") : ModTranslation.getString("AssassinFail")) + "<size=0%>");
                                 p.RpcSetHat(outfit.HatId);
                                 p.RpcSetVisor(outfit.VisorId);
                                 p.RpcSetSkin(outfit.SkinId);
@@ -72,7 +72,7 @@ namespace SuperNewRoles.Roles
                         }
                     }
                     RoleClass.Assassin.MeetingEndPlayers.Add(RoleClass.Assassin.TriggerPlayer.PlayerId);
-                    if (target.Object.isRole(RoleId.Marine))
+                    if (target.Object.IsRole(RoleId.Marine))
                     {
                         RoleClass.Assassin.IsImpostorWin = true;
                     }
@@ -120,7 +120,7 @@ namespace SuperNewRoles.Roles
                 ShipStatus.RpcEndGame(GameOverReason.ImpostorByVote, false);
             }
             var exile = Main.RealExiled;
-            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && exile != null && exile.isRole(RoleId.Assassin))
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && exile != null && exile.IsRole(RoleId.Assassin))
             {
                 if (AmongUsClient.Instance.AmHost)
                 {

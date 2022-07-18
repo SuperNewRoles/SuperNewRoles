@@ -287,7 +287,7 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
-            if (player.isRole(RoleId.MadStuntMan))
+            if (player.IsRole(RoleId.MadStuntMan))
             {
                 if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(playerid))
                 {
@@ -298,7 +298,7 @@ namespace SuperNewRoles.CustomRPC
                     RoleClass.MadStuntMan.GuardCount[playerid]--;
                 }
             }
-            else if (player.isRole(RoleId.StuntMan))
+            else if (player.IsRole(RoleId.StuntMan))
             {
                 if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
                 {
@@ -525,11 +525,11 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             var roleId = (RoleId)RPCRoleId;
-            if (!roleId.isGhostRole())
+            if (!roleId.IsGhostRole())
             {
                 player.ClearRole();
             }
-            player.setRole(roleId);
+            player.SetRole(roleId);
         }
         public static void SetQuarreled(byte playerid1, byte playerid2)
         {
@@ -558,7 +558,7 @@ namespace SuperNewRoles.CustomRPC
             }
             else
             {
-                if (sheriff.isRole(RoleId.RemoteSheriff) && !RoleClass.RemoteSheriff.IsKillTeleport)
+                if (sheriff.IsRole(RoleId.RemoteSheriff) && !RoleClass.RemoteSheriff.IsKillTeleport)
                 {
                     if (CachedPlayer.LocalPlayer.PlayerId == SheriffId)
                     {
@@ -583,7 +583,7 @@ namespace SuperNewRoles.CustomRPC
             PlayerControl target = ModHelpers.playerById(TargetId);
             if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
             if (sheriff == null || target == null) return;
-            if (!PlayerControl.LocalPlayer.isAlive())
+            if (!PlayerControl.LocalPlayer.IsAlive())
             {
                 FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は" + target.name + "をシェリフキルした！");
                 if (MissFire)
@@ -711,7 +711,7 @@ namespace SuperNewRoles.CustomRPC
             foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
             {
                 p.ClearRole();
-                p.setRole(RoleId.Jackal);
+                p.SetRole(RoleId.Jackal);
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
@@ -721,7 +721,7 @@ namespace SuperNewRoles.CustomRPC
             foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
             {
                 p.ClearRole();
-                p.setRole(RoleId.JackalSeer);
+                p.SetRole(RoleId.JackalSeer);
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
@@ -924,7 +924,7 @@ namespace SuperNewRoles.CustomRPC
             var SwapperPosition = SwapperPlayer.transform.position;
             //Text
             var rand = new System.Random();
-            if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)*/)
+            if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.IsRole(RoleId.PositionSwapper)*/)
             {
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");

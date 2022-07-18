@@ -8,9 +8,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         public static string GetRoleTextPostfix(PlayerControl p)
         {
             string returndata = "";
-            if (p.isAlive())
+            if (p.IsAlive())
             {
-                if (p.isRole(RoleId.SerialKiller))
+                if (p.IsRole(RoleId.SerialKiller))
                 {
                     if (!(!RoleClass.SerialKiller.IsSuicideViews.ContainsKey(p.PlayerId) || !RoleClass.SerialKiller.IsSuicideViews[p.PlayerId]))
                     {

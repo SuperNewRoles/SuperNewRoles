@@ -12,7 +12,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             Teams.Add(PlayerControl.LocalPlayer);
             try
             {
-                if (PlayerControl.LocalPlayer.isCrew())
+                if (PlayerControl.LocalPlayer.IsCrew())
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
@@ -22,11 +22,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         }
                     }
                 }
-                else if (PlayerControl.LocalPlayer.isImpostor())
+                else if (PlayerControl.LocalPlayer.IsImpostor())
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if ((p.isImpostor() || p.isRole(RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && p.IsPlayer())
+                        if ((p.IsImpostor() || p.IsRole(RoleId.Spy)) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId && p.IsPlayer())
                         {
                             Teams.Add(p);
                         }
@@ -47,7 +47,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static void RoleTextHandler(IntroCutscene __instance)
         {
-            var myrole = PlayerControl.LocalPlayer.getRole();
+            var myrole = PlayerControl.LocalPlayer.GetRole();
             if (myrole is not (RoleId.DefaultRole or RoleId.Bestfalsecharge))
             {
                 var date = SuperNewRoles.Intro.IntroDate.GetIntroDate(myrole);

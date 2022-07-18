@@ -35,7 +35,7 @@ namespace SuperNewRoles.Mode.HideAndSeek
             for (int i = 0; i < __instance.AllPlayers.Count; i++)
             {
                 GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
-                if (playerInfo.Object.isAlive() && !playerInfo.Object.isImpostor())
+                if (playerInfo.Object.IsAlive() && !playerInfo.Object.IsImpostor())
                 {
                     var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
                     __instance.TotalTasks += playerTotal;

@@ -44,7 +44,7 @@ namespace SuperNewRoles.Roles
 
         public static bool IsDoused(this PlayerControl source, PlayerControl target)
         {
-            if (source == null || source.Data.Disconnected || target == null || target.isDead() || target.IsBot()) return true;
+            if (source == null || source.Data.Disconnected || target == null || target.IsDead() || target.IsBot()) return true;
             if (source.PlayerId == target.PlayerId) return true;
             if (RoleClass.Arsonist.DouseDatas.ContainsKey(source.PlayerId))
             {
@@ -79,12 +79,12 @@ namespace SuperNewRoles.Roles
 
         public static bool IsButton()
         {
-            return ModeHandler.IsMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist);
+            return ModeHandler.IsMode(ModeId.Default) && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist);
         }
 
         public static bool IseveryButton()
         {
-            return (ModeHandler.IsMode(ModeId.SuperHostRoles) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist)) || (ModeHandler.IsMode(ModeId.Default) && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.isRole(RoleId.Arsonist));
+            return (ModeHandler.IsMode(ModeId.SuperHostRoles) && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist)) || (ModeHandler.IsMode(ModeId.Default) && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist));
 
         }
 
@@ -97,7 +97,7 @@ namespace SuperNewRoles.Roles
                     return false;
                 }
             }
-            return !Arsonist.isDead();
+            return !Arsonist.IsDead();
         }
 
         [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

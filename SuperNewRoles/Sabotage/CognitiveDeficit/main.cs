@@ -80,12 +80,12 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
             bool IsOK = true;
             foreach (PlayerControl p3 in CachedPlayer.AllPlayers)
             {
-                if (p3.isAlive() && !OKPlayers.IsCheckListPlayerControl(p3))
+                if (p3.IsAlive() && !OKPlayers.IsCheckListPlayerControl(p3))
                 {
                     IsOK = false;
-                    if (PlayerControl.LocalPlayer.isImpostor())
+                    if (PlayerControl.LocalPlayer.IsImpostor())
                     {
-                        if (!(p3.isImpostor() || p3.isRole(RoleId.MadKiller)))
+                        if (!(p3.IsImpostor() || p3.IsRole(RoleId.MadKiller)))
                         {
                             SetNamesClass.SetPlayerNameColor(p3, new Color32(18, 112, 214, byte.MaxValue));
                         }
@@ -150,7 +150,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                     List<PlayerControl> target = new();
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (!p.Data.Disconnected && p.isAlive())
+                        if (!p.Data.Disconnected && p.IsAlive())
                         {
                             target.Add(p);
                         }

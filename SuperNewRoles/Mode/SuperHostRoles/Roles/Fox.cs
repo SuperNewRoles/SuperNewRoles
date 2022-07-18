@@ -12,7 +12,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
             public static void Postfix(HudManager __instance)
             {
                 if (!AmongUsClient.Instance.AmHost) return;
-                if (PlayerControl.LocalPlayer.isRole(RoleId.Fox))
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Fox))
                 {
                     __instance.ReportButton.ToggleVisible(visible: RoleClass.Fox.UseReport);
                 }

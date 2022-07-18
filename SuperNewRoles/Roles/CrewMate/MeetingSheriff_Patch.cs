@@ -51,7 +51,7 @@ namespace SuperNewRoles.Roles
     {
         static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isDead())
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.IsDead())
             {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
@@ -95,9 +95,9 @@ namespace SuperNewRoles.Roles
         {
             var roledata = CountChanger.GetRoleType(Target);
             if ((roledata == TeamRoleType.Impostor)
-                || (Target.isMadRole() && RoleClass.MeetingSheriff.MadRoleKill)
-                || (Target.isFriendRole() && RoleClass.MeetingSheriff.MadRoleKill)) return true;
-            return Target.isNeutral() && RoleClass.MeetingSheriff.NeutralKill ? true : Target.isRole(RoleId.HauntedWolf);
+                || (Target.IsMadRoles() && RoleClass.MeetingSheriff.MadRoleKill)
+                || (Target.IsFriendRoles() && RoleClass.MeetingSheriff.MadRoleKill)) return true;
+            return Target.IsNeutral() && RoleClass.MeetingSheriff.NeutralKill ? true : Target.IsRole(RoleId.HauntedWolf);
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
         {
@@ -122,13 +122,13 @@ namespace SuperNewRoles.Roles
         }
         static void Event(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.isAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.MeetingSheriff) && PlayerControl.LocalPlayer.IsAlive() && RoleClass.MeetingSheriff.KillMaxCount >= 1)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
                     var player = ModHelpers.playerById(__instance.playerStates[i].TargetPlayerId);
-                    if (player.isAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                    if (player.IsAlive() && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                         GameObject targetBox = Object.Instantiate(template, playerVoteArea.transform);
@@ -163,7 +163,7 @@ namespace SuperNewRoles.Roles
                 List<PlayerVoteArea> deadareas = new();
                 foreach (PlayerVoteArea area in __instance.playerStates)
                 {
-                    if (ModHelpers.playerById(area.TargetPlayerId).isAlive())
+                    if (ModHelpers.playerById(area.TargetPlayerId).IsAlive())
                     {
                         Meetingsheriff_updatepatch.PlayerVoteAreas.Add(area);
                     }
@@ -187,7 +187,7 @@ namespace SuperNewRoles.Roles
                 {
                     if (ModHelpers.playerById(area.TargetPlayerId).IsPlayer())
                     {
-                        if (ModHelpers.playerById(area.TargetPlayerId).isAlive())
+                        if (ModHelpers.playerById(area.TargetPlayerId).IsAlive())
                             newareas.Add(area);
                         else
                             deadareas.Add(area);

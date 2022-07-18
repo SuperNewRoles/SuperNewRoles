@@ -9,11 +9,11 @@ namespace SuperNewRoles.Roles
         public static void MurderPlayer(PlayerControl __instance, PlayerControl target)
         {
             if (__instance.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
-            if (__instance.isRole(RoleId.Levelinger))
+            if (__instance.IsRole(RoleId.Levelinger))
             {
                 RoleClass.Levelinger.ThisXP += RoleClass.Levelinger.OneKillXP;
             }
-            else if (target.isRole(RoleId.Levelinger))
+            else if (target.IsRole(RoleId.Levelinger))
             {
                 LevelingerRevive();
             }

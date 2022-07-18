@@ -26,7 +26,7 @@ namespace SuperNewRoles.Roles
             string printStr;
 
             var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : exiled.Object;
-            if (exile != null && exile.isRole(RoleId.Marine))
+            if (exile != null && exile.IsRole(RoleId.Marine))
             {
                 printStr = player.Data.PlayerName + ModTranslation.getString("AssassinSucsess");
                 RoleClass.Assassin.IsImpostorWin = true;
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Roles
         {
             foreach (PlayerControl p in RoleClass.Bakery.BakeryPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     SuperNewRolesPlugin.Logger.LogInfo("パン屋が生きていると判定されました");
                     return true;

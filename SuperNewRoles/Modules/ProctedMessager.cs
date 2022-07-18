@@ -16,7 +16,7 @@ namespace SuperNewRoles.Modules
                 if (player.protectedByGuardianThisRound)
                 {
                     player.protectedByGuardianThisRound = false;
-                    if (player.Data != null && player.isAlive())
+                    if (player.Data != null && player.IsAlive())
                     {
                         AnythingPlayerProcted = true;
                     }

@@ -8,7 +8,7 @@ namespace SuperNewRoles.Buttons
         public static bool IsDestroyKill(this PlayerControl player)
         {
             var IsDestroyKill = false;
-            switch (player.getRole())
+            switch (player.GetRole())
             {
                 case RoleId.FastMaker:
                     return !RoleClass.FastMaker.IsCreatedMadMate;
@@ -24,7 +24,7 @@ namespace SuperNewRoles.Buttons
         public static bool IsDestroyReport(this PlayerControl player)
         {
             var IsDestroyReport = false;
-            switch (player.getRole())
+            switch (player.GetRole())
             {
                 case RoleId.Minimalist:
                     return !RoleClass.Minimalist.UseReport;
@@ -40,7 +40,7 @@ namespace SuperNewRoles.Buttons
         public static bool IsDestroySabo(this PlayerControl player)
         {
             var IsDestroySabo = false;
-            return player.getRole() switch
+            return player.GetRole() switch
             {
                 RoleId.Minimalist => !RoleClass.Minimalist.UseSabo,
                 RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseSabo,
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Buttons
         public static bool IsDestroyUse(this PlayerControl player)
         {
             var IsDestroyUse = false;
-            switch (player.getRole())
+            switch (player.GetRole())
             {
                 case RoleId.Neet:
                     IsDestroyUse = true;
@@ -62,7 +62,7 @@ namespace SuperNewRoles.Buttons
         public static bool IsDestroyVent(this PlayerControl player)
         {
             var IsDestroyVent = false;
-            return player.getRole() switch
+            return player.GetRole() switch
             {
                 RoleId.Minimalist => !RoleClass.Minimalist.UseVent,
                 RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseVent,

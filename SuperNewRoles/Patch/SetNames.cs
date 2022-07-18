@@ -62,7 +62,7 @@ namespace SuperNewRoles.Patch
             {
                 bool hidename = ModHelpers.hidePlayerName(PlayerControl.LocalPlayer, player);
                 player.nameText().text = hidename ? "" : player.CurrentOutfit.PlayerName;
-                if (PlayerControl.LocalPlayer.isImpostor() && (player.isImpostor() || player.isRole(RoleId.Spy)))
+                if (PlayerControl.LocalPlayer.IsImpostor() && (player.IsImpostor() || player.IsRole(RoleId.Spy)))
                 {
                     SetPlayerNameColor(player, RoleClass.ImpostorRed);
                 }
@@ -111,7 +111,7 @@ namespace SuperNewRoles.Patch
             string TaskText = "";
             try
             {
-                if (!p.isClearTask())
+                if (!p.IsClearTask())
                 {
                     if (commsActive)
                     {
@@ -146,10 +146,10 @@ namespace SuperNewRoles.Patch
             Color roleColors;
             string GhostroleNames = "";
             Color? GhostroleColors = null;
-            var role = p.getRole();
-            if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && p.isAlive()))
+            var role = p.GetRole();
+            if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && p.IsAlive()))
             {
-                if (p.isImpostor())
+                if (p.IsImpostor())
                 {
                     roleNames = "ImpostorName";
                     roleColors = RoleClass.ImpostorRed;
@@ -166,7 +166,7 @@ namespace SuperNewRoles.Patch
                 roleNames = introdate.Name;
                 roleColors = introdate.color;
             }
-            var GhostRole = p.getGhostRole();
+            var GhostRole = p.GetGhostRole();
             if (GhostRole != RoleId.DefaultRole)
             {
                 var GhostIntro = IntroDate.GetIntroDate(GhostRole);
@@ -177,8 +177,8 @@ namespace SuperNewRoles.Patch
         }
         public static void SetPlayerNameColors(PlayerControl player)
         {
-            var role = player.getRole();
-            if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && player.isAlive())) return;
+            var role = player.GetRole();
+            if (role == RoleId.DefaultRole || (role == RoleId.Bestfalsecharge && player.IsAlive())) return;
             SetPlayerNameColor(player, IntroDate.GetIntroDate(role).color);
         }
         public static void SetPlayerRoleNames(PlayerControl player)
@@ -188,7 +188,7 @@ namespace SuperNewRoles.Patch
         public static void QuarreledSet()
         {
             string suffix = ModHelpers.cs(RoleClass.Quarreled.color, "○");
-            if (PlayerControl.LocalPlayer.IsQuarreled() && PlayerControl.LocalPlayer.isAlive())
+            if (PlayerControl.LocalPlayer.IsQuarreled() && PlayerControl.LocalPlayer.IsAlive())
             {
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideQuarreled();
                 SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.nameText().text + suffix);
@@ -197,7 +197,7 @@ namespace SuperNewRoles.Patch
                     SetPlayerNameText(side, side.nameText().text + suffix);
                 }
             }
-            if (!PlayerControl.LocalPlayer.isAlive() && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
+            if (!PlayerControl.LocalPlayer.IsAlive() && RoleClass.Quarreled.QuarreledPlayer != new List<List<PlayerControl>>())
             {
                 foreach (List<PlayerControl> ps in RoleClass.Quarreled.QuarreledPlayer)
                 {
@@ -214,14 +214,14 @@ namespace SuperNewRoles.Patch
         public static void LoversSet()
         {
             string suffix = ModHelpers.cs(RoleClass.Lovers.color, " ♥");
-            if (PlayerControl.LocalPlayer.IsLovers() && PlayerControl.LocalPlayer.isAlive())
+            if (PlayerControl.LocalPlayer.IsLovers() && PlayerControl.LocalPlayer.IsAlive())
             {
                 PlayerControl side = PlayerControl.LocalPlayer.GetOneSideLovers();
                 SetPlayerNameText(PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.nameText().text + suffix);
                 if (!side.Data.Disconnected)
                     SetPlayerNameText(side, side.nameText().text + suffix);
             }
-            if ((PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
+            if ((PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God)) && RoleClass.Lovers.LoversPlayer != new List<List<PlayerControl>>())
             {
                 foreach (List<PlayerControl> ps in RoleClass.Lovers.LoversPlayer)
                 {
@@ -235,7 +235,7 @@ namespace SuperNewRoles.Patch
         }
         public static void DemonSet()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Demon) || PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Demon) || PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
@@ -249,7 +249,7 @@ namespace SuperNewRoles.Patch
         }
         public static void ArsonistSet()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Arsonist) || PlayerControl.LocalPlayer.isDead() || PlayerControl.LocalPlayer.isRole(RoleId.God))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Arsonist) || PlayerControl.LocalPlayer.IsDead() || PlayerControl.LocalPlayer.IsRole(RoleId.God))
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
@@ -284,8 +284,8 @@ namespace SuperNewRoles.Patch
         public static void Postfix(PlayerControl __instance)
         {
             SetNamesClass.ResetNameTagsAndColors();
-            RoleId LocalRole = PlayerControl.LocalPlayer.getRole();
-            if (PlayerControl.LocalPlayer.isDead() && LocalRole != RoleId.NiceRedRidingHood)
+            RoleId LocalRole = PlayerControl.LocalPlayer.GetRole();
+            if (PlayerControl.LocalPlayer.IsDead() && LocalRole != RoleId.NiceRedRidingHood)
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
@@ -297,7 +297,7 @@ namespace SuperNewRoles.Patch
             {
                 foreach (PlayerControl player in CachedPlayer.AllPlayers)
                 {
-                    if (RoleClass.IsMeeting || player.isAlive())
+                    if (RoleClass.IsMeeting || player.IsAlive())
                     {
                         SetNamesClass.SetPlayerNameColors(player);
                         SetNamesClass.SetPlayerRoleNames(player);
@@ -314,13 +314,13 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.isImpostor() || p.isRole(RoleId.Spy))
+                        if (p.IsImpostor() || p.IsRole(RoleId.Spy))
                         {
                             SetNamesClass.SetPlayerNameColor(p, RoleClass.ImpostorRed);
                         }
                     }
                 }
-                if (PlayerControl.LocalPlayer.isImpostor())
+                if (PlayerControl.LocalPlayer.IsImpostor())
                 {
                     foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
                     {
@@ -336,7 +336,7 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        RoleId role = p.getRole();
+                        RoleId role = p.GetRole();
                         if ((role == RoleId.Jackal ||
                             role == RoleId.Sidekick ||
                             role == RoleId.TeleportingJackal ||
@@ -363,11 +363,11 @@ namespace SuperNewRoles.Patch
                 {
                     foreach (PlayerControl p3 in CachedPlayer.AllPlayers)
                     {
-                        if (p3.isAlive() && !Sabotage.CognitiveDeficit.main.OKPlayers.IsCheckListPlayerControl(p3))
+                        if (p3.IsAlive() && !Sabotage.CognitiveDeficit.main.OKPlayers.IsCheckListPlayerControl(p3))
                         {
-                            if (PlayerControl.LocalPlayer.isImpostor())
+                            if (PlayerControl.LocalPlayer.IsImpostor())
                             {
-                                if (!(p3.isImpostor() || p3.isRole(RoleId.MadKiller)))
+                                if (!(p3.IsImpostor() || p3.IsRole(RoleId.MadKiller)))
                                 {
                                     SetNamesClass.SetPlayerNameColor(p3, new Color32(18, 112, 214, byte.MaxValue));
                                 }

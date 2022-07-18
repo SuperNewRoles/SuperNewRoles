@@ -6,7 +6,7 @@ namespace SuperNewRoles.Roles
 {
     public class Vulture
     {
-       // private static readonly List<DeadBody> Targets = new();
+        // private static readonly List<DeadBody> Targets = new();
         public class FixedUpdate
         {
             public static void Postfix()
@@ -38,7 +38,7 @@ namespace SuperNewRoles.Roles
                 {
                     RoleClass.Vulture.Arrow.Update(target.transform.position, color: RoleClass.Vulture.color);
                 }
-                if (!PlayerControl.LocalPlayer.isAlive())
+                if (!PlayerControl.LocalPlayer.IsAlive())
                 {
                     Object.Destroy(RoleClass.Vulture.Arrow.arrow);
                     return;

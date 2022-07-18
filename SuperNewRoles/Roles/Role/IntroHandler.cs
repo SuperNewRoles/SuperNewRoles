@@ -15,31 +15,16 @@ namespace SuperNewRoles.Roles
             {
                 RoleClass.IsStart = true;
             }, time, "IsStartOn");
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Pursuer))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Pursuer))
             {
                 RoleClass.Pursuer.arrow.arrow.SetActive(false);
                 RoleClass.Pursuer.arrow.arrow.SetActive(true);
             }
-            if (Mode.ModeHandler.IsMode(Mode.ModeId.Zombie))
-            {
-                Mode.Zombie.Main.SetTimer();
-            }
-            else if (Mode.ModeHandler.IsMode(Mode.ModeId.BattleRoyal))
-            {
-                Mode.BattleRoyal.Main.IsCountOK = true;
-            }
-            if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles))
-            {
-                Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
-            }
-            if (Mode.ModeHandler.IsMode(Mode.ModeId.Werewolf))
-            {
-                Mode.Werewolf.Main.IntroHandler();
-            }
-            if (Mode.ModeHandler.IsMode(Mode.ModeId.CopsRobbers))
-            {
-                Mode.CopsRobbers.Main.IsStart = true;
-            }
+            if (Mode.ModeHandler.IsMode(Mode.ModeId.Zombie)) Mode.Zombie.Main.SetTimer();
+            if (Mode.ModeHandler.IsMode(Mode.ModeId.BattleRoyal)) Mode.BattleRoyal.Main.IsCountOK = true;
+            if (Mode.ModeHandler.IsMode(Mode.ModeId.SuperHostRoles)) Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+            if (Mode.ModeHandler.IsMode(Mode.ModeId.Werewolf)) Mode.Werewolf.Main.IntroHandler();
+            if (Mode.ModeHandler.IsMode(Mode.ModeId.CopsRobbers)) Mode.CopsRobbers.Main.IsStart = true;
         }
     }
 }

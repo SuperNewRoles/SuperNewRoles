@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -95,7 +95,7 @@ namespace SuperNewRoles.Roles
             Workperson.ClearAndReload();
             Magaziner.ClearAndReload();
             Mayor.ClearAndReload();
-            truelover.ClearAndReload();
+            Truelover.ClearAndReload();
             Technician.ClearAndReload();
             SerialKiller.ClearAndReload();
             OverKiller.ClearAndReload();
@@ -936,7 +936,7 @@ namespace SuperNewRoles.Roles
             public static bool MyPanelFlag;
             public static Minigame Vital;
             private static Sprite VitalSprite;
-            public static Sprite getVitalsSprite()
+            public static Sprite GetVitalsSprite()
             {
                 if (VitalSprite) return VitalSprite;
                 VitalSprite = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.VitalsButton].Image;
@@ -1099,13 +1099,13 @@ namespace SuperNewRoles.Roles
             public static bool IsOKSet;
             private static Sprite GetbuttonSprite;
             private static Sprite AddbuttonSprite;
-            public static Sprite getGetButtonSprite()
+            public static Sprite GetGetButtonSprite()
             {
                 if (GetbuttonSprite) return GetbuttonSprite;
                 GetbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MagazinerGetButton.png", 115f);
                 return GetbuttonSprite;
             }
-            public static Sprite getAddButtonSprite()
+            public static Sprite GetAddButtonSprite()
             {
                 if (AddbuttonSprite) return AddbuttonSprite;
                 AddbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.MagazinerAddButton.png", 115f);
@@ -1130,7 +1130,7 @@ namespace SuperNewRoles.Roles
                 AddVote = (int)CustomOptions.MayorVoteCount.GetFloat();
             }
         }
-        public static class truelover
+        public static class Truelover
         {
             public static List<PlayerControl> trueloverPlayer;
             public static Color32 color = Lovers.color;
@@ -1230,26 +1230,11 @@ namespace SuperNewRoles.Roles
                     for (int i = 0; i < 5; i++)
                     {
                         string getdata = "";
-                        if (i == 0)
-                        {
-                            getdata = CustomOptions.LevelingerLevelOneGetPower.GetString();
-                        }
-                        else if (i == 1)
-                        {
-                            getdata = CustomOptions.LevelingerLevelTwoGetPower.GetString();
-                        }
-                        else if (i == 2)
-                        {
-                            getdata = CustomOptions.LevelingerLevelThreeGetPower.GetString();
-                        }
-                        else if (i == 3)
-                        {
-                            getdata = CustomOptions.LevelingerLevelFourGetPower.GetString();
-                        }
-                        else if (i == 4)
-                        {
-                            getdata = CustomOptions.LevelingerLevelFiveGetPower.GetString();
-                        }
+                        if (i == 0) { getdata = CustomOptions.LevelingerLevelOneGetPower.GetString(); }
+                        else if (i == 1) { getdata = CustomOptions.LevelingerLevelTwoGetPower.GetString(); }
+                        else if (i == 2) { getdata = CustomOptions.LevelingerLevelThreeGetPower.GetString(); }
+                        else if (i == 3) { getdata = CustomOptions.LevelingerLevelFourGetPower.GetString(); }
+                        else if (i == 4) { getdata = CustomOptions.LevelingerLevelFiveGetPower.GetString(); }
                         GetPowerData.Add(GetLevelPowerType(getdata));
                     }
                     IsUseOKRevive = CustomOptions.LevelingerReviveXP.GetBool();
@@ -1264,7 +1249,7 @@ namespace SuperNewRoles.Roles
             public static LevelPowerTypes GetThisPower(int Level = 0, PlayerControl player = null)
             {
                 if (player == null) player = PlayerControl.LocalPlayer;
-                if (!player.isRole(RoleId.Levelinger)) return LevelPowerTypes.None;
+                if (!player.IsRole(RoleId.Levelinger)) return LevelPowerTypes.None;
                 if (Level == 0)
                 {
                     Level = ThisXP / UpLevelXp;
@@ -1278,26 +1263,11 @@ namespace SuperNewRoles.Roles
             {
                 try
                 {
-                    if (name == CustomOptions.LevelingerTexts[0])
-                    {
-                        return LevelPowerTypes.None;
-                    }
-                    else if (name == CustomOptions.LevelingerTexts[1])
-                    {
-                        return LevelPowerTypes.Keep;
-                    }
-                    else if (name == CustomOptions.LevelingerTexts[2])
-                    {
-                        return LevelPowerTypes.Pursuer;
-                    }
-                    else if (name == CustomOptions.LevelingerTexts[3])
-                    {
-                        return LevelPowerTypes.Teleporter;
-                    }
-                    else if (name == CustomOptions.LevelingerTexts[4])
-                    {
-                        return LevelPowerTypes.Sidekick;
-                    }
+                    if (name == CustomOptions.LevelingerTexts[0]) { return LevelPowerTypes.None; }
+                    else if (name == CustomOptions.LevelingerTexts[1]) { return LevelPowerTypes.Keep; }
+                    else if (name == CustomOptions.LevelingerTexts[2]) { return LevelPowerTypes.Pursuer; }
+                    else if (name == CustomOptions.LevelingerTexts[3]) { return LevelPowerTypes.Teleporter; }
+                    else if (name == CustomOptions.LevelingerTexts[4]) { return LevelPowerTypes.Sidekick; }
                     else
                     {
                         return name == CustomOptions.LevelingerTexts[5]
@@ -1351,7 +1321,7 @@ namespace SuperNewRoles.Roles
                 IsCreateMadKiller = false;
                 IsUpMadKiller = false;
             }
-            public static PlayerControl getSidePlayer(PlayerControl p)
+            public static PlayerControl GetSidePlayer(PlayerControl p)
             {
                 if (MadKillerPair.ContainsKey(p.PlayerId))
                 {
@@ -1566,7 +1536,6 @@ namespace SuperNewRoles.Roles
             public static Color32 color = Color.yellow;
             public static bool ChangeRoleView;
             public static List<PlayerControl> ViewPlayers;
-
             public static void ClearAndReload()
             {
                 CelebrityPlayer = new();
@@ -1962,13 +1931,13 @@ namespace SuperNewRoles.Roles
             public static PlayerControl DouseTarget;
             private static Sprite DousebuttonSprite;
             private static Sprite IgnitebuttonSprite;
-            public static Sprite getDouseButtonSprite()
+            public static Sprite GetDouseButtonSprite()
             {
                 if (DousebuttonSprite) return DousebuttonSprite;
                 DousebuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistDouse.png", 115f);
                 return DousebuttonSprite;
             }
-            public static Sprite getIgniteButtonSprite()
+            public static Sprite GetIgniteButtonSprite()
             {
                 if (IgnitebuttonSprite) return IgnitebuttonSprite;
                 IgnitebuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ArsonistIgnite.png", 115f);
@@ -2298,12 +2267,6 @@ namespace SuperNewRoles.Roles
             public static PlayerControl target;
             public static DateTime ButtonTimer;
             public static Sprite buttonSprite;
-            /*public static Sprite GetButtonSprite()
-            {
-                if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.KillButton.png", 115f);
-                return buttonSprite;
-            }*/
             public static void ClearAndReload()
             {
                 SecretlyKillerPlayer = new();
@@ -2359,14 +2322,8 @@ namespace SuperNewRoles.Roles
                 KillCoolTime = CustomOptions.KunoichiCoolTime.GetFloat();
                 KillKunai = (int)CustomOptions.KunoichiKillKunai.GetFloat();
                 HitCount = new();
-                if (Kunai != null)
-                {
-                    GameObject.Destroy(Kunai.kunai);
-                }
-                if (SendKunai != null)
-                {
-                    GameObject.Destroy(SendKunai.kunai);
-                }
+                if (Kunai != null) { GameObject.Destroy(Kunai.kunai); }
+                if (SendKunai != null) { GameObject.Destroy(SendKunai.kunai); }
                 if (Kunais.Count > 0)
                 {
                     foreach (Kunai kunai in Kunais)

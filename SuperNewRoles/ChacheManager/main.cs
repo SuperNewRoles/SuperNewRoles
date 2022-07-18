@@ -41,14 +41,14 @@ namespace SuperNewRoles
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                MyRoleChache[p.PlayerId] = p.getRole(false);
+                MyRoleChache[p.PlayerId] = p.GetRole(false);
             }
         }
         public static void ResetMyGhostRoleChache()
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                MyGhostRoleChache[p.PlayerId] = p.getGhostRole(false);
+                MyGhostRoleChache[p.PlayerId] = p.GetGhostRole(false);
             }
         }
     }

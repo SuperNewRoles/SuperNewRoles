@@ -49,7 +49,7 @@ namespace SuperNewRoles.Roles
                 {
                     GameData.PlayerInfo playerInfo = allPlayers[i];
                     //下記TeleportingJackalがbuttonのターゲットにできない役職の設定
-                    if (playerInfo.Object.isAlive() && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.Object.IsJackalTeamJackal() && !playerInfo.Object.IsJackalTeamSidekick())
+                    if (playerInfo.Object.IsAlive() && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.Object.IsJackalTeamJackal() && !playerInfo.Object.IsJackalTeamSidekick())
                     {
                         PlayerControl @object = playerInfo.Object;
                         if (untargetablePlayers.Any(x => x == @object))
@@ -78,7 +78,7 @@ namespace SuperNewRoles.Roles
             }
             public static void Postfix()
             {
-                if (PlayerControl.LocalPlayer.isRole(RoleId.TeleportingJackal))
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.TeleportingJackal))
                 {
                     TeleportingJackalPlayerOutLineTarget();
                 }
@@ -94,7 +94,7 @@ namespace SuperNewRoles.Roles
             List<PlayerControl> aliveplayers = new();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive() && p.CanMove)
+                if (p.IsAlive() && p.CanMove)
                 {
                     aliveplayers.Add(p);
                 }
@@ -107,7 +107,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsTeleportingJackal(PlayerControl Player)
         {
-            return Player.isRole(RoleId.TeleportingJackal);
+            return Player.IsRole(RoleId.TeleportingJackal);
         }
     }
 }

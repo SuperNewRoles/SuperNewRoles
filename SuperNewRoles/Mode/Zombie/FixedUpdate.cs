@@ -61,7 +61,7 @@ namespace SuperNewRoles.Mode.Zombie
                             foreach (PlayerControl p in CachedPlayer.AllPlayers)
                             {
                                 p.RpcSetName("　");
-                                if (p.isImpostor())
+                                if (p.IsImpostor())
                                 {
                                     main.SetZombie(p);
                                 }
@@ -112,7 +112,7 @@ namespace SuperNewRoles.Mode.Zombie
                         {
                             if (!p.IsZombie())
                             {
-                                if (p != null && p.isAlive() && !p.Data.Disconnected)
+                                if (p != null && p.IsAlive() && !p.Data.Disconnected)
                                 {
                                     var DistanceData = Vector2.Distance(p.transform.position, p1.transform.position);
                                     if (DistanceData <= 0.5f)

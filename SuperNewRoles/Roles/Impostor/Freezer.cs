@@ -36,7 +36,7 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsFreezer(PlayerControl Player)
         {
-            return Player.isRole(RoleId.Freezer);
+            return Player.IsRole(RoleId.Freezer);
         }
         public static void EndMeeting()
         {

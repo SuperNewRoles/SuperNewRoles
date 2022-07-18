@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.Werewolf
                 __instance.RoleBlurbText.text = ModTranslation.getString("WereWolfHunterText");
                 __instance.RoleBlurbText.color = Color.green;
             }
-            else if (PlayerControl.LocalPlayer.isImpostor())
+            else if (PlayerControl.LocalPlayer.IsImpostor())
             {
                 __instance.YouAreText.color = RoleClass.ImpostorRed;
                 __instance.RoleText.text = ModTranslation.getString("WareWolfImpostor");
@@ -24,7 +24,7 @@ namespace SuperNewRoles.Mode.Werewolf
                 __instance.RoleBlurbText.text = ModTranslation.getString("WereWolfImpostorText");
                 __instance.RoleBlurbText.color = RoleClass.ImpostorRed;
             }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.MadMate))
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.MadMate))
             {
                 __instance.YouAreText.color = RoleClass.ImpostorRed;
                 __instance.RoleText.text = ModTranslation.getString("WareWolfMadmate");
@@ -32,12 +32,12 @@ namespace SuperNewRoles.Mode.Werewolf
                 __instance.RoleBlurbText.text = ModTranslation.getString("WereWolfMadmateText");
                 __instance.RoleBlurbText.color = RoleClass.ImpostorRed;
             }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.DefaultRole))
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.DefaultRole))
             {
                 __instance.RoleText.text = ModTranslation.getString("WareWolfCrewmate");
                 __instance.RoleBlurbText.text = ModTranslation.getString("WereWolfCrewmateText");
             }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.SoothSayer))
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer))
             {
                 __instance.YouAreText.color = RoleClass.SoothSayer.color;
                 __instance.RoleText.text = ModTranslation.getString("WareWolfFortuneTeller");
@@ -45,7 +45,7 @@ namespace SuperNewRoles.Mode.Werewolf
                 __instance.RoleBlurbText.text = ModTranslation.getString("WereWolfFortuneTellerText");
                 __instance.RoleBlurbText.color = RoleClass.SoothSayer.color;
             }
-            else if (PlayerControl.LocalPlayer.isRole(RoleId.SoothSayer))
+            else if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer))
             {
                 __instance.YouAreText.color = RoleClass.SpiritMedium.color;
                 __instance.RoleText.text = ModTranslation.getString("WareWolfMedium");

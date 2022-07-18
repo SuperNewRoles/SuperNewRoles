@@ -276,7 +276,7 @@ namespace SuperNewRoles.EndGame
             bool IsOpptexton = false;
             foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
             {
-                if (player.isAlive())
+                if (player.IsAlive())
                 {
                     if (!IsOpptexton && !haison)
                     {
@@ -294,7 +294,7 @@ namespace SuperNewRoles.EndGame
                     Temp1 = false;
                     foreach (PlayerControl player in PlayerList)
                     {
-                        if (player.isAlive())
+                        if (player.IsAlive())
                         {
                             Temp1 = true;
                         }
@@ -326,7 +326,7 @@ namespace SuperNewRoles.EndGame
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.isAlive())
+                    if (p.IsAlive())
                     {
                         text = p.nameText().text;
                         textRenderer.color = new Color32(116, 80, 48, byte.MaxValue);
@@ -420,10 +420,10 @@ namespace SuperNewRoles.EndGame
                 if (p.Object.IsPlayer())
                 {
                     //var p = pc.Data;
-                    var roles = Intro.IntroDate.GetIntroDate(p.Object.getRole(), p.Object);
-                    var ghostRoles = Intro.IntroDate.GetIntroDate(p.Object.getGhostRole(), p.Object);
+                    var roles = Intro.IntroDate.GetIntroDate(p.Object.GetRole(), p.Object);
+                    var ghostRoles = Intro.IntroDate.GetIntroDate(p.Object.GetGhostRole(), p.Object);
                     var (tasksCompleted, tasksTotal) = TaskCount.TaskDate(p);
-                    if (p.Object.isImpostor())
+                    if (p.Object.IsImpostor())
                     {
                         tasksCompleted = 0;
                         tasksTotal = 0;
@@ -463,7 +463,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.JackalFriends.JackalFriendsPlayer);
             notWinners.AddRange(RoleClass.God.GodPlayer);
             notWinners.AddRange(RoleClass.Opportunist.OpportunistPlayer);
-            notWinners.AddRange(RoleClass.truelover.trueloverPlayer);
+            notWinners.AddRange(RoleClass.Truelover.trueloverPlayer);
             notWinners.AddRange(RoleClass.Egoist.EgoistPlayer);
             notWinners.AddRange(RoleClass.Workperson.WorkpersonPlayer);
             notWinners.AddRange(RoleClass.Amnesiac.AmnesiacPlayer);
@@ -491,7 +491,7 @@ namespace SuperNewRoles.EndGame
 
             foreach (PlayerControl p in RoleClass.Survivor.SurvivorPlayer)
             {
-                if (p.isDead())
+                if (p.IsDead())
                 {
                     notWinners.Add(p);
                 }
@@ -569,7 +569,7 @@ namespace SuperNewRoles.EndGame
                 TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                 foreach (PlayerControl p in RoleClass.Egoist.EgoistPlayer)
                 {
-                    if (p.isAlive())
+                    if (p.IsAlive())
                     {
                         WinningPlayerData wpd = new(p.Data);
                         TempData.winners.Add(wpd);
@@ -630,7 +630,7 @@ namespace SuperNewRoles.EndGame
             {
                 foreach (var cp in CachedPlayer.AllPlayers)
                 {
-                    if (cp.PlayerControl.isMadRole())
+                    if (cp.PlayerControl.IsMadRoles())
                     {
                         WinningPlayerData wpd = new(cp.Data);
                         TempData.winners.Add(wpd);
@@ -653,7 +653,7 @@ namespace SuperNewRoles.EndGame
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.isAlive())
+                        if (p.IsAlive())
                         {
                             WinningPlayerData wpd = new(p.Data);
                             TempData.winners.Add(wpd);
@@ -664,7 +664,7 @@ namespace SuperNewRoles.EndGame
             }
             foreach (PlayerControl p in RoleClass.God.GodPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     var (complate, all) = TaskCount.TaskDateNoClearCheck(p.Data);
                     if (!RoleClass.God.IsTaskEndWin || complate >= all)
@@ -678,7 +678,7 @@ namespace SuperNewRoles.EndGame
             }
             foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                     WinningPlayerData wpd = new(p.Data);
@@ -688,7 +688,7 @@ namespace SuperNewRoles.EndGame
             }
             foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
             {
-                if (p.isAlive() && !RoleClass.Tuna.IsTunaAddWin)
+                if (p.IsAlive() && !RoleClass.Tuna.IsTunaAddWin)
                 {
                     TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                     WinningPlayerData wpd = new(p.Data);
@@ -696,14 +696,14 @@ namespace SuperNewRoles.EndGame
                     AdditionalTempData.winCondition = WinCondition.TunaWin;
 
                 }
-                if (p.isAlive() && RoleClass.Tuna.IsTunaAddWin)
+                if (p.IsAlive() && RoleClass.Tuna.IsTunaAddWin)
                 {
                     TempData.winners.Add(new WinningPlayerData(p.Data));
                 }
             }
             foreach (PlayerControl p in RoleClass.Neet.NeetPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
                     WinningPlayerData wpd = new(p.Data);
@@ -715,14 +715,14 @@ namespace SuperNewRoles.EndGame
 
             foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
             {
-                if (player.isAlive())
+                if (player.IsAlive())
                 {
                     TempData.winners.Add(new WinningPlayerData(player.Data));
                 }
             }
             foreach (PlayerControl player in RoleClass.Neet.NeetPlayer)
             {
-                if (player.isAlive())
+                if (player.IsAlive())
                 {
                     TempData.winners.Add(new WinningPlayerData(player.Data));
                 }
@@ -766,7 +766,7 @@ namespace SuperNewRoles.EndGame
                 bool IsWinLovers = false;
                 foreach (PlayerControl p in plist)
                 {
-                    if (p.isAlive())
+                    if (p.IsAlive())
                     {
                         IsWinLovers = true;
                     }
@@ -782,7 +782,7 @@ namespace SuperNewRoles.EndGame
                 bool IsWinLovers = false;
                 foreach (PlayerControl p in plist)
                 {
-                    if (p.isAlive())
+                    if (p.IsAlive())
                     {
                         IsWinLovers = true;
                     }
@@ -857,7 +857,7 @@ namespace SuperNewRoles.EndGame
                     // Exile role text
                     if (id is StringNames.ExileTextPN or StringNames.ExileTextSN or StringNames.ExileTextPP or StringNames.ExileTextSP)
                     {
-                        __result = player.Data.PlayerName + " は " + ModTranslation.getString(Intro.IntroDate.GetIntroDate(player.getRole(), player).NameKey + "Name") + " だった！";
+                        __result = player.Data.PlayerName + " は " + ModTranslation.getString(Intro.IntroDate.GetIntroDate(player.GetRole(), player).NameKey + "Name") + " だった！";
                     }
                 }
             }
@@ -893,7 +893,7 @@ namespace SuperNewRoles.EndGame
         {
             if (!GameData.Instance) return false;
             if (DestroyableSingleton<TutorialManager>.InstanceExists) return true;
-            if (!RoleManagerSelectRolesPatch.IsSetRoleRpc) return false;
+            if (!RoleManagerSelectRolesPatch.IsSetRoleRPC) return false;
             if (DebugMode.IsDebugMode()) return false;
             if (RoleClass.Assassin.TriggerPlayer != null) return false;
             var statistics = new PlayerStatistics(__instance);
@@ -1008,7 +1008,7 @@ namespace SuperNewRoles.EndGame
             {
                 foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
                 {
-                    if (!p.isImpostor() && !p.Data.Disconnected)
+                    if (!p.IsImpostor() && !p.Data.Disconnected)
                     {
                         return false;
                     }
@@ -1026,7 +1026,7 @@ namespace SuperNewRoles.EndGame
             {
                 foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)
                 {
-                    if (!p.isImpostor() && !p.Data.Disconnected)
+                    if (!p.IsImpostor() && !p.Data.Disconnected)
                     {
                         return false;
                     }
@@ -1043,7 +1043,7 @@ namespace SuperNewRoles.EndGame
             {
                 if (!p.Data.Disconnected)
                 {
-                    if (p.isAlive() || !RoleClass.Workperson.IsAliveWin)
+                    if (p.IsAlive() || !RoleClass.Workperson.IsAliveWin)
                     {
                         var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         if (playerCompleted >= playerTotal)
@@ -1091,24 +1091,24 @@ namespace SuperNewRoles.EndGame
                     GameData.PlayerInfo playerInfo = GameData.Instance.AllPlayers[i];
                     if (!playerInfo.Disconnected && playerInfo.Object.IsPlayer())
                     {
-                        if (playerInfo.Object.isAlive())
+                        if (playerInfo.Object.IsAlive())
                         {
                             numTotalAlive++;
-                            if (playerInfo.Object.isRole(RoleId.Jackal, RoleId.Sidekick, RoleId.TeleportingJackal, RoleId.JackalSeer, RoleId.SidekickSeer))
+                            if (playerInfo.Object.IsRole(RoleId.Jackal, RoleId.Sidekick, RoleId.TeleportingJackal, RoleId.JackalSeer, RoleId.SidekickSeer))
                             {
                                 numTotalJackalTeam++;
                             }
-                            else if (playerInfo.Object.isImpostor())
+                            else if (playerInfo.Object.IsImpostor())
                             {
                                 numImpostorsAlive++;
                             }
-                            else if (!playerInfo.Object.isCrew())
+                            else if (!playerInfo.Object.IsCrew())
                             {
                                 numCrewAlive++;
                             }
-                            else if (playerInfo.Object.isNeutral())
+                            else if (playerInfo.Object.IsNeutral())
                             {
-                                if (playerInfo.Object.isRole(RoleId.Egoist))
+                                if (playerInfo.Object.IsRole(RoleId.Egoist))
                                 {
                                     numTotalEgoist++;
                                     numImpostorsAlive++;

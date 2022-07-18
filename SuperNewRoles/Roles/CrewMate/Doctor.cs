@@ -31,7 +31,7 @@ namespace SuperNewRoles.Roles
             {
                 static void Postfix(VitalsMinigame __instance)
                 {
-                    if (PlayerControl.LocalPlayer.isRole(RoleId.Doctor) && !RoleClass.Doctor.MyPanelFlag)
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Doctor) && !RoleClass.Doctor.MyPanelFlag)
                     {
                         for (int k = 0; k < __instance.vitals.Length; k++)
                         {

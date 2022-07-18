@@ -19,13 +19,13 @@ namespace SuperNewRoles.Roles
         }
         public static bool IsSelfBomber(PlayerControl Player)
         {
-            return Player.isRole(RoleId.SelfBomber);
+            return Player.IsRole(RoleId.SelfBomber);
         }
         public static void SelfBomb()
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                if (p.IsAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
                     if (GetIsBomb(PlayerControl.LocalPlayer, p))
                     {

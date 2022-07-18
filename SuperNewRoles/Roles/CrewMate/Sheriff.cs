@@ -8,7 +8,7 @@ namespace SuperNewRoles.Roles
     {
         public static void ResetKillCoolDown()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.RemoteSheriff))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.RemoteSheriff))
             {
                 HudManagerStartPatch.SheriffKillButton.MaxTimer = RoleClass.RemoteSheriff.CoolTime;
                 HudManagerStartPatch.SheriffKillButton.Timer = RoleClass.RemoteSheriff.CoolTime;
@@ -26,43 +26,43 @@ namespace SuperNewRoles.Roles
         {
             var roledata = CountChanger.GetRoleType(Target);
             if ((roledata == TeamRoleType.Impostor)
-            || (Target.isMadRole() && RoleClass.Sheriff.IsMadRoleKill)
-            || (Target.isFriendRole() && RoleClass.Sheriff.IsMadRoleKill)
-            || (Target.isNeutral() && RoleClass.Sheriff.IsNeutralKill)) return true;
-            return RoleClass.Sheriff.IsLoversKill && Target.IsLovers() ? true : Target.isRole(RoleId.HauntedWolf);
+            || (Target.IsMadRoles() && RoleClass.Sheriff.IsMadRoleKill)
+            || (Target.IsFriendRoles() && RoleClass.Sheriff.IsMadRoleKill)
+            || (Target.IsNeutral() && RoleClass.Sheriff.IsNeutralKill)) return true;
+            return RoleClass.Sheriff.IsLoversKill && Target.IsLovers() ? true : Target.IsRole(RoleId.HauntedWolf);
         }
         public static bool IsChiefSheriffKill(PlayerControl Target)
         {
             var roledata = CountChanger.GetRoleType(Target);
             if ((roledata == TeamRoleType.Impostor)
-            || (Target.isMadRole() && RoleClass.Chief.IsMadRoleKill)
-            || (Target.isFriendRole() && RoleClass.Chief.IsMadRoleKill)
-            || (Target.isNeutral() && RoleClass.Chief.IsNeutralKill)) return true;
-            return RoleClass.Chief.IsLoversKill && Target.IsLovers() ? true : Target.isRole(RoleId.HauntedWolf);
+            || (Target.IsMadRoles() && RoleClass.Chief.IsMadRoleKill)
+            || (Target.IsFriendRoles() && RoleClass.Chief.IsMadRoleKill)
+            || (Target.IsNeutral() && RoleClass.Chief.IsNeutralKill)) return true;
+            return RoleClass.Chief.IsLoversKill && Target.IsLovers() ? true : Target.IsRole(RoleId.HauntedWolf);
         }
         public static bool IsRemoteSheriffKill(PlayerControl Target)
         {
             var roledata = CountChanger.GetRoleType(Target);
             if ((roledata == TeamRoleType.Impostor)
-            || (Target.isMadRole() && RoleClass.RemoteSheriff.IsMadRoleKill)
-            || (Target.isFriendRole() && RoleClass.RemoteSheriff.IsMadRoleKill)
-            || (Target.isNeutral() && RoleClass.RemoteSheriff.IsNeutralKill)) return true;
-            return RoleClass.RemoteSheriff.IsLoversKill && Target.IsLovers() ? true : Target.isRole(RoleId.HauntedWolf);
+            || (Target.IsMadRoles() && RoleClass.RemoteSheriff.IsMadRoleKill)
+            || (Target.IsFriendRoles() && RoleClass.RemoteSheriff.IsMadRoleKill)
+            || (Target.IsNeutral() && RoleClass.RemoteSheriff.IsNeutralKill)) return true;
+            return RoleClass.RemoteSheriff.IsLoversKill && Target.IsLovers() ? true : Target.IsRole(RoleId.HauntedWolf);
         }
         public static bool IsSheriff(PlayerControl Player)
         {
-            return Player.isRole(RoleId.Sheriff) || Player.isRole(RoleId.RemoteSheriff);
+            return Player.IsRole(RoleId.Sheriff) || Player.IsRole(RoleId.RemoteSheriff);
         }
         public static bool IsSheriffButton(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.Sheriff))
+            if (Player.IsRole(RoleId.Sheriff))
             {
                 if (RoleClass.Sheriff.KillMaxCount > 0)
                 {
                     return true;
                 }
             }
-            else if (Player.isRole(RoleId.RemoteSheriff))
+            else if (Player.IsRole(RoleId.RemoteSheriff))
             {
                 if (RoleClass.RemoteSheriff.KillMaxCount > 0)
                 {

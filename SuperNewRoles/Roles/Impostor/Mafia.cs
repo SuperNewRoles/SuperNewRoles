@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles
             if (RoleClass.Mafia.CachedIs) return true;
             foreach (CachedPlayer player in CachedPlayer.AllPlayers)
             {
-                if (player.PlayerControl.IsPlayer() && player.PlayerControl.isAlive() && player.PlayerControl.isImpostor() && !player.PlayerControl.isRole(RoleId.Mafia) && !player.PlayerControl.isRole(RoleId.Egoist))
+                if (player.PlayerControl.IsPlayer() && player.PlayerControl.IsAlive() && player.PlayerControl.IsImpostor() && !player.PlayerControl.IsRole(RoleId.Mafia) && !player.PlayerControl.IsRole(RoleId.Egoist))
                 {
                     return false;
                 }

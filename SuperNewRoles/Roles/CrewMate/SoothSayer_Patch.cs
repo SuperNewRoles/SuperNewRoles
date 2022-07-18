@@ -10,7 +10,7 @@ namespace SuperNewRoles.Roles
     {
         static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isDead() && PlayerControl.LocalPlayer.isRole(RoleId.SoothSayer))
+            if (PlayerControl.LocalPlayer.IsDead() && PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer))
             {
                 __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("SoothSayerButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("SoothSayerButton").gameObject); });
             }
@@ -23,13 +23,13 @@ namespace SuperNewRoles.Roles
         static void SoothSayerOnClick(int Index, MeetingHud __instance)
         {
             var Target = ModHelpers.playerById(__instance.playerStates[Index].TargetPlayerId);
-            var introdate = Target.getRole();
+            var introdate = Target.GetRole();
             if (RoleClass.SoothSayer.DisplayMode)
             {
-                if (Target.isImpostor()) namedate = "Impostor";
-                if (Target.isHauntedWolf()) namedate = "Impostor";
-                else if (Target.isNeutral()) namedate = "Neutral";
-                else if (Target.isCrew()) namedate = "CrewMate";
+                if (Target.IsImpostor()) namedate = "Impostor";
+                if (Target.IsHauntedWolf()) namedate = "Impostor";
+                else if (Target.IsNeutral()) namedate = "Neutral";
+                else if (Target.IsCrew()) namedate = "CrewMate";
             }
             else
             {
@@ -51,13 +51,13 @@ namespace SuperNewRoles.Roles
         }
         static void Event(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.SoothSayer) && PlayerControl.LocalPlayer.isAlive() && RoleClass.SoothSayer.Count >= 1)
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.SoothSayer) && PlayerControl.LocalPlayer.IsAlive() && RoleClass.SoothSayer.Count >= 1)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
                     var player = ModHelpers.playerById(__instance.playerStates[i].TargetPlayerId);
-                    if (player.isAlive() && !RoleClass.SoothSayer.DisplayedPlayer.Contains(player.PlayerId) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                    if (player.IsAlive() && !RoleClass.SoothSayer.DisplayedPlayer.Contains(player.PlayerId) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                         GameObject targetBox = Object.Instantiate(template, playerVoteArea.transform);
@@ -77,14 +77,14 @@ namespace SuperNewRoles.Roles
         static void SpiritOnClick(int Index, MeetingHud __instance)
         {
             var Target = ModHelpers.playerById(__instance.playerStates[Index].TargetPlayerId);
-            var introdate = Target.getRole();
+            var introdate = Target.GetRole();
             namedate = Intro.IntroDate.GetIntroDate(introdate, Target).NameKey;
             if (RoleClass.SpiritMedium.DisplayMode)
             {
-                if (Target.isImpostor()) namedate = "Impostor";
-                if (Target.isHauntedWolf()) namedate = "Impostor";
-                else if (Target.isNeutral()) namedate = "Neutral";
-                else if (Target.isCrew()) namedate = "CrewMate";
+                if (Target.IsImpostor()) namedate = "Impostor";
+                if (Target.IsHauntedWolf()) namedate = "Impostor";
+                else if (Target.IsNeutral()) namedate = "Neutral";
+                else if (Target.IsCrew()) namedate = "CrewMate";
             }
             else
             {
@@ -105,14 +105,14 @@ namespace SuperNewRoles.Roles
         }
         static void SpiritEvent(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.SpiritMedium) && PlayerControl.LocalPlayer.isAlive() && RoleClass.SpiritMedium.MaxCount >= 1)
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.SpiritMedium) && PlayerControl.LocalPlayer.IsAlive() && RoleClass.SpiritMedium.MaxCount >= 1)
             {
                 for (int i = 0; i < __instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = __instance.playerStates[i];
 
                     var player = ModHelpers.playerById(__instance.playerStates[i].TargetPlayerId);
-                    if (!player.Data.Disconnected && player.isDead() && !RoleClass.SoothSayer.DisplayedPlayer.Contains(player.PlayerId) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                    if (!player.Data.Disconnected && player.IsDead() && !RoleClass.SoothSayer.DisplayedPlayer.Contains(player.PlayerId) && player.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                     {
                         GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
                         GameObject targetBox = Object.Instantiate(template, playerVoteArea.transform);

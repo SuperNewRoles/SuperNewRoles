@@ -42,7 +42,7 @@ namespace SuperNewRoles
         {
             if (player == null) return;
 
-            List<Intro.IntroDate> infos = new() { Intro.IntroDate.GetIntroDate(player.getRole(), player) };
+            List<Intro.IntroDate> infos = new() { Intro.IntroDate.GetIntroDate(player.GetRole(), player) };
 
             var toRemove = new List<PlayerTask>();
             var aaa = false;
@@ -82,9 +82,9 @@ namespace SuperNewRoles
                 {
                     task.Text += "\n" + ModHelpers.cs(RoleClass.Lovers.color, ModTranslation.getString("LoversName") + ": " + string.Format(ModTranslation.getString("LoversIntro"), PlayerControl.LocalPlayer.GetOneSideLovers()?.Data?.PlayerName ?? ""));
                 }
-                if (!player.isGhostRole(RoleId.DefaultRole))
+                if (!player.IsGhostRole(RoleId.DefaultRole))
                 {
-                    var GhostRoleInfo = IntroDate.GetIntroDate(player.getGhostRole(), player);
+                    var GhostRoleInfo = IntroDate.GetIntroDate(player.GetGhostRole(), player);
                     task.Text += "\n" + CustomOption.CustomOptions.cs(GhostRoleInfo.color, $"{ModTranslation.getString(GhostRoleInfo.NameKey + "Name")}: {GhostRoleInfo.TitleDesc}");
                 }
                 /**

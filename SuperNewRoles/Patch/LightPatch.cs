@@ -18,7 +18,7 @@ namespace SuperNewRoles.Patch
             float lerpValue = switchSystem.Value / 255f;
 
             var LocalPlayer = PlayerControl.LocalPlayer;
-            if (LocalPlayer.isRole(RoleId.Nocturnality))
+            if (LocalPlayer.IsRole(RoleId.Nocturnality))
             {
                 lerpValue = 1 - lerpValue >= 0 ? 1f - lerpValue : 1f + (1f - lerpValue);
             }
@@ -35,11 +35,11 @@ namespace SuperNewRoles.Patch
 
             if (player == null || player.IsDead)
                 __result = __instance.MaxLightRadius;
-            else if (player.Object.isRole(RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate)
+            else if (player.Object.IsRole(RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate)
                 __result = GetNeutralLightRadius(__instance, false);
-            else __result = player.Object.isImpostor() || RoleHelpers.IsImpostorLight(player.Object)
+            else __result = player.Object.IsImpostor() || RoleHelpers.IsImpostorLight(player.Object)
                 ? GetNeutralLightRadius(__instance, true)
-                : player.Object.isRole(RoleId.Lighter) && RoleClass.Lighter.IsLightOn
+                : player.Object.IsRole(RoleId.Lighter) && RoleClass.Lighter.IsLightOn
                 ? Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num)
                 : GetNeutralLightRadius(__instance, false);
             return false;

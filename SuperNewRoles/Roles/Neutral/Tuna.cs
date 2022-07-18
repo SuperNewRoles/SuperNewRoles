@@ -14,7 +14,7 @@ namespace SuperNewRoles.Roles
             if (RoleClass.IsMeeting) return;
             if (ModeHandler.IsMode(ModeId.Default))
             {
-                if (PlayerControl.LocalPlayer.isAlive() && PlayerControl.LocalPlayer.isRole(RoleId.Tuna) && RoleClass.Tuna.IsMeetingEnd)
+                if (PlayerControl.LocalPlayer.IsAlive() && PlayerControl.LocalPlayer.IsRole(RoleId.Tuna) && RoleClass.Tuna.IsMeetingEnd)
                 {
                     if (RoleClass.Tuna.Position[CachedPlayer.LocalPlayer.PlayerId] == CachedPlayer.LocalPlayer.transform.position)
                     {
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Roles
             {
                 foreach (PlayerControl p in RoleClass.Tuna.TunaPlayer)
                 {
-                    if (p.isAlive() && RoleClass.Tuna.IsMeetingEnd)
+                    if (p.IsAlive() && RoleClass.Tuna.IsMeetingEnd)
                     {
                         if (RoleClass.Tuna.Position[p.PlayerId] == p.transform.position)
                         {

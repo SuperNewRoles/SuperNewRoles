@@ -13,7 +13,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
         public static void WrapUp(GameData.PlayerInfo exiled)
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            if (exiled.Object.isRole(RoleId.Jester))
+            if (exiled.Object.IsRole(RoleId.Jester))
             {
                 var (complate, all) = TaskCount.TaskDateNoClearCheck(exiled);
                 if (!RoleClass.Jester.IsJesterTaskClearWin || complate >= all)
@@ -46,7 +46,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles.Roles
                     EndGameCheck.CustomEndGame(MapUtilities.CachedShipStatus, GameOverReason.HumansByVote, false);
                 }
             }
-            else if (exiled.Object.isRole(RoleId.MadJester))
+            else if (exiled.Object.IsRole(RoleId.MadJester))
             {
                 var (complate, all) = TaskCount.TaskDateNoClearCheck(exiled);
                 if (!RoleClass.MadJester.IsMadJesterTaskClearWin || complate >= all)

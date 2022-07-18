@@ -26,7 +26,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     allplayer++;
-                    if (p.isAlive())
+                    if (p.IsAlive())
                     {
                         alives++;
                     }
@@ -143,7 +143,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     return false;
                 }
                 if ((ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.HideAndSeek) || ModeHandler.IsMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
-                if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.isRole(RoleId.MadMate))
+                if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.IsRole(RoleId.MadMate))
                 {
                     return false;
                 }
@@ -165,7 +165,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
                         {
-                            if (p.inVent && p.isAlive() && VentData.ContainsKey(p.PlayerId) && VentData[p.PlayerId] != null)
+                            if (p.inVent && p.IsAlive() && VentData.ContainsKey(p.PlayerId) && VentData[p.PlayerId] != null)
                             {
                                 p.MyPhysics.RpcBootFromVent((int)VentData[p.PlayerId]);
                             }
@@ -193,7 +193,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 List<PlayerControl> players = new();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.isAlive())
+                    if (p.IsAlive())
                     {
                         players.Add(p);
                     }
@@ -250,7 +250,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.isAlive())
+                    if (p.IsAlive())
                     {
                         alives++;
                     }
@@ -260,7 +260,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     __instance.enabled = false;
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.isAlive())
+                        if (p.IsAlive())
                         {
                             p.RpcSetRole(RoleTypes.Impostor);
                         }

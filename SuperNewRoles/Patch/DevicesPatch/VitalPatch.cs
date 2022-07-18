@@ -39,7 +39,7 @@ namespace SuperNewRoles.Patch
         static void UseVitalsTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.MapOption.RestrictVital.GetBool() && RestrictVitalsTime > 0f && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.MapOptionSetting.GetBool())
+            if (MapOptions.MapOption.RestrictVital.GetBool() && RestrictVitalsTime > 0f && PlayerControl.LocalPlayer.IsAlive() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.MapOptionSetting.GetBool())
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseVitalsTime, SendOption.Reliable, -1);
                 writer.Write(vitalsTimer);

@@ -24,11 +24,11 @@ namespace SuperNewRoles.Roles
             AlivePlayer.Clear();
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive() && p.CanMove && !p.isImpostor())
+                if (p.IsAlive() && p.CanMove && !p.IsImpostor())
                 {
                     AlivePlayer.Add(p);
                 }
-                SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:" + p.PlayerId + "\n生存:" + p.isAlive());
+                SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:" + p.PlayerId + "\n生存:" + p.IsAlive());
             }
             var RandomPlayer = ModHelpers.GetRandom<PlayerControl>(AlivePlayer);
             var PushSwapper = PlayerControl.LocalPlayer;
@@ -38,12 +38,12 @@ namespace SuperNewRoles.Roles
             Writer.Write(RandomPlayer.PlayerId);
             Writer.Write(PushSwapper.PlayerId);
             AmongUsClient.Instance.FinishRpcImmediately(Writer);
-            //SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:"+RandomPlayer.PlayerId+"\n生存:"+!RandomPlayer.isDead());
+            //SuperNewRolesPlugin.Logger.LogInfo("ポジションスワップ:"+RandomPlayer.PlayerId+"\n生存:"+!RandomPlayer.IsDead());
         }
         /*public static Vector3 GetSwapPosition(byte SwapPlayerID, byte SwapperID){
             var SwapPlayer = ModHelpers.playerById(SwapPlayerID);
             var SwapperPlayer = ModHelpers.playerById(SwapperID);
-            if (PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)){
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.PositionSwapper)){
                 return SwapPlayer.transform.position;
             }
             else{

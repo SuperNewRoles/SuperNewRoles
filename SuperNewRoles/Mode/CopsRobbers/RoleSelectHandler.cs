@@ -32,7 +32,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
                 {
                     if (!player2.Data.Disconnected)
                     {
-                        if (!player2.isImpostor())
+                        if (!player2.IsImpostor())
                         {
                             player2.RpcSetRoleDesync(RoleTypes.GuardianAngel, player);
                         }
@@ -43,7 +43,7 @@ namespace SuperNewRoles.Mode.CopsRobbers
             {
                 if (!player.Data.Disconnected)
                 {
-                    if (!player.isImpostor())
+                    if (!player.IsImpostor())
                     {
                         player.RpcSetRole(RoleTypes.Crewmate);
                     }
