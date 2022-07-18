@@ -45,7 +45,7 @@ namespace SuperNewRoles.Helpers
         {
             door.SetDoorway(Open);
             MessageWriter writer = StartRPC(CustomRPC.CustomRPC.RpcSetDoorway);
-            writer.Write(door.Id);
+            writer.Write((byte)door.Id);
             writer.Write(Open);
             writer.EndRPC();
         }
