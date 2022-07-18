@@ -22,7 +22,7 @@ namespace SuperNewRoles
             __instance.NumEmergencyMeetings = 1;
             __instance.TaskBarMode = TaskBarMode.Invisible;
             if (modes != GameModes.OnlineGame)
-            __instance.NumImpostors = GameOptionsData.RecommendedImpostors[numPlayers];
+                __instance.NumImpostors = GameOptionsData.RecommendedImpostors[numPlayers];
             __instance.KillDistance = 0;
             __instance.DiscussionTime = 0;
             __instance.VotingTime = 150;

@@ -6,11 +6,11 @@ namespace SuperNewRoles.Mode.RandomColor
     {
         public static bool CheckEndGame(ShipStatus __instance, PlayerStatistics statistics)
         {
-            if (CheckAndEndGameForSabotageWin(__instance)
-                || CheckAndEndGameForImpostorWin(__instance, statistics)) return false;
-            return CheckAndEndGameForCrewmateWin(__instance, statistics)
+            return CheckAndEndGameForSabotageWin(__instance)
+                || CheckAndEndGameForImpostorWin(__instance, statistics)
                 ? false
-                : !PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance) && false;
+                : !CheckAndEndGameForCrewmateWin(__instance, statistics)
+&& !PlusModeHandler.IsMode(PlusModeId.NotTaskWin) && CheckAndEndGameForTaskWin(__instance) && false;
         }
         public static void CustomEndGame(ShipStatus __instance, GameOverReason reason, bool showAd)
         {

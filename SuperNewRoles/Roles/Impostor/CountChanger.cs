@@ -43,13 +43,12 @@ namespace SuperNewRoles.Roles
             var getroledata = GetRoleType(p);
             if (getroledata == TeamRoleType.Crewmate)
             {
-                if ((RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId)
+                return (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId)
                     && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.MadMate))
                     || (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId)
-                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadMate)))
-                    return true;
-                else
-                    return p.IsRole(RoleId.MadMate);
+                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadMate))
+                    ? true
+                    : p.IsRole(RoleId.MadMate);
             }
             return false;
         }
@@ -58,13 +57,12 @@ namespace SuperNewRoles.Roles
             var getroledata = GetRoleType(p);
             if (getroledata == TeamRoleType.Crewmate)
             {
-                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId)
+                return RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId)
                     && (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.MadMayor)
                     || (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId)
-                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadMayor))))
-                    return true;
-                else
-                    return p.IsRole(RoleId.MadMayor);
+                    && ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.MadMayor)))
+                    ? true
+                    : p.IsRole(RoleId.MadMayor);
             }
             return false;
         }

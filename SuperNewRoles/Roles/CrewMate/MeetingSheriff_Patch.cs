@@ -94,10 +94,11 @@ namespace SuperNewRoles.Roles
         public static bool IsMeetingSheriffKill(PlayerControl Target)
         {
             var roledata = CountChanger.GetRoleType(Target);
-            if ((roledata == TeamRoleType.Impostor)
+            return (roledata == TeamRoleType.Impostor)
                 || (Target.IsMadRoles() && RoleClass.MeetingSheriff.MadRoleKill)
-                || (Target.IsFriendRoles() && RoleClass.MeetingSheriff.MadRoleKill)) return true;
-            return Target.IsNeutral() && RoleClass.MeetingSheriff.NeutralKill ? true : Target.IsRole(RoleId.HauntedWolf);
+                || (Target.IsFriendRoles() && RoleClass.MeetingSheriff.MadRoleKill)
+                ? true
+                : (Target.IsNeutral() && RoleClass.MeetingSheriff.NeutralKill) || Target.IsRole(RoleId.HauntedWolf);
         }
         static void MeetingSheriffOnClick(int Index, MeetingHud __instance)
         {

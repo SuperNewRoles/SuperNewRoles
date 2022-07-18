@@ -21,7 +21,7 @@ namespace SuperNewRoles
         }
         public static bool IsMod(this int player)
         {
-            return player == AmongUsClient.Instance.HostId && AmongUsClient.Instance.AmHost
+            return (player == AmongUsClient.Instance.HostId && AmongUsClient.Instance.AmHost)
 || GameStartManagerUpdatePatch.VersionPlayers.ContainsKey(player);
         }
         public static void clearAllTasks(this PlayerControl player)

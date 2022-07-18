@@ -17,7 +17,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             try
             {
-                return player.Data.Disconnected ? true : player.Data.Role.IsImpostor || ZombiePlayers.Contains(player.PlayerId);
+                return player.Data.Disconnected || player.Data.Role.IsImpostor || ZombiePlayers.Contains(player.PlayerId);
             }
             catch { return false; }
         }

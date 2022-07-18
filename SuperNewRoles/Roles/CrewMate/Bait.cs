@@ -1,7 +1,7 @@
 using System.Linq;
 using Hazel;
-using SuperNewRoles.Patch;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Patch;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles

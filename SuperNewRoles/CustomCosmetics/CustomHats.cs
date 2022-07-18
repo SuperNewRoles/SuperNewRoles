@@ -410,8 +410,7 @@ namespace SuperNewRoles.CustomCosmetics
 
                     if (x == "developerHats") return 20;
                     if (x.Contains("gmEdition")) return 40;
-                    if (x.Contains("shiune")) return 30;
-                    return x.Contains("01haomingHat") ? 10 : x.Contains("Hat_SNR") ? 0 : 500;
+                    return x.Contains("shiune") ? 30 : x.Contains("01haomingHat") ? 10 : x.Contains("Hat_SNR") ? 0 : 500;
                 });
 
                 foreach (string key in orderedKeys)

@@ -1,5 +1,5 @@
-using UnityEngine;
 using Il2CppSystem.Collections.Generic;
+using UnityEngine;
 
 namespace SuperNewRoles.Mode.HideAndSeek
 {

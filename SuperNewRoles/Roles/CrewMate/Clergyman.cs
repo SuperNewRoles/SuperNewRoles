@@ -25,7 +25,7 @@ namespace SuperNewRoles.Roles
         public static bool IsLightOutVision()
         {
             if (RoleClass.Clergyman.OldButtonTime <= 0) return false;
-            if ((CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor)
+            return (CountChanger.GetRoleType(PlayerControl.LocalPlayer) == TeamRoleType.Impostor)
                 || CountChanger.IsChangeMadmate(PlayerControl.LocalPlayer)
                 || CountChanger.IsChangeMadMayor(PlayerControl.LocalPlayer)
                 || CountChanger.IsChangeMadJester(PlayerControl.LocalPlayer)
@@ -37,8 +37,9 @@ namespace SuperNewRoles.Roles
                 || CountChanger.IsChangeSidekick(PlayerControl.LocalPlayer)
                 || CountChanger.IsChangeJackalFriends(PlayerControl.LocalPlayer)
                 || CountChanger.IsChangeSeerFriends(PlayerControl.LocalPlayer)
-                || CountChanger.IsChangeJackalSeer(PlayerControl.LocalPlayer)) return true;
-            return CountChanger.IsChangeSidekickSeer(PlayerControl.LocalPlayer) ? true : CountChanger.IsChangeBlackCat(PlayerControl.LocalPlayer);
+                || CountChanger.IsChangeJackalSeer(PlayerControl.LocalPlayer)
+                ? true
+                : CountChanger.IsChangeSidekickSeer(PlayerControl.LocalPlayer) || CountChanger.IsChangeBlackCat(PlayerControl.LocalPlayer);
         }
         public static bool IsLightOutVisionNoTime()
         {

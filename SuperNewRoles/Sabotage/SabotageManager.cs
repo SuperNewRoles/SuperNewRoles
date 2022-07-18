@@ -15,8 +15,9 @@ namespace SuperNewRoles.Sabotage
         }
         public static bool IsOK(CustomSabotage sabotage)
         {
-            if (!Options.SabotageSetting.GetBool()) return false;
-            return sabotage switch
+            return !Options.SabotageSetting.GetBool()
+                ? false
+                : sabotage switch
             {
                 CustomSabotage.CognitiveDeficit => PlayerControl.GameOptions.MapId == 4 && Options.CognitiveDeficitSetting.GetBool(),
                 _ => false,
@@ -24,14 +25,13 @@ namespace SuperNewRoles.Sabotage
         }
         public static bool IsOKMeeting()
         {
-            return RoleHelpers.IsSabotage()
-                ? false
-                : thisSabotage == CustomSabotage.None
+            return !RoleHelpers.IsSabotage()
+&& (thisSabotage == CustomSabotage.None
 || thisSabotage switch
 {
     CustomSabotage.CognitiveDeficit => CognitiveDeficit.Main.IsLocalEnd,
     _ => false,
-};
+});
         }
         public static InfectedOverlay InfectedOverlayInstance;
         public const float SabotageMaxTime = 30f;

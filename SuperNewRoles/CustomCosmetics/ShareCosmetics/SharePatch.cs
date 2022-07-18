@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
-using UnityEngine;
 using SuperNewRoles.CustomRPC;
+using UnityEngine;
 
 namespace SuperNewRoles.CustomCosmetics.ShareCosmetics
 {

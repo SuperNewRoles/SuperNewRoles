@@ -34,10 +34,10 @@ namespace SuperNewRoles.Patch
                 || ModeHandler.IsMode(ModeId.HideAndSeek)
                 || ModeHandler.IsMode(ModeId.BattleRoyal)
                 || ModeHandler.IsMode(ModeId.CopsRobbers)) return false;
-                if (ModeHandler.IsMode(ModeId.SuperHostRoles)) return Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target);
-                return ModeHandler.IsMode(ModeId.Zombie)
-                    ? false
-                    : !ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId;
+                return ModeHandler.IsMode(ModeId.SuperHostRoles)
+                    ? Mode.SuperHostRoles.ReportDeadBody.ReportDeadBodyPatch(__instance, target)
+                    : !ModeHandler.IsMode(ModeId.Zombie)
+&& (!ModeHandler.IsMode(ModeId.Detective) || target != null || !Mode.Detective.Main.IsNotDetectiveMeetingButton || __instance.PlayerId == Mode.Detective.Main.DetectivePlayer.PlayerId);
             }
         }
     }

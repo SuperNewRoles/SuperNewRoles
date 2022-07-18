@@ -34,18 +34,13 @@ namespace SuperNewRoles
             {
                 if (!Loaded) return null;
 
-                if (_submarineStatus is null || _submarineStatus.WasCollected || !_submarineStatus || _submarineStatus == null)
-                {
-                    return MapUtilities.CachedShipStatus is null || MapUtilities.CachedShipStatus.WasCollected || !MapUtilities.CachedShipStatus || MapUtilities.CachedShipStatus == null
+                return _submarineStatus is null || _submarineStatus.WasCollected || !_submarineStatus || _submarineStatus == null
+                    ? MapUtilities.CachedShipStatus is null || MapUtilities.CachedShipStatus.WasCollected || !MapUtilities.CachedShipStatus || MapUtilities.CachedShipStatus == null
                         ? (_submarineStatus = null)
                         : MapUtilities.CachedShipStatus.Type == SUBMERGED_MAP_TYPE
                             ? (_submarineStatus = MapUtilities.CachedShipStatus.GetComponent(Il2CppType.From(SubmarineStatusType))?.TryCast(SubmarineStatusType) as MonoBehaviour)
-                            : (_submarineStatus = null);
-                }
-                else
-                {
-                    return _submarineStatus;
-                }
+                            : (_submarineStatus = null)
+                    : _submarineStatus;
             }
         }
 

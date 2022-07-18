@@ -5,7 +5,7 @@ namespace SuperNewRoles.Roles
 {
     public class MadHawk
     {
-        public static void TimerEnd(){}
+        public static void TimerEnd() { }
         public class FixedUpdate
         {
             public static void Postfix()

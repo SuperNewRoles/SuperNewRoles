@@ -606,7 +606,7 @@ namespace SuperNewRoles.CustomOption
         }
         public static bool IsHidden(this CustomOption option)
         {
-            return option.isHidden ? true : !option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false);
+            return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false));
         }
         public static void Postfix(GameOptionsMenu __instance)
         {

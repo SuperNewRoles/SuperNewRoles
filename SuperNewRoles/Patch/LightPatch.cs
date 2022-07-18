@@ -35,9 +35,9 @@ namespace SuperNewRoles.Patch
 
             if (player == null || player.IsDead)
                 __result = __instance.MaxLightRadius;
-            else if (player.Object.IsRole(RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate)
-                __result = GetNeutralLightRadius(__instance, false);
-            else __result = player.Object.IsImpostor() || RoleHelpers.IsImpostorLight(player.Object)
+            else __result = player.Object.IsRole(RoleId.CountChanger) && CountChanger.GetRoleType(player.Object) == TeamRoleType.Crewmate
+                ? GetNeutralLightRadius(__instance, false)
+                : player.Object.IsImpostor() || RoleHelpers.IsImpostorLight(player.Object)
                 ? GetNeutralLightRadius(__instance, true)
                 : player.Object.IsRole(RoleId.Lighter) && RoleClass.Lighter.IsLightOn
                 ? Mathf.Lerp(__instance.MaxLightRadius * RoleClass.Lighter.UpVision, __instance.MaxLightRadius * RoleClass.Lighter.UpVision, num)

@@ -200,8 +200,9 @@ namespace SuperNewRoles.Mode
             if (IsMode(ModeId.RandomColor, false)) return ModeId.RandomColor;
             if (IsMode(ModeId.NotImpostorCheck, false)) return ModeId.NotImpostorCheck;
             if (IsMode(ModeId.Detective, false)) return ModeId.Detective;
-            if (IsMode(ModeId.Werewolf, false)) return ModeId.Werewolf;
-            return IsMode(ModeId.CopsRobbers, false) ? ModeId.CopsRobbers : IsMode(ModeId.LevelUp, false) ? ModeId.LevelUp : ModeId.No;
+            return IsMode(ModeId.Werewolf, false)
+                ? ModeId.Werewolf
+                : IsMode(ModeId.CopsRobbers, false) ? ModeId.CopsRobbers : IsMode(ModeId.LevelUp, false) ? ModeId.LevelUp : ModeId.No;
         }
         public static string GetThisModeIntro()
         {
@@ -266,8 +267,7 @@ namespace SuperNewRoles.Mode
         }
         public static bool IsBlockVanilaRole()
         {
-            if (IsMode(ModeId.NotImpostorCheck)) return false;
-            return IsMode(ModeId.Detective) ? false : !IsMode(ModeId.Default);
+            return IsMode(ModeId.NotImpostorCheck) ? false : !IsMode(ModeId.Detective) && !IsMode(ModeId.Default);
         }
         public static bool IsBlockGuardianAngelRole()
         {
