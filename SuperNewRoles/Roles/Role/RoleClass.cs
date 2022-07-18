@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
@@ -1264,10 +1264,11 @@ namespace SuperNewRoles.Roles
                 try
                 {
                     if (name == CustomOptions.LevelingerTexts[0]) { return LevelPowerTypes.None; }
-                    else if (name == CustomOptions.LevelingerTexts[1]) { return LevelPowerTypes.Keep; }
                     else
                     {
-                        return name == CustomOptions.LevelingerTexts[2]
+                        return name == CustomOptions.LevelingerTexts[1]
+                        ? LevelPowerTypes.Keep
+                        : name == CustomOptions.LevelingerTexts[2]
                         ? LevelPowerTypes.Pursuer
                         : name == CustomOptions.LevelingerTexts[3]
                         ? LevelPowerTypes.Teleporter

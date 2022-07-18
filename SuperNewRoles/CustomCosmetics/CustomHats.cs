@@ -406,9 +406,9 @@ namespace SuperNewRoles.CustomCosmetics
 
                 var orderedKeys = packages.Keys.OrderBy((string x) =>
                 {
-                    if (x == innerslothPackageName) return 100003;
-
-                    return x == "developerHats"
+                    return x == innerslothPackageName
+                        ? 100003
+                        : x == "developerHats"
                         ? 20
                         : x.Contains("gmEdition") ? 40 : x.Contains("shiune") ? 30 : x.Contains("01haomingHat") ? 10 : x.Contains("Hat_SNR") ? 0 : 500;
                 });
