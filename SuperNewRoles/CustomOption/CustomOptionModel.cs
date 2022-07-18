@@ -186,6 +186,7 @@ namespace SuperNewRoles.CustomOption
 
                 if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
                 {
+                    Logger.Info($"{GetName()} => {newSelection}","CustomOptionModel");
                     if (id == 0) SwitchPreset(selection); // Switch presets
                     else if (entry != null) entry.Value = selection; // Save selection to config
 
