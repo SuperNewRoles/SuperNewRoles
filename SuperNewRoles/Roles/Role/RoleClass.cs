@@ -1774,7 +1774,6 @@ namespace SuperNewRoles.Roles
             public static bool IsUseVent;
             public static bool IsUseSabo;
             public static bool IsImpostorLight;
-            public static bool IsCreatedFriend;
             public static bool CanCreateFriend;
             public static float CoolTime;
             public static float DurationTime;
@@ -1913,9 +1912,7 @@ namespace SuperNewRoles.Roles
             public static bool CreateSidekick;
             public static bool NewJackalCreateSidekick;
             public static bool IsCreateSidekick;
-
             public static bool CanCreateFriend;
-
             public static void ClearAndReload()
             {
                 JackalSeerPlayer = new();
@@ -1934,7 +1931,6 @@ namespace SuperNewRoles.Roles
                 CreateSidekick = CustomOptions.JackalSeerCreateSidekick.getBool();
                 IsCreateSidekick = CustomOptions.JackalSeerCreateSidekick.getBool();
                 NewJackalCreateSidekick = CustomOptions.JackalSeerNewJackalCreateSidekick.getBool();
-
                 CanCreateFriend = CustomOptions.JackalSeerCreateFriend.getBool();
             }
         }
