@@ -1,12 +1,11 @@
-// 旧式翻訳システム
-
-/*using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using SuperNewRoles.Patch;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 namespace SuperNewRoles
 {
@@ -15,15 +14,14 @@ namespace SuperNewRoles
         public static int defaultLanguage = (int)SupportedLangs.English;
         public static Dictionary<string, Dictionary<int, string>> stringData = new();
 
-        public ModTranslation()
-        {
+        private const string blankText = "[BLANK]";
 
-        }
+        public ModTranslation() { }
         public static dynamic LangDate;
         public static void Load()
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
-            Stream stream = assembly.GetManifestResourceStream("SuperNewRoles.Resources.translatedate.json");
+            Stream stream = assembly.GetManifestResourceStream("SuperNewRoles.Resources.TranslateFile.json");
             var byteTexture = new byte[stream.Length];
             var read = stream.Read(byteTexture, 0, (int)stream.Length);
             string json = System.Text.Encoding.UTF8.GetString(byteTexture);
@@ -45,53 +43,47 @@ namespace SuperNewRoles
 
                         if (text != null && text.Length > 0)
                         {
-                            //SuperNewRolesPlugin.Instance.Log.LogInfo($"key: {stringName} {key} {text}");
-                            strings[j] = text;
+                            if (text == blankText) strings[j] = "";
+                            else strings[j] = text;
                         }
                     }
                     stringData[stringName] = strings;
                 }
             }
         }
-
-        public static uint GetLang()
-        {
-            return SaveManager.LastLanguage;
-        }
         public static string GetString(string key, string def = null)
         {
-            try
-            {
-                return stringData[key][(int)GetLang()].Replace("\\n", "\n");
-            }
-            catch
-            {
-                try
-                {
-                    return stringData[key][defaultLanguage].Replace("\\n", "\n");
-                }
-                catch
-                {
-                    return key;
-                }
-            }
-        }
+            // Strip out color tags.
+            string keyClean = Regex.Replace(key, "<.*?>", "");
+            keyClean = Regex.Replace(keyClean, "^-\\s*", "");
+            keyClean = keyClean.Trim();
 
-        public static Sprite getImage(string key, float pixelsPerUnit)
-        {
-            key = key.Replace("/", ".");
-            key = key.Replace("\\", ".");
-            key = "SuperNewRoles.Resources." + key;
-
-            return ModHelpers.LoadSpriteFromResources(key, pixelsPerUnit);
-        }
-        [HarmonyPatch(typeof(LanguageSetter), nameof(LanguageSetter.SetLanguage))]
-        class SetLanguagePatch
-        {
-            static void Postfix()
+            def = def ?? key;
+            if (!stringData.ContainsKey(keyClean))
             {
-                ClientOptionsPatch.UpdateTranslations();
+                return def;
             }
+
+            var data = stringData[keyClean];
+            int lang = (int)SaveManager.LastLanguage;
+
+            if (data.ContainsKey(lang))
+            {
+                return key.Replace(keyClean, data[lang]);
+            }
+            else if (data.ContainsKey(defaultLanguage))
+            {
+                return key.Replace(keyClean, data[defaultLanguage]);
+            }
+            return key;
         }
     }
-}*/
+    [HarmonyPatch(typeof(LanguageSetter), nameof(LanguageSetter.SetLanguage))]
+    class SetLanguagePatch
+    {
+        static void Postfix()
+        {
+            ClientOptionsPatch.updateTranslations();
+        }
+    }
+}

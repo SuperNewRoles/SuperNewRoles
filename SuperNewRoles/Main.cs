@@ -67,7 +67,7 @@ namespace SuperNewRoles
 
             // Old Delete End
 
-            Logger.LogInfo(ModTranslation.GetString("StartLogText"));
+            Logger.LogInfo(ModTranslation.GetString("\n---------------\nSuperNewRoles\n" + ModTranslation.GetString("StartLogText") + "\n---------------"));
 
             var assembly = Assembly.GetExecutingAssembly();
 
