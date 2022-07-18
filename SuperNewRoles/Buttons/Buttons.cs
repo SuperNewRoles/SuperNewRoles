@@ -65,6 +65,8 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SuicideWisherSuicideButton;
         public static CustomButton FastMakerButton;
         public static CustomButton ToiletFanButton;
+        public static CustomButton AllCloserButton;
+        public static CustomButton MadAllCloserButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -1983,6 +1985,142 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.getString("ToiletName"),
+                showButtonText = true
+            };
+
+                        AllCloserButton = new CustomButton(
+                () =>
+                {
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Cafeteria);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Hallway);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Storage);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Nav);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Weapons);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Admin);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.MedBay);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Electrical);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Security);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.UpperEngine);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.LowerEngine);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Reactor);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Balcony);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Greenhouse);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Office);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.LockerRoom);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Laboratory);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Decontamination);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Decontamination2);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Decontamination3);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Launchpad);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Specimens);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Dropship);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.CargoBay);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Lounge);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Medical);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Showers);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Records);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.MainHall);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.GapRoom);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.MeetingRoom);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Brig);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Engine);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Kitchen);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.VaultRoom);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Comms);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Armory);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.ViewingDeck);
+
+                    //技術がないので全部の部屋を1個1個指定してあけるようにするとかいう脳筋
+
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.AllCloser; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    AllCloserButton.MaxTimer = RoleClass.AllCloser.CloseCool;
+                    AllCloserButton.Timer = RoleClass.AllCloser.CloseCool;
+                },
+                RoleClass.AllCloser.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.getString("AllCloseName"),
+                showButtonText = true
+            };
+
+                                    MadAllCloserButton = new CustomButton(
+                () =>
+                {
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Cafeteria);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Hallway);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Storage);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Nav);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Weapons);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Admin);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.MedBay);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Electrical);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Security);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.UpperEngine);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.LowerEngine);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Reactor);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Balcony);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Greenhouse);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Office);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.LockerRoom);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Laboratory);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Decontamination);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Decontamination2);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Decontamination3);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Launchpad);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Specimens);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Dropship);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.CargoBay);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Lounge);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Medical);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Showers);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Records);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.MainHall);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.GapRoom);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.MeetingRoom);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Brig);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Engine);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Kitchen);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.VaultRoom);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Comms);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Armory);
+                    ShipStatus.Instance.CloseDoorsOfType(SystemTypes.ViewingDeck);
+
+                    //技術がないので全部の部屋を1個1個指定してあけるようにするとかいう脳筋
+
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.MadAllCloser; },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    MadAllCloserButton.MaxTimer = RoleClass.MadAllCloser.CloseCool;
+                    MadAllCloserButton.Timer = RoleClass.MadAllCloser.CloseCool;
+                },
+                RoleClass.MadAllCloser.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.getString("AllCloseName"),
                 showButtonText = true
             };
 

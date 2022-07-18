@@ -136,6 +136,7 @@ namespace SuperNewRoles.Patches
                         case RoleId.MadSeer:
                         case RoleId.MadMaker:
                         case RoleId.BlackCat:
+                        case RoleId.MadAllCloser:
                         case RoleId.JackalFriends:
                         case RoleId.SeerFriends:
                         case RoleId.MayorFriends:

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -162,6 +162,86 @@ namespace SuperNewRoles.Patches
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
+                        return false;
+                    case RoleId.AllCloser:
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Cafeteria);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Hallway);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Storage);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Nav);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Weapons);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Admin);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.MedBay);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Electrical);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Security);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.UpperEngine);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.LowerEngine);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Reactor);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Balcony);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Greenhouse);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Office);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.LockerRoom);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Laboratory);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Decontamination);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Decontamination2);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Decontamination3);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Launchpad);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Specimens);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Dropship);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.CargoBay);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Lounge);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Medical);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Showers);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Records);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.MainHall);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.GapRoom);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.MeetingRoom);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Brig);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Engine);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Kitchen);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.VaultRoom);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Comms);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Armory);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.ViewingDeck);
+                        return false;
+                    case RoleId.MadAllCloser:
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Cafeteria);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Hallway);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Storage);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Nav);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Weapons);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Admin);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.MedBay);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Electrical);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Security);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.UpperEngine);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.LowerEngine);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Reactor);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Balcony);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Greenhouse);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Office);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.LockerRoom);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Laboratory);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Decontamination);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Decontamination2);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Decontamination3);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Launchpad);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Specimens);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Dropship);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.CargoBay);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Lounge);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Medical);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Showers);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Records);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.MainHall);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.GapRoom);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.MeetingRoom);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Brig);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Engine);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Kitchen);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.VaultRoom);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Comms);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.Armory);
+                        ShipStatus.Instance.CloseDoorsOfType(SystemTypes.ViewingDeck);
                         return false;
                 }
             }
@@ -399,6 +479,8 @@ namespace SuperNewRoles.Patches
                     {
                         case RoleId.RemoteSheriff:
                         case RoleId.ToiletFan:
+                        case RoleId.AllCloser:
+                        case RoleId.MadAllCloser:
                             return false;
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;

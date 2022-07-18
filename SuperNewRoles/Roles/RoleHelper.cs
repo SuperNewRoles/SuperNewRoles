@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.CustomRPC;
@@ -42,6 +42,8 @@ namespace SuperNewRoles
                 RoleId.MadSeer => true,
                 RoleId.BlackCat => true,
                 RoleId.MadMaker => true,
+                RoleId.AllCloser => true,
+                RoleId.MadAllCloser => true,
                 //isMad
                 _ => false,
             };
@@ -600,6 +602,12 @@ namespace SuperNewRoles
                 case (RoleId.ToiletFan):
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
+                case (RoleId.AllCloser):
+                    RoleClass.AllCloser.AllCloserPlayer.Add(player);
+                    break;
+                case (RoleId.MadAllCloser):
+                    RoleClass.MadAllCloser.MadAllCloserPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -958,6 +966,12 @@ namespace SuperNewRoles
                 case (RoleId.ToiletFan):
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
+                case (RoleId.AllCloser):
+                    RoleClass.AllCloser.AllCloserPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (RoleId.MadAllCloser):
+                    RoleClass.MadAllCloser.MadAllCloserPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -1010,13 +1024,16 @@ namespace SuperNewRoles
                 case RoleId.Neet:
                     IsTaskClear = true;
                     break;
-                    //タスククリアか
+                case (RoleId.MadAllCloser):
+                    IsTaskClear = true;
+                    break;
+                //タスククリアか
             }
             if (player.isImpostor())
             {
                 IsTaskClear = true;
             }
-            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan)))
+            if (!IsTaskClear && ModeHandler.isMode(ModeId.SuperHostRoles) && (player.isRole(RoleId.Sheriff) || player.isRole(RoleId.RemoteSheriff) || player.isRole(RoleId.ToiletFan) || player.isRole(RoleId.AllCloser)))
             {
                 IsTaskClear = true;
             }
@@ -1089,6 +1106,8 @@ namespace SuperNewRoles
                     return RoleClass.BlackCat.IsUseVent;
                 case RoleId.Spy:
                     return RoleClass.Spy.CanUseVent;
+                case RoleId.MadAllCloser:
+                    return RoleClass.MadAllCloser.IsUseVent;
                     //ベントが使える
             }
             return false;
@@ -1154,6 +1173,7 @@ namespace SuperNewRoles
                 RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
                 RoleId.MayorFriends => RoleClass.MayorFriends.IsImpostorLight,
                 RoleId.BlackCat => RoleClass.BlackCat.IsImpostorLight,
+                RoleId.MadAllCloser => RoleClass.MadAllCloser.IsImpostorLight,
                 _ => false,
             };
         }
@@ -1466,6 +1486,8 @@ namespace SuperNewRoles
                 else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
+                else if (RoleClass.AllCloser.AllCloserPlayer.IsCheckListPlayerControl(player)) return RoleId.AllCloser;
+                else if (RoleClass.MadAllCloser.MadAllCloserPlayer.IsCheckListPlayerControl(player)) return RoleId.MadAllCloser;
                 //ロールチェック
             }
             catch (Exception e)

@@ -36,11 +36,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.Samurai:
                     if (RoleClass.Samurai.UseVent) return true;
                     break;
+                case RoleId.MadAllCloser:
+                    if (RoleClass.MadAllCloser.IsUseVent) return true;
+                    break;
                 case RoleId.RemoteSheriff:
                 case RoleId.Sheriff:
                 case RoleId.truelover:
                 case RoleId.FalseCharges:
                 case RoleId.ToiletFan:
+                case RoleId.AllCloser:
                     break;
                 default:
                     return true;

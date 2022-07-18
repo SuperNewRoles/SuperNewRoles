@@ -132,6 +132,8 @@ namespace SuperNewRoles.CustomRPC
         Neet,
         FastMaker,
         ToiletFan,
+        AllCloser,
+        MadAllCloser,
         //RoleId
     }
 
