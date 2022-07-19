@@ -7,14 +7,14 @@ namespace SuperNewRoles.MapCustoms
     [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Awake))]
     class OptimizeMapPatch
     {
-        public static void Postfix(ShipStatus __instance)
+        public static void Postfix()
         {
-            addWireTasks();
+            AddWireTasks();
         }
-        public static void addWireTasks()
+        public static void AddWireTasks()
         {
             // Airship配線タスク追加
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AddWireTask.getBool())
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AddWireTask.GetBool())
             {
                 ActivateWiring("task_wiresHallway2", 2);
                 ActivateWiring("task_electricalside2", 3).Room = SystemTypes.Armory;
@@ -47,7 +47,7 @@ namespace SuperNewRoles.MapCustoms
         }
         protected static Console ActivateConsole(string objectName)
         {
-            GameObject obj = UnityEngine.GameObject.Find(objectName);
+            GameObject obj = GameObject.Find(objectName);
             if (obj == null)
             {
                 SuperNewRolesPlugin.Logger.LogError($"Object \"{objectName}\" was not found!");

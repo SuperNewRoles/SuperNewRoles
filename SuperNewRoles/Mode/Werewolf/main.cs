@@ -6,7 +6,7 @@ using SuperNewRoles.Roles;
 
 namespace SuperNewRoles.Mode.Werewolf
 {
-    class main
+    class Main
     {
         public static bool IsDiscussion;
         public static bool IsFirst;
@@ -26,7 +26,7 @@ namespace SuperNewRoles.Mode.Werewolf
             CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                p.getDefaultName();
+                p.GetDefaultName();
             }
             IsDiscussion = true;
             IsFirst = true;
@@ -41,7 +41,7 @@ namespace SuperNewRoles.Mode.Werewolf
         public static void IntroHandler()
         {
             if (!AmongUsClient.Instance.AmHost) return;
-            PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.getString("WereWolfMeetingNormal"));
+            PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.GetString("WereWolfMeetingNormal"));
             new LateTask(() =>
             {
                 IsDiscussion = true;
@@ -59,7 +59,7 @@ namespace SuperNewRoles.Mode.Werewolf
             if (IsAbility)
             {
                 PlayerControl.GameOptions.VotingTime = AbilityTime;
-                PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.getString("WereWolfMeetingAbility"));
+                PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.GetString("WereWolfMeetingAbility"));
                 HunterExilePlayer = null;
                 SoothRoles = new();
                 HunterKillPlayers = new();
@@ -68,7 +68,7 @@ namespace SuperNewRoles.Mode.Werewolf
             else
             {
                 PlayerControl.GameOptions.VotingTime = DiscussionTime;
-                PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.getString("WereWolfMeetingNormal"));
+                PlayerControl.LocalPlayer.RpcSendChat(ModTranslation.GetString("WereWolfMeetingNormal"));
                 if (HunterExilePlayer != null)
                 {
                     HunterExilePlayer.RpcMurderPlayer(HunterExilePlayer);
@@ -88,9 +88,9 @@ namespace SuperNewRoles.Mode.Werewolf
                     PlayerControl target = ModHelpers.playerById((byte)players.Value);
                     if (source == null || target == null || source.Data.Disconnected) break;
                     string Chat = "";
-                    var RoleDate = IntroDate.GetIntroDate(target.getRole(), target);
-                    var RoleName = ModTranslation.getString("Werewolf" + RoleDate.NameKey + "Name");
-                    Chat += string.Format(ModTranslation.getString("WereWolfMediumAbilityText"), target.getDefaultName(), RoleName);
+                    var RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
+                    var RoleName = ModTranslation.GetString("Werewolf" + RoleDate.NameKey + "Name");
+                    Chat += string.Format(ModTranslation.GetString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
                     new LateTask(() =>
                     {
                         source.RPCSendChatPrivate(Chat);
@@ -103,9 +103,9 @@ namespace SuperNewRoles.Mode.Werewolf
                     {
                         string Chat = "";
                         PlayerControl target = exiled.Object;
-                        var RoleDate = IntroDate.GetIntroDate(target.getRole(), target);
-                        var RoleName = ModTranslation.getString("Werewolf" + RoleDate.NameKey + "Name");
-                        Chat += string.Format(ModTranslation.getString("WereWolfMediumAbilityText"), target.getDefaultName(), RoleName);
+                        var RoleDate = IntroDate.GetIntroDate(target.GetRole(), target);
+                        var RoleName = ModTranslation.GetString("Werewolf" + RoleDate.NameKey + "Name");
+                        Chat += string.Format(ModTranslation.GetString("WereWolfMediumAbilityText"), target.GetDefaultName(), RoleName);
                         new LateTask(() =>
                         {
                             player.RPCSendChatPrivate(Chat);
@@ -136,7 +136,7 @@ namespace SuperNewRoles.Mode.Werewolf
                     MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, target);
                     FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcStartMeeting(target);
-                    PlayerControl.LocalPlayer.RpcSetName(ModTranslation.getString("WereWolfMeetingNormal"));
+                    PlayerControl.LocalPlayer.RpcSetName(ModTranslation.GetString("WereWolfMeetingNormal"));
                     SetDefaultName();
                 }, Time, "KillStartMeeting");
 
@@ -144,7 +144,7 @@ namespace SuperNewRoles.Mode.Werewolf
                 {
                     new LateTask(() =>
                     {
-                        PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
+                        PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.GetDefaultName());
                     }, 5, "NameChangeMeeting");
                 }
                 SoothRoles = new();
@@ -157,11 +157,11 @@ namespace SuperNewRoles.Mode.Werewolf
                     MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
                     FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
                     PlayerControl.LocalPlayer.RpcStartMeeting(null);
-                    PlayerControl.LocalPlayer.RpcSetName(ModTranslation.getString("WereWolfMeetingAbility"));
+                    PlayerControl.LocalPlayer.RpcSetName(ModTranslation.GetString("WereWolfMeetingAbility"));
                 }, 11, "AbilityStartMeeting");
                 new LateTask(() =>
                 {
-                    PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.getDefaultName());
+                    PlayerControl.LocalPlayer.RpcSetName(PlayerControl.LocalPlayer.GetDefaultName());
                 }, 5, "NameChangeMeeting");
             }
             CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);

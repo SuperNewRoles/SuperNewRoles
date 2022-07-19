@@ -8,7 +8,7 @@ using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.Zombie
 {
-    static class main
+    static class Main
     {
         public static Color Zombiecolor = new Color32(143, 188, 143, byte.MaxValue);
         public static Color Policecolor = Color.blue;
@@ -17,9 +17,7 @@ namespace SuperNewRoles.Mode.Zombie
         {
             try
             {
-                if (player.Data.Disconnected) return true;
-                if (player.Data.Role.IsImpostor || ZombiePlayers.Contains(player.PlayerId)) return true;
-                return false;
+                return player.Data.Disconnected || player.Data.Role.IsImpostor || ZombiePlayers.Contains(player.PlayerId);
             }
             catch { return false; }
         }
@@ -55,7 +53,7 @@ namespace SuperNewRoles.Mode.Zombie
             }
             /*
             var Data = PlayerControl.GameOptions;
-            Data.CrewLightMod = ZombieOptions.ZombieLight.getFloat();
+            Data.CrewLightMod = ZombieOptions.ZombieLight.GetFloat();
             RPCHelper.RPCGameOptionsPrivate(Data,player);
             */
             if (!ZombiePlayers.Contains(player.PlayerId)) ZombiePlayers.Add(player.PlayerId);
@@ -70,7 +68,7 @@ namespace SuperNewRoles.Mode.Zombie
             bool IsZombieWin = true;
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (!ZombiePlayers.Contains(p.PlayerId) && p.isAlive())
+                if (!ZombiePlayers.Contains(p.PlayerId) && p.IsAlive())
                 {
                     IsZombieWin = false;
                 }
@@ -96,14 +94,14 @@ namespace SuperNewRoles.Mode.Zombie
                 p.SetHat("", 0);
             }
             /*
-            PlayerControl.GameOptions.ImpostorLightMod = ZombieOptions.ZombieLight.getFloat();
+            PlayerControl.GameOptions.ImpostorLightMod = ZombieOptions.ZombieLight.GetFloat();
             CachedPlayer.LocalPlayer.PlayerControl.RpcSyncSettings(PlayerControl.GameOptions);
             */
             SyncSetting.OptionData = PlayerControl.GameOptions;
-            ZombieOptions.ZombieLight = ZombieOptions.ZombieLightOption.getFloat();
-            ZombieOptions.ZombieSpeed = ZombieOptions.ZombieSpeedOption.getFloat();
-            ZombieOptions.PoliceLight = ZombieOptions.PoliceLightOption.getFloat();
-            ZombieOptions.PoliceSpeed = ZombieOptions.PoliceSpeedOption.getFloat();
+            ZombieOptions.ZombieLight = ZombieOptions.ZombieLightOption.GetFloat();
+            ZombieOptions.ZombieSpeed = ZombieOptions.ZombieSpeedOption.GetFloat();
+            ZombieOptions.PoliceLight = ZombieOptions.PoliceLightOption.GetFloat();
+            ZombieOptions.PoliceSpeed = ZombieOptions.PoliceSpeedOption.GetFloat();
             if (!AmongUsClient.Instance.AmHost) return;
             ZombiePlayers = new();
             if (AmongUsClient.Instance.AmHost)
@@ -111,7 +109,7 @@ namespace SuperNewRoles.Mode.Zombie
                 FixedUpdate.IsStart = false;
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    p.getDefaultName();
+                    p.GetDefaultName();
                     /*
                     p.UncheckSetVisor("visor_EmptyVisor");
                     */
@@ -138,7 +136,7 @@ namespace SuperNewRoles.Mode.Zombie
                     }
                 }
             }
-            FixedUpdate.NameChangeTimer = ZombieOptions.StartSecondOption.getFloat();
+            FixedUpdate.NameChangeTimer = ZombieOptions.StartSecondOption.GetFloat();
         }
     }
 }

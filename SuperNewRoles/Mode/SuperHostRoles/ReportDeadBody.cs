@@ -23,17 +23,17 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             DeadPlayer deadPlayer;
             deadPlayer = DeadPlayer.deadPlayers?.Where(x => x.player?.PlayerId == CachedPlayer.LocalPlayer.PlayerId)?.FirstOrDefault();
             //if (RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) return true;
-            if (__instance.isRole(RoleId.Minimalist))
+            if (__instance.IsRole(RoleId.Minimalist))
             {
                 var a = RoleClass.Minimalist.UseReport;
                 return a;
             }
-            if (__instance.isRole(RoleId.Fox))
+            if (__instance.IsRole(RoleId.Fox))
             {
                 var a = RoleClass.Fox.UseReport;
                 return a;
             }
-            //if (target.Object.isRole(RoleId.Bait) && (!deadPlayer.killerIfExisting.isRole(RoleId.Minimalist) || RoleClass.Minimalist.UseReport)) if (!RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) { return false; } else { return true; }
+            //if (target.Object.IsRole(RoleId.Bait) && (!deadPlayer.killerIfExisting.IsRole(RoleId.Minimalist) || RoleClass.Minimalist.UseReport)) if (!RoleClass.Bait.ReportedPlayer.Contains(target.PlayerId)) { return false; } else { return true; }
 
             return true;
         }

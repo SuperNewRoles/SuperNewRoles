@@ -288,22 +288,22 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
-            if (player.isRole(RoleId.MadStuntMan))
+            if (player.IsRole(RoleId.MadStuntMan))
             {
                 if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(playerid))
                 {
-                    RoleClass.MadStuntMan.GuardCount[playerid] = ((int)CustomOptions.MadStuntManMaxGuardCount.getFloat()) - 1;
+                    RoleClass.MadStuntMan.GuardCount[playerid] = ((int)CustomOptions.MadStuntManMaxGuardCount.GetFloat()) - 1;
                 }
                 else
                 {
                     RoleClass.MadStuntMan.GuardCount[playerid]--;
                 }
             }
-            else if (player.isRole(RoleId.StuntMan))
+            else if (player.IsRole(RoleId.StuntMan))
             {
                 if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
                 {
-                    RoleClass.StuntMan.GuardCount[playerid] = ((int)CustomOptions.StuntManMaxGuardCount.getFloat()) - 1;
+                    RoleClass.StuntMan.GuardCount[playerid] = ((int)CustomOptions.StuntManMaxGuardCount.GetFloat()) - 1;
                 }
                 else
                 {
@@ -334,7 +334,7 @@ namespace SuperNewRoles.CustomRPC
         {
             /*
             SuperNewRolesPlugin.Logger.LogInfo("TORGMシェアあああ！");
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, Hazel.SendOption.Reliable, clientId);
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.TORVersionShare, SendOption.Reliable, clientId);
             writer.WritePacked(major);
             writer.WritePacked(minor);
             writer.WritePacked(build);
@@ -413,7 +413,7 @@ namespace SuperNewRoles.CustomRPC
                 }
             }*/
         }
-        public static void uncheckedSetTasks(byte playerId, byte[] taskTypeIds)
+        public static void UncheckedSetTasks(byte playerId, byte[] taskTypeIds)
         {
             var player = ModHelpers.playerById(playerId);
             player.clearAllTasks();
@@ -481,7 +481,7 @@ namespace SuperNewRoles.CustomRPC
             var source = ModHelpers.playerById(sourceid);
             var target = ModHelpers.playerById(targetid);
             if (source == null || target == null) return;
-            if (CustomOptions.CountChangerNextTurn.getBool())
+            if (CustomOptions.CountChangerNextTurn.GetBool())
             {
                 RoleClass.CountChanger.Setdata[source.PlayerId] = target.PlayerId;
             }
@@ -494,7 +494,7 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             if (player == null) return;
-            Mode.Detective.main.DetectivePlayer = player;
+            Mode.Detective.Main.DetectivePlayer = player;
         }
         public static void SetShareNamePlate(byte playerid, byte id)
         {
@@ -508,7 +508,7 @@ namespace SuperNewRoles.CustomRPC
                     uint optionId = reader.ReadPackedUInt32();
                     uint selection = reader.ReadPackedUInt32();
                     CustomOption.CustomOption option = CustomOption.CustomOption.options.FirstOrDefault(option => option.id == (int)optionId);
-                    option.updateSelection((int)selection);
+                    option.UpdateSelection((int)selection);
                 }
             }
             catch (Exception e)
@@ -518,11 +518,7 @@ namespace SuperNewRoles.CustomRPC
         }
         public static void ShareSNRversion(int major, int minor, int build, int revision, Guid guid, int clientId)
         {
-            System.Version ver;
-            if (revision < 0)
-                ver = new System.Version(major, minor, build);
-            else
-                ver = new System.Version(major, minor, build, revision);
+            Version ver = revision < 0 ? new System.Version(major, minor, build) : new System.Version(major, minor, build, revision);
             Patch.ShareGameVersion.GameStartManagerUpdatePatch.VersionPlayers[clientId] = new Patch.PlayerVersion(ver, guid);
             //SuperNewRolesPlugin.Logger.LogInfo("PATCHES:"+ Patch.ShareGameVersion.playerVersions);
         }
@@ -530,11 +526,11 @@ namespace SuperNewRoles.CustomRPC
         {
             var player = ModHelpers.playerById(playerid);
             var roleId = (RoleId)RPCRoleId;
-            if (!roleId.isGhostRole())
+            if (!roleId.IsGhostRole())
             {
                 player.ClearRole();
             }
-            player.setRole(roleId);
+            player.SetRole(roleId);
         }
         public static void SetQuarreled(byte playerid1, byte playerid2)
         {
@@ -563,7 +559,7 @@ namespace SuperNewRoles.CustomRPC
             }
             else
             {
-                if (sheriff.isRole(RoleId.RemoteSheriff) && !RoleClass.RemoteSheriff.IsKillTeleport)
+                if (sheriff.IsRole(RoleId.RemoteSheriff) && !RoleClass.RemoteSheriff.IsKillTeleport)
                 {
                     if (CachedPlayer.LocalPlayer.PlayerId == SheriffId)
                     {
@@ -588,7 +584,7 @@ namespace SuperNewRoles.CustomRPC
             PlayerControl target = ModHelpers.playerById(TargetId);
             if (Constants.ShouldPlaySfx()) SoundManager.Instance.PlaySound(target.KillSfx, false, 0.8f);
             if (sheriff == null || target == null) return;
-            if (!PlayerControl.LocalPlayer.isAlive())
+            if (!PlayerControl.LocalPlayer.IsAlive())
             {
                 FastDestroyableSingleton<HudManager>.Instance.Chat.AddChat(sheriff, sheriff.name + "は" + target.name + "をシェリフキルした！");
                 if (MissFire)
@@ -716,7 +712,7 @@ namespace SuperNewRoles.CustomRPC
             foreach (PlayerControl p in RoleClass.Jackal.SidekickPlayer.ToArray())
             {
                 p.ClearRole();
-                p.setRole(RoleId.Jackal);
+                p.SetRole(RoleId.Jackal);
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
@@ -726,7 +722,7 @@ namespace SuperNewRoles.CustomRPC
             foreach (PlayerControl p in RoleClass.JackalSeer.SidekickSeerPlayer.ToArray())
             {
                 p.ClearRole();
-                p.setRole(RoleId.JackalSeer);
+                p.SetRole(RoleId.JackalSeer);
             }
             PlayerControlHepler.refreshRoleDescription(PlayerControl.LocalPlayer);
             ChacheManager.ResetMyRoleChache();
@@ -838,13 +834,13 @@ namespace SuperNewRoles.CustomRPC
         public static void ShareWinner(byte playerid)
         {
             PlayerControl player = ModHelpers.playerById(playerid);
-            if (ModeHandler.isMode(ModeId.BattleRoyal))
+            if (ModeHandler.IsMode(ModeId.BattleRoyal))
             {
-                Mode.BattleRoyal.main.Winners.Add(player);
+                Mode.BattleRoyal.Main.Winners.Add(player);
             }
             else
             {
-                EndGame.OnGameEndPatch.WinnerPlayer = player;
+                OnGameEndPatch.WinnerPlayer = player;
             }
         }
         public static void TeleporterTP(byte playerid)
@@ -855,7 +851,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 SubmergedCompatibility.ChangeFloor(SubmergedCompatibility.GetFloor(p));
             }
-            new CustomMessage(string.Format(ModTranslation.getString("TeleporterTPTextMessage"), p.nameText().text), 3);
+            new CustomMessage(string.Format(ModTranslation.GetString("TeleporterTPTextMessage"), p.NameText().text), 3);
         }
         public static void SetWinCond(byte Cond)
         {
@@ -929,7 +925,7 @@ namespace SuperNewRoles.CustomRPC
             var SwapperPosition = SwapperPlayer.transform.position;
             //Text
             var rand = new System.Random();
-            if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.isRole(RoleId.PositionSwapper)*/)
+            if (SwapperID == PlayerControl.LocalPlayer.PlayerId /*PlayerControl.LocalPlayer.IsRole(RoleId.PositionSwapper)*/)
             {
                 CachedPlayer.LocalPlayer.transform.position = SwapPosition;
                 SuperNewRolesPlugin.Logger.LogInfo("スワップ本体！");
@@ -941,11 +937,11 @@ namespace SuperNewRoles.CustomRPC
                 SuperNewRolesPlugin.Logger.LogInfo("スワップランダム！");
                 if (rand.Next(1, 20) == 1)
                 {
-                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText2")), 3);
+                    new CustomMessage(string.Format(ModTranslation.GetString("PositionSwapperSwapText2")), 3);
                 }
                 else
                 {
-                    new CustomMessage(string.Format(ModTranslation.getString("PositionSwapperSwapText")), 3);
+                    new CustomMessage(string.Format(ModTranslation.GetString("PositionSwapperSwapText")), 3);
                 }
             }
         }
@@ -962,7 +958,7 @@ namespace SuperNewRoles.CustomRPC
         {
             Patch.VitalsPatch.RestrictVitalsTime -= time;
         }*/
-        public static void randomSpawn(byte playerId, byte locId)
+        public static void RandomSpawn(byte playerId, byte locId)
         {
             HudManager.Instance.StartCoroutine(Effects.Lerp(3f, new Action<float>((p) =>
             { // Delayed action
@@ -1156,7 +1152,7 @@ namespace SuperNewRoles.CustomRPC
                             StartGameRPC();
                             break;
                         case CustomRPC.UncheckedSetTasks:
-                            uncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
+                            UncheckedSetTasks(reader.ReadByte(), reader.ReadBytesAndSize());
                             break;
                         case CustomRPC.SetLovers:
                             SetLovers(reader.ReadByte(), reader.ReadByte());
@@ -1220,7 +1216,7 @@ namespace SuperNewRoles.CustomRPC
                             MakeVent(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
                             break;
                         case CustomRPC.PositionSwapperTP:
-                            RPCProcedure.PositionSwapperTP(reader.ReadByte(), reader.ReadByte());
+                            PositionSwapperTP(reader.ReadByte(), reader.ReadByte());
                             break;
                         /*
                     case CustomRPC.UseAdminTime:
@@ -1239,7 +1235,7 @@ namespace SuperNewRoles.CustomRPC
                         case CustomRPC.RandomSpawn:
                             byte pId = reader.ReadByte();
                             byte locId = reader.ReadByte();
-                            RPCProcedure.randomSpawn(pId, locId);
+                            RandomSpawn(pId, locId);
                             break;
                         case CustomRPC.KunaiKill:
                             KunaiKill(reader.ReadByte(), reader.ReadByte());
