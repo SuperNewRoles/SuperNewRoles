@@ -8,8 +8,10 @@ namespace SuperNewRoles.CustomOption
 {
     public static class CustomRegulation
     {
+        static bool Loaded = false;
         public static IEnumerator FetchRegulation()
         {
+            if (Loaded) yield break;
             Logger.Info("フェチ開始いいいい");
             var request = UnityWebRequest.Get("https://raw.githubusercontent.com/ykundesu/SuperNewRegulations/main/Regulations.json");
             yield return request.SendWebRequest();
@@ -20,11 +22,16 @@ namespace SuperNewRoles.CustomOption
             }
             Logger.Info("通過");
             var json = JObject.Parse(request.downloadHandler.text);
+            RegulationData CustomData = new();
+            CustomData.id = 0;
+            CustomData.title = "カスタム";
+            RegulationData.Regulations.Add(CustomData);
             for (var regulation = json["regulations"].First; regulation != null; regulation = regulation.Next)
             {
                 RegulationData data = new();
                 data.title = regulation["title"]?.ToString();
-                data.id = RegulationData.MaxId++;
+                RegulationData.MaxId++;
+                data.id = RegulationData.MaxId;
                 data.MeetingButtonNum = int.Parse(regulation["MeetingButtonNum"]?.ToString());
                 data.MeetingButtonCooldown = int.Parse(regulation["MeetingButtonCooldown"]?.ToString());
                 data.VoteTime = int.Parse(regulation["VoteTime"]?.ToString());
@@ -62,6 +69,51 @@ namespace SuperNewRoles.CustomOption
                     Logger.Info(CustomOption.options.FirstOrDefault((CustomOption option) => option.id == datas.Key).GetName() +" => "+datas.Value);
                 }
             }
+            Loaded = true;
+        }
+        public static void Select(int id)
+        {
+            if (RegulationData.Selected == id) return;
+            RegulationData.Selected = id;
+            if (id == 0)
+            {
+                foreach (CustomOption options in CustomOption.options)
+                {
+                    options.selection = options.ClientSelection;
+                }
+                CustomOption.ShareOptionSelections();
+                return;
+            }
+            RegulationData data = RegulationData.Regulations.FirstOrDefault(rd => rd.id == id);
+            PlayerControl.GameOptions.NumEmergencyMeetings = data.MeetingButtonNum;
+            PlayerControl.GameOptions.EmergencyCooldown = data.MeetingButtonCooldown;
+            PlayerControl.GameOptions.VotingTime = data.VoteTime;
+            PlayerControl.GameOptions.PlayerSpeedMod = data.PlayerSpeed;
+            PlayerControl.GameOptions.CrewLightMod = data.CrewVision;
+            PlayerControl.GameOptions.ImpostorLightMod = data.ImpostorVision;
+            PlayerControl.GameOptions.KillCooldown = data.KillCoolTime;
+            PlayerControl.GameOptions.NumCommonTasks = data.CommonTask;
+            PlayerControl.GameOptions.NumLongTasks = data.LongTask;
+            PlayerControl.GameOptions.NumShortTasks = data.ShortTask;
+            foreach (CustomOption options in CustomOption.options)
+            {
+                options.selection = options.defaultSelection;
+            }
+            foreach (var option in data.ChangeOptions)
+            {
+                var opt = CustomOption.options.FirstOrDefault((CustomOption optiondata) => optiondata.id == option.Key);
+                if (opt != null)
+                {
+                    opt.selection = option.Value;
+                }
+                else
+                {
+                    Logger.Info(option.Key + "がnullでした");
+                }
+            }
+            CustomOptions.DisconnectNotPCOption.selection = 0;
+
+            PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
         }
         public class RegulationData
         {

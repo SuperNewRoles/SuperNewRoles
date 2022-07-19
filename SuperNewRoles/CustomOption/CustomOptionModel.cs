@@ -39,17 +39,25 @@ namespace SuperNewRoles.CustomOption
         public ConfigEntry<int> entry;
         public int HostSelection;
         public int ClientSelection;
+        public int ClientSelectedSelection;
         public int selection
         {
             get
             {
-                return AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost ? ClientSelection : HostSelection;
+                return AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost ? RegulationData.Selected == 0 ? ClientSelection : ClientSelectedSelection : HostSelection;
             }
             set
             {
+                Logger.Info($"セレクション:{RegulationData.Selected}");
                 if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost)
                 {
-                    ClientSelection = value;
+                    if (RegulationData.Selected == 0)
+                    {
+                        ClientSelection = value;
+                    } else
+                    {
+                        ClientSelectedSelection = value;
+                    }
                 }
                 else
                 {
@@ -215,7 +223,10 @@ namespace SuperNewRoles.CustomOption
 
                     }
                     if (id == 0) SwitchPreset(selection); // Switch presets
-                    else if (entry != null) entry.Value = selection; // Save selection to config
+                    else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0) {
+                        Logger.Info("ばりゅーせっと");
+                        entry.Value = selection;
+                    } // Save selection to config
 
                     ShareOptionSelections();// Share all selections
                 }
@@ -616,7 +627,15 @@ namespace SuperNewRoles.CustomOption
                     __instance.OnValueChanged = new Action<OptionBehaviour>((o) => { });
                     __instance.TitleText.text = Regulation.title;
                     __instance.Value = __instance.oldValue = 0;
-                    __instance.ValueText.text = "無効(off)";
+                    if (RegulationData.Selected == Regulation.id)
+                    {
+                        __instance.ValueText.text = "有効(on)";
+                    }
+                    else
+                    {
+                        __instance.ValueText.text = "無効(off)";
+
+                    }
                     return false;
                 }
                 return true;
@@ -646,28 +665,15 @@ namespace SuperNewRoles.CustomOption
                     {
                         if (regulation.optionBehaviour is not null and StringOption stringOption)
                         {
+                            stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
+                            stringOption.TitleText.text = regulation.title;
                             stringOption.oldValue = __instance.Value = 0;
                             stringOption.ValueText.text = "無効(off)";
                         }
                     }
-                    RegulationData.Selected = Regulation.id;
+                    Select(Regulation.id);
                     __instance.oldValue = __instance.Value = 1;
                     __instance.ValueText.text = "有効(on)";
-                    foreach (CustomOption options in CustomOption.options)
-                    {
-                        options.selection = options.defaultSelection;
-                    }
-                    foreach (var data in Regulation.ChangeOptions)
-                    {
-                        var opt = CustomOption.options.FirstOrDefault((CustomOption optiondata) => optiondata.id == data.Key);
-                        if (opt != null)
-                        {
-                            opt.selection = data.Value;
-                        } else
-                        {
-                            Logger.Info(data.Key+"がnullでした");
-                        }
-                    }
                     return false;
                 }
                 return true;
@@ -689,21 +695,35 @@ namespace SuperNewRoles.CustomOption
                 if (Regulation != null)
                 {
                     bool isReset = true;
+                    bool IsFirst = true;
+                    if (Regulation.optionBehaviour is not null and StringOption stringOptiona)
+                    {
+                        if (stringOptiona.Value == 0) return false;
+                    }
                     foreach (var regulation in RegulationData.Regulations)
                     {
                         if (regulation.optionBehaviour is not null and StringOption stringOption)
                         {
                             if (stringOption.ValueText.text == "有効(on)")
                             {
-                                isReset = false;
+                                if (!IsFirst)
+                                {
+                                    isReset = false;
+                                }
+                                IsFirst = false;
                             }
                         }
                     }
-                    if (isReset) {
-                        RegulationData.Selected = 0;
-                    }
-                    __instance.oldValue = __instance.Value = 1;
+                    __instance.oldValue = __instance.Value = 0;
                     __instance.ValueText.text = "無効(off)";
+                    if (isReset) {
+                        Select(0);
+                        if (RegulationData.Regulations.FirstOrDefault(d => d.id == 0).optionBehaviour is not null and StringOption stringOption0){
+                            stringOption0.oldValue = __instance.Value = 1;
+                            stringOption0.ValueText.text = "有効(on)";
+                        }
+                    }
+                    Logger.Info(isReset.ToString());
                     return false;
                 }
                 return true;
@@ -755,10 +775,15 @@ namespace SuperNewRoles.CustomOption
             float offset = 2.75f;
             if (__instance.name == "RegulationSetting")
             {
-                foreach (var Regulation in CustomRegulation.RegulationData.Regulations)
+                foreach (var Regulation in RegulationData.Regulations)
                 {
                     if (Regulation?.optionBehaviour != null && Regulation.optionBehaviour.gameObject != null)
                     {
+                        if (Regulation.optionBehaviour is not null and StringOption stringOption)
+                        {
+                            stringOption.ValueText.text = Regulation.id == RegulationData.Selected ? "有効(on)" : "無効(off)";
+                        }
+
                         bool enabled = true;
 
                         Regulation.optionBehaviour.gameObject.SetActive(enabled);
