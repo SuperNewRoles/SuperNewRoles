@@ -32,10 +32,9 @@ namespace SuperNewRoles.Roles
                     PlayerControl.LocalPlayer.RpcMurderPlayer(target);//キルをして守護モーションの発動(守護解除)
                     target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
 
-                    var RoleName = PlayerControl.LocalPlayer.getRole();//ログに表示する為、此処にたどり着いた役職の名前を取得
                     target.setRoleRPC(RoleId.JackalFriends);//ジャッカルフレンズにする
                     RoleClass.Jackal.IsCreatedFriend = true;//作ったことに
-                    SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend_RoleName:" + RoleName + "]フレンズを作ったから普通のキルボタンに戻すよ!");
+                    SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend_RoleName:" + PlayerControl.LocalPlayer.getRole() + "]フレンズを作ったから普通のキルボタンに戻すよ!");
 
                 }, 0.1f);
 

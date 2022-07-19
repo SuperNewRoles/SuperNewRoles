@@ -540,6 +540,7 @@ namespace SuperNewRoles.Buttons
                                     TeleportingJackal.resetCoolDown();
                                     break;
                             }
+                            SuperNewRolesPlugin.Logger.LogInfo("[Kills by Jackals RoleName:" + PlayerControl.LocalPlayer.getRole() + "]通常のキルを行いました。");
                         }
                     }
                 },
