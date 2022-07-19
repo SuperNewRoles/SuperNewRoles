@@ -511,15 +511,22 @@ namespace SuperNewRoles.Buttons
                 {
                     if (Jackal.JackalFixedPatch.JackalsetTarget() && RoleHelpers.isAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
+                        //ジャッカル系がジャッカルフレンズを作っていない且つ設定が有効であれば
                         if (!RoleClass.Jackal.IsCreatedFriend &&
-                            (PlayerControl.LocalPlayer.isRole(RoleId.Jackal) && RoleClass.Jackal.CanCreateFriend) ||
-                            (PlayerControl.LocalPlayer.isRole(RoleId.JackalSeer) && RoleClass.JackalSeer.CanCreateFriend) ||
-                            (PlayerControl.LocalPlayer.isRole(RoleId.TeleportingJackal) && RoleClass.TeleportingJackal.CanCreateFriend))
+                                (
+                                    (PlayerControl.LocalPlayer.isRole(RoleId.Jackal) && RoleClass.Jackal.CanCreateFriend) ||
+                                    (PlayerControl.LocalPlayer.isRole(RoleId.JackalSeer) && RoleClass.JackalSeer.CanCreateFriend) ||
+                                    (PlayerControl.LocalPlayer.isRole(RoleId.TeleportingJackal) && RoleClass.TeleportingJackal.CanCreateFriend)
+                                )
+                            )
                         {
+                            //キルボタンによりフレンズを作る
+                            //(制御はどのジャッカルも「Jackal.cs」の「CreateFriend()」メソッドで行う)
                             Jackal.CreateFriend();
                         }
-                        else
+                        else//フレンズを既に作っている、又は設定が無効である場合
                         {
+                            //キルボタンでキルを行う
                             ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, Jackal.JackalFixedPatch.JackalsetTarget());
                             switch (PlayerControl.LocalPlayer.getRole())
                             {
