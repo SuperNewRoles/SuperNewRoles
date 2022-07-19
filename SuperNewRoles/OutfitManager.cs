@@ -11,7 +11,7 @@ namespace SuperNewRoles
             pc.RawSetHat(outfit.HatId, outfit.ColorId);
             pc.RawSetVisor(outfit.VisorId);
             pc.RawSetColor(outfit.ColorId);
-            ModHelpers.setSkinWithAnim(pc.MyPhysics, outfit.SkinId);
+            ModHelpers.SetSkinWithAnim(pc.MyPhysics, outfit.SkinId);
 
             // idk how to handle pets right now, so just not doing it
             // TODO: FIX PETS

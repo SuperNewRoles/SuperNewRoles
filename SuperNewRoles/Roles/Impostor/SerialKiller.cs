@@ -15,7 +15,7 @@ namespace SuperNewRoles.Roles
                 {
                     foreach (PlayerControl p in RoleClass.SerialKiller.SerialKillerPlayer)
                     {
-                        if (p.isAlive())
+                        if (p.IsAlive())
                         {
                             if (RoleClass.SerialKiller.IsSuicideViews.TryGetValue(p.PlayerId, out bool IsView) && IsView)
                             {
@@ -35,7 +35,7 @@ namespace SuperNewRoles.Roles
                 if (!RoleClass.IsMeeting && RoleClass.SerialKiller.IsSuicideView)
                 {
                     RoleClass.SerialKiller.SuicideTime -= Time.fixedDeltaTime;
-                    RoleClass.SerialKiller.SuicideKillText.text = string.Format(ModTranslation.getString("SerialKillerSuicideText"), ((int)RoleClass.SerialKiller.SuicideTime) + 1);
+                    RoleClass.SerialKiller.SuicideKillText.text = string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.SerialKiller.SuicideTime) + 1);
                 }
                 else if (RoleClass.SerialKiller.SuicideKillText.text != "")
                 {
@@ -63,7 +63,7 @@ namespace SuperNewRoles.Roles
             }
             if (!RoleClass.IsMeeting && RoleClass.SerialKiller.IsSuicideView)
             {
-                RoleClass.SerialKiller.SuicideKillText.text = string.Format(ModTranslation.getString("SerialKillerSuicideText"), ((int)RoleClass.SerialKiller.SuicideTime) + 1);
+                RoleClass.SerialKiller.SuicideKillText.text = string.Format(ModTranslation.GetString("SerialKillerSuicideText"), ((int)RoleClass.SerialKiller.SuicideTime) + 1);
             }
             else
             {
@@ -75,7 +75,7 @@ namespace SuperNewRoles.Roles
         }
         public static void MurderPlayer(PlayerControl __instance, PlayerControl target)
         {
-            if (__instance.isRole(RoleId.SerialKiller))
+            if (__instance.IsRole(RoleId.SerialKiller))
             {
                 if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                 {
@@ -83,11 +83,11 @@ namespace SuperNewRoles.Roles
                     RoleClass.SerialKiller.IsSuicideView = true;
                 }
                 RoleClass.SerialKiller.IsSuicideViews[__instance.PlayerId] = true;
-                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
                     RoleClass.SerialKiller.SuicideTimers[__instance.PlayerId] = RoleClass.SerialKiller.SuicideDefaultTime;
                 }
-                else if (ModeHandler.isMode(ModeId.Default))
+                else if (ModeHandler.IsMode(ModeId.Default))
                 {
                     if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId)
                     {

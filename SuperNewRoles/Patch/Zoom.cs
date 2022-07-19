@@ -1,17 +1,16 @@
 using HarmonyLib;
-using UnityEngine;
 using SuperNewRoles.Mode;
+using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-
     //Town Of Plusより!
     public static class Zoom
     {
         public static void Postfix(HudManager __instance)
         {
-            if (ModeHandler.isMode(ModeId.Default) && MapOptions.MapOption.MouseZoom && PlayerControl.LocalPlayer.Data.IsDead)
+            if (ModeHandler.IsMode(ModeId.Default) && MapOptions.MapOption.MouseZoom && PlayerControl.LocalPlayer.Data.IsDead)
             {
                 if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 {
@@ -22,7 +21,6 @@ namespace SuperNewRoles.Patch
                         __instance.UICamera.orthographicSize /= 1.5f;
                         HudManager.Instance.TaskStuff.SetActive(false);
                     }
-
                     else if (Camera.main.orthographicSize > 3.0f)
                     {
                         Camera.main.orthographicSize /= 1.5f;
@@ -42,7 +40,7 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
-                if (ModeHandler.isMode(ModeId.Default))
+                if (ModeHandler.IsMode(ModeId.Default))
                 {
                     if (Camera.main.orthographicSize != 3.0f)
                     {

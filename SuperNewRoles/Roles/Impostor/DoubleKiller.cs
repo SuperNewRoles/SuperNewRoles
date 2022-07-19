@@ -8,23 +8,23 @@ namespace SuperNewRoles.Roles
 {
     public static class DoubleKiller
     {
-        public static void resetMainCoolDown()
+        public static void ResetMainCoolDown()
         {
             HudManagerStartPatch.DoubleKillerMainKillButton.MaxTimer = RoleClass.DoubleKiller.MainCoolTime;
             HudManagerStartPatch.DoubleKillerMainKillButton.Timer = RoleClass.DoubleKiller.MainCoolTime;
         }
-        public static void resetSubCoolDown()
+        public static void ResetSubCoolDown()
         {
             HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer = RoleClass.DoubleKiller.SubCoolTime;
             HudManagerStartPatch.DoubleKillerSubKillButton.Timer = RoleClass.DoubleKiller.SubCoolTime;
         }
         public static void EndMeeting()
         {
-            resetSubCoolDown();
-            resetMainCoolDown();
+            ResetSubCoolDown();
+            ResetMainCoolDown();
             HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer = RoleClass.DoubleKiller.SubCoolTime;
         }
-        public static void setPlayerOutline(PlayerControl target, Color color)
+        public static void SetPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null || target.MyRend == null) return;
 
@@ -33,7 +33,7 @@ namespace SuperNewRoles.Roles
         }
         public class DoubleKillerFixedPatch
         {
-            public static PlayerControl DoubleKillersetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+            public static PlayerControl DoubleKillerSetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
             {
                 PlayerControl result = null;
                 float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
@@ -51,7 +51,7 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < allPlayers.Count; i++)
                 {
                     GameData.PlayerInfo playerInfo = allPlayers[i];
-                    if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && playerInfo.Object.isAlive() && !playerInfo.Object.isDead() && !playerInfo.Object.isRole(RoleId.DoubleKiller))
+                    if (!playerInfo.Disconnected && playerInfo.PlayerId != targetingPlayer.PlayerId && playerInfo.Object.IsAlive() && !playerInfo.Object.IsDead() && !playerInfo.Object.IsRole(RoleId.DoubleKiller))
                     {
                         PlayerControl @object = playerInfo.Object;
                         if (untargetablePlayers.Any(x => x == @object))
@@ -76,11 +76,11 @@ namespace SuperNewRoles.Roles
             }
             static void DoubleKillerPlayerOutLineTarget()
             {
-                setPlayerOutline(DoubleKillersetTarget(), RoleClass.DoubleKiller.color);
+                SetPlayerOutline(DoubleKillerSetTarget(), RoleClass.DoubleKiller.color);
             }
             public static void Postfix(PlayerControl __instance)
             {
-                if (PlayerControl.LocalPlayer.isRole(RoleId.DoubleKiller))
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.DoubleKiller))
                 {
                     DoubleKillerPlayerOutLineTarget();
                 }

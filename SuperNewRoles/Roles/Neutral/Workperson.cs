@@ -9,11 +9,11 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
         class BeginCrewmatePatch
         {
-            public static void Postfix(ShipStatus __instance)
+            public static void Postfix()
             {
-                if (PlayerControl.LocalPlayer.isRole(RoleId.Workperson))
+                if (PlayerControl.LocalPlayer.IsRole(RoleId.Workperson))
                 {
-                    PlayerControl.LocalPlayer.generateAndAssignTasks((int)CustomOptions.WorkpersonCommonTask.getFloat(), (int)CustomOptions.WorkpersonShortTask.getFloat(), (int)CustomOptions.WorkpersonLongTask.getFloat());
+                    PlayerControl.LocalPlayer.GenerateAndAssignTasks((int)CustomOptions.WorkpersonCommonTask.GetFloat(), (int)CustomOptions.WorkpersonShortTask.GetFloat(), (int)CustomOptions.WorkpersonLongTask.GetFloat());
                 }
             }
         }

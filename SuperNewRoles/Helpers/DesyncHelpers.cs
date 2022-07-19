@@ -9,7 +9,7 @@ namespace SuperNewRoles.Helpers
         {
             PlayerControl SeePlayer = see;
             if (see == null) SeePlayer = source;
-            MessageWriter MurderWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.MurderPlayer, SendOption.Reliable, SeePlayer.getClientId());
+            MessageWriter MurderWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.MurderPlayer, SendOption.Reliable, SeePlayer.GetClientId());
             MessageExtensions.WriteNetObject(MurderWriter, target);
             AmongUsClient.Instance.FinishRpcImmediately(MurderWriter);
         }
@@ -17,7 +17,7 @@ namespace SuperNewRoles.Helpers
         {
             PlayerControl SeePlayer = see;
             if (see == null) SeePlayer = source;
-            sender.StartMessage(SeePlayer.getClientId())
+            sender.StartMessage(SeePlayer.GetClientId())
                 .StartRpc(source.NetId, RpcCalls.MurderPlayer)
                 .WriteNetObject(target)
                 .EndRpc()

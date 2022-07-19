@@ -1,7 +1,7 @@
 using Hazel;
 using SuperNewRoles.Buttons;
-using UnityEngine;
 using SuperNewRoles.CustomRPC;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
@@ -11,7 +11,7 @@ namespace SuperNewRoles.Roles
         {
             public static void Postfix(PlayerControl __instance)
             {
-                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.isRole(RoleId.Samurai))
+                if (CachedPlayer.LocalPlayer.PlayerId == __instance.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Samurai))
                 {
                     PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Samurai.KillCoolTime);
                 }
@@ -19,7 +19,7 @@ namespace SuperNewRoles.Roles
         }
         public static void SetSamuraiButton()
         {
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Samurai))
+            if (PlayerControl.LocalPlayer.IsRole(RoleId.Samurai))
             {
                 if (!RoleClass.Samurai.UseVent)
                 {
@@ -49,27 +49,20 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.SamuraiButton.MaxTimer = RoleClass.Samurai.SwordCoolTime;
             HudManagerStartPatch.SamuraiButton.Timer = RoleClass.Samurai.SwordCoolTime;
         }
-        public static bool isSamurai(PlayerControl Player)
+        public static bool IsSamurai(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.Samurai))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.IsRole(RoleId.Samurai);
         }
         public static void SamuraiKill()
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                if (p.IsAlive() && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                 {
                     if (Getsword(PlayerControl.LocalPlayer, p))
                     {
-                        CustomRPC.RPCProcedure.BySamuraiKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
-                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BySamuraiKillRPC, Hazel.SendOption.Reliable, -1);
+                        RPCProcedure.BySamuraiKillRPC(CachedPlayer.LocalPlayer.PlayerId, p.PlayerId);
+                        MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.BySamuraiKillRPC, SendOption.Reliable, -1);
                         Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                         Writer.Write(p.PlayerId);
                         RoleClass.Samurai.Sword = true;
@@ -82,7 +75,7 @@ namespace SuperNewRoles.Roles
         {
             Vector3 position = source.transform.position;
             Vector3 playerposition = player.transform.position;
-            var r = CustomOption.CustomOptions.SamuraiScope.getFloat();
+            var r = CustomOption.CustomOptions.SamuraiScope.GetFloat();
             if ((position.x + r >= playerposition.x) && (playerposition.x >= position.x - r))
             {
                 if ((position.y + r >= playerposition.y) && (playerposition.y >= position.y - r))

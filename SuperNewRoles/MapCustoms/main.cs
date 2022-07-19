@@ -1,22 +1,22 @@
-using HarmonyLib;
-using UnityEngine;
-using System.Collections.Generic;
 using System;
-using static PlayerControl;
+using System.Collections.Generic;
+using HarmonyLib;
 using SuperNewRoles.Mode;
+using UnityEngine;
+using static PlayerControl;
 
 namespace SuperNewRoles.MapCustoms
 {
     public class MapCustomHandler
     {
-        public static bool isMapCustom(MapCustomId mapCustomId, bool IsChache = true)
+        public static bool IsMapCustom(MapCustomId mapCustomId)
         {
             return mapCustomId switch
             {
-                MapCustomId.Skeld => GameOptions.MapId == 0 && MapCustom.MapCustomOption.getBool() && MapCustom.SkeldSetting.getBool() && ModeHandler.isMode(ModeId.Default),
-                MapCustomId.Mira => GameOptions.MapId == 1 && MapCustom.MapCustomOption.getBool() && MapCustom.MiraSetting.getBool() && ModeHandler.isMode(ModeId.Default),
-                MapCustomId.Polus => GameOptions.MapId == 2 && MapCustom.MapCustomOption.getBool() && MapCustom.PolusSetting.getBool() && ModeHandler.isMode(ModeId.Default),
-                MapCustomId.Airship => GameOptions.MapId == 4 && MapCustom.MapCustomOption.getBool() && MapCustom.AirshipSetting.getBool() && ModeHandler.isMode(ModeId.Default),
+                MapCustomId.Skeld => GameOptions.MapId == 0 && MapCustom.MapCustomOption.GetBool() && MapCustom.SkeldSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
+                MapCustomId.Mira => GameOptions.MapId == 1 && MapCustom.MapCustomOption.GetBool() && MapCustom.MiraSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
+                MapCustomId.Polus => GameOptions.MapId == 2 && MapCustom.MapCustomOption.GetBool() && MapCustom.PolusSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
+                MapCustomId.Airship => GameOptions.MapId == 4 && MapCustom.MapCustomOption.GetBool() && MapCustom.AirshipSetting.GetBool() && ModeHandler.IsMode(ModeId.Default),
                 _ => false,
             };
         }
@@ -37,14 +37,14 @@ namespace SuperNewRoles.MapCustoms
             AdditionalVents.AddAdditionalVents();
 
             // スペシメンにバイタルを移動する
-            SpecimenVital.moveVital();
+            SpecimenVital.MoveVital();
 
             //配電盤を移動させる
             MoveElecPad.MoveElecPads();
 
             GameObject gapRoom = DestroyableSingleton<ShipStatus>.Instance.FastRooms[SystemTypes.GapRoom].gameObject;
             // ぬ～んを消す
-            if (MapCustomHandler.isMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirshipDisableMovingPlatform.getBool())
+            if (MapCustomHandler.IsMapCustom(MapCustomHandler.MapCustomId.Airship) && MapCustom.AirshipDisableMovingPlatform.GetBool())
             {
                 gapRoom.GetComponentInChildren<MovingPlatformBehaviour>().gameObject.SetActive(false);
                 gapRoom.GetComponentsInChildren<PlatformConsole>().ForEach(x => x.gameObject.SetActive(false));
@@ -62,11 +62,7 @@ namespace SuperNewRoles.MapCustoms
         }
         public static T Random<T>(this IList<T> self)
         {
-            if (self.Count > 0)
-            {
-                return self[UnityEngine.Random.Range(0, self.Count)];
-            }
-            return default;
+            return self.Count > 0 ? self[UnityEngine.Random.Range(0, self.Count)] : default;
         }
     }
 }

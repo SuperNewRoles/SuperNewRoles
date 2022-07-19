@@ -1,16 +1,15 @@
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Helpers;
 using SuperNewRoles.Mode.SuperHostRoles;
 using SuperNewRoles.Roles;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
-using static SuperNewRoles.EndGame.CheckGameEndPatch;
 
 namespace SuperNewRoles.Mode.BattleRoyal
 {
-    class main
+    class Main
     {
         public static void FixedUpdate()
         {
@@ -20,14 +19,14 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 CachedPlayer.LocalPlayer.Data.Role.CanUseKillButton = true;
                 if (!IsTeamBattle)
                 {
-                    FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.setTarget());
+                    FastDestroyableSingleton<HudManager>.Instance.KillButton.SetTarget(Buttons.HudManagerStartPatch.SetTarget());
                 }
                 int alives = 0;
                 int allplayer = 0;
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     allplayer++;
-                    if (p.isAlive())
+                    if (p.IsAlive())
                     {
                         alives++;
                     }
@@ -58,7 +57,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         if (!p.Data.Disconnected)
                         {
-                            p.RpcSetNamePrivate(ModTranslation.getString("BattleRoyalRemaining") + ((int)StartSeconds + 1) + ModTranslation.getString("second"));
+                            p.RpcSetNamePrivate(ModTranslation.GetString("BattleRoyalRemaining") + ((int)StartSeconds + 1) + ModTranslation.GetString("second"));
                         }
                     }
                     UpdateTime += 1f;
@@ -74,7 +73,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                             {
                                 if (p.PlayerId != 0)
                                 {
-                                    PlayerControl.LocalPlayer.RpcSetNamePrivate(ModHelpers.cs(RoleClass.ImpostorRed, ModTranslation.getString("Player")), p);
+                                    PlayerControl.LocalPlayer.RpcSetNamePrivate(ModHelpers.Cs(RoleClass.ImpostorRed, ModTranslation.GetString("Player")), p);
                                 }
                             }
                         }
@@ -101,14 +100,14 @@ namespace SuperNewRoles.Mode.BattleRoyal
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
-                    if (ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.CopsRobbers))
+                    if (ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.CopsRobbers))
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
                         writer.WritePacked(127);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         new LateTask(() =>
                         {
-                            int clientId = __instance.myPlayer.getClientId();
+                            int clientId = __instance.myPlayer.GetClientId();
                             MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, clientId);
                             writer2.Write(id);
                             AmongUsClient.Instance.FinishRpcImmediately(writer2);
@@ -116,7 +115,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                         }, 0.5f, "Anti Vent");
                         return false;
                     }
-                    else if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    else if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
                         bool data = CoEnterVent.Prefix(__instance, id);
                         if (data)
@@ -139,23 +138,23 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 [HarmonyArgument(1)] PlayerControl player,
                 [HarmonyArgument(2)] byte amount)
             {
-                if (PlusModeHandler.isMode(PlusModeId.NotSabotage))
+                if (PlusModeHandler.IsMode(PlusModeId.NotSabotage))
                 {
                     return false;
                 }
-                if ((ModeHandler.isMode(ModeId.BattleRoyal) || ModeHandler.isMode(ModeId.Zombie) || ModeHandler.isMode(ModeId.HideAndSeek) || ModeHandler.isMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
-                if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.isRole(RoleId.MadMate))
+                if ((ModeHandler.IsMode(ModeId.BattleRoyal) || ModeHandler.IsMode(ModeId.Zombie) || ModeHandler.IsMode(ModeId.HideAndSeek) || ModeHandler.IsMode(ModeId.CopsRobbers)) && (systemType == SystemTypes.Sabotage || systemType == SystemTypes.Doors)) return false;
+                if (systemType == SystemTypes.Electrical && 0 <= amount && amount <= 4 && player.IsRole(RoleId.MadMate))
                 {
                     return false;
                 }
-                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
                     bool returndata = MorePatch.RepairSystem(__instance, systemType, player, amount);
                     return returndata;
                 }
                 return true;
             }
-            public static void Postfix(ShipStatus __instance,
+            public static void Postfix(
                 [HarmonyArgument(0)] SystemTypes systemType,
                 [HarmonyArgument(1)] PlayerControl player,
                 [HarmonyArgument(2)] byte amount)
@@ -166,7 +165,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     {
                         foreach (PlayerControl p in RoleClass.Technician.TechnicianPlayer)
                         {
-                            if (p.inVent && p.isAlive() && VentData.ContainsKey(p.PlayerId) && VentData[p.PlayerId] != null)
+                            if (p.inVent && p.IsAlive() && VentData.ContainsKey(p.PlayerId) && VentData[p.PlayerId] != null)
                             {
                                 p.MyPhysics.RpcBootFromVent((int)VentData[p.PlayerId]);
                             }
@@ -174,19 +173,19 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     }, 0.1f, "TecExitVent");
                 }
                 SuperNewRolesPlugin.Logger.LogInfo(player.Data.PlayerName + " => " + systemType + " : " + amount);
-                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
                     SyncSetting.CustomSyncSettings();
                     if (systemType == SystemTypes.Comms)
                     {
-                        Mode.SuperHostRoles.FixedUpdate.SetRoleNames();
+                        SuperHostRoles.FixedUpdate.SetRoleNames();
                     }
                 }
             }
         }
         public static List<PlayerControl> Winners;
         public static bool IsViewAlivePlayer;
-        public static bool EndGameCheck(ShipStatus __instance, PlayerStatistics statistics)
+        public static bool EndGameCheck(ShipStatus __instance)
         {
             if (IsTeamBattle)
             {
@@ -194,7 +193,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 List<PlayerControl> players = new();
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.isAlive())
+                    if (p.IsAlive())
                     {
                         players.Add(p);
                     }
@@ -251,7 +250,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 FastDestroyableSingleton<HudManager>.Instance.ImpostorVentButton.gameObject.SetActive(false);
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
-                    if (p.isAlive())
+                    if (p.IsAlive())
                     {
                         alives++;
                     }
@@ -261,7 +260,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     __instance.enabled = false;
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.isAlive())
+                        if (p.IsAlive())
                         {
                             p.RpcSetRole(RoleTypes.Impostor);
                         }
@@ -290,14 +289,14 @@ namespace SuperNewRoles.Mode.BattleRoyal
         static bool IsSeted;
         public static void ClearAndReload()
         {
-            IsViewAlivePlayer = BROption.IsViewAlivePlayer.getBool();
+            IsViewAlivePlayer = BROption.IsViewAlivePlayer.GetBool();
             AlivePlayer = 0;
             AllPlayer = 0;
             IsStart = false;
-            StartSeconds = BROption.StartSeconds.getFloat() + 4.5f;
+            StartSeconds = BROption.StartSeconds.GetFloat() + 4.5f;
             IsCountOK = false;
             UpdateTime = 0f;
-            IsTeamBattle = BROption.IsTeamBattle.getBool();
+            IsTeamBattle = BROption.IsTeamBattle.GetBool();
             Teams = new List<List<PlayerControl>>();
             IsSeted = false;
             Winners = new();
@@ -310,7 +309,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                 {
                     if (IsTeamBattle)
                     {
-                        float count = BROption.TeamAmount.getFloat();
+                        float count = BROption.TeamAmount.GetFloat();
                         var oneteamcount = Mathf.CeilToInt(CachedPlayer.AllPlayers.Count / count);
                         List<PlayerControl> target = new();
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -409,7 +408,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
                     }
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        p.getDefaultName();
+                        p.GetDefaultName();
                         p.RpcSetName("");//Playing on SuperNewRoles!");
                     }
                     new LateTask(() =>

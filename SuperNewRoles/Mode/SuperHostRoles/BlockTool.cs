@@ -13,7 +13,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.RepairSystem))]
         class RepairSystemPatch
         {
-            public static void Prefix(ShipStatus __instance,
+            public static void Prefix(
                 [HarmonyArgument(0)] SystemTypes systemType,
                 [HarmonyArgument(1)] PlayerControl player,
                 [HarmonyArgument(2)] byte amount)
@@ -22,17 +22,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 {
                     if (amount == 1)
                     {
-                        if (!CameraPlayers.Contains(player.PlayerId))
-                        {
-                            CameraPlayers.Add(player.PlayerId);
-                        }
+                        if (!CameraPlayers.Contains(player.PlayerId)) CameraPlayers.Add(player.PlayerId);
                     }
                     else
                     {
-                        if (CameraPlayers.Contains(player.PlayerId))
-                        {
-                            CameraPlayers.Remove(player.PlayerId);
-                        }
+                        if (CameraPlayers.Contains(player.PlayerId)) CameraPlayers.Remove(player.PlayerId);
                     }
                 }
                 else if (systemType == SystemTypes.Comms)
@@ -43,7 +37,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static List<byte> CameraPlayers;
         public static List<byte> OldDesyncCommsPlayers;
-        private static float UsableDistance = 1.5f;
+        private static readonly float UsableDistance = 1.5f;
         private static int Count = 0;
         public static bool IsCom;
         public static float CameraTime;
@@ -57,72 +51,48 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if ((!MapOption.UseAdmin ||
                 !MapOption.UseVitalOrDoorLog ||
                 !MapOption.UseCamera)
-                && !ModeHandler.isMode(ModeId.Default))
+                && !ModeHandler.IsMode(ModeId.Default))
             {
                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                 {
                     try
                     {
-                        if (p.isAlive() && !p.IsMod())
+                        if (p.IsAlive() && !p.IsMod())
                         {
-                            var cid = p.getClientId();
+                            var cid = p.GetClientId();
                             bool IsGuard = false;
                             Vector2 playerposition = p.GetTruePosition();
                             //カメラチェック
-                            if (!MapOption.UseCamera)
-                            {
-                                if (CameraPlayers.Contains(p.PlayerId))
-                                {
-                                    IsGuard = true;
-                                }
-                            }
+                            if (!MapOption.UseCamera && CameraPlayers.Contains(p.PlayerId)) IsGuard = true;
                             //アドミンチェック
                             if (!MapOption.UseAdmin)
                             {
                                 var AdminDistance = Vector2.Distance(playerposition, GetAdminTransform());
-                                if (AdminDistance <= UsableDistance)
-                                {
-                                    IsGuard = true;
-                                }
+                                if (AdminDistance <= UsableDistance) IsGuard = true;
                             }
                             //Polus用のアドミンチェック。Polusはアドミンが2つあるから
                             if (!IsGuard && PlayerControl.GameOptions.MapId == 2 && !MapOption.UseAdmin)
                             {
                                 var AdminDistance = Vector2.Distance(playerposition, new Vector2(24.66107f, -21.523f));
-                                if (AdminDistance <= UsableDistance)
-                                {
-                                    IsGuard = true;
-                                }
+                                if (AdminDistance <= UsableDistance) IsGuard = true;
                             }
                             //AirShip(アーカイブ)用のアドミンチェック。AirShipはアドミンが2つあるから
-                            if (!IsGuard && PlayerControl.GameOptions.MapId == 4 && !MapOption.UseAdmin || !IsGuard && PlayerControl.GameOptions.MapId == 4 && MapCustoms.MapCustom.RecordsAdminDestroy.getBool() && MapOption.MapOptionSetting.getBool())
+                            if ((!IsGuard && PlayerControl.GameOptions.MapId == 4 && !MapOption.UseAdmin) || (!IsGuard && PlayerControl.GameOptions.MapId == 4 && MapCustoms.MapCustom.RecordsAdminDestroy.GetBool() && MapOption.MapOptionSetting.GetBool()))
                             {
                                 var AdminDistance = Vector2.Distance(playerposition, new Vector2(19.9f, 12.9f));
-                                if (AdminDistance <= UsableDistance)
-                                {
-                                    IsGuard = true;
-                                }
+                                if (AdminDistance <= UsableDistance) IsGuard = true;
                             }
                             //バイタルもしくはドアログを防ぐ
                             if (!IsGuard && !MapOption.UseVitalOrDoorLog)
                             {
                                 float distance = UsableDistance;
-                                if (PlayerControl.GameOptions.MapId == 2)
-                                {
-                                    distance += 0.5f;
-                                }
+                                if (PlayerControl.GameOptions.MapId == 2) distance += 0.5f;
                                 var AdminDistance = Vector2.Distance(playerposition, GetVitalOrDoorLogTransform());
-                                if (AdminDistance <= distance)
-                                {
-                                    IsGuard = true;
-                                }
+                                if (AdminDistance <= distance) IsGuard = true;
                             }
                             if (IsGuard && !p.inVent)
                             {
-                                if (!OldDesyncCommsPlayers.Contains(p.PlayerId))
-                                {
-                                    OldDesyncCommsPlayers.Add(p.PlayerId);
-                                }
+                                if (!OldDesyncCommsPlayers.Contains(p.PlayerId)) { OldDesyncCommsPlayers.Add(p.PlayerId); }
                                 MessageWriter SabotageWriter = AmongUsClient.Instance.StartRpcImmediately(MapUtilities.CachedShipStatus.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, cid);
                                 SabotageWriter.Write((byte)SystemTypes.Comms);
                                 MessageExtensions.WriteNetObject(SabotageWriter, p);
@@ -161,63 +131,27 @@ namespace SuperNewRoles.Mode.SuperHostRoles
         }
         public static Vector2 GetAdminTransform()
         {
-            if (PlayerControl.GameOptions.MapId == 0)
-            {
-                return new Vector2(3.48f, -8.624401f);
-            }
-            else if (PlayerControl.GameOptions.MapId == 1)
-            {
-                return new Vector2(21.024f, 19.095f);
-            }
-            else if (PlayerControl.GameOptions.MapId == 2)
-            {
-                return new Vector2(23.13707f, -21.523f);
-            }
-            else if (PlayerControl.GameOptions.MapId == 3)
-            {
-                return new Vector2(-3.48f, -8.624401f);
-            }
-            else if (PlayerControl.GameOptions.MapId == 4)
-            {
-                return new Vector2(-22.323f, 0.9099998f);
-            }
+            if (PlayerControl.GameOptions.MapId == 0) return new Vector2(3.48f, -8.624401f);
+            else if (PlayerControl.GameOptions.MapId == 1) return new Vector2(21.024f, 19.095f);
+            else if (PlayerControl.GameOptions.MapId == 2) return new Vector2(23.13707f, -21.523f);
+            else if (PlayerControl.GameOptions.MapId == 3) return new Vector2(-3.48f, -8.624401f);
+            else if (PlayerControl.GameOptions.MapId == 4) return new Vector2(-22.323f, 0.9099998f);
             return new Vector2(1000, 1000);
         }
 
         public static Vector2 GetCameraTransform()
         {
-            if (PlayerControl.GameOptions.MapId == 0)
-            {
-                return new Vector2(-12.93658f, -2.790947f);
-            }
-            else if (PlayerControl.GameOptions.MapId == 2)
-            {
-                return new Vector2(2.428533f, -12.52964f);
-            }
-            else if (PlayerControl.GameOptions.MapId == 3)
-            {
-                return new Vector2(13.07439f, -3.215496f);
-            }
-            else if (PlayerControl.GameOptions.MapId == 4)
-            {
-                return new Vector2(8.018572f, -9.942375f);
-            }
+            if (PlayerControl.GameOptions.MapId == 0) return new Vector2(-12.93658f, -2.790947f);
+            else if (PlayerControl.GameOptions.MapId == 2) return new Vector2(2.428533f, -12.52964f);
+            else if (PlayerControl.GameOptions.MapId == 3) return new Vector2(13.07439f, -3.215496f);
+            else if (PlayerControl.GameOptions.MapId == 4) return new Vector2(8.018572f, -9.942375f);
             return new Vector2(1000, 1000);
         }
         public static Vector2 GetVitalOrDoorLogTransform()
         {
-            if (PlayerControl.GameOptions.MapId == 1)
-            {
-                return new Vector2(15.51107f, -2.897387f);
-            }
-            else if (PlayerControl.GameOptions.MapId == 2)
-            {
-                return new Vector2(26.20935f, -16.04406f);
-            }
-            else if (PlayerControl.GameOptions.MapId == 4)
-            {
-                return new Vector2(25.28237f, -8.145635f);
-            }
+            if (PlayerControl.GameOptions.MapId == 1) return new Vector2(15.51107f, -2.897387f);
+            else if (PlayerControl.GameOptions.MapId == 2) return new Vector2(26.20935f, -16.04406f);
+            else if (PlayerControl.GameOptions.MapId == 4) return new Vector2(25.28237f, -8.145635f);
             return new Vector2(1000, 1000);
         }
     }

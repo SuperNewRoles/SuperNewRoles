@@ -1,3 +1,4 @@
+//元:https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/AirShipStatusPatch.cs
 using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
@@ -12,7 +13,6 @@ namespace SuperNewRoles.Roles
 {
     public static class Assassin
     {
-        //元:https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/AirShipStatusPatch.cs
         [HarmonyPatch(typeof(AirshipStatus), nameof(AirshipStatus.PrespawnStep))]
         public static class AirshipStatusPrespawnStepPatch
         {
@@ -23,7 +23,7 @@ namespace SuperNewRoles.Roles
         }
         public static void AddChat(PlayerControl sourcePlayer, string chatText)
         {
-            if (!ModeHandler.isMode(ModeId.SuperHostRoles)) return;
+            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return;
             if (RoleClass.Assassin.TriggerPlayer != null && sourcePlayer.PlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId)
             {
                 var player = CachedPlayer.AllPlayers.ToArray().ToList().FirstOrDefault((_) => chatText.Equals(_.PlayerControl.name));
@@ -36,14 +36,7 @@ namespace SuperNewRoles.Roles
                 for (int i = 0; i < MeetingHud.Instance.playerStates.Length; i++)
                 {
                     PlayerVoteArea playerVoteArea = MeetingHud.Instance.playerStates[i];
-                    if (playerVoteArea.TargetPlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId)
-                    {
-                        playerVoteArea.VotedFor = player.Data.PlayerId;
-                    }
-                    else
-                    {
-                        playerVoteArea.VotedFor = 254;
-                    }
+                    playerVoteArea.VotedFor = playerVoteArea.TargetPlayerId == RoleClass.Assassin.TriggerPlayer.PlayerId ? player.Data.PlayerId : (byte)254;
                     MeetingHud.Instance.SetDirtyBit(1U);
 
                     array[i] = new MeetingHud.VoterState
@@ -60,17 +53,17 @@ namespace SuperNewRoles.Roles
                     var outfit = target.DefaultOutfit;
                     exileplayer = target;
                     PlayerControl exile = null;
-                    Mode.SuperHostRoles.main.RealExiled = target.Object;
-                    if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                    Main.RealExiled = target.Object;
+                    if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                     {
                         foreach (PlayerControl p in BotManager.AllBots)
                         {
-                            if (p.isDead())
+                            if (p.IsDead())
                             {
                                 exileplayer = p.Data;
                                 exile = p;
                                 p.RpcSetColor((byte)outfit.ColorId);
-                                p.RpcSetName(target.Object.getDefaultName() + (target.Object.isRole(RoleId.Marine) ? ModTranslation.getString("AssassinSucsess") : ModTranslation.getString("AssassinFail")) + "<size=0%>");
+                                p.RpcSetName(target.Object.GetDefaultName() + (target.Object.IsRole(RoleId.Marine) ? ModTranslation.GetString("AssassinSucsess") : ModTranslation.GetString("AssassinFail")) + "<size=0%>");
                                 p.RpcSetHat(outfit.HatId);
                                 p.RpcSetVisor(outfit.VisorId);
                                 p.RpcSetSkin(outfit.SkinId);
@@ -79,7 +72,7 @@ namespace SuperNewRoles.Roles
                         }
                     }
                     RoleClass.Assassin.MeetingEndPlayers.Add(RoleClass.Assassin.TriggerPlayer.PlayerId);
-                    if (target.Object.isRole(RoleId.Marine))
+                    if (target.Object.IsRole(RoleId.Marine))
                     {
                         RoleClass.Assassin.IsImpostorWin = true;
                     }
@@ -91,7 +84,7 @@ namespace SuperNewRoles.Roles
                     {
                         if (exile != null)
                         {
-                            exile.RpcSetName(exile.getDefaultName());
+                            exile.RpcSetName(exile.GetDefaultName());
                             exile.RpcSetColor(1);
                             exile.RpcSetHat("hat_NoHat");
                             exile.RpcSetPet("peet_EmptyPet");
@@ -104,11 +97,11 @@ namespace SuperNewRoles.Roles
                 new LateTask(() => MeetingHud.Instance.RpcVotingComplete(array, exileplayer, true), 0.2f);
             }
         }
-        public static void WrapUp(GameData.PlayerInfo exiled)
+        public static void WrapUp()
         {
             if (RoleClass.Assassin.DeadPlayer != null)
             {
-                if (ModeHandler.isMode(ModeId.SuperHostRoles))
+                if (ModeHandler.IsMode(ModeId.SuperHostRoles))
                 {
                     if (AmongUsClient.Instance.AmHost)
                     {
@@ -126,8 +119,8 @@ namespace SuperNewRoles.Roles
                 MapUtilities.CachedShipStatus.enabled = false;
                 ShipStatus.RpcEndGame(GameOverReason.ImpostorByVote, false);
             }
-            var exile = Mode.SuperHostRoles.main.RealExiled;
-            if (ModeHandler.isMode(ModeId.SuperHostRoles) && exile != null && exile.isRole(RoleId.Assassin))
+            var exile = Main.RealExiled;
+            if (ModeHandler.IsMode(ModeId.SuperHostRoles) && exile != null && exile.IsRole(RoleId.Assassin))
             {
                 if (AmongUsClient.Instance.AmHost)
                 {
@@ -139,15 +132,15 @@ namespace SuperNewRoles.Roles
                     }, 10.5f);
                     new LateTask(() =>
                     {
-                        exile.RpcSetName($"<size=200%>{CustomOptions.cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}<color=white>は誰だ？</size>");
+                        exile.RpcSetName($"<size=200%>{CustomOptions.Cs(RoleClass.Marine.color, IntroDate.MarineIntro.NameKey + "Name")}<color=white>は誰だ？</size>");
                     }, 12f);
                     new LateTask(() =>
                     {
-                        exile.RpcSendChat($"\n{ModTranslation.getString("MarineWhois")}");
+                        exile.RpcSendChat($"\n{ModTranslation.GetString("MarineWhois")}");
                     }, 12.5f);
                     new LateTask(() =>
                     {
-                        exile.RpcSetName(exile.getDefaultName());
+                        exile.RpcSetName(exile.GetDefaultName());
                     }, 13f);
                 }
                 RoleClass.Assassin.TriggerPlayer = exile;

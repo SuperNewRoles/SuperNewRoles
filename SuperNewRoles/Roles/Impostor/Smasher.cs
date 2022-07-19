@@ -5,23 +5,23 @@ namespace SuperNewRoles.Roles
 {
     public static class Smasher
     {
-        public static void resetCoolDown()
+        public static void ResetCoolDown()
         {
             HudManagerStartPatch.DoubleKillerMainKillButton.MaxTimer = RoleClass.Smasher.KillCoolTime;
             HudManagerStartPatch.DoubleKillerMainKillButton.Timer = RoleClass.Smasher.KillCoolTime;
         }
-        public static void resetSmashCoolDown()
+        public static void ResetSmashCoolDown()
         {
             HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer = 0.1f;
             HudManagerStartPatch.DoubleKillerSubKillButton.Timer = 0.1f;
         }
         public static void EndMeeting()
         {
-            resetCoolDown();
-            resetSmashCoolDown();
+            ResetCoolDown();
+            ResetSmashCoolDown();
             HudManagerStartPatch.DoubleKillerSubKillButton.MaxTimer = 0.1f;
         }
-        public static void setPlayerOutline(PlayerControl target, Color color)
+        public static void SetPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null || target.MyRend == null) return;
 

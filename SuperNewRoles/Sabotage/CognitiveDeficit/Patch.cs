@@ -15,7 +15,7 @@ namespace SuperNewRoles.Sabotage.CognitiveDeficit
                 {
                     if (SabotageManager.thisSabotage == SabotageManager.CustomSabotage.CognitiveDeficit)
                     {
-                        __instance.gameObject.SetActive(main.IsLocalEnd);
+                        __instance.gameObject.SetActive(Main.IsLocalEnd);
                     }
                 }
             }

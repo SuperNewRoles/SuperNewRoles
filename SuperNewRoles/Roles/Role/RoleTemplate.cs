@@ -3,6 +3,7 @@ using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomRPC;
 
+//TODO:さつまいも、リファクタ
 namespace SuperNewRoles.Roles
 {
     class RoleTemplate
@@ -19,7 +20,7 @@ namespace SuperNewRoles.Roles
             public abstract void OnKill(PlayerControl target);
             public abstract void OnDeath(PlayerControl killer = null);
             public abstract void HandleDisconnect(PlayerControl player, DisconnectReasons reason);
-            public virtual void ResetRole() { }
+            public virtual void ReSetRole() { }
 
             public static void ClearAll()
             {
@@ -59,7 +60,7 @@ namespace SuperNewRoles.Roles
             {
                 get
                 {
-                    return players.Select(x => x.player).Where(x => x.isAlive()).ToList();
+                    return players.Select(x => x.player).Where(x => x.IsAlive()).ToList();
                 }
             }
 
@@ -67,7 +68,7 @@ namespace SuperNewRoles.Roles
             {
                 get
                 {
-                    return players.Select(x => x.player).Where(x => !x.isAlive()).ToList();
+                    return players.Select(x => x.player).Where(x => !x.IsAlive()).ToList();
                 }
             }
 
@@ -76,20 +77,20 @@ namespace SuperNewRoles.Roles
                 get { return players.Count > 0; }
             }
 
-            public static T getRole(PlayerControl player = null)
+            public static T GetRole(PlayerControl player = null)
             {
                 player ??= PlayerControl.LocalPlayer;
                 return players.FirstOrDefault(x => x.player == player);
             }
 
-            public static bool isRole(PlayerControl player)
+            public static bool IsRole(PlayerControl player)
             {
                 return players.Any(x => x.player == player);
             }
 
-            public static void setRole(PlayerControl player)
+            public static void SetRole(PlayerControl player)
             {
-                if (!isRole(player))
+                if (!IsRole(player))
                 {
                     T role = new();
                     role.Init(player);
@@ -98,7 +99,7 @@ namespace SuperNewRoles.Roles
 
             public static void eraseRole(PlayerControl player)
             {
-                players.DoIf(x => x.player == player, x => x.ResetRole());
+                players.DoIf(x => x.player == player, x => x.ReSetRole());
                 players.RemoveAll(x => x.player == player && x.roleId == RoleType);
                 allRoles.RemoveAll(x => x.player == player && x.roleId == RoleType);
             }
