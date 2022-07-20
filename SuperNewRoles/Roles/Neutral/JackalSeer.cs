@@ -9,7 +9,7 @@ namespace SuperNewRoles.Roles
 {
     class JackalSeer
     {
-        public static void resetCoolDown()
+        public static void ResetCoolDown()
         {
             HudManagerStartPatch.JackalKillButton.MaxTimer = RoleClass.JackalSeer.KillCoolDown;
             HudManagerStartPatch.JackalKillButton.Timer = RoleClass.JackalSeer.KillCoolDown;
@@ -18,9 +18,9 @@ namespace SuperNewRoles.Roles
         }
         public static void EndMeeting()
         {
-            resetCoolDown();
+            ResetCoolDown();
         }
-        public static void setPlayerOutline(PlayerControl target, Color color)
+        public static void SetPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null || target.MyRend == null) return;
 
@@ -29,7 +29,7 @@ namespace SuperNewRoles.Roles
         }
         public class JackalSeerFixedPatch
         {
-            public static PlayerControl JackalSeersetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
+            public static PlayerControl JackalSeerSetTarget(bool onlyCrewmates = false, bool targetPlayersInVents = false, List<PlayerControl> untargetablePlayers = null, PlayerControl targetingPlayer = null)
             {
                 PlayerControl result = null;
                 float num = GameOptionsData.KillDistances[Mathf.Clamp(PlayerControl.GameOptions.KillDistance, 0, 2)];
@@ -48,7 +48,7 @@ namespace SuperNewRoles.Roles
                 {
                     GameData.PlayerInfo playerInfo = allPlayers[i];
                     //下記JackalSeerがbuttonのターゲットにできない役職の設定
-                    if (playerInfo.Object.isAlive() && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.Object.IsJackalTeamJackal() && !playerInfo.Object.IsJackalTeamSidekick())
+                    if (playerInfo.Object.IsAlive() && playerInfo.PlayerId != targetingPlayer.PlayerId && !playerInfo.Object.IsJackalTeamJackal() && !playerInfo.Object.IsJackalTeamSidekick())
                     {
                         PlayerControl @object = playerInfo.Object;
                         if (untargetablePlayers.Any(x => x == @object))
@@ -73,7 +73,7 @@ namespace SuperNewRoles.Roles
             }
             static void JackalSeerPlayerOutLineTarget()
             {
-                setPlayerOutline(JackalSeersetTarget(), RoleClass.JackalSeer.color);
+                SetPlayerOutline(JackalSeerSetTarget(), RoleClass.JackalSeer.color);
             }
             public static void Postfix(PlayerControl __instance, RoleId role)
             {
@@ -84,14 +84,14 @@ namespace SuperNewRoles.Roles
                         var upflag = true;
                         foreach (PlayerControl p in RoleClass.JackalSeer.JackalSeerPlayer)
                         {
-                            if (p.isAlive())
+                            if (p.IsAlive())
                             {
                                 upflag = false;
                             }
                         }
                         if (upflag)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SidekickSeerPromotes, Hazel.SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SidekickSeerPromotes, SendOption.Reliable, -1);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                             RPCProcedure.SidekickSeerPromotes();
                         }

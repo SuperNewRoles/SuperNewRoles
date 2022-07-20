@@ -1,9 +1,9 @@
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -20,34 +20,27 @@ namespace SuperNewRoles.Roles
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedDown, SendOption.Reliable, -1);
             writer.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetSpeedDown(true);
+            RPCProcedure.SetSpeedDown(true);
         }
         public static void ResetSpeed()
         {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedDown, SendOption.Reliable, -1);
             writer.Write(false);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetSpeedDown(false);
+            RPCProcedure.SetSpeedDown(false);
         }
         public static void SpeedDownEnd()
         {
             ResetSpeed();
-            Speeder.ResetCoolDown();
+            ResetCoolDown();
         }
         public static bool IsSpeeder(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.Speeder))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.IsRole(RoleId.Speeder);
         }
         public static void EndMeeting()
         {
-            Speeder.ResetCoolDown();
+            ResetCoolDown();
             ResetSpeed();
         }
     }
@@ -57,7 +50,7 @@ namespace SuperNewRoles.Roles
         public static void Postfix(PlayerPhysics __instance)
         {
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (RoleClass.Speeder.IsSpeedDown)
                 {

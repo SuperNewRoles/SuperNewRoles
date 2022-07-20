@@ -7,7 +7,7 @@ namespace SuperNewRoles.Patch.Harmony
     {
         public static void Postfix(MeetingIntroAnimation __instance)
         {
-            SuperNewRoles.Modules.ProctedMessager.StartMeeting(__instance);
+            Modules.ProctedMessager.StartMeeting(__instance);
         }
     }
 }

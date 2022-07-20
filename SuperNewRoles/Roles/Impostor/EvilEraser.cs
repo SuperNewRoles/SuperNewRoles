@@ -1,7 +1,8 @@
 using Hazel;
-using SuperNewRoles.Helpers;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Helpers;
 
+//TODO:さつまいも、いつかリファクタします
 namespace SuperNewRoles.Roles
 {
     public static class EvilEraser
@@ -21,22 +22,19 @@ namespace SuperNewRoles.Roles
         public static bool IsBlock(BlockTypes blocktype, PlayerControl player = null)
         {
             if (player == null) player = PlayerControl.LocalPlayer;
-            if (!player.isRole(RoleId.EvilEraser)) return false;
-            if (RoleClass.EvilEraser.Counts.ContainsKey(player.PlayerId) && RoleClass.EvilEraser.Counts[player.PlayerId] <= 0)
-            {
-                return false;
-            }
-            return blocktype switch
-            {
-                BlockTypes.StuntmanGuard => true,
-                BlockTypes.ClergymanLightOut => true,
-                BlockTypes.BaitReport => true,
-                BlockTypes.RedRidingHoodRevive => true,
-                BlockTypes.JackalSidekick => true,
-                BlockTypes.NekomataExiled => true,
-                BlockTypes.FoxGuard => true,
-                _ => false,
-            };
+            return player.IsRole(RoleId.EvilEraser)
+&& (!RoleClass.EvilEraser.Counts.ContainsKey(player.PlayerId) || RoleClass.EvilEraser.Counts[player.PlayerId] > 0)
+&& blocktype switch
+{
+    BlockTypes.StuntmanGuard => true,
+    BlockTypes.ClergymanLightOut => true,
+    BlockTypes.BaitReport => true,
+    BlockTypes.RedRidingHoodRevive => true,
+    BlockTypes.JackalSidekick => true,
+    BlockTypes.NekomataExiled => true,
+    BlockTypes.FoxGuard => true,
+    _ => false,
+};
         }
         public static bool IsBlockAndTryUse(BlockTypes blocktype, PlayerControl player = null)
         {
@@ -52,7 +50,7 @@ namespace SuperNewRoles.Roles
             MessageWriter writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.UseEraserCount);
             writer.Write(player.PlayerId);
             writer.EndRPC();
-            CustomRPC.RPCProcedure.UseEraserCount(player.PlayerId);
+            RPCProcedure.UseEraserCount(player.PlayerId);
         }
         public static bool IsOKAndTryUse(BlockTypes blocktype, PlayerControl player = null)
         {
@@ -64,7 +62,7 @@ namespace SuperNewRoles.Roles
             bool IsAlive = false;
             foreach (PlayerControl p in RoleClass.God.GodPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     IsAlive = true;
                 }
@@ -96,7 +94,7 @@ namespace SuperNewRoles.Roles
             bool IsAlive = false;
             foreach (PlayerControl p in RoleClass.Fox.FoxPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     IsAlive = true;
                 }
@@ -127,7 +125,7 @@ namespace SuperNewRoles.Roles
             bool IsAlive = false;
             foreach (PlayerControl p in RoleClass.Neet.NeetPlayer)
             {
-                if (p.isAlive())
+                if (p.IsAlive())
                 {
                     IsAlive = true;
                 }

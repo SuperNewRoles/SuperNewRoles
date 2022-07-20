@@ -5,18 +5,7 @@ namespace SuperNewRoles.Roles
 {
     public class MadHawk
     {
-        public static void TimerEnd()
-        {
-            /**
-            if (PlayerControl.LocalPlayer.isRole(RoleId.Hawk))
-            {
-                MapBehaviour.Instance.Close();
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.gameObject.SetActive(true);
-                FastDestroyableSingleton<HudManager>.Instance.ReportButton.gameObject.SetActive(true);
-                FastDestroyableSingleton<HudManager>.Instance.SabotageButton.gameObject.SetActive(true);
-            }
-            **/
-        }
+        public static void TimerEnd() { }
         public class FixedUpdate
         {
             public static void Postfix()
@@ -34,8 +23,8 @@ namespace SuperNewRoles.Roles
                 }
                 if (RoleClass.MadHawk.timer1 >= 0.1 && !RoleClass.IsMeeting)
                 {
-                    var TimeSpanDate = new TimeSpan(0, 0, 0, (int)10);
-                    RoleClass.MadHawk.timer1 = (float)((RoleClass.MadHawk.Timer2 + TimeSpanDate) - DateTime.Now).TotalSeconds;
+                    var TimeSpanDate = new TimeSpan(0, 0, 0, 10);
+                    RoleClass.MadHawk.timer1 = (float)(RoleClass.MadHawk.Timer2 + TimeSpanDate - DateTime.Now).TotalSeconds;
                     CachedPlayer.LocalPlayer.transform.localPosition = RoleClass.MadHawk.Postion;
                     SuperNewRolesPlugin.Logger.LogInfo(RoleClass.MadHawk.timer1);
                 }

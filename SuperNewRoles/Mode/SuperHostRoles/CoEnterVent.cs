@@ -8,8 +8,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
     {
         public static bool Prefix(PlayerPhysics __instance, int id)
         {
-            if (!AmongUsClient.Instance.AmHost || !ModeHandler.isMode(ModeId.SuperHostRoles)) return true;
-            RoleId role = __instance.myPlayer.getRole();
+            if (!AmongUsClient.Instance.AmHost || !ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
+            RoleId role = __instance.myPlayer.GetRole();
             switch (role)
             {
                 case RoleId.Minimalist:
@@ -50,7 +50,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             AmongUsClient.Instance.FinishRpcImmediately(writer);
             new LateTask(() =>
             {
-                int clientId = __instance.myPlayer.getClientId();
+                int clientId = __instance.myPlayer.GetClientId();
                 MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, clientId);
                 writer2.Write(id);
                 AmongUsClient.Instance.FinishRpcImmediately(writer2);

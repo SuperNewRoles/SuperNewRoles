@@ -1,9 +1,9 @@
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.Buttons;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Mode;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Roles
 {
@@ -20,34 +20,27 @@ namespace SuperNewRoles.Roles
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedFreeze, SendOption.Reliable, -1);
             writer.Write(true);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetSpeedFreeze(true);
+            RPCProcedure.SetSpeedFreeze(true);
         }
         public static void ResetSpeed()
         {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetSpeedFreeze, SendOption.Reliable, -1);
             writer.Write(false);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-            CustomRPC.RPCProcedure.SetSpeedFreeze(false);
+            RPCProcedure.SetSpeedFreeze(false);
         }
         public static void SpeedDownEnd()
         {
             ResetSpeed();
-            Freezer.ResetCoolDown();
+            ResetCoolDown();
         }
         public static bool IsFreezer(PlayerControl Player)
         {
-            if (Player.isRole(RoleId.Freezer))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return Player.IsRole(RoleId.Freezer);
         }
         public static void EndMeeting()
         {
-            Freezer.ResetCoolDown();
+            ResetCoolDown();
             ResetSpeed();
         }
     }
@@ -57,7 +50,7 @@ namespace SuperNewRoles.Roles
         public static void Postfix(PlayerPhysics __instance)
         {
             if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-            if (ModeHandler.isMode(ModeId.Default))
+            if (ModeHandler.IsMode(ModeId.Default))
             {
                 if (RoleClass.Freezer.IsSpeedDown)
                 {

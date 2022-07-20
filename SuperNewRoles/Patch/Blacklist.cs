@@ -1,14 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using BepInEx.IL2CPP.Utils;
 using HarmonyLib;
 using InnerNet;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+
 namespace SuperNewRoles.Patch
 {
     public static class Blacklist
@@ -42,10 +41,12 @@ namespace SuperNewRoles.Patch
             var json = JObject.Parse(request.downloadHandler.text);
             for (var user = json["blockedUsers"].First; user != null; user = user.Next)
             {
-                BlackPlayer player = new();
-                player.FriendCode = user["FriendCode"]?.ToString();
-                player.Reason = user["Reason"]?.ToString();
-                player.clientId = user["clientId"]?.ToString();
+                BlackPlayer player = new()
+                {
+                    FriendCode = user["FriendCode"]?.ToString(),
+                    Reason = user["Reason"]?.ToString(),
+                    clientId = user["clientId"]?.ToString()
+                };
                 SuperNewRolesPlugin.Logger.LogInfo(player.FriendCode);
             }
         }
@@ -56,9 +57,9 @@ namespace SuperNewRoles.Patch
             {
                 yield return null;
                 clientData = AmongUsClient.Instance
-                                          .allClients
-                                          .ToArray()
-                                          .FirstOrDefault(client => client.Id == clientId);
+                                        .allClients
+                                        .ToArray()
+                                        .FirstOrDefault(client => client.Id == clientId);
                 SuperNewRolesPlugin.Logger.LogInfo(clientData);
             } while (clientData == null);
             SuperNewRolesPlugin.Logger.LogInfo(clientData.FriendCode);

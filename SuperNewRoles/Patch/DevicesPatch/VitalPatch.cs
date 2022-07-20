@@ -13,22 +13,22 @@ namespace SuperNewRoles.Patch
     [Harmony]
     public class VitalsPatch
     {
-        static float vitalsTimer = MapOptions.MapOption.CanUseVitalTime.getFloat();
-        public static float RestrictVitalsTime = MapOptions.MapOption.CanUseVitalTime.getFloat();
-        public static float RestrictVitalsTimeMax = MapOptions.MapOption.CanUseVitalTime.getFloat();
+        static float vitalsTimer = MapOptions.MapOption.CanUseVitalTime.GetFloat();
+        public static float RestrictVitalsTime = MapOptions.MapOption.CanUseVitalTime.GetFloat();
+        public static float RestrictVitalsTimeMax = MapOptions.MapOption.CanUseVitalTime.GetFloat();
         static TMPro.TextMeshPro TimeRemaining;
 
         public static void ClearAndReload()
         {
             //vitalsTimer = 0f;
             ResetData();
-            RestrictVitalsTime = MapOptions.MapOption.CanUseVitalTime.getFloat();
-            RestrictVitalsTimeMax = MapOptions.MapOption.CanUseVitalTime.getFloat();
+            RestrictVitalsTime = MapOptions.MapOption.CanUseVitalTime.GetFloat();
+            RestrictVitalsTimeMax = MapOptions.MapOption.CanUseVitalTime.GetFloat();
         }
 
         public static void ResetData()
         {
-            vitalsTimer = MapOptions.MapOption.CanUseVitalTime.getFloat();
+            vitalsTimer = MapOptions.MapOption.CanUseVitalTime.GetFloat();
             if (TimeRemaining != null)
             {
                 UnityEngine.Object.Destroy(TimeRemaining);
@@ -39,12 +39,12 @@ namespace SuperNewRoles.Patch
         static void UseVitalsTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.MapOption.RestrictVital.getBool() && RestrictVitalsTime > 0f && PlayerControl.LocalPlayer.isAlive() && MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.MapOptionSetting.getBool())
+            if (MapOptions.MapOption.RestrictVital.GetBool() && RestrictVitalsTime > 0f && PlayerControl.LocalPlayer.IsAlive() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.MapOptionSetting.GetBool())
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseVitalsTime, Hazel.SendOption.Reliable, -1);
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.UseVitalsTime, SendOption.Reliable, -1);
                 writer.Write(vitalsTimer);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
-                CustomRPC.RPCProcedure.UseVitalTime(vitalsTimer);
+                RPCProcedure.UseVitalTime(vitalsTimer);
             }
             vitalsTimer = 0f;
         }
@@ -63,13 +63,13 @@ namespace SuperNewRoles.Patch
         {
             static bool Prefix(VitalsMinigame __instance)
             {
-                if (Mode.ModeHandler.isMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.getBool() && MapOptions.MapOption.RestrictDevicesOption.getBool() && MapOptions.MapOption.RestrictVital.getBool())
+                if (Mode.ModeHandler.IsMode(Mode.ModeId.Default) && MapOptions.MapOption.MapOptionSetting.GetBool() && MapOptions.MapOption.RestrictDevicesOption.GetBool() && MapOptions.MapOption.RestrictVital.GetBool())
                 {
                     vitalsTimer += Time.deltaTime;
                     if (vitalsTimer > 0.1f)
                         UseVitalsTime();
 
-                    if (MapOptions.MapOption.RestrictVital.getBool())
+                    if (MapOptions.MapOption.RestrictVital.GetBool())
                     {
                         if (TimeRemaining == null)
                         {
@@ -88,7 +88,7 @@ namespace SuperNewRoles.Patch
                         }
 
                         string timeString = TimeSpan.FromSeconds(RestrictVitalsTime).ToString(@"mm\:ss\.ff");
-                        TimeRemaining.text = String.Format(ModTranslation.getString("timeRemaining"), timeString);
+                        TimeRemaining.text = String.Format(ModTranslation.GetString("timeRemaining"), timeString);
                         TimeRemaining.gameObject.SetActive(true);
                     }
 

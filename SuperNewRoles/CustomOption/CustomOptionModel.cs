@@ -20,7 +20,6 @@ namespace SuperNewRoles.CustomOption
         Impostor,
         Neutral,
         Crewmate
-
     }
 
     public class CustomOption
@@ -44,11 +43,11 @@ namespace SuperNewRoles.CustomOption
         public bool isHeader;
         public bool isHidden;
 
-        public virtual bool enabled
+        public virtual bool Enabled
         {
             get
             {
-                return this.getBool();
+                return GetBool();
             }
         }
 
@@ -116,7 +115,7 @@ namespace SuperNewRoles.CustomOption
 
         // Static behaviour
 
-        public static void switchPreset(int newPreset)
+        public static void SwitchPreset(int newPreset)
         {
             CustomOption.preset = newPreset;
             foreach (CustomOption option in CustomOption.options)
@@ -128,7 +127,7 @@ namespace SuperNewRoles.CustomOption
                 if (option.optionBehaviour is not null and StringOption stringOption)
                 {
                     stringOption.oldValue = stringOption.Value = option.selection;
-                    stringOption.ValueText.text = option.getString();
+                    stringOption.ValueText.text = option.GetString();
                 }
             }
         }
@@ -137,7 +136,7 @@ namespace SuperNewRoles.CustomOption
         {
             if (CachedPlayer.AllPlayers.Count <= 1 || (AmongUsClient.Instance?.AmHost == false && PlayerControl.LocalPlayer == null)) return;
 
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareOptions, Hazel.SendOption.Reliable);
+            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareOptions, SendOption.Reliable);
             messageWriter.WritePacked((uint)CustomOption.options.Count);
             foreach (CustomOption option in CustomOption.options)
             {
@@ -149,49 +148,45 @@ namespace SuperNewRoles.CustomOption
 
         // Getter
 
-        public virtual int getSelection()
+        public virtual int GetSelection()
         {
             return selection;
         }
 
-        public virtual bool getBool()
+        public virtual bool GetBool()
         {
             return selection > 0;
         }
 
-        public virtual float getFloat()
+        public virtual float GetFloat()
         {
             return (float)selections[selection];
         }
 
-        public virtual string getString()
+        public virtual string GetString()
         {
             string sel = selections[selection].ToString();
-            if (format != "")
-            {
-                return sel;
-            }
-            return ModTranslation.getString(sel);
+            return format != "" ? sel : ModTranslation.GetString(sel);
         }
 
-        public virtual string getName()
+        public virtual string GetName()
         {
-            return ModTranslation.getString(name);
+            return ModTranslation.GetString(name);
         }
 
         // Option changes
 
-        public virtual void updateSelection(int newSelection)
+        public virtual void UpdateSelection(int newSelection)
         {
             selection = Mathf.Clamp((newSelection + selections.Length) % selections.Length, 0, selections.Length - 1);
             if (optionBehaviour is not null and StringOption stringOption)
             {
                 stringOption.oldValue = stringOption.Value = selection;
-                stringOption.ValueText.text = getString();
+                stringOption.ValueText.text = GetString();
 
                 if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
                 {
-                    if (id == 0) switchPreset(selection); // Switch presets
+                    if (id == 0) SwitchPreset(selection); // Switch presets
                     else if (entry != null) entry.Value = selection; // Save selection to config
 
                     ShareOptionSelections();// Share all selections
@@ -207,19 +202,19 @@ namespace SuperNewRoles.CustomOption
 
         public RoleId RoleId;
 
-        public int rate
+        public int Rate
         {
             get
             {
-                return getSelection();
+                return GetSelection();
             }
         }
 
-        public bool isRoleEnable
+        public bool IsRoleEnable
         {
             get
             {
-                return getSelection() != 0;
+                return GetSelection() != 0;
             }
         }
 
@@ -231,27 +226,24 @@ namespace SuperNewRoles.CustomOption
             }
         }
 
-        public int count
+        public int Count
         {
             get
             {
-                if (countOption != null)
-                    return Mathf.RoundToInt(countOption.getFloat());
-
-                return 1;
+                return countOption != null ? Mathf.RoundToInt(countOption.GetFloat()) : 1;
             }
         }
 
-        public (int, int) data
+        public (int, int) Data
         {
             get
             {
-                return (rate, count);
+                return (Rate, Count);
             }
         }
 
         public CustomRoleOption(int id, bool isSHROn, CustomOptionType type, string name, Color color, int max = 15) :
-            base(id, isSHROn, type, CustomOptions.cs(color, name), CustomOptions.rates, "", null, true, false, "")
+            base(id, isSHROn, type, CustomOptions.Cs(color, name), CustomOptions.rates, "", null, true, false, "")
         {
             try
             {
@@ -280,27 +272,27 @@ namespace SuperNewRoles.CustomOption
             options.Add(this);
         }
 
-        public override int getSelection()
+        public override int GetSelection()
         {
             return 0;
         }
 
-        public override bool getBool()
+        public override bool GetBool()
         {
             return true;
         }
 
-        public override float getFloat()
+        public override float GetFloat()
         {
             return 0f;
         }
 
-        public override string getString()
+        public override string GetString()
         {
             return "";
         }
 
-        public override void updateSelection(int newSelection)
+        public override void UpdateSelection(int newSelection)
         {
             return;
         }
@@ -330,22 +322,22 @@ namespace SuperNewRoles.CustomOption
         {
             if (GameObject.Find("SNRSettings") != null)
             { // Settings setup has already been performed, fixing the title of the tab and returning
-                GameObject.Find("SNRSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingSuperNewRoles"));
+                GameObject.Find("SNRSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingSuperNewRoles"));
                 return;
             }
             if (GameObject.Find("ImpostorSettings") != null)
             {
-                GameObject.Find("ImpostorSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingImpostor"));
+                GameObject.Find("ImpostorSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingImpostor"));
                 return;
             }
             if (GameObject.Find("NeutralSettings") != null)
             {
-                GameObject.Find("NeutralSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingNeutral"));
+                GameObject.Find("NeutralSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingNeutral"));
                 return;
             }
             if (GameObject.Find("CrewmateSettings") != null)
             {
-                GameObject.Find("CrewmateSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.getString("SettingCrewmate"));
+                GameObject.Find("CrewmateSettings").transform.FindChild("GameGroup").FindChild("Text").GetComponent<TMPro.TextMeshPro>().SetText(ModTranslation.GetString("SettingCrewmate"));
                 return;
             }
             // Setup TOR tab
@@ -379,21 +371,21 @@ namespace SuperNewRoles.CustomOption
 
             var snrTab = UnityEngine.Object.Instantiate(roleTab, roleTab.transform.parent);
             var snrTabHighlight = snrTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-            snrTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.TabIcon.png", 100f);
+            snrTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.TabIcon.png", 100f);
 
             var impostorTab = UnityEngine.Object.Instantiate(roleTab, snrTab.transform);
             var impostorTabHighlight = impostorTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-            impostorTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Setting_Impostor.png", 100f);
+            impostorTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Impostor.png", 100f);
             impostorTab.name = "ImpostorTab";
 
             var neutralTab = UnityEngine.Object.Instantiate(roleTab, impostorTab.transform);
             var neutralTabHighlight = neutralTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-            neutralTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Setting_Neutral.png", 100f);
+            neutralTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Neutral.png", 100f);
             neutralTab.name = "NeutralTab";
 
             var crewmateTab = UnityEngine.Object.Instantiate(roleTab, neutralTab.transform);
             var crewmateTabHighlight = crewmateTab.transform.FindChild("Hat Button").FindChild("Tab Background").GetComponent<SpriteRenderer>();
-            crewmateTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
+            crewmateTab.transform.FindChild("Hat Button").FindChild("Icon").GetComponent<SpriteRenderer>().sprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.Setting_Crewmate.png", 100f);
             crewmateTab.name = "CrewmateTab";
 
             // Position of Tab Icons
@@ -556,9 +548,9 @@ namespace SuperNewRoles.CustomOption
             if (option == null) return true;
 
             __instance.OnValueChanged = new Action<OptionBehaviour>((o) => { });
-            __instance.TitleText.text = option.getName();
+            __instance.TitleText.text = option.GetName();
             __instance.Value = __instance.oldValue = option.selection;
-            __instance.ValueText.text = option.getString();
+            __instance.ValueText.text = option.GetString();
 
             return false;
         }
@@ -571,7 +563,7 @@ namespace SuperNewRoles.CustomOption
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
             if (option == null) return true;
-            option.updateSelection(option.selection + 1);
+            option.UpdateSelection(option.selection + 1);
             return false;
         }
     }
@@ -583,7 +575,7 @@ namespace SuperNewRoles.CustomOption
         {
             CustomOption option = CustomOption.options.FirstOrDefault(option => option.optionBehaviour == __instance);
             if (option == null) return true;
-            option.updateSelection(option.selection - 1);
+            option.UpdateSelection(option.selection - 1);
             return false;
         }
     }
@@ -601,7 +593,7 @@ namespace SuperNewRoles.CustomOption
     static class GameOptionsMenuUpdatePatch
     {
         private static float timer = 1f;
-        public static CustomOptionType getCustomOptionType(string name)
+        public static CustomOptionType GetCustomOptionType(string name)
         {
             return name switch
             {
@@ -612,12 +604,9 @@ namespace SuperNewRoles.CustomOption
                 _ => CustomOptionType.Crewmate,
             };
         }
-        public static bool isHidden(this CustomOption option)
+        public static bool IsHidden(this CustomOption option)
         {
-            if (option.isHidden) return true;
-
-            if (option.isSHROn) return false;
-            else return ModeHandler.isMode(ModeId.SuperHostRoles, false);
+            return option.isHidden || (!option.isSHROn && ModeHandler.IsMode(ModeId.SuperHostRoles, false));
         }
         public static void Postfix(GameOptionsMenu __instance)
         {
@@ -631,7 +620,7 @@ namespace SuperNewRoles.CustomOption
             float numItems = __instance.Children.Length;
 
             float offset = 2.75f;
-            CustomOptionType type = getCustomOptionType(__instance.name);
+            CustomOptionType type = GetCustomOptionType(__instance.name);
             foreach (CustomOption option in CustomOption.options)
             {
                 if (option.type != type) continue;
@@ -640,19 +629,19 @@ namespace SuperNewRoles.CustomOption
                     bool enabled = true;
                     var parent = option.parent;
 
-                    if (AmongUsClient.Instance?.AmHost == false && CustomOptions.hideSettings.getBool())
+                    if (AmongUsClient.Instance?.AmHost == false && CustomOptions.hideSettings.GetBool())
                     {
                         enabled = false;
                     }
 
-                    if (option.isHidden())
+                    if (option.IsHidden())
                     {
                         enabled = false;
                     }
 
                     while (parent != null && enabled)
                     {
-                        enabled = parent.enabled;
+                        enabled = parent.Enabled;
                         parent = parent.parent;
                     }
 
@@ -714,7 +703,7 @@ namespace SuperNewRoles.CustomOption
             return false;
         }
 
-        public static bool aprilFools
+        public static bool AprilFools
         {
             get
             {
@@ -741,12 +730,12 @@ namespace SuperNewRoles.CustomOption
     {
         public static bool Prefix()
         {
-            return ConstantsShouldFlipSkeldPatch.aprilFools;
+            return ConstantsShouldFlipSkeldPatch.AprilFools;
         }
     }
 
     [HarmonyPatch(typeof(GameOptionsData), nameof(GameOptionsData.ToHudString))]
-    class tohudstring
+    class Tohudstring
     {
         public static bool Prefix(ref string __result, GameOptionsData __instance, [HarmonyArgument(0)] int numPlayers)
         {
@@ -821,9 +810,9 @@ namespace SuperNewRoles.CustomOption
     [HarmonyPatch]
     class GameOptionsDataPatch
     {
-        public static string tl(string key)
+        public static string Tl(string key)
         {
-            return ModTranslation.getString(key);
+            return ModTranslation.GetString(key);
         }
 
         private static IEnumerable<MethodBase> TargetMethods()
@@ -831,23 +820,22 @@ namespace SuperNewRoles.CustomOption
             return typeof(GameOptionsData).GetMethods().Where(x => x.ReturnType == typeof(string) && x.GetParameters().Length == 1 && x.GetParameters()[0].ParameterType == typeof(int));
         }
 
-        public static string optionToString(CustomOption option)
+        public static string OptionToString(CustomOption option)
         {
-            if (option == null) return "";
-            return $"{option.getName()}: {option.getString()}";
+            return option == null ? "" : $"{option.GetName()}: {option.GetString()}";
         }
 
-        public static string optionsToString(CustomOption option, bool skipFirst = false)
+        public static string OptionsToString(CustomOption option, bool skipFirst = false)
         {
             if (option == null) return "";
 
             List<string> options = new();
-            if (!GameOptionsMenuUpdatePatch.isHidden(option) && !skipFirst) options.Add(optionToString(option));
-            if (option.enabled)
+            if (!GameOptionsMenuUpdatePatch.IsHidden(option) && !skipFirst) options.Add(OptionToString(option));
+            if (option.Enabled)
             {
                 foreach (CustomOption op in option.children)
                 {
-                    string str = optionsToString(op);
+                    string str = OptionsToString(op);
                     if (str != "") options.Add(str);
                 }
             }
@@ -856,7 +844,7 @@ namespace SuperNewRoles.CustomOption
         public static string DefaultResult = "";
         public static string ResultData()
         {
-            bool hideSettings = AmongUsClient.Instance?.AmHost == false && CustomOptions.hideSettings.getBool();
+            bool hideSettings = AmongUsClient.Instance?.AmHost == false && CustomOptions.hideSettings.GetBool();
             if (hideSettings)
             {
                 return DefaultResult;
@@ -872,47 +860,47 @@ namespace SuperNewRoles.CustomOption
             {
 
                 // First add the presets and the role counts
-                optionToString(CustomOptions.presetSelection)
+                OptionToString(CustomOptions.presetSelection)
             };
 
-            var optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingCrewmateRoles"));
-            var min = CustomOptions.crewmateRolesCountMax.getSelection();
-            var max = CustomOptions.crewmateRolesCountMax.getSelection();
+            var optionName = CustomOptions.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingCrewmateRoles"));
+            var min = CustomOptions.crewmateRolesCountMax.GetSelection();
+            var max = CustomOptions.crewmateRolesCountMax.GetSelection();
             if (min > max) min = max;
             var optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
-            optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingCrewmateGhostRoles"));
-            min = CustomOptions.crewmateGhostRolesCountMax.getSelection();
-            max = CustomOptions.crewmateGhostRolesCountMax.getSelection();
+            optionName = CustomOptions.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingCrewmateGhostRoles"));
+            min = CustomOptions.crewmateGhostRolesCountMax.GetSelection();
+            max = CustomOptions.crewmateGhostRolesCountMax.GetSelection();
             if (min > max) min = max;
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
-            optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingNeutralRoles"));
-            min = CustomOptions.neutralRolesCountMax.getSelection();
-            max = CustomOptions.neutralRolesCountMax.getSelection();
+            optionName = CustomOptions.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingNeutralRoles"));
+            min = CustomOptions.neutralRolesCountMax.GetSelection();
+            max = CustomOptions.neutralRolesCountMax.GetSelection();
             if (min > max) min = max;
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
-            optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingNeutralGhostRoles"));
-            min = CustomOptions.neutralGhostRolesCountMax.getSelection();
-            max = CustomOptions.neutralGhostRolesCountMax.getSelection();
+            optionName = CustomOptions.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingNeutralGhostRoles"));
+            min = CustomOptions.neutralGhostRolesCountMax.GetSelection();
+            max = CustomOptions.neutralGhostRolesCountMax.GetSelection();
             if (min > max) min = max;
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
-            optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingImpostorRoles"));
-            min = CustomOptions.impostorRolesCountMax.getSelection();
-            max = CustomOptions.impostorRolesCountMax.getSelection();
+            optionName = CustomOptions.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingImpostorRoles"));
+            min = CustomOptions.impostorRolesCountMax.GetSelection();
+            max = CustomOptions.impostorRolesCountMax.GetSelection();
             if (min > max) min = max;
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
 
-            optionName = CustomOptions.cs(new Color(204f / 255f, 204f / 255f, 0, 1f), tl("SettingImpostorGhostRoles"));
-            min = CustomOptions.impostorGhostRolesCountMax.getSelection();
-            max = CustomOptions.impostorGhostRolesCountMax.getSelection();
+            optionName = CustomOptions.Cs(new Color(204f / 255f, 204f / 255f, 0, 1f), Tl("SettingImpostorGhostRoles"));
+            min = CustomOptions.impostorGhostRolesCountMax.GetSelection();
+            max = CustomOptions.impostorGhostRolesCountMax.GetSelection();
             if (min > max) min = max;
             optionValue = (min == max) ? $"{max}" : $"{min} - {max}";
             entry.AppendLine($"{optionName}: {optionValue}");
@@ -921,12 +909,12 @@ namespace SuperNewRoles.CustomOption
 
             static void addChildren(CustomOption option, ref StringBuilder entry, bool indent = true)
             {
-                if (!option.enabled) return;
+                if (!option.Enabled) return;
 
                 foreach (var child in option.children)
                 {
-                    if (!GameOptionsMenuUpdatePatch.isHidden(option))
-                        entry.AppendLine((indent ? "    " : "") + optionToString(child));
+                    if (!GameOptionsMenuUpdatePatch.IsHidden(option))
+                        entry.AppendLine((indent ? "    " : "") + OptionToString(child));
                     addChildren(child, ref entry, indent);
                 }
             }
@@ -947,17 +935,17 @@ namespace SuperNewRoles.CustomOption
 
                 if (option.parent == null)
                 {
-                    if (!option.enabled)
+                    if (!option.Enabled)
                     {
                         continue;
                     }
 
                     entry = new StringBuilder();
-                    if (!GameOptionsMenuUpdatePatch.isHidden(option))
+                    if (!GameOptionsMenuUpdatePatch.IsHidden(option))
                     {
-                        entry.AppendLine(optionToString(option));
+                        entry.AppendLine(OptionToString(option));
                     }
-                    addChildren(option, ref entry, !GameOptionsMenuUpdatePatch.isHidden(option));
+                    addChildren(option, ref entry, !GameOptionsMenuUpdatePatch.IsHidden(option));
                     if (entry.ToString().Trim('\n', '\r') is not "\r" and not "")
                     {
                         entries.Add(entry.ToString().Trim('\n', '\r'));
@@ -990,7 +978,7 @@ namespace SuperNewRoles.CustomOption
 
             int numPages = pages.Count;
             int counter = SuperNewRolesPlugin.optionsPage %= numPages;
-            return pages[counter].Trim('\r', '\n') + "\n\n" + tl("SettingPressTabForMore") + $" ({counter + 1}/{numPages})";
+            return pages[counter].Trim('\r', '\n') + "\n\n" + Tl("SettingPressTabForMore") + $" ({counter + 1}/{numPages})";
         }
         public static void Postfix(ref string __result)
         {

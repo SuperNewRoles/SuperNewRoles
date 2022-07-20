@@ -2,8 +2,8 @@ using System;
 using HarmonyLib;
 using Hazel;
 using SuperNewRoles.CustomObject;
-using SuperNewRoles.Mode;
 using SuperNewRoles.CustomRPC;
+using SuperNewRoles.Mode;
 using UnityEngine;
 
 namespace SuperNewRoles.Roles
@@ -23,7 +23,7 @@ namespace SuperNewRoles.Roles
                 //自分自身は撃ち抜かれない
                 if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
 
-                if (player.isDead()) continue;
+                if (player.IsDead()) continue;
 
                 pos = player.transform.position - PlayerControl.LocalPlayer.transform.position;
                 pos = new Vector3(
@@ -43,14 +43,14 @@ namespace SuperNewRoles.Roles
             if (!RoleClass.Kunoichi.HideKunai && RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(CachedPlayer.LocalPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[CachedPlayer.LocalPlayer.PlayerId]) return;
             PlayerControl.LocalPlayer.SetKillTimerUnchecked(RoleClass.Kunoichi.KillCoolTime, RoleClass.Kunoichi.KillCoolTime);
             RoleClass.Kunoichi.SendKunai = RoleClass.Kunoichi.Kunai;
-            RoleClass.Kunoichi.Kunai = new CustomObject.Kunai();
+            RoleClass.Kunoichi.Kunai = new Kunai();
             RoleClass.Kunoichi.Kunai.kunai.transform.position = CachedPlayer.LocalPlayer.transform.position;
             RoleClass.Kunoichi.KunaiSend = true;
             RoleClass.Kunoichi.Kunais.Add(RoleClass.Kunoichi.SendKunai);
             // クリックした座標の取得（スクリーン座標からワールド座標に変換）
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            Vector3 shotForward = Vector3.Scale((mouseWorldPos - RoleClass.Kunoichi.SendKunai.kunai.transform.position), new Vector3(1, 1, 0)).normalized;
+            Vector3 shotForward = Vector3.Scale(mouseWorldPos - RoleClass.Kunoichi.SendKunai.kunai.transform.position, new Vector3(1, 1, 0)).normalized;
 
             // 弾に速度を与える
             var body = RoleClass.Kunoichi.SendKunai.kunai.AddComponent<Rigidbody2D>();
@@ -89,7 +89,7 @@ namespace SuperNewRoles.Roles
                     var kunaipos = kunai.kunai.transform.position;
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p.isDead()) continue;
+                        if (p.IsDead()) continue;
                         if (p.PlayerId == CachedPlayer.LocalPlayer.PlayerId) continue;
                         if (Vector2.Distance(p.GetTruePosition() + new Vector2(0, 0.4f), kunaipos) < 0.4f)
                         {
@@ -98,7 +98,7 @@ namespace SuperNewRoles.Roles
                             RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId]++;
                             if (RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] >= RoleClass.Kunoichi.KillKunai)
                             {
-                                ModHelpers.checkMuderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation: false);
+                                ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, p, showAnimation: false);
                                 RoleClass.Kunoichi.HitCount[PlayerControl.LocalPlayer.PlayerId][p.PlayerId] = 0;
                             }
                             RoleClass.Kunoichi.Kunais.Remove(kunai);
@@ -117,22 +117,22 @@ namespace SuperNewRoles.Roles
                         RoleClass.Kunoichi.StopTime += Time.fixedDeltaTime;
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, Hazel.SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
                             writer.Write(true);
                             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            CustomRPC.RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
+                            RPCProcedure.SetScientistRPC(true, CachedPlayer.LocalPlayer.PlayerId);
                         }
                     }
                     else
                     {
                         if (RoleClass.Kunoichi.StopTime >= RoleClass.Kunoichi.HideTime)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, Hazel.SendOption.Reliable, -1);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SetScientistRPC, SendOption.Reliable, -1);
                             writer.Write(false);
                             writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
-                            CustomRPC.RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
+                            RPCProcedure.SetScientistRPC(false, CachedPlayer.LocalPlayer.PlayerId);
                         }
                         RoleClass.Kunoichi.StopTime = 0;
                     }
@@ -156,7 +156,7 @@ namespace SuperNewRoles.Roles
             }*/
         }
 
-        public static void setOpacity(PlayerControl player, float opacity, bool cansee)
+        public static void SetOpacity(PlayerControl player, float opacity, bool cansee)
         {
             // Sometimes it just doesn't work?
             var color = Color.Lerp(Palette.ClearWhite, Palette.White, opacity);
@@ -183,10 +183,10 @@ namespace SuperNewRoles.Roles
                 if (player.cosmetics.colorBlindText != null)
                     player.cosmetics.colorBlindText.color = color;
 
-                if (player.nameText != null)
+                if (player.NameText != null)
                     if (opacity == 0.1f)
                     {
-                        player.nameText().text = "";
+                        player.NameText().text = "";
                     }
             }
             catch { }
@@ -205,13 +205,13 @@ namespace SuperNewRoles.Roles
             public static void Postfix(PlayerPhysics __instance)
             {
                 if (AmongUsClient.Instance.GameState != AmongUsClient.GameStates.Started) return;
-                if (!ModeHandler.isMode(ModeId.Default)) return;
-                if (__instance.myPlayer.isRole(RoleId.Kunoichi))
+                if (!ModeHandler.IsMode(ModeId.Default)) return;
+                if (__instance.myPlayer.IsRole(RoleId.Kunoichi))
                 {
                     var Scientist = __instance.myPlayer;
-                    if (Scientist == null || Scientist.isDead()) return;
+                    if (Scientist == null || Scientist.IsDead()) return;
                     var ison = RoleClass.NiceScientist.IsScientistPlayers.ContainsKey(__instance.myPlayer.PlayerId) && GameData.Instance && RoleClass.NiceScientist.IsScientistPlayers[__instance.myPlayer.PlayerId];
-                    bool canSee = !ison || PlayerControl.LocalPlayer.isDead() || __instance.myPlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
+                    bool canSee = !ison || PlayerControl.LocalPlayer.IsDead() || __instance.myPlayer.PlayerId == CachedPlayer.LocalPlayer.PlayerId;
 
                     var opacity = canSee ? 0.1f : 0.0f;
                     if (ison)
@@ -223,7 +223,7 @@ namespace SuperNewRoles.Roles
                     {
                         opacity = Math.Max(opacity, 1.5f);
                     }
-                    setOpacity(Scientist, opacity, canSee);
+                    SetOpacity(Scientist, opacity, canSee);
                 }
             }
         }

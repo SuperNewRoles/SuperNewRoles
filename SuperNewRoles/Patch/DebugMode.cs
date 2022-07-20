@@ -7,6 +7,18 @@ using UnityEngine;
 
 namespace SuperNewRoles.Patch
 {
+    [HarmonyPatch(typeof(SplashManager), nameof(SplashManager.Update))]
+    class SplashLogoAnimatorPatch
+    {
+        public static void Prefix(SplashManager __instance)
+        {
+            if (ConfigRoles.DebugMode.Value)
+            {
+                __instance.sceneChanger.AllowFinishLoadingScene();
+                __instance.startedSceneLoad = true;
+            }
+        }
+    }
     class DebugMode
     {
         [HarmonyPatch(typeof(MapConsole), nameof(MapConsole.Use))]
@@ -26,14 +38,14 @@ namespace SuperNewRoles.Patch
         public static class DebugManager
         {
             private static readonly System.Random random = new((int)DateTime.Now.Ticks);
-            private static List<PlayerControl> bots = new();
+            private static readonly List<PlayerControl> bots = new();
             public class LateTask
             {
                 public string name;
                 public float timer;
                 public Action action;
                 public static List<LateTask> Tasks = new();
-                public bool run(float deltaTime)
+                public bool Run(float deltaTime)
                 {
                     timer -= deltaTime;
                     if (timer <= 0)
@@ -55,7 +67,7 @@ namespace SuperNewRoles.Patch
                     var TasksToRemove = new List<LateTask>();
                     Tasks.ForEach((task) =>
                     {
-                        if (task.run(deltaTime))
+                        if (task.Run(deltaTime))
                         {
                             TasksToRemove.Add(task);
                         }
@@ -70,7 +82,7 @@ namespace SuperNewRoles.Patch
                 // Spawn dummys
                 if (Input.GetKeyDown(KeyCode.G))
                 {
-                    PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.nameText().text);
+                    PlayerControl bot = BotManager.Spawn(PlayerControl.LocalPlayer.NameText().text);
 
                     bot.NetTransform.SnapTo(PlayerControl.LocalPlayer.transform.position);
                     //new LateTask(() => bot.NetTransform.RpcSnapTo(new Vector2(0, 15)), 0.2f, "Bot TP Task");
@@ -83,7 +95,7 @@ namespace SuperNewRoles.Patch
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
                         if (p == PlayerControl.LocalPlayer) continue;
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.MyPhysics.NetId, (byte)RpcCalls.EnterVent, SendOption.None, p.getClientId());
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.MyPhysics.NetId, (byte)RpcCalls.EnterVent, SendOption.None, p.GetClientId());
                         writer.WritePacked(MapUtilities.CachedShipStatus.AllVents[0].Id);
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
                         SuperNewRolesPlugin.Logger.LogInfo(MapUtilities.CachedShipStatus.AllVents[0].transform);
@@ -124,7 +136,7 @@ namespace SuperNewRoles.Patch
             var IsDebugModeBool = false;
             if (ConfigRoles.DebugMode.Value)
             {
-                if (CustomOptions.IsDebugMode.getBool())
+                if (CustomOptions.IsDebugMode.GetBool())
                 {
                     IsDebugModeBool = true;
                 }
