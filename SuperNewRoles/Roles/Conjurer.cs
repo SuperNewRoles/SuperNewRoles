@@ -7,27 +7,6 @@ using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
-    public class Kill
-    {
-        public static void TraingleInKill()
-        {
-            foreach (PlayerControl p in CachedPlayer.AllPlayers)
-            {
-                if (p.isAlive())//生きてるなら
-                {
-                    var A = RoleClass.Conjurer.pos1;
-                    var B = RoleClass.Conjurer.pos2;
-                    var C = RoleClass.Conjurer.pos1;
-                    //魔術師1、２,３個目の座標とプレイヤーの座標を代入
-                    if (Conjurer.TriangleArea(A, B, C, PlayerControl.LocalPlayer.transform.position))
-                    {
-                        //殺す
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                    }
-                }
-            }
-        }
-    }
     public class Conjurer
     {
         //ベクトル内積
@@ -53,7 +32,6 @@ namespace SuperNewRoles.Roles
                 ret.x = vl.y * vr.z - vl.z * vr.y;
                 ret.y = vl.z * vr.x - vl.x * vr.z;
                 ret.z = vl.x * vr.y - vl.y * vr.x;
-
                 return ret;
             }
 
@@ -81,11 +59,7 @@ namespace SuperNewRoles.Roles
                 //SuperNewRolesPlugin.Logger.LogInfo("TriangleAreaがtrue");
                 return true;
             }
-            else
-            {
-                //SuperNewRolesPlugin.Logger.LogInfo("TriangleAreaがfalse");
-                return false;
-            }
+            return false;
         }
 
 
@@ -116,7 +90,7 @@ namespace SuperNewRoles.Roles
                 // if (PlayerControl.LocalPlayer.isRole(RoleId.Conjurer) || p.isDead())//魔術師と死人のとき
                 {
                     /*アニメーション*/
-                    CustomAnimation.Animation Conjurer_Marker_Animation = new CustomAnimation.Animation();
+                    CustomAnimation.Animation Conjurer_Marker_Animation = new();
                     Conjurer_Marker_Animation.Sprites = CustomAnimation.LoadSprites.GetSpritesAgartha("SuperNewRoles.Resources.Animation.Conjurer_Maker_30fps", 60);
                     /*========1個目==========*/
                     Transform Conjurer_Marker1 = GameObject.Instantiate(GameObject.Find("Marker" + RoleClass.Conjurer.AddedCount).transform);
@@ -179,3 +153,4 @@ namespace SuperNewRoles.Roles
         }
     }
 }
+

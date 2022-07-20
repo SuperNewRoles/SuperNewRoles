@@ -1941,7 +1941,6 @@ namespace SuperNewRoles.Buttons
             ConjurerAddButton = new CustomButton(
                 () =>
                     {
-
                         //マーカー設置
                         var pos1 = PlayerControl.LocalPlayer.transform.position;
                         var pos2 = PlayerControl.LocalPlayer.transform.position;
@@ -1988,7 +1987,7 @@ namespace SuperNewRoles.Buttons
                         ConjurerAddButton.MaxTimer = RoleClass.Conjurer.CoolTime;
                         ConjurerAddButton.Timer = RoleClass.Conjurer.CoolTime;
                     },
-                    RoleClass.Conjurer.getAddButtonSprite(),
+                    RoleClass.Conjurer.GetAddButtonSprite(),
                     new Vector3(0f, 1f, 0f),
                     __instance,
                     __instance.AbilityButton,
@@ -1997,14 +1996,14 @@ namespace SuperNewRoles.Buttons
                     () => { return false; }
                 )
             {
-                buttonText = ModTranslation.getString("1stAdd"),
+                buttonText = ModTranslation.GetString("1stAdd"),
                 showButtonText = true
             };
 
             ConjurerStartButton = new CustomButton(
                     () =>
                     {
-                        var Target = PlayerControlFixedUpdatePatch.setTarget(onlyCrewmates: true);
+                        var Target = PlayerControlFixedUpdatePatch.SetTarget(onlyCrewmates: true);
                         var TargetID = Target.PlayerId;
                         var LocalID = CachedPlayer.LocalPlayer.PlayerId;
 
@@ -2017,16 +2016,13 @@ namespace SuperNewRoles.Buttons
                         //発光(色)
                         if (RoleClass.Conjurer.ScreenFrash)
                         {
-                            RoleHelpers.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
+                            Seer.ShowFlash(new Color(42f / 255f, 187f / 255f, 245f / 255f));
                         }
-
-                        //全ボタンのクールリセット
-                        Conjurer.AllCoolReset();
 
                         RoleClass.Conjurer.AddedCount = 0;
 
                         //全部Marker消す
-                        JackInTheBox.clearJackInTheBoxes();
+                        Roles.JackInTheBox.clearJackInTheBoxes();
                     },
                     (bool isAlive, RoleId role) => { return role == RoleId.Conjurer && RoleClass.Conjurer.AddedCount == 3; },
                     () =>
@@ -2038,7 +2034,7 @@ namespace SuperNewRoles.Buttons
                             ConjurerStartButton.MaxTimer = 0f;
                             ConjurerStartButton.Timer = 0f;
                         },
-                    RoleClass.Conjurer.getStartButtonSprite(),
+                    RoleClass.Conjurer.GetStartButtonSprite(),
                     new Vector3(0f, 1f, 0f),
                     __instance,
                     __instance.AbilityButton,
@@ -2047,7 +2043,7 @@ namespace SuperNewRoles.Buttons
                     () => { return false; }
                 )
             {
-                buttonText = ModTranslation.getString("Kill"),
+                buttonText = ModTranslation.GetString("Kill"),
                 showButtonText = true
             };
 

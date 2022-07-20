@@ -25,7 +25,7 @@ namespace SuperNewRoles.CustomAnimation
                     }
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("パス:"+path+"_"+countdata+".png");
-                Sprites.Add(ModHelpers.loadSpriteFromResources(path+"_"+countdata+".png",110f));
+                Sprites.Add(ModHelpers.LoadSpriteFromResources(path+"_"+countdata+".png",110f));
             }
             return Sprites.ToArray();
         }
@@ -47,7 +47,7 @@ namespace SuperNewRoles.CustomAnimation
                     }
                 }
                 SuperNewRolesPlugin.Logger.LogInfo("パス:" + path + "_" + countdata + ".png");
-                Sprites.Add(ModHelpers.loadSpriteFromResources(path + "_" + countdata + ".png", 110f));
+                Sprites.Add(ModHelpers.LoadSpriteFromResources(path + "_" + countdata + ".png", 110f));
             }
             return Sprites.ToArray();
         }

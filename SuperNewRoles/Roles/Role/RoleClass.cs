@@ -2268,23 +2268,23 @@ namespace SuperNewRoles.Roles
             public static Vector3 pos3;
             private static Sprite AddbuttonSprite;
             private static Sprite StartbuttonSprite;
-            public static Sprite getAddButtonSprite()
+            public static Sprite GetAddButtonSprite()
             {
                 if (AddbuttonSprite) return AddbuttonSprite;
-                AddbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ConjurerAddButton.png", 115f);
+                AddbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ConjurerAddButton.png", 115f);
                 return AddbuttonSprite;
             }
-            public static Sprite getStartButtonSprite()
+            public static Sprite GetStartButtonSprite()
             {
                 if (StartbuttonSprite) return StartbuttonSprite;
-                StartbuttonSprite = ModHelpers.loadSpriteFromResources("SuperNewRoles.Resources.ConjurerStartButton.png", 115f);
+                StartbuttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ConjurerStartButton.png", 115f);
                 return StartbuttonSprite;
             }
             public static void ClearAndReload()
             {
                 ConjurerPlayer = new List<PlayerControl>();
-                CoolTime = CustomOptions.ConjurerCoolTime.getFloat();
-                ScreenFrash = CustomOptions.ConjurerScreenFrash.getBool();
+                CoolTime = CustomOptions.ConjurerCoolTime.GetFloat();
+                ScreenFrash = CustomOptions.ConjurerScreenFrash.GetBool();
                 AddedCount = 0;
                 pos1 = new();
                 pos2 = new();

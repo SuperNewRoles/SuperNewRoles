@@ -971,14 +971,11 @@ namespace SuperNewRoles.CustomRPC
         {
             foreach (PlayerControl p in CachedPlayer.AllPlayers)
             {
-                if (p.isAlive())//生きてるなら
+                //魔術師1、２,３個目の座標とプレイヤーの座標を代入
+                if (Conjurer.TriangleArea(RoleClass.Conjurer.pos1, RoleClass.Conjurer.pos2, RoleClass.Conjurer.pos3, PlayerControl.LocalPlayer.transform.position))
                 {
-                    //魔術師1、２,３個目の座標とプレイヤーの座標を代入
-                    if (Conjurer.TriangleArea(RoleClass.Conjurer.pos1, RoleClass.Conjurer.pos2, RoleClass.Conjurer.pos3, PlayerControl.LocalPlayer.transform.position))
-                    {
-                        //殺す
-                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
-                    }
+                    //殺す
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
                 }
             }
         }
