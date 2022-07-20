@@ -666,9 +666,13 @@ namespace SuperNewRoles.CustomOption
         
         public static CustomRoleOption EvilBotanerOption;
         public static CustomOption EvilBotanerPlayerCount;
-        
+        public static CustomOption EvilBotanerCoolTime;
+        public static CustomOption EvilBotanerCount;
+
         public static CustomRoleOption NiceBotanerOption;
         public static CustomOption NiceBotanerPlayerCount;
+        public static CustomOption NiceBotanerCoolTime;
+        public static CustomOption NiceBotanerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1375,11 +1379,15 @@ namespace SuperNewRoles.CustomOption
             ToiletFanCoolTime = CustomOption.Create(658, true, CustomOptionType.Crewmate, "ToiletCoolDownSetting", 30f, 0f, 60f, 2.5f, ToiletFanOption);
 
             
-            EvilBotanerOption = new CustomRoleOption(1101, true, CustomOptionType.Impostor, "EvilBotanerName",RoleClass.EvilBotaner.color, 1);
-            EvilBotanerPlayerCount = CustomOption.Create(11012, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilBotanerOption);
-            
-            NiceBotanerOption = new CustomRoleOption(1104, true, CustomOptionType.Crewmate, "NiceBotanerName",RoleClass.NiceBotaner.color, 1);
-            NiceBotanerPlayerCount = CustomOption.Create(11042, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceBotanerOption);
+            EvilBotanerOption = new CustomRoleOption(864, true, CustomOptionType.Impostor, "EvilBotanerName",RoleClass.EvilBotaner.color, 1);
+            EvilBotanerPlayerCount = CustomOption.Create(865, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilBotanerOption);
+            EvilBotanerCoolTime = CustomOption.Create(866, true, CustomOptionType.Impostor, "BotanerCoolDownSetting", 20f, 0f, 60f, 2.5f, EvilBotanerOption);
+            EvilBotanerCount = CustomOption.Create(867, true, CustomOptionType.Impostor, "BotanerCountSetting", 1f, 0f, 10f, 1f, EvilBotanerOption);
+
+            NiceBotanerOption = new CustomRoleOption(868, true, CustomOptionType.Crewmate, "NiceBotanerName",RoleClass.NiceBotaner.color, 1);
+            NiceBotanerPlayerCount = CustomOption.Create(869, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceBotanerOption);
+            NiceBotanerCoolTime = CustomOption.Create(870, true, CustomOptionType.Crewmate, "BotanerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NiceBotanerOption);
+            NiceBotanerCount = CustomOption.Create(871, true, CustomOptionType.Crewmate, "BotanerCountSetting", 1f, 1f, 10f, 1f, NiceBotanerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
