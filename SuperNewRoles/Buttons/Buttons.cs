@@ -33,6 +33,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton JackalKillButton;
         public static CustomButton JackalSidekickButton;
         public static CustomButton JackalSeerSidekickButton;
+        public static CustomButton JackalFriendsMakeButton;
         public static CustomButton MagazinerAddButton;
         public static CustomButton MagazinerGetButton;
         public static CustomButton trueloverLoveButton;
@@ -511,37 +512,21 @@ namespace SuperNewRoles.Buttons
                 {
                     if (Jackal.JackalFixedPatch.JackalSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
                     {
-                        //ジャッカル系がジャッカルフレンズを作っていない且つ設定が有効であれば
-                        if (!RoleClass.Jackal.IsCreatedFriend &&
-                                (
-                                    (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal) && RoleClass.Jackal.CanCreateFriend) ||
-                                    (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer) && RoleClass.JackalSeer.CanCreateFriend) ||
-                                    (PlayerControl.LocalPlayer.IsRole(RoleId.TeleportingJackal) && RoleClass.TeleportingJackal.CanCreateFriend)
-                                )
-                            )
+                        //キルボタンでキルを行う
+                        ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, Jackal.JackalFixedPatch.JackalSetTarget());
+                        switch (PlayerControl.LocalPlayer.GetRole())
                         {
-                            //キルボタンによりフレンズを作る
-                            //(制御はどのジャッカルも「Jackal.cs」の「CreateFriend()」メソッドで行う)
-                            Jackal.CreateFriend();
+                            case RoleId.Jackal:
+                                Jackal.ResetCoolDown();
+                                break;
+                            case RoleId.JackalSeer:
+                                JackalSeer.ResetCoolDown();
+                                break;
+                            case RoleId.TeleportingJackal:
+                                TeleportingJackal.ResetCoolDown();
+                                break;
                         }
-                        else//フレンズを既に作っている、又は設定が無効である場合
-                        {
-                            //キルボタンでキルを行う
-                            ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, Jackal.JackalFixedPatch.JackalSetTarget());
-                            switch (PlayerControl.LocalPlayer.GetRole())
-                            {
-                                case RoleId.Jackal:
-                                    Jackal.ResetCoolDown();
-                                    break;
-                                case RoleId.JackalSeer:
-                                    JackalSeer.ResetCoolDown();
-                                    break;
-                                case RoleId.TeleportingJackal:
-                                    TeleportingJackal.ResetCoolDown();
-                                    break;
-                            }
-                            SuperNewRolesPlugin.Logger.LogInfo("[Kills by Jackals RoleName:" + PlayerControl.LocalPlayer.GetRole() + "]通常のキルを行いました。");
-                        }
+                        SuperNewRolesPlugin.Logger.LogInfo("[Kills by Jackals RoleName:" + PlayerControl.LocalPlayer.GetRole() + "]通常のキルを行いました。");
                     }
                 },
                 (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Jackal || role == RoleId.TeleportingJackal || role == RoleId.JackalSeer) && ModeHandler.IsMode(ModeId.Default); },
@@ -564,6 +549,49 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
+                showButtonText = true
+            };
+
+
+            JackalFriendsMakeButton = new CustomButton(
+                () =>
+                {
+                    if (Jackal.JackalFixedPatch.JackalSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
+                    {
+                        //ジャッカル系がジャッカルフレンズを作っていない且つ設定が有効であれば
+                        if (!RoleClass.Jackal.IsCreatedFriend &&
+                                (
+                                    (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal) && RoleClass.Jackal.CanCreateFriend) ||
+                                    (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer) && RoleClass.JackalSeer.CanCreateFriend) ||
+                                    (PlayerControl.LocalPlayer.IsRole(RoleId.TeleportingJackal) && RoleClass.TeleportingJackal.CanCreateFriend)
+                                )
+                            )
+                        {
+                            //(制御はどのジャッカルも「Jackal.cs」の「CreateFriend()」メソッドで行う)
+                            Jackal.CreateFriend();
+                        }
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.Jackal || role == RoleId.TeleportingJackal || role == RoleId.JackalSeer) && !RoleClass.Jackal.IsCreatedFriend && ModeHandler.IsMode(ModeId.Default); },
+                () =>
+                {
+                    return Jackal.JackalFixedPatch.JackalSetTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.Jackal)) { Jackal.EndMeeting(); }
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.JackalSeer)) { JackalSeer.EndMeeting(); }
+                },
+                RoleClass.Jackal.GetFriendsMakeButtonSprite(),
+                new Vector3(-2.7f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.J,
+                350,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("JackalFriendsMakeButtonName"),
                 showButtonText = true
             };
 

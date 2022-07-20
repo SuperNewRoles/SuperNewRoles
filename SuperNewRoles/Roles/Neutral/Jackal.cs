@@ -16,6 +16,8 @@ namespace SuperNewRoles.Roles
             HudManagerStartPatch.JackalKillButton.Timer = RoleClass.Jackal.KillCoolDown;
             HudManagerStartPatch.JackalSidekickButton.MaxTimer = RoleClass.Jackal.KillCoolDown;
             HudManagerStartPatch.JackalSidekickButton.Timer = RoleClass.Jackal.KillCoolDown;
+            HudManagerStartPatch.JackalFriendsMakeButton.MaxTimer = RoleClass.Jackal.KillCoolDown;
+            HudManagerStartPatch.JackalFriendsMakeButton.Timer = RoleClass.Jackal.KillCoolDown;
         }
         public static void EndMeeting()
         {
@@ -24,20 +26,11 @@ namespace SuperNewRoles.Roles
         public static void CreateFriend()
         {
             var target = Jackal.JackalFixedPatch.JackalSetTarget();
-            target.RpcProtectPlayer(target, 0);//ジャッカルフレンズにできたことを示すモーションとしての守護をかける
 
-            //キルする前に守護を発動させるためのLateTask
-            new LateTask(() =>
-                {
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(target);//キルをして守護モーションの発動(守護解除)
-                    target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
-
-                    target.SetRoleRPC(RoleId.JackalFriends);//ジャッカルフレンズにする
-                    RoleClass.Jackal.IsCreatedFriend = true;//作ったことに
-                    SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend_RoleName:" + PlayerControl.LocalPlayer.GetRole() + "]フレンズを作ったから普通のキルボタンに戻すよ!");
-
-                }, 0.1f);
-
+            target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
+            target.SetRoleRPC(RoleId.JackalFriends);//ジャッカルフレンズにする
+            RoleClass.Jackal.IsCreatedFriend = true;//作ったことに
+            SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend_RoleName:" + PlayerControl.LocalPlayer.GetRole() + "]フレンズを作ったよ!");
         }
         public static void SetPlayerOutline(PlayerControl target, Color color)
         {

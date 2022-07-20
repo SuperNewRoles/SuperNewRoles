@@ -344,6 +344,12 @@ namespace SuperNewRoles.Roles
                 buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalSidekickButton.png", 115f);
                 return buttonSprite;
             }
+            public static Sprite GetFriendsMakeButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.JackalMakeFriendsButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 JackalPlayer = new();
