@@ -1381,7 +1381,7 @@ namespace SuperNewRoles.CustomOption
             
             EvilBotanerOption = new CustomRoleOption(864, true, CustomOptionType.Impostor, "EvilBotanerName",RoleClass.EvilBotaner.color, 1);
             EvilBotanerPlayerCount = CustomOption.Create(865, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilBotanerOption);
-            EvilBotanerCoolTime = CustomOption.Create(866, true, CustomOptionType.Impostor, "BotanerCoolDownSetting", 20f, 0f, 60f, 2.5f, EvilBotanerOption);
+            EvilBotanerCoolTime = CustomOption.Create(866, true, CustomOptionType.Impostor, "BotanerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, EvilBotanerOption);
             EvilBotanerCount = CustomOption.Create(867, true, CustomOptionType.Impostor, "BotanerCountSetting", 1f, 0f, 10f, 1f, EvilBotanerOption);
 
             NiceBotanerOption = new CustomRoleOption(868, true, CustomOptionType.Crewmate, "NiceBotanerName",RoleClass.NiceBotaner.color, 1);

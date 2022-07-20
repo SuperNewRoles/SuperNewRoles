@@ -2439,20 +2439,26 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> EvilBotanerPlayer;
             public static Color32 color = ImpostorRed;
+            public static float CoolTime;
+            public static float SkillCount;
             public static void ClearAndReload()
             {
                 EvilBotanerPlayer = new();
-                
+                CoolTime = CustomOptions.EvilBotanerCoolTime.GetFloat();
+                SkillCount = CustomOptions.EvilBotanerCount.GetFloat();
             }
         }
         public static class NiceBotaner
         {
             public static List<PlayerControl> NiceBotanerPlayer;
             public static Color32 color = new Color32(0, 128, 128, byte.MaxValue);
+            public static float CoolTime;
+            public static float SkillCount;
             public static void ClearAndReload()
             {
                 NiceBotanerPlayer = new();
-                
+                CoolTime = CustomOptions.NiceBotanerCoolTime.GetFloat();
+                SkillCount = CustomOptions.NiceBotanerCount.GetFloat();
             }
         }
         //新ロールクラス
