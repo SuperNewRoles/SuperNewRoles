@@ -74,11 +74,14 @@ namespace SuperNewRoles.CustomCosmetics
                     flips.Add(p[0], hats[i]);
                 else
                 {
-                    CustomHat custom = new() { resource = hats[i] };
-                    custom.name = p[0].Replace('-', ' ');
-                    custom.bounce = options.Contains("bounce");
-                    custom.adaptive = options.Contains("adaptive");
-                    custom.behind = options.Contains("behind");
+                    CustomHat custom = new()
+                    {
+                        resource = hats[i],
+                        name = p[0].Replace('-', ' '),
+                        bounce = options.Contains("bounce"),
+                        adaptive = options.Contains("adaptive"),
+                        behind = options.Contains("behind")
+                    };
 
                     fronts.Add(p[0], custom);
                 }
@@ -110,7 +113,7 @@ namespace SuperNewRoles.CustomCosmetics
 
         private static Sprite CreateHatSprite(string path, bool fromDisk = false)
         {
-            Texture2D texture = fromDisk ? ModHelpers.loadTextureFromDisk(path) : ModHelpers.loadTextureFromResources(path);
+            Texture2D texture = fromDisk ? ModHelpers.loadTextureFromDisk(path) : ModHelpers.LoadTextureFromResources(path);
             if (texture == null)
                 return null;
             Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.53f, 0.575f), texture.width * 0.375f);
@@ -140,7 +143,7 @@ namespace SuperNewRoles.CustomCosmetics
                 hat.hatViewData.viewData.ClimbImage = CreateHatSprite(ch.climbresource, fromDisk);
             hat.name = ch.name + "\nby " + ch.author;
             hat.displayOrder = 99;
-            hat.ProductId = "MOD_"+ch.package+"_" + ch.name.Replace(' ', '_');
+            hat.ProductId = "MOD_" + ch.package + "_" + ch.name.Replace(' ', '_');
             hat.InFront = !ch.behind;
             hat.NoBounce = !ch.bounce;
             hat.ChipOffset = new Vector2(0f, 0.2f);
@@ -243,25 +246,11 @@ namespace SuperNewRoles.CustomCosmetics
                 if (extend == null) return;
                 if (extend.FlipImage != null)
                 {
-                    if (__instance.rend().flipX)
-                    {
-                        hp.FrontLayer.sprite = extend.FlipImage;
-                    }
-                    else
-                    {
-                        hp.FrontLayer.sprite = hp.Hat.hatViewData.viewData.MainImage;
-                    }
+                    hp.FrontLayer.sprite = __instance.rend().flipX ? extend.FlipImage : hp.Hat.hatViewData.viewData.MainImage;
                 }
                 if (extend.BackFlipImage != null)
                 {
-                    if (__instance.rend().flipX)
-                    {
-                        hp.BackLayer.sprite = extend.BackFlipImage;
-                    }
-                    else
-                    {
-                        hp.BackLayer.sprite = hp.Hat.hatViewData.viewData.BackImage;
-                    }
+                    hp.BackLayer.sprite = __instance.rend().flipX ? extend.BackFlipImage : hp.Hat.hatViewData.viewData.BackImage;
                 }
             }
         }
@@ -291,13 +280,13 @@ namespace SuperNewRoles.CustomCosmetics
             }
         }
 
-        private static List<TMPro.TMP_Text> hatsTabCustomTexts = new();
+        private static readonly List<TMPro.TMP_Text> hatsTabCustomTexts = new();
         public static string innerslothPackageName = "innerslothHats";
-        private static float headerSize = 0.8f;
-        private static float headerX = 0.8f;
+        private static readonly float headerSize = 0.8f;
+        private static readonly float headerX = 0.8f;
         private static float inventoryTop = 1.5f;
         private static float inventoryBot = -2.5f;
-        private static float inventoryZ = -2f;
+        private static readonly float inventoryZ = -2f;
 
         public static void calcItemBounds(HatsTab __instance)
         {
@@ -323,7 +312,7 @@ namespace SuperNewRoles.CustomCosmetics
                     title.fontWeight = TMPro.FontWeight.Thin;
                     title.enableAutoSizing = false;
                     title.autoSizeTextContainer = true;
-                    title.text = ModTranslation.getString(packageName);
+                    title.text = ModTranslation.GetString(packageName);
                     switch (packageName)
                     {
                         case "shiuneCollection":
@@ -387,8 +376,8 @@ namespace SuperNewRoles.CustomCosmetics
                 HatData[] unlockedHats = DestroyableSingleton<HatManager>.Instance.GetUnlockedHats();
                 Dictionary<string, List<System.Tuple<HatData, HatExtension>>> packages = new();
 
-                ModHelpers.destroyList(hatsTabCustomTexts);
-                ModHelpers.destroyList(__instance.ColorChips);
+                ModHelpers.DestroyList(hatsTabCustomTexts);
+                ModHelpers.DestroyList(__instance.ColorChips);
 
                 hatsTabCustomTexts.Clear();
                 __instance.ColorChips.Clear();
@@ -417,14 +406,11 @@ namespace SuperNewRoles.CustomCosmetics
 
                 var orderedKeys = packages.Keys.OrderBy((string x) =>
                 {
-                    if (x == innerslothPackageName) return 100003;
-
-                    if (x == "developerHats") return 20;
-                    if (x.Contains("gmEdition")) return 40;
-                    if (x.Contains("shiune")) return 30;
-                    if (x.Contains("01haomingHat")) return 10;
-                    if (x.Contains("Hat_SNR")) return 0;
-                    return 500;
+                    return x == innerslothPackageName
+                        ? 100003
+                        : x == "developerHats"
+                        ? 20
+                        : x.Contains("gmEdition") ? 40 : x.Contains("shiune") ? 30 : x.Contains("01haomingHat") ? 10 : x.Contains("Hat_SNR") ? 0 : 500;
                 });
 
                 foreach (string key in orderedKeys)
@@ -469,10 +455,10 @@ namespace SuperNewRoles.CustomCosmetics
         public static string[] hatRepos = new string[]
         {
             "https://raw.githubusercontent.com/ykundesu/SuperNewNamePlates/master",
-            
+
             "https://raw.githubusercontent.com/hinakkyu/TheOtherHats/master",
             "https://raw.githubusercontent.com/Ujet222/TOPHats/main",
-            
+
             "https://raw.githubusercontent.com/haoming37/TheOtherHats-GM-Haoming/master",
             "https://raw.githubusercontent.com/yukinogatari/TheOtherHats-GM/master",
             "https://raw.githubusercontent.com/Eisbison/TheOtherHats/master"

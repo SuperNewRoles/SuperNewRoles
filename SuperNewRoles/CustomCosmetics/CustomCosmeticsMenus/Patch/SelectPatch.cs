@@ -74,21 +74,17 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         public static ClosetPresetData GetData(int index = -1)
         {
             if (index == -1) index = SelectedPreset.Value;
-            ClosetPresetData data = null;
-            if (!ClosetPresetDatas.ContainsKey(index))
-            {
-                data = new();
-                data.BodyColor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "BodyColor", (byte)0);
-                data.Hat = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Hat", "");
-                data.Visor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Visor", "");
-                data.Skin = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Skin", "");
-                data.NamePlate = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "NamePlate", "");
-                data.Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "");
-            }
-            else
-            {
-                data = ClosetPresetDatas[index];
-            }
+            ClosetPresetData data = !ClosetPresetDatas.ContainsKey(index)
+                ? (new()
+                {
+                    BodyColor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "BodyColor", (byte)0),
+                    Hat = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Hat", ""),
+                    Visor = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Visor", ""),
+                    Skin = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Skin", ""),
+                    NamePlate = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "NamePlate", ""),
+                    Pet = SuperNewRolesPlugin.Instance.Config.Bind("ClosetPreset_" + index.ToString(), "Pet", "")
+                })
+                : ClosetPresetDatas[index];
             return data;
         }
     }

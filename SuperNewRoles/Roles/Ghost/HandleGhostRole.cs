@@ -12,11 +12,11 @@ namespace SuperNewRoles.Roles
         [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.TryAssignRoleOnDeath))]
         class AssignRole
         {
-            public static bool Prefix(RoleManager __instance, [HarmonyArgument(0)] PlayerControl player)
+            public static bool Prefix([HarmonyArgument(0)] PlayerControl player)
             {
-                if (!(ModeHandler.isMode(ModeId.Default) || ModeHandler.isMode(ModeId.SuperHostRoles))) return true;
+                if (!(ModeHandler.IsMode(ModeId.Default) || ModeHandler.IsMode(ModeId.SuperHostRoles))) return true;
                 //生存者と割り当て済みの人は弾く
-                if (player.isAlive() || !player.isGhostRole(RoleId.DefaultRole)) return false;
+                if (player.IsAlive() || !player.IsGhostRole(RoleId.DefaultRole)) return false;
                 //幽霊役職がアサインされていたら守護天使をアサインしない
                 return !HandleAssign(player);
             }
@@ -25,18 +25,7 @@ namespace SuperNewRoles.Roles
         {
             //各役職にあったアサインをする
             var Team = TeamRoleType.Error;
-            if (player.isCrew())
-            {
-                Team = TeamRoleType.Crewmate;
-            }
-            else if (player.isNeutral())
-            {
-                Team = TeamRoleType.Neutral;
-            }
-            else
-            {
-                Team = TeamRoleType.Impostor;
-            }
+            Team = player.IsCrew() ? TeamRoleType.Crewmate : player.IsNeutral() ? TeamRoleType.Neutral : TeamRoleType.Impostor;
             List<IntroDate> GhostRoles = new();
             foreach (IntroDate intro in IntroDate.GhostRoleDatas)
             {
@@ -49,28 +38,22 @@ namespace SuperNewRoles.Roles
             {
                 case TeamRoleType.Impostor:
                     if (AllRoleSetClass.ImpostorGhostRolePlayerNum <= 0)
-                    {
                         return false;
-                    }
                     AllRoleSetClass.ImpostorGhostRolePlayerNum--;
                     break;
                 case TeamRoleType.Neutral:
                     if (AllRoleSetClass.NeutralGhostRolePlayerNum <= 0)
-                    {
                         return false;
-                    }
                     AllRoleSetClass.NeutralGhostRolePlayerNum--;
                     break;
                 case TeamRoleType.Crewmate:
                     if (AllRoleSetClass.CrewMateGhostRolePlayerNum <= 0)
-                    {
                         return false;
-                    }
                     AllRoleSetClass.CrewMateGhostRolePlayerNum--;
                     break;
 
             }
-            player.setRoleRPC(assignrole);
+            player.SetRoleRPC(assignrole);
             return true;
         }
 
@@ -87,11 +70,11 @@ namespace SuperNewRoles.Roles
                 //設定を取得
                 var option = IntroDate.GetOption(data.RoleId);
                 //確率を取得
-                var selection = option.getSelection();
+                var selection = option.GetSelection();
 
                 //確率が0%ではないかつ、
                 //もう割り当てきられてないか(最大人数まで割り当てられていないか)
-                if ((option.isSHROn || mode != ModeId.SuperHostRoles) && selection != 0 && count > CachedPlayer.AllPlayers.ToArray().ToList().Count((CachedPlayer pc) => pc.PlayerControl.isGhostRole(data.RoleId)))
+                if ((option.isSHROn || mode != ModeId.SuperHostRoles) && selection != 0 && count > CachedPlayer.AllPlayers.ToArray().ToList().Count((CachedPlayer pc) => pc.PlayerControl.IsGhostRole(data.RoleId)))
                 {
                     //100%なら100%アサインListに入れる
                     if (selection == 10)

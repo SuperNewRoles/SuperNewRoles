@@ -21,8 +21,7 @@ namespace SuperNewRoles
 
         public static T CastFast<T>(this Il2CppObjectBase obj) where T : Il2CppObjectBase
         {
-            if (obj is T casted) return casted;
-            return obj.Pointer.CastFast<T>();
+            return obj is T casted ? casted : obj.Pointer.CastFast<T>();
         }
 
         public static T CastFast<T>(this IntPtr ptr) where T : Il2CppObjectBase

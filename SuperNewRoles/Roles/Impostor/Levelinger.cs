@@ -9,11 +9,11 @@ namespace SuperNewRoles.Roles
         public static void MurderPlayer(PlayerControl __instance, PlayerControl target)
         {
             if (__instance.PlayerId != CachedPlayer.LocalPlayer.PlayerId) return;
-            if (__instance.isRole(RoleId.Levelinger))
+            if (__instance.IsRole(RoleId.Levelinger))
             {
                 RoleClass.Levelinger.ThisXP += RoleClass.Levelinger.OneKillXP;
             }
-            else if (target.isRole(RoleId.Levelinger))
+            else if (target.IsRole(RoleId.Levelinger))
             {
                 LevelingerRevive();
             }
@@ -27,11 +27,11 @@ namespace SuperNewRoles.Roles
                     var Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.ReviveRPC);
                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     Writer.EndRPC();
-                    CustomRPC.RPCProcedure.ReviveRPC(CachedPlayer.LocalPlayer.PlayerId);
+                    RPCProcedure.ReviveRPC(CachedPlayer.LocalPlayer.PlayerId);
                     Writer = RPCHelper.StartRPC(CustomRPC.CustomRPC.CleanBody);
                     Writer.Write(CachedPlayer.LocalPlayer.PlayerId);
                     Writer.EndRPC();
-                    CustomRPC.RPCProcedure.CleanBody(CachedPlayer.LocalPlayer.PlayerId);
+                    RPCProcedure.CleanBody(CachedPlayer.LocalPlayer.PlayerId);
                     CachedPlayer.LocalPlayer.Data.IsDead = false;
                     DeadPlayer.deadPlayers?.RemoveAll(x => x.player?.PlayerId == CachedPlayer.LocalPlayer.PlayerId);
                     RoleClass.Levelinger.ThisXP -= RoleClass.Levelinger.ReviveUseXP;

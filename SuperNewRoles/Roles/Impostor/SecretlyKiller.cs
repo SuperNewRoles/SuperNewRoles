@@ -1,5 +1,5 @@
-using UnityEngine;
 using SuperNewRoles.Buttons;
+using UnityEngine;
 
 namespace SuperNewRoles.Roles
 {
@@ -15,24 +15,12 @@ namespace SuperNewRoles.Roles
             //ノーマルリセット
             HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.KillCoolTime;
             HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.KillCoolTime;
-            //シークレットリーリセット
-            /*if (SuperNewRoles.CustomOption.CustomOptions.SecretlyKillerKillCoolTimeChange.getBool()){
-                HudManagerStartPatch.SecretlyKillerSecretlyKillButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
-                HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer = RoleClass.SecretlyKiller.SecretlyKillerKillCoolTime;
-            }*/
-            //RoleClass.SecretlyKiller.ButtonTimer = DateTime.Now;
         }
         public static void SecretlyResetCoolDown()
         {
             //シークレットリーリセット
             HudManagerStartPatch.SecretlyKillerSecretlyKillButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
             HudManagerStartPatch.SecretlyKillerSecretlyKillButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
-            /*//ノーマルリセット
-            if (SuperNewRoles.CustomOption.CustomOptions.SecretlyKillerKillCoolTimeChange.getBool()){
-                HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
-                HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.SecretlyKillCoolTime;
-            }*/
-            //RoleClass.SecretlyKiller.ButtonTimer = DateTime.Now;
         }
         public static void AllResetCoolDown()
         {
@@ -42,7 +30,6 @@ namespace SuperNewRoles.Roles
             //ノーマルリセット
             HudManagerStartPatch.SecretlyKillerMainButton.MaxTimer = RoleClass.SecretlyKiller.KillCoolTime;
             HudManagerStartPatch.SecretlyKillerMainButton.Timer = RoleClass.SecretlyKiller.KillCoolTime;
-            //RoleClass.SecretlyKiller.ButtonTimer = DateTime.Now;
         }
 
         //シークレットキル (by:Buttons.cs)
@@ -50,11 +37,8 @@ namespace SuperNewRoles.Roles
         {
             RoleClass.SecretlyKiller.target.RpcMurderPlayer(RoleClass.SecretlyKiller.target);
             RoleClass.SecretlyKiller.target = null;
-            //MessageWriter killWriter = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.SheriffKill, Hazel.SendOption.Reliable, -1);
-            //killWriter.Write();
-            //AmongUsClient.Instance.FinishRpcImmediately(killWriter);
         }
-        public static void setPlayerOutline(PlayerControl target, Color color)
+        public static void SetPlayerOutline(PlayerControl target, Color color)
         {
             if (target == null || target.MyRend == null) return;
 

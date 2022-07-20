@@ -1,7 +1,7 @@
 using HarmonyLib;
+using SuperNewRoles.CustomRPC;
 using SuperNewRoles.MapOptions;
 using UnityEngine;
-using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Buttons
 {
@@ -78,25 +78,17 @@ namespace SuperNewRoles.Buttons
         [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]
         class EnterVentAnimPatch
         {
-            public static bool Prefix(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
+            public static bool Prefix([HarmonyArgument(0)] PlayerControl pc)
             {
-                if (MapOption.VentAnimation.getBool())
-                {
-                    return pc.AmOwner;
-                }
-                return true;
+                return !MapOption.VentAnimation.GetBool() || pc.AmOwner;
             }
         }
         [HarmonyPatch(typeof(Vent), nameof(Vent.ExitVent))]
         class ExitVentAnimPatch
         {
-            public static bool Prefix(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
+            public static bool Prefix([HarmonyArgument(0)] PlayerControl pc)
             {
-                if (MapOption.VentAnimation.getBool())
-                {
-                    return pc.AmOwner;
-                }
-                return true;
+                return !MapOption.VentAnimation.GetBool() || pc.AmOwner;
             }
         }
         [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
@@ -203,7 +195,7 @@ namespace SuperNewRoles.Buttons
             public static bool Prefix(Vent __instance)
             {
                 __instance.CanUse(CachedPlayer.LocalPlayer.Data, out bool canUse, out bool couldUse);
-                bool canMoveInVents = !PlayerControl.LocalPlayer.isRole(RoleId.NiceNekomata);
+                bool canMoveInVents = !PlayerControl.LocalPlayer.IsRole(RoleId.NiceNekomata);
                 if (!canUse) return false; // No need to execute the native method as using is disallowed anyways
 
                 bool isEnter = !PlayerControl.LocalPlayer.inVent;

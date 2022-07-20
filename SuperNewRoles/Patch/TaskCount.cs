@@ -75,7 +75,7 @@ namespace SuperNewRoles.Patch
                         CountDefaultTask(__instance);
                         return;
                     case ModeId.Zombie:
-                        Mode.Zombie.main.CountTaskZombie(__instance);
+                        Mode.Zombie.Main.CountTaskZombie(__instance);
                         return;
                     case ModeId.Detective:
                         Mode.Detective.Task.TaskCountDetective(__instance);
@@ -93,9 +93,9 @@ namespace SuperNewRoles.Patch
             for (int i = 0; i < __instance.AllPlayers.Count; i++)
             {
                 GameData.PlayerInfo playerInfo = __instance.AllPlayers[i];
-                if (!RoleHelpers.isClearTask(playerInfo.Object) && playerInfo.Object.IsPlayer())
+                if (!RoleHelpers.IsClearTask(playerInfo.Object) && playerInfo.Object.IsPlayer())
                 {
-                    var (playerCompleted, playerTotal) = TaskCount.TaskDate(playerInfo);
+                    var (playerCompleted, playerTotal) = TaskDate(playerInfo);
                     __instance.TotalTasks += playerTotal;
                     __instance.CompletedTasks += playerCompleted;
                 }

@@ -7,7 +7,8 @@ namespace SuperNewRoles.Patch.Harmony
     [HarmonyPatch(typeof(AirshipExileController), nameof(AirshipExileController.WrapUpAndSpawn))]
     class AirShipExileController_WrapUpAndSpawn
     {
-        private static void Postfix(PlayerControl __instance){
+        private static void Postfix()//PlayerControl __instance)
+        {
             //
         }
     }
@@ -15,8 +16,9 @@ namespace SuperNewRoles.Patch.Harmony
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
     class ExilerController_WrapUp
     {
-        private static void Postfix(PlayerControl __instance){
-            var MyRole = PlayerControl.LocalPlayer.getRole();
+        private static void Postfix(PlayerControl __instance)
+        {
+            var MyRole = PlayerControl.LocalPlayer.GetRole();
             Jackal.JackalFixedPatch.Postfix(__instance, MyRole);
             JackalSeer.JackalSeerFixedPatch.Postfix(__instance, MyRole);
         }

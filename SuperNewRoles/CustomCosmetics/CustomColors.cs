@@ -402,7 +402,7 @@ namespace SuperNewRoles.CustomCosmetics
                         string text = CustomColors.ColorStrings[(int)name];
                         if (text != null)
                         {
-                            __result = ModTranslation.getString(text) + " (MOD)";
+                            __result = ModTranslation.GetString(text) + " (MOD)";
                             return false;
                         }
                     }

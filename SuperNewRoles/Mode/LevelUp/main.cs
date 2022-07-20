@@ -8,13 +8,13 @@ using UnityEngine;
 
 namespace SuperNewRoles.Mode.LevelUp
 {
-    class main
+    class Main
     {
         public static void ClearAndReloads()
         {
             UpdateTime = 12f;
             Count = 0;
-            MurderCount = (int)LevelUpMurder.getFloat();
+            MurderCount = (int)LevelUpMurder.GetFloat();
         }
         public static float UpdateTime = 2f;
         public static float Count = 0;
