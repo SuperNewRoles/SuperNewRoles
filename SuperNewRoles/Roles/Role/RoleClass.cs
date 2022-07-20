@@ -153,6 +153,8 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
+            EvilBotaner.ClearAndReload();
+            NiceBotaner.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2431,6 +2433,26 @@ namespace SuperNewRoles.Roles
             {
                 ToiletFanPlayer = new();
                 ToiletCool = CustomOptions.ToiletFanCoolTime.GetFloat();
+            }
+        }
+        public static class EvilBotaner
+        {
+            public static List<PlayerControl> EvilBotanerPlayer;
+            public static Color32 color = ImpostorRed;
+            public static void ClearAndReload()
+            {
+                EvilBotanerPlayer = new();
+                
+            }
+        }
+        public static class NiceBotaner
+        {
+            public static List<PlayerControl> NiceBotanerPlayer;
+            public static Color32 color = new Color32(0, 128, 128, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                NiceBotanerPlayer = new();
+                
             }
         }
         //新ロールクラス

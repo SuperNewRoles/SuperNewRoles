@@ -663,6 +663,12 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption ToiletFanOption;
         public static CustomOption ToiletFanPlayerCount;
         public static CustomOption ToiletFanCoolTime;
+        
+        public static CustomRoleOption EvilBotanerOption;
+        public static CustomOption EvilBotanerPlayerCount;
+        
+        public static CustomRoleOption NiceBotanerOption;
+        public static CustomOption NiceBotanerPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1368,6 +1374,12 @@ namespace SuperNewRoles.CustomOption
             ToiletFanPlayerCount = CustomOption.Create(657, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ToiletFanOption);
             ToiletFanCoolTime = CustomOption.Create(658, true, CustomOptionType.Crewmate, "ToiletCoolDownSetting", 30f, 0f, 60f, 2.5f, ToiletFanOption);
 
+            
+            EvilBotanerOption = new CustomRoleOption(1101, true, CustomOptionType.Impostor, "EvilBotanerName",RoleClass.EvilBotaner.color, 1);
+            EvilBotanerPlayerCount = CustomOption.Create(11012, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilBotanerOption);
+            
+            NiceBotanerOption = new CustomRoleOption(1104, true, CustomOptionType.Crewmate, "NiceBotanerName",RoleClass.NiceBotaner.color, 1);
+            NiceBotanerPlayerCount = CustomOption.Create(11042, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceBotanerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
