@@ -2441,6 +2441,13 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static float CoolTime;
             public static float SkillCount;
+            private static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.BotanerButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 EvilBotanerPlayer = new();

@@ -1973,12 +1973,12 @@ namespace SuperNewRoles.Buttons
                 {
                     if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.EvilBotaner) && RoleClass.EvilBotaner.SkillCount != 0)
                     {
-                        EvilBotaner.EvilBotanerStartMeeting(CachedPlayer.LocalPlayer.PlayerId);
+                        EvilBotaner.EvilBotanerStartMeeting(PlayerControl.LocalPlayer);
                         RoleClass.EvilBotaner.SkillCount = RoleClass.EvilBotaner.SkillCount - 1;
                     }
-                    else if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceBotaner) && RoleClass.NiceBotaner.SkillCount != 0)
+                    else if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.NiceBotaner) && RoleClass.NiceBotaner.SkillCount != 0)
                     {
-                        EvilBotaner.EvilBotanerStartMeeting(CachedPlayer.LocalPlayer.PlayerId);
+                        EvilBotaner.EvilBotanerStartMeeting(PlayerControl.LocalPlayer);
                         RoleClass.NiceBotaner.SkillCount = RoleClass.NiceBotaner.SkillCount - 1;
                     }
                 },
@@ -1991,6 +1991,8 @@ namespace SuperNewRoles.Buttons
                 },
                 () =>
                 {
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceBotaner) && RoleClass.NiceBotaner.SkillCount == 0) return;
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilBotaner) && RoleClass.EvilBotaner.SkillCount == 0) return;
                     //イビルボタナーなら
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilBotaner))
                     {
@@ -2004,7 +2006,7 @@ namespace SuperNewRoles.Buttons
                         BotanerButton.Timer = RoleClass.NiceBotaner.CoolTime;
                     }
                 },
-                RoleClass.ToiletFan.GetButtonSprite(),
+                RoleClass.EvilBotaner.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
@@ -2013,7 +2015,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.GetString("ToiletName"),
+                buttonText = ModTranslation.GetString("BotannerBottonName"),
                 showButtonText = true
             };
 
