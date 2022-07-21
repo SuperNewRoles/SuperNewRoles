@@ -391,6 +391,7 @@ namespace SuperNewRoles.Patches
                     {
                         case RoleId.RemoteSheriff:
                         case RoleId.ToiletFan:
+                        case RoleId.NiceBotaner:
                             return false;
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;

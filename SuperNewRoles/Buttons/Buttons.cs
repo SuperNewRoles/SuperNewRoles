@@ -1982,7 +1982,7 @@ namespace SuperNewRoles.Buttons
                         RoleClass.NiceBotaner.SkillCount = RoleClass.NiceBotaner.SkillCount - 1;
                     }
                 },
-                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.EvilBotaner || role == RoleId.NiceBotaner); },
+                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.EvilBotaner || role == RoleId.NiceBotaner) && ModeHandler.IsMode(ModeId.Default); },
                 () =>
                 {
                     if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceBotaner) && RoleClass.NiceBotaner.SkillCount == 0) return false;

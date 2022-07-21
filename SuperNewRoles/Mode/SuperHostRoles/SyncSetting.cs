@@ -151,6 +151,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.ToiletFan.ToiletCool;
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
+                case RoleId.NiceBotaner:
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.NiceBotaner.CoolTime;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    break;
+                case RoleId.EvilBotaner:
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.EvilBotaner.CoolTime;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    break;
+
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;

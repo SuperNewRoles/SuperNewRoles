@@ -982,7 +982,7 @@ namespace SuperNewRoles
                     //タスククリアか
             }
             if (!IsTaskClear
-                && ((ModeHandler.IsMode(ModeId.SuperHostRoles) && (player.IsRole(RoleId.Sheriff) || player.IsRole(RoleId.RemoteSheriff) || player.IsRole(RoleId.ToiletFan)))
+                && ((ModeHandler.IsMode(ModeId.SuperHostRoles) && (player.IsRole(RoleId.Sheriff) || player.IsRole(RoleId.RemoteSheriff) || player.IsRole(RoleId.ToiletFan) || player.IsRole(RoleId.NiceBotaner)))
                 || player.IsQuarreled()
                 || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
                 || player.IsImpostor()))
