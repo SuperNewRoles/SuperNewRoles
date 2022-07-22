@@ -326,6 +326,7 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> JackalPlayer;
             public static List<PlayerControl> SidekickPlayer;
             public static List<PlayerControl> FakeSidekickPlayer;
+            public static List<PlayerControl> SidekickFriendsPlayer;
             public static Color32 color = new(0, 255, 255, byte.MaxValue);
             public static float KillCoolDown;
             public static bool IsUseVent;
@@ -355,6 +356,7 @@ namespace SuperNewRoles.Roles
                 JackalPlayer = new();
                 SidekickPlayer = new();
                 FakeSidekickPlayer = new();
+                SidekickFriendsPlayer = new();
                 KillCoolDown = CustomOptions.JackalKillCoolDown.GetFloat();
                 IsUseVent = CustomOptions.JackalUseVent.GetBool();
                 IsUseSabo = CustomOptions.JackalUseSabo.GetBool();

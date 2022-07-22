@@ -332,6 +332,7 @@ namespace SuperNewRoles.Patch
                     LocalRole == RoleId.TeleportingJackal ||
                     LocalRole == RoleId.JackalSeer ||
                     LocalRole == RoleId.SidekickSeer ||
+                    LocalRole == RoleId.SidekickFriends ||
                     JackalFriends.CheckJackal(PlayerControl.LocalPlayer))
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
@@ -341,7 +342,8 @@ namespace SuperNewRoles.Patch
                             role == RoleId.Sidekick ||
                             role == RoleId.TeleportingJackal ||
                             role == RoleId.JackalSeer ||
-                            role == RoleId.SidekickSeer
+                            role == RoleId.SidekickSeer ||
+                            role == RoleId.SidekickFriends
                             ) && p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
                         {
                             SetNamesClass.SetPlayerRoleNames(p);

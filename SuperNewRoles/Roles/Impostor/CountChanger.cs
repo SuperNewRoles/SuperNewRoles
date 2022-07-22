@@ -242,6 +242,26 @@ namespace SuperNewRoles.Roles
             }
             return false;
         }
+        public static bool IsChangeSidekickFriends(this PlayerControl p)
+        {
+            var getroledata = GetRoleType(p);
+            if (getroledata == TeamRoleType.Crewmate)
+            {
+                if (RoleClass.CountChanger.ChangeData.ContainsKey(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData[p.PlayerId]).IsRole(RoleId.SidekickFriends)) return true;
+                }
+                else if (RoleClass.CountChanger.ChangeData.ContainsValue(p.PlayerId))
+                {
+                    if (ModHelpers.playerById((byte)RoleClass.CountChanger.ChangeData.GetKey(p.PlayerId)).IsRole(RoleId.SidekickFriends)) return true;
+                }
+                else
+                {
+                    return p.IsRole(RoleId.SidekickFriends);
+                }
+            }
+            return false;
+        }
         public static bool IsChangeSeerFriends(this PlayerControl p)
         {
             var getroledata = GetRoleType(p);

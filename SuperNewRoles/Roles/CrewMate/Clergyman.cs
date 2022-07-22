@@ -36,6 +36,7 @@ namespace SuperNewRoles.Roles
                 || CountChanger.IsChangeMadMaker(PlayerControl.LocalPlayer)
                 || CountChanger.IsChangeJackal(PlayerControl.LocalPlayer)
                 || CountChanger.IsChangeSidekick(PlayerControl.LocalPlayer)
+                || CountChanger.IsChangeSidekickFriends(PlayerControl.LocalPlayer)
                 || CountChanger.IsChangeJackalFriends(PlayerControl.LocalPlayer)
                 || CountChanger.IsChangeSeerFriends(PlayerControl.LocalPlayer)
                 || CountChanger.IsChangeJackalSeer(PlayerControl.LocalPlayer)

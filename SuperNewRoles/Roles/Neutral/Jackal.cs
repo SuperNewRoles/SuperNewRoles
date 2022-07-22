@@ -28,7 +28,7 @@ namespace SuperNewRoles.Roles
             var target = Jackal.JackalFixedPatch.JackalSetTarget();
 
             target.RPCSetRoleUnchecked(RoleTypes.Crewmate);//くるぅにして
-            target.SetRoleRPC(RoleId.JackalFriends);//ジャッカルフレンズにする
+            target.SetRoleRPC(RoleId.SidekickFriends);//サイドキックフレンズにする
             RoleClass.Jackal.IsCreatedFriend = true;//作ったことに
             SuperNewRolesPlugin.Logger.LogInfo("[CreateFriend_RoleName:" + PlayerControl.LocalPlayer.GetRole() + "]フレンズを作ったよ!");
         }
