@@ -24,7 +24,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.GameMode != GameModes.FreePlay)
             {
                 if ((player.IsRole(RoleId.Jackal) && !RoleClass.Jackal.IsUseSabo) || player.IsRole(RoleId.Demon, RoleId.Arsonist, RoleId.RemoteSheriff, RoleId.Sheriff,
-                    RoleId.truelover, RoleId.FalseCharges, RoleId.MadMaker, RoleId.ToiletFan)
+                    RoleId.truelover, RoleId.FalseCharges, RoleId.MadMaker, RoleId.ToiletFan, RoleId.NiceBotaner)
                     || (!RoleClass.Minimalist.UseSabo && player.IsRole(RoleId.Minimalist))
                     || (!RoleClass.Samurai.UseSabo && player.IsRole(RoleId.Samurai))
                     || (!RoleClass.Egoist.UseSabo && player.IsRole(RoleId.Egoist))) return false;

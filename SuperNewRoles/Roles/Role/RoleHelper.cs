@@ -558,6 +558,12 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
+                case (RoleId.EvilBotaner):
+                    RoleClass.EvilBotaner.EvilBotanerPlayer.Add(player);
+                    break;
+                case (RoleId.NiceBotaner):
+                    RoleClass.NiceBotaner.NiceBotanerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -915,7 +921,13 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case (RoleId.EvilBotaner):
+                    RoleClass.EvilBotaner.EvilBotanerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case (RoleId.NiceBotaner):
+                    RoleClass.NiceBotaner.NiceBotanerPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -970,7 +982,7 @@ namespace SuperNewRoles
                     //タスククリアか
             }
             if (!IsTaskClear
-                && ((ModeHandler.IsMode(ModeId.SuperHostRoles) && (player.IsRole(RoleId.Sheriff) || player.IsRole(RoleId.RemoteSheriff) || player.IsRole(RoleId.ToiletFan)))
+                && ((ModeHandler.IsMode(ModeId.SuperHostRoles) && (player.IsRole(RoleId.Sheriff) || player.IsRole(RoleId.RemoteSheriff) || player.IsRole(RoleId.ToiletFan) || player.IsRole(RoleId.NiceBotaner)))
                 || player.IsQuarreled()
                 || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
                 || player.IsImpostor()))
@@ -1375,6 +1387,8 @@ namespace SuperNewRoles
                 else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
+                else if (RoleClass.EvilBotaner.EvilBotanerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilBotaner;
+                else if (RoleClass.NiceBotaner.NiceBotanerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceBotaner;
                 //ロールチェック
             }
             catch (Exception e)

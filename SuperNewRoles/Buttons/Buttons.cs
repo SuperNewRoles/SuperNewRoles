@@ -65,6 +65,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton SuicideWisherSuicideButton;
         public static CustomButton FastMakerButton;
         public static CustomButton ToiletFanButton;
+        public static CustomButton BotanerButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -1964,6 +1965,57 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("ToiletName"),
+                showButtonText = true
+            };
+
+            BotanerButton = new CustomButton(
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.EvilBotaner) && RoleClass.EvilBotaner.SkillCount != 0)
+                    {
+                        EvilBotaner.EvilBotanerStartMeeting(PlayerControl.LocalPlayer);
+                        RoleClass.EvilBotaner.SkillCount = RoleClass.EvilBotaner.SkillCount - 1;
+                    }
+                    else if (PlayerControl.LocalPlayer.CanMove && PlayerControl.LocalPlayer.IsRole(RoleId.NiceBotaner) && RoleClass.NiceBotaner.SkillCount != 0)
+                    {
+                        EvilBotaner.EvilBotanerStartMeeting(PlayerControl.LocalPlayer);
+                        RoleClass.NiceBotaner.SkillCount = RoleClass.NiceBotaner.SkillCount - 1;
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && (role == RoleId.EvilBotaner || role == RoleId.NiceBotaner) && ModeHandler.IsMode(ModeId.Default); },
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceBotaner) && RoleClass.NiceBotaner.SkillCount == 0) return false;
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilBotaner) && RoleClass.EvilBotaner.SkillCount == 0) return false;
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.NiceBotaner) && RoleClass.NiceBotaner.SkillCount == 0) return;
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilBotaner) && RoleClass.EvilBotaner.SkillCount == 0) return;
+                    //イビルボタナーなら
+                    if (PlayerControl.LocalPlayer.IsRole(RoleId.EvilBotaner))
+                    {
+                        BotanerButton.MaxTimer = RoleClass.EvilBotaner.CoolTime;
+                        BotanerButton.Timer = RoleClass.EvilBotaner.CoolTime;
+                    }
+                    //ナイスボタナーなら
+                    else
+                    {
+                        BotanerButton.MaxTimer = RoleClass.NiceBotaner.CoolTime;
+                        BotanerButton.Timer = RoleClass.NiceBotaner.CoolTime;
+                    }
+                },
+                RoleClass.EvilBotaner.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("BotanerButtonName"),
                 showButtonText = true
             };
 
