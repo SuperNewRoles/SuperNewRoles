@@ -1,2 +1,0 @@
-py "CreateRoleAdvanced.py"
-PAUSE

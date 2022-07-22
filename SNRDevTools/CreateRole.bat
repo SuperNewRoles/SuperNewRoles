@@ -1,2 +1,0 @@
-py "CreateRole.py"
-PAUSE
