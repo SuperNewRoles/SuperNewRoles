@@ -2015,7 +2015,7 @@ namespace SuperNewRoles.Buttons
                 () => { return false; }
             )
             {
-                buttonText = ModTranslation.GetString("BotannerBottonName"),
+                buttonText = ModTranslation.GetString("BotanerButtonName"),
                 showButtonText = true
             };
 
