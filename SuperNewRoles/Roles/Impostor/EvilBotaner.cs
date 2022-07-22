@@ -1,12 +1,4 @@
-using System.Linq;
-using HarmonyLib;
-using SuperNewRoles.CustomOption;
-using SuperNewRoles.CustomRPC;
-using SuperNewRoles.Helpers;
-using SuperNewRoles.Intro;
 using SuperNewRoles.Mode;
-using SuperNewRoles.Mode.SuperHostRoles;
-using UnhollowerBaseLib;
 
 namespace SuperNewRoles.Roles
 {
