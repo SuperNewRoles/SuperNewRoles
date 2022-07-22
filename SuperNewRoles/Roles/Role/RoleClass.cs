@@ -2441,6 +2441,7 @@ namespace SuperNewRoles.Roles
             public static Color32 color = ImpostorRed;
             public static float CoolTime;
             public static float SkillCount;
+            public static Dictionary<int, int> SkillCountSHR;
             private static Sprite buttonSprite;
             public static Sprite GetButtonSprite()
             {
@@ -2453,6 +2454,7 @@ namespace SuperNewRoles.Roles
                 EvilBotanerPlayer = new();
                 CoolTime = CustomOptions.EvilBotanerCoolTime.GetFloat();
                 SkillCount = CustomOptions.EvilBotanerCount.GetFloat();
+                SkillCountSHR = new();
             }
         }
         public static class NiceBotaner
@@ -2461,11 +2463,13 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new Color32(0, 128, 128, byte.MaxValue);
             public static float CoolTime;
             public static float SkillCount;
+            public static Dictionary<int, int> SkillCountSHR;
             public static void ClearAndReload()
             {
                 NiceBotanerPlayer = new();
                 CoolTime = CustomOptions.NiceBotanerCoolTime.GetFloat();
                 SkillCount = CustomOptions.NiceBotanerCount.GetFloat();
+                SkillCountSHR = new();
             }
         }
         //新ロールクラス

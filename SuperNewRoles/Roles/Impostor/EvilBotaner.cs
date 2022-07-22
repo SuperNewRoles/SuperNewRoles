@@ -12,6 +12,7 @@ namespace SuperNewRoles.Roles
 {
     public static class EvilBotaner
     {
+        //SNR
         public static void EvilBotanerStartMeeting(PlayerControl sourceId)
         {
             if (ModeHandler.IsMode(ModeId.Default))
@@ -22,21 +23,15 @@ namespace SuperNewRoles.Roles
                 sourceId.RpcStartMeeting(null);
             }
         }
-
-        /*public static void RpcCheckExile(this PlayerControl __instance)
+        //SHR
+        public static void EvilBotanerStartMeetingSHR(this PlayerControl __instance)
         {
-            if ()
+            new LateTask(() =>
             {
-                new LateTask(() =>
-                {
-                    if (AmongUsClient.Instance.AmHost)
-                    {
-                        MeetingRoomManager.Instance.AssignSelf(__instance, null);
-                        FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
-                        __instance.RpcStartMeeting(null);
-                    }
-                }, 0.5f);
-            }
-        }*/
+                MeetingRoomManager.Instance.AssignSelf(__instance, null);
+                FastDestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(__instance);
+                __instance.RpcStartMeeting(null);
+            }, 0.5f);
+        }
     }
 }
