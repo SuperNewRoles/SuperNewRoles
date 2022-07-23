@@ -335,6 +335,17 @@ namespace SuperNewRoles.Patch
                                     });
                                 }
                             }
+                            else if (ModHelpers.playerById(ps.TargetPlayerId).IsRole(RoleId.Dictator))
+                            {
+                                for (var i2 = 0; i2 < RoleClass.Dictator.VoteCount - 1; i2++)
+                                {
+                                    statesList.Add(new VoterState()
+                                    {
+                                        VoterId = ps.TargetPlayerId,
+                                        VotedForId = ps.VotedFor
+                                    });
+                                }
+                            }
                         }
                     }
                 }
@@ -502,6 +513,7 @@ namespace SuperNewRoles.Patch
                     if (ModHelpers.playerById(ps.TargetPlayerId).IsRole(RoleId.Mayor)) VoteNum = RoleClass.Mayor.AddVote;
                     else if (ModHelpers.playerById(ps.TargetPlayerId).IsRole(RoleId.MadMayor)) VoteNum = RoleClass.MadMayor.AddVote;
                     else if (ModHelpers.playerById(ps.TargetPlayerId).IsRole(RoleId.MayorFriends)) VoteNum = RoleClass.MayorFriends.AddVote;
+                    else if (ModHelpers.playerById(ps.TargetPlayerId).IsRole(RoleId.Dictator)) VoteNum = RoleClass.Dictator.VoteCount;
                     dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out int num) ? VoteNum : num + VoteNum;
                 }
             }
