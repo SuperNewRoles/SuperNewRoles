@@ -2477,9 +2477,11 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SuicidalIdeationPlayer;
             public static Color32 color = new Color32(71, 71, 71, byte.MaxValue);
+            public static bool SuicidalIdeationWinText;
             public static void ClearAndReload()
             {
                 SuicidalIdeationPlayer = new();
+                SuicidalIdeationWinText = CustomOptions.SuicidalIdeationWinText.GetBool();
             }
         }
         //新ロールクラス
