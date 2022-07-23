@@ -89,19 +89,18 @@ namespace SuperNewRoles.Patch
                     //new LateTask(() => { foreach (var pc in CachedPlayer.AllPlayers) pc.PlayerControl.RpcMurderPlayer(bot); }, 0.4f, "Bot Kill Task");
                     //new LateTask(() => bot.Despawn(), 0.6f, "Bot Despawn Task");
                 }
-                /*
+                
                 if (Input.GetKeyDown(KeyCode.I))
                 {
                     foreach (PlayerControl p in CachedPlayer.AllPlayers)
                     {
-                        if (p == PlayerControl.LocalPlayer) continue;
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.MyPhysics.NetId, (byte)RpcCalls.EnterVent, SendOption.None, p.GetClientId());
-                        writer.WritePacked(MapUtilities.CachedShipStatus.AllVents[0].Id);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        SuperNewRolesPlugin.Logger.LogInfo(MapUtilities.CachedShipStatus.AllVents[0].transform);
+                        if (p.PlayerId != CachedPlayer.LocalPlayer.PlayerId)
+                        {
+                            p.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                        }
                     }
                 }
-
+                /*
                     if (Input.GetKeyDown(KeyCode.C))
                     {
                         SuperNewRolesPlugin.Logger.LogInfo("CHANGE!!!");
