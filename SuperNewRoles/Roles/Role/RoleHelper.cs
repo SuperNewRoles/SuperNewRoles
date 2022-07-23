@@ -558,16 +558,16 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
-                case (RoleId.EvilBotaner):
+                case RoleId.EvilBotaner:
                     RoleClass.EvilBotaner.EvilBotanerPlayer.Add(player);
                     break;
-                case (RoleId.NiceBotaner):
+                case RoleId.NiceBotaner:
                     RoleClass.NiceBotaner.NiceBotanerPlayer.Add(player);
                     break;
-                case (RoleId.Revolutionist):
+                case RoleId.Revolutionist:
                     RoleClass.Revolutionist.RevolutionistPlayer.Add(player);
                     break;
-                case (RoleId.Dictator):
+                case RoleId.Dictator:
                     RoleClass.Dictator.DictatorPlayer.Add(player);
                     break;
                 //ロールアド
@@ -927,16 +927,16 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (RoleId.EvilBotaner):
+                case RoleId.EvilBotaner:
                     RoleClass.EvilBotaner.EvilBotanerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (RoleId.NiceBotaner):
+                case RoleId.NiceBotaner:
                     RoleClass.NiceBotaner.NiceBotanerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (RoleId.Revolutionist):
+                case RoleId.Revolutionist:
                     RoleClass.Revolutionist.RevolutionistPlayer.RemoveAll(ClearRemove);
                     break;
-                case (RoleId.Dictator):
+                case RoleId.Dictator:
                     RoleClass.Dictator.DictatorPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
@@ -1132,7 +1132,7 @@ namespace SuperNewRoles
                 case RoleId.MayorFriends:
                 case RoleId.Tuna:
                 case RoleId.Neet:
-                case (RoleId.Revolutionist):
+                case RoleId.Revolutionist:
                     IsNeutral = true;
                     break;
             //第三か
