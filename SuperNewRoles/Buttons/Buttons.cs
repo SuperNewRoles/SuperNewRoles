@@ -555,7 +555,7 @@ namespace SuperNewRoles.Buttons
             };
 
 
-            JackalFriendsMakeButton = new CustomButton(
+            JackalFriendsMakeButton = new(
                 () =>
                 {
                     if (Jackal.JackalFixedPatch.JackalSetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && PlayerControl.LocalPlayer.CanMove)
@@ -2060,7 +2060,7 @@ namespace SuperNewRoles.Buttons
                 KeyCode.Q,
                 8,
                 () => { return false; }
-                
+
             )
             {
                 buttonText = ModTranslation.GetString("BotanerButtonName"),
