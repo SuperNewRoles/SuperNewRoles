@@ -676,6 +676,7 @@ namespace SuperNewRoles.CustomOption
         
         public static CustomRoleOption FinderOption;
         public static CustomOption FinderPlayerCount;
+        public static CustomOption FinderCheckMadmateSetting;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1393,7 +1394,8 @@ namespace SuperNewRoles.CustomOption
             NiceBotanerCount = CustomOption.Create(871, true, CustomOptionType.Crewmate, "BotanerCountSetting", 1f, 1f, 10f, 1f, NiceBotanerOption);
             
             FinderOption = new CustomRoleOption(872, false, CustomOptionType.Impostor, "FinderName",RoleClass.Finder.color, 1);
-            FinderPlayerCount = CustomOption.Create(8722, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FinderOption);
+            FinderPlayerCount = CustomOption.Create(873, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FinderOption);
+            FinderCheckMadmateSetting = CustomOption.Create(874, false, CustomOptionType.Impostor, "FinderCheckMadmateSetting", 3f, 1f, 15f, 1f, FinderOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
