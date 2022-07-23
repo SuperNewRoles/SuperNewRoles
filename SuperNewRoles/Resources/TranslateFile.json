@@ -339,6 +339,11 @@
         "11": "<color=#00ffff>\u30af\u30eb\u30fc\u30e1\u30a4\u30c8</color>\u306e\u8a2d\u5b9a",
         "13": "<color=#00ffff>\u8239\u5458\u9635\u8425</color>\u8bbe\u7f6e"
     },
+    "SettingRegulation": {
+        "0": "Regulation Settings",
+        "11": "\u30ec\u30ae\u30e5\u30ec\u30fc\u30b7\u30e7\u30f3\u8a2d\u5b9a",
+        "13": "\u76d1\u7ba1\u8bbe\u7f6e"
+    },
     "SettingMiniCrewRole": {
         "0": "Minimum Crewmate Roles",
         "11": "\u6700\u5c0f\u30af\u30eb\u30fc\u30e1\u30a4\u30c8\u5f79\u8077\u6570",

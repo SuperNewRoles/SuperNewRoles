@@ -48,7 +48,6 @@ namespace SuperNewRoles.CustomOption
             }
             set
             {
-                Logger.Info($"セレクション:{RegulationData.Selected}");
                 if (AmongUsClient.Instance == null || AmongUsClient.Instance.AmHost)
                 {
                     if (RegulationData.Selected == 0)
@@ -219,17 +218,8 @@ namespace SuperNewRoles.CustomOption
 
                 if (AmongUsClient.Instance?.AmHost == true && PlayerControl.LocalPlayer)
                 {
-                    try
-                    {
-                        Logger.Info($"{GetName()}({id}) => {selection}", "CustomOptionModel");
-                    }
-                    catch
-                    {
-
-                    }
                     if (id == 0) SwitchPreset(selection); // Switch presets
                     else if (entry != null && AmongUsClient.Instance.AmHost && RegulationData.Selected == 0) {
-                        Logger.Info("ばりゅーせっと");
                         entry.Value = selection;
                     } // Save selection to config
 
@@ -454,7 +444,7 @@ namespace SuperNewRoles.CustomOption
             impostorTab.transform.localPosition = Vector3.right * 1f;
             neutralTab.transform.localPosition = Vector3.right * 1f;
             crewmateTab.transform.localPosition = Vector3.right * 0.95f;
-            RegulationTab.transform.localPosition = Vector3.right * 1.3f;
+            RegulationTab.transform.localPosition = Vector3.right * 1.8f;
 
             var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab, RegulationTab };
             for (int i = 0; i < tabs.Length; i++)
