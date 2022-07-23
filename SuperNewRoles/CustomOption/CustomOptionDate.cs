@@ -1404,7 +1404,7 @@ namespace SuperNewRoles.CustomOption
             NiceBotanerCoolTime = CustomOption.Create(870, false, CustomOptionType.Crewmate, "BotanerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NiceBotanerOption, format: "unitSeconds");
             NiceBotanerCount = CustomOption.Create(871, true, CustomOptionType.Crewmate, "BotanerCountSetting", 1f, 1f, 10f, 1f, NiceBotanerOption);
             
-            FinderOption = new CustomRoleOption(881, false, CustomOptionType.Impostor, "FinderName",RoleClass.Finder.color, 1);
+            FinderOption = new CustomRoleOption(884, false, CustomOptionType.Impostor, "FinderName",RoleClass.Finder.color, 1);
             FinderPlayerCount = CustomOption.Create(882, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FinderOption);
             FinderCheckMadmateSetting = CustomOption.Create(883, false, CustomOptionType.Impostor, "FinderCheckMadmateSetting", 3f, 1f, 15f, 1f, FinderOption);
 

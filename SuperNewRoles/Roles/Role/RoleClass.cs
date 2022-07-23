@@ -2480,11 +2480,20 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> FinderPlayer;
             public static Color32 color = ImpostorRed;
-            public static int CheckMadmate;
+            public static int CheckMadmateKillCount;
+            public static int KillCount;
+            public static bool IsCheck
+            {
+                get
+                {
+                    return CheckMadmateKillCount <=  KillCount;
+                }
+            }
             public static void ClearAndReload()
             {
                 FinderPlayer = new();
-                CheckMadmate = CustomOptions.FinderCheckMadmateSetting.GetInt();
+                CheckMadmateKillCount = CustomOptions.FinderCheckMadmateSetting.GetInt();
+                KillCount = 0;
             }
         }
         public static class Revolutionist
