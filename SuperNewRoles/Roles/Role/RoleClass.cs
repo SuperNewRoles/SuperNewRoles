@@ -155,6 +155,7 @@ namespace SuperNewRoles.Roles
             ToiletFan.ClearAndReload();
             EvilBotaner.ClearAndReload();
             NiceBotaner.ClearAndReload();
+            SuicidalIdeation.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
