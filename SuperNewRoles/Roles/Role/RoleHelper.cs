@@ -989,7 +989,7 @@ namespace SuperNewRoles
                 case RoleId.Tuna:
                 case RoleId.BlackCat:
                 case RoleId.Neet:
-                case (RoleId.Revolutionist):
+                case RoleId.Revolutionist:
                     IsTaskClear = true;
                     break; 
                 //タスククリアか
@@ -1132,12 +1132,10 @@ namespace SuperNewRoles
                 case RoleId.MayorFriends:
                 case RoleId.Tuna:
                 case RoleId.Neet:
+                case (RoleId.Revolutionist):
                     IsNeutral = true;
                     break;
-                    case (RoleId.Revolutionist):
-                    IsNeutral = true;
-                    break;
-                //第三か
+            //第三か
             }
             return IsNeutral;
         }
