@@ -674,6 +674,10 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption NiceBotanerCoolTime;
         public static CustomOption NiceBotanerCount;
         
+        public static CustomRoleOption FinderOption;
+        public static CustomOption FinderPlayerCount;
+        public static CustomOption FinderCheckMadmateSetting;
+
         public static CustomRoleOption RevolutionistAndDictatorOption;
         public static CustomOption RevolutionistPlayerCount;
         public static CustomOption DictatorPlayerCount;
@@ -1399,6 +1403,10 @@ namespace SuperNewRoles.CustomOption
             NiceBotanerPlayerCount = CustomOption.Create(869, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceBotanerOption);
             NiceBotanerCoolTime = CustomOption.Create(870, false, CustomOptionType.Crewmate, "BotanerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NiceBotanerOption, format: "unitSeconds");
             NiceBotanerCount = CustomOption.Create(871, true, CustomOptionType.Crewmate, "BotanerCountSetting", 1f, 1f, 10f, 1f, NiceBotanerOption);
+            
+            FinderOption = new CustomRoleOption(884, false, CustomOptionType.Impostor, "FinderName",RoleClass.Finder.color, 1);
+            FinderPlayerCount = CustomOption.Create(882, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FinderOption);
+            FinderCheckMadmateSetting = CustomOption.Create(883, false, CustomOptionType.Impostor, "FinderCheckMadmateSetting", 3f, 1f, 15f, 1f, FinderOption);
 
             RevolutionistAndDictatorOption = new CustomRoleOption(872, false, CustomOptionType.Neutral, "RevolutionistAndDictatorName", Color.white, 1);
             RevolutionistPlayerCount = CustomOption.Create(873, false, CustomOptionType.Neutral, "SettingRevolutionistPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);

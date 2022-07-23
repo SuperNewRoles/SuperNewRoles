@@ -320,6 +320,19 @@ namespace SuperNewRoles.Patch
                         }
                     }
                 }
+                if (LocalRole == RoleId.Finder)
+                {
+                    if (RoleClass.Finder.IsCheck)
+                    {
+                        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+                        {
+                            if (player.IsMadRoles())
+                            {
+                                SetNamesClass.SetPlayerNameColor(player, Color.red);
+                            }
+                        }
+                    }
+                }
                 if (PlayerControl.LocalPlayer.IsImpostor())
                 {
                     foreach (PlayerControl p in RoleClass.SideKiller.MadKillerPlayer)

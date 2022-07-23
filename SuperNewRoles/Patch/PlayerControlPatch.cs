@@ -829,6 +829,10 @@ namespace SuperNewRoles.Patches
             }
             else if (ModeHandler.IsMode(ModeId.Default))
             {
+                if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
+                {
+                    RoleClass.Finder.KillCount++;
+                }
                 if (target.IsRole(RoleId.Assassin))
                 {
                     target.Revive();
