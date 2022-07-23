@@ -65,9 +65,14 @@
         "13": "\u8bbe\u7f6e"
     },
     "moreOptionsText": {
-        "0": "Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings",
-        "11": "\u901a\u5e38\u8a2d\u5b9a&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u8a2d\u5b9a",
-        "13": "\u4e00\u822c\u8bbe\u7f6e\u4e0e&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u8bbe\u7f6e"
+        "0": "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings",
+        "11": "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u8a2d\u5b9a",
+        "13": "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u8bbe\u7f6e"
+    },
+    "vanillaOptionsText": {
+        "0": "AmongUs Settings",
+        "11": "AmongUs\u306e\u8a2d\u5b9a",
+        "13": "AmongUs \u8bbe\u7f6e"
     },
     "HaisonName": {
         "0": "Haison",
