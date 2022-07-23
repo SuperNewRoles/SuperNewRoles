@@ -1026,13 +1026,13 @@ namespace SuperNewRoles
             else if (ModeHandler.IsMode(ModeId.SuperHostRoles) && IsComms()) return false;
             return role switch
             {
-                RoleId.Jackal or RoleId.Sidekick or RoleId.SidekickFriends => RoleClass.Jackal.IsUseVent,
+                RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsUseVent,
                 RoleId.Minimalist => RoleClass.Minimalist.UseVent,
                 RoleId.Samurai => RoleClass.Samurai.UseVent,
                 RoleId.Jester => RoleClass.Jester.IsUseVent,
                 RoleId.MadMate => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.MadMate.IsUseVent,
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseVent,
-                RoleId.JackalFriends => RoleClass.JackalFriends.IsUseVent,
+                RoleId.JackalFriends or RoleId.SidekickFriends => RoleClass.JackalFriends.IsUseVent,
                 RoleId.Egoist => RoleClass.Egoist.UseVent,
                 RoleId.Technician => IsSabotage(),
                 RoleId.MadMayor => RoleClass.MadMayor.IsUseVent,
@@ -1110,8 +1110,8 @@ namespace SuperNewRoles
                     RoleId.Fox => RoleClass.Fox.IsImpostorLight,
                     RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsImpostorLight,
                     RoleId.MadMaker => RoleClass.MadMaker.IsImpostorLight,
-                    RoleId.Jackal or RoleId.Sidekick or RoleId.SidekickFriends => RoleClass.Jackal.IsImpostorLight,
-                    RoleId.JackalFriends => RoleClass.JackalFriends.IsImpostorLight,
+                    RoleId.Jackal or RoleId.Sidekick => RoleClass.Jackal.IsImpostorLight,
+                    RoleId.JackalFriends or RoleId.SidekickFriends => RoleClass.JackalFriends.IsImpostorLight,
                     RoleId.SeerFriends => RoleClass.SeerFriends.IsImpostorLight,
                     RoleId.JackalSeer or RoleId.SidekickSeer => RoleClass.JackalSeer.IsImpostorLight,
                     RoleId.MadCleaner => RoleClass.MadCleaner.IsImpostorLight,
