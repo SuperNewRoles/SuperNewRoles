@@ -560,7 +560,7 @@ namespace SuperNewRoles.CustomOption
                     stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
                     stringOption.TitleText.text = Regulation.title;
                     stringOption.Value = stringOption.oldValue = 0;
-                    stringOption.ValueText.text = "無効(Off)";
+                    stringOption.ValueText.text = ModTranslation.GetString("optionOff");
 
                     Regulation.optionBehaviour = stringOption;
                 }
@@ -634,11 +634,11 @@ namespace SuperNewRoles.CustomOption
                     __instance.Value = __instance.oldValue = 0;
                     if (RegulationData.Selected == Regulation.id)
                     {
-                        __instance.ValueText.text = "有効(on)";
+                        __instance.ValueText.text = ModTranslation.GetString("optionOn");
                     }
                     else
                     {
-                        __instance.ValueText.text = "無効(off)";
+                        __instance.ValueText.text = ModTranslation.GetString("optionOff");
 
                     }
                     return false;
@@ -673,12 +673,12 @@ namespace SuperNewRoles.CustomOption
                             stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
                             stringOption.TitleText.text = regulation.title;
                             stringOption.oldValue = __instance.Value = 0;
-                            stringOption.ValueText.text = "無効(off)";
+                            stringOption.ValueText.text = ModTranslation.GetString("optionOff");
                         }
                     }
                     Select(Regulation.id);
                     __instance.oldValue = __instance.Value = 1;
-                    __instance.ValueText.text = "有効(on)";
+                    __instance.ValueText.text = ModTranslation.GetString("optionOn");
                     return false;
                 }
                 return true;
@@ -709,7 +709,7 @@ namespace SuperNewRoles.CustomOption
                     {
                         if (regulation.optionBehaviour is not null and StringOption stringOption)
                         {
-                            if (stringOption.ValueText.text == "有効(on)")
+                            if (stringOption.ValueText.text == ModTranslation.GetString("optionOn"))
                             {
                                 if (!IsFirst)
                                 {
@@ -720,12 +720,12 @@ namespace SuperNewRoles.CustomOption
                         }
                     }
                     __instance.oldValue = __instance.Value = 0;
-                    __instance.ValueText.text = "無効(off)";
+                    __instance.ValueText.text = ModTranslation.GetString("optionOff");
                     if (isReset) {
                         Select(0);
                         if (RegulationData.Regulations.FirstOrDefault(d => d.id == 0).optionBehaviour is not null and StringOption stringOption0){
                             stringOption0.oldValue = __instance.Value = 1;
-                            stringOption0.ValueText.text = "有効(on)";
+                            stringOption0.ValueText.text = ModTranslation.GetString("optionOn");
                         }
                     }
                     Logger.Info(isReset.ToString());
@@ -786,7 +786,7 @@ namespace SuperNewRoles.CustomOption
                     {
                         if (Regulation.optionBehaviour is not null and StringOption stringOption)
                         {
-                            stringOption.ValueText.text = Regulation.id == RegulationData.Selected ? "有効(on)" : "無効(off)";
+                            stringOption.ValueText.text = Regulation.id == RegulationData.Selected ? ModTranslation.GetString("optionOn") : ModTranslation.GetString("optionOff");
                         }
 
                         bool enabled = true;
