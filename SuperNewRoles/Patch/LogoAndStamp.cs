@@ -92,11 +92,12 @@ namespace SuperNewRoles.Patches
                     __instance.transform.localPosition = CachedPlayer.LocalPlayer.Data.IsDead
                         ? new Vector3(3.45f, __instance.transform.localPosition.y, __instance.transform.localPosition.z)
                         : new Vector3(4.2f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
+                    __instance.gameObject.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(1.2f, 0.1f, 0.5f);
                 }
                 else
                 {
                     __instance.text.text = $"{baseCredentials}\n{ModTranslation.GetString("creditsFull")}\n{__instance.text.text}";
-                    __instance.transform.localPosition = new Vector3(3.5f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
+                    __instance.transform.localPosition = new Vector3(4f, __instance.transform.localPosition.y, __instance.transform.localPosition.z);
                 }
             }
         }

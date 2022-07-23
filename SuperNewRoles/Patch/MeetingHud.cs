@@ -265,6 +265,43 @@ namespace SuperNewRoles.Patch
                     }
                     return false;
                 }
+                else if (RoleClass.Revolutionist.MeetingTrigger != null)
+                {
+                    var (isVoteEnd, voteFor, voteArea) = RevolutionistVoteState(__instance);
+
+                    SuperNewRolesPlugin.Logger.LogInfo(isVoteEnd + "、" + voteFor);
+                    if (isVoteEnd)
+                    {
+                        //GameData.PlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
+                        Il2CppStructArray<MeetingHud.VoterState> array =
+                            new(
+                                __instance.playerStates.Length);
+
+                        for (int i = 0; i < __instance.playerStates.Length; i++)
+                        {
+                            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                            playerVoteArea.VotedFor = playerVoteArea.TargetPlayerId == RoleClass.Revolutionist.MeetingTrigger.PlayerId ? voteFor : (byte)254;
+                            __instance.SetDirtyBit(1U);
+
+                            array[i] = new VoterState
+                            {
+                                VoterId = playerVoteArea.TargetPlayerId,
+                                VotedForId = playerVoteArea.VotedFor
+                            };
+                        }
+                        GameData.PlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
+                        GameData.PlayerInfo exileplayer = null;
+                        if (target != null && target.Object.PlayerId != RoleClass.Revolutionist.MeetingTrigger.PlayerId && target.Object.IsPlayer())
+                        {
+                            var outfit = target.DefaultOutfit;
+                            exileplayer = target;
+                            if (target.Object.IsRole(RoleId.Dictator))
+                                RoleClass.Revolutionist.WinPlayer = RoleClass.Revolutionist.MeetingTrigger;
+                        }
+                        new LateTask(() => __instance.RpcVotingComplete(array, exileplayer, true), 0.2f);
+                    }
+                    return false;
+                }
                 else
                 {
                     foreach (var ps in __instance.playerStates)
@@ -327,6 +364,17 @@ namespace SuperNewRoles.Patch
                             else if (ModHelpers.playerById(ps.TargetPlayerId).IsRole(RoleId.MayorFriends))
                             {
                                 for (var i2 = 0; i2 < RoleClass.MayorFriends.AddVote - 1; i2++)
+                                {
+                                    statesList.Add(new VoterState()
+                                    {
+                                        VoterId = ps.TargetPlayerId,
+                                        VotedForId = ps.VotedFor
+                                    });
+                                }
+                            }
+                            else if (ModHelpers.playerById(ps.TargetPlayerId).IsRole(RoleId.Dictator))
+                            {
+                                for (var i2 = 0; i2 < RoleClass.Dictator.VoteCount - 1; i2++)
                                 {
                                     statesList.Add(new VoterState()
                                     {
@@ -432,6 +480,28 @@ namespace SuperNewRoles.Patch
                     }
                 }
 
+                if (exiledPlayer.Object.IsRole(RoleId.Dictator))
+                {
+                    bool Flag = false;
+                    if (!RoleClass.Dictator.SubExileLimitData.ContainsKey(exiledPlayer.Object.PlayerId))
+                    {
+                        RoleClass.Dictator.SubExileLimitData[exiledPlayer.Object.PlayerId] = RoleClass.Dictator.SubExileLimit;
+                    }
+                    if (RoleClass.Dictator.SubExileLimitData[exiledPlayer.Object.PlayerId] > 0)
+                    {
+                        RoleClass.Dictator.SubExileLimitData[exiledPlayer.Object.PlayerId]--;
+                        Flag = true;
+                    }
+                    if (Flag)
+                    {
+                        List<PlayerControl> DictatorSubExileTargetList = PlayerControl.AllPlayerControls.ToArray().ToList();
+                        DictatorSubExileTargetList.RemoveAll(p => {
+                            return p.IsDead() || p.PlayerId == exiledPlayer.PlayerId;
+                        });
+                        exiledPlayer = ModHelpers.GetRandom(DictatorSubExileTargetList)?.Data;
+                    }
+                }
+
                 __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
 
                 /*
@@ -483,6 +553,25 @@ namespace SuperNewRoles.Patch
             }
             return Tuple.Create(isVoteEnd, voteFor, area);
         }
+        private static Tuple<bool, byte, PlayerVoteArea> RevolutionistVoteState(MeetingHud __instance)
+        {
+            bool isVoteEnd = false;
+            byte voteFor = byte.MaxValue;
+            PlayerVoteArea area = null;
+
+            for (int i = 0; i < __instance.playerStates.Length; i++)
+            {
+                PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                if (playerVoteArea.TargetPlayerId == RoleClass.Revolutionist.MeetingTrigger.PlayerId)
+                {
+                    isVoteEnd = playerVoteArea.DidVote || playerVoteArea.AmDead;
+                    voteFor = playerVoteArea.VotedFor;
+                    area = playerVoteArea;
+                    break;
+                }
+            }
+            return Tuple.Create(isVoteEnd, voteFor, area);
+        }
     }
 
     static class ExtendedMeetingHud
@@ -502,6 +591,7 @@ namespace SuperNewRoles.Patch
                     if (ModHelpers.playerById(ps.TargetPlayerId).IsRole(RoleId.Mayor)) VoteNum = RoleClass.Mayor.AddVote;
                     else if (ModHelpers.playerById(ps.TargetPlayerId).IsRole(RoleId.MadMayor)) VoteNum = RoleClass.MadMayor.AddVote;
                     else if (ModHelpers.playerById(ps.TargetPlayerId).IsRole(RoleId.MayorFriends)) VoteNum = RoleClass.MayorFriends.AddVote;
+                    else if (ModHelpers.playerById(ps.TargetPlayerId).IsRole(RoleId.Dictator)) VoteNum = RoleClass.Dictator.VoteCount;
                     dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out int num) ? VoteNum : num + VoteNum;
                 }
             }
@@ -513,7 +603,7 @@ namespace SuperNewRoles.Patch
     {
         public static bool Prefix()
         {
-            return RoleClass.Assassin.TriggerPlayer == null || !RoleClass.Assassin.TriggerPlayer.AmOwner;
+            return (RoleClass.Assassin.TriggerPlayer == null || !RoleClass.Assassin.TriggerPlayer.AmOwner) && (RoleClass.Revolutionist.MeetingTrigger == null || !RoleClass.Revolutionist.MeetingTrigger.AmOwner);
         }
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
@@ -521,7 +611,7 @@ namespace SuperNewRoles.Patch
     {
         public static bool PreFix(MeetingHud __instance)
         {
-            if (RoleClass.Assassin.TriggerPlayer == null) { return true; }
+            if (RoleClass.Assassin.TriggerPlayer == null && RoleClass.Revolutionist.MeetingTrigger) { return true; }
 
             if (AmongUsClient.Instance.AmHost)
             {
