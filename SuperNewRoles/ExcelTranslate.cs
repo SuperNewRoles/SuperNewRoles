@@ -83,7 +83,8 @@ namespace SuperNewRoles
     {
         static void Postfix()
         {
-            ClientOptionsPatch.updateTranslations();
+            VanillaOptionsPatch.updateTranslations();
+            ClientModOptionsPatch.updateTranslations();
         }
     }
 }
