@@ -151,6 +151,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.Kunoichi:
                                 Kunoichi.Update();
                                 break;
+                            case RoleId.SuicidalIdeation:
+                                SuicidalIdeation.Postfix();
+                                break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                                     NormalButtonDestroy.Postfix(p);

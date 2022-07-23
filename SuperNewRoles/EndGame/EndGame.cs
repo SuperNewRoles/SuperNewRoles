@@ -1094,7 +1094,7 @@ namespace SuperNewRoles.EndGame
             {
                 if (!p.Data.Disconnected)
                 {
-                    if (p.IsAlive())
+                    if (!p.IsAlive())
                     {
                         //var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
                         //if (playerCompleted >= playerTotal)

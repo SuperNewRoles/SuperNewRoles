@@ -66,6 +66,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton FastMakerButton;
         public static CustomButton ToiletFanButton;
         public static CustomButton BotanerButton;
+        public static CustomButton SuicidalIdeationButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2016,6 +2017,31 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("BotanerButtonName"),
+                showButtonText = true
+            };
+
+            SuicidalIdeationButton = new CustomButton(
+                () =>
+                {
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SuicidalIdeation; },
+                () =>
+                {
+                    return false;
+                },
+                () =>
+                {
+                },
+                RoleClass.ToiletFan.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("SuicidalIdeationButtonName"),
                 showButtonText = true
             };
 
