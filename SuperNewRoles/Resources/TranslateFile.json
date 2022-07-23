@@ -4013,6 +4013,80 @@
         "11": "\u78ba\u8a8d\u3067\u304d\u308b\u30ad\u30eb\u6570",
         "13": "\n\u786e\u8ba4\u7684\u6740\u622e\u6570\u91cf"
     },
+    "RevolutionistName": {
+        "0": "Revolutionist",
+        "11": "\u9769\u547d\u5bb6",
+        "13": "\u9769\u547d\u8005"
+    },
+    "RevolutionistTitle1": {
+        "0": "Let's start a revolution.",
+        "11": "\u9769\u547d\u3092\u8d77\u3053\u305d\u3046",
+        "13": "?\u6211??\u59cb\u4e00?\u9769\u547d\u3002"
+    },
+    "DictatorName": {
+        "0": "Dictator",
+        "11": "\u72ec\u88c1\u8005",
+        "13": "\u72ec\u88c1?\u6cbb"
+    },
+    "DictatorTitle1": {
+        "0": "Let's monopolize power",
+        "11": "\u6a29\u529b\u3092\u72ec\u5360\u3057\u3088\u3046",
+        "13": "?\u6211??\u65ad?\u529b"
+    },
+    "RevolutionistAndDictatorName": {
+        "0": "<color=#FF0033>Revolutionist</color>And<color=#336600>Dictator</color>",
+        "11": "<color=#FF0033>\u9769\u547d\u5bb6</color>\u3068<color=#336600>\u72ec\u88c1\u8005</color>"
+    },
+    "SettingRevolutionistPlayerCountName": {
+        "0": "Number of <color=#FF0033>Revolutionist</color>",
+        "11": "<color=#FF0033>\u9769\u547d\u5bb6</color>\u306e\u4eba\u6570",
+        "13": "<color=#FF0033>\u9769\u547d\u8005</color>\u7684\u6570\u91cf"
+    },
+    "SettingDictatorPlayerCountName": {
+        "0": "Number of <color=#336600>Dictator</color>",
+        "11": "<color=#336600>\u72ec\u88c1\u8005</color>\u306e\u4eba\u6570",
+        "13": "<color=#336600>\u72ec\u88c1\u8005</color>\u7684\u6570\u91cf"
+    },
+    "DictatorSubExile": {
+        "0": "When exiled, exile another player.",
+        "11": "\u8ffd\u653e\u6642\u3001\u5225\u306e\u30d7\u30ec\u30a4\u30e4\u30fc\u3092\u8ffd\u653e\u3059\u308b",
+        "13": "\u5f53\u88ab\u653e\u9010?\uff0c\u653e\u9010?\u4e00\u4e2a\u73a9\u5bb6\u3002"
+    },
+    "DictatorSubExileLimit": {
+        "0": "Maximum number of substitutions",
+        "11": "\u8eab\u4ee3\u308f\u308a\u306e\u6700\u5927\u56de\u6570",
+        "13": "\u66ff?\u7684\u6700\u5927\u6570\u91cf"
+    },
+    "DictatorVoteCount": {
+        "0": "Dictatorial vote count",
+        "11": "\u72ec\u88c1\u8005\u306e\u7968\u6570",
+        "13": "\u72ec\u88c1\u8005\u7684\u7968\u6570\u3002"
+    },
+    "RevolutionCoolTime": {
+        "0": "revolutionary cool time",
+        "11": "\u9769\u547d\u30af\u30fc\u30eb\u30bf\u30a4\u30e0",
+        "13": "\u9769\u547d\u6027\u7684\u51b7\u5374??"
+    },
+    "RevolutionTouchTime": {
+        "0": "Revolutionary contact hours",
+        "11": "\u9769\u547d\u5bb6\u306e\u63a5\u89e6\u6642\u9593",
+        "13": "\u9769\u547d\u6027\u7684\u63a5\u89e6??"
+    },
+    "RevolutionistAddWin": {
+        "0": "Additional Victories for Revolutionist",
+        "11": "\u9769\u547d\u5bb6\u306e\u8ffd\u52a0\u52dd\u5229",
+        "13": "\u9769\u547d\u8005\u7684?\u5916?\u5229"
+    },
+    "RevolutionistAddWinIsAlive": {
+        "0": "Additional victory only when alive",
+        "11": "\u751f\u5b58\u6642\u306e\u307f\u8ffd\u52a0\u52dd\u5229",
+        "13": "\u53ea\u6709\u5728\u6d3b\u7740\u7684?\u5019\u624d\u80fd\u53d6\u5f97?\u5916\u7684?\u5229\u3002"
+    },
+    "RevolutionistButtonName": {
+        "0": "Up to revolutionary possible",
+        "11": "\u9769\u547d\u53ef\u80fd\u307e\u3067",
+        "13": "\u6700\u591a\u53ef\u80fd\u662f\u9769\u547d\u6027\u7684"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",
