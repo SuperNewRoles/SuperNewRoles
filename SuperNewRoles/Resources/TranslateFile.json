@@ -4030,12 +4030,12 @@
     "SettingRevolutionistPlayerCountName": {
         "0": "Number of <color=#FF0033>Revolutionist</color>",
         "11": "<color=#FF0033>\u9769\u547d\u5bb6</color>\u306e\u4eba\u6570",
-        "13": "<color=#FF0033>\u9769\u547d\u8005\u7684\u6570\u91cf</color>"
+        "13": "<color=#FF0033>\u9769\u547d\u8005</color>\u7684\u6570\u91cf"
     },
     "SettingDictatorPlayerCountName": {
         "0": "Number of <color=#336600>Dictator</color>",
         "11": "<color=#336600>\u72ec\u88c1\u8005</color>\u306e\u4eba\u6570",
-        "13": "<color=#336600>\u72ec\u88c1\u8005\u7684\u6570\u91cf</color>"
+        "13": "<color=#336600>\u72ec\u88c1\u8005</color>\u7684\u6570\u91cf"
     },
     "DictatorSubExile": {
         "0": "When exiled, exile another player.",
