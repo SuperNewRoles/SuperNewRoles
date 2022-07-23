@@ -574,6 +574,9 @@ namespace SuperNewRoles
                 case RoleId.Dictator:
                     RoleClass.Dictator.DictatorPlayer.Add(player);
                     break;
+                case RoleId.SidekickFriends:
+                    RoleClass.Jackal.SidekickFriendsPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -1003,7 +1006,7 @@ namespace SuperNewRoles
                 case RoleId.SidekickFriends:
                     IsTaskClear = true;
                     break;
-                //タスククリアか
+                    //タスククリアか
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
@@ -1146,7 +1149,7 @@ namespace SuperNewRoles
                 case RoleId.Revolutionist:
                     IsNeutral = true;
                     break;
-            //第三か
+                    //第三か
             }
             return IsNeutral;
         }
