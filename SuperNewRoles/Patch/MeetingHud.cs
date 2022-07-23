@@ -443,6 +443,28 @@ namespace SuperNewRoles.Patch
                     }
                 }
 
+                if (exiledPlayer.Object.IsRole(RoleId.Dictator))
+                {
+                    bool Flag = false;
+                    if (!RoleClass.Dictator.SubExileLimitData.ContainsKey(exiledPlayer.Object.PlayerId))
+                    {
+                        RoleClass.Dictator.SubExileLimitData[exiledPlayer.Object.PlayerId] = RoleClass.Dictator.SubExileLimit;
+                    }
+                    if (RoleClass.Dictator.SubExileLimitData[exiledPlayer.Object.PlayerId] > 0)
+                    {
+                        RoleClass.Dictator.SubExileLimitData[exiledPlayer.Object.PlayerId]--;
+                        Flag = true;
+                    }
+                    if (Flag)
+                    {
+                        List<PlayerControl> DictatorSubExileTargetList = PlayerControl.AllPlayerControls.ToArray().ToList();
+                        DictatorSubExileTargetList.RemoveAll(p => {
+                            return p.IsDead() || p.PlayerId == exiledPlayer.PlayerId;
+                        });
+                        exiledPlayer = ModHelpers.GetRandom(DictatorSubExileTargetList)?.Data;
+                    }
+                }
+
                 __instance.RpcVotingComplete(states, exiledPlayer, tie); //RPC
 
                 /*
