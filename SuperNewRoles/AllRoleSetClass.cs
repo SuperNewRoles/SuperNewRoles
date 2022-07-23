@@ -926,12 +926,9 @@ namespace SuperNewRoles
                 RoleId.ToiletFan => CustomOptions.ToiletFanPlayerCount.GetFloat(),
                 RoleId.EvilBotaner => CustomOptions.EvilBotanerPlayerCount.GetFloat(),
                 RoleId.NiceBotaner => CustomOptions.NiceBotanerPlayerCount.GetFloat(),
-<<<<<<< HEAD
                 RoleId.Finder => CustomOptions.FinderPlayerCount.GetFloat(),
-=======
                 RoleId.Revolutionist => CustomOptions.RevolutionistPlayerCount.GetFloat(),
                 RoleId.Dictator => CustomOptions.DictatorPlayerCount.GetFloat(),
->>>>>>> develop
                 //プレイヤーカウント
                 _ => 1,
             };

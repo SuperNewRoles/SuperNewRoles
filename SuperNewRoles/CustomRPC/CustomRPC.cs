@@ -134,12 +134,9 @@ namespace SuperNewRoles.CustomRPC
         ToiletFan,
         EvilBotaner,
         NiceBotaner,
-<<<<<<< HEAD
         Finder,
-=======
         Revolutionist,
         Dictator,
->>>>>>> develop
         //RoleId
     }
 

@@ -156,12 +156,9 @@ namespace SuperNewRoles.Roles
             ToiletFan.ClearAndReload();
             EvilBotaner.ClearAndReload();
             NiceBotaner.ClearAndReload();
-<<<<<<< HEAD
             Finder.ClearAndReload();
-=======
             Revolutionist.ClearAndReload();
             Dictator.ClearAndReload();
->>>>>>> develop
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2479,7 +2476,6 @@ namespace SuperNewRoles.Roles
                 SkillCountSHR = new();
             }
         }
-<<<<<<< HEAD
         public static class Finder
         {
             public static List<PlayerControl> FinderPlayer;
@@ -2488,9 +2484,9 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 FinderPlayer = new();
-                CheckMadmate = CustomOptions.FinderCheckMadmateSetting.GetFloat();
-                
-=======
+                CheckMadmate = CustomOptions.FinderCheckMadmateSetting.GetInt();
+            }
+        }
         public static class Revolutionist
         {
             public static List<PlayerControl> RevolutionistPlayer;
@@ -2551,7 +2547,6 @@ namespace SuperNewRoles.Roles
                 if (CustomOptions.DictatorSubstituteExile.GetBool()) SubExileLimit = CustomOptions.DictatorSubstituteExileLimit.GetInt();
                 else SubExileLimit = 0;
                 SubExileLimitData = new();
->>>>>>> develop
             }
         }
         //新ロールクラス
