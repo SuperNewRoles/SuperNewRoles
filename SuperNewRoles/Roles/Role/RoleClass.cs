@@ -155,6 +155,7 @@ namespace SuperNewRoles.Roles
             ToiletFan.ClearAndReload();
             EvilBotaner.ClearAndReload();
             NiceBotaner.ClearAndReload();
+            Finder.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2470,6 +2471,18 @@ namespace SuperNewRoles.Roles
                 CoolTime = CustomOptions.NiceBotanerCoolTime.GetFloat();
                 SkillCount = CustomOptions.NiceBotanerCount.GetFloat();
                 SkillCountSHR = new();
+            }
+        }
+        public static class Finder
+        {
+            public static List<PlayerControl> FinderPlayer;
+            public static Color32 color = ImpostorRed;
+            public static int CheckMadmate;
+            public static void ClearAndReload()
+            {
+                FinderPlayer = new();
+                CheckMadmate = CustomOptions.FinderCheckMadmateSetting.GetFloat();
+                
             }
         }
         //新ロールクラス

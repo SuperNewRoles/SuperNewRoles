@@ -184,6 +184,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate ToiletFanIntro = new("ToiletFan", RoleClass.ToiletFan.color, 1, RoleId.ToiletFan, TeamRoleType.Crewmate);
         public static IntroDate EvilBotanerIntro = new("EvilBotaner", RoleClass.EvilBotaner.color, 1, RoleId.EvilBotaner, TeamRoleType.Impostor);
         public static IntroDate NiceBotanerIntro = new("NiceBotaner", RoleClass.NiceBotaner.color, 1, RoleId.NiceBotaner, TeamRoleType.Crewmate);
+        public static IntroDate FinderIntro = new("Finder", RoleClass.Finder.color, 1, RoleId.Finder, TeamRoleType.Impostor);
         //イントロオブジェ
     }
 }

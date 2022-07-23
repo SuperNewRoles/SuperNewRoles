@@ -134,6 +134,7 @@ namespace SuperNewRoles.CustomRPC
         ToiletFan,
         EvilBotaner,
         NiceBotaner,
+        Finder,
         //RoleId
     }
 

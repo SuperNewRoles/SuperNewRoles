@@ -564,6 +564,9 @@ namespace SuperNewRoles
                 case (RoleId.NiceBotaner):
                     RoleClass.NiceBotaner.NiceBotanerPlayer.Add(player);
                     break;
+                case RoleId.Finder:
+                    RoleClass.Finder.FinderPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -926,6 +929,9 @@ namespace SuperNewRoles
                     break;
                 case (RoleId.NiceBotaner):
                     RoleClass.NiceBotaner.NiceBotanerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Finder:
+                    RoleClass.Finder.FinderPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -1389,6 +1395,7 @@ namespace SuperNewRoles
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
                 else if (RoleClass.EvilBotaner.EvilBotanerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilBotaner;
                 else if (RoleClass.NiceBotaner.NiceBotanerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceBotaner;
+                else if (RoleClass.Finder.FinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Finder;
                 //ロールチェック
             }
             catch (Exception e)
