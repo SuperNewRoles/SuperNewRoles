@@ -265,18 +265,12 @@ namespace SuperNewRoles.Roles"""+namedata+"""
                     break;\n                //ロールリモベ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("Neut")):
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//第三か",
-                                 """case (RoleId.ROLENAME):
-                    IsNeutral = true;
-                    break;\n                //第三か""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """case (RoleId.ROLENAME):\n                //第三か""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//タスククリアか",
-                                 """case (RoleId.ROLENAME):
-                    IsTaskClear = true;
-                    break; \n                //タスククリアか""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """case (RoleId.ROLENAME):\n                //タスククリアか""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("A_ClearTask")):
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//タスククリアか",
                                  """case (RoleId.ROLENAME):
-                    IsTaskClear = true;
-                    break;
                 //タスククリアか""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # Roles/Role/RoleClass.cs
