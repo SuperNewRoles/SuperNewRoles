@@ -444,7 +444,7 @@ namespace SuperNewRoles.CustomOption
             impostorTab.transform.localPosition = Vector3.right * 1f;
             neutralTab.transform.localPosition = Vector3.right * 1f;
             crewmateTab.transform.localPosition = Vector3.right * 0.95f;
-            RegulationTab.transform.localPosition = Vector3.right * 1.8f;
+            RegulationTab.transform.localPosition = Vector3.right * 1.85f;
 
             var tabs = new GameObject[] { gameTab, roleTab, snrTab, impostorTab, neutralTab, crewmateTab, RegulationTab };
             for (int i = 0; i < tabs.Length; i++)
