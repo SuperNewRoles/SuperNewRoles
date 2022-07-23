@@ -256,21 +256,21 @@ namespace SuperNewRoles.Roles"""+namedata+"""
                 //ロールチェック""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ロールアド",
-                             """case (RoleId.ROLENAME):
+                             """case RoleId.ROLENAME:
                     RoleClass.ROLENAME.ROLENAMEPlayer.Add(player);
                     break;\n                //ロールアド""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//ロールリモベ",
-                             """case (RoleId.ROLENAME):
+                             """case RoleId.ROLENAME:
                     RoleClass.ROLENAME.ROLENAMEPlayer.RemoveAll(ClearRemove);
                     break;\n                //ロールリモベ""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("Neut")):
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//第三か",
-                                 """case (RoleId.ROLENAME):\n                //第三か""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """case RoleId.ROLENAME:\n                //第三か""".replace("ROLENAME", MainClass.GetInput("RoleName")))
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//タスククリアか",
-                                 """case (RoleId.ROLENAME):\n                //タスククリアか""".replace("ROLENAME", MainClass.GetInput("RoleName")))
+                                 """case RoleId.ROLENAME:\n                //タスククリアか""".replace("ROLENAME", MainClass.GetInput("RoleName")))
         if (MainClass.GetBool("A_ClearTask")):
             MainClass.WriteCodes("Roles/Role/RoleHelper.cs", "//タスククリアか",
-                                 """case (RoleId.ROLENAME):
+                                 """case RoleId.ROLENAME:
                 //タスククリアか""".replace("ROLENAME", MainClass.GetInput("RoleName")))
 
         # Roles/Role/RoleClass.cs
