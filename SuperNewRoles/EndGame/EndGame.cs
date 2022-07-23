@@ -35,6 +35,7 @@ namespace SuperNewRoles.EndGame
         VultureWin,
         TunaWin,
         NeetWin,
+        RevolutionistWin,
         BugEnd
     }
     enum WinCondition
@@ -56,6 +57,7 @@ namespace SuperNewRoles.EndGame
         VultureWin,
         TunaWin,
         NeetWin,
+        RevolutionistWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -240,6 +242,10 @@ namespace SuperNewRoles.EndGame
                     text = "NeetName";
                     RoleColor = RoleClass.Neet.color;
                     break;
+                case WinCondition.RevolutionistWin:
+                    text = "RevolutionistName";
+                    RoleColor = RoleClass.Neet.color;
+                    break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
                     {
@@ -381,9 +387,8 @@ namespace SuperNewRoles.EndGame
             AdditionalTempData.Clear();
 
             IsHaison = false;
-
-            static string GetStatusText(FinalStatus status) => ModTranslation.GetString("FinalStatus" + status.ToString()); //ローカル関数
         }
+        static string GetStatusText(FinalStatus status) => ModTranslation.GetString("FinalStatus" + status.ToString()); //ローカル関数
     }
 
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]

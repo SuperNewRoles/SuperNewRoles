@@ -2517,12 +2517,14 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new(0, 102, 51, byte.MaxValue);
             public static int VoteCount;
             public static int SubExileLimit;
+            public static Dictionary<byte, int> SubExileLimitData;
             public static void ClearAndReload()
             {
                 DictatorPlayer = new();
                 VoteCount = CustomOptions.DictatorVoteCount.GetInt();
                 if (CustomOptions.DictatorSubstituteExile.GetBool()) SubExileLimit = CustomOptions.DictatorSubstituteExileLimit.GetInt();
                 else SubExileLimit = 0;
+                SubExileLimitData = new();
             }
         }
         //新ロールクラス
