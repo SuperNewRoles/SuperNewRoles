@@ -4057,6 +4057,11 @@
         "11": "\u9769\u547d\u30af\u30fc\u30eb\u30bf\u30a4\u30e0",
         "13": "\u9769\u547d\u6027\u7684\u51b7\u5374\u65f6\u95f4"
     },
+    "RevolutionTouchTime": {
+        "0": "Revolutionary contact hours",
+        "11": "\u9769\u547d\u5bb6\u306e\u63a5\u89e6\u6642\u9593",
+        "13": "\u9769\u547d\u6027\u7684\u63a5\u89e6\u65f6\u95f4"
+    },
     "RevolutionistAddWin": {
         "0": "Additional Victories for Revolutionist",
         "11": "\u9769\u547d\u5bb6\u306e\u8ffd\u52a0\u52dd\u5229",
@@ -4066,6 +4071,11 @@
         "0": "Additional victory only when alive",
         "11": "\u751f\u5b58\u6642\u306e\u307f\u8ffd\u52a0\u52dd\u5229",
         "13": "\u53ea\u6709\u5728\u6d3b\u7740\u7684\u65f6\u5019\u624d\u80fd\u53d6\u5f97\u989d\u5916\u7684\u80dc\u5229\u3002"
+    },
+    "RevolutionistButtonName": {
+        "0": "Up to revolutionary possible",
+        "11": "\u9769\u547d\u53ef\u80fd\u307e\u3067",
+        "13": "\u6700\u591a\u53ef\u80fd\u662f\u9769\u547d\u6027\u7684"
     },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",

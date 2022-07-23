@@ -206,10 +206,19 @@ namespace SuperNewRoles.CustomRPC
         RandomSpawn,
         KunaiKill,
         SetSecretRoomTeleportStatus,
-        ChiefSidekick
+        ChiefSidekick,
+        StartRevolutionMeeting
     }
     public static class RPCProcedure
     {
+        public static void StartRevolutionMeeting(byte sourceid)
+        {
+            PlayerControl source = ModHelpers.playerById(sourceid);
+            if (source == null) return;
+            source.ReportDeadBody(null);
+            RoleClass.Revolutionist.MeetingTrigger = source;
+        }
+
         public static void KunaiKill(byte sourceid, byte targetid)
         {
             PlayerControl source = ModHelpers.playerById(sourceid);
@@ -1248,6 +1257,9 @@ namespace SuperNewRoles.CustomRPC
                             break;
                         case CustomRPC.ChiefSidekick:
                             ChiefSidekick(reader.ReadByte());
+                            break;
+                        case CustomRPC.StartRevolutionMeeting:
+                            StartRevolutionMeeting(reader.ReadByte());
                             break;
                     }
                 }

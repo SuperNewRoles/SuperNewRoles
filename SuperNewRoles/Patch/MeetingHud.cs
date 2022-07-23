@@ -265,6 +265,43 @@ namespace SuperNewRoles.Patch
                     }
                     return false;
                 }
+                else if (RoleClass.Revolutionist.MeetingTrigger != null)
+                {
+                    var (isVoteEnd, voteFor, voteArea) = RevolutionistVoteState(__instance);
+
+                    SuperNewRolesPlugin.Logger.LogInfo(isVoteEnd + "、" + voteFor);
+                    if (isVoteEnd)
+                    {
+                        //GameData.PlayerInfo exiled = Helper.Player.GetPlayerControlById(voteFor).Data;
+                        Il2CppStructArray<MeetingHud.VoterState> array =
+                            new(
+                                __instance.playerStates.Length);
+
+                        for (int i = 0; i < __instance.playerStates.Length; i++)
+                        {
+                            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                            playerVoteArea.VotedFor = playerVoteArea.TargetPlayerId == RoleClass.Revolutionist.MeetingTrigger.PlayerId ? voteFor : (byte)254;
+                            __instance.SetDirtyBit(1U);
+
+                            array[i] = new VoterState
+                            {
+                                VoterId = playerVoteArea.TargetPlayerId,
+                                VotedForId = playerVoteArea.VotedFor
+                            };
+                        }
+                        GameData.PlayerInfo target = GameData.Instance.GetPlayerById(voteFor);
+                        GameData.PlayerInfo exileplayer = null;
+                        if (target != null && target.Object.PlayerId != RoleClass.Revolutionist.MeetingTrigger.PlayerId && target.Object.IsPlayer())
+                        {
+                            var outfit = target.DefaultOutfit;
+                            exileplayer = target;
+                            if (target.Object.IsRole(RoleId.Dictator))
+                                RoleClass.Revolutionist.WinPlayer = RoleClass.Revolutionist.MeetingTrigger;
+                        }
+                        new LateTask(() => __instance.RpcVotingComplete(array, exileplayer, true), 0.2f);
+                    }
+                    return false;
+                }
                 else
                 {
                     foreach (var ps in __instance.playerStates)
@@ -516,6 +553,25 @@ namespace SuperNewRoles.Patch
             }
             return Tuple.Create(isVoteEnd, voteFor, area);
         }
+        private static Tuple<bool, byte, PlayerVoteArea> RevolutionistVoteState(MeetingHud __instance)
+        {
+            bool isVoteEnd = false;
+            byte voteFor = byte.MaxValue;
+            PlayerVoteArea area = null;
+
+            for (int i = 0; i < __instance.playerStates.Length; i++)
+            {
+                PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+                if (playerVoteArea.TargetPlayerId == RoleClass.Revolutionist.MeetingTrigger.PlayerId)
+                {
+                    isVoteEnd = playerVoteArea.DidVote || playerVoteArea.AmDead;
+                    voteFor = playerVoteArea.VotedFor;
+                    area = playerVoteArea;
+                    break;
+                }
+            }
+            return Tuple.Create(isVoteEnd, voteFor, area);
+        }
     }
 
     static class ExtendedMeetingHud
@@ -547,7 +603,7 @@ namespace SuperNewRoles.Patch
     {
         public static bool Prefix()
         {
-            return RoleClass.Assassin.TriggerPlayer == null || !RoleClass.Assassin.TriggerPlayer.AmOwner;
+            return (RoleClass.Assassin.TriggerPlayer == null || !RoleClass.Assassin.TriggerPlayer.AmOwner) && (RoleClass.Revolutionist.MeetingTrigger == null || !RoleClass.Revolutionist.MeetingTrigger.AmOwner);
         }
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.UpdateButtons))]
@@ -555,7 +611,7 @@ namespace SuperNewRoles.Patch
     {
         public static bool PreFix(MeetingHud __instance)
         {
-            if (RoleClass.Assassin.TriggerPlayer == null) { return true; }
+            if (RoleClass.Assassin.TriggerPlayer == null && RoleClass.Revolutionist.MeetingTrigger) { return true; }
 
             if (AmongUsClient.Instance.AmHost)
             {

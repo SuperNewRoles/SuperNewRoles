@@ -989,15 +989,14 @@ namespace SuperNewRoles
                 case RoleId.Tuna:
                 case RoleId.BlackCat:
                 case RoleId.Neet:
-                    IsTaskClear = true;
-                    break;
-                    case (RoleId.Revolutionist):
+                case (RoleId.Revolutionist):
                     IsTaskClear = true;
                     break; 
                 //タスククリアか
             }
             if (!IsTaskClear
-                && ((ModeHandler.IsMode(ModeId.SuperHostRoles) && (player.IsRole(RoleId.Sheriff) || player.IsRole(RoleId.RemoteSheriff) || player.IsRole(RoleId.ToiletFan) || player.IsRole(RoleId.NiceBotaner)))
+                && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
+                player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceBotaner))
                 || player.IsQuarreled()
                 || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
                 || player.IsImpostor()))

@@ -681,6 +681,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption DictatorSubstituteExile;
         public static CustomOption DictatorSubstituteExileLimit;
         public static CustomOption RevolutionistCoolTime;
+        public static CustomOption RevolutionistTouchTime;
         public static CustomOption RevolutionistAddWin;
         public static CustomOption RevolutionistAddWinIsAlive;
         //CustomOption
@@ -1406,6 +1407,7 @@ namespace SuperNewRoles.CustomOption
             DictatorSubstituteExile = CustomOption.Create(876, false, CustomOptionType.Neutral, "DictatorSubExile", false, RevolutionistAndDictatorOption);
             DictatorSubstituteExileLimit = CustomOption.Create(877, false, CustomOptionType.Neutral, "DictatorSubExileLimit", 1f, 1f, 15f, 1f, DictatorSubstituteExile);
             RevolutionistCoolTime = CustomOption.Create(878, false, CustomOptionType.Neutral, "RevolutionCoolTime", 10f, 2.5f, 60f, 2.5f, RevolutionistAndDictatorOption);
+            RevolutionistTouchTime = CustomOption.Create(881, false, CustomOptionType.Neutral, "RevolutionTouchTime", 1f, 0f, 10f, 0.5f, RevolutionistAndDictatorOption);
             RevolutionistAddWin = CustomOption.Create(879, false, CustomOptionType.Neutral, "RevolutionistAddWin", false, RevolutionistAndDictatorOption);
             RevolutionistAddWinIsAlive = CustomOption.Create(880, false, CustomOptionType.Neutral, "RevolutionistAddWinIsAlive", true, RevolutionistAddWin);
             //表示設定

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-namespace SuperNewRoles.Roles
+namespace SuperNewRoles.Roles.CrewMate
 {
     public static class Dictator
     {
-        //‚±‚±‚ÉƒR[ƒh‚ğ‘‚«‚±‚ñ‚Å‚­‚¾‚³‚¢
+        //ã“ã“ã«ã‚³ãƒ¼ãƒ‰ã‚’æ›¸ãã“ã‚“ã§ãã ã•ã„
     }
 }

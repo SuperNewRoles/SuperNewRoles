@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOption;
@@ -2479,9 +2480,9 @@ namespace SuperNewRoles.Roles
             public static List<PlayerControl> RevolutionistPlayer;
             public static Color32 color = new(255, 0, 51, byte.MaxValue);
             public static float CoolTime;
-            public static float MyCoolTime;
+            public static float TouchTime;
             public static List<byte> RevolutionedPlayerId;
-            public static PlayerControl[] RevolutionedPlayer {
+            public static List<PlayerControl> RevolutionedPlayer {
                 get
                 {
                     if (_revolutionedPlayer.Length != RevolutionedPlayerId.Count)
@@ -2493,22 +2494,31 @@ namespace SuperNewRoles.Roles
                             if (player == null) continue;
                             newList.Add(player);
                         }
+                        _revolutionedPlayer = newList.ToArray();
                     }
-                    return _revolutionedPlayer;
+                    return _revolutionedPlayer.ToList();
                 }
             }
             public static PlayerControl[] _revolutionedPlayer;
             public static bool IsAddWin;
             public static bool IsAddWinAlive;
+            public static PlayerControl CurrentTarget;
+            public static PlayerControl MeetingTrigger;
+            public static bool IsEndMeeting;
+            public static PlayerControl WinPlayer;
             public static void ClearAndReload()
             {
                 RevolutionistPlayer = new();
                 CoolTime = CustomOptions.RevolutionistCoolTime.GetFloat();
-                MyCoolTime = 0;
+                TouchTime = CustomOptions.RevolutionistTouchTime.GetFloat();
                 RevolutionedPlayerId = new();
                 _revolutionedPlayer = new PlayerControl[] { };
                 IsAddWin = CustomOptions.RevolutionistAddWin.GetBool();
                 IsAddWinAlive = CustomOptions.RevolutionistAddWinIsAlive.GetBool();
+                CurrentTarget = null;
+                MeetingTrigger = null;
+                IsEndMeeting = false;
+                WinPlayer = null;
             }
         }
         public static class Dictator
