@@ -134,6 +134,8 @@ namespace SuperNewRoles.CustomRPC
         ToiletFan,
         EvilBotaner,
         NiceBotaner,
+        Revolutionist,
+        Dictator,
         //RoleId
     }
 
