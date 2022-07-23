@@ -564,6 +564,9 @@ namespace SuperNewRoles
                 case (RoleId.NiceBotaner):
                     RoleClass.NiceBotaner.NiceBotanerPlayer.Add(player);
                     break;
+                case (RoleId.SuicidalIdeation):
+                    RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -927,7 +930,10 @@ namespace SuperNewRoles
                 case (RoleId.NiceBotaner):
                     RoleClass.NiceBotaner.NiceBotanerPlayer.RemoveAll(ClearRemove);
                     break;
-                //ロールリモベ
+                case (RoleId.SuicidalIdeation):
+                    RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.RemoveAll(ClearRemove);
+                    break;
+                    //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -977,6 +983,7 @@ namespace SuperNewRoles
                 case RoleId.Tuna:
                 case RoleId.BlackCat:
                 case RoleId.Neet:
+                case RoleId.SuicidalIdeation:
                     IsTaskClear = true;
                     break;
                     //タスククリアか
@@ -1118,6 +1125,7 @@ namespace SuperNewRoles
                 case RoleId.MayorFriends:
                 case RoleId.Tuna:
                 case RoleId.Neet:
+                case RoleId.SuicidalIdeation:
                     IsNeutral = true;
                     break;
                     //第三か
@@ -1389,6 +1397,7 @@ namespace SuperNewRoles
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
                 else if (RoleClass.EvilBotaner.EvilBotanerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilBotaner;
                 else if (RoleClass.NiceBotaner.NiceBotanerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceBotaner;
+                else if (RoleClass.SuicidalIdeation.SuicidalIdeationPlayer.IsCheckListPlayerControl(player)) return RoleId.SuicidalIdeation;
                 //ロールチェック
             }
             catch (Exception e)

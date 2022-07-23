@@ -673,6 +673,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption NiceBotanerPlayerCount;
         public static CustomOption NiceBotanerCoolTime;
         public static CustomOption NiceBotanerCount;
+
+        public static CustomOption SuicidalIdeationOption;
+        public static CustomOption SuicidalIdeationPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1388,6 +1391,9 @@ namespace SuperNewRoles.CustomOption
             NiceBotanerPlayerCount = CustomOption.Create(869, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceBotanerOption);
             NiceBotanerCoolTime = CustomOption.Create(870, false, CustomOptionType.Crewmate, "BotanerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NiceBotanerOption, format: "unitSeconds");
             NiceBotanerCount = CustomOption.Create(871, true, CustomOptionType.Crewmate, "BotanerCountSetting", 1f, 1f, 10f, 1f, NiceBotanerOption);
+
+            SuicidalIdeationOption = new CustomRoleOption(872, false, CustomOptionType.Neutral, "SuicidalIdeationName", RoleClass.SuicidalIdeation.color, 1);
+            SuicidalIdeationPlayerCount = CustomOption.Create(873, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SuicidalIdeationOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

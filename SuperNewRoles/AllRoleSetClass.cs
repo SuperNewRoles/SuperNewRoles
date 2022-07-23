@@ -853,6 +853,7 @@ namespace SuperNewRoles
                 RoleId.ToiletFan => CustomOptions.ToiletFanPlayerCount.GetFloat(),
                 RoleId.EvilBotaner => CustomOptions.EvilBotanerPlayerCount.GetFloat(),
                 RoleId.NiceBotaner => CustomOptions.NiceBotanerPlayerCount.GetFloat(),
+                RoleId.SuicidalIdeation => CustomOptions.SuicidalIdeationPlayerCount.GetFloat(),
                 //プレイヤーカウント
                 _ => 1,
             };

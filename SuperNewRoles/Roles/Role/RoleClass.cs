@@ -2472,6 +2472,15 @@ namespace SuperNewRoles.Roles
                 SkillCountSHR = new();
             }
         }
+        public static class SuicidalIdeation
+        {
+            public static List<PlayerControl> SuicidalIdeationPlayer;
+            public static Color32 color = new Color32(71, 71, 71, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                SuicidalIdeationPlayer = new();
+            }
+        }
         //新ロールクラス
         public static class Quarreled
         {
