@@ -558,11 +558,17 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
-                case (RoleId.EvilBotaner):
+                case RoleId.EvilBotaner:
                     RoleClass.EvilBotaner.EvilBotanerPlayer.Add(player);
                     break;
-                case (RoleId.NiceBotaner):
+                case RoleId.NiceBotaner:
                     RoleClass.NiceBotaner.NiceBotanerPlayer.Add(player);
+                    break;
+                case RoleId.Revolutionist:
+                    RoleClass.Revolutionist.RevolutionistPlayer.Add(player);
+                    break;
+                case RoleId.Dictator:
+                    RoleClass.Dictator.DictatorPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -921,11 +927,17 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
-                    case (RoleId.EvilBotaner):
+                case RoleId.EvilBotaner:
                     RoleClass.EvilBotaner.EvilBotanerPlayer.RemoveAll(ClearRemove);
                     break;
-                case (RoleId.NiceBotaner):
+                case RoleId.NiceBotaner:
                     RoleClass.NiceBotaner.NiceBotanerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Revolutionist:
+                    RoleClass.Revolutionist.RevolutionistPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Dictator:
+                    RoleClass.Dictator.DictatorPlayer.RemoveAll(ClearRemove);
                     break;
                 //ロールリモベ
             }
@@ -977,12 +989,14 @@ namespace SuperNewRoles
                 case RoleId.Tuna:
                 case RoleId.BlackCat:
                 case RoleId.Neet:
+                case RoleId.Revolutionist:
                     IsTaskClear = true;
-                    break;
-                    //タスククリアか
+                    break; 
+                //タスククリアか
             }
             if (!IsTaskClear
-                && ((ModeHandler.IsMode(ModeId.SuperHostRoles) && (player.IsRole(RoleId.Sheriff) || player.IsRole(RoleId.RemoteSheriff) || player.IsRole(RoleId.ToiletFan) || player.IsRole(RoleId.NiceBotaner)))
+                && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
+                player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceBotaner))
                 || player.IsQuarreled()
                 || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
                 || player.IsImpostor()))
@@ -1118,9 +1132,10 @@ namespace SuperNewRoles
                 case RoleId.MayorFriends:
                 case RoleId.Tuna:
                 case RoleId.Neet:
+                case RoleId.Revolutionist:
                     IsNeutral = true;
                     break;
-                    //第三か
+            //第三か
             }
             return IsNeutral;
         }
@@ -1389,6 +1404,8 @@ namespace SuperNewRoles
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
                 else if (RoleClass.EvilBotaner.EvilBotanerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilBotaner;
                 else if (RoleClass.NiceBotaner.NiceBotanerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceBotaner;
+                else if (RoleClass.Revolutionist.RevolutionistPlayer.IsCheckListPlayerControl(player)) return RoleId.Revolutionist;
+                else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
                 //ロールチェック
             }
             catch (Exception e)
