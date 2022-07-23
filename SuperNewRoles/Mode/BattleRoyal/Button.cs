@@ -34,7 +34,7 @@ namespace SuperNewRoles.Mode.BattleRoyal
 
         public static void Postfix(HudManager __instance)
         {
-            BattleRoyalKillButton = new CustomButton(
+            BattleRoyalKillButton = new(
                 () =>
                 {
                     if (PlayerControlFixedUpdatePatch.SetTarget() && RoleHelpers.IsAlive(PlayerControl.LocalPlayer) && ModeHandler.IsMode(ModeId.BattleRoyal) && PlayerControl.LocalPlayer.CanMove)
