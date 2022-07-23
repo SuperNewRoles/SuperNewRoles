@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOption;
@@ -155,7 +156,12 @@ namespace SuperNewRoles.Roles
             ToiletFan.ClearAndReload();
             EvilBotaner.ClearAndReload();
             NiceBotaner.ClearAndReload();
+<<<<<<< HEAD
             Finder.ClearAndReload();
+=======
+            Revolutionist.ClearAndReload();
+            Dictator.ClearAndReload();
+>>>>>>> develop
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2461,7 +2467,7 @@ namespace SuperNewRoles.Roles
         public static class NiceBotaner
         {
             public static List<PlayerControl> NiceBotanerPlayer;
-            public static Color32 color = new Color32(0, 128, 128, byte.MaxValue);
+            public static Color32 color = new(0, 128, 128, byte.MaxValue);
             public static float CoolTime;
             public static float SkillCount;
             public static Dictionary<int, int> SkillCountSHR;
@@ -2473,6 +2479,7 @@ namespace SuperNewRoles.Roles
                 SkillCountSHR = new();
             }
         }
+<<<<<<< HEAD
         public static class Finder
         {
             public static List<PlayerControl> FinderPlayer;
@@ -2483,6 +2490,68 @@ namespace SuperNewRoles.Roles
                 FinderPlayer = new();
                 CheckMadmate = CustomOptions.FinderCheckMadmateSetting.GetFloat();
                 
+=======
+        public static class Revolutionist
+        {
+            public static List<PlayerControl> RevolutionistPlayer;
+            public static Color32 color = new(255, 0, 51, byte.MaxValue);
+            public static float CoolTime;
+            public static float TouchTime;
+            public static List<byte> RevolutionedPlayerId;
+            public static List<PlayerControl> RevolutionedPlayer {
+                get
+                {
+                    if (_revolutionedPlayer.Length != RevolutionedPlayerId.Count)
+                    {
+                        List<PlayerControl> newList = new();
+                        foreach (byte playerid in RevolutionedPlayerId)
+                        {
+                            PlayerControl player = ModHelpers.playerById(playerid);
+                            if (player == null) continue;
+                            newList.Add(player);
+                        }
+                        _revolutionedPlayer = newList.ToArray();
+                    }
+                    return _revolutionedPlayer.ToList();
+                }
+            }
+            public static PlayerControl[] _revolutionedPlayer;
+            public static bool IsAddWin;
+            public static bool IsAddWinAlive;
+            public static PlayerControl CurrentTarget;
+            public static PlayerControl MeetingTrigger;
+            public static bool IsEndMeeting;
+            public static PlayerControl WinPlayer;
+            public static void ClearAndReload()
+            {
+                RevolutionistPlayer = new();
+                CoolTime = CustomOptions.RevolutionistCoolTime.GetFloat();
+                TouchTime = CustomOptions.RevolutionistTouchTime.GetFloat();
+                RevolutionedPlayerId = new();
+                _revolutionedPlayer = new PlayerControl[] { };
+                IsAddWin = CustomOptions.RevolutionistAddWin.GetBool();
+                IsAddWinAlive = CustomOptions.RevolutionistAddWinIsAlive.GetBool();
+                CurrentTarget = null;
+                MeetingTrigger = null;
+                IsEndMeeting = false;
+                WinPlayer = null;
+            }
+        }
+        public static class Dictator
+        {
+            public static List<PlayerControl> DictatorPlayer;
+            public static Color32 color = new(0, 102, 51, byte.MaxValue);
+            public static int VoteCount;
+            public static int SubExileLimit;
+            public static Dictionary<byte, int> SubExileLimitData;
+            public static void ClearAndReload()
+            {
+                DictatorPlayer = new();
+                VoteCount = CustomOptions.DictatorVoteCount.GetInt();
+                if (CustomOptions.DictatorSubstituteExile.GetBool()) SubExileLimit = CustomOptions.DictatorSubstituteExileLimit.GetInt();
+                else SubExileLimit = 0;
+                SubExileLimitData = new();
+>>>>>>> develop
             }
         }
         //新ロールクラス
