@@ -154,8 +154,8 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
-            EvilBotaner.ClearAndReload();
-            NiceBotaner.ClearAndReload();
+            EvilButtoner.ClearAndReload();
+            NiceButtoner.ClearAndReload();
             Finder.ClearAndReload();
             Revolutionist.ClearAndReload();
             Dictator.ClearAndReload();
@@ -2439,9 +2439,9 @@ namespace SuperNewRoles.Roles
                 ToiletCool = CustomOptions.ToiletFanCoolTime.GetFloat();
             }
         }
-        public static class EvilBotaner
+        public static class EvilButtoner
         {
-            public static List<PlayerControl> EvilBotanerPlayer;
+            public static List<PlayerControl> EvilButtonerPlayer;
             public static Color32 color = ImpostorRed;
             public static float CoolTime;
             public static float SkillCount;
@@ -2450,29 +2450,29 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.BotanerButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ButtonerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
-                EvilBotanerPlayer = new();
-                CoolTime = CustomOptions.EvilBotanerCoolTime.GetFloat();
-                SkillCount = CustomOptions.EvilBotanerCount.GetFloat();
+                EvilButtonerPlayer = new();
+                CoolTime = CustomOptions.EvilButtonerCoolTime.GetFloat();
+                SkillCount = CustomOptions.EvilButtonerCount.GetFloat();
                 SkillCountSHR = new();
             }
         }
-        public static class NiceBotaner
+        public static class NiceButtoner
         {
-            public static List<PlayerControl> NiceBotanerPlayer;
+            public static List<PlayerControl> NiceButtonerPlayer;
             public static Color32 color = new(0, 128, 128, byte.MaxValue);
             public static float CoolTime;
             public static float SkillCount;
             public static Dictionary<int, int> SkillCountSHR;
             public static void ClearAndReload()
             {
-                NiceBotanerPlayer = new();
-                CoolTime = CustomOptions.NiceBotanerCoolTime.GetFloat();
-                SkillCount = CustomOptions.NiceBotanerCount.GetFloat();
+                NiceButtonerPlayer = new();
+                CoolTime = CustomOptions.NiceButtonerCoolTime.GetFloat();
+                SkillCount = CustomOptions.NiceButtonerCount.GetFloat();
                 SkillCountSHR = new();
             }
         }
@@ -2486,7 +2486,7 @@ namespace SuperNewRoles.Roles
             {
                 get
                 {
-                    return CheckMadmateKillCount <=  KillCount;
+                    return CheckMadmateKillCount <= KillCount;
                 }
             }
             public static void ClearAndReload()
@@ -2503,7 +2503,8 @@ namespace SuperNewRoles.Roles
             public static float CoolTime;
             public static float TouchTime;
             public static List<byte> RevolutionedPlayerId;
-            public static List<PlayerControl> RevolutionedPlayer {
+            public static List<PlayerControl> RevolutionedPlayer
+            {
                 get
                 {
                     if (_revolutionedPlayer.Length != RevolutionedPlayerId.Count)
