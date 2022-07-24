@@ -15,8 +15,15 @@ namespace SuperNewRoles.Buttons
                 ClergymanDuration();
             }
             catch { }
+            SpeedBoosterButton();
+            EvilSpeedBoosterButton();
+            ClergymanButton();
+            LighterButton();
+            MovingButton();
+            DoorrButton();
+            TeleporterButton();
             HawkDuration();
-            ClairvoyantDuration();
+            ScientistButton();
         }
         public static void ScientistButton()
         {

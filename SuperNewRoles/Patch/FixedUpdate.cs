@@ -151,6 +151,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.Kunoichi:
                                 Kunoichi.Update();
                                 break;
+                            case RoleId.Revolutionist:
+                                Roles.Neutral.Revolutionist.FixedUpdate();
+                                break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                                     NormalButtonDestroy.Postfix(p);
