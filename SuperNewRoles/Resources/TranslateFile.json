@@ -65,14 +65,9 @@
         "13": "\u8bbe\u7f6e"
     },
     "moreOptionsText": {
-        "0": "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings",
-        "11": "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u8a2d\u5b9a",
-        "13": "<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u8bbe\u7f6e"
-    },
-    "vanillaOptionsText": {
-        "0": "AmongUs Settings",
-        "11": "AmongUs\u306e\u8a2d\u5b9a",
-        "13": "AmongUs \u8bbe\u7f6e"
+        "0": "Normal Setting&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> Settings",
+        "11": "\u901a\u5e38\u8a2d\u5b9a&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u306e\u8a2d\u5b9a",
+        "13": "\u4e00\u822c\u8bbe\u7f6e\u4e0e&<color=#ffa500>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color>\u8bbe\u7f6e"
     },
     "HaisonName": {
         "0": "Haison",
@@ -343,6 +338,11 @@
         "0": "<color=#a9ceec>Crewmate</color> Settings",
         "11": "<color=#00ffff>\u30af\u30eb\u30fc\u30e1\u30a4\u30c8</color>\u306e\u8a2d\u5b9a",
         "13": "<color=#00ffff>\u8239\u5458\u9635\u8425</color>\u8bbe\u7f6e"
+    },
+    "SettingRegulation": {
+        "0": "Regulation Settings",
+        "11": "\u30ec\u30ae\u30e5\u30ec\u30fc\u30b7\u30e7\u30f3\u8a2d\u5b9a",
+        "13": "\u76d1\u7ba1\u8bbe\u7f6e"
     },
     "SettingMiniCrewRole": {
         "0": "Minimum Crewmate Roles",
@@ -1338,6 +1338,16 @@
         "0": "Default Impostor.",
         "11": "\u901a\u5e38\u306e\u30a4\u30f3\u30dd\u30b9\u30bf\u30fc\u3067\u3059\u3002",
         "13": "\u666e\u901a\u5185\u9b3c\u3002"
+    },
+    "Neutral": {
+        "0": "Neutral",
+        "11": "\u7b2c\u4e09\u9663\u55b6",
+        "13": "\u4e2d\u6027"
+    },
+    "NeutralSubIntro": {
+        "0": "Let's work only for ourselves.",
+        "11": "\u81ea\u5206\u306e\u70ba\u3060\u3051\u306b\u52d5\u3053\u3046",
+        "13": "\u8ba9\u6211\u4eec\u53ea\u4e3a\u81ea\u5df1\u5de5\u4f5c\u3002"
     },
     "detecName": {
         "0": "Detective",
@@ -3998,21 +4008,6 @@
         "0": "Meeting!",
         "11": "\u7dca\u6025\u4f1a\u8b70\uff01"
     },
-    "FinderName": {
-        "0": "Finder",
-        "11": "\u30d5\u30a1\u30a4\u30f3\u30c0\u30fc",
-        "13": "\u5bfb\u627e\u8005"
-    },
-    "FinderTitle1": {
-        "0": "Get to know your peers.",
-        "11": "\u4ef2\u9593\u3092\u77e5\u308d\u3046",
-        "13": "\u4e86\u89e3\u4f60\u7684\u540c\u4f34\u3002"
-    },
-    "FinderCheckMadmateSetting": {
-        "0": "Number of confirmed kills",
-        "11": "\u78ba\u8a8d\u3067\u304d\u308b\u30ad\u30eb\u6570",
-        "13": "\n\u786e\u8ba4\u7684\u6740\u622e\u6570\u91cf"
-    },
     "RevolutionistName": {
         "0": "Revolutionist",
         "11": "\u9769\u547d\u5bb6",
@@ -4021,17 +4016,17 @@
     "RevolutionistTitle1": {
         "0": "Let's start a revolution.",
         "11": "\u9769\u547d\u3092\u8d77\u3053\u305d\u3046",
-        "13": "?\u6211??\u59cb\u4e00?\u9769\u547d\u3002"
+        "13": "\u8ba9\u6211\u4eec\u5f00\u59cb\u4e00\u573a\u9769\u547d\u3002"
     },
     "DictatorName": {
         "0": "Dictator",
         "11": "\u72ec\u88c1\u8005",
-        "13": "\u72ec\u88c1?\u6cbb"
+        "13": "\u72ec\u88c1\u7edf\u6cbb"
     },
     "DictatorTitle1": {
         "0": "Let's monopolize power",
         "11": "\u6a29\u529b\u3092\u72ec\u5360\u3057\u3088\u3046",
-        "13": "?\u6211??\u65ad?\u529b"
+        "13": "\u8ba9\u6211\u4eec\u5784\u65ad\u6743\u529b"
     },
     "RevolutionistAndDictatorName": {
         "0": "<color=#FF0033>Revolutionist</color>And<color=#336600>Dictator</color>",
@@ -4050,12 +4045,12 @@
     "DictatorSubExile": {
         "0": "When exiled, exile another player.",
         "11": "\u8ffd\u653e\u6642\u3001\u5225\u306e\u30d7\u30ec\u30a4\u30e4\u30fc\u3092\u8ffd\u653e\u3059\u308b",
-        "13": "\u5f53\u88ab\u653e\u9010?\uff0c\u653e\u9010?\u4e00\u4e2a\u73a9\u5bb6\u3002"
+        "13": "\u5f53\u88ab\u653e\u9010\u65f6\uff0c\u653e\u9010\u53e6\u4e00\u4e2a\u73a9\u5bb6\u3002"
     },
     "DictatorSubExileLimit": {
         "0": "Maximum number of substitutions",
         "11": "\u8eab\u4ee3\u308f\u308a\u306e\u6700\u5927\u56de\u6570",
-        "13": "\u66ff?\u7684\u6700\u5927\u6570\u91cf"
+        "13": "\u66ff\u6362\u7684\u6700\u5927\u6570\u91cf"
     },
     "DictatorVoteCount": {
         "0": "Dictatorial vote count",
@@ -4065,27 +4060,37 @@
     "RevolutionCoolTime": {
         "0": "revolutionary cool time",
         "11": "\u9769\u547d\u30af\u30fc\u30eb\u30bf\u30a4\u30e0",
-        "13": "\u9769\u547d\u6027\u7684\u51b7\u5374??"
+        "13": "\u9769\u547d\u6027\u7684\u51b7\u5374\u65f6\u95f4"
     },
     "RevolutionTouchTime": {
         "0": "Revolutionary contact hours",
         "11": "\u9769\u547d\u5bb6\u306e\u63a5\u89e6\u6642\u9593",
-        "13": "\u9769\u547d\u6027\u7684\u63a5\u89e6??"
+        "13": "\u9769\u547d\u6027\u7684\u63a5\u89e6\u65f6\u95f4"
     },
     "RevolutionistAddWin": {
         "0": "Additional Victories for Revolutionist",
         "11": "\u9769\u547d\u5bb6\u306e\u8ffd\u52a0\u52dd\u5229",
-        "13": "\u9769\u547d\u8005\u7684?\u5916?\u5229"
+        "13": "\u9769\u547d\u8005\u7684\u989d\u5916\u80dc\u5229"
     },
     "RevolutionistAddWinIsAlive": {
         "0": "Additional victory only when alive",
         "11": "\u751f\u5b58\u6642\u306e\u307f\u8ffd\u52a0\u52dd\u5229",
-        "13": "\u53ea\u6709\u5728\u6d3b\u7740\u7684?\u5019\u624d\u80fd\u53d6\u5f97?\u5916\u7684?\u5229\u3002"
+        "13": "\u53ea\u6709\u5728\u6d3b\u7740\u7684\u65f6\u5019\u624d\u80fd\u53d6\u5f97\u989d\u5916\u7684\u80dc\u5229\u3002"
     },
     "RevolutionistButtonName": {
         "0": "Up to revolutionary possible",
         "11": "\u9769\u547d\u53ef\u80fd\u307e\u3067",
         "13": "\u6700\u591a\u53ef\u80fd\u662f\u9769\u547d\u6027\u7684"
+    },
+    "SpelunkerName": {
+        "0": "Spelunker",
+        "11": "\u30b9\u30da\u30e9\u30f3\u30ab\u30fc",
+        "13": "\u6f5c\u6c34\u5458"
+    },
+    "SpelunkerTitle1": {
+        "0": "It's so easy to die.",
+        "11": "\u7c21\u5358\u306b\u6b7b\u3093\u3067\u3057\u307e\u3046",
+        "13": "\u5f88\u5bb9\u6613\u6b7b"
     },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",

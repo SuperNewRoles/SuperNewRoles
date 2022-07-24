@@ -688,6 +688,9 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption RevolutionistTouchTime;
         public static CustomOption RevolutionistAddWin;
         public static CustomOption RevolutionistAddWinIsAlive;
+        
+        public static CustomRoleOption SpelunkerOption;
+        public static CustomOption SpelunkerPlayerCount;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1418,6 +1421,9 @@ namespace SuperNewRoles.CustomOption
             RevolutionistTouchTime = CustomOption.Create(881, false, CustomOptionType.Neutral, "RevolutionTouchTime", 1f, 0f, 10f, 0.5f, RevolutionistAndDictatorOption);
             RevolutionistAddWin = CustomOption.Create(879, false, CustomOptionType.Neutral, "RevolutionistAddWin", false, RevolutionistAndDictatorOption);
             RevolutionistAddWinIsAlive = CustomOption.Create(880, false, CustomOptionType.Neutral, "RevolutionistAddWinIsAlive", true, RevolutionistAddWin);
+            
+            SpelunkerOption = new CustomRoleOption(885, false, CustomOptionType.Neutral, "SpelunkerName",RoleClass.Spelunker.color, 1);
+            SpelunkerPlayerCount = CustomOption.Create(8852, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpelunkerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

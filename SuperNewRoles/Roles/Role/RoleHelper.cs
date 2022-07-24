@@ -573,6 +573,9 @@ namespace SuperNewRoles
                 case RoleId.Dictator:
                     RoleClass.Dictator.DictatorPlayer.Add(player);
                     break;
+                case RoleId.Spelunker:
+                    RoleClass.Spelunker.SpelunkerPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -945,6 +948,9 @@ namespace SuperNewRoles
                 case RoleId.Dictator:
                     RoleClass.Dictator.DictatorPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.Spelunker:
+                    RoleClass.Spelunker.SpelunkerPlayer.RemoveAll(ClearRemove);
+                    break;
                 //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -996,9 +1002,10 @@ namespace SuperNewRoles
                 case RoleId.BlackCat:
                 case RoleId.Neet:
                 case RoleId.Revolutionist:
+                case RoleId.Spelunker:
+                    //タスククリアか
                     IsTaskClear = true;
                     break; 
-                //タスククリアか
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
@@ -1139,9 +1146,10 @@ namespace SuperNewRoles
                 case RoleId.Tuna:
                 case RoleId.Neet:
                 case RoleId.Revolutionist:
+                case RoleId.Spelunker:
+            //第三か
                     IsNeutral = true;
                     break;
-            //第三か
             }
             return IsNeutral;
         }
@@ -1413,6 +1421,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Finder.FinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Finder;
                 else if (RoleClass.Revolutionist.RevolutionistPlayer.IsCheckListPlayerControl(player)) return RoleId.Revolutionist;
                 else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
+                else if (RoleClass.Spelunker.SpelunkerPlayer.IsCheckListPlayerControl(player)) return RoleId.Spelunker;
                 //ロールチェック
             }
             catch (Exception e)

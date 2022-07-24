@@ -187,6 +187,7 @@ namespace SuperNewRoles.Intro
         public static IntroDate FinderIntro = new("Finder", RoleClass.Finder.color, 1, RoleId.Finder, TeamRoleType.Impostor);
         public static IntroDate RevolutionistIntro = new("Revolutionist", RoleClass.Revolutionist.color, 1, RoleId.Revolutionist, TeamRoleType.Neutral);
         public static IntroDate DictatorIntro = new("Dictator", RoleClass.Dictator.color, 1, RoleId.Dictator, TeamRoleType.Crewmate);
+        public static IntroDate SpelunkerIntro = new("Spelunker", RoleClass.Spelunker.color, 1, RoleId.Spelunker, TeamRoleType.Neutral);
         //イントロオブジェ
     }
 }

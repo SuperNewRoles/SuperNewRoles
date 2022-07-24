@@ -159,6 +159,7 @@ namespace SuperNewRoles.Roles
             Finder.ClearAndReload();
             Revolutionist.ClearAndReload();
             Dictator.ClearAndReload();
+            Spelunker.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2556,6 +2557,15 @@ namespace SuperNewRoles.Roles
                 if (CustomOptions.DictatorSubstituteExile.GetBool()) SubExileLimit = CustomOptions.DictatorSubstituteExileLimit.GetInt();
                 else SubExileLimit = 0;
                 SubExileLimitData = new();
+            }
+        }
+        public static class Spelunker
+        {
+            public static List<PlayerControl> SpelunkerPlayer;
+            public static Color32 color = new(255, 255, 0, byte.MaxValue);
+            public static void ClearAndReload()
+            {
+                SpelunkerPlayer = new();
             }
         }
         //新ロールクラス
