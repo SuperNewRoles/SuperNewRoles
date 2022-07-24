@@ -2,10 +2,10 @@ using SuperNewRoles.Mode;
 
 namespace SuperNewRoles.Roles
 {
-    public static class EvilBotaner
+    public static class EvilButtoner
     {
         //SNR
-        public static void EvilBotanerStartMeeting(PlayerControl sourceId)
+        public static void EvilButtonerStartMeeting(PlayerControl sourceId)
         {
             if (ModeHandler.IsMode(ModeId.Default))
             {
@@ -16,7 +16,7 @@ namespace SuperNewRoles.Roles
             }
         }
         //SHR
-        public static void EvilBotanerStartMeetingSHR(this PlayerControl __instance)
+        public static void EvilButtonerStartMeetingSHR(this PlayerControl __instance)
         {
             new LateTask(() =>
             {
