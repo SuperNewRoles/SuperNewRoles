@@ -156,19 +156,19 @@ namespace SuperNewRoles.Patches
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
                         ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
                         return false;
-                    case RoleId.NiceBotaner:
-                        if (RoleClass.NiceBotaner.SkillCountSHR.ContainsKey(__instance.PlayerId))
-                            RoleClass.NiceBotaner.SkillCountSHR[__instance.PlayerId]--;
+                    case RoleId.NiceButtoner:
+                        if (RoleClass.NiceButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
+                            RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId]--;
                         else
-                            RoleClass.NiceBotaner.SkillCountSHR[__instance.PlayerId] = (int)CustomOptions.NiceBotanerCount.GetFloat() - 1;
-                        if (AmongUsClient.Instance.AmHost && RoleClass.NiceBotaner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilBotaner.EvilBotanerStartMeetingSHR(__instance);
+                            RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] = (int)CustomOptions.NiceButtonerCount.GetFloat() - 1;
+                        if (AmongUsClient.Instance.AmHost && RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
                         return false;
-                    case RoleId.EvilBotaner:
-                        if (RoleClass.EvilBotaner.SkillCountSHR.ContainsKey(__instance.PlayerId))
-                            RoleClass.EvilBotaner.SkillCountSHR[__instance.PlayerId]--;
+                    case RoleId.EvilButtoner:
+                        if (RoleClass.EvilButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
+                            RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId]--;
                         else
-                            RoleClass.EvilBotaner.SkillCountSHR[__instance.PlayerId] = (int)CustomOptions.EvilBotanerCount.GetFloat() - 1;
-                        if (AmongUsClient.Instance.AmHost && RoleClass.EvilBotaner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilBotaner.EvilBotanerStartMeetingSHR(__instance);
+                            RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] = (int)CustomOptions.EvilButtonerCount.GetFloat() - 1;
+                        if (AmongUsClient.Instance.AmHost && RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
                         return false;
                 }
             }
@@ -405,7 +405,7 @@ namespace SuperNewRoles.Patches
                     {
                         case RoleId.RemoteSheriff:
                         case RoleId.ToiletFan:
-                        case RoleId.NiceBotaner:
+                        case RoleId.NiceButtoner:
                             return false;
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;
