@@ -57,7 +57,7 @@ namespace SuperNewRoles.Patch
                 if (sourcepos.y > targetpos.y)
                 {
                     //SuperNewRolesPlugin.Logger.LogInfo("降りています");
-                    int Chance = UnityEngine.Random.Range(1, 10);
+                    int Chance = Random.Range(1, 10);
                     if (Chance <= (CustomOptions.LadderDeadChance.GetSelection() + 1))
                     {
                         TargetLadderData[__instance.myPlayer.PlayerId] = targetpos;

@@ -154,6 +154,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.Revolutionist:
                                 Roles.Neutral.Revolutionist.FixedUpdate();
                                 break;
+                            case RoleId.Spelunker:
+                                Roles.Neutral.Spelunker.FixedUpdate();
+                                break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                                     NormalButtonDestroy.Postfix(p);

@@ -2563,9 +2563,13 @@ namespace SuperNewRoles.Roles
         {
             public static List<PlayerControl> SpelunkerPlayer;
             public static Color32 color = new(255, 255, 0, byte.MaxValue);
+            public static bool IsVentChecked;
+            public static int VentDeathChance;
             public static void ClearAndReload()
             {
                 SpelunkerPlayer = new();
+                IsVentChecked = false;
+                VentDeathChance = CustomOptions.SpelunkerVentDeathChance.GetSelection();
             }
         }
         //新ロールクラス

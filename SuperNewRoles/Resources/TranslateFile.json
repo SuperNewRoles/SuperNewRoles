@@ -4092,6 +4092,11 @@
         "11": "\u7c21\u5358\u306b\u6b7b\u3093\u3067\u3057\u307e\u3046",
         "13": "\u5f88\u5bb9\u6613\u6b7b"
     },
+    "SpelunkerVentDeathChance": {
+        "0": "Probability of vent death",
+        "11": "\u30d9\u30f3\u30c8\u6b7b\u306e\u78ba\u7387",
+        "13": "\u901a\u98ce\u53e3\u6b7b\u4ea1\u7684\u6982\u7387"
+    },
     "WelcomeMessage1": {
         "0": "Welcome to SuperNewRoles!",
         "11": "SuperNewRoles\u3078\u3088\u3046\u3053\u305d\uff01",

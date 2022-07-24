@@ -691,6 +691,7 @@ namespace SuperNewRoles.CustomOption
         
         public static CustomRoleOption SpelunkerOption;
         public static CustomOption SpelunkerPlayerCount;
+        public static CustomOption SpelunkerVentDeathChance;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1423,7 +1424,8 @@ namespace SuperNewRoles.CustomOption
             RevolutionistAddWinIsAlive = CustomOption.Create(880, false, CustomOptionType.Neutral, "RevolutionistAddWinIsAlive", true, RevolutionistAddWin);
             
             SpelunkerOption = new CustomRoleOption(885, false, CustomOptionType.Neutral, "SpelunkerName",RoleClass.Spelunker.color, 1);
-            SpelunkerPlayerCount = CustomOption.Create(8852, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpelunkerOption);
+            SpelunkerPlayerCount = CustomOption.Create(886, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SpelunkerOption);
+            SpelunkerVentDeathChance = CustomOption.Create(887, false, CustomOptionType.Neutral, "SpelunkerVentDeathChance", rates, SpelunkerOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
