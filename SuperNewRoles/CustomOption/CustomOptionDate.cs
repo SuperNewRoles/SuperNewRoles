@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -663,7 +663,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption ToiletFanOption;
         public static CustomOption ToiletFanPlayerCount;
         public static CustomOption ToiletFanCoolTime;
-        
+
         public static CustomRoleOption EvilBotanerOption;
         public static CustomOption EvilBotanerPlayerCount;
         public static CustomOption EvilBotanerCoolTime;
@@ -673,7 +673,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption NiceBotanerPlayerCount;
         public static CustomOption NiceBotanerCoolTime;
         public static CustomOption NiceBotanerCount;
-        
+
         public static CustomRoleOption FinderOption;
         public static CustomOption FinderPlayerCount;
         public static CustomOption FinderCheckMadmateSetting;
@@ -1393,17 +1393,17 @@ namespace SuperNewRoles.CustomOption
             ToiletFanPlayerCount = CustomOption.Create(657, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ToiletFanOption);
             ToiletFanCoolTime = CustomOption.Create(658, true, CustomOptionType.Crewmate, "ToiletCoolDownSetting", 30f, 0f, 60f, 2.5f, ToiletFanOption);
 
-            
+
             EvilBotanerOption = new CustomRoleOption(864, true, CustomOptionType.Impostor, "EvilBotanerName", RoleClass.EvilBotaner.color, 1);
             EvilBotanerPlayerCount = CustomOption.Create(865, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilBotanerOption);
-            EvilBotanerCoolTime = CustomOption.Create(866, false, CustomOptionType.Impostor, "BotanerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, EvilBotanerOption, format: "unitSeconds");
+            EvilBotanerCoolTime = CustomOption.Create(866, false, CustomOptionType.Impostor, "BotanerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, EvilBotanerOption, format: "unitSeconds");//クールタイムはSHR未対応の為false
             EvilBotanerCount = CustomOption.Create(867, true, CustomOptionType.Impostor, "BotanerCountSetting", 1f, 1f, 10f, 1f, EvilBotanerOption);
 
             NiceBotanerOption = new CustomRoleOption(868, true, CustomOptionType.Crewmate, "NiceBotanerName", RoleClass.NiceBotaner.color, 1);
             NiceBotanerPlayerCount = CustomOption.Create(869, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceBotanerOption);
-            NiceBotanerCoolTime = CustomOption.Create(870, false, CustomOptionType.Crewmate, "BotanerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NiceBotanerOption, format: "unitSeconds");
+            NiceBotanerCoolTime = CustomOption.Create(870, false, CustomOptionType.Crewmate, "BotanerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NiceBotanerOption, format: "unitSeconds");//クールタイムはSHR未対応の為false
             NiceBotanerCount = CustomOption.Create(871, true, CustomOptionType.Crewmate, "BotanerCountSetting", 1f, 1f, 10f, 1f, NiceBotanerOption);
-            
+
             FinderOption = new CustomRoleOption(884, false, CustomOptionType.Impostor, "FinderName",RoleClass.Finder.color, 1);
             FinderPlayerCount = CustomOption.Create(882, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FinderOption);
             FinderCheckMadmateSetting = CustomOption.Create(883, false, CustomOptionType.Impostor, "FinderCheckMadmateSetting", 3f, 1f, 15f, 1f, FinderOption);
