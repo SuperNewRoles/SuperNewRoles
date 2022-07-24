@@ -222,6 +222,7 @@ namespace SuperNewRoles
 
         public static void SetRole(this PlayerControl player, RoleId role)
         {
+            if (!Roles.Neutral.Spelunker.CheckSetRole(player, role)) return;
             switch (role)
             {
                 case RoleId.SoothSayer:
