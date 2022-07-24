@@ -58,6 +58,8 @@ namespace SuperNewRoles.EndGame
         TunaWin,
         NeetWin,
         RevolutionistWin,
+
+        EveryoneDied,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -164,7 +166,7 @@ namespace SuperNewRoles.EndGame
 
                 foreach (var data in AdditionalTempData.playerRoles)
                 {
-                    Logger.Info(data.PlayerName+":"+winningPlayerData2.PlayerName);
+                    Logger.Info(data.PlayerName + ":" + winningPlayerData2.PlayerName);
                     if (data.PlayerName != winningPlayerData2.PlayerName) continue;
                     poolablePlayer.cosmetics.nameText.text = $"{data.PlayerName}{data.NameSuffix}\n{string.Join("\n", ModHelpers.Cs(data.IntroDate.color, data.IntroDate.Name))}";
                 }
@@ -245,6 +247,10 @@ namespace SuperNewRoles.EndGame
                 case WinCondition.RevolutionistWin:
                     text = "RevolutionistName";
                     RoleColor = RoleClass.Revolutionist.color;
+                    break;
+                case WinCondition.EveryoneDied:
+                    text = "EveryoneDiedName";
+                    RoleColor = Color.gray;
                     break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
@@ -526,7 +532,8 @@ namespace SuperNewRoles.EndGame
             bool VultureWin = gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
             bool NeetWin = gameOverReason == (GameOverReason)CustomGameOverReason.NeetWin;
             bool RevolutionistWin = gameOverReason == (GameOverReason)CustomGameOverReason.RevolutionistWin;
-            bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
+            bool EveryoneDied = gameOverReason == (GameOverReason)CustomGameOverReason.RevolutionistWin;
+            bool everyoneDead = AdditionalTempData.playerRoles.All(x => x.Status != FinalStatus.Alive);
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)
             {
                 JesterWin = EndData == CustomGameOverReason.JesterWin;
@@ -638,6 +645,11 @@ namespace SuperNewRoles.EndGame
                 WinningPlayerData wpd = new(WinnerPlayer.Data);
                 TempData.winners.Add(wpd);
                 AdditionalTempData.winCondition = WinCondition.RevolutionistWin;
+            }
+            else if (everyoneDead)
+            {
+                TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                AdditionalTempData.winCondition = WinCondition.EveryoneDied;
             }
 
             if (TempData.winners.GetFastEnumerator().ToArray().Any(x => x.IsImpostor))
