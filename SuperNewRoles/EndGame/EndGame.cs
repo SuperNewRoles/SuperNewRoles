@@ -532,7 +532,7 @@ namespace SuperNewRoles.EndGame
             bool VultureWin = gameOverReason == (GameOverReason)CustomGameOverReason.VultureWin;
             bool NeetWin = gameOverReason == (GameOverReason)CustomGameOverReason.NeetWin;
             bool RevolutionistWin = gameOverReason == (GameOverReason)CustomGameOverReason.RevolutionistWin;
-            bool EveryoneDied = gameOverReason == (GameOverReason)CustomGameOverReason.RevolutionistWin;
+            bool BUGEND = gameOverReason == (GameOverReason)CustomGameOverReason.BugEnd;
             bool everyoneDead = AdditionalTempData.playerRoles.All(x => x.Status != FinalStatus.Alive);
             if (ModeHandler.IsMode(ModeId.SuperHostRoles) && EndData != null)
             {
