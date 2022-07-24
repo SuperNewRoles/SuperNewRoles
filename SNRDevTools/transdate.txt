@@ -823,3 +823,11 @@ ToiletCoolDownSetting,Toilet Cool Time,トイレクールタイム
 ToiletName,DoorOpen,ドア開放
 PolusrandomSpawn,RandomSpawn,ランダムスポーン
 NotImpostorExiled,Not taking the Imposter off the road,インポスターを道連れにしない
+AllCloserName,AllCloser,オールクローザー
+AllCloserTitle,Close the doors and sabotage the Impostor!,ドアを閉めてインポスターを妨害しよう
+AllCloserDescription,AllCloser can close all doors,オールクローザーは全てのドアを閉めることができます。
+AllCloseCoolDownSetting,AllClose Cool Time,ドアを閉めるクールダウン
+AllCloseName,Blockade Door,ドア封鎖
+MadAllCloserName,MadAllCloser,マッドオールクローザー
+MadAllCloserTitle,Close the doors and help the Impostor!,ドアを閉めてインポスターを助けよう
+MadAllCloserDescription,MadAllCloser can close all doors. and MadAllCloser is Impostor camp. so let's help Inpostor!,マッドオールクローザーは全てのドアを閉めることが可能です。クルーメイト判定ですが、インポスター陣営なので、インポスターを助けましょう！

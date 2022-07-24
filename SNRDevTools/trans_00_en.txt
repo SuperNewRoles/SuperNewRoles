@@ -822,3 +822,11 @@ Toilet Cool Time
 DoorOpen
 RandomSpawn
 Not taking the Imposter off the road
+AllCloser
+Close the doors and sabotage the Impostor!
+AllCloser can close all doors
+AllClose Cool Time
+Blockade Door
+MadAllCloser
+Close the doors and help the Impostor!
+MadAllCloser can close all doors. and MadAllCloser is Impostor camp. so let's help Inpostor!

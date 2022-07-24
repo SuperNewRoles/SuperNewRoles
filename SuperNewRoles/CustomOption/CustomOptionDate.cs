@@ -662,6 +662,16 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption ToiletFanOption;
         public static CustomOption ToiletFanPlayerCount;
         public static CustomOption ToiletFanCoolTime;
+        
+        public static CustomRoleOption AllCloserOption;
+        public static CustomOption AllCloserPlayerCount;
+        public static CustomOption AllCloserCoolTime;
+        
+        public static CustomRoleOption MadAllCloserOption;
+        public static CustomOption MadAllCloserPlayerCount;
+        public static CustomOption MadAllCloserCoolTime;
+        public static CustomOption MadAllCloserIsUseVent;
+        public static CustomOption MadAllCloserIsImpostorLight;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1368,6 +1378,18 @@ namespace SuperNewRoles.CustomOption
             ToiletFanPlayerCount = CustomOption.Create(657, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ToiletFanOption);
             ToiletFanCoolTime = CustomOption.Create(658, true, CustomOptionType.Crewmate, "ToiletCoolDownSetting", 30f, 0f, 60f, 2.5f, ToiletFanOption);
 
+
+            
+            AllCloserOption = new CustomRoleOption(659, true, CustomOptionType.Crewmate, "AllCloserName",RoleClass.AllCloser.color, 1);
+            AllCloserPlayerCount = CustomOption.Create(660, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], AllCloserOption);
+            AllCloserCoolTime = CustomOption.Create(661, true, CustomOptionType.Crewmate, "AllCloseCoolDownSetting", 30f, 0f, 60f, 2.5f, AllCloserOption);
+
+            
+            MadAllCloserOption = new CustomRoleOption(662, true, CustomOptionType.Crewmate, "MadAllCloserName",RoleClass.MadAllCloser.color, 1);
+            MadAllCloserPlayerCount = CustomOption.Create(663, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], MadAllCloserOption);
+            MadAllCloserCoolTime = CustomOption.Create(664, true, CustomOptionType.Crewmate, "AllCloseCoolDownSetting", 30f, 0f, 60f, 2.5f, MadAllCloserOption);
+            MadAllCloserIsUseVent = CustomOption.Create(665, true, CustomOptionType.Crewmate, "MadMateUseVentSetting", false, MadAllCloserOption);
+            MadAllCloserIsImpostorLight = CustomOption.Create(666, true, CustomOptionType.Crewmate, "MadMateImpostorLightSetting", false, MadAllCloserOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

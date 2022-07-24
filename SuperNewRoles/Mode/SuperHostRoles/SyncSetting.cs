@@ -351,6 +351,46 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.ToiletFan.ToiletCool;
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
+                case RoleId.AllCloser:
+                    optdata.ImpostorLightMod = optdata.CrewLightMod;
+                    var switchSystemAllCloser = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                    if (switchSystemAllCloser != null && switchSystemAllCloser.IsActive)
+                    {
+                        optdata.ImpostorLightMod /= 5;
+                    }
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.AllCloser.CloseCool;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    optdata.KillCooldown = 100000f;
+                    break;
+                case RoleId.MadAllCloser:
+                    if (!player.IsMod())
+                    {
+                        if (!RoleClass.MadAllCloser.IsImpostorLight)
+                        {
+                            optdata.ImpostorLightMod = optdata.CrewLightMod;
+                            var switchSystemMadAllCloser = MapUtilities.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            if (switchSystemMadAllCloser != null && switchSystemMadAllCloser.IsActive)
+                            {
+                                optdata.ImpostorLightMod /= 5;
+                            }
+                        }
+                    }
+                    if (player.IsMod())
+                    {
+                        if (RoleClass.MadAllCloser.IsImpostorLight)
+                        {
+                            optdata.CrewLightMod = optdata.ImpostorLightMod;
+                            var switchSystem2 = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            if (switchSystem2 != null && switchSystem2.IsActive)
+                            {
+                                optdata.CrewLightMod = optdata.ImpostorLightMod * 15;
+                            }
+                        }
+                    }
+                    optdata.RoleOptions.ShapeshifterCooldown = RoleClass.MadAllCloser.CloseCool;
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    optdata.KillCooldown = 100000f;
+                    break;
             }
             if (player.isDead()) optdata.AnonymousVotes = false;
             optdata.RoleOptions.ShapeshifterLeaveSkin = false;

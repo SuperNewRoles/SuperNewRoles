@@ -57,7 +57,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     CustomOptions.MadMakerOption.getSelection() != 0 ||
                     CustomOptions.SamuraiOption.getSelection() != 0 ||
                     CustomOptions.DemonOption.getSelection() != 0 ||
-                    CustomOptions.ToiletFanOption.getSelection() != 0)
+                    CustomOptions.ToiletFanOption.getSelection() != 0 ||
+                    CustomOptions.AllCloserOption.getSelection() != 0 ||
+                    CustomOptions.MadAllCloserOption.getSelection() != 0)
                 {
                     PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                     bot1.RpcSetRole(RoleTypes.Impostor);
@@ -130,6 +132,8 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             DesyncShapeshifters.AddRange(RoleClass.Arsonist.ArsonistPlayer);
             DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
             DesyncShapeshifters.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
+            DesyncShapeshifters.AddRange(RoleClass.AllCloser.AllCloserPlayer);
+            DesyncShapeshifters.AddRange(RoleClass.MadAllCloser.MadAllCloserPlayer);
             /*============シェイプシフターDesync============*/
 
 
