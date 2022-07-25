@@ -678,6 +678,7 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption SuicidalIdeationPlayerCount;
         public static CustomOption SuicidalIdeationWinText;
         public static CustomOption SuicidalIdeationTimeLeft;
+        public static CustomOption SuicidalIdeationFallProbability;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1398,6 +1399,7 @@ namespace SuperNewRoles.CustomOption
             SuicidalIdeationPlayerCount = CustomOption.Create(873, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SuicidalIdeationOption);
             SuicidalIdeationWinText = CustomOption.Create(874, false, CustomOptionType.Neutral, "SuicidalIdeationWinTextSetting", false, SuicidalIdeationOption);
             SuicidalIdeationTimeLeft = CustomOption.Create(875, false, CustomOptionType.Neutral, "SuicidalIdeationTimeLeftSetting", 20f, 2.5f, 300f, 2.5f, SuicidalIdeationOption, format: "unitSeconds");
+            SuicidalIdeationFallProbability = CustomOption.Create(876, false, CustomOptionType.Neutral, "SuicidalIdeationFallProbabilitySetting", rates, SuicidalIdeationOption);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

@@ -2040,7 +2040,7 @@ namespace SuperNewRoles.Buttons
                 8,
                 () =>
                 {
-                    return RoleClass.IsMeeting || !PlayerControl.LocalPlayer.CanMove;
+                    return RoleClass.IsMeeting;
                 }
             )
             {
