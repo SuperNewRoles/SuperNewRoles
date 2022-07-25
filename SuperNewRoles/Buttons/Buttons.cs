@@ -2062,12 +2062,12 @@ namespace SuperNewRoles.Buttons
                     SuicidalIdeationButton.MaxTimer = RoleClass.SuicidalIdeation.TimeLeft;
                     SuicidalIdeationButton.Timer = RoleClass.SuicidalIdeation.TimeLeft;
                 },
-                RoleClass.ToiletFan.GetButtonSprite(),
+                RoleClass.SuicidalIdeation.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
-                KeyCode.Q,
-                8,
+                KeyCode.F,
+                49,
                 () =>
                 {
                     return RoleClass.IsMeeting;

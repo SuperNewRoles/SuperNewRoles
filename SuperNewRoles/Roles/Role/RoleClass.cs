@@ -2569,6 +2569,13 @@ namespace SuperNewRoles.Roles
             public static DateTime ButtonTimer;
             public static int CompletedTask;
             public static float AddTimeLeft;
+            public static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicidalIdeationButton.png", 115f);
+                return buttonSprite;
+            }
             public static void ClearAndReload()
             {
                 SuicidalIdeationPlayer = new();
