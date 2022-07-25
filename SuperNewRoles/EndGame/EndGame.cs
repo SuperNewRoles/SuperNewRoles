@@ -748,7 +748,8 @@ namespace SuperNewRoles.EndGame
             }
             foreach (PlayerControl p in RoleClass.SuicidalIdeation.SuicidalIdeationPlayer)
             {
-                if (p.IsAlive())
+                var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                if (p.IsAlive() && playerTotal > playerCompleted) 
                 {
                     TempData.winners.Add(new WinningPlayerData(p.Data));
                 }
