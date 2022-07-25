@@ -409,7 +409,7 @@ namespace SuperNewRoles.Patches
                     {
                         case RoleId.RemoteSheriff:
                         case RoleId.ToiletFan:
-                        case RoleId.AllCleaner:
+                        case RoleId.AllOpener:
                         case RoleId.NiceButtoner:
                             return false;//キルをガード
                         case RoleId.Egoist:
