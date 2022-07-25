@@ -159,6 +159,7 @@ namespace SuperNewRoles.Roles
             Finder.ClearAndReload();
             Revolutionist.ClearAndReload();
             Dictator.ClearAndReload();
+            NiceSelfBomber.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1230,8 +1231,8 @@ namespace SuperNewRoles.Roles
                     LevelingerPlayer = new();
                     ThisXP = 0;
                     IsCreateMadmate = false;
-                    OneKillXP = CustomOptions.LevelingerOneKillXP.GetFloat();
-                    UpLevelXp = CustomOptions.LevelingerUpLevelXP.GetFloat();
+                    OneKillXP = CustomOptions.LevelingerOneKillXP.GetInt();
+                    UpLevelXp = CustomOptions.LevelingerUpLevelXP.GetInt();
                     GetPowerData = new();
                     for (int i = 0; i < 5; i++)
                     {
@@ -1244,7 +1245,7 @@ namespace SuperNewRoles.Roles
                         GetPowerData.Add(GetLevelPowerType(getdata));
                     }
                     IsUseOKRevive = CustomOptions.LevelingerReviveXP.GetBool();
-                    ReviveUseXP = CustomOptions.LevelingerUseXPRevive.GetFloat();
+                    ReviveUseXP = CustomOptions.LevelingerUseXPRevive.GetInt();
                 }
                 catch { }
             }
@@ -1368,7 +1369,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MadMayorPlayer = new();
-                AddVote = CustomOptions.MadMayorVoteCount.GetFloat();
+                AddVote = CustomOptions.MadMayorVoteCount.GetInt();
                 IsImpostorCheck = CustomOptions.MadMayorIsCheckImpostor.GetBool();
                 IsUseVent = CustomOptions.MadMayorIsUseVent.GetBool();
                 IsImpostorLight = CustomOptions.MadMayorIsImpostorLight.GetBool();
@@ -2095,7 +2096,7 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MayorFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
-                AddVote = CustomOptions.MayorFriendsVoteCount.GetFloat();
+                AddVote = CustomOptions.MayorFriendsVoteCount.GetInt();
             }
         }
         public static class VentMaker
@@ -2135,7 +2136,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 GhostMechanicPlayer = new();
-                LimitCount = CustomOptions.GhostMechanicRepairLimit.GetFloat();
+                LimitCount = CustomOptions.GhostMechanicRepairLimit.GetInt();
             }
         }
         public static class EvilHacker
@@ -2557,6 +2558,24 @@ namespace SuperNewRoles.Roles
                 if (CustomOptions.DictatorSubstituteExile.GetBool()) SubExileLimit = CustomOptions.DictatorSubstituteExileLimit.GetInt();
                 else SubExileLimit = 0;
                 SubExileLimitData = new();
+            }
+        }
+        public static class NiceSelfBomber
+        {
+            public static List<PlayerControl> NiceSelfBomberPlayer;
+            public static Color32 color = new Color32(255, 157, 38, byte.MaxValue);
+            private static Sprite ButtonSprite;
+            public static bool IsCrewBom;
+            public static Sprite GetButtonSprite()
+            {
+                if (ButtonSprite) return ButtonSprite;
+                ButtonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SelfBomberBomButton.png", 115f);
+                return ButtonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                NiceSelfBomberPlayer = new();
+                IsCrewBom = CustomOptions.NiceSelfBomberIsCrewBom.GetBool();
             }
         }
         //新ロールクラス

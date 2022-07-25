@@ -157,6 +157,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.EvilButtoner:
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
+                case RoleId.NiceSelfBomber:
+                    optdata.RoleOptions.ShapeshifterCooldown = 0.000001f;
+                    optdata.RoleOptions.ShapeshifterDuration = 0.000001f;
+                    break;
 
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;

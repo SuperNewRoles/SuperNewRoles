@@ -67,6 +67,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ToiletFanButton;
         public static CustomButton ButtonerButton;
         public static CustomButton RevolutionistButton;
+        public static CustomButton NiceSelfBomberButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2048,6 +2049,34 @@ namespace SuperNewRoles.Buttons
                 showButtonText = true,
                 color = Color.yellow
             };
+
+            NiceSelfBomberButton = new Buttons.CustomButton(
+                () =>
+                {
+                    if (PlayerControl.LocalPlayer.CanMove)
+                    {
+                        NiceSelfBomber.SelfBomb();
+                    }
+                },
+                (bool isAlive, RoleId role) => { return isAlive && ModeHandler.IsMode(ModeId.Default) && NiceSelfBomber.IsNiceSelfBomber(PlayerControl.LocalPlayer); },
+                () =>
+                {
+                    return PlayerControl.LocalPlayer.CanMove;
+                },
+                () => { NiceSelfBomber.EndMeeting(); },
+                RoleClass.NiceSelfBomber.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () => { return false; }
+            )
+            {
+                buttonText = ModTranslation.GetString("SelfBomberButtonName"),
+                showButtonText = true
+            };
+            //(簡略化に苦戦中)
 
             SetCustomButtonCooldowns();
         }

@@ -573,6 +573,9 @@ namespace SuperNewRoles
                 case RoleId.Dictator:
                     RoleClass.Dictator.DictatorPlayer.Add(player);
                     break;
+                case RoleId.NiceSelfBomber:
+                    RoleClass.NiceSelfBomber.NiceSelfBomberPlayer.Add(player);
+                    break;
                 //ロールアド
                 default:
                     SuperNewRolesPlugin.Logger.LogError($"[SetRole]:No Method Found for Role Type {role}");
@@ -945,7 +948,10 @@ namespace SuperNewRoles
                 case RoleId.Dictator:
                     RoleClass.Dictator.DictatorPlayer.RemoveAll(ClearRemove);
                     break;
-                    //ロールリモベ
+                    case RoleId.NiceSelfBomber:
+                    RoleClass.NiceSelfBomber.NiceSelfBomberPlayer.RemoveAll(ClearRemove);
+                    break;
+                //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
         }
@@ -1002,7 +1008,7 @@ namespace SuperNewRoles
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
-                player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceButtoner))
+                player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceButtoner, RoleId.NiceSelfBomber))
                 || player.IsQuarreled()
                 || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
                 || player.IsImpostor()))
@@ -1413,6 +1419,7 @@ namespace SuperNewRoles
                 else if (RoleClass.Finder.FinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Finder;
                 else if (RoleClass.Revolutionist.RevolutionistPlayer.IsCheckListPlayerControl(player)) return RoleId.Revolutionist;
                 else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
+                else if (RoleClass.NiceSelfBomber.NiceSelfBomberPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceSelfBomber;
                 //ロールチェック
             }
             catch (Exception e)

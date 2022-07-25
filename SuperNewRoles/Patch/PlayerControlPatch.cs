@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -82,6 +82,7 @@ namespace SuperNewRoles.Patches
                             }
                         }
                         return true;
+
                     case RoleId.SelfBomber:
                         if (AmongUsClient.Instance.AmHost)
                         {
@@ -169,6 +170,38 @@ namespace SuperNewRoles.Patches
                         else
                             RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] = CustomOptions.EvilButtonerCount.GetInt() - 1;
                         if (AmongUsClient.Instance.AmHost && RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
+                        return false;
+                    case RoleId.NiceSelfBomber:
+                        if (AmongUsClient.Instance.AmHost)
+                        {
+                            foreach (PlayerControl p in CachedPlayer.AllPlayers)
+                            {
+                                    if (NiceSelfBomber.GetIsBomb(__instance, p))
+                                    {
+                                        if (RoleClass.NiceSelfBomber.IsCrewBom)
+                                        {                                        
+                                                __instance.RpcMurderPlayerCheck(p);
+                                        }
+                                        //もしクルーを巻き込むの設定がオンなら役職関係なく全員ムッコロース！！
+                                        else
+                                        {
+                                        var roledata = CountChanger.GetRoleType(target);
+                                        RoleId role = target.GetRole();
+
+                                        if ((roledata == TeamRoleType.Impostor) || target.IsRole(RoleId.HauntedWolf))
+                                        {
+                                            __instance.RpcMurderPlayerCheck(p);
+                                        }
+                                        else if (roledata == TeamRoleType.Crewmate)
+                                        {
+
+                                        }
+                                            //そうじゃないならクルーではないやつだけムッコロース！！！
+                                    　　}
+                            　　    }
+                            }
+                            __instance.RpcMurderPlayer(__instance);
+                        }
                         return false;
                 }
             }
@@ -406,6 +439,7 @@ namespace SuperNewRoles.Patches
                         case RoleId.RemoteSheriff:
                         case RoleId.ToiletFan:
                         case RoleId.NiceButtoner:
+                        case RoleId.NiceSelfBomber:
                             return false;
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;

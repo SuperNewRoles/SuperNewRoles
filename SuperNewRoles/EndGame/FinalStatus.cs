@@ -36,6 +36,8 @@ namespace SuperNewRoles.EndGame
         Ignite,
         Disconnected,
         Dead,
-        Sabotage
+        Sabotage,
+        ByNiceSelfBom,
+        NiceSelfBom
     }
 }
