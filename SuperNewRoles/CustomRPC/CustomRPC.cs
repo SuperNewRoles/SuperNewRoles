@@ -305,7 +305,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 if (!RoleClass.MadStuntMan.GuardCount.ContainsKey(playerid))
                 {
-                    RoleClass.MadStuntMan.GuardCount[playerid] = ((int)CustomOptions.MadStuntManMaxGuardCount.GetFloat()) - 1;
+                    RoleClass.MadStuntMan.GuardCount[playerid] = CustomOptions.MadStuntManMaxGuardCount.GetInt() - 1;
                 }
                 else
                 {
@@ -316,7 +316,7 @@ namespace SuperNewRoles.CustomRPC
             {
                 if (!RoleClass.StuntMan.GuardCount.ContainsKey(playerid))
                 {
-                    RoleClass.StuntMan.GuardCount[playerid] = ((int)CustomOptions.StuntManMaxGuardCount.GetFloat()) - 1;
+                    RoleClass.StuntMan.GuardCount[playerid] = CustomOptions.StuntManMaxGuardCount.GetInt() - 1;
                 }
                 else
                 {
