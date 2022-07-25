@@ -152,12 +152,6 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
                 case RoleId.AllOpener:
-                    optdata.ImpostorLightMod = optdata.CrewLightMod;
-                    var switchSystemAllOpener = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
-                    if (switchSystemAllOpener != null && switchSystemAllOpener.IsActive)
-                    {
-                        optdata.ImpostorLightMod /= 5;
-                    }
                     optdata.RoleOptions.ShapeshifterCooldown = 1f;
                     break;
                 case RoleId.NiceButtoner:
