@@ -345,7 +345,6 @@ namespace SuperNewRoles.EndGame
                     }
                 }
             }
-
             textRenderer.text = haison ? text : string.Format(text + " " + ModTranslation.GetString("WinName"));
             try
             {
