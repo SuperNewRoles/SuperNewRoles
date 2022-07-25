@@ -478,7 +478,6 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Truelover.trueloverPlayer);
             notWinners.AddRange(RoleClass.Egoist.EgoistPlayer);
             notWinners.AddRange(RoleClass.Workperson.WorkpersonPlayer);
-
             notWinners.AddRange(RoleClass.Amnesiac.AmnesiacPlayer);
             notWinners.AddRange(RoleClass.SideKiller.MadKillerPlayer);
             notWinners.AddRange(RoleClass.MadMayor.MadMayorPlayer);
