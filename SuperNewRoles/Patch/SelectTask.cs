@@ -150,9 +150,9 @@ namespace SuperNewRoles.Patch
             }
             else if (p.IsRole(RoleId.SuicidalIdeation))
             {
-                int commont = (int)CustomOptions.SuicidalIdeationCommonTask.GetFloat();
-                int longt = (int)CustomOptions.SuicidalIdeationLongTask.GetFloat();
-                int shortt = (int)CustomOptions.SuicidalIdeationShortTask.GetFloat();
+                int commont = CustomOptions.SuicidalIdeationCommonTask.GetInt();
+                int longt = CustomOptions.SuicidalIdeationLongTask.GetInt();
+                int shortt = CustomOptions.SuicidalIdeationShortTask.GetInt();
                 if (!(commont == 0 && shortt == 0 && longt == 0)) return (commont, shortt, longt);
             }
             else if (p.IsLovers() && !p.IsImpostor())

@@ -1514,11 +1514,11 @@ namespace SuperNewRoles.CustomOption
 
             SuicidalIdeationOption = new CustomRoleOption(885, false, CustomOptionType.Neutral, "SuicidalIdeationName", RoleClass.SuicidalIdeation.color, 1);
             SuicidalIdeationPlayerCount = CustomOption.Create(886, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SuicidalIdeationOption);
-            SuicidalIdeationWinText = CustomOption.Create(887, false, CustomOptionType.Neutral, "SuicidalIdeationWinTextSetting", false, SuicidalIdeationOption);
-            SuicidalIdeationTimeLeft = CustomOption.Create(888, false, CustomOptionType.Neutral, "SuicidalIdeationTimeLeftSetting", 90f, 30f, 600f, 5f, SuicidalIdeationOption, format: "unitSeconds");
-            SuicidalIdeationAddTimeLeft = CustomOption.Create(889, false, CustomOptionType.Neutral, "SuicidalIdeationAddTimeLeftSetting", 20f, 0f, 300f, 5f, SuicidalIdeationOption, format: "unitSeconds");
-            SuicidalIdeationFallProbability = CustomOption.Create(890, false, CustomOptionType.Neutral, "SuicidalIdeationFallProbabilitySetting", rates, SuicidalIdeationOption);
-            var SuicidalIdeationoption = SelectTask.TaskSetting(891, 892, 893, SuicidalIdeationOption, CustomOptionType.Neutral, false);
+            SuicidalIdeationWinText = CustomOption.Create(922, false, CustomOptionType.Neutral, "SuicidalIdeationWinTextSetting", false, SuicidalIdeationOption);
+            SuicidalIdeationTimeLeft = CustomOption.Create(923, false, CustomOptionType.Neutral, "SuicidalIdeationTimeLeftSetting", 90f, 30f, 600f, 5f, SuicidalIdeationOption, format: "unitSeconds");
+            SuicidalIdeationAddTimeLeft = CustomOption.Create(924, false, CustomOptionType.Neutral, "SuicidalIdeationAddTimeLeftSetting", 20f, 0f, 300f, 5f, SuicidalIdeationOption, format: "unitSeconds");
+            SuicidalIdeationFallProbability = CustomOption.Create(925, false, CustomOptionType.Neutral, "SuicidalIdeationFallProbabilitySetting", rates, SuicidalIdeationOption);
+            var SuicidalIdeationoption = SelectTask.TaskSetting(926, 927, 928, SuicidalIdeationOption, CustomOptionType.Neutral, false);
             SuicidalIdeationCommonTask = SuicidalIdeationoption.Item1;
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
