@@ -73,10 +73,53 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption SheriffOption;
         public static CustomOption SheriffPlayerCount;
         public static CustomOption SheriffCoolTime;
-        public static CustomOption SheriffMadRoleKill;
-        public static CustomOption SheriffNeutralKill;
-        public static CustomOption SheriffLoversKill;
         public static CustomOption SheriffKillMaxCount;
+        public static CustomOption SheriffCanKillImpostor;
+        //=============================================
+        public static CustomOption SheriffMadRoleKill;
+        public static CustomOption SheriffCanKillMadMate;
+        public static CustomOption SheriffCanKillMadMayor;
+        public static CustomOption SheriffCanKillMadStuntMan;
+        public static CustomOption SheriffCanKillMadHawk;
+        public static CustomOption SheriffCanKillMadJester;
+        public static CustomOption SheriffCanKillMadSeer;
+        public static CustomOption SheriffCanKillBlackCat;
+        public static CustomOption SheriffCanKillMadMaker;
+        //シェリフマッドキル
+        //=============================================
+        public static CustomOption SheriffFriendsRoleKill;
+        public static CustomOption SheriffCanKillJackalFriends;
+        public static CustomOption SheriffCanKillSeerFriends;
+        public static CustomOption SheriffCanKillMayorFriends;
+        //シェリフフレンズキル
+        //=============================================
+        public static CustomOption SheriffNeutralKill;
+        public static CustomOption SheriffCanKillJester;
+        public static CustomOption SheriffCanKillJackal;
+        public static CustomOption SheriffCanKillSidekick;
+        public static CustomOption SheriffCanKillVulture;
+        public static CustomOption SheriffCanKillOpportunist;
+        public static CustomOption SheriffCanKillResearcher;
+        public static CustomOption SheriffCanKillGod;
+        public static CustomOption SheriffCanKillEgoist;
+        public static CustomOption SheriffCanKillWorkperson;
+        public static CustomOption SheriffCanKilltruelover;
+        public static CustomOption SheriffCanKillAmnesiac;
+        public static CustomOption SheriffCanKillFalseCharges;
+        public static CustomOption SheriffCanKillFox;
+        public static CustomOption SheriffCanKillTeleportingJackal;
+        public static CustomOption SheriffCanKillDemon;
+        public static CustomOption SheriffCanKillJackalSeer;
+        public static CustomOption SheriffCanKillSidekickSeer;
+        public static CustomOption SheriffCanKillArsonist;
+        public static CustomOption SheriffCanKillTuna;
+        public static CustomOption SheriffCanKillNeet;
+        public static CustomOption SheriffCanKillRevolutionist;
+        //シェリフ第三キル
+        //=============================================
+        public static CustomOption SheriffLoversKill;
+        public static CustomOption SheriffQuarreledKill;
+
 
         public static CustomRoleOption RemoteSheriffOption;
         public static CustomOption RemoteSheriffPlayerCount;
@@ -811,10 +854,51 @@ namespace SuperNewRoles.CustomOption
             SheriffOption = new CustomRoleOption(37, true, CustomOptionType.Crewmate, "SheriffName", RoleClass.Sheriff.color, 1);
             SheriffPlayerCount = CustomOption.Create(38, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SheriffOption);
             SheriffCoolTime = CustomOption.Create(39, true, CustomOptionType.Crewmate, "SheriffCoolDownSetting", 30f, 2.5f, 60f, 2.5f, SheriffOption, format: "unitSeconds");
-            SheriffNeutralKill = CustomOption.Create(40, true, CustomOptionType.Crewmate, "SheriffIsKillNewtralSetting", false, SheriffOption);
-            SheriffLoversKill = CustomOption.Create(41, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, SheriffOption);
-            SheriffMadRoleKill = CustomOption.Create(42, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, SheriffOption);
             SheriffKillMaxCount = CustomOption.Create(43, true, CustomOptionType.Crewmate, "SheriffMaxKillCountSetting", 1f, 1f, 20f, 1, SheriffOption, format: "unitSeconds");
+
+            SheriffCanKillImpostor = CustomOption.Create(889, true, CustomOptionType.Crewmate, "Impostor" + "CanKillSetting", true, SheriffOption);
+
+            SheriffMadRoleKill = CustomOption.Create(42, true, CustomOptionType.Crewmate, "SheriffIsKillMadRoleSetting", false, SheriffOption);
+            SheriffCanKillMadMate = CustomOption.Create(918, true, CustomOptionType.Crewmate, "MadMateName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadMayor = CustomOption.Create(919, true, CustomOptionType.Crewmate, "MadMayorName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadStuntMan = CustomOption.Create(920, true, CustomOptionType.Crewmate, "MadStuntManName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadHawk = CustomOption.Create(915, true, CustomOptionType.Crewmate, "MadHawkName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadJester = CustomOption.Create(916, true, CustomOptionType.Crewmate, "MadJesterName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadSeer = CustomOption.Create(917, true, CustomOptionType.Crewmate, "MadSeerName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillBlackCat = CustomOption.Create(887, true, CustomOptionType.Crewmate, "BlackCatName" + "CanKillSetting", true, SheriffMadRoleKill);
+            SheriffCanKillMadMaker = CustomOption.Create(888, true, CustomOptionType.Crewmate, "MadMakerName" + "CanKillSetting", true, SheriffMadRoleKill);
+            //シェリフ、マッドキル表示設定
+
+            SheriffFriendsRoleKill = CustomOption.Create(911, true, CustomOptionType.Crewmate, "SheriffIsKillFriendsRoleSetting", false, SheriffOption);
+            SheriffCanKillJackalFriends = CustomOption.Create(912, true, CustomOptionType.Crewmate, "JackalFriendsName" + "CanKillSetting", true, SheriffFriendsRoleKill);
+            SheriffCanKillSeerFriends = CustomOption.Create(913, true, CustomOptionType.Crewmate, "SeerFriendsName" + "CanKillSetting", true, SheriffFriendsRoleKill);
+            SheriffCanKillMayorFriends = CustomOption.Create(914, true, CustomOptionType.Crewmate, "MayorFriendsName" + "CanKillSetting", true, SheriffFriendsRoleKill);
+
+            SheriffNeutralKill = CustomOption.Create(40, true, CustomOptionType.Crewmate, "SheriffIsKillNewtralSetting", false, SheriffOption);
+            SheriffCanKillJester = CustomOption.Create(890, true, CustomOptionType.Crewmate, "JesterName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillJackal = CustomOption.Create(891, true, CustomOptionType.Crewmate, "JackalName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillVulture = CustomOption.Create(893, true, CustomOptionType.Crewmate, "VultureName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillOpportunist = CustomOption.Create(894, true, CustomOptionType.Crewmate, "OpportunistName" + "CanKillSetting", true, SheriffNeutralKill);
+            //SheriffCanKillResearcher = CustomOption.Create(895, true, CustomOptionType.Crewmate, "ReseacherName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillGod = CustomOption.Create(896, true, CustomOptionType.Crewmate, "GodName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillEgoist = CustomOption.Create(897, true, CustomOptionType.Crewmate, "EgoistName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillWorkperson = CustomOption.Create(898, true, CustomOptionType.Crewmate, "WorkpersonName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKilltruelover = CustomOption.Create(899, true, CustomOptionType.Crewmate, "trueloverName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillAmnesiac = CustomOption.Create(900, true, CustomOptionType.Crewmate, "AmnesiacName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillFalseCharges = CustomOption.Create(901, true, CustomOptionType.Crewmate, "FalseChargesName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillFox = CustomOption.Create(902, true, CustomOptionType.Crewmate, "FoxName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillTeleportingJackal = CustomOption.Create(903, true, CustomOptionType.Crewmate, "TeleportingJackalName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillDemon = CustomOption.Create(904, true, CustomOptionType.Crewmate, "DemonName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillJackalSeer = CustomOption.Create(905, true, CustomOptionType.Crewmate, "JackalSeerName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillSidekickSeer = CustomOption.Create(906, true, CustomOptionType.Crewmate, "SideKickSeerName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillArsonist = CustomOption.Create(907, true, CustomOptionType.Crewmate, "ArsonistName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillTuna = CustomOption.Create(908, true, CustomOptionType.Crewmate, "TunaName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillNeet = CustomOption.Create(909, true, CustomOptionType.Crewmate, "SideKickName" + "CanKillSetting", true, SheriffNeutralKill);
+            SheriffCanKillRevolutionist = CustomOption.Create(910, true, CustomOptionType.Crewmate, "RevolutionistName" + "CanKillSetting", true, SheriffNeutralKill);
+            //シェリフ、第三陣営キル表示設定
+
+            SheriffLoversKill = CustomOption.Create(41, true, CustomOptionType.Crewmate, "SheriffIsKillLoversSetting", false, SheriffOption);
+            SheriffQuarreledKill = CustomOption.Create(921, true, CustomOptionType.Crewmate, "SheriffIsKillQuarreledSetting", false, SheriffOption);
 
             RemoteSheriffOption = new CustomRoleOption(44, true, CustomOptionType.Crewmate, "RemoteSheriffName", RoleClass.RemoteSheriff.color, 1);
             RemoteSheriffPlayerCount = CustomOption.Create(45, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RemoteSheriffOption);
