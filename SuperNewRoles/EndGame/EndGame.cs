@@ -473,6 +473,7 @@ namespace SuperNewRoles.EndGame
             notWinners.AddRange(RoleClass.Truelover.trueloverPlayer);
             notWinners.AddRange(RoleClass.Egoist.EgoistPlayer);
             notWinners.AddRange(RoleClass.Workperson.WorkpersonPlayer);
+
             notWinners.AddRange(RoleClass.Amnesiac.AmnesiacPlayer);
             notWinners.AddRange(RoleClass.SideKiller.MadKillerPlayer);
             notWinners.AddRange(RoleClass.MadMayor.MadMayorPlayer);
@@ -1094,11 +1095,11 @@ namespace SuperNewRoles.EndGame
             {
                 if (!p.Data.Disconnected)
                 {
-                    if (!p.IsAlive())
+                    if (p.IsAlive())
                     {
-                        //var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
-                        //if (playerCompleted >= playerTotal)
-                        //{
+                        var (playerCompleted, playerTotal) = TaskCount.TaskDate(p.Data);
+                        if (playerCompleted >= playerTotal)
+                        {
                             MessageWriter Writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.CustomRPC.ShareWinner, SendOption.Reliable, -1);
                             Writer.Write(p.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(Writer);
@@ -1106,7 +1107,7 @@ namespace SuperNewRoles.EndGame
                             __instance.enabled = false;
                             CustomEndGame((GameOverReason)CustomGameOverReason.SuicidalIdeationWin, false);
                             return true;
-                        //}
+                        }
                     }
                 }
             }

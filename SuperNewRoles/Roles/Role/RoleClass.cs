@@ -2480,12 +2480,16 @@ namespace SuperNewRoles.Roles
             public static bool SuicidalIdeationWinText;
             public static float TimeLeft;
             public static DateTime ButtonTimer;
+            public static int CompletedTask;
+            public static float AddTimeLeft;
             public static void ClearAndReload()
             {
                 SuicidalIdeationPlayer = new();
                 SuicidalIdeationWinText = CustomOptions.SuicidalIdeationWinText.GetBool();
                 TimeLeft = CustomOptions.SuicidalIdeationTimeLeft.GetFloat();
+                AddTimeLeft = CustomOptions.SuicidalIdeationAddTimeLeft.GetFloat();
                 ButtonTimer = DateTime.Now;
+                CompletedTask = 0;
             }
         }
         //新ロールクラス
