@@ -1889,8 +1889,8 @@ namespace SuperNewRoles.Buttons
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
-                KeyCode.Q,
-                8,
+                KeyCode.F,
+                49,
                 () => { return false; }
             )
             {
@@ -1960,8 +1960,8 @@ namespace SuperNewRoles.Buttons
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
-                KeyCode.Q,
-                8,
+                KeyCode.F,
+                49,
                 () => { return false; }
             )
             {
@@ -2010,9 +2010,9 @@ namespace SuperNewRoles.Buttons
                 RoleClass.EvilButtoner.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
-                __instance.KillButton,
-                KeyCode.Q,
-                8,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
                 () => { return false; }
 
             )
