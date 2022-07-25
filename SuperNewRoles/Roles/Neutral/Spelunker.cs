@@ -21,23 +21,45 @@ namespace SuperNewRoles.Roles.Neutral
         const float VentDistance = 0.35f;
         public static void FixedUpdate()
         {
-            Vent CurrentVent = null;
-            if (!MapUtilities.CachedShipStatus.AllVents.ToList().TrueForAll(vent => {
-                bool isok = Vector2.Distance(vent.transform.position + new Vector3(0,0.15f,0), CachedPlayer.LocalPlayer.transform.position) < VentDistance;
-                if (isok) {
-                    CurrentVent = vent;
-                }
-                return !isok;
-            }))
+            if (RoleClass.IsMeeting) return;
+            //ベント判定
+            if (RoleClass.Spelunker.VentDeathChance > 0)
             {
-                Logger.Info("キタコレ");
-                if (!RoleClass.Spelunker.IsVentChecked) {
-                    RoleClass.Spelunker.IsVentChecked = true;
-                    if (ModHelpers.IsSucsessChance(RoleClass.Spelunker.VentDeathChance)) PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                Vent CurrentVent = null;
+                if (!MapUtilities.CachedShipStatus.AllVents.ToList().TrueForAll(vent =>
+                {
+                    bool isok = Vector2.Distance(vent.transform.position + new Vector3(0, 0.15f, 0), CachedPlayer.LocalPlayer.transform.position) < VentDistance;
+                    if (isok)
+                    {
+                        CurrentVent = vent;
+                    }
+                    return !isok;
+                }))
+                {
+                    if (!RoleClass.Spelunker.IsVentChecked)
+                    {
+                        RoleClass.Spelunker.IsVentChecked = true;
+                        if (ModHelpers.IsSucsessChance(RoleClass.Spelunker.VentDeathChance)) PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    }
                 }
-            } else
+                else
+                {
+                    RoleClass.Spelunker.IsVentChecked = false;
+                }
+            }
+            //コミュと停電の不安死
+            if (RoleClass.Spelunker.CommsOrLightdownDeathTime != -1)
             {
-                RoleClass.Spelunker.IsVentChecked = false;
+                if (RoleHelpers.IsComms() || RoleHelpers.IsLightdown()) {
+                    RoleClass.Spelunker.CommsOrLightdownTime -= Time.fixedDeltaTime;
+                    if (RoleClass.Spelunker.CommsOrLightdownTime <= 0)
+                    {
+                        PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+                    }
+                } else
+                {
+                    RoleClass.Spelunker.CommsOrLightdownTime = RoleClass.Spelunker.CommsOrLightdownDeathTime;
+                }
             }
         }
     }

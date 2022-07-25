@@ -559,11 +559,11 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
-                case RoleId.EvilBotaner:
-                    RoleClass.EvilBotaner.EvilBotanerPlayer.Add(player);
+                case RoleId.EvilButtoner:
+                    RoleClass.EvilButtoner.EvilButtonerPlayer.Add(player);
                     break;
-                case RoleId.NiceBotaner:
-                    RoleClass.NiceBotaner.NiceBotanerPlayer.Add(player);
+                case RoleId.NiceButtoner:
+                    RoleClass.NiceButtoner.NiceButtonerPlayer.Add(player);
                     break;
                 case RoleId.Finder:
                     RoleClass.Finder.FinderPlayer.Add(player);
@@ -934,11 +934,11 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.RemoveAll(ClearRemove);
                     break;
-                case RoleId.EvilBotaner:
-                    RoleClass.EvilBotaner.EvilBotanerPlayer.RemoveAll(ClearRemove);
+                case RoleId.EvilButtoner:
+                    RoleClass.EvilButtoner.EvilButtonerPlayer.RemoveAll(ClearRemove);
                     break;
-                case RoleId.NiceBotaner:
-                    RoleClass.NiceBotaner.NiceBotanerPlayer.RemoveAll(ClearRemove);
+                case RoleId.NiceButtoner:
+                    RoleClass.NiceButtoner.NiceButtonerPlayer.RemoveAll(ClearRemove);
                     break;
                 case RoleId.Finder:
                     RoleClass.Finder.FinderPlayer.RemoveAll(ClearRemove);
@@ -1010,7 +1010,7 @@ namespace SuperNewRoles
             }
             if (!IsTaskClear
                 && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
-                player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceBotaner))
+                player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceButtoner))
                 || player.IsQuarreled()
                 || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
                 || player.IsImpostor()))
@@ -1070,8 +1070,19 @@ namespace SuperNewRoles
         {
             try
             {
-                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks.GetFastEnumerator())
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                     if (task.TaskType == TaskTypes.FixComms)
+                        return true;
+            }
+            catch { }
+            return false;
+        }
+        public static bool IsLightdown()
+        {
+            try
+            {
+                foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+                    if (task.TaskType == TaskTypes.FixLights)
                         return true;
             }
             catch { }
@@ -1417,8 +1428,8 @@ namespace SuperNewRoles
                 else if (RoleClass.Neet.NeetPlayer.IsCheckListPlayerControl(player)) return RoleId.Neet;
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
-                else if (RoleClass.EvilBotaner.EvilBotanerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilBotaner;
-                else if (RoleClass.NiceBotaner.NiceBotanerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceBotaner;
+                else if (RoleClass.EvilButtoner.EvilButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilButtoner;
+                else if (RoleClass.NiceButtoner.NiceButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceButtoner;
                 else if (RoleClass.Finder.FinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Finder;
                 else if (RoleClass.Revolutionist.RevolutionistPlayer.IsCheckListPlayerControl(player)) return RoleId.Revolutionist;
                 else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;

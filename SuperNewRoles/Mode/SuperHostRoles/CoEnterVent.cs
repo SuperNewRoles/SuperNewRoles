@@ -41,7 +41,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.truelover:
                 case RoleId.FalseCharges:
                 case RoleId.ToiletFan:
-                case RoleId.NiceBotaner:
+                case RoleId.NiceButtoner:
                     break;
                 default:
                     return true;

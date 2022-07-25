@@ -151,10 +151,10 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     optdata.RoleOptions.ShapeshifterCooldown = RoleClass.ToiletFan.ToiletCool;
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
-                case RoleId.NiceBotaner:
+                case RoleId.NiceButtoner:
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
-                case RoleId.EvilBotaner:
+                case RoleId.EvilButtoner:
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
 
