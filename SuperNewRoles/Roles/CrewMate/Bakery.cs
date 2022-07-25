@@ -12,37 +12,66 @@ namespace SuperNewRoles.Roles
             ExileController __instance,
             [HarmonyArgument(0)] GameData.PlayerInfo exiled)
         {
-            if (RoleClass.Assassin.TriggerPlayer == null) { return true; }
+            if (RoleClass.Assassin.TriggerPlayer == null && RoleClass.Revolutionist.MeetingTrigger == null) { return true; }
 
-            if (__instance.specialInputHandler != null) __instance.specialInputHandler.disableVirtualCursor = true;
-            ExileController.Instance = __instance;
-            ControllerManager.Instance.CloseAndResetAll();
-
-            __instance.Text.gameObject.SetActive(false);
-            __instance.Text.text = string.Empty;
-
-            PlayerControl player = RoleClass.Assassin.TriggerPlayer;
-
-            string printStr;
-
-            var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : exiled.Object;
-            if (exile != null && exile.IsRole(RoleId.Marine))
+            if (RoleClass.Assassin.TriggerPlayer != null)
             {
-                printStr = player.Data.PlayerName + ModTranslation.GetString("AssassinSucsess");
-                RoleClass.Assassin.IsImpostorWin = true;
-            }
-            else
+                if (__instance.specialInputHandler != null) __instance.specialInputHandler.disableVirtualCursor = true;
+                ExileController.Instance = __instance;
+                ControllerManager.Instance.CloseAndResetAll();
+
+                __instance.Text.gameObject.SetActive(false);
+                __instance.Text.text = string.Empty;
+
+                PlayerControl player = RoleClass.Assassin.TriggerPlayer;
+
+                string printStr;
+
+                var exile = ModeHandler.IsMode(ModeId.SuperHostRoles) ? Mode.SuperHostRoles.Main.RealExiled : exiled.Object;
+                if (exile != null && exile.IsRole(RoleId.Marine))
+                {
+                    printStr = player.Data.PlayerName + ModTranslation.GetString("AssassinSucsess");
+                    RoleClass.Assassin.IsImpostorWin = true;
+                }
+                else
+                {
+                    printStr = player.Data.PlayerName + ModTranslation.GetString(
+                        "AssassinFail");
+                    RoleClass.Assassin.DeadPlayer = RoleClass.Assassin.TriggerPlayer;
+                }
+                RoleClass.Assassin.TriggerPlayer = null;
+                __instance.exiled = null;
+                __instance.Player.gameObject.SetActive(false);
+                __instance.completeString = printStr;
+                __instance.ImpostorText.text = string.Empty;
+                __instance.StartCoroutine(__instance.Animate());
+            } else if (RoleClass.Revolutionist.MeetingTrigger != null)
             {
-                printStr = player.Data.PlayerName + ModTranslation.GetString(
-                    "AssassinFail");
-                RoleClass.Assassin.DeadPlayer = RoleClass.Assassin.TriggerPlayer;
+                if (__instance.specialInputHandler != null) __instance.specialInputHandler.disableVirtualCursor = true;
+                ExileController.Instance = __instance;
+                ControllerManager.Instance.CloseAndResetAll();
+
+                __instance.Text.gameObject.SetActive(false);
+                __instance.Text.text = string.Empty;
+
+                string printStr;
+
+                var exile = exiled.Object;
+                if (exile != null && exile.IsRole(RoleId.Dictator))
+                {
+                    printStr = exiled.PlayerName + ModTranslation.GetString("RevolutionistSucsess");
+                }
+                else
+                {
+                    printStr = exiled.PlayerName + ModTranslation.GetString(
+                        "RevolutionistFail");
+                }
+                __instance.exiled = null;
+                __instance.Player.gameObject.SetActive(false);
+                __instance.completeString = printStr;
+                __instance.ImpostorText.text = string.Empty;
+                __instance.StartCoroutine(__instance.Animate());
             }
-            RoleClass.Assassin.TriggerPlayer = null;
-            __instance.exiled = null;
-            __instance.Player.gameObject.SetActive(false);
-            __instance.completeString = printStr;
-            __instance.ImpostorText.text = string.Empty;
-            __instance.StartCoroutine(__instance.Animate());
             return false;
         }
         //生存判定

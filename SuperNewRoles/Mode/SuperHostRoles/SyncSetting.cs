@@ -159,6 +159,11 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                         optdata.ImpostorLightMod /= 5;
                     }
                     optdata.RoleOptions.ShapeshifterCooldown = 1f;
+break;
+                case RoleId.NiceButtoner:
+                    optdata.RoleOptions.ShapeshifterDuration = 1f;
+                    break;
+                case RoleId.EvilButtoner:
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
 

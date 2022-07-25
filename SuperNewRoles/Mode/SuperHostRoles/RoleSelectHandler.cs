@@ -58,7 +58,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                     CustomOptions.SamuraiOption.GetSelection() != 0 ||
                     CustomOptions.DemonOption.GetSelection() != 0 ||
                     CustomOptions.ToiletFanOption.GetSelection() != 0||
-                    CustomOptions.AllOpenerOption.GetSelection() != 0)
+                    CustomOptions.AllOpenerOption.GetSelection() != 0||
+                    CustomOptions.ToiletFanOption.GetSelection() != 0 ||
+                    CustomOptions.NiceButtonerOption.GetSelection() != 0)
                 {
                     PlayerControl bot1 = BotManager.Spawn("暗転対策BOT1");
                     bot1.RpcSetRole(RoleTypes.Impostor);
@@ -131,13 +133,15 @@ namespace SuperNewRoles.Mode.SuperHostRoles
             DesyncShapeshifters.AddRange(RoleClass.RemoteSheriff.RemoteSheriffPlayer);
             DesyncShapeshifters.AddRange(RoleClass.ToiletFan.ToiletFanPlayer);
             DesyncShapeshifters.AddRange(RoleClass.AllOpener.AllOpenerPlayer);
-            /*==========シェイプシフターDesync==========*/
+            DesyncShapeshifters.AddRange(RoleClass.NiceButtoner.NiceButtonerPlayer);
+            /*============シェイプシフターDesync============*/
 
 
             /*============シェイプシフター役職設定============*/
             List<PlayerControl> SetRoleShapeshifters = new();
             SetRoleShapeshifters.AddRange(RoleClass.SelfBomber.SelfBomberPlayer);
             SetRoleShapeshifters.AddRange(RoleClass.Samurai.SamuraiPlayer);
+            SetRoleShapeshifters.AddRange(RoleClass.EvilButtoner.EvilButtonerPlayer);
             SetRoleShapeshifters.AddRange(RoleClass.SuicideWisher.SuicideWisherPlayer);
             /*============シェイプシフター役職設定============*/
 

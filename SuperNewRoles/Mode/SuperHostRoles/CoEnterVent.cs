@@ -42,6 +42,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.FalseCharges:
                 case RoleId.ToiletFan:
                 case RoleId.AllOpener:
+                case RoleId.NiceButtoner:
                     break;
                 default:
                     return true;

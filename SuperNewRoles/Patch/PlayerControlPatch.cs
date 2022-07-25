@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -160,6 +160,20 @@ namespace SuperNewRoles.Patches
                         if (!RoleClass.AllOpener.IsOpened) { AllOpener.AllDoorsOpen(); }//開けてなければ開ける
                         RoleClass.AllOpener.IsOpened = true;
                         break;
+                    case RoleId.NiceButtoner:
+                        if (RoleClass.NiceButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
+                            RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId]--;
+                        else
+                            RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] = (int)CustomOptions.NiceButtonerCount.GetFloat() - 1;
+                        if (AmongUsClient.Instance.AmHost && RoleClass.NiceButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
+                        return false;
+                    case RoleId.EvilButtoner:
+                        if (RoleClass.EvilButtoner.SkillCountSHR.ContainsKey(__instance.PlayerId))
+                            RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId]--;
+                        else
+                            RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] = (int)CustomOptions.EvilButtonerCount.GetFloat() - 1;
+                        if (AmongUsClient.Instance.AmHost && RoleClass.EvilButtoner.SkillCountSHR[__instance.PlayerId] + 1 >= 1) EvilButtoner.EvilButtonerStartMeetingSHR(__instance);
+                        return false;
                 }
             }
             return true;
@@ -396,7 +410,8 @@ namespace SuperNewRoles.Patches
                         case RoleId.RemoteSheriff:
                         case RoleId.ToiletFan:
                         case RoleId.AllCleaner:
-                            return false;//キルさせない
+                        case RoleId.NiceButtoner:
+                            return false;//キルをガード
                         case RoleId.Egoist:
                             if (!RoleClass.Egoist.UseKill) return false;
                             break;
@@ -819,6 +834,10 @@ namespace SuperNewRoles.Patches
             }
             else if (ModeHandler.IsMode(ModeId.Default))
             {
+                if (__instance.PlayerId == CachedPlayer.LocalPlayer.PlayerId && PlayerControl.LocalPlayer.IsRole(RoleId.Finder))
+                {
+                    RoleClass.Finder.KillCount++;
+                }
                 if (target.IsRole(RoleId.Assassin))
                 {
                     target.Revive();

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Hazel;
 using SuperNewRoles.CustomRPC;
@@ -558,8 +558,23 @@ namespace SuperNewRoles
                 case RoleId.ToiletFan:
                     RoleClass.ToiletFan.ToiletFanPlayer.Add(player);
                     break;
-                case (RoleId.AllOpener):
+                case RoleId.AllOpener:
                     RoleClass.AllOpener.AllOpenerPlayer.Add(player);
+                    break;
+                case RoleId.EvilButtoner:
+                    RoleClass.EvilButtoner.EvilButtonerPlayer.Add(player);
+                    break;
+                case RoleId.NiceButtoner:
+                    RoleClass.NiceButtoner.NiceButtonerPlayer.Add(player);
+                    break;
+                case RoleId.Finder:
+                    RoleClass.Finder.FinderPlayer.Add(player);
+                    break;
+                case RoleId.Revolutionist:
+                    RoleClass.Revolutionist.RevolutionistPlayer.Add(player);
+                    break;
+                case RoleId.Dictator:
+                    RoleClass.Dictator.DictatorPlayer.Add(player);
                     break;
                 //ロールアド
                 default:
@@ -921,6 +936,21 @@ namespace SuperNewRoles
                 case RoleId.AllOpener:
                     RoleClass.AllOpener.AllOpenerPlayer.RemoveAll(ClearRemove);
                     break;
+                case RoleId.EvilButtoner:
+                    RoleClass.EvilButtoner.EvilButtonerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.NiceButtoner:
+                    RoleClass.NiceButtoner.NiceButtonerPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Finder:
+                    RoleClass.Finder.FinderPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Revolutionist:
+                    RoleClass.Revolutionist.RevolutionistPlayer.RemoveAll(ClearRemove);
+                    break;
+                case RoleId.Dictator:
+                    RoleClass.Dictator.DictatorPlayer.RemoveAll(ClearRemove);
+                    break;
                     //ロールリモベ
             }
             ChacheManager.ResetMyRoleChache();
@@ -971,12 +1001,14 @@ namespace SuperNewRoles
                 case RoleId.Tuna:
                 case RoleId.BlackCat:
                 case RoleId.Neet:
+                case RoleId.Revolutionist:
                     IsTaskClear = true;
                     break;
                     //タスククリアか
             }
             if (!IsTaskClear
-                && ((ModeHandler.IsMode(ModeId.SuperHostRoles) && (player.IsRole(RoleId.Sheriff) || player.IsRole(RoleId.RemoteSheriff) || player.IsRole(RoleId.ToiletFan) || player.IsRole(RoleId.AllOpener)))
+                && ((ModeHandler.IsMode(ModeId.SuperHostRoles) &&
+                player.IsRole(RoleId.Sheriff, RoleId.RemoteSheriff, RoleId.ToiletFan, RoleId.NiceButtoner, RoleId.AllOpener))
                 || player.IsQuarreled()
                 || (!RoleClass.Lovers.AliveTaskCount && player.IsLovers())
                 || player.IsImpostor()))
@@ -1112,6 +1144,7 @@ namespace SuperNewRoles
                 case RoleId.MayorFriends:
                 case RoleId.Tuna:
                 case RoleId.Neet:
+                case RoleId.Revolutionist:
                     IsNeutral = true;
                     break;
                     //第三か
@@ -1382,6 +1415,11 @@ namespace SuperNewRoles
                 else if (RoleClass.FastMaker.FastMakerPlayer.IsCheckListPlayerControl(player)) return RoleId.FastMaker;
                 else if (RoleClass.ToiletFan.ToiletFanPlayer.IsCheckListPlayerControl(player)) return RoleId.ToiletFan;
                 else if (RoleClass.AllOpener.AllOpenerPlayer.IsCheckListPlayerControl(player)) return RoleId.AllOpener;
+                else if (RoleClass.EvilButtoner.EvilButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.EvilButtoner;
+                else if (RoleClass.NiceButtoner.NiceButtonerPlayer.IsCheckListPlayerControl(player)) return RoleId.NiceButtoner;
+                else if (RoleClass.Finder.FinderPlayer.IsCheckListPlayerControl(player)) return RoleId.Finder;
+                else if (RoleClass.Revolutionist.RevolutionistPlayer.IsCheckListPlayerControl(player)) return RoleId.Revolutionist;
+                else if (RoleClass.Dictator.DictatorPlayer.IsCheckListPlayerControl(player)) return RoleId.Dictator;
                 //ロールチェック
             }
             catch (Exception e)
