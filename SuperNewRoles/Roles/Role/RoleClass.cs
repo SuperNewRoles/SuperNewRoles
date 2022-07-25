@@ -185,7 +185,7 @@ namespace SuperNewRoles.Roles
                 SoothSayerPlayer = new();
                 DisplayedPlayer = new();
                 DisplayMode = CustomOptions.SoothSayerDisplayMode.GetBool();
-                Count = (int)CustomOptions.SoothSayerMaxCount.GetFloat();
+                Count = CustomOptions.SoothSayerMaxCount.GetInt();
             }
         }
         public static class Jester
@@ -602,10 +602,10 @@ namespace SuperNewRoles.Roles
             {
                 VulturePlayer = new();
                 CoolTime = CustomOptions.VultureCoolDown.GetFloat();
-                DeadBodyCount = (int)CustomOptions.VultureDeadBodyMaxCount.GetFloat();
+                DeadBodyCount = CustomOptions.VultureDeadBodyMaxCount.GetInt();
                 IsUseVent = CustomOptions.VultureIsUseVent.GetBool();
                 ShowArrows = CustomOptions.VultureShowArrows.GetBool();
-                RoleClass.Vulture.Arrow = null;
+                Arrow = null;
             }
         }
         public static class NiceScientist
@@ -680,9 +680,9 @@ namespace SuperNewRoles.Roles
                 IsImpostorCheck = CustomOptions.MadMateIsCheckImpostor.GetBool();
                 IsUseVent = CustomOptions.MadMateIsUseVent.GetBool();
                 IsImpostorLight = CustomOptions.MadMateIsImpostorLight.GetBool();
-                int Common = (int)CustomOptions.MadMateCommonTask.GetFloat();
-                int Long = (int)CustomOptions.MadMateLongTask.GetFloat();
-                int Short = (int)CustomOptions.MadMateShortTask.GetFloat();
+                int Common = CustomOptions.MadMateCommonTask.GetInt();
+                int Long = CustomOptions.MadMateLongTask.GetInt();
+                int Short = CustomOptions.MadMateShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -776,7 +776,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 NiceGamblerPlayer = new();
-                //Num = (int)CustomOptions.NiceGamblerUseCount.GetFloat();
+                //Num = CustomOptions.NiceGamblerUseCount.GetInt();
             }
         }
         public static class EvilGambler
@@ -791,8 +791,8 @@ namespace SuperNewRoles.Roles
             {
                 EvilGamblerPlayer = new();
                 IsSuc = false;
-                SucCool = (int)CustomOptions.EvilGamblerSucTime.GetFloat();
-                NotSucCool = (int)CustomOptions.EvilGamblerNotSucTime.GetFloat();
+                SucCool = CustomOptions.EvilGamblerSucTime.GetInt();
+                NotSucCool = CustomOptions.EvilGamblerNotSucTime.GetInt();
                 var temp = CustomOptions.EvilGamblerSucpar.GetString().Replace("0%", "");
                 SucPar = temp == "" ? 0 : int.Parse(temp);
             }
@@ -921,9 +921,9 @@ namespace SuperNewRoles.Roles
                 IsJackalCheck = CustomOptions.JackalFriendsIsCheckJackal.GetBool();
                 IsUseVent = CustomOptions.JackalFriendsIsUseVent.GetBool();
                 IsImpostorLight = CustomOptions.JackalFriendsIsImpostorLight.GetBool();
-                int Common = (int)CustomOptions.JackalFriendsCommonTask.GetFloat();
-                int Long = (int)CustomOptions.JackalFriendsLongTask.GetFloat();
-                int Short = (int)CustomOptions.JackalFriendsShortTask.GetFloat();
+                int Common = CustomOptions.JackalFriendsCommonTask.GetInt();
+                int Long = CustomOptions.JackalFriendsLongTask.GetInt();
+                int Short = CustomOptions.JackalFriendsShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -975,7 +975,7 @@ namespace SuperNewRoles.Roles
                 CountChangerPlayer = new();
                 ChangeData = new();
                 Setdata = new();
-                Count = (int)CustomOptions.CountChangerMaxCount.GetFloat();
+                Count = CustomOptions.CountChangerMaxCount.GetInt();
                 IsSet = false;
             }
         }
@@ -1068,7 +1068,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 NiceRedRidingHoodPlayer = new();
-                Count = (int)CustomOptions.NiceRedRidingHoodCount.GetFloat();
+                Count = CustomOptions.NiceRedRidingHoodCount.GetInt();
                 deadbodypos = null;
             }
         }
@@ -1082,7 +1082,7 @@ namespace SuperNewRoles.Roles
             {
                 EvilEraserPlayer = new();
                 Counts = new();
-                Count = ((int)CustomOptions.EvilEraserMaxCount.GetFloat()) - 1;
+                Count = CustomOptions.EvilEraserMaxCount.GetInt() - 1;
             }
         }
         public static class Workperson
@@ -1133,7 +1133,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MayorPlayer = new();
-                AddVote = (int)CustomOptions.MayorVoteCount.GetFloat();
+                AddVote = CustomOptions.MayorVoteCount.GetInt();
             }
         }
         public static class Truelover
@@ -1199,7 +1199,7 @@ namespace SuperNewRoles.Roles
             {
                 OverKillerPlayer = new();
                 KillCoolTime = CustomOptions.OverKillerKillCoolTime.GetFloat();
-                KillCount = (int)CustomOptions.OverKillerKillCount.GetFloat();
+                KillCount = CustomOptions.OverKillerKillCount.GetInt();
             }
         }
         public static class Levelinger
@@ -1230,8 +1230,8 @@ namespace SuperNewRoles.Roles
                     LevelingerPlayer = new();
                     ThisXP = 0;
                     IsCreateMadmate = false;
-                    OneKillXP = (int)CustomOptions.LevelingerOneKillXP.GetFloat();
-                    UpLevelXp = (int)CustomOptions.LevelingerUpLevelXP.GetFloat();
+                    OneKillXP = CustomOptions.LevelingerOneKillXP.GetFloat();
+                    UpLevelXp = CustomOptions.LevelingerUpLevelXP.GetFloat();
                     GetPowerData = new();
                     for (int i = 0; i < 5; i++)
                     {
@@ -1244,7 +1244,7 @@ namespace SuperNewRoles.Roles
                         GetPowerData.Add(GetLevelPowerType(getdata));
                     }
                     IsUseOKRevive = CustomOptions.LevelingerReviveXP.GetBool();
-                    ReviveUseXP = (int)CustomOptions.LevelingerUseXPRevive.GetFloat();
+                    ReviveUseXP = CustomOptions.LevelingerUseXPRevive.GetFloat();
                 }
                 catch { }
             }
@@ -1368,13 +1368,13 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MadMayorPlayer = new();
-                AddVote = (int)CustomOptions.MadMayorVoteCount.GetFloat();
+                AddVote = CustomOptions.MadMayorVoteCount.GetFloat();
                 IsImpostorCheck = CustomOptions.MadMayorIsCheckImpostor.GetBool();
                 IsUseVent = CustomOptions.MadMayorIsUseVent.GetBool();
                 IsImpostorLight = CustomOptions.MadMayorIsImpostorLight.GetBool();
-                int Common = (int)CustomOptions.MadMayorCommonTask.GetFloat();
-                int Long = (int)CustomOptions.MadMayorLongTask.GetFloat();
-                int Short = (int)CustomOptions.MadMayorShortTask.GetFloat();
+                int Common = CustomOptions.MadMayorCommonTask.GetInt();
+                int Long = CustomOptions.MadMayorLongTask.GetInt();
+                int Short = CustomOptions.MadMayorShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -1486,9 +1486,9 @@ namespace SuperNewRoles.Roles
                 IsUseVent = CustomOptions.MadJesterIsUseVent.GetBool();
                 IsImpostorLight = CustomOptions.MadJesterIsImpostorLight.GetBool();
                 IsMadJesterTaskClearWin = CustomOptions.IsMadJesterTaskClearWin.GetBool();
-                int Common = (int)CustomOptions.MadJesterCommonTask.GetFloat();
-                int Long = (int)CustomOptions.MadJesterLongTask.GetFloat();
-                int Short = (int)CustomOptions.MadJesterShortTask.GetFloat();
+                int Common = CustomOptions.MadJesterCommonTask.GetInt();
+                int Long = CustomOptions.MadJesterLongTask.GetInt();
+                int Short = CustomOptions.MadJesterShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -1515,7 +1515,7 @@ namespace SuperNewRoles.Roles
                 FalseChargePlayers = new Dictionary<byte, byte>();
                 FalseChargePlayer = 255;
                 Turns = 255;
-                DefaultTurn = (int)CustomOptions.FalseChargesExileTurn.GetFloat();
+                DefaultTurn = CustomOptions.FalseChargesExileTurn.GetInt();
                 CoolTime = CustomOptions.FalseChargesCoolTime.GetFloat();
             }
         }
@@ -1665,9 +1665,9 @@ namespace SuperNewRoles.Roles
                 IsImpostorCheck = CustomOptions.MadSeerIsCheckImpostor.GetBool();
                 IsUseVent = CustomOptions.MadSeerIsUseVent.GetBool();
                 IsImpostorLight = CustomOptions.MadSeerIsImpostorLight.GetBool();
-                int Common = (int)CustomOptions.MadSeerCommonTask.GetFloat();
-                int Long = (int)CustomOptions.MadSeerLongTask.GetFloat();
-                int Short = (int)CustomOptions.MadSeerShortTask.GetFloat();
+                int Common = CustomOptions.MadSeerCommonTask.GetInt();
+                int Long = CustomOptions.MadSeerLongTask.GetInt();
+                int Short = CustomOptions.MadSeerShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -1804,9 +1804,9 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 TaskManagerPlayer = new();
-                int Common = (int)CustomOptions.TaskManagerCommonTask.GetFloat();
-                int Long = (int)CustomOptions.TaskManagerLongTask.GetFloat();
-                int Short = (int)CustomOptions.TaskManagerShortTask.GetFloat();
+                int Common = CustomOptions.TaskManagerCommonTask.GetInt();
+                int Long = CustomOptions.TaskManagerLongTask.GetInt();
+                int Short = CustomOptions.TaskManagerShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -1843,9 +1843,9 @@ namespace SuperNewRoles.Roles
                 IsJackalCheck = CustomOptions.SeerFriendsIsCheckJackal.GetBool();
                 IsUseVent = CustomOptions.SeerFriendsIsUseVent.GetBool();
                 IsImpostorLight = CustomOptions.SeerFriendsIsImpostorLight.GetBool();
-                int Common = (int)CustomOptions.SeerFriendsCommonTask.GetFloat();
-                int Long = (int)CustomOptions.SeerFriendsLongTask.GetFloat();
-                int Short = (int)CustomOptions.SeerFriendsShortTask.GetFloat();
+                int Common = CustomOptions.SeerFriendsCommonTask.GetInt();
+                int Long = CustomOptions.SeerFriendsLongTask.GetInt();
+                int Short = CustomOptions.SeerFriendsShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -1994,7 +1994,7 @@ namespace SuperNewRoles.Roles
                 IsNeutralKill = CustomOptions.ChiefIsNeutralKill.GetBool();
                 IsLoversKill = CustomOptions.ChiefIsLoversKill.GetBool();
                 IsMadRoleKill = CustomOptions.ChiefIsMadRoleKill.GetBool();
-                KillLimit = (int)CustomOptions.ChiefKillLimit.GetFloat();
+                KillLimit = CustomOptions.ChiefKillLimit.GetInt();
             }
         }
         public static class Cleaner
@@ -2084,9 +2084,9 @@ namespace SuperNewRoles.Roles
                 IsJackalCheck = CustomOptions.MayorFriendsIsCheckJackal.GetBool();
                 IsUseVent = CustomOptions.MayorFriendsIsUseVent.GetBool();
                 IsImpostorLight = CustomOptions.MayorFriendsIsImpostorLight.GetBool();
-                int Common = (int)CustomOptions.MayorFriendsCommonTask.GetFloat();
-                int Long = (int)CustomOptions.MayorFriendsLongTask.GetFloat();
-                int Short = (int)CustomOptions.MayorFriendsShortTask.GetFloat();
+                int Common = CustomOptions.MayorFriendsCommonTask.GetInt();
+                int Long = CustomOptions.MayorFriendsLongTask.GetInt();
+                int Short = CustomOptions.MayorFriendsShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -2095,7 +2095,7 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MayorFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
-                AddVote = (int)CustomOptions.MayorFriendsVoteCount.GetFloat();
+                AddVote = CustomOptions.MayorFriendsVoteCount.GetFloat();
             }
         }
         public static class VentMaker
@@ -2135,7 +2135,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 GhostMechanicPlayer = new();
-                LimitCount = (int)CustomOptions.GhostMechanicRepairLimit.GetFloat();
+                LimitCount = CustomOptions.GhostMechanicRepairLimit.GetFloat();
             }
         }
         public static class EvilHacker
@@ -2188,7 +2188,7 @@ namespace SuperNewRoles.Roles
             {
                 PositionSwapperPlayer = new();
                 CoolTime = CustomOptions.PositionSwapperCoolTime.GetFloat();
-                SwapCount = (int)CustomOptions.PositionSwapperSwapCount.GetFloat();
+                SwapCount = CustomOptions.PositionSwapperSwapCount.GetInt();
             }
         }
 
@@ -2247,9 +2247,9 @@ namespace SuperNewRoles.Roles
                 IsImpostorCheck = CustomOptions.BlackCatIsCheckImpostor.GetBool();
                 IsUseVent = CustomOptions.BlackCatIsUseVent.GetBool();
                 IsImpostorLight = CustomOptions.BlackCatIsImpostorLight.GetBool();
-                int Common = (int)CustomOptions.BlackCatCommonTask.GetFloat();
-                int Long = (int)CustomOptions.BlackCatLongTask.GetFloat();
-                int Short = (int)CustomOptions.BlackCatShortTask.GetFloat();
+                int Common = CustomOptions.BlackCatCommonTask.GetInt();
+                int Long = CustomOptions.BlackCatLongTask.GetInt();
+                int Short = CustomOptions.BlackCatShortTask.GetInt();
                 int AllTask = Common + Long + Short;
                 if (AllTask == 0)
                 {
@@ -2283,7 +2283,7 @@ namespace SuperNewRoles.Roles
                 KillCoolTime = CustomOptions.SecretlyKillerKillCoolTime.GetFloat();
                 IsKillCoolChange = CustomOptions.SecretlyKillerIsKillCoolTimeChange.GetBool();
                 IsBlackOutKillCharge = CustomOptions.SecretlyKillerIsBlackOutKillCharge.GetBool();
-                SecretlyKillLimit = (int)CustomOptions.SecretlyKillerSecretKillLimit.GetFloat();
+                SecretlyKillLimit = CustomOptions.SecretlyKillerSecretKillLimit.GetInt();
                 SecretlyKillCoolTime = CustomOptions.SecretlyKillerSecretKillCoolTime.GetFloat();
             }
         }
@@ -2330,7 +2330,7 @@ namespace SuperNewRoles.Roles
                 HideTime = CustomOptions.KunoichiIsHide.GetBool() ? CustomOptions.KunoichiHideTime.GetFloat() : -1;
                 KunoichiPlayer = new();
                 KillCoolTime = CustomOptions.KunoichiCoolTime.GetFloat();
-                KillKunai = (int)CustomOptions.KunoichiKillKunai.GetFloat();
+                KillKunai = CustomOptions.KunoichiKillKunai.GetInt();
                 HitCount = new();
                 if (Kunai != null) { GameObject.Destroy(Kunai.kunai); }
                 if (SendKunai != null) { GameObject.Destroy(SendKunai.kunai); }
