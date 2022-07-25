@@ -2565,11 +2565,13 @@ namespace SuperNewRoles.Roles
             public static Color32 color = new(255, 255, 0, byte.MaxValue);
             public static bool IsVentChecked;
             public static int VentDeathChance;
+            public static int LadderDeathChance;
             public static void ClearAndReload()
             {
                 SpelunkerPlayer = new();
                 IsVentChecked = false;
                 VentDeathChance = CustomOptions.SpelunkerVentDeathChance.GetSelection();
+                LadderDeathChance = CustomOptions.SpelunkerLadderDeadChance.GetSelection();
             }
         }
         //新ロールクラス
