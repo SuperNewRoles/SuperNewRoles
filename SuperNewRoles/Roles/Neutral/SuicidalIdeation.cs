@@ -1,13 +1,5 @@
 using System;
-using System.Collections.Generic;
-using Hazel;
-using SuperNewRoles.CustomRPC;
 using SuperNewRoles.Buttons;
-using SuperNewRoles.Mode;
-using SuperNewRoles.Roles;
-using SuperNewRoles.MapOptions;
-using UnityEngine;
-using HarmonyLib;
 using SuperNewRoles.Patch;
 
 
