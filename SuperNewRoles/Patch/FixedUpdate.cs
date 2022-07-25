@@ -151,6 +151,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.Kunoichi:
                                 Kunoichi.Update();
                                 break;
+                            case RoleId.Revolutionist:
+                                Roles.Neutral.Revolutionist.FixedUpdate();
+                                break;
                                 case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
                                 break;

@@ -16,7 +16,7 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.RemoteSheriff:
                 case RoleId.Arsonist:
                 case RoleId.ToiletFan:
-                case RoleId.NiceBotaner:
+                case RoleId.NiceButtoner:
                     IsCrewVision = true;
                     break;
                     //クルー視界か

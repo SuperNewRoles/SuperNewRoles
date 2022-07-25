@@ -7,66 +7,56 @@ namespace SuperNewRoles.Buttons
     {
         public static bool IsDestroyKill(this PlayerControl player)
         {
-            var IsDestroyKill = false;
-            switch (player.GetRole())
+            return player.GetRole() switch
             {
-                case RoleId.FastMaker:
-                    return !RoleClass.FastMaker.IsCreatedMadMate;
-                case RoleId.SecretlyKiller:
-                case RoleId.DoubleKiller:
-                case RoleId.Smasher:
-                    IsDestroyKill = true;
-                    break;
-                    //キルボタン無効か
-            }
-            return IsDestroyKill;
+                RoleId.FastMaker => !RoleClass.FastMaker.IsCreatedMadMate,
+                RoleId.SecretlyKiller or RoleId.DoubleKiller or RoleId.Smasher => true,
+                //キルボタン無効か
+                _ => false
+            };
         }
         public static bool IsDestroyReport(this PlayerControl player)
         {
-            var IsDestroyReport = false;
-            switch (player.GetRole())
+            return player.GetRole() switch
             {
-                case RoleId.Minimalist:
-                    return !RoleClass.Minimalist.UseReport;
-                case RoleId.Fox:
-                    return !RoleClass.Fox.UseReport;
-                case RoleId.Neet:
-                    IsDestroyReport = true;
-                    break;
-                    //通報ボタン無効か
-            }
-            return IsDestroyReport;
+                RoleId.Minimalist => !RoleClass.Minimalist.UseReport,
+                RoleId.Fox => !RoleClass.Fox.UseReport,
+                RoleId.Neet => true,
+                //通報ボタン無効か
+                _ => false
+            };
         }
         public static bool IsDestroySabo(this PlayerControl player)
         {
-            var IsDestroySabo = false;
             return player.GetRole() switch
             {
                 RoleId.Minimalist => !RoleClass.Minimalist.UseSabo,
                 RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseSabo,
-                _ => IsDestroySabo,
+                //サボタージュボタン無効か
+                _ => false
             };
         }
         public static bool IsDestroyUse(this PlayerControl player)
-        {
+        {//使用ボタン消す役職少ないと思うのでswitch文にしときます
+         //役職増えたり複雑な条件増えてきたらreturn player.GetRole() switchにします
             var IsDestroyUse = false;
             switch (player.GetRole())
             {
                 case RoleId.Neet:
+                    //使用ボタン無効か
                     IsDestroyUse = true;
                     break;
-                    //使用ボタン無効か
             }
             return IsDestroyUse;
         }
         public static bool IsDestroyVent(this PlayerControl player)
         {
-            var IsDestroyVent = false;
             return player.GetRole() switch
             {
                 RoleId.Minimalist => !RoleClass.Minimalist.UseVent,
                 RoleId.DoubleKiller => !RoleClass.DoubleKiller.CanUseVent,
-                _ => IsDestroyVent,
+                //ベントボタン無効化
+                _ => false,
             };
         }
     }
