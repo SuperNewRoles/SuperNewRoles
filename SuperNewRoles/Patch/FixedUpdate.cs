@@ -154,7 +154,7 @@ namespace SuperNewRoles.Patch
                             case RoleId.Revolutionist:
                                 Roles.Neutral.Revolutionist.FixedUpdate();
                                 break;
-                                case RoleId.SuicidalIdeation:
+                            case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
                                 break;
                             default:
