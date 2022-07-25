@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -590,6 +590,11 @@ namespace SuperNewRoles.Patches
                                 __instance.RpcMurderPlayer(target);
                             }
                             return false;
+                        case RoleId.DarkKiller:
+                            var ma = MapUtilities.CachedShipStatus.Systems[SystemTypes.Electrical].CastFast<SwitchSystem>();
+                            if (ma != null && !ma.IsActive) { return false; }//停電じゃないならキルをブロック
+                            else { __instance.RpcMurderPlayer(target); }//停電なら殺す
+                            break;
                     }
                     break;
                 case ModeId.Detective:

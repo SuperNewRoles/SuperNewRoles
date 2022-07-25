@@ -157,6 +157,9 @@ namespace SuperNewRoles.Mode.SuperHostRoles
                 case RoleId.EvilButtoner:
                     optdata.RoleOptions.ShapeshifterDuration = 1f;
                     break;
+                case RoleId.DarkKiller:
+                    optdata.killCooldown = KillCoolSet(RoleClass.DarkKiller.KillCoolTime);
+                    break;
 
             }
             if (player.IsDead()) optdata.AnonymousVotes = false;

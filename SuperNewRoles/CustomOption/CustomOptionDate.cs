@@ -1174,9 +1174,9 @@ namespace SuperNewRoles.CustomOption
             FoxIsImpostorLight = CustomOption.Create(313, true, CustomOptionType.Neutral, "MadMateImpostorLightSetting", false, FoxOption);
             FoxReport = CustomOption.Create(314, true, CustomOptionType.Neutral, "MinimalistReportSetting", true, FoxOption);
 
-            DarkKillerOption = new CustomRoleOption(315, false, CustomOptionType.Impostor, "DarkKillerName", RoleClass.DarkKiller.color, 1);
-            DarkKillerPlayerCount = CustomOption.Create(316, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DarkKillerOption);
-            DarkKillerKillCoolTime = CustomOption.Create(317, false, CustomOptionType.Impostor, "DarkKillerKillCoolSetting", 20f, 2.5f, 60f, 2.5f, DarkKillerOption);
+            DarkKillerOption = new CustomRoleOption(315, true, CustomOptionType.Impostor, "DarkKillerName", RoleClass.DarkKiller.color, 1);
+            DarkKillerPlayerCount = CustomOption.Create(316, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], DarkKillerOption);
+            DarkKillerKillCoolTime = CustomOption.Create(317, true, CustomOptionType.Impostor, "DarkKillerKillCoolSetting", 20f, 2.5f, 60f, 2.5f, DarkKillerOption);
 
             SeerOption = new CustomRoleOption(318, false, CustomOptionType.Crewmate, "SeerName", RoleClass.Seer.color, 1);
             SeerPlayerCount = CustomOption.Create(319, false, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SeerOption);
