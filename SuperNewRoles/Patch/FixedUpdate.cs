@@ -151,7 +151,7 @@ namespace SuperNewRoles.Patch
                             case RoleId.Kunoichi:
                                 Kunoichi.Update();
                                 break;
-                            case RoleId.SuicidalIdeation:
+                                case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
                                 break;
                             default:

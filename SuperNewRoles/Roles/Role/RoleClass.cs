@@ -2480,20 +2480,12 @@ namespace SuperNewRoles.Roles
             public static bool SuicidalIdeationWinText;
             public static float TimeLeft;
             public static DateTime ButtonTimer;
-            public static bool IsMeetingEnd;
-            public static float IsMeetingTime;
-            public static float DateTimeCount;
-            public static float IsDateTime2;
             public static void ClearAndReload()
             {
                 SuicidalIdeationPlayer = new();
                 SuicidalIdeationWinText = CustomOptions.SuicidalIdeationWinText.GetBool();
                 TimeLeft = CustomOptions.SuicidalIdeationTimeLeft.GetFloat();
-                IsMeetingEnd = false;
-                IsMeetingTime = 0f;
                 ButtonTimer = DateTime.Now;
-                bool IsDateTime1 = float.TryParse(ButtonTimer.ToString("ss"), out IsDateTime2);
-                DateTimeCount = IsDateTime2 == 0 ? -1 : 0;
             }
         }
         //新ロールクラス

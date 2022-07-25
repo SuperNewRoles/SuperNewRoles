@@ -1397,7 +1397,7 @@ namespace SuperNewRoles.CustomOption
             SuicidalIdeationOption = new CustomRoleOption(872, false, CustomOptionType.Neutral, "SuicidalIdeationName", RoleClass.SuicidalIdeation.color, 1);
             SuicidalIdeationPlayerCount = CustomOption.Create(873, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SuicidalIdeationOption);
             SuicidalIdeationWinText = CustomOption.Create(874, false, CustomOptionType.Neutral, "SuicidalIdeationWinTextSetting", false, SuicidalIdeationOption);
-            SuicidalIdeationTimeLeft = CustomOption.Create(875, false, CustomOptionType.Neutral, "SuicidalIdeationTimeLeftSetting", 20f, 2.5f, 120f, 2.5f, SuicidalIdeationOption, format: "unitSeconds");
+            SuicidalIdeationTimeLeft = CustomOption.Create(875, false, CustomOptionType.Neutral, "SuicidalIdeationTimeLeftSetting", 20f, 2.5f, 300f, 2.5f, SuicidalIdeationOption, format: "unitSeconds");
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

@@ -2021,16 +2021,16 @@ namespace SuperNewRoles.Buttons
             };
 
             SuicidalIdeationButton = new CustomButton(
-                () =>
-                {
-                },
+                () =>{},
                 (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SuicidalIdeation; },
                 () =>
                 {
-                    return false;
+                    return true;
                 },
                 () =>
                 {
+                    SuicidalIdeationButton.MaxTimer = RoleClass.SuicidalIdeation.TimeLeft;
+                    SuicidalIdeationButton.Timer = RoleClass.SuicidalIdeation.TimeLeft;
                 },
                 RoleClass.ToiletFan.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
@@ -2038,7 +2038,10 @@ namespace SuperNewRoles.Buttons
                 __instance.AbilityButton,
                 KeyCode.Q,
                 8,
-                () => { return false; }
+                () =>
+                {
+                    return RoleClass.IsMeeting || !PlayerControl.LocalPlayer.CanMove;
+                }
             )
             {
                 buttonText = ModTranslation.GetString("SuicidalIdeationButtonName"),
