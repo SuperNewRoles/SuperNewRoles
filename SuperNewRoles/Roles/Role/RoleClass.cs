@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using SuperNewRoles.CustomObject;
 using SuperNewRoles.CustomOption;
@@ -153,8 +154,11 @@ namespace SuperNewRoles.Roles
             Neet.ClearAndReload();
             FastMaker.ClearAndReload();
             ToiletFan.ClearAndReload();
-            EvilBotaner.ClearAndReload();
-            NiceBotaner.ClearAndReload();
+            EvilButtoner.ClearAndReload();
+            NiceButtoner.ClearAndReload();
+            Finder.ClearAndReload();
+            Revolutionist.ClearAndReload();
+            Dictator.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2435,9 +2439,9 @@ namespace SuperNewRoles.Roles
                 ToiletCool = CustomOptions.ToiletFanCoolTime.GetFloat();
             }
         }
-        public static class EvilBotaner
+        public static class EvilButtoner
         {
-            public static List<PlayerControl> EvilBotanerPlayer;
+            public static List<PlayerControl> EvilButtonerPlayer;
             public static Color32 color = ImpostorRed;
             public static float CoolTime;
             public static float SkillCount;
@@ -2446,30 +2450,113 @@ namespace SuperNewRoles.Roles
             public static Sprite GetButtonSprite()
             {
                 if (buttonSprite) return buttonSprite;
-                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.BotanerButton.png", 115f);
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.ButtonerButton.png", 115f);
                 return buttonSprite;
             }
             public static void ClearAndReload()
             {
-                EvilBotanerPlayer = new();
-                CoolTime = CustomOptions.EvilBotanerCoolTime.GetFloat();
-                SkillCount = CustomOptions.EvilBotanerCount.GetFloat();
+                EvilButtonerPlayer = new();
+                CoolTime = CustomOptions.EvilButtonerCoolTime.GetFloat();
+                SkillCount = CustomOptions.EvilButtonerCount.GetFloat();
                 SkillCountSHR = new();
             }
         }
-        public static class NiceBotaner
+        public static class NiceButtoner
         {
-            public static List<PlayerControl> NiceBotanerPlayer;
-            public static Color32 color = new Color32(0, 128, 128, byte.MaxValue);
+            public static List<PlayerControl> NiceButtonerPlayer;
+            public static Color32 color = new(0, 128, 128, byte.MaxValue);
             public static float CoolTime;
             public static float SkillCount;
             public static Dictionary<int, int> SkillCountSHR;
             public static void ClearAndReload()
             {
-                NiceBotanerPlayer = new();
-                CoolTime = CustomOptions.NiceBotanerCoolTime.GetFloat();
-                SkillCount = CustomOptions.NiceBotanerCount.GetFloat();
+                NiceButtonerPlayer = new();
+                CoolTime = CustomOptions.NiceButtonerCoolTime.GetFloat();
+                SkillCount = CustomOptions.NiceButtonerCount.GetFloat();
                 SkillCountSHR = new();
+            }
+        }
+        public static class Finder
+        {
+            public static List<PlayerControl> FinderPlayer;
+            public static Color32 color = ImpostorRed;
+            public static int CheckMadmateKillCount;
+            public static int KillCount;
+            public static bool IsCheck
+            {
+                get
+                {
+                    return CheckMadmateKillCount <= KillCount;
+                }
+            }
+            public static void ClearAndReload()
+            {
+                FinderPlayer = new();
+                CheckMadmateKillCount = CustomOptions.FinderCheckMadmateSetting.GetInt();
+                KillCount = 0;
+            }
+        }
+        public static class Revolutionist
+        {
+            public static List<PlayerControl> RevolutionistPlayer;
+            public static Color32 color = new(255, 0, 51, byte.MaxValue);
+            public static float CoolTime;
+            public static float TouchTime;
+            public static List<byte> RevolutionedPlayerId;
+            public static List<PlayerControl> RevolutionedPlayer
+            {
+                get
+                {
+                    if (_revolutionedPlayer.Length != RevolutionedPlayerId.Count)
+                    {
+                        List<PlayerControl> newList = new();
+                        foreach (byte playerid in RevolutionedPlayerId)
+                        {
+                            PlayerControl player = ModHelpers.playerById(playerid);
+                            if (player == null) continue;
+                            newList.Add(player);
+                        }
+                        _revolutionedPlayer = newList.ToArray();
+                    }
+                    return _revolutionedPlayer.ToList();
+                }
+            }
+            public static PlayerControl[] _revolutionedPlayer;
+            public static bool IsAddWin;
+            public static bool IsAddWinAlive;
+            public static PlayerControl CurrentTarget;
+            public static PlayerControl MeetingTrigger;
+            public static bool IsEndMeeting;
+            public static PlayerControl WinPlayer;
+            public static void ClearAndReload()
+            {
+                RevolutionistPlayer = new();
+                CoolTime = CustomOptions.RevolutionistCoolTime.GetFloat();
+                TouchTime = CustomOptions.RevolutionistTouchTime.GetFloat();
+                RevolutionedPlayerId = new();
+                _revolutionedPlayer = new PlayerControl[] { };
+                IsAddWin = CustomOptions.RevolutionistAddWin.GetBool();
+                IsAddWinAlive = CustomOptions.RevolutionistAddWinIsAlive.GetBool();
+                CurrentTarget = null;
+                MeetingTrigger = null;
+                IsEndMeeting = false;
+                WinPlayer = null;
+            }
+        }
+        public static class Dictator
+        {
+            public static List<PlayerControl> DictatorPlayer;
+            public static Color32 color = new(0, 102, 51, byte.MaxValue);
+            public static int VoteCount;
+            public static int SubExileLimit;
+            public static Dictionary<byte, int> SubExileLimitData;
+            public static void ClearAndReload()
+            {
+                DictatorPlayer = new();
+                VoteCount = CustomOptions.DictatorVoteCount.GetInt();
+                if (CustomOptions.DictatorSubstituteExile.GetBool()) SubExileLimit = CustomOptions.DictatorSubstituteExileLimit.GetInt();
+                else SubExileLimit = 0;
+                SubExileLimitData = new();
             }
         }
         //新ロールクラス

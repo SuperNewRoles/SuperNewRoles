@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -663,16 +663,31 @@ namespace SuperNewRoles.CustomOption
         public static CustomRoleOption ToiletFanOption;
         public static CustomOption ToiletFanPlayerCount;
         public static CustomOption ToiletFanCoolTime;
-        
-        public static CustomRoleOption EvilBotanerOption;
-        public static CustomOption EvilBotanerPlayerCount;
-        public static CustomOption EvilBotanerCoolTime;
-        public static CustomOption EvilBotanerCount;
 
-        public static CustomRoleOption NiceBotanerOption;
-        public static CustomOption NiceBotanerPlayerCount;
-        public static CustomOption NiceBotanerCoolTime;
-        public static CustomOption NiceBotanerCount;
+        public static CustomRoleOption EvilButtonerOption;
+        public static CustomOption EvilButtonerPlayerCount;
+        public static CustomOption EvilButtonerCoolTime;
+        public static CustomOption EvilButtonerCount;
+
+        public static CustomRoleOption NiceButtonerOption;
+        public static CustomOption NiceButtonerPlayerCount;
+        public static CustomOption NiceButtonerCoolTime;
+        public static CustomOption NiceButtonerCount;
+
+        public static CustomRoleOption FinderOption;
+        public static CustomOption FinderPlayerCount;
+        public static CustomOption FinderCheckMadmateSetting;
+
+        public static CustomRoleOption RevolutionistAndDictatorOption;
+        public static CustomOption RevolutionistPlayerCount;
+        public static CustomOption DictatorPlayerCount;
+        public static CustomOption DictatorVoteCount;
+        public static CustomOption DictatorSubstituteExile;
+        public static CustomOption DictatorSubstituteExileLimit;
+        public static CustomOption RevolutionistCoolTime;
+        public static CustomOption RevolutionistTouchTime;
+        public static CustomOption RevolutionistAddWin;
+        public static CustomOption RevolutionistAddWinIsAlive;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1378,16 +1393,30 @@ namespace SuperNewRoles.CustomOption
             ToiletFanPlayerCount = CustomOption.Create(657, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], ToiletFanOption);
             ToiletFanCoolTime = CustomOption.Create(658, true, CustomOptionType.Crewmate, "ToiletCoolDownSetting", 30f, 0f, 60f, 2.5f, ToiletFanOption);
 
-            
-            EvilBotanerOption = new CustomRoleOption(864, true, CustomOptionType.Impostor, "EvilBotanerName", RoleClass.EvilBotaner.color, 1);
-            EvilBotanerPlayerCount = CustomOption.Create(865, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilBotanerOption);
-            EvilBotanerCoolTime = CustomOption.Create(866, false, CustomOptionType.Impostor, "BotanerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, EvilBotanerOption, format: "unitSeconds");
-            EvilBotanerCount = CustomOption.Create(867, true, CustomOptionType.Impostor, "BotanerCountSetting", 1f, 1f, 10f, 1f, EvilBotanerOption);
+            EvilButtonerOption = new CustomRoleOption(864, true, CustomOptionType.Impostor, "EvilButtonerName", RoleClass.EvilButtoner.color, 1);
+            EvilButtonerPlayerCount = CustomOption.Create(865, true, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], EvilButtonerOption);
+            EvilButtonerCoolTime = CustomOption.Create(866, false, CustomOptionType.Impostor, "ButtonerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, EvilButtonerOption, format: "unitSeconds");//クールタイムはSHR未対応の為false
+            EvilButtonerCount = CustomOption.Create(867, true, CustomOptionType.Impostor, "ButtonerCountSetting", 1f, 1f, 10f, 1f, EvilButtonerOption);
 
-            NiceBotanerOption = new CustomRoleOption(868, true, CustomOptionType.Crewmate, "NiceBotanerName", RoleClass.NiceBotaner.color, 1);
-            NiceBotanerPlayerCount = CustomOption.Create(869, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceBotanerOption);
-            NiceBotanerCoolTime = CustomOption.Create(870, false, CustomOptionType.Crewmate, "BotanerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NiceBotanerOption, format: "unitSeconds");
-            NiceBotanerCount = CustomOption.Create(871, true, CustomOptionType.Crewmate, "BotanerCountSetting", 1f, 1f, 10f, 1f, NiceBotanerOption);
+            NiceButtonerOption = new CustomRoleOption(868, true, CustomOptionType.Crewmate, "NiceButtonerName", RoleClass.NiceButtoner.color, 1);
+            NiceButtonerPlayerCount = CustomOption.Create(869, true, CustomOptionType.Crewmate, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], NiceButtonerOption);
+            NiceButtonerCoolTime = CustomOption.Create(870, false, CustomOptionType.Crewmate, "ButtonerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NiceButtonerOption, format: "unitSeconds");//クールタイムはSHR未対応の為false
+            NiceButtonerCount = CustomOption.Create(871, true, CustomOptionType.Crewmate, "ButtonerCountSetting", 1f, 1f, 10f, 1f, NiceButtonerOption);
+
+            FinderOption = new CustomRoleOption(884, false, CustomOptionType.Impostor, "FinderName", RoleClass.Finder.color, 1);
+            FinderPlayerCount = CustomOption.Create(882, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FinderOption);
+            FinderCheckMadmateSetting = CustomOption.Create(883, false, CustomOptionType.Impostor, "FinderCheckMadmateSetting", 3f, 1f, 15f, 1f, FinderOption);
+
+            RevolutionistAndDictatorOption = new CustomRoleOption(872, false, CustomOptionType.Neutral, "RevolutionistAndDictatorName", Color.white, 1);
+            RevolutionistPlayerCount = CustomOption.Create(873, false, CustomOptionType.Neutral, "SettingRevolutionistPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
+            DictatorPlayerCount = CustomOption.Create(874, false, CustomOptionType.Neutral, "SettingDictatorPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
+            DictatorVoteCount = CustomOption.Create(875, false, CustomOptionType.Neutral, "DictatorVoteCount", 2f, 1f, 100f, 1f, RevolutionistAndDictatorOption);
+            DictatorSubstituteExile = CustomOption.Create(876, false, CustomOptionType.Neutral, "DictatorSubExile", false, RevolutionistAndDictatorOption);
+            DictatorSubstituteExileLimit = CustomOption.Create(877, false, CustomOptionType.Neutral, "DictatorSubExileLimit", 1f, 1f, 15f, 1f, DictatorSubstituteExile);
+            RevolutionistCoolTime = CustomOption.Create(878, false, CustomOptionType.Neutral, "RevolutionCoolTime", 10f, 2.5f, 60f, 2.5f, RevolutionistAndDictatorOption);
+            RevolutionistTouchTime = CustomOption.Create(881, false, CustomOptionType.Neutral, "RevolutionTouchTime", 1f, 0f, 10f, 0.5f, RevolutionistAndDictatorOption);
+            RevolutionistAddWin = CustomOption.Create(879, false, CustomOptionType.Neutral, "RevolutionistAddWin", false, RevolutionistAndDictatorOption);
+            RevolutionistAddWinIsAlive = CustomOption.Create(880, false, CustomOptionType.Neutral, "RevolutionistAddWinIsAlive", true, RevolutionistAddWin);
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);

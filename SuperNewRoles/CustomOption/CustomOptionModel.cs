@@ -163,6 +163,11 @@ namespace SuperNewRoles.CustomOption
             return (float)selections[selection];
         }
 
+        public virtual int GetInt()
+        {
+            return (int)GetFloat();
+        }
+
         public virtual string GetString()
         {
             string sel = selections[selection].ToString();
