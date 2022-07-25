@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Hazel;
@@ -395,12 +395,12 @@ namespace SuperNewRoles
         }
         public static void SetPlayerNum()
         {
-            ImpostorPlayerNum = (int)CustomOptions.impostorRolesCountMax.GetFloat();
-            ImpostorGhostRolePlayerNum = (int)CustomOptions.impostorGhostRolesCountMax.GetFloat();
-            NeutralPlayerNum = (int)CustomOptions.neutralRolesCountMax.GetFloat();
-            NeutralGhostRolePlayerNum = (int)CustomOptions.neutralGhostRolesCountMax.GetFloat();
-            CrewMatePlayerNum = (int)CustomOptions.crewmateRolesCountMax.GetFloat();
-            CrewMateGhostRolePlayerNum = (int)CustomOptions.crewmateGhostRolesCountMax.GetFloat();
+            ImpostorPlayerNum = CustomOptions.impostorRolesCountMax.GetInt();
+            ImpostorGhostRolePlayerNum = CustomOptions.impostorGhostRolesCountMax.GetInt();
+            NeutralPlayerNum = CustomOptions.neutralRolesCountMax.GetInt();
+            NeutralGhostRolePlayerNum = CustomOptions.neutralGhostRolesCountMax.GetInt();
+            CrewMatePlayerNum = CustomOptions.crewmateRolesCountMax.GetInt();
+            CrewMateGhostRolePlayerNum = CustomOptions.crewmateGhostRolesCountMax.GetInt();
         }
         public static void ImpostorRandomSelect()
         {
