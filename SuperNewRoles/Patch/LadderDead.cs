@@ -4,6 +4,7 @@ using SuperNewRoles.CustomOption;
 using SuperNewRoles.Mode;
 using SuperNewRoles.Roles;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Patch
 {
@@ -58,7 +59,8 @@ namespace SuperNewRoles.Patch
                 if (sourcepos.y > targetpos.y)
                 {
                     if (!(ModHelpers.IsSucsessChance(CustomOptions.LadderDeadChance.GetSelection() + 1) ||
-                        (__instance.myPlayer.IsRole(CustomRPC.RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.LadderDeathChance))
+                        (__instance.myPlayer.IsRole(RoleId.SuicidalIdeation) && ModHelpers.IsSucsessChance(CustomOptions.SuicidalIdeationFallProbability.GetSelection() + 1)) || 
+                        (__instance.myPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.LadderDeathChance))
                         ))
                     {
                         return;

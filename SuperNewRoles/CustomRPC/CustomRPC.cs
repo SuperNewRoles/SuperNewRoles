@@ -138,6 +138,7 @@ namespace SuperNewRoles.CustomRPC
         Revolutionist,
         Dictator,
         Spelunker,
+        SuicidalIdeation,
         //RoleId
     }
 
