@@ -1539,13 +1539,13 @@ namespace SuperNewRoles.CustomOption
             RevolutionistAddWin = CustomOption.Create(883, false, CustomOptionType.Neutral, "RevolutionistAddWin", false, RevolutionistAndDictatorOption);
             RevolutionistAddWinIsAlive = CustomOption.Create(884, false, CustomOptionType.Neutral, "RevolutionistAddWinIsAlive", true, RevolutionistAddWin);
 
-            SuicidalIdeationOption = new CustomRoleOption(885, false, CustomOptionType.Neutral, "SuicidalIdeationName", RoleClass.SuicidalIdeation.color, 1);
-            SuicidalIdeationPlayerCount = CustomOption.Create(886, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SuicidalIdeationOption);
-            SuicidalIdeationWinText = CustomOption.Create(922, false, CustomOptionType.Neutral, "SuicidalIdeationWinTextSetting", false, SuicidalIdeationOption);
-            SuicidalIdeationTimeLeft = CustomOption.Create(923, false, CustomOptionType.Neutral, "SuicidalIdeationTimeLeftSetting", 90f, 30f, 600f, 5f, SuicidalIdeationOption, format: "unitSeconds");
-            SuicidalIdeationAddTimeLeft = CustomOption.Create(924, false, CustomOptionType.Neutral, "SuicidalIdeationAddTimeLeftSetting", 20f, 0f, 300f, 5f, SuicidalIdeationOption, format: "unitSeconds");
-            SuicidalIdeationFallProbability = CustomOption.Create(925, false, CustomOptionType.Neutral, "SuicidalIdeationFallProbabilitySetting", rates, SuicidalIdeationOption);
-            var SuicidalIdeationoption = SelectTask.TaskSetting(926, 927, 928, SuicidalIdeationOption, CustomOptionType.Neutral, false);
+            SuicidalIdeationOption = new CustomRoleOption(928, false, CustomOptionType.Neutral, "SuicidalIdeationName", RoleClass.SuicidalIdeation.color, 1);
+            SuicidalIdeationPlayerCount = CustomOption.Create(929, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SuicidalIdeationOption);
+            SuicidalIdeationWinText = CustomOption.Create(930, false, CustomOptionType.Neutral, "SuicidalIdeationWinTextSetting", false, SuicidalIdeationOption);
+            SuicidalIdeationTimeLeft = CustomOption.Create(931, false, CustomOptionType.Neutral, "SuicidalIdeationTimeLeftSetting", 90f, 30f, 600f, 5f, SuicidalIdeationOption, format: "unitSeconds");
+            SuicidalIdeationAddTimeLeft = CustomOption.Create(932, false, CustomOptionType.Neutral, "SuicidalIdeationAddTimeLeftSetting", 20f, 0f, 300f, 5f, SuicidalIdeationOption, format: "unitSeconds");
+            SuicidalIdeationFallProbability = CustomOption.Create(933, false, CustomOptionType.Neutral, "SuicidalIdeationFallProbabilitySetting", rates, SuicidalIdeationOption);
+            var SuicidalIdeationoption = SelectTask.TaskSetting(934, 935, 936, SuicidalIdeationOption, CustomOptionType.Neutral, false);
             SuicidalIdeationCommonTask = SuicidalIdeationoption.Item1;
             SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
             SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
