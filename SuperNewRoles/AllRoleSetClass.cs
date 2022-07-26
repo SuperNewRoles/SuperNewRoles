@@ -19,14 +19,13 @@ namespace SuperNewRoles
         public static List<(PlayerControl, RoleTypes)> StoragedData = new();
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] RoleTypes roleType)
         {
-            return true;
-            if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
+            //if (!ModeHandler.IsMode(ModeId.SuperHostRoles)) return true;
             if (doReplace && sender != null)
             {
                 StoragedData.Add((__instance, roleType));
                 return false;
             }
-            else return true;
+            return true;
         }
         public static void Release()
         {

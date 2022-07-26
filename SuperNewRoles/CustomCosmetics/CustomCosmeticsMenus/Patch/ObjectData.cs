@@ -96,10 +96,8 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
         {
             //SuperNewRolesPlugin.Logger.LogInfo(CustomHats.IsEnd);
             //if (!CustomHats.IsEnd)
-            {
-                ShowDefaultTabButton();
-                return;
-            }
+            ShowDefaultTabButton();
+            return;/*
             SuperNewRolesPlugin.Logger.LogInfo(HatTabButtons.Length);
             if (HatTabButtons.Length > 0)
             {
@@ -127,7 +125,7 @@ namespace SuperNewRoles.CustomCosmetics.CustomCosmeticsMenus.Patch
                 SuperNewRolesPlugin.Logger.LogInfo("追加:" + key);
             }
             HatTabButtons = Tabs.ToArray();
-            ClickHatTab(CustomHats.Keys[0]);
+            ClickHatTab(CustomHats.Keys[0]);*/
         }
         public static void ClickHatTab(string package)
         {

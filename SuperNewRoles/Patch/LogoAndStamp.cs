@@ -351,7 +351,7 @@ namespace SuperNewRoles.Patches
                 }
             }
 
-            private static readonly Task DownloadTask = null;
+           // private static readonly Task DownloadTask = null;
             public static async Task<bool> DownloadSubmarged()
             {
                 try
