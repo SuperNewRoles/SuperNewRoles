@@ -36,6 +36,7 @@ namespace SuperNewRoles.EndGame
         TunaWin,
         NeetWin,
         RevolutionistWin,
+        SpelunkerWin,
         BugEnd
     }
     enum WinCondition
@@ -58,6 +59,7 @@ namespace SuperNewRoles.EndGame
         TunaWin,
         NeetWin,
         RevolutionistWin,
+        SpelunkerWin,
         BugEnd
     }
     [HarmonyPatch(typeof(ShipStatus))]
@@ -245,6 +247,10 @@ namespace SuperNewRoles.EndGame
                 case WinCondition.RevolutionistWin:
                     text = "RevolutionistName";
                     RoleColor = RoleClass.Revolutionist.color;
+                    break;
+                case WinCondition.SpelunkerWin:
+                    text = "SpelunkerName";
+                    RoleColor = RoleClass.Spelunker.color;
                     break;
                 default:
                     switch (AdditionalTempData.gameOverReason)
@@ -731,6 +737,21 @@ namespace SuperNewRoles.EndGame
                 }
             }
 
+            foreach (PlayerControl p in RoleClass.Spelunker.SpelunkerPlayer)
+            {
+                bool isreset = false;
+                if (p.IsAlive())
+                {
+                    if (!isreset)
+                    {
+                        TempData.winners = new Il2CppSystem.Collections.Generic.List<WinningPlayerData>();
+                        WinningPlayerData wpd = new(p.Data);
+                        TempData.winners.Add(wpd);
+                        AdditionalTempData.winCondition = WinCondition.SpelunkerWin;
+                    }
+                    isreset = true;
+                }
+            }
             foreach (PlayerControl player in RoleClass.Opportunist.OpportunistPlayer)
             {
                 if (player.IsAlive())
