@@ -1,6 +1,8 @@
 using System.Linq;
 using UnityEngine;
 using SuperNewRoles.CustomRPC;
+using HarmonyLib;
+using System.Collections.Generic;
 
 namespace SuperNewRoles.Roles.Neutral
 {
@@ -59,6 +61,33 @@ namespace SuperNewRoles.Roles.Neutral
                 } else
                 {
                     RoleClass.Spelunker.CommsOrLightdownTime = RoleClass.Spelunker.CommsOrLightdownDeathTime;
+                }
+            }
+            if (DeathPosition != null && Vector2.Distance((Vector2)DeathPosition, CachedPlayer.LocalPlayer.transform.position) < 0.5f)
+            {
+                PlayerControl.LocalPlayer.RpcMurderPlayer(PlayerControl.LocalPlayer);
+            }
+        }
+        public static void WrapUp()
+        {
+            DeathPosition = null;
+        }
+        public static Vector2?DeathPosition;
+        [HarmonyPatch(typeof(MovingPlatformBehaviour),nameof(MovingPlatformBehaviour.UsePlatform))]
+        class MovingPlatformUsePlatformPatch
+        {
+            public static void Postfix(MovingPlatformBehaviour __instance, PlayerControl target)
+            {
+                if (target.PlayerId == CachedPlayer.LocalPlayer.PlayerId &&
+                    target.IsRole(RoleId.Spelunker))
+                {
+                    bool isok = ModHelpers.IsSucsessChance(RoleClass.Spelunker.LiftDeathChance);
+                    Logger.Info($"{target.Data.PlayerName}のぬーん転落死の結果は{isok}でした ", "ぬーん転落死");
+                    if (isok)
+                    {
+                        DeathPosition = __instance.transform.parent.TransformPoint((!__instance.IsLeft) ? __instance.LeftUsePosition : __instance.RightUsePosition);
+                        Logger.Info(DeathPosition.ToString());
+                    }
                 }
             }
         }
