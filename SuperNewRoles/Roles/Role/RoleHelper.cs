@@ -1058,6 +1058,7 @@ namespace SuperNewRoles
                 RoleId.Tuna => RoleClass.Tuna.IsUseVent,
                 RoleId.BlackCat => CachedPlayer.LocalPlayer.Data.Role.Role != RoleTypes.GuardianAngel && RoleClass.BlackCat.IsUseVent,
                 RoleId.Spy => RoleClass.Spy.CanUseVent,
+                RoleId.Stefinder => RoleClass.Stefinder.UseVent,
                 _ => false,
             };
         }
@@ -1096,6 +1097,7 @@ namespace SuperNewRoles
                 RoleId.TeleportingJackal => RoleClass.TeleportingJackal.IsUseSabo,
                 RoleId.SidekickSeer or RoleId.JackalSeer => RoleClass.JackalSeer.IsUseSabo,
                 RoleId.Egoist => RoleClass.Egoist.UseSabo,
+                RoleId.Stefinder => RoleClass.Stefinder.UseSabo,
                 _ => false,
             };
         }
