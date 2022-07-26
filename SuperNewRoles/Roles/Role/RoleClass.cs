@@ -161,6 +161,7 @@ namespace SuperNewRoles.Roles
             Dictator.ClearAndReload();
             Spelunker.ClearAndReload();
             SuicidalIdeation.ClearAndReload();
+            Hitman.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -2614,6 +2615,32 @@ namespace SuperNewRoles.Roles
                 AddTimeLeft = CustomOptions.SuicidalIdeationAddTimeLeft.GetFloat();
                 ButtonTimer = DateTime.Now;
                 CompletedTask = 0;
+            }
+        }
+        public static class Hitman
+        {
+            public static List<PlayerControl> HitmanPlayer;
+            public static Color32 color = new(86, 41, 18, byte.MaxValue);
+            public static float KillCoolTime;
+            public static int OutMissionLimit;
+            public static PlayerControl Target;
+            public static float ChangeTargetTime;
+            public static float UpdateTime;
+            public static TextMeshPro cooldownText;
+            public static void ClearAndReload()
+            {
+                HitmanPlayer = new();
+                KillCoolTime = CustomOptions.HitmanKillCoolTime.GetFloat();
+                if (CustomOptions.HitmanIsOutMission.GetBool())
+                {
+                    OutMissionLimit = CustomOptions.HitmanOutMissionLimit.GetInt();
+                } else
+                {
+                    OutMissionLimit = -1;
+                }
+                ChangeTargetTime = CustomOptions.HitmanChangeTargetTime.GetFloat();
+                UpdateTime = ChangeTargetTime;
+                cooldownText = null;
             }
         }
         //新ロールクラス

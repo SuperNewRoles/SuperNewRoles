@@ -139,6 +139,7 @@ namespace SuperNewRoles.CustomRPC
         Dictator,
         Spelunker,
         SuicidalIdeation,
+        Hitman,
         //RoleId
     }
 

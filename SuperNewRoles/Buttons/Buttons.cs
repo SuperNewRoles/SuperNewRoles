@@ -68,6 +68,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ButtonerButton;
         public static CustomButton RevolutionistButton;
         public static CustomButton SuicidalIdeationButton;
+        public static CustomButton HitmanKillButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -2075,6 +2076,41 @@ namespace SuperNewRoles.Buttons
             )
             {
                 buttonText = ModTranslation.GetString("SuicidalIdeationButtonName"),
+                showButtonText = true
+            };
+
+            HitmanKillButton = new(
+                () =>
+                {
+                    PlayerControl target = SetTarget();
+                    if (ModHelpers.CheckMuderAttemptAndKill(PlayerControl.LocalPlayer, target) == ModHelpers.MurderAttemptResult.PerformKill) {
+                    }
+                    if (RoleClass.Hitman.Target.PlayerId != target.PlayerId)
+                    {
+                        Roles.Neutral.Hitman.SetTarget();
+                        Roles.Neutral.Hitman.LimitDown();
+                    }
+                    HitmanKillButton.Timer = HitmanKillButton.MaxTimer;
+                },
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.Hitman; },
+                () =>
+                {
+                    return SetTarget() && PlayerControl.LocalPlayer.CanMove;
+                },
+                () =>
+                {
+                    Roles.Neutral.Hitman.EndMeeting();
+                },
+                __instance.KillButton.graphic.sprite,
+                new Vector3(0, 1, 0),
+                __instance,
+                __instance.KillButton,
+                KeyCode.Q,
+                8,
+                () => { return false; }
+            )
+            {
+                buttonText = FastDestroyableSingleton<HudManager>.Instance.KillButton.buttonLabelText.text,
                 showButtonText = true
             };
 

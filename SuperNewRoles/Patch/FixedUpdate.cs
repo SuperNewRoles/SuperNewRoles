@@ -159,6 +159,9 @@ namespace SuperNewRoles.Patch
                             case RoleId.SuicidalIdeation:
                                 SuicidalIdeation.Postfix();
                                 break;
+                            case RoleId.Hitman:
+                                Roles.Neutral.Hitman.FixedUpdate();
+                                break;
                             default:
                                 foreach (PlayerControl p in CachedPlayer.AllPlayers)
                                     NormalButtonDestroy.Postfix(p);
