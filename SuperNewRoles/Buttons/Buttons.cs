@@ -67,6 +67,7 @@ namespace SuperNewRoles.Buttons
         public static CustomButton ToiletFanButton;
         public static CustomButton ButtonerButton;
         public static CustomButton RevolutionistButton;
+        public static CustomButton SuicidalIdeationButton;
 
         public static TMPro.TMP_Text sheriffNumShotsText;
         public static TMPro.TMP_Text GhostMechanicNumRepairText;
@@ -1889,8 +1890,8 @@ namespace SuperNewRoles.Buttons
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
-                KeyCode.Q,
-                8,
+                KeyCode.F,
+                49,
                 () => { return false; }
             )
             {
@@ -1960,8 +1961,8 @@ namespace SuperNewRoles.Buttons
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 __instance.AbilityButton,
-                KeyCode.Q,
-                8,
+                KeyCode.F,
+                49,
                 () => { return false; }
             )
             {
@@ -2010,9 +2011,9 @@ namespace SuperNewRoles.Buttons
                 RoleClass.EvilButtoner.GetButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
-                __instance.KillButton,
-                KeyCode.Q,
-                8,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
                 () => { return false; }
 
             )
@@ -2047,6 +2048,34 @@ namespace SuperNewRoles.Buttons
                 buttonText = ModTranslation.GetString("RevolutionistButtonName"),
                 showButtonText = true,
                 color = Color.yellow
+            };
+
+            SuicidalIdeationButton = new CustomButton(
+                () =>{},
+                (bool isAlive, RoleId role) => { return isAlive && role == RoleId.SuicidalIdeation; },
+                () =>
+                {
+                    return true;
+                },
+                () =>
+                {
+                    SuicidalIdeationButton.MaxTimer = RoleClass.SuicidalIdeation.TimeLeft;
+                    SuicidalIdeationButton.Timer = RoleClass.SuicidalIdeation.TimeLeft;
+                },
+                RoleClass.SuicidalIdeation.GetButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                __instance.AbilityButton,
+                KeyCode.F,
+                49,
+                () =>
+                {
+                    return RoleClass.IsMeeting;
+                }
+            )
+            {
+                buttonText = ModTranslation.GetString("SuicidalIdeationButtonName"),
+                showButtonText = true
             };
 
             SetCustomButtonCooldowns();

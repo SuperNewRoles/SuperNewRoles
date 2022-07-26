@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using HarmonyLib;
 using SuperNewRoles.CustomOption;
 using SuperNewRoles.Mode;
+using SuperNewRoles.Roles;
 using UnityEngine;
+using SuperNewRoles.CustomRPC;
 
 namespace SuperNewRoles.Patch
 {
@@ -56,12 +58,14 @@ namespace SuperNewRoles.Patch
                 //降りている
                 if (sourcepos.y > targetpos.y)
                 {
-                    //SuperNewRolesPlugin.Logger.LogInfo("降りています");
-                    int Chance = UnityEngine.Random.Range(1, 10);
-                    if (Chance <= (CustomOptions.LadderDeadChance.GetSelection() + 1))
+                    if (!(ModHelpers.IsSucsessChance(CustomOptions.LadderDeadChance.GetSelection() + 1) ||
+                        (__instance.myPlayer.IsRole(RoleId.SuicidalIdeation) && ModHelpers.IsSucsessChance(CustomOptions.SuicidalIdeationFallProbability.GetSelection() + 1)) || 
+                        (__instance.myPlayer.IsRole(RoleId.Spelunker) && ModHelpers.IsSucsessChance(RoleClass.Spelunker.LadderDeathChance))
+                        ))
                     {
-                        TargetLadderData[__instance.myPlayer.PlayerId] = targetpos;
+                        return;
                     }
+                    TargetLadderData[__instance.myPlayer.PlayerId] = targetpos;
                 }
             }
         }
