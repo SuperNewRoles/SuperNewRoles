@@ -159,6 +159,7 @@ namespace SuperNewRoles.Roles
             Finder.ClearAndReload();
             Revolutionist.ClearAndReload();
             Dictator.ClearAndReload();
+            SuicidalIdeation.ClearAndReload();
             //ロールクリア
             Quarreled.ClearAndReload();
             Lovers.ClearAndReload();
@@ -1230,8 +1231,8 @@ namespace SuperNewRoles.Roles
                     LevelingerPlayer = new();
                     ThisXP = 0;
                     IsCreateMadmate = false;
-                    OneKillXP = CustomOptions.LevelingerOneKillXP.GetFloat();
-                    UpLevelXp = CustomOptions.LevelingerUpLevelXP.GetFloat();
+                    OneKillXP = CustomOptions.LevelingerOneKillXP.GetInt();
+                    UpLevelXp = CustomOptions.LevelingerUpLevelXP.GetInt();
                     GetPowerData = new();
                     for (int i = 0; i < 5; i++)
                     {
@@ -1244,7 +1245,7 @@ namespace SuperNewRoles.Roles
                         GetPowerData.Add(GetLevelPowerType(getdata));
                     }
                     IsUseOKRevive = CustomOptions.LevelingerReviveXP.GetBool();
-                    ReviveUseXP = CustomOptions.LevelingerUseXPRevive.GetFloat();
+                    ReviveUseXP = CustomOptions.LevelingerUseXPRevive.GetInt();
                 }
                 catch { }
             }
@@ -1368,7 +1369,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 MadMayorPlayer = new();
-                AddVote = CustomOptions.MadMayorVoteCount.GetFloat();
+                AddVote = CustomOptions.MadMayorVoteCount.GetInt();
                 IsImpostorCheck = CustomOptions.MadMayorIsCheckImpostor.GetBool();
                 IsUseVent = CustomOptions.MadMayorIsUseVent.GetBool();
                 IsImpostorLight = CustomOptions.MadMayorIsImpostorLight.GetBool();
@@ -2095,7 +2096,7 @@ namespace SuperNewRoles.Roles
                     Short = PlayerControl.GameOptions.NumShortTasks;
                 }
                 JackalCheckTask = (int)(AllTask * (int.Parse(CustomOptions.MayorFriendsCheckJackalTask.GetString().Replace("%", "")) / 100f));
-                AddVote = CustomOptions.MayorFriendsVoteCount.GetFloat();
+                AddVote = CustomOptions.MayorFriendsVoteCount.GetInt();
             }
         }
         public static class VentMaker
@@ -2135,7 +2136,7 @@ namespace SuperNewRoles.Roles
             public static void ClearAndReload()
             {
                 GhostMechanicPlayer = new();
-                LimitCount = CustomOptions.GhostMechanicRepairLimit.GetFloat();
+                LimitCount = CustomOptions.GhostMechanicRepairLimit.GetInt();
             }
         }
         public static class EvilHacker
@@ -2557,6 +2558,32 @@ namespace SuperNewRoles.Roles
                 if (CustomOptions.DictatorSubstituteExile.GetBool()) SubExileLimit = CustomOptions.DictatorSubstituteExileLimit.GetInt();
                 else SubExileLimit = 0;
                 SubExileLimitData = new();
+            }
+        }
+        public static class SuicidalIdeation
+        {
+            public static List<PlayerControl> SuicidalIdeationPlayer;
+            public static Color32 color = new Color32(71, 71, 71, byte.MaxValue);
+            public static bool SuicidalIdeationWinText;
+            public static float TimeLeft;
+            public static DateTime ButtonTimer;
+            public static int CompletedTask;
+            public static float AddTimeLeft;
+            public static Sprite buttonSprite;
+            public static Sprite GetButtonSprite()
+            {
+                if (buttonSprite) return buttonSprite;
+                buttonSprite = ModHelpers.LoadSpriteFromResources("SuperNewRoles.Resources.SuicidalIdeationButton.png", 115f);
+                return buttonSprite;
+            }
+            public static void ClearAndReload()
+            {
+                SuicidalIdeationPlayer = new();
+                SuicidalIdeationWinText = CustomOptions.SuicidalIdeationWinText.GetBool();
+                TimeLeft = CustomOptions.SuicidalIdeationTimeLeft.GetFloat();
+                AddTimeLeft = CustomOptions.SuicidalIdeationAddTimeLeft.GetFloat();
+                ButtonTimer = DateTime.Now;
+                CompletedTask = 0;
             }
         }
         //新ロールクラス

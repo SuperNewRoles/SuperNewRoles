@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using SuperNewRoles.Patch;
 using SuperNewRoles.Roles;
 using UnityEngine;
@@ -731,6 +731,16 @@ namespace SuperNewRoles.CustomOption
         public static CustomOption RevolutionistTouchTime;
         public static CustomOption RevolutionistAddWin;
         public static CustomOption RevolutionistAddWinIsAlive;
+
+        public static CustomRoleOption SuicidalIdeationOption;
+        public static CustomOption SuicidalIdeationPlayerCount;
+        public static CustomOption SuicidalIdeationWinText;
+        public static CustomOption SuicidalIdeationTimeLeft;
+        public static CustomOption SuicidalIdeationAddTimeLeft;
+        public static CustomOption SuicidalIdeationFallProbability;
+        public static CustomOption SuicidalIdeationCommonTask;
+        public static CustomOption SuicidalIdeationShortTask;
+        public static CustomOption SuicidalIdeationLongTask;
         //CustomOption
 
         public static CustomOption QuarreledOption;
@@ -1487,20 +1497,31 @@ namespace SuperNewRoles.CustomOption
             NiceButtonerCoolTime = CustomOption.Create(870, false, CustomOptionType.Crewmate, "ButtonerCoolDownSetting", 20f, 2.5f, 60f, 2.5f, NiceButtonerOption, format: "unitSeconds");//クールタイムはSHR未対応の為false
             NiceButtonerCount = CustomOption.Create(871, true, CustomOptionType.Crewmate, "ButtonerCountSetting", 1f, 1f, 10f, 1f, NiceButtonerOption);
 
-            FinderOption = new CustomRoleOption(884, false, CustomOptionType.Impostor, "FinderName", RoleClass.Finder.color, 1);
-            FinderPlayerCount = CustomOption.Create(882, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FinderOption);
-            FinderCheckMadmateSetting = CustomOption.Create(883, false, CustomOptionType.Impostor, "FinderCheckMadmateSetting", 3f, 1f, 15f, 1f, FinderOption);
+            FinderOption = new CustomRoleOption(872, false, CustomOptionType.Impostor, "FinderName", RoleClass.Finder.color, 1);
+            FinderPlayerCount = CustomOption.Create(873, false, CustomOptionType.Impostor, "SettingPlayerCountName", ImpostorPlayers[0], ImpostorPlayers[1], ImpostorPlayers[2], ImpostorPlayers[3], FinderOption);
+            FinderCheckMadmateSetting = CustomOption.Create(874, false, CustomOptionType.Impostor, "FinderCheckMadmateSetting", 3f, 1f, 15f, 1f, FinderOption);
 
-            RevolutionistAndDictatorOption = new CustomRoleOption(872, false, CustomOptionType.Neutral, "RevolutionistAndDictatorName", Color.white, 1);
-            RevolutionistPlayerCount = CustomOption.Create(873, false, CustomOptionType.Neutral, "SettingRevolutionistPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
-            DictatorPlayerCount = CustomOption.Create(874, false, CustomOptionType.Neutral, "SettingDictatorPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
-            DictatorVoteCount = CustomOption.Create(875, false, CustomOptionType.Neutral, "DictatorVoteCount", 2f, 1f, 100f, 1f, RevolutionistAndDictatorOption);
-            DictatorSubstituteExile = CustomOption.Create(876, false, CustomOptionType.Neutral, "DictatorSubExile", false, RevolutionistAndDictatorOption);
-            DictatorSubstituteExileLimit = CustomOption.Create(877, false, CustomOptionType.Neutral, "DictatorSubExileLimit", 1f, 1f, 15f, 1f, DictatorSubstituteExile);
-            RevolutionistCoolTime = CustomOption.Create(878, false, CustomOptionType.Neutral, "RevolutionCoolTime", 10f, 2.5f, 60f, 2.5f, RevolutionistAndDictatorOption);
-            RevolutionistTouchTime = CustomOption.Create(881, false, CustomOptionType.Neutral, "RevolutionTouchTime", 1f, 0f, 10f, 0.5f, RevolutionistAndDictatorOption);
-            RevolutionistAddWin = CustomOption.Create(879, false, CustomOptionType.Neutral, "RevolutionistAddWin", false, RevolutionistAndDictatorOption);
-            RevolutionistAddWinIsAlive = CustomOption.Create(880, false, CustomOptionType.Neutral, "RevolutionistAddWinIsAlive", true, RevolutionistAddWin);
+            RevolutionistAndDictatorOption = new CustomRoleOption(875, false, CustomOptionType.Neutral, "RevolutionistAndDictatorName", Color.white, 1);
+            RevolutionistPlayerCount = CustomOption.Create(876, false, CustomOptionType.Neutral, "SettingRevolutionistPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
+            DictatorPlayerCount = CustomOption.Create(877, false, CustomOptionType.Neutral, "SettingDictatorPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], RevolutionistAndDictatorOption);
+            DictatorVoteCount = CustomOption.Create(878, false, CustomOptionType.Neutral, "DictatorVoteCount", 2f, 1f, 100f, 1f, RevolutionistAndDictatorOption);
+            DictatorSubstituteExile = CustomOption.Create(879, false, CustomOptionType.Neutral, "DictatorSubExile", false, RevolutionistAndDictatorOption);
+            DictatorSubstituteExileLimit = CustomOption.Create(880, false, CustomOptionType.Neutral, "DictatorSubExileLimit", 1f, 1f, 15f, 1f, DictatorSubstituteExile);
+            RevolutionistCoolTime = CustomOption.Create(881, false, CustomOptionType.Neutral, "RevolutionCoolTime", 10f, 2.5f, 60f, 2.5f, RevolutionistAndDictatorOption);
+            RevolutionistTouchTime = CustomOption.Create(882, false, CustomOptionType.Neutral, "RevolutionTouchTime", 1f, 0f, 10f, 0.5f, RevolutionistAndDictatorOption);
+            RevolutionistAddWin = CustomOption.Create(883, false, CustomOptionType.Neutral, "RevolutionistAddWin", false, RevolutionistAndDictatorOption);
+            RevolutionistAddWinIsAlive = CustomOption.Create(884, false, CustomOptionType.Neutral, "RevolutionistAddWinIsAlive", true, RevolutionistAddWin);
+
+            SuicidalIdeationOption = new CustomRoleOption(885, false, CustomOptionType.Neutral, "SuicidalIdeationName", RoleClass.SuicidalIdeation.color, 1);
+            SuicidalIdeationPlayerCount = CustomOption.Create(886, false, CustomOptionType.Neutral, "SettingPlayerCountName", CrewPlayers[0], CrewPlayers[1], CrewPlayers[2], CrewPlayers[3], SuicidalIdeationOption);
+            SuicidalIdeationWinText = CustomOption.Create(922, false, CustomOptionType.Neutral, "SuicidalIdeationWinTextSetting", false, SuicidalIdeationOption);
+            SuicidalIdeationTimeLeft = CustomOption.Create(923, false, CustomOptionType.Neutral, "SuicidalIdeationTimeLeftSetting", 90f, 30f, 600f, 5f, SuicidalIdeationOption, format: "unitSeconds");
+            SuicidalIdeationAddTimeLeft = CustomOption.Create(924, false, CustomOptionType.Neutral, "SuicidalIdeationAddTimeLeftSetting", 20f, 0f, 300f, 5f, SuicidalIdeationOption, format: "unitSeconds");
+            SuicidalIdeationFallProbability = CustomOption.Create(925, false, CustomOptionType.Neutral, "SuicidalIdeationFallProbabilitySetting", rates, SuicidalIdeationOption);
+            var SuicidalIdeationoption = SelectTask.TaskSetting(926, 927, 928, SuicidalIdeationOption, CustomOptionType.Neutral, false);
+            SuicidalIdeationCommonTask = SuicidalIdeationoption.Item1;
+            SuicidalIdeationShortTask = SuicidalIdeationoption.Item2;
+            SuicidalIdeationLongTask = SuicidalIdeationoption.Item3;
             //表示設定
 
             QuarreledOption = CustomOption.Create(432, true, CustomOptionType.Neutral, Cs(RoleClass.Quarreled.color, "QuarreledName"), false, null, isHeader: true);
