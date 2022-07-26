@@ -1009,9 +1009,9 @@ namespace SuperNewRoles
                 case RoleId.Neet:
                 case RoleId.Revolutionist:
                 case RoleId.SuicidalIdeation:
+                case RoleId.Stefinder:
                     IsTaskClear = true;
                     break;
-                    case RoleId.Stefinder:
                 //タスククリアか
             }
             if (!IsTaskClear
@@ -1154,9 +1154,9 @@ namespace SuperNewRoles
                 case RoleId.Neet:
                 case RoleId.Revolutionist:
                 case RoleId.SuicidalIdeation:
+                case RoleId.Stefinder:
                     IsNeutral = true;
                     break;
-                    case RoleId.Stefinder:
                 //第三か
             }
             return IsNeutral;
